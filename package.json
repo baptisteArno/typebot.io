@@ -1,26 +1,22 @@
 {
+  "name": "typebot-os",
   "packageManager": "yarn@3.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "^12.0.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "db:up": "docker-compose up -d",
+    "db:setup": "yarn workspace @typebot/prisma dev",
+    "db:nuke": "docker-compose down --volumes --remove-orphans",
+    "db:inspect": "dotenv -e .env yarn workspace @typebot/prisma prisma studio",
+    "dev:setup": "dotenv -e .env run-s db:up db:setup",
+    "dev:builder": "yarn workspace builder dev",
+    "dev:viewer": "yarn workspace viewer dev"
   },
   "devDependencies": {
-    "@types/node": "^16.11.9",
-    "@types/react": "^17.0.35",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "eslint": "<8.0.0",
-    "eslint-config-next": "12.0.4",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1",
-    "typescript": "^4.5.2"
+    "dotenv-cli": "^4.1.0",
+    "npm-run-all": "^4.1.5"
   }
 }

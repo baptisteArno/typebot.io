@@ -1,0 +1,42 @@
+{
+  "name": "builder",
+  "packageManager": "yarn@3.1.0",
+  "scripts": {
+    "dev": "dotenv -e ../../.env next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cypress": "cypress open"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@next-auth/prisma-adapter": "next",
+    "framer-motion": "^4",
+    "next": "^12.0.4",
+    "next-auth": "beta",
+    "nodemailer": "^6.7.1",
+    "nprogress": "^0.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^8.0.2",
+    "@types/node": "^16.11.9",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "^17.0.35",
+    "@types/testing-library__cypress": "^5.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "cypress": "^9.1.0",
+    "cypress-social-logins": "^1.12.0",
+    "dotenv-cli": "^4.1.0",
+    "eslint": "<8.0.0",
+    "eslint-config-next": "12.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.5.2"
+  }
+}

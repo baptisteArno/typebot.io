@@ -24,5 +24,10 @@ node_modules
 
 .next
 
+.env
+.env.local
+
+cypress.env.json
+
 
 
