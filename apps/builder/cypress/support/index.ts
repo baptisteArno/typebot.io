@@ -13,20 +13,33 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
-// Import commands.js using ES2015 syntax:
+/// <reference types="cypress" />
 
 declare global {
   namespace Cypress {
     interface Chainable {
-      /**
-       * Log out using the NextAuth API.
-       * @example cy.logOutByApi()
-       */
-      logOutByApi(): Chainable<Response<any>>
+      signOut(): Chainable<any>
+      signIn(email: string): Chainable<any>
+      mouseMoveBy(
+        x: number,
+        y: number,
+        options?: { delay: number }
+      ): Chainable<
+        [
+          Element,
+          {
+            initialRect: ClientRect
+            finalRect: ClientRect
+            delta: { x: number; y: number }
+          }
+        ]
+      >
     }
   }
 }
+
+// Import commands.js using ES2015 syntax:
+import '@testing-library/cypress/add-commands'
 import './commands'
 
 // Alternatively you can use CommonJS syntax:

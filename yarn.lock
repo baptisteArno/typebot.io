@@ -287,7 +287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/css-reset@npm:1.1.1":
+"@chakra-ui/css-reset@npm:1.1.1, @chakra-ui/css-reset@npm:^1.1.1":
   version: 1.1.1
   resolution: "@chakra-ui/css-reset@npm:1.1.1"
   peerDependencies:
@@ -1010,6 +1010,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dnd-kit/accessibility@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@dnd-kit/accessibility@npm:3.0.0"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: feac6afea07ece1568df38973d7a1a1b994782a6df119983250c3849ca2a3818a7bcc67fe4c5d22b0a1cfde866081644d677d2188abed507b3eccc255da79320
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/core@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@dnd-kit/core@npm:4.0.3"
+  dependencies:
+    "@dnd-kit/accessibility": ^3.0.0
+    "@dnd-kit/utilities": ^3.0.1
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 828609317504f32bf37238840e5d2ae545efaaa779d696fdad1606d2ae22ae5668a43466db007efde89c8c1ef04ca66b2c61b6e98465f9487ec37c8e3d11a1b2
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/utilities@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@dnd-kit/utilities@npm:3.0.1"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 01ffe77bf98707e2e0e949b4425caf6a237ad4fc07fe15f9f0e4ab7c710d81ba2190915549c5302386cb55517e7be4bea6560dfb7eba0a516fa46719f837ec57
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.3.0":
   version: 11.3.0
   resolution: "@emotion/babel-plugin@npm:11.3.0"
@@ -1529,31 +1565,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "@prisma/client@npm:3.5.0"
+"@prisma/client@npm:latest":
+  version: 3.6.0
+  resolution: "@prisma/client@npm:3.6.0"
   dependencies:
-    "@prisma/engines-version": 3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e
+    "@prisma/engines-version": 3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 515880b22c4df43185cefb17fe34968c9ba51cf4fead39e2a9bd9da7ba58a3303194ca0d81fcee27e9a14caa017d3f92cffdcdb4e90fa912ba1ca9508991503d
+  checksum: 83835117d60d100cf0933f60933603f5b85833414ad4dae9ea6b18f99190030317de459bbb573e928f764b476733676722fd90637292defae887dd974a2914a1
   languageName: node
   linkType: hard
 
-"@prisma/engines-version@npm:3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e":
-  version: 3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e
-  resolution: "@prisma/engines-version@npm:3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e"
-  checksum: 2919f44abc369ec48c8b2c0169293934ba7e2cff6e2bf29a86731b9e1a8c6bad8a3ffc41e604187ea75cfbb04b138bad7e4fe8ec7b557b437e0e2264ef9806df
+"@prisma/engines-version@npm:3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727":
+  version: 3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727
+  resolution: "@prisma/engines-version@npm:3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727"
+  checksum: 40adea282d62b7d8d03696f3f9f1c6da271671955f5305d3750d07f80eff7bcfad89430e97215183d027895487c4ab36373fc8f59df1a537eb2ab18458168993
   languageName: node
   linkType: hard
 
-"@prisma/engines@npm:3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e":
-  version: 3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e
-  resolution: "@prisma/engines@npm:3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e"
-  checksum: 2a31da94fef3c497d66ae77174c1a6627e7aae63039b01cbd4f2dbc4b44198dd4932af48a013566bb54ed173dd948d75b8d47bfb4f139551cc685f2e2cf2f0ad
+"@prisma/engines@npm:3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727":
+  version: 3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727
+  resolution: "@prisma/engines@npm:3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727"
+  checksum: 3eb1e40dbd6ca8e8bd727048393b9fd993b415bcc1efca2f6bac5b0a60da8e73c2dd35602c4083b29fc31fd17a2cc9ba0522afe1b6499a68663ecdf5f833cdb3
   languageName: node
   linkType: hard
 
@@ -1689,10 +1725,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typebot/prisma@workspace:packages/prisma"
   dependencies:
-    "@prisma/client": ^3.5.0
+    "@prisma/client": latest
     dotenv-cli: ^4.1.0
     npm-run-all: ^4.1.5
-    prisma: ^3.5.0
+    prisma: latest
     ts-node: ^10.4.0
     typescript: ^4.5.2
   languageName: unknown
@@ -2663,7 +2699,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "builder@workspace:apps/builder"
   dependencies:
+    "@chakra-ui/css-reset": ^1.1.1
     "@chakra-ui/react": ^1.7.2
+    "@dnd-kit/core": ^4.0.3
     "@emotion/react": ^11
     "@emotion/styled": ^11
     "@next-auth/prisma-adapter": next
@@ -2681,6 +2719,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-cypress: ^2.12.1
     eslint-plugin-prettier: ^4.0.0
+    focus-visible: ^5.2.0
     framer-motion: ^4
     next: ^12.0.4
     next-auth: beta
@@ -2689,7 +2728,9 @@ __metadata:
     prettier: ^2.4.1
     react: ^17.0.2
     react-dom: ^17.0.2
+    swr: ^1.0.1
     typescript: ^4.5.2
+    use-debounce: ^7.0.1
   languageName: unknown
   linkType: soft
 
@@ -2899,6 +2940,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cliui@npm:^7.0.2":
+  version: 7.0.4
+  resolution: "cliui@npm:7.0.4"
+  dependencies:
+    string-width: ^4.2.0
+    strip-ansi: ^6.0.0
+    wrap-ansi: ^7.0.0
+  checksum: ce2e8f578a4813806788ac399b9e866297740eecd4ad1823c27fd344d78b22c5f8597d548adbcc46f0573e43e21e751f39446c5a5e804a12aace402b7a315d7f
+  languageName: node
+  linkType: hard
+
 "code-point-at@npm:^1.0.0":
   version: 1.1.0
   resolution: "code-point-at@npm:1.1.0"
@@ -3012,6 +3064,24 @@ __metadata:
     readable-stream: ^2.2.2
     typedarray: ^0.0.6
   checksum: 1ef77032cb4459dcd5187bd710d6fc962b067b64ec6a505810de3d2b8cc0605638551b42f8ec91edf6fcd26141b32ef19ad749239b58fae3aba99187adc32285
+  languageName: node
+  linkType: hard
+
+"concurrently@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "concurrently@npm:6.4.0"
+  dependencies:
+    chalk: ^4.1.0
+    date-fns: ^2.16.1
+    lodash: ^4.17.21
+    rxjs: ^6.6.3
+    spawn-command: ^0.0.2-1
+    supports-color: ^8.1.0
+    tree-kill: ^1.2.2
+    yargs: ^16.2.0
+  bin:
+    concurrently: bin/concurrently.js
+  checksum: 902864cc853176cac406246fa367a1b24ebfcbea9ba43c164f9cb4e2c9c1a5f9d8be05ce98fe7ef13329ffd5cc340a052007a9c870863e2068425d95b3bf89d7
   languageName: node
   linkType: hard
 
@@ -3316,6 +3386,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^2.16.1":
+  version: 2.27.0
+  resolution: "date-fns@npm:2.27.0"
+  checksum: db62036b3816eb0322c9532b353beac7f660a91e1a55dbd21c14893c621ebb8509f21c66ba287844dabd34dee0207edd54a9537bce6bb7cab9383dedc6b8bc90
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.10.4":
   version: 1.10.7
   resolution: "dayjs@npm:1.10.7"
@@ -3387,6 +3464,13 @@ __metadata:
   version: 1.1.2
   resolution: "depd@npm:1.1.2"
   checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
+  languageName: node
+  linkType: hard
+
+"dequal@npm:2.0.2":
+  version: 2.0.2
+  resolution: "dequal@npm:2.0.2"
+  checksum: 86c7a2c59f7b0797ed397c74b5fcdb744e48fc19440b70ad6ac59f57550a96b0faef3f1cfd5760ec5e6d3f7cb101f634f1f80db4e727b1dc8389bf62d977c0a0
   languageName: node
   linkType: hard
 
@@ -4260,6 +4344,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"focus-visible@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "focus-visible@npm:5.2.0"
+  checksum: 876f646ef453680d3d34e9f9b23961527ffd5ccaed8690f423d4fbfa37ff023d98a490972bc1387850e37ec2e44958c81f6096ef95b67462e5c4b5404cf1dbb9
+  languageName: node
+  linkType: hard
+
 "foreach@npm:^2.0.5":
   version: 2.0.5
   resolution: "foreach@npm:2.0.5"
@@ -4388,6 +4479,13 @@ __metadata:
     strip-ansi: ^3.0.1
     wide-align: ^1.1.0
   checksum: a89b53cee65579b46832e050b5f3a79a832cc422c190de79c6b8e2e15296ab92faddde6ddf2d376875cbba2b043efa99b9e1ed8124e7365f61b04e3cee9d40ee
+  languageName: node
+  linkType: hard
+
+"get-caller-file@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "get-caller-file@npm:2.0.5"
+  checksum: b9769a836d2a98c3ee734a88ba712e62703f1df31b94b784762c433c27a386dd6029ff55c2a920c392e33657d80191edbf18c61487e198844844516f843496b9
   languageName: node
   linkType: hard
 
@@ -6618,15 +6716,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "prisma@npm:3.5.0"
+"prisma@npm:latest":
+  version: 3.6.0
+  resolution: "prisma@npm:3.6.0"
   dependencies:
-    "@prisma/engines": 3.5.0-38.78a5df6def6943431f4c022e1428dbc3e833cf8e
+    "@prisma/engines": 3.6.0-24.dc520b92b1ebb2d28dc3161f9f82e875bd35d727
   bin:
     prisma: build/index.js
     prisma2: build/index.js
-  checksum: 5ac2558dc29a8c325d991e59de2208bf6756bddb4fa2d3d97cd17aa9daa94611515d3ab284777adcda2c7b918b0624316e7081bae5d1c01b449738b8ebf81882
+  checksum: 365718b1e0ed8491aedb79bda39c500e8fddae0d62f57ed0ab3786c6709bd79d43b61c3603847b165b5a3de1e983b64388902a9ed55d4d5cb5878d67af23da8b
   languageName: node
   linkType: hard
 
@@ -7040,6 +7138,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"require-directory@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "require-directory@npm:2.1.1"
+  checksum: fb47e70bf0001fdeabdc0429d431863e9475e7e43ea5f94ad86503d918423c1543361cc5166d713eaa7029dd7a3d34775af04764bebff99ef413111a5af18c80
+  languageName: node
+  linkType: hard
+
 "require-from-string@npm:^2.0.2":
   version: 2.0.2
   resolution: "require-from-string@npm:2.0.2"
@@ -7163,6 +7268,15 @@ __metadata:
   dependencies:
     queue-microtask: ^1.2.2
   checksum: cb4f97ad25a75ebc11a8ef4e33bb962f8af8516bb2001082ceabd8902e15b98f4b84b4f8a9b222e5d57fc3bd1379c483886ed4619367a7680dad65316993021d
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^6.6.3":
+  version: 6.6.7
+  resolution: "rxjs@npm:6.6.7"
+  dependencies:
+    tslib: ^1.9.0
+  checksum: bc334edef1bb8bbf56590b0b25734ba0deaf8825b703256a93714308ea36dff8a11d25533671adf8e104e5e8f256aa6fdfe39b2e248cdbd7a5f90c260acbbd1b
   languageName: node
   linkType: hard
 
@@ -7409,6 +7523,13 @@ __metadata:
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
+  languageName: node
+  linkType: hard
+
+"spawn-command@npm:^0.0.2-1":
+  version: 0.0.2
+  resolution: "spawn-command@npm:0.0.2"
+  checksum: e35c5d28177b4d461d33c88cc11f6f3a5079e2b132c11e1746453bbb7a0c0b8a634f07541a2a234fa4758239d88203b758def509161b651e81958894c0b4b64b
   languageName: node
   linkType: hard
 
@@ -7735,12 +7856,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^8.0.0, supports-color@npm:^8.1.1":
+"supports-color@npm:^8.0.0, supports-color@npm:^8.1.0, supports-color@npm:^8.1.1":
   version: 8.1.1
   resolution: "supports-color@npm:8.1.1"
   dependencies:
     has-flag: ^4.0.0
   checksum: c052193a7e43c6cdc741eb7f378df605636e01ad434badf7324f17fb60c69a880d8d8fcdcb562cf94c2350e57b937d7425ab5b8326c67c2adc48f7c87c1db406
+  languageName: node
+  linkType: hard
+
+"swr@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "swr@npm:1.0.1"
+  dependencies:
+    dequal: 2.0.2
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0
+  checksum: 8aaa10c4c65cb9b46a143a52ac2728111fc8af96e83781df1f7b7d56aa027ef720b7feb230658616e479f224f684d4cbc5d2ca3265c40f95a3140dbdba801061
   languageName: node
   linkType: hard
 
@@ -7873,6 +8005,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tree-kill@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "tree-kill@npm:1.2.2"
+  bin:
+    tree-kill: cli.js
+  checksum: 49117f5f410d19c84b0464d29afb9642c863bc5ba40fcb9a245d474c6d5cc64d1b177a6e6713129eb346b40aebb9d4631d967517f9fbe8251c35b21b13cd96c7
+  languageName: node
+  linkType: hard
+
 "ts-node@npm:^10.4.0":
   version: 10.4.0
   resolution: "ts-node@npm:10.4.0"
@@ -7921,14 +8062,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.0.0, tslib@npm:^1.8.1, tslib@npm:^1.9.3":
+"tslib@npm:^1.0.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
@@ -8010,6 +8151,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typebot-os@workspace:."
   dependencies:
+    concurrently: ^6.4.0
     dotenv-cli: ^4.1.0
     npm-run-all: ^4.1.5
   languageName: unknown
@@ -8122,6 +8264,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: b0027242311ed3fb006575c3be69efe31946f17129f2464707f4fcf2e167b91917236569a1d622c57b36843bc05efd9740a4ba51591553ad6fe2799cc12b138e
+  languageName: node
+  linkType: hard
+
+"use-debounce@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "use-debounce@npm:7.0.1"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: c5c1c34ccef6c11fe25fecef983a07f5a7260fce77b58f0f648f6ae08693a22a9077b5362b96154896e9ea756e6aaea303eb44550a293456cecb6f15cf87d73b
   languageName: node
   linkType: hard
 
@@ -8380,6 +8531,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"y18n@npm:^5.0.5":
+  version: 5.0.8
+  resolution: "y18n@npm:5.0.8"
+  checksum: 54f0fb95621ee60898a38c572c515659e51cc9d9f787fb109cef6fde4befbe1c4602dc999d30110feee37456ad0f1660fa2edcfde6a9a740f86a290999550d30
+  languageName: node
+  linkType: hard
+
 "yallist@npm:^4.0.0":
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
@@ -8391,6 +8549,28 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: ce4ada136e8a78a0b08dc10b4b900936912d15de59905b2bf415b4d33c63df1d555d23acb2a41b23cf9fb5da41c256441afca3d6509de7247daa062fd2c5ea5f
+  languageName: node
+  linkType: hard
+
+"yargs-parser@npm:^20.2.2":
+  version: 20.2.9
+  resolution: "yargs-parser@npm:20.2.9"
+  checksum: 8bb69015f2b0ff9e17b2c8e6bfe224ab463dd00ca211eece72a4cd8a906224d2703fb8a326d36fdd0e68701e201b2a60ed7cf81ce0fd9b3799f9fe7745977ae3
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^16.2.0":
+  version: 16.2.0
+  resolution: "yargs@npm:16.2.0"
+  dependencies:
+    cliui: ^7.0.2
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.0
+    y18n: ^5.0.5
+    yargs-parser: ^20.2.2
+  checksum: b14afbb51e3251a204d81937c86a7e9d4bdbf9a2bcee38226c900d00f522969ab675703bee2a6f99f8e20103f608382936034e64d921b74df82b63c07c5e8f59
   languageName: node
   linkType: hard
 

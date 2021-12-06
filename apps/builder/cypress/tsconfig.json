@@ -8,6 +8,7 @@
     "target": "es5",
     "isolatedModules": false,
     "allowJs": true,
-    "noEmit": true
+    "noEmit": true,
+    "downlevelIteration": true
   }
 }

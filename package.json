@@ -7,15 +7,17 @@
     "apps/*"
   ],
   "scripts": {
-    "db:up": "docker-compose up -d",
-    "db:setup": "yarn workspace @typebot/prisma dev",
+    "db:up": "docker-compose up -d && yarn workspace @typebot/prisma prisma db push",
     "db:nuke": "docker-compose down --volumes --remove-orphans",
-    "db:inspect": "dotenv -e .env yarn workspace @typebot/prisma prisma studio",
-    "dev:setup": "dotenv -e .env run-s db:up db:setup",
+    "dev": "concurrently -n builder,viewer \"yarn dev:builder\" \"yarn dev:viewer\"",
     "dev:builder": "yarn workspace builder dev",
-    "dev:viewer": "yarn workspace viewer dev"
+    "dev:viewer": "yarn workspace viewer dev",
+    "dx": "run-s db:up dev",
+    "cypress:builder": "yarn workspace builder cypress",
+    "cypress:viewer": "yarn workspace builder cypress"
   },
   "devDependencies": {
+    "concurrently": "^6.4.0",
     "dotenv-cli": "^4.1.0",
     "npm-run-all": "^4.1.5"
   }

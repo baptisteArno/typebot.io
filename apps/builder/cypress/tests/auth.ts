@@ -1,7 +1,8 @@
 describe('SignIn page', () => {
   beforeEach(() => {
-    cy.logOutByApi()
+    cy.signOut()
   })
+
   it('can continue with Google', () => {
     cy.visit('/signin')
     const username = Cypress.env('GOOGLE_USER')
@@ -98,6 +99,6 @@ const exectueSocialLogin = (
       })
     }
     cy.visit('/typebots')
-    cy.findByText(`Hello ${username}`).should('exist')
+    cy.findByRole('button', { name: 'Create a folder' }).should('exist')
   })
 }

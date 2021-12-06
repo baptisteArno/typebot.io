@@ -33,26 +33,10 @@
 
 3. Copy `.env.example` to `.env`
 4. Configure environment variables in the `.env` file.
-5. Setup the database
+5. Run the applications
 
    ```sh
-   yarn dev:setup
-   ```
-
-6. Run the applications
-
-   ```sh
-   yarn dev:builder
-   ```
-
-   ```sh
-   yarn dev:viewer
-   ```
-
-7. Open [Prisma Studio](https://www.prisma.io/studio) to look at or modify the database content
-
-   ```sh
-   yarn db:inspect
+   yarn dx
    ```
 
 ## Deployment

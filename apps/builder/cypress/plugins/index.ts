@@ -3,6 +3,7 @@ import {
   FacebookSocialLogin,
   GoogleSocialLogin,
 } from 'cypress-social-logins/src/Plugins'
+import { seedDb } from './database'
 /// <reference types="cypress" />
 
 /**
@@ -14,6 +15,7 @@ const handler = (on: any) => {
     GoogleSocialLogin: GoogleSocialLogin,
     FacebookSocialLogin: FacebookSocialLogin,
     GitHubSocialLogin: GitHubSocialLogin,
+    seed: seedDb,
   })
 }
 

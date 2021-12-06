@@ -4,24 +4,24 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  oauth_token_secret       String?
+  oauth_token              String?
   refresh_token_expires_in Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -38,13 +38,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String            @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?           @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  typebots      Typebot[]
+  folders       DashboardFolder[]
+  plan          Plan              @default(FREE)
+}
+
+enum Plan {
+  FREE
+  PRO
 }
 
 model VerificationToken {
@@ -53,4 +61,46 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model DashboardFolder {
+  id             String            @id @default(cuid())
+  createdAt      DateTime          @default(now())
+  name           String
+  owner          User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId        String
+  parentFolderId String?
+  parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
+  childrenFolder DashboardFolder[] @relation("ParentChild")
+  typebots       Typebot[]
+}
+
+model Typebot {
+  id                 String           @id @default(cuid())
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now())
+  name               String
+  ownerId            String
+  owner              User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  publishedTypebotId String?
+  publishedTypebot   PublicTypebot?
+  results            Result[]
+  folderId           String?
+  folder             DashboardFolder? @relation(fields: [folderId], references: [id])
+}
+
+model PublicTypebot {
+  id        String  @id @default(cuid())
+  typebotId String  @unique
+  typebot   Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  steps     Json[]
+  name      String
+}
+
+model Result {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  typebotId String
+  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }

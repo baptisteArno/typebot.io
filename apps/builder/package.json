@@ -9,17 +9,22 @@
     "cypress": "cypress open"
   },
   "dependencies": {
+    "@chakra-ui/css-reset": "^1.1.1",
     "@chakra-ui/react": "^1.7.2",
+    "@dnd-kit/core": "^4.0.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@next-auth/prisma-adapter": "next",
+    "focus-visible": "^5.2.0",
     "framer-motion": "^4",
     "next": "^12.0.4",
     "next-auth": "beta",
     "nodemailer": "^6.7.1",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "swr": "^1.0.1",
+    "use-debounce": "^7.0.1"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.2",

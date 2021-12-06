@@ -1,0 +1,87 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String            @id
+  createdAt        DateTime          @default(now())
+  email            String            @unique
+  name             String?
+  avatarUrl        String?
+  redeemedCoupon   Boolean?
+  oAuthCredentials Json?
+  referralId       String?
+  domains          String[]
+  onboarding_data  Json?
+  settings         Json
+  typebots         Typebot[]         @relation("Owner")
+  sharedTypebots   Typebot[]         @relation("Collaborators")
+  dashboardFolders DashboardFolder[]
+}
+
+model DashboardFolder {
+  id             BigInt            @id @default(autoincrement())
+  createdAt      DateTime          @default(now())
+  name           String
+  owner          User              @relation(fields: [ownerId], references: [id])
+  ownerId        String
+  parentFolderId BigInt
+  parentFolder   DashboardFolder   @relation("ParentChild", fields: [parentFolderId], references: [id])
+  childrenFolder DashboardFolder[] @relation("ParentChild")
+}
+
+model Typebot {
+  id                     BigInt        @id @default(autoincrement())
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @default(now())
+  steps                  Json[]
+  publishedTypebotId     BigInt        @unique
+  publishedTypebot       PublicTypebot @relation(fields: [publishedTypebotId], references: [id])
+  connectors             Json[]
+  name                   String
+  ownerId                String
+  owner                  User          @relation("Owner", fields: [ownerId], references: [id])
+  conditions             Json
+  startConditions Json
+  theme                 Json
+  settings               Json
+  collaborators          User[]        @relation("Collaborators")
+  customDomains          String[]
+  shareSettings          Json
+  variables              Json
+  checkedConversionRules String[]
+  results                Result[]
+  httpRequests           Json[]
+  credentials            Json[]
+}
+
+model PublicTypebot {
+  id            BigInt   @id @default(autoincrement())
+  typebot       Typebot?
+  steps         Json[]
+  name String
+  conditions    Json
+  startConditions Json
+  theme        Json
+  settings      Json
+  connectors    Json
+  customDomains String[]
+  shareSettings Json
+  variables     Json
+}
+
+model Result {
+  id          BigInt   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  typebotId   BigInt
+  typebot     Typebot  @relation(fields: [typebotId], references: [id])
+  variables   Json[]
+  isCompleted Boolean
+  answers     Json[]
+}
