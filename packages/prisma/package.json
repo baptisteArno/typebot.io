@@ -12,6 +12,7 @@
     "@prisma/client": "latest"
   },
   "scripts": {
-    "prisma": "dotenv -e ../../.env prisma"
+    "prisma": "dotenv -e ../../.env prisma",
+    "deploy": "prisma generate && prisma migrate deploy"
   }
 }
