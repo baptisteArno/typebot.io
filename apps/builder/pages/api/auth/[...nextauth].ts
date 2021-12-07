@@ -79,8 +79,8 @@ export default NextAuth({
       user && (token.user = user)
       return token
     },
-    session: async ({ session, token }) => {
-      if (token.user) session.user = token.user as User
+    session: async ({ session, token, user }) => {
+      token?.user ? (session.user = token.user as User) : (session.user = user)
       return session
     },
   },
