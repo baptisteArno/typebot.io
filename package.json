@@ -10,6 +10,7 @@
     "builder": "yarn workspace builder",
     "viewer": "yarn workspace viewer",
     "db": "yarn workspace db",
+    "bot-engine": "yarn workspace bot-engine",
     "db:up": "docker-compose up -d && yarn db prisma db push",
     "db:nuke": "docker-compose down --volumes --remove-orphans",
     "dev": "concurrently -n builder,viewer \"yarn builder dev\" \"yarn viewer dev\"",

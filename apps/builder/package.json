@@ -15,6 +15,7 @@
     "@dnd-kit/core": "^4.0.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@jsplumb/browser-ui": "^5.2.3",
     "@next-auth/prisma-adapter": "next",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",
