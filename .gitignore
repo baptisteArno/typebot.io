@@ -29,5 +29,7 @@ node_modules
 
 cypress.env.json
 
+workspace.code-workspace
+
 
 
