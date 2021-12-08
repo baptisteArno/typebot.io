@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Typebot</h1>
   <a href="https://github.com/prisma/prisma/blob/main/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
-  <a href="https://github.com/prisma/prisma/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL-blue" /></a>
+  <a href="https://github.com/baptisteArno/typebot-io/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-blue" /></a>
   <br />
   <a href="https://docs.typebot.io">Quickstart</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
