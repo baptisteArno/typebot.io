@@ -1,5 +1,5 @@
 {
-  "name": "@typebot/prisma",
+  "name": "db",
   "packageManager": "yarn@3.1.0",
   "devDependencies": {
     "dotenv-cli": "^4.1.0",

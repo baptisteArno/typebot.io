@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "dotenv -e ../../.env next dev",
     "build": "next build",
-    "build:prod": "yarn workspace @typebot/prisma deploy && next build",
+    "build:prod": "yarn workspace db deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "cypress": "cypress open"

@@ -1,4 +1,4 @@
-import { DashboardFolder } from '@typebot/prisma'
+import { DashboardFolder } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'

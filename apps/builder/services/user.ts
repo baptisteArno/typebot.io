@@ -1,4 +1,4 @@
-import { User } from '@typebot/prisma'
+import { User } from 'db'
 import { useSession } from 'next-auth/react'
 
 export const useUser = (): User | undefined => {

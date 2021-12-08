@@ -1,4 +1,4 @@
-import { Typebot } from '@typebot/prisma'
+import { Typebot } from 'db'
 import useSWR from 'swr'
 import { fetcher, sendRequest } from './utils'
 

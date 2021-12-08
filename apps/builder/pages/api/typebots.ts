@@ -1,4 +1,4 @@
-import { Typebot, User } from '@typebot/prisma'
+import { Typebot, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'

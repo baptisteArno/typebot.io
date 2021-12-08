@@ -31,5 +31,7 @@ cypress.env.json
 
 workspace.code-workspace
 
+.DS_Store
+
 
 

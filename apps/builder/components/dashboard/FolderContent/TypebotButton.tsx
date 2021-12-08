@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useDraggable } from '@dnd-kit/core'
 import { useRouter } from 'next/router'
-import { Typebot } from '@typebot/prisma'
+import { Typebot } from 'db'
 import { isMobile } from 'services/utils'
 import { MoreButton } from 'components/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'

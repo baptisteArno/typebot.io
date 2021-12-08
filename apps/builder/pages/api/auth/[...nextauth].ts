@@ -7,7 +7,7 @@ import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
-import { User } from '@typebot/prisma'
+import { User } from 'db'
 
 const providers: Provider[] = [
   EmailProvider({

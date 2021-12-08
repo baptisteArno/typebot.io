@@ -87,6 +87,7 @@ model Typebot {
   results            Result[]
   folderId           String?
   folder             DashboardFolder? @relation(fields: [folderId], references: [id])
+  blocks Json[]
 }
 
 model PublicTypebot {
@@ -95,6 +96,7 @@ model PublicTypebot {
   typebot   Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   steps     Json[]
   name      String
+  blocks Json[]
 }
 
 model Result {
