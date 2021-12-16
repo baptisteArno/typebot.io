@@ -1,13 +1,12 @@
 {
   "name": "builder",
-  "packageManager": "yarn@3.1.0",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "dotenv -e ../../.env next dev",
+    "dev": "next dev",
     "build": "next build",
-    "build:prod": "yarn workspace db deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress": "cypress open"
+    "test": "cypress run"
   },
   "dependencies": {
     "@chakra-ui/css-reset": "^1.1.1",
@@ -17,6 +16,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@next-auth/prisma-adapter": "next",
+    "bot-engine": "*",
+    "db": "*",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",
     "next": "^12.0.4",
@@ -26,7 +27,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "short-uuid": "^4.2.0",
-    "svg-round-corners": "^0.2.0",
+    "svg-round-corners": "^0.3.0",
     "swr": "^1.0.1",
     "use-debounce": "^7.0.1"
   },
@@ -45,7 +46,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.0.0",
+    "next-transpile-modules": "^9.0.0",
     "prettier": "^2.4.1",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.4"
   }
 }
