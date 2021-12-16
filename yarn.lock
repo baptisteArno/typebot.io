@@ -1035,7 +1035,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnd-kit/utilities@npm:^3.0.1":
+"@dnd-kit/sortable@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@dnd-kit/sortable@npm:5.1.0"
+  dependencies:
+    "@dnd-kit/utilities": ^3.0.0
+    tslib: ^2.0.0
+  peerDependencies:
+    "@dnd-kit/core": ^4.0.2
+    react: ">=16.8.0"
+  checksum: f2f687a70dc52894e569d6377d7cb2e5e1761f0164cf08a1d0c8c3df43d6e88fd2858e0f5dfc8a5670fac8f6ce9a2ed91b0aeb8837f44d067acf21d1baf6a55e
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/utilities@npm:^3.0.0, @dnd-kit/utilities@npm:^3.0.1":
   version: 3.0.1
   resolution: "@dnd-kit/utilities@npm:3.0.1"
   dependencies:
@@ -1297,40 +1310,6 @@ __metadata:
     "@types/yargs": ^16.0.0
     chalk: ^4.0.0
   checksum: 322603c24354a5333b5b7a670464422a46e0244a5a96a35552a7018eb4ac2e84c3b7657336b0ea6aa114963f9b6d0da8b8f6f963cb044fea9e7bc04d464b0ab1
-  languageName: node
-  linkType: hard
-
-"@jsplumb/browser-ui@npm:^5.2.3":
-  version: 5.2.3
-  resolution: "@jsplumb/browser-ui@npm:5.2.3"
-  dependencies:
-    "@jsplumb/core": 5.2.3
-  checksum: e6076dea1dff18e9121b12544132be6b71222370578973514f6f3ac863736b7262b15169ba57a65078d3dd041b0eea757f989799a680594431415ffbf9e4dca2
-  languageName: node
-  linkType: hard
-
-"@jsplumb/common@npm:5.2.3":
-  version: 5.2.3
-  resolution: "@jsplumb/common@npm:5.2.3"
-  dependencies:
-    "@jsplumb/util": 5.2.3
-  checksum: 7c7241ca5b673788eb9bd88b15acf59f1497ccbfde8198b6b649659d70cefff7b60f34062e8735da4c886d8fc5d75d3467c53369525f4e7a62c8b59710613354
-  languageName: node
-  linkType: hard
-
-"@jsplumb/core@npm:5.2.3":
-  version: 5.2.3
-  resolution: "@jsplumb/core@npm:5.2.3"
-  dependencies:
-    "@jsplumb/common": 5.2.3
-  checksum: d5008eeb5e8bcf11af156dc0896fcc01a8ccee437462a4d9ff05473ad6523c9f1c446a4333ff99ed67e141e7cf9abc4c514ef9f1044540920be08818d36935db
-  languageName: node
-  linkType: hard
-
-"@jsplumb/util@npm:5.2.3":
-  version: 5.2.3
-  resolution: "@jsplumb/util@npm:5.2.3"
-  checksum: 5bef8e4845943aed038dc120bce88da4f7d7b3bef9326034b6e08e3a3019bae9376ffc32f63872f6c426aaac866567a53ba183847259dbd3c249abe59b8c14e3
   languageName: node
   linkType: hard
 
@@ -2386,6 +2365,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"any-base@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "any-base@npm:1.1.0"
+  checksum: c1fd040de52e710e2de7d9ae4df52bac589f35622adb24686c98ce21c7b824859a8db9614bc119ed8614f42fd08918b2612e6a6c385480462b3100a1af59289d
+  languageName: node
+  linkType: hard
+
 "anymatch@npm:~3.1.1, anymatch@npm:~3.1.2":
   version: 3.1.2
   resolution: "anymatch@npm:3.1.2"
@@ -2899,9 +2885,9 @@ __metadata:
     "@chakra-ui/css-reset": ^1.1.1
     "@chakra-ui/react": ^1.7.2
     "@dnd-kit/core": ^4.0.3
+    "@dnd-kit/sortable": ^5.1.0
     "@emotion/react": ^11
     "@emotion/styled": ^11
-    "@jsplumb/browser-ui": ^5.2.3
     "@next-auth/prisma-adapter": next
     "@testing-library/cypress": ^8.0.2
     "@types/node": ^16.11.9
@@ -2926,6 +2912,8 @@ __metadata:
     prettier: ^2.4.1
     react: ^17.0.2
     react-dom: ^17.0.2
+    short-uuid: ^4.2.0
+    svg-round-corners: ^0.2.0
     swr: ^1.0.1
     typescript: ^4.5.2
     use-debounce: ^7.0.1
@@ -6295,6 +6283,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 92c46f094b064e876a23c97f57f81fbffd5d760bf2d8a1c61d85db6d1e488c66b0384c943abee4f6af7debf5ad4e4282e74ff83177c9e63d8ff081a4837c3489
+  languageName: node
+  linkType: hard
+
 "lodash.memoize@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
@@ -8940,6 +8935,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"short-uuid@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "short-uuid@npm:4.2.0"
+  dependencies:
+    any-base: ^1.1.0
+    uuid: ^8.3.2
+  checksum: 09013559393bc26d1462ae27c84b4eb7e6e4052e9fea1704f21370e226864f9dfcd1b9465eefa980da84b2537b70cabd98718193934dcc2a0fc06e7b0d1f4b9e
+  languageName: node
+  linkType: hard
+
 "side-channel@npm:^1.0.4":
   version: 1.0.4
   resolution: "side-channel@npm:1.0.4"
@@ -9440,6 +9445,15 @@ __metadata:
   dependencies:
     has-flag: ^4.0.0
   checksum: c052193a7e43c6cdc741eb7f378df605636e01ad434badf7324f17fb60c69a880d8d8fcdcb562cf94c2350e57b937d7425ab5b8326c67c2adc48f7c87c1db406
+  languageName: node
+  linkType: hard
+
+"svg-round-corners@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "svg-round-corners@npm:0.2.0"
+  dependencies:
+    lodash.clonedeep: ^4.5.0
+  checksum: edaeaea3aa8bbef8509d747477381333bc93b49c3daf82503fe0236152d9e33124b17c3acde5cca424abd0602cf9794fda97f0446a547a0a8a4d84e13e99cbf0
   languageName: node
   linkType: hard
 

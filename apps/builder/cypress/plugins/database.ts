@@ -1,4 +1,5 @@
 import { PrismaClient } from '.prisma/client'
+import { StartBlock, StepType } from 'bot-engine'
 
 const prisma = new PrismaClient()
 
@@ -24,7 +25,23 @@ const createFolders = () =>
     data: [{ ownerId: 'test2', name: 'Folder #1', id: 'folder1' }],
   })
 
-const createTypebots = () =>
+const createTypebots = () => {
+  const startBlock: StartBlock = {
+    graphCoordinates: { x: 0, y: 0 },
+    id: 'start-block',
+    steps: [
+      {
+        id: 'start-step',
+        blockId: 'start-block',
+        type: StepType.START,
+        label: 'Start',
+      },
+    ],
+    title: 'Start',
+  }
   prisma.typebot.createMany({
-    data: [{ name: 'Typebot #1', ownerId: 'test2' }],
+    data: [
+      { id: 'typebot1', name: 'Typebot #1', ownerId: 'test2', startBlock },
+    ],
   })
+}

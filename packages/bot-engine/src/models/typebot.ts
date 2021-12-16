@@ -1,25 +1,47 @@
 import { Typebot as TypebotFromPrisma } from 'db'
 
-export type Typebot = TypebotFromPrisma & { blocks: Block[] }
+export type Typebot = TypebotFromPrisma & {
+  blocks: Block[]
+  startBlock: StartBlock
+}
+
+export type StartBlock = {
+  id: `start-block`
+  graphCoordinates: {
+    x: number
+    y: number
+  }
+  title: string
+  steps: [StartStep]
+}
+
+export type StartStep = {
+  id: 'start-step'
+  blockId: 'start-block'
+  target?: Target
+  type: StepType.START
+  label: string
+}
 
 export type Block = {
   id: string
   title: string
   steps: Step[]
-  boardCoordinates: {
+  graphCoordinates: {
     x: number
     y: number
   }
 }
 
 export enum StepType {
+  START = 'start',
   TEXT = 'text',
   IMAGE = 'image',
   BUTTONS = 'buttons',
   DATE_PICKER = 'date picker',
 }
 
-type Target = { blockId: string; stepId?: string }
+export type Target = { blockId: string; stepId?: string }
 
 export type Step = { id: string; blockId: string; target?: Target } & (
   | TextStep

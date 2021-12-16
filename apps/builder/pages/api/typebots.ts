@@ -1,3 +1,4 @@
+import { StartBlock, StepType } from 'bot-engine'
 import { Typebot, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -23,8 +24,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const data = JSON.parse(req.body) as Typebot
+    const startBlock: StartBlock = {
+      id: 'start-block',
+      title: 'Start',
+      graphCoordinates: { x: 0, y: 0 },
+      steps: [
+        {
+          id: 'start-step',
+          blockId: 'start-block',
+          label: 'Form starts here',
+          type: StepType.START,
+        },
+      ],
+    }
     const typebot = await prisma.typebot.create({
-      data: { ...data, ownerId: user.id },
+      data: { ...data, ownerId: user.id, startBlock },
     })
     return res.send(typebot)
   }

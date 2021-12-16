@@ -87,16 +87,18 @@ model Typebot {
   results            Result[]
   folderId           String?
   folder             DashboardFolder? @relation(fields: [folderId], references: [id])
-  blocks Json[]
+  blocks             Json[]
+  startBlock         Json
 }
 
 model PublicTypebot {
-  id        String  @id @default(cuid())
-  typebotId String  @unique
-  typebot   Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  steps     Json[]
-  name      String
-  blocks Json[]
+  id         String  @id @default(cuid())
+  typebotId  String  @unique
+  typebot    Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  steps      Json[]
+  name       String
+  blocks     Json[]
+  startBlock Json
 }
 
 model Result {

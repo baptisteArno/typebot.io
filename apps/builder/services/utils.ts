@@ -30,3 +30,17 @@ export const sendRequest = async <ResponseData>({
     return { error: e as Error }
   }
 }
+
+export const insertItemInList = <T>(
+  arr: T[],
+  index: number,
+  newItem: T
+): T[] => [...arr.slice(0, index), newItem, ...arr.slice(index)]
+
+export const isDefined = <T>(value: T | undefined | null): value is T => {
+  return <T>value !== undefined && <T>value !== null
+}
+
+export const isNotDefined = <T>(value: T | undefined | null): value is T => {
+  return <T>value === undefined || <T>value === null
+}
