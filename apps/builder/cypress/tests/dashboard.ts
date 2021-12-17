@@ -29,11 +29,11 @@ describe('Dashboard page', () => {
   it('should be droppable', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots')
-    cy.findByTestId('typebot-button').mouseMoveBy(-100, 0, {
+    cy.findByTestId('typebot-button-typebot1').mouseMoveBy(-100, 0, {
       delay: 120,
     })
     cy.visit('/typebots/folders/folder1')
-    cy.findByTestId('typebot-button').mouseMoveBy(-300, -100, {
+    cy.findByTestId('typebot-button-typebot1').mouseMoveBy(-300, -100, {
       delay: 120,
     })
     cy.visit('/typebots')

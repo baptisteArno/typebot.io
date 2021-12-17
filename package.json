@@ -6,14 +6,11 @@
     "apps/*"
   ],
   "scripts": {
-    "builder": "yarn workspace builder",
-    "viewer": "yarn workspace viewer",
-    "db": "yarn workspace db",
-    "bot-engine": "yarn workspace bot-engine",
-    "db:up": "docker-compose up -d && yarn db prisma db push",
+    "docker:up": "docker-compose up -d",
     "db:nuke": "docker-compose down --volumes --remove-orphans",
+    "dev": "dotenv -e .env yarn docker:up && dotenv -e .env turbo run dev --parallel",
     "build": "dotenv -e .env turbo run build",
-    "dev": "dotenv -e .env yarn db:up && turbo run dev --parallel",
+    "test": "dotenv -e .env turbo run dev test",
     "lint": "turbo run lint"
   },
   "devDependencies": {
@@ -33,7 +30,7 @@
       },
       "test": {
         "dependsOn": [
-          "^build"
+          "^dev"
         ],
         "outputs": []
       },

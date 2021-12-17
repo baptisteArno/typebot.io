@@ -85,7 +85,7 @@ export const TypebotButton = ({
       mb={6}
       rounded="lg"
       whiteSpace="normal"
-      data-testid="typebot-button"
+      data-testid={`typebot-button-${typebot.id}`}
       opacity={isDragging ? 0.2 : 1}
       ref={setNodeRef}
       {...listeners}

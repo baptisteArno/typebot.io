@@ -9,6 +9,7 @@
     "isolatedModules": false,
     "allowJs": true,
     "noEmit": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "jsx": "react"
   }
 }

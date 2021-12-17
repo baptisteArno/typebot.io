@@ -10,7 +10,6 @@ import { StartBlockNode } from './BlockNode/StartBlockNode'
 const Graph = () => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
     useDnd()
-  const graphRef = useRef<HTMLDivElement | null>(null)
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
   const { typebot } = useTypebot()
   const {
@@ -59,8 +58,8 @@ const Graph = () => {
     addNewBlock({
       step: draggedStep,
       type: draggedStepType,
-      x: e.x - graphPosition.x - blockWidth / 3,
-      y: e.y - graphPosition.y - 20,
+      x: e.clientX - graphPosition.x - blockWidth / 3,
+      y: e.clientY - graphPosition.y - 20,
     })
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
@@ -69,11 +68,10 @@ const Graph = () => {
 
   if (!typebot) return <></>
   return (
-    <Flex ref={graphContainerRef} pos="relative" flex="1" h="full">
+    <Flex ref={graphContainerRef} flex="1" h="full">
       <Flex
-        ref={graphRef}
         flex="1"
-        h="full"
+        boxSize={'200px'}
         style={{
           transform,
         }}

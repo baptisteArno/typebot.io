@@ -3,5 +3,6 @@
   "chromeWebSecurity": false,
   "integrationFolder": "cypress/tests",
   "viewportWidth": 1400,
-  "viewportHeight": 800
+  "viewportHeight": 800,
+  "video": false
 }

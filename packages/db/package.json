@@ -12,6 +12,7 @@
     "@prisma/client": "latest"
   },
   "scripts": {
+    "dev": "yarn prisma db push",
     "build": "prisma generate && prisma migrate deploy"
   }
 }

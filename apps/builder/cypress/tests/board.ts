@@ -3,8 +3,10 @@ describe('BoardPage', () => {
     cy.task('seed')
     cy.signOut()
   })
+
   it('steps should be droppable', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot1')
+    // Can't find an easy way to implement this
   })
 })
