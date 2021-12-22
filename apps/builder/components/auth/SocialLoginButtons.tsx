@@ -16,7 +16,6 @@ export const SocialLoginButtons = () => {
     <Stack>
       <Button
         leftIcon={<GithubLogo />}
-        colorScheme="gray"
         onClick={handleGitHubClick}
         data-testid="github"
         isLoading={['loading', 'authenticated'].includes(status)}
@@ -25,7 +24,6 @@ export const SocialLoginButtons = () => {
       </Button>
       <Button
         leftIcon={<GoogleLogo />}
-        colorScheme="gray"
         onClick={handleGoogleClick}
         data-testid="google"
         isLoading={['loading', 'authenticated'].includes(status)}
@@ -34,7 +32,6 @@ export const SocialLoginButtons = () => {
       </Button>
       <Button
         leftIcon={<FacebookLogo />}
-        colorScheme="gray"
         onClick={handleFacebookClick}
         data-testid="facebook"
         isLoading={['loading', 'authenticated'].includes(status)}

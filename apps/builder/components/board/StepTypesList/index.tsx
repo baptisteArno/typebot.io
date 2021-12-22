@@ -1,1 +1,1 @@
-export { StepTypesList as default } from './StepTypesList'
+export { StepTypesList } from './StepTypesList'

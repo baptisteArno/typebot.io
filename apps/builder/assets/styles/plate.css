@@ -1,0 +1,31 @@
+.slate-bold {
+  font-weight: bold;
+}
+
+.slate-italic {
+  font-style: oblique;
+}
+
+.slate-underline {
+  text-decoration: underline;
+}
+
+.slate-ToolbarButton-active {
+  color: blue !important;
+}
+.slate-ToolbarButton-active > svg {
+  stroke-width: 2px;
+}
+
+.slate-ToolbarButton {
+  color: gray;
+}
+
+.slate-a {
+  color: blue !important;
+  text-decoration: underline;
+}
+
+.slate-html-container > div {
+  min-height: 24px;
+}

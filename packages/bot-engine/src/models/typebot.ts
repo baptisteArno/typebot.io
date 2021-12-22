@@ -1,6 +1,6 @@
 import { Typebot as TypebotFromPrisma } from 'db'
 
-export type Typebot = TypebotFromPrisma & {
+export type Typebot = Omit<TypebotFromPrisma, 'blocks' | 'startBlock'> & {
   blocks: Block[]
   startBlock: StartBlock
 }
@@ -36,38 +36,21 @@ export type Block = {
 export enum StepType {
   START = 'start',
   TEXT = 'text',
-  IMAGE = 'image',
-  BUTTONS = 'buttons',
-  DATE_PICKER = 'date picker',
+  TEXT_INPUT = 'text input',
 }
 
 export type Target = { blockId: string; stepId?: string }
 
-export type Step = { id: string; blockId: string; target?: Target } & (
-  | TextStep
-  | ImageStep
-  | ButtonsStep
-  | DatePickerStep
-)
-
-export type TextStep = {
+export type Step = BubbleStep | InputStep
+export type BubbleStep = TextStep
+export type InputStep = TextInputStep
+export type StepBase = { id: string; blockId: string; target?: Target }
+export type TextStep = StepBase & {
   type: StepType.TEXT
-  content: string
+  content: { html: string; richText: unknown[]; plainText: string }
 }
-
-export type ImageStep = {
-  type: StepType.IMAGE
-  content: { url: string }
-}
-
-export type ButtonsStep = {
-  type: StepType.BUTTONS
-  buttons: Button[]
-}
-
-export type DatePickerStep = {
-  type: StepType.DATE_PICKER
-  content: string
+export type TextInputStep = StepBase & {
+  type: StepType.TEXT_INPUT
 }
 
 export type Button = {

@@ -1,5 +1,6 @@
 import { Block, StartStep, Step, Target } from 'bot-engine'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo } from 'react'
 import {
   getAnchorsPosition,
@@ -18,17 +19,32 @@ export type StepWithTarget = Omit<Step | StartStep, 'target'> & {
 }
 
 export const Edge = ({ step }: { step: StepWithTarget }) => {
-  const { blocks, startBlock } = useGraph()
+  const { typebot } = useTypebot()
+  const { previewingIds } = useGraph()
+  const isPreviewing = useMemo(
+    () =>
+      previewingIds.sourceId === step.blockId &&
+      previewingIds.targetId === step.target.blockId,
+    [
+      previewingIds.sourceId,
+      previewingIds.targetId,
+      step.blockId,
+      step.target.blockId,
+    ]
+  )
+  const { blocks, startBlock } = typebot ?? {}
 
   const { sourceBlock, targetBlock, targetStepIndex } = useMemo(() => {
-    const targetBlock = blocks.find(
+    const targetBlock = blocks?.find(
       (b) => b?.id === step.target.blockId
     ) as Block
     const targetStepIndex = step.target.stepId
       ? targetBlock.steps.findIndex((s) => s.id === step.target.stepId)
       : undefined
     return {
-      sourceBlock: [startBlock, ...blocks].find((b) => b?.id === step.blockId),
+      sourceBlock: [startBlock, ...(blocks ?? [])].find(
+        (b) => b?.id === step.blockId
+      ),
       targetBlock,
       targetStepIndex,
     }
@@ -54,7 +70,7 @@ export const Edge = ({ step }: { step: StepWithTarget }) => {
   return (
     <path
       d={path}
-      stroke="#718096"
+      stroke={isPreviewing ? '#1a5fff' : '#718096'}
       strokeWidth="2px"
       markerEnd="url(#arrow)"
       fill="none"

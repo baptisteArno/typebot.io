@@ -1,3 +1,5 @@
+import { Parser } from 'htmlparser2'
+
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)
   return res.json()
@@ -43,4 +45,21 @@ export const isDefined = <T>(value: T | undefined | null): value is T => {
 
 export const isNotDefined = <T>(value: T | undefined | null): value is T => {
   return <T>value === undefined || <T>value === null
+}
+
+export const preventUserFromRefreshing = (e: BeforeUnloadEvent) => {
+  e.preventDefault()
+  e.returnValue = ''
+}
+
+export const parseHtmlStringToPlainText = (html: string): string => {
+  let label = ''
+  const parser = new Parser({
+    ontext(text) {
+      label += `${text}`
+    },
+  })
+  parser.write(html)
+  parser.end()
+  return label
 }

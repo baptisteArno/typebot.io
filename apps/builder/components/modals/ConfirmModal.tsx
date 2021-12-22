@@ -58,7 +58,7 @@ export const ConfirmModal = ({
           <AlertDialogBody>{message}</AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose} colorScheme="gray">
+            <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
             <Button

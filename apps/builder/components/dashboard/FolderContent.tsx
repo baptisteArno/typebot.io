@@ -1,4 +1,5 @@
-import { DashboardFolder, Typebot } from '.prisma/client'
+import { DashboardFolder } from '.prisma/client'
+import { Typebot } from 'bot-engine'
 import {
   Button,
   Flex,
@@ -133,7 +134,6 @@ export const FolderContent = ({ folder }: Props) => {
             <HStack>
               {folder && <BackButton id={folder.parentFolderId} />}
               <Button
-                colorScheme="gray"
                 leftIcon={<FolderPlusIcon />}
                 onClick={handleCreateFolder}
                 isLoading={isCreatingFolder || isFolderLoading}

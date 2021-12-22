@@ -1,16 +1,10 @@
 module.exports = {
-  mode: 'jit',
+  content: ['./src/**/*.tsx'],
   theme: {
     extend: {
       screens: {
         xs: '400px',
       },
-    },
-  },
-  variants: {
-    extend: {
-      opacity: ['disabled'],
-      cursor: ['disabled'],
     },
   },
   plugins: [],

@@ -1,6 +1,7 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
 import { StartStep, Step } from 'bot-engine'
 import { useDnd } from 'contexts/DndContext'
+import { Coordinates } from 'contexts/GraphContext'
 import { useState } from 'react'
 import { StepNode, StepNodeOverlay } from './StepNode'
 
@@ -51,13 +52,12 @@ export const StepsList = ({
     onMouseUp(expandedPlaceholderIndex)
   }
 
-  const handleStepMouseDown = (e: React.MouseEvent, step: Step) => {
-    const element = e.currentTarget as HTMLDivElement
-    const rect = element.getBoundingClientRect()
-    const relativeX = e.clientX - rect.left
-    const relativeY = e.clientY - rect.top
-    setPosition({ x: e.clientX - relativeX, y: e.clientY - relativeY })
-    setRelativeCoordinates({ x: relativeX, y: relativeY })
+  const handleStepMouseDown = (
+    { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+    step: Step
+  ) => {
+    setPosition(absolute)
+    setRelativeCoordinates(relative)
     setDraggedStep(step)
   }
 

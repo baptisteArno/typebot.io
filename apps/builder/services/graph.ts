@@ -1,13 +1,5 @@
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import {
-  StepType,
-  Block,
-  Step,
-  TextStep,
-  ImageStep,
-  DatePickerStep,
-  StartBlock,
-} from 'bot-engine'
+import { Block, StartBlock } from 'bot-engine'
 import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
 import {
   stubLength,
@@ -16,53 +8,8 @@ import {
   spaceBetweenSteps,
   firstStepOffsetY,
 } from 'contexts/GraphContext'
-import shortId from 'short-uuid'
 import { roundCorners } from 'svg-round-corners'
 import { isDefined } from './utils'
-
-export const parseNewBlock = ({
-  type,
-  totalBlocks,
-  initialCoordinates,
-  step,
-}: {
-  step?: Step
-  type?: StepType
-  totalBlocks: number
-  initialCoordinates: { x: number; y: number }
-}): Block => {
-  const id = `b${shortId.generate()}`
-  return {
-    id,
-    title: `Block #${totalBlocks + 1}`,
-    graphCoordinates: initialCoordinates,
-    steps: [
-      step ? { ...step, blockId: id } : parseNewStep(type as StepType, id),
-    ],
-  }
-}
-
-export const parseNewStep = (type: StepType, blockId: string): Step => {
-  const id = `s${shortId.generate()}`
-  switch (type) {
-    case StepType.TEXT: {
-      const textStep: TextStep = { type, content: '' }
-      return { blockId, id, ...textStep }
-    }
-    case StepType.IMAGE: {
-      const imageStep: ImageStep = { type, content: { url: '' } }
-      return { blockId, id, ...imageStep }
-    }
-    case StepType.DATE_PICKER: {
-      const imageStep: DatePickerStep = { type, content: '' }
-      return { blockId, id, ...imageStep }
-    }
-    default: {
-      const textStep: TextStep = { type: StepType.TEXT, content: '' }
-      return { blockId, id, ...textStep }
-    }
-  }
-}
 
 export const computeFlowChartConnectorPath = ({
   sourcePosition,

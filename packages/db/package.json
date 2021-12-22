@@ -12,7 +12,9 @@
     "@prisma/client": "latest"
   },
   "scripts": {
-    "dev": "yarn prisma db push",
-    "build": "prisma generate && prisma migrate deploy"
+    "dev": "yarn prisma db push && BROWSER=none yarn prisma studio",
+    "build": "prisma generate && prisma migrate deploy",
+    "migration:create": "dotenv -e ../../.env yarn prisma migrate dev",
+    "migration:reset": "dotenv -e ../../.env yarn prisma migrate reset"
   }
 }

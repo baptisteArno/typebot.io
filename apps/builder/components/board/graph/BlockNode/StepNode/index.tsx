@@ -1,1 +1,2 @@
-export { StepNode, StepNodeOverlay } from './StepNode'
+export { StepNode } from './StepNode'
+export { StepNodeOverlay } from './StepNodeOverlay'

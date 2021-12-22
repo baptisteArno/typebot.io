@@ -34,3 +34,4 @@ workspace.code-workspace
 .DS_Store
 
 .turbo
+apps/builder/tsconfig.tsbuildinfo

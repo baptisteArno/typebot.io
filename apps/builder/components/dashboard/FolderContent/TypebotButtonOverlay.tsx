@@ -1,6 +1,6 @@
 import { Button, Flex, Text, VStack } from '@chakra-ui/react'
-import { Typebot } from '.prisma/client'
 import { GlobeIcon, ToolIcon } from 'assets/icons'
+import { Typebot } from 'bot-engine'
 
 type Props = {
   typebot: Typebot
@@ -16,7 +16,6 @@ export const TypebotCardOverlay = ({ typebot }: Props) => {
         display="flex"
         flexDir="column"
         variant="outline"
-        colorScheme="gray"
         w="full"
         h="full"
         whiteSpace="normal"

@@ -1,4 +1,4 @@
-import { Block, StartBlock, Step, StepType, Target } from 'bot-engine'
+import { Block, Step, StepType, Target } from 'bot-engine'
 import {
   createContext,
   Dispatch,
@@ -7,8 +7,6 @@ import {
   useContext,
   useState,
 } from 'react'
-import { parseNewBlock, parseNewStep } from 'services/graph'
-import { insertItemInList } from 'services/utils'
 
 export const stubLength = 20
 export const blockWidth = 300
@@ -27,7 +25,7 @@ export const blockAnchorsOffset = {
   },
 }
 export const firstStepOffsetY = 88
-export const spaceBetweenSteps = 66
+export const spaceBetweenSteps = 62
 
 export type Coordinates = { x: number; y: number }
 
@@ -59,38 +57,15 @@ const graphContext = createContext<{
   setConnectingIds: Dispatch<
     SetStateAction<{ blockId: string; stepId: string; target?: Target } | null>
   >
-  startBlock?: StartBlock
-  setStartBlock: Dispatch<SetStateAction<StartBlock | undefined>>
-  blocks: Block[]
-  setBlocks: Dispatch<SetStateAction<Block[]>>
-  addNewBlock: (props: NewBlockPayload) => void
-  updateBlockPosition: (blockId: string, newPositon: Coordinates) => void
-  addNewStepToBlock: (
-    blockId: string,
-    step: StepType | Step,
-    index: number
-  ) => void
-  removeStepFromBlock: (blockId: string, stepId: string) => void
-  addTarget: (connectingIds: {
-    blockId: string
-    stepId: string
-    target?: Target
-  }) => void
-  removeTarget: (connectingIds: { blockId: string; stepId: string }) => void
+  previewingIds: { sourceId?: string; targetId?: string }
+  setPreviewingIds: Dispatch<
+    SetStateAction<{ sourceId?: string; targetId?: string }>
+  >
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
 }>({
   graphPosition: graphPositionDefaultValue,
-  setGraphPosition: () => console.log("I'm not instantiated"),
   connectingIds: null,
-  setConnectingIds: () => console.log("I'm not instantiated"),
-  blocks: [],
-  setBlocks: () => console.log("I'm not instantiated"),
-  updateBlockPosition: () => console.log("I'm not instantiated"),
-  addNewStepToBlock: () => console.log("I'm not instantiated"),
-  addNewBlock: () => console.log("I'm not instantiated"),
-  removeStepFromBlock: () => console.log("I'm not instantiated"),
-  addTarget: () => console.log("I'm not instantiated"),
-  removeTarget: () => console.log("I'm not instantiated"),
-  setStartBlock: () => console.log("I'm not instantiated"),
 })
 
 export const GraphProvider = ({ children }: { children: ReactNode }) => {
@@ -100,125 +75,10 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
     stepId: string
     target?: Target
   } | null>(null)
-  const [blocks, setBlocks] = useState<Block[]>([])
-  const [startBlock, setStartBlock] = useState<StartBlock | undefined>()
-
-  const addNewBlock = ({ x, y, type, step }: NewBlockPayload) => {
-    const boardCoordinates = {
-      x,
-      y,
-    }
-    setBlocks((blocks) => [
-      ...blocks.filter((block) => block.steps.length > 0),
-      parseNewBlock({
-        step,
-        type,
-        totalBlocks: blocks.length,
-        initialCoordinates: boardCoordinates,
-      }),
-    ])
-  }
-
-  const updateBlockPosition = (blockId: string, newPosition: Coordinates) => {
-    setBlocks((blocks) =>
-      blocks.map((block) =>
-        block.id === blockId
-          ? { ...block, graphCoordinates: newPosition }
-          : block
-      )
-    )
-  }
-
-  const addNewStepToBlock = (
-    blockId: string,
-    step: StepType | Step,
-    index: number
-  ) => {
-    setBlocks((blocks) =>
-      blocks
-        .map((block) =>
-          block.id === blockId
-            ? {
-                ...block,
-                steps: insertItemInList<Step>(
-                  block.steps,
-                  index,
-                  typeof step === 'string'
-                    ? parseNewStep(step as StepType, block.id)
-                    : { ...step, blockId: block.id }
-                ),
-              }
-            : block
-        )
-        .filter((block) => block.steps.length > 0)
-    )
-  }
-
-  const removeStepFromBlock = (blockId: string, stepId: string) => {
-    setBlocks((blocks) =>
-      blocks.map((block) =>
-        block.id === blockId
-          ? {
-              ...block,
-              steps: [...block.steps.filter((step) => step.id !== stepId)],
-            }
-          : block
-      )
-    )
-  }
-
-  const addTarget = ({
-    blockId,
-    stepId,
-    target,
-  }: {
-    blockId: string
-    stepId: string
-    target?: Target
-  }) => {
-    startBlock && blockId === 'start-block'
-      ? setStartBlock({
-          ...startBlock,
-          steps: [{ ...startBlock.steps[0], target }],
-        })
-      : setBlocks((blocks) =>
-          blocks.map((block) =>
-            block.id === blockId
-              ? {
-                  ...block,
-                  steps: [
-                    ...block.steps.map((step) =>
-                      step.id === stepId ? { ...step, target } : step
-                    ),
-                  ],
-                }
-              : block
-          )
-        )
-  }
-
-  const removeTarget = ({
-    blockId,
-    stepId,
-  }: {
-    blockId: string
-    stepId: string
-  }) => {
-    setBlocks((blocks) =>
-      blocks.map((block) =>
-        block.id === blockId
-          ? {
-              ...block,
-              steps: [
-                ...block.steps.map((step) =>
-                  step.id === stepId ? { ...step, target: undefined } : step
-                ),
-              ],
-            }
-          : block
-      )
-    )
-  }
+  const [previewingIds, setPreviewingIds] = useState<{
+    sourceId?: string
+    targetId?: string
+  }>({})
 
   return (
     <graphContext.Provider
@@ -227,16 +87,8 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
         setGraphPosition,
         connectingIds,
         setConnectingIds,
-        blocks,
-        setBlocks,
-        updateBlockPosition,
-        addNewStepToBlock,
-        addNewBlock,
-        removeStepFromBlock,
-        addTarget,
-        removeTarget,
-        startBlock,
-        setStartBlock,
+        previewingIds,
+        setPreviewingIds,
       }}
     >
       {children}

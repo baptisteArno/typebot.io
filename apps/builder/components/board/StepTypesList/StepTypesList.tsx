@@ -14,8 +14,8 @@ export const stepListItems: {
   bubbles: { type: StepType }[]
   inputs: { type: StepType }[]
 } = {
-  bubbles: [{ type: StepType.TEXT }, { type: StepType.IMAGE }],
-  inputs: [{ type: StepType.DATE_PICKER }],
+  bubbles: [{ type: StepType.TEXT }],
+  inputs: [{ type: StepType.TEXT_INPUT }],
 }
 
 export const StepTypesList = () => {

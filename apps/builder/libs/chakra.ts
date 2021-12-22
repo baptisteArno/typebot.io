@@ -50,11 +50,6 @@ const components = {
       colorScheme: 'blue',
     },
   },
-  Button: {
-    defaultProps: {
-      colorScheme: 'blue',
-    },
-  },
   NumberInput: {
     defaultProps: {
       focusBorderColor: 'blue.200',

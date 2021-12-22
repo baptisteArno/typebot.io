@@ -11,12 +11,12 @@ import {
 } from '@chakra-ui/react'
 import { useDraggable } from '@dnd-kit/core'
 import { useRouter } from 'next/router'
-import { Typebot } from 'db'
 import { isMobile } from 'services/utils'
 import { MoreButton } from 'components/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { GlobeIcon, ToolIcon } from 'assets/icons'
 import { deleteTypebot, duplicateTypebot } from 'services/typebots'
+import { Typebot } from 'bot-engine'
 
 type ChatbotCardProps = {
   typebot: Typebot
@@ -77,7 +77,6 @@ export const TypebotButton = ({
       display="flex"
       flexDir="column"
       variant="outline"
-      colorScheme="gray"
       color="gray.800"
       w="225px"
       h="270px"

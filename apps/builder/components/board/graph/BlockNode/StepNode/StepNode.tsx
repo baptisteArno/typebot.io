@@ -1,10 +1,16 @@
-import { Box, Flex, HStack, StackProps, Text } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Box, Flex, HStack, useEventListener } from '@chakra-ui/react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Block, StartStep, Step, StepType } from 'bot-engine'
 import { SourceEndpoint } from './SourceEndpoint'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 import { isDefined } from 'services/utils'
+import { Coordinates } from '@dnd-kit/core/dist/types'
+import { TextEditor } from './TextEditor/TextEditor'
+import { StepContent } from './StepContent'
+import { useTypebot } from 'contexts/TypebotContext'
+import { ContextMenu } from 'components/shared/ContextMenu'
+import { StepNodeContextMenu } from './RightClickMenu'
 
 export const StepNode = ({
   step,
@@ -17,17 +23,18 @@ export const StepNode = ({
   isConnectable: boolean
   onMouseMoveBottomOfElement?: () => void
   onMouseMoveTopOfElement?: () => void
-  onMouseDown?: (e: React.MouseEvent, step: Step) => void
+  onMouseDown?: (
+    stepNodePosition: { absolute: Coordinates; relative: Coordinates },
+    step: Step
+  ) => void
 }) => {
-  const stepRef = useRef<HTMLDivElement | null>(null)
-  const {
-    setConnectingIds,
-    removeStepFromBlock,
-    blocks,
-    connectingIds,
-    startBlock,
-  } = useGraph()
+  const { setConnectingIds, connectingIds } = useGraph()
+  const { removeStepFromBlock, typebot } = useTypebot()
+  const { blocks, startBlock } = typebot ?? {}
   const [isConnecting, setIsConnecting] = useState(false)
+  const [mouseDownEvent, setMouseDownEvent] =
+    useState<{ absolute: Coordinates; relative: Coordinates }>()
+  const [isEditing, setIsEditing] = useState<boolean | undefined>(undefined)
 
   useEffect(() => {
     setIsConnecting(
@@ -59,12 +66,38 @@ export const StepNode = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!onMouseDown) return
     e.stopPropagation()
-    onMouseDown(e, step as Step)
-    removeStepFromBlock(step.blockId, step.id)
+    const element = e.currentTarget as HTMLDivElement
+    const rect = element.getBoundingClientRect()
+    const relativeX = e.clientX - rect.left
+    const relativeY = e.clientY - rect.top
+    setMouseDownEvent({
+      absolute: { x: e.clientX + relativeX, y: e.clientY + relativeY },
+      relative: { x: relativeX, y: relativeY },
+    })
+  }
+
+  const handleGlobalMouseUp = () => {
+    setMouseDownEvent(undefined)
+  }
+  useEventListener('mouseup', handleGlobalMouseUp)
+
+  const handleMouseUp = () => {
+    if (mouseDownEvent) {
+      setIsEditing(true)
+    }
   }
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!onMouseMoveBottomOfElement || !onMouseMoveTopOfElement) return
+    const isMovingAndIsMouseDown =
+      mouseDownEvent &&
+      onMouseDown &&
+      (event.movementX > 0 || event.movementY > 0)
+    if (isMovingAndIsMouseDown) {
+      onMouseDown(mouseDownEvent, step as Step)
+      removeStepFromBlock(step.blockId, step.id)
+      setMouseDownEvent(undefined)
+    }
     const element = event.currentTarget as HTMLDivElement
     const rect = element.getBoundingClientRect()
     const y = event.clientY - rect.top
@@ -72,8 +105,12 @@ export const StepNode = ({
     else onMouseMoveTopOfElement()
   }
 
+  const handleCloseEditor = () => {
+    setIsEditing(false)
+  }
+
   const connectedStubPosition: 'right' | 'left' | undefined = useMemo(() => {
-    const currentBlock = [startBlock, ...blocks].find(
+    const currentBlock = [startBlock, ...(blocks ?? [])].find(
       (b) => b?.id === step.blockId
     )
     const isDragginConnectorFromCurrentBlock =
@@ -83,7 +120,7 @@ export const StepNode = ({
       ? connectingIds.target?.blockId
       : step.target?.blockId
     const targetedBlock = targetBlockId
-      ? blocks.find((b) => b.id === targetBlockId)
+      ? (blocks ?? []).find((b) => b.id === targetBlockId)
       : undefined
     return targetedBlock
       ? targetedBlock.graphCoordinates.x <
@@ -100,106 +137,74 @@ export const StepNode = ({
     startBlock,
   ])
 
-  return (
-    <Flex
-      pos="relative"
-      ref={stepRef}
-      onMouseMove={handleMouseMove}
-      onMouseDown={handleMouseDown}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {connectedStubPosition === 'left' && (
-        <Box
-          h="2px"
-          pos="absolute"
-          left="-18px"
-          top="25px"
-          w="18px"
-          bgColor="blue.500"
-        />
+  return step.type === StepType.TEXT &&
+    (isEditing ||
+      (isEditing === undefined && step.content.plainText === '')) ? (
+    <TextEditor
+      ids={{ stepId: step.id, blockId: step.blockId }}
+      initialValue={step.content.richText}
+      onClose={handleCloseEditor}
+    />
+  ) : (
+    <ContextMenu<HTMLDivElement>
+      renderMenu={() => (
+        <StepNodeContextMenu blockId={step.blockId} stepId={step.id} />
       )}
-      <HStack
-        flex="1"
-        userSelect="none"
-        p="3"
-        borderWidth="2px"
-        borderColor={isConnecting ? 'blue.400' : 'gray.400'}
-        rounded="lg"
-        cursor={'grab'}
-        bgColor="white"
-      >
-        <StepIcon type={step.type} />
-        <StepContent {...step} />
-        {isConnectable && (
-          <SourceEndpoint
-            onConnectionDragStart={handleConnectionDragStart}
-            pos="absolute"
-            right="20px"
-          />
-        )}
-      </HStack>
-
-      {isDefined(connectedStubPosition) && (
-        <Box
-          h="2px"
-          pos="absolute"
-          right={connectedStubPosition === 'left' ? undefined : '-18px'}
-          left={connectedStubPosition === 'left' ? '-18px' : undefined}
-          top="25px"
-          w="18px"
-          bgColor="gray.500"
-        />
-      )}
-    </Flex>
-  )
-}
-
-export const StepContent = (props: Step | StartStep) => {
-  switch (props.type) {
-    case StepType.TEXT: {
-      return (
-        <Text opacity={props.content === '' ? '0.5' : '1'}>
-          {props.content === '' ? 'Type text...' : props.content}
-        </Text>
-      )
-    }
-    case StepType.DATE_PICKER: {
-      return (
-        <Text opacity={props.content === '' ? '0.5' : '1'}>
-          {props.content === '' ? 'Pick a date...' : props.content}
-        </Text>
-      )
-    }
-    case StepType.START: {
-      return <Text>{props.label}</Text>
-    }
-    default: {
-      return <Text>No input</Text>
-    }
-  }
-}
-
-export const StepNodeOverlay = ({
-  step,
-  ...props
-}: { step: Step } & StackProps) => {
-  return (
-    <HStack
-      p="3"
-      borderWidth="1px"
-      rounded="lg"
-      bgColor="white"
-      cursor={'grab'}
-      pos="fixed"
-      top="0"
-      left="0"
-      w="264px"
-      pointerEvents="none"
-      {...props}
     >
-      <StepIcon type={step.type} />
-      <StepContent {...step} />
-    </HStack>
+      {(ref, isOpened) => (
+        <Flex
+          pos="relative"
+          ref={ref}
+          onMouseMove={handleMouseMove}
+          onMouseDown={handleMouseDown}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+        >
+          {connectedStubPosition === 'left' && (
+            <Box
+              h="2px"
+              pos="absolute"
+              left="-18px"
+              top="25px"
+              w="18px"
+              bgColor="blue.500"
+            />
+          )}
+          <HStack
+            flex="1"
+            userSelect="none"
+            p="3"
+            borderWidth="2px"
+            borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.400'}
+            rounded="lg"
+            cursor={'pointer'}
+            bgColor="white"
+          >
+            <StepIcon type={step.type} />
+            <StepContent {...step} />
+            {isConnectable && (
+              <SourceEndpoint
+                onConnectionDragStart={handleConnectionDragStart}
+                pos="absolute"
+                right="20px"
+              />
+            )}
+          </HStack>
+
+          {isDefined(connectedStubPosition) && (
+            <Box
+              h="2px"
+              pos="absolute"
+              right={connectedStubPosition === 'left' ? undefined : '-18px'}
+              left={connectedStubPosition === 'left' ? '-18px' : undefined}
+              top="25px"
+              w="18px"
+              bgColor="gray.500"
+            />
+          )}
+        </Flex>
+      )}
+    </ContextMenu>
   )
 }

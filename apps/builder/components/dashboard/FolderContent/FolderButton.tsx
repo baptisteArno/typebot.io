@@ -148,7 +148,6 @@ export const ButtonSkeleton = () => (
     pos="relative"
     cursor="pointer"
     variant="outline"
-    colorScheme={'gray'}
   >
     <VStack spacing="6" w="full">
       <SkeletonCircle boxSize="45px" />

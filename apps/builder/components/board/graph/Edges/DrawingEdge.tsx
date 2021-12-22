@@ -1,6 +1,7 @@
 import { useEventListener } from '@chakra-ui/hooks'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { Block } from 'bot-engine'
+import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import {
   blockWidth,
   firstStepOffsetY,
@@ -8,6 +9,7 @@ import {
   stubLength,
   useGraph,
 } from 'contexts/GraphContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo, useState } from 'react'
 import {
   computeFlowChartConnectorPath,
@@ -16,18 +18,16 @@ import {
 import { roundCorners } from 'svg-round-corners'
 
 export const DrawingEdge = () => {
-  const {
-    graphPosition,
-    setConnectingIds,
-    blocks,
-    connectingIds,
-    addTarget,
-    startBlock,
-  } = useGraph()
+  const { graphPosition, setConnectingIds, connectingIds } = useGraph()
+  const { typebot, updateTarget } = useTypebot()
+  const { startBlock, blocks } = typebot ?? {}
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const sourceBlock = useMemo(
-    () => [startBlock, ...blocks].find((b) => b?.id === connectingIds?.blockId),
+    () =>
+      [startBlock, ...(blocks ?? [])].find(
+        (b) => b?.id === connectingIds?.blockId
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [connectingIds]
   )
@@ -35,7 +35,7 @@ export const DrawingEdge = () => {
   const path = useMemo(() => {
     if (!sourceBlock) return ``
     if (connectingIds?.target) {
-      const targetedBlock = blocks.find(
+      const targetedBlock = blocks?.find(
         (b) => b.id === connectingIds.target?.blockId
       ) as Block
       const targetedStepIndex = connectingIds.target.stepId
@@ -62,12 +62,12 @@ export const DrawingEdge = () => {
   const handleMouseMove = (e: MouseEvent) => {
     setMousePosition({
       x: e.clientX - graphPosition.x,
-      y: e.clientY - graphPosition.y,
+      y: e.clientY - graphPosition.y - headerHeight,
     })
   }
   useEventListener('mousemove', handleMouseMove)
   useEventListener('mouseup', () => {
-    if (connectingIds?.target) addTarget(connectingIds)
+    if (connectingIds?.target) updateTarget(connectingIds)
     setConnectingIds(null)
   })
 
@@ -117,8 +117,8 @@ const computeThreeSegments = (
   const segments = []
   const firstSegmentX =
     sourceType === 'right'
-      ? sourcePosition.x + stubLength
-      : sourcePosition.x - stubLength
+      ? sourcePosition.x + stubLength + 40
+      : sourcePosition.x - stubLength - 40
   segments.push(`L${firstSegmentX},${sourcePosition.y}`)
   segments.push(`L${firstSegmentX},${targetPosition.y}`)
   segments.push(`L${targetPosition.x},${targetPosition.y}`)

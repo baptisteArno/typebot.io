@@ -29,7 +29,6 @@ export const StepCard = ({
         rounded="lg"
         flex="1"
         cursor={'grab'}
-        colorScheme="gray"
         opacity={isMouseDown ? '0.4' : '1'}
         onMouseDown={handleMouseDown}
       >
@@ -54,7 +53,6 @@ export const StepCardOverlay = ({
       borderWidth="1px"
       rounded="lg"
       cursor={'grab'}
-      colorScheme="gray"
       w="147px"
       pos="fixed"
       top="0"

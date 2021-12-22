@@ -9,11 +9,8 @@ export const StepLabel = ({ type }: Props) => {
     case StepType.TEXT: {
       return <Text>Text</Text>
     }
-    case StepType.IMAGE: {
-      return <Text>Image</Text>
-    }
-    case StepType.DATE_PICKER: {
-      return <Text>Date</Text>
+    case StepType.TEXT_INPUT: {
+      return <Text>Text</Text>
     }
     default: {
       return <></>

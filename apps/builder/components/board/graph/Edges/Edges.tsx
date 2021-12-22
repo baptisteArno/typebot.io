@@ -1,16 +1,17 @@
 import { chakra } from '@chakra-ui/system'
-import { useGraph } from 'contexts/GraphContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo } from 'react'
 import { DrawingEdge } from './DrawingEdge'
 import { Edge, StepWithTarget } from './Edge'
 
 export const Edges = () => {
-  const { blocks, startBlock } = useGraph()
+  const { typebot } = useTypebot()
+  const { blocks, startBlock } = typebot ?? {}
   const stepsWithTarget: StepWithTarget[] = useMemo(() => {
     if (!startBlock) return []
     return [
       ...(startBlock.steps.filter((s) => s.target) as StepWithTarget[]),
-      ...(blocks
+      ...((blocks ?? [])
         .flatMap((b) => b.steps)
         .filter((s) => s.target) as StepWithTarget[]),
     ]
