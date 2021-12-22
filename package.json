@@ -10,12 +10,13 @@
     "db:nuke": "docker-compose down --volumes --remove-orphans",
     "dev": "dotenv -e .env yarn docker:up && dotenv -e .env turbo run dev --parallel",
     "build": "dotenv -e .env turbo run build",
+    "build:builder": "yarn build --scope=builder --includeDependencies",
     "test": "dotenv -e .env turbo run dev test",
     "lint": "turbo run lint"
   },
   "devDependencies": {
     "dotenv-cli": "^4.1.0",
-    "turbo": "^1.0.13"
+    "turbo": "^1.0.19"
   },
   "turbo": {
     "baseBranch": "origin/main",
