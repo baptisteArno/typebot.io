@@ -1,6 +1,7 @@
 {
   "name": "builder",
   "version": "0.1.0",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
