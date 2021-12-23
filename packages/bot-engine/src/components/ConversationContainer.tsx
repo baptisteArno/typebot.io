@@ -3,6 +3,8 @@ import { PublicTypebot } from '..'
 
 import { Block } from '..'
 import { ChatBlock } from './ChatBlock/ChatBlock'
+import { useFrame } from 'react-frame-component'
+import { setCssVariablesValue } from '../services/theme'
 
 export const ConversationContainer = ({
   typebot,
@@ -11,6 +13,7 @@ export const ConversationContainer = ({
   typebot: PublicTypebot
   onNewBlockVisisble: (blockId: string) => void
 }) => {
+  const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<Block[]>([])
 
   const [isConversationEnded, setIsConversationEnded] = useState(false)
@@ -27,6 +30,10 @@ export const ConversationContainer = ({
     const firstBlockId = typebot.startBlock.steps[0].target?.blockId
     if (firstBlockId) displayNextBlock(firstBlockId)
   }, [])
+
+  useEffect(() => {
+    setCssVariablesValue(typebot.theme, frameDocument.body.style)
+  }, [typebot.theme, frameDocument])
 
   return (
     <div

@@ -44,7 +44,6 @@ export const TextEditor = ({ initialValue, ids, onClose }: TextEditorProps) => {
   }, [debouncedValue])
 
   const save = (value: unknown[]) => {
-    console.log('SAVE', value)
     if (value.length === 0) return
     const html = serializeHtml(editor, {
       nodes: value,

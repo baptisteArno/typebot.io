@@ -1,4 +1,4 @@
-import { StartBlock, StepType } from 'bot-engine'
+import { BackgroundType, StartBlock, StepType, Theme } from 'bot-engine'
 import { Typebot, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -38,8 +38,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         ],
       }
+      const theme: Theme = {
+        general: {
+          font: 'Open Sans',
+          background: { type: BackgroundType.NONE, content: '#ffffff' },
+        },
+      }
       const typebot = await prisma.typebot.create({
-        data: { ...data, ownerId: user.id, startBlock },
+        data: { ...data, ownerId: user.id, startBlock, theme },
       })
       return res.send(typebot)
     }

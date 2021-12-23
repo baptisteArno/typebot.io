@@ -22,6 +22,7 @@ export const CreateBotButton = ({
       onClick={handleClick}
       paddingX={6}
       whiteSpace={'normal'}
+      colorScheme="blue"
       {...props}
     >
       <VStack spacing="6">

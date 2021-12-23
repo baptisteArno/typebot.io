@@ -1,8 +1,12 @@
 import { Typebot as TypebotFromPrisma } from 'db'
 
-export type Typebot = Omit<TypebotFromPrisma, 'blocks' | 'startBlock'> & {
+export type Typebot = Omit<
+  TypebotFromPrisma,
+  'blocks' | 'startBlock' | 'theme'
+> & {
   blocks: Block[]
   startBlock: StartBlock
+  theme: Theme
 }
 
 export type StartBlock = {
@@ -53,11 +57,20 @@ export type TextInputStep = StepBase & {
   type: StepType.TEXT_INPUT
 }
 
-export type Button = {
-  id: string
-  content: string
-  target: {
-    type: 'block' | 'step'
-    id: string
+export type Theme = {
+  general: {
+    font: string
+    background: Background
   }
+}
+
+export enum BackgroundType {
+  COLOR = 'Color',
+  IMAGE = 'Image',
+  NONE = 'None',
+}
+
+export type Background = {
+  type: BackgroundType
+  content: string
 }

@@ -89,6 +89,7 @@ model Typebot {
   folder             DashboardFolder? @relation(fields: [folderId], references: [id])
   blocks             Json[]
   startBlock         Json
+  theme              Json
 }
 
 model PublicTypebot {
@@ -98,14 +99,15 @@ model PublicTypebot {
   name       String
   blocks     Json[]
   startBlock Json
+  theme      Json
 }
 
 model Result {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  typebotId String
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers   Json[]
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  typebotId   String
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers     Json[]
   isCompleted Boolean?
 }

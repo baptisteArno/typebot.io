@@ -29,7 +29,7 @@ export const TypebotHeader = () => {
       borderBottomWidth="1px"
       justify="center"
       align="center"
-      pos="fixed"
+      pos="relative"
       h={`${headerHeight}px`}
       zIndex={2}
       bgColor="white"
@@ -37,10 +37,7 @@ export const TypebotHeader = () => {
       <HStack>
         <Button
           as={NextChakraLink}
-          href={{
-            pathname: `/typebots/${typebot?.id}/edit`,
-            query: { ...router.query, typebotId: [] },
-          }}
+          href={`/typebots/${typebot?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
         >
@@ -48,21 +45,15 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={{
-            pathname: `/typebots/${typebot?.id}/design`,
-            query: { ...router.query, typebotId: [] },
-          }}
-          colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
-          variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
+          href={`/typebots/${typebot?.id}/theme`}
+          colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
+          variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
         >
           Theme
         </Button>
         <Button
           as={NextChakraLink}
-          href={{
-            pathname: `/typebots/${typebot?.id}/design`,
-            query: { ...router.query, typebotId: [] },
-          }}
+          href={`/typebots/${typebot?.id}/design`}
           colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         >
@@ -70,10 +61,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={{
-            pathname: `/typebots/${typebot?.id}/share`,
-            query: { ...router.query, typebotId: [] },
-          }}
+          href={`/typebots/${typebot?.id}/share`}
           colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         >
@@ -81,10 +69,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={{
-            pathname: `/typebots/${typebot?.id}/results/responses`,
-            query: { ...router.query, typebotId: [] },
-          }}
+          href={`/typebots/${typebot?.id}/results/responses`}
           colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
           variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
         >

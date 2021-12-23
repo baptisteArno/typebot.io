@@ -4,16 +4,17 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "devDependencies": {
-    "prisma": "latest",
+    "prisma": "^3.7.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "^3.7.0"
   },
   "scripts": {
     "dev": "yarn prisma db push && BROWSER=none yarn prisma studio",
     "build": "prisma generate && prisma migrate deploy",
+    "migration:push": "dotenv -e ../../.env yarn prisma db push",
     "migration:create": "dotenv -e ../../.env yarn prisma migrate dev",
     "migration:reset": "dotenv -e ../../.env yarn prisma migrate reset"
   }

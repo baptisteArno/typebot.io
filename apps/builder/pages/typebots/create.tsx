@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { Seo } from 'components/Seo'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { createTypebot } from 'services/typebots'
+import withAuth from 'components/HOC/withUser'
 
 const TemplatesPage = () => {
   const user = useUser()
@@ -25,7 +26,7 @@ const TemplatesPage = () => {
       folderId: router.query.folderId?.toString() ?? null,
     })
     if (error) toast({ description: error.message })
-    if (data) router.push(`/typebots/${data.id}`)
+    if (data) router.push(`/typebots/${data.id}/edit`)
     setIsLoading(false)
   }
 
@@ -40,4 +41,4 @@ const TemplatesPage = () => {
   )
 }
 
-export default TemplatesPage
+export default withAuth(TemplatesPage)

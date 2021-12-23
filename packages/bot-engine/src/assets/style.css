@@ -4,10 +4,9 @@
 
 :root {
   --typebot-container-bg-image: none;
-  --typebot-container-bg-color: #f7f8ff;
-  --typebot-container-font-family: 'Inter';
+  --typebot-container-bg-color: transparent;
+  --typebot-container-font-family: 'Open Sans';
   --typebot-chat-view-max-width: 700px;
-  --typebot-chat-view-bg-color: #ffffff;
   --typebot-chat-view-color: #303235;
 
   --typebot-button-active-bg-color: #0042da;
@@ -318,7 +317,6 @@ textarea {
 
 .typebot-chat-view {
   max-width: var(--typebot-chat-view-max-width);
-  background-color: var(--typebot-chat-view-bg-color);
 }
 
 .typebot-button.active {

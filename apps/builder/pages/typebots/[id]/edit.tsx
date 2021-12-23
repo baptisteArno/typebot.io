@@ -20,7 +20,7 @@ const TypebotEditPage = () => {
       <EditorContext>
         <KBarProvider actions={actions}>
           <KBar />
-          <Flex overflow="hidden" h="100vh">
+          <Flex overflow="hidden" h="100vh" flexDir="column">
             <TypebotHeader />
             <GraphProvider>
               <Board />

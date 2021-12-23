@@ -1,0 +1,1 @@
+export { GeneralContent } from './GeneralContent'
