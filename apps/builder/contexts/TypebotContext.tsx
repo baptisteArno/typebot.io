@@ -56,6 +56,7 @@ const typebotContext = createContext<{
   undo: () => void
   updateTheme: (theme: Theme) => void
   updateSettings: (settings: Settings) => void
+  updatePublicId: (publicId: string) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -284,6 +285,11 @@ export const TypebotContext = ({
     setLocalTypebot({ ...localTypebot, settings })
   }
 
+  const updatePublicId = (publicId: string) => {
+    if (!localTypebot) return
+    setLocalTypebot({ ...localTypebot, publicId })
+  }
+
   return (
     <typebotContext.Provider
       value={{
@@ -301,6 +307,7 @@ export const TypebotContext = ({
         undo,
         updateTheme,
         updateSettings,
+        updatePublicId,
       }}
     >
       {children}

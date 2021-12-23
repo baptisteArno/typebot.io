@@ -9,7 +9,7 @@ import {
 import shortId from 'short-uuid'
 import { Typebot } from 'bot-engine'
 import useSWR from 'swr'
-import { fetcher, sendRequest } from './utils'
+import { fetcher, sendRequest, toKebabCase } from './utils'
 import { deepEqual } from 'fast-equals'
 
 export const useTypebots = ({
@@ -71,7 +71,14 @@ export const deleteTypebot = async (id: string) =>
     method: 'DELETE',
   })
 
-export const updateTypebot = async (id: string, typebot: Partial<Typebot>) =>
+export const updateTypebot = async (id: string, typebot: Typebot) =>
+  sendRequest({
+    url: `/api/typebots/${id}`,
+    method: 'PUT',
+    body: typebot,
+  })
+
+export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
   sendRequest({
     url: `/api/typebots/${id}`,
     method: 'PATCH',
@@ -157,4 +164,8 @@ export const parseTypebotToPublicTypebot = (
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
+  publicId: typebot.publicId,
 })
+
+export const parseDefaultPublicId = (name: string, id: string) =>
+  toKebabCase(`${name}-${id?.slice(0, 5)}`)

@@ -22,6 +22,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     return res.send({ typebots })
   }
+  if (req.method === 'PUT') {
+    const data = JSON.parse(req.body)
+    const typebots = await prisma.typebot.update({
+      where: { id },
+      data,
+    })
+    return res.send({ typebots })
+  }
   if (req.method === 'PATCH') {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({

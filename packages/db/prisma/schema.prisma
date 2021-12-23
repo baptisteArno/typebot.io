@@ -91,6 +91,7 @@ model Typebot {
   startBlock         Json
   theme              Json
   settings           Json
+  publicId           String?          @unique
 }
 
 model PublicTypebot {
@@ -102,6 +103,7 @@ model PublicTypebot {
   startBlock Json
   theme      Json
   settings   Json
+  publicId   String? @unique
 }
 
 model Result {

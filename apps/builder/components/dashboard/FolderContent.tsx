@@ -22,7 +22,7 @@ import {
 import { FolderPlusIcon } from 'assets/icons'
 import React, { useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
-import { updateTypebot, useTypebots } from 'services/typebots'
+import { patchTypebot, useTypebots } from 'services/typebots'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
 import { ButtonSkeleton, FolderButton } from './FolderContent/FolderButton'
@@ -83,7 +83,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebots) return
-    const { error } = await updateTypebot(typebotId, {
+    const { error } = await patchTypebot(typebotId, {
       folderId: folderId === 'root' ? null : folderId,
     })
     if (error) toast({ description: error.message })
