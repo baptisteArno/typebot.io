@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHostAvatars } from '../../../../contexts/HostAvatarsContext'
+import { useTypebot } from '../../../../contexts/TypebotContext'
 import { StepType, TextStep } from '../../../../models'
+import { computeTypingTimeout } from '../../../../services/chat'
 import { TypingContent } from './TypingContent'
 
 type HostMessageBubbleProps = {
@@ -16,15 +18,18 @@ export const HostMessageBubble = ({
   step,
   onTransitionEnd,
 }: HostMessageBubbleProps) => {
+  const { typebot } = useTypebot()
+  const { typingEmulation } = typebot.settings
   const { updateLastAvatarOffset } = useHostAvatars()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
   useEffect(() => {
-    const wordCount = step.content.plainText.match(/(\w+)/g)?.length ?? 0
-    const typedWordsPerMinute = 250
-    const typingTimeout = (wordCount / typedWordsPerMinute) * 60000
     sendAvatarOffset()
+    const typingTimeout = computeTypingTimeout(
+      step.content.plainText,
+      typingEmulation
+    )
     setTimeout(() => {
       onTypingEnd()
     }, typingTimeout)

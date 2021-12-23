@@ -156,4 +156,5 @@ export const parseTypebotToPublicTypebot = (
   startBlock: typebot.startBlock,
   typebotId: typebot.id,
   theme: typebot.theme,
+  settings: typebot.settings,
 })

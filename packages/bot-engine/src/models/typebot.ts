@@ -2,11 +2,12 @@ import { Typebot as TypebotFromPrisma } from 'db'
 
 export type Typebot = Omit<
   TypebotFromPrisma,
-  'blocks' | 'startBlock' | 'theme'
+  'blocks' | 'startBlock' | 'theme' | 'settings'
 > & {
   blocks: Block[]
   startBlock: StartBlock
   theme: Theme
+  settings: Settings
 }
 
 export type StartBlock = {
@@ -73,4 +74,14 @@ export enum BackgroundType {
 export type Background = {
   type: BackgroundType
   content: string
+}
+
+export type Settings = {
+  typingEmulation: TypingEmulationSettings
+}
+
+export type TypingEmulationSettings = {
+  enabled: boolean
+  speed: number
+  maxDelay: number
 }

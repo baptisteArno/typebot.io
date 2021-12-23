@@ -90,6 +90,7 @@ model Typebot {
   blocks             Json[]
   startBlock         Json
   theme              Json
+  settings           Json
 }
 
 model PublicTypebot {
@@ -100,6 +101,7 @@ model PublicTypebot {
   blocks     Json[]
   startBlock Json
   theme      Json
+  settings   Json
 }
 
 model Result {

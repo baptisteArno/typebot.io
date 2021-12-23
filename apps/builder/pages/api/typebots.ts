@@ -1,4 +1,10 @@
-import { BackgroundType, StartBlock, StepType, Theme } from 'bot-engine'
+import {
+  BackgroundType,
+  Settings,
+  StartBlock,
+  StepType,
+  Theme,
+} from 'bot-engine'
 import { Typebot, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -44,8 +50,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           background: { type: BackgroundType.NONE, content: '#ffffff' },
         },
       }
+      const settings: Settings = {
+        typingEmulation: {
+          enabled: true,
+          speed: 300,
+          maxDelay: 1.5,
+        },
+      }
       const typebot = await prisma.typebot.create({
-        data: { ...data, ownerId: user.id, startBlock, theme },
+        data: { ...data, ownerId: user.id, startBlock, theme, settings },
       })
       return res.send(typebot)
     }

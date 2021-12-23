@@ -1,5 +1,13 @@
 import { useToast } from '@chakra-ui/react'
-import { Block, Step, StepType, Target, Theme, Typebot } from 'bot-engine'
+import {
+  Block,
+  Settings,
+  Step,
+  StepType,
+  Target,
+  Theme,
+  Typebot,
+} from 'bot-engine'
 import { useRouter } from 'next/router'
 import {
   createContext,
@@ -47,6 +55,7 @@ const typebotContext = createContext<{
   }) => void
   undo: () => void
   updateTheme: (theme: Theme) => void
+  updateSettings: (settings: Settings) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -270,6 +279,11 @@ export const TypebotContext = ({
     setLocalTypebot({ ...localTypebot, theme })
   }
 
+  const updateSettings = (settings: Settings) => {
+    if (!localTypebot) return
+    setLocalTypebot({ ...localTypebot, settings })
+  }
+
   return (
     <typebotContext.Provider
       value={{
@@ -286,6 +300,7 @@ export const TypebotContext = ({
         removeBlock,
         undo,
         updateTheme,
+        updateSettings,
       }}
     >
       {children}
