@@ -3,8 +3,8 @@ import {
   StepType,
   Block,
   TextStep,
-  PublicTypebot,
   TextInputStep,
+  PublicTypebot,
 } from 'bot-engine'
 import shortId from 'short-uuid'
 import { Typebot } from 'bot-engine'
@@ -154,18 +154,16 @@ export const checkIfTypebotsAreEqual = (
     }
   )
 
-export const parseTypebotToPublicTypebot = (
-  typebot: Typebot
-): PublicTypebot => ({
-  id: shortId.generate(),
-  blocks: typebot.blocks,
-  name: typebot.name,
-  startBlock: typebot.startBlock,
-  typebotId: typebot.id,
-  theme: typebot.theme,
-  settings: typebot.settings,
-  publicId: typebot.publicId,
-})
+export const checkIfPublished = (
+  typebot: Typebot,
+  publicTypebot: PublicTypebot
+) =>
+  deepEqual(typebot.blocks, publicTypebot.blocks) &&
+  deepEqual(typebot.startBlock, publicTypebot.startBlock) &&
+  typebot.name === publicTypebot.name &&
+  typebot.publicId === publicTypebot.publicId &&
+  deepEqual(typebot.settings, publicTypebot.settings) &&
+  deepEqual(typebot.theme, publicTypebot.theme)
 
 export const parseDefaultPublicId = (name: string, id: string) =>
   toKebabCase(`${name}-${id?.slice(0, 5)}`)

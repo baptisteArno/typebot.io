@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
 import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo } from 'react'
-import { parseTypebotToPublicTypebot } from 'services/typebots'
+import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import { SideMenu } from './SideMenu'
 
 export const ThemeContent = () => {

@@ -1,6 +1,7 @@
 import { useToast } from '@chakra-ui/react'
 import {
   Block,
+  PublicTypebot,
   Settings,
   Step,
   StepType,
@@ -8,16 +9,25 @@ import {
   Theme,
   Typebot,
 } from 'bot-engine'
+import { deepEqual } from 'fast-equals'
 import { useRouter } from 'next/router'
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import {
+  createPublishedTypebot,
+  parseTypebotToPublicTypebot,
+  updatePublishedTypebot,
+} from 'services/publicTypebot'
+import {
+  checkIfPublished,
   checkIfTypebotsAreEqual,
+  parseDefaultPublicId,
   parseNewBlock,
   parseNewStep,
   updateTypebot,
@@ -25,6 +35,8 @@ import {
 import {
   fetcher,
   insertItemInList,
+  isDefined,
+  omit,
   preventUserFromRefreshing,
 } from 'services/utils'
 import useSWR from 'swr'
@@ -32,6 +44,9 @@ import { NewBlockPayload, Coordinates } from './GraphContext'
 
 const typebotContext = createContext<{
   typebot?: Typebot
+  publishedTypebot?: PublicTypebot
+  isPublished: boolean
+  isPublishing: boolean
   hasUnsavedChanges: boolean
   isSavingLoading: boolean
   save: () => void
@@ -57,6 +72,7 @@ const typebotContext = createContext<{
   updateTheme: (theme: Theme) => void
   updateSettings: (settings: Settings) => void
   updatePublicId: (publicId: string) => void
+  publishTypebot: () => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -74,7 +90,7 @@ export const TypebotContext = ({
     status: 'error',
   })
   const [undoStack, setUndoStack] = useState<Typebot[]>([])
-  const { typebot, isLoading, mutate } = useFetchedTypebot({
+  const { typebot, publishedTypebot, isLoading, mutate } = useFetchedTypebot({
     typebotId,
     onError: (error) =>
       toast({
@@ -83,18 +99,33 @@ export const TypebotContext = ({
       }),
   })
   const [localTypebot, setLocalTypebot] = useState<Typebot>()
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [localPublishedTypebot, setLocalPublishedTypebot] =
+    useState<PublicTypebot>()
   const [isSavingLoading, setIsSavingLoading] = useState(false)
+  const [isPublishing, setIsPublishing] = useState(false)
+
+  const hasUnsavedChanges = useMemo(
+    () =>
+      isDefined(typebot) &&
+      isDefined(localTypebot) &&
+      !deepEqual(localTypebot, typebot),
+    [typebot, localTypebot]
+  )
+  const isPublished = useMemo(
+    () =>
+      isDefined(typebot) &&
+      isDefined(publishedTypebot) &&
+      checkIfPublished(typebot, publishedTypebot),
+    [typebot, publishedTypebot]
+  )
 
   useEffect(() => {
     if (!localTypebot || !typebot) return
     if (!checkIfTypebotsAreEqual(localTypebot, typebot)) {
-      setHasUnsavedChanges(true)
       pushNewTypebotInUndoStack(localTypebot)
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
       window.addEventListener('beforeunload', preventUserFromRefreshing)
     } else {
-      setHasUnsavedChanges(false)
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,6 +139,7 @@ export const TypebotContext = ({
       return
     }
     setLocalTypebot({ ...typebot })
+    if (publishedTypebot) setLocalPublishedTypebot({ ...publishedTypebot })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
@@ -128,7 +160,6 @@ export const TypebotContext = ({
     setIsSavingLoading(false)
     if (error) return toast({ title: error.name, description: error.message })
     mutate({ typebot: localTypebot })
-    setHasUnsavedChanges(false)
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
   }
 
@@ -290,10 +321,34 @@ export const TypebotContext = ({
     setLocalTypebot({ ...localTypebot, publicId })
   }
 
+  const publishTypebot = async () => {
+    if (!localTypebot) return
+    if (!localPublishedTypebot)
+      updatePublicId(parseDefaultPublicId(localTypebot.name, localTypebot.id))
+    if (hasUnsavedChanges) await saveTypebot()
+    setIsPublishing(true)
+    if (localPublishedTypebot) {
+      const { error } = await updatePublishedTypebot(
+        localPublishedTypebot.id,
+        omit(parseTypebotToPublicTypebot(localTypebot), 'id')
+      )
+      setIsPublishing(false)
+      if (error) return toast({ title: error.name, description: error.message })
+    } else {
+      const { error } = await createPublishedTypebot(
+        omit(parseTypebotToPublicTypebot(localTypebot), 'id')
+      )
+      setIsPublishing(false)
+      if (error) return toast({ title: error.name, description: error.message })
+    }
+    mutate({ typebot: localTypebot })
+  }
+
   return (
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
+        publishedTypebot: localPublishedTypebot,
         updateStep,
         addNewBlock,
         addStepToBlock,
@@ -308,6 +363,9 @@ export const TypebotContext = ({
         updateTheme,
         updateSettings,
         updatePublicId,
+        publishTypebot,
+        isPublishing,
+        isPublished,
       }}
     >
       {children}
@@ -324,13 +382,14 @@ export const useFetchedTypebot = ({
   typebotId?: string
   onError: (error: Error) => void
 }) => {
-  const { data, error, mutate } = useSWR<{ typebot: Typebot }, Error>(
-    typebotId ? `/api/typebots/${typebotId}` : null,
-    fetcher
-  )
+  const { data, error, mutate } = useSWR<
+    { typebot: Typebot; publishedTypebot?: PublicTypebot },
+    Error
+  >(typebotId ? `/api/typebots/${typebotId}` : null, fetcher)
   if (error) onError(error)
   return {
     typebot: data?.typebot,
+    publishedTypebot: data?.publishedTypebot,
     isLoading: !error && !data,
     mutate,
   }

@@ -13,8 +13,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findUnique({
       where: { id },
+      include: {
+        publishedTypebot: true,
+      },
     })
-    return res.send({ typebot })
+    if (!typebot) return res.send({ typebot: null })
+    const { publishedTypebot, ...restOfTypebot } = typebot
+    return res.send({ typebot: restOfTypebot, publishedTypebot })
   }
   if (req.method === 'DELETE') {
     const typebots = await prisma.typebot.delete({

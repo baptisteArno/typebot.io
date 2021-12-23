@@ -14,7 +14,7 @@ import { useEditor } from 'contexts/EditorContext'
 import { useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo, useState } from 'react'
-import { parseTypebotToPublicTypebot } from 'services/typebots'
+import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()

@@ -30,7 +30,7 @@ export const TypebotViewer = ({
     <Frame
       id="typebot-iframe"
       head={<style>{style}</style>}
-      style={{ width: '100%' }}
+      style={{ width: '100%', height: '100%', border: 'none' }}
     >
       <style
         dangerouslySetInnerHTML={{
@@ -42,7 +42,7 @@ export const TypebotViewer = ({
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
-              // We set this as inline style to avoid color flashing (due to SSR)
+              // We set this as inline style to avoid color for SSR
               backgroundColor: containerBgColor,
             }}
           >
