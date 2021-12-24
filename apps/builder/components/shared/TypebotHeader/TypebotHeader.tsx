@@ -69,7 +69,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/results/responses`}
+          href={`/typebots/${typebot?.id}/results`}
           colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
           variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
         >

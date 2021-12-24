@@ -1,4 +1,11 @@
-import { PublicTypebot, Typebot } from 'bot-engine'
+import {
+  Block,
+  InputStep,
+  PublicTypebot,
+  Step,
+  StepType,
+  Typebot,
+} from 'bot-engine'
 import { sendRequest } from './utils'
 import shortId from 'short-uuid'
 
@@ -33,3 +40,18 @@ export const updatePublishedTypebot = async (
     method: 'PUT',
     body: typebot,
   })
+
+export const parseSubmissionsColumns = (
+  typebot?: PublicTypebot
+): {
+  Header: string
+  accessor: string
+}[] =>
+  (typebot?.blocks ?? [])
+    .filter(blockContainsInput)
+    .map((block) => ({ Header: block.title, accessor: block.id }))
+
+const blockContainsInput = (block: Block) => block.steps.some(stepIsInput)
+
+const stepIsInput = (step: Step): step is InputStep =>
+  step.type === StepType.TEXT_INPUT

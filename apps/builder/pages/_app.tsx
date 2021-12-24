@@ -7,6 +7,7 @@ import { useRouterProgressBar } from 'libs/routerProgressBar'
 import 'assets/styles/routerProgressBar.css'
 import 'assets/styles/plate.css'
 import 'focus-visible/dist/focus-visible'
+import 'assets/styles/submissionsTable.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
