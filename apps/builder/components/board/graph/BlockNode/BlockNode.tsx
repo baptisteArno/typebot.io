@@ -10,7 +10,7 @@ import { Block, StartBlock } from 'bot-engine'
 import { useGraph } from 'contexts/GraphContext'
 import { useDnd } from 'contexts/DndContext'
 import { StepsList } from './StepsList'
-import { isNotDefined } from 'services/utils'
+import { isDefined } from 'services/utils'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -34,7 +34,7 @@ export const BlockNode = ({ block }: { block: Block | StartBlock }) => {
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === block.id &&
-        isNotDefined(connectingIds.target?.stepId)
+        !isDefined(connectingIds.target?.stepId)
     )
   }, [block.id, connectingIds])
 

@@ -12,13 +12,13 @@ import {
   Skeleton,
 } from '@chakra-ui/react'
 import { TypebotLogo } from 'assets/logos'
-import { useUser } from 'services/user'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { LogOutIcon, SettingsIcon } from 'assets/icons'
 import { signOut } from 'next-auth/react'
+import { useUser } from 'contexts/UserContext'
 
 export const DashboardHeader = () => {
-  const user = useUser()
+  const { user } = useUser()
 
   const handleLogOut = () => {
     signOut()

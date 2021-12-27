@@ -43,10 +43,6 @@ export const isDefined = <T>(value: T | undefined | null): value is T => {
   return <T>value !== undefined && <T>value !== null
 }
 
-export const isNotDefined = <T>(value: T | undefined | null): value is T => {
-  return <T>value === undefined || <T>value === null
-}
-
 export const preventUserFromRefreshing = (e: BeforeUnloadEvent) => {
   e.preventDefault()
   e.returnValue = ''
@@ -90,4 +86,27 @@ export const omit: Omit = (obj, ...keys) => {
     }
   }
   return ret
+}
+
+export const uploadFile = async (file: File, key: string) => {
+  const res = await fetch(
+    `/api/storage/upload-url?key=${encodeURIComponent(
+      key
+    )}&fileType=${encodeURIComponent(file.type)}`
+  )
+  const { url, fields } = await res.json()
+  const formData = new FormData()
+
+  Object.entries({ ...fields, file }).forEach(([key, value]) => {
+    formData.append(key, value as string | Blob)
+  })
+
+  const upload = await fetch(url, {
+    method: 'POST',
+    body: formData,
+  })
+
+  return {
+    url: upload.ok ? `${url}/${key}` : null,
+  }
 }

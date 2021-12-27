@@ -1,7 +1,9 @@
 import { User } from 'db'
-import { useSession } from 'next-auth/react'
+import { sendRequest } from './utils'
 
-export const useUser = (): User | undefined => {
-  const { data } = useSession()
-  return data?.user as User | undefined
-}
+export const updateUser = async (id: string, user: User) =>
+  sendRequest({
+    url: `/api/users/${id}`,
+    method: 'PUT',
+    body: user,
+  })

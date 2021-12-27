@@ -48,11 +48,14 @@ model User {
   typebots      Typebot[]
   folders       DashboardFolder[]
   plan          Plan              @default(FREE)
+  stripeId      String?           @unique
 }
 
 enum Plan {
   FREE
   PRO
+  LIFETIME
+  OFFERED
 }
 
 model VerificationToken {

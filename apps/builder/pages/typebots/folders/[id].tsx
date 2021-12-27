@@ -1,4 +1,3 @@
-import withAuth from 'components/HOC/withUser'
 import React from 'react'
 import { Flex, Stack } from '@chakra-ui/layout'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
@@ -7,6 +6,7 @@ import { FolderContent } from 'components/dashboard/FolderContent'
 import { useRouter } from 'next/router'
 import { useFolderContent } from 'services/folders'
 import { Spinner, useToast } from '@chakra-ui/react'
+import { UserContext } from 'contexts/UserContext'
 
 const FolderPage = () => {
   const router = useRouter()
@@ -27,18 +27,20 @@ const FolderPage = () => {
   })
 
   return (
-    <Stack>
+    <UserContext>
       <Seo title="My typebots" />
-      <DashboardHeader />
-      {!folder ? (
-        <Flex flex="1">
-          <Spinner mx="auto" />
-        </Flex>
-      ) : (
-        <FolderContent folder={folder} />
-      )}
-    </Stack>
+      <Stack>
+        <DashboardHeader />
+        {!folder ? (
+          <Flex flex="1">
+            <Spinner mx="auto" />
+          </Flex>
+        ) : (
+          <FolderContent folder={folder} />
+        )}
+      </Stack>
+    </UserContext>
   )
 }
 
-export default withAuth(FolderPage)
+export default FolderPage

@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
@@ -8,6 +8,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
 import { User } from 'db'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 const providers: Provider[] = [
   EmailProvider({
@@ -67,7 +68,7 @@ if (process.env.NODE_ENV !== 'production')
     })
   )
 
-export default NextAuth({
+const createOptions = (req: NextApiRequest): NextAuthOptions => ({
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
   providers,
@@ -75,13 +76,25 @@ export default NextAuth({
     strategy: process.env.NODE_ENV === 'production' ? 'database' : 'jwt',
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
-      user && (token.user = user)
+    jwt: async ({ token, user, account }) => {
+      if (req.url === '/api/auth/session?update' && token.user) {
+        token.user = await prisma.user.findUnique({
+          where: { id: (token.user as User).id },
+        })
+      } else if (user) {
+        token.user = user
+      }
+      account?.type && (token.providerType = account?.type)
       return token
     },
     session: async ({ session, token, user }) => {
       token?.user ? (session.user = token.user as User) : (session.user = user)
-      return session
+      return { ...session, providerType: token.providerType }
     },
   },
 })
+
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  NextAuth(req, res, createOptions(req))
+}
+export default handler

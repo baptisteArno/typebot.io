@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Stack, useToast } from '@chakra-ui/react'
-import { useUser } from 'services/user'
 import { useRouter } from 'next/router'
 import { Seo } from 'components/Seo'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { createTypebot } from 'services/typebots'
-import withAuth from 'components/HOC/withUser'
+import { UserContext, useUser } from 'contexts/UserContext'
 
 const TemplatesPage = () => {
-  const user = useUser()
+  const { user } = useUser()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -31,14 +30,20 @@ const TemplatesPage = () => {
   }
 
   return (
-    <Stack>
+    <UserContext>
       <Seo title="Templates" />
-      <DashboardHeader />
-      <Button ml={4} onClick={() => handleCreateSubmit()} isLoading={isLoading}>
-        Start from scratch
-      </Button>
-    </Stack>
+      <Stack>
+        <DashboardHeader />
+        <Button
+          ml={4}
+          onClick={() => handleCreateSubmit()}
+          isLoading={isLoading}
+        >
+          Start from scratch
+        </Button>
+      </Stack>
+    </UserContext>
   )
 }
 
-export default withAuth(TemplatesPage)
+export default TemplatesPage
