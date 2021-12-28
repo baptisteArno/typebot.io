@@ -3,7 +3,7 @@
   "include": ["**/*.ts"],
   "exclude": [],
   "compilerOptions": {
-    "types": ["cypress", "@testing-library/cypress"],
+    "types": ["cypress", "@testing-library/cypress", "cypress-file-upload"],
     "lib": ["es2015", "dom"],
     "target": "es5",
     "isolatedModules": false,

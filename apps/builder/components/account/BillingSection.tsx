@@ -1,6 +1,7 @@
 import { Stack, Heading, HStack, Button, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useUser } from 'contexts/UserContext'
+import { Plan } from 'db'
 import React from 'react'
 import { SubscriptionTag } from './SubscriptionTag'
 
@@ -17,9 +18,12 @@ export const BillingSection = () => {
           <SubscriptionTag plan={user?.plan} />
         </HStack>
         {user?.stripeId && (
-          <Button as={NextChakraLink} href="test">
-            Billing portal
+          <Button as={NextChakraLink} href="/api/stripe/customer-portal">
+            Manage my subscription
           </Button>
+        )}
+        {user?.plan === Plan.FREE && (
+          <Button colorScheme="blue">Upgrade</Button>
         )}
       </Stack>
     </Stack>

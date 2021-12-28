@@ -1,11 +1,5 @@
-import {
-  BackgroundType,
-  Settings,
-  StartBlock,
-  StepType,
-  Theme,
-} from 'bot-engine'
-import { Typebot, User } from 'db'
+import { parseNewTypebot } from 'bot-engine'
+import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -30,35 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send({ typebots })
     }
     if (req.method === 'POST') {
-      const data = JSON.parse(req.body) as Typebot
-      const startBlock: StartBlock = {
-        id: 'start-block',
-        title: 'Start',
-        graphCoordinates: { x: 0, y: 0 },
-        steps: [
-          {
-            id: 'start-step',
-            blockId: 'start-block',
-            label: 'Form starts here',
-            type: StepType.START,
-          },
-        ],
-      }
-      const theme: Theme = {
-        general: {
-          font: 'Open Sans',
-          background: { type: BackgroundType.NONE, content: '#ffffff' },
-        },
-      }
-      const settings: Settings = {
-        typingEmulation: {
-          enabled: true,
-          speed: 300,
-          maxDelay: 1.5,
-        },
-      }
+      const data = JSON.parse(req.body)
       const typebot = await prisma.typebot.create({
-        data: { ...data, ownerId: user.id, startBlock, theme, settings },
+        data: parseNewTypebot({ ownerId: user.id, ...data }),
       })
       return res.send(typebot)
     }
