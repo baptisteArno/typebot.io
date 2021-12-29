@@ -9,7 +9,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined } from 'services/utils'
+import { isDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user'
 import { useToast } from '@chakra-ui/react'
 import { deepEqual } from 'fast-equals'

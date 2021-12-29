@@ -1,0 +1,13 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "next": "^12.0.7"
+  }
+}

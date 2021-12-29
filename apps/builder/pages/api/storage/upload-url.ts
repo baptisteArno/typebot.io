@@ -1,7 +1,7 @@
 import aws from 'aws-sdk'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { methodNotAllowed } from 'services/api/utils'
+import { methodNotAllowed } from 'utils'
 
 const maxUploadFileSize = 10485760 // 10 MB
 const handler = async (

@@ -9,7 +9,7 @@ import {
   firstStepOffsetY,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
-import { isDefined } from './utils'
+import { isDefined } from 'utils'
 
 export const computeFlowChartConnectorPath = ({
   sourcePosition,

@@ -91,7 +91,7 @@ export const PreviewDrawer = () => {
           >
             <TypebotViewer
               typebot={publicTypebot}
-              onNewBlockVisisble={handleNewBlockVisible}
+              onNewBlockVisible={handleNewBlockVisible}
             />
           </Flex>
         )}

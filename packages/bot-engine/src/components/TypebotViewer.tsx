@@ -1,19 +1,23 @@
 import React, { useMemo } from 'react'
-import { BackgroundType, PublicTypebot } from '../models'
+import { Answer, BackgroundType, PublicTypebot } from '../models'
 import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
 //@ts-ignore
 import style from '../assets/style.css'
 import { ConversationContainer } from './ConversationContainer'
-import { ResultContext } from '../contexts/ResultsContext'
+import { AnswersContext } from '../contexts/AnswersContext'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
-  onNewBlockVisisble?: (blockId: string) => void
+  onNewBlockVisible?: (blockId: string) => void
+  onAnswersUpdate?: (answers: Answer[]) => void
+  onCompleted?: () => void
 }
 export const TypebotViewer = ({
   typebot,
-  onNewBlockVisisble,
+  onNewBlockVisible,
+  onAnswersUpdate,
+  onCompleted,
 }: TypebotViewerProps) => {
   const containerBgColor = useMemo(
     () =>
@@ -23,7 +27,13 @@ export const TypebotViewer = ({
     [typebot.theme.general.background]
   )
   const handleNewBlockVisible = (blockId: string) => {
-    if (onNewBlockVisisble) onNewBlockVisisble(blockId)
+    if (onNewBlockVisible) onNewBlockVisible(blockId)
+  }
+  const handleAnswersUpdate = (answers: Answer[]) => {
+    if (onAnswersUpdate) onAnswersUpdate(answers)
+  }
+  const handleCompleted = () => {
+    if (onCompleted) onCompleted()
   }
 
   return (
@@ -38,22 +48,24 @@ export const TypebotViewer = ({
         }}
       />
       <TypebotContext typebot={typebot}>
-        <ResultContext typebotId={typebot.id}>
+        <AnswersContext typebotId={typebot.id}>
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
-              // We set this as inline style to avoid color for SSR
+              // We set this as inline style to avoid color flash for SSR
               backgroundColor: containerBgColor,
             }}
           >
             <div className="flex w-full h-full justify-center">
               <ConversationContainer
                 typebot={typebot}
-                onNewBlockVisisble={handleNewBlockVisible}
+                onNewBlockVisible={handleNewBlockVisible}
+                onAnswersUpdate={handleAnswersUpdate}
+                onCompleted={handleCompleted}
               />
             </div>
           </div>
-        </ResultContext>
+        </AnswersContext>
       </TypebotContext>
     </Frame>
   )

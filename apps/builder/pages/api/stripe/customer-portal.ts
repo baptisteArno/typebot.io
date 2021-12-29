@@ -1,7 +1,7 @@
 import { User } from 'db'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { methodNotAllowed } from 'services/api/utils'
+import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
 
 const createCheckoutSession = async (

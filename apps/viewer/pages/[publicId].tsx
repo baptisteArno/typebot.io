@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const pathname = context.resolvedUrl.split('?')[0]
   try {
     if (!context.req.headers.host) return { props: {} }
-    typebot = await getTypebotFromPublicId(context.query.publicId.toString())
+    typebot = await getTypebotFromPublicId(context.query.publicId?.toString())
     if (!typebot) return { props: {} }
     return {
       props: {
@@ -32,8 +32,9 @@ export const getServerSideProps: GetServerSideProps = async (
 }
 
 const getTypebotFromPublicId = async (
-  publicId: string
+  publicId?: string
 ): Promise<PublicTypebot | undefined> => {
+  if (!publicId) return
   const typebot = await prisma.publicTypebot.findUnique({
     where: { publicId },
   })

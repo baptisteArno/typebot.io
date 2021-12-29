@@ -39,10 +39,6 @@ export const insertItemInList = <T>(
   newItem: T
 ): T[] => [...arr.slice(0, index), newItem, ...arr.slice(index)]
 
-export const isDefined = <T>(value: T | undefined | null): value is T => {
-  return <T>value !== undefined && <T>value !== null
-}
-
 export const preventUserFromRefreshing = (e: BeforeUnloadEvent) => {
   e.preventDefault()
   e.returnValue = ''

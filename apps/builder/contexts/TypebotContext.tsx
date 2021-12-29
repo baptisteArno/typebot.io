@@ -35,11 +35,11 @@ import {
 import {
   fetcher,
   insertItemInList,
-  isDefined,
   omit,
   preventUserFromRefreshing,
 } from 'services/utils'
 import useSWR from 'swr'
+import { isDefined } from 'utils'
 import { NewBlockPayload, Coordinates } from './GraphContext'
 
 const typebotContext = createContext<{

@@ -32,6 +32,7 @@
     "framer-motion": "^4",
     "htmlparser2": "^7.2.0",
     "kbar": "^0.1.0-beta.24",
+    "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
     "next": "^12.0.7",
     "next-auth": "beta",
@@ -50,7 +51,8 @@
     "styled-components": "^5.3.3",
     "svg-round-corners": "^0.3.0",
     "swr": "^1.1.1",
-    "use-debounce": "^7.0.1"
+    "use-debounce": "^7.0.1",
+    "utils": "*"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.2",
@@ -69,6 +71,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.0.0",
+    "next-transpile-modules": "^9.0.0",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4"
   }

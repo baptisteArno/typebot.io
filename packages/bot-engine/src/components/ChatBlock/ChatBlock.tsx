@@ -8,7 +8,7 @@ import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
 
 type ChatBlockProps = {
   block: Block
-  onBlockEnd: (nextBlockId: string) => void
+  onBlockEnd: (nextBlockId?: string) => void
 }
 
 export const ChatBlock = ({ block, onBlockEnd }: ChatBlockProps) => {
@@ -31,7 +31,10 @@ export const ChatBlock = ({ block, onBlockEnd }: ChatBlockProps) => {
 
   const displayNextStep = () => {
     const currentStep = [...displayedSteps].pop()
-    if (currentStep?.target?.blockId)
+    if (
+      currentStep?.target?.blockId ||
+      displayedSteps.length === block.steps.length
+    )
       return onBlockEnd(currentStep?.target?.blockId)
     const nextStep = block.steps[displayedSteps.length]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])

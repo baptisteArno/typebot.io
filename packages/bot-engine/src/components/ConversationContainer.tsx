@@ -1,28 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { PublicTypebot } from '..'
+import { Answer, PublicTypebot } from '..'
 
 import { Block } from '..'
 import { ChatBlock } from './ChatBlock/ChatBlock'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
+import { useAnswers } from '../contexts/AnswersContext'
+import { deepEqual } from 'fast-equals'
 
+type Props = {
+  typebot: PublicTypebot
+  onNewBlockVisible: (blockId: string) => void
+  onAnswersUpdate: (answers: Answer[]) => void
+  onCompleted: () => void
+}
 export const ConversationContainer = ({
   typebot,
-  onNewBlockVisisble,
-}: {
-  typebot: PublicTypebot
-  onNewBlockVisisble: (blockId: string) => void
-}) => {
+  onNewBlockVisible,
+  onAnswersUpdate,
+  onCompleted,
+}: Props) => {
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<Block[]>([])
-
-  const [isConversationEnded, setIsConversationEnded] = useState(false)
+  const [localAnswers, setLocalAnswers] = useState<Answer[]>([])
+  const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = (blockId: string) => {
+  const displayNextBlock = (blockId?: string) => {
+    if (!blockId) return onCompleted()
     const nextBlock = typebot.blocks.find((b) => b.id === blockId)
-    if (!nextBlock) return
-    onNewBlockVisisble(blockId)
+    if (!nextBlock) return onCompleted()
+    onNewBlockVisible(blockId)
     setDisplayedBlocks([...displayedBlocks, nextBlock])
   }
 
@@ -34,6 +42,12 @@ export const ConversationContainer = ({
   useEffect(() => {
     setCssVariablesValue(typebot.theme, frameDocument.body.style)
   }, [typebot.theme, frameDocument])
+
+  useEffect(() => {
+    if (deepEqual(localAnswers, answers)) return
+    setLocalAnswers(answers)
+    onAnswersUpdate(answers)
+  }, [answers])
 
   return (
     <div
@@ -48,14 +62,7 @@ export const ConversationContainer = ({
         />
       ))}
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
-      <div
-        className="w-full"
-        ref={bottomAnchor}
-        style={{
-          transition: isConversationEnded ? 'height 1s' : '',
-          height: isConversationEnded ? '5%' : '20%',
-        }}
-      />
+      <div className="w-full" ref={bottomAnchor} />
     </div>
   )
 }

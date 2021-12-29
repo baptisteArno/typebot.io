@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'services/api/utils'
+import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
 import Cors from 'micro-cors'
 import { buffer } from 'micro'
