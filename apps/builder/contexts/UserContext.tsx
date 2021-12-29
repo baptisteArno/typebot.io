@@ -49,7 +49,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isDefined(user) || !isDefined(session)) return
-
     setUser(session.user as User)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
