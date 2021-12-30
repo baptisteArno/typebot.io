@@ -1,5 +1,6 @@
 import { Answer, PublicTypebot, TypebotViewer } from 'bot-engine'
 import React, { useEffect, useState } from 'react'
+import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'
 import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
@@ -38,9 +39,9 @@ export const TypebotPage = ({ typebot, isIE, url }: TypebotPageProps) => {
     }
   }
 
-  const handleAnswersUpdate = async (answers: Answer[]) => {
+  const handleNewAnswer = async (answer: Answer) => {
     if (!resultId) return setError(new Error('Result was not created'))
-    const { error } = await updateResult(resultId, { answers })
+    const { error } = await upsertAnswer({ ...answer, resultId })
     if (error) setError(error)
   }
 
@@ -62,7 +63,7 @@ export const TypebotPage = ({ typebot, isIE, url }: TypebotPageProps) => {
       {resultId && (
         <TypebotViewer
           typebot={typebot}
-          onAnswersUpdate={handleAnswersUpdate}
+          onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
         />
       )}

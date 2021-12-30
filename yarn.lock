@@ -1482,6 +1482,11 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
 
+"@types/qs@^6.9.7":
+  version "6.9.7"
+  resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
+  integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
+
 "@types/react-scroll@^1.8.3":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@types/react-scroll/-/react-scroll-1.8.3.tgz#80951ed1934ab49d4926aad95c26607b8b1a9713"
@@ -6046,7 +6051,7 @@ puppeteer@^2.1.1:
     rimraf "^2.6.1"
     ws "^6.1.0"
 
-qs@^6.6.0:
+qs@^6.10.2, qs@^6.6.0:
   version "6.10.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.2.tgz#c1431bea37fc5b24c5bdbafa20f16bdf2a4b9ffe"
   integrity sha512-mSIdjzqznWgfd4pMii7sHtaYF8rx8861hBO80SraY5GT0XQibWZWJSid0avzHGkDIZLImux2S5mXO0Hfct2QCw==
@@ -7320,83 +7325,83 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-turbo-darwin-64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-darwin-64/-/turbo-darwin-64-1.0.23.tgz#0164b1a2ee6782bf2233bb1887b01ac78486378e"
-  integrity sha512-z6ArzNKpQIw/YhFf20lUGl5VaGTZ94MSppXuuYkCyxMQwK3qye3r2ENQbUKkxfv16fAmfr7z1bJt6YwfOjwPiw==
+turbo-darwin-64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-darwin-64/-/turbo-darwin-64-1.0.24-canary.2.tgz#5d64c95d14fb06f45b2c0c44d1657b1884e009d7"
+  integrity sha512-MTY6Eea5QQc+ZqC2EqZWtIRaIygenWY7i0f+PVyCyfaXp5TqZiIUljd4s1vfp4tygVg66EVkI2Pu34FsXNVB3g==
 
-turbo-darwin-arm64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.0.23.tgz#7d6de986595d6ded9d853744c26780b50c7b196c"
-  integrity sha512-U02Ip7kO7eDN3WRliIrPtqYFqcpsvpNsE5fX1T0uFjXfSJruiDBrrNpGmZEh8hatS5wQyG7VaxW+izJqd7TCsw==
+turbo-darwin-arm64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.0.24-canary.2.tgz#2169cebc1be5d8fbcf8334a50d411432c7480c10"
+  integrity sha512-FaaAJ25smSeKjnkyUYxJhth0L59VmGjM9MrHXg+KhjU9jPFzyXTr9Bnb0nV6TAFRcL+IzZ3TXHykRCqfY4FjYA==
 
-turbo-freebsd-64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-freebsd-64/-/turbo-freebsd-64-1.0.23.tgz#f78d2056414496334cb8c6bc28ac7f3d5d0ab30c"
-  integrity sha512-5XT8pp0uJ1vRqNJydacn6ouY4COUeufOdLuiPOWAOsvMW5FOJNAOdAJ7lISBBqhCpYF8CEZ9kCAI2f9nOzzY0Q==
+turbo-freebsd-64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-freebsd-64/-/turbo-freebsd-64-1.0.24-canary.2.tgz#91528c2a75f621d7e7861e94b73c9a70443206ef"
+  integrity sha512-alNrWyWvpIdKoQARB85PJchwr6VqKbWdayq2zlzGnSnTmH0EQb0bSDL9zNsdiKu4ISGE2E7YUN616lfvqx3wHA==
 
-turbo-freebsd-arm64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-freebsd-arm64/-/turbo-freebsd-arm64-1.0.23.tgz#d7d4eca48a21da17403c804e5bd52a3daffbdc1c"
-  integrity sha512-70BGJTVX3jYvzDISp8dWM/rwiK4CDlNVQJnnlUMKrueFtpgHZhsRKjIeNgIKxVSTyp4xT0Vl4xhc9zFhMT17aw==
+turbo-freebsd-arm64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-freebsd-arm64/-/turbo-freebsd-arm64-1.0.24-canary.2.tgz#8cea1bf6335e284beea3136eb7cc811da8501c72"
+  integrity sha512-vfS+L5NqRLN2w4R0QgmBFl9Z9pXnIYwoS3IWcfx2SRqTUdcqfrM3Mq3jHUdfQE2DufMYcGt1u28aakYb5LEpdA==
 
-turbo-linux-32@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-32/-/turbo-linux-32-1.0.23.tgz#c11de3c98944d43b9e25582c03ddd8f38d6cd85c"
-  integrity sha512-ee3N8f7h1qg5noKII5Tq2gyG6PVFl/apllX0TPbZiUab6553QPfVt+tB+5W6BZmKGUdHHCvW42xuig0krrrRGw==
+turbo-linux-32@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-32/-/turbo-linux-32-1.0.24-canary.2.tgz#41d68a780b805111a05a2e4b692b3f10c944bb51"
+  integrity sha512-kjhHH3IQv83MrxpW5ScWlC08XzoWgoI2IbrZsZeZYXVdzDgIk5Uf8PfiUe0fJXpdUL8bIFq3nQ+yX8U/FuChAw==
 
-turbo-linux-64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-64/-/turbo-linux-64-1.0.23.tgz#7700a5e5ad96e741405957e7cd33a7422c49bfbd"
-  integrity sha512-j2+1P2+rdOXb/yzz78SCmxXLdFSSlCzZS0Psg1vetYozuoT0k+xu7gr6iqEHdBWw39jNFuT72hVqrNZ4TClHcA==
+turbo-linux-64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-64/-/turbo-linux-64-1.0.24-canary.2.tgz#18331dfc7b1d0f89a5f82cc17383571186779e85"
+  integrity sha512-v8+u+gV01UsCl7psvptL+mr863lrVr3L1j0CFKXhjyZQJlEgXoRbkxU4VUWaXwf9ABaadsPsmv9B2oQnudypeA==
 
-turbo-linux-arm64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-arm64/-/turbo-linux-arm64-1.0.23.tgz#79b49e14ef3038f99036134abcf53c17645b5eb9"
-  integrity sha512-VNW8yyBG63MGUzZ/Y2DS883P8rzz/hQuiCklw2lTBQ4O9dp2FxYrAVnmCxbnsIDZG/wEupdvaHVgqH7j2DJgwg==
+turbo-linux-arm64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-arm64/-/turbo-linux-arm64-1.0.24-canary.2.tgz#8873aa5b812f668934d16b69d59f5030b3d9fc8e"
+  integrity sha512-v3/XDIQ9Cyz1dfPXnuJyH2V4xIDGPw9SaQS3FPiGH6TvUULkFYphg+cLttk7DPo3573GDxUQug3c5TvlIZFO8Q==
 
-turbo-linux-arm@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-arm/-/turbo-linux-arm-1.0.23.tgz#7140b73572948a0285395feb3abe8a9067f74d68"
-  integrity sha512-+aD+v03bpkmuXEfk14w2fLH5cAyfyGlAs5gBwQmwyF3XllJ40OL/cw9xDnBREpZsnm9o1GTQpr0wmepjw9d4iQ==
+turbo-linux-arm@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-arm/-/turbo-linux-arm-1.0.24-canary.2.tgz#22126953b881f952a1b5f480a3053c514cf314aa"
+  integrity sha512-pkfSuuOjN8DDJDOAdx0jqwTL4jeEsZbjmgNnhgrkb1HwVjQCjmqHbh15Wa2E51G12/Ctr6h2aKit2kbLXPfGWw==
 
-turbo-linux-mips64le@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-mips64le/-/turbo-linux-mips64le-1.0.23.tgz#fa4e989a8e149e3684f4732ed1b2a386fc829c8a"
-  integrity sha512-CJNd7F9z8EhqcdJnd1rSiU/+hSNG3E+fudQ5pr55y0nhSShFMMdZxdLvL5zzhWpBl1g8YldphjPqNLChgGatKw==
+turbo-linux-mips64le@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-mips64le/-/turbo-linux-mips64le-1.0.24-canary.2.tgz#11254292c40ac8acef8452a379bb74bad39bf858"
+  integrity sha512-35WJMoIxfIG8ruoMJVdOCxuQlJjNeLbxbqigDizJh2zkjlJITzEK+WwmF9KrqzMaN7Ks4LPq+xd/YvBEULx4Zw==
 
-turbo-linux-ppc64le@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-linux-ppc64le/-/turbo-linux-ppc64le-1.0.23.tgz#3c1e0f5a79b8c34d790c7828ec443ed73ed95706"
-  integrity sha512-RjzDqXQl+nqV+2A6MRk1sALBQtpCB/h8qDWhJIL/VUgToTMdllAThiYI+lALLmGWBumXs4XDbk+83FGJlJ1bDg==
+turbo-linux-ppc64le@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-linux-ppc64le/-/turbo-linux-ppc64le-1.0.24-canary.2.tgz#abc93ede90deca66f20c23fedc0f2b032e43a48a"
+  integrity sha512-ZCipAVam+ZKyiQ5KYrL8pPgQ06JJ09H6mqTxEAP0OP2kN6Se+TuycFjAsedE0Gn/G+6MBmStjR99ha+I2fRnDA==
 
-turbo-windows-32@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-windows-32/-/turbo-windows-32-1.0.23.tgz#17d58f43406cd68062131924f94c2df8ca159f9e"
-  integrity sha512-qTfldTd5OO/s8unGFnITe4IX8ua2SNj/VVQbvVcObDJK6xrfBY4tDS78rIo9//xTSRyK+28AoPxRZsVqqF2hlA==
+turbo-windows-32@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-windows-32/-/turbo-windows-32-1.0.24-canary.2.tgz#c24ae090c84c4ad83833deaeb0dba68186fe8e7d"
+  integrity sha512-b9FBMoxhunGQNN/DwT9KK7g4FwDG3/cc4DEV5TdD809I66LmyVk1ThvpnUdZIRZRymcWq1c6kjT+0LfJFEBxGw==
 
-turbo-windows-64@1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo-windows-64/-/turbo-windows-64-1.0.23.tgz#0e53fde0395fa88006be7fcd36c1853995cfa319"
-  integrity sha512-yzhF6GEYiyrXoO/l9T6amB16OITsFXdeMTc0Vf2BZFOG1fn9Muc4CxQ+CcdsLlai+TqQTKlpEf0+l83vI+R2Jw==
+turbo-windows-64@1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo-windows-64/-/turbo-windows-64-1.0.24-canary.2.tgz#f783fcb3661634cc3c1f578fdc79441ed3de5f8e"
+  integrity sha512-HqXW3k+5h4nP8eCg5i/0NhUlR4+3vxTSyI3UvoACVz/IkiUIwVKF9ZhlAfFpkRCYU+1KKOMs7iDWlYiTyW4Inw==
 
-turbo@^1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.0.23.tgz#9a8f54f116daee67e0c131c4c936f075d32281a2"
-  integrity sha512-/VHsARQyl8wsfCJtuJicjYq7Do/P5yjJde3bjG9TAZHj/PzA9LuRU7WOEPfUrT+felOQ3vwUMZtC8xrYFmndLA==
+turbo@^1.0.24-canary.2:
+  version "1.0.24-canary.2"
+  resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.0.24-canary.2.tgz#7b7c134d4e6dce0cf6e9e7b09393dde9767c397e"
+  integrity sha512-Ve/KYeSxPBGKB6qmHc7BBZhZ7AaFH6WeUjd97IB38zfEtrcLlQ0xziY8EX7qiACarbrV9TKkYG5QctI5OIbD9A==
   optionalDependencies:
-    turbo-darwin-64 "1.0.23"
-    turbo-darwin-arm64 "1.0.23"
-    turbo-freebsd-64 "1.0.23"
-    turbo-freebsd-arm64 "1.0.23"
-    turbo-linux-32 "1.0.23"
-    turbo-linux-64 "1.0.23"
-    turbo-linux-arm "1.0.23"
-    turbo-linux-arm64 "1.0.23"
-    turbo-linux-mips64le "1.0.23"
-    turbo-linux-ppc64le "1.0.23"
-    turbo-windows-32 "1.0.23"
-    turbo-windows-64 "1.0.23"
+    turbo-darwin-64 "1.0.24-canary.2"
+    turbo-darwin-arm64 "1.0.24-canary.2"
+    turbo-freebsd-64 "1.0.24-canary.2"
+    turbo-freebsd-arm64 "1.0.24-canary.2"
+    turbo-linux-32 "1.0.24-canary.2"
+    turbo-linux-64 "1.0.24-canary.2"
+    turbo-linux-arm "1.0.24-canary.2"
+    turbo-linux-arm64 "1.0.24-canary.2"
+    turbo-linux-mips64le "1.0.24-canary.2"
+    turbo-linux-ppc64le "1.0.24-canary.2"
+    turbo-windows-32 "1.0.24-canary.2"
+    turbo-windows-64 "1.0.24-canary.2"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

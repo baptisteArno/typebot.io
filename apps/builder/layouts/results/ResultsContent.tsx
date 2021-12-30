@@ -1,8 +1,17 @@
-import { Button, Flex, HStack, Stack } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  HStack,
+  Stack,
+  Tag,
+  useToast,
+  Text,
+} from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
+import { useResultsCount } from 'services/results'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
 
@@ -13,6 +22,15 @@ export const ResultsContent = () => {
     () => router.pathname.endsWith('analytics'),
     [router.pathname]
   )
+  const toast = useToast({
+    position: 'top-right',
+    status: 'error',
+  })
+
+  const { totalResults } = useResultsCount({
+    typebotId: typebot?.id,
+    onError: (err) => toast({ title: err.name, description: err.message }),
+  })
   return (
     <Flex h="full" w="full" justifyContent="center" align="flex-start">
       <Stack maxW="1200px" w="full" pt="4" spacing={6}>
@@ -24,7 +42,12 @@ export const ResultsContent = () => {
             size="sm"
             href={`/typebots/${typebot?.id}/results`}
           >
-            Submissions
+            <Text>Submissions</Text>
+            {totalResults && (
+              <Tag size="sm" colorScheme="blue" ml="1">
+                {totalResults}
+              </Tag>
+            )}
           </Button>
           <Button
             as={NextChakraLink}
@@ -36,7 +59,15 @@ export const ResultsContent = () => {
             Analytics
           </Button>
         </HStack>
-        {isAnalytics ? <AnalyticsContent /> : <SubmissionsContent />}
+        {typebot &&
+          (isAnalytics ? (
+            <AnalyticsContent />
+          ) : (
+            <SubmissionsContent
+              typebotId={typebot.id}
+              totalResults={totalResults ?? 0}
+            />
+          ))}
       </Stack>
     </Flex>
   )

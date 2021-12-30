@@ -115,6 +115,17 @@ model Result {
   updatedAt   DateTime @default(now())
   typebotId   String
   typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers     Json[]
+  answers     Answer[]
   isCompleted Boolean?
+}
+
+model Answer {
+  createdAt DateTime @default(now())
+  resultId  String
+  result    Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  stepId    String
+  blockId   String
+  content   String
+
+  @@unique([resultId, blockId, stepId])
 }

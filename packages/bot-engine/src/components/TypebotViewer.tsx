@@ -10,13 +10,13 @@ import { AnswersContext } from '../contexts/AnswersContext'
 export type TypebotViewerProps = {
   typebot: PublicTypebot
   onNewBlockVisible?: (blockId: string) => void
-  onAnswersUpdate?: (answers: Answer[]) => void
+  onNewAnswer?: (answer: Answer) => void
   onCompleted?: () => void
 }
 export const TypebotViewer = ({
   typebot,
   onNewBlockVisible,
-  onAnswersUpdate,
+  onNewAnswer,
   onCompleted,
 }: TypebotViewerProps) => {
   const containerBgColor = useMemo(
@@ -29,8 +29,8 @@ export const TypebotViewer = ({
   const handleNewBlockVisible = (blockId: string) => {
     if (onNewBlockVisible) onNewBlockVisible(blockId)
   }
-  const handleAnswersUpdate = (answers: Answer[]) => {
-    if (onAnswersUpdate) onAnswersUpdate(answers)
+  const handleNewAnswer = (answer: Answer) => {
+    if (onNewAnswer) onNewAnswer(answer)
   }
   const handleCompleted = () => {
     if (onCompleted) onCompleted()
@@ -60,7 +60,7 @@ export const TypebotViewer = ({
               <ConversationContainer
                 typebot={typebot}
                 onNewBlockVisible={handleNewBlockVisible}
-                onAnswersUpdate={handleAnswersUpdate}
+                onNewAnswer={handleNewAnswer}
                 onCompleted={handleCompleted}
               />
             </div>

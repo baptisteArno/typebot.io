@@ -9,10 +9,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session?.user)
     return res.status(401).json({ message: 'Not authenticated' })
 
-  const id = req.query.id.toString()
+  const typebotId = req.query.typebotId.toString()
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findUnique({
-      where: { id },
+      where: { id: typebotId },
       include: {
         publishedTypebot: true,
       },
@@ -23,14 +23,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'DELETE') {
     const typebots = await prisma.typebot.delete({
-      where: { id },
+      where: { id: typebotId },
     })
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({
-      where: { id },
+      where: { id: typebotId },
       data,
     })
     return res.send({ typebots })
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({
-      where: { id },
+      where: { id: typebotId },
       data,
     })
     return res.send({ typebots })

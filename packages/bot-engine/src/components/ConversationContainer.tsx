@@ -11,18 +11,18 @@ import { deepEqual } from 'fast-equals'
 type Props = {
   typebot: PublicTypebot
   onNewBlockVisible: (blockId: string) => void
-  onAnswersUpdate: (answers: Answer[]) => void
+  onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
 }
 export const ConversationContainer = ({
   typebot,
   onNewBlockVisible,
-  onAnswersUpdate,
+  onNewAnswer,
   onCompleted,
 }: Props) => {
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<Block[]>([])
-  const [localAnswers, setLocalAnswers] = useState<Answer[]>([])
+  const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
   const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
 
@@ -44,9 +44,10 @@ export const ConversationContainer = ({
   }, [typebot.theme, frameDocument])
 
   useEffect(() => {
-    if (deepEqual(localAnswers, answers)) return
-    setLocalAnswers(answers)
-    onAnswersUpdate(answers)
+    const answer = [...answers].pop()
+    if (!answer || deepEqual(localAnswer, answer)) return
+    setLocalAnswer(answer)
+    onNewAnswer(answer)
   }, [answers])
 
   return (

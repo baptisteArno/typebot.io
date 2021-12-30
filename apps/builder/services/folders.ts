@@ -1,6 +1,7 @@
 import { DashboardFolder } from '.prisma/client'
 import useSWR from 'swr'
 import { fetcher, sendRequest } from './utils'
+import { stringify } from 'qs'
 
 export const useFolders = ({
   parentId,
@@ -9,9 +10,7 @@ export const useFolders = ({
   parentId?: string
   onError: (error: Error) => void
 }) => {
-  const params = new URLSearchParams(
-    parentId ? { parentId: parentId.toString() } : undefined
-  )
+  const params = stringify({ parentId })
   const { data, error, mutate } = useSWR<{ folders: DashboardFolder[] }, Error>(
     `/api/folders?${params}`,
     fetcher

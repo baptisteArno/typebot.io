@@ -8,6 +8,9 @@ import {
 } from 'bot-engine'
 import { sendRequest } from './utils'
 import shortId from 'short-uuid'
+import { HStack, Text } from '@chakra-ui/react'
+import { CalendarIcon } from 'assets/icons'
+import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
@@ -44,12 +47,32 @@ export const updatePublishedTypebot = async (
 export const parseSubmissionsColumns = (
   typebot?: PublicTypebot
 ): {
-  Header: string
+  Header: JSX.Element
   accessor: string
-}[] =>
-  (typebot?.blocks ?? [])
-    .filter(blockContainsInput)
-    .map((block) => ({ Header: block.title, accessor: block.id }))
+}[] => [
+  {
+    Header: (
+      <HStack>
+        <CalendarIcon />
+        <Text>Submitted at</Text>
+      </HStack>
+    ),
+    accessor: 'createdAt',
+  },
+  ...(typebot?.blocks ?? []).filter(blockContainsInput).map((block) => ({
+    Header: (
+      <HStack>
+        <StepIcon
+          type={
+            block.steps.find((step) => step.target)?.type ?? StepType.TEXT_INPUT
+          }
+        />
+        <Text>{block.title}</Text>
+      </HStack>
+    ),
+    accessor: block.id,
+  })),
+]
 
 const blockContainsInput = (block: Block) => block.steps.some(stepIsInput)
 

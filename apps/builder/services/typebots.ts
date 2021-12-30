@@ -11,6 +11,7 @@ import { Typebot } from 'bot-engine'
 import useSWR from 'swr'
 import { fetcher, sendRequest, toKebabCase } from './utils'
 import { deepEqual } from 'fast-equals'
+import { stringify } from 'qs'
 
 export const useTypebots = ({
   folderId,
@@ -19,9 +20,7 @@ export const useTypebots = ({
   folderId?: string
   onError: (error: Error) => void
 }) => {
-  const params = new URLSearchParams(
-    folderId ? { folderId: folderId.toString() } : undefined
-  )
+  const params = stringify({ folderId })
   const { data, error, mutate } = useSWR<{ typebots: Typebot[] }, Error>(
     `/api/typebots?${params}`,
     fetcher
