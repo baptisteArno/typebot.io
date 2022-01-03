@@ -90,7 +90,12 @@ export const TypebotButton = ({
       {...listeners}
       {...attributes}
     >
-      <MoreButton pos="absolute" top="10px" right="10px">
+      <MoreButton
+        pos="absolute"
+        top="10px"
+        right="10px"
+        aria-label="Show typebot menu"
+      >
         <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
         <MenuItem
           color="red"

@@ -4,7 +4,7 @@ describe('Dashboard page', () => {
     cy.signOut()
   })
 
-  test('folders navigation should work', () => {
+  it('folders navigation should work', () => {
     cy.signIn('test1@gmail.com')
     cy.visit('/typebots')
     createFolder('My folder #1')
@@ -26,7 +26,22 @@ describe('Dashboard page', () => {
     cy.findByDisplayValue('My folder #2').should('not.exist')
   })
 
-  test('folders should be draggable and droppable', () => {
+  it('folders and typebots should be deletable', () => {
+    cy.signIn('test2@gmail.com')
+    cy.visit('/typebots')
+    cy.findByText('Folder #1').should('exist')
+    cy.findAllByRole('button', { name: 'Show folder menu' }).first().click()
+    cy.findByRole('menuitem', { name: 'Delete' }).click()
+    cy.findByRole('button', { name: 'Delete' }).click()
+    cy.findByText('Folder #1').should('not.exist')
+    cy.findByText('Typebot #1').should('exist')
+    cy.findAllByRole('button', { name: 'Show typebot menu' }).first().click()
+    cy.findByRole('menuitem', { name: 'Delete' }).click()
+    cy.findByRole('button', { name: 'Delete' }).click()
+    cy.findByText('Typebot #1').should('not.exist')
+  })
+
+  it('folders should be draggable and droppable', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots')
     cy.findByTestId('typebot-button-typebot1').mouseMoveBy(-100, 0, {
