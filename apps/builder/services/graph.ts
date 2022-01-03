@@ -11,6 +11,29 @@ import {
 import { roundCorners } from 'svg-round-corners'
 import { isDefined } from 'utils'
 
+export const computeDropOffPath = (
+  sourcePosition: Coordinates,
+  sourceStepIndex: number
+) => {
+  const sourceCoord = computeSourceCoordinates(sourcePosition, sourceStepIndex)
+  const segments = computeTwoSegments(sourceCoord, {
+    x: sourceCoord.x + 20,
+    y: sourceCoord.y + 80,
+  })
+  return roundCorners(`M${sourceCoord.x},${sourceCoord.y} ${segments}`, 10).path
+}
+
+export const computeSourceCoordinates = (
+  sourcePosition: Coordinates,
+  sourceStepIndex: number
+) => ({
+  x: sourcePosition.x + blockWidth,
+  y:
+    (sourcePosition.y ?? 0) +
+    firstStepOffsetY +
+    spaceBetweenSteps * sourceStepIndex,
+})
+
 export const computeFlowChartConnectorPath = ({
   sourcePosition,
   targetPosition,
@@ -125,20 +148,16 @@ export const getAnchorsPosition = (
   sourceStepIndex: number,
   targetStepIndex?: number
 ): AnchorsPositionProps => {
-  const sourceOffsetY =
-    (sourceBlock.graphCoordinates.y ?? 0) +
-    firstStepOffsetY +
-    spaceBetweenSteps * sourceStepIndex
   const targetOffsetY = isDefined(targetStepIndex)
     ? (targetBlock.graphCoordinates.y ?? 0) +
       firstStepOffsetY +
       spaceBetweenSteps * targetStepIndex
     : undefined
 
-  const sourcePosition = {
-    x: (sourceBlock.graphCoordinates.x ?? 0) + blockWidth,
-    y: sourceOffsetY,
-  }
+  const sourcePosition = computeSourceCoordinates(
+    sourceBlock.graphCoordinates,
+    sourceStepIndex
+  )
   let sourceType: 'right' | 'left' = 'right'
   if (sourceBlock.graphCoordinates.x > targetBlock.graphCoordinates.x) {
     sourcePosition.x = sourceBlock.graphCoordinates.x
@@ -148,7 +167,7 @@ export const getAnchorsPosition = (
   const { targetPosition, totalSegments } = computeBlockTargetPosition(
     sourceBlock.graphCoordinates,
     targetBlock.graphCoordinates,
-    sourceOffsetY,
+    sourcePosition.y,
     targetOffsetY
   )
   return { sourcePosition, targetPosition, sourceType, totalSegments }

@@ -5,6 +5,7 @@ import { DndContext } from 'contexts/DndContext'
 import { StepTypesList } from './StepTypesList'
 import { PreviewDrawer } from './preview/PreviewDrawer'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
+import { GraphProvider } from 'contexts/GraphContext'
 
 export const Board = () => {
   const { rightPanel } = useEditor()
@@ -12,7 +13,9 @@ export const Board = () => {
     <Flex flex="1" pos="relative" bgColor="gray.50" h="full">
       <DndContext>
         <StepTypesList />
-        <Graph />
+        <GraphProvider>
+          <Graph flex="1" />
+        </GraphProvider>
         {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
       </DndContext>
     </Flex>

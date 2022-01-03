@@ -3,7 +3,6 @@ import { Board } from 'components/board/Board'
 import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
 import { EditorContext } from 'contexts/EditorContext'
-import { GraphProvider } from 'contexts/GraphContext'
 import { TypebotContext } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import { KBarProvider } from 'kbar'
@@ -23,9 +22,7 @@ const TypebotEditPage = () => {
             <KBar />
             <Flex overflow="hidden" h="100vh" flexDir="column">
               <TypebotHeader />
-              <GraphProvider>
-                <Board />
-              </GraphProvider>
+              <Board />
             </Flex>
           </KBarProvider>
         </EditorContext>

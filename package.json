@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "dotenv-cli": "^4.1.1",
-    "turbo": "^1.0.24-canary.2"
+    "turbo": "^1.0.24"
   },
   "turbo": {
     "baseBranch": "origin/main",

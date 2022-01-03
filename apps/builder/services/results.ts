@@ -28,25 +28,6 @@ export const useResults = ({
   }
 }
 
-export const useResultsCount = ({
-  typebotId,
-  onError,
-}: {
-  typebotId?: string
-  onError: (error: Error) => void
-}) => {
-  const { data, error, mutate } = useSWR<{ totalResults: number }, Error>(
-    typebotId ? `/api/typebots/${typebotId}/results/count` : null,
-    fetcher
-  )
-  if (error) onError(error)
-  return {
-    totalResults: data?.totalResults,
-    isLoading: !error && !data,
-    mutate,
-  }
-}
-
 export const parseDateToReadable = (dateStr: string): string => {
   const date = new Date(dateStr)
   return (

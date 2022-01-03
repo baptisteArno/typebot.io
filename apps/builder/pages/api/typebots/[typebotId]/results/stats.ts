@@ -1,3 +1,4 @@
+import { Stats } from 'bot-engine'
 import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -13,13 +14,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = session.user as User
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId.toString()
-    const totalResults = await prisma.result.count({
+
+    const totalViews = await prisma.result.count({
       where: {
         typebotId,
         typebot: { ownerId: user.id },
       },
     })
-    return res.status(200).send({ totalResults })
+    const totalStarts = await prisma.result.count({
+      where: {
+        typebotId,
+        typebot: { ownerId: user.id },
+        answers: { some: {} },
+      },
+    })
+    const totalCompleted = await prisma.result.count({
+      where: {
+        typebotId,
+        typebot: { ownerId: user.id },
+        isCompleted: true,
+      },
+    })
+    const stats: Stats = {
+      totalViews,
+      totalStarts,
+      completionRate: Math.round((totalCompleted / totalStarts) * 100),
+    }
+    return res.status(200).send({ stats })
   }
   return methodNotAllowed(res)
 }

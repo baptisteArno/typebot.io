@@ -43,7 +43,7 @@ export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
   )
 
   return (
-    <Stack>
+    <Stack maxW="1200px" w="full">
       <Flex w="full" justifyContent="flex-end">
         <HStack>
           <HStack as={Button} colorScheme="blue">

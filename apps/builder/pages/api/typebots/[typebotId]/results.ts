@@ -25,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         typebotId,
         typebot: { ownerId: user.id },
+        answers: { some: {} },
       },
       orderBy: {
         createdAt: 'desc',

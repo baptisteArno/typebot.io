@@ -118,6 +118,9 @@ export const StepsList = ({
           <StepNodeOverlay
             step={draggedStep}
             onMouseUp={handleMouseUp}
+            pos="fixed"
+            top="0"
+            left="0"
             style={{
               transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
             }}

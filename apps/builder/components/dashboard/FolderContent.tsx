@@ -37,8 +37,7 @@ export const FolderContent = ({ folder }: Props) => {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
-        delay: 100,
-        tolerance: 300,
+        distance: 20,
       },
     })
   )

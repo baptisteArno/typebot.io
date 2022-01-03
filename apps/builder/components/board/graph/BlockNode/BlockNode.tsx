@@ -6,7 +6,7 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Block, StartBlock } from 'bot-engine'
+import { Block } from 'bot-engine'
 import { useGraph } from 'contexts/GraphContext'
 import { useDnd } from 'contexts/DndContext'
 import { StepsList } from './StepsList'
@@ -15,7 +15,11 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
 
-export const BlockNode = ({ block }: { block: Block | StartBlock }) => {
+type Props = {
+  block: Block
+}
+
+export const BlockNode = ({ block }: Props) => {
   const { connectingIds, setConnectingIds, previewingIds } = useGraph()
   const { updateBlockPosition, addStepToBlock } = useTypebot()
   const { draggedStep, draggedStepType, setDraggedStepType, setDraggedStep } =

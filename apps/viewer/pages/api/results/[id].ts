@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const id = req.query.id.toString()
     const result = await prisma.result.update({
       where: { id },
-      data: { ...data, updatedAt: new Date() },
+      data,
     })
     return res.send(result)
   }

@@ -4,7 +4,7 @@ describe('Dashboard page', () => {
     cy.signOut()
   })
 
-  it('should navigate correctly', () => {
+  test('folders navigation should work', () => {
     cy.signIn('test1@gmail.com')
     cy.visit('/typebots')
     createFolder('My folder #1')
@@ -26,7 +26,7 @@ describe('Dashboard page', () => {
     cy.findByDisplayValue('My folder #2').should('not.exist')
   })
 
-  it('should be droppable', () => {
+  test('folders should be draggable and droppable', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots')
     cy.findByTestId('typebot-button-typebot1').mouseMoveBy(-100, 0, {

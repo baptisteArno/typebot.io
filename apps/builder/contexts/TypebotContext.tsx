@@ -323,9 +323,15 @@ export const TypebotContext = ({
 
   const publishTypebot = async () => {
     if (!localTypebot) return
-    if (!localPublishedTypebot)
-      updatePublicId(parseDefaultPublicId(localTypebot.name, localTypebot.id))
-    if (hasUnsavedChanges) await saveTypebot()
+    if (!localPublishedTypebot) {
+      const newPublicId = parseDefaultPublicId(
+        localTypebot.name,
+        localTypebot.id
+      )
+      updatePublicId(newPublicId)
+      localTypebot.publicId = newPublicId
+    }
+    if (hasUnsavedChanges || !localPublishedTypebot) await saveTypebot()
     setIsPublishing(true)
     if (localPublishedTypebot) {
       const { error } = await updatePublishedTypebot(

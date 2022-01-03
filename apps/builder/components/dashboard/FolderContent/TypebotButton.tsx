@@ -92,7 +92,13 @@ export const TypebotButton = ({
     >
       <MoreButton pos="absolute" top="10px" right="10px">
         <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
-        <MenuItem color="red" onClick={onDeleteOpen}>
+        <MenuItem
+          color="red"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDeleteOpen()
+          }}
+        >
           Delete
         </MenuItem>
       </MoreButton>

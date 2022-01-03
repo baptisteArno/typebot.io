@@ -5,26 +5,18 @@ import {
   Stack,
   useEventListener,
 } from '@chakra-ui/react'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { StartBlock } from 'bot-engine'
-import { StepNode } from './StepNode'
-import { useTypebot } from 'contexts/TypebotContext'
-import { useGraph } from 'contexts/GraphContext'
+import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
+import { StepsList } from './StepsList'
 
 type Props = {
   block: StartBlock
 }
-export const StartBlockNode = ({ block }: Props) => {
-  const { previewingIds } = useGraph()
-  const [isMouseDown, setIsMouseDown] = useState(false)
-  const [titleValue, setTitleValue] = useState(block.title)
-  const { updateBlockPosition } = useTypebot()
-  const isPreviewing = useMemo(
-    () => previewingIds.sourceId === block.id,
-    [block.id, previewingIds.sourceId]
-  )
 
-  const handleTitleChange = (title: string) => setTitleValue(title)
+export const StartBlockNode = ({ block }: Props) => {
+  const { updateBlockPosition } = useAnalyticsGraph()
+  const [isMouseDown, setIsMouseDown] = useState(false)
 
   const handleMouseDown = () => {
     setIsMouseDown(true)
@@ -42,6 +34,7 @@ export const StartBlockNode = ({ block }: Props) => {
       y: block.graphCoordinates.y + movementY,
     })
   }
+
   useEventListener('mousemove', handleMouseMove)
 
   return (
@@ -50,7 +43,6 @@ export const StartBlockNode = ({ block }: Props) => {
       rounded="lg"
       bgColor="blue.50"
       borderWidth="2px"
-      borderColor={isPreviewing ? 'blue.400' : 'gray.400'}
       minW="300px"
       transition="border 300ms"
       pos="absolute"
@@ -59,17 +51,12 @@ export const StartBlockNode = ({ block }: Props) => {
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      spacing="14px"
     >
-      <Editable value={titleValue} onChange={handleTitleChange}>
-        <EditablePreview
-          _hover={{ bgColor: 'blue.100' }}
-          px="1"
-          userSelect={'none'}
-        />
+      <Editable value={block.title} isDisabled>
+        <EditablePreview px="1" userSelect={'none'} />
         <EditableInput minW="0" px="1" />
       </Editable>
-      <StepNode step={block.steps[0]} isConnectable={true} />
+      <StepsList blockId={block.id} steps={block.steps} />
     </Stack>
   )
 }

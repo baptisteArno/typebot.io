@@ -1,4 +1,4 @@
-import { Flex, useEventListener } from '@chakra-ui/react'
+import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './BlockNode/BlockNode'
@@ -8,11 +8,11 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { StartBlockNode } from './BlockNode/StartBlockNode'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 
-const Graph = () => {
+const Graph = ({ ...props }: FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
     useDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
-  const { typebot, addNewBlock } = useTypebot()
+  const { addNewBlock, typebot } = useTypebot()
   const { graphPosition, setGraphPosition } = useGraph()
   const transform = useMemo(
     () =>
@@ -60,7 +60,7 @@ const Graph = () => {
 
   if (!typebot) return <></>
   return (
-    <Flex ref={graphContainerRef} flex="1">
+    <Flex ref={graphContainerRef} {...props}>
       <Flex
         flex="1"
         boxSize={'200px'}
@@ -70,6 +70,7 @@ const Graph = () => {
         }}
       >
         <Edges />
+        {props.children}
         {typebot.startBlock && <StartBlockNode block={typebot.startBlock} />}
         {(typebot.blocks ?? []).map((block) => (
           <BlockNode block={block} key={block.id} />

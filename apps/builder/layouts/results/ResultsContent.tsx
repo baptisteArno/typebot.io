@@ -1,17 +1,9 @@
-import {
-  Button,
-  Flex,
-  HStack,
-  Stack,
-  Tag,
-  useToast,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Flex, HStack, Tag, useToast, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
-import { useResultsCount } from 'services/results'
+import { useStats } from 'services/analytics'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
 
@@ -27,14 +19,21 @@ export const ResultsContent = () => {
     status: 'error',
   })
 
-  const { totalResults } = useResultsCount({
+  const { stats } = useStats({
     typebotId: typebot?.id,
     onError: (err) => toast({ title: err.name, description: err.message }),
   })
   return (
-    <Flex h="full" w="full" justifyContent="center" align="flex-start">
-      <Stack maxW="1200px" w="full" pt="4" spacing={6}>
-        <HStack>
+    <Flex h="full" w="full">
+      <Flex
+        pos="absolute"
+        zIndex={2}
+        bgColor="white"
+        w="full"
+        justifyContent="center"
+        h="60px"
+      >
+        <HStack maxW="1200px" w="full">
           <Button
             as={NextChakraLink}
             colorScheme={!isAnalytics ? 'blue' : 'gray'}
@@ -43,9 +42,9 @@ export const ResultsContent = () => {
             href={`/typebots/${typebot?.id}/results`}
           >
             <Text>Submissions</Text>
-            {totalResults && (
+            {(stats?.totalStarts ?? 0) > 0 && (
               <Tag size="sm" colorScheme="blue" ml="1">
-                {totalResults}
+                {stats?.totalStarts}
               </Tag>
             )}
           </Button>
@@ -59,16 +58,18 @@ export const ResultsContent = () => {
             Analytics
           </Button>
         </HStack>
+      </Flex>
+      <Flex pt="60px" w="full" justify="center">
         {typebot &&
           (isAnalytics ? (
-            <AnalyticsContent />
+            <AnalyticsContent stats={stats} />
           ) : (
             <SubmissionsContent
               typebotId={typebot.id}
-              totalResults={totalResults ?? 0}
+              totalResults={stats?.totalStarts ?? 0}
             />
           ))}
-      </Stack>
+      </Flex>
     </Flex>
   )
 }
