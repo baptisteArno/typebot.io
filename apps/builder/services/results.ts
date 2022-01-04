@@ -12,14 +12,13 @@ const getKey = (
   }
 ) => {
   if (previousPageData && previousPageData.results.length === 0) return null
-  if (pageIndex === 0) return `/api/typebots/${typebotId}/results`
-  console.log(previousPageData.results)
+  if (pageIndex === 0) return `/api/typebots/${typebotId}/results?limit=50`
   return `/api/typebots/${typebotId}/results?lastResultId=${
     previousPageData.results[previousPageData.results.length - 1].id
-  }`
+  }&limit=50`
 }
 
-type ResultWithAnswers = Result & { answers: Answer[] }
+export type ResultWithAnswers = Result & { answers: Answer[] }
 export const useResults = ({
   typebotId,
   onError,
@@ -72,6 +71,12 @@ export const deleteAllResults = async (typebotId: string) =>
     method: 'DELETE',
   })
 
+export const getAllResults = async (typebotId: string) =>
+  sendRequest<{ results: ResultWithAnswers[] }>({
+    url: `/api/typebots/${typebotId}/results`,
+    method: 'GET',
+  })
+
 export const parseDateToReadable = (dateStr: string): string => {
   const date = new Date(dateStr)
   return (
@@ -83,3 +88,12 @@ export const parseDateToReadable = (dateStr: string): string => {
     })
   )
 }
+
+export const convertResultsToTableData = (results?: ResultWithAnswers[]) =>
+  (results ?? []).map((result) => ({
+    createdAt: parseDateToReadable(result.createdAt),
+    ...result.answers.reduce(
+      (o, answer) => ({ ...o, [answer.blockId]: answer.content }),
+      {}
+    ),
+  }))

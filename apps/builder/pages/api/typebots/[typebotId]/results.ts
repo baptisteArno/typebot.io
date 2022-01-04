@@ -14,8 +14,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId.toString()
     const lastResultId = req.query.lastResultId?.toString()
+    const take = parseInt(req.query.limit?.toString())
     const results = await prisma.result.findMany({
-      take: 50,
+      take: isNaN(take) ? undefined : take,
       skip: lastResultId ? 1 : 0,
       cursor: lastResultId
         ? {

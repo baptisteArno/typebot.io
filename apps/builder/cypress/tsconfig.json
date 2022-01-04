@@ -4,7 +4,7 @@
   "exclude": [],
   "compilerOptions": {
     "types": ["cypress", "@testing-library/cypress", "cypress-file-upload"],
-    "lib": ["es2015", "dom"],
+    "lib": ["es2015", "dom", "ES2021.String"],
     "target": "es5",
     "isolatedModules": false,
     "allowJs": true,

@@ -1,3 +1,6 @@
+import path from 'path'
+import { parse } from 'papaparse'
+
 describe('ResultsPage', () => {
   before(() => {
     cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
@@ -44,4 +47,48 @@ describe('ResultsPage', () => {
     cy.findByText('content50').should('exist')
     cy.findByText('content0').should('exist')
   })
+
+  it.only('should correctly export selection in CSV', () => {
+    const downloadsFolder = Cypress.config('downloadsFolder')
+    cy.signIn('test2@gmail.com')
+    cy.visit('/typebots/typebot2/results')
+    cy.wait('@getResults')
+    cy.findByRole('button', { name: 'Export' }).should('not.exist')
+    cy.findByText('content199').should('exist')
+    cy.findAllByRole('checkbox').eq(2).check({ force: true })
+    cy.findAllByRole('checkbox').eq(3).check({ force: true })
+    cy.findByRole('button', { name: 'Export 2' }).click({ force: true })
+    const filename = path.join(
+      downloadsFolder,
+      `typebot-export_${new Date()
+        .toLocaleDateString()
+        .replaceAll('/', '-')}.csv`
+    )
+    cy.readFile(filename, { timeout: 15000 })
+      .then(parse)
+      .then(validateExportSelection as any)
+    cy.findAllByRole('checkbox').first().check({ force: true })
+    cy.findByRole('button', { name: 'Export 200' }).click({ force: true })
+    const filenameAll = path.join(
+      downloadsFolder,
+      `typebot-export_${new Date()
+        .toLocaleDateString()
+        .replaceAll('/', '-')}_all.csv`
+    )
+    cy.readFile(filenameAll, { timeout: 15000 })
+      .then(parse)
+      .then(validateExportAll as any)
+  })
 })
+
+const validateExportSelection = (list: { data: unknown[][] }) => {
+  expect(list.data, 'number of records').to.have.length(3)
+  expect(list.data[1][1], 'first record').to.equal('content198')
+  expect(list.data[2][1], 'second record').to.equal('content197')
+}
+
+const validateExportAll = (list: { data: unknown[][] }) => {
+  expect(list.data, 'number of records').to.have.length(201)
+  expect(list.data[1][1], 'first record').to.equal('content199')
+  expect(list.data[200][1], 'second record').to.equal('content0')
+}

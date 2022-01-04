@@ -1,46 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
 import { Box, Checkbox, Flex } from '@chakra-ui/react'
-import { Answer, Result } from 'bot-engine'
 import { useTypebot } from 'contexts/TypebotContext'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useFlexLayout, useRowSelect, useTable } from 'react-table'
 import { parseSubmissionsColumns } from 'services/publicTypebot'
-import { parseDateToReadable } from 'services/results'
 import { LoadingRows } from './LoadingRows'
 
 const defaultCellWidth = 180
 
 type SubmissionsTableProps = {
-  results?: (Result & { answers: Answer[] })[]
+  data?: any
   hasMore?: boolean
-  onNewSelection: (selection: string[]) => void
+  onNewSelection: (indices: number[]) => void
   onScrollToBottom: () => void
 }
 
 export const SubmissionsTable = ({
-  results,
+  data,
   hasMore,
   onNewSelection,
   onScrollToBottom,
 }: SubmissionsTableProps) => {
   const { publishedTypebot } = useTypebot()
-  const columns: any = React.useMemo(
+  const columns: any = useMemo(
     () => parseSubmissionsColumns(publishedTypebot),
     [publishedTypebot]
   )
-  const data = React.useMemo(
-    () =>
-      (results ?? []).map((result) => ({
-        createdAt: parseDateToReadable(result.createdAt),
-        ...result.answers.reduce(
-          (o, answer) => ({ ...o, [answer.blockId]: answer.content }),
-          {}
-        ),
-      })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [results?.length]
-  )
+
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)
 
@@ -59,8 +46,7 @@ export const SubmissionsTable = ({
   ) as any
 
   useEffect(() => {
-    if (!results) return
-    onNewSelection(selectedFlatRows.map((row: any) => results[row.index].id))
+    onNewSelection(selectedFlatRows.map((row: any) => row.index))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFlatRows])
 
@@ -130,8 +116,7 @@ export const SubmissionsTable = ({
                 as="tr"
                 {...row.getRowProps()}
                 ref={(ref) => {
-                  if (results && idx === results.length - 10)
-                    bottomElement.current = ref
+                  if (idx === data.length - 10) bottomElement.current = ref
                 }}
               >
                 {row.cells.map((cell: any, idx: number) => {
@@ -155,9 +140,7 @@ export const SubmissionsTable = ({
               </Flex>
             )
           })}
-          {(results === undefined || hasMore === true) && (
-            <LoadingRows totalColumns={columns.length} />
-          )}
+          {hasMore === true && <LoadingRows totalColumns={columns.length} />}
         </Box>
       </Box>
     </Flex>

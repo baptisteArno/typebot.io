@@ -1,19 +1,15 @@
-import {
-  Button,
-  HStack,
-  Stack,
-  Tag,
-  useToast,
-  Text,
-  Fade,
-  Flex,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { DownloadIcon, TrashIcon } from 'assets/icons'
-import { ConfirmModal } from 'components/modals/ConfirmModal'
+import { Stack, useToast, Flex } from '@chakra-ui/react'
+import { ResultsActionButtons } from 'components/results/ResultsActionButtons'
 import { SubmissionsTable } from 'components/results/SubmissionsTable'
 import React, { useCallback, useMemo, useState } from 'react'
-import { deleteAllResults, deleteResults, useResults } from 'services/results'
+import {
+  convertResultsToTableData,
+  deleteAllResults,
+  deleteResults,
+  getAllResults,
+  useResults,
+} from 'services/results'
+import { unparse } from 'papaparse'
 
 type Props = {
   typebotId: string
@@ -25,10 +21,9 @@ export const SubmissionsContent = ({
   totalResults,
   onDeleteResults,
 }: Props) => {
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isExportLoading, setIsExportLoading] = useState(false)
 
   const toast = useToast({
     position: 'top-right',
@@ -42,13 +37,16 @@ export const SubmissionsContent = ({
 
   const results = useMemo(() => data?.flatMap((d) => d.results), [data])
 
-  const handleNewSelection = (newSelection: string[]) => {
-    if (newSelection.length === selectedIds.length) return
-    setSelectedIds(newSelection)
+  const handleNewSelection = (newSelectionIndices: number[]) => {
+    if (newSelectionIndices.length === selectedIndices.length) return
+    setSelectedIndices(newSelectionIndices)
   }
 
   const handleDeleteSelection = async () => {
     setIsDeleteLoading(true)
+    const selectedIds = (results ?? [])
+      .filter((_, idx) => selectedIndices.includes(idx))
+      .map((result) => result.id)
     const { error } =
       totalSelected === totalResults
         ? await deleteAllResults(typebotId)
@@ -69,10 +67,10 @@ export const SubmissionsContent = ({
 
   const totalSelected = useMemo(
     () =>
-      selectedIds.length === results?.length
+      selectedIndices.length === results?.length
         ? totalResults
-        : selectedIds.length,
-    [results?.length, selectedIds.length, totalResults]
+        : selectedIndices.length,
+    [results?.length, selectedIndices.length, totalResults]
   )
 
   const handleScrolledToBottom = useCallback(
@@ -80,59 +78,51 @@ export const SubmissionsContent = ({
     [setSize]
   )
 
+  const handleExportSelection = async () => {
+    setIsExportLoading(true)
+    const isSelectAll = totalSelected === totalResults
+    const dataToUnparse = isSelectAll
+      ? await getAllTableData()
+      : tableData.filter((_, idx) => selectedIndices.includes(idx))
+    const csvData = new Blob([unparse(dataToUnparse)], {
+      type: 'text/csv;charset=utf-8;',
+    })
+    const fileName =
+      `typebot-export_${new Date().toLocaleDateString().replaceAll('/', '-')}` +
+      (isSelectAll ? `_all` : ``)
+    const tempLink = document.createElement('a')
+    tempLink.href = window.URL.createObjectURL(csvData)
+    tempLink.setAttribute('download', `${fileName}.csv`)
+    tempLink.click()
+    setIsExportLoading(false)
+  }
+
+  const getAllTableData = async () => {
+    const { data, error } = await getAllResults(typebotId)
+    if (error) toast({ description: error.message, title: error.name })
+    return convertResultsToTableData(data?.results)
+  }
+
+  const tableData: { [key: string]: string }[] = useMemo(
+    () => convertResultsToTableData(results),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [results?.length]
+  )
+
   return (
     <Stack maxW="1200px" w="full">
       <Flex w="full" justifyContent="flex-end">
-        <HStack>
-          <HStack as={Button} colorScheme="blue">
-            <DownloadIcon />
-            <Text>Export</Text>
-            <Fade
-              in={totalSelected > 0 && (results ?? []).length > 0}
-              unmountOnExit
-            >
-              <Tag colorScheme="blue" variant="subtle" size="sm">
-                {totalSelected}
-              </Tag>
-            </Fade>
-          </HStack>
-          <Fade in={totalSelected > 0} unmountOnExit>
-            <HStack
-              as={Button}
-              colorScheme="red"
-              onClick={onOpen}
-              isLoading={isDeleteLoading}
-            >
-              <TrashIcon />
-              <Text>Delete</Text>
-              {totalSelected > 0 && (
-                <Tag colorScheme="red" variant="subtle" size="sm">
-                  {totalSelected}
-                </Tag>
-              )}
-            </HStack>
-            <ConfirmModal
-              isOpen={isOpen}
-              onConfirm={handleDeleteSelection}
-              onClose={onClose}
-              message={
-                <Text>
-                  You are about to delete{' '}
-                  <strong>
-                    {totalSelected} submission
-                    {totalSelected > 1 ? 's' : ''}
-                  </strong>
-                  . Are you sure you wish to continue?
-                </Text>
-              }
-              confirmButtonLabel={'Delete'}
-            />
-          </Fade>
-        </HStack>
+        <ResultsActionButtons
+          isDeleteLoading={isDeleteLoading}
+          isExportLoading={isExportLoading}
+          totalSelected={totalSelected}
+          onDeleteClick={handleDeleteSelection}
+          onExportClick={handleExportSelection}
+        />
       </Flex>
 
       <SubmissionsTable
-        results={results}
+        data={tableData}
         onNewSelection={handleNewSelection}
         onScrollToBottom={handleScrolledToBottom}
         hasMore={hasMore}

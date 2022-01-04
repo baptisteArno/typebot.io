@@ -33,6 +33,7 @@ export const TypebotHeader = () => {
       h={`${headerHeight}px`}
       zIndex={2}
       bgColor="white"
+      flexShrink={0}
     >
       <HStack>
         <Button
