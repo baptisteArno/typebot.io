@@ -12,12 +12,19 @@ import {
 import { DownloadIcon, TrashIcon } from 'assets/icons'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { SubmissionsTable } from 'components/results/SubmissionsTable'
-import React, { useMemo, useState } from 'react'
-import { deleteResults, useResults } from 'services/results'
+import React, { useCallback, useMemo, useState } from 'react'
+import { deleteAllResults, deleteResults, useResults } from 'services/results'
 
-type Props = { typebotId: string; totalResults: number }
-export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
-  const [lastResultId, setLastResultId] = useState<string>()
+type Props = {
+  typebotId: string
+  totalResults: number
+  onDeleteResults: (total: number) => void
+}
+export const SubmissionsContent = ({
+  typebotId,
+  totalResults,
+  onDeleteResults,
+}: Props) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
 
@@ -28,11 +35,12 @@ export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
     status: 'error',
   })
 
-  const { results, mutate } = useResults({
-    lastResultId,
+  const { data, mutate, setSize, hasMore } = useResults({
     typebotId,
     onError: (err) => toast({ title: err.name, description: err.message }),
   })
+
+  const results = useMemo(() => data?.flatMap((d) => d.results), [data])
 
   const handleNewSelection = (newSelection: string[]) => {
     if (newSelection.length === selectedIds.length) return
@@ -41,14 +49,21 @@ export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
 
   const handleDeleteSelection = async () => {
     setIsDeleteLoading(true)
-    const { error } = await deleteResults(typebotId, selectedIds)
+    const { error } =
+      totalSelected === totalResults
+        ? await deleteAllResults(typebotId)
+        : await deleteResults(typebotId, selectedIds)
     if (error) toast({ description: error.message, title: error.name })
-    else
-      mutate({
-        results: (results ?? []).filter((result) =>
-          selectedIds.includes(result.id)
-        ),
-      })
+    else {
+      mutate(
+        totalSelected === totalResults
+          ? []
+          : data?.map((d) => ({
+              results: d.results.filter((r) => !selectedIds.includes(r.id)),
+            }))
+      )
+      onDeleteResults(totalSelected)
+    }
     setIsDeleteLoading(false)
   }
 
@@ -58,6 +73,11 @@ export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
         ? totalResults
         : selectedIds.length,
     [results?.length, selectedIds.length, totalResults]
+  )
+
+  const handleScrolledToBottom = useCallback(
+    () => setSize((state) => state + 1),
+    [setSize]
   )
 
   return (
@@ -90,28 +110,33 @@ export const SubmissionsContent = ({ typebotId, totalResults }: Props) => {
                   {totalSelected}
                 </Tag>
               )}
-              <ConfirmModal
-                isOpen={isOpen}
-                onConfirm={handleDeleteSelection}
-                onClose={onClose}
-                message={
-                  <Text>
-                    You are about to delete{' '}
-                    <strong>
-                      {totalSelected} submission
-                      {totalSelected > 0 ? 's' : ''}
-                    </strong>
-                    . Are you sure you wish to continue?
-                  </Text>
-                }
-                confirmButtonLabel={'Delete'}
-              />
             </HStack>
+            <ConfirmModal
+              isOpen={isOpen}
+              onConfirm={handleDeleteSelection}
+              onClose={onClose}
+              message={
+                <Text>
+                  You are about to delete{' '}
+                  <strong>
+                    {totalSelected} submission
+                    {totalSelected > 1 ? 's' : ''}
+                  </strong>
+                  . Are you sure you wish to continue?
+                </Text>
+              }
+              confirmButtonLabel={'Delete'}
+            />
           </Fade>
         </HStack>
       </Flex>
 
-      <SubmissionsTable results={results} onNewSelection={handleNewSelection} />
+      <SubmissionsTable
+        results={results}
+        onNewSelection={handleNewSelection}
+        onScrollToBottom={handleScrolledToBottom}
+        hasMore={hasMore}
+      />
     </Stack>
   )
 }

@@ -17,7 +17,7 @@ export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
             border="1px"
             as="td"
             borderColor="gray.200"
-            flex="0"
+            width="50px"
           >
             <Checkbox isDisabled />
           </Flex>
@@ -30,7 +30,7 @@ export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
                 border="1px"
                 as="td"
                 borderColor="gray.200"
-                flex="1"
+                width="180px"
                 align="center"
               >
                 <Skeleton height="5px" w="full" />

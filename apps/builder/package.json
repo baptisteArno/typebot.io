@@ -51,7 +51,7 @@
     "stripe": "^8.195.0",
     "styled-components": "^5.3.3",
     "svg-round-corners": "^0.3.0",
-    "swr": "^1.1.1",
+    "swr": "^1.1.2",
     "use-debounce": "^7.0.1",
     "utils": "*"
   },

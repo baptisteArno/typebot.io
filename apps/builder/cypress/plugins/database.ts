@@ -85,24 +85,16 @@ const createTypebots = async () => {
 const createResults = () => {
   return prisma.result.createMany({
     data: [
-      {
-        typebotId: 'typebot1',
-      },
-      {
-        typebotId: 'typebot1',
-      },
-      {
-        id: 'result1',
-        typebotId: 'typebot2',
-      },
-      {
-        id: 'result2',
-        typebotId: 'typebot2',
-      },
-      {
-        id: 'result3',
-        typebotId: 'typebot2',
-      },
+      ...Array.from(Array(200)).map((_, idx) => {
+        const today = new Date()
+        return {
+          id: `result${idx}`,
+          typebotId: 'typebot2',
+          createdAt: new Date(
+            today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx)
+          ),
+        }
+      }),
     ],
   })
 }
@@ -110,24 +102,12 @@ const createResults = () => {
 const createAnswers = () => {
   return prisma.answer.createMany({
     data: [
-      {
-        resultId: 'result1',
-        content: 'content 1',
+      ...Array.from(Array(200)).map((_, idx) => ({
+        resultId: `result${idx}`,
+        content: `content${idx}`,
         stepId: 'step1',
         blockId: 'block1',
-      },
-      {
-        resultId: 'result2',
-        content: 'content 2',
-        stepId: 'step1',
-        blockId: 'block1',
-      },
-      {
-        resultId: 'result3',
-        content: 'content 3',
-        stepId: 'step1',
-        blockId: 'block1',
-      },
+      })),
     ],
   })
 }

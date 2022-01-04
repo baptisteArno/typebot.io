@@ -19,10 +19,18 @@ export const ResultsContent = () => {
     status: 'error',
   })
 
-  const { stats } = useStats({
+  const { stats, mutate } = useStats({
     typebotId: typebot?.id,
     onError: (err) => toast({ title: err.name, description: err.message }),
   })
+
+  const handleDeletedResults = (total: number) => {
+    if (!stats) return
+    mutate({
+      stats: { ...stats, totalStarts: stats.totalStarts - total },
+    })
+  }
+
   return (
     <Flex h="full" w="full">
       <Flex
@@ -66,6 +74,7 @@ export const ResultsContent = () => {
           ) : (
             <SubmissionsContent
               typebotId={typebot.id}
+              onDeleteResults={handleDeletedResults}
               totalResults={stats?.totalStarts ?? 0}
             />
           ))}

@@ -1,30 +1,55 @@
 import { Result } from 'bot-engine'
-import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
 import { fetcher, sendRequest } from './utils'
 import { stringify } from 'qs'
 import { Answer } from 'db'
 
+const getKey = (
+  typebotId: string,
+  pageIndex: number,
+  previousPageData: {
+    results: ResultWithAnswers[]
+  }
+) => {
+  if (previousPageData && previousPageData.results.length === 0) return null
+  if (pageIndex === 0) return `/api/typebots/${typebotId}/results`
+  console.log(previousPageData.results)
+  return `/api/typebots/${typebotId}/results?lastResultId=${
+    previousPageData.results[previousPageData.results.length - 1].id
+  }`
+}
+
+type ResultWithAnswers = Result & { answers: Answer[] }
 export const useResults = ({
-  lastResultId,
   typebotId,
   onError,
 }: {
-  lastResultId?: string
   typebotId: string
   onError: (error: Error) => void
 }) => {
-  const params = stringify({
-    lastResultId,
-  })
-  const { data, error, mutate } = useSWR<
-    { results: (Result & { answers: Answer[] })[] },
+  const { data, error, mutate, setSize, size } = useSWRInfinite<
+    { results: ResultWithAnswers[] },
     Error
-  >(`/api/typebots/${typebotId}/results?${params}`, fetcher)
+  >(
+    (
+      pageIndex: number,
+      previousPageData: {
+        results: ResultWithAnswers[]
+      }
+    ) => getKey(typebotId, pageIndex, previousPageData),
+    fetcher,
+    { revalidateAll: true }
+  )
+
   if (error) onError(error)
   return {
-    results: data?.results,
+    data,
     isLoading: !error && !data,
     mutate,
+    setSize,
+    size,
+    hasMore:
+      data && data.length > 0 && data[data.length - 1].results.length > 0,
   }
 }
 
@@ -40,6 +65,12 @@ export const deleteResults = async (typebotId: string, ids: string[]) => {
     method: 'DELETE',
   })
 }
+
+export const deleteAllResults = async (typebotId: string) =>
+  sendRequest({
+    url: `/api/typebots/${typebotId}/results`,
+    method: 'DELETE',
+  })
 
 export const parseDateToReadable = (dateStr: string): string => {
   const date = new Date(dateStr)
