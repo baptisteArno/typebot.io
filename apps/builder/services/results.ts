@@ -1,6 +1,6 @@
 import { Result } from 'bot-engine'
 import useSWR from 'swr'
-import { fetcher } from './utils'
+import { fetcher, sendRequest } from './utils'
 import { stringify } from 'qs'
 import { Answer } from 'db'
 
@@ -26,6 +26,19 @@ export const useResults = ({
     isLoading: !error && !data,
     mutate,
   }
+}
+
+export const deleteResults = async (typebotId: string, ids: string[]) => {
+  const params = stringify(
+    {
+      ids,
+    },
+    { indices: false }
+  )
+  return sendRequest({
+    url: `/api/typebots/${typebotId}/results?${params}`,
+    method: 'DELETE',
+  })
 }
 
 export const parseDateToReadable = (dateStr: string): string => {

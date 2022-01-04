@@ -34,6 +34,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     return res.status(200).send({ results })
   }
+  if (req.method === 'DELETE') {
+    const typebotId = req.query.typebotId.toString()
+    const ids = req.query.ids as string[]
+    const results = await prisma.result.deleteMany({
+      where: { id: { in: ids }, typebotId, typebot: { ownerId: user.id } },
+    })
+    return res.status(200).send({ results })
+  }
   return methodNotAllowed(res)
 }
 
