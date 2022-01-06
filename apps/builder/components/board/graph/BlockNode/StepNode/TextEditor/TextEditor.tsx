@@ -9,20 +9,25 @@ import {
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
 import { useDebounce } from 'use-debounce'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { createEditor } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
+import { TextStep } from 'models'
 
 type TextEditorProps = {
-  ids: { stepId: string; blockId: string }
+  stepId: string
   initialValue: TDescendant[]
   onClose: () => void
 }
 
-export const TextEditor = ({ initialValue, ids, onClose }: TextEditorProps) => {
+export const TextEditor = ({
+  initialValue,
+  stepId,
+  onClose,
+}: TextEditorProps) => {
   const editor = useMemo(
-    () => withPlate(createEditor(), { id: ids.stepId, plugins: platePlugins }),
+    () => withPlate(createEditor(), { id: stepId, plugins: platePlugins }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
@@ -48,13 +53,13 @@ export const TextEditor = ({ initialValue, ids, onClose }: TextEditorProps) => {
     const html = serializeHtml(editor, {
       nodes: value,
     })
-    updateStep(ids, {
+    updateStep(stepId, {
       content: {
         html,
         richText: value,
         plainText: parseHtmlStringToPlainText(html),
       },
-    })
+    } as TextStep)
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -72,7 +77,7 @@ export const TextEditor = ({ initialValue, ids, onClose }: TextEditorProps) => {
     >
       <ToolBar />
       <Plate
-        id={ids.stepId}
+        id={stepId}
         editableProps={{
           style: editorStyle,
           autoFocus: true,

@@ -1,8 +1,8 @@
 import { chakra } from '@chakra-ui/system'
-import { StepWithTarget } from 'components/board/graph/Edges/Edge'
 import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
+import { isDefined } from 'utils'
 import { DropOffBlock } from '../blocks/DropOffBlock'
 import { DropOffEdge } from './DropOffEdge'
 import { Edge } from './Edge'
@@ -11,16 +11,13 @@ type Props = { answersCounts?: AnswersCount[] }
 
 export const Edges = ({ answersCounts }: Props) => {
   const { typebot } = useAnalyticsGraph()
-  const { blocks, startBlock } = typebot ?? {}
-  const stepsWithTarget: StepWithTarget[] = useMemo(() => {
-    if (!startBlock) return []
-    return [
-      ...(startBlock.steps.filter((s) => s.target) as StepWithTarget[]),
-      ...((blocks ?? [])
-        .flatMap((b) => b.steps)
-        .filter((s) => s.target) as StepWithTarget[]),
-    ]
-  }, [blocks, startBlock])
+
+  const stepIdsWithTarget: string[] = useMemo(() => {
+    if (!typebot) return []
+    return typebot.steps.allIds.filter((stepId) =>
+      isDefined(typebot.steps.byId[stepId].target)
+    )
+  }, [typebot])
 
   return (
     <>
@@ -32,8 +29,8 @@ export const Edges = ({ answersCounts }: Props) => {
         left="0"
         top="0"
       >
-        {stepsWithTarget.map((step) => (
-          <Edge key={step.id} step={step} />
+        {stepIdsWithTarget.map((stepId) => (
+          <Edge key={stepId} stepId={stepId} />
         ))}
         <marker
           id={'arrow'}

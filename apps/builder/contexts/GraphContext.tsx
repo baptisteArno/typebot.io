@@ -1,4 +1,4 @@
-import { Block, Step, StepType, Target } from 'bot-engine'
+import { Block, Step, Target } from 'models'
 import {
   createContext,
   Dispatch,
@@ -41,26 +41,22 @@ export type Node = Omit<Block, 'steps'> & {
   })[]
 }
 
-export type NewBlockPayload = {
-  x: number
-  y: number
-  type?: StepType
-  step?: Step
-}
-
 const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
+
+type ConnectingIdsProps = {
+  source: { blockId: string; stepId: string }
+  target?: Target
+} | null
+
+type PreviewingIdsProps = { sourceId?: string; targetId?: string }
 
 const graphContext = createContext<{
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
-  connectingIds: { blockId: string; stepId: string; target?: Target } | null
-  setConnectingIds: Dispatch<
-    SetStateAction<{ blockId: string; stepId: string; target?: Target } | null>
-  >
-  previewingIds: { sourceId?: string; targetId?: string }
-  setPreviewingIds: Dispatch<
-    SetStateAction<{ sourceId?: string; targetId?: string }>
-  >
+  connectingIds: ConnectingIdsProps
+  setConnectingIds: Dispatch<SetStateAction<ConnectingIdsProps>>
+  previewingIds: PreviewingIdsProps
+  setPreviewingIds: Dispatch<SetStateAction<PreviewingIdsProps>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -70,15 +66,8 @@ const graphContext = createContext<{
 
 export const GraphProvider = ({ children }: { children: ReactNode }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
-  const [connectingIds, setConnectingIds] = useState<{
-    blockId: string
-    stepId: string
-    target?: Target
-  } | null>(null)
-  const [previewingIds, setPreviewingIds] = useState<{
-    sourceId?: string
-    targetId?: string
-  }>({})
+  const [connectingIds, setConnectingIds] = useState<ConnectingIdsProps>(null)
+  const [previewingIds, setPreviewingIds] = useState<PreviewingIdsProps>({})
 
   return (
     <graphContext.Provider

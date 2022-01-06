@@ -1,4 +1,4 @@
-import { Step, StepType } from 'bot-engine'
+import { Step, StepType } from 'models'
 import {
   createContext,
   Dispatch,

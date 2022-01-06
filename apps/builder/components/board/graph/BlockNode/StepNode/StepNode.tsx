@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, useEventListener } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Block, StartStep, Step, StepType } from 'bot-engine'
+import { Block, Step, StepType } from 'models'
 import { SourceEndpoint } from './SourceEndpoint'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
@@ -8,7 +8,7 @@ import { isDefined } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepContent } from './StepContent'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { StepNodeContextMenu } from './RightClickMenu'
 
@@ -19,7 +19,7 @@ export const StepNode = ({
   onMouseMoveTopOfElement,
   onMouseDown,
 }: {
-  step: Step | StartStep
+  step: Step
   isConnectable: boolean
   onMouseMoveBottomOfElement?: () => void
   onMouseMoveTopOfElement?: () => void
@@ -29,8 +29,7 @@ export const StepNode = ({
   ) => void
 }) => {
   const { setConnectingIds, connectingIds } = useGraph()
-  const { removeStepFromBlock, typebot } = useTypebot()
-  const { blocks, startBlock } = typebot ?? {}
+  const { deleteStep, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
@@ -59,9 +58,8 @@ export const StepNode = ({
       })
   }
 
-  const handleConnectionDragStart = () => {
-    setConnectingIds({ blockId: step.blockId, stepId: step.id })
-  }
+  const handleConnectionDragStart = () =>
+    setConnectingIds({ source: { blockId: step.blockId, stepId: step.id } })
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!onMouseDown) return
@@ -95,7 +93,7 @@ export const StepNode = ({
       (event.movementX > 0 || event.movementY > 0)
     if (isMovingAndIsMouseDown) {
       onMouseDown(mouseDownEvent, step as Step)
-      removeStepFromBlock(step.blockId, step.id)
+      deleteStep(step.id)
       setMouseDownEvent(undefined)
     }
     const element = event.currentTarget as HTMLDivElement
@@ -110,18 +108,15 @@ export const StepNode = ({
   }
 
   const connectedStubPosition: 'right' | 'left' | undefined = useMemo(() => {
-    const currentBlock = [startBlock, ...(blocks ?? [])].find(
-      (b) => b?.id === step.blockId
-    )
+    if (!typebot) return
+    const currentBlock = typebot.blocks?.byId[step.blockId]
     const isDragginConnectorFromCurrentBlock =
-      connectingIds?.blockId === currentBlock?.id &&
+      connectingIds?.source.blockId === currentBlock?.id &&
       connectingIds?.target?.blockId
     const targetBlockId = isDragginConnectorFromCurrentBlock
       ? connectingIds.target?.blockId
       : step.target?.blockId
-    const targetedBlock = targetBlockId
-      ? (blocks ?? []).find((b) => b.id === targetBlockId)
-      : undefined
+    const targetedBlock = targetBlockId && typebot.blocks.byId[targetBlockId]
     return targetedBlock
       ? targetedBlock.graphCoordinates.x <
         (currentBlock as Block).graphCoordinates.x
@@ -129,27 +124,24 @@ export const StepNode = ({
         : 'right'
       : undefined
   }, [
-    blocks,
-    connectingIds?.blockId,
-    connectingIds?.target?.blockId,
+    typebot,
     step.blockId,
     step.target?.blockId,
-    startBlock,
+    connectingIds?.source.blockId,
+    connectingIds?.target?.blockId,
   ])
 
   return step.type === StepType.TEXT &&
     (isEditing ||
       (isEditing === undefined && step.content.plainText === '')) ? (
     <TextEditor
-      ids={{ stepId: step.id, blockId: step.blockId }}
+      stepId={step.id}
       initialValue={step.content.richText}
       onClose={handleCloseEditor}
     />
   ) : (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => (
-        <StepNodeContextMenu blockId={step.blockId} stepId={step.id} />
-      )}
+      renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
     >
       {(ref, isOpened) => (
         <Flex

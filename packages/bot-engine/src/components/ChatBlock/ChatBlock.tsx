@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Block, Step } from '../../models'
 import { animateScroll as scroll } from 'react-scroll'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
+import { Step, Table } from 'models'
 
 type ChatBlockProps = {
-  block: Block
+  steps: Table<Step>
   onBlockEnd: (nextBlockId?: string) => void
 }
 
-export const ChatBlock = ({ block, onBlockEnd }: ChatBlockProps) => {
+export const ChatBlock = ({ steps, onBlockEnd }: ChatBlockProps) => {
   const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
 
   useEffect(() => {
-    setDisplayedSteps([block.steps[0]])
+    setDisplayedSteps([steps.byId[steps.allIds[0]]])
   }, [])
 
   useEffect(() => {
@@ -33,10 +33,10 @@ export const ChatBlock = ({ block, onBlockEnd }: ChatBlockProps) => {
     const currentStep = [...displayedSteps].pop()
     if (
       currentStep?.target?.blockId ||
-      displayedSteps.length === block.steps.length
+      displayedSteps.length === steps.allIds.length
     )
       return onBlockEnd(currentStep?.target?.blockId)
-    const nextStep = block.steps[displayedSteps.length]
+    const nextStep = steps.byId[displayedSteps.length]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
   }
 

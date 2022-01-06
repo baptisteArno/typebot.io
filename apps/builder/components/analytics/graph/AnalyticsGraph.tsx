@@ -3,7 +3,6 @@ import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import React, { useMemo, useRef } from 'react'
 import { AnswersCount } from 'services/analytics'
 import { BlockNode } from './blocks/BlockNode'
-import { StartBlockNode } from './blocks/StartBlockNode'
 import { Edges } from './Edges'
 
 const AnalyticsGraph = ({
@@ -49,9 +48,8 @@ const AnalyticsGraph = ({
         }}
       >
         <Edges answersCounts={answersCounts} />
-        {typebot.startBlock && <StartBlockNode block={typebot.startBlock} />}
-        {(typebot.blocks ?? []).map((block) => (
-          <BlockNode block={block} key={block.id} />
+        {typebot.blocks.allIds.map((blockId) => (
+          <BlockNode block={typebot.blocks.byId[blockId]} key={blockId} />
         ))}
       </Flex>
     </Flex>

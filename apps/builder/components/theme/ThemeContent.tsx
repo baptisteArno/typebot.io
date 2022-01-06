@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import { SideMenu } from './SideMenu'

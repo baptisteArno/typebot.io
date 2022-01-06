@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
 import { Box, Checkbox, Flex } from '@chakra-ui/react'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useFlexLayout, useRowSelect, useTable } from 'react-table'
 import { parseSubmissionsColumns } from 'services/publicTypebot'

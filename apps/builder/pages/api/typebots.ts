@@ -1,8 +1,8 @@
-import { parseNewTypebot } from 'bot-engine'
-import { User } from 'db'
+import { Prisma, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import { parseNewTypebot } from 'services/typebots'
 import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,7 +26,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
       const data = JSON.parse(req.body)
       const typebot = await prisma.typebot.create({
-        data: parseNewTypebot({ ownerId: user.id, ...data }),
+        data: parseNewTypebot({
+          ownerId: user.id,
+          ...data,
+        }) as Prisma.TypebotUncheckedCreateInput,
       })
       return res.send(typebot)
     }

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Answer, PublicTypebot } from '..'
 
-import { Block } from '..'
 import { ChatBlock } from './ChatBlock/ChatBlock'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
+import { Answer, Block, PublicTypebot } from 'models'
+import { filterTable } from 'utils'
 
 type Props = {
   typebot: PublicTypebot
@@ -28,14 +28,17 @@ export const ConversationContainer = ({
 
   const displayNextBlock = (blockId?: string) => {
     if (!blockId) return onCompleted()
-    const nextBlock = typebot.blocks.find((b) => b.id === blockId)
+    const nextBlock = typebot.blocks.byId[blockId]
     if (!nextBlock) return onCompleted()
     onNewBlockVisible(blockId)
     setDisplayedBlocks([...displayedBlocks, nextBlock])
   }
 
   useEffect(() => {
-    const firstBlockId = typebot.startBlock.steps[0].target?.blockId
+    const blocks = typebot.blocks
+    const firstBlockId =
+      typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].target
+        ?.blockId
     if (firstBlockId) displayNextBlock(firstBlockId)
   }, [])
 
@@ -58,7 +61,7 @@ export const ConversationContainer = ({
       {displayedBlocks.map((block, idx) => (
         <ChatBlock
           key={block.id + idx}
-          block={block}
+          steps={filterTable(block.stepIds, typebot.steps)}
           onBlockEnd={displayNextBlock}
         />
       ))}

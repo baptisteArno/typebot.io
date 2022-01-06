@@ -1,21 +1,18 @@
 import { chakra } from '@chakra-ui/system'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo } from 'react'
+import { isDefined } from 'utils'
 import { DrawingEdge } from './DrawingEdge'
-import { Edge, StepWithTarget } from './Edge'
+import { Edge } from './Edge'
 
 export const Edges = () => {
   const { typebot } = useTypebot()
-  const { blocks, startBlock } = typebot ?? {}
-  const stepsWithTarget: StepWithTarget[] = useMemo(() => {
-    if (!startBlock) return []
-    return [
-      ...(startBlock.steps.filter((s) => s.target) as StepWithTarget[]),
-      ...((blocks ?? [])
-        .flatMap((b) => b.steps)
-        .filter((s) => s.target) as StepWithTarget[]),
-    ]
-  }, [blocks, startBlock])
+  const stepIdsWithTarget: string[] = useMemo(() => {
+    if (!typebot) return []
+    return typebot.steps.allIds.filter((stepId) =>
+      isDefined(typebot.steps.byId[stepId].target)
+    )
+  }, [typebot])
 
   return (
     <chakra.svg
@@ -27,8 +24,8 @@ export const Edges = () => {
       top="0"
     >
       <DrawingEdge />
-      {stepsWithTarget.map((step) => (
-        <Edge key={step.id} step={step} />
+      {stepIdsWithTarget.map((stepId) => (
+        <Edge key={stepId} stepId={stepId} />
       ))}
       <marker
         id={'arrow'}

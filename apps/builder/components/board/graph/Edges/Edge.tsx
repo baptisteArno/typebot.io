@@ -1,6 +1,5 @@
-import { Block, StartStep, Step, Target } from 'bot-engine'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo } from 'react'
 import {
   getAnchorsPosition,
@@ -14,58 +13,43 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export type StepWithTarget = Omit<Step | StartStep, 'target'> & {
-  target: Target
-}
-
-export const Edge = ({ step }: { step: StepWithTarget }) => {
+export const Edge = ({ stepId }: { stepId: string }) => {
   const { typebot } = useTypebot()
   const { previewingIds } = useGraph()
+  const step = typebot?.steps.byId[stepId]
   const isPreviewing = useMemo(
     () =>
-      previewingIds.sourceId === step.blockId &&
-      previewingIds.targetId === step.target.blockId,
-    [
-      previewingIds.sourceId,
-      previewingIds.targetId,
-      step.blockId,
-      step.target.blockId,
-    ]
+      previewingIds.sourceId === step?.blockId &&
+      previewingIds.targetId === step?.target?.blockId,
+    [previewingIds.sourceId, previewingIds.targetId, step]
   )
-  const { blocks, startBlock } = typebot ?? {}
 
   const { sourceBlock, targetBlock, targetStepIndex } = useMemo(() => {
-    const targetBlock = blocks?.find(
-      (b) => b?.id === step.target.blockId
-    ) as Block
+    if (!typebot) return {}
+    const step = typebot.steps.byId[stepId]
+    if (!step.target) return {}
+    const sourceBlock = typebot.blocks.byId[step.blockId]
+    const targetBlock = typebot.blocks.byId[step.target.blockId]
     const targetStepIndex = step.target.stepId
-      ? targetBlock.steps.findIndex((s) => s.id === step.target.stepId)
+      ? targetBlock.stepIds.indexOf(step.target.stepId)
       : undefined
     return {
-      sourceBlock: [startBlock, ...(blocks ?? [])].find(
-        (b) => b?.id === step.blockId
-      ),
+      sourceBlock,
       targetBlock,
       targetStepIndex,
     }
-  }, [
-    blocks,
-    startBlock,
-    step.blockId,
-    step.target.blockId,
-    step.target.stepId,
-  ])
+  }, [stepId, typebot])
 
   const path = useMemo(() => {
     if (!sourceBlock || !targetBlock) return ``
     const anchorsPosition = getAnchorsPosition(
       sourceBlock,
       targetBlock,
-      sourceBlock.steps.findIndex((s) => s.id === step.id),
+      sourceBlock.stepIds.indexOf(stepId),
       targetStepIndex
     )
     return computeFlowChartConnectorPath(anchorsPosition)
-  }, [sourceBlock, step.id, targetBlock, targetStepIndex])
+  }, [sourceBlock, stepId, targetBlock, targetStepIndex])
 
   return (
     <path

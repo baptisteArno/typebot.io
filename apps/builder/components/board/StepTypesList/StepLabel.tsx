@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { StepType } from 'bot-engine'
+import { StepType } from 'models'
 import React from 'react'
 
 type Props = { type: StepType }

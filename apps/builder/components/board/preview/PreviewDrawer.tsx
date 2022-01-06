@@ -12,7 +12,7 @@ import { TypebotViewer } from 'bot-engine'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useEditor } from 'contexts/EditorContext'
 import { useGraph } from 'contexts/GraphContext'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 

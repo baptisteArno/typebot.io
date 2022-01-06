@@ -1,4 +1,4 @@
-import { Stats } from 'bot-engine'
+import { Stats } from 'models'
 import useSWR from 'swr'
 import { fetcher } from './utils'
 

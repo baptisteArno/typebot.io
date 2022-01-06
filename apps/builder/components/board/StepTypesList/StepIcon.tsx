@@ -1,5 +1,5 @@
 import { ChatIcon, FlagIcon, TextIcon } from 'assets/icons'
-import { StepType } from 'bot-engine'
+import { StepType } from 'models'
 import React from 'react'
 
 type StepIconProps = { type: StepType }

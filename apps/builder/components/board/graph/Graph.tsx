@@ -4,15 +4,15 @@ import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './BlockNode/BlockNode'
 import { useDnd } from 'contexts/DndContext'
 import { Edges } from './Edges'
-import { useTypebot } from 'contexts/TypebotContext'
-import { StartBlockNode } from './BlockNode/StartBlockNode'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
+import { StepType } from 'models'
 
 const Graph = ({ ...props }: FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
     useDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
-  const { addNewBlock, typebot } = useTypebot()
+  const { createBlock, typebot } = useTypebot()
   const { graphPosition, setGraphPosition } = useGraph()
   const transform = useMemo(
     () =>
@@ -41,11 +41,10 @@ const Graph = ({ ...props }: FlexProps) => {
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!draggedStep && !draggedStepType) return
-    addNewBlock({
-      step: draggedStep,
-      type: draggedStepType,
+    createBlock({
       x: e.clientX - graphPosition.x - blockWidth / 3,
       y: e.clientY - graphPosition.y - 20 - headerHeight,
+      step: draggedStep ?? (draggedStepType as StepType),
     })
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
@@ -71,9 +70,8 @@ const Graph = ({ ...props }: FlexProps) => {
       >
         <Edges />
         {props.children}
-        {typebot.startBlock && <StartBlockNode block={typebot.startBlock} />}
-        {(typebot.blocks ?? []).map((block) => (
-          <BlockNode block={block} key={block.id} />
+        {typebot.blocks.allIds.map((blockId) => (
+          <BlockNode block={typebot.blocks.byId[blockId]} key={blockId} />
         ))}
       </Flex>
     </Flex>

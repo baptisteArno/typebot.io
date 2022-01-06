@@ -1,4 +1,4 @@
-import { PublicTypebot } from 'bot-engine'
+import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
 import prisma from '../libs/prisma'

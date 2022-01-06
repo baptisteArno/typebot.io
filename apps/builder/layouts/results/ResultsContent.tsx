@@ -1,6 +1,6 @@
 import { Button, Flex, HStack, Tag, useToast, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useStats } from 'services/analytics'

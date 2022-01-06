@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
-import { Answer, BackgroundType, PublicTypebot } from '../models'
 import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
 //@ts-ignore
 import style from '../assets/style.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
+import { Answer, BackgroundType, PublicTypebot } from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot

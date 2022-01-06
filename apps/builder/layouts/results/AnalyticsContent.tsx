@@ -1,9 +1,9 @@
 import { Flex, useToast } from '@chakra-ui/react'
-import { Stats } from 'bot-engine'
 import AnalyticsGraph from 'components/analytics/graph/AnalyticsGraph'
 import { StatsCards } from 'components/analytics/StatsCards'
 import { AnalyticsGraphProvider } from 'contexts/AnalyticsGraphProvider'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { Stats } from 'models'
 import React from 'react'
 import { useAnswersCount } from 'services/analytics'
 

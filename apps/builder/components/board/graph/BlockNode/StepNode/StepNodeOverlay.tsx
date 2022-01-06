@@ -1,5 +1,5 @@
 import { StackProps, HStack } from '@chakra-ui/react'
-import { StartStep, Step } from 'bot-engine'
+import { StartStep, Step } from 'models'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 import { StepContent } from './StepContent'
 

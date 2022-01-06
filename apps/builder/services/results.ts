@@ -1,4 +1,4 @@
-import { Result } from 'bot-engine'
+import { Result } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { fetcher, sendRequest } from './utils'
 import { stringify } from 'qs'

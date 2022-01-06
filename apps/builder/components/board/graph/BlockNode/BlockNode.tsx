@@ -6,12 +6,12 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Block } from 'bot-engine'
+import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { useDnd } from 'contexts/DndContext'
 import { StepsList } from './StepsList'
-import { isDefined } from 'utils'
-import { useTypebot } from 'contexts/TypebotContext'
+import { filterTable, isDefined } from 'utils'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
 
@@ -21,7 +21,7 @@ type Props = {
 
 export const BlockNode = ({ block }: Props) => {
   const { connectingIds, setConnectingIds, previewingIds } = useGraph()
-  const { updateBlockPosition, addStepToBlock } = useTypebot()
+  const { typebot, updateBlock, createStep } = useTypebot()
   const { draggedStep, draggedStepType, setDraggedStepType, setDraggedStep } =
     useDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
@@ -55,9 +55,11 @@ export const BlockNode = ({ block }: Props) => {
     if (!isMouseDown) return
     const { movementX, movementY } = event
 
-    updateBlockPosition(block.id, {
-      x: block.graphCoordinates.x + movementX,
-      y: block.graphCoordinates.y + movementY,
+    updateBlock(block.id, {
+      graphCoordinates: {
+        x: block.graphCoordinates.x + movementX,
+        y: block.graphCoordinates.y + movementY,
+      },
     })
   }
 
@@ -77,11 +79,11 @@ export const BlockNode = ({ block }: Props) => {
   const handleStepDrop = (index: number) => {
     setShowSortPlaceholders(false)
     if (draggedStepType) {
-      addStepToBlock(block.id, draggedStepType, index)
+      createStep(block.id, draggedStepType, index)
       setDraggedStepType(undefined)
     }
     if (draggedStep) {
-      addStepToBlock(block.id, draggedStep, index)
+      createStep(block.id, draggedStep, index)
       setDraggedStep(undefined)
     }
   }
@@ -119,12 +121,14 @@ export const BlockNode = ({ block }: Props) => {
             />
             <EditableInput minW="0" px="1" />
           </Editable>
-          <StepsList
-            blockId={block.id}
-            steps={block.steps}
-            showSortPlaceholders={showSortPlaceholders}
-            onMouseUp={handleStepDrop}
-          />
+          {typebot && (
+            <StepsList
+              blockId={block.id}
+              steps={filterTable(block.stepIds, typebot?.steps)}
+              showSortPlaceholders={showSortPlaceholders}
+              onMouseUp={handleStepDrop}
+            />
+          )}
         </Stack>
       )}
     </ContextMenu>

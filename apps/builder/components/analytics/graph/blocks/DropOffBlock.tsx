@@ -1,5 +1,4 @@
 import { Tag, Text, VStack } from '@chakra-ui/react'
-import { Block } from 'bot-engine'
 import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
@@ -21,13 +20,13 @@ export const DropOffBlock = ({ answersCounts, blockId }: Props) => {
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!typebot || totalAnswers === undefined)
       return { previousTotal: undefined, dropOffRate: undefined }
-    const previousTotal = answersCounts
-      .filter(
-        (a) =>
-          [typebot.startBlock, ...typebot.blocks].find((b) =>
-            (b as Block).steps.find((s) => s.target?.blockId === blockId)
-          )?.id === a.blockId
+    const previousBlockIds = typebot.blocks.allIds.filter(() =>
+      typebot.steps.allIds.find(
+        (sId) => typebot.steps.byId[sId].target?.blockId === blockId
       )
+    )
+    const previousTotal = answersCounts
+      .filter((a) => previousBlockIds.includes(a.blockId))
       .reduce((prev, acc) => acc.totalAnswers + prev, 0)
     if (previousTotal === 0)
       return { previousTotal: undefined, dropOffRate: undefined }
@@ -41,11 +40,11 @@ export const DropOffBlock = ({ answersCounts, blockId }: Props) => {
 
   const labelCoordinates = useMemo(() => {
     if (!typebot) return { x: 0, y: 0 }
-    const sourceBlock = typebot?.blocks.find((b) => b.id === blockId)
+    const sourceBlock = typebot?.blocks.byId[blockId]
     if (!sourceBlock) return
     return computeSourceCoordinates(
       sourceBlock?.graphCoordinates,
-      sourceBlock?.steps.length - 1
+      sourceBlock?.stepIds.length - 1
     )
   }, [blockId, typebot])
 

@@ -1,4 +1,4 @@
-import { Block, PublicTypebot } from 'bot-engine'
+import { PublicTypebot } from 'models'
 import {
   createContext,
   Dispatch,
@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react'
 import { Coordinates } from './GraphContext'
+import produce from 'immer'
 
 type Position = Coordinates & { scale: number }
 
@@ -35,31 +36,13 @@ export const AnalyticsGraphProvider = ({
 
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
 
-  const updateBlocks = (blocks: Block[]) => {
-    if (!typebot) return
-    setTypebot({
-      ...typebot,
-      blocks: [...blocks],
-    })
-  }
-
   const updateBlockPosition = (blockId: string, newPosition: Coordinates) => {
     if (!typebot) return
-    blockId === 'start-block'
-      ? setTypebot({
-          ...typebot,
-          startBlock: {
-            ...typebot.startBlock,
-            graphCoordinates: newPosition,
-          },
-        })
-      : updateBlocks(
-          typebot.blocks.map((block) =>
-            block.id === blockId
-              ? { ...block, graphCoordinates: newPosition }
-              : block
-          )
-        )
+    setTypebot(
+      produce(typebot, (nextTypebot) => {
+        nextTypebot.blocks.byId[blockId].graphCoordinates = newPosition
+      })
+    )
   }
 
   return (

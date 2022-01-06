@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { Background, BackgroundType } from 'bot-engine'
+import { Background, BackgroundType } from 'models'
 import { deepEqual } from 'fast-equals'
 import React, { useEffect, useState } from 'react'
 import { BackgroundContent } from './BackgroundContent'

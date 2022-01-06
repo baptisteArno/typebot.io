@@ -1,6 +1,6 @@
 import { IconButton, Text, Tooltip } from '@chakra-ui/react'
 import { CheckIcon, SaveIcon } from 'assets/icons'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React from 'react'
 
 export const SaveButton = () => {

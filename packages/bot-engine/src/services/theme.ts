@@ -1,4 +1,4 @@
-import { BackgroundType, Theme } from '../models'
+import { BackgroundType, Theme } from 'models'
 
 const cssVariableNames = {
   container: {

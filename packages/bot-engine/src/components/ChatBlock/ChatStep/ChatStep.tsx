@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { Step } from '../../../models'
+import { Step } from 'models'
 import { isTextInputStep, isTextStep } from '../../../services/utils'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { HostMessageBubble } from './bubbles/HostMessageBubble'

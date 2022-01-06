@@ -1,5 +1,3 @@
-import { Block } from 'bot-engine'
-import { StepWithTarget } from 'components/board/graph/Edges/Edge'
 import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import React, { useMemo } from 'react'
 import {
@@ -7,42 +5,37 @@ import {
   computeFlowChartConnectorPath,
 } from 'services/graph'
 
-export const Edge = ({ step }: { step: StepWithTarget }) => {
+type Props = { stepId: string }
+
+export const Edge = ({ stepId }: Props) => {
   const { typebot } = useAnalyticsGraph()
-  const { blocks, startBlock } = typebot ?? {}
 
   const { sourceBlock, targetBlock, targetStepIndex } = useMemo(() => {
-    const targetBlock = blocks?.find(
-      (b) => b?.id === step.target.blockId
-    ) as Block
+    if (!typebot) return {}
+    const step = typebot.steps.byId[stepId]
+    if (!step.target) return {}
+    const targetBlock = typebot.blocks.byId[step.target.blockId]
     const targetStepIndex = step.target.stepId
-      ? targetBlock.steps.findIndex((s) => s.id === step.target.stepId)
+      ? targetBlock.stepIds.indexOf(step.target.stepId)
       : undefined
+    const sourceBlock = typebot.blocks.byId[step.blockId]
     return {
-      sourceBlock: [startBlock, ...(blocks ?? [])].find(
-        (b) => b?.id === step.blockId
-      ),
+      sourceBlock,
       targetBlock,
       targetStepIndex,
     }
-  }, [
-    blocks,
-    startBlock,
-    step.blockId,
-    step.target.blockId,
-    step.target.stepId,
-  ])
+  }, [stepId, typebot])
 
   const path = useMemo(() => {
     if (!sourceBlock || !targetBlock) return ``
     const anchorsPosition = getAnchorsPosition(
       sourceBlock,
       targetBlock,
-      sourceBlock.steps.findIndex((s) => s.id === step.id),
+      sourceBlock.stepIds.indexOf(stepId),
       targetStepIndex
     )
     return computeFlowChartConnectorPath(anchorsPosition)
-  }, [sourceBlock, step.id, targetBlock, targetStepIndex])
+  }, [sourceBlock, stepId, targetBlock, targetStepIndex])
 
   return (
     <path

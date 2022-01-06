@@ -7,11 +7,12 @@ type Props = {
 }
 export const DropOffEdge = ({ blockId }: Props) => {
   const { typebot } = useAnalyticsGraph()
+
   const path = useMemo(() => {
     if (!typebot) return
-    const block = (typebot?.blocks ?? []).find((b) => b.id === blockId)
+    const block = typebot.blocks.byId[blockId]
     if (!block) return ''
-    return computeDropOffPath(block.graphCoordinates, block.steps.length - 1)
+    return computeDropOffPath(block.graphCoordinates, block.stepIds.length - 1)
   }, [blockId, typebot])
 
   return <path d={path} stroke={'#E53E3E'} strokeWidth="2px" fill="none" />

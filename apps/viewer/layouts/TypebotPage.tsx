@@ -1,4 +1,5 @@
-import { Answer, PublicTypebot, TypebotViewer } from 'bot-engine'
+import { TypebotViewer } from 'bot-engine'
+import { Answer, PublicTypebot } from 'models'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'

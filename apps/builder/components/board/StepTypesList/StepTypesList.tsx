@@ -5,7 +5,7 @@ import {
   SimpleGrid,
   useEventListener,
 } from '@chakra-ui/react'
-import { StepType } from 'bot-engine'
+import { StepType } from 'models'
 import { useDnd } from 'contexts/DndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'

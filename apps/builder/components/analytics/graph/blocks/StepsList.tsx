@@ -1,27 +1,24 @@
 import { Flex, Stack } from '@chakra-ui/react'
-import { StartStep, Step } from 'bot-engine'
 import { StepNodeOverlay } from 'components/board/graph/BlockNode/StepNode'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
-export const StepsList = ({
-  steps,
-}: {
-  blockId: string
-  steps: Step[] | [StartStep]
-}) => {
+export const StepsList = ({ stepIds }: { stepIds: string[] }) => {
+  const { typebot } = useTypebot()
   return (
     <Stack spacing={1} transition="none">
       <Flex h={'2px'} bgColor={'gray.400'} visibility={'hidden'} rounded="lg" />
-      {steps.map((step) => (
-        <Stack key={step.id} spacing={1}>
-          <StepNodeOverlay key={step.id} step={step} />
-          <Flex
-            h={'2px'}
-            bgColor={'gray.400'}
-            visibility={'hidden'}
-            rounded="lg"
-          />
-        </Stack>
-      ))}
+      {typebot &&
+        stepIds.map((stepId) => (
+          <Stack key={stepId} spacing={1}>
+            <StepNodeOverlay step={typebot?.steps.byId[stepId]} />
+            <Flex
+              h={'2px'}
+              bgColor={'gray.400'}
+              visibility={'hidden'}
+              rounded="lg"
+            />
+          </Stack>
+        ))}
     </Stack>
   )
 }

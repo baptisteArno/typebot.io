@@ -1,15 +1,15 @@
 import { Flex, Heading, Stack } from '@chakra-ui/react'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
 import { EditableUrl } from './EditableUrl'
 
 export const ShareContent = () => {
-  const { typebot, updatePublicId } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
 
   const handlePublicIdChange = (publicId: string) => {
     if (publicId === typebot?.publicId) return
-    updatePublicId(publicId)
+    updateTypebot({ publicId })
   }
   return (
     <Flex h="full" w="full" justifyContent="center" align="flex-start">

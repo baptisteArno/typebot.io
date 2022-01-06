@@ -1,4 +1,4 @@
-import { PublicTypebot } from 'bot-engine'
+import { PublicTypebot } from 'models'
 import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -24,14 +24,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const answersCounts: { blockId: string; totalAnswers: number }[] =
       await Promise.all(
-        (typebot.publishedTypebot as PublicTypebot).blocks.map(
-          async (block) => {
-            const totalAnswers = await prisma.answer.count({
-              where: { blockId: block.id },
-            })
-            return { blockId: block.id, totalAnswers }
-          }
-        )
+        (
+          typebot.publishedTypebot as unknown as PublicTypebot
+        ).blocks.allIds.map(async (blockId) => {
+          const totalAnswers = await prisma.answer.count({
+            where: { blockId },
+          })
+          return { blockId, totalAnswers }
+        })
       )
     return res.status(200).send({ answersCounts })
   }

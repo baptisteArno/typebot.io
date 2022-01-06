@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react'
-import { Background, BackgroundType } from 'bot-engine'
+import { Background, BackgroundType } from 'models'
 import React from 'react'
 import { ColorPicker } from '../ColorPicker'
 

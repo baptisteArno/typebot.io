@@ -1,6 +1,6 @@
 import { Button, Flex, Text, VStack } from '@chakra-ui/react'
 import { GlobeIcon, ToolIcon } from 'assets/icons'
-import { Typebot } from 'bot-engine'
+import { Typebot } from 'models'
 
 type Props = {
   typebot: Typebot

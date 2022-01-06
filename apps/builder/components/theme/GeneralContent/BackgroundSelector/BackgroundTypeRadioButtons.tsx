@@ -6,7 +6,7 @@ import {
   useRadioGroup,
   UseRadioProps,
 } from '@chakra-ui/react'
-import { BackgroundType } from 'bot-engine'
+import { BackgroundType } from 'models'
 import { ReactNode } from 'react'
 
 type Props = {

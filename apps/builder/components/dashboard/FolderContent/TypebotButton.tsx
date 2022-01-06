@@ -16,7 +16,7 @@ import { MoreButton } from 'components/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { GlobeIcon, ToolIcon } from 'assets/icons'
 import { deleteTypebot, duplicateTypebot } from 'services/typebots'
-import { Typebot } from 'bot-engine'
+import { Typebot } from 'models'
 
 type ChatbotCardProps = {
   typebot: Typebot

@@ -1,17 +1,17 @@
 import { Flex, Stack } from '@chakra-ui/react'
-import { TypingEmulationSettings } from 'bot-engine'
-import { useTypebot } from 'contexts/TypebotContext'
+import { TypingEmulationSettings } from 'models'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React from 'react'
 import { TypingEmulation } from './TypingEmulation'
 
 export const SettingsContent = () => {
-  const { typebot, updateSettings } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
 
   const handleTypingEmulationUpdate = (
     typingEmulation: TypingEmulationSettings
   ) => {
     if (!typebot) return
-    updateSettings({ ...typebot.settings, typingEmulation })
+    updateTypebot({ settings: { ...typebot.settings, typingEmulation } })
   }
   return (
     <Flex h="full" w="full" justifyContent="center" align="flex-start">

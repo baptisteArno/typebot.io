@@ -1,6 +1,6 @@
-import { Stats } from 'bot-engine'
 import { User } from 'db'
 import prisma from 'libs/prisma'
+import { Stats } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import { methodNotAllowed } from 'utils'

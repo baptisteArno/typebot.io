@@ -6,7 +6,7 @@ import {
   StatLabel,
   StatNumber,
 } from '@chakra-ui/react'
-import { Stats } from 'bot-engine'
+import { Stats } from 'models'
 import React from 'react'
 
 export const StatsCards = ({

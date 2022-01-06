@@ -1,5 +1,5 @@
+import { PublicTypebot } from 'models'
 import React, { createContext, ReactNode, useContext } from 'react'
-import { PublicTypebot } from '../models/publicTypebot'
 
 const typebotContext = createContext<{
   typebot: PublicTypebot

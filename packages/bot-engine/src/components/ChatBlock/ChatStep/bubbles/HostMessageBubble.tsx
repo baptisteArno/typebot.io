@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHostAvatars } from '../../../../contexts/HostAvatarsContext'
 import { useTypebot } from '../../../../contexts/TypebotContext'
-import { StepType, TextStep } from '../../../../models'
+import { StepType, TextStep } from 'models'
 import { computeTypingTimeout } from '../../../../services/chat'
 import { TypingContent } from './TypingContent'
 

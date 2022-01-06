@@ -5,9 +5,13 @@ import {
   TextStep,
   TextInputStep,
   PublicTypebot,
-} from 'bot-engine'
+  BackgroundType,
+  Settings,
+  StartStep,
+  Theme,
+} from 'models'
 import shortId from 'short-uuid'
-import { Typebot } from 'bot-engine'
+import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, sendRequest, toKebabCase } from './utils'
 import { deepEqual } from 'fast-equals'
@@ -85,13 +89,9 @@ export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
   })
 
 export const parseNewBlock = ({
-  type,
   totalBlocks,
   initialCoordinates,
-  step,
 }: {
-  step?: Step
-  type?: StepType
   totalBlocks: number
   initialCoordinates: { x: number; y: number }
 }): Block => {
@@ -100,9 +100,7 @@ export const parseNewBlock = ({
     id,
     title: `Block #${totalBlocks + 1}`,
     graphCoordinates: initialCoordinates,
-    steps: [
-      step ? { ...step, blockId: id } : parseNewStep(type as StepType, id),
-    ],
+    stepIds: [],
   }
 }
 
@@ -158,11 +156,58 @@ export const checkIfPublished = (
   publicTypebot: PublicTypebot
 ) =>
   deepEqual(typebot.blocks, publicTypebot.blocks) &&
-  deepEqual(typebot.startBlock, publicTypebot.startBlock) &&
+  deepEqual(typebot.steps, publicTypebot.steps) &&
   typebot.name === publicTypebot.name &&
   typebot.publicId === publicTypebot.publicId &&
   deepEqual(typebot.settings, publicTypebot.settings) &&
   deepEqual(typebot.theme, publicTypebot.theme)
 
 export const parseDefaultPublicId = (name: string, id: string) =>
-  toKebabCase(`${name}-${id?.slice(0, 5)}`)
+  toKebabCase(name) + `-${id?.slice(-7)}`
+
+export const parseNewTypebot = ({
+  ownerId,
+  folderId,
+  name,
+}: {
+  ownerId: string
+  folderId: string | null
+  name: string
+}): Partial<Typebot> => {
+  const startBlockId = shortId.generate()
+  const startStepId = shortId.generate()
+  const startStep: StartStep = {
+    blockId: startBlockId,
+    id: startStepId,
+    label: 'Start',
+    type: StepType.START,
+  }
+  const startBlock: Block = {
+    id: startBlockId,
+    title: 'Start',
+    graphCoordinates: { x: 0, y: 0 },
+    stepIds: [startStepId],
+  }
+  const theme: Theme = {
+    general: {
+      font: 'Open Sans',
+      background: { type: BackgroundType.NONE, content: '#ffffff' },
+    },
+  }
+  const settings: Settings = {
+    typingEmulation: {
+      enabled: true,
+      speed: 300,
+      maxDelay: 1.5,
+    },
+  }
+  return {
+    folderId,
+    name,
+    ownerId,
+    blocks: { byId: { [startBlockId]: startBlock }, allIds: [startBlockId] },
+    steps: { byId: { [startStepId]: startStep }, allIds: [startStepId] },
+    theme,
+    settings,
+  }
+}

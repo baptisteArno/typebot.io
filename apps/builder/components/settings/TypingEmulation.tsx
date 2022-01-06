@@ -1,5 +1,5 @@
 import { Flex, Stack, Switch, Text } from '@chakra-ui/react'
-import { TypingEmulationSettings } from 'bot-engine'
+import { TypingEmulationSettings } from 'models'
 import React from 'react'
 import { SmartNumberInput } from './SmartNumberInput'
 

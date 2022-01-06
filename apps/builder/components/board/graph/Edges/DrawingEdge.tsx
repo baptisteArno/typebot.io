@@ -1,6 +1,5 @@
 import { useEventListener } from '@chakra-ui/hooks'
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import { Block } from 'bot-engine'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import {
   blockWidth,
@@ -9,7 +8,7 @@ import {
   stubLength,
   useGraph,
 } from 'contexts/GraphContext'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo, useState } from 'react'
 import {
   computeFlowChartConnectorPath,
@@ -19,34 +18,30 @@ import { roundCorners } from 'svg-round-corners'
 
 export const DrawingEdge = () => {
   const { graphPosition, setConnectingIds, connectingIds } = useGraph()
-  const { typebot, updateTarget } = useTypebot()
-  const { startBlock, blocks } = typebot ?? {}
+  const { typebot, updateStep } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const sourceBlock = useMemo(
-    () =>
-      [startBlock, ...(blocks ?? [])].find(
-        (b) => b?.id === connectingIds?.blockId
-      ),
+    () => connectingIds && typebot?.blocks.byId[connectingIds.source.blockId],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [connectingIds]
   )
 
   const path = useMemo(() => {
-    if (!sourceBlock) return ``
+    if (!sourceBlock || !typebot) return ``
     if (connectingIds?.target) {
-      const targetedBlock = blocks?.find(
-        (b) => b.id === connectingIds.target?.blockId
-      ) as Block
+      const targetedBlock = typebot?.blocks.byId[connectingIds.target.blockId]
       const targetedStepIndex = connectingIds.target.stepId
-        ? targetedBlock.steps.findIndex(
-            (s) => s.id === connectingIds.target?.stepId
+        ? targetedBlock.stepIds.findIndex(
+            (stepId) => stepId === connectingIds.target?.stepId
           )
         : undefined
       const anchorsPosition = getAnchorsPosition(
         sourceBlock,
         targetedBlock,
-        sourceBlock?.steps.findIndex((s) => s.id === connectingIds?.stepId),
+        sourceBlock?.stepIds.findIndex(
+          (stepId) => stepId === connectingIds?.source.stepId
+        ),
         targetedStepIndex
       )
       return computeFlowChartConnectorPath(anchorsPosition)
@@ -54,7 +49,9 @@ export const DrawingEdge = () => {
     return computeConnectingEdgePath(
       sourceBlock?.graphCoordinates,
       mousePosition,
-      sourceBlock.steps.findIndex((s) => s.id === connectingIds?.stepId)
+      sourceBlock.stepIds.findIndex(
+        (stepId) => stepId === connectingIds?.source.stepId
+      )
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceBlock, mousePosition])
@@ -67,7 +64,8 @@ export const DrawingEdge = () => {
   }
   useEventListener('mousemove', handleMouseMove)
   useEventListener('mouseup', () => {
-    if (connectingIds?.target) updateTarget(connectingIds)
+    if (connectingIds?.target)
+      updateStep(connectingIds.source.stepId, { target: connectingIds.target })
     setConnectingIds(null)
   })
 

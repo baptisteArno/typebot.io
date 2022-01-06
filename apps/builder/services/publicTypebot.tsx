@@ -1,11 +1,4 @@
-import {
-  Block,
-  InputStep,
-  PublicTypebot,
-  Step,
-  StepType,
-  Typebot,
-} from 'bot-engine'
+import { InputStep, PublicTypebot, Step, StepType, Typebot } from 'models'
 import { sendRequest } from './utils'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
@@ -17,8 +10,8 @@ export const parseTypebotToPublicTypebot = (
 ): PublicTypebot => ({
   id: shortId.generate(),
   blocks: typebot.blocks,
+  steps: typebot.steps,
   name: typebot.name,
-  startBlock: typebot.startBlock,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
@@ -28,7 +21,7 @@ export const parseTypebotToPublicTypebot = (
 export const createPublishedTypebot = async (
   typebot: Omit<PublicTypebot, 'id'>
 ) =>
-  sendRequest({
+  sendRequest<PublicTypebot>({
     url: `/api/publicTypebots`,
     method: 'POST',
     body: typebot,
@@ -49,32 +42,47 @@ export const parseSubmissionsColumns = (
 ): {
   Header: JSX.Element
   accessor: string
-}[] => [
-  {
-    Header: (
-      <HStack>
-        <CalendarIcon />
-        <Text>Submitted at</Text>
-      </HStack>
-    ),
-    accessor: 'createdAt',
-  },
-  ...(typebot?.blocks ?? []).filter(blockContainsInput).map((block) => ({
-    Header: (
-      <HStack>
-        <StepIcon
-          type={
-            block.steps.find((step) => step.target)?.type ?? StepType.TEXT_INPUT
-          }
-        />
-        <Text>{block.title}</Text>
-      </HStack>
-    ),
-    accessor: block.id,
-  })),
-]
+}[] => {
+  console.log(typebot)
+  if (!typebot) return []
+  return [
+    {
+      Header: (
+        <HStack>
+          <CalendarIcon />
+          <Text>Submitted at</Text>
+        </HStack>
+      ),
+      accessor: 'createdAt',
+    },
+    ...typebot.blocks.allIds
+      .filter((blockId) => typebot && blockContainsInput(typebot, blockId))
+      .map((blockId) => {
+        const block = typebot.blocks.byId[blockId]
+        const inputStepId = block.stepIds.find((stepId) =>
+          stepIsInput(typebot.steps.byId[stepId])
+        )
+        const inputStep = typebot.steps.byId[inputStepId as string]
+        return {
+          Header: (
+            <HStack>
+              <StepIcon type={inputStep.type} />
+              <Text>{block.title}</Text>
+            </HStack>
+          ),
+          accessor: blockId,
+        }
+      }),
+  ]
+}
 
-const blockContainsInput = (block: Block) => block.steps.some(stepIsInput)
+const blockContainsInput = (
+  typebot: PublicTypebot | Typebot,
+  blockId: string
+) =>
+  typebot.blocks.byId[blockId].stepIds.some((stepId) =>
+    stepIsInput(typebot.steps.byId[stepId])
+  )
 
 const stepIsInput = (step: Step): step is InputStep =>
   step.type === StepType.TEXT_INPUT

@@ -1,5 +1,5 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
-import { StartStep, Step } from 'bot-engine'
+import { Step, Table } from 'models'
 import { useDnd } from 'contexts/DndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useState } from 'react'
@@ -12,7 +12,7 @@ export const StepsList = ({
   onMouseUp,
 }: {
   blockId: string
-  steps: Step[] | [StartStep]
+  steps: Table<Step>
   showSortPlaceholders: boolean
   onMouseUp: (index: number) => void
 }) => {
@@ -88,12 +88,12 @@ export const StepsList = ({
         rounded="lg"
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
       />
-      {steps.map((step, idx) => (
-        <Stack key={step.id} spacing={1}>
+      {steps.allIds.map((stepId, idx) => (
+        <Stack key={stepId} spacing={1}>
           <StepNode
-            key={step.id}
-            step={step}
-            isConnectable={steps.length - 1 === idx}
+            key={stepId}
+            step={steps.byId[stepId]}
+            isConnectable={steps.allIds.length - 1 === idx}
             onMouseMoveTopOfElement={() => handleMouseOnTopOfStep(idx)}
             onMouseMoveBottomOfElement={() => {
               handleMouseOnBottomOfStep(idx)

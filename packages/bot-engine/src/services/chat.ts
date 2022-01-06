@@ -1,4 +1,4 @@
-import { TypingEmulationSettings } from '../models'
+import { TypingEmulationSettings } from 'models'
 
 export const computeTypingTimeout = (
   bubbleContent: string,

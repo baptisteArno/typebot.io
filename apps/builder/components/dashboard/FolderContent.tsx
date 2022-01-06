@@ -1,5 +1,5 @@
 import { DashboardFolder } from '.prisma/client'
-import { Typebot } from 'bot-engine'
+import { Typebot } from 'models'
 import {
   Button,
   Flex,

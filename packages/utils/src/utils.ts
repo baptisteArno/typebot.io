@@ -1,3 +1,5 @@
+import { Table } from 'models'
+
 export const sendRequest = async <ResponseData>({
   url,
   method,
@@ -25,3 +27,8 @@ export const sendRequest = async <ResponseData>({
 export const isDefined = <T>(value: T | undefined | null): value is T => {
   return <T>value !== undefined && <T>value !== null
 }
+
+export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
+  byId: ids.reduce((acc, id) => ({ ...acc, [id]: table.byId[id] }), {}),
+  allIds: ids,
+})

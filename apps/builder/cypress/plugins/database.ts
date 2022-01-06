@@ -1,5 +1,6 @@
-import { parseNewTypebot, PublicTypebot, StepType, Typebot } from 'bot-engine'
+import { PublicTypebot, StepType, Typebot } from 'models'
 import { Plan, PrismaClient } from 'db'
+import { parseTestTypebot } from './utils'
 
 const prisma = new PrismaClient()
 
@@ -34,51 +35,50 @@ const createFolders = () =>
   })
 
 const createTypebots = async () => {
-  const typebot2: Typebot = {
-    ...(parseNewTypebot({
+  const typebot2 = {
+    ...parseTestTypebot({
+      id: 'typebot2',
       name: 'Typebot #2',
       ownerId: 'test2',
-      folderId: null,
-    }) as Typebot),
-    id: 'typebot2',
-    startBlock: {
-      id: 'start-block',
-      steps: [
-        {
-          id: 'start-step',
-          blockId: 'start-block',
-          type: StepType.START,
-          label: 'Start',
-          target: { blockId: 'block1' },
+      blocks: {
+        byId: {
+          block1: {
+            id: 'block1',
+            title: 'Block #1',
+            stepIds: ['step1'],
+            graphCoordinates: { x: 200, y: 200 },
+          },
         },
-      ],
-      graphCoordinates: { x: 0, y: 0 },
-      title: 'Start',
-    },
-    blocks: [
-      {
-        title: 'Block #1',
-        id: 'block1',
-        steps: [{ id: 'step1', type: StepType.TEXT_INPUT, blockId: 'block1' }],
-        graphCoordinates: { x: 200, y: 200 },
+        allIds: ['block1'],
       },
-    ],
+      steps: {
+        byId: {
+          step1: {
+            id: 'step1',
+            type: StepType.TEXT_INPUT,
+            blockId: 'block1',
+          },
+        },
+        allIds: ['step1'],
+      },
+    }),
   }
   await prisma.typebot.createMany({
     data: [
       {
-        ...parseNewTypebot({
+        ...parseTestTypebot({
+          id: 'typebot1',
           name: 'Typebot #1',
           ownerId: 'test2',
-          folderId: null,
+          blocks: { byId: {}, allIds: [] },
+          steps: { byId: {}, allIds: [] },
         }),
-        id: 'typebot1',
       },
       typebot2,
-    ],
+    ] as any,
   })
   return prisma.publicTypebot.createMany({
-    data: [parseTypebotToPublicTypebot('publictypebot2', typebot2)],
+    data: [parseTypebotToPublicTypebot('publictypebot2', typebot2)] as any,
   })
 }
 
@@ -118,8 +118,8 @@ const parseTypebotToPublicTypebot = (
 ): PublicTypebot => ({
   id,
   blocks: typebot.blocks,
+  steps: typebot.steps,
   name: typebot.name,
-  startBlock: typebot.startBlock,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,

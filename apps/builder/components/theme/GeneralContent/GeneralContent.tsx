@@ -8,28 +8,32 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { PencilIcon } from 'assets/icons'
-import { Background } from 'bot-engine'
-import { useTypebot } from 'contexts/TypebotContext'
+import { Background } from 'models'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { FontSelector } from './FontSelector'
 
 export const GeneralContent = () => {
-  const { typebot, updateTheme } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
 
   const handleSelectFont = (font: string) => {
     if (!typebot) return
-    updateTheme({
-      ...typebot.theme,
-      general: { ...typebot.theme.general, font },
+    updateTypebot({
+      theme: {
+        ...typebot.theme,
+        general: { ...typebot.theme.general, font },
+      },
     })
   }
 
   const handleBackgroundChange = (background: Background) => {
     if (!typebot) return
-    updateTheme({
-      ...typebot.theme,
-      general: { ...typebot.theme.general, background },
+    updateTypebot({
+      theme: {
+        ...typebot.theme,
+        general: { ...typebot.theme.general, background },
+      },
     })
   }
   return (

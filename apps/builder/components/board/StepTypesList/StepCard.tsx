@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Flex, HStack } from '@chakra-ui/react'
-import { StepType } from 'bot-engine'
+import { StepType } from 'models'
 import { useDnd } from 'contexts/DndContext'
 import React, { useEffect, useState } from 'react'
 import { StepIcon } from './StepIcon'

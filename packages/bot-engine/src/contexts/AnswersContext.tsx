@@ -1,4 +1,4 @@
-import { Answer } from '../models'
+import { Answer } from 'models'
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 const answersContext = createContext<{

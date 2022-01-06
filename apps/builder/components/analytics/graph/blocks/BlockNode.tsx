@@ -6,9 +6,9 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { Block } from 'bot-engine'
 import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import { StepsList } from './StepsList'
+import { Block } from 'models'
 
 type Props = {
   block: Block
@@ -56,7 +56,7 @@ export const BlockNode = ({ block }: Props) => {
         <EditablePreview px="1" userSelect={'none'} />
         <EditableInput minW="0" px="1" />
       </Editable>
-      <StepsList blockId={block.id} steps={block.steps} />
+      <StepsList stepIds={block.stepIds} />
     </Stack>
   )
 }

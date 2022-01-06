@@ -1,4 +1,4 @@
-import { Answer } from 'bot-engine'
+import { Answer } from 'models'
 import { sendRequest } from 'utils'
 
 export const upsertAnswer = async (answer: Answer & { resultId: string }) => {

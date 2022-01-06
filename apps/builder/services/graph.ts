@@ -1,5 +1,5 @@
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import { Block, StartBlock } from 'bot-engine'
+import { Block } from 'models'
 import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
 import {
   stubLength,
@@ -143,7 +143,7 @@ const computeFiveSegments = (
 }
 
 export const getAnchorsPosition = (
-  sourceBlock: Block | StartBlock,
+  sourceBlock: Block,
   targetBlock: Block,
   sourceStepIndex: number,
   targetStepIndex?: number

@@ -2,15 +2,10 @@ import path from 'path'
 import { parse } from 'papaparse'
 
 describe('ResultsPage', () => {
-  before(() => {
-    cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
-      'getResults'
-    )
-    cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
-      'getResults'
-    )
-  })
   beforeEach(() => {
+    cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
+      'getResults'
+    )
     cy.task('seed')
     cy.signOut()
   })
@@ -48,7 +43,7 @@ describe('ResultsPage', () => {
     cy.findByText('content0').should('exist')
   })
 
-  it.only('should correctly export selection in CSV', () => {
+  it('should correctly export selection in CSV', () => {
     const downloadsFolder = Cypress.config('downloadsFolder')
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot2/results')

@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import { useTypebot } from 'contexts/TypebotContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
 export const PublishButton = () => {
   const { isPublishing, isPublished, publishTypebot } = useTypebot()
