@@ -84,12 +84,13 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
       } else if (user) {
         token.user = user
       }
-      account?.type && (token.providerType = account?.type)
+      account?.type && token && (token.providerType = account?.type)
       return token
     },
     session: async ({ session, token, user }) => {
       token?.user ? (session.user = token.user as User) : (session.user = user)
-      return { ...session, providerType: token.providerType }
+      if (token?.providerType) session.providerType = token.providerType
+      return session
     },
   },
 })
