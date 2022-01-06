@@ -21,8 +21,9 @@ export const PreviewDrawer = () => {
   const { setRightPanel } = useEditor()
   const { previewingIds, setPreviewingIds } = useGraph()
   const [isResizing, setIsResizing] = useState(false)
-  const [width, setWidth] = useState(400)
+  const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
+  const [restartKey, setRestartKey] = useState(0)
 
   const publicTypebot = useMemo(
     () => (typebot ? parseTypebotToPublicTypebot(typebot) : undefined),
@@ -47,10 +48,12 @@ export const PreviewDrawer = () => {
   const handleNewBlockVisible = (targetId: string) =>
     setPreviewingIds({
       sourceId: !previewingIds.sourceId
-        ? 'start-block'
+        ? typebot?.blocks.allIds[0]
         : previewingIds.targetId,
       targetId: targetId,
     })
+
+  const handleRestartClick = () => setRestartKey((key) => key + 1)
 
   return (
     <Flex
@@ -77,7 +80,7 @@ export const PreviewDrawer = () => {
 
       <VStack w="full" spacing={4}>
         <Flex justifyContent={'space-between'} w="full">
-          <Button>Restart</Button>
+          <Button onClick={handleRestartClick}>Restart</Button>
           <CloseButton onClick={() => setRightPanel(undefined)} />
         </Flex>
 
@@ -87,6 +90,7 @@ export const PreviewDrawer = () => {
             borderRadius={'lg'}
             h="full"
             w="full"
+            key={restartKey}
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
             <TypebotViewer

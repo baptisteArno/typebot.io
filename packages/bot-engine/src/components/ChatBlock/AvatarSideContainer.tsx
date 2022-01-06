@@ -19,6 +19,9 @@ export const AvatarSideContainer = () => {
       setMarginBottom(isMobile ? 38 : 48)
     })
     resizeObserver.observe(document.body)
+    return () => {
+      resizeObserver.disconnect()
+    }
   }, [])
 
   return (

@@ -1,4 +1,11 @@
-import { Box, Flex, HStack, useEventListener } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  HStack,
+  Popover,
+  PopoverTrigger,
+  useEventListener,
+} from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Block, Step, StepType } from 'models'
 import { SourceEndpoint } from './SourceEndpoint'
@@ -11,6 +18,7 @@ import { StepContent } from './StepContent'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { StepNodeContextMenu } from './RightClickMenu'
+import { SettingsPopoverContent } from './SettingsPopoverContent'
 
 export const StepNode = ({
   step,
@@ -144,58 +152,64 @@ export const StepNode = ({
       renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
     >
       {(ref, isOpened) => (
-        <Flex
-          pos="relative"
-          ref={ref}
-          onMouseMove={handleMouseMove}
-          onMouseDown={handleMouseDown}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-        >
-          {connectedStubPosition === 'left' && (
-            <Box
-              h="2px"
-              pos="absolute"
-              left="-18px"
-              top="25px"
-              w="18px"
-              bgColor="blue.500"
-            />
-          )}
-          <HStack
-            flex="1"
-            userSelect="none"
-            p="3"
-            borderWidth="2px"
-            borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.400'}
-            rounded="lg"
-            cursor={'pointer'}
-            bgColor="white"
-          >
-            <StepIcon type={step.type} />
-            <StepContent {...step} />
-            {isConnectable && (
-              <SourceEndpoint
-                onConnectionDragStart={handleConnectionDragStart}
-                pos="absolute"
-                right="20px"
-              />
-            )}
-          </HStack>
+        <Popover placement="left" isLazy>
+          <PopoverTrigger>
+            <Flex
+              pos="relative"
+              ref={ref}
+              onMouseMove={handleMouseMove}
+              onMouseDown={handleMouseDown}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              data-testid={`step-${step.id}`}
+            >
+              {connectedStubPosition === 'left' && (
+                <Box
+                  h="2px"
+                  pos="absolute"
+                  left="-18px"
+                  top="25px"
+                  w="18px"
+                  bgColor="blue.500"
+                />
+              )}
+              <HStack
+                flex="1"
+                userSelect="none"
+                p="3"
+                borderWidth="2px"
+                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.400'}
+                rounded="lg"
+                cursor={'pointer'}
+                bgColor="white"
+              >
+                <StepIcon type={step.type} />
+                <StepContent {...step} />
+                {isConnectable && (
+                  <SourceEndpoint
+                    onConnectionDragStart={handleConnectionDragStart}
+                    pos="absolute"
+                    right="20px"
+                  />
+                )}
+              </HStack>
 
-          {isDefined(connectedStubPosition) && (
-            <Box
-              h="2px"
-              pos="absolute"
-              right={connectedStubPosition === 'left' ? undefined : '-18px'}
-              left={connectedStubPosition === 'left' ? '-18px' : undefined}
-              top="25px"
-              w="18px"
-              bgColor="gray.500"
-            />
-          )}
-        </Flex>
+              {isDefined(connectedStubPosition) && (
+                <Box
+                  h="2px"
+                  pos="absolute"
+                  right={connectedStubPosition === 'left' ? undefined : '-18px'}
+                  left={connectedStubPosition === 'left' ? '-18px' : undefined}
+                  top="25px"
+                  w="18px"
+                  bgColor="gray.500"
+                />
+              )}
+            </Flex>
+          </PopoverTrigger>
+          <SettingsPopoverContent step={step} />
+        </Popover>
       )}
     </ContextMenu>
   )

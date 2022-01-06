@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { Step } from 'models'
+import { InputStep, Step } from 'models'
 import { isTextInputStep, isTextStep } from '../../../services/utils'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { HostMessageBubble } from './bubbles/HostMessageBubble'
@@ -24,11 +24,17 @@ export const ChatStep = ({
   if (isTextStep(step))
     return <HostMessageBubble step={step} onTransitionEnd={onTransitionEnd} />
   if (isTextInputStep(step))
-    return <InputChatStep onSubmit={handleInputSubmit} />
+    return <InputChatStep step={step} onSubmit={handleInputSubmit} />
   return <span>No step</span>
 }
 
-const InputChatStep = ({ onSubmit }: { onSubmit: (value: string) => void }) => {
+const InputChatStep = ({
+  step,
+  onSubmit,
+}: {
+  step: InputStep
+  onSubmit: (value: string) => void
+}) => {
   const { addNewAvatarOffset } = useHostAvatars()
   const [answer, setAnswer] = useState<string>()
 
@@ -44,5 +50,5 @@ const InputChatStep = ({ onSubmit }: { onSubmit: (value: string) => void }) => {
   if (answer) {
     return <GuestBubble message={answer} />
   }
-  return <TextInput onSubmit={handleSubmit} />
+  return <TextInput step={step} onSubmit={handleSubmit} />
 }

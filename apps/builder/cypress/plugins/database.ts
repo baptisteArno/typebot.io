@@ -15,6 +15,9 @@ export const seedDb = async () => {
   return createAnswers()
 }
 
+export const createTypebot = (typebot: Typebot) =>
+  prisma.typebot.create({ data: typebot as any })
+
 const createUsers = () =>
   prisma.user.createMany({
     data: [

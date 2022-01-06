@@ -24,6 +24,12 @@ export type TextStep = StepBase & {
 
 export type TextInputStep = StepBase & {
   type: StepType.TEXT_INPUT
+  options?: TextInputOptions
+}
+
+export type TextInputOptions = {
+  labels?: { placeholder?: string; button?: string }
+  isLong?: boolean
 }
 
 export type Target = { blockId: string; stepId?: string }

@@ -15,8 +15,8 @@ export const Board = () => {
         <StepTypesList />
         <GraphProvider>
           <Graph flex="1" />
+          {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
         </GraphProvider>
-        {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
       </DndContext>
     </Flex>
   )

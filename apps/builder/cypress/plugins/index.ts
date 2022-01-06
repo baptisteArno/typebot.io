@@ -3,7 +3,7 @@ import {
   FacebookSocialLogin,
   GoogleSocialLogin,
 } from 'cypress-social-logins/src/Plugins'
-import { seedDb } from './database'
+import { createTypebot, seedDb } from './database'
 /// <reference types="cypress" />
 
 /**
@@ -16,6 +16,7 @@ const handler = (on: any) => {
     FacebookSocialLogin: FacebookSocialLogin,
     GitHubSocialLogin: GitHubSocialLogin,
     seed: seedDb,
+    createTypebot,
   })
 }
 

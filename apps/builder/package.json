@@ -35,6 +35,7 @@
     "kbar": "^0.1.0-beta.24",
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
+    "models": "*",
     "next": "^12.0.7",
     "next-auth": "beta",
     "nodemailer": "^6.7.2",
@@ -56,8 +57,7 @@
     "swr": "^1.1.2",
     "use-debounce": "^7.0.1",
     "use-immer": "^0.6.0",
-    "utils": "*",
-    "models": "*"
+    "utils": "*"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.2",
