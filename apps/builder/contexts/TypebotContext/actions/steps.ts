@@ -1,6 +1,7 @@
 import { Step, StepType, Typebot } from 'models'
 import { parseNewStep } from 'services/typebots'
 import { Updater } from 'use-immer'
+import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 
 export type StepsActions = {
@@ -15,6 +16,7 @@ export type StepsActions = {
 export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
   createStep: (blockId: string, step: StepType | Step, index?: number) => {
     setTypebot((typebot) => {
+      removeEmptyBlocks(typebot)
       createStepDraft(typebot, step, blockId, index)
     })
   },
@@ -24,10 +26,24 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     }),
   deleteStep: (stepId: string) => {
     setTypebot((typebot) => {
+      removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)
     })
   },
 })
+
+const removeStepIdFromBlock = (
+  typebot: WritableDraft<Typebot>,
+  stepId: string
+) => {
+  const containerBlockId = typebot.blocks.allIds.find((blockId) =>
+    typebot.blocks.byId[blockId].stepIds.includes(stepId)
+  ) as string
+  typebot.blocks.byId[containerBlockId].stepIds.splice(
+    typebot.blocks.byId[containerBlockId].stepIds.indexOf(stepId),
+    1
+  )
+}
 
 export const deleteStepDraft = (
   typebot: WritableDraft<Typebot>,
@@ -44,7 +60,10 @@ export const createStepDraft = (
   blockId: string,
   index?: number
 ) => {
-  const newStep = typeof step === 'string' ? parseNewStep(step, blockId) : step
+  const newStep =
+    typeof step === 'string'
+      ? parseNewStep(step, blockId)
+      : { ...step, blockId }
   typebot.steps.byId[newStep.id] = newStep
   typebot.steps.allIds.push(newStep.id)
   typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, newStep.id)

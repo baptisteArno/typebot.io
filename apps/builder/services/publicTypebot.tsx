@@ -43,7 +43,6 @@ export const parseSubmissionsColumns = (
   Header: JSX.Element
   accessor: string
 }[] => {
-  console.log(typebot)
   if (!typebot) return []
   return [
     {

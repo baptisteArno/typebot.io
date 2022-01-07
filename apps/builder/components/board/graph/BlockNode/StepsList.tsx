@@ -70,6 +70,7 @@ export const StepsList = ({
     if (!draggedStep && !draggedStepType) return
     setExpandedPlaceholderIndex(stepIndex + 1)
   }
+
   return (
     <Stack
       spacing={1}
