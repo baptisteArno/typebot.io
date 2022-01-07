@@ -211,3 +211,6 @@ export const parseNewTypebot = ({
     settings,
   }
 }
+
+export const isStepText = (step: Step): step is TextStep =>
+  step.type === StepType.TEXT

@@ -87,6 +87,7 @@ export const TextEditor = ({
               edge: 'end',
             })
           },
+          'aria-label': 'Text editor',
         }}
         initialValue={
           initialValue.length === 0

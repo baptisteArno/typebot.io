@@ -7,7 +7,7 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Block, Step, StepType } from 'models'
+import { Block, Step } from 'models'
 import { SourceEndpoint } from './SourceEndpoint'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
@@ -19,6 +19,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { StepNodeContextMenu } from './RightClickMenu'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
+import { isStepText } from 'services/typebots'
 
 export const StepNode = ({
   step,
@@ -41,7 +42,9 @@ export const StepNode = ({
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
-  const [isEditing, setIsEditing] = useState<boolean | undefined>(undefined)
+  const [isEditing, setIsEditing] = useState<boolean>(
+    isStepText(step) && step.content.plainText === ''
+  )
 
   useEffect(() => {
     setIsConnecting(
@@ -139,9 +142,7 @@ export const StepNode = ({
     connectingIds?.target?.blockId,
   ])
 
-  return step.type === StepType.TEXT &&
-    (isEditing ||
-      (isEditing === undefined && step.content.plainText === '')) ? (
+  return isEditing && isStepText(step) ? (
     <TextEditor
       stepId={step.id}
       initialValue={step.content.richText}

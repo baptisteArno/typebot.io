@@ -83,5 +83,5 @@ const blockContainsInput = (
     stepIsInput(typebot.steps.byId[stepId])
   )
 
-const stepIsInput = (step: Step): step is InputStep =>
+export const stepIsInput = (step: Step): step is InputStep =>
   step.type === StepType.TEXT_INPUT

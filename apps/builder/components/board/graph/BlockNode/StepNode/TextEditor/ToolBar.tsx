@@ -22,18 +22,24 @@ export const ToolBar = (props: StackProps) => {
       {...props}
     >
       <Button size="sm">Variables</Button>
-      <MarkToolbarButton
-        type={getPluginType(editor, MARK_BOLD)}
-        icon={<BoldIcon />}
-      />
-      <MarkToolbarButton
-        type={getPluginType(editor, MARK_ITALIC)}
-        icon={<ItalicIcon />}
-      />
-      <MarkToolbarButton
-        type={getPluginType(editor, MARK_UNDERLINE)}
-        icon={<UnderlineIcon />}
-      />
+      <span data-testid="bold-button">
+        <MarkToolbarButton
+          type={getPluginType(editor, MARK_BOLD)}
+          icon={<BoldIcon />}
+        />
+      </span>
+      <span data-testid="italic-button">
+        <MarkToolbarButton
+          type={getPluginType(editor, MARK_ITALIC)}
+          icon={<ItalicIcon />}
+        />
+      </span>
+      <span data-testid="underline-button">
+        <MarkToolbarButton
+          type={getPluginType(editor, MARK_UNDERLINE)}
+          icon={<UnderlineIcon />}
+        />
+      </span>
       <LinkToolbarButton icon={<LinkIcon />} />
     </HStack>
   )
