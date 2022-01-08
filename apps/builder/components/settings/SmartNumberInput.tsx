@@ -13,14 +13,14 @@ export const SmartNumberInput = ({
   onValueChange,
   ...props
 }: {
-  initialValue: number
-  onValueChange: (value: number) => void
+  initialValue?: number
+  onValueChange: (value?: number) => void
 } & NumberInputProps) => {
-  const [value, setValue] = useState(initialValue.toString())
+  const [value, setValue] = useState(initialValue?.toString() ?? '')
 
   useEffect(() => {
     if (value.endsWith('.') || value.endsWith(',')) return
-    if (value === '') onValueChange(0)
+    if (value === '') onValueChange(undefined)
     const newValue = parseFloat(value)
     if (isNaN(newValue)) return
     onValueChange(newValue)

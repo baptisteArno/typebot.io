@@ -1,5 +1,5 @@
 import { parseTestTypebot } from 'cypress/plugins/utils'
-import { StepType } from 'models'
+import { BubbleStepType } from 'models'
 
 describe('Text bubbles', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Text bubbles', () => {
             step1: {
               id: 'step1',
               blockId: 'block1',
-              type: StepType.TEXT,
+              type: BubbleStepType.TEXT,
               content: { html: '', plainText: '', richText: [] },
             },
           },

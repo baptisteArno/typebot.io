@@ -1,6 +1,5 @@
 import {
   Block,
-  StepType,
   Theme,
   BackgroundType,
   Settings,
@@ -59,7 +58,7 @@ export const parseTestTypebot = ({
       byId: {
         step0: {
           id: 'step0',
-          type: StepType.START,
+          type: 'start',
           blockId: 'block0',
           label: 'Start',
           target: { blockId: 'block1' },

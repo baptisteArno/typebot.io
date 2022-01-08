@@ -1,4 +1,12 @@
-import { Table } from 'models'
+import {
+  BubbleStepType,
+  InputStep,
+  InputStepType,
+  Step,
+  Table,
+  TextInputStep,
+  TextStep,
+} from 'models'
 
 export const sendRequest = async <ResponseData>({
   url,
@@ -32,3 +40,12 @@ export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
   byId: ids.reduce((acc, id) => ({ ...acc, [id]: table.byId[id] }), {}),
   allIds: ids,
 })
+
+export const isInputStep = (step: Step): step is InputStep =>
+  (Object.values(InputStepType) as string[]).includes(step.type)
+
+export const isTextBubbleStep = (step: Step): step is TextStep =>
+  step.type === BubbleStepType.TEXT
+
+export const isTextInputStep = (step: Step): step is TextInputStep =>
+  step.type === InputStepType.TEXT

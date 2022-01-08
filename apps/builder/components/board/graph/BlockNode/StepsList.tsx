@@ -1,6 +1,6 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
 import { Step, Table } from 'models'
-import { useDnd } from 'contexts/DndContext'
+import { DraggableStep, useDnd } from 'contexts/DndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useState } from 'react'
 import { StepNode, StepNodeOverlay } from './StepNode'
@@ -54,7 +54,7 @@ export const StepsList = ({
 
   const handleStepMouseDown = (
     { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-    step: Step
+    step: DraggableStep
   ) => {
     setPosition(absolute)
     setRelativeCoordinates(relative)

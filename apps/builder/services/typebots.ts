@@ -1,14 +1,15 @@
 import {
-  Step,
-  StepType,
   Block,
   TextStep,
-  TextInputStep,
   PublicTypebot,
   BackgroundType,
   Settings,
   StartStep,
   Theme,
+  BubbleStep,
+  InputStep,
+  BubbleStepType,
+  InputStepType,
 } from 'models'
 import shortId from 'short-uuid'
 import { Typebot } from 'models'
@@ -104,23 +105,16 @@ export const parseNewBlock = ({
   }
 }
 
-export const parseNewStep = (type: StepType, blockId: string): Step => {
+export const parseNewStep = (
+  type: BubbleStepType | InputStepType,
+  blockId: string
+): BubbleStep | InputStep => {
   const id = `s${shortId.generate()}`
   switch (type) {
-    case StepType.TEXT: {
+    case BubbleStepType.TEXT: {
       const textStep: Pick<TextStep, 'type' | 'content'> = {
         type,
         content: { html: '', richText: [], plainText: '' },
-      }
-      return {
-        id,
-        blockId,
-        ...textStep,
-      }
-    }
-    case StepType.TEXT_INPUT: {
-      const textStep: Pick<TextInputStep, 'type'> = {
-        type,
       }
       return {
         id,
@@ -129,11 +123,11 @@ export const parseNewStep = (type: StepType, blockId: string): Step => {
       }
     }
     default: {
-      const textStep: Pick<TextStep, 'type' | 'content'> = {
-        type: StepType.TEXT,
-        content: { html: '', richText: [], plainText: '' },
+      return {
+        id,
+        blockId,
+        type,
       }
-      return { blockId, id, ...textStep }
     }
   }
 }
@@ -180,7 +174,7 @@ export const parseNewTypebot = ({
     blockId: startBlockId,
     id: startStepId,
     label: 'Start',
-    type: StepType.START,
+    type: 'start',
   }
   const startBlock: Block = {
     id: startBlockId,
@@ -211,6 +205,3 @@ export const parseNewTypebot = ({
     settings,
   }
 }
-
-export const isStepText = (step: Step): step is TextStep =>
-  step.type === StepType.TEXT

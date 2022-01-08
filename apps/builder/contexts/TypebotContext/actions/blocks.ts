@@ -1,20 +1,25 @@
 import { Coordinates } from 'contexts/GraphContext'
 import { WritableDraft } from 'immer/dist/internal'
-import { Block, Step, StepType, Typebot } from 'models'
+import { Block, BubbleStepType, InputStepType, Step, Typebot } from 'models'
 import { parseNewBlock } from 'services/typebots'
 import { Updater } from 'use-immer'
 import { createStepDraft, deleteStepDraft } from './steps'
 
 export type BlocksActions = {
-  createBlock: (props: Coordinates & { step: StepType | Step }) => void
+  createBlock: (
+    props: Coordinates & { step: BubbleStepType | InputStepType | Step }
+  ) => void
   updateBlock: (blockId: string, updates: Partial<Omit<Block, 'id'>>) => void
   deleteBlock: (blockId: string) => void
 }
 
 export const blocksActions = (setTypebot: Updater<Typebot>): BlocksActions => ({
-  createBlock: ({ x, y, step }: Coordinates & { step: StepType | Step }) => {
+  createBlock: ({
+    x,
+    y,
+    step,
+  }: Coordinates & { step: BubbleStepType | InputStepType | Step }) => {
     setTypebot((typebot) => {
-      removeEmptyBlocks(typebot)
       const newBlock = parseNewBlock({
         totalBlocks: typebot.blocks.allIds.length,
         initialCoordinates: { x, y },
@@ -22,6 +27,7 @@ export const blocksActions = (setTypebot: Updater<Typebot>): BlocksActions => ({
       typebot.blocks.byId[newBlock.id] = newBlock
       typebot.blocks.allIds.push(newBlock.id)
       createStepDraft(typebot, step, newBlock.id)
+      removeEmptyBlocks(typebot)
     })
   },
   updateBlock: (blockId: string, updates: Partial<Omit<Block, 'id'>>) =>

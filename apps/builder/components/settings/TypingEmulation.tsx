@@ -17,14 +17,14 @@ export const TypingEmulation = ({
     onUpdate({ ...typingEmulation, enabled: !typingEmulation.enabled })
   }
 
-  const handleSpeedChange = (speed: number) => {
+  const handleSpeedChange = (speed?: number) => {
     if (!typingEmulation) return
-    onUpdate({ ...typingEmulation, speed })
+    onUpdate({ ...typingEmulation, speed: speed ?? 0 })
   }
 
-  const handleMaxDelayChange = (maxDelay: number) => {
+  const handleMaxDelayChange = (maxDelay?: number) => {
     if (!typingEmulation) return
-    onUpdate({ ...typingEmulation, maxDelay: maxDelay })
+    onUpdate({ ...typingEmulation, maxDelay: maxDelay ?? 0 })
   }
 
   return (

@@ -2,11 +2,10 @@ import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './BlockNode/BlockNode'
-import { useDnd } from 'contexts/DndContext'
+import { DraggableStepType, useDnd } from 'contexts/DndContext'
 import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
-import { StepType } from 'models'
 
 const Graph = ({ ...props }: FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
@@ -44,7 +43,7 @@ const Graph = ({ ...props }: FlexProps) => {
     createBlock({
       x: e.clientX - graphPosition.x - blockWidth / 3,
       y: e.clientY - graphPosition.y - 20 - headerHeight,
-      step: draggedStep ?? (draggedStepType as StepType),
+      step: draggedStep ?? (draggedStepType as DraggableStepType),
     })
     setDraggedStep(undefined)
     setDraggedStepType(undefined)

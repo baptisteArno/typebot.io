@@ -1,4 +1,4 @@
-import { PublicTypebot, StepType, Typebot } from 'models'
+import { InputStepType, PublicTypebot, Typebot } from 'models'
 import { Plan, PrismaClient } from 'db'
 import { parseTestTypebot } from './utils'
 
@@ -58,7 +58,7 @@ const createTypebots = async () => {
         byId: {
           step1: {
             id: 'step1',
-            type: StepType.TEXT_INPUT,
+            type: InputStepType.TEXT,
             blockId: 'block1',
           },
         },

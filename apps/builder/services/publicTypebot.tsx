@@ -1,9 +1,10 @@
-import { InputStep, PublicTypebot, Step, StepType, Typebot } from 'models'
+import { PublicTypebot, Typebot } from 'models'
 import { sendRequest } from './utils'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon } from 'assets/icons'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
+import { isInputStep } from 'utils'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
@@ -59,7 +60,7 @@ export const parseSubmissionsColumns = (
       .map((blockId) => {
         const block = typebot.blocks.byId[blockId]
         const inputStepId = block.stepIds.find((stepId) =>
-          stepIsInput(typebot.steps.byId[stepId])
+          isInputStep(typebot.steps.byId[stepId])
         )
         const inputStep = typebot.steps.byId[inputStepId as string]
         return {
@@ -80,8 +81,5 @@ const blockContainsInput = (
   blockId: string
 ) =>
   typebot.blocks.byId[blockId].stepIds.some((stepId) =>
-    stepIsInput(typebot.steps.byId[stepId])
+    isInputStep(typebot.steps.byId[stepId])
   )
-
-export const stepIsInput = (step: Step): step is InputStep =>
-  step.type === StepType.TEXT_INPUT

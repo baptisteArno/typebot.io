@@ -1,11 +1,15 @@
-import { Step, StepType, Typebot } from 'models'
+import { BubbleStepType, InputStepType, Step, Typebot } from 'models'
 import { parseNewStep } from 'services/typebots'
 import { Updater } from 'use-immer'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 
 export type StepsActions = {
-  createStep: (blockId: string, step: StepType | Step, index?: number) => void
+  createStep: (
+    blockId: string,
+    step: BubbleStepType | InputStepType | Step,
+    index?: number
+  ) => void
   updateStep: (
     stepId: string,
     updates: Partial<Omit<Step, 'id' | 'type'>>
@@ -14,10 +18,14 @@ export type StepsActions = {
 }
 
 export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
-  createStep: (blockId: string, step: StepType | Step, index?: number) => {
+  createStep: (
+    blockId: string,
+    step: BubbleStepType | InputStepType | Step,
+    index?: number
+  ) => {
     setTypebot((typebot) => {
-      removeEmptyBlocks(typebot)
       createStepDraft(typebot, step, blockId, index)
+      removeEmptyBlocks(typebot)
     })
   },
   updateStep: (stepId: string, updates: Partial<Omit<Step, 'id' | 'type'>>) =>
@@ -28,6 +36,7 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     setTypebot((typebot) => {
       removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)
+      removeEmptyBlocks(typebot)
     })
   },
 })
@@ -56,7 +65,7 @@ export const deleteStepDraft = (
 
 export const createStepDraft = (
   typebot: WritableDraft<Typebot>,
-  step: StepType | Step,
+  step: BubbleStepType | InputStepType | Step,
   blockId: string,
   index?: number
 ) => {

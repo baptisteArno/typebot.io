@@ -106,3 +106,12 @@ export const uploadFile = async (file: File, key: string) => {
     url: upload.ok ? `${url}/${key}` : null,
   }
 }
+
+export const removeUndefinedFields = <T>(obj: T): T =>
+  Object.keys(obj).reduce(
+    (acc, key) =>
+      obj[key as keyof T] === undefined
+        ? { ...acc }
+        : { ...acc, [key]: obj[key as keyof T] },
+    {} as T
+  )

@@ -11,15 +11,15 @@ import { Block, Step } from 'models'
 import { SourceEndpoint } from './SourceEndpoint'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import { isDefined } from 'utils'
+import { isDefined, isTextBubbleStep } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
-import { StepContent } from './StepContent'
+import { StepNodeLabel } from './StepNodeLabel'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { StepNodeContextMenu } from './RightClickMenu'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
-import { isStepText } from 'services/typebots'
+import { DraggableStep } from 'contexts/DndContext'
 
 export const StepNode = ({
   step,
@@ -34,7 +34,7 @@ export const StepNode = ({
   onMouseMoveTopOfElement?: () => void
   onMouseDown?: (
     stepNodePosition: { absolute: Coordinates; relative: Coordinates },
-    step: Step
+    step: DraggableStep
   ) => void
 }) => {
   const { setConnectingIds, connectingIds } = useGraph()
@@ -43,7 +43,7 @@ export const StepNode = ({
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
   const [isEditing, setIsEditing] = useState<boolean>(
-    isStepText(step) && step.content.plainText === ''
+    isTextBubbleStep(step) && step.content.plainText === ''
   )
 
   useEffect(() => {
@@ -102,8 +102,8 @@ export const StepNode = ({
       mouseDownEvent &&
       onMouseDown &&
       (event.movementX > 0 || event.movementY > 0)
-    if (isMovingAndIsMouseDown) {
-      onMouseDown(mouseDownEvent, step as Step)
+    if (isMovingAndIsMouseDown && step.type !== 'start') {
+      onMouseDown(mouseDownEvent, step)
       deleteStep(step.id)
       setMouseDownEvent(undefined)
     }
@@ -142,7 +142,7 @@ export const StepNode = ({
     connectingIds?.target?.blockId,
   ])
 
-  return isEditing && isStepText(step) ? (
+  return isEditing && isTextBubbleStep(step) ? (
     <TextEditor
       stepId={step.id}
       initialValue={step.content.richText}
@@ -186,7 +186,7 @@ export const StepNode = ({
                 bgColor="white"
               >
                 <StepIcon type={step.type} />
-                <StepContent {...step} />
+                <StepNodeLabel {...step} />
                 {isConnectable && (
                   <SourceEndpoint
                     onConnectionDragStart={handleConnectionDragStart}

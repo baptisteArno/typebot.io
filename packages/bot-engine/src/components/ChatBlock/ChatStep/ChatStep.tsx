@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { InputStep, Step } from 'models'
-import { isTextInputStep, isTextStep } from '../../../services/utils'
+import { InputStep, InputStepType, Step } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { HostMessageBubble } from './bubbles/HostMessageBubble'
 import { TextInput } from './inputs/TextInput'
+import { isInputStep, isTextBubbleStep, isTextInputStep } from 'utils'
+import { NumberInput } from './inputs/NumberInput'
 
 export const ChatStep = ({
   step,
@@ -21,9 +22,9 @@ export const ChatStep = ({
     onTransitionEnd()
   }
 
-  if (isTextStep(step))
+  if (isTextBubbleStep(step))
     return <HostMessageBubble step={step} onTransitionEnd={onTransitionEnd} />
-  if (isTextInputStep(step))
+  if (isInputStep(step))
     return <InputChatStep step={step} onSubmit={handleInputSubmit} />
   return <span>No step</span>
 }
@@ -50,5 +51,10 @@ const InputChatStep = ({
   if (answer) {
     return <GuestBubble message={answer} />
   }
-  return <TextInput step={step} onSubmit={handleSubmit} />
+  switch (step.type) {
+    case InputStepType.TEXT:
+      return <TextInput step={step} onSubmit={handleSubmit} />
+    case InputStepType.NUMBER:
+      return <NumberInput step={step} onSubmit={handleSubmit} />
+  }
 }

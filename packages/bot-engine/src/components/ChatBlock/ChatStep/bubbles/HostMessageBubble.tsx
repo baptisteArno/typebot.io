@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHostAvatars } from '../../../../contexts/HostAvatarsContext'
 import { useTypebot } from '../../../../contexts/TypebotContext'
-import { StepType, TextStep } from 'models'
+import { BubbleStepType, StepType, TextStep } from 'models'
 import { computeTypingTimeout } from '../../../../services/chat'
 import { TypingContent } from './TypingContent'
 
@@ -62,7 +62,7 @@ export const HostMessageBubble = ({
           >
             {isTyping ? <TypingContent /> : <></>}
           </div>
-          {step.type === StepType.TEXT && (
+          {step.type === BubbleStepType.TEXT && (
             <p
               style={{
                 textOverflow: 'ellipsis',
