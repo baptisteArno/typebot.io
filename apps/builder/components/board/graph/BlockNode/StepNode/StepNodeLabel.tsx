@@ -32,6 +32,13 @@ export const StepNodeLabel = (props: Step | StartStep) => {
         </Text>
       )
     }
+    case InputStepType.EMAIL: {
+      return (
+        <Text color={'gray.500'}>
+          {props.options?.labels?.placeholder ?? 'Type your email...'}
+        </Text>
+      )
+    }
     case 'start': {
       return <Text>{props.label}</Text>
     }

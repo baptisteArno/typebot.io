@@ -4,9 +4,8 @@ import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
 import { InputStep, InputStepType, Step } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { HostMessageBubble } from './bubbles/HostMessageBubble'
-import { TextInput } from './inputs/TextInput'
-import { isInputStep, isTextBubbleStep, isTextInputStep } from 'utils'
-import { NumberInput } from './inputs/NumberInput'
+import { TextForm } from './inputs/TextForm'
+import { isInputStep, isTextBubbleStep } from 'utils'
 
 export const ChatStep = ({
   step,
@@ -53,8 +52,8 @@ const InputChatStep = ({
   }
   switch (step.type) {
     case InputStepType.TEXT:
-      return <TextInput step={step} onSubmit={handleSubmit} />
     case InputStepType.NUMBER:
-      return <NumberInput step={step} onSubmit={handleSubmit} />
+    case InputStepType.EMAIL:
+      return <TextForm step={step} onSubmit={handleSubmit} />
   }
 }

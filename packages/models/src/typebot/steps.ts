@@ -2,7 +2,7 @@ export type Step = StartStep | BubbleStep | InputStep
 
 export type BubbleStep = TextStep
 
-export type InputStep = TextInputStep | NumberInputStep
+export type InputStep = TextInputStep | NumberInputStep | EmailInputStep
 
 export type StepType = 'start' | BubbleStepType | InputStepType
 
@@ -13,6 +13,7 @@ export enum BubbleStepType {
 export enum InputStepType {
   TEXT = 'text input',
   NUMBER = 'number input',
+  EMAIL = 'email input',
 }
 
 export type StepBase = { id: string; blockId: string; target?: Target }
@@ -36,6 +37,13 @@ export type NumberInputStep = StepBase & {
   type: InputStepType.NUMBER
   options?: NumberInputOptions
 }
+
+export type EmailInputStep = StepBase & {
+  type: InputStepType.EMAIL
+  options?: EmailInputOptions
+}
+
+export type EmailInputOptions = InputOptionsBase
 
 type InputOptionsBase = {
   labels?: { placeholder?: string; button?: string }

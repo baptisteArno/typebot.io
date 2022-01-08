@@ -13,7 +13,7 @@ describe('Text input', () => {
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody().findByPlaceholderText('Type your answer...').should('exist')
-    getIframeBody().findByRole('button', { name: 'Send' })
+    getIframeBody().findByRole('button', { name: 'Send' }).should('exist')
     cy.findByTestId('step-step1').click({ force: true })
     cy.findByRole('textbox', { name: 'Placeholder:' })
       .clear()
@@ -37,12 +37,12 @@ describe('Number input', () => {
     cy.signOut()
   })
 
-  it.only('options should work', () => {
+  it('options should work', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody().findByPlaceholderText('Type your answer...').should('exist')
-    getIframeBody().findByRole('button', { name: 'Send' })
+    getIframeBody().findByRole('button', { name: 'Send' }).should('exist')
     cy.findByTestId('step-step1').click({ force: true })
     cy.findByRole('textbox', { name: 'Placeholder:' })
       .clear()
@@ -61,6 +61,31 @@ describe('Number input', () => {
       .type('150{enter}')
     getIframeBody().findByRole('button', { name: 'Go' })
     cy.findByTestId('step-step1').click({ force: true })
+  })
+})
+
+describe('Email input', () => {
+  beforeEach(() => {
+    cy.task('seed')
+    createTypebotWithStep({ type: InputStepType.EMAIL })
+    cy.signOut()
+  })
+
+  it.only('options should work', () => {
+    cy.signIn('test2@gmail.com')
+    cy.visit('/typebots/typebot3/edit')
+    cy.findByRole('button', { name: 'Preview' }).click()
+    getIframeBody().findByPlaceholderText('Type your email...').should('exist')
+    getIframeBody().findByRole('button', { name: 'Send' })
+    cy.findByTestId('step-step1').click({ force: true })
+    cy.findByRole('textbox', { name: 'Placeholder:' })
+      .clear()
+      .type('Your email...')
+    cy.findByRole('textbox', { name: 'Button label:' }).clear().type('Go')
+    cy.findByTestId('step-step1').should('contain.text', 'Your email...')
+    cy.findByRole('button', { name: 'Restart' }).click()
+    getIframeBody().findByPlaceholderText('Your email...').should('exist')
+    getIframeBody().findByRole('button', { name: 'Go' })
   })
 })
 

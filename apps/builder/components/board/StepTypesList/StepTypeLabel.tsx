@@ -13,6 +13,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.NUMBER: {
       return <Text>Number</Text>
     }
+    case InputStepType.EMAIL: {
+      return <Text>Email</Text>
+    }
     default: {
       return <></>
     }

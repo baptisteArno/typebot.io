@@ -1,4 +1,10 @@
-import { ChatIcon, FlagIcon, NumberIcon, TextIcon } from 'assets/icons'
+import {
+  ChatIcon,
+  EmailIcon,
+  FlagIcon,
+  NumberIcon,
+  TextIcon,
+} from 'assets/icons'
 import { BubbleStepType, InputStepType, StepType } from 'models'
 import React from 'react'
 
@@ -14,6 +20,9 @@ export const StepIcon = ({ type }: StepIconProps) => {
     }
     case InputStepType.NUMBER: {
       return <NumberIcon />
+    }
+    case InputStepType.EMAIL: {
+      return <EmailIcon />
     }
     case 'start': {
       return <FlagIcon />
