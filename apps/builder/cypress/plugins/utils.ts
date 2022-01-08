@@ -72,3 +72,8 @@ export const parseTestTypebot = ({
     updatedAt: new Date(),
   }
 }
+
+export const preventUserFromRefreshing = (e: BeforeUnloadEvent) => {
+  e.preventDefault()
+  e.returnValue = ''
+}

@@ -1,4 +1,7 @@
-import { parseTestTypebot } from 'cypress/plugins/utils'
+import {
+  parseTestTypebot,
+  preventUserFromRefreshing,
+} from 'cypress/plugins/utils'
 import { BubbleStepType } from 'models'
 
 describe('Text bubbles', () => {
@@ -35,6 +38,12 @@ describe('Text bubbles', () => {
       })
     )
     cy.signOut()
+  })
+
+  afterEach(() => {
+    cy.window().then((win) => {
+      win.removeEventListener('beforeunload', preventUserFromRefreshing)
+    })
   })
 
   it('rich text features should work', () => {

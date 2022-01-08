@@ -38,6 +38,12 @@ declare global {
   }
 }
 
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+    return false
+  }
+})
+
 // Import commands.js using ES2015 syntax:
 import '@testing-library/cypress/add-commands'
 import 'cypress-file-upload'

@@ -1,4 +1,7 @@
-import { parseTestTypebot } from 'cypress/plugins/utils'
+import {
+  parseTestTypebot,
+  preventUserFromRefreshing,
+} from 'cypress/plugins/utils'
 import { InputStep, InputStepType } from 'models'
 
 describe('Text input', () => {
@@ -6,6 +9,12 @@ describe('Text input', () => {
     cy.task('seed')
     createTypebotWithStep({ type: InputStepType.TEXT })
     cy.signOut()
+  })
+
+  afterEach(() => {
+    cy.window().then((win) => {
+      win.removeEventListener('beforeunload', preventUserFromRefreshing)
+    })
   })
 
   it('options should work', () => {
@@ -71,7 +80,7 @@ describe('Email input', () => {
     cy.signOut()
   })
 
-  it.only('options should work', () => {
+  it('options should work', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
