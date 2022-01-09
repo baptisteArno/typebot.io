@@ -4,6 +4,7 @@ import { InputStepType, Step, TextInputOptions } from 'models'
 import { EmailInputSettingsBody } from './EmailInputSettingsBody'
 import { NumberInputSettingsBody } from './NumberInputSettingsBody'
 import { TextInputSettingsBody } from './TextInputSettingsBody'
+import { UrlInputSettingsBody } from './UrlInputSettingsBody'
 
 type Props = {
   step: Step
@@ -46,6 +47,14 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
     case InputStepType.EMAIL: {
       return (
         <EmailInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.URL: {
+      return (
+        <UrlInputSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

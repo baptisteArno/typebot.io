@@ -1,0 +1,46 @@
+import { FormLabel, Stack } from '@chakra-ui/react'
+import { DebouncedInput } from 'components/shared/DebouncedInput'
+import { UrlInputOptions } from 'models'
+import React from 'react'
+
+type UrlInputSettingsBodyProps = {
+  options?: UrlInputOptions
+  onOptionsChange: (options: UrlInputOptions) => void
+}
+
+export const UrlInputSettingsBody = ({
+  options,
+  onOptionsChange,
+}: UrlInputSettingsBodyProps) => {
+  const handlePlaceholderChange = (placeholder: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
+  const handleButtonLabelChange = (button: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+
+  return (
+    <Stack spacing={4}>
+      <Stack>
+        <FormLabel mb="0" htmlFor="placeholder">
+          Placeholder:
+        </FormLabel>
+        <DebouncedInput
+          id="placeholder"
+          initialValue={options?.labels?.placeholder ?? 'Type your URL...'}
+          delay={100}
+          onChange={handlePlaceholderChange}
+        />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="button">
+          Button label:
+        </FormLabel>
+        <DebouncedInput
+          id="button"
+          initialValue={options?.labels?.button ?? 'Send'}
+          delay={100}
+          onChange={handleButtonLabelChange}
+        />
+      </Stack>
+    </Stack>
+  )
+}

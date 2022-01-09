@@ -1,10 +1,15 @@
-import { EmailInputStep, NumberInputStep, TextInputStep } from 'models'
+import {
+  EmailInputStep,
+  NumberInputStep,
+  TextInputStep,
+  UrlInputStep,
+} from 'models'
 import React, { FormEvent, useState } from 'react'
 import { SendIcon } from '../../../../../assets/icons'
 import { TextInput } from './TextInputContent'
 
 type TextFormProps = {
-  step: TextInputStep | EmailInputStep | NumberInputStep
+  step: TextInputStep | EmailInputStep | NumberInputStep | UrlInputStep
   onSubmit: (value: string) => void
 }
 

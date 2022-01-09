@@ -3,6 +3,7 @@ import {
   EmailInputStep,
   NumberInputStep,
   InputStepType,
+  UrlInputStep,
 } from 'models'
 import React, {
   ChangeEvent,
@@ -13,7 +14,7 @@ import React, {
 } from 'react'
 
 type TextInputProps = {
-  step: TextInputStep | EmailInputStep | NumberInputStep
+  step: TextInputStep | EmailInputStep | NumberInputStep | UrlInputStep
   onChange: (value: string) => void
 }
 
@@ -74,6 +75,16 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           min={step.options?.min}
           max={step.options?.max}
           step={step.options?.step}
+        />
+      )
+    }
+    case InputStepType.URL: {
+      return (
+        <ShortTextInput
+          ref={inputRef}
+          placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
+          onChange={handleInputChange}
+          type="url"
         />
       )
     }

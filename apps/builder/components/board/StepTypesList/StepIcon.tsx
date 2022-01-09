@@ -2,6 +2,7 @@ import {
   ChatIcon,
   EmailIcon,
   FlagIcon,
+  GlobeIcon,
   NumberIcon,
   TextIcon,
 } from 'assets/icons'
@@ -23,6 +24,9 @@ export const StepIcon = ({ type }: StepIconProps) => {
     }
     case InputStepType.EMAIL: {
       return <EmailIcon />
+    }
+    case InputStepType.URL: {
+      return <GlobeIcon />
     }
     case 'start': {
       return <FlagIcon />

@@ -39,6 +39,13 @@ export const StepNodeLabel = (props: Step | StartStep) => {
         </Text>
       )
     }
+    case InputStepType.URL: {
+      return (
+        <Text color={'gray.500'}>
+          {props.options?.labels?.placeholder ?? 'Type your URL...'}
+        </Text>
+      )
+    }
     case 'start': {
       return <Text>{props.label}</Text>
     }
