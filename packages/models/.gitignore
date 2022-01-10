@@ -3,5 +3,4 @@ node_modules
 .env
 
 dist
-types
 yarn-error.log

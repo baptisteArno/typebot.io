@@ -22,6 +22,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.DATE: {
       return <Text>Date</Text>
     }
+    case InputStepType.PHONE: {
+      return <Text>Phone</Text>
+    }
     default: {
       return <></>
     }

@@ -6,6 +6,7 @@ export type InputStep =
   | EmailInputStep
   | UrlInputStep
   | DateInputStep
+  | PhoneNumberInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
@@ -13,6 +14,7 @@ export enum InputStepType {
   EMAIL = 'email input',
   URL = 'url input',
   DATE = 'date input',
+  PHONE = 'phone number input',
 }
 
 export type TextInputStep = StepBase & {
@@ -38,6 +40,11 @@ export type UrlInputStep = StepBase & {
 export type DateInputStep = StepBase & {
   type: InputStepType.DATE
   options?: DateInputOptions
+}
+
+export type PhoneNumberInputStep = StepBase & {
+  type: InputStepType.PHONE
+  options?: InputOptionsBase
 }
 
 export type DateInputOptions = {

@@ -1,6 +1,7 @@
 import {
   EmailInputStep,
   NumberInputStep,
+  PhoneNumberInputStep,
   TextInputStep,
   UrlInputStep,
 } from 'models'
@@ -9,7 +10,12 @@ import { SendButton } from '../SendButton'
 import { TextInput } from './TextInputContent'
 
 type TextFormProps = {
-  step: TextInputStep | EmailInputStep | NumberInputStep | UrlInputStep
+  step:
+    | TextInputStep
+    | EmailInputStep
+    | NumberInputStep
+    | UrlInputStep
+    | PhoneNumberInputStep
   onSubmit: (value: string) => void
 }
 

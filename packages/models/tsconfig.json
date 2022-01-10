@@ -7,7 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
-    "declarationDir": "./types",
+    "declarationDir": "./dist/types",
     "outDir": "./dist"
   }
 }

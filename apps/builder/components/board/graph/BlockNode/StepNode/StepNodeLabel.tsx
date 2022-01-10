@@ -53,6 +53,13 @@ export const StepNodeLabel = (props: Step | StartStep) => {
         </Text>
       )
     }
+    case InputStepType.PHONE: {
+      return (
+        <Text color={'gray.500'}>
+          {props.options?.labels?.placeholder ?? 'Your phone number...'}
+        </Text>
+      )
+    }
     case 'start': {
       return <Text>{props.label}</Text>
     }

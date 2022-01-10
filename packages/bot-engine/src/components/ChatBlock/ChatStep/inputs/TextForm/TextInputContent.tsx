@@ -4,6 +4,7 @@ import {
   NumberInputStep,
   InputStepType,
   UrlInputStep,
+  PhoneNumberInputStep,
 } from 'models'
 import React, {
   ChangeEvent,
@@ -12,14 +13,20 @@ import React, {
   useEffect,
   useRef,
 } from 'react'
+import PhoneInput, { Value } from 'react-phone-number-input'
 
 type TextInputProps = {
-  step: TextInputStep | EmailInputStep | NumberInputStep | UrlInputStep
+  step:
+    | TextInputStep
+    | EmailInputStep
+    | NumberInputStep
+    | UrlInputStep
+    | PhoneNumberInputStep
   onChange: (value: string) => void
 }
 
 export const TextInput = ({ step, onChange }: TextInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<any>(null)
 
   useEffect(() => {
     if (!inputRef.current) return
@@ -29,6 +36,10 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => onChange(e.target.value)
+
+  const handlePhoneNumberChange = (value?: Value | undefined) => {
+    onChange(value as string)
+  }
 
   switch (step.type) {
     case InputStepType.TEXT: {
@@ -85,6 +96,17 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
           onChange={handleInputChange}
           type="url"
+        />
+      )
+    }
+    case InputStepType.PHONE: {
+      return (
+        <PhoneInput
+          ref={inputRef}
+          onChange={handlePhoneNumberChange}
+          placeholder={
+            step.options?.labels?.placeholder ?? 'Your phone number...'
+          }
         />
       )
     }

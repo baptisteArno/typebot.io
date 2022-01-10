@@ -3,6 +3,8 @@ import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
 //@ts-ignore
 import style from '../assets/style.css'
+//@ts-ignore
+import phoneNumberInputStyle from 'react-phone-number-input/style.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
 import { Answer, BackgroundType, PublicTypebot } from 'models'
@@ -39,7 +41,12 @@ export const TypebotViewer = ({
   return (
     <Frame
       id="typebot-iframe"
-      head={<style>{style}</style>}
+      head={
+        <style>
+          {phoneNumberInputStyle}
+          {style}
+        </style>
+      }
       style={{ width: '100%', height: '100%', border: 'none' }}
     >
       <style

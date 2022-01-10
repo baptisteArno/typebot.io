@@ -5,6 +5,7 @@ import {
   FlagIcon,
   GlobeIcon,
   NumberIcon,
+  PhoneIcon,
   TextIcon,
 } from 'assets/icons'
 import { BubbleStepType, InputStepType, StepType } from 'models'
@@ -31,6 +32,9 @@ export const StepIcon = ({ type }: StepIconProps) => {
     }
     case InputStepType.DATE: {
       return <CalendarIcon />
+    }
+    case InputStepType.PHONE: {
+      return <PhoneIcon />
     }
     case 'start': {
       return <FlagIcon />

@@ -38,6 +38,10 @@
   --typebot-header-border: none;
   --typebot-header-shadow: none;
   --typebot-header-max-width: 1000px;
+
+  /* Phone input */
+  --PhoneInputCountryFlag-borderColor: transparent;
+  --PhoneInput-color--focus: transparent;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

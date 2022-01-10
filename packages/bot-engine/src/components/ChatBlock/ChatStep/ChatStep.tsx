@@ -56,6 +56,7 @@ const InputChatStep = ({
     case InputStepType.NUMBER:
     case InputStepType.EMAIL:
     case InputStepType.URL:
+    case InputStepType.PHONE:
       return <TextForm step={step} onSubmit={handleSubmit} />
     case InputStepType.DATE:
       return <DateForm options={step.options} onSubmit={handleSubmit} />

@@ -8,6 +8,7 @@ import {
   UrlInputSettingsBody,
   DateInputSettingsBody,
 } from './bodies'
+import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 
 type Props = {
   step: Step
@@ -66,6 +67,14 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
     case InputStepType.DATE: {
       return (
         <DateInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.PHONE: {
+      return (
+        <PhoneNumberSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />
