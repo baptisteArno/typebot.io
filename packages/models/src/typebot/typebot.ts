@@ -1,7 +1,7 @@
 import { Typebot as TypebotFromPrisma } from 'db'
 import { Table } from '../utils'
 import { Settings } from './settings'
-import { Step } from './steps'
+import { Step } from './steps/steps'
 import { Theme } from './theme'
 
 export type Typebot = Omit<

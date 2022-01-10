@@ -6,6 +6,7 @@ import { GuestBubble } from './bubbles/GuestBubble'
 import { HostMessageBubble } from './bubbles/HostMessageBubble'
 import { TextForm } from './inputs/TextForm'
 import { isInputStep, isTextBubbleStep } from 'utils'
+import { DateForm } from './inputs/DateForm'
 
 export const ChatStep = ({
   step,
@@ -56,5 +57,7 @@ const InputChatStep = ({
     case InputStepType.EMAIL:
     case InputStepType.URL:
       return <TextForm step={step} onSubmit={handleSubmit} />
+    case InputStepType.DATE:
+      return <DateForm options={step.options} onSubmit={handleSubmit} />
   }
 }

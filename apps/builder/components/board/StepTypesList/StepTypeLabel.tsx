@@ -19,6 +19,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.URL: {
       return <Text>Website</Text>
     }
+    case InputStepType.DATE: {
+      return <Text>Date</Text>
+    }
     default: {
       return <></>
     }

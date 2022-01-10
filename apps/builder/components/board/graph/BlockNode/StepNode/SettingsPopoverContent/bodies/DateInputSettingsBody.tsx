@@ -1,0 +1,80 @@
+import { FormLabel, Stack } from '@chakra-ui/react'
+import { DebouncedInput } from 'components/shared/DebouncedInput'
+import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { DateInputOptions } from 'models'
+import React from 'react'
+
+type DateInputSettingsBodyProps = {
+  options?: DateInputOptions
+  onOptionsChange: (options: DateInputOptions) => void
+}
+
+export const DateInputSettingsBody = ({
+  options,
+  onOptionsChange,
+}: DateInputSettingsBodyProps) => {
+  const handleFromChange = (from: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, from } })
+  const handleToChange = (to: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, to } })
+  const handleButtonLabelChange = (button: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+  const handleIsRangeChange = (isRange: boolean) =>
+    onOptionsChange({ ...options, isRange })
+  const handleHasTimeChange = (hasTime: boolean) =>
+    onOptionsChange({ ...options, hasTime })
+
+  return (
+    <Stack spacing={4}>
+      <SwitchWithLabel
+        id="is-range"
+        label={'Is range?'}
+        initialValue={options?.isRange ?? false}
+        onCheckChange={handleIsRangeChange}
+      />
+      <SwitchWithLabel
+        id="with-time"
+        label={'With time?'}
+        initialValue={options?.isRange ?? false}
+        onCheckChange={handleHasTimeChange}
+      />
+      {options?.isRange && (
+        <Stack>
+          <FormLabel mb="0" htmlFor="from">
+            From label:
+          </FormLabel>
+          <DebouncedInput
+            id="from"
+            initialValue={options?.labels?.from ?? 'From:'}
+            delay={100}
+            onChange={handleFromChange}
+          />
+        </Stack>
+      )}
+      {options?.isRange && (
+        <Stack>
+          <FormLabel mb="0" htmlFor="to">
+            To label:
+          </FormLabel>
+          <DebouncedInput
+            id="to"
+            initialValue={options?.labels?.to ?? 'To:'}
+            delay={100}
+            onChange={handleToChange}
+          />
+        </Stack>
+      )}
+      <Stack>
+        <FormLabel mb="0" htmlFor="button">
+          Button label:
+        </FormLabel>
+        <DebouncedInput
+          id="button"
+          initialValue={options?.labels?.button ?? 'Send'}
+          delay={100}
+          onChange={handleButtonLabelChange}
+        />
+      </Stack>
+    </Stack>
+  )
+}

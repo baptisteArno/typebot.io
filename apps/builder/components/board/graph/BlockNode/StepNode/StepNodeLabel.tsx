@@ -46,6 +46,13 @@ export const StepNodeLabel = (props: Step | StartStep) => {
         </Text>
       )
     }
+    case InputStepType.DATE: {
+      return (
+        <Text color={'gray.500'}>
+          {props.options?.labels?.from ?? 'Pick a date...'}
+        </Text>
+      )
+    }
     case 'start': {
       return <Text>{props.label}</Text>
     }

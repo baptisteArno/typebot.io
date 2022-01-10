@@ -1,10 +1,13 @@
 import { PopoverContent, PopoverArrow, PopoverBody } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { InputStepType, Step, TextInputOptions } from 'models'
-import { EmailInputSettingsBody } from './EmailInputSettingsBody'
-import { NumberInputSettingsBody } from './NumberInputSettingsBody'
-import { TextInputSettingsBody } from './TextInputSettingsBody'
-import { UrlInputSettingsBody } from './UrlInputSettingsBody'
+import {
+  TextInputSettingsBody,
+  NumberInputSettingsBody,
+  EmailInputSettingsBody,
+  UrlInputSettingsBody,
+  DateInputSettingsBody,
+} from './bodies'
 
 type Props = {
   step: Step
@@ -55,6 +58,14 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
     case InputStepType.URL: {
       return (
         <UrlInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.DATE: {
+      return (
+        <DateInputSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

@@ -1,4 +1,5 @@
 import {
+  CalendarIcon,
   ChatIcon,
   EmailIcon,
   FlagIcon,
@@ -27,6 +28,9 @@ export const StepIcon = ({ type }: StepIconProps) => {
     }
     case InputStepType.URL: {
       return <GlobeIcon />
+    }
+    case InputStepType.DATE: {
+      return <CalendarIcon />
     }
     case 'start': {
       return <FlagIcon />

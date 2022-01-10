@@ -1,36 +1,18 @@
-export type Step = StartStep | BubbleStep | InputStep
-
-export type BubbleStep = TextStep
+import { StepBase } from './steps'
 
 export type InputStep =
   | TextInputStep
   | NumberInputStep
   | EmailInputStep
   | UrlInputStep
-
-export type StepType = 'start' | BubbleStepType | InputStepType
-
-export enum BubbleStepType {
-  TEXT = 'text',
-}
+  | DateInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
   NUMBER = 'number input',
   EMAIL = 'email input',
   URL = 'url input',
-}
-
-export type StepBase = { id: string; blockId: string; target?: Target }
-
-export type StartStep = StepBase & {
-  type: 'start'
-  label: string
-}
-
-export type TextStep = StepBase & {
-  type: BubbleStepType.TEXT
-  content: { html: string; richText: unknown[]; plainText: string }
+  DATE = 'date input',
 }
 
 export type TextInputStep = StepBase & {
@@ -53,6 +35,17 @@ export type UrlInputStep = StepBase & {
   options?: UrlInputOptions
 }
 
+export type DateInputStep = StepBase & {
+  type: InputStepType.DATE
+  options?: DateInputOptions
+}
+
+export type DateInputOptions = {
+  labels?: { button?: string; from?: string; to?: string }
+  hasTime?: boolean
+  isRange?: boolean
+}
+
 export type EmailInputOptions = InputOptionsBase
 
 export type UrlInputOptions = InputOptionsBase
@@ -70,5 +63,3 @@ export type NumberInputOptions = InputOptionsBase & {
   max?: number
   step?: number
 }
-
-export type Target = { blockId: string; stepId?: string }
