@@ -1,6 +1,7 @@
 import { InputStepType, PublicTypebot, Typebot } from 'models'
 import { Plan, PrismaClient } from 'db'
 import { parseTestTypebot } from './utils'
+import { userIds } from './data'
 
 const prisma = new PrismaClient()
 
@@ -21,9 +22,9 @@ export const createTypebot = (typebot: Typebot) =>
 const createUsers = () =>
   prisma.user.createMany({
     data: [
-      { id: 'test1', email: 'test1@gmail.com', emailVerified: new Date() },
+      { id: userIds[0], email: 'test1@gmail.com', emailVerified: new Date() },
       {
-        id: 'test2',
+        id: userIds[1],
         email: 'test2@gmail.com',
         emailVerified: new Date(),
         plan: Plan.PRO,
@@ -34,7 +35,7 @@ const createUsers = () =>
 
 const createFolders = () =>
   prisma.dashboardFolder.createMany({
-    data: [{ ownerId: 'test2', name: 'Folder #1', id: 'folder1' }],
+    data: [{ ownerId: userIds[1], name: 'Folder #1', id: 'folder1' }],
   })
 
 const createTypebots = async () => {
@@ -42,7 +43,7 @@ const createTypebots = async () => {
     ...parseTestTypebot({
       id: 'typebot2',
       name: 'Typebot #2',
-      ownerId: 'test2',
+      ownerId: userIds[1],
       blocks: {
         byId: {
           block1: {
@@ -72,7 +73,7 @@ const createTypebots = async () => {
         ...parseTestTypebot({
           id: 'typebot1',
           name: 'Typebot #1',
-          ownerId: 'test2',
+          ownerId: userIds[1],
           blocks: { byId: {}, allIds: [] },
           steps: { byId: {}, allIds: [] },
         }),
@@ -129,3 +130,6 @@ const parseTypebotToPublicTypebot = (
   publicId: typebot.publicId,
   choiceItems: typebot.choiceItems,
 })
+
+export const loadRawTypebotInDatabase = (typebot: Typebot) =>
+  prisma.typebot.create({ data: { ...typebot, ownerId: userIds[1] } as any })

@@ -1,3 +1,4 @@
+import { userIds } from 'cypress/plugins/data'
 import {
   parseTestTypebot,
   preventUserFromRefreshing,
@@ -12,7 +13,7 @@ describe('Text bubbles', () => {
       parseTestTypebot({
         id: 'typebot3',
         name: 'Typebot #3',
-        ownerId: 'test2',
+        ownerId: userIds[1],
         steps: {
           byId: {
             step1: {

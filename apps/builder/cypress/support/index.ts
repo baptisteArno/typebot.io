@@ -20,6 +20,7 @@ declare global {
     interface Chainable {
       signOut(): Chainable<any>
       signIn(email: string): Chainable<any>
+      loadTypebotFixtureInDatabase(path: string): Chainable<any>
       mouseMoveBy(
         x: number,
         y: number,

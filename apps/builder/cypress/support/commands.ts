@@ -12,6 +12,12 @@ Cypress.Commands.add('signIn', (email: string) => {
   })
 })
 
+Cypress.Commands.add('loadTypebotFixtureInDatabase', (path: string) => {
+  return cy.fixture(path).then((typebot) => {
+    cy.task('loadRawTypebotInDatabase', typebot)
+  })
+})
+
 Cypress.Commands.add(
   'mouseMoveBy',
   {

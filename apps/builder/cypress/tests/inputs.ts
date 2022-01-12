@@ -1,3 +1,4 @@
+import { userIds } from 'cypress/plugins/data'
 import {
   parseTestTypebot,
   preventUserFromRefreshing,
@@ -213,7 +214,7 @@ describe('Button input', () => {
     cy.signOut()
   })
 
-  it('Can edit choice items', () => {
+  it.only('Can edit choice items', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByDisplayValue('Click to edit').type('Item 1{enter}')
@@ -249,7 +250,15 @@ describe('Button input', () => {
   })
 
   it('Single choice targets should work', () => {
-    //TO-DO
+    cy.loadTypebotFixtureInDatabase('typebots/singleChoiceTarget.json')
+    cy.signIn('test2@gmail.com')
+    cy.visit('/typebots/typebot4/edit')
+    cy.findByRole('button', { name: 'Preview' }).click()
+    getIframeBody().findByRole('button', { name: 'Burgers' }).click()
+    getIframeBody().findByText('I love burgers!').should('exist')
+    cy.findByRole('button', { name: 'Restart' }).click()
+    getIframeBody().findByRole('button', { name: 'Carpaccio' }).click()
+    getIframeBody().findByText('Cool!').should('exist')
   })
 })
 
@@ -259,7 +268,7 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
     parseTestTypebot({
       id: 'typebot3',
       name: 'Typebot #3',
-      ownerId: 'test2',
+      ownerId: userIds[1],
       steps: {
         byId: {
           step1: {

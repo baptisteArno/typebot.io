@@ -1,3 +1,5 @@
+import { userIds } from 'cypress/plugins/data'
+
 describe('Dashboard page', () => {
   before(() => {
     cy.intercept({
@@ -33,7 +35,7 @@ describe('Dashboard page', () => {
       .should('have.attr', 'src')
       .should(
         'include',
-        'https://s3.eu-west-3.amazonaws.com/typebot/test1/avatar'
+        `https://s3.eu-west-3.amazonaws.com/typebot/${userIds[0]}/avatar`
       )
     cy.findByRole('button', { name: 'Save' }).should('exist').click()
     cy.wait('@getUpdatedSession')
@@ -43,7 +45,7 @@ describe('Dashboard page', () => {
       .should('have.attr', 'src')
       .should(
         'include',
-        'https://s3.eu-west-3.amazonaws.com/typebot/test1/avatar'
+        `https://s3.eu-west-3.amazonaws.com/typebot/${userIds[0]}/avatar`
       )
     cy.findByRole('button', { name: 'Save' }).should('not.exist')
   })
