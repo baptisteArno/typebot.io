@@ -6,6 +6,7 @@ import { StepTypesList } from './StepTypesList'
 import { PreviewDrawer } from './preview/PreviewDrawer'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
 import { GraphProvider } from 'contexts/GraphContext'
+import { BoardMenuButton } from './BoardMenuButton'
 
 export const Board = () => {
   const { rightPanel } = useEditor()
@@ -16,6 +17,7 @@ export const Board = () => {
         <GraphProvider>
           <Graph flex="1" />
           {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
+          <BoardMenuButton pos="absolute" right="20px" top="20px" />
         </GraphProvider>
       </DndContext>
     </Flex>
