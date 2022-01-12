@@ -27,6 +27,7 @@ import { isDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { useImmer, Updater } from 'use-immer'
 import { stepsAction, StepsActions } from './actions/steps'
+import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -46,7 +47,8 @@ const typebotContext = createContext<
     updateTypebot: (updates: UpdateTypebotPayload) => void
     publishTypebot: () => void
   } & BlocksActions &
-    StepsActions
+    StepsActions &
+    ChoiceItemsActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
@@ -202,6 +204,7 @@ export const TypebotContext = ({
         updateTypebot: updateLocalTypebot,
         ...blocksActions(setLocalTypebot as Updater<Typebot>),
         ...stepsAction(setLocalTypebot as Updater<Typebot>),
+        ...choiceItemsAction(setLocalTypebot as Updater<Typebot>),
       }}
     >
       {children}

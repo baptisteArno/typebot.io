@@ -27,6 +27,8 @@ export const blockAnchorsOffset = {
 export const firstStepOffsetY = 88
 export const spaceBetweenSteps = 62
 
+export const firstChoiceItemOffsetY = 20
+
 export type Coordinates = { x: number; y: number }
 
 type Position = Coordinates & { scale: number }
@@ -43,18 +45,24 @@ export type Node = Omit<Block, 'steps'> & {
 
 const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
 
-type ConnectingIdsProps = {
-  source: { blockId: string; stepId: string }
+export type ConnectingIds = {
+  source: ConnectingSourceIds
   target?: Target
-} | null
+}
+
+export type ConnectingSourceIds = {
+  blockId: string
+  stepId: string
+  choiceItemId?: string
+}
 
 type PreviewingIdsProps = { sourceId?: string; targetId?: string }
 
 const graphContext = createContext<{
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
-  connectingIds: ConnectingIdsProps
-  setConnectingIds: Dispatch<SetStateAction<ConnectingIdsProps>>
+  connectingIds: ConnectingIds | null
+  setConnectingIds: Dispatch<SetStateAction<ConnectingIds | null>>
   previewingIds: PreviewingIdsProps
   setPreviewingIds: Dispatch<SetStateAction<PreviewingIdsProps>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -66,7 +74,7 @@ const graphContext = createContext<{
 
 export const GraphProvider = ({ children }: { children: ReactNode }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
-  const [connectingIds, setConnectingIds] = useState<ConnectingIdsProps>(null)
+  const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
   const [previewingIds, setPreviewingIds] = useState<PreviewingIdsProps>({})
 
   return (

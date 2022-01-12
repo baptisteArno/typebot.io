@@ -10,6 +10,7 @@ import {
   InputStep,
   BubbleStepType,
   InputStepType,
+  ChoiceInputStep,
 } from 'models'
 import shortId from 'short-uuid'
 import { Typebot } from 'models'
@@ -122,6 +123,17 @@ export const parseNewStep = (
         ...textStep,
       }
     }
+    case InputStepType.CHOICE: {
+      const choiceInput: Pick<ChoiceInputStep, 'type' | 'options'> = {
+        type,
+        options: { itemIds: [] },
+      }
+      return {
+        id,
+        blockId,
+        ...choiceInput,
+      }
+    }
     default: {
       return {
         id,
@@ -201,6 +213,7 @@ export const parseNewTypebot = ({
     ownerId,
     blocks: { byId: { [startBlockId]: startBlock }, allIds: [startBlockId] },
     steps: { byId: { [startStepId]: startStep }, allIds: [startStepId] },
+    choiceItems: { byId: {}, allIds: [] },
     theme,
     settings,
   }

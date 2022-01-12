@@ -21,12 +21,11 @@ type Props = {
 
 export const BlockNode = ({ block }: Props) => {
   const { connectingIds, setConnectingIds, previewingIds } = useGraph()
-  const { typebot, updateBlock, createStep } = useTypebot()
-  const { draggedStep, draggedStepType, setDraggedStepType, setDraggedStep } =
-    useDnd()
+  const { typebot, updateBlock } = useTypebot()
+  const { setMouseOverBlockId } = useDnd()
+  const { draggedStep, draggedStepType } = useDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [titleValue, setTitleValue] = useState(block.title)
-  const [showSortPlaceholders, setShowSortPlaceholders] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
   const isPreviewing = useMemo(
     () =>
@@ -66,26 +65,14 @@ export const BlockNode = ({ block }: Props) => {
   useEventListener('mousemove', handleMouseMove)
 
   const handleMouseEnter = () => {
-    if (draggedStepType || draggedStep) setShowSortPlaceholders(true)
+    if (draggedStepType || draggedStep) setMouseOverBlockId(block.id)
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { blockId: block.id } })
   }
 
   const handleMouseLeave = () => {
-    setShowSortPlaceholders(false)
+    setMouseOverBlockId(undefined)
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
-  }
-
-  const handleStepDrop = (index: number) => {
-    setShowSortPlaceholders(false)
-    if (draggedStepType) {
-      createStep(block.id, draggedStepType, index)
-      setDraggedStepType(undefined)
-    }
-    if (draggedStep) {
-      createStep(block.id, draggedStep, index)
-      setDraggedStep(undefined)
-    }
   }
 
   return (
@@ -125,8 +112,6 @@ export const BlockNode = ({ block }: Props) => {
             <StepsList
               blockId={block.id}
               steps={filterTable(block.stepIds, typebot?.steps)}
-              showSortPlaceholders={showSortPlaceholders}
-              onMouseUp={handleStepDrop}
             />
           )}
         </Stack>

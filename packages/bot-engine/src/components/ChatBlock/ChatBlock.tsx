@@ -4,18 +4,21 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { Step, Table } from 'models'
+import { ChoiceInputStep, Step } from 'models'
+import { useTypebot } from '../../contexts/TypebotContext'
+import { isChoiceInput } from 'utils'
 
 type ChatBlockProps = {
-  steps: Table<Step>
+  stepIds: string[]
   onBlockEnd: (nextBlockId?: string) => void
 }
 
-export const ChatBlock = ({ steps, onBlockEnd }: ChatBlockProps) => {
+export const ChatBlock = ({ stepIds, onBlockEnd }: ChatBlockProps) => {
+  const { typebot } = useTypebot()
   const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
 
   useEffect(() => {
-    setDisplayedSteps([steps.byId[steps.allIds[0]]])
+    setDisplayedSteps([typebot.steps.byId[stepIds[0]]])
   }, [])
 
   useEffect(() => {
@@ -29,15 +32,34 @@ export const ChatBlock = ({ steps, onBlockEnd }: ChatBlockProps) => {
     })
   }
 
-  const displayNextStep = () => {
+  const displayNextStep = (answerContent?: string) => {
     const currentStep = [...displayedSteps].pop()
+    if (!currentStep) throw new Error('currentStep should exist')
+    const isSingleChoiceStep =
+      isChoiceInput(currentStep) && !currentStep.options.isMultipleChoice
+    if (isSingleChoiceStep)
+      return onBlockEnd(getSingleChoiceTargetId(currentStep, answerContent))
     if (
       currentStep?.target?.blockId ||
-      displayedSteps.length === steps.allIds.length
+      displayedSteps.length === stepIds.length
     )
       return onBlockEnd(currentStep?.target?.blockId)
-    const nextStep = steps.byId[displayedSteps.length]
+    const nextStep = typebot.steps.byId[stepIds[displayedSteps.length]]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
+  }
+
+  const getSingleChoiceTargetId = (
+    currentStep: ChoiceInputStep,
+    answerContent?: string
+  ) => {
+    const itemId = currentStep.options.itemIds.find(
+      (itemId) => typebot.choiceItems.byId[itemId].content === answerContent
+    )
+    if (!itemId) throw new Error('itemId should exist')
+    const targetId =
+      typebot.choiceItems.byId[itemId].target?.blockId ??
+      currentStep.target?.blockId
+    return targetId
   }
 
   return (

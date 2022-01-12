@@ -28,12 +28,12 @@ export const Edge = ({ stepId }: Props) => {
 
   const path = useMemo(() => {
     if (!sourceBlock || !targetBlock) return ``
-    const anchorsPosition = getAnchorsPosition(
+    const anchorsPosition = getAnchorsPosition({
       sourceBlock,
       targetBlock,
-      sourceBlock.stepIds.indexOf(stepId),
-      targetStepIndex
-    )
+      sourceStepIndex: sourceBlock.stepIds.indexOf(stepId),
+      sourceChoiceItemIndex: targetStepIndex,
+    })
     return computeFlowChartConnectorPath(anchorsPosition)
   }, [sourceBlock, stepId, targetBlock, targetStepIndex])
 

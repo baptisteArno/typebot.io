@@ -1,4 +1,5 @@
 import { Typebot as TypebotFromPrisma } from 'db'
+import { ChoiceItem } from './steps/inputs'
 import { Table } from '../utils'
 import { Settings } from './settings'
 import { Step } from './steps/steps'
@@ -10,6 +11,7 @@ export type Typebot = Omit<
 > & {
   blocks: Table<Block>
   steps: Table<Step>
+  choiceItems: Table<ChoiceItem>
   theme: Theme
   settings: Settings
 }

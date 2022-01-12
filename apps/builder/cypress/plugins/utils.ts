@@ -6,6 +6,7 @@ import {
   Typebot,
   Table,
   Step,
+  ChoiceItem,
 } from 'models'
 
 export const parseTestTypebot = ({
@@ -14,12 +15,14 @@ export const parseTestTypebot = ({
   name,
   blocks,
   steps,
+  choiceItems,
 }: {
   id: string
   ownerId: string
   name: string
   blocks: Table<Block>
   steps: Table<Step>
+  choiceItems?: Table<ChoiceItem>
 }): Typebot => {
   const theme: Theme = {
     general: {
@@ -67,6 +70,7 @@ export const parseTestTypebot = ({
       },
       allIds: ['step0', ...steps.allIds],
     },
+    choiceItems: choiceItems ?? { byId: {}, allIds: [] },
     publicId: null,
     publishedTypebotId: null,
     updatedAt: new Date(),

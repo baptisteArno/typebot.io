@@ -1,6 +1,8 @@
+import { IconProps } from '@chakra-ui/react'
 import {
   CalendarIcon,
   ChatIcon,
+  CheckSquareIcon,
   EmailIcon,
   FlagIcon,
   GlobeIcon,
@@ -11,33 +13,36 @@ import {
 import { BubbleStepType, InputStepType, StepType } from 'models'
 import React from 'react'
 
-type StepIconProps = { type: StepType }
+type StepIconProps = { type: StepType } & IconProps
 
-export const StepIcon = ({ type }: StepIconProps) => {
+export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT: {
-      return <ChatIcon />
+      return <ChatIcon {...props} />
     }
     case InputStepType.TEXT: {
-      return <TextIcon />
+      return <TextIcon {...props} />
     }
     case InputStepType.NUMBER: {
-      return <NumberIcon />
+      return <NumberIcon {...props} />
     }
     case InputStepType.EMAIL: {
-      return <EmailIcon />
+      return <EmailIcon {...props} />
     }
     case InputStepType.URL: {
-      return <GlobeIcon />
+      return <GlobeIcon {...props} />
     }
     case InputStepType.DATE: {
-      return <CalendarIcon />
+      return <CalendarIcon {...props} />
     }
     case InputStepType.PHONE: {
-      return <PhoneIcon />
+      return <PhoneIcon {...props} />
+    }
+    case InputStepType.CHOICE: {
+      return <CheckSquareIcon {...props} />
     }
     case 'start': {
-      return <FlagIcon />
+      return <FlagIcon {...props} />
     }
     default: {
       return <></>

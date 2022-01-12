@@ -1,4 +1,10 @@
-import { BubbleStep, BubbleStepType, InputStep, InputStepType } from 'models'
+import {
+  BubbleStep,
+  BubbleStepType,
+  ChoiceItem,
+  InputStep,
+  InputStepType,
+} from 'models'
 import {
   createContext,
   Dispatch,
@@ -16,16 +22,23 @@ const dndContext = createContext<{
   setDraggedStepType: Dispatch<SetStateAction<DraggableStepType | undefined>>
   draggedStep?: DraggableStep
   setDraggedStep: Dispatch<SetStateAction<DraggableStep | undefined>>
-}>({
-  setDraggedStep: () => console.log("I'm not implemented"),
-  setDraggedStepType: () => console.log("I'm not implemented"),
-})
+  draggedChoiceItem?: ChoiceItem
+  setDraggedChoiceItem: Dispatch<SetStateAction<ChoiceItem | undefined>>
+  mouseOverBlockId?: string
+  setMouseOverBlockId: Dispatch<SetStateAction<string | undefined>>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+}>({})
 
 export const DndContext = ({ children }: { children: ReactNode }) => {
-  const [draggedStep, setDraggedStep] = useState<DraggableStep | undefined>()
+  const [draggedStep, setDraggedStep] = useState<DraggableStep>()
   const [draggedStepType, setDraggedStepType] = useState<
     DraggableStepType | undefined
   >()
+  const [draggedChoiceItem, setDraggedChoiceItem] = useState<
+    ChoiceItem | undefined
+  >()
+  const [mouseOverBlockId, setMouseOverBlockId] = useState<string>()
 
   return (
     <dndContext.Provider
@@ -34,6 +47,10 @@ export const DndContext = ({ children }: { children: ReactNode }) => {
         setDraggedStep,
         draggedStepType,
         setDraggedStepType,
+        draggedChoiceItem,
+        setDraggedChoiceItem,
+        mouseOverBlockId,
+        setMouseOverBlockId,
       }}
     >
       {children}

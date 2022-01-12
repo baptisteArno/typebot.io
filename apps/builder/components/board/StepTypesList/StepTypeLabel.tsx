@@ -25,6 +25,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.PHONE: {
       return <Text>Phone</Text>
     }
+    case InputStepType.CHOICE: {
+      return <Text>Button</Text>
+    }
     default: {
       return <></>
     }

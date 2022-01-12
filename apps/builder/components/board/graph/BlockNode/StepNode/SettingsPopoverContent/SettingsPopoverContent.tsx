@@ -1,6 +1,11 @@
 import { PopoverContent, PopoverArrow, PopoverBody } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { InputStepType, Step, TextInputOptions } from 'models'
+import {
+  ChoiceInputOptions,
+  InputStep,
+  InputStepType,
+  TextInputOptions,
+} from 'models'
 import {
   TextInputSettingsBody,
   NumberInputSettingsBody,
@@ -8,10 +13,11 @@ import {
   UrlInputSettingsBody,
   DateInputSettingsBody,
 } from './bodies'
+import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 
 type Props = {
-  step: Step
+  step: InputStep
 }
 export const SettingsPopoverContent = ({ step }: Props) => {
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
@@ -28,8 +34,9 @@ export const SettingsPopoverContent = ({ step }: Props) => {
 
 const SettingsPopoverBodyContent = ({ step }: Props) => {
   const { updateStep } = useTypebot()
-  const handleOptionsChange = (options: TextInputOptions) =>
-    updateStep(step.id, { options } as Partial<Step>)
+  const handleOptionsChange = (
+    options: TextInputOptions | ChoiceInputOptions
+  ) => updateStep(step.id, { options } as Partial<InputStep>)
 
   switch (step.type) {
     case InputStepType.TEXT: {
@@ -75,6 +82,14 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
     case InputStepType.PHONE: {
       return (
         <PhoneNumberSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.CHOICE: {
+      return (
+        <ChoiceInputSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

@@ -61,7 +61,7 @@ export const ConversationContainer = ({
       {displayedBlocks.map((block, idx) => (
         <ChatBlock
           key={block.id + idx}
-          steps={filterTable(block.stepIds, typebot.steps)}
+          stepIds={block.stepIds}
           onBlockEnd={displayNextBlock}
         />
       ))}

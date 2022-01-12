@@ -1,7 +1,8 @@
 import { chakra } from '@chakra-ui/system'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { ChoiceItem } from 'models'
 import React, { useMemo } from 'react'
-import { isDefined } from 'utils'
+import { isDefined, isSingleChoiceInput } from 'utils'
 import { DrawingEdge } from './DrawingEdge'
 import { Edge } from './Edge'
 
@@ -12,6 +13,18 @@ export const Edges = () => {
     return typebot.steps.allIds.filter((stepId) =>
       isDefined(typebot.steps.byId[stepId].target)
     )
+  }, [typebot])
+  const singleChoiceItemsWithTarget: ChoiceItem[] = useMemo(() => {
+    if (!typebot) return []
+    return typebot.choiceItems.allIds
+      .filter(
+        (itemId) =>
+          isDefined(typebot.choiceItems.byId[itemId].target) &&
+          isSingleChoiceInput(
+            typebot.steps.byId[typebot.choiceItems.byId[itemId].stepId]
+          )
+      )
+      .map((itemId) => typebot.choiceItems.byId[itemId])
   }, [typebot])
 
   return (
@@ -26,6 +39,9 @@ export const Edges = () => {
       <DrawingEdge />
       {stepIdsWithTarget.map((stepId) => (
         <Edge key={stepId} stepId={stepId} />
+      ))}
+      {singleChoiceItemsWithTarget.map((item) => (
+        <Edge key={item.id} stepId={item.stepId} item={item} />
       ))}
       <marker
         id={'arrow'}

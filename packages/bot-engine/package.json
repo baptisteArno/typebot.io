@@ -9,7 +9,7 @@
     "db": "*",
     "fast-equals": "^2.0.4",
     "models": "*",
-    "react-frame-component": "^5.2.1",
+    "react-frame-component": "5.2.2-alpha.0",
     "react-phone-number-input": "^3.1.44",
     "react-scroll": "^1.8.4",
     "react-transition-group": "^4.4.2",

@@ -1,5 +1,6 @@
 import {
   BubbleStepType,
+  ChoiceInputStep,
   InputStep,
   InputStepType,
   Step,
@@ -49,3 +50,9 @@ export const isTextBubbleStep = (step: Step): step is TextStep =>
 
 export const isTextInputStep = (step: Step): step is TextInputStep =>
   step.type === InputStepType.TEXT
+
+export const isChoiceInput = (step: Step): step is ChoiceInputStep =>
+  step.type === InputStepType.CHOICE
+
+export const isSingleChoiceInput = (step: Step): step is ChoiceInputStep =>
+  step.type === InputStepType.CHOICE && !step.options.isMultipleChoice

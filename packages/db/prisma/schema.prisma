@@ -92,21 +92,23 @@ model Typebot {
   folder             DashboardFolder? @relation(fields: [folderId], references: [id])
   blocks             Json
   steps              Json
+  choiceItems        Json
   theme              Json
   settings           Json
   publicId           String?          @unique
 }
 
 model PublicTypebot {
-  id        String  @id @default(cuid())
-  typebotId String  @unique
-  typebot   Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  name      String
-  blocks    Json
-  steps     Json
-  theme     Json
-  settings  Json
-  publicId  String? @unique
+  id          String  @id @default(cuid())
+  typebotId   String  @unique
+  typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  name        String
+  blocks      Json
+  steps       Json
+  choiceItems Json
+  theme       Json
+  settings    Json
+  publicId    String? @unique
 }
 
 model Result {

@@ -1,16 +1,18 @@
 import { Box, BoxProps } from '@chakra-ui/react'
+import { ConnectingSourceIds, useGraph } from 'contexts/GraphContext'
 import React, { MouseEvent } from 'react'
 
 export const SourceEndpoint = ({
-  onConnectionDragStart,
+  source,
   ...props
 }: BoxProps & {
-  onConnectionDragStart?: () => void
+  source: ConnectingSourceIds
 }) => {
+  const { setConnectingIds } = useGraph()
+
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!onConnectionDragStart) return
     e.stopPropagation()
-    onConnectionDragStart()
+    setConnectingIds({ source })
   }
 
   return (

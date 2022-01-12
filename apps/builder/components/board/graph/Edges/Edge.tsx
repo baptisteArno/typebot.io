@@ -1,10 +1,15 @@
+import { isDefined } from '@udecode/plate-core'
+import assert from 'assert'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { ChoiceItem } from 'models'
 import React, { useMemo } from 'react'
 import {
   getAnchorsPosition,
   computeFlowChartConnectorPath,
+  getSourceChoiceItemIndex,
 } from 'services/graph'
+import { isChoiceInput } from 'utils'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -13,7 +18,13 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export const Edge = ({ stepId }: { stepId: string }) => {
+export const Edge = ({
+  stepId,
+  item,
+}: {
+  stepId: string
+  item?: ChoiceItem
+}) => {
   const { typebot } = useTypebot()
   const { previewingIds } = useGraph()
   const step = typebot?.steps.byId[stepId]
@@ -27,29 +38,35 @@ export const Edge = ({ stepId }: { stepId: string }) => {
   const { sourceBlock, targetBlock, targetStepIndex } = useMemo(() => {
     if (!typebot) return {}
     const step = typebot.steps.byId[stepId]
-    if (!step.target) return {}
     const sourceBlock = typebot.blocks.byId[step.blockId]
-    const targetBlock = typebot.blocks.byId[step.target.blockId]
-    const targetStepIndex = step.target.stepId
-      ? targetBlock.stepIds.indexOf(step.target.stepId)
+    const targetBlockId = item?.target?.blockId ?? step.target?.blockId
+    assert(isDefined(targetBlockId))
+    const targetBlock = typebot.blocks.byId[targetBlockId]
+    const targetStepId = item?.target?.stepId ?? step.target?.stepId
+    const targetStepIndex = targetStepId
+      ? targetBlock.stepIds.indexOf(targetStepId)
       : undefined
     return {
       sourceBlock,
       targetBlock,
       targetStepIndex,
     }
-  }, [stepId, typebot])
+  }, [item?.target?.blockId, item?.target?.stepId, stepId, typebot])
 
   const path = useMemo(() => {
-    if (!sourceBlock || !targetBlock) return ``
-    const anchorsPosition = getAnchorsPosition(
+    if (!sourceBlock || !targetBlock || !step) return ``
+    const sourceChoiceItemIndex = isChoiceInput(step)
+      ? getSourceChoiceItemIndex(step, item?.id)
+      : undefined
+    const anchorsPosition = getAnchorsPosition({
       sourceBlock,
       targetBlock,
-      sourceBlock.stepIds.indexOf(stepId),
-      targetStepIndex
-    )
+      sourceStepIndex: sourceBlock.stepIds.indexOf(stepId),
+      targetStepIndex,
+      sourceChoiceItemIndex,
+    })
     return computeFlowChartConnectorPath(anchorsPosition)
-  }, [sourceBlock, stepId, targetBlock, targetStepIndex])
+  }, [item, sourceBlock, step, stepId, targetBlock, targetStepIndex])
 
   return (
     <path

@@ -1,3 +1,4 @@
+import { Target } from '.'
 import { StepBase } from './steps'
 
 export type InputStep =
@@ -7,6 +8,7 @@ export type InputStep =
   | UrlInputStep
   | DateInputStep
   | PhoneNumberInputStep
+  | ChoiceInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
@@ -15,6 +17,7 @@ export enum InputStepType {
   URL = 'url input',
   DATE = 'date input',
   PHONE = 'phone number input',
+  CHOICE = 'choice input',
 }
 
 export type TextInputStep = StepBase & {
@@ -44,7 +47,25 @@ export type DateInputStep = StepBase & {
 
 export type PhoneNumberInputStep = StepBase & {
   type: InputStepType.PHONE
-  options?: InputOptionsBase
+  options?: InputTextOptionsBase
+}
+
+export type ChoiceInputStep = StepBase & {
+  type: InputStepType.CHOICE
+  options: ChoiceInputOptions
+}
+
+export type ChoiceInputOptions = {
+  itemIds: string[]
+  isMultipleChoice?: boolean
+  buttonLabel?: string
+}
+
+export type ChoiceItem = {
+  id: string
+  stepId: string
+  content?: string
+  target?: Target
 }
 
 export type DateInputOptions = {
@@ -53,19 +74,19 @@ export type DateInputOptions = {
   isRange?: boolean
 }
 
-export type EmailInputOptions = InputOptionsBase
+export type EmailInputOptions = InputTextOptionsBase
 
-export type UrlInputOptions = InputOptionsBase
+export type UrlInputOptions = InputTextOptionsBase
 
-type InputOptionsBase = {
+type InputTextOptionsBase = {
   labels?: { placeholder?: string; button?: string }
 }
 
-export type TextInputOptions = InputOptionsBase & {
+export type TextInputOptions = InputTextOptionsBase & {
   isLong?: boolean
 }
 
-export type NumberInputOptions = InputOptionsBase & {
+export type NumberInputOptions = InputTextOptionsBase & {
   min?: number
   max?: number
   step?: number

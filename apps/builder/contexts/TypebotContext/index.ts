@@ -1,1 +1,1 @@
-export { TypebotContext } from './TypebotContext'
+export { TypebotContext, useTypebot } from './TypebotContext'

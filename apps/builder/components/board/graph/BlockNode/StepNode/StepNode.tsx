@@ -8,18 +8,18 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Block, Step } from 'models'
-import { SourceEndpoint } from './SourceEndpoint'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import { isDefined, isTextBubbleStep } from 'utils'
+import { isChoiceInput, isDefined, isInputStep, isTextBubbleStep } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
-import { StepNodeLabel } from './StepNodeLabel'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { StepNodeContent } from './StepNodeContent'
+import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
-import { StepNodeContextMenu } from './RightClickMenu'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
 import { DraggableStep } from 'contexts/DndContext'
+import { StepNodeContextMenu } from './StepNodeContextMenu'
+import { SourceEndpoint } from './SourceEndpoint'
 
 export const StepNode = ({
   step,
@@ -38,7 +38,7 @@ export const StepNode = ({
   ) => void
 }) => {
   const { setConnectingIds, connectingIds } = useGraph()
-  const { deleteStep, typebot } = useTypebot()
+  const { moveStep, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
@@ -68,9 +68,6 @@ export const StepNode = ({
         target: { ...connectingIds.target, stepId: undefined },
       })
   }
-
-  const handleConnectionDragStart = () =>
-    setConnectingIds({ source: { blockId: step.blockId, stepId: step.id } })
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!onMouseDown) return
@@ -104,7 +101,7 @@ export const StepNode = ({
       (event.movementX > 0 || event.movementY > 0)
     if (isMovingAndIsMouseDown && step.type !== 'start') {
       onMouseDown(mouseDownEvent, step)
-      deleteStep(step.id)
+      moveStep(step.id)
       setMouseDownEvent(undefined)
     }
     const element = event.currentTarget as HTMLDivElement
@@ -164,6 +161,7 @@ export const StepNode = ({
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
               data-testid={`step-${step.id}`}
+              w="full"
             >
               {connectedStubPosition === 'left' && (
                 <Box
@@ -184,19 +182,24 @@ export const StepNode = ({
                 rounded="lg"
                 cursor={'pointer'}
                 bgColor="white"
+                align="flex-start"
               >
-                <StepIcon type={step.type} />
-                <StepNodeLabel {...step} />
-                {isConnectable && (
+                <StepIcon type={step.type} mt="1" />
+                <StepNodeContent step={step} />
+                {isConnectable && !isChoiceInput(step) && (
                   <SourceEndpoint
-                    onConnectionDragStart={handleConnectionDragStart}
+                    source={{
+                      blockId: step.blockId,
+                      stepId: step.id,
+                    }}
                     pos="absolute"
-                    right="20px"
+                    right="15px"
+                    top="19px"
                   />
                 )}
               </HStack>
 
-              {isDefined(connectedStubPosition) && (
+              {isDefined(connectedStubPosition) && !isChoiceInput(step) && (
                 <Box
                   h="2px"
                   pos="absolute"
@@ -209,7 +212,7 @@ export const StepNode = ({
               )}
             </Flex>
           </PopoverTrigger>
-          <SettingsPopoverContent step={step} />
+          {isInputStep(step) && <SettingsPopoverContent step={step} />}
         </Popover>
       )}
     </ContextMenu>

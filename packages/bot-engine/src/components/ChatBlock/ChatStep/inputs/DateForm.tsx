@@ -62,6 +62,7 @@ export const DateForm = ({
           <SendButton
             label={labels?.button ?? 'Send'}
             isDisabled={inputValues.to === '' && inputValues.from === ''}
+            className="my-2 ml-2"
           />
         </form>
       </div>

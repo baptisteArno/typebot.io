@@ -175,7 +175,6 @@ describe('Date input', () => {
 describe('Phone number input', () => {
   beforeEach(() => {
     cy.task('seed')
-    cy.log(JSON.stringify({ type: InputStepType.PHONE }))
     createTypebotWithStep({ type: InputStepType.PHONE })
     cy.signOut()
   })
@@ -207,6 +206,53 @@ describe('Phone number input', () => {
   })
 })
 
+describe('Button input', () => {
+  beforeEach(() => {
+    cy.task('seed')
+    createTypebotWithStep({ type: InputStepType.CHOICE })
+    cy.signOut()
+  })
+
+  it('Can edit choice items', () => {
+    cy.signIn('test2@gmail.com')
+    cy.visit('/typebots/typebot3/edit')
+    cy.findByDisplayValue('Click to edit').type('Item 1{enter}')
+    cy.findByText('Item 1').trigger('mouseover')
+    cy.findByRole('button', { name: 'Add item' }).click()
+    cy.findByDisplayValue('Click to edit').type('Item 2{enter}')
+    cy.findByRole('button', { name: 'Add item' }).click()
+    cy.findByDisplayValue('Click to edit').type('Item 3{enter}')
+    cy.findByText('Item 2').rightclick()
+    cy.findByRole('menuitem', { name: 'Delete' }).click()
+    cy.findByText('Item 2').should('not.exist')
+    cy.findByTestId('step-step1').click({ force: true })
+    cy.findByRole('button', { name: 'Preview' }).click()
+    getIframeBody().findByRole('button', { name: 'Item 3' }).click()
+    getIframeBody().findByRole('button', { name: 'Item 3' }).should('not.exist')
+    getIframeBody().findByText('Item 3')
+    cy.findByRole('button', { name: 'Close' }).click()
+    cy.findByTestId('step-step1').click({ force: true })
+    cy.findByRole('checkbox', { name: 'Multiple choice?' }).check({
+      force: true,
+    })
+    cy.findByRole('textbox', { name: 'Button label:' }).clear().type('Go')
+    cy.wait(200)
+    cy.findByTestId('step-step1').click({ force: true })
+    cy.findByText('Item 1').trigger('mouseover')
+    cy.findByRole('button', { name: 'Add item' }).click()
+    cy.findByDisplayValue('Click to edit').type('Item 2{enter}')
+    cy.findByRole('button', { name: 'Preview' }).click()
+    getIframeBody().findByRole('checkbox', { name: 'Item 3' }).click()
+    getIframeBody().findByRole('checkbox', { name: 'Item 1' }).click()
+    getIframeBody().findByRole('button', { name: 'Go' }).click()
+    getIframeBody().findByText('Item 3, Item 1').should('exist')
+  })
+
+  it('Single choice targets should work', () => {
+    //TO-DO
+  })
+})
+
 const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
   cy.task(
     'createTypebot',
@@ -216,7 +262,17 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
       ownerId: 'test2',
       steps: {
         byId: {
-          step1: { ...step, id: 'step1', blockId: 'block1' },
+          step1: {
+            ...step,
+            id: 'step1',
+            blockId: 'block1',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            options:
+              step.type === InputStepType.CHOICE
+                ? { itemIds: ['item1'] }
+                : undefined,
+          },
         },
         allIds: ['step1'],
       },
@@ -231,6 +287,13 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
         },
         allIds: ['block1'],
       },
+      choiceItems:
+        step.type === InputStepType.CHOICE
+          ? {
+              byId: { item1: { stepId: 'step1', id: 'item1' } },
+              allIds: ['item1'],
+            }
+          : undefined,
     })
   )
 }

@@ -1,5 +1,5 @@
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import { Block } from 'models'
+import { Block, ChoiceInputStep, Step, Table, Target, Typebot } from 'models'
 import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
 import {
   stubLength,
@@ -7,9 +7,11 @@ import {
   blockAnchorsOffset,
   spaceBetweenSteps,
   firstStepOffsetY,
+  firstChoiceItemOffsetY,
+  ConnectingIds,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
-import { isDefined } from 'utils'
+import { isChoiceInput, isDefined } from 'utils'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
@@ -25,13 +27,18 @@ export const computeDropOffPath = (
 
 export const computeSourceCoordinates = (
   sourcePosition: Coordinates,
-  sourceStepIndex: number
+  sourceStepIndex: number,
+  sourceChoiceItemIndex?: number
 ) => ({
   x: sourcePosition.x + blockWidth,
   y:
     (sourcePosition.y ?? 0) +
     firstStepOffsetY +
-    spaceBetweenSteps * sourceStepIndex,
+    spaceBetweenSteps * sourceStepIndex +
+    (isDefined(sourceChoiceItemIndex)
+      ? firstChoiceItemOffsetY +
+        (sourceChoiceItemIndex ?? 0) * spaceBetweenSteps
+      : 0),
 })
 
 export const computeFlowChartConnectorPath = ({
@@ -142,12 +149,20 @@ const computeFiveSegments = (
   return segments.join(' ')
 }
 
-export const getAnchorsPosition = (
-  sourceBlock: Block,
-  targetBlock: Block,
-  sourceStepIndex: number,
+type GetAnchorsPositionParams = {
+  sourceBlock: Block
+  targetBlock: Block
+  sourceStepIndex: number
+  sourceChoiceItemIndex?: number
   targetStepIndex?: number
-): AnchorsPositionProps => {
+}
+export const getAnchorsPosition = ({
+  sourceBlock,
+  targetBlock,
+  sourceStepIndex,
+  sourceChoiceItemIndex,
+  targetStepIndex,
+}: GetAnchorsPositionParams): AnchorsPositionProps => {
   const targetOffsetY = isDefined(targetStepIndex)
     ? (targetBlock.graphCoordinates.y ?? 0) +
       firstStepOffsetY +
@@ -156,7 +171,8 @@ export const getAnchorsPosition = (
 
   const sourcePosition = computeSourceCoordinates(
     sourceBlock.graphCoordinates,
-    sourceStepIndex
+    sourceStepIndex,
+    sourceChoiceItemIndex
   )
   let sourceType: 'right' | 'left' = 'right'
   if (sourceBlock.graphCoordinates.x > targetBlock.graphCoordinates.x) {
@@ -230,3 +246,95 @@ const parseBlockAnchorPosition = (
       }
   }
 }
+
+export const computeDrawingConnectedPath = (
+  connectingIds: Omit<ConnectingIds, 'target'> & { target: Target },
+  sourceBlock: Block,
+  typebot: Typebot
+) => {
+  if (!sourceBlock) return ``
+  const targetBlock = typebot.blocks.byId[connectingIds.target.blockId]
+  const targetStepIndex = connectingIds.target.stepId
+    ? targetBlock.stepIds.findIndex(
+        (stepId) => stepId === connectingIds.target?.stepId
+      )
+    : undefined
+
+  const sourceStepIndex = sourceBlock?.stepIds.indexOf(
+    connectingIds?.source.stepId
+  )
+  const sourceStep = typebot.steps.byId[connectingIds?.source.stepId]
+  const sourceChoiceItemIndex = isChoiceInput(sourceStep)
+    ? getSourceChoiceItemIndex(sourceStep, connectingIds.source.choiceItemId)
+    : undefined
+  const anchorsPosition = getAnchorsPosition({
+    sourceBlock,
+    targetBlock,
+    sourceStepIndex,
+    sourceChoiceItemIndex,
+    targetStepIndex,
+  })
+  return computeFlowChartConnectorPath(anchorsPosition)
+}
+
+export const computeDrawingPathToMouse = (
+  sourceBlock: Block,
+  connectingIds: ConnectingIds,
+  mousePosition: Coordinates,
+  steps: Table<Step>
+) => {
+  const sourceStep = steps.byId[connectingIds?.source.stepId ?? '']
+  return computeConnectingEdgePath({
+    blockPosition: sourceBlock?.graphCoordinates,
+    mousePosition,
+    stepIndex: sourceBlock.stepIds.findIndex(
+      (stepId) => stepId === connectingIds?.source.stepId
+    ),
+    choiceItemIndex: isChoiceInput(sourceStep)
+      ? getSourceChoiceItemIndex(sourceStep, connectingIds?.source.choiceItemId)
+      : undefined,
+  })
+}
+
+const computeConnectingEdgePath = ({
+  blockPosition,
+  mousePosition,
+  stepIndex,
+  choiceItemIndex,
+}: {
+  blockPosition: Coordinates
+  mousePosition: Coordinates
+  stepIndex: number
+  choiceItemIndex?: number
+}): string => {
+  const sourcePosition = {
+    x:
+      mousePosition.x - blockPosition.x > blockWidth / 2
+        ? blockPosition.x + blockWidth - 40
+        : blockPosition.x + 40,
+    y:
+      blockPosition.y +
+      firstStepOffsetY +
+      stepIndex * spaceBetweenSteps +
+      (isDefined(choiceItemIndex)
+        ? firstChoiceItemOffsetY + (choiceItemIndex ?? 0) * spaceBetweenSteps
+        : 0),
+  }
+  const sourceType =
+    mousePosition.x - blockPosition.x > blockWidth / 2 ? 'right' : 'left'
+  const segments = computeThreeSegments(
+    sourcePosition,
+    mousePosition,
+    sourceType
+  )
+  return roundCorners(
+    `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
+    10
+  ).path
+}
+
+export const getSourceChoiceItemIndex = (
+  step: ChoiceInputStep,
+  itemId?: string
+) =>
+  itemId ? step.options.itemIds.indexOf(itemId) : step.options.itemIds.length

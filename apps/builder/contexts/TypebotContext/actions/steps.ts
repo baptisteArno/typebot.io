@@ -1,8 +1,16 @@
-import { BubbleStepType, InputStepType, Step, Typebot } from 'models'
+import {
+  BubbleStepType,
+  ChoiceInputStep,
+  InputStepType,
+  Step,
+  Typebot,
+} from 'models'
 import { parseNewStep } from 'services/typebots'
 import { Updater } from 'use-immer'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
+import { createChoiceItemDraft, deleteChoiceItemDraft } from './choiceItems'
+import { isChoiceInput } from 'utils'
 
 export type StepsActions = {
   createStep: (
@@ -14,6 +22,7 @@ export type StepsActions = {
     stepId: string,
     updates: Partial<Omit<Step, 'id' | 'type'>>
   ) => void
+  moveStep: (stepId: string) => void
   deleteStep: (stepId: string) => void
 }
 
@@ -32,11 +41,17 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     setTypebot((typebot) => {
       typebot.steps.byId[stepId] = { ...typebot.steps.byId[stepId], ...updates }
     }),
-  deleteStep: (stepId: string) => {
+  moveStep: (stepId: string) => {
     setTypebot((typebot) => {
       removeStepIdFromBlock(typebot, stepId)
+    })
+  },
+  deleteStep: (stepId: string) => {
+    setTypebot((typebot) => {
+      const step = typebot.steps.byId[stepId]
+      if (isChoiceInput(step)) deleteChoiceItemsInsideStep(typebot, step)
+      removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)
-      removeEmptyBlocks(typebot)
     })
   },
 })
@@ -45,13 +60,8 @@ const removeStepIdFromBlock = (
   typebot: WritableDraft<Typebot>,
   stepId: string
 ) => {
-  const containerBlockId = typebot.blocks.allIds.find((blockId) =>
-    typebot.blocks.byId[blockId].stepIds.includes(stepId)
-  ) as string
-  typebot.blocks.byId[containerBlockId].stepIds.splice(
-    typebot.blocks.byId[containerBlockId].stepIds.indexOf(stepId),
-    1
-  )
+  const containerBlock = typebot.blocks.byId[typebot.steps.byId[stepId].blockId]
+  containerBlock.stepIds.splice(containerBlock.stepIds.indexOf(stepId), 1)
 }
 
 export const deleteStepDraft = (
@@ -74,6 +84,16 @@ export const createStepDraft = (
       ? parseNewStep(step, blockId)
       : { ...step, blockId }
   typebot.steps.byId[newStep.id] = newStep
+  if (isChoiceInput(newStep) && newStep.options.itemIds.length === 0)
+    createChoiceItemDraft(typebot, { stepId: newStep.id })
   typebot.steps.allIds.push(newStep.id)
   typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, newStep.id)
 }
+
+const deleteChoiceItemsInsideStep = (
+  typebot: WritableDraft<Typebot>,
+  step: ChoiceInputStep
+) =>
+  step.options?.itemIds.forEach((itemId) =>
+    deleteChoiceItemDraft(typebot, itemId)
+  )

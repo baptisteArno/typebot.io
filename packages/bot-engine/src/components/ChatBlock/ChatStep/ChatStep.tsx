@@ -7,19 +7,20 @@ import { HostMessageBubble } from './bubbles/HostMessageBubble'
 import { TextForm } from './inputs/TextForm'
 import { isInputStep, isTextBubbleStep } from 'utils'
 import { DateForm } from './inputs/DateForm'
+import { ChoiceForm } from './inputs/ChoiceForm'
 
 export const ChatStep = ({
   step,
   onTransitionEnd,
 }: {
   step: Step
-  onTransitionEnd: () => void
+  onTransitionEnd: (answerContent?: string) => void
 }) => {
   const { addAnswer } = useAnswers()
 
   const handleInputSubmit = (content: string) => {
     addAnswer({ stepId: step.id, blockId: step.blockId, content })
-    onTransitionEnd()
+    onTransitionEnd(content)
   }
 
   if (isTextBubbleStep(step))
@@ -60,5 +61,7 @@ const InputChatStep = ({
       return <TextForm step={step} onSubmit={handleSubmit} />
     case InputStepType.DATE:
       return <DateForm options={step.options} onSubmit={handleSubmit} />
+    case InputStepType.CHOICE:
+      return <ChoiceForm options={step.options} onSubmit={handleSubmit} />
   }
 }

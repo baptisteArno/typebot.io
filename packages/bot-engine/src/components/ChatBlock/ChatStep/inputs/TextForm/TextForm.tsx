@@ -41,6 +41,7 @@ export const TextForm = ({ step, onSubmit }: TextFormProps) => {
           <SendButton
             label={step.options?.labels?.button ?? 'Send'}
             isDisabled={inputValue === ''}
+            className="my-2 ml-2"
           />
         </form>
       </div>

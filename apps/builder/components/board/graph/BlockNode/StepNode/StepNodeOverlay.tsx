@@ -1,7 +1,7 @@
 import { StackProps, HStack } from '@chakra-ui/react'
 import { StartStep, Step } from 'models'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import { StepNodeLabel } from './StepNodeLabel'
+import { StepNodeContent } from './StepNodeContent'
 
 export const StepNodeOverlay = ({
   step,
@@ -19,7 +19,7 @@ export const StepNodeOverlay = ({
       {...props}
     >
       <StepIcon type={step.type} />
-      <StepNodeLabel {...step} />
+      <StepNodeContent step={step} />
     </HStack>
   )
 }

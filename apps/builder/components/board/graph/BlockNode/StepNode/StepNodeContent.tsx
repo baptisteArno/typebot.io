@@ -1,19 +1,24 @@
 import { Flex, Text } from '@chakra-ui/react'
 import { Step, StartStep, BubbleStepType, InputStepType } from 'models'
+import { ChoiceItemsList } from './ChoiceInputStepNode/ChoiceItemsList'
 
-export const StepNodeLabel = (props: Step | StartStep) => {
-  switch (props.type) {
+type Props = {
+  step: Step | StartStep
+  isConnectable?: boolean
+}
+export const StepNodeContent = ({ step }: Props) => {
+  switch (step.type) {
     case BubbleStepType.TEXT: {
       return (
         <Flex
           flexDir={'column'}
-          opacity={props.content.html === '' ? '0.5' : '1'}
+          opacity={step.content.html === '' ? '0.5' : '1'}
           className="slate-html-container"
           dangerouslySetInnerHTML={{
             __html:
-              props.content.html === ''
+              step.content.html === ''
                 ? `<p>Click to edit...</p>`
-                : props.content.html,
+                : step.content.html,
           }}
         />
       )
@@ -21,47 +26,50 @@ export const StepNodeLabel = (props: Step | StartStep) => {
     case InputStepType.TEXT: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.placeholder ?? 'Type your answer...'}
+          {step.options?.labels?.placeholder ?? 'Type your answer...'}
         </Text>
       )
     }
     case InputStepType.NUMBER: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.placeholder ?? 'Type your answer...'}
+          {step.options?.labels?.placeholder ?? 'Type your answer...'}
         </Text>
       )
     }
     case InputStepType.EMAIL: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.placeholder ?? 'Type your email...'}
+          {step.options?.labels?.placeholder ?? 'Type your email...'}
         </Text>
       )
     }
     case InputStepType.URL: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.placeholder ?? 'Type your URL...'}
+          {step.options?.labels?.placeholder ?? 'Type your URL...'}
         </Text>
       )
     }
     case InputStepType.DATE: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.from ?? 'Pick a date...'}
+          {step.options?.labels?.from ?? 'Pick a date...'}
         </Text>
       )
     }
     case InputStepType.PHONE: {
       return (
         <Text color={'gray.500'}>
-          {props.options?.labels?.placeholder ?? 'Your phone number...'}
+          {step.options?.labels?.placeholder ?? 'Your phone number...'}
         </Text>
       )
     }
+    case InputStepType.CHOICE: {
+      return <ChoiceItemsList step={step} />
+    }
     case 'start': {
-      return <Text>{props.label}</Text>
+      return <Text>{step.label}</Text>
     }
     default: {
       return <Text>No input</Text>

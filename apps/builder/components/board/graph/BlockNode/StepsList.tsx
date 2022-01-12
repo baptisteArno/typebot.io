@@ -2,24 +2,33 @@ import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
 import { Step, Table } from 'models'
 import { DraggableStep, useDnd } from 'contexts/DndContext'
 import { Coordinates } from 'contexts/GraphContext'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { StepNode, StepNodeOverlay } from './StepNode'
+import { useTypebot } from 'contexts/TypebotContext'
 
 export const StepsList = ({
   blockId,
   steps,
-  showSortPlaceholders,
-  onMouseUp,
 }: {
   blockId: string
   steps: Table<Step>
-  showSortPlaceholders: boolean
-  onMouseUp: (index: number) => void
 }) => {
-  const { draggedStep, setDraggedStep, draggedStepType } = useDnd()
+  const {
+    draggedStep,
+    setDraggedStep,
+    draggedStepType,
+    mouseOverBlockId,
+    setDraggedStepType,
+    setMouseOverBlockId,
+  } = useDnd()
+  const { createStep } = useTypebot()
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
   >()
+  const showSortPlaceholders = useMemo(
+    () => mouseOverBlockId === blockId && (draggedStep || draggedStepType),
+    [mouseOverBlockId, blockId, draggedStep, draggedStepType]
+  )
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -48,8 +57,16 @@ export const StepsList = ({
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
     if (expandedPlaceholderIndex === undefined) return
     e.stopPropagation()
+    setMouseOverBlockId(undefined)
     setExpandedPlaceholderIndex(undefined)
-    onMouseUp(expandedPlaceholderIndex)
+    if (draggedStepType) {
+      createStep(blockId, draggedStepType, expandedPlaceholderIndex)
+      setDraggedStepType(undefined)
+    }
+    if (draggedStep) {
+      createStep(blockId, draggedStep, expandedPlaceholderIndex)
+      setDraggedStep(undefined)
+    }
   }
 
   const handleStepMouseDown = (
@@ -58,6 +75,7 @@ export const StepsList = ({
   ) => {
     setPosition(absolute)
     setRelativeCoordinates(relative)
+    setMouseOverBlockId(blockId)
     setDraggedStep(step)
   }
 
@@ -118,7 +136,6 @@ export const StepsList = ({
         <Portal>
           <StepNodeOverlay
             step={draggedStep}
-            onMouseUp={handleMouseUp}
             pos="fixed"
             top="0"
             left="0"
