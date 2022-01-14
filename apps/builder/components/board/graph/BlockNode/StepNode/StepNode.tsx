@@ -10,7 +10,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Block, Step } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import { isChoiceInput, isDefined, isInputStep, isTextBubbleStep } from 'utils'
+import {
+  isChoiceInput,
+  isDefined,
+  isInputStep,
+  isLogicStep,
+  isTextBubbleStep,
+} from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent'
@@ -212,7 +218,9 @@ export const StepNode = ({
               )}
             </Flex>
           </PopoverTrigger>
-          {isInputStep(step) && <SettingsPopoverContent step={step} />}
+          {(isInputStep(step) || isLogicStep(step)) && (
+            <SettingsPopoverContent step={step} />
+          )}
         </Popover>
       )}
     </ContextMenu>

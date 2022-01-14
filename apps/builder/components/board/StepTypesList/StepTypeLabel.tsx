@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { BubbleStepType, InputStepType, StepType } from 'models'
+import { BubbleStepType, InputStepType, LogicStepType, StepType } from 'models'
 import React from 'react'
 
 type Props = { type: StepType }
@@ -27,6 +27,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     }
     case InputStepType.CHOICE: {
       return <Text>Button</Text>
+    }
+    case LogicStepType.SET_VARIABLE: {
+      return <Text>Set variable</Text>
     }
     default: {
       return <></>

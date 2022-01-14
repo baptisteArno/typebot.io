@@ -4,6 +4,7 @@ import {
   InputStepType,
   Step,
   Typebot,
+  LogicStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots'
 import { Updater } from 'use-immer'
@@ -15,7 +16,7 @@ import { isChoiceInput } from 'utils'
 export type StepsActions = {
   createStep: (
     blockId: string,
-    step: BubbleStepType | InputStepType | Step,
+    step: BubbleStepType | InputStepType | LogicStepType | Step,
     index?: number
   ) => void
   updateStep: (
@@ -29,7 +30,7 @@ export type StepsActions = {
 export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
   createStep: (
     blockId: string,
-    step: BubbleStepType | InputStepType | Step,
+    step: BubbleStepType | InputStepType | LogicStepType | Step,
     index?: number
   ) => {
     setTypebot((typebot) => {
@@ -75,7 +76,7 @@ export const deleteStepDraft = (
 
 export const createStepDraft = (
   typebot: WritableDraft<Typebot>,
-  step: BubbleStepType | InputStepType | Step,
+  step: BubbleStepType | InputStepType | LogicStepType | Step,
   blockId: string,
   index?: number
 ) => {

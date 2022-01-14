@@ -1,6 +1,7 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { EmailInputOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { EmailInputOptions, Variable } from 'models'
 import React from 'react'
 
 type PhoneNumberSettingsBodyProps = {
@@ -16,6 +17,8 @@ export const PhoneNumberSettingsBody = ({
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+  const handleVariableChange = (variable: Variable) =>
+    onOptionsChange({ ...options, variableId: variable.id })
 
   return (
     <Stack spacing={4}>
@@ -39,6 +42,15 @@ export const PhoneNumberSettingsBody = ({
           initialValue={options?.labels?.button ?? 'Send'}
           delay={100}
           onChange={handleButtonLabelChange}
+        />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Save answer in a variable:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
         />
       </Stack>
     </Stack>

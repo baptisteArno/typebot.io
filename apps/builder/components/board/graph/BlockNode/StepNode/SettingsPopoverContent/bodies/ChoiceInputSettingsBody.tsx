@@ -1,7 +1,8 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { ChoiceInputOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { ChoiceInputOptions, Variable } from 'models'
 import React from 'react'
 
 type ChoiceInputSettingsBodyProps = {
@@ -17,6 +18,8 @@ export const ChoiceInputSettingsBody = ({
     options && onOptionsChange({ ...options, isMultipleChoice })
   const handleButtonLabelChange = (buttonLabel: string) =>
     options && onOptionsChange({ ...options, buttonLabel })
+  const handleVariableChange = (variable: Variable) =>
+    options && onOptionsChange({ ...options, variableId: variable.id })
 
   return (
     <Stack spacing={4}>
@@ -39,6 +42,15 @@ export const ChoiceInputSettingsBody = ({
           />
         </Stack>
       )}
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Save answer in a variable:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
+        />
+      </Stack>
     </Stack>
   )
 }

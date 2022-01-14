@@ -93,6 +93,7 @@ model Typebot {
   blocks             Json
   steps              Json
   choiceItems        Json
+  variables          Json
   theme              Json
   settings           Json
   publicId           String?          @unique
@@ -106,6 +107,7 @@ model PublicTypebot {
   blocks      Json
   steps       Json
   choiceItems Json
+  variables   Json
   theme       Json
   settings    Json
   publicId    String? @unique

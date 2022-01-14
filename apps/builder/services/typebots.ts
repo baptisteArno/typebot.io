@@ -11,6 +11,8 @@ import {
   BubbleStepType,
   InputStepType,
   ChoiceInputStep,
+  LogicStepType,
+  LogicStep,
 } from 'models'
 import shortId from 'short-uuid'
 import { Typebot } from 'models'
@@ -107,9 +109,9 @@ export const parseNewBlock = ({
 }
 
 export const parseNewStep = (
-  type: BubbleStepType | InputStepType,
+  type: BubbleStepType | InputStepType | LogicStepType,
   blockId: string
-): BubbleStep | InputStep => {
+): BubbleStep | InputStep | LogicStep => {
   const id = `s${shortId.generate()}`
   switch (type) {
     case BubbleStepType.TEXT: {
@@ -144,17 +146,10 @@ export const parseNewStep = (
   }
 }
 
-export const checkIfTypebotsAreEqual = (
-  firstChatbot: Typebot,
-  secondChatbot: Typebot
-) =>
+export const checkIfTypebotsAreEqual = (typebotA: Typebot, typebotB: Typebot) =>
   deepEqual(
-    {
-      ...firstChatbot,
-    },
-    {
-      ...secondChatbot,
-    }
+    JSON.parse(JSON.stringify(typebotA)),
+    JSON.parse(JSON.stringify(typebotB))
   )
 
 export const checkIfPublished = (
@@ -214,6 +209,7 @@ export const parseNewTypebot = ({
     blocks: { byId: { [startBlockId]: startBlock }, allIds: [startBlockId] },
     steps: { byId: { [startStepId]: startStep }, allIds: [startStepId] },
     choiceItems: { byId: {}, allIds: [] },
+    variables: { byId: {}, allIds: [] },
     theme,
     settings,
   }

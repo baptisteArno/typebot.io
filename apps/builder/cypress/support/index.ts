@@ -45,6 +45,14 @@ Cypress.on('uncaught:exception', (err) => {
   }
 })
 
+export const getIframeBody = () => {
+  return cy
+    .get('#typebot-iframe')
+    .its('0.contentDocument.body')
+    .should('not.be.empty')
+    .then(cy.wrap)
+}
+
 // Import commands.js using ES2015 syntax:
 import '@testing-library/cypress/add-commands'
 import 'cypress-file-upload'

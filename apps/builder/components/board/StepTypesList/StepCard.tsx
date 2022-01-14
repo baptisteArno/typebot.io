@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Flex, HStack } from '@chakra-ui/react'
-import { BubbleStepType, InputStepType, StepType } from 'models'
+import { BubbleStepType, InputStepType, StepType, LogicStepType } from 'models'
 import { useDnd } from 'contexts/DndContext'
 import React, { useEffect, useState } from 'react'
 import { StepIcon } from './StepIcon'
@@ -9,10 +9,10 @@ export const StepCard = ({
   type,
   onMouseDown,
 }: {
-  type: BubbleStepType | InputStepType
+  type: BubbleStepType | InputStepType | LogicStepType
   onMouseDown: (
     e: React.MouseEvent,
-    type: BubbleStepType | InputStepType
+    type: BubbleStepType | InputStepType | LogicStepType
   ) => void
 }) => {
   const { draggedStepType } = useDnd()

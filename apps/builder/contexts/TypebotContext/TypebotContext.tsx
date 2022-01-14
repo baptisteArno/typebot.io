@@ -1,5 +1,4 @@
 import { useToast } from '@chakra-ui/react'
-import { deepEqual } from 'fast-equals'
 import { PublicTypebot, Settings, Theme, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import {
@@ -28,6 +27,7 @@ import { BlocksActions, blocksActions } from './actions/blocks'
 import { useImmer, Updater } from 'use-immer'
 import { stepsAction, StepsActions } from './actions/steps'
 import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
+import { variablesAction, VariablesActions } from './actions/variables'
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -48,7 +48,8 @@ const typebotContext = createContext<
     publishTypebot: () => void
   } & BlocksActions &
     StepsActions &
-    ChoiceItemsActions
+    ChoiceItemsActions &
+    VariablesActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
@@ -86,9 +87,10 @@ export const TypebotContext = ({
     () =>
       isDefined(typebot) &&
       isDefined(localTypebot) &&
-      !deepEqual(localTypebot, typebot),
+      !checkIfTypebotsAreEqual(localTypebot, typebot),
     [typebot, localTypebot]
   )
+
   const isPublished = useMemo(
     () =>
       isDefined(typebot) &&
@@ -205,6 +207,7 @@ export const TypebotContext = ({
         ...blocksActions(setLocalTypebot as Updater<Typebot>),
         ...stepsAction(setLocalTypebot as Updater<Typebot>),
         ...choiceItemsAction(setLocalTypebot as Updater<Typebot>),
+        ...variablesAction(setLocalTypebot as Updater<Typebot>),
       }}
     >
       {children}

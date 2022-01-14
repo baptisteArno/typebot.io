@@ -1,5 +1,13 @@
 import { Flex, Text } from '@chakra-ui/react'
-import { Step, StartStep, BubbleStepType, InputStepType } from 'models'
+import { useTypebot } from 'contexts/TypebotContext'
+import {
+  Step,
+  StartStep,
+  BubbleStepType,
+  InputStepType,
+  LogicStepType,
+  SetVariableStep,
+} from 'models'
 import { ChoiceItemsList } from './ChoiceInputStepNode/ChoiceItemsList'
 
 type Props = {
@@ -68,6 +76,9 @@ export const StepNodeContent = ({ step }: Props) => {
     case InputStepType.CHOICE: {
       return <ChoiceItemsList step={step} />
     }
+    case LogicStepType.SET_VARIABLE: {
+      return <SetVariableNodeContent step={step} />
+    }
     case 'start': {
       return <Text>{step.label}</Text>
     }
@@ -75,4 +86,18 @@ export const StepNodeContent = ({ step }: Props) => {
       return <Text>No input</Text>
     }
   }
+}
+
+const SetVariableNodeContent = ({ step }: { step: SetVariableStep }) => {
+  const { typebot } = useTypebot()
+  const variableName =
+    typebot?.variables.byId[step.options?.variableId ?? '']?.name ?? ''
+  const expression = step.options?.expressionToEvaluate ?? ''
+  return (
+    <Text color={'gray.500'}>
+      {variableName === '' && expression === ''
+        ? 'Click to edit...'
+        : `${variableName} = ${expression}`}
+    </Text>
+  )
 }

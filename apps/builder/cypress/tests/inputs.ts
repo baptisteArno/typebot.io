@@ -3,6 +3,7 @@ import {
   parseTestTypebot,
   preventUserFromRefreshing,
 } from 'cypress/plugins/utils'
+import { getIframeBody } from 'cypress/support'
 import { InputStep, InputStepType } from 'models'
 
 describe('Text input', () => {
@@ -214,7 +215,7 @@ describe('Button input', () => {
     cy.signOut()
   })
 
-  it.only('Can edit choice items', () => {
+  it('Can edit choice items', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByDisplayValue('Click to edit').type('Item 1{enter}')
@@ -275,11 +276,11 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
             ...step,
             id: 'step1',
             blockId: 'block1',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
             options:
               step.type === InputStepType.CHOICE
-                ? { itemIds: ['item1'] }
+                ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  { itemIds: ['item1'] }
                 : undefined,
           },
         },
@@ -305,12 +306,4 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
           : undefined,
     })
   )
-}
-
-const getIframeBody = () => {
-  return cy
-    .get('#typebot-iframe')
-    .its('0.contentDocument.body')
-    .should('not.be.empty')
-    .then(cy.wrap)
 }

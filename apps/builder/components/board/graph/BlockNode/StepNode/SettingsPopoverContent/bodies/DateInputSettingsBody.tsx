@@ -1,7 +1,8 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { DateInputOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { DateInputOptions, Variable } from 'models'
 import React from 'react'
 
 type DateInputSettingsBodyProps = {
@@ -23,6 +24,8 @@ export const DateInputSettingsBody = ({
     onOptionsChange({ ...options, isRange })
   const handleHasTimeChange = (hasTime: boolean) =>
     onOptionsChange({ ...options, hasTime })
+  const handleVariableChange = (variable: Variable) =>
+    onOptionsChange({ ...options, variableId: variable.id })
 
   return (
     <Stack spacing={4}>
@@ -73,6 +76,15 @@ export const DateInputSettingsBody = ({
           initialValue={options?.labels?.button ?? 'Send'}
           delay={100}
           onChange={handleButtonLabelChange}
+        />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Save answer in a variable:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
         />
       </Stack>
     </Stack>

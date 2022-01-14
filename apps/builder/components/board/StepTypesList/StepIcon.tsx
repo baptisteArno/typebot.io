@@ -3,6 +3,7 @@ import {
   CalendarIcon,
   ChatIcon,
   CheckSquareIcon,
+  EditIcon,
   EmailIcon,
   FlagIcon,
   GlobeIcon,
@@ -10,7 +11,7 @@ import {
   PhoneIcon,
   TextIcon,
 } from 'assets/icons'
-import { BubbleStepType, InputStepType, StepType } from 'models'
+import { BubbleStepType, InputStepType, LogicStepType, StepType } from 'models'
 import React from 'react'
 
 type StepIconProps = { type: StepType } & IconProps
@@ -40,6 +41,9 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     }
     case InputStepType.CHOICE: {
       return <CheckSquareIcon {...props} />
+    }
+    case LogicStepType.SET_VARIABLE: {
+      return <EditIcon {...props} />
     }
     case 'start': {
       return <FlagIcon {...props} />

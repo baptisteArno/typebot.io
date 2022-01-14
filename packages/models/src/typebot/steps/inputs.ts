@@ -47,18 +47,12 @@ export type DateInputStep = StepBase & {
 
 export type PhoneNumberInputStep = StepBase & {
   type: InputStepType.PHONE
-  options?: InputTextOptionsBase
+  options?: OptionBase & InputTextOptionsBase
 }
 
 export type ChoiceInputStep = StepBase & {
   type: InputStepType.CHOICE
   options: ChoiceInputOptions
-}
-
-export type ChoiceInputOptions = {
-  itemIds: string[]
-  isMultipleChoice?: boolean
-  buttonLabel?: string
 }
 
 export type ChoiceItem = {
@@ -68,26 +62,35 @@ export type ChoiceItem = {
   target?: Target
 }
 
-export type DateInputOptions = {
+type OptionBase = { variableId?: string }
+type InputTextOptionsBase = {
+  labels?: { placeholder?: string; button?: string }
+}
+
+export type ChoiceInputOptions = OptionBase & {
+  itemIds: string[]
+  isMultipleChoice?: boolean
+  buttonLabel?: string
+}
+
+export type DateInputOptions = OptionBase & {
   labels?: { button?: string; from?: string; to?: string }
   hasTime?: boolean
   isRange?: boolean
 }
 
-export type EmailInputOptions = InputTextOptionsBase
+export type EmailInputOptions = OptionBase & InputTextOptionsBase
 
-export type UrlInputOptions = InputTextOptionsBase
+export type UrlInputOptions = OptionBase & InputTextOptionsBase
 
-type InputTextOptionsBase = {
-  labels?: { placeholder?: string; button?: string }
-}
+export type TextInputOptions = OptionBase &
+  InputTextOptionsBase & {
+    isLong?: boolean
+  }
 
-export type TextInputOptions = InputTextOptionsBase & {
-  isLong?: boolean
-}
-
-export type NumberInputOptions = InputTextOptionsBase & {
-  min?: number
-  max?: number
-  step?: number
-}
+export type NumberInputOptions = OptionBase &
+  InputTextOptionsBase & {
+    min?: number
+    max?: number
+    step?: number
+  }

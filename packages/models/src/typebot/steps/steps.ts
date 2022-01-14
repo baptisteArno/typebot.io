@@ -1,10 +1,11 @@
 import { InputStep, InputStepType } from './inputs'
+import { LogicStep, LogicStepType } from './logic'
 
-export type Step = StartStep | BubbleStep | InputStep
+export type Step = StartStep | BubbleStep | InputStep | LogicStep
 
 export type BubbleStep = TextStep
 
-export type StepType = 'start' | BubbleStepType | InputStepType
+export type StepType = 'start' | BubbleStepType | InputStepType | LogicStepType
 
 export enum BubbleStepType {
   TEXT = 'text',

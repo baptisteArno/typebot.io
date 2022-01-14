@@ -1,8 +1,11 @@
 import {
+  BubbleStep,
   BubbleStepType,
   ChoiceInputStep,
   InputStep,
   InputStepType,
+  LogicStep,
+  LogicStepType,
   Step,
   Table,
   TextInputStep,
@@ -44,6 +47,12 @@ export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
 
 export const isInputStep = (step: Step): step is InputStep =>
   (Object.values(InputStepType) as string[]).includes(step.type)
+
+export const isBubbleStep = (step: Step): step is BubbleStep =>
+  (Object.values(BubbleStepType) as string[]).includes(step.type)
+
+export const isLogicStep = (step: Step): step is LogicStep =>
+  (Object.values(LogicStepType) as string[]).includes(step.type)
 
 export const isTextBubbleStep = (step: Step): step is TextStep =>
   step.type === BubbleStepType.TEXT

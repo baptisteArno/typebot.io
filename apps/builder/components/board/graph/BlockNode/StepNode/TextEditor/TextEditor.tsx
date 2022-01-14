@@ -1,4 +1,4 @@
-import { Stack, useOutsideClick } from '@chakra-ui/react'
+import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
@@ -10,10 +10,12 @@ import {
 import { editorStyle, platePlugins } from 'libs/plate'
 import { useDebounce } from 'use-debounce'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { createEditor } from 'slate'
+import { BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
-import { TextStep } from 'models'
+import { TextStep, Variable } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { ReactEditor } from 'slate-react'
 
 type TextEditorProps = {
   stepId: string
@@ -26,14 +28,20 @@ export const TextEditor = ({
   stepId,
   onClose,
 }: TextEditorProps) => {
+  const randomEditorId = useMemo(() => Math.random().toString(), [])
   const editor = useMemo(
-    () => withPlate(createEditor(), { id: stepId, plugins: platePlugins }),
+    () =>
+      withPlate(createEditor(), { id: randomEditorId, plugins: platePlugins }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
   const { updateStep } = useTypebot()
   const [value, setValue] = useState(initialValue)
   const [debouncedValue] = useDebounce(value, 500)
+  const varDropdownRef = useRef<HTMLDivElement | null>(null)
+  const rememberedSelection = useRef<BaseSelection | null>(null)
+  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+
   const textEditorRef = useRef<HTMLDivElement>(null)
   useOutsideClick({
     ref: textEditorRef,
@@ -47,6 +55,29 @@ export const TextEditor = ({
     save(debouncedValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue])
+
+  useEffect(() => {
+    if (!isVariableDropdownOpen) return
+    const el = varDropdownRef.current
+    if (!el) return
+    const { top, left } = computeTargetCoord()
+    el.style.top = `${top}px`
+    el.style.left = `${left}px`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVariableDropdownOpen])
+
+  const computeTargetCoord = () => {
+    const selection = window.getSelection()
+    const relativeParent = textEditorRef.current
+    if (!selection || !relativeParent) return { top: 0, left: 0 }
+    const range = selection.getRangeAt(0)
+    const selectionBoundingRect = range.getBoundingClientRect()
+    const relativeRect = relativeParent.getBoundingClientRect()
+    return {
+      top: selectionBoundingRect.bottom - relativeRect.top,
+      left: selectionBoundingRect.left - relativeRect.left,
+    }
+  }
 
   const save = (value: unknown[]) => {
     if (value.length === 0) return
@@ -65,6 +96,19 @@ export const TextEditor = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
   }
+
+  const handleVariableSelected = (variable: Variable) => {
+    setIsVariableDropdownOpen(false)
+    if (!rememberedSelection.current) return
+    Transforms.select(editor, rememberedSelection.current)
+    Transforms.insertText(editor, '{{' + variable.name + '}}')
+    ReactEditor.focus(editor as unknown as ReactEditor)
+  }
+
+  const handleChangeEditorContent = (val: unknown[]) => {
+    setValue(val)
+    setIsVariableDropdownOpen(false)
+  }
   return (
     <Stack
       flex="1"
@@ -73,11 +117,12 @@ export const TextEditor = ({
       borderColor="blue.500"
       rounded="md"
       onMouseDown={handleMouseDown}
+      pos="relative"
       spacing={0}
     >
-      <ToolBar />
+      <ToolBar onVariablesButtonClick={() => setIsVariableDropdownOpen(true)} />
       <Plate
-        id={stepId}
+        id={randomEditorId}
         editableProps={{
           style: editorStyle,
           autoFocus: true,
@@ -88,15 +133,34 @@ export const TextEditor = ({
             })
           },
           'aria-label': 'Text editor',
+          onBlur: () => {
+            rememberedSelection.current = editor.selection
+          },
         }}
         initialValue={
           initialValue.length === 0
             ? [{ type: 'p', children: [{ text: '' }] }]
             : initialValue
         }
-        onChange={setValue}
+        onChange={handleChangeEditorContent}
         editor={editor}
       />
+      {isVariableDropdownOpen && (
+        <Flex
+          pos="absolute"
+          ref={varDropdownRef}
+          shadow="lg"
+          rounded="md"
+          bgColor="white"
+          w="250px"
+        >
+          <VariableSearchInput
+            onSelectVariable={handleVariableSelected}
+            placeholder="Search for a variable"
+            isDefaultOpen
+          />
+        </Flex>
+      )}
     </Stack>
   )
 }

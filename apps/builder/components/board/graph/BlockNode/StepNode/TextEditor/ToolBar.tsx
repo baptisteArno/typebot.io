@@ -9,8 +9,14 @@ import { LinkToolbarButton } from '@udecode/plate-ui-link'
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
 import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon } from 'assets/icons'
 
-export const ToolBar = (props: StackProps) => {
+type Props = { onVariablesButtonClick: () => void } & StackProps
+export const ToolBar = (props: Props) => {
   const editor = usePlateEditorRef()
+
+  const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    props.onVariablesButtonClick()
+  }
   return (
     <HStack
       bgColor={'white'}
@@ -21,7 +27,9 @@ export const ToolBar = (props: StackProps) => {
       borderBottomWidth={1}
       {...props}
     >
-      <Button size="sm">Variables</Button>
+      <Button size="sm" onMouseDown={handleVariablesButtonMouseDown}>
+        Variables
+      </Button>
       <span data-testid="bold-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_BOLD)}

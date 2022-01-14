@@ -1,7 +1,8 @@
 import { FormLabel, HStack, Stack } from '@chakra-ui/react'
 import { SmartNumberInput } from 'components/settings/SmartNumberInput'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { NumberInputOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { NumberInputOptions, Variable } from 'models'
 import React from 'react'
 import { removeUndefinedFields } from 'services/utils'
 
@@ -24,6 +25,8 @@ export const NumberInputSettingsBody = ({
     onOptionsChange(removeUndefinedFields({ ...options, max }))
   const handleStepChange = (step?: number) =>
     onOptionsChange(removeUndefinedFields({ ...options, step }))
+  const handleVariableChange = (variable: Variable) =>
+    onOptionsChange({ ...options, variableId: variable.id })
 
   return (
     <Stack spacing={4}>
@@ -79,6 +82,15 @@ export const NumberInputSettingsBody = ({
           onValueChange={handleStepChange}
         />
       </HStack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Save answer in a variable:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
+        />
+      </Stack>
     </Stack>
   )
 }

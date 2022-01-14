@@ -18,6 +18,7 @@ export const parseTypebotToPublicTypebot = (
   settings: typebot.settings,
   publicId: typebot.publicId,
   choiceItems: typebot.choiceItems,
+  variables: typebot.variables,
 })
 
 export const createPublishedTypebot = async (

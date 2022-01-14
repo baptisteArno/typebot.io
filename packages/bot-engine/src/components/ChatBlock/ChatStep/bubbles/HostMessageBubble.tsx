@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useHostAvatars } from '../../../../contexts/HostAvatarsContext'
-import { useTypebot } from '../../../../contexts/TypebotContext'
-import { BubbleStepType, StepType, TextStep } from 'models'
-import { computeTypingTimeout } from '../../../../services/chat'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useHostAvatars } from 'contexts/HostAvatarsContext'
+import { useTypebot } from 'contexts/TypebotContext'
+import { BubbleStepType, TextStep } from 'models'
+import { computeTypingTimeout } from 'services/chat'
 import { TypingContent } from './TypingContent'
+import { parseVariables } from 'services/variable'
 
 type HostMessageBubbleProps = {
   step: TextStep
@@ -23,6 +24,11 @@ export const HostMessageBubble = ({
   const { updateLastAvatarOffset } = useHostAvatars()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
+
+  const content = useMemo(
+    () => parseVariables(step.content.html, typebot.variables),
+    [typebot.variables]
+  )
 
   useEffect(() => {
     sendAvatarOffset()
@@ -72,7 +78,7 @@ export const HostMessageBubble = ({
                 (isTyping ? 'opacity-0 h-6' : 'opacity-100 h-full')
               }
               dangerouslySetInnerHTML={{
-                __html: step.content.html,
+                __html: content,
               }}
             />
           )}

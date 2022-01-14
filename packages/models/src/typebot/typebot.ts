@@ -4,14 +4,16 @@ import { Table } from '../utils'
 import { Settings } from './settings'
 import { Step } from './steps/steps'
 import { Theme } from './theme'
+import { Variable } from './variable'
 
 export type Typebot = Omit<
   TypebotFromPrisma,
-  'blocks' | 'theme' | 'settings' | 'steps'
+  'blocks' | 'theme' | 'settings' | 'steps' | 'choiceItems' | 'variables'
 > & {
   blocks: Table<Block>
   steps: Table<Step>
   choiceItems: Table<ChoiceItem>
+  variables: Table<Variable>
   theme: Theme
   settings: Settings
 }

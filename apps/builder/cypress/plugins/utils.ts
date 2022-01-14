@@ -74,6 +74,7 @@ export const parseTestTypebot = ({
     publicId: null,
     publishedTypebotId: null,
     updatedAt: new Date(),
+    variables: { byId: {}, allIds: [] },
   }
 }
 

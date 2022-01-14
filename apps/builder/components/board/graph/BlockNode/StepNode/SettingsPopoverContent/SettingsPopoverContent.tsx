@@ -4,6 +4,9 @@ import {
   ChoiceInputOptions,
   InputStep,
   InputStepType,
+  LogicStepType,
+  SetVariableOptions,
+  Step,
   TextInputOptions,
 } from 'models'
 import {
@@ -15,10 +18,12 @@ import {
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
+import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
 
 type Props = {
-  step: InputStep
+  step: Step
 }
+
 export const SettingsPopoverContent = ({ step }: Props) => {
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -35,7 +40,7 @@ export const SettingsPopoverContent = ({ step }: Props) => {
 const SettingsPopoverBodyContent = ({ step }: Props) => {
   const { updateStep } = useTypebot()
   const handleOptionsChange = (
-    options: TextInputOptions | ChoiceInputOptions
+    options: TextInputOptions | ChoiceInputOptions | SetVariableOptions
   ) => updateStep(step.id, { options } as Partial<InputStep>)
 
   switch (step.type) {
@@ -90,6 +95,14 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
     case InputStepType.CHOICE: {
       return (
         <ChoiceInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case LogicStepType.SET_VARIABLE: {
+      return (
+        <SetVariableSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

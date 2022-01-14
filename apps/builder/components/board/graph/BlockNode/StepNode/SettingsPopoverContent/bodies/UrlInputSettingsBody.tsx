@@ -1,6 +1,7 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { UrlInputOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { UrlInputOptions, Variable } from 'models'
 import React from 'react'
 
 type UrlInputSettingsBodyProps = {
@@ -16,6 +17,8 @@ export const UrlInputSettingsBody = ({
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+  const handleVariableChange = (variable: Variable) =>
+    onOptionsChange({ ...options, variableId: variable.id })
 
   return (
     <Stack spacing={4}>
@@ -39,6 +42,15 @@ export const UrlInputSettingsBody = ({
           initialValue={options?.labels?.button ?? 'Send'}
           delay={100}
           onChange={handleButtonLabelChange}
+        />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Save answer in a variable:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
         />
       </Stack>
     </Stack>

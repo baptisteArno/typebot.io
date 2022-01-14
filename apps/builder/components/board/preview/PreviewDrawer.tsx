@@ -26,7 +26,7 @@ export const PreviewDrawer = () => {
   const [restartKey, setRestartKey] = useState(0)
 
   const publicTypebot = useMemo(
-    () => (typebot ? parseTypebotToPublicTypebot(typebot) : undefined),
+    () => (typebot ? { ...parseTypebotToPublicTypebot(typebot) } : undefined),
     [typebot]
   )
 

@@ -1,3 +1,4 @@
+import { Link } from '@chakra-ui/react'
 import {
   AutoformatRule,
   createAutoformatPlugin,
@@ -11,7 +12,7 @@ import {
   createUnderlinePlugin,
 } from '@udecode/plate-basic-marks'
 import { createPlugins } from '@udecode/plate-core'
-import { createLinkPlugin } from '@udecode/plate-link'
+import { createLinkPlugin, ELEMENT_LINK } from '@udecode/plate-link'
 
 export const editorStyle: React.CSSProperties = {
   flex: 1,
@@ -43,14 +44,17 @@ export const autoFormatRules: AutoformatRule[] = [
   },
 ]
 
-export const platePlugins = createPlugins([
-  createBoldPlugin(),
-  createItalicPlugin(),
-  createUnderlinePlugin(),
-  createLinkPlugin(),
-  createAutoformatPlugin({
-    options: {
-      rules: autoFormatRules,
-    },
-  }),
-])
+export const platePlugins = createPlugins(
+  [
+    createBoldPlugin(),
+    createItalicPlugin(),
+    createUnderlinePlugin(),
+    createLinkPlugin(),
+    createAutoformatPlugin({
+      options: {
+        rules: autoFormatRules,
+      },
+    }),
+  ],
+  { components: { [ELEMENT_LINK]: Link } }
+)

@@ -1,4 +1,5 @@
 import { Parser } from 'htmlparser2'
+import { Step } from 'models'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)
@@ -115,3 +116,5 @@ export const removeUndefinedFields = <T>(obj: T): T =>
         : { ...acc, [key]: obj[key as keyof T] },
     {} as T
   )
+
+export const stepHasOptions = (step: Step) => 'options' in step

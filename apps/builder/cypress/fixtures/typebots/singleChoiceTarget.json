@@ -126,5 +126,6 @@
   "settings": {
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
+  "variables": { "byId": {}, "allIds": [] },
   "publicId": null
 }

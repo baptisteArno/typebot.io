@@ -60,6 +60,11 @@ const components = {
       focusBorderColor: 'blue.200',
     },
   },
+  Textarea: {
+    defaultProps: {
+      focusBorderColor: 'blue.200',
+    },
+  },
   Popover: {
     baseStyle: {
       popper: {

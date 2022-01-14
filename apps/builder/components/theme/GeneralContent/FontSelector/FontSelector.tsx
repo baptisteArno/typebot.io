@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Text, Flex } from '@chakra-ui/react'
-import { SearchableDropdown } from './SearchableDropdown'
+import { SearchableDropdown } from '../../../shared/SearchableDropdown'
 
 type FontSelectorProps = {
   activeFont?: string
