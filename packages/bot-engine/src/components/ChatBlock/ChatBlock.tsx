@@ -4,10 +4,20 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { ChoiceInputStep, LogicStep, Step } from 'models'
+import {
+  ChoiceInputStep,
+  ComparisonOperators,
+  ConditionStep,
+  LogicalOperator,
+  LogicStep,
+  LogicStepType,
+  Step,
+  Target,
+} from 'models'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isChoiceInput,
+  isDefined,
   isInputStep,
   isLogicStep,
   isTextBubbleStep,
@@ -20,23 +30,30 @@ import {
 
 type ChatBlockProps = {
   stepIds: string[]
-  onBlockEnd: (nextBlockId?: string) => void
+  startStepId?: string
+  onBlockEnd: (target?: Target) => void
 }
 
-export const ChatBlock = ({ stepIds, onBlockEnd }: ChatBlockProps) => {
+export const ChatBlock = ({
+  stepIds,
+  startStepId,
+  onBlockEnd,
+}: ChatBlockProps) => {
   const { typebot, updateVariableValue } = useTypebot()
   const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
 
   useEffect(() => {
-    displayNextStep()
+    const nextStep =
+      typebot.steps.byId[startStepId ?? stepIds[displayedSteps.length]]
+    if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
   }, [])
 
   useEffect(() => {
     autoScrollToBottom()
     const currentStep = [...displayedSteps].pop()
     if (currentStep && isLogicStep(currentStep)) {
-      executeLogic(currentStep)
-      displayNextStep()
+      const target = executeLogic(currentStep)
+      target ? onBlockEnd(target) : displayNextStep()
     }
   }, [displayedSteps])
 
@@ -65,33 +82,71 @@ export const ChatBlock = ({ stepIds, onBlockEnd }: ChatBlockProps) => {
         currentStep?.target?.blockId ||
         displayedSteps.length === stepIds.length
       )
-        return onBlockEnd(currentStep?.target?.blockId)
+        return onBlockEnd(currentStep?.target)
     }
     const nextStep = typebot.steps.byId[stepIds[displayedSteps.length]]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
   }
 
-  const executeLogic = (step: LogicStep) => {
-    if (!step.options?.variableId || !step.options.expressionToEvaluate) return
-    const expression = step.options.expressionToEvaluate
-    const evaluatedExpression = isMathFormula(expression)
-      ? evaluateExpression(parseVariables(expression, typebot.variables))
-      : expression
-    updateVariableValue(step.options.variableId, evaluatedExpression)
+  const executeLogic = (step: LogicStep): Target | undefined => {
+    switch (step.type) {
+      case LogicStepType.SET_VARIABLE: {
+        if (!step.options?.variableId || !step.options.expressionToEvaluate)
+          return
+        const expression = step.options.expressionToEvaluate
+        const evaluatedExpression = isMathFormula(expression)
+          ? evaluateExpression(parseVariables(expression, typebot.variables))
+          : expression
+        updateVariableValue(step.options.variableId, evaluatedExpression)
+        return
+      }
+      case LogicStepType.CONDITION: {
+        const isConditionPassed =
+          step.options?.logicalOperator === LogicalOperator.AND
+            ? step.options?.comparisons.allIds.every(executeComparison(step))
+            : step.options?.comparisons.allIds.some(executeComparison(step))
+        return isConditionPassed ? step.trueTarget : step.falseTarget
+      }
+    }
+  }
+
+  const executeComparison = (step: ConditionStep) => (comparisonId: string) => {
+    const comparison = step.options?.comparisons.byId[comparisonId]
+    if (!comparison?.variableId) return false
+    const inputValue = typebot.variables.byId[comparison.variableId].value ?? ''
+    const { value } = comparison
+    if (!isDefined(value)) return false
+    switch (comparison.comparisonOperator) {
+      case ComparisonOperators.CONTAINS: {
+        return inputValue.includes(value)
+      }
+      case ComparisonOperators.EQUAL: {
+        return inputValue === value
+      }
+      case ComparisonOperators.NOT_EQUAL: {
+        return inputValue !== value
+      }
+      case ComparisonOperators.GREATER: {
+        return parseFloat(inputValue) >= parseFloat(value)
+      }
+      case ComparisonOperators.LESS: {
+        return parseFloat(inputValue) <= parseFloat(value)
+      }
+      case ComparisonOperators.IS_SET: {
+        return isDefined(inputValue) && inputValue.length > 0
+      }
+    }
   }
 
   const getSingleChoiceTargetId = (
     currentStep: ChoiceInputStep,
     answerContent?: string
-  ) => {
+  ): Target | undefined => {
     const itemId = currentStep.options.itemIds.find(
       (itemId) => typebot.choiceItems.byId[itemId].content === answerContent
     )
     if (!itemId) throw new Error('itemId should exist')
-    const targetId =
-      typebot.choiceItems.byId[itemId].target?.blockId ??
-      currentStep.target?.blockId
-    return targetId
+    return typebot.choiceItems.byId[itemId].target ?? currentStep.target
   }
 
   return (

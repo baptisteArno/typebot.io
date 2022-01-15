@@ -3,13 +3,13 @@ import assert from 'assert'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ChoiceItem } from 'models'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   getAnchorsPosition,
-  computeFlowChartConnectorPath,
-  getSourceChoiceItemIndex,
+  computeEdgePath,
+  getEndpointTopOffset,
+  getTarget,
 } from 'services/graph'
-import { isChoiceInput } from 'utils'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -18,15 +18,25 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
+export enum EdgeType {
+  STEP,
+  CHOICE_ITEM,
+  CONDITION_TRUE,
+  CONDITION_FALSE,
+}
+
 export const Edge = ({
+  type,
   stepId,
   item,
 }: {
+  type: EdgeType
   stepId: string
   item?: ChoiceItem
 }) => {
   const { typebot } = useTypebot()
-  const { previewingIds } = useGraph()
+  const { previewingIds, sourceEndpoints, targetEndpoints, graphPosition } =
+    useGraph()
   const step = typebot?.steps.byId[stepId]
   const isPreviewing = useMemo(
     () =>
@@ -34,40 +44,83 @@ export const Edge = ({
       previewingIds.targetId === step?.target?.blockId,
     [previewingIds.sourceId, previewingIds.targetId, step]
   )
+  const [sourceTop, setSourceTop] = useState(
+    getEndpointTopOffset(graphPosition, sourceEndpoints, item?.id ?? step?.id)
+  )
+  const [targetTop, setTargetTop] = useState(
+    getEndpointTopOffset(graphPosition, targetEndpoints, step?.id)
+  )
 
-  const { sourceBlock, targetBlock, targetStepIndex } = useMemo(() => {
+  useEffect(() => {
+    const newSourceTop = getEndpointTopOffset(
+      graphPosition,
+      sourceEndpoints,
+      getSourceEndpointId()
+    )
+    const sensibilityThreshold = 10
+    const newSourceTopIsTooClose =
+      sourceTop < newSourceTop + sensibilityThreshold &&
+      sourceTop > newSourceTop - sensibilityThreshold
+    if (newSourceTopIsTooClose) return
+    setSourceTop(newSourceTop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot?.blocks, typebot?.steps, graphPosition, sourceEndpoints])
+
+  const getSourceEndpointId = () => {
+    switch (type) {
+      case EdgeType.STEP:
+        return step?.id
+      case EdgeType.CHOICE_ITEM:
+        return item?.id
+      case EdgeType.CONDITION_TRUE:
+        return step?.id + 'true'
+      case EdgeType.CONDITION_FALSE:
+        return step?.id + 'false'
+    }
+  }
+
+  useEffect(() => {
+    if (!step) return
+    const target = getTarget(step, type)
+    const newTargetTop = getEndpointTopOffset(
+      graphPosition,
+      targetEndpoints,
+      target?.blockId ?? target?.stepId
+    )
+    const sensibilityThreshold = 10
+    const newSourceTopIsTooClose =
+      targetTop < newTargetTop + sensibilityThreshold &&
+      targetTop > newTargetTop - sensibilityThreshold
+    if (newSourceTopIsTooClose) return
+    setTargetTop(newTargetTop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot?.blocks, typebot?.steps, graphPosition, targetEndpoints])
+
+  const { sourceBlock, targetBlock } = useMemo(() => {
     if (!typebot) return {}
     const step = typebot.steps.byId[stepId]
     const sourceBlock = typebot.blocks.byId[step.blockId]
-    const targetBlockId = item?.target?.blockId ?? step.target?.blockId
+    const targetBlockId = getTarget(step, type)?.blockId
     assert(isDefined(targetBlockId))
     const targetBlock = typebot.blocks.byId[targetBlockId]
-    const targetStepId = item?.target?.stepId ?? step.target?.stepId
-    const targetStepIndex = targetStepId
-      ? targetBlock.stepIds.indexOf(targetStepId)
-      : undefined
     return {
       sourceBlock,
       targetBlock,
-      targetStepIndex,
     }
-  }, [item?.target?.blockId, item?.target?.stepId, stepId, typebot])
+  }, [stepId, type, typebot])
 
   const path = useMemo(() => {
     if (!sourceBlock || !targetBlock || !step) return ``
-    const sourceChoiceItemIndex = isChoiceInput(step)
-      ? getSourceChoiceItemIndex(step, item?.id)
-      : undefined
     const anchorsPosition = getAnchorsPosition({
       sourceBlock,
       targetBlock,
-      sourceStepIndex: sourceBlock.stepIds.indexOf(stepId),
-      targetStepIndex,
-      sourceChoiceItemIndex,
+      sourceTop,
+      targetTop,
     })
-    return computeFlowChartConnectorPath(anchorsPosition)
-  }, [item, sourceBlock, step, stepId, targetBlock, targetStepIndex])
+    return computeEdgePath(anchorsPosition)
+  }, [sourceBlock, sourceTop, step, targetBlock, targetTop])
 
+  if (sourceTop === 0) return <></>
   return (
     <path
       d={path}

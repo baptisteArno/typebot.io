@@ -13,7 +13,7 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
-  const { typebot } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
   const { setRightPanel } = useEditor()
 
   const handleBackClick = () => {
@@ -23,6 +23,7 @@ export const TypebotHeader = () => {
     })
   }
 
+  const handleNameSubmit = (name: string) => updateTypebot({ name })
   return (
     <Flex
       w="full"
@@ -87,7 +88,7 @@ export const TypebotHeader = () => {
           />
           <EditableTypebotName
             name={typebot?.name}
-            onNewName={(newName) => console.log(newName)}
+            onNewName={handleNameSubmit}
           />
         </Flex>
       </Flex>

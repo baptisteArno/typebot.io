@@ -1,17 +1,19 @@
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import { Block, ChoiceInputStep, Step, Table, Target, Typebot } from 'models'
-import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
+import { Block, Step, Table, Target, Typebot } from 'models'
+import {
+  AnchorsPositionProps,
+  EdgeType,
+} from 'components/board/graph/Edges/Edge'
 import {
   stubLength,
   blockWidth,
   blockAnchorsOffset,
-  spaceBetweenSteps,
-  firstStepOffsetY,
-  firstChoiceItemOffsetY,
   ConnectingIds,
+  Endpoint,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
-import { isChoiceInput, isDefined } from 'utils'
+import { headerHeight } from 'components/shared/TypebotHeader'
+import { isConditionStep } from 'utils'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
@@ -27,37 +29,11 @@ export const computeDropOffPath = (
 
 export const computeSourceCoordinates = (
   sourcePosition: Coordinates,
-  sourceStepIndex: number,
-  sourceChoiceItemIndex?: number
+  sourceTop: number
 ) => ({
   x: sourcePosition.x + blockWidth,
-  y:
-    (sourcePosition.y ?? 0) +
-    firstStepOffsetY +
-    spaceBetweenSteps * sourceStepIndex +
-    (isDefined(sourceChoiceItemIndex)
-      ? firstChoiceItemOffsetY +
-        (sourceChoiceItemIndex ?? 0) * spaceBetweenSteps
-      : 0),
+  y: sourceTop,
 })
-
-export const computeFlowChartConnectorPath = ({
-  sourcePosition,
-  targetPosition,
-  sourceType,
-  totalSegments,
-}: AnchorsPositionProps) => {
-  const segments = getSegments({
-    sourcePosition,
-    targetPosition,
-    sourceType,
-    totalSegments,
-  })
-  return roundCorners(
-    `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
-    10
-  ).path
-}
 
 const getSegments = ({
   sourcePosition,
@@ -152,27 +128,20 @@ const computeFiveSegments = (
 type GetAnchorsPositionParams = {
   sourceBlock: Block
   targetBlock: Block
-  sourceStepIndex: number
-  sourceChoiceItemIndex?: number
-  targetStepIndex?: number
+  sourceTop: number
+  targetTop: number
 }
 export const getAnchorsPosition = ({
   sourceBlock,
   targetBlock,
-  sourceStepIndex,
-  sourceChoiceItemIndex,
-  targetStepIndex,
+  sourceTop,
+  targetTop,
 }: GetAnchorsPositionParams): AnchorsPositionProps => {
-  const targetOffsetY = isDefined(targetStepIndex)
-    ? (targetBlock.graphCoordinates.y ?? 0) +
-      firstStepOffsetY +
-      spaceBetweenSteps * targetStepIndex
-    : undefined
+  const targetOffsetY = targetTop > 0 ? targetTop : undefined
 
   const sourcePosition = computeSourceCoordinates(
     sourceBlock.graphCoordinates,
-    sourceStepIndex,
-    sourceChoiceItemIndex
+    sourceTop
   )
   let sourceType: 'right' | 'left' = 'right'
   if (sourceBlock.graphCoordinates.x > targetBlock.graphCoordinates.x) {
@@ -247,78 +216,58 @@ const parseBlockAnchorPosition = (
   }
 }
 
-export const computeDrawingConnectedPath = (
+export const computeEdgePath = ({
+  sourcePosition,
+  targetPosition,
+  sourceType,
+  totalSegments,
+}: AnchorsPositionProps) => {
+  const segments = getSegments({
+    sourcePosition,
+    targetPosition,
+    sourceType,
+    totalSegments,
+  })
+  return roundCorners(
+    `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
+    10
+  ).path
+}
+
+export const computeConnectingEdgePath = (
   connectingIds: Omit<ConnectingIds, 'target'> & { target: Target },
   sourceBlock: Block,
+  sourceTop: number,
+  targetTop: number,
   typebot: Typebot
 ) => {
   if (!sourceBlock) return ``
   const targetBlock = typebot.blocks.byId[connectingIds.target.blockId]
-  const targetStepIndex = connectingIds.target.stepId
-    ? targetBlock.stepIds.findIndex(
-        (stepId) => stepId === connectingIds.target?.stepId
-      )
-    : undefined
 
-  const sourceStepIndex = sourceBlock?.stepIds.indexOf(
-    connectingIds?.source.stepId
-  )
-  const sourceStep = typebot.steps.byId[connectingIds?.source.stepId]
-  const sourceChoiceItemIndex = isChoiceInput(sourceStep)
-    ? getSourceChoiceItemIndex(sourceStep, connectingIds.source.choiceItemId)
-    : undefined
   const anchorsPosition = getAnchorsPosition({
     sourceBlock,
     targetBlock,
-    sourceStepIndex,
-    sourceChoiceItemIndex,
-    targetStepIndex,
+    sourceTop,
+    targetTop,
   })
-  return computeFlowChartConnectorPath(anchorsPosition)
+  return computeEdgePath(anchorsPosition)
 }
 
-export const computeDrawingPathToMouse = (
-  sourceBlock: Block,
-  connectingIds: ConnectingIds,
-  mousePosition: Coordinates,
-  steps: Table<Step>
-) => {
-  const sourceStep = steps.byId[connectingIds?.source.stepId ?? '']
-  return computeConnectingEdgePath({
-    blockPosition: sourceBlock?.graphCoordinates,
-    mousePosition,
-    stepIndex: sourceBlock.stepIds.findIndex(
-      (stepId) => stepId === connectingIds?.source.stepId
-    ),
-    choiceItemIndex: isChoiceInput(sourceStep)
-      ? getSourceChoiceItemIndex(sourceStep, connectingIds?.source.choiceItemId)
-      : undefined,
-  })
-}
-
-const computeConnectingEdgePath = ({
+export const computeEdgePathToMouse = ({
   blockPosition,
   mousePosition,
-  stepIndex,
-  choiceItemIndex,
+  sourceTop,
 }: {
   blockPosition: Coordinates
   mousePosition: Coordinates
-  stepIndex: number
-  choiceItemIndex?: number
+  sourceTop: number
 }): string => {
   const sourcePosition = {
     x:
       mousePosition.x - blockPosition.x > blockWidth / 2
         ? blockPosition.x + blockWidth - 40
         : blockPosition.x + 40,
-    y:
-      blockPosition.y +
-      firstStepOffsetY +
-      stepIndex * spaceBetweenSteps +
-      (isDefined(choiceItemIndex)
-        ? firstChoiceItemOffsetY + (choiceItemIndex ?? 0) * spaceBetweenSteps
-        : 0),
+    y: sourceTop,
   }
   const sourceType =
     mousePosition.x - blockPosition.x > blockWidth / 2 ? 'right' : 'left'
@@ -333,8 +282,33 @@ const computeConnectingEdgePath = ({
   ).path
 }
 
-export const getSourceChoiceItemIndex = (
-  step: ChoiceInputStep,
-  itemId?: string
-) =>
-  itemId ? step.options.itemIds.indexOf(itemId) : step.options.itemIds.length
+export const getEndpointTopOffset = (
+  graphPosition: Coordinates,
+  endpoints: Table<Endpoint>,
+  id?: string
+): number => {
+  if (!id) return 0
+  const endpointRef = endpoints.byId[id]?.ref
+  if (!endpointRef) return 0
+  return (
+    7 +
+    (endpointRef.current?.getBoundingClientRect().top ?? 0) -
+    graphPosition.y -
+    headerHeight
+  )
+}
+
+export const getTarget = (step: Step, edgeType: EdgeType) => {
+  if (!step) return
+  switch (edgeType) {
+    case EdgeType.STEP:
+    case EdgeType.CHOICE_ITEM:
+      return step.target
+    case EdgeType.CONDITION_TRUE:
+      if (!isConditionStep(step)) return
+      return step.trueTarget
+    case EdgeType.CONDITION_FALSE:
+      if (!isConditionStep(step)) return
+      return step.falseTarget
+  }
+}

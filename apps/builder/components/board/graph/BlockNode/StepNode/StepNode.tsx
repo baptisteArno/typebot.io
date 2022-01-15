@@ -10,13 +10,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Block, Step } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import {
-  isChoiceInput,
-  isDefined,
-  isInputStep,
-  isLogicStep,
-  isTextBubbleStep,
-} from 'utils'
+import { isDefined, isInputStep, isLogicStep, isTextBubbleStep } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent'
@@ -26,6 +20,8 @@ import { SettingsPopoverContent } from './SettingsPopoverContent'
 import { DraggableStep } from 'contexts/DndContext'
 import { StepNodeContextMenu } from './StepNodeContextMenu'
 import { SourceEndpoint } from './SourceEndpoint'
+import { hasDefaultConnector } from 'services/typebots'
+import { TargetEndpoint } from './TargetEndpoint'
 
 export const StepNode = ({
   step,
@@ -192,7 +188,13 @@ export const StepNode = ({
               >
                 <StepIcon type={step.type} mt="1" />
                 <StepNodeContent step={step} />
-                {isConnectable && !isChoiceInput(step) && (
+                <TargetEndpoint
+                  pos="absolute"
+                  left="-32px"
+                  top="19px"
+                  stepId={step.id}
+                />
+                {isConnectable && hasDefaultConnector(step) && (
                   <SourceEndpoint
                     source={{
                       blockId: step.blockId,
@@ -205,17 +207,23 @@ export const StepNode = ({
                 )}
               </HStack>
 
-              {isDefined(connectedStubPosition) && !isChoiceInput(step) && (
-                <Box
-                  h="2px"
-                  pos="absolute"
-                  right={connectedStubPosition === 'left' ? undefined : '-18px'}
-                  left={connectedStubPosition === 'left' ? '-18px' : undefined}
-                  top="25px"
-                  w="18px"
-                  bgColor="gray.500"
-                />
-              )}
+              {isDefined(connectedStubPosition) &&
+                hasDefaultConnector(step) &&
+                isConnectable && (
+                  <Box
+                    h="2px"
+                    pos="absolute"
+                    right={
+                      connectedStubPosition === 'left' ? undefined : '-18px'
+                    }
+                    left={
+                      connectedStubPosition === 'left' ? '-18px' : undefined
+                    }
+                    top="25px"
+                    w="18px"
+                    bgColor="gray.500"
+                  />
+                )}
             </Flex>
           </PopoverTrigger>
           {(isInputStep(step) || isLogicStep(step)) && (

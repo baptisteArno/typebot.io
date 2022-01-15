@@ -8,7 +8,6 @@ import {
   withPlate,
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
-import { useDebounce } from 'use-debounce'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
@@ -37,7 +36,6 @@ export const TextEditor = ({
   )
   const { updateStep } = useTypebot()
   const [value, setValue] = useState(initialValue)
-  const [debouncedValue] = useDebounce(value, 500)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
@@ -45,16 +43,15 @@ export const TextEditor = ({
   const textEditorRef = useRef<HTMLDivElement>(null)
   useOutsideClick({
     ref: textEditorRef,
-    handler: () => {
-      save(value)
-      onClose()
-    },
+    handler: onClose,
   })
 
   useEffect(() => {
-    save(debouncedValue)
+    return () => {
+      save(value)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
+  }, [value])
 
   useEffect(() => {
     if (!isVariableDropdownOpen) return
@@ -107,6 +104,7 @@ export const TextEditor = ({
 
   const handleChangeEditorContent = (val: unknown[]) => {
     setValue(val)
+    save(val)
     setIsVariableDropdownOpen(false)
   }
   return (

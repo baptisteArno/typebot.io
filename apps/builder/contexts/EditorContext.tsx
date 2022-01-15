@@ -13,9 +13,9 @@ export enum RightPanel {
 const editorContext = createContext<{
   rightPanel?: RightPanel
   setRightPanel: Dispatch<SetStateAction<RightPanel | undefined>>
-}>({
-  setRightPanel: () => console.log("I'm not instantiated"),
-})
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+}>({})
 
 export const EditorContext = ({ children }: { children: ReactNode }) => {
   const [rightPanel, setRightPanel] = useState<RightPanel>()

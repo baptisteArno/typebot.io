@@ -5,8 +5,7 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Block, PublicTypebot } from 'models'
-import { filterTable } from 'utils'
+import { Answer, Block, PublicTypebot, Target } from 'models'
 
 type Props = {
   typebot: PublicTypebot
@@ -21,25 +20,29 @@ export const ConversationContainer = ({
   onCompleted,
 }: Props) => {
   const { document: frameDocument } = useFrame()
-  const [displayedBlocks, setDisplayedBlocks] = useState<Block[]>([])
+  const [displayedBlocks, setDisplayedBlocks] = useState<
+    { block: Block; startStepId?: string }[]
+  >([])
   const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
   const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = (blockId?: string) => {
-    if (!blockId) return onCompleted()
-    const nextBlock = typebot.blocks.byId[blockId]
+  const displayNextBlock = (target?: Target) => {
+    if (!target) return onCompleted()
+    const nextBlock = {
+      block: typebot.blocks.byId[target.blockId],
+      startStepId: target.stepId,
+    }
     if (!nextBlock) return onCompleted()
-    onNewBlockVisible(blockId)
+    onNewBlockVisible(target.blockId)
     setDisplayedBlocks([...displayedBlocks, nextBlock])
   }
 
   useEffect(() => {
     const blocks = typebot.blocks
-    const firstBlockId =
+    const firstTarget =
       typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].target
-        ?.blockId
-    if (firstBlockId) displayNextBlock(firstBlockId)
+    if (firstTarget) displayNextBlock(firstTarget)
   }, [])
 
   useEffect(() => {
@@ -58,10 +61,11 @@ export const ConversationContainer = ({
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
       id="scrollable-container"
     >
-      {displayedBlocks.map((block, idx) => (
+      {displayedBlocks.map((displayedBlock, idx) => (
         <ChatBlock
-          key={block.id + idx}
-          stepIds={block.stepIds}
+          key={displayedBlock.block.id + idx}
+          stepIds={displayedBlock.block.stepIds}
+          startStepId={displayedBlock.startStepId}
           onBlockEnd={displayNextBlock}
         />
       ))}

@@ -13,13 +13,18 @@ import {
   ChoiceInputStep,
   LogicStepType,
   LogicStep,
+  Step,
+  ConditionStep,
+  ComparisonOperators,
+  LogicalOperator,
 } from 'models'
-import shortId from 'short-uuid'
+import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, sendRequest, toKebabCase } from './utils'
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
+import { isChoiceInput, isConditionStep } from 'utils'
 
 export const useTypebots = ({
   folderId,
@@ -136,6 +141,26 @@ export const parseNewStep = (
         ...choiceInput,
       }
     }
+    case LogicStepType.CONDITION: {
+      const id = generate()
+      const conditionStep: Pick<ConditionStep, 'type' | 'options'> = {
+        type,
+        options: {
+          comparisons: {
+            byId: {
+              [id]: { id, comparisonOperator: ComparisonOperators.EQUAL },
+            },
+            allIds: [id],
+          },
+          logicalOperator: LogicalOperator.AND,
+        },
+      }
+      return {
+        id,
+        blockId,
+        ...conditionStep,
+      }
+    }
     default: {
       return {
         id,
@@ -214,3 +239,6 @@ export const parseNewTypebot = ({
     settings,
   }
 }
+
+export const hasDefaultConnector = (step: Step) =>
+  !isChoiceInput(step) && !isConditionStep(step)

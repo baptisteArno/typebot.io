@@ -5,6 +5,7 @@ import {
   CheckSquareIcon,
   EditIcon,
   EmailIcon,
+  FilterIcon,
   FlagIcon,
   GlobeIcon,
   NumberIcon,
@@ -44,6 +45,9 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     }
     case LogicStepType.SET_VARIABLE: {
       return <EditIcon {...props} />
+    }
+    case LogicStepType.CONDITION: {
+      return <FilterIcon {...props} />
     }
     case 'start': {
       return <FlagIcon {...props} />

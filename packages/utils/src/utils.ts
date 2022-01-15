@@ -2,6 +2,7 @@ import {
   BubbleStep,
   BubbleStepType,
   ChoiceInputStep,
+  ConditionStep,
   InputStep,
   InputStepType,
   LogicStep,
@@ -36,9 +37,9 @@ export const sendRequest = async <ResponseData>({
   }
 }
 
-export const isDefined = <T>(value: T | undefined | null): value is T => {
-  return <T>value !== undefined && <T>value !== null
-}
+export const isDefined = <T>(
+  value: T | undefined | null
+): value is NonNullable<T> => value !== undefined && value !== null
 
 export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
   byId: ids.reduce((acc, id) => ({ ...acc, [id]: table.byId[id] }), {}),
@@ -65,3 +66,6 @@ export const isChoiceInput = (step: Step): step is ChoiceInputStep =>
 
 export const isSingleChoiceInput = (step: Step): step is ChoiceInputStep =>
   step.type === InputStepType.CHOICE && !step.options.isMultipleChoice
+
+export const isConditionStep = (step: Step): step is ConditionStep =>
+  step.type === LogicStepType.CONDITION

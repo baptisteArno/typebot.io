@@ -33,6 +33,7 @@ type UpdateTypebotPayload = Partial<{
   theme: Theme
   settings: Settings
   publicId: string
+  name: string
 }>
 const typebotContext = createContext<
   {
@@ -150,12 +151,14 @@ export const TypebotContext = ({
     publicId,
     settings,
     theme,
+    name,
   }: UpdateTypebotPayload) => {
     setLocalTypebot((typebot) => {
       if (!typebot) return
       if (publicId) typebot.publicId = publicId
       if (settings) typebot.settings = settings
       if (theme) typebot.theme = theme
+      if (name) typebot.name = name
     })
   }
 

@@ -1,10 +1,10 @@
 import { chakra } from '@chakra-ui/system'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { ChoiceItem } from 'models'
+import { ChoiceItem, ConditionStep } from 'models'
 import React, { useMemo } from 'react'
-import { isDefined, isSingleChoiceInput } from 'utils'
+import { isConditionStep, isDefined, isSingleChoiceInput } from 'utils'
 import { DrawingEdge } from './DrawingEdge'
-import { Edge } from './Edge'
+import { Edge, EdgeType } from './Edge'
 
 export const Edges = () => {
   const { typebot } = useTypebot()
@@ -26,6 +26,14 @@ export const Edges = () => {
       )
       .map((itemId) => typebot.choiceItems.byId[itemId])
   }, [typebot])
+  const conditionStepIdsWithTarget = useMemo(
+    () =>
+      typebot?.steps.allIds.filter((stepId) => {
+        const step = typebot.steps.byId[stepId]
+        return isConditionStep(step) && (step.trueTarget || step.falseTarget)
+      }),
+    [typebot?.steps.allIds, typebot?.steps.byId]
+  )
 
   return (
     <chakra.svg
@@ -38,10 +46,18 @@ export const Edges = () => {
     >
       <DrawingEdge />
       {stepIdsWithTarget.map((stepId) => (
-        <Edge key={stepId} stepId={stepId} />
+        <Edge key={stepId} stepId={stepId} type={EdgeType.STEP} />
       ))}
       {singleChoiceItemsWithTarget.map((item) => (
-        <Edge key={item.id} stepId={item.stepId} item={item} />
+        <Edge
+          key={item.id}
+          stepId={item.stepId}
+          item={item}
+          type={EdgeType.CHOICE_ITEM}
+        />
+      ))}
+      {conditionStepIdsWithTarget?.map((stepId) => (
+        <ConditionStepEdges key={stepId} stepId={stepId} />
       ))}
       <marker
         id={'arrow'}
@@ -59,5 +75,20 @@ export const Edges = () => {
         />
       </marker>
     </chakra.svg>
+  )
+}
+
+const ConditionStepEdges = ({ stepId }: { stepId: string }) => {
+  const { typebot } = useTypebot()
+  const step = typebot?.steps.byId[stepId] as ConditionStep
+  return (
+    <>
+      {step.trueTarget && (
+        <Edge type={EdgeType.CONDITION_TRUE} stepId={stepId} />
+      )}
+      {step.falseTarget && (
+        <Edge type={EdgeType.CONDITION_FALSE} stepId={stepId} />
+      )}
+    </>
   )
 }

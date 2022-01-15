@@ -31,6 +31,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     case LogicStepType.SET_VARIABLE: {
       return <Text>Set variable</Text>
     }
+    case LogicStepType.CONDITION: {
+      return <Text>Condition</Text>
+    }
     default: {
       return <></>
     }

@@ -1,7 +1,8 @@
-import { Block, Step, Target } from 'models'
+import { Block, Step, Table, Target } from 'models'
 import {
   createContext,
   Dispatch,
+  MutableRefObject,
   ReactNode,
   SetStateAction,
   useContext,
@@ -24,10 +25,6 @@ export const blockAnchorsOffset = {
     y: 20,
   },
 }
-export const firstStepOffsetY = 88
-export const spaceBetweenSteps = 62
-
-export const firstChoiceItemOffsetY = 20
 
 export type Coordinates = { x: number; y: number }
 
@@ -54,9 +51,17 @@ export type ConnectingSourceIds = {
   blockId: string
   stepId: string
   choiceItemId?: string
+  conditionType?: 'true' | 'false'
 }
 
 type PreviewingIdsProps = { sourceId?: string; targetId?: string }
+
+type StepId = string
+type NodeId = string
+export type Endpoint = {
+  id: StepId | NodeId
+  ref: MutableRefObject<HTMLDivElement | null>
+}
 
 const graphContext = createContext<{
   graphPosition: Position
@@ -65,6 +70,10 @@ const graphContext = createContext<{
   setConnectingIds: Dispatch<SetStateAction<ConnectingIds | null>>
   previewingIds: PreviewingIdsProps
   setPreviewingIds: Dispatch<SetStateAction<PreviewingIdsProps>>
+  sourceEndpoints: Table<Endpoint>
+  addSourceEndpoint: (endpoint: Endpoint) => void
+  targetEndpoints: Table<Endpoint>
+  addTargetEndpoint: (endpoint: Endpoint) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -76,6 +85,28 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
   const [previewingIds, setPreviewingIds] = useState<PreviewingIdsProps>({})
+  const [sourceEndpoints, setSourceEndpoints] = useState<Table<Endpoint>>({
+    byId: {},
+    allIds: [],
+  })
+  const [targetEndpoints, setTargetEndpoints] = useState<Table<Endpoint>>({
+    byId: {},
+    allIds: [],
+  })
+
+  const addSourceEndpoint = (endpoint: Endpoint) => {
+    setSourceEndpoints((endpoints) => ({
+      byId: { ...endpoints.byId, [endpoint.id]: endpoint },
+      allIds: [...endpoints.allIds, endpoint.id],
+    }))
+  }
+
+  const addTargetEndpoint = (endpoint: Endpoint) => {
+    setTargetEndpoints((endpoints) => ({
+      byId: { ...endpoints.byId, [endpoint.id]: endpoint },
+      allIds: [...endpoints.allIds, endpoint.id],
+    }))
+  }
 
   return (
     <graphContext.Provider
@@ -86,6 +117,10 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
         setConnectingIds,
         previewingIds,
         setPreviewingIds,
+        sourceEndpoints,
+        targetEndpoints,
+        addSourceEndpoint,
+        addTargetEndpoint,
       }}
     >
       {children}

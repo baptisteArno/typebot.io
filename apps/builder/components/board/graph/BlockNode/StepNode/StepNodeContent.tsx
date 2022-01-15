@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, HStack, Stack, Tag, Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   Step,
@@ -7,8 +7,10 @@ import {
   InputStepType,
   LogicStepType,
   SetVariableStep,
+  ConditionStep,
 } from 'models'
 import { ChoiceItemsList } from './ChoiceInputStepNode/ChoiceItemsList'
+import { SourceEndpoint } from './SourceEndpoint'
 
 type Props = {
   step: Step | StartStep
@@ -79,6 +81,9 @@ export const StepNodeContent = ({ step }: Props) => {
     case LogicStepType.SET_VARIABLE: {
       return <SetVariableNodeContent step={step} />
     }
+    case LogicStepType.CONDITION: {
+      return <ConditionNodeContent step={step} />
+    }
     case 'start': {
       return <Text>{step.label}</Text>
     }
@@ -99,5 +104,53 @@ const SetVariableNodeContent = ({ step }: { step: SetVariableStep }) => {
         ? 'Click to edit...'
         : `${variableName} = ${expression}`}
     </Text>
+  )
+}
+
+const ConditionNodeContent = ({ step }: { step: ConditionStep }) => {
+  const { typebot } = useTypebot()
+  return (
+    <Flex>
+      <Stack color={'gray.500'}>
+        {step.options?.comparisons.allIds.map((comparisonId, idx) => {
+          const comparison = step.options?.comparisons.byId[comparisonId]
+          const variable = typebot?.variables.byId[comparison?.variableId ?? '']
+          return (
+            <HStack key={comparisonId} spacing={1}>
+              {idx > 0 && <Text>{step.options?.logicalOperator ?? ''}</Text>}
+              {variable?.name && (
+                <Tag bgColor="orange.400">{variable.name}</Tag>
+              )}
+              {comparison.comparisonOperator && (
+                <Text>{comparison?.comparisonOperator}</Text>
+              )}
+              {comparison?.value && (
+                <Tag bgColor={'green.400'}>{comparison.value}</Tag>
+              )}
+            </HStack>
+          )
+        })}
+      </Stack>
+      <SourceEndpoint
+        source={{
+          blockId: step.blockId,
+          stepId: step.id,
+          conditionType: 'true',
+        }}
+        pos="absolute"
+        top="7px"
+        right="15px"
+      />
+      <SourceEndpoint
+        source={{
+          blockId: step.blockId,
+          stepId: step.id,
+          conditionType: 'false',
+        }}
+        pos="absolute"
+        bottom="7px"
+        right="15px"
+      />
+    </Flex>
   )
 }
