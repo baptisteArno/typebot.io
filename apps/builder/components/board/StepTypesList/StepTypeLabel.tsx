@@ -1,5 +1,11 @@
 import { Text } from '@chakra-ui/react'
-import { BubbleStepType, InputStepType, LogicStepType, StepType } from 'models'
+import {
+  BubbleStepType,
+  InputStepType,
+  IntegrationStepType,
+  LogicStepType,
+  StepType,
+} from 'models'
 import React from 'react'
 
 type Props = { type: StepType }
@@ -33,6 +39,9 @@ export const StepTypeLabel = ({ type }: Props) => {
     }
     case LogicStepType.CONDITION: {
       return <Text>Condition</Text>
+    }
+    case IntegrationStepType.GOOGLE_SHEETS: {
+      return <Text>Sheets</Text>
     }
     default: {
       return <></>

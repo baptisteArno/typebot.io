@@ -2,10 +2,11 @@ import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './BlockNode/BlockNode'
-import { DraggableStepType, useDnd } from 'contexts/DndContext'
+import { useDnd } from 'contexts/DndContext'
 import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
+import { DraggableStepType } from 'models'
 
 const Graph = ({ ...props }: FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =

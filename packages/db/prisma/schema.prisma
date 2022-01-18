@@ -49,6 +49,22 @@ model User {
   folders       DashboardFolder[]
   plan          Plan              @default(FREE)
   stripeId      String?           @unique
+  credentials   Credentials[]
+}
+
+model Credentials {
+  id      String          @id @default(cuid())
+  ownerId String
+  owner   User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  data    Json
+  name    String
+  type    CredentialsType
+
+  @@unique([name, type, ownerId])
+}
+
+enum CredentialsType {
+  GOOGLE_SHEETS
 }
 
 enum Plan {

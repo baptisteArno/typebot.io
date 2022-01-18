@@ -8,18 +8,21 @@ import {
   PopoverContent,
   Button,
   Text,
+  InputProps,
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 
+type Props = {
+  selectedItem?: string
+  items: string[]
+  onSelectItem: (value: string) => void
+} & InputProps
 export const SearchableDropdown = ({
   selectedItem,
   items,
   onSelectItem,
-}: {
-  selectedItem?: string
-  items: string[]
-  onSelectItem: (value: string) => void
-}) => {
+  ...inputProps
+}: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem)
   const [filteredItems, setFilteredItems] = useState([
@@ -64,19 +67,38 @@ export const SearchableDropdown = ({
     ])
   }
 
+  const handleItemClick = (item: string) => () => {
+    setInputValue(item)
+    onSelectItem(item)
+    onClose()
+  }
+
   return (
-    <Flex ref={dropdownRef}>
-      <Popover isOpen={isOpen} initialFocusRef={inputRef}>
+    <Flex ref={dropdownRef} w="full">
+      <Popover
+        isOpen={isOpen}
+        initialFocusRef={inputRef}
+        matchWidth
+        offset={[0, 0]}
+        isLazy
+      >
         <PopoverTrigger>
           <Input
             ref={inputRef}
             value={inputValue}
             onChange={onInputChange}
             onClick={onOpen}
-            w="300px"
+            {...inputProps}
           />
         </PopoverTrigger>
-        <PopoverContent maxH="35vh" overflowY="scroll" spacing="0" w="300px">
+        <PopoverContent
+          maxH="35vh"
+          overflowY="scroll"
+          spacing="0"
+          role="menu"
+          w="inherit"
+          shadow="lg"
+        >
           {filteredItems.length > 0 ? (
             <>
               {filteredItems.map((item, idx) => {
@@ -84,15 +106,12 @@ export const SearchableDropdown = ({
                   <Button
                     minH="40px"
                     key={idx}
-                    onClick={() => {
-                      setInputValue(item)
-                      onSelectItem(item)
-                      onClose()
-                    }}
+                    onClick={handleItemClick(item)}
                     fontSize="16px"
                     fontWeight="normal"
                     rounded="none"
                     colorScheme="gray"
+                    role="menuitem"
                     variant="ghost"
                     justifyContent="flex-start"
                   >

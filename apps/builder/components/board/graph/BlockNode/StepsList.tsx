@@ -1,6 +1,6 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
-import { Step, Table } from 'models'
-import { DraggableStep, useDnd } from 'contexts/DndContext'
+import { DraggableStep, Step, Table } from 'models'
+import { useDnd } from 'contexts/DndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useMemo, useState } from 'react'
 import { StepNode, StepNodeOverlay } from './StepNode'

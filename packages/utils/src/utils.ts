@@ -5,6 +5,8 @@ import {
   ConditionStep,
   InputStep,
   InputStepType,
+  IntegrationStep,
+  IntegrationStepType,
   LogicStep,
   LogicStepType,
   Step,
@@ -69,3 +71,6 @@ export const isSingleChoiceInput = (step: Step): step is ChoiceInputStep =>
 
 export const isConditionStep = (step: Step): step is ConditionStep =>
   step.type === LogicStepType.CONDITION
+
+export const isIntegrationStep = (step: Step): step is IntegrationStep =>
+  step.type === IntegrationStepType.GOOGLE_SHEETS

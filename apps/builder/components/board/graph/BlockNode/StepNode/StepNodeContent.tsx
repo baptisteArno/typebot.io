@@ -8,6 +8,7 @@ import {
   LogicStepType,
   SetVariableStep,
   ConditionStep,
+  IntegrationStepType,
 } from 'models'
 import { ChoiceItemsList } from './ChoiceInputStepNode/ChoiceItemsList'
 import { SourceEndpoint } from './SourceEndpoint'
@@ -83,6 +84,10 @@ export const StepNodeContent = ({ step }: Props) => {
     }
     case LogicStepType.CONDITION: {
       return <ConditionNodeContent step={step} />
+    }
+    case IntegrationStepType.GOOGLE_SHEETS: {
+      if (!step.options) return <Text color={'gray.500'}>Configure...</Text>
+      return <Text>{step.options?.action}</Text>
     }
     case 'start': {
       return <Text>{step.label}</Text>

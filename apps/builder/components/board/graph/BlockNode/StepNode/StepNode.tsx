@@ -7,21 +7,27 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Block, Step } from 'models'
+import { Block, DraggableStep, Step } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import { isDefined, isInputStep, isLogicStep, isTextBubbleStep } from 'utils'
+import {
+  isDefined,
+  isInputStep,
+  isLogicStep,
+  isTextBubbleStep,
+  isIntegrationStep,
+} from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
-import { DraggableStep } from 'contexts/DndContext'
 import { StepNodeContextMenu } from './StepNodeContextMenu'
 import { SourceEndpoint } from './SourceEndpoint'
 import { hasDefaultConnector } from 'services/typebots'
 import { TargetEndpoint } from './TargetEndpoint'
+import { useRouter } from 'next/router'
 
 export const StepNode = ({
   step,
@@ -39,6 +45,7 @@ export const StepNode = ({
     step: DraggableStep
   ) => void
 }) => {
+  const { query } = useRouter()
   const { setConnectingIds, connectingIds } = useGraph()
   const { moveStep, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
@@ -152,7 +159,11 @@ export const StepNode = ({
       renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
     >
       {(ref, isOpened) => (
-        <Popover placement="left" isLazy>
+        <Popover
+          placement="left"
+          isLazy
+          defaultIsOpen={query.stepId?.toString() === step.id}
+        >
           <PopoverTrigger>
             <Flex
               pos="relative"
@@ -226,11 +237,12 @@ export const StepNode = ({
                 )}
             </Flex>
           </PopoverTrigger>
-          {(isInputStep(step) || isLogicStep(step)) && (
-            <SettingsPopoverContent step={step} />
-          )}
+          {hasPopover(step) && <SettingsPopoverContent step={step} />}
         </Popover>
       )}
     </ContextMenu>
   )
 }
+
+const hasPopover = (step: Step) =>
+  isInputStep(step) || isLogicStep(step) || isIntegrationStep(step)

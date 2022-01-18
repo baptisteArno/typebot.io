@@ -1,8 +1,9 @@
 import { Result } from 'models'
 import useSWRInfinite from 'swr/infinite'
-import { fetcher, sendRequest } from './utils'
+import { fetcher } from './utils'
 import { stringify } from 'qs'
 import { Answer } from 'db'
+import { sendRequest } from 'utils'
 
 const getKey = (
   typebotId: string,

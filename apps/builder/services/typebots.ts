@@ -6,25 +6,24 @@ import {
   Settings,
   StartStep,
   Theme,
-  BubbleStep,
-  InputStep,
   BubbleStepType,
   InputStepType,
   ChoiceInputStep,
   LogicStepType,
-  LogicStep,
   Step,
   ConditionStep,
   ComparisonOperators,
   LogicalOperator,
+  DraggableStepType,
+  DraggableStep,
 } from 'models'
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
-import { fetcher, sendRequest, toKebabCase } from './utils'
+import { fetcher, toKebabCase } from './utils'
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep } from 'utils'
+import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
 
 export const useTypebots = ({
   folderId,
@@ -114,9 +113,9 @@ export const parseNewBlock = ({
 }
 
 export const parseNewStep = (
-  type: BubbleStepType | InputStepType | LogicStepType,
+  type: DraggableStepType,
   blockId: string
-): BubbleStep | InputStep | LogicStep => {
+): DraggableStep => {
   const id = `s${shortId.generate()}`
   switch (type) {
     case BubbleStepType.TEXT: {

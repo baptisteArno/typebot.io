@@ -1,12 +1,4 @@
-import {
-  BubbleStep,
-  BubbleStepType,
-  ChoiceItem,
-  InputStep,
-  InputStepType,
-  LogicStepType,
-  LogicStep,
-} from 'models'
+import { ChoiceItem, DraggableStep, DraggableStepType } from 'models'
 import {
   createContext,
   Dispatch,
@@ -15,9 +7,6 @@ import {
   useContext,
   useState,
 } from 'react'
-
-export type DraggableStep = BubbleStep | InputStep | LogicStep
-export type DraggableStepType = BubbleStepType | InputStepType | LogicStepType
 
 const dndContext = createContext<{
   draggedStepType?: DraggableStepType

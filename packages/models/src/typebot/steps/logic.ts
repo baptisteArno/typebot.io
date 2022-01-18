@@ -8,6 +8,8 @@ export enum LogicStepType {
   CONDITION = 'Condition',
 }
 
+export type LogicStepOptions = SetVariableOptions | ConditionOptions
+
 export type SetVariableStep = StepBase & {
   type: LogicStepType.SET_VARIABLE
   options?: SetVariableOptions

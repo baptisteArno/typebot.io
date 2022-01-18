@@ -3,17 +3,16 @@ import {
   PopoverArrow,
   PopoverBody,
   useEventListener,
+  Portal,
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import {
-  ChoiceInputOptions,
-  ConditionOptions,
   InputStep,
   InputStepType,
+  IntegrationStepType,
   LogicStepType,
-  SetVariableOptions,
   Step,
-  TextInputOptions,
+  StepOptions,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -25,6 +24,7 @@ import {
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
+import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
 
@@ -41,24 +41,21 @@ export const SettingsPopoverContent = ({ step }: Props) => {
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
   return (
-    <PopoverContent onMouseDown={handleMouseDown}>
-      <PopoverArrow />
-      <PopoverBody p="6" overflowY="scroll" maxH="400px" ref={ref}>
-        <SettingsPopoverBodyContent step={step} />
-      </PopoverBody>
-    </PopoverContent>
+    <Portal>
+      <PopoverContent onMouseDown={handleMouseDown}>
+        <PopoverArrow />
+        <PopoverBody p="6" overflowY="scroll" maxH="400px" ref={ref}>
+          <SettingsPopoverBodyContent step={step} />
+        </PopoverBody>
+      </PopoverContent>
+    </Portal>
   )
 }
 
 const SettingsPopoverBodyContent = ({ step }: Props) => {
   const { updateStep } = useTypebot()
-  const handleOptionsChange = (
-    options:
-      | TextInputOptions
-      | ChoiceInputOptions
-      | SetVariableOptions
-      | ConditionOptions
-  ) => updateStep(step.id, { options } as Partial<InputStep>)
+  const handleOptionsChange = (options: StepOptions) =>
+    updateStep(step.id, { options } as Partial<InputStep>)
 
   switch (step.type) {
     case InputStepType.TEXT: {
@@ -130,6 +127,15 @@ const SettingsPopoverBodyContent = ({ step }: Props) => {
         <ConditionSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case IntegrationStepType.GOOGLE_SHEETS: {
+      return (
+        <GoogleSheetsSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+          stepId={step.id}
         />
       )
     }

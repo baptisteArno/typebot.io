@@ -5,7 +5,13 @@ import {
   SimpleGrid,
   useEventListener,
 } from '@chakra-ui/react'
-import { BubbleStepType, InputStepType, LogicStepType } from 'models'
+import {
+  BubbleStepType,
+  DraggableStepType,
+  InputStepType,
+  IntegrationStepType,
+  LogicStepType,
+} from 'models'
 import { useDnd } from 'contexts/DndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
@@ -29,10 +35,7 @@ export const StepTypesList = () => {
   }
   useEventListener('mousemove', handleMouseMove)
 
-  const handleMouseDown = (
-    e: React.MouseEvent,
-    type: BubbleStepType | InputStepType | LogicStepType
-  ) => {
+  const handleMouseDown = (e: React.MouseEvent, type: DraggableStepType) => {
     const element = e.currentTarget as HTMLDivElement
     const rect = element.getBoundingClientRect()
     const relativeX = e.clientX - rect.left
@@ -91,6 +94,15 @@ export const StepTypesList = () => {
       </Text>
       <SimpleGrid columns={2} spacing="2">
         {Object.values(LogicStepType).map((type) => (
+          <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+        ))}
+      </SimpleGrid>
+
+      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+        Integrations
+      </Text>
+      <SimpleGrid columns={2} spacing="2">
+        {Object.values(IntegrationStepType).map((type) => (
           <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
         ))}
       </SimpleGrid>

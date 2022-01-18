@@ -1,13 +1,6 @@
 import { Coordinates } from 'contexts/GraphContext'
 import { WritableDraft } from 'immer/dist/internal'
-import {
-  Block,
-  BubbleStepType,
-  InputStepType,
-  LogicStepType,
-  Step,
-  Typebot,
-} from 'models'
+import { Block, DraggableStep, DraggableStepType, Typebot } from 'models'
 import { parseNewBlock } from 'services/typebots'
 import { Updater } from 'use-immer'
 import { createStepDraft, deleteStepDraft } from './steps'
@@ -15,7 +8,7 @@ import { createStepDraft, deleteStepDraft } from './steps'
 export type BlocksActions = {
   createBlock: (
     props: Coordinates & {
-      step: BubbleStepType | InputStepType | LogicStepType | Step
+      step: DraggableStep | DraggableStepType
     }
   ) => void
   updateBlock: (blockId: string, updates: Partial<Omit<Block, 'id'>>) => void
@@ -28,7 +21,7 @@ export const blocksActions = (setTypebot: Updater<Typebot>): BlocksActions => ({
     y,
     step,
   }: Coordinates & {
-    step: BubbleStepType | InputStepType | LogicStepType | Step
+    step: DraggableStep | DraggableStepType
   }) => {
     setTypebot((typebot) => {
       const newBlock = parseNewBlock({

@@ -11,15 +11,17 @@ import { ChevronLeftIcon } from 'assets/icons'
 import React from 'react'
 
 type Props<T> = {
-  currentItem: T
+  currentItem?: T
   onItemSelect: (item: T) => void
   items: T[]
+  placeholder?: string
 }
 
 export const DropdownList = <T,>({
   currentItem,
   onItemSelect,
   items,
+  placeholder = '',
   ...props
 }: Props<T> & MenuButtonProps) => {
   const handleMenuItemClick = (operator: T) => () => {
@@ -27,7 +29,7 @@ export const DropdownList = <T,>({
   }
   return (
     <>
-      <Menu isLazy placement="bottom-end">
+      <Menu isLazy placement="bottom-end" matchWidth>
         <MenuButton
           as={Button}
           rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
@@ -37,9 +39,9 @@ export const DropdownList = <T,>({
           textAlign="left"
           {...props}
         >
-          {currentItem}
+          {currentItem ?? placeholder}
         </MenuButton>
-        <MenuList maxW="500px">
+        <MenuList maxW="500px" shadow="lg">
           <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
             {items.map((item) => (
               <MenuItem

@@ -1,5 +1,5 @@
 import { User } from 'db'
-import { sendRequest } from './utils'
+import { sendRequest } from 'utils'
 
 export const updateUser = async (id: string, user: User) =>
   sendRequest({

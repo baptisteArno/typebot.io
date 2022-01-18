@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/react'
+import { ToastId, useToast } from '@chakra-ui/react'
 import { PublicTypebot, Settings, Theme, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import {
@@ -43,7 +43,7 @@ const typebotContext = createContext<
     isPublishing: boolean
     hasUnsavedChanges: boolean
     isSavingLoading: boolean
-    save: () => void
+    save: () => Promise<ToastId | undefined>
     undo: () => void
     updateTypebot: (updates: UpdateTypebotPayload) => void
     publishTypebot: () => void

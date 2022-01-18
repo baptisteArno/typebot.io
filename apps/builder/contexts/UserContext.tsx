@@ -1,4 +1,3 @@
-import { User } from 'db'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import {
@@ -13,6 +12,8 @@ import { isDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user'
 import { useToast } from '@chakra-ui/react'
 import { deepEqual } from 'fast-equals'
+import { useCredentials } from 'services/credentials'
+import { Credentials, User } from 'db'
 
 const userContext = createContext<{
   user?: User
@@ -20,6 +21,7 @@ const userContext = createContext<{
   isSaving: boolean
   hasUnsavedChanges: boolean
   isOAuthProvider: boolean
+  credentials: Credentials[]
   updateUser: (newUser: Partial<User>) => void
   saveUser: () => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -29,8 +31,12 @@ const userContext = createContext<{
 export const UserContext = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
   const { data: session, status } = useSession()
-
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | undefined>()
+  const { credentials } = useCredentials({
+    userId: user?.id,
+    onError: (error) =>
+      toast({ title: error.name, description: error.message }),
+  })
   const [isSaving, setIsSaving] = useState(false)
   const isOAuthProvider = useMemo(
     () => (session?.providerType as boolean | undefined) ?? false,
@@ -69,9 +75,13 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     setIsSaving(true)
     const { error } = await updateUserInDb(user.id, user)
     if (error) toast({ title: error.name, description: error.message })
+    await refreshUser()
+    setIsSaving(false)
+  }
+
+  const refreshUser = async () => {
     await fetch('/api/auth/session?update')
     reloadSession()
-    setIsSaving(false)
   }
 
   return (
@@ -84,6 +94,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
         isLoading: status === 'loading',
         hasUnsavedChanges,
         isOAuthProvider,
+        credentials: credentials ?? [],
       }}
     >
       {children}

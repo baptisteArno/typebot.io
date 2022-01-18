@@ -280,7 +280,9 @@ const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
             //@ts-ignore
             options:
               step.type === InputStepType.CHOICE
-                ? { itemIds: ['item1'] }
+                ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  { itemIds: ['item1'] }
                 : undefined,
           },
         },

@@ -1,26 +1,46 @@
+import {
+  InputStepOptions,
+  IntegrationStepOptions,
+  IntegrationStepType,
+  LogicStepOptions,
+} from '.'
+import { BubbleStep, BubbleStepType } from './bubble'
 import { InputStep, InputStepType } from './inputs'
+import { IntegrationStep } from './integration'
 import { LogicStep, LogicStepType } from './logic'
 
-export type Step = StartStep | BubbleStep | InputStep | LogicStep
+export type Step =
+  | StartStep
+  | BubbleStep
+  | InputStep
+  | LogicStep
+  | IntegrationStep
 
-export type BubbleStep = TextStep
+export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep
 
-export type StepType = 'start' | BubbleStepType | InputStepType | LogicStepType
+export type StepType =
+  | 'start'
+  | BubbleStepType
+  | InputStepType
+  | LogicStepType
+  | IntegrationStepType
 
-export enum BubbleStepType {
-  TEXT = 'text',
-}
+export type DraggableStepType =
+  | BubbleStepType
+  | InputStepType
+  | LogicStepType
+  | IntegrationStepType
+
+export type StepOptions =
+  | InputStepOptions
+  | LogicStepOptions
+  | IntegrationStepOptions
 
 export type StepBase = { id: string; blockId: string; target?: Target }
 
 export type StartStep = StepBase & {
   type: 'start'
   label: string
-}
-
-export type TextStep = StepBase & {
-  type: BubbleStepType.TEXT
-  content: { html: string; richText: unknown[]; plainText: string }
 }
 
 export type Target = { blockId: string; stepId?: string }

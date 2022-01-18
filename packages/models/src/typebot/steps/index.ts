@@ -1,3 +1,5 @@
 export * from './steps'
+export * from './bubble'
 export * from './inputs'
 export * from './logic'
+export * from './integration'

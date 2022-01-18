@@ -1,5 +1,11 @@
 import { Input, InputProps } from '@chakra-ui/react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react'
 import { useDebounce } from 'use-debounce'
 
 type Props = Omit<InputProps, 'onChange' | 'value'> & {
@@ -8,24 +14,31 @@ type Props = Omit<InputProps, 'onChange' | 'value'> & {
   onChange: (debouncedValue: string) => void
 }
 
-export const DebouncedInput = ({
-  delay,
-  onChange,
-  initialValue,
-  ...props
-}: Props) => {
-  const [currentValue, setCurrentValue] = useState(initialValue)
-  const [currentValueDebounced] = useDebounce(currentValue, delay)
+export const DebouncedInput = forwardRef(
+  (
+    { delay, onChange, initialValue, ...props }: Props,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    const [currentValue, setCurrentValue] = useState(initialValue)
+    const [currentValueDebounced] = useDebounce(currentValue, delay)
 
-  useEffect(() => {
-    if (currentValueDebounced === initialValue) return
-    onChange(currentValueDebounced)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentValueDebounced])
+    useEffect(() => {
+      if (currentValueDebounced === initialValue) return
+      onChange(currentValueDebounced)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentValueDebounced])
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCurrentValue(e.target.value)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setCurrentValue(e.target.value)
+    }
+
+    return (
+      <Input
+        {...props}
+        ref={ref}
+        value={currentValue}
+        onChange={handleChange}
+      />
+    )
   }
-
-  return <Input {...props} value={currentValue} onChange={handleChange} />
-}
+)

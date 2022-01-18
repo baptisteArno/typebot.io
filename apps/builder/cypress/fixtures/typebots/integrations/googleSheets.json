@@ -1,0 +1,80 @@
+{
+  "id": "typebot4",
+  "createdAt": "2022-01-17T14:37:01.826Z",
+  "updatedAt": "2022-01-17T14:37:01.826Z",
+  "name": "My typebot",
+  "ownerId": "user2",
+  "publishedTypebotId": null,
+  "folderId": null,
+  "blocks": {
+    "byId": {
+      "bec5A5bLwenmZpCJc8FRaM": {
+        "id": "bec5A5bLwenmZpCJc8FRaM",
+        "title": "Start",
+        "stepIds": ["uDMB7a2ucg17WGvbQJjeRn"],
+        "graphCoordinates": { "x": 0, "y": 0 }
+      },
+      "bcyiT7P6E99YnHKnpxs4Yux": {
+        "id": "bcyiT7P6E99YnHKnpxs4Yux",
+        "title": "Block #2",
+        "stepIds": ["step1"],
+        "graphCoordinates": { "x": 411, "y": 108 }
+      },
+      "bgpNxHtBBXWrP1QMe2A8hZ9": {
+        "id": "bgpNxHtBBXWrP1QMe2A8hZ9",
+        "title": "Block #3",
+        "graphCoordinates": { "x": 1, "y": 236 },
+        "stepIds": ["sj72oDhJEe4N92KTt64GKWs"]
+      }
+    },
+    "allIds": [
+      "bec5A5bLwenmZpCJc8FRaM",
+      "bcyiT7P6E99YnHKnpxs4Yux",
+      "bgpNxHtBBXWrP1QMe2A8hZ9"
+    ]
+  },
+  "steps": {
+    "byId": {
+      "step1": {
+        "id": "step1",
+        "type": "Google Sheets",
+        "blockId": "bcyiT7P6E99YnHKnpxs4Yux"
+      },
+      "uDMB7a2ucg17WGvbQJjeRn": {
+        "id": "uDMB7a2ucg17WGvbQJjeRn",
+        "type": "start",
+        "label": "Start",
+        "target": { "blockId": "bgpNxHtBBXWrP1QMe2A8hZ9" },
+        "blockId": "bec5A5bLwenmZpCJc8FRaM"
+      },
+      "sj72oDhJEe4N92KTt64GKWs": {
+        "id": "sj72oDhJEe4N92KTt64GKWs",
+        "blockId": "bgpNxHtBBXWrP1QMe2A8hZ9",
+        "type": "email input",
+        "target": { "blockId": "bcyiT7P6E99YnHKnpxs4Yux" },
+        "options": { "variableId": "8H3aQsNji2Gyfpp3RPozNN" }
+      }
+    },
+    "allIds": ["uDMB7a2ucg17WGvbQJjeRn", "step1", "sj72oDhJEe4N92KTt64GKWs"]
+  },
+  "choiceItems": { "byId": {}, "allIds": [] },
+  "variables": {
+    "byId": {
+      "8H3aQsNji2Gyfpp3RPozNN": {
+        "id": "8H3aQsNji2Gyfpp3RPozNN",
+        "name": "Email"
+      }
+    },
+    "allIds": ["8H3aQsNji2Gyfpp3RPozNN"]
+  },
+  "theme": {
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "None", "content": "#ffffff" }
+    }
+  },
+  "settings": {
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null
+}

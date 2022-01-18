@@ -12,48 +12,45 @@ import {
   PhoneIcon,
   TextIcon,
 } from 'assets/icons'
-import { BubbleStepType, InputStepType, LogicStepType, StepType } from 'models'
+import { GoogleSheetsLogo } from 'assets/logos'
+import {
+  BubbleStepType,
+  InputStepType,
+  IntegrationStepType,
+  LogicStepType,
+  StepType,
+} from 'models'
 import React from 'react'
 
 type StepIconProps = { type: StepType } & IconProps
 
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
-    case BubbleStepType.TEXT: {
+    case BubbleStepType.TEXT:
       return <ChatIcon {...props} />
-    }
-    case InputStepType.TEXT: {
+    case InputStepType.TEXT:
       return <TextIcon {...props} />
-    }
-    case InputStepType.NUMBER: {
+    case InputStepType.NUMBER:
       return <NumberIcon {...props} />
-    }
-    case InputStepType.EMAIL: {
+    case InputStepType.EMAIL:
       return <EmailIcon {...props} />
-    }
-    case InputStepType.URL: {
+    case InputStepType.URL:
       return <GlobeIcon {...props} />
-    }
-    case InputStepType.DATE: {
+    case InputStepType.DATE:
       return <CalendarIcon {...props} />
-    }
-    case InputStepType.PHONE: {
+    case InputStepType.PHONE:
       return <PhoneIcon {...props} />
-    }
-    case InputStepType.CHOICE: {
+    case InputStepType.CHOICE:
       return <CheckSquareIcon {...props} />
-    }
-    case LogicStepType.SET_VARIABLE: {
+    case LogicStepType.SET_VARIABLE:
       return <EditIcon {...props} />
-    }
-    case LogicStepType.CONDITION: {
+    case LogicStepType.CONDITION:
       return <FilterIcon {...props} />
-    }
-    case 'start': {
+    case IntegrationStepType.GOOGLE_SHEETS:
+      return <GoogleSheetsLogo {...props} />
+    case 'start':
       return <FlagIcon {...props} />
-    }
-    default: {
+    default:
       return <></>
-    }
   }
 }

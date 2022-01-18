@@ -1,7 +1,8 @@
 import { DashboardFolder } from '.prisma/client'
 import useSWR from 'swr'
-import { fetcher, sendRequest } from './utils'
+import { fetcher } from './utils'
 import { stringify } from 'qs'
+import { sendRequest } from 'utils'
 
 export const useFolders = ({
   parentId,

@@ -20,6 +20,13 @@ export enum InputStepType {
   CHOICE = 'choice input',
 }
 
+export type InputStepOptions =
+  | TextInputOptions
+  | NumberInputOptions
+  | EmailInputOptions
+  | DateInputOptions
+  | UrlInputOptions
+
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
   options?: TextInputOptions
