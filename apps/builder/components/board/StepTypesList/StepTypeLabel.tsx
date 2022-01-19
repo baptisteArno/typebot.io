@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Text, Tooltip } from '@chakra-ui/react'
 import {
   BubbleStepType,
   InputStepType,
@@ -41,7 +41,18 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Condition</Text>
     }
     case IntegrationStepType.GOOGLE_SHEETS: {
-      return <Text>Sheets</Text>
+      return (
+        <Tooltip label="Google Sheets">
+          <Text>Sheets</Text>
+        </Tooltip>
+      )
+    }
+    case IntegrationStepType.GOOGLE_ANALYTICS: {
+      return (
+        <Tooltip label="Google Analytics">
+          <Text>Analytics</Text>
+        </Tooltip>
+      )
     }
     default: {
       return <></>

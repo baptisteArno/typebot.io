@@ -12,7 +12,7 @@ import {
   PhoneIcon,
   TextIcon,
 } from 'assets/icons'
-import { GoogleSheetsLogo } from 'assets/logos'
+import { GoogleAnalyticsLogo, GoogleSheetsLogo } from 'assets/logos'
 import {
   BubbleStepType,
   InputStepType,
@@ -48,6 +48,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <FilterIcon {...props} />
     case IntegrationStepType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
+    case IntegrationStepType.GOOGLE_ANALYTICS:
+      return <GoogleAnalyticsLogo {...props} />
     case 'start':
       return <FlagIcon {...props} />
     default:

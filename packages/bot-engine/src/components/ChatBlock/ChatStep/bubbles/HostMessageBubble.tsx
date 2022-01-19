@@ -26,7 +26,8 @@ export const HostMessageBubble = ({
   const [isTyping, setIsTyping] = useState(true)
 
   const content = useMemo(
-    () => parseVariables(step.content.html, typebot.variables),
+    () =>
+      parseVariables({ text: step.content.html, variables: typebot.variables }),
     [typebot.variables]
   )
 

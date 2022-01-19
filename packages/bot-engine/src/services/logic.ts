@@ -22,7 +22,7 @@ export const executeLogic = (
         return
       const expression = step.options.expressionToEvaluate
       const evaluatedExpression = isMathFormula(expression)
-        ? evaluateExpression(parseVariables(expression, variables))
+        ? evaluateExpression(parseVariables({ text: expression, variables }))
         : expression
       updateVariableValue(step.options.variableId, evaluatedExpression)
       return

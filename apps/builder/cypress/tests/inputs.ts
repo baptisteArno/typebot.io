@@ -1,10 +1,7 @@
-import { userIds } from 'cypress/plugins/data'
-import {
-  parseTestTypebot,
-  preventUserFromRefreshing,
-} from 'cypress/plugins/utils'
+import { createTypebotWithStep } from 'cypress/plugins/data'
+import { preventUserFromRefreshing } from 'cypress/plugins/utils'
 import { getIframeBody } from 'cypress/support'
-import { InputStep, InputStepType } from 'models'
+import { InputStepType } from 'models'
 
 describe('Text input', () => {
   beforeEach(() => {
@@ -262,50 +259,3 @@ describe('Button input', () => {
     getIframeBody().findByText('Cool!').should('exist')
   })
 })
-
-const createTypebotWithStep = (step: Omit<InputStep, 'id' | 'blockId'>) => {
-  cy.task(
-    'createTypebot',
-    parseTestTypebot({
-      id: 'typebot3',
-      name: 'Typebot #3',
-      ownerId: userIds[1],
-      steps: {
-        byId: {
-          step1: {
-            ...step,
-            id: 'step1',
-            blockId: 'block1',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            options:
-              step.type === InputStepType.CHOICE
-                ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  //@ts-ignore
-                  { itemIds: ['item1'] }
-                : undefined,
-          },
-        },
-        allIds: ['step1'],
-      },
-      blocks: {
-        byId: {
-          block1: {
-            id: 'block1',
-            graphCoordinates: { x: 400, y: 200 },
-            title: 'Block #1',
-            stepIds: ['step1'],
-          },
-        },
-        allIds: ['block1'],
-      },
-      choiceItems:
-        step.type === InputStepType.CHOICE
-          ? {
-              byId: { item1: { stepId: 'step1', id: 'item1' } },
-              allIds: ['item1'],
-            }
-          : undefined,
-    })
-  )
-}

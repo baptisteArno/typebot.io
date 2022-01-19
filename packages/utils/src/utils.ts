@@ -73,4 +73,4 @@ export const isConditionStep = (step: Step): step is ConditionStep =>
   step.type === LogicStepType.CONDITION
 
 export const isIntegrationStep = (step: Step): step is IntegrationStep =>
-  step.type === IntegrationStepType.GOOGLE_SHEETS
+  (Object.values(IntegrationStepType) as string[]).includes(step.type)

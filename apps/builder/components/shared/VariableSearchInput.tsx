@@ -9,6 +9,7 @@ import {
   Button,
   InputProps,
   IconButton,
+  Portal,
 } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -110,60 +111,62 @@ export const VariableSearchInput = ({
             {...inputProps}
           />
         </PopoverTrigger>
-        <PopoverContent
-          maxH="35vh"
-          overflowY="scroll"
-          spacing="0"
-          role="menu"
-          w="inherit"
-          shadow="lg"
-        >
-          {(inputValue?.length ?? 0) > 0 &&
-            !isDefined(variables.find((v) => v.name === inputValue)) && (
-              <Button
-                role="menuitem"
-                minH="40px"
-                onClick={handleCreateNewVariableClick}
-                fontSize="16px"
-                fontWeight="normal"
-                rounded="none"
-                colorScheme="gray"
-                variant="ghost"
-                justifyContent="flex-start"
-                leftIcon={<PlusIcon />}
-              >
-                Create "{inputValue}"
-              </Button>
+        <Portal>
+          <PopoverContent
+            maxH="35vh"
+            overflowY="scroll"
+            spacing="0"
+            role="menu"
+            w="inherit"
+            shadow="lg"
+          >
+            {(inputValue?.length ?? 0) > 0 &&
+              !isDefined(variables.find((v) => v.name === inputValue)) && (
+                <Button
+                  role="menuitem"
+                  minH="40px"
+                  onClick={handleCreateNewVariableClick}
+                  fontSize="16px"
+                  fontWeight="normal"
+                  rounded="none"
+                  colorScheme="gray"
+                  variant="ghost"
+                  justifyContent="flex-start"
+                  leftIcon={<PlusIcon />}
+                >
+                  Create "{inputValue}"
+                </Button>
+              )}
+            {filteredItems.length > 0 && (
+              <>
+                {filteredItems.map((item, idx) => {
+                  return (
+                    <Button
+                      role="menuitem"
+                      minH="40px"
+                      key={idx}
+                      onClick={handleVariableNameClick(item)}
+                      fontSize="16px"
+                      fontWeight="normal"
+                      rounded="none"
+                      colorScheme="gray"
+                      variant="ghost"
+                      justifyContent="space-between"
+                    >
+                      {item.name}
+                      <IconButton
+                        icon={<TrashIcon />}
+                        aria-label="Remove variable"
+                        size="xs"
+                        onClick={handleDeleteVariableClick(item)}
+                      />
+                    </Button>
+                  )
+                })}
+              </>
             )}
-          {filteredItems.length > 0 && (
-            <>
-              {filteredItems.map((item, idx) => {
-                return (
-                  <Button
-                    role="menuitem"
-                    minH="40px"
-                    key={idx}
-                    onClick={handleVariableNameClick(item)}
-                    fontSize="16px"
-                    fontWeight="normal"
-                    rounded="none"
-                    colorScheme="gray"
-                    variant="ghost"
-                    justifyContent="space-between"
-                  >
-                    {item.name}
-                    <IconButton
-                      icon={<TrashIcon />}
-                      aria-label="Remove variable"
-                      size="xs"
-                      onClick={handleDeleteVariableClick(item)}
-                    />
-                  </Button>
-                )
-              })}
-            </>
-          )}
-        </PopoverContent>
+          </PopoverContent>
+        </Portal>
       </Popover>
     </Flex>
   )

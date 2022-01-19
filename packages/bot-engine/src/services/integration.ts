@@ -9,10 +9,12 @@ import {
   GoogleSheetsUpdateRowOptions,
   Cell,
   GoogleSheetsGetOptions,
+  GoogleAnalyticsStep,
 } from 'models'
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
-import { parseVariables } from './variable'
+import { sendGaEvent } from '../../lib/gtag'
+import { parseVariables, parseVariablesInObject } from './variable'
 
 export const executeIntegration = (
   step: IntegrationStep,
@@ -22,7 +24,19 @@ export const executeIntegration = (
   switch (step.type) {
     case IntegrationStepType.GOOGLE_SHEETS:
       return executeGoogleSheetIntegration(step, variables, updateVariableValue)
+    case IntegrationStepType.GOOGLE_ANALYTICS:
+      return executeGoogleAnalyticsIntegration(step, variables)
   }
+}
+
+export const executeGoogleAnalyticsIntegration = async (
+  step: GoogleAnalyticsStep,
+  variables: Table<Variable>
+) => {
+  if (!step.options?.trackingId) return
+  const { default: initGoogleAnalytics } = await import('../../lib/gtag')
+  await initGoogleAnalytics(step.options.trackingId)
+  sendGaEvent(parseVariablesInObject(step.options, variables))
 }
 
 const executeGoogleSheetIntegration = async (
@@ -73,7 +87,10 @@ const updateRowInGoogleSheets = async (
       values: parseCellValues(options.cellsToUpsert, variables),
       referenceCell: {
         column: options.referenceCell.column,
-        value: parseVariables(options.referenceCell.value ?? '', variables),
+        value: parseVariables({
+          text: options.referenceCell.value ?? '',
+          variables,
+        }),
       },
     },
   })
@@ -90,7 +107,10 @@ const getRowFromGoogleSheets = async (
       credentialsId: options.credentialsId,
       referenceCell: {
         column: options.referenceCell.column,
-        value: parseVariables(options.referenceCell.value ?? '', variables),
+        value: parseVariables({
+          text: options.referenceCell.value ?? '',
+          variables,
+        }),
       },
       columns: options.cellsToExtract.allIds.map(
         (id) => options.cellsToExtract?.byId[id].column
@@ -117,5 +137,8 @@ const parseCellValues = (
     const cell = cells.byId[id]
     return !cell.column || !cell.value
       ? row
-      : { ...row, [cell.column]: parseVariables(cell.value, variables) }
+      : {
+          ...row,
+          [cell.column]: parseVariables({ text: cell.value, variables }),
+        }
   }, {})

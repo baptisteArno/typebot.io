@@ -1,17 +1,33 @@
 import { StepBase } from '.'
 import { Table } from '../..'
 
-export type IntegrationStep = GoogleSheetsStep
+export type IntegrationStep = GoogleSheetsStep | GoogleAnalyticsStep
 
-export type IntegrationStepOptions = GoogleSheetsOptions
+export type IntegrationStepOptions =
+  | GoogleSheetsOptions
+  | GoogleAnalyticsOptions
 
 export enum IntegrationStepType {
   GOOGLE_SHEETS = 'Google Sheets',
+  GOOGLE_ANALYTICS = 'Google Analytics',
 }
 
 export type GoogleSheetsStep = StepBase & {
   type: IntegrationStepType.GOOGLE_SHEETS
   options?: GoogleSheetsOptions
+}
+
+export type GoogleAnalyticsStep = StepBase & {
+  type: IntegrationStepType.GOOGLE_ANALYTICS
+  options?: GoogleAnalyticsOptions
+}
+
+export type GoogleAnalyticsOptions = {
+  trackingId?: string
+  category?: string
+  action?: string
+  label?: string
+  value?: number
 }
 
 export enum GoogleSheetsAction {

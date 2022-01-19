@@ -4,9 +4,7 @@ import {
   PopoverBody,
   useEventListener,
   Portal,
-  Stack,
   IconButton,
-  Flex,
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
@@ -28,6 +26,7 @@ import {
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
+import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
@@ -47,7 +46,7 @@ export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
   useEventListener('wheel', handleMouseWheel, ref.current)
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown}>
+      <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow />
         <PopoverBody
           px="6"
@@ -58,18 +57,17 @@ export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
           ref={ref}
           shadow="lg"
         >
-          <Stack>
-            <Flex justifyContent="flex-end">
-              <IconButton
-                aria-label="expand"
-                icon={<ExpandIcon />}
-                size="xs"
-                onClick={onExpandClick}
-              />
-            </Flex>
-            <StepSettings step={step} />
-          </Stack>
+          <StepSettings step={step} />
         </PopoverBody>
+        <IconButton
+          pos="absolute"
+          top="5px"
+          right="5px"
+          aria-label="expand"
+          icon={<ExpandIcon />}
+          size="xs"
+          onClick={onExpandClick}
+        />
       </PopoverContent>
     </Portal>
   )
@@ -159,6 +157,14 @@ export const StepSettings = ({ step }: { step: Step }) => {
           options={step.options}
           onOptionsChange={handleOptionsChange}
           stepId={step.id}
+        />
+      )
+    }
+    case IntegrationStepType.GOOGLE_ANALYTICS: {
+      return (
+        <GoogleAnalyticsSettings
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }

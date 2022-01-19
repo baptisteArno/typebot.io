@@ -89,6 +89,11 @@ export const StepNodeContent = ({ step }: Props) => {
       if (!step.options) return <Text color={'gray.500'}>Configure...</Text>
       return <Text>{step.options?.action}</Text>
     }
+    case IntegrationStepType.GOOGLE_ANALYTICS: {
+      if (!step.options || !step.options.action)
+        return <Text color={'gray.500'}>Configure...</Text>
+      return <Text>Track "{step.options?.action}"</Text>
+    }
     case 'start': {
       return <Text>{step.label}</Text>
     }

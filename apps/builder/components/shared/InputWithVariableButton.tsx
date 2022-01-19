@@ -14,23 +14,23 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { VariableSearchInput } from './VariableSearchInput'
 
-export const InputWithVariable = ({
+export const InputWithVariableButton = ({
   initialValue,
-  noAbsolute,
-  onValueChange,
+  onChange,
+  delay,
   ...props
 }: {
   initialValue: string
-  onValueChange: (value: string) => void
-  noAbsolute?: boolean
-} & InputProps) => {
+  onChange: (value: string) => void
+  delay?: number
+} & Omit<InputProps, 'onChange'>) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [value, setValue] = useState(initialValue)
-  const [debouncedValue] = useDebounce(value, 100)
+  const [debouncedValue] = useDebounce(value, delay ?? 100)
   const [carretPosition, setCarretPosition] = useState<number>(0)
 
   useEffect(() => {
-    onValueChange(debouncedValue)
+    onChange(debouncedValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue])
 
@@ -77,10 +77,7 @@ export const InputWithVariable = ({
         {...props}
         bgColor={'white'}
       />
-      <InputRightElement
-        pos={noAbsolute ? 'relative' : 'absolute'}
-        zIndex={noAbsolute ? 'unset' : '1'}
-      >
+      <InputRightElement>
         <Popover matchWidth isLazy>
           <PopoverTrigger>
             <IconButton

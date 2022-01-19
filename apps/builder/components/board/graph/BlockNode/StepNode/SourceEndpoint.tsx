@@ -41,7 +41,7 @@ export const SourceEndpoint = ({
       align="center"
       {...props}
     >
-      <Box bgColor="gray.400" rounded="full" boxSize="7px" />
+      <Box bgColor="gray.400" rounded="full" boxSize="6px" />
     </Flex>
   )
 }

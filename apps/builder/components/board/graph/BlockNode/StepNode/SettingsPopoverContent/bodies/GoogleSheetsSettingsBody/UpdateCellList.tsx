@@ -1,7 +1,7 @@
 import { Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
 import { DropdownList } from 'components/shared/DropdownList'
-import { InputWithVariable } from 'components/shared/InputWithVariable'
+import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
 import { Cell, Table } from 'models'
 import React, { useEffect, useState } from 'react'
 import { Sheet } from 'services/integrations'
@@ -131,9 +131,9 @@ export const CellWithValueStack = ({
         items={columns}
         placeholder="Select a column"
       />
-      <InputWithVariable
+      <InputWithVariableButton
         initialValue={cell.value ?? ''}
-        onValueChange={handleValueChange}
+        onChange={handleValueChange}
         placeholder="Type a value..."
       />
     </Stack>

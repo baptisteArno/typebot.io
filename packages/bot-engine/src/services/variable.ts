@@ -6,11 +6,14 @@ const safeEval = eval
 export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)
 
-export const parseVariables = (
-  text: string,
+export const parseVariables = ({
+  text,
+  variables,
+}: {
+  text?: string
   variables: Table<Variable>
-): string => {
-  if (text === '') return text
+}): string => {
+  if (!text || text === '') return ''
   return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
     const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
     const matchedVariableId = variables.allIds.find((variableId) => {
@@ -44,3 +47,18 @@ const countDecimals = (value: number) => {
   if (value % 1 != 0) return value.toString().split('.')[1].length
   return 0
 }
+
+export const parseVariablesInObject = (
+  object: { [key: string]: string | number },
+  variables: Table<Variable>
+) =>
+  Object.keys(object).reduce((newObj, key) => {
+    const currentValue = object[key]
+    return {
+      ...newObj,
+      [key]:
+        typeof currentValue === 'string'
+          ? parseVariables({ text: currentValue, variables })
+          : currentValue,
+    }
+  }, {})
