@@ -32,7 +32,7 @@ describe('Google sheets', () => {
     cy.findByRole('button', { name: 'Insert a variable' }).click()
     cy.findByRole('menuitem', { name: 'Email' }).click()
 
-    cy.findByRole('button', { name: 'Add' }).click()
+    cy.findByRole('button', { name: 'Add a value' }).click()
 
     cy.findByRole('button', { name: 'Select a column' }).click()
     cy.findByRole('menuitem', { name: 'First name' }).click()
@@ -106,7 +106,7 @@ describe('Google sheets', () => {
     cy.findByRole('menuitem', { name: 'First name' }).click()
     createNewVar('First name')
 
-    cy.findByRole('button', { name: 'Add' }).click()
+    cy.findByRole('button', { name: 'Add a value' }).click()
 
     cy.findByRole('button', { name: 'Select a column' }).click()
     cy.findByRole('menuitem', { name: 'Last name' }).click()

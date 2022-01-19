@@ -15,7 +15,7 @@ describe('Google Analytics', () => {
     })
   })
 
-  it.only('can be filled correctly', () => {
+  it('can be filled correctly', () => {
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.intercept({

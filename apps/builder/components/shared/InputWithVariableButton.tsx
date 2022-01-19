@@ -78,7 +78,7 @@ export const InputWithVariableButton = ({
         bgColor={'white'}
       />
       <InputRightElement>
-        <Popover matchWidth isLazy>
+        <Popover matchWidth isLazy closeOnBlur={false}>
           <PopoverTrigger>
             <IconButton
               aria-label="Insert a variable"

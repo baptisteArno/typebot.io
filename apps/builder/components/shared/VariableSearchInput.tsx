@@ -111,62 +111,60 @@ export const VariableSearchInput = ({
             {...inputProps}
           />
         </PopoverTrigger>
-        <Portal>
-          <PopoverContent
-            maxH="35vh"
-            overflowY="scroll"
-            spacing="0"
-            role="menu"
-            w="inherit"
-            shadow="lg"
-          >
-            {(inputValue?.length ?? 0) > 0 &&
-              !isDefined(variables.find((v) => v.name === inputValue)) && (
-                <Button
-                  role="menuitem"
-                  minH="40px"
-                  onClick={handleCreateNewVariableClick}
-                  fontSize="16px"
-                  fontWeight="normal"
-                  rounded="none"
-                  colorScheme="gray"
-                  variant="ghost"
-                  justifyContent="flex-start"
-                  leftIcon={<PlusIcon />}
-                >
-                  Create "{inputValue}"
-                </Button>
-              )}
-            {filteredItems.length > 0 && (
-              <>
-                {filteredItems.map((item, idx) => {
-                  return (
-                    <Button
-                      role="menuitem"
-                      minH="40px"
-                      key={idx}
-                      onClick={handleVariableNameClick(item)}
-                      fontSize="16px"
-                      fontWeight="normal"
-                      rounded="none"
-                      colorScheme="gray"
-                      variant="ghost"
-                      justifyContent="space-between"
-                    >
-                      {item.name}
-                      <IconButton
-                        icon={<TrashIcon />}
-                        aria-label="Remove variable"
-                        size="xs"
-                        onClick={handleDeleteVariableClick(item)}
-                      />
-                    </Button>
-                  )
-                })}
-              </>
+        <PopoverContent
+          maxH="35vh"
+          overflowY="scroll"
+          spacing="0"
+          role="menu"
+          w="inherit"
+          shadow="lg"
+        >
+          {(inputValue?.length ?? 0) > 0 &&
+            !isDefined(variables.find((v) => v.name === inputValue)) && (
+              <Button
+                role="menuitem"
+                minH="40px"
+                onClick={handleCreateNewVariableClick}
+                fontSize="16px"
+                fontWeight="normal"
+                rounded="none"
+                colorScheme="gray"
+                variant="ghost"
+                justifyContent="flex-start"
+                leftIcon={<PlusIcon />}
+              >
+                Create "{inputValue}"
+              </Button>
             )}
-          </PopoverContent>
-        </Portal>
+          {filteredItems.length > 0 && (
+            <>
+              {filteredItems.map((item, idx) => {
+                return (
+                  <Button
+                    role="menuitem"
+                    minH="40px"
+                    key={idx}
+                    onClick={handleVariableNameClick(item)}
+                    fontSize="16px"
+                    fontWeight="normal"
+                    rounded="none"
+                    colorScheme="gray"
+                    variant="ghost"
+                    justifyContent="space-between"
+                  >
+                    {item.name}
+                    <IconButton
+                      icon={<TrashIcon />}
+                      aria-label="Remove variable"
+                      size="xs"
+                      onClick={handleDeleteVariableClick(item)}
+                    />
+                  </Button>
+                )
+              })}
+            </>
+          )}
+        </PopoverContent>
       </Popover>
     </Flex>
   )

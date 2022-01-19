@@ -64,7 +64,7 @@ describe('Condition step', () => {
     cy.findByRole('menuitem', { name: 'Greater than' }).click()
     cy.findByPlaceholderText('Type a value...').type('80')
 
-    cy.findByRole('button', { name: 'Add' }).click()
+    cy.findByRole('button', { name: 'Add a comparison' }).click()
     cy.findAllByTestId('variables-input').last().click()
     cy.findByRole('menuitem', { name: 'Age' }).click()
     cy.findByRole('button', { name: 'Equal to' }).click()
