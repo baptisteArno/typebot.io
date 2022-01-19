@@ -4,10 +4,10 @@ export const getSingleChoiceTargetId = (
   currentStep: ChoiceInputStep,
   choiceItems: Table<ChoiceItem>,
   answerContent?: string
-): Target | undefined => {
+): string | undefined => {
   const itemId = currentStep.options.itemIds.find(
     (itemId) => choiceItems.byId[itemId].content === answerContent
   )
   if (!itemId) throw new Error('itemId should exist')
-  return choiceItems.byId[itemId].target ?? currentStep.target
+  return choiceItems.byId[itemId].edgeId ?? currentStep.edgeId
 }

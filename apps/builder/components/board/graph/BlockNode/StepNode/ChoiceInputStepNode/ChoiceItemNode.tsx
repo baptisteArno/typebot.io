@@ -128,7 +128,7 @@ export const ChoiceItemNode = ({
               source={{
                 blockId: typebot.steps.byId[item.stepId].blockId,
                 stepId: item.stepId,
-                choiceItemId: item.id,
+                nodeId: item.id,
               }}
               pos="absolute"
               right="15px"

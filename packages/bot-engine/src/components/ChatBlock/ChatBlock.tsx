@@ -4,7 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { Step, Target } from 'models'
+import { Edge, Step, Target } from 'models'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isChoiceInput,
@@ -20,7 +20,7 @@ import { executeIntegration } from 'services/integration'
 type ChatBlockProps = {
   stepIds: string[]
   startStepId?: string
-  onBlockEnd: (target?: Target) => void
+  onBlockEnd: (edgeId?: string) => void
 }
 
 export const ChatBlock = ({
@@ -46,20 +46,20 @@ export const ChatBlock = ({
     const currentStep = [...displayedSteps].pop()
     if (!currentStep) return
     if (isLogicStep(currentStep)) {
-      const target = executeLogic(
+      const nextEdgeId = executeLogic(
         currentStep,
         typebot.variables,
         updateVariableValue
       )
-      target ? onBlockEnd(target) : displayNextStep()
+      nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
-      const target = await executeIntegration(
+      const nextEdgeId = await executeIntegration(
         currentStep,
         typebot.variables,
         updateVariableValue
       )
-      target ? onBlockEnd(target) : displayNextStep()
+      nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
   }
 
@@ -90,11 +90,8 @@ export const ChatBlock = ({
             answerContent
           )
         )
-      if (
-        currentStep?.target?.blockId ||
-        displayedSteps.length === stepIds.length
-      )
-        return onBlockEnd(currentStep?.target)
+      if (currentStep?.edgeId || displayedSteps.length === stepIds.length)
+        return onBlockEnd(currentStep.edgeId)
     }
     const nextStep = typebot.steps.byId[stepIds[displayedSteps.length]]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])

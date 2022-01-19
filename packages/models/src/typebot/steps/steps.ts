@@ -36,11 +36,9 @@ export type StepOptions =
   | LogicStepOptions
   | IntegrationStepOptions
 
-export type StepBase = { id: string; blockId: string; target?: Target }
+export type StepBase = { id: string; blockId: string; edgeId?: string }
 
 export type StartStep = StepBase & {
   type: 'start'
   label: string
 }
-
-export type Target = { blockId: string; stepId?: string }

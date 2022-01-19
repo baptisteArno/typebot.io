@@ -3,6 +3,7 @@ import { useAnalyticsGraph } from 'contexts/AnalyticsGraphProvider'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
 import { computeSourceCoordinates } from 'services/graph'
+import { isDefined } from 'utils'
 
 type Props = {
   answersCounts: AnswersCount[]
@@ -20,11 +21,12 @@ export const DropOffBlock = ({ answersCounts, blockId }: Props) => {
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!typebot || totalAnswers === undefined)
       return { previousTotal: undefined, dropOffRate: undefined }
-    const previousBlockIds = typebot.blocks.allIds.filter(() =>
-      typebot.steps.allIds.find(
-        (sId) => typebot.steps.byId[sId].target?.blockId === blockId
-      )
-    )
+    const previousBlockIds = typebot.edges.allIds
+      .map((edgeId) => {
+        const edge = typebot.edges.byId[edgeId]
+        return edge.to.blockId === blockId ? edge.from.blockId : undefined
+      })
+      .filter((blockId) => isDefined(blockId))
     const previousTotal = answersCounts
       .filter((a) => previousBlockIds.includes(a.blockId))
       .reduce((prev, acc) => acc.totalAnswers + prev, 0)

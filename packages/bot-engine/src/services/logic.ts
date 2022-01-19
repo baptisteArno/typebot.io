@@ -15,7 +15,7 @@ export const executeLogic = (
   step: LogicStep,
   variables: Table<Variable>,
   updateVariableValue: (variableId: string, expression: string) => void
-): Target | undefined => {
+): string | undefined => {
   switch (step.type) {
     case LogicStepType.SET_VARIABLE: {
       if (!step.options?.variableId || !step.options.expressionToEvaluate)
@@ -36,7 +36,7 @@ export const executeLogic = (
           : step.options?.comparisons.allIds.some(
               executeComparison(step, variables)
             )
-      return isConditionPassed ? step.trueTarget : step.falseTarget
+      return isConditionPassed ? step.trueEdgeId : step.falseEdgeId
     }
   }
 }

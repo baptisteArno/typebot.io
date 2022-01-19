@@ -148,7 +148,10 @@ const parseTypebotToPublicTypebot = (
   publicId: typebot.publicId,
   choiceItems: typebot.choiceItems,
   variables: typebot.variables,
+  edges: typebot.edges,
 })
 
 export const loadRawTypebotInDatabase = (typebot: Typebot) =>
-  prisma.typebot.create({ data: { ...typebot, ownerId: userIds[1] } as any })
+  prisma.typebot.create({
+    data: { ...typebot, id: 'typebot4', ownerId: userIds[1] } as any,
+  })

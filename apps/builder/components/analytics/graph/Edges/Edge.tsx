@@ -5,26 +5,31 @@ import {
   getAnchorsPosition,
   computeEdgePath,
   getEndpointTopOffset,
+  getSourceEndpointId,
 } from 'services/graph'
 
-type Props = { stepId: string }
+type Props = { edgeId: string }
 
-export const Edge = ({ stepId }: Props) => {
+export const Edge = ({ edgeId }: Props) => {
   const { typebot } = useAnalyticsGraph()
-  const step = typebot?.steps.byId[stepId]
+  const edge = typebot?.edges.byId[edgeId]
   const { sourceEndpoints, targetEndpoints, graphPosition } = useGraph()
   const [sourceTop, setSourceTop] = useState(
-    getEndpointTopOffset(graphPosition, sourceEndpoints, stepId)
+    getEndpointTopOffset(
+      graphPosition,
+      sourceEndpoints,
+      getSourceEndpointId(edge)
+    )
   )
   const [targetTop, setTargetTop] = useState(
-    getEndpointTopOffset(graphPosition, sourceEndpoints, step?.target?.stepId)
+    getEndpointTopOffset(graphPosition, sourceEndpoints, edge?.to.stepId)
   )
 
   useEffect(() => {
     const newSourceTop = getEndpointTopOffset(
       graphPosition,
       sourceEndpoints,
-      stepId
+      getSourceEndpointId(edge)
     )
     const sensibilityThreshold = 10
     const newSourceTopIsTooClose =
@@ -39,7 +44,7 @@ export const Edge = ({ stepId }: Props) => {
     const newTargetTop = getEndpointTopOffset(
       graphPosition,
       targetEndpoints,
-      step?.target?.stepId
+      edge?.to.stepId
     )
     const sensibilityThreshold = 10
     const newSourceTopIsTooClose =
@@ -51,15 +56,14 @@ export const Edge = ({ stepId }: Props) => {
   }, [graphPosition])
 
   const { sourceBlock, targetBlock } = useMemo(() => {
-    if (!typebot) return {}
-    if (!step?.target) return {}
-    const targetBlock = typebot.blocks.byId[step.target.blockId]
-    const sourceBlock = typebot.blocks.byId[step.blockId]
+    if (!typebot || !edge) return {}
+    const targetBlock = typebot.blocks.byId[edge.to.blockId]
+    const sourceBlock = typebot.blocks.byId[edge.from.blockId]
     return {
       sourceBlock,
       targetBlock,
     }
-  }, [step?.blockId, step?.target, typebot])
+  }, [edge, typebot])
 
   const path = useMemo(() => {
     if (!sourceBlock || !targetBlock) return ``

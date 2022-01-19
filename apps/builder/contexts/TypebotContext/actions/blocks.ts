@@ -3,6 +3,7 @@ import { WritableDraft } from 'immer/dist/internal'
 import { Block, DraggableStep, DraggableStepType, Typebot } from 'models'
 import { parseNewBlock } from 'services/typebots'
 import { Updater } from 'use-immer'
+import { deleteEdgeDraft } from './edges'
 import { createStepDraft, deleteStepDraft } from './steps'
 
 export type BlocksActions = {
@@ -44,6 +45,7 @@ export const blocksActions = (setTypebot: Updater<Typebot>): BlocksActions => ({
   deleteBlock: (blockId: string) =>
     setTypebot((typebot) => {
       deleteStepsInsideBlock(typebot, blockId)
+      deleteAssociatedEdges(typebot, blockId)
       deleteBlockDraft(typebot)(blockId)
     }),
 })
@@ -53,6 +55,16 @@ export const removeEmptyBlocks = (typebot: WritableDraft<Typebot>) => {
     (blockId) => typebot.blocks.byId[blockId].stepIds.length === 0
   )
   emptyBlockIds.forEach(deleteBlockDraft(typebot))
+}
+
+const deleteAssociatedEdges = (
+  typebot: WritableDraft<Typebot>,
+  blockId: string
+) => {
+  typebot.edges.allIds.forEach((edgeId) => {
+    if (typebot.edges.byId[edgeId].to.blockId === blockId)
+      deleteEdgeDraft(typebot, edgeId)
+  })
 }
 
 const deleteStepsInsideBlock = (

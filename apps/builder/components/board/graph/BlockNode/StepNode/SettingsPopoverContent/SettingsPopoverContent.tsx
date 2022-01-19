@@ -49,9 +49,7 @@ export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow />
         <PopoverBody
-          px="6"
-          pb="6"
-          pt="4"
+          p="6"
           overflowY="scroll"
           maxH="400px"
           ref={ref}

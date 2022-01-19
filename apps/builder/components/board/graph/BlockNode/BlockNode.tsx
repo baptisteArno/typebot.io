@@ -20,18 +20,17 @@ type Props = {
 }
 
 export const BlockNode = ({ block }: Props) => {
-  const { connectingIds, setConnectingIds, previewingIds } = useGraph()
+  const { connectingIds, setConnectingIds, previewingEdgeId } = useGraph()
   const { typebot, updateBlock } = useTypebot()
   const { setMouseOverBlockId } = useDnd()
   const { draggedStep, draggedStepType } = useDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
-  const isPreviewing = useMemo(
-    () =>
-      previewingIds.sourceId === block.id ||
-      previewingIds.targetId === block.id,
-    [block.id, previewingIds.sourceId, previewingIds.targetId]
-  )
+  const isPreviewing = useMemo(() => {
+    if (!previewingEdgeId) return
+    const edge = typebot?.edges.byId[previewingEdgeId]
+    return edge?.to.blockId === block.id || edge?.from.blockId === block.id
+  }, [block.id, previewingEdgeId, typebot?.edges.byId])
 
   useEffect(() => {
     setIsConnecting(

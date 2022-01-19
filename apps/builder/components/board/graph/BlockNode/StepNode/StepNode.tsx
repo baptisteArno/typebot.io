@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   HStack,
   Popover,
@@ -7,12 +6,11 @@ import {
   useDisclosure,
   useEventListener,
 } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Block, DraggableStep, Step } from 'models'
+import React, { useEffect, useState } from 'react'
+import { DraggableStep, Step } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 import {
-  isDefined,
   isInputStep,
   isLogicStep,
   isTextBubbleStep,
@@ -50,7 +48,7 @@ export const StepNode = ({
 }) => {
   const { query } = useRouter()
   const { setConnectingIds, connectingIds } = useGraph()
-  const { moveStep, typebot } = useTypebot()
+  const { moveStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
@@ -132,30 +130,6 @@ export const StepNode = ({
     setIsEditing(false)
   }
 
-  const connectedStubPosition: 'right' | 'left' | undefined = useMemo(() => {
-    if (!typebot) return
-    const currentBlock = typebot.blocks?.byId[step.blockId]
-    const isDragginConnectorFromCurrentBlock =
-      connectingIds?.source.blockId === currentBlock?.id &&
-      connectingIds?.target?.blockId
-    const targetBlockId = isDragginConnectorFromCurrentBlock
-      ? connectingIds.target?.blockId
-      : step.target?.blockId
-    const targetedBlock = targetBlockId && typebot.blocks.byId[targetBlockId]
-    return targetedBlock
-      ? targetedBlock.graphCoordinates.x <
-        (currentBlock as Block).graphCoordinates.x
-        ? 'left'
-        : 'right'
-      : undefined
-  }, [
-    typebot,
-    step.blockId,
-    step.target?.blockId,
-    connectingIds?.source.blockId,
-    connectingIds?.target?.blockId,
-  ])
-
   return isEditing && isTextBubbleStep(step) ? (
     <TextEditor
       stepId={step.id}
@@ -184,16 +158,6 @@ export const StepNode = ({
               data-testid={`step-${step.id}`}
               w="full"
             >
-              {connectedStubPosition === 'left' && (
-                <Box
-                  h="2px"
-                  pos="absolute"
-                  left="-18px"
-                  top="25px"
-                  w="18px"
-                  bgColor="blue.500"
-                />
-              )}
               <HStack
                 flex="1"
                 userSelect="none"
@@ -225,24 +189,6 @@ export const StepNode = ({
                   />
                 )}
               </HStack>
-
-              {isDefined(connectedStubPosition) &&
-                hasDefaultConnector(step) &&
-                isConnectable && (
-                  <Box
-                    h="2px"
-                    pos="absolute"
-                    right={
-                      connectedStubPosition === 'left' ? undefined : '-18px'
-                    }
-                    left={
-                      connectedStubPosition === 'left' ? '-18px' : undefined
-                    }
-                    top="25px"
-                    w="18px"
-                    bgColor="gray.500"
-                  />
-                )}
             </Flex>
           </PopoverTrigger>
           {hasPopover(step) && (

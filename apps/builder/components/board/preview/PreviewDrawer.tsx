@@ -19,7 +19,7 @@ import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
   const { setRightPanel } = useEditor()
-  const { previewingIds, setPreviewingIds } = useGraph()
+  const { setPreviewingEdgeId } = useGraph()
   const [isResizing, setIsResizing] = useState(false)
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
@@ -45,13 +45,7 @@ export const PreviewDrawer = () => {
   }
   useEventListener('mouseup', handleMouseUp)
 
-  const handleNewBlockVisible = (targetId: string) =>
-    setPreviewingIds({
-      sourceId: !previewingIds.sourceId
-        ? typebot?.blocks.allIds[0]
-        : previewingIds.targetId,
-      targetId: targetId,
-    })
+  const handleNewBlockVisible = (edgeId: string) => setPreviewingEdgeId(edgeId)
 
   const handleRestartClick = () => setRestartKey((key) => key + 1)
 

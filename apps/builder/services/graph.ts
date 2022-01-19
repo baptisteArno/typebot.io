@@ -1,9 +1,6 @@
 import { Coordinates } from '@dnd-kit/core/dist/types'
-import { Block, Step, Table, Target, Typebot } from 'models'
-import {
-  AnchorsPositionProps,
-  EdgeType,
-} from 'components/board/graph/Edges/Edge'
+import { Block, Edge, Table, Target, Typebot } from 'models'
+import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
 import {
   stubLength,
   blockWidth,
@@ -13,7 +10,6 @@ import {
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
 import { headerHeight } from 'components/shared/TypebotHeader'
-import { isConditionStep } from 'utils'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
@@ -285,10 +281,10 @@ export const computeEdgePathToMouse = ({
 export const getEndpointTopOffset = (
   graphPosition: Coordinates,
   endpoints: Table<Endpoint>,
-  id?: string
+  endpointId?: string
 ): number => {
-  if (!id) return 0
-  const endpointRef = endpoints.byId[id]?.ref
+  if (!endpointId) return 0
+  const endpointRef = endpoints.byId[endpointId]?.ref
   if (!endpointRef) return 0
   return (
     8 +
@@ -298,17 +294,5 @@ export const getEndpointTopOffset = (
   )
 }
 
-export const getTarget = (step: Step, edgeType: EdgeType) => {
-  if (!step) return
-  switch (edgeType) {
-    case EdgeType.STEP:
-    case EdgeType.CHOICE_ITEM:
-      return step.target
-    case EdgeType.CONDITION_TRUE:
-      if (!isConditionStep(step)) return
-      return step.trueTarget
-    case EdgeType.CONDITION_FALSE:
-      if (!isConditionStep(step)) return
-      return step.falseTarget
-  }
-}
+export const getSourceEndpointId = (edge?: Edge) =>
+  edge?.from.nodeId ?? edge?.from.stepId + `${edge?.from.conditionType ?? ''}`

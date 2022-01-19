@@ -9,7 +9,6 @@ import {
   Button,
   InputProps,
   IconButton,
-  Portal,
 } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -98,8 +97,8 @@ export const VariableSearchInput = ({
         isOpen={isOpen}
         initialFocusRef={inputRef}
         matchWidth
-        offset={[0, 0]}
         isLazy
+        offset={[0, 2]}
       >
         <PopoverTrigger>
           <Input

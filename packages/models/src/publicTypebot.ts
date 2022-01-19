@@ -1,5 +1,5 @@
 import { PublicTypebot as PublicTypebotFromPrisma } from 'db'
-import { Block, ChoiceItem, Settings, Step, Theme } from './typebot'
+import { Block, ChoiceItem, Edge, Settings, Step, Theme } from './typebot'
 import { Variable } from './typebot/variable'
 import { Table } from './utils'
 
@@ -17,6 +17,7 @@ export type PublicTypebot = Omit<
   steps: Table<Step>
   choiceItems: Table<ChoiceItem>
   variables: Table<Variable>
+  edges: Table<Edge>
   theme: Theme
   settings: Settings
 }

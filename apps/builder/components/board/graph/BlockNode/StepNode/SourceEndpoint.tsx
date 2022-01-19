@@ -1,12 +1,13 @@
 import { Box, BoxProps, Flex } from '@chakra-ui/react'
-import { ConnectingSourceIds, useGraph } from 'contexts/GraphContext'
+import { useGraph } from 'contexts/GraphContext'
+import { Source } from 'models'
 import React, { MouseEvent, useEffect, useRef } from 'react'
 
 export const SourceEndpoint = ({
   source,
   ...props
 }: BoxProps & {
-  source: ConnectingSourceIds
+  source: Source
 }) => {
   const { setConnectingIds, addSourceEndpoint: addEndpoint } = useGraph()
   const ref = useRef<HTMLDivElement | null>(null)
@@ -18,8 +19,7 @@ export const SourceEndpoint = ({
 
   useEffect(() => {
     if (!ref.current) return
-    const id =
-      source.choiceItemId ?? source.stepId + (source.conditionType ?? '')
+    const id = source.nodeId ?? source.stepId + (source.conditionType ?? '')
     addEndpoint({
       id,
       ref,

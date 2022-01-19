@@ -121,7 +121,7 @@ describe('Google sheets', () => {
 })
 
 const fillInSpreadsheetInfo = () => {
-  cy.findByTestId('step-step1').click()
+  cy.findByText('Configure...').click()
 
   cy.findByRole('button', { name: 'Select an account' }).click()
   cy.findByRole('menuitem', { name: 'test2@gmail.com' }).click()

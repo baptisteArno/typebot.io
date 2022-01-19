@@ -11,7 +11,7 @@ import { Answer, BackgroundType, PublicTypebot } from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
-  onNewBlockVisible?: (blockId: string) => void
+  onNewBlockVisible?: (edgeId: string) => void
   onNewAnswer?: (answer: Answer) => void
   onCompleted?: () => void
 }

@@ -64,7 +64,7 @@ export const parseTestTypebot = ({
           type: 'start',
           blockId: 'block0',
           label: 'Start',
-          target: { blockId: 'block1' },
+          edgeId: 'edge1',
         },
         ...steps.byId,
       },
@@ -75,6 +75,16 @@ export const parseTestTypebot = ({
     publishedTypebotId: null,
     updatedAt: new Date(),
     variables: { byId: {}, allIds: [] },
+    edges: {
+      byId: {
+        edge1: {
+          id: 'edge1',
+          from: { blockId: 'block0', stepId: 'step0' },
+          to: { blockId: 'block1' },
+        },
+      },
+      allIds: ['edge1'],
+    },
   }
 }
 

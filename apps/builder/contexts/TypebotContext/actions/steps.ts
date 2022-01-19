@@ -11,6 +11,7 @@ import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { createChoiceItemDraft, deleteChoiceItemDraft } from './choiceItems'
 import { isChoiceInput } from 'utils'
+import { deleteEdgeDraft } from './edges'
 
 export type StepsActions = {
   createStep: (
@@ -50,11 +51,22 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     setTypebot((typebot) => {
       const step = typebot.steps.byId[stepId]
       if (isChoiceInput(step)) deleteChoiceItemsInsideStep(typebot, step)
+      deleteAssociatedEdges(typebot, stepId)
       removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)
     })
   },
 })
+
+const deleteAssociatedEdges = (
+  typebot: WritableDraft<Typebot>,
+  stepId: string
+) => {
+  typebot.edges.allIds.forEach((edgeId) => {
+    if (typebot.edges.byId[edgeId].from.stepId === stepId)
+      deleteEdgeDraft(typebot, edgeId)
+  })
+}
 
 const removeStepIdFromBlock = (
   typebot: WritableDraft<Typebot>,

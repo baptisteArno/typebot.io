@@ -1,4 +1,4 @@
-import { Block, Step, Table, Target } from 'models'
+import { Block, Source, Step, Table, Target } from 'models'
 import {
   createContext,
   Dispatch,
@@ -43,18 +43,9 @@ export type Node = Omit<Block, 'steps'> & {
 const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
 
 export type ConnectingIds = {
-  source: ConnectingSourceIds
+  source: Source
   target?: Target
 }
-
-export type ConnectingSourceIds = {
-  blockId: string
-  stepId: string
-  choiceItemId?: string
-  conditionType?: 'true' | 'false'
-}
-
-type PreviewingIdsProps = { sourceId?: string; targetId?: string }
 
 type StepId = string
 type NodeId = string
@@ -68,8 +59,8 @@ const graphContext = createContext<{
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
   setConnectingIds: Dispatch<SetStateAction<ConnectingIds | null>>
-  previewingIds: PreviewingIdsProps
-  setPreviewingIds: Dispatch<SetStateAction<PreviewingIdsProps>>
+  previewingEdgeId?: string
+  setPreviewingEdgeId: Dispatch<SetStateAction<string | undefined>>
   sourceEndpoints: Table<Endpoint>
   addSourceEndpoint: (endpoint: Endpoint) => void
   targetEndpoints: Table<Endpoint>
@@ -84,7 +75,7 @@ const graphContext = createContext<{
 export const GraphProvider = ({ children }: { children: ReactNode }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
-  const [previewingIds, setPreviewingIds] = useState<PreviewingIdsProps>({})
+  const [previewingEdgeId, setPreviewingEdgeId] = useState<string>()
   const [sourceEndpoints, setSourceEndpoints] = useState<Table<Endpoint>>({
     byId: {},
     allIds: [],
@@ -115,8 +106,8 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
         setGraphPosition,
         connectingIds,
         setConnectingIds,
-        previewingIds,
-        setPreviewingIds,
+        previewingEdgeId,
+        setPreviewingEdgeId,
         sourceEndpoints,
         targetEndpoints,
         addSourceEndpoint,

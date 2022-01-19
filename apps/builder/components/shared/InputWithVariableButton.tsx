@@ -1,9 +1,8 @@
 import {
+  HStack,
   IconButton,
   Input,
-  InputGroup,
   InputProps,
-  InputRightElement,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -55,6 +54,7 @@ export const InputWithVariableButton = ({
       if (!inputRef.current) return
       inputRef.current.selectionStart = inputRef.current.selectionEnd =
         carretPosition + `{{${variable.name}}}`.length
+      setCarretPosition(inputRef.current.selectionStart)
     }, 100)
   }
 
@@ -67,7 +67,7 @@ export const InputWithVariableButton = ({
     setValue(e.target.value)
 
   return (
-    <InputGroup>
+    <HStack>
       <Input
         ref={inputRef}
         onKeyUp={handleKeyUp}
@@ -77,26 +77,24 @@ export const InputWithVariableButton = ({
         {...props}
         bgColor={'white'}
       />
-      <InputRightElement>
-        <Popover matchWidth isLazy closeOnBlur={false}>
-          <PopoverTrigger>
-            <IconButton
-              aria-label="Insert a variable"
-              icon={<UserIcon />}
-              size="sm"
-              pos="relative"
-            />
-          </PopoverTrigger>
-          <PopoverContent w="full">
-            <VariableSearchInput
-              onSelectVariable={handleVariableSelected}
-              placeholder="Search for a variable"
-              shadow="lg"
-              isDefaultOpen
-            />
-          </PopoverContent>
-        </Popover>
-      </InputRightElement>
-    </InputGroup>
+      <Popover matchWidth isLazy>
+        <PopoverTrigger>
+          <IconButton
+            aria-label="Insert a variable"
+            icon={<UserIcon />}
+            pos="relative"
+            ml="2"
+          />
+        </PopoverTrigger>
+        <PopoverContent w="full">
+          <VariableSearchInput
+            onSelectVariable={handleVariableSelected}
+            placeholder="Search for a variable"
+            shadow="lg"
+            isDefaultOpen
+          />
+        </PopoverContent>
+      </Popover>
+    </HStack>
   )
 }

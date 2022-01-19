@@ -1,71 +1,96 @@
 {
-  "id": "typebot4",
-  "createdAt": "2022-01-17T14:37:01.826Z",
-  "updatedAt": "2022-01-17T14:37:01.826Z",
+  "id": "ckylszb9z0354z31a623dg7ji",
+  "createdAt": "2022-01-19T17:12:27.863Z",
+  "updatedAt": "2022-01-19T17:12:27.863Z",
   "name": "My typebot",
-  "ownerId": "user2",
+  "ownerId": "ckylsz8yy0335z31amvq0jwtt",
   "publishedTypebotId": null,
   "folderId": null,
   "blocks": {
     "byId": {
-      "bec5A5bLwenmZpCJc8FRaM": {
-        "id": "bec5A5bLwenmZpCJc8FRaM",
+      "j24wz82YG3rjXMgrmCiTLy": {
+        "id": "j24wz82YG3rjXMgrmCiTLy",
         "title": "Start",
-        "stepIds": ["uDMB7a2ucg17WGvbQJjeRn"],
+        "stepIds": ["1NdXPCiRicqDA8k4JfnXfi"],
         "graphCoordinates": { "x": 0, "y": 0 }
       },
-      "bcyiT7P6E99YnHKnpxs4Yux": {
-        "id": "bcyiT7P6E99YnHKnpxs4Yux",
+      "bmaKTUXkT2cc3wtKfK7ra71": {
+        "id": "bmaKTUXkT2cc3wtKfK7ra71",
         "title": "Block #2",
-        "stepIds": ["step1"],
-        "graphCoordinates": { "x": 411, "y": 108 }
+        "graphCoordinates": { "x": 175, "y": 197 },
+        "stepIds": ["spHxPWbSqkVZW9gqH86ovC5"]
       },
-      "bgpNxHtBBXWrP1QMe2A8hZ9": {
-        "id": "bgpNxHtBBXWrP1QMe2A8hZ9",
+      "bnt8fM5Wgc8gBg2iSmUcfJu": {
+        "id": "bnt8fM5Wgc8gBg2iSmUcfJu",
         "title": "Block #3",
-        "graphCoordinates": { "x": 1, "y": 236 },
-        "stepIds": ["sj72oDhJEe4N92KTt64GKWs"]
+        "graphCoordinates": { "x": 504, "y": 347 },
+        "stepIds": ["siPoEE9H27hVHqykth3a7Kj"]
       }
     },
     "allIds": [
-      "bec5A5bLwenmZpCJc8FRaM",
-      "bcyiT7P6E99YnHKnpxs4Yux",
-      "bgpNxHtBBXWrP1QMe2A8hZ9"
+      "j24wz82YG3rjXMgrmCiTLy",
+      "bmaKTUXkT2cc3wtKfK7ra71",
+      "bnt8fM5Wgc8gBg2iSmUcfJu"
     ]
   },
   "steps": {
     "byId": {
-      "step1": {
-        "id": "step1",
-        "type": "Google Sheets",
-        "blockId": "bcyiT7P6E99YnHKnpxs4Yux"
-      },
-      "uDMB7a2ucg17WGvbQJjeRn": {
-        "id": "uDMB7a2ucg17WGvbQJjeRn",
+      "1NdXPCiRicqDA8k4JfnXfi": {
+        "id": "1NdXPCiRicqDA8k4JfnXfi",
         "type": "start",
         "label": "Start",
-        "target": { "blockId": "bgpNxHtBBXWrP1QMe2A8hZ9" },
-        "blockId": "bec5A5bLwenmZpCJc8FRaM"
+        "blockId": "j24wz82YG3rjXMgrmCiTLy",
+        "edgeId": "benDCcLMUWNvi6Fg6CXE9H"
       },
-      "sj72oDhJEe4N92KTt64GKWs": {
-        "id": "sj72oDhJEe4N92KTt64GKWs",
-        "blockId": "bgpNxHtBBXWrP1QMe2A8hZ9",
+      "spHxPWbSqkVZW9gqH86ovC5": {
+        "id": "spHxPWbSqkVZW9gqH86ovC5",
+        "blockId": "bmaKTUXkT2cc3wtKfK7ra71",
         "type": "email input",
-        "target": { "blockId": "bcyiT7P6E99YnHKnpxs4Yux" },
-        "options": { "variableId": "8H3aQsNji2Gyfpp3RPozNN" }
+        "options": { "variableId": "oexLr4sJQNVdSnYCGgGRB3" },
+        "edgeId": "6Tax9rw7L8kmRn9JRD2Mrg"
+      },
+      "siPoEE9H27hVHqykth3a7Kj": {
+        "id": "siPoEE9H27hVHqykth3a7Kj",
+        "blockId": "bnt8fM5Wgc8gBg2iSmUcfJu",
+        "type": "Google Sheets"
       }
     },
-    "allIds": ["uDMB7a2ucg17WGvbQJjeRn", "step1", "sj72oDhJEe4N92KTt64GKWs"]
+    "allIds": [
+      "1NdXPCiRicqDA8k4JfnXfi",
+      "spHxPWbSqkVZW9gqH86ovC5",
+      "siPoEE9H27hVHqykth3a7Kj"
+    ]
   },
   "choiceItems": { "byId": {}, "allIds": [] },
   "variables": {
     "byId": {
-      "8H3aQsNji2Gyfpp3RPozNN": {
-        "id": "8H3aQsNji2Gyfpp3RPozNN",
+      "oexLr4sJQNVdSnYCGgGRB3": {
+        "id": "oexLr4sJQNVdSnYCGgGRB3",
         "name": "Email"
       }
     },
-    "allIds": ["8H3aQsNji2Gyfpp3RPozNN"]
+    "allIds": ["oexLr4sJQNVdSnYCGgGRB3"]
+  },
+  "edges": {
+    "byId": {
+      "benDCcLMUWNvi6Fg6CXE9H": {
+        "from": {
+          "blockId": "j24wz82YG3rjXMgrmCiTLy",
+          "stepId": "1NdXPCiRicqDA8k4JfnXfi"
+        },
+        "to": { "blockId": "bmaKTUXkT2cc3wtKfK7ra71" },
+        "id": "benDCcLMUWNvi6Fg6CXE9H"
+      },
+      "6Tax9rw7L8kmRn9JRD2Mrg": {
+        "from": {
+          "blockId": "bmaKTUXkT2cc3wtKfK7ra71",
+          "stepId": "spHxPWbSqkVZW9gqH86ovC5"
+        },
+        "to": { "blockId": "bnt8fM5Wgc8gBg2iSmUcfJu" },
+        "id": "6Tax9rw7L8kmRn9JRD2Mrg"
+      }
+    },
+    "allIds": ["benDCcLMUWNvi6Fg6CXE9H", "6Tax9rw7L8kmRn9JRD2Mrg"]
   },
   "theme": {
     "general": {

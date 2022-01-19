@@ -1,4 +1,4 @@
-import { StepBase, Target } from '.'
+import { StepBase } from '.'
 import { Table } from '../..'
 
 export type LogicStep = SetVariableStep | ConditionStep
@@ -32,8 +32,8 @@ export enum ComparisonOperators {
 export type ConditionStep = StepBase & {
   type: LogicStepType.CONDITION
   options: ConditionOptions
-  trueTarget?: Target
-  falseTarget?: Target
+  trueEdgeId?: string
+  falseEdgeId?: string
 }
 
 export type ConditionOptions = {

@@ -14,6 +14,7 @@ export type Typebot = Omit<
   steps: Table<Step>
   choiceItems: Table<ChoiceItem>
   variables: Table<Variable>
+  edges: Table<Edge>
   theme: Theme
   settings: Settings
 }
@@ -26,4 +27,17 @@ export type Block = {
     y: number
   }
   stepIds: string[]
+}
+
+export type Source = {
+  blockId: string
+  stepId: string
+  nodeId?: string
+  conditionType?: 'true' | 'false'
+}
+export type Target = { blockId: string; stepId?: string }
+export type Edge = {
+  id: string
+  from: Source
+  to: Target
 }

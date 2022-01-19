@@ -1,39 +1,11 @@
 import { chakra } from '@chakra-ui/system'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { ChoiceItem, ConditionStep } from 'models'
-import React, { useMemo } from 'react'
-import { isConditionStep, isDefined, isSingleChoiceInput } from 'utils'
+import React from 'react'
 import { DrawingEdge } from './DrawingEdge'
-import { Edge, EdgeType } from './Edge'
+import { Edge } from './Edge'
 
 export const Edges = () => {
   const { typebot } = useTypebot()
-  const stepIdsWithTarget: string[] = useMemo(() => {
-    if (!typebot) return []
-    return typebot.steps.allIds.filter((stepId) =>
-      isDefined(typebot.steps.byId[stepId].target)
-    )
-  }, [typebot])
-  const singleChoiceItemsWithTarget: ChoiceItem[] = useMemo(() => {
-    if (!typebot) return []
-    return typebot.choiceItems.allIds
-      .filter(
-        (itemId) =>
-          isDefined(typebot.choiceItems.byId[itemId].target) &&
-          isSingleChoiceInput(
-            typebot.steps.byId[typebot.choiceItems.byId[itemId].stepId]
-          )
-      )
-      .map((itemId) => typebot.choiceItems.byId[itemId])
-  }, [typebot])
-  const conditionStepIdsWithTarget = useMemo(
-    () =>
-      typebot?.steps.allIds.filter((stepId) => {
-        const step = typebot.steps.byId[stepId]
-        return isConditionStep(step) && (step.trueTarget || step.falseTarget)
-      }),
-    [typebot?.steps.allIds, typebot?.steps.byId]
-  )
 
   return (
     <chakra.svg
@@ -45,19 +17,8 @@ export const Edges = () => {
       top="0"
     >
       <DrawingEdge />
-      {stepIdsWithTarget.map((stepId) => (
-        <Edge key={stepId} stepId={stepId} type={EdgeType.STEP} />
-      ))}
-      {singleChoiceItemsWithTarget.map((item) => (
-        <Edge
-          key={item.id}
-          stepId={item.stepId}
-          item={item}
-          type={EdgeType.CHOICE_ITEM}
-        />
-      ))}
-      {conditionStepIdsWithTarget?.map((stepId) => (
-        <ConditionStepEdges key={stepId} stepId={stepId} />
+      {typebot?.edges.allIds.map((edgeId) => (
+        <Edge key={edgeId} edgeId={edgeId} />
       ))}
       <marker
         id={'arrow'}
@@ -90,20 +51,5 @@ export const Edges = () => {
         />
       </marker>
     </chakra.svg>
-  )
-}
-
-const ConditionStepEdges = ({ stepId }: { stepId: string }) => {
-  const { typebot } = useTypebot()
-  const step = typebot?.steps.byId[stepId] as ConditionStep
-  return (
-    <>
-      {step.trueTarget && (
-        <Edge type={EdgeType.CONDITION_TRUE} stepId={stepId} />
-      )}
-      {step.falseTarget && (
-        <Edge type={EdgeType.CONDITION_FALSE} stepId={stepId} />
-      )}
-    </>
   )
 }

@@ -21,6 +21,7 @@ declare global {
       signOut(): Chainable<any>
       signIn(email: string): Chainable<any>
       loadTypebotFixtureInDatabase(path: string): Chainable<any>
+      createVariable(name: string): Chainable<any>
       mouseMoveBy(
         x: number,
         y: number,

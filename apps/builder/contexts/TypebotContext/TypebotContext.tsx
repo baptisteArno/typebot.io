@@ -28,6 +28,7 @@ import { useImmer, Updater } from 'use-immer'
 import { stepsAction, StepsActions } from './actions/steps'
 import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 import { variablesAction, VariablesActions } from './actions/variables'
+import { edgesAction, EdgesActions } from './actions/edges'
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -50,7 +51,8 @@ const typebotContext = createContext<
   } & BlocksActions &
     StepsActions &
     ChoiceItemsActions &
-    VariablesActions
+    VariablesActions &
+    EdgesActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
@@ -211,6 +213,7 @@ export const TypebotContext = ({
         ...stepsAction(setLocalTypebot as Updater<Typebot>),
         ...choiceItemsAction(setLocalTypebot as Updater<Typebot>),
         ...variablesAction(setLocalTypebot as Updater<Typebot>),
+        ...edgesAction(setLocalTypebot as Updater<Typebot>),
       }}
     >
       {children}

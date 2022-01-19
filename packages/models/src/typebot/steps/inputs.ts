@@ -1,4 +1,3 @@
-import { Target } from '.'
 import { StepBase } from './steps'
 
 export type InputStep =
@@ -66,7 +65,7 @@ export type ChoiceItem = {
   id: string
   stepId: string
   content?: string
-  target?: Target
+  edgeId?: string
 }
 
 type OptionBase = { variableId?: string }

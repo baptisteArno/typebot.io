@@ -234,6 +234,7 @@ export const parseNewTypebot = ({
     steps: { byId: { [startStepId]: startStep }, allIds: [startStepId] },
     choiceItems: { byId: {}, allIds: [] },
     variables: { byId: {}, allIds: [] },
+    edges: { byId: {}, allIds: [] },
     theme,
     settings,
   }

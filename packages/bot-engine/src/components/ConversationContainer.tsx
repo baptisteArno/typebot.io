@@ -5,11 +5,11 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Block, PublicTypebot, Target } from 'models'
+import { Answer, Block, Edge, PublicTypebot } from 'models'
 
 type Props = {
   typebot: PublicTypebot
-  onNewBlockVisible: (blockId: string) => void
+  onNewBlockVisible: (edgeId: string) => void
   onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
 }
@@ -27,22 +27,24 @@ export const ConversationContainer = ({
   const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = (target?: Target) => {
-    if (!target) return onCompleted()
+  const displayNextBlock = (edgeId?: string) => {
+    const edge = typebot.edges.byId[edgeId ?? '']
+    if (!edge) return onCompleted()
     const nextBlock = {
-      block: typebot.blocks.byId[target.blockId],
-      startStepId: target.stepId,
+      block: typebot.blocks.byId[edge.to.blockId],
+      startStepId: edge.to.stepId,
     }
     if (!nextBlock) return onCompleted()
-    onNewBlockVisible(target.blockId)
+    onNewBlockVisible(edge.id)
     setDisplayedBlocks([...displayedBlocks, nextBlock])
   }
 
   useEffect(() => {
     const blocks = typebot.blocks
-    const firstTarget =
-      typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].target
-    if (firstTarget) displayNextBlock(firstTarget)
+    const firstEdgeId =
+      typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].edgeId
+    if (!firstEdgeId) return
+    displayNextBlock(firstEdgeId)
   }, [])
 
   useEffect(() => {

@@ -1,14 +1,11 @@
-import { isDefined } from '@udecode/plate-core'
-import assert from 'assert'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { ChoiceItem } from 'models'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   getAnchorsPosition,
   computeEdgePath,
   getEndpointTopOffset,
-  getTarget,
+  getSourceEndpointId,
 } from 'services/graph'
 
 export type AnchorsPositionProps = {
@@ -18,44 +15,31 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export enum EdgeType {
-  STEP,
-  CHOICE_ITEM,
-  CONDITION_TRUE,
-  CONDITION_FALSE,
-}
-
-export const Edge = ({
-  type,
-  stepId,
-  item,
-}: {
-  type: EdgeType
-  stepId: string
-  item?: ChoiceItem
-}) => {
+export const Edge = ({ edgeId }: { edgeId: string }) => {
   const { typebot } = useTypebot()
-  const { previewingIds, sourceEndpoints, targetEndpoints, graphPosition } =
+  const { previewingEdgeId, sourceEndpoints, targetEndpoints, graphPosition } =
     useGraph()
-  const step = typebot?.steps.byId[stepId]
-  const isPreviewing = useMemo(
-    () =>
-      previewingIds.sourceId === step?.blockId &&
-      previewingIds.targetId === step?.target?.blockId,
-    [previewingIds.sourceId, previewingIds.targetId, step]
+  const edge = useMemo(
+    () => typebot?.edges.byId[edgeId],
+    [edgeId, typebot?.edges.byId]
   )
+  const isPreviewing = previewingEdgeId === edgeId
   const [sourceTop, setSourceTop] = useState(
-    getEndpointTopOffset(graphPosition, sourceEndpoints, item?.id ?? step?.id)
+    getEndpointTopOffset(
+      graphPosition,
+      sourceEndpoints,
+      getSourceEndpointId(edge)
+    )
   )
   const [targetTop, setTargetTop] = useState(
-    getEndpointTopOffset(graphPosition, targetEndpoints, step?.id)
+    getEndpointTopOffset(graphPosition, targetEndpoints, edge?.to.stepId)
   )
 
   useEffect(() => {
     const newSourceTop = getEndpointTopOffset(
       graphPosition,
       sourceEndpoints,
-      getSourceEndpointId()
+      getSourceEndpointId(edge)
     )
     const sensibilityThreshold = 10
     const newSourceTopIsTooClose =
@@ -66,26 +50,12 @@ export const Edge = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot?.blocks, typebot?.steps, graphPosition, sourceEndpoints])
 
-  const getSourceEndpointId = () => {
-    switch (type) {
-      case EdgeType.STEP:
-        return step?.id
-      case EdgeType.CHOICE_ITEM:
-        return item?.id
-      case EdgeType.CONDITION_TRUE:
-        return step?.id + 'true'
-      case EdgeType.CONDITION_FALSE:
-        return step?.id + 'false'
-    }
-  }
-
   useEffect(() => {
-    if (!step) return
-    const target = getTarget(step, type)
+    if (!edge) return
     const newTargetTop = getEndpointTopOffset(
       graphPosition,
       targetEndpoints,
-      target?.blockId ?? target?.stepId
+      edge?.to.stepId
     )
     const sensibilityThreshold = 10
     const newSourceTopIsTooClose =
@@ -97,20 +67,17 @@ export const Edge = ({
   }, [typebot?.blocks, typebot?.steps, graphPosition, targetEndpoints])
 
   const { sourceBlock, targetBlock } = useMemo(() => {
-    if (!typebot) return {}
-    const step = typebot.steps.byId[stepId]
-    const sourceBlock = typebot.blocks.byId[step.blockId]
-    const targetBlockId = getTarget(step, type)?.blockId
-    assert(isDefined(targetBlockId))
-    const targetBlock = typebot.blocks.byId[targetBlockId]
+    if (!typebot || !edge?.from.stepId) return {}
+    const sourceBlock = typebot.blocks.byId[edge.from.blockId]
+    const targetBlock = typebot.blocks.byId[edge.to.blockId]
     return {
       sourceBlock,
       targetBlock,
     }
-  }, [stepId, type, typebot])
+  }, [edge?.from.blockId, edge?.from.stepId, edge?.to.blockId, typebot])
 
   const path = useMemo(() => {
-    if (!sourceBlock || !targetBlock || !step) return ``
+    if (!sourceBlock || !targetBlock) return ``
     const anchorsPosition = getAnchorsPosition({
       sourceBlock,
       targetBlock,
@@ -118,7 +85,7 @@ export const Edge = ({
       targetTop,
     })
     return computeEdgePath(anchorsPosition)
-  }, [sourceBlock, sourceTop, step, targetBlock, targetTop])
+  }, [sourceBlock, sourceTop, targetBlock, targetTop])
 
   if (sourceTop === 0) return <></>
   return (

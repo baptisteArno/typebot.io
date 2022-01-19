@@ -110,6 +110,7 @@ model Typebot {
   steps              Json
   choiceItems        Json
   variables          Json
+  edges              Json
   theme              Json
   settings           Json
   publicId           String?          @unique
@@ -124,6 +125,7 @@ model PublicTypebot {
   steps       Json
   choiceItems Json
   variables   Json
+  edges       Json
   theme       Json
   settings    Json
   publicId    String? @unique

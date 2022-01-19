@@ -1,8 +1,9 @@
 import { useEventListener } from '@chakra-ui/hooks'
+import assert from 'assert'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { useGraph, ConnectingIds } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { Step, Target } from 'models'
+import { Target } from 'models'
 import React, { useMemo, useState } from 'react'
 import {
   computeConnectingEdgePath,
@@ -18,7 +19,7 @@ export const DrawingEdge = () => {
     sourceEndpoints,
     targetEndpoints,
   } = useGraph()
-  const { typebot, updateStep, updateChoiceItem } = useTypebot()
+  const { typebot, createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const sourceBlock = useMemo(
@@ -32,7 +33,7 @@ export const DrawingEdge = () => {
     return getEndpointTopOffset(
       graphPosition,
       sourceEndpoints,
-      connectingIds.source.choiceItemId ??
+      connectingIds.source.nodeId ??
         connectingIds.source.stepId + (connectingIds.source.conditionType ?? '')
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,23 +80,8 @@ export const DrawingEdge = () => {
   })
 
   const createNewEdge = (connectingIds: ConnectingIds) => {
-    if (connectingIds.source.choiceItemId) {
-      updateChoiceItem(connectingIds.source.choiceItemId, {
-        target: connectingIds.target,
-      })
-    } else if (connectingIds.source.conditionType === 'true') {
-      updateStep(connectingIds.source.stepId, {
-        trueTarget: connectingIds.target,
-      } as Step)
-    } else if (connectingIds.source.conditionType === 'false') {
-      updateStep(connectingIds.source.stepId, {
-        falseTarget: connectingIds.target,
-      } as Step)
-    } else {
-      updateStep(connectingIds.source.stepId, {
-        target: connectingIds.target,
-      })
-    }
+    assert(connectingIds.target)
+    createEdge({ from: connectingIds.source, to: connectingIds.target })
   }
 
   if ((mousePosition.x === 0 && mousePosition.y === 0) || !connectingIds)
