@@ -102,7 +102,7 @@ export const StepsList = ({
             ? '50px'
             : '2px'
         }
-        bgColor={'gray.400'}
+        bgColor={'gray.300'}
         visibility={showSortPlaceholders ? 'visible' : 'hidden'}
         rounded="lg"
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
@@ -125,7 +125,7 @@ export const StepsList = ({
                 ? '50px'
                 : '2px'
             }
-            bgColor={'gray.400'}
+            bgColor={'gray.300'}
             visibility={showSortPlaceholders ? 'visible' : 'hidden'}
             rounded="lg"
             transition={showSortPlaceholders ? 'height 200ms' : 'none'}

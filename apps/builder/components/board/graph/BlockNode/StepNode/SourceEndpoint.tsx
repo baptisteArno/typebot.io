@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@chakra-ui/react'
+import { Box, BoxProps, Flex } from '@chakra-ui/react'
 import { ConnectingSourceIds, useGraph } from 'contexts/GraphContext'
 import React, { MouseEvent, useEffect, useRef } from 'react'
 
@@ -28,14 +28,20 @@ export const SourceEndpoint = ({
   }, [ref])
 
   return (
-    <Box
+    <Flex
       ref={ref}
-      boxSize="15px"
+      boxSize="18px"
       rounded="full"
-      bgColor="gray.500"
       onMouseDown={handleMouseDown}
-      cursor="pointer"
+      cursor="copy"
+      borderWidth="1px"
+      borderColor="gray.400"
+      bgColor="white"
+      justify="center"
+      align="center"
       {...props}
-    />
+    >
+      <Box bgColor="gray.400" rounded="full" boxSize="7px" />
+    </Flex>
   )
 }

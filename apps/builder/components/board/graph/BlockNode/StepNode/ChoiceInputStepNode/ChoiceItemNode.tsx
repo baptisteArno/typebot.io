@@ -99,15 +99,17 @@ export const ChoiceItemNode = ({
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           justifyContent="center"
+          shadow="sm"
+          _hover={{ shadow: 'md' }}
+          transition="box-shadow 200ms"
+          borderWidth="1px"
+          rounded="md"
+          px="4"
+          py="2"
+          borderColor={isOpened ? 'blue.400' : 'gray.300'}
         >
           <Editable
             ref={ref}
-            px="4"
-            py="2"
-            rounded="md"
-            bgColor="green.200"
-            borderWidth="2px"
-            borderColor={isOpened ? 'blue.400' : 'gray.400'}
             defaultValue={item.content ?? 'Click to edit'}
             flex="1"
             startWithEditView={!isDefined(item.content)}
@@ -115,7 +117,10 @@ export const ChoiceItemNode = ({
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
           >
-            <EditablePreview />
+            <EditablePreview
+              w="full"
+              color={item.content !== 'Click to edit' ? 'inherit' : 'gray.500'}
+            />
             <EditableInput />
           </Editable>
           {typebot && isSingleChoiceInput(typebot.steps.byId[item.stepId]) && (
@@ -138,6 +143,8 @@ export const ChoiceItemNode = ({
               aria-label="Add item"
               icon={<PlusIcon />}
               size="xs"
+              shadow="md"
+              colorScheme="blue"
               onClick={handlePlusClick}
             />
           </Fade>

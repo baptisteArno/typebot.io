@@ -103,9 +103,9 @@ export const DrawingEdge = () => {
   return (
     <path
       d={path}
-      stroke="#718096"
+      stroke="#1a5fff"
       strokeWidth="2px"
-      markerEnd="url(#arrow)"
+      markerEnd="url(#blue-arrow)"
       fill="none"
     />
   )

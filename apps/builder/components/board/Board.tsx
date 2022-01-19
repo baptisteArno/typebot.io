@@ -16,7 +16,7 @@ export const Board = () => {
         <StepTypesList />
         <GraphProvider>
           <Graph flex="1" />
-          <BoardMenuButton pos="absolute" right="20px" top="20px" />
+          <BoardMenuButton pos="absolute" right="40px" top="20px" />
           {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
         </GraphProvider>
       </DndContext>

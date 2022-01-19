@@ -25,7 +25,6 @@ export const BlockNode = ({ block }: Props) => {
   const { setMouseOverBlockId } = useDnd()
   const { draggedStep, draggedStepType } = useDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
-  const [titleValue, setTitleValue] = useState(block.title)
   const [isConnecting, setIsConnecting] = useState(false)
   const isPreviewing = useMemo(
     () =>
@@ -41,7 +40,7 @@ export const BlockNode = ({ block }: Props) => {
     )
   }, [block.id, connectingIds])
 
-  const handleTitleChange = (title: string) => setTitleValue(title)
+  const handleTitleSubmit = (title: string) => updateBlock(block.id, { title })
 
   const handleMouseDown = () => {
     setIsMouseDown(true)
@@ -49,6 +48,7 @@ export const BlockNode = ({ block }: Props) => {
   const handleMouseUp = () => {
     setIsMouseDown(false)
   }
+  useEventListener('mouseup', handleMouseUp)
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!isMouseDown) return
@@ -85,24 +85,31 @@ export const BlockNode = ({ block }: Props) => {
           p="4"
           rounded="lg"
           bgColor="blue.50"
+          backgroundImage="linear-gradient(rgb(235, 239, 244), rgb(231, 234, 241))"
           borderWidth="2px"
           borderColor={
-            isConnecting || isOpened || isPreviewing ? 'blue.400' : 'gray.400'
+            isConnecting || isOpened || isPreviewing ? 'blue.400' : 'white'
           }
           minW="300px"
-          transition="border 300ms"
+          transition="border 300ms, box-shadow 200ms"
           pos="absolute"
           style={{
             transform: `translate(${block.graphCoordinates.x}px, ${block.graphCoordinates.y}px)`,
           }}
           onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          cursor={isMouseDown ? 'grabbing' : 'pointer'}
+          boxShadow="0px 0px 0px 1px #e9edf3;"
+          _hover={{ shadow: 'lg' }}
         >
-          <Editable value={titleValue} onChange={handleTitleChange}>
+          <Editable
+            defaultValue={block.title}
+            onSubmit={handleTitleSubmit}
+            fontWeight="semibold"
+          >
             <EditablePreview
-              _hover={{ bgColor: 'blue.100' }}
+              _hover={{ bgColor: 'gray.300' }}
               px="1"
               userSelect={'none'}
             />

@@ -291,7 +291,7 @@ export const getEndpointTopOffset = (
   const endpointRef = endpoints.byId[id]?.ref
   if (!endpointRef) return 0
   return (
-    7 +
+    8 +
     (endpointRef.current?.getBoundingClientRect().top ?? 0) -
     graphPosition.y -
     headerHeight

@@ -16,6 +16,7 @@ export const StepNodeOverlay = ({
       cursor={'grab'}
       w="264px"
       pointerEvents="none"
+      shadow="lg"
       {...props}
     >
       <StepIcon type={step.type} />

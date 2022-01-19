@@ -15,11 +15,12 @@ export const ChoiceItemNodeOverlay = ({
       px="4"
       py="2"
       rounded="md"
-      bgColor="green.200"
-      borderWidth="2px"
-      borderColor={'gray.400'}
+      bgColor="white"
+      borderWidth="1px"
+      borderColor={'gray.300'}
       w="212px"
       pointerEvents="none"
+      shadow="lg"
       {...props}
     >
       {item.content ?? 'Click to edit'}

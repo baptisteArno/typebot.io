@@ -44,14 +44,17 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
   }
   useEventListener('mousemove', handleStepMove)
 
-  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (expandedPlaceholderIndex === undefined || !draggedChoiceItem) return
-    e.stopPropagation()
+  const handleMouseUp = (e: MouseEvent) => {
+    if (!draggedChoiceItem) return
+    if (expandedPlaceholderIndex !== -1) {
+      e.stopPropagation()
+      createChoiceItem(draggedChoiceItem, expandedPlaceholderIndex)
+    }
     setMouseOverBlockId(undefined)
     setExpandedPlaceholderIndex(undefined)
     setDraggedChoiceItem(undefined)
-    createChoiceItem(draggedChoiceItem, expandedPlaceholderIndex)
   }
+  useEventListener('mouseup', handleMouseUp, undefined, { capture: true })
 
   const handleStepMouseDown = (
     { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
@@ -76,15 +79,10 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
 
   return (
-    <Stack
-      flex={1}
-      spacing={1}
-      onMouseUpCapture={handleMouseUp}
-      onClick={stopPropagating}
-    >
+    <Stack flex={1} spacing={1} onClick={stopPropagating}>
       <Flex
         h={expandedPlaceholderIndex === 0 ? '50px' : '2px'}
-        bgColor={'gray.400'}
+        bgColor={'gray.300'}
         visibility={showSortPlaceholders ? 'visible' : 'hidden'}
         rounded="lg"
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
@@ -107,7 +105,7 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
                 ? '50px'
                 : '2px'
             }
-            bgColor={'gray.400'}
+            bgColor={'gray.300'}
             visibility={showSortPlaceholders ? 'visible' : 'hidden'}
             rounded="lg"
             transition={showSortPlaceholders ? 'height 200ms' : 'none'}
@@ -118,13 +116,15 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
         <Flex
           px="4"
           py="2"
-          bgColor="gray.200"
-          borderWidth="2px"
+          borderWidth="1px"
+          borderColor="gray.300"
+          bgColor="gray.50"
           rounded="md"
           pos="relative"
           align="center"
+          cursor="not-allowed"
         >
-          <Text>Default</Text>
+          <Text color="gray.500">Default</Text>
           <SourceEndpoint
             source={{
               blockId: step.blockId,
@@ -140,7 +140,6 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
         <Portal>
           <ChoiceItemNodeOverlay
             item={draggedChoiceItem}
-            onMouseUp={handleMouseUp}
             pos="fixed"
             top="0"
             left="0"

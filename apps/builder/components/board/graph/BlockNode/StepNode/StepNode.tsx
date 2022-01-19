@@ -4,6 +4,7 @@ import {
   HStack,
   Popover,
   PopoverTrigger,
+  useDisclosure,
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -28,6 +29,8 @@ import { SourceEndpoint } from './SourceEndpoint'
 import { hasDefaultConnector } from 'services/typebots'
 import { TargetEndpoint } from './TargetEndpoint'
 import { useRouter } from 'next/router'
+import { SettingsModal } from './SettingsPopoverContent/SettingsModal'
+import { StepSettings } from './SettingsPopoverContent/SettingsPopoverContent'
 
 export const StepNode = ({
   step,
@@ -54,6 +57,11 @@ export const StepNode = ({
   const [isEditing, setIsEditing] = useState<boolean>(
     isTextBubbleStep(step) && step.content.plainText === ''
   )
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure()
 
   useEffect(() => {
     setIsConnecting(
@@ -190,8 +198,8 @@ export const StepNode = ({
                 flex="1"
                 userSelect="none"
                 p="3"
-                borderWidth="2px"
-                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.400'}
+                borderWidth="1px"
+                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.300'}
                 rounded="lg"
                 cursor={'pointer'}
                 bgColor="white"
@@ -213,7 +221,7 @@ export const StepNode = ({
                     }}
                     pos="absolute"
                     right="15px"
-                    top="19px"
+                    top="18px"
                   />
                 )}
               </HStack>
@@ -237,7 +245,12 @@ export const StepNode = ({
                 )}
             </Flex>
           </PopoverTrigger>
-          {hasPopover(step) && <SettingsPopoverContent step={step} />}
+          {hasPopover(step) && (
+            <SettingsPopoverContent step={step} onExpandClick={onModalOpen} />
+          )}
+          <SettingsModal isOpen={isModalOpen} onClose={onModalClose}>
+            <StepSettings step={step} />
+          </SettingsModal>
         </Popover>
       )}
     </ContextMenu>

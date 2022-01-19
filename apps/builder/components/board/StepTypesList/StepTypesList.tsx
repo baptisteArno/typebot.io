@@ -4,6 +4,7 @@ import {
   Text,
   SimpleGrid,
   useEventListener,
+  Portal,
 } from '@chakra-ui/react'
 import {
   BubbleStepType,
@@ -38,10 +39,11 @@ export const StepTypesList = () => {
   const handleMouseDown = (e: React.MouseEvent, type: DraggableStepType) => {
     const element = e.currentTarget as HTMLDivElement
     const rect = element.getBoundingClientRect()
-    const relativeX = e.clientX - rect.left
-    const relativeY = e.clientY - rect.top
-    setPosition({ x: e.clientX - relativeX, y: e.clientY - relativeY })
-    setRelativeCoordinates({ x: relativeX, y: relativeY })
+    setPosition({ x: rect.left, y: rect.top })
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    setRelativeCoordinates({ x, y })
+    console.log({ x: rect.left, y: rect.top })
     setDraggedStepType(type)
   }
 
@@ -60,60 +62,76 @@ export const StepTypesList = () => {
       w="320px"
       pos="absolute"
       left="10px"
-      top="20px"
-      h="calc(100vh - 100px)"
+      top="10px"
+      h="calc(100vh - 80px)"
       rounded="lg"
-      shadow="lg"
+      shadow="xl"
       borderWidth="1px"
-      zIndex="10"
+      zIndex="2"
       py="4"
       px="2"
-      bgColor="white"
+      bgColor="gray.50"
+      spacing={6}
+      userSelect="none"
     >
-      <Input placeholder="Search..." />
-      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-        Bubbles
-      </Text>
-      <SimpleGrid columns={2} spacing="2">
-        {Object.values(BubbleStepType).map((type) => (
-          <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-        ))}
-      </SimpleGrid>
+      <Input placeholder="Search..." bgColor="white" />
+      <Stack>
+        <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          Bubbles
+        </Text>
+        <SimpleGrid columns={2} spacing="2">
+          {Object.values(BubbleStepType).map((type) => (
+            <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+          ))}
+        </SimpleGrid>
+      </Stack>
 
-      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-        Inputs
-      </Text>
-      <SimpleGrid columns={2} spacing="2">
-        {Object.values(InputStepType).map((type) => (
-          <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-        ))}
-      </SimpleGrid>
+      <Stack>
+        <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          Inputs
+        </Text>
+        <SimpleGrid columns={2} spacing="2">
+          {Object.values(InputStepType).map((type) => (
+            <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+          ))}
+        </SimpleGrid>
+      </Stack>
 
-      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-        Logic
-      </Text>
-      <SimpleGrid columns={2} spacing="2">
-        {Object.values(LogicStepType).map((type) => (
-          <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-        ))}
-      </SimpleGrid>
+      <Stack>
+        <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          Logic
+        </Text>
+        <SimpleGrid columns={2} spacing="2">
+          {Object.values(LogicStepType).map((type) => (
+            <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+          ))}
+        </SimpleGrid>
+      </Stack>
 
-      <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-        Integrations
-      </Text>
-      <SimpleGrid columns={2} spacing="2">
-        {Object.values(IntegrationStepType).map((type) => (
-          <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-        ))}
-      </SimpleGrid>
+      <Stack>
+        <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          Integrations
+        </Text>
+        <SimpleGrid columns={2} spacing="2">
+          {Object.values(IntegrationStepType).map((type) => (
+            <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+          ))}
+        </SimpleGrid>
+      </Stack>
+
       {draggedStepType && (
-        <StepCardOverlay
-          type={draggedStepType}
-          onMouseUp={handleMouseUp}
-          style={{
-            transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
-          }}
-        />
+        <Portal>
+          <StepCardOverlay
+            type={draggedStepType}
+            onMouseUp={handleMouseUp}
+            pos="fixed"
+            top="0"
+            left="0"
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
+            }}
+          />
+        </Portal>
       )}
     </Stack>
   )

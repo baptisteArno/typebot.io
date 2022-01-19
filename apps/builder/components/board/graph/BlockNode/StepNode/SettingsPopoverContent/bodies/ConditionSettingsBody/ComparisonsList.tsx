@@ -107,22 +107,20 @@ export const ComparisonsList = ({
           >
             <Stack
               key={comparisonId}
-              bgColor="blue.50"
               p="4"
               rounded="md"
               flex="1"
+              borderWidth="1px"
             >
               <VariableSearchInput
                 initialVariableId={comparisons.byId[comparisonId].variableId}
                 onSelectVariable={handleVariableSelected(comparisonId)}
-                bgColor="white"
                 placeholder="Search for a variable"
               />
               <DropdownList<ComparisonOperators>
                 currentItem={comparisons.byId[comparisonId].comparisonOperator}
                 onItemSelect={handleComparisonOperatorSelected(comparisonId)}
                 items={Object.values(ComparisonOperators)}
-                bgColor="white"
               />
               {comparisons.byId[comparisonId].comparisonOperator !==
                 ComparisonOperators.IS_SET && (
@@ -130,7 +128,6 @@ export const ComparisonsList = ({
                   delay={100}
                   initialValue={comparisons.byId[comparisonId].value ?? ''}
                   onChange={handleValueChange(comparisonId)}
-                  bgColor="white"
                   placeholder="Type a value..."
                 />
               )}
@@ -141,16 +138,22 @@ export const ComparisonsList = ({
                 aria-label="Remove comparison"
                 onClick={deleteComparison(comparisonId)}
                 pos="absolute"
-                left="-10px"
-                top="-10px"
+                left="-15px"
+                top="-15px"
                 size="sm"
+                shadow="md"
               />
             </Fade>
           </Flex>
         </>
       ))}
-      <Button leftIcon={<PlusIcon />} onClick={createComparison} flexShrink={0}>
-        Add
+      <Button
+        leftIcon={<PlusIcon />}
+        onClick={createComparison}
+        flexShrink={0}
+        colorScheme="blue"
+      >
+        Add a comparison
       </Button>
     </Stack>
   )

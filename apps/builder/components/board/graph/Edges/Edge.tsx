@@ -126,7 +126,7 @@ export const Edge = ({
       d={path}
       stroke={isPreviewing ? '#1a5fff' : '#718096'}
       strokeWidth="2px"
-      markerEnd="url(#arrow)"
+      markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
       fill="none"
     />
   )

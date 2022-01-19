@@ -87,16 +87,22 @@ export const ExtractCellList = ({
                 aria-label="Remove cell"
                 onClick={deleteCell(cellId)}
                 pos="absolute"
-                left="-10px"
-                top="-10px"
+                left="-15px"
+                top="-15px"
                 size="sm"
+                shadow="md"
               />
             </Fade>
           </Flex>
         </>
       ))}
-      <Button leftIcon={<PlusIcon />} onClick={createCell} flexShrink={0}>
-        Add
+      <Button
+        leftIcon={<PlusIcon />}
+        onClick={createCell}
+        flexShrink={0}
+        colorScheme="blue"
+      >
+        Add a value
       </Button>
     </Stack>
   )
@@ -118,12 +124,11 @@ export const CellWithVariableIdStack = ({
     onCellChange({ ...cell, variableId: variable.id })
   }
   return (
-    <Stack bgColor="blue.50" p="4" rounded="md" flex="1">
+    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <DropdownList<string>
         currentItem={cell.column}
         onItemSelect={handleColumnSelect}
         items={columns}
-        bgColor="white"
         placeholder="Select a column"
       />
       <VariableSearchInput

@@ -35,6 +35,8 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
     <Menu>
       <MenuButton
         as={IconButton}
+        variant="outline"
+        colorScheme="blue"
         icon={<MoreVerticalIcon transform={'rotate(90deg)'} />}
         isLoading={isDownloading}
         {...props}

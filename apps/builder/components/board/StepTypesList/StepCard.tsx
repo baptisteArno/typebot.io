@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Flex, HStack } from '@chakra-ui/react'
+import { Flex, HStack, StackProps, Text } from '@chakra-ui/react'
 import { StepType, DraggableStepType } from 'models'
 import { useDnd } from 'contexts/DndContext'
 import React, { useEffect, useState } from 'react'
@@ -23,22 +23,31 @@ export const StepCard = ({
 
   return (
     <Flex pos="relative">
-      <Button
-        as={HStack}
+      <HStack
         borderWidth="1px"
         rounded="lg"
         flex="1"
         cursor={'grab'}
         opacity={isMouseDown ? '0.4' : '1'}
         onMouseDown={handleMouseDown}
+        bgColor="white"
+        shadow="sm"
+        px="4"
+        py="2"
+        _hover={{ shadow: 'md' }}
+        transition="box-shadow 200ms"
       >
-        {!isMouseDown && (
+        {!isMouseDown ? (
           <>
             <StepIcon type={type} />
             <StepTypeLabel type={type} />
           </>
+        ) : (
+          <Text color="white" userSelect="none">
+            Placeholder
+          </Text>
         )}
-      </Button>
+      </HStack>
     </Flex>
   )
 }
@@ -46,23 +55,24 @@ export const StepCard = ({
 export const StepCardOverlay = ({
   type,
   ...props
-}: Omit<ButtonProps, 'type'> & { type: StepType }) => {
+}: StackProps & { type: StepType }) => {
   return (
-    <Button
-      as={HStack}
+    <HStack
       borderWidth="1px"
       rounded="lg"
-      cursor={'grab'}
+      cursor={'grabbing'}
       w="147px"
-      pos="fixed"
-      top="0"
-      left="0"
       transition="none"
       pointerEvents="none"
+      px="4"
+      py="2"
+      bgColor="white"
+      shadow="xl"
+      zIndex={2}
       {...props}
     >
       <StepIcon type={type} />
       <StepTypeLabel type={type} />
-    </Button>
+    </HStack>
   )
 }

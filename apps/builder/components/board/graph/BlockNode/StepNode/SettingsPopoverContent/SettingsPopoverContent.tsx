@@ -4,7 +4,11 @@ import {
   PopoverBody,
   useEventListener,
   Portal,
+  Stack,
+  IconButton,
+  Flex,
 } from '@chakra-ui/react'
+import { ExpandIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import {
   InputStep,
@@ -30,9 +34,10 @@ import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
 
 type Props = {
   step: Step
+  onExpandClick: () => void
 }
 
-export const SettingsPopoverContent = ({ step }: Props) => {
+export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null)
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -44,15 +49,33 @@ export const SettingsPopoverContent = ({ step }: Props) => {
     <Portal>
       <PopoverContent onMouseDown={handleMouseDown}>
         <PopoverArrow />
-        <PopoverBody p="6" overflowY="scroll" maxH="400px" ref={ref}>
-          <SettingsPopoverBodyContent step={step} />
+        <PopoverBody
+          px="6"
+          pb="6"
+          pt="4"
+          overflowY="scroll"
+          maxH="400px"
+          ref={ref}
+          shadow="lg"
+        >
+          <Stack>
+            <Flex justifyContent="flex-end">
+              <IconButton
+                aria-label="expand"
+                icon={<ExpandIcon />}
+                size="xs"
+                onClick={onExpandClick}
+              />
+            </Flex>
+            <StepSettings step={step} />
+          </Stack>
         </PopoverBody>
       </PopoverContent>
     </Portal>
   )
 }
 
-const SettingsPopoverBodyContent = ({ step }: Props) => {
+export const StepSettings = ({ step }: { step: Step }) => {
   const { updateStep } = useTypebot()
   const handleOptionsChange = (options: StepOptions) =>
     updateStep(step.id, { options } as Partial<InputStep>)
