@@ -5,6 +5,7 @@ import {
   CheckSquareIcon,
   EditIcon,
   EmailIcon,
+  ExternalLinkIcon,
   FilterIcon,
   FlagIcon,
   GlobeIcon,
@@ -46,6 +47,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <EditIcon {...props} />
     case LogicStepType.CONDITION:
       return <FilterIcon {...props} />
+    case LogicStepType.REDIRECT:
+      return <ExternalLinkIcon {...props} />
     case IntegrationStepType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationStepType.GOOGLE_ANALYTICS:

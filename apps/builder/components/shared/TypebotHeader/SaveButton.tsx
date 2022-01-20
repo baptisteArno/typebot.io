@@ -6,10 +6,6 @@ import React from 'react'
 export const SaveButton = () => {
   const { save, isSavingLoading, hasUnsavedChanges } = useTypebot()
 
-  const onSaveClick = () => {
-    save()
-  }
-
   return (
     <>
       {hasUnsavedChanges && (
@@ -20,7 +16,7 @@ export const SaveButton = () => {
       <Tooltip label="Save changes">
         <IconButton
           isDisabled={!hasUnsavedChanges}
-          onClick={onSaveClick}
+          onClick={save}
           isLoading={isSavingLoading}
           icon={
             hasUnsavedChanges ? <SaveIcon /> : <CheckIcon color="green.400" />

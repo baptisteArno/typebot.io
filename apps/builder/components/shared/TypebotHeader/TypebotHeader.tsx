@@ -13,7 +13,7 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
-  const { typebot, updateTypebot } = useTypebot()
+  const { typebot, updateTypebot, save } = useTypebot()
   const { setRightPanel } = useEditor()
 
   const handleBackClick = () => {
@@ -24,6 +24,12 @@ export const TypebotHeader = () => {
   }
 
   const handleNameSubmit = (name: string) => updateTypebot({ name })
+
+  const handlePreviewClick = async () => {
+    await save()
+    setRightPanel(RightPanel.PREVIEW)
+  }
+
   return (
     <Flex
       w="full"
@@ -95,14 +101,7 @@ export const TypebotHeader = () => {
 
       <HStack right="40px" pos="absolute">
         <SaveButton />
-        <Button
-          onClick={() => {
-            setRightPanel(RightPanel.PREVIEW)
-          }}
-        >
-          Preview
-        </Button>
-
+        <Button onClick={handlePreviewClick}>Preview</Button>
         <PublishButton />
       </HStack>
     </Flex>

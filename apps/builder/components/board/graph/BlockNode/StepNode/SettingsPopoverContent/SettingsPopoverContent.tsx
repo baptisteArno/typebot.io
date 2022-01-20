@@ -29,6 +29,7 @@ import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
+import { RedirectSettings } from './bodies/RedirectSettings'
 import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
 
 type Props = {
@@ -144,6 +145,14 @@ export const StepSettings = ({ step }: { step: Step }) => {
     case LogicStepType.CONDITION: {
       return (
         <ConditionSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case LogicStepType.REDIRECT: {
+      return (
+        <RedirectSettings
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

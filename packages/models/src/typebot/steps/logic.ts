@@ -1,18 +1,34 @@
 import { StepBase } from '.'
 import { Table } from '../..'
 
-export type LogicStep = SetVariableStep | ConditionStep
+export type LogicStep = SetVariableStep | ConditionStep | RedirectStep
 
 export enum LogicStepType {
   SET_VARIABLE = 'Set variable',
   CONDITION = 'Condition',
+  REDIRECT = 'Redirect',
 }
 
-export type LogicStepOptions = SetVariableOptions | ConditionOptions
+export type LogicStepOptions =
+  | SetVariableOptions
+  | ConditionOptions
+  | RedirectOptions
 
 export type SetVariableStep = StepBase & {
   type: LogicStepType.SET_VARIABLE
   options?: SetVariableOptions
+}
+
+export type ConditionStep = StepBase & {
+  type: LogicStepType.CONDITION
+  options: ConditionOptions
+  trueEdgeId?: string
+  falseEdgeId?: string
+}
+
+export type RedirectStep = StepBase & {
+  type: LogicStepType.REDIRECT
+  options?: RedirectOptions
 }
 
 export enum LogicalOperator {
@@ -27,13 +43,6 @@ export enum ComparisonOperators {
   GREATER = 'Greater than',
   LESS = 'Less than',
   IS_SET = 'Is set',
-}
-
-export type ConditionStep = StepBase & {
-  type: LogicStepType.CONDITION
-  options: ConditionOptions
-  trueEdgeId?: string
-  falseEdgeId?: string
 }
 
 export type ConditionOptions = {
@@ -51,4 +60,9 @@ export type Comparison = {
 export type SetVariableOptions = {
   variableId?: string
   expressionToEvaluate?: string
+}
+
+export type RedirectOptions = {
+  url?: string
+  isNewTab?: boolean
 }
