@@ -15,6 +15,7 @@ import {
   LogicStepType,
   Step,
   StepOptions,
+  TextBubbleStep,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -33,7 +34,7 @@ import { RedirectSettings } from './bodies/RedirectSettings'
 import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
 
 type Props = {
-  step: Step
+  step: Exclude<Step, TextBubbleStep>
   onExpandClick: () => void
 }
 

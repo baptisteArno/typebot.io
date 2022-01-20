@@ -12,7 +12,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
-import { TextStep, Variable } from 'models'
+import { TextBubbleStep, Variable } from 'models'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
 
@@ -87,7 +87,7 @@ export const TextEditor = ({
         richText: value,
         plainText: parseHtmlStringToPlainText(html),
       },
-    } as TextStep)
+    } as TextBubbleStep)
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {

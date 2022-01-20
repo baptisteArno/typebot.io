@@ -1,0 +1,18 @@
+import { BubbleStep, BubbleStepType } from 'models'
+import React from 'react'
+import { ImageBubble } from './ImageBubble'
+import { TextBubble } from './TextBubble'
+
+type Props = {
+  step: BubbleStep
+  onTransitionEnd: () => void
+}
+
+export const HostBubble = ({ step, onTransitionEnd }: Props) => {
+  switch (step.type) {
+    case BubbleStepType.TEXT:
+      return <TextBubble step={step} onTransitionEnd={onTransitionEnd} />
+    case BubbleStepType.IMAGE:
+      return <ImageBubble step={step} onTransitionEnd={onTransitionEnd} />
+  }
+}

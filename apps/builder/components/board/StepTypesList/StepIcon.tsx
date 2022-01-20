@@ -9,6 +9,7 @@ import {
   FilterIcon,
   FlagIcon,
   GlobeIcon,
+  ImageIcon,
   NumberIcon,
   PhoneIcon,
   TextIcon,
@@ -29,6 +30,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT:
       return <ChatIcon {...props} />
+    case BubbleStepType.IMAGE:
+      return <ImageIcon {...props} />
     case InputStepType.TEXT:
       return <TextIcon {...props} />
     case InputStepType.NUMBER:

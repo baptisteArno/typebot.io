@@ -1,7 +1,7 @@
 import path from 'path'
 import { parse } from 'papaparse'
 
-describe('ResultsPage', () => {
+describe('Results page', () => {
   beforeEach(() => {
     cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
       'getResults'
@@ -35,7 +35,7 @@ describe('ResultsPage', () => {
     cy.findByText('content50').should('not.exist')
     cy.findByText('content199').should('exist')
     cy.findByTestId('table-wrapper').scrollTo('bottom')
-    cy.findByText('content149').should('exist')
+    cy.findByText('content149', { timeout: 10000 }).should('exist')
     cy.findByTestId('table-wrapper').scrollTo('bottom')
     cy.findByText('content99').should('exist')
     cy.findByTestId('table-wrapper').scrollTo('bottom')

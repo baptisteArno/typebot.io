@@ -43,7 +43,6 @@ export const StepTypesList = () => {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
     setRelativeCoordinates({ x, y })
-    console.log({ x: rect.left, y: rect.top })
     setDraggedStepType(type)
   }
 

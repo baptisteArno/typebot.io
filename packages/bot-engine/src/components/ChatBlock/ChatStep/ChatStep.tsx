@@ -3,11 +3,11 @@ import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
 import { InputStep, InputStepType, Step } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
-import { HostMessageBubble } from './bubbles/HostMessageBubble'
 import { TextForm } from './inputs/TextForm'
-import { isInputStep, isTextBubbleStep } from 'utils'
+import { isBubbleStep, isInputStep } from 'utils'
 import { DateForm } from './inputs/DateForm'
 import { ChoiceForm } from './inputs/ChoiceForm'
+import { HostBubble } from './bubbles/HostBubble'
 
 export const ChatStep = ({
   step,
@@ -23,8 +23,8 @@ export const ChatStep = ({
     onTransitionEnd(content)
   }
 
-  if (isTextBubbleStep(step))
-    return <HostMessageBubble step={step} onTransitionEnd={onTransitionEnd} />
+  if (isBubbleStep(step))
+    return <HostBubble step={step} onTransitionEnd={onTransitionEnd} />
   if (isInputStep(step))
     return <InputChatStep step={step} onSubmit={handleInputSubmit} />
   return <span>No step</span>

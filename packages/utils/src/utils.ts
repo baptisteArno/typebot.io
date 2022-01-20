@@ -12,7 +12,7 @@ import {
   Step,
   Table,
   TextInputStep,
-  TextStep,
+  TextBubbleStep,
 } from 'models'
 
 export const sendRequest = async <ResponseData>({
@@ -57,7 +57,7 @@ export const isBubbleStep = (step: Step): step is BubbleStep =>
 export const isLogicStep = (step: Step): step is LogicStep =>
   (Object.values(LogicStepType) as string[]).includes(step.type)
 
-export const isTextBubbleStep = (step: Step): step is TextStep =>
+export const isTextBubbleStep = (step: Step): step is TextBubbleStep =>
   step.type === BubbleStepType.TEXT
 
 export const isTextInputStep = (step: Step): step is TextInputStep =>

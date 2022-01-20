@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
     } as Cell
-    console.log(referenceCell)
     const extractingColumns = req.query.columns as string[]
     const doc = new GoogleSpreadsheet(spreadsheetId)
     doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))

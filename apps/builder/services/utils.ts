@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression'
 import { Parser } from 'htmlparser2'
 import { Step } from 'models'
 
@@ -76,6 +77,16 @@ export const uploadFile = async (file: File, key: string) => {
   return {
     url: upload.ok ? `${url}/${key}` : null,
   }
+}
+
+export const compressFile = async (file: File) => {
+  const options = {
+    maxSizeMB: 0.5,
+    maxWidthOrHeight: 1600,
+  }
+  return ['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)
+    ? imageCompression(file, options)
+    : file
 }
 
 export const removeUndefinedFields = <T>(obj: T): T =>

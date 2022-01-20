@@ -4,14 +4,14 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { Edge, Step, Target } from 'models'
+import { Step } from 'models'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
+  isBubbleStep,
   isChoiceInput,
   isInputStep,
   isIntegrationStep,
   isLogicStep,
-  isTextBubbleStep,
 } from 'utils'
 import { executeLogic } from 'services/logic'
 import { getSingleChoiceTargetId } from 'services/inputs'
@@ -104,7 +104,7 @@ export const ChatBlock = ({
         <div className="flex flex-col w-full">
           <TransitionGroup>
             {displayedSteps
-              .filter((step) => isInputStep(step) || isTextBubbleStep(step))
+              .filter((step) => isInputStep(step) || isBubbleStep(step))
               .map((step) => (
                 <CSSTransition
                   key={step.id}

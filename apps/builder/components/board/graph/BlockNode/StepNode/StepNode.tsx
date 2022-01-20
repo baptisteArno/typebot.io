@@ -7,15 +7,10 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { DraggableStep, Step } from 'models'
+import { BubbleStep, DraggableStep, Step, TextBubbleStep } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
-import {
-  isInputStep,
-  isLogicStep,
-  isTextBubbleStep,
-  isIntegrationStep,
-} from 'utils'
+import { isBubbleStep, isTextBubbleStep } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent'
@@ -29,6 +24,7 @@ import { TargetEndpoint } from './TargetEndpoint'
 import { useRouter } from 'next/router'
 import { SettingsModal } from './SettingsPopoverContent/SettingsModal'
 import { StepSettings } from './SettingsPopoverContent/SettingsPopoverContent'
+import { ContentPopover } from './ContentPopover'
 
 export const StepNode = ({
   step,
@@ -185,15 +181,16 @@ export const StepNode = ({
                     }}
                     pos="absolute"
                     right="15px"
-                    top="18px"
+                    bottom="18px"
                   />
                 )}
               </HStack>
             </Flex>
           </PopoverTrigger>
-          {hasPopover(step) && (
+          {hasSettingsPopover(step) && (
             <SettingsPopoverContent step={step} onExpandClick={onModalOpen} />
           )}
+          {hasContentPopover(step) && <ContentPopover step={step} />}
           <SettingsModal isOpen={isModalOpen} onClose={onModalClose}>
             <StepSettings step={step} />
           </SettingsModal>
@@ -203,5 +200,10 @@ export const StepNode = ({
   )
 }
 
-const hasPopover = (step: Step) =>
-  isInputStep(step) || isLogicStep(step) || isIntegrationStep(step)
+const hasSettingsPopover = (step: Step): step is Exclude<Step, BubbleStep> =>
+  !isBubbleStep(step)
+
+const hasContentPopover = (
+  step: Step
+): step is Exclude<BubbleStep, TextBubbleStep> =>
+  isBubbleStep(step) && !isTextBubbleStep(step)

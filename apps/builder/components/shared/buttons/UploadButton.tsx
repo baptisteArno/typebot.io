@@ -1,19 +1,37 @@
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
+import { compressFile, uploadFile } from 'services/utils'
 
-type UploadButtonProps = { onUploadChange: (file: File) => void } & ButtonProps
+type UploadButtonProps = {
+  filePath: string
+  includeFileName?: boolean
+  onFileUploaded: (url: string) => void
+} & ButtonProps
 
 export const UploadButton = ({
-  onUploadChange,
+  filePath,
+  includeFileName,
+  onFileUploaded,
   ...props
 }: UploadButtonProps) => {
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const [isUploading, setIsUploading] = useState(false)
+
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return
-    onUploadChange(e.target.files[0])
+    setIsUploading(true)
+    const file = e.target.files[0]
+    const { url } = await uploadFile(
+      await compressFile(file),
+      filePath + (includeFileName ? `/${file.name}` : '')
+    )
+    if (url) onFileUploaded(url)
+    setIsUploading(false)
   }
+
   return (
     <>
       <chakra.input
+        data-testid="file-upload-input"
         type="file"
         id="file-input"
         display="none"
@@ -25,6 +43,7 @@ export const UploadButton = ({
         size="sm"
         htmlFor="file-input"
         cursor="pointer"
+        isLoading={isUploading}
         {...props}
       >
         {props.children}

@@ -15,7 +15,6 @@ import { UploadIcon } from 'assets/icons'
 import { UploadButton } from 'components/shared/buttons/UploadButton'
 import { useUser } from 'contexts/UserContext'
 import React, { ChangeEvent, useState } from 'react'
-import { uploadFile } from 'services/utils'
 
 export const PersonalInfoForm = () => {
   const {
@@ -27,14 +26,10 @@ export const PersonalInfoForm = () => {
     isOAuthProvider,
   } = useUser()
   const [reloadParam, setReloadParam] = useState('')
-  const [isUploading, setIsUploading] = useState(false)
 
-  const handleFileChange = async (file: File) => {
-    setIsUploading(true)
-    const { url } = await uploadFile(file, `${user?.id}/avatar`)
+  const handleFileUploaded = async (url: string) => {
     setReloadParam(Date.now().toString())
     updateUser({ image: url })
-    setIsUploading(false)
   }
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +55,9 @@ export const PersonalInfoForm = () => {
           <Stack>
             <UploadButton
               size="sm"
+              filePath={`users/${user?.id}/avatar`}
               leftIcon={<UploadIcon />}
-              isLoading={isUploading}
-              onUploadChange={handleFileChange}
+              onFileUploaded={handleFileUploaded}
             >
               Change photo
             </UploadButton>

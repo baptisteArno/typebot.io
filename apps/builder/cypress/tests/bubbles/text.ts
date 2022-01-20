@@ -1,43 +1,15 @@
-import { userIds } from 'cypress/plugins/data'
-import {
-  parseTestTypebot,
-  preventUserFromRefreshing,
-} from 'cypress/plugins/utils'
-import { BubbleStepType } from 'models'
+import { createTypebotWithStep } from 'cypress/plugins/data'
+import { preventUserFromRefreshing } from 'cypress/plugins/utils'
+import { getIframeBody } from 'cypress/support'
+import { BubbleStepType, Step } from 'models'
 
 describe('Text bubbles', () => {
   beforeEach(() => {
     cy.task('seed')
-    cy.task(
-      'createTypebot',
-      parseTestTypebot({
-        id: 'typebot3',
-        name: 'Typebot #3',
-        ownerId: userIds[1],
-        steps: {
-          byId: {
-            step1: {
-              id: 'step1',
-              blockId: 'block1',
-              type: BubbleStepType.TEXT,
-              content: { html: '', plainText: '', richText: [] },
-            },
-          },
-          allIds: ['step1'],
-        },
-        blocks: {
-          byId: {
-            block1: {
-              id: 'block1',
-              graphCoordinates: { x: 400, y: 200 },
-              title: 'Block #1',
-              stepIds: ['step1'],
-            },
-          },
-          allIds: ['block1'],
-        },
-      })
-    )
+    createTypebotWithStep({
+      type: BubbleStepType.TEXT,
+      content: { html: '', plainText: '', richText: [] },
+    } as Omit<Step, 'id' | 'blockId'>)
     cy.signOut()
   })
 
@@ -78,11 +50,3 @@ describe('Text bubbles', () => {
       .should('contain.text', 'Underlined text')
   })
 })
-
-const getIframeBody = () => {
-  return cy
-    .get('#typebot-iframe')
-    .its('0.contentDocument.body')
-    .should('not.be.empty')
-    .then(cy.wrap)
-}

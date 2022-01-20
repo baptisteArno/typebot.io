@@ -1,6 +1,6 @@
 import {
   Block,
-  TextStep,
+  TextBubbleStep,
   PublicTypebot,
   BackgroundType,
   Settings,
@@ -119,7 +119,7 @@ export const parseNewStep = (
   const id = `s${shortId.generate()}`
   switch (type) {
     case BubbleStepType.TEXT: {
-      const textStep: Pick<TextStep, 'type' | 'content'> = {
+      const textStep: Pick<TextBubbleStep, 'type' | 'content'> = {
         type,
         content: { html: '', richText: [], plainText: '' },
       }

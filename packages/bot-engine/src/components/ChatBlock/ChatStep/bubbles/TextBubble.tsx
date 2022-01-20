@@ -1,24 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useHostAvatars } from 'contexts/HostAvatarsContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { BubbleStepType, TextStep } from 'models'
+import { BubbleStepType, TextBubbleStep } from 'models'
 import { computeTypingTimeout } from 'services/chat'
 import { TypingContent } from './TypingContent'
 import { parseVariables } from 'services/variable'
 
-type HostMessageBubbleProps = {
-  step: TextStep
+type Props = {
+  step: TextBubbleStep
   onTransitionEnd: () => void
 }
 
 export const showAnimationDuration = 400
 
-export const mediaLoadingFallbackTimeout = 5000
-
-export const HostMessageBubble = ({
-  step,
-  onTransitionEnd,
-}: HostMessageBubbleProps) => {
+export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const { typebot } = useTypebot()
   const { typingEmulation } = typebot.settings
   const { updateLastAvatarOffset } = useHostAvatars()

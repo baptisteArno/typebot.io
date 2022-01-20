@@ -1,4 +1,4 @@
-import { Flex, HStack, Stack, Tag, Text } from '@chakra-ui/react'
+import { Box, Flex, HStack, Image, Stack, Tag, Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   Step,
@@ -32,6 +32,20 @@ export const StepNodeContent = ({ step }: Props) => {
                 : step.content.html,
           }}
         />
+      )
+    }
+    case BubbleStepType.IMAGE: {
+      return !step.content?.url ? (
+        <Text color={'gray.500'}>Click to edit...</Text>
+      ) : (
+        <Box w="full">
+          <Image
+            src={step.content?.url}
+            alt="Step image"
+            rounded="md"
+            objectFit="cover"
+          />
+        </Box>
       )
     }
     case InputStepType.TEXT: {
