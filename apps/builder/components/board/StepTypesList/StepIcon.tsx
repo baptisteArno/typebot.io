@@ -6,6 +6,7 @@ import {
   EditIcon,
   EmailIcon,
   ExternalLinkIcon,
+  FilmIcon,
   FilterIcon,
   FlagIcon,
   GlobeIcon,
@@ -32,6 +33,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ChatIcon {...props} />
     case BubbleStepType.IMAGE:
       return <ImageIcon {...props} />
+    case BubbleStepType.VIDEO:
+      return <FilmIcon {...props} />
     case InputStepType.TEXT:
       return <TextIcon {...props} />
     case InputStepType.NUMBER:

@@ -4,16 +4,17 @@ import {
   PopoverArrow,
   PopoverBody,
 } from '@chakra-ui/react'
-import { ImagePopoverContent } from 'components/shared/ImageUploadContent'
+import { ImageUploadContent } from 'components/shared/ImageUploadContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   BubbleStep,
+  BubbleStepContent,
   BubbleStepType,
-  ImageBubbleContent,
   ImageBubbleStep,
   TextBubbleStep,
 } from 'models'
 import { useRef } from 'react'
+import { VideoUploadContent } from './VideoUploadContent'
 
 type Props = {
   step: Exclude<BubbleStep, TextBubbleStep>
@@ -25,7 +26,7 @@ export const ContentPopover = ({ step }: Props) => {
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} w="500px">
+      <PopoverContent onMouseDown={handleMouseDown}>
         <PopoverArrow />
         <PopoverBody ref={ref} shadow="lg">
           <StepContent step={step} />
@@ -37,16 +38,24 @@ export const ContentPopover = ({ step }: Props) => {
 
 export const StepContent = ({ step }: Props) => {
   const { updateStep } = useTypebot()
-  const handleContentChange = (content: ImageBubbleContent) =>
+
+  const handleContentChange = (content: BubbleStepContent) =>
     updateStep(step.id, { content } as Partial<ImageBubbleStep>)
 
-  const handleNewImageSubmit = (url: string) => handleContentChange({ url })
   switch (step.type) {
     case BubbleStepType.IMAGE: {
       return (
-        <ImagePopoverContent
-          url={step.content?.url}
-          onSubmit={handleNewImageSubmit}
+        <ImageUploadContent
+          content={step.content}
+          onSubmit={handleContentChange}
+        />
+      )
+    }
+    case BubbleStepType.VIDEO: {
+      return (
+        <VideoUploadContent
+          content={step.content}
+          onSubmit={handleContentChange}
         />
       )
     }

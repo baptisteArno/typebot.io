@@ -1,1 +1,1 @@
-export { ImageUploadContent as ImagePopoverContent } from './ImageUploadContent'
+export { ImageUploadContent } from './ImageUploadContent'

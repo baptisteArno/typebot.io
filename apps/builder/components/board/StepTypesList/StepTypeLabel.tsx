@@ -13,54 +13,43 @@ type Props = { type: StepType }
 export const StepTypeLabel = ({ type }: Props) => {
   switch (type) {
     case BubbleStepType.TEXT:
-    case InputStepType.TEXT: {
+    case InputStepType.TEXT:
       return <Text>Text</Text>
-    }
     case BubbleStepType.IMAGE:
       return <Text>Image</Text>
-    case InputStepType.NUMBER: {
+    case BubbleStepType.VIDEO:
+      return <Text>Video</Text>
+    case InputStepType.NUMBER:
       return <Text>Number</Text>
-    }
-    case InputStepType.EMAIL: {
+    case InputStepType.EMAIL:
       return <Text>Email</Text>
-    }
-    case InputStepType.URL: {
+    case InputStepType.URL:
       return <Text>Website</Text>
-    }
-    case InputStepType.DATE: {
+    case InputStepType.DATE:
       return <Text>Date</Text>
-    }
-    case InputStepType.PHONE: {
+    case InputStepType.PHONE:
       return <Text>Phone</Text>
-    }
-    case InputStepType.CHOICE: {
+    case InputStepType.CHOICE:
       return <Text>Button</Text>
-    }
-    case LogicStepType.SET_VARIABLE: {
+    case LogicStepType.SET_VARIABLE:
       return <Text>Set variable</Text>
-    }
-    case LogicStepType.CONDITION: {
+    case LogicStepType.CONDITION:
       return <Text>Condition</Text>
-    }
-    case LogicStepType.REDIRECT: {
+    case LogicStepType.REDIRECT:
       return <Text>Redirect</Text>
-    }
-    case IntegrationStepType.GOOGLE_SHEETS: {
+    case IntegrationStepType.GOOGLE_SHEETS:
       return (
         <Tooltip label="Google Sheets">
           <Text>Sheets</Text>
         </Tooltip>
       )
-    }
-    case IntegrationStepType.GOOGLE_ANALYTICS: {
+    case IntegrationStepType.GOOGLE_ANALYTICS:
       return (
         <Tooltip label="Google Analytics">
           <Text>Analytics</Text>
         </Tooltip>
       )
-    }
-    default: {
+    default:
       return <></>
-    }
   }
 }

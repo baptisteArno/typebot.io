@@ -4,17 +4,19 @@ import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
+import { ImageBubbleContent } from 'models'
 
 type Props = {
-  url?: string
-  onSubmit: (url: string) => void
+  content?: ImageBubbleContent
+  onSubmit: (content: ImageBubbleContent) => void
 }
 
-export const ImageUploadContent = ({ url, onSubmit }: Props) => {
+export const ImageUploadContent = ({ content, onSubmit }: Props) => {
   const [currentTab, setCurrentTab] = useState<'link' | 'upload' | 'giphy'>(
     'upload'
   )
 
+  const handleSubmit = (url: string) => onSubmit({ url })
   return (
     <Stack>
       <HStack>
@@ -43,7 +45,11 @@ export const ImageUploadContent = ({ url, onSubmit }: Props) => {
         )}
       </HStack>
 
-      <BodyContent tab={currentTab} onSubmit={onSubmit} url={url} />
+      <BodyContent
+        tab={currentTab}
+        onSubmit={handleSubmit}
+        url={content?.url}
+      />
     </Stack>
   )
 }
