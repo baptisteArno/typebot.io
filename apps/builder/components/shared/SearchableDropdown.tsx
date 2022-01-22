@@ -11,20 +11,23 @@ import {
   InputProps,
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
+import { useDebounce } from 'use-debounce'
 
 type Props = {
   selectedItem?: string
   items: string[]
-  onSelectItem: (value: string) => void
+  onValueChange?: (value: string) => void
 } & InputProps
+
 export const SearchableDropdown = ({
   selectedItem,
   items,
-  onSelectItem,
+  onValueChange,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const [inputValue, setInputValue] = useState(selectedItem)
+  const [inputValue, setInputValue] = useState(selectedItem ?? '')
+  const [debouncedInputValue] = useDebounce(inputValue, 200)
   const [filteredItems, setFilteredItems] = useState([
     ...items
       .filter((item) =>
@@ -52,6 +55,13 @@ export const SearchableDropdown = ({
     handler: onClose,
   })
 
+  useEffect(() => {
+    onValueChange &&
+      debouncedInputValue !== selectedItem &&
+      onValueChange(debouncedInputValue)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInputValue])
+
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     if (e.target.value === '') {
@@ -69,7 +79,6 @@ export const SearchableDropdown = ({
 
   const handleItemClick = (item: string) => () => {
     setInputValue(item)
-    onSelectItem(item)
     onClose()
   }
 

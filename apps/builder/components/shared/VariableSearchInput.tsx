@@ -15,11 +15,14 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useMemo, useEffect } from 'react'
 import { generate } from 'short-uuid'
+import { useDebounce } from 'use-debounce'
 import { isDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
-  onSelectVariable: (variable: Pick<Variable, 'id' | 'name'>) => void
+  onSelectVariable: (
+    variable: Pick<Variable, 'id' | 'name'> | undefined
+  ) => void
   isDefaultOpen?: boolean
 } & InputProps
 
@@ -39,6 +42,7 @@ export const VariableSearchInput = ({
   const [inputValue, setInputValue] = useState(
     typebot?.variables.byId[initialVariableId ?? '']?.name ?? ''
   )
+  const [debouncedInputValue] = useDebounce(inputValue, 200)
   const [filteredItems, setFilteredItems] = useState<Variable[]>(variables)
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
@@ -53,11 +57,18 @@ export const VariableSearchInput = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    const variable = variables.find((v) => v.name === debouncedInputValue)
+    if (variable) onSelectVariable(variable)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInputValue])
+
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     onOpen()
     if (e.target.value === '') {
       setFilteredItems([...variables.slice(0, 50)])
+      onSelectVariable(undefined)
       return
     }
     setFilteredItems([

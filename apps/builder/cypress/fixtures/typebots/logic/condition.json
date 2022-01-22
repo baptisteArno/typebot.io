@@ -6,6 +6,7 @@
   "ownerId": "ckylsbdf60088z31ayqytest6",
   "publishedTypebotId": null,
   "folderId": null,
+  "webhooks": { "byId": {}, "allIds": [] },
   "blocks": {
     "byId": {
       "2x83WHtEBkiv7pk7KgqJwZ": {

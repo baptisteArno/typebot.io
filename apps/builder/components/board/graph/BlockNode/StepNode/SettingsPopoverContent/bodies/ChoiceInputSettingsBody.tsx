@@ -18,8 +18,8 @@ export const ChoiceInputSettingsBody = ({
     options && onOptionsChange({ ...options, isMultipleChoice })
   const handleButtonLabelChange = (buttonLabel: string) =>
     options && onOptionsChange({ ...options, buttonLabel })
-  const handleVariableChange = (variable: Variable) =>
-    options && onOptionsChange({ ...options, variableId: variable.id })
+  const handleVariableChange = (variable?: Variable) =>
+    options && onOptionsChange({ ...options, variableId: variable?.id })
 
   return (
     <Stack spacing={4}>

@@ -52,7 +52,7 @@ describe('Image bubbles', () => {
         .should('include', unsplashImageSrc)
     })
 
-    it.only('should import giphy gifs correctly', () => {
+    it('should import giphy gifs correctly', () => {
       cy.findByRole('button', { name: 'Giphy' }).click()
       cy.findAllByRole('img').eq(3).click()
       cy.findAllByRole('img')

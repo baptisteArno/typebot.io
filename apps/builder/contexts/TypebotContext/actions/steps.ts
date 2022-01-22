@@ -10,8 +10,9 @@ import { Updater } from 'use-immer'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { createChoiceItemDraft, deleteChoiceItemDraft } from './choiceItems'
-import { isChoiceInput } from 'utils'
+import { isChoiceInput, isWebhookStep } from 'utils'
 import { deleteEdgeDraft } from './edges'
+import { deleteWebhookDraft } from './webhooks'
 
 export type StepsActions = {
   createStep: (
@@ -51,6 +52,8 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     setTypebot((typebot) => {
       const step = typebot.steps.byId[stepId]
       if (isChoiceInput(step)) deleteChoiceItemsInsideStep(typebot, step)
+      if (isWebhookStep(step))
+        deleteWebhookDraft(step.options?.webhookId)(typebot)
       deleteAssociatedEdges(typebot, stepId)
       removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)

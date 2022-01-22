@@ -1,6 +1,7 @@
 import { Divider, Stack, Text } from '@chakra-ui/react'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { DropdownList } from 'components/shared/DropdownList'
+import { TableList, TableListItemProps } from 'components/shared/TableList'
 import { useTypebot } from 'contexts/TypebotContext'
 import { CredentialsType } from 'db'
 import {
@@ -17,10 +18,10 @@ import {
   useSheets,
 } from 'services/integrations'
 import { isDefined } from 'utils'
-import { ExtractCellList } from './ExtractCellList'
 import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
-import { CellWithValueStack, UpdateCellList } from './UpdateCellList'
+import { CellWithValueStack } from './CellWithValueStack'
+import { CellWithVariableIdStack } from './CellWithVariableIdStack'
 
 type Props = {
   options?: GoogleSheetsOptions
@@ -132,13 +133,26 @@ const ActionOptions = ({
   const handleExtractingCellsChange = (cellsToExtract: Table<ExtractingCell>) =>
     onOptionsChange({ ...options, cellsToExtract } as GoogleSheetsOptions)
 
+  const UpdatingCellItem = useMemo(
+    () => (props: TableListItemProps<Cell>) =>
+      <CellWithValueStack {...props} columns={sheet.columns} />,
+    [sheet.columns]
+  )
+
+  const ExtractingCellItem = useMemo(
+    () => (props: TableListItemProps<ExtractingCell>) =>
+      <CellWithVariableIdStack {...props} columns={sheet.columns} />,
+    [sheet.columns]
+  )
+
   switch (options.action) {
     case GoogleSheetsAction.INSERT_ROW:
       return (
-        <UpdateCellList
-          initialCells={options.cellsToInsert}
-          sheet={sheet}
-          onCellsChange={handleInsertColumnsChange}
+        <TableList<Cell>
+          initialItems={options.cellsToInsert}
+          onItemsChange={handleInsertColumnsChange}
+          Item={UpdatingCellItem}
+          addLabel="Add a value"
         />
       )
     case GoogleSheetsAction.UPDATE_ROW:
@@ -146,15 +160,17 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            cell={options.referenceCell ?? {}}
+            id={'reference'}
             columns={sheet.columns}
-            onCellChange={handleReferenceCellChange}
+            item={options.referenceCell ?? {}}
+            onItemChange={handleReferenceCellChange}
           />
           <Text>Cells to update</Text>
-          <UpdateCellList
-            initialCells={options.cellsToUpsert}
-            sheet={sheet}
-            onCellsChange={handleUpsertColumnsChange}
+          <TableList<Cell>
+            initialItems={options.cellsToUpsert}
+            onItemsChange={handleUpsertColumnsChange}
+            Item={UpdatingCellItem}
+            addLabel="Add a value"
           />
         </Stack>
       )
@@ -163,15 +179,17 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            cell={options.referenceCell ?? {}}
+            id={'reference'}
             columns={sheet.columns}
-            onCellChange={handleReferenceCellChange}
+            item={options.referenceCell ?? {}}
+            onItemChange={handleReferenceCellChange}
           />
           <Text>Cells to extract</Text>
-          <ExtractCellList
-            initialCells={options.cellsToExtract}
-            sheet={sheet}
-            onCellsChange={handleExtractingCellsChange}
+          <TableList<ExtractingCell>
+            initialItems={options.cellsToExtract}
+            onItemsChange={handleExtractingCellsChange}
+            Item={ExtractingCellItem}
+            addLabel="Add a value"
           />
         </Stack>
       )

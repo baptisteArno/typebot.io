@@ -75,6 +75,7 @@ export const parseTestTypebot = ({
     publishedTypebotId: null,
     updatedAt: new Date(),
     variables: { byId: {}, allIds: [] },
+    webhooks: { byId: {}, allIds: [] },
     edges: {
       byId: {
         edge1: {

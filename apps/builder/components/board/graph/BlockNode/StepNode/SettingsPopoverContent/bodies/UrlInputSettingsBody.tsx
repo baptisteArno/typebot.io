@@ -17,8 +17,8 @@ export const UrlInputSettingsBody = ({
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
-  const handleVariableChange = (variable: Variable) =>
-    onOptionsChange({ ...options, variableId: variable.id })
+  const handleVariableChange = (variable?: Variable) =>
+    onOptionsChange({ ...options, variableId: variable?.id })
 
   return (
     <Stack spacing={4}>

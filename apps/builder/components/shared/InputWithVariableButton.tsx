@@ -1,4 +1,5 @@
 import {
+  Flex,
   HStack,
   IconButton,
   Input,
@@ -6,6 +7,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tooltip,
 } from '@chakra-ui/react'
 import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
@@ -29,12 +31,12 @@ export const InputWithVariableButton = ({
   const [carretPosition, setCarretPosition] = useState<number>(0)
 
   useEffect(() => {
-    onChange(debouncedValue)
+    if (debouncedValue !== initialValue) onChange(debouncedValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue])
 
-  const handleVariableSelected = (variable: Variable) => {
-    if (!inputRef.current) return
+  const handleVariableSelected = (variable?: Variable) => {
+    if (!inputRef.current || !variable) return
     const cursorPosition = carretPosition
     const textBeforeCursorPosition = inputRef.current.value.substring(
       0,
@@ -67,7 +69,7 @@ export const InputWithVariableButton = ({
     setValue(e.target.value)
 
   return (
-    <HStack>
+    <HStack spacing={0}>
       <Input
         ref={inputRef}
         onKeyUp={handleKeyUp}
@@ -79,12 +81,15 @@ export const InputWithVariableButton = ({
       />
       <Popover matchWidth isLazy>
         <PopoverTrigger>
-          <IconButton
-            aria-label="Insert a variable"
-            icon={<UserIcon />}
-            pos="relative"
-            ml="2"
-          />
+          <Flex>
+            <Tooltip label="Insert a variable">
+              <IconButton
+                aria-label="Insert a variable"
+                icon={<UserIcon />}
+                pos="relative"
+              />
+            </Tooltip>
+          </Flex>
         </PopoverTrigger>
         <PopoverContent w="full">
           <VariableSearchInput

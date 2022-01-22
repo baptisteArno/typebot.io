@@ -1,6 +1,9 @@
+import { Flex } from '@chakra-ui/react'
+import { DropdownList } from 'components/shared/DropdownList'
+import { TableList } from 'components/shared/TableList'
 import { Comparison, ConditionOptions, LogicalOperator, Table } from 'models'
 import React from 'react'
-import { ComparisonsList } from './ComparisonsList'
+import { ComparisonItem } from './ComparisonsItem'
 
 type ConditionSettingsBodyProps = {
   options: ConditionOptions
@@ -17,11 +20,19 @@ export const ConditionSettingsBody = ({
     onOptionsChange({ ...options, logicalOperator })
 
   return (
-    <ComparisonsList
-      initialComparisons={options.comparisons}
-      logicalOperator={options.logicalOperator ?? LogicalOperator.AND}
-      onLogicalOperatorChange={handleLogicalOperatorChange}
-      onComparisonsChange={handleComparisonsChange}
+    <TableList<Comparison>
+      onItemsChange={handleComparisonsChange}
+      Item={ComparisonItem}
+      ComponentBetweenItems={() => (
+        <Flex justify="center">
+          <DropdownList<LogicalOperator>
+            currentItem={options.logicalOperator}
+            onItemSelect={handleLogicalOperatorChange}
+            items={Object.values(LogicalOperator)}
+          />
+        </Flex>
+      )}
+      addLabel="Add a comparison"
     />
   )
 }

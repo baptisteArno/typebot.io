@@ -29,7 +29,7 @@ export const SheetsDropdown = ({
     <SearchableDropdown
       selectedItem={currentSheet?.name}
       items={(sheets ?? []).map((s) => s.name)}
-      onSelectItem={handleSpreadsheetSelect}
+      onValueChange={handleSpreadsheetSelect}
       placeholder={isLoading ? 'Loading...' : 'Select the sheet'}
       isDisabled={isLoading}
     />

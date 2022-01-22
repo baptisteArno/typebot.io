@@ -29,6 +29,7 @@ import { stepsAction, StepsActions } from './actions/steps'
 import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { edgesAction, EdgesActions } from './actions/edges'
+import { webhooksAction, WebhooksAction } from './actions/webhooks'
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -52,7 +53,8 @@ const typebotContext = createContext<
     StepsActions &
     ChoiceItemsActions &
     VariablesActions &
-    EdgesActions
+    EdgesActions &
+    WebhooksAction
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
@@ -78,9 +80,11 @@ export const TypebotContext = ({
         description: error.message,
       }),
   })
+
   const [localTypebot, setLocalTypebot] = useImmer<Typebot | undefined>(
     undefined
   )
+
   const [localPublishedTypebot, setLocalPublishedTypebot] =
     useState<PublicTypebot>()
   const [isSavingLoading, setIsSavingLoading] = useState(false)
@@ -214,6 +218,7 @@ export const TypebotContext = ({
         ...choiceItemsAction(setLocalTypebot as Updater<Typebot>),
         ...variablesAction(setLocalTypebot as Updater<Typebot>),
         ...edgesAction(setLocalTypebot as Updater<Typebot>),
+        ...webhooksAction(setLocalTypebot as Updater<Typebot>),
       }}
     >
       {children}

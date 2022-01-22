@@ -16,6 +16,8 @@ import {
   Step,
   StepOptions,
   TextBubbleStep,
+  Webhook,
+  WebhookStep,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -32,6 +34,7 @@ import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
 import { SetVariableSettingsBody } from './bodies/SetVariableSettingsBody'
+import { WebhookSettings } from './bodies/WebhookSettings'
 
 type Props = {
   step: Exclude<Step, TextBubbleStep>
@@ -51,7 +54,7 @@ export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow />
         <PopoverBody
-          p="6"
+          py="6"
           overflowY="scroll"
           maxH="400px"
           ref={ref}
@@ -74,9 +77,16 @@ export const SettingsPopoverContent = ({ step, onExpandClick }: Props) => {
 }
 
 export const StepSettings = ({ step }: { step: Step }) => {
-  const { updateStep } = useTypebot()
-  const handleOptionsChange = (options: StepOptions) =>
+  const { updateStep, updateWebhook, typebot } = useTypebot()
+  const handleOptionsChange = (options: StepOptions) => {
     updateStep(step.id, { options } as Partial<InputStep>)
+  }
+
+  const handleWebhookChange = (webhook: Partial<Webhook>) => {
+    const webhookId = (step as WebhookStep).options?.webhookId
+    if (!webhookId) return
+    updateWebhook(webhookId, webhook)
+  }
 
   switch (step.type) {
     case InputStepType.TEXT: {
@@ -173,6 +183,17 @@ export const StepSettings = ({ step }: { step: Step }) => {
         <GoogleAnalyticsSettings
           options={step.options}
           onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case IntegrationStepType.WEBHOOK: {
+      return (
+        <WebhookSettings
+          key={step.options?.webhookId}
+          options={step.options}
+          webhook={typebot?.webhooks.byId[step.options?.webhookId ?? '']}
+          onOptionsChange={handleOptionsChange}
+          onWebhookChange={handleWebhookChange}
         />
       )
     }

@@ -13,7 +13,7 @@ import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 import { isBubbleStep, isTextBubbleStep } from 'utils'
 import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
-import { StepNodeContent } from './StepNodeContent'
+import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
@@ -164,6 +164,7 @@ export const StepNode = ({
                 cursor={'pointer'}
                 bgColor="white"
                 align="flex-start"
+                w="full"
               >
                 <StepIcon type={step.type} mt="1" />
                 <StepNodeContent step={step} />

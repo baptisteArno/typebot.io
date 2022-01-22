@@ -94,9 +94,9 @@ export const TextEditor = ({
     e.stopPropagation()
   }
 
-  const handleVariableSelected = (variable: Variable) => {
+  const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
-    if (!rememberedSelection.current) return
+    if (!rememberedSelection.current || !variable) return
     Transforms.select(editor, rememberedSelection.current)
     Transforms.insertText(editor, '{{' + variable.name + '}}')
     ReactEditor.focus(editor as unknown as ReactEditor)

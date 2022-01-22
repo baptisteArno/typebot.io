@@ -20,8 +20,8 @@ export const TextInputSettingsBody = ({
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
   const handleLongChange = (isLong: boolean) =>
     onOptionsChange({ ...options, isLong })
-  const handleVariableChange = (variable: Variable) =>
-    onOptionsChange({ ...options, variableId: variable.id })
+  const handleVariableChange = (variable?: Variable) =>
+    onOptionsChange({ ...options, variableId: variable?.id })
 
   return (
     <Stack spacing={4}>

@@ -198,7 +198,10 @@ export const parseNewTypebot = ({
   ownerId: string
   folderId: string | null
   name: string
-}): Partial<Typebot> => {
+}): Omit<
+  Typebot,
+  'createdAt' | 'updatedAt' | 'id' | 'publishedTypebotId' | 'publicId'
+> => {
   const startBlockId = shortId.generate()
   const startStepId = shortId.generate()
   const startStep: StartStep = {
@@ -235,6 +238,7 @@ export const parseNewTypebot = ({
     choiceItems: { byId: {}, allIds: [] },
     variables: { byId: {}, allIds: [] },
     edges: { byId: {}, allIds: [] },
+    webhooks: { byId: {}, allIds: [] },
     theme,
     settings,
   }

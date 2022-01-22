@@ -5,12 +5,12 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "devDependencies": {
-    "prisma": "^3.7.0",
+    "prisma": "^3.8.1",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@prisma/client": "^3.7.0"
+    "@prisma/client": "^3.8.1"
   },
   "scripts": {
     "dev": "yarn prisma db push && BROWSER=none yarn prisma studio",

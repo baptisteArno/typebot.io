@@ -89,7 +89,7 @@ export const BlockNode = ({ block }: Props) => {
           borderColor={
             isConnecting || isOpened || isPreviewing ? 'blue.400' : 'white'
           }
-          minW="300px"
+          w="300px"
           transition="border 300ms, box-shadow 200ms"
           pos="absolute"
           style={{

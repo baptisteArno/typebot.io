@@ -13,6 +13,7 @@ import {
   Table,
   TextInputStep,
   TextBubbleStep,
+  WebhookStep,
 } from 'models'
 
 export const sendRequest = async <ResponseData>({
@@ -74,3 +75,6 @@ export const isConditionStep = (step: Step): step is ConditionStep =>
 
 export const isIntegrationStep = (step: Step): step is IntegrationStep =>
   (Object.values(IntegrationStepType) as string[]).includes(step.type)
+
+export const isWebhookStep = (step: Step): step is WebhookStep =>
+  step.type === IntegrationStepType.WEBHOOK

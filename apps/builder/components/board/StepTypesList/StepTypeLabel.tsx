@@ -49,6 +49,8 @@ export const StepTypeLabel = ({ type }: Props) => {
           <Text>Analytics</Text>
         </Tooltip>
       )
+    case IntegrationStepType.WEBHOOK:
+      return <Text>Webhook</Text>
     default:
       return <></>
   }

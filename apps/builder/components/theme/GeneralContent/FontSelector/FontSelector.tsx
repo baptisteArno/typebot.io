@@ -27,18 +27,19 @@ export const FontSelector = ({
     )
   }
 
+  const handleFontSelected = (nextFont: string) => {
+    if (nextFont == currentFont) return
+    setCurrentFont(nextFont)
+    onSelectFont(nextFont)
+  }
+
   return (
     <Flex justify="space-between" align="center">
       <Text>Font</Text>
       <SearchableDropdown
         selectedItem={activeFont}
         items={googleFonts}
-        onSelectItem={(nextFont) => {
-          if (nextFont !== currentFont) {
-            setCurrentFont(nextFont)
-            onSelectFont(nextFont)
-          }
-        }}
+        onValueChange={handleFontSelected}
       />
     </Flex>
   )

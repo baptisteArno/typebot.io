@@ -22,14 +22,14 @@ describe('Condition step', () => {
 
     cy.findByTestId('variables-input').click()
     cy.findByRole('menuitem', { name: 'Age' }).click()
-    cy.findByRole('button', { name: 'Equal to' }).click()
+    cy.findByRole('button', { name: 'Select an operator' }).click()
     cy.findByRole('menuitem', { name: 'Greater than' }).click()
     cy.findByPlaceholderText('Type a value...').type('80')
 
     cy.findByRole('button', { name: 'Add a comparison' }).click()
     cy.findAllByTestId('variables-input').last().click()
     cy.findByRole('menuitem', { name: 'Age' }).click()
-    cy.findByRole('button', { name: 'Equal to' }).click()
+    cy.findByRole('button', { name: 'Select an operator' }).click()
     cy.findByRole('menuitem', { name: 'Less than' }).click()
     cy.findAllByPlaceholderText('Type a value...').last().type('100')
 
@@ -37,7 +37,7 @@ describe('Condition step', () => {
 
     cy.findByTestId('variables-input').click()
     cy.findByRole('menuitem', { name: 'Age' }).click()
-    cy.findByRole('button', { name: 'Equal to' }).click()
+    cy.findByRole('button', { name: 'Select an operator' }).click()
     cy.findByRole('menuitem', { name: 'Greater than' }).click()
     cy.findByPlaceholderText('Type a value...').type('20')
 

@@ -10,13 +10,18 @@ import {
   Cell,
   GoogleSheetsGetOptions,
   GoogleAnalyticsStep,
+  Webhook,
+  WebhookStep,
 } from 'models'
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
 import { parseVariables, parseVariablesInObject } from './variable'
 
+const safeEval = eval
+
 export const executeIntegration = (
+  typebotId: string,
   step: IntegrationStep,
   variables: Table<Variable>,
   updateVariableValue: (variableId: string, value: string) => void
@@ -26,6 +31,8 @@ export const executeIntegration = (
       return executeGoogleSheetIntegration(step, variables, updateVariableValue)
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return executeGoogleAnalyticsIntegration(step, variables)
+    case IntegrationStepType.WEBHOOK:
+      return executeWebhook(typebotId, step, variables, updateVariableValue)
   }
 }
 
@@ -142,3 +149,26 @@ const parseCellValues = (
           [cell.column]: parseVariables({ text: cell.value, variables }),
         }
   }, {})
+
+const executeWebhook = async (
+  typebotId: string,
+  step: WebhookStep,
+  variables: Table<Variable>,
+  updateVariableValue: (variableId: string, value: string) => void
+) => {
+  if (!step.options?.webhookId) return step.edgeId
+  const { data, error } = await sendRequest({
+    url: `http://localhost:3000/api/typebots/${typebotId}/webhooks/${step.options?.webhookId}/execute`,
+    method: 'POST',
+    body: {
+      variables,
+    },
+  })
+  console.error(error)
+  step.options.responseVariableMapping?.allIds.forEach((varMappingId) => {
+    const varMapping = step.options?.responseVariableMapping?.byId[varMappingId]
+    if (!varMapping?.bodyPath || !varMapping.variableId) return
+    const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
+    updateVariableValue(varMapping.variableId, value)
+  })
+}

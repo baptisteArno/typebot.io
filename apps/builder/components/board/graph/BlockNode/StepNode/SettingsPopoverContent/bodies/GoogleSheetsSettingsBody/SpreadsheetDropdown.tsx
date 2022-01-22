@@ -27,7 +27,7 @@ export const SpreadsheetsDropdown = ({
     <SearchableDropdown
       selectedItem={currentSpreadsheet?.name}
       items={(spreadsheets ?? []).map((s) => s.name)}
-      onSelectItem={handleSpreadsheetSelect}
+      onValueChange={handleSpreadsheetSelect}
       placeholder={isLoading ? 'Loading...' : 'Search for spreadsheet'}
       isDisabled={isLoading}
     />

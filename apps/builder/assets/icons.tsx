@@ -280,3 +280,9 @@ export const FilmIcon = (props: IconProps) => (
     <line x1="17" y1="7" x2="22" y2="7"></line>
   </Icon>
 )
+
+export const WebhookIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+  </Icon>
+)

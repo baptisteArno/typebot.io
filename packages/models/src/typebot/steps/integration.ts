@@ -1,15 +1,20 @@
 import { StepBase } from '.'
 import { Table } from '../..'
 
-export type IntegrationStep = GoogleSheetsStep | GoogleAnalyticsStep
+export type IntegrationStep =
+  | GoogleSheetsStep
+  | GoogleAnalyticsStep
+  | WebhookStep
 
 export type IntegrationStepOptions =
   | GoogleSheetsOptions
   | GoogleAnalyticsOptions
+  | WebhookOptions
 
 export enum IntegrationStepType {
   GOOGLE_SHEETS = 'Google Sheets',
   GOOGLE_ANALYTICS = 'Google Analytics',
+  WEBHOOK = 'Webhook',
 }
 
 export type GoogleSheetsStep = StepBase & {
@@ -20,6 +25,11 @@ export type GoogleSheetsStep = StepBase & {
 export type GoogleAnalyticsStep = StepBase & {
   type: IntegrationStepType.GOOGLE_ANALYTICS
   options?: GoogleAnalyticsOptions
+}
+
+export type WebhookStep = StepBase & {
+  type: IntegrationStepType.WEBHOOK
+  options?: WebhookOptions
 }
 
 export type GoogleAnalyticsOptions = {
@@ -65,4 +75,41 @@ export type GoogleSheetsUpdateRowOptions = GoogleSheetsOptionsBase & {
   action?: GoogleSheetsAction.UPDATE_ROW
   referenceCell?: Cell
   cellsToUpsert?: Table<Cell>
+}
+
+export type ResponseVariableMapping = { bodyPath?: string; variableId?: string }
+
+export type WebhookOptions = {
+  webhookId?: string
+  variablesForTest?: Table<VariableForTest>
+  responseVariableMapping?: Table<ResponseVariableMapping>
+}
+
+export enum HttpMethod {
+  POST = 'POST',
+  GET = 'GET',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+  HEAD = 'HEAD',
+  CONNECT = 'CONNECT',
+  OPTIONS = 'OPTIONS',
+  TRACE = 'TRACE',
+}
+
+export type KeyValue = { key?: string; value?: string }
+export type VariableForTest = { variableId?: string; value?: string }
+
+export type Webhook = {
+  id: string
+  url?: string
+  method?: HttpMethod
+  queryParams?: Table<KeyValue>
+  headers?: Table<KeyValue>
+  body?: string
+}
+
+export type WebhookResponse = {
+  statusCode: number
+  data?: unknown
 }

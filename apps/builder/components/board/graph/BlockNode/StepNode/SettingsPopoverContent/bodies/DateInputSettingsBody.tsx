@@ -24,8 +24,8 @@ export const DateInputSettingsBody = ({
     onOptionsChange({ ...options, isRange })
   const handleHasTimeChange = (hasTime: boolean) =>
     onOptionsChange({ ...options, hasTime })
-  const handleVariableChange = (variable: Variable) =>
-    onOptionsChange({ ...options, variableId: variable.id })
+  const handleVariableChange = (variable?: Variable) =>
+    onOptionsChange({ ...options, variableId: variable?.id })
 
   return (
     <Stack spacing={4}>

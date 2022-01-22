@@ -110,6 +110,7 @@ model Typebot {
   steps              Json
   choiceItems        Json
   variables          Json
+  webhooks           Json
   edges              Json
   theme              Json
   settings           Json

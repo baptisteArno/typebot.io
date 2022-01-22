@@ -13,8 +13,8 @@ export const SetVariableSettingsBody = ({
   options,
   onOptionsChange,
 }: Props) => {
-  const handleVariableChange = (variable: Variable) =>
-    onOptionsChange({ ...options, variableId: variable.id })
+  const handleVariableChange = (variable?: Variable) =>
+    onOptionsChange({ ...options, variableId: variable?.id })
   const handleExpressionChange = (expressionToEvaluate: string) =>
     onOptionsChange({ ...options, expressionToEvaluate })
 

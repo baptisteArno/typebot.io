@@ -55,6 +55,7 @@ export const ChatBlock = ({
     }
     if (isIntegrationStep(currentStep)) {
       const nextEdgeId = await executeIntegration(
+        typebot.typebotId,
         currentStep,
         typebot.variables,
         updateVariableValue
