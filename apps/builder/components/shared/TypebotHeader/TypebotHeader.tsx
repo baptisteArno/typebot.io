@@ -26,7 +26,7 @@ export const TypebotHeader = () => {
   const handleNameSubmit = (name: string) => updateTypebot({ name })
 
   const handlePreviewClick = async () => {
-    await save()
+    save().then()
     setRightPanel(RightPanel.PREVIEW)
   }
 

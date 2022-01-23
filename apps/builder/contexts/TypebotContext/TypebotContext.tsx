@@ -30,6 +30,9 @@ import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { edgesAction, EdgesActions } from './actions/edges'
 import { webhooksAction, WebhooksAction } from './actions/webhooks'
+import { useDebounce } from 'use-debounce'
+
+const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -84,6 +87,12 @@ export const TypebotContext = ({
   const [localTypebot, setLocalTypebot] = useImmer<Typebot | undefined>(
     undefined
   )
+
+  const [debouncedLocalTypebot] = useDebounce(localTypebot, autoSaveTimeout)
+  useEffect(() => {
+    if (hasUnsavedChanges) saveTypebot()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedLocalTypebot])
 
   const [localPublishedTypebot, setLocalPublishedTypebot] =
     useState<PublicTypebot>()

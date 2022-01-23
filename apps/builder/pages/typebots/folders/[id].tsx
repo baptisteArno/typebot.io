@@ -6,7 +6,6 @@ import { FolderContent } from 'components/dashboard/FolderContent'
 import { useRouter } from 'next/router'
 import { useFolderContent } from 'services/folders'
 import { Spinner, useToast } from '@chakra-ui/react'
-import { UserContext } from 'contexts/UserContext'
 
 const FolderPage = () => {
   const router = useRouter()
@@ -27,19 +26,17 @@ const FolderPage = () => {
   })
 
   return (
-    <UserContext>
+    <Stack>
       <Seo title="My typebots" />
-      <Stack>
-        <DashboardHeader />
-        {!folder ? (
-          <Flex flex="1">
-            <Spinner mx="auto" />
-          </Flex>
-        ) : (
-          <FolderContent folder={folder} />
-        )}
-      </Stack>
-    </UserContext>
+      <DashboardHeader />
+      {!folder ? (
+        <Flex flex="1">
+          <Spinner mx="auto" />
+        </Flex>
+      ) : (
+        <FolderContent folder={folder} />
+      )}
+    </Stack>
   )
 }
 

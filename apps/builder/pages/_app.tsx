@@ -9,14 +9,22 @@ import 'assets/styles/plate.css'
 import 'focus-visible/dist/focus-visible'
 import 'assets/styles/submissionsTable.css'
 import 'assets/styles/codeMirror.css'
+import { UserContext } from 'contexts/UserContext'
+import { TypebotContext } from 'contexts/TypebotContext'
+import { useRouter } from 'next/router'
 
 const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
+  const { query } = useRouter()
 
   return (
     <ChakraProvider theme={customTheme}>
       <SessionProvider>
-        <Component {...pageProps} />
+        <UserContext>
+          <TypebotContext typebotId={query.typebotId?.toString()}>
+            <Component {...pageProps} />
+          </TypebotContext>
+        </UserContext>
       </SessionProvider>
     </ChakraProvider>
   )
