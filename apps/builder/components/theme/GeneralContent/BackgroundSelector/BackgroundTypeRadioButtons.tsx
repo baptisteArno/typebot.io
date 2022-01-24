@@ -17,7 +17,7 @@ export const BackgroundTypeRadioButtons = ({
   backgroundType,
   onBackgroundTypeChange,
 }: Props) => {
-  const options = ['Color', 'Image', 'None']
+  const options = ['Color', 'None']
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'background-type',

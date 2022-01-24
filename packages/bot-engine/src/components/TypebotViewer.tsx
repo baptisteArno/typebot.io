@@ -62,6 +62,7 @@ export const TypebotViewer = ({
               // We set this as inline style to avoid color flash for SSR
               backgroundColor: containerBgColor,
             }}
+            data-testid="container"
           >
             <div className="flex w-full h-full justify-center">
               <ConversationContainer

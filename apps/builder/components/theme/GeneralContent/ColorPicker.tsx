@@ -42,7 +42,7 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
     <Popover variant="picker">
       <PopoverTrigger>
         <Button
-          aria-label={color}
+          aria-label={'Pick a color'}
           background={color}
           height="22px"
           width="22px"
@@ -85,7 +85,8 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
           <Input
             borderRadius={3}
             marginTop={3}
-            placeholder="red.100"
+            placeholder="#2a9d8f"
+            aria-label="Color value"
             size="sm"
             value={color}
             onChange={(e) => {

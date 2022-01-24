@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, Flex } from '@chakra-ui/react'
+import { Text, HStack } from '@chakra-ui/react'
 import { SearchableDropdown } from '../../../shared/SearchableDropdown'
 
 type FontSelectorProps = {
@@ -34,13 +34,13 @@ export const FontSelector = ({
   }
 
   return (
-    <Flex justify="space-between" align="center">
+    <HStack justify="space-between" align="center">
       <Text>Font</Text>
       <SearchableDropdown
         selectedItem={activeFont}
         items={googleFonts}
         onValueChange={handleFontSelected}
       />
-    </Flex>
+    </HStack>
   )
 }

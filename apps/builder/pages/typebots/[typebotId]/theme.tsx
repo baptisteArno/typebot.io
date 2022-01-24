@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
-import { ThemeContent } from 'components/theme/ThemeContent'
+import { ThemeContent } from 'layouts/theme/ThemeContent'
 import React from 'react'
 
 const ThemePage = () => (

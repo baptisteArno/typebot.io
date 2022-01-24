@@ -19,7 +19,7 @@ export const setCssVariablesValue = (
     background.type === BackgroundType.IMAGE
       ? cssVariableNames.container.bg.image
       : cssVariableNames.container.bg.color,
-    background.content
+    background.type === BackgroundType.NONE ? 'transparent' : background.content
   )
   documentStyle.setProperty(cssVariableNames.container.fontFamily, font)
 }
