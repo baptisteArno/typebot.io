@@ -13,9 +13,14 @@ type Props = {
 
 export const showAnimationDuration = 400
 
+const defaultTypingEmulation = {
+  enabled: true,
+  speed: 300,
+  maxDelay: 1.5,
+}
+
 export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const { typebot } = useTypebot()
-  const { typingEmulation } = typebot.settings
   const { updateLastAvatarOffset } = useHostAvatars()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
@@ -30,7 +35,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
     sendAvatarOffset()
     const typingTimeout = computeTypingTimeout(
       step.content.plainText,
-      typingEmulation
+      typebot.settings?.typingEmulation ?? defaultTypingEmulation
     )
     setTimeout(() => {
       onTypingEnd()
@@ -61,6 +66,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
               width: isTyping ? '4rem' : '100%',
               height: isTyping ? '2rem' : '100%',
             }}
+            data-testid="host-bubble"
           >
             {isTyping ? <TypingContent /> : <></>}
           </div>

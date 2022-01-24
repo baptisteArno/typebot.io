@@ -5,6 +5,8 @@ import Frame from 'react-frame-component'
 import style from '../assets/style.css'
 //@ts-ignore
 import phoneNumberInputStyle from 'react-phone-number-input/style.css'
+//@ts-ignore
+import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
 import { Answer, BackgroundType, PublicTypebot } from 'models'
@@ -23,10 +25,10 @@ export const TypebotViewer = ({
 }: TypebotViewerProps) => {
   const containerBgColor = useMemo(
     () =>
-      typebot.theme.general.background.type === BackgroundType.COLOR
+      typebot?.theme?.general?.background?.type === BackgroundType.COLOR
         ? typebot.theme.general.background.content
         : 'transparent',
-    [typebot.theme.general.background]
+    [typebot?.theme?.general?.background]
   )
   const handleNewBlockVisible = (blockId: string) => {
     if (onNewBlockVisible) onNewBlockVisible(blockId)
@@ -44,6 +46,7 @@ export const TypebotViewer = ({
       head={
         <style>
           {phoneNumberInputStyle}
+          {phoneSyle}
           {style}
         </style>
       }
@@ -51,7 +54,9 @@ export const TypebotViewer = ({
     >
       <style
         dangerouslySetInnerHTML={{
-          __html: `@import url('https://fonts.googleapis.com/css2?family=${typebot.theme.general.font}:wght@300;400;600&display=swap');`,
+          __html: `@import url('https://fonts.googleapis.com/css2?family=${
+            typebot?.theme?.general?.font ?? 'Open Sans'
+          }:wght@300;400;600&display=swap');`,
         }}
       />
       <TypebotContext typebot={typebot}>
@@ -60,7 +65,7 @@ export const TypebotViewer = ({
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
               // We set this as inline style to avoid color flash for SSR
-              backgroundColor: containerBgColor,
+              backgroundColor: containerBgColor ?? 'transparent',
             }}
             data-testid="container"
           >

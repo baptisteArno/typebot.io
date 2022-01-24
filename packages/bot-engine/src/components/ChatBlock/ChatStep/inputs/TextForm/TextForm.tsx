@@ -36,6 +36,7 @@ export const TextForm = ({ step, onSubmit }: TextFormProps) => {
         <form
           className="flex items-end justify-between rounded-lg pr-2 typebot-input"
           onSubmit={handleSubmit}
+          data-testid="input"
         >
           <TextInput step={step} onChange={handleChange} />
           <SendButton

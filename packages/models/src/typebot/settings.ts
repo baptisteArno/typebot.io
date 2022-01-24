@@ -1,9 +1,9 @@
 export type Settings = {
-  typingEmulation: TypingEmulationSettings
+  typingEmulation?: TypingEmulationSettings
 }
 
 export type TypingEmulationSettings = {
-  enabled: boolean
-  speed: number
-  maxDelay: number
+  enabled?: boolean
+  speed?: number
+  maxDelay?: number
 }

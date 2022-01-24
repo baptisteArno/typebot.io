@@ -6,8 +6,8 @@ describe('General theme settings', () => {
     cy.signOut()
   })
 
-  it.only('should reflect changes in real time', () => {
-    cy.loadTypebotFixtureInDatabase('typebots/integrations/webhook.json')
+  it('should reflect changes in real time', () => {
+    cy.loadTypebotFixtureInDatabase('typebots/theme/theme.json')
     cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/theme')
     cy.findByRole('button', { name: 'General' }).click()

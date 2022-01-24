@@ -120,7 +120,7 @@ const ShortTextInput = React.forwardRef(
   ) => (
     <input
       ref={ref}
-      className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full comp-input"
+      className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       type="text"
       required
       {...props}
@@ -135,7 +135,7 @@ const LongTextInput = React.forwardRef(
   ) => (
     <textarea
       ref={ref}
-      className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full comp-input"
+      className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       rows={4}
       data-testid="textarea"
       required

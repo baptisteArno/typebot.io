@@ -17,7 +17,7 @@ export const SettingsContent = () => {
     <Flex h="full" w="full" justifyContent="center" align="flex-start">
       <Stack p="6" rounded="md" borderWidth={1} w="600px" minH="500px" mt={10}>
         <TypingEmulation
-          typingEmulation={typebot?.settings.typingEmulation}
+          typingEmulation={typebot?.settings?.typingEmulation}
           onUpdate={handleTypingEmulationUpdate}
         />
       </Stack>

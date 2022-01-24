@@ -1,43 +1,35 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { Background, BackgroundType } from 'models'
-import { deepEqual } from 'fast-equals'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import { BackgroundTypeRadioButtons } from './BackgroundTypeRadioButtons'
 
 type Props = {
-  initialBackground?: Background
+  background?: Background
   onBackgroundChange: (newBackground: Background) => void
 }
+
+const defaultBackgroundType = BackgroundType.NONE
+
 export const BackgroundSelector = ({
-  initialBackground,
+  background,
   onBackgroundChange,
 }: Props) => {
-  const [currentBackground, setCurrentBackground] = useState<Background>(
-    initialBackground ?? { type: BackgroundType.NONE, content: '' }
-  )
-
-  useEffect(() => {
-    if (deepEqual(currentBackground, initialBackground)) return
-    onBackgroundChange(currentBackground)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentBackground])
-
   const handleBackgroundTypeChange = (type: BackgroundType) =>
-    setCurrentBackground({ ...currentBackground, type })
+    background && onBackgroundChange({ ...background, type })
 
   const handleBackgroundContentChange = (content: string) =>
-    setCurrentBackground({ ...currentBackground, content })
+    background && onBackgroundChange({ ...background, content })
 
   return (
     <Stack spacing={4}>
       <Text>Background</Text>
       <BackgroundTypeRadioButtons
-        backgroundType={currentBackground.type}
+        backgroundType={background?.type ?? defaultBackgroundType}
         onBackgroundTypeChange={handleBackgroundTypeChange}
       />
       <BackgroundContent
-        background={currentBackground}
+        background={background}
         onBackgroundContentChange={handleBackgroundContentChange}
       />
     </Stack>

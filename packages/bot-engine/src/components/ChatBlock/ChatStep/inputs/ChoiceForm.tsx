@@ -49,6 +49,7 @@ export const ChoiceForm = ({ options, onSubmit }: ChoiceFormProps) => {
                 ? 'active'
                 : '')
             }
+            data-testid="button"
           >
             {items.byId[itemId].content}
           </button>

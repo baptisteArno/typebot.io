@@ -1,8 +1,27 @@
 export type Theme = {
-  general: {
-    font: string
-    background: Background
-  }
+  general?: GeneralTheme
+  chat?: ChatTheme
+}
+
+export type GeneralTheme = {
+  font?: string
+  background?: Background
+}
+
+export type ChatTheme = {
+  hostBubbles?: ContainerColors
+  guestBubbles?: ContainerColors
+  buttons?: ContainerColors
+  inputs?: InputColors
+}
+
+export type ContainerColors = {
+  backgroundColor?: string
+  color?: string
+}
+
+export type InputColors = ContainerColors & {
+  placeholderColor?: string
 }
 
 export enum BackgroundType {
@@ -13,5 +32,5 @@ export enum BackgroundType {
 
 export type Background = {
   type: BackgroundType
-  content: string
+  content?: string
 }

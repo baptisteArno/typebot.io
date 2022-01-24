@@ -1,0 +1,13 @@
+.PhoneInputInput {
+  padding: 1rem 0.5rem;
+  outline: none !important;
+}
+
+.PhoneInputCountry {
+  padding-left: 0.5rem;
+}
+
+.PhoneInputCountryIcon,
+.PhoneInputCountryIconImg {
+  border-radius: 3px;
+}

@@ -4,9 +4,11 @@ import React from 'react'
 import { ColorPicker } from '../ColorPicker'
 
 type BackgroundContentProps = {
-  background: Background
+  background?: Background
   onBackgroundContentChange: (content: string) => void
 }
+
+const defaultBackgroundColor = '#ffffff'
 
 export const BackgroundContent = ({
   background,
@@ -15,13 +17,13 @@ export const BackgroundContent = ({
   const handleContentChange = (content: string) =>
     onBackgroundContentChange(content)
 
-  switch (background.type) {
+  switch (background?.type) {
     case BackgroundType.COLOR:
       return (
         <Flex justify="space-between" align="center">
           <Text>Background color:</Text>
           <ColorPicker
-            initialColor={background.content}
+            initialColor={background.content ?? defaultBackgroundColor}
             onColorChange={handleContentChange}
           />
         </Flex>

@@ -2,10 +2,7 @@ import {
   Block,
   TextBubbleStep,
   PublicTypebot,
-  BackgroundType,
-  Settings,
   StartStep,
-  Theme,
   BubbleStepType,
   InputStepType,
   ChoiceInputStep,
@@ -216,19 +213,6 @@ export const parseNewTypebot = ({
     graphCoordinates: { x: 0, y: 0 },
     stepIds: [startStepId],
   }
-  const theme: Theme = {
-    general: {
-      font: 'Open Sans',
-      background: { type: BackgroundType.NONE, content: '#ffffff' },
-    },
-  }
-  const settings: Settings = {
-    typingEmulation: {
-      enabled: true,
-      speed: 300,
-      maxDelay: 1.5,
-    },
-  }
   return {
     folderId,
     name,
@@ -239,8 +223,6 @@ export const parseNewTypebot = ({
     variables: { byId: {}, allIds: [] },
     edges: { byId: {}, allIds: [] },
     webhooks: { byId: {}, allIds: [] },
-    theme,
-    settings,
   }
 }
 
