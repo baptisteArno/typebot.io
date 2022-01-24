@@ -1,6 +1,7 @@
 export type Theme = {
   general?: GeneralTheme
   chat?: ChatTheme
+  customCss?: string
 }
 
 export type GeneralTheme = {

@@ -159,6 +159,7 @@ export const WebhookSettings = ({
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <CodeEditor
               value={webhook?.body ?? ''}
+              lang="json"
               onChange={handleBodyChange}
             />
           </AccordionPanel>
@@ -181,7 +182,9 @@ export const WebhookSettings = ({
       <Button onClick={handleTestRequestClick} colorScheme="blue">
         Test the request
       </Button>
-      {testResponse && <CodeEditor isReadOnly value={testResponse} />}
+      {testResponse && (
+        <CodeEditor isReadOnly lang="json" value={testResponse} />
+      )}
       {(testResponse || options?.responseVariableMapping) && (
         <Accordion allowToggle allowMultiple>
           <AccordionItem>

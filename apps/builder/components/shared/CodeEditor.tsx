@@ -1,15 +1,18 @@
 import { Box, BoxProps } from '@chakra-ui/react'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 import { json } from '@codemirror/lang-json'
+import { css } from '@codemirror/lang-css'
 import { useEffect, useRef } from 'react'
 
 type Props = {
   value: string
+  lang: 'css' | 'json'
   onChange?: (value: string) => void
   isReadOnly?: boolean
 }
 export const CodeEditor = ({
   value,
+  lang,
   onChange,
   isReadOnly = false,
   ...props
@@ -31,14 +34,15 @@ export const CodeEditor = ({
       if (update.docChanged && onChange)
         onChange(update.state.doc.toJSON().join(' '))
     })
+    const extensions = [
+      updateListenerExtension,
+      basicSetup,
+      EditorState.readOnly.of(isReadOnly),
+    ]
+    extensions.push(lang === 'json' ? json() : css())
     const editor = new EditorView({
       state: EditorState.create({
-        extensions: [
-          updateListenerExtension,
-          basicSetup,
-          json(),
-          EditorState.readOnly.of(isReadOnly),
-        ],
+        extensions,
       }),
       parent: editorContainer.current,
     })
