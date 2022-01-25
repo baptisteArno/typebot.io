@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTypebot } from '../../contexts/TypebotContext'
 import { HostAvatar } from '../avatars/HostAvatar'
 import { useFrame } from 'react-frame-component'
@@ -22,6 +22,7 @@ export const AvatarSideContainer = () => {
     return () => {
       resizeObserver.disconnect()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -1,8 +1,8 @@
-import { TypingEmulationSettings } from 'models'
+import { TypingEmulation } from 'models'
 
 export const computeTypingTimeout = (
   bubbleContent: string,
-  typingSettings: TypingEmulationSettings
+  typingSettings: TypingEmulation
 ) => {
   const wordCount = bubbleContent.match(/(\w+)/g)?.length ?? 0
   const typedWordsPerMinute = typingSettings.speed

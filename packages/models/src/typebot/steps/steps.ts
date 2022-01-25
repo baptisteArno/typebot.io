@@ -31,6 +31,13 @@ export type DraggableStepType =
   | LogicStepType
   | IntegrationStepType
 
+export type StepWithOptions = InputStep | LogicStep | IntegrationStep
+
+export type StepWithOptionsType =
+  | InputStepType
+  | LogicStepType
+  | IntegrationStepType
+
 export type StepOptions =
   | InputStepOptions
   | LogicStepOptions

@@ -7,7 +7,7 @@ import { HostBubbles } from './HostBubbles'
 import { InputsTheme } from './InputsTheme'
 
 type Props = {
-  chatTheme?: ChatTheme
+  chatTheme: ChatTheme
   onChatThemeChange: (chatTheme: ChatTheme) => void
 }
 
@@ -26,28 +26,28 @@ export const ChatThemeSettings = ({ chatTheme, onChatThemeChange }: Props) => {
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Bot bubbles</Heading>
         <HostBubbles
-          hostBubbles={chatTheme?.hostBubbles}
+          hostBubbles={chatTheme.hostBubbles}
           onHostBubblesChange={handleHostBubblesChange}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">User bubbles</Heading>
         <GuestBubbles
-          guestBubbles={chatTheme?.guestBubbles}
+          guestBubbles={chatTheme.guestBubbles}
           onGuestBubblesChange={handleGuestBubblesChange}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Buttons</Heading>
         <ButtonsTheme
-          buttons={chatTheme?.buttons}
+          buttons={chatTheme.buttons}
           onButtonsChange={handleButtonsChange}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Inputs</Heading>
         <InputsTheme
-          inputs={chatTheme?.inputs}
+          inputs={chatTheme.inputs}
           onInputsChange={handleInputsChange}
         />
       </Stack>

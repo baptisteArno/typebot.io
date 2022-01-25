@@ -5,7 +5,7 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Block, Edge, PublicTypebot } from 'models'
+import { Answer, Block, PublicTypebot } from 'models'
 
 type Props = {
   typebot: PublicTypebot
@@ -45,6 +45,7 @@ export const ConversationContainer = ({
       typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].edgeId
     if (!firstEdgeId) return
     displayNextBlock(firstEdgeId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -56,6 +57,7 @@ export const ConversationContainer = ({
     if (!answer || deepEqual(localAnswer, answer)) return
     setLocalAnswer(answer)
     onNewAnswer(answer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers])
 
   return (

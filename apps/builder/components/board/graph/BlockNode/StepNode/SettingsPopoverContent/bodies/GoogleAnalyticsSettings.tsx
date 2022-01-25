@@ -10,7 +10,7 @@ import {
   Tag,
 } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { GoogleAnalyticsOptions } from 'models'
 import React from 'react'
 

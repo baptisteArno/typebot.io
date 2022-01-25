@@ -42,6 +42,7 @@ const InputChatStep = ({
 
   useEffect(() => {
     addNewAvatarOffset()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSubmit = (value: string) => {

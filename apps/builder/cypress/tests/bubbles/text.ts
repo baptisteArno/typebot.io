@@ -1,27 +1,23 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
-import { BubbleStepType, Step } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { BubbleStepType, defaultTextBubbleContent, Step } from 'models'
 
 describe('Text bubbles', () => {
   beforeEach(() => {
-    cy.task('seed')
+    prepareDbAndSignIn()
     createTypebotWithStep({
       type: BubbleStepType.TEXT,
-      content: { html: '', plainText: '', richText: [] },
+      content: defaultTextBubbleContent,
     } as Omit<Step, 'id' | 'blockId'>)
-    cy.signOut()
+    cy.visit('/typebots/typebot3/edit')
   })
-
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
   it('rich text features should work', () => {
-    cy.signIn('test2@gmail.com')
-    cy.visit('/typebots/typebot3/edit')
     cy.findByTestId('bold-button').click()
     cy.findByRole('textbox', { name: 'Text editor' }).type('Bold text{enter}')
     cy.findByTestId('bold-button').click()

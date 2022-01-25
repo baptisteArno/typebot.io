@@ -1,5 +1,5 @@
 import { FormLabel, HStack, Stack } from '@chakra-ui/react'
-import { SmartNumberInput } from 'components/settings/SmartNumberInput'
+import { SmartNumberInput } from 'components/shared/SmartNumberInput'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { NumberInputOptions, Variable } from 'models'
@@ -7,7 +7,7 @@ import React from 'react'
 import { removeUndefinedFields } from 'services/utils'
 
 type NumberInputSettingsBodyProps = {
-  options?: NumberInputOptions
+  options: NumberInputOptions
   onOptionsChange: (options: NumberInputOptions) => void
 }
 
@@ -16,9 +16,9 @@ export const NumberInputSettingsBody = ({
   onOptionsChange,
 }: NumberInputSettingsBodyProps) => {
   const handlePlaceholderChange = (placeholder: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
+    onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+    onOptionsChange({ ...options, labels: { ...options.labels, button } })
   const handleMinChange = (min?: number) =>
     onOptionsChange(removeUndefinedFields({ ...options, min }))
   const handleMaxChange = (max?: number) =>
@@ -36,7 +36,7 @@ export const NumberInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="placeholder"
-          initialValue={options?.labels?.placeholder ?? 'Type your answer...'}
+          initialValue={options.labels.placeholder}
           delay={100}
           onChange={handlePlaceholderChange}
         />
@@ -58,7 +58,7 @@ export const NumberInputSettingsBody = ({
         </FormLabel>
         <SmartNumberInput
           id="min"
-          initialValue={options?.min}
+          value={options.min}
           onValueChange={handleMinChange}
         />
       </HStack>
@@ -68,7 +68,7 @@ export const NumberInputSettingsBody = ({
         </FormLabel>
         <SmartNumberInput
           id="max"
-          initialValue={options?.max}
+          value={options.max}
           onValueChange={handleMaxChange}
         />
       </HStack>
@@ -78,7 +78,7 @@ export const NumberInputSettingsBody = ({
         </FormLabel>
         <SmartNumberInput
           id="step"
-          initialValue={options?.step}
+          value={options.step}
           onValueChange={handleStepChange}
         />
       </HStack>
@@ -87,7 +87,7 @@ export const NumberInputSettingsBody = ({
           Save answer in a variable:
         </FormLabel>
         <VariableSearchInput
-          initialVariableId={options?.variableId}
+          initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
       </Stack>

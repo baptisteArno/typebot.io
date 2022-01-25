@@ -28,7 +28,7 @@ export const isMathFormula = (str?: string) =>
   ['*', '/', '+', '-'].some((val) => str && str.includes(val))
 
 export const evaluateExpression = (str: string) => {
-  let result = replaceCommasWithDots(str)
+  const result = replaceCommasWithDots(str)
   try {
     const evaluatedNumber = safeEval(result) as number
     if (countDecimals(evaluatedNumber) > 2) {

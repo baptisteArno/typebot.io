@@ -1,4 +1,5 @@
-import { userIds } from 'cypress/plugins/data'
+import { users } from 'cypress/plugins/data'
+import { prepareDbAndSignIn, removePreventReload } from 'cypress/support'
 
 describe('Account page', () => {
   before(() => {
@@ -11,13 +12,12 @@ describe('Account page', () => {
     )
   })
 
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
+
+  afterEach(removePreventReload)
 
   it('should edit user info properly', () => {
-    cy.signIn('test1@gmail.com')
+    cy.signIn(users[0].email)
     cy.visit('/account')
     cy.findByRole('button', { name: 'Save' }).should('not.exist')
     cy.findByRole('textbox', { name: 'Email address' }).should(
@@ -35,23 +35,19 @@ describe('Account page', () => {
       .should('have.attr', 'src')
       .should(
         'include',
-        `https://s3.eu-west-3.amazonaws.com/typebot/users/${userIds[0]}/avatar`
+        `https://s3.eu-west-3.amazonaws.com/typebot/users/${users[0].id}/avatar`
       )
     cy.findByRole('button', { name: 'Save' }).should('exist').click()
     cy.wait('@getUpdatedSession')
-    cy.reload()
-    cy.findByRole('textbox', { name: 'Name' }).should('have.value', 'John Doe')
-    cy.findByRole('img')
-      .should('have.attr', 'src')
-      .should(
-        'include',
-        `https://s3.eu-west-3.amazonaws.com/typebot/users/${userIds[0]}/avatar`
-      )
+      .then((interception) => {
+        return interception.response?.statusCode
+      })
+      .should('eq', 200)
     cy.findByRole('button', { name: 'Save' }).should('not.exist')
   })
 
   it('should display valid plans', () => {
-    cy.signIn('test1@gmail.com')
+    cy.signIn(users[0].email)
     cy.visit('/account')
     cy.findByText('Free plan').should('exist')
     cy.findByRole('link', { name: 'Manage my subscription' }).should(
@@ -59,7 +55,7 @@ describe('Account page', () => {
     )
     cy.findByRole('button', { name: 'Upgrade' }).should('exist')
     cy.signOut()
-    cy.signIn('test2@gmail.com')
+    cy.signIn(users[1].email)
     cy.visit('/account')
     cy.findByText('Pro plan').should('exist')
     cy.findByRole('link', { name: 'Manage my subscription' })

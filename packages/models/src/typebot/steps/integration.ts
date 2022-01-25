@@ -19,17 +19,17 @@ export enum IntegrationStepType {
 
 export type GoogleSheetsStep = StepBase & {
   type: IntegrationStepType.GOOGLE_SHEETS
-  options?: GoogleSheetsOptions
+  options: GoogleSheetsOptions
 }
 
 export type GoogleAnalyticsStep = StepBase & {
   type: IntegrationStepType.GOOGLE_ANALYTICS
-  options?: GoogleAnalyticsOptions
+  options: GoogleAnalyticsOptions
 }
 
 export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
-  options?: WebhookOptions
+  options: WebhookOptions
 }
 
 export type GoogleAnalyticsOptions = {
@@ -113,3 +113,9 @@ export type WebhookResponse = {
   statusCode: number
   data?: unknown
 }
+
+export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
+
+export const defaultGoogleAnalyticsOptions: GoogleAnalyticsOptions = {}
+
+export const defaultWebhookOptions: WebhookOptions = {}

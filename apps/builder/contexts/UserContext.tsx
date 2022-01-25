@@ -62,8 +62,11 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!router.isReady) return
     if (status === 'loading') return
-    if (status === 'unauthenticated') router.replace('/signin')
+    if (status === 'unauthenticated' && !isSigningIn())
+      router.replace('/signin')
   }, [status, router])
+
+  const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
 
   const updateUser = (newUser: Partial<User>) => {
     if (!isDefined(user)) return

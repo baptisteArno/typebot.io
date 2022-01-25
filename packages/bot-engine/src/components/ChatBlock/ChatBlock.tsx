@@ -35,11 +35,13 @@ export const ChatBlock = ({
     const nextStep =
       typebot.steps.byId[startStepId ?? stepIds[displayedSteps.length]]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     autoScrollToBottom()
     onNewStepDisplayed()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayedSteps])
 
   const onNewStepDisplayed = async () => {

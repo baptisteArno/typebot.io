@@ -20,12 +20,12 @@ export type TextBubbleStep = StepBase & {
 
 export type ImageBubbleStep = StepBase & {
   type: BubbleStepType.IMAGE
-  content?: ImageBubbleContent
+  content: ImageBubbleContent
 }
 
 export type VideoBubbleStep = StepBase & {
   type: BubbleStepType.VIDEO
-  content?: VideoBubbleContent
+  content: VideoBubbleContent
 }
 
 export type TextBubbleContent = {
@@ -49,3 +49,13 @@ export type VideoBubbleContent = {
   url?: string
   id?: string
 }
+
+export const defaultTextBubbleContent: TextBubbleContent = {
+  html: '',
+  richText: [],
+  plainText: '',
+}
+
+export const defaultImageBubbleContent: ImageBubbleContent = {}
+
+export const defaultVideoBubbleContent: VideoBubbleContent = {}

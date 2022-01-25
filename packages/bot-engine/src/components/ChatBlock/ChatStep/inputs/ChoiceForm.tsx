@@ -13,6 +13,7 @@ export const ChoiceForm = ({ options, onSubmit }: ChoiceFormProps) => {
   const { typebot } = useTypebot()
   const items = useMemo(
     () => filterTable(options?.itemIds ?? [], typebot.choiceItems),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
   const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -41,6 +42,7 @@ export const ChoiceForm = ({ options, onSubmit }: ChoiceFormProps) => {
       <div className="flex flex-wrap">
         {options?.itemIds.map((itemId) => (
           <button
+            key={itemId}
             role={options?.isMultipleChoice ? 'checkbox' : 'button'}
             onClick={handleClick(itemId)}
             className={

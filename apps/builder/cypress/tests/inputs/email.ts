@@ -1,16 +1,22 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultEmailInputOptions, InputStepType, Step } from 'models'
 
 describe('Email input', () => {
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.EMAIL })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.EMAIL,
+      options: defaultEmailInputOptions,
+    } as Step)
   })
+  afterEach(removePreventReload)
 
   it('options should work', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody()
@@ -18,7 +24,9 @@ describe('Email input', () => {
       .should('have.attr', 'type')
       .should('equal', 'email')
     getIframeBody().findByRole('button', { name: 'Send' })
-    getIframeBody().findByPlaceholderText('Type your email...').should('exist')
+    getIframeBody()
+      .findByPlaceholderText(defaultEmailInputOptions.labels.placeholder)
+      .should('exist')
     getIframeBody().findByRole('button', { name: 'Send' }).should('be.disabled')
     cy.findByTestId('step-step1').click({ force: true })
     cy.findByRole('textbox', { name: 'Placeholder:' })

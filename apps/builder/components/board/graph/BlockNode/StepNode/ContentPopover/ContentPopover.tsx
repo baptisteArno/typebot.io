@@ -8,10 +8,11 @@ import { ImageUploadContent } from 'components/shared/ImageUploadContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   BubbleStep,
-  BubbleStepContent,
   BubbleStepType,
   ImageBubbleStep,
   TextBubbleStep,
+  VideoBubbleContent,
+  VideoBubbleStep,
 } from 'models'
 import { useRef } from 'react'
 import { VideoUploadContent } from './VideoUploadContent'
@@ -39,14 +40,17 @@ export const ContentPopover = ({ step }: Props) => {
 export const StepContent = ({ step }: Props) => {
   const { updateStep } = useTypebot()
 
-  const handleContentChange = (content: BubbleStepContent) =>
-    updateStep(step.id, { content } as Partial<ImageBubbleStep>)
+  const handleContentChange = (url: string) =>
+    updateStep(step.id, { content: { url } } as Partial<ImageBubbleStep>)
+
+  const handleVideoContentChange = (content: VideoBubbleContent) =>
+    updateStep(step.id, { content } as Partial<VideoBubbleStep>)
 
   switch (step.type) {
     case BubbleStepType.IMAGE: {
       return (
         <ImageUploadContent
-          content={step.content}
+          url={step.content?.url}
           onSubmit={handleContentChange}
         />
       )
@@ -55,7 +59,7 @@ export const StepContent = ({ step }: Props) => {
       return (
         <VideoUploadContent
           content={step.content}
-          onSubmit={handleContentChange}
+          onSubmit={handleVideoContentChange}
         />
       )
     }

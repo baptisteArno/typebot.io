@@ -1,22 +1,23 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { IntegrationStepType } from 'models'
+import { prepareDbAndSignIn, removePreventReload } from 'cypress/support'
+import {
+  defaultGoogleAnalyticsOptions,
+  IntegrationStepType,
+  Step,
+} from 'models'
 
 describe('Google Analytics', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: IntegrationStepType.GOOGLE_ANALYTICS })
-    cy.signOut()
-  })
+  afterEach(removePreventReload)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
+  beforeEach(() => {
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: IntegrationStepType.GOOGLE_ANALYTICS,
+      options: defaultGoogleAnalyticsOptions,
+    } as Step)
   })
 
   it('can be filled correctly', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.intercept({
       url: '/g/collect',

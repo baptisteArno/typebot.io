@@ -4,9 +4,9 @@ import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { typebotId } = JSON.parse(req.body)
+    const { typebotId } = JSON.parse(req.body) as { typebotId: string }
     const result = await prisma.result.create({
-      data: { typebotId },
+      data: { typebotId, isCompleted: false },
     })
     return res.send(result)
   }

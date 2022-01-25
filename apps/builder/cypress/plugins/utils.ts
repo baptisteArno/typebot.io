@@ -1,12 +1,11 @@
 import {
   Block,
-  Theme,
-  BackgroundType,
-  Settings,
   Typebot,
   Table,
   Step,
   ChoiceItem,
+  defaultTheme,
+  defaultSettings,
 } from 'models'
 
 export const parseTestTypebot = ({
@@ -24,26 +23,13 @@ export const parseTestTypebot = ({
   steps: Table<Step>
   choiceItems?: Table<ChoiceItem>
 }): Typebot => {
-  const theme: Theme = {
-    general: {
-      font: 'Open Sans',
-      background: { type: BackgroundType.NONE, content: '#ffffff' },
-    },
-  }
-  const settings: Settings = {
-    typingEmulation: {
-      enabled: true,
-      speed: 300,
-      maxDelay: 1.5,
-    },
-  }
   return {
     id,
     folderId: null,
     name,
     ownerId,
-    theme,
-    settings,
+    theme: defaultTheme,
+    settings: defaultSettings,
     createdAt: new Date(),
     blocks: {
       byId: {

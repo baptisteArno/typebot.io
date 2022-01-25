@@ -94,12 +94,23 @@
     "allIds": ["benDCcLMUWNvi6Fg6CXE9H", "6Tax9rw7L8kmRn9JRD2Mrg"]
   },
   "theme": {
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "None", "content": "#ffffff" }
-    }
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": { "font": "Open Sans", "background": { "type": "None" } }
   },
   "settings": {
+    "general": { "isBrandingEnabled": true },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
   "publicId": null

@@ -1,4 +1,4 @@
-import { ChoiceInputStep, ChoiceItem, Table, Target } from 'models'
+import { ChoiceInputStep, ChoiceItem, Table } from 'models'
 
 export const getSingleChoiceTargetId = (
   currentStep: ChoiceInputStep,

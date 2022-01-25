@@ -31,7 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({
       where: { id: typebotId },
-      data,
+      data: {
+        ...data,
+        theme: data.theme ?? undefined,
+        settings: data.settings ?? undefined,
+      },
     })
     return res.send({ typebots })
   }

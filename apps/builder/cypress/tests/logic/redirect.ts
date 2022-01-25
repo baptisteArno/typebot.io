@@ -1,21 +1,16 @@
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
 
 describe('Redirect', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
   it('should redirect to URL correctly', () => {
     cy.loadTypebotFixtureInDatabase('typebots/logic/redirect.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
     cy.findByText('Configure...').click()
     cy.findByPlaceholderText('Type a URL...').type('google.com')

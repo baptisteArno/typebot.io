@@ -3,7 +3,7 @@ import { TypebotViewer } from 'bot-engine'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
-import { SideMenu } from '../../components/theme/SideMenu'
+import { ThemeSideMenu } from '../../components/theme/ThemeSideMenu'
 
 export const ThemeContent = () => {
   const { typebot } = useTypebot()
@@ -14,7 +14,7 @@ export const ThemeContent = () => {
   )
   return (
     <Flex h="full" w="full">
-      <SideMenu />
+      <ThemeSideMenu />
       <Flex flex="1">
         {publicTypebot && <TypebotViewer typebot={publicTypebot} />}
       </Flex>

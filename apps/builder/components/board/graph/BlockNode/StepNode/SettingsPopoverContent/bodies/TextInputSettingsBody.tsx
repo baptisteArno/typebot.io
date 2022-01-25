@@ -6,7 +6,7 @@ import { TextInputOptions, Variable } from 'models'
 import React from 'react'
 
 type TextInputSettingsBodyProps = {
-  options?: TextInputOptions
+  options: TextInputOptions
   onOptionsChange: (options: TextInputOptions) => void
 }
 
@@ -15,9 +15,9 @@ export const TextInputSettingsBody = ({
   onOptionsChange,
 }: TextInputSettingsBodyProps) => {
   const handlePlaceholderChange = (placeholder: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
+    onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+    onOptionsChange({ ...options, labels: { ...options.labels, button } })
   const handleLongChange = (isLong: boolean) =>
     onOptionsChange({ ...options, isLong })
   const handleVariableChange = (variable?: Variable) =>
@@ -37,7 +37,7 @@ export const TextInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="placeholder"
-          initialValue={options?.labels?.placeholder ?? 'Type your answer...'}
+          initialValue={options.labels.placeholder}
           delay={100}
           onChange={handlePlaceholderChange}
         />
@@ -48,7 +48,7 @@ export const TextInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="button"
-          initialValue={options?.labels?.button ?? 'Send'}
+          initialValue={options.labels.button}
           delay={100}
           onChange={handleButtonLabelChange}
         />
@@ -58,7 +58,7 @@ export const TextInputSettingsBody = ({
           Save answer in a variable:
         </FormLabel>
         <VariableSearchInput
-          initialVariableId={options?.variableId}
+          initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
       </Stack>

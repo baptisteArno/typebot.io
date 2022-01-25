@@ -1,21 +1,16 @@
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
 
 describe('Condition step', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
   it('options should work', () => {
     cy.loadTypebotFixtureInDatabase('typebots/logic/condition.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
 
     cy.findAllByText('Equal to').first().click()

@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
-import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { TableListItemProps } from 'components/shared/TableList'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { Comparison, Variable, ComparisonOperators } from 'models'

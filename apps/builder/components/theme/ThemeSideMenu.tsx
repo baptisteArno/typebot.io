@@ -17,17 +17,17 @@ import { ChatThemeSettings } from './ChatSettings'
 import { CustomCssSettings } from './CustomCssSettings/CustomCssSettings'
 import { GeneralSettings } from './GeneralSettings'
 
-export const SideMenu = () => {
+export const ThemeSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot()
 
   const handleChatThemeChange = (chat: ChatTheme) =>
-    updateTypebot({ theme: { ...typebot?.theme, chat } })
+    typebot && updateTypebot({ theme: { ...typebot.theme, chat } })
 
   const handleGeneralThemeChange = (general: GeneralTheme) =>
-    updateTypebot({ theme: { ...typebot?.theme, general } })
+    typebot && updateTypebot({ theme: { ...typebot.theme, general } })
 
   const handleCustomCssChange = (customCss: string) =>
-    updateTypebot({ theme: { ...typebot?.theme, customCss } })
+    typebot && updateTypebot({ theme: { ...typebot.theme, customCss } })
 
   return (
     <Stack
@@ -53,10 +53,12 @@ export const SideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            <GeneralSettings
-              generalTheme={typebot?.theme?.general}
-              onGeneralThemeChange={handleGeneralThemeChange}
-            />
+            {typebot && (
+              <GeneralSettings
+                generalTheme={typebot.theme.general}
+                onGeneralThemeChange={handleGeneralThemeChange}
+              />
+            )}
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
@@ -68,10 +70,12 @@ export const SideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            <ChatThemeSettings
-              chatTheme={typebot?.theme?.chat}
-              onChatThemeChange={handleChatThemeChange}
-            />
+            {typebot && (
+              <ChatThemeSettings
+                chatTheme={typebot.theme.chat}
+                onChatThemeChange={handleChatThemeChange}
+              />
+            )}
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
@@ -83,10 +87,12 @@ export const SideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            <CustomCssSettings
-              customCss={typebot?.theme?.customCss}
-              onCustomCssChange={handleCustomCssChange}
-            />
+            {typebot && (
+              <CustomCssSettings
+                customCss={typebot.theme.customCss}
+                onCustomCssChange={handleCustomCssChange}
+              />
+            )}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

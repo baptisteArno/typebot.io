@@ -6,29 +6,29 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export const SmartNumberInput = ({
-  initialValue,
+  value,
   onValueChange,
   ...props
 }: {
-  initialValue?: number
+  value?: number
   onValueChange: (value?: number) => void
 } & NumberInputProps) => {
-  const [value, setValue] = useState(initialValue?.toString() ?? '')
+  const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
 
-  useEffect(() => {
+  const handleValueChange = (value: string) => {
+    setCurrentValue(value)
     if (value.endsWith('.') || value.endsWith(',')) return
-    if (value === '') onValueChange(undefined)
+    if (value === '') return onValueChange(undefined)
     const newValue = parseFloat(value)
     if (isNaN(newValue)) return
     onValueChange(newValue)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
+  }
 
   return (
-    <NumberInput onChange={setValue} value={value} {...props}>
+    <NumberInput onChange={handleValueChange} value={currentValue} {...props}>
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />

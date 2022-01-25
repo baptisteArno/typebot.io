@@ -1,5 +1,5 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { TableListItemProps } from 'components/shared/TableList'
 import { KeyValue } from 'models'
 

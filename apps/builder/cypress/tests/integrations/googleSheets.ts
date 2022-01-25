@@ -1,16 +1,13 @@
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
+import { users } from 'cypress/plugins/data'
+import { getIframeBody, removePreventReload } from 'cypress/support'
 
 describe('Google sheets', () => {
-  beforeEach(() => {
-    cy.task('seed', Cypress.env('GOOGLE_SHEETS_REFRESH_TOKEN'))
-    cy.signOut()
-  })
+  afterEach(removePreventReload)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
+  beforeEach(() => {
+    cy.signOut()
+    cy.task('seed', Cypress.env('GOOGLE_SHEETS_REFRESH_TOKEN'))
+    cy.signIn(users[1].email)
   })
 
   it('Insert row should work', () => {
@@ -19,7 +16,6 @@ describe('Google sheets', () => {
       method: 'POST',
     }).as('insertRowInGoogleSheets')
     cy.loadTypebotFixtureInDatabase('typebots/integrations/googleSheets.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
 
     fillInSpreadsheetInfo()
@@ -55,7 +51,6 @@ describe('Google sheets', () => {
       method: 'PATCH',
     }).as('updateRowInGoogleSheets')
     cy.loadTypebotFixtureInDatabase('typebots/integrations/googleSheets.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
 
     fillInSpreadsheetInfo()
@@ -87,7 +82,6 @@ describe('Google sheets', () => {
     cy.loadTypebotFixtureInDatabase(
       'typebots/integrations/googleSheetsGet.json'
     )
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
 
     fillInSpreadsheetInfo()

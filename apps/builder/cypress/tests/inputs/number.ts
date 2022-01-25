@@ -1,20 +1,26 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultNumberInputOptions, InputStepType, Step } from 'models'
 
 describe('Number input', () => {
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.NUMBER })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.NUMBER,
+      options: defaultNumberInputOptions,
+    } as Step)
   })
+  afterEach(removePreventReload)
 
   it('options should work', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody()
-      .findByPlaceholderText('Type your answer...')
+      .findByPlaceholderText(defaultNumberInputOptions.labels.placeholder)
       .should('have.attr', 'type')
       .should('equal', 'number')
     getIframeBody().findByRole('button', { name: 'Send' }).should('be.disabled')

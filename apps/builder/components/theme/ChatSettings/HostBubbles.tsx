@@ -4,12 +4,9 @@ import React from 'react'
 import { ColorPicker } from '../GeneralSettings/ColorPicker'
 
 type Props = {
-  hostBubbles?: ContainerColors
+  hostBubbles: ContainerColors
   onHostBubblesChange: (hostBubbles: ContainerColors) => void
 }
-
-const defaultBackgroundColor = '#f7f8ff'
-const defaultTextColor = '#303235'
 
 export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
   const handleBackgroundChange = (backgroundColor: string) =>
@@ -22,14 +19,14 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={hostBubbles?.backgroundColor ?? defaultBackgroundColor}
+          initialColor={hostBubbles.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
         <ColorPicker
-          initialColor={hostBubbles?.color ?? defaultTextColor}
+          initialColor={hostBubbles.color}
           onColorChange={handleTextChange}
         />
       </Flex>

@@ -1,7 +1,15 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
-import { BubbleStepType, Step, VideoBubbleContentType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import {
+  BubbleStepType,
+  defaultVideoBubbleContent,
+  Step,
+  VideoBubbleContentType,
+} from 'models'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
@@ -9,22 +17,17 @@ const youtubeVideoSrc = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 const vimeoVideoSrc = 'https://vimeo.com/649301125'
 
 describe('Video bubbles', () => {
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
   describe('Content settings', () => {
     beforeEach(() => {
-      cy.task('seed')
+      prepareDbAndSignIn()
       createTypebotWithStep({
         type: BubbleStepType.VIDEO,
+        content: defaultVideoBubbleContent,
       } as Omit<Step, 'id' | 'blockId'>)
-      cy.signOut()
     })
+    afterEach(removePreventReload)
 
     it('upload image file correctly', () => {
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot3/edit')
       cy.findByText('Click to edit...').click()
       cy.findByPlaceholderText('Paste the video link...').type(videoSrc, {
@@ -53,10 +56,8 @@ describe('Video bubbles', () => {
   })
 
   describe('Preview', () => {
-    beforeEach(() => {
-      cy.task('seed')
-      cy.signOut()
-    })
+    beforeEach(prepareDbAndSignIn)
+    afterEach(removePreventReload)
 
     it('should display video correctly', () => {
       createTypebotWithStep({
@@ -66,7 +67,6 @@ describe('Video bubbles', () => {
           url: videoSrc,
         },
       } as Omit<Step, 'id' | 'blockId'>)
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot3/edit')
       cy.findByRole('button', { name: 'Preview' }).click()
       getIframeBody()
@@ -84,7 +84,6 @@ describe('Video bubbles', () => {
           id: 'dQw4w9WgXcQ',
         },
       } as Omit<Step, 'id' | 'blockId'>)
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot3/edit')
       cy.findByRole('button', { name: 'Preview' }).click()
       getIframeBody()
@@ -103,7 +102,6 @@ describe('Video bubbles', () => {
           id: '649301125',
         },
       } as Omit<Step, 'id' | 'blockId'>)
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot3/edit')
       cy.findByRole('button', { name: 'Preview' }).click()
       getIframeBody()

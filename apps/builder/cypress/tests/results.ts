@@ -1,19 +1,21 @@
 import path from 'path'
 import { parse } from 'papaparse'
+import { prepareDbAndSignIn, removePreventReload } from 'cypress/support'
+
+const downloadsFolder = Cypress.config('downloadsFolder')
 
 describe('Results page', () => {
   beforeEach(() => {
+    prepareDbAndSignIn()
     cy.intercept({ url: '/api/typebots/typebot2/results*', method: 'GET' }).as(
       'getResults'
     )
-    cy.task('seed')
-    cy.signOut()
   })
 
+  afterEach(removePreventReload)
+
   it('results should be deletable', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot2/results')
-    cy.wait('@getResults')
     cy.findByText('content198').should('exist')
     cy.findByText('content197').should('exist')
     cy.findAllByRole('checkbox').eq(2).check({ force: true })
@@ -30,7 +32,6 @@ describe('Results page', () => {
   })
 
   it('submissions table should have infinite scroll', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot2/results')
     cy.findByText('content50').should('not.exist')
     cy.findByText('content199').should('exist')
@@ -44,8 +45,6 @@ describe('Results page', () => {
   })
 
   it('should correctly export selection in CSV', () => {
-    const downloadsFolder = Cypress.config('downloadsFolder')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot2/results')
     cy.wait('@getResults')
     cy.findByRole('button', { name: 'Export' }).should('not.exist')

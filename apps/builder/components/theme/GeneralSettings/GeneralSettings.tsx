@@ -1,15 +1,13 @@
 import { Stack } from '@chakra-ui/react'
-import { Background, BackgroundType, GeneralTheme } from 'models'
+import { Background, GeneralTheme } from 'models'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { FontSelector } from './FontSelector'
 
 type Props = {
-  generalTheme?: GeneralTheme
+  generalTheme: GeneralTheme
   onGeneralThemeChange: (general: GeneralTheme) => void
 }
-
-const defaultFont = 'Open Sans'
 
 export const GeneralSettings = ({
   generalTheme,
@@ -24,11 +22,11 @@ export const GeneralSettings = ({
   return (
     <Stack spacing={6}>
       <FontSelector
-        activeFont={generalTheme?.font ?? defaultFont}
+        activeFont={generalTheme.font}
         onSelectFont={handleSelectFont}
       />
       <BackgroundSelector
-        background={generalTheme?.background ?? { type: BackgroundType.NONE }}
+        background={generalTheme.background}
         onBackgroundChange={handleBackgroundChange}
       />
     </Stack>

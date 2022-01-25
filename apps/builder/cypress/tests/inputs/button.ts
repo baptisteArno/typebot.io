@@ -1,16 +1,22 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultChoiceInputOptions, InputStepType, Step } from 'models'
 
 describe('Button input', () => {
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.CHOICE })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.CHOICE,
+      options: { ...defaultChoiceInputOptions, itemIds: ['item1'] },
+    } as Step)
   })
+  afterEach(removePreventReload)
 
   it('Can edit choice items', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByDisplayValue('Click to edit').type('Item 1{enter}')
     cy.findByText('Item 1').trigger('mouseover')
@@ -46,7 +52,6 @@ describe('Button input', () => {
 
   it('Single choice targets should work', () => {
     cy.loadTypebotFixtureInDatabase('typebots/singleChoiceTarget.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody().findByRole('button', { name: 'Burgers' }).click()

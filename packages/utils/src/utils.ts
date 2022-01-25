@@ -14,6 +14,8 @@ import {
   TextInputStep,
   TextBubbleStep,
   WebhookStep,
+  StepType,
+  StepWithOptionsType,
 } from 'models'
 
 export const sendRequest = async <ResponseData>({
@@ -78,3 +80,14 @@ export const isIntegrationStep = (step: Step): step is IntegrationStep =>
 
 export const isWebhookStep = (step: Step): step is WebhookStep =>
   step.type === IntegrationStepType.WEBHOOK
+
+export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
+  (Object.values(BubbleStepType) as string[]).includes(type)
+
+export const stepTypeHasOption = (
+  type: StepType
+): type is StepWithOptionsType =>
+  (Object.values(InputStepType) as string[])
+    .concat(Object.values(LogicStepType))
+    .concat(Object.values(IntegrationStepType))
+    .includes(type)

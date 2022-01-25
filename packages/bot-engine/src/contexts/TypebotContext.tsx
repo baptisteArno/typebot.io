@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 const typebotContext = createContext<{
   typebot: PublicTypebot
   updateVariableValue: (variableId: string, value: string) => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

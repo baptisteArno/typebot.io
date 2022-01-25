@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useMemo } from 'react'
 import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
@@ -61,7 +62,7 @@ export const TypebotViewer = ({
         }}
       />
       <TypebotContext typebot={typebot}>
-        <AnswersContext typebotId={typebot.id}>
+        <AnswersContext>
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
@@ -78,6 +79,17 @@ export const TypebotViewer = ({
                 onCompleted={handleCompleted}
               />
             </div>
+            {typebot.settings.general.isBrandingEnabled && (
+              <a
+                href={'https://www.typebot.io/?utm_source=litebadge'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed py-1 px-2 bg-white z-50 rounded shadow-md"
+                style={{ bottom: '20px' }}
+              >
+                Made with <span className="text-blue-500">Typebot</span>.
+              </a>
+            )}
           </div>
         </AnswersContext>
       </TypebotContext>

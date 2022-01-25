@@ -1,11 +1,13 @@
+import { users } from 'cypress/plugins/data'
+import { prepareDbAndSignIn, removePreventReload } from 'cypress/support'
+
 describe('Dashboard page', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
+
+  afterEach(removePreventReload)
 
   it('folders navigation should work', () => {
-    cy.signIn('test1@gmail.com')
+    cy.signIn(users[0].email)
     cy.visit('/typebots')
     createFolder('My folder #1')
     cy.findByTestId('folder-button').click()
@@ -27,7 +29,6 @@ describe('Dashboard page', () => {
   })
 
   it('folders and typebots should be deletable', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots')
     cy.findByText('Folder #1').should('exist')
     cy.findAllByRole('button', { name: 'Show folder menu' }).first().click()
@@ -42,7 +43,6 @@ describe('Dashboard page', () => {
   })
 
   it('folders should be draggable and droppable', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots')
     cy.findByTestId('typebot-button-typebot1').mouseMoveBy(-100, 0, {
       delay: 120,

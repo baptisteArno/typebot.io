@@ -1,16 +1,22 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultDateInputOptions, InputStepType, Step } from 'models'
 
 describe('Date input', () => {
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.DATE })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.DATE,
+      options: defaultDateInputOptions,
+    } as Step)
   })
+  afterEach(removePreventReload)
 
   it('options should work', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody()

@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { VideoBubbleContent, VideoBubbleContentType } from 'models'
 import urlParser from 'js-video-url-parser/lib/base'
 import 'js-video-url-parser/lib/provider/vimeo'

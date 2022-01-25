@@ -103,7 +103,7 @@ export const StepNodeContent = ({ step }: Props) => {
       return <ConditionNodeContent step={step} />
     }
     case LogicStepType.REDIRECT: {
-      if (!step.options) return <Text color={'gray.500'}>Configure...</Text>
+      if (!step.options.url) return <Text color={'gray.500'}>Configure...</Text>
       return <Text isTruncated>Redirect to {step.options?.url}</Text>
     }
     case IntegrationStepType.GOOGLE_SHEETS: {

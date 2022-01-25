@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
-import { SettingsContent } from 'components/settings/SettingsContent'
+import { SettingsContent } from 'layouts/settings/SettingsContent'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
 import React from 'react'
 

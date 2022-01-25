@@ -1,22 +1,27 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Button, HStack, Input, Stack } from '@chakra-ui/react'
 import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ImageBubbleContent } from 'models'
+import { useDebounce } from 'use-debounce'
 
 type Props = {
-  content?: ImageBubbleContent
-  onSubmit: (content: ImageBubbleContent) => void
+  url?: string
+  onSubmit: (url: string) => void
+  isGiphyEnabled?: boolean
 }
 
-export const ImageUploadContent = ({ content, onSubmit }: Props) => {
+export const ImageUploadContent = ({
+  url,
+  onSubmit,
+  isGiphyEnabled = true,
+}: Props) => {
   const [currentTab, setCurrentTab] = useState<'link' | 'upload' | 'giphy'>(
     'upload'
   )
 
-  const handleSubmit = (url: string) => onSubmit({ url })
+  const handleSubmit = (url: string) => onSubmit(url)
   return (
     <Stack>
       <HStack>
@@ -34,7 +39,7 @@ export const ImageUploadContent = ({ content, onSubmit }: Props) => {
         >
           Embed link
         </Button>
-        {process.env.NEXT_PUBLIC_GIPHY_API_KEY && (
+        {process.env.NEXT_PUBLIC_GIPHY_API_KEY && isGiphyEnabled && (
           <Button
             variant={currentTab === 'giphy' ? 'solid' : 'ghost'}
             onClick={() => setCurrentTab('giphy')}
@@ -45,11 +50,7 @@ export const ImageUploadContent = ({ content, onSubmit }: Props) => {
         )}
       </HStack>
 
-      <BodyContent
-        tab={currentTab}
-        onSubmit={handleSubmit}
-        url={content?.url}
-      />
+      <BodyContent tab={currentTab} onSubmit={handleSubmit} url={url} />
     </Stack>
   )
 }
@@ -93,26 +94,23 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
 
 const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
   const [imageUrl, setImageUrl] = useState(initialUrl ?? '')
+  const [debouncedImageUrl] = useDebounce(imageUrl, 100)
+
+  useEffect(() => {
+    if (initialUrl === debouncedImageUrl) return
+    onNewUrl(imageUrl)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedImageUrl])
 
   const handleImageUrlChange = (e: ChangeEvent<HTMLInputElement>) =>
     setImageUrl(e.target.value)
 
-  const handleUrlSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    onNewUrl(imageUrl)
-  }
-
   return (
-    <Stack as="form" onSubmit={handleUrlSubmit}>
-      <Input
-        placeholder={'Paste the image link...'}
-        onChange={handleImageUrlChange}
-        value={imageUrl}
-      />
-      <Button type="submit" disabled={imageUrl === ''} colorScheme="blue">
-        Embed image
-      </Button>
-    </Stack>
+    <Input
+      placeholder={'Paste the image link...'}
+      onChange={handleImageUrlChange}
+      value={imageUrl}
+    />
   )
 }
 

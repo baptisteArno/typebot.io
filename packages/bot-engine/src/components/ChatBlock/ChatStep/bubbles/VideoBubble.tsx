@@ -28,6 +28,7 @@ export const VideoBubble = ({ step, onTransitionEnd }: Props) => {
 
   useEffect(() => {
     showContentAfterMediaLoad()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const showContentAfterMediaLoad = () => {
@@ -86,6 +87,7 @@ const VideoContent = ({
 }) => {
   const url = useMemo(
     () => parseVariables({ text: content?.url, variables: variables }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [variables]
   )
   if (!content?.type) return <></>

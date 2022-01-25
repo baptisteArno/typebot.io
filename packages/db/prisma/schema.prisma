@@ -138,7 +138,7 @@ model Result {
   typebotId   String
   typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers     Answer[]
-  isCompleted Boolean?
+  isCompleted Boolean
 }
 
 model Answer {

@@ -1,7 +1,10 @@
-import { Step, InputStepType } from 'models'
+import { Step } from 'models'
 import { parseTestTypebot } from './utils'
 
-export const userIds = ['user1', 'user2']
+export const users = [
+  { id: 'user1', email: 'test1@gmail.com' },
+  { id: 'user2', email: 'test2@gmail.com' },
+]
 
 export const createTypebotWithStep = (step: Omit<Step, 'id' | 'blockId'>) => {
   cy.task(
@@ -9,21 +12,15 @@ export const createTypebotWithStep = (step: Omit<Step, 'id' | 'blockId'>) => {
     parseTestTypebot({
       id: 'typebot3',
       name: 'Typebot #3',
-      ownerId: userIds[1],
+      ownerId: users[1].id,
       steps: {
         byId: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
           step1: {
             ...step,
             id: 'step1',
             blockId: 'block1',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            options:
-              step.type === InputStepType.CHOICE
-                ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  //@ts-ignore
-                  { itemIds: ['item1'] }
-                : undefined,
           },
         },
         allIds: ['step1'],
@@ -39,13 +36,10 @@ export const createTypebotWithStep = (step: Omit<Step, 'id' | 'blockId'>) => {
         },
         allIds: ['block1'],
       },
-      choiceItems:
-        step.type === InputStepType.CHOICE
-          ? {
-              byId: { item1: { stepId: 'step1', id: 'item1' } },
-              allIds: ['item1'],
-            }
-          : undefined,
+      choiceItems: {
+        byId: { item1: { stepId: 'step1', id: 'item1' } },
+        allIds: ['item1'],
+      },
     })
   )
 }

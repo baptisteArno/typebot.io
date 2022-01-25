@@ -4,13 +4,9 @@ import React from 'react'
 import { ColorPicker } from '../GeneralSettings/ColorPicker'
 
 type Props = {
-  inputs?: InputColors
+  inputs: InputColors
   onInputsChange: (buttons: InputColors) => void
 }
-
-const defaultBackgroundColor = '#ffffff'
-const defaultTextColor = '#303235'
-const defaultPlaceholderColor = '#9095A0'
 
 export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
   const handleBackgroundChange = (backgroundColor: string) =>
@@ -25,21 +21,21 @@ export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={inputs?.backgroundColor ?? defaultBackgroundColor}
+          initialColor={inputs.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
         <ColorPicker
-          initialColor={inputs?.color ?? defaultTextColor}
+          initialColor={inputs.color}
           onColorChange={handleTextChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Placeholder text:</Text>
         <ColorPicker
-          initialColor={inputs?.placeholderColor ?? defaultPlaceholderColor}
+          initialColor={inputs.placeholderColor}
           onColorChange={handlePlaceholderChange}
         />
       </Flex>

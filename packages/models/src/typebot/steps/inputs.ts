@@ -25,36 +25,40 @@ export type InputStepOptions =
   | EmailInputOptions
   | DateInputOptions
   | UrlInputOptions
+  | PhoneNumberInputOptions
+  | ChoiceInputOptions
 
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
-  options?: TextInputOptions
+  options: TextInputOptions
 }
 
 export type NumberInputStep = StepBase & {
   type: InputStepType.NUMBER
-  options?: NumberInputOptions
+  options: NumberInputOptions
 }
 
 export type EmailInputStep = StepBase & {
   type: InputStepType.EMAIL
-  options?: EmailInputOptions
+  options: EmailInputOptions
 }
 
 export type UrlInputStep = StepBase & {
   type: InputStepType.URL
-  options?: UrlInputOptions
+  options: UrlInputOptions
 }
 
 export type DateInputStep = StepBase & {
   type: InputStepType.DATE
-  options?: DateInputOptions
+  options: DateInputOptions
 }
 
 export type PhoneNumberInputStep = StepBase & {
   type: InputStepType.PHONE
-  options?: OptionBase & InputTextOptionsBase
+  options: OptionBase & InputTextOptionsBase
 }
+
+export type PhoneNumberInputOptions = OptionBase & InputTextOptionsBase
 
 export type ChoiceInputStep = StepBase & {
   type: InputStepType.CHOICE
@@ -70,19 +74,19 @@ export type ChoiceItem = {
 
 type OptionBase = { variableId?: string }
 type InputTextOptionsBase = {
-  labels?: { placeholder?: string; button?: string }
+  labels: { placeholder: string; button: string }
 }
 
 export type ChoiceInputOptions = OptionBase & {
   itemIds: string[]
-  isMultipleChoice?: boolean
-  buttonLabel?: string
+  isMultipleChoice: boolean
+  buttonLabel: string
 }
 
 export type DateInputOptions = OptionBase & {
-  labels?: { button?: string; from?: string; to?: string }
-  hasTime?: boolean
-  isRange?: boolean
+  labels: { button: string; from: string; to: string }
+  hasTime: boolean
+  isRange: boolean
 }
 
 export type EmailInputOptions = OptionBase & InputTextOptionsBase
@@ -91,7 +95,7 @@ export type UrlInputOptions = OptionBase & InputTextOptionsBase
 
 export type TextInputOptions = OptionBase &
   InputTextOptionsBase & {
-    isLong?: boolean
+    isLong: boolean
   }
 
 export type NumberInputOptions = OptionBase &
@@ -100,3 +104,41 @@ export type NumberInputOptions = OptionBase &
     max?: number
     step?: number
   }
+
+const defaultButtonLabel = 'Send'
+
+export const defaultTextInputOptions: TextInputOptions = {
+  isLong: false,
+  labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
+}
+
+export const defaultNumberInputOptions: NumberInputOptions = {
+  labels: { button: defaultButtonLabel, placeholder: 'Type a number...' },
+}
+
+export const defaultEmailInputOptions: EmailInputOptions = {
+  labels: { button: defaultButtonLabel, placeholder: 'Type your email...' },
+}
+
+export const defaultUrlInputOptions: UrlInputOptions = {
+  labels: { button: defaultButtonLabel, placeholder: 'Type a URL...' },
+}
+
+export const defaultDateInputOptions: DateInputOptions = {
+  hasTime: false,
+  isRange: false,
+  labels: { button: defaultButtonLabel, from: 'From:', to: 'To:' },
+}
+
+export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
+  labels: {
+    button: defaultButtonLabel,
+    placeholder: 'Type your phone number...',
+  },
+}
+
+export const defaultChoiceInputOptions: ChoiceInputOptions = {
+  buttonLabel: defaultButtonLabel,
+  isMultipleChoice: false,
+  itemIds: [],
+}

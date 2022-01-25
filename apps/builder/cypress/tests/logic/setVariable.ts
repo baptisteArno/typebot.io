@@ -1,23 +1,18 @@
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
 
 describe('Set variables', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
-  it('options should work', () => {
+  it.only('options should work', () => {
     cy.loadTypebotFixtureInDatabase('typebots/logic/setVariable.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/edit')
-    cy.findByText('Type your answer...').click()
+    cy.findByText('Type a number...').click()
     cy.createVariable('Num')
     cy.findAllByText('Click to edit...').first().click()
     cy.createVariable('Total')
@@ -31,9 +26,7 @@ describe('Set variables', () => {
       'Custom value'
     )
     cy.findByRole('button', { name: 'Preview' }).click()
-    getIframeBody()
-      .findByPlaceholderText('Type your answer...')
-      .type('365{enter}')
+    getIframeBody().findByPlaceholderText('Type a number...').type('365{enter}')
     getIframeBody().findByText('Total: 365000').should('exist')
     getIframeBody().findByText('Custom var: Custom value')
   })

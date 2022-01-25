@@ -1,27 +1,26 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultTextInputOptions, InputStepType, Step } from 'models'
 
 describe('Text input', () => {
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.TEXT })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.TEXT,
+      options: defaultTextInputOptions,
+    } as Step)
   })
-
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
   it('options should work', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody()
-      .findByPlaceholderText('Type your answer...')
+      .findByPlaceholderText(defaultTextInputOptions.labels.placeholder)
       .should('have.attr', 'type')
       .should('equal', 'text')
     getIframeBody().findByRole('button', { name: 'Send' }).should('be.disabled')

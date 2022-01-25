@@ -40,11 +40,24 @@ declare global {
   }
 }
 
+const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+  if (resizeObserverLoopErrRe.test(err.message)) {
     return false
   }
 })
+
+export const prepareDbAndSignIn = () => {
+  cy.signOut()
+  cy.task('seed')
+  cy.signIn(users[1].email)
+}
+
+export const removePreventReload = () => {
+  cy.window().then((win) => {
+    win.removeEventListener('beforeunload', preventUserFromRefreshing)
+  })
+}
 
 export const getIframeBody = () => {
   return cy
@@ -57,6 +70,8 @@ export const getIframeBody = () => {
 // Import commands.js using ES2015 syntax:
 import '@testing-library/cypress/add-commands'
 import 'cypress-file-upload'
+import { users } from 'cypress/plugins/data'
+import { preventUserFromRefreshing } from 'cypress/plugins/utils'
 import './commands'
 
 // Alternatively you can use CommonJS syntax:

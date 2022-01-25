@@ -1,20 +1,27 @@
 import { createTypebotWithStep } from 'cypress/plugins/data'
-import { getIframeBody } from 'cypress/support'
-import { InputStepType } from 'models'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
+import { defaultUrlInputOptions, InputStepType, Step } from 'models'
 
 describe('URL input', () => {
+  afterEach(removePreventReload)
+
   beforeEach(() => {
-    cy.task('seed')
-    createTypebotWithStep({ type: InputStepType.URL })
-    cy.signOut()
+    prepareDbAndSignIn()
+    createTypebotWithStep({
+      type: InputStepType.URL,
+      options: defaultUrlInputOptions,
+    } as Step)
   })
 
   it('options should work', () => {
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot3/edit')
     cy.findByRole('button', { name: 'Preview' }).click()
     getIframeBody()
-      .findByPlaceholderText('Type your URL...')
+      .findByPlaceholderText(defaultUrlInputOptions.labels.placeholder)
       .should('have.attr', 'type')
       .should('eq', 'url')
     getIframeBody().findByRole('button', { name: 'Send' }).should('be.disabled')

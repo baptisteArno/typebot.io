@@ -16,7 +16,7 @@ export type LogicStepOptions =
 
 export type SetVariableStep = StepBase & {
   type: LogicStepType.SET_VARIABLE
-  options?: SetVariableOptions
+  options: SetVariableOptions
 }
 
 export type ConditionStep = StepBase & {
@@ -28,7 +28,7 @@ export type ConditionStep = StepBase & {
 
 export type RedirectStep = StepBase & {
   type: LogicStepType.REDIRECT
-  options?: RedirectOptions
+  options: RedirectOptions
 }
 
 export enum LogicalOperator {
@@ -47,13 +47,13 @@ export enum ComparisonOperators {
 
 export type ConditionOptions = {
   comparisons: Table<Comparison>
-  logicalOperator?: LogicalOperator
+  logicalOperator: LogicalOperator
 }
 
 export type Comparison = {
   id: string
   variableId?: string
-  comparisonOperator: ComparisonOperators
+  comparisonOperator?: ComparisonOperators
   value?: string
 }
 
@@ -64,5 +64,14 @@ export type SetVariableOptions = {
 
 export type RedirectOptions = {
   url?: string
-  isNewTab?: boolean
+  isNewTab: boolean
 }
+
+export const defaultSetVariablesOptions: SetVariableOptions = {}
+
+export const defaultConditionOptions: ConditionOptions = {
+  comparisons: { byId: {}, allIds: [] },
+  logicalOperator: LogicalOperator.AND,
+}
+
+export const defaultRedirectOptions: RedirectOptions = { isNewTab: false }

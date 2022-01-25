@@ -11,7 +11,7 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 const colorsSelection: `#${string}`[] = [
   '#264653',
@@ -37,6 +37,9 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
     onColorChange(color)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [color])
+
+  const handleColorChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setColor(e.target.value)
 
   return (
     <Popover variant="picker">
@@ -89,9 +92,7 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
             aria-label="Color value"
             size="sm"
             value={color}
-            onChange={(e) => {
-              setColor(e.target.value)
-            }}
+            onChange={handleColorChange}
           />
         </PopoverBody>
       </PopoverContent>

@@ -5,7 +5,7 @@ import { SetVariableOptions, Variable } from 'models'
 import React from 'react'
 
 type Props = {
-  options?: SetVariableOptions
+  options: SetVariableOptions
   onOptionsChange: (options: SetVariableOptions) => void
 }
 
@@ -26,7 +26,7 @@ export const SetVariableSettingsBody = ({
         </FormLabel>
         <VariableSearchInput
           onSelectVariable={handleVariableChange}
-          initialVariableId={options?.variableId}
+          initialVariableId={options.variableId}
           id="variable-search"
         />
       </Stack>
@@ -36,7 +36,7 @@ export const SetVariableSettingsBody = ({
         </FormLabel>
         <DebouncedTextarea
           id="expression"
-          initialValue={options?.expressionToEvaluate ?? ''}
+          initialValue={options.expressionToEvaluate ?? ''}
           delay={100}
           onChange={handleExpressionChange}
         />

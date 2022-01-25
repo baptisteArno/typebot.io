@@ -24,11 +24,12 @@ export const ImageBubble = ({ step, onTransitionEnd }: Props) => {
   const url = useMemo(
     () =>
       parseVariables({ text: step.content?.url, variables: typebot.variables }),
-    [typebot.variables]
+    [step.content?.url, typebot.variables]
   )
 
   useEffect(() => {
     showContentAfterMediaLoad()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const showContentAfterMediaLoad = () => {
@@ -83,6 +84,7 @@ export const ImageBubble = ({ step, onTransitionEnd }: Props) => {
               height: isTyping ? '2rem' : 'auto',
               maxWidth: '100%',
             }}
+            alt="Bubble image"
           />
         </div>
       </div>

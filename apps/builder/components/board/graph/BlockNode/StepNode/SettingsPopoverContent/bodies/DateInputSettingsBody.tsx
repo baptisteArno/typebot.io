@@ -6,7 +6,7 @@ import { DateInputOptions, Variable } from 'models'
 import React from 'react'
 
 type DateInputSettingsBodyProps = {
-  options?: DateInputOptions
+  options: DateInputOptions
   onOptionsChange: (options: DateInputOptions) => void
 }
 
@@ -32,23 +32,23 @@ export const DateInputSettingsBody = ({
       <SwitchWithLabel
         id="is-range"
         label={'Is range?'}
-        initialValue={options?.isRange ?? false}
+        initialValue={options.isRange}
         onCheckChange={handleIsRangeChange}
       />
       <SwitchWithLabel
         id="with-time"
         label={'With time?'}
-        initialValue={options?.isRange ?? false}
+        initialValue={options.isRange}
         onCheckChange={handleHasTimeChange}
       />
-      {options?.isRange && (
+      {options.isRange && (
         <Stack>
           <FormLabel mb="0" htmlFor="from">
             From label:
           </FormLabel>
           <DebouncedInput
             id="from"
-            initialValue={options?.labels?.from ?? 'From:'}
+            initialValue={options.labels.from}
             delay={100}
             onChange={handleFromChange}
           />
@@ -61,7 +61,7 @@ export const DateInputSettingsBody = ({
           </FormLabel>
           <DebouncedInput
             id="to"
-            initialValue={options?.labels?.to ?? 'To:'}
+            initialValue={options.labels.to}
             delay={100}
             onChange={handleToChange}
           />
@@ -73,7 +73,7 @@ export const DateInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="button"
-          initialValue={options?.labels?.button ?? 'Send'}
+          initialValue={options.labels.button}
           delay={100}
           onChange={handleButtonLabelChange}
         />
@@ -83,7 +83,7 @@ export const DateInputSettingsBody = ({
           Save answer in a variable:
         </FormLabel>
         <VariableSearchInput
-          initialVariableId={options?.variableId}
+          initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
       </Stack>

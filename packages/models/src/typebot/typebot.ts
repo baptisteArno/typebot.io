@@ -23,8 +23,8 @@ export type Typebot = Omit<
   variables: Table<Variable>
   edges: Table<Edge>
   webhooks: Table<Webhook>
-  theme?: Theme
-  settings?: Settings
+  theme: Theme
+  settings: Settings
 }
 
 export type Block = {

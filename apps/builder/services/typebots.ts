@@ -1,23 +1,41 @@
 import {
   Block,
-  TextBubbleStep,
   PublicTypebot,
   StartStep,
   BubbleStepType,
   InputStepType,
-  ChoiceInputStep,
   LogicStepType,
   Step,
-  ConditionStep,
-  ComparisonOperators,
-  LogicalOperator,
   DraggableStepType,
   DraggableStep,
+  defaultTheme,
+  defaultSettings,
+  StepOptions,
+  BubbleStepContent,
+  IntegrationStepType,
+  defaultTextBubbleContent,
+  defaultImageBubbleContent,
+  defaultVideoBubbleContent,
+  defaultTextInputOptions,
+  defaultNumberInputOptions,
+  defaultEmailInputOptions,
+  defaultDateInputOptions,
+  defaultPhoneInputOptions,
+  defaultUrlInputOptions,
+  defaultChoiceInputOptions,
+  defaultSetVariablesOptions,
+  defaultConditionOptions,
+  defaultRedirectOptions,
+  defaultGoogleSheetsOptions,
+  defaultGoogleAnalyticsOptions,
+  defaultWebhookOptions,
+  StepWithOptionsType,
 } from 'models'
-import shortId, { generate } from 'short-uuid'
+import shortId from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from './utils'
+import { isBubbleStepType, stepTypeHasOption } from 'utils'
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
@@ -114,56 +132,56 @@ export const parseNewStep = (
   blockId: string
 ): DraggableStep => {
   const id = `s${shortId.generate()}`
+  return {
+    id,
+    blockId,
+    type,
+    content: isBubbleStepType(type) ? parseDefaultContent(type) : undefined,
+    options: stepTypeHasOption(type)
+      ? parseDefaultStepOptions(type)
+      : undefined,
+  } as DraggableStep
+}
+
+const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
   switch (type) {
-    case BubbleStepType.TEXT: {
-      const textStep: Pick<TextBubbleStep, 'type' | 'content'> = {
-        type,
-        content: { html: '', richText: [], plainText: '' },
-      }
-      return {
-        id,
-        blockId,
-        ...textStep,
-      }
-    }
-    case InputStepType.CHOICE: {
-      const choiceInput: Pick<ChoiceInputStep, 'type' | 'options'> = {
-        type,
-        options: { itemIds: [] },
-      }
-      return {
-        id,
-        blockId,
-        ...choiceInput,
-      }
-    }
-    case LogicStepType.CONDITION: {
-      const id = generate()
-      const conditionStep: Pick<ConditionStep, 'type' | 'options'> = {
-        type,
-        options: {
-          comparisons: {
-            byId: {
-              [id]: { id, comparisonOperator: ComparisonOperators.EQUAL },
-            },
-            allIds: [id],
-          },
-          logicalOperator: LogicalOperator.AND,
-        },
-      }
-      return {
-        id,
-        blockId,
-        ...conditionStep,
-      }
-    }
-    default: {
-      return {
-        id,
-        blockId,
-        type,
-      }
-    }
+    case BubbleStepType.TEXT:
+      return defaultTextBubbleContent
+    case BubbleStepType.IMAGE:
+      return defaultImageBubbleContent
+    case BubbleStepType.VIDEO:
+      return defaultVideoBubbleContent
+  }
+}
+
+const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
+  switch (type) {
+    case InputStepType.TEXT:
+      return defaultTextInputOptions
+    case InputStepType.NUMBER:
+      return defaultNumberInputOptions
+    case InputStepType.EMAIL:
+      return defaultEmailInputOptions
+    case InputStepType.DATE:
+      return defaultDateInputOptions
+    case InputStepType.PHONE:
+      return defaultPhoneInputOptions
+    case InputStepType.URL:
+      return defaultUrlInputOptions
+    case InputStepType.CHOICE:
+      return defaultChoiceInputOptions
+    case LogicStepType.SET_VARIABLE:
+      return defaultSetVariablesOptions
+    case LogicStepType.CONDITION:
+      return defaultConditionOptions
+    case LogicStepType.REDIRECT:
+      return defaultRedirectOptions
+    case IntegrationStepType.GOOGLE_SHEETS:
+      return defaultGoogleSheetsOptions
+    case IntegrationStepType.GOOGLE_ANALYTICS:
+      return defaultGoogleAnalyticsOptions
+    case IntegrationStepType.WEBHOOK:
+      return defaultWebhookOptions
   }
 }
 
@@ -223,6 +241,8 @@ export const parseNewTypebot = ({
     variables: { byId: {}, allIds: [] },
     edges: { byId: {}, allIds: [] },
     webhooks: { byId: {}, allIds: [] },
+    theme: defaultTheme,
+    settings: defaultSettings,
   }
 }
 

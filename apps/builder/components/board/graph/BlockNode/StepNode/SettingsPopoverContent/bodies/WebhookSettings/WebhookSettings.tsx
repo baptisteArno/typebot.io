@@ -10,7 +10,7 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/InputWithVariableButton'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   HttpMethod,

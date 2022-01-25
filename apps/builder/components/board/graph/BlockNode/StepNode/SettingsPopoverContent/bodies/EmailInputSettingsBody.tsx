@@ -5,7 +5,7 @@ import { EmailInputOptions, Variable } from 'models'
 import React from 'react'
 
 type EmailInputSettingsBodyProps = {
-  options?: EmailInputOptions
+  options: EmailInputOptions
   onOptionsChange: (options: EmailInputOptions) => void
 }
 
@@ -14,9 +14,9 @@ export const EmailInputSettingsBody = ({
   onOptionsChange,
 }: EmailInputSettingsBodyProps) => {
   const handlePlaceholderChange = (placeholder: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
+    onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+    onOptionsChange({ ...options, labels: { ...options.labels, button } })
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
 
@@ -28,7 +28,7 @@ export const EmailInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="placeholder"
-          initialValue={options?.labels?.placeholder ?? 'Type your email...'}
+          initialValue={options.labels.placeholder}
           delay={100}
           onChange={handlePlaceholderChange}
         />
@@ -39,7 +39,7 @@ export const EmailInputSettingsBody = ({
         </FormLabel>
         <DebouncedInput
           id="button"
-          initialValue={options?.labels?.button ?? 'Send'}
+          initialValue={options.labels.button}
           delay={100}
           onChange={handleButtonLabelChange}
         />
@@ -49,7 +49,7 @@ export const EmailInputSettingsBody = ({
           Save answer in a variable:
         </FormLabel>
         <VariableSearchInput
-          initialVariableId={options?.variableId}
+          initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
       </Stack>

@@ -26,7 +26,7 @@ type TextInputProps = {
 }
 
 export const TextInput = ({ step, onChange }: TextInputProps) => {
-  const inputRef = useRef<any>(null)
+  const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
 
   useEffect(() => {
     if (!inputRef.current) return
@@ -102,7 +102,8 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
     case InputStepType.PHONE: {
       return (
         <PhoneInput
-          ref={inputRef}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ref={inputRef as any}
           onChange={handlePhoneNumberChange}
           placeholder={
             step.options?.labels?.placeholder ?? 'Your phone number...'

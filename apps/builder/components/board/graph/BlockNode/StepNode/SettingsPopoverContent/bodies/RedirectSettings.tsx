@@ -5,14 +5,14 @@ import { RedirectOptions } from 'models'
 import React from 'react'
 
 type Props = {
-  options?: RedirectOptions
+  options: RedirectOptions
   onOptionsChange: (options: RedirectOptions) => void
 }
 
 export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
   const handleUrlChange = (url?: string) => onOptionsChange({ ...options, url })
 
-  const handleIsNewTabChange = (isNewTab?: boolean) =>
+  const handleIsNewTabChange = (isNewTab: boolean) =>
     onOptionsChange({ ...options, isNewTab })
 
   return (
@@ -23,7 +23,7 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <DebouncedInput
           id="tracking-id"
-          initialValue={options?.url ?? ''}
+          initialValue={options.url ?? ''}
           placeholder="Type a URL..."
           delay={100}
           onChange={handleUrlChange}
@@ -32,7 +32,7 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
       <SwitchWithLabel
         id="new-tab"
         label="Open in new tab?"
-        initialValue={options?.isNewTab ?? false}
+        initialValue={options.isNewTab}
         onCheckChange={handleIsNewTabChange}
       />
     </Stack>

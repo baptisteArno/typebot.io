@@ -10,7 +10,6 @@ import {
   Cell,
   GoogleSheetsGetOptions,
   GoogleAnalyticsStep,
-  Webhook,
   WebhookStep,
 } from 'models'
 import { stringify } from 'qs'

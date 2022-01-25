@@ -1,22 +1,17 @@
-import { preventUserFromRefreshing } from 'cypress/plugins/utils'
-import { getIframeBody } from 'cypress/support'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
 
 describe('Webhook step', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
 
-  afterEach(() => {
-    cy.window().then((win) => {
-      win.removeEventListener('beforeunload', preventUserFromRefreshing)
-    })
-  })
+  afterEach(removePreventReload)
 
   describe('Configuration', () => {
     it('configuration is working', () => {
       cy.loadTypebotFixtureInDatabase('typebots/integrations/webhook.json')
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot4/edit')
       cy.findByText('Configure...').click()
       cy.findByRole('button', { name: 'GET' }).click()
@@ -80,7 +75,6 @@ describe('Webhook step', () => {
       cy.loadTypebotFixtureInDatabase(
         'typebots/integrations/webhookPreview.json'
       )
-      cy.signIn('test2@gmail.com')
       cy.visit('/typebots/typebot4/edit')
       cy.findByRole('button', { name: 'Preview' }).click()
       getIframeBody().findByRole('button', { name: 'Go' }).click()

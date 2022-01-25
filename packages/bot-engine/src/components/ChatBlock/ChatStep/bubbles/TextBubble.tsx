@@ -28,6 +28,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const content = useMemo(
     () =>
       parseVariables({ text: step.content.html, variables: typebot.variables }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [typebot.variables]
   )
 
@@ -40,6 +41,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
     setTimeout(() => {
       onTypingEnd()
     }, typingTimeout)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onTypingEnd = () => {

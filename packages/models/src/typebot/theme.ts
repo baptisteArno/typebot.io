@@ -1,28 +1,28 @@
 export type Theme = {
-  general?: GeneralTheme
-  chat?: ChatTheme
+  general: GeneralTheme
+  chat: ChatTheme
   customCss?: string
 }
 
 export type GeneralTheme = {
-  font?: string
-  background?: Background
+  font: string
+  background: Background
 }
 
 export type ChatTheme = {
-  hostBubbles?: ContainerColors
-  guestBubbles?: ContainerColors
-  buttons?: ContainerColors
-  inputs?: InputColors
+  hostBubbles: ContainerColors
+  guestBubbles: ContainerColors
+  buttons: ContainerColors
+  inputs: InputColors
 }
 
 export type ContainerColors = {
-  backgroundColor?: string
-  color?: string
+  backgroundColor: string
+  color: string
 }
 
 export type InputColors = ContainerColors & {
-  placeholderColor?: string
+  placeholderColor: string
 }
 
 export enum BackgroundType {
@@ -34,4 +34,18 @@ export enum BackgroundType {
 export type Background = {
   type: BackgroundType
   content?: string
+}
+
+export const defaultTheme: Theme = {
+  chat: {
+    hostBubbles: { backgroundColor: '#F7F8FF', color: '#303235' },
+    guestBubbles: { backgroundColor: '#FF8E21', color: '#FFFFFF' },
+    buttons: { backgroundColor: '#0042DA', color: '#FFFFFF' },
+    inputs: {
+      backgroundColor: '#FFFFFF',
+      color: '#303235',
+      placeholderColor: '#9095A0',
+    },
+  },
+  general: { font: 'Open Sans', background: { type: BackgroundType.NONE } },
 }

@@ -1,14 +1,16 @@
-import { getIframeBody } from 'cypress/support'
+import {
+  getIframeBody,
+  prepareDbAndSignIn,
+  removePreventReload,
+} from 'cypress/support'
 
 describe('General theme settings', () => {
-  beforeEach(() => {
-    cy.task('seed')
-    cy.signOut()
-  })
+  beforeEach(prepareDbAndSignIn)
+
+  afterEach(removePreventReload)
 
   it('should reflect changes in real time', () => {
     cy.loadTypebotFixtureInDatabase('typebots/theme/theme.json')
-    cy.signIn('test2@gmail.com')
     cy.visit('/typebots/typebot4/theme')
     getIframeBody().findByText('Ready?').should('exist')
     cy.findByRole('button', { name: 'Chat' }).click()
@@ -56,9 +58,6 @@ describe('General theme settings', () => {
       .eq(3)
       .click({ force: true })
     cy.findByRole('textbox', { name: 'Color value' }).clear().type('#264653')
-    cy.findAllByRole('button', { name: 'Pick a color' })
-      .eq(6)
-      .click({ force: true })
     getIframeBody().findByRole('button', { name: 'Go' }).click()
     getIframeBody()
       .findByTestId('guest-bubble')
@@ -68,8 +67,17 @@ describe('General theme settings', () => {
       .findByTestId('guest-bubble')
       .should('have.css', 'color')
       .should('eq', 'rgb(38, 70, 83)')
+    cy.findAllByRole('button', { name: 'Pick a color' })
+      .eq(3)
+      .click({ force: true })
 
-    cy.findByRole('textbox', { name: 'Color value' }).clear().type('#ffe8d6')
+    // Input
+    cy.findAllByRole('button', { name: 'Pick a color' })
+      .eq(6)
+      .click({ force: true })
+    cy.findByRole('textbox', { name: 'Color value' })
+      .clear({ force: true })
+      .type('#ffe8d6')
     cy.findAllByRole('button', { name: 'Pick a color' })
       .eq(7)
       .click({ force: true })
@@ -85,6 +93,6 @@ describe('General theme settings', () => {
     getIframeBody()
       .findByTestId('input')
       .should('have.css', 'color')
-      .should('eq', 'rgb(2, 61, 138)')
+      .should('eq', 'rgb(2, 62, 138)')
   })
 })

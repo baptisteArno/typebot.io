@@ -18,6 +18,6 @@ export type PublicTypebot = Omit<
   choiceItems: Table<ChoiceItem>
   variables: Table<Variable>
   edges: Table<Edge>
-  theme?: Theme
-  settings?: Settings
+  theme: Theme
+  settings: Settings
 }

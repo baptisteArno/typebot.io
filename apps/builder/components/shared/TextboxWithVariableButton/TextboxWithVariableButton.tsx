@@ -1,31 +1,40 @@
 import {
+  ComponentWithAs,
   Flex,
   HStack,
   IconButton,
-  Input,
   InputProps,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  TextareaProps,
   Tooltip,
 } from '@chakra-ui/react'
 import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import { VariableSearchInput } from './VariableSearchInput'
+import { VariableSearchInput } from '../VariableSearchInput'
 
-export const InputWithVariableButton = ({
-  initialValue,
-  onChange,
-  delay,
-  ...props
-}: {
+export type TextBoxWithVariableButtonProps = {
   initialValue: string
   onChange: (value: string) => void
   delay?: number
-} & Omit<InputProps, 'onChange'>) => {
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  TextBox:
+    | ComponentWithAs<'textarea', TextareaProps>
+    | ComponentWithAs<'input', InputProps>
+} & Omit<InputProps & TextareaProps, 'onChange'>
+
+export const TextBoxWithVariableButton = ({
+  initialValue,
+  onChange,
+  delay,
+  TextBox,
+  ...props
+}: TextBoxWithVariableButtonProps) => {
+  const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
+    null
+  )
   const [value, setValue] = useState(initialValue)
   const [debouncedValue] = useDebounce(value, delay ?? 100)
   const [carretPosition, setCarretPosition] = useState<number>(0)
@@ -36,48 +45,49 @@ export const InputWithVariableButton = ({
   }, [debouncedValue])
 
   const handleVariableSelected = (variable?: Variable) => {
-    if (!inputRef.current || !variable) return
+    if (!textBoxRef.current || !variable) return
     const cursorPosition = carretPosition
-    const textBeforeCursorPosition = inputRef.current.value.substring(
+    const textBeforeCursorPosition = textBoxRef.current.value.substring(
       0,
       cursorPosition
     )
-    const textAfterCursorPosition = inputRef.current.value.substring(
+    const textAfterCursorPosition = textBoxRef.current.value.substring(
       cursorPosition,
-      inputRef.current.value.length
+      textBoxRef.current.value.length
     )
     setValue(
       textBeforeCursorPosition +
         `{{${variable.name}}}` +
         textAfterCursorPosition
     )
-    inputRef.current.focus()
+    textBoxRef.current.focus()
     setTimeout(() => {
-      if (!inputRef.current) return
-      inputRef.current.selectionStart = inputRef.current.selectionEnd =
+      if (!textBoxRef.current) return
+      textBoxRef.current.selectionStart = textBoxRef.current.selectionEnd =
         carretPosition + `{{${variable.name}}}`.length
-      setCarretPosition(inputRef.current.selectionStart)
+      setCarretPosition(textBoxRef.current.selectionStart)
     }, 100)
   }
 
   const handleKeyUp = () => {
-    if (!inputRef.current?.selectionStart) return
-    setCarretPosition(inputRef.current.selectionStart)
+    if (!textBoxRef.current?.selectionStart) return
+    setCarretPosition(textBoxRef.current.selectionStart)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setValue(e.target.value)
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setValue(e.target.value)
 
   return (
-    <HStack spacing={0}>
-      <Input
-        ref={inputRef}
+    <HStack spacing={0} align={'flex-end'}>
+      <TextBox
+        ref={textBoxRef}
         onKeyUp={handleKeyUp}
         onClick={handleKeyUp}
         value={value}
         onChange={handleChange}
-        {...props}
         bgColor={'white'}
+        {...props}
       />
       <Popover matchWidth isLazy>
         <PopoverTrigger>

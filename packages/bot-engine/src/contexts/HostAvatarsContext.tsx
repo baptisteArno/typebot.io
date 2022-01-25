@@ -5,6 +5,7 @@ const hostAvatarsContext = createContext<{
   lastBubblesTopOffset: number[]
   addNewAvatarOffset: () => void
   updateLastAvatarOffset: (newOffset: number) => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
