@@ -19,7 +19,7 @@ test.describe('Webhook step', () => {
     await page.click('text=POST')
     await page.fill(
       'input[placeholder="Your Webhook URL..."]',
-      `${process.env.NEXTAUTH_URL}/api/mock/webhook`
+      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook`
     )
 
     await page.click('text=Query params')
