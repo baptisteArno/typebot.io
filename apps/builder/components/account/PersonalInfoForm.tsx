@@ -15,6 +15,7 @@ import { UploadIcon } from 'assets/icons'
 import { UploadButton } from 'components/shared/buttons/UploadButton'
 import { useUser } from 'contexts/UserContext'
 import React, { ChangeEvent, useState } from 'react'
+import { isDefined } from 'utils'
 
 export const PersonalInfoForm = () => {
   const {
@@ -75,28 +76,29 @@ export const PersonalInfoForm = () => {
             onChange={handleNameChange}
           />
         </FormControl>
-        <Tooltip
-          label="Can't update the email because it is linked to an OAuth service"
-          placement="left"
-          hasArrow
-          isDisabled={!isOAuthProvider}
-        >
-          <FormControl>
-            <FormLabel
-              htmlFor="email"
-              color={isOAuthProvider ? 'gray.500' : 'current'}
-            >
-              Email address
-            </FormLabel>
-            <Input
-              id="email"
-              type="email"
-              isDisabled={isOAuthProvider}
-              value={user?.email ?? ''}
-              onChange={handleEmailChange}
-            />
-          </FormControl>
-        </Tooltip>
+        {isDefined(user?.email) && (
+          <Tooltip
+            label="Updating email is not available."
+            placement="left"
+            hasArrow
+          >
+            <FormControl>
+              <FormLabel
+                htmlFor="email"
+                color={isOAuthProvider ? 'gray.500' : 'current'}
+              >
+                Email address
+              </FormLabel>
+              <Input
+                id="email"
+                type="email"
+                isDisabled
+                value={user?.email ?? ''}
+                onChange={handleEmailChange}
+              />
+            </FormControl>
+          </Tooltip>
+        )}
 
         {hasUnsavedChanges && (
           <Flex justifyContent="flex-end">

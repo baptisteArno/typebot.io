@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 5000,
   },
-  retries: process.env.CI ? 2 : 0,
+  retries: 2,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   maxFailures: process.env.CI ? 10 : undefined,
@@ -18,6 +18,7 @@ const config: PlaywrightTestConfig = {
     trace: 'on-first-retry',
     storageState: path.join(__dirname, 'playwright/authenticatedState.json'),
     video: 'retain-on-failure',
+    locale: 'en-US',
   },
   outputDir: path.join(__dirname, 'playwright/test-results/'),
   projects: [

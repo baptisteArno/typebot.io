@@ -2,7 +2,7 @@ import test, { expect } from '@playwright/test'
 import { refreshUser } from '../services/browser'
 import { Plan } from 'db'
 import path from 'path'
-import { updateUser, user } from '../services/database'
+import { updateUser } from '../services/database'
 
 test.describe('Account page', () => {
   test('should edit user info properly', async ({ page }) => {
@@ -14,17 +14,14 @@ test.describe('Account page', () => {
     ).toBeDefined()
     await page.fill('#name', 'John Doe')
     expect(saveButton).toBeVisible()
-    const avatarImg = page.locator('img')
-    await expect(page.locator('text=JD')).toBeVisible()
-    await expect(avatarImg).toBeHidden()
     await page.setInputFiles(
       'input[type="file"]',
       path.join(__dirname, '../fixtures/avatar.jpg')
     )
-    await expect(avatarImg).toHaveAttribute(
+    await expect(page.locator('img')).toHaveAttribute(
       'src',
       new RegExp(
-        `https://s3.eu-west-3.amazonaws.com/typebot/users/${user.id}/avatar`,
+        `https://s3.eu-west-3.amazonaws.com/typebot/users/${process.env.PLAYWRIGHT_USER_ID}/avatar`,
         'gm'
       )
     )
@@ -43,7 +40,6 @@ test.describe('Account page', () => {
     )
     await expect(manageSubscriptionButton).toBeHidden()
     await updateUser({ plan: Plan.PRO, stripeId: 'stripeId' })
-    await page.evaluate(refreshUser)
     await page.reload()
     await expect(page.locator('text=Pro plan')).toBeVisible()
     await expect(manageSubscriptionButton).toBeVisible()

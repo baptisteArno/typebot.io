@@ -5,19 +5,22 @@ import {
   Step,
   Typebot,
 } from 'models'
-import { CredentialsType, DashboardFolder, Plan, PrismaClient, User } from 'db'
+import { CredentialsType, DashboardFolder, PrismaClient, User } from 'db'
 import { readFileSync } from 'fs'
-
-export const user = { id: 'user1', email: 'test1@gmail.com' }
 
 const prisma = new PrismaClient()
 
 export const teardownDatabase = async () => prisma.user.deleteMany()
 
-export const setupDatabase = async () => {
-  await createUsers()
+export const setupDatabase = async (userEmail: string) => {
+  const createdUser = await getSignedInUser(userEmail)
+  if (!createdUser) throw new Error("Couldn't find user")
+  process.env.PLAYWRIGHT_USER_ID = createdUser.id
   return createCredentials()
 }
+
+const getSignedInUser = (email: string) =>
+  prisma.user.findFirst({ where: { email } })
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   await prisma.typebot.createMany({
@@ -33,47 +36,37 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
 export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
   prisma.dashboardFolder.createMany({
     data: partialFolders.map((folder) => ({
-      ownerId: user.id,
+      ownerId: process.env.PLAYWRIGHT_USER_ID as string,
       name: 'Folder #1',
       id: 'folder',
       ...folder,
     })),
   })
 
-const createUsers = () =>
-  prisma.user.create({
-    data: {
-      ...user,
-      emailVerified: new Date(),
-      plan: Plan.FREE,
-      stripeId: 'stripe-test2',
-    },
-  })
-
-const createCredentials = () => {
-  if (!process.env.GOOGLE_REFRESH_TOKEN_TEST)
-    console.warn(
-      'GOOGLE_REFRESH_TOKEN_TEST env var is missing. It is required to run Google Sheets tests'
-    )
-  return prisma.credentials.createMany({
+const createCredentials = () =>
+  prisma.credentials.createMany({
     data: [
       {
         name: 'test2@gmail.com',
-        ownerId: user.id,
+        ownerId: process.env.PLAYWRIGHT_USER_ID as string,
         type: CredentialsType.GOOGLE_SHEETS,
         data: {
           expiry_date: 1642441058842,
           access_token:
             'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
-          refresh_token: process.env.GOOGLE_REFRESH_TOKEN_TEST,
+          // This token is linked to a mock Google account (typebot.test.user@gmail.com)
+          refresh_token:
+            '1//03W5-TyIxXd7nCgYIARAAGAMSNwF-L9IrAGAmp5MG8RqVyk6YYmqDDn9x-4nHTkSUj4xZWuMs6mNeyjdS_bgO0CWuZEfJoAd_zIw',
         },
       },
     ],
   })
-}
 
 export const updateUser = (data: Partial<User>) =>
-  prisma.user.update({ data, where: { id: user.id } })
+  prisma.user.update({
+    data,
+    where: { id: process.env.PLAYWRIGHT_USER_ID as string },
+  })
 
 export const createResults = async ({ typebotId }: { typebotId: string }) => {
   await prisma.result.createMany({
@@ -129,7 +122,7 @@ export const loadRawTypebotInDatabase = (typebot: Typebot) =>
     data: {
       ...typebot,
       id: 'typebot4',
-      ownerId: user.id,
+      ownerId: process.env.PLAYWRIGHT_USER_ID,
     } as any,
   })
 
@@ -137,7 +130,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  ownerId: user.id,
+  ownerId: process.env.PLAYWRIGHT_USER_ID as string,
   theme: defaultTheme,
   settings: defaultSettings,
   createdAt: new Date(),
@@ -224,7 +217,13 @@ export const importTypebotInDatabase = (
   updates?: Partial<Typebot>
 ) => {
   const typebot: Typebot = JSON.parse(readFileSync(path).toString())
-  return prisma.typebot.create({
-    data: { ...typebot, ...updates, ownerId: user.id } as any,
-  })
+  try {
+    return prisma.typebot.create({
+      data: {
+        ...typebot,
+        ...updates,
+        ownerId: process.env.PLAYWRIGHT_USER_ID,
+      } as any,
+    })
+  } catch {}
 }

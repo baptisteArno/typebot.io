@@ -64,6 +64,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     if (status === 'loading') return
     if (status === 'unauthenticated' && !isSigningIn())
       router.replace('/signin')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, router])
 
   const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)

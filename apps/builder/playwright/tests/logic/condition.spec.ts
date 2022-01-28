@@ -16,7 +16,10 @@ test.describe('Condition step', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
-    await page.fill('input[placeholder="Search for a variable"]', 'Age')
+    await page.fill(
+      'input[placeholder="Search for a variable"] >> nth=-1',
+      'Age'
+    )
     await page.click('button:has-text("Age")')
     await page.click('button:has-text("Select an operator")')
     await page.click('button:has-text("Greater than")', { force: true })
@@ -37,7 +40,10 @@ test.describe('Condition step', () => {
     )
 
     await page.click('text=Configure...')
-    await page.fill('input[placeholder="Search for a variable"]', 'Age')
+    await page.fill(
+      'input[placeholder="Search for a variable"] >> nth=-1',
+      'Age'
+    )
     await page.click('button:has-text("Age")')
     await page.click('button:has-text("Select an operator")')
     await page.click('button:has-text("Greater than")', { force: true })

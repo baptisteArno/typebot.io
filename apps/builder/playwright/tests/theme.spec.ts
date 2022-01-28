@@ -41,14 +41,18 @@ test.describe.parallel('Theme page', () => {
   test.describe('Chat', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = 'chat-theme-typebot'
-      await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/theme.json'),
-        {
-          id: typebotId,
-        }
-      )
+      try {
+        await importTypebotInDatabase(
+          path.join(__dirname, '../fixtures/typebots/theme.json'),
+          {
+            id: typebotId,
+          }
+        )
+      } catch {}
+
       await page.goto(`/typebots/${typebotId}/theme`)
       await page.click('button:has-text("Chat")')
+      await page.waitForTimeout(300)
 
       // Host bubbles
       await page.click(':nth-match([aria-label="Pick a color"], 1)')

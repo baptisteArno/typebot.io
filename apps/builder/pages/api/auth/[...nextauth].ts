@@ -1,13 +1,11 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
-import { User } from 'db'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const providers: Provider[] = [
@@ -48,54 +46,18 @@ if (process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET)
     })
   )
 
-if (process.env.NODE_ENV !== 'production')
-  providers.push(
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'credentials@email.com',
-        },
-      },
-      async authorize(credentials) {
-        const user = await prisma.user.findUnique({
-          where: { email: credentials?.email },
-        })
-        return user
-      },
-    })
-  )
-
-const createOptions = (req: NextApiRequest): NextAuthOptions => ({
-  adapter: PrismaAdapter(prisma),
-  secret: process.env.SECRET,
-  providers,
-  session: {
-    strategy: process.env.NODE_ENV === 'production' ? 'database' : 'jwt',
-  },
-  callbacks: {
-    jwt: async ({ token, user, account }) => {
-      if (req.url === '/api/auth/session?update' && token.user) {
-        token.user = await prisma.user.findUnique({
-          where: { id: (token.user as User).id },
-        })
-      } else if (user) {
-        token.user = user
-      }
-      account?.type && token && (token.providerType = account?.type)
-      return token
-    },
-    session: async ({ session, token, user }) => {
-      token?.user ? (session.user = token.user as User) : (session.user = user)
-      if (token?.providerType) session.providerType = token.providerType
-      return session
-    },
-  },
-})
-
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  NextAuth(req, res, createOptions(req))
+  NextAuth(req, res, {
+    adapter: PrismaAdapter(prisma),
+    secret: process.env.SECRET,
+    providers,
+    session: {
+      strategy: 'database',
+    },
+    callbacks: {
+      session: async ({ session, user }) => ({ ...session, user }),
+    },
+  })
 }
+
 export default handler
