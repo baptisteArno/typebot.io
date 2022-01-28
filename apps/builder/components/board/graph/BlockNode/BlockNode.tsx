@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react'
 import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import { StepsList } from './StepsList'
 import { filterTable, isDefined } from 'utils'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
@@ -22,8 +22,8 @@ type Props = {
 export const BlockNode = ({ block }: Props) => {
   const { connectingIds, setConnectingIds, previewingEdgeId } = useGraph()
   const { typebot, updateBlock } = useTypebot()
-  const { setMouseOverBlockId } = useDnd()
-  const { draggedStep, draggedStepType } = useDnd()
+  const { setMouseOverBlockId } = useStepDnd()
+  const { draggedStep, draggedStepType } = useStepDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
   const isPreviewing = useMemo(() => {

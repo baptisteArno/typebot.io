@@ -1,3 +1,10 @@
 cypress/videos
 cypress/screenshots
 cypress/downloads
+node_modules/
+test-results/
+playwright-report/
+
+authenticatedState.json
+
+.env

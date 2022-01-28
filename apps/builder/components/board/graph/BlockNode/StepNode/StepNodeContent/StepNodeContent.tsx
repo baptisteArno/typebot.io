@@ -80,11 +80,7 @@ export const StepNodeContent = ({ step }: Props) => {
       )
     }
     case InputStepType.DATE: {
-      return (
-        <Text color={'gray.500'}>
-          {step.options?.labels?.from ?? 'Pick a date...'}
-        </Text>
-      )
+      return <Text color={'gray.500'}>Pick a date...</Text>
     }
     case InputStepType.PHONE: {
       return (

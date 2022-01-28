@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Button,
   Flex,
+  IconButton,
   MenuItem,
   Text,
   useDisclosure,
@@ -9,28 +10,28 @@ import {
   VStack,
   WrapItem,
 } from '@chakra-ui/react'
-import { useDraggable } from '@dnd-kit/core'
 import { useRouter } from 'next/router'
 import { isMobile } from 'services/utils'
-import { MoreButton } from 'components/MoreButton'
+import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
-import { GlobeIcon, ToolIcon } from 'assets/icons'
+import { GlobeIcon, GripIcon, ToolIcon } from 'assets/icons'
 import { deleteTypebot, duplicateTypebot } from 'services/typebots'
 import { Typebot } from 'models'
+import { useTypebotDnd } from 'contexts/TypebotDndContext'
 
 type ChatbotCardProps = {
   typebot: Typebot
   onTypebotDeleted: () => void
+  onMouseDown: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const TypebotButton = ({
   typebot,
   onTypebotDeleted,
+  onMouseDown,
 }: ChatbotCardProps) => {
   const router = useRouter()
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: typebot.id.toString(),
-  })
+  const { draggedTypebot } = useTypebotDnd()
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
@@ -43,6 +44,7 @@ export const TypebotButton = ({
   })
 
   const handleTypebotClick = () => {
+    if (draggedTypebot) return
     router.push(
       isMobile
         ? `/typebots/${typebot.id}/results/responses`
@@ -73,7 +75,7 @@ export const TypebotButton = ({
   return (
     <Button
       as={WrapItem}
-      onClick={handleTypebotClick}
+      onMouseUp={handleTypebotClick}
       display="flex"
       flexDir="column"
       variant="outline"
@@ -84,17 +86,26 @@ export const TypebotButton = ({
       mb={6}
       rounded="lg"
       whiteSpace="normal"
-      data-testid={`typebot-button-${typebot.id}`}
-      opacity={isDragging ? 0.2 : 1}
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
+      opacity={draggedTypebot?.id === typebot.id ? 0.2 : 1}
+      onMouseDown={onMouseDown}
+      cursor="pointer"
     >
+      <IconButton
+        icon={<GripIcon />}
+        pos="absolute"
+        top="20px"
+        left="20px"
+        aria-label="Drag"
+        cursor="grab"
+        variant="ghost"
+        colorScheme="blue"
+        size="sm"
+      />
       <MoreButton
         pos="absolute"
-        top="10px"
-        right="10px"
-        aria-label="Show typebot menu"
+        top="20px"
+        right="20px"
+        aria-label={`Show ${typebot.name} menu`}
       >
         <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
         <MenuItem

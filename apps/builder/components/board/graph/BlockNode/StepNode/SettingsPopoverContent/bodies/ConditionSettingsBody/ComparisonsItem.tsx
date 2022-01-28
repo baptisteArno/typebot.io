@@ -40,7 +40,6 @@ export const ComparisonItem = ({
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET && (
         <InputWithVariableButton
-          delay={100}
           initialValue={item.value ?? ''}
           onChange={handleChangeValue}
           placeholder="Type a value..."

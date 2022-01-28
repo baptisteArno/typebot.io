@@ -20,6 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ownerId: user.id,
         parentFolderId,
       },
+      orderBy: { createdAt: 'desc' },
     })
     return res.send({ folders })
   }

@@ -1,6 +1,6 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
 import { DraggableStep, Step, Table } from 'models'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useMemo, useState } from 'react'
 import { StepNode, StepNodeOverlay } from './StepNode'
@@ -20,7 +20,7 @@ export const StepsList = ({
     mouseOverBlockId,
     setDraggedStepType,
     setMouseOverBlockId,
-  } = useDnd()
+  } = useStepDnd()
   const { createStep } = useTypebot()
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined

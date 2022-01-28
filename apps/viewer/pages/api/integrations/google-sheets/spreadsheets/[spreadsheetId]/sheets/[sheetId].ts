@@ -1,10 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils'
+import { initMiddleware, methodNotAllowed } from 'utils'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'
+import Cors from 'cors'
 
+const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await cors(req, res)
   if (req.method === 'GET') {
     const spreadsheetId = req.query.spreadsheetId.toString()
     const sheetId = req.query.sheetId.toString()

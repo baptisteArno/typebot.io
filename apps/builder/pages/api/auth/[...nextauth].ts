@@ -56,7 +56,7 @@ if (process.env.NODE_ENV !== 'production')
         email: {
           label: 'Email',
           type: 'email',
-          placeholder: 'email@email.com',
+          placeholder: 'credentials@email.com',
         },
       },
       async authorize(credentials) {

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bot-engine": "*",
+    "cors": "^2.8.5",
     "db": "*",
     "google-spreadsheet": "^3.2.0",
     "models": "*",
@@ -19,6 +20,7 @@
     "utils": "*"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/google-spreadsheet": "^3.1.5",
     "@types/node": "^17.0.4",
     "@types/react": "^17.0.38",

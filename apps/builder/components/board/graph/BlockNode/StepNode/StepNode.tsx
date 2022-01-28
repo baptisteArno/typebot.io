@@ -8,10 +8,9 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { BubbleStep, DraggableStep, Step, TextBubbleStep } from 'models'
-import { useGraph } from 'contexts/GraphContext'
+import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/board/StepTypesList/StepIcon'
 import { isBubbleStep, isTextBubbleStep } from 'utils'
-import { Coordinates } from '@dnd-kit/core/dist/types'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -43,7 +42,8 @@ export const StepNode = ({
   ) => void
 }) => {
   const { query } = useRouter()
-  const { setConnectingIds, connectingIds } = useGraph()
+  const { setConnectingIds, connectingIds, openedStepId, setOpenedStepId } =
+    useGraph()
   const { moveStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
@@ -56,6 +56,11 @@ export const StepNode = ({
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure()
+
+  useEffect(() => {
+    if (query.stepId?.toString() === step.id) setOpenedStepId(step.id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query])
 
   useEffect(() => {
     setIsConnecting(
@@ -126,6 +131,16 @@ export const StepNode = ({
     setIsEditing(false)
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setOpenedStepId(step.id)
+  }
+
+  const handleExpandClick = () => {
+    setOpenedStepId(undefined)
+    onModalOpen()
+  }
+
   return isEditing && isTextBubbleStep(step) ? (
     <TextEditor
       stepId={step.id}
@@ -137,11 +152,7 @@ export const StepNode = ({
       renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
     >
       {(ref, isOpened) => (
-        <Popover
-          placement="left"
-          isLazy
-          defaultIsOpen={query.stepId?.toString() === step.id}
-        >
+        <Popover placement="left" isLazy isOpen={openedStepId === step.id}>
           <PopoverTrigger>
             <Flex
               pos="relative"
@@ -151,6 +162,7 @@ export const StepNode = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
+              onClick={handleClick}
               data-testid={`step-${step.id}`}
               w="full"
             >
@@ -166,7 +178,11 @@ export const StepNode = ({
                 align="flex-start"
                 w="full"
               >
-                <StepIcon type={step.type} mt="1" />
+                <StepIcon
+                  type={step.type}
+                  mt="1"
+                  data-testid={`${step.id}-icon`}
+                />
                 <StepNodeContent step={step} />
                 <TargetEndpoint
                   pos="absolute"
@@ -189,7 +205,10 @@ export const StepNode = ({
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(step) && (
-            <SettingsPopoverContent step={step} onExpandClick={onModalOpen} />
+            <SettingsPopoverContent
+              step={step}
+              onExpandClick={handleExpandClick}
+            />
           )}
           {hasContentPopover(step) && <ContentPopover step={step} />}
           <SettingsModal isOpen={isModalOpen} onClose={onModalClose}>

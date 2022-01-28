@@ -51,7 +51,6 @@ export const GoogleAnalyticsSettings = ({
           id="tracking-id"
           initialValue={options?.trackingId ?? ''}
           placeholder="G-123456..."
-          delay={100}
           onChange={handleTrackingIdChange}
         />
       </Stack>
@@ -63,7 +62,6 @@ export const GoogleAnalyticsSettings = ({
           id="category"
           initialValue={options?.category ?? ''}
           placeholder="Example: Typebot"
-          delay={100}
           onChange={handleCategoryChange}
         />
       </Stack>
@@ -75,7 +73,6 @@ export const GoogleAnalyticsSettings = ({
           id="action"
           initialValue={options?.action ?? ''}
           placeholder="Example: Submit email"
-          delay={100}
           onChange={handleActionChange}
         />
       </Stack>
@@ -98,7 +95,6 @@ export const GoogleAnalyticsSettings = ({
                 id="label"
                 initialValue={options?.label ?? ''}
                 placeholder="Example: Campaign Z"
-                delay={100}
                 onChange={handleLabelChange}
               />
             </Stack>

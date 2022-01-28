@@ -31,13 +31,12 @@ export const ChoiceInputSettingsBody = ({
       />
       {options?.isMultipleChoice && (
         <Stack>
-          <FormLabel mb="0" htmlFor="send">
+          <FormLabel mb="0" htmlFor="button">
             Button label:
           </FormLabel>
           <DebouncedInput
-            id="send"
+            id="button"
             initialValue={options?.buttonLabel ?? 'Send'}
-            delay={100}
             onChange={handleButtonLabelChange}
           />
         </Stack>

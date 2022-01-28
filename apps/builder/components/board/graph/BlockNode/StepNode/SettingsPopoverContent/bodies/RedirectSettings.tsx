@@ -1,6 +1,7 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton'
 import { RedirectOptions } from 'models'
 import React from 'react'
 
@@ -21,11 +22,10 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
         <FormLabel mb="0" htmlFor="tracking-id">
           Url:
         </FormLabel>
-        <DebouncedInput
+        <InputWithVariableButton
           id="tracking-id"
           initialValue={options.url ?? ''}
           placeholder="Type a URL..."
-          delay={100}
           onChange={handleUrlChange}
         />
       </Stack>

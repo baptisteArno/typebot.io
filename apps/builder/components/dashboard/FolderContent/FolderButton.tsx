@@ -17,11 +17,11 @@ import {
   SkeletonCircle,
   WrapItem,
 } from '@chakra-ui/react'
-import { useDroppable } from '@dnd-kit/core'
 import { FolderIcon, MoreVerticalIcon } from 'assets/icons'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
+import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { deleteFolder, updateFolder } from 'services/folders'
 
 export const FolderButton = ({
@@ -34,9 +34,12 @@ export const FolderButton = ({
   onFolderRenamed: (newName: string) => void
 }) => {
   const router = useRouter()
-  const { setNodeRef, isOver } = useDroppable({
-    id: folder.id.toString(),
-  })
+  const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
+    useTypebotDnd()
+  const isTypebotOver = useMemo(
+    () => draggedTypebot && mouseOverFolderId === folder.id,
+    [draggedTypebot, folder.id, mouseOverFolderId]
+  )
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast({
     position: 'top-right',
@@ -65,31 +68,33 @@ export const FolderButton = ({
     router.push(`/typebots/folders/${folder.id}`)
   }
 
+  const handleMouseEnter = () => setMouseOverFolderId(folder.id)
+  const handleMouseLeave = () => setMouseOverFolderId(undefined)
   return (
     <Button
       as={WrapItem}
-      ref={setNodeRef}
       style={{ width: '225px', height: '270px' }}
       paddingX={6}
       whiteSpace={'normal'}
       pos="relative"
       cursor="pointer"
       variant="outline"
-      colorScheme={isOver ? 'blue' : 'gray'}
-      borderWidth={isOver ? '3px' : '1px'}
+      colorScheme={isTypebotOver ? 'blue' : 'gray'}
+      borderWidth={isTypebotOver ? '3px' : '1px'}
       justifyContent="center"
       onClick={handleClick}
-      data-testid="folder-button"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Menu>
         <MenuButton
           as={IconButton}
           icon={<MoreVerticalIcon />}
-          aria-label="Show folder menu"
+          aria-label={`Show ${folder.name} menu`}
           onClick={(e) => e.stopPropagation()}
-          colorScheme="blue"
-          variant="ghost"
-          size="lg"
+          colorScheme="gray"
+          variant="outline"
+          size="sm"
           pos="absolute"
           top="5"
           right="5"

@@ -28,8 +28,8 @@ export const SpreadsheetsDropdown = ({
       selectedItem={currentSpreadsheet?.name}
       items={(spreadsheets ?? []).map((s) => s.name)}
       onValueChange={handleSpreadsheetSelect}
-      placeholder={isLoading ? 'Loading...' : 'Search for spreadsheet'}
-      isDisabled={isLoading}
+      placeholder={'Search for spreadsheet'}
+      isLoading={isLoading}
     />
   )
 }

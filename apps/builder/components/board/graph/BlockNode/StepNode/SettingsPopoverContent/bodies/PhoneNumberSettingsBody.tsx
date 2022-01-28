@@ -29,7 +29,6 @@ export const PhoneNumberSettingsBody = ({
         <DebouncedInput
           id="placeholder"
           initialValue={options.labels.placeholder}
-          delay={100}
           onChange={handlePlaceholderChange}
         />
       </Stack>
@@ -40,7 +39,6 @@ export const PhoneNumberSettingsBody = ({
         <DebouncedInput
           id="button"
           initialValue={options.labels.button}
-          delay={100}
           onChange={handleButtonLabelChange}
         />
       </Stack>

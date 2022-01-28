@@ -1,26 +1,20 @@
 import { DashboardFolder } from '.prisma/client'
-import { Typebot } from 'models'
 import {
   Button,
   Flex,
   Heading,
   HStack,
+  Portal,
   Skeleton,
   Stack,
+  useEventListener,
   useToast,
   Wrap,
 } from '@chakra-ui/react'
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
-  MouseSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
 import { FolderPlusIcon } from 'assets/icons'
-import React, { useState } from 'react'
+import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import { Typebot } from 'models'
+import React, { useEffect, useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
 import { patchTypebot, useTypebots } from 'services/typebots'
 import { BackButton } from './FolderContent/BackButton'
@@ -31,16 +25,24 @@ import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
 
 type Props = { folder: DashboardFolder | null }
 
+const dragDistanceTolerance = 20
+
 export const FolderContent = ({ folder }: Props) => {
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
-  const [draggedTypebot, setDraggedTypebot] = useState<Typebot | undefined>()
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 20,
-      },
-    })
-  )
+  const {
+    setDraggedTypebot,
+    draggedTypebot,
+    mouseOverFolderId,
+    setMouseOverFolderId,
+  } = useTypebotDnd()
+  const [mouseDownPosition, setMouseDownPosition] = useState({ x: 0, y: 0 })
+  const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 })
+  const [relativeDraggablePosition, setRelativeDraggablePosition] = useState({
+    x: 0,
+    y: 0,
+  })
+  const [typebotDragCandidate, setTypebotDragCandidate] = useState<Typebot>()
+
   const toast = useToast({
     position: 'top-right',
     status: 'error',
@@ -66,19 +68,6 @@ export const FolderContent = ({ folder }: Props) => {
       toast({ title: "Couldn't fetch typebots", description: error.message })
     },
   })
-
-  const handleDragStart = (event: DragStartEvent) => {
-    if (!typebots) return
-    setDraggedTypebot(typebots.find((c) => c.id === event.active.id))
-  }
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    if (!typebots) return
-    const { over } = event
-    if (over?.id && draggedTypebot?.id)
-      await moveTypebotToFolder(draggedTypebot.id, over.id)
-    setDraggedTypebot(undefined)
-  }
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebots) return
@@ -118,63 +107,103 @@ export const FolderContent = ({ folder }: Props) => {
     })
   }
 
+  const handleMouseUp = async () => {
+    if (mouseOverFolderId !== undefined && draggedTypebot)
+      await moveTypebotToFolder(draggedTypebot.id, mouseOverFolderId ?? 'root')
+    setTypebotDragCandidate(undefined)
+    setMouseOverFolderId(undefined)
+    setDraggedTypebot(undefined)
+  }
+  useEventListener('mouseup', handleMouseUp)
+
+  const handleMouseDown = (typebot: Typebot) => (e: React.MouseEvent) => {
+    const element = e.currentTarget as HTMLDivElement
+    const rect = element.getBoundingClientRect()
+    setDraggablePosition({ x: rect.left, y: rect.top })
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    setRelativeDraggablePosition({ x, y })
+    setMouseDownPosition({ x: e.screenX, y: e.screenY })
+    setTypebotDragCandidate(typebot)
+  }
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!typebotDragCandidate) return
+    const { clientX, clientY, screenX, screenY } = e
+    if (
+      Math.abs(mouseDownPosition.x - screenX) > dragDistanceTolerance ||
+      Math.abs(mouseDownPosition.y - screenY) > dragDistanceTolerance
+    )
+      setDraggedTypebot(typebotDragCandidate)
+    setDraggablePosition({
+      ...draggablePosition,
+      x: clientX - relativeDraggablePosition.x,
+      y: clientY - relativeDraggablePosition.y,
+    })
+  }
+  useEventListener('mousemove', handleMouseMove)
+
   return (
-    <Flex w="full" justify="center" align="center" pt={4}>
-      <DndContext
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        sensors={sensors}
-      >
-        <Stack w="1000px" spacing={6}>
-          <Skeleton isLoaded={folder?.name !== undefined}>
-            <Heading as="h1">{folder?.name}</Heading>
-          </Skeleton>
-          <Stack>
-            <HStack>
-              {folder && <BackButton id={folder.parentFolderId} />}
-              <Button
-                leftIcon={<FolderPlusIcon />}
-                onClick={handleCreateFolder}
-                isLoading={isCreatingFolder || isFolderLoading}
-              >
-                Create a folder
-              </Button>
-            </HStack>
-            <Wrap spacing={4}>
-              <CreateBotButton
-                folderId={folder?.id}
-                isLoading={isTypebotLoading}
-              />
-              {isFolderLoading && <ButtonSkeleton />}
-              {folders &&
-                folders.map((folder) => (
-                  <FolderButton
-                    key={folder.id.toString()}
-                    folder={folder}
-                    onFolderDeleted={() => handleFolderDeleted(folder.id)}
-                    onFolderRenamed={(newName: string) =>
-                      handleFolderRenamed(folder.id, newName)
-                    }
-                  />
-                ))}
-              {isTypebotLoading && <ButtonSkeleton />}
-              {typebots &&
-                typebots.map((typebot) => (
-                  <TypebotButton
-                    key={typebot.id.toString()}
-                    typebot={typebot}
-                    onTypebotDeleted={() => handleTypebotDeleted(typebot.id)}
-                  />
-                ))}
-              <DragOverlay dropAnimation={null}>
-                {draggedTypebot && (
-                  <TypebotCardOverlay typebot={draggedTypebot} />
-                )}
-              </DragOverlay>
-            </Wrap>
-          </Stack>
+    <Flex w="full" flex="1" justify="center" pt={4}>
+      <Stack w="1000px" spacing={6}>
+        <Skeleton isLoaded={folder?.name !== undefined}>
+          <Heading as="h1">{folder?.name}</Heading>
+        </Skeleton>
+        <Stack>
+          <HStack>
+            {folder && <BackButton id={folder.parentFolderId} />}
+            <Button
+              leftIcon={<FolderPlusIcon />}
+              onClick={handleCreateFolder}
+              isLoading={isCreatingFolder || isFolderLoading}
+            >
+              Create a folder
+            </Button>
+          </HStack>
+          <Wrap spacing={4}>
+            <CreateBotButton
+              folderId={folder?.id}
+              isLoading={isTypebotLoading}
+            />
+            {isFolderLoading && <ButtonSkeleton />}
+            {folders &&
+              folders.map((folder) => (
+                <FolderButton
+                  key={folder.id.toString()}
+                  folder={folder}
+                  onFolderDeleted={() => handleFolderDeleted(folder.id)}
+                  onFolderRenamed={(newName: string) =>
+                    handleFolderRenamed(folder.id, newName)
+                  }
+                />
+              ))}
+            {isTypebotLoading && <ButtonSkeleton />}
+            {typebots &&
+              typebots.map((typebot) => (
+                <TypebotButton
+                  key={typebot.id.toString()}
+                  typebot={typebot}
+                  onTypebotDeleted={() => handleTypebotDeleted(typebot.id)}
+                  onMouseDown={handleMouseDown(typebot)}
+                />
+              ))}
+          </Wrap>
         </Stack>
-      </DndContext>
+      </Stack>
+      {draggedTypebot && (
+        <Portal>
+          <TypebotCardOverlay
+            typebot={draggedTypebot}
+            onMouseUp={handleMouseUp}
+            pos="fixed"
+            top="0"
+            left="0"
+            style={{
+              transform: `translate(${draggablePosition.x}px, ${draggablePosition.y}px) rotate(-2deg)`,
+            }}
+          />
+        </Portal>
+      )}
     </Flex>
   )
 }

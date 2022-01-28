@@ -37,7 +37,6 @@ export const NumberInputSettingsBody = ({
         <DebouncedInput
           id="placeholder"
           initialValue={options.labels.placeholder}
-          delay={100}
           onChange={handlePlaceholderChange}
         />
       </Stack>
@@ -48,7 +47,6 @@ export const NumberInputSettingsBody = ({
         <DebouncedInput
           id="button"
           initialValue={options?.labels?.button ?? 'Send'}
-          delay={100}
           onChange={handleButtonLabelChange}
         />
       </Stack>

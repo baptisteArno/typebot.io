@@ -5,6 +5,7 @@ import {
   MenuButtonProps,
   MenuItem,
   MenuList,
+  Portal,
   Stack,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
@@ -41,22 +42,24 @@ export const DropdownList = <T,>({
         >
           {currentItem ?? placeholder}
         </MenuButton>
-        <MenuList maxW="500px" shadow="lg">
-          <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
-            {items.map((item) => (
-              <MenuItem
-                key={item as unknown as string}
-                maxW="500px"
-                overflow="hidden"
-                whiteSpace="nowrap"
-                textOverflow="ellipsis"
-                onClick={handleMenuItemClick(item)}
-              >
-                {item}
-              </MenuItem>
-            ))}
-          </Stack>
-        </MenuList>
+        <Portal>
+          <MenuList maxW="500px" shadow="lg" zIndex={1500}>
+            <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+              {items.map((item) => (
+                <MenuItem
+                  key={item as unknown as string}
+                  maxW="500px"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                  onClick={handleMenuItemClick(item)}
+                >
+                  {item}
+                </MenuItem>
+              ))}
+            </Stack>
+          </MenuList>
+        </Portal>
       </Menu>
     </>
   )

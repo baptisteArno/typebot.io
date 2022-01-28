@@ -3,17 +3,17 @@ import { Stack } from '@chakra-ui/layout'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
-import { UserContext } from 'contexts/UserContext'
+import { TypebotDndContext } from 'contexts/TypebotDndContext'
 
 const DashboardPage = () => {
   return (
-    <UserContext>
+    <Stack minH="100vh">
       <Seo title="My typebots" />
-      <Stack>
-        <DashboardHeader />
+      <DashboardHeader />
+      <TypebotDndContext>
         <FolderContent folder={null} />
-      </Stack>
-    </UserContext>
+      </TypebotDndContext>
+    </Stack>
   )
 }
 

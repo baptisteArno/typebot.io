@@ -1,6 +1,6 @@
 import { Flex, HStack, StackProps, Text } from '@chakra-ui/react'
 import { StepType, DraggableStepType } from 'models'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import React, { useEffect, useState } from 'react'
 import { StepIcon } from './StepIcon'
 import { StepTypeLabel } from './StepTypeLabel'
@@ -12,7 +12,7 @@ export const StepCard = ({
   type: DraggableStepType
   onMouseDown: (e: React.MouseEvent, type: DraggableStepType) => void
 }) => {
-  const { draggedStepType } = useDnd()
+  const { draggedStepType } = useStepDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { Flex, Portal, Stack, Text, useEventListener } from '@chakra-ui/react'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ChoiceInputStep, ChoiceItem } from 'models'
@@ -19,7 +19,7 @@ export const ChoiceItemsList = ({ step }: ChoiceItemsListProps) => {
     mouseOverBlockId,
     setDraggedChoiceItem,
     setMouseOverBlockId,
-  } = useDnd()
+  } = useStepDnd()
   const showSortPlaceholders = useMemo(
     () => mouseOverBlockId === step.blockId && draggedChoiceItem,
     [draggedChoiceItem, mouseOverBlockId, step.blockId]

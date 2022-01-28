@@ -37,7 +37,6 @@ export const SetVariableSettingsBody = ({
         <DebouncedTextarea
           id="expression"
           initialValue={options.expressionToEvaluate ?? ''}
-          delay={100}
           onChange={handleExpressionChange}
         />
       </Stack>

@@ -17,12 +17,14 @@ type Props = {
   selectedItem?: string
   items: string[]
   onValueChange?: (value: string) => void
+  isLoading?: boolean
 } & InputProps
 
 export const SearchableDropdown = ({
   selectedItem,
   items,
   onValueChange,
+  isLoading = false,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
@@ -47,6 +49,7 @@ export const SearchableDropdown = ({
         )
         .slice(0, 50),
     ])
+    if (inputRef.current === document.activeElement) onOpen()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
 
@@ -97,6 +100,7 @@ export const SearchableDropdown = ({
             value={inputValue}
             onChange={onInputChange}
             onClick={onOpen}
+            type="text"
             {...inputProps}
           />
         </PopoverTrigger>
@@ -130,7 +134,9 @@ export const SearchableDropdown = ({
               })}
             </>
           ) : (
-            <Text p={4}>Not found.</Text>
+            <Text p={4} color="gray.500">
+              {isLoading ? 'Loading...' : 'Not found.'}
+            </Text>
           )}
         </PopoverContent>
       </Popover>

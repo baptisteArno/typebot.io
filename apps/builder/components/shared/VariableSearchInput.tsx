@@ -118,6 +118,7 @@ export const VariableSearchInput = ({
             value={inputValue}
             onChange={onInputChange}
             onClick={onOpen}
+            placeholder={inputProps.placeholder ?? 'Select a variable'}
             {...inputProps}
           />
         </PopoverTrigger>

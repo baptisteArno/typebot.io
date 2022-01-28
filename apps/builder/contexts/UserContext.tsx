@@ -82,11 +82,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     setIsSaving(false)
   }
 
-  const refreshUser = async () => {
-    await fetch('/api/auth/session?update')
-    reloadSession()
-  }
-
   return (
     <userContext.Provider
       value={{
@@ -103,6 +98,11 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
       {children}
     </userContext.Provider>
   )
+}
+
+export const refreshUser = async () => {
+  await fetch('/api/auth/session?update')
+  reloadSession()
 }
 
 const reloadSession = () => {

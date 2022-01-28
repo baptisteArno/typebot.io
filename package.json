@@ -11,7 +11,7 @@
     "db:nuke": "docker-compose down --volumes --remove-orphans",
     "dev": "dotenv -e .env yarn docker:up && dotenv -e .env turbo run dev --parallel",
     "build": "dotenv -e .env turbo run build",
-    "test": "dotenv -e .env turbo run dev test",
+    "test": "dotenv -e .env turbo run test",
     "lint": "turbo run lint"
   },
   "devDependencies": {
@@ -30,9 +30,7 @@
         ]
       },
       "test": {
-        "dependsOn": [
-          "^dev"
-        ],
+        "dependsOn": [],
         "outputs": []
       },
       "lint": {

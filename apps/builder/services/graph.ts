@@ -1,4 +1,3 @@
-import { Coordinates } from '@dnd-kit/core/dist/types'
 import { Block, Edge, Table, Target, Typebot } from 'models'
 import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
 import {
@@ -7,6 +6,7 @@ import {
   blockAnchorsOffset,
   ConnectingIds,
   Endpoint,
+  Coordinates,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
 import { headerHeight } from 'components/shared/TypebotHeader'

@@ -13,7 +13,7 @@ export type TableListItemProps<T> = {
 }
 
 type Props<T> = {
-  initialItems?: Table<T>
+  initialItems: Table<T>
   onItemsChange: (items: Table<T>) => void
   addLabel?: string
   Item: (props: TableListItemProps<T>) => JSX.Element
@@ -27,7 +27,7 @@ export const TableList = <T,>({
   Item,
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
-  const [items, setItems] = useImmer(initialItems ?? { byId: {}, allIds: [] })
+  const [items, setItems] = useImmer(initialItems)
   const [showDeleteId, setShowDeleteId] = useState<string | undefined>()
 
   useEffect(() => {
@@ -80,6 +80,7 @@ export const TableList = <T,>({
             pos="relative"
             onMouseEnter={handleMouseEnter(itemId)}
             onMouseLeave={handleMouseLeave}
+            mt={idx !== 0 && ComponentBetweenItems ? 4 : 0}
           >
             <Item
               id={itemId}

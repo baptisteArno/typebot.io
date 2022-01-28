@@ -92,7 +92,6 @@ export const MetadataForm = ({
         <InputWithVariableButton
           id="title"
           initialValue={metadata.title ?? typebotName}
-          delay={100}
           onChange={handleTitleChange}
         />
       </Stack>
@@ -103,7 +102,6 @@ export const MetadataForm = ({
         <TextareaWithVariableButton
           id="description"
           initialValue={metadata.description}
-          delay={100}
           onChange={handleDescriptionChange}
         />
       </Stack>

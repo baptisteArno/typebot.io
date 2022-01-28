@@ -130,7 +130,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TableList<KeyValue>
-              initialItems={webhook?.queryParams}
+              initialItems={webhook?.queryParams ?? { byId: {}, allIds: [] }}
               onItemsChange={handleQueryParamsChange}
               Item={QueryParamsInputs}
               addLabel="Add a param"
@@ -144,7 +144,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TableList<KeyValue>
-              initialItems={webhook?.headers}
+              initialItems={webhook?.headers ?? { byId: {}, allIds: [] }}
               onItemsChange={handleHeadersChange}
               Item={HeadersInputs}
               addLabel="Add a value"
@@ -171,7 +171,9 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TableList<VariableForTest>
-              initialItems={options?.variablesForTest}
+              initialItems={
+                options?.variablesForTest ?? { byId: {}, allIds: [] }
+              }
               onItemsChange={handleVariablesChange}
               Item={VariableForTestInputs}
               addLabel="Add an entry"
@@ -194,7 +196,9 @@ export const WebhookSettings = ({
             </AccordionButton>
             <AccordionPanel pb={4} as={Stack} spacing="6">
               <TableList<ResponseVariableMapping>
-                initialItems={options?.responseVariableMapping}
+                initialItems={
+                  options?.responseVariableMapping ?? { byId: {}, allIds: [] }
+                }
                 onItemsChange={handleResponseMappingChange}
                 Item={ResponseMappingInputs}
               />

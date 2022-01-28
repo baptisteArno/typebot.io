@@ -13,13 +13,11 @@ import {
 import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
-import { useDebounce } from 'use-debounce'
 import { VariableSearchInput } from '../VariableSearchInput'
 
 export type TextBoxWithVariableButtonProps = {
   initialValue: string
   onChange: (value: string) => void
-  delay?: number
   TextBox:
     | ComponentWithAs<'textarea', TextareaProps>
     | ComponentWithAs<'input', InputProps>
@@ -28,7 +26,6 @@ export type TextBoxWithVariableButtonProps = {
 export const TextBoxWithVariableButton = ({
   initialValue,
   onChange,
-  delay,
   TextBox,
   ...props
 }: TextBoxWithVariableButtonProps) => {
@@ -36,13 +33,12 @@ export const TextBoxWithVariableButton = ({
     null
   )
   const [value, setValue] = useState(initialValue)
-  const [debouncedValue] = useDebounce(value, delay ?? 100)
   const [carretPosition, setCarretPosition] = useState<number>(0)
 
   useEffect(() => {
-    if (debouncedValue !== initialValue) onChange(debouncedValue)
+    if (value !== initialValue) onChange(value)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
+  }, [value])
 
   const handleVariableSelected = (variable?: Variable) => {
     if (!textBoxRef.current || !variable) return

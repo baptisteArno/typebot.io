@@ -52,6 +52,7 @@ export const TypebotViewer = ({
           {typebot.theme?.customCss}
         </style>
       }
+      name="Typebot viewer"
       style={{ width: '100%', height: '100%', border: 'none' }}
     >
       <style

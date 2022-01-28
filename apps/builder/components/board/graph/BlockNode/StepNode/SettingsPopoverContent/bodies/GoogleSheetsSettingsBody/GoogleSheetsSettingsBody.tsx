@@ -149,7 +149,7 @@ const ActionOptions = ({
     case GoogleSheetsAction.INSERT_ROW:
       return (
         <TableList<Cell>
-          initialItems={options.cellsToInsert}
+          initialItems={options.cellsToInsert ?? { byId: {}, allIds: [] }}
           onItemsChange={handleInsertColumnsChange}
           Item={UpdatingCellItem}
           addLabel="Add a value"
@@ -167,7 +167,7 @@ const ActionOptions = ({
           />
           <Text>Cells to update</Text>
           <TableList<Cell>
-            initialItems={options.cellsToUpsert}
+            initialItems={options.cellsToUpsert ?? { byId: {}, allIds: [] }}
             onItemsChange={handleUpsertColumnsChange}
             Item={UpdatingCellItem}
             addLabel="Add a value"
@@ -186,7 +186,7 @@ const ActionOptions = ({
           />
           <Text>Cells to extract</Text>
           <TableList<ExtractingCell>
-            initialItems={options.cellsToExtract}
+            initialItems={options.cellsToExtract ?? { byId: {}, allIds: [] }}
             onItemsChange={handleExtractingCellsChange}
             Item={ExtractingCellItem}
             addLabel="Add a value"

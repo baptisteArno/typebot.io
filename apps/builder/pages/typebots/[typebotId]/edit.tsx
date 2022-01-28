@@ -13,7 +13,7 @@ const TypebotEditPage = () => (
     <Seo title="Editor" />
     <KBarProvider actions={actions}>
       <KBar />
-      <Flex overflow="hidden" h="100vh" flexDir="column">
+      <Flex overflow="hidden" h="100vh" flexDir="column" id="editor-container">
         <TypebotHeader />
         <Board />
       </Flex>

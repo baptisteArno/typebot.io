@@ -21,6 +21,7 @@ export const ConditionSettingsBody = ({
 
   return (
     <TableList<Comparison>
+      initialItems={options.comparisons}
       onItemsChange={handleComparisonsChange}
       Item={ComparisonItem}
       ComponentBetweenItems={() => (

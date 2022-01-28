@@ -50,7 +50,8 @@ export const useTypebots = ({
   const params = stringify({ folderId })
   const { data, error, mutate } = useSWR<{ typebots: Typebot[] }, Error>(
     `/api/typebots?${params}`,
-    fetcher
+    fetcher,
+    { dedupingInterval: 0 }
   )
   if (error) onError(error)
   return {

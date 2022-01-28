@@ -28,7 +28,6 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
         placeholder="Paste the video link..."
         initialValue={content?.url ?? ''}
         onChange={handleUrlChange}
-        delay={100}
       />
       <Text fontSize="sm" color="gray.400" textAlign="center">
         Works with Youtube, Vimeo and others

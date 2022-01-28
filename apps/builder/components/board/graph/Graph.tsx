@@ -1,8 +1,8 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useEffect } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './BlockNode/BlockNode'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
@@ -10,15 +10,22 @@ import { DraggableStepType } from 'models'
 
 const Graph = ({ ...props }: FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
-    useDnd()
+    useStepDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
+  const editorContainerRef = useRef<HTMLDivElement | null>(null)
   const { createBlock, typebot } = useTypebot()
-  const { graphPosition, setGraphPosition } = useGraph()
+  const { graphPosition, setGraphPosition, setOpenedStepId } = useGraph()
   const transform = useMemo(
     () =>
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
+
+  useEffect(() => {
+    editorContainerRef.current = document.getElementById(
+      'editor-container'
+    ) as HTMLDivElement
+  }, [])
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
@@ -56,6 +63,9 @@ const Graph = ({ ...props }: FlexProps) => {
     if (isRightClick) e.stopPropagation()
   }
   useEventListener('mousedown', handleMouseDown, undefined, { capture: true })
+
+  const handleClick = () => setOpenedStepId(undefined)
+  useEventListener('click', handleClick, editorContainerRef.current)
 
   if (!typebot) return <></>
   return (

@@ -13,12 +13,12 @@ import {
   IntegrationStepType,
   LogicStepType,
 } from 'models'
-import { useDnd } from 'contexts/DndContext'
+import { useStepDnd } from 'contexts/StepDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
 
 export const StepTypesList = () => {
-  const { setDraggedStepType, draggedStepType } = useDnd()
+  const { setDraggedStepType, draggedStepType } = useStepDnd()
   const [position, setPosition] = useState({
     x: 0,
     y: 0,

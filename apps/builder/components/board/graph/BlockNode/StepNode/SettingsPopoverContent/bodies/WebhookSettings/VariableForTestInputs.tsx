@@ -29,7 +29,6 @@ export const VariableForTestInputs = ({
         <FormLabel htmlFor={'value' + id}>Test value:</FormLabel>
         <DebouncedInput
           id={'value' + id}
-          delay={100}
           initialValue={item.value ?? ''}
           onChange={handleValueChange}
         />

@@ -49,7 +49,6 @@ export const DateInputSettingsBody = ({
           <DebouncedInput
             id="from"
             initialValue={options.labels.from}
-            delay={100}
             onChange={handleFromChange}
           />
         </Stack>
@@ -62,7 +61,6 @@ export const DateInputSettingsBody = ({
           <DebouncedInput
             id="to"
             initialValue={options.labels.to}
-            delay={100}
             onChange={handleToChange}
           />
         </Stack>
@@ -74,7 +72,6 @@ export const DateInputSettingsBody = ({
         <DebouncedInput
           id="button"
           initialValue={options.labels.button}
-          delay={100}
           onChange={handleButtonLabelChange}
         />
       </Stack>

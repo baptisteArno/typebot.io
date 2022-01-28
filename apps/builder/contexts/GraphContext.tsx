@@ -65,6 +65,8 @@ const graphContext = createContext<{
   addSourceEndpoint: (endpoint: Endpoint) => void
   targetEndpoints: Table<Endpoint>
   addTargetEndpoint: (endpoint: Endpoint) => void
+  openedStepId?: string
+  setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -84,6 +86,7 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
     byId: {},
     allIds: [],
   })
+  const [openedStepId, setOpenedStepId] = useState<string>()
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
     setSourceEndpoints((endpoints) => ({
@@ -112,6 +115,8 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
         targetEndpoints,
         addSourceEndpoint,
         addTargetEndpoint,
+        openedStepId,
+        setOpenedStepId,
       }}
     >
       {children}

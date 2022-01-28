@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "cypress run"
+    "test": "yarn playwright test",
+    "test:open": "PWDEBUG=1 yarn playwright test"
   },
   "dependencies": {
     "@chakra-ui/css-reset": "^1.1.1",
@@ -16,8 +17,6 @@
     "@codemirror/lang-css": "^0.19.3",
     "@codemirror/lang-json": "^0.19.1",
     "@codemirror/text": "^0.19.6",
-    "@dnd-kit/core": "^4.0.3",
-    "@dnd-kit/sortable": "^5.1.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@giphy/js-fetch-api": "^4.1.2",
@@ -72,6 +71,7 @@
     "utils": "*"
   },
   "devDependencies": {
+    "@playwright/test": "^1.18.0",
     "@testing-library/cypress": "^8.0.2",
     "@types/google-spreadsheet": "^3.1.5",
     "@types/micro-cors": "^0.1.2",

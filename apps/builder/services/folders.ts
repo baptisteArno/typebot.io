@@ -14,7 +14,8 @@ export const useFolders = ({
   const params = stringify({ parentId })
   const { data, error, mutate } = useSWR<{ folders: DashboardFolder[] }, Error>(
     `/api/folders?${params}`,
-    fetcher
+    fetcher,
+    { dedupingInterval: 0 }
   )
   if (error) onError(error)
   return {

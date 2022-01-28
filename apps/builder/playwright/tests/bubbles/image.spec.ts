@@ -1,0 +1,113 @@
+import test, { expect } from '@playwright/test'
+import {
+  createTypebots,
+  parseDefaultBlockWithStep,
+} from '../../services/database'
+import { BubbleStepType, defaultImageBubbleContent } from 'models'
+import { typebotViewer } from '../../services/selectorUtils'
+import path from 'path'
+
+const unsplashImageSrc =
+  'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
+
+test.describe.parallel('Image bubble step', () => {
+  test.describe('Content settings', () => {
+    test('should upload image file correctly', async ({ page }) => {
+      const typebotId = 'image-bubble-step-image-upload'
+      await createTypebots([
+        {
+          id: typebotId,
+          ...parseDefaultBlockWithStep({
+            type: BubbleStepType.IMAGE,
+            content: defaultImageBubbleContent,
+          }),
+        },
+      ])
+
+      await page.goto(`/typebots/${typebotId}/edit`)
+
+      await page.click('text=Click to edit...')
+      await page.setInputFiles(
+        'input[type="file"]',
+        path.join(__dirname, '../../fixtures/avatar.jpg')
+      )
+      await expect(page.locator('img')).toHaveAttribute(
+        'src',
+        new RegExp(
+          `https://s3.eu-west-3.amazonaws.com/typebot/typebots/${typebotId}/avatar.jpg`,
+          'gm'
+        )
+      )
+    })
+
+    test('should import image link correctly', async ({ page }) => {
+      const typebotId = 'image-bubble-step-image-link'
+      await createTypebots([
+        {
+          id: typebotId,
+          ...parseDefaultBlockWithStep({
+            type: BubbleStepType.IMAGE,
+            content: defaultImageBubbleContent,
+          }),
+        },
+      ])
+
+      await page.goto(`/typebots/${typebotId}/edit`)
+
+      await page.click('text=Click to edit...')
+      await page.click('text=Embed link')
+      await page.fill(
+        'input[placeholder="Paste the image link..."]',
+        unsplashImageSrc
+      )
+      await expect(page.locator('img')).toHaveAttribute('src', unsplashImageSrc)
+    })
+
+    test('should import gifs correctly', async ({ page }) => {
+      const typebotId = 'image-bubble-step-gifs'
+      await createTypebots([
+        {
+          id: typebotId,
+          ...parseDefaultBlockWithStep({
+            type: BubbleStepType.IMAGE,
+            content: defaultImageBubbleContent,
+          }),
+        },
+      ])
+
+      await page.goto(`/typebots/${typebotId}/edit`)
+
+      await page.click('text=Click to edit...')
+      await page.click('text=Giphy')
+      await page.click('img >> nth=3')
+      await expect(page.locator('img[alt="Step image"]')).toHaveAttribute(
+        'src',
+        new RegExp('giphy.com/media', 'gm')
+      )
+    })
+  })
+
+  test.describe('Preview', () => {
+    test('should display correctly', async ({ page }) => {
+      const typebotId = 'image-bubble-step-preview'
+      await createTypebots([
+        {
+          id: typebotId,
+          ...parseDefaultBlockWithStep({
+            type: BubbleStepType.IMAGE,
+            content: {
+              url: unsplashImageSrc,
+            },
+          }),
+        },
+      ])
+
+      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.click('text=Preview')
+      await expect(typebotViewer(page).locator('img')).toHaveAttribute(
+        'src',
+        unsplashImageSrc
+      )
+    })
+  })
+})
