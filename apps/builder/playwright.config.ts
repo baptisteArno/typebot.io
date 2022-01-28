@@ -11,9 +11,10 @@ const config: PlaywrightTestConfig = {
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  maxFailures: process.env.CI ? 10 : undefined,
   use: {
     actionTimeout: 0,
-    baseURL: process.env.NEXTAUTH_URL,
+    baseURL: process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL,
     trace: 'on-first-retry',
     storageState: path.join(__dirname, 'playwright/authenticatedState.json'),
     video: 'retain-on-failure',

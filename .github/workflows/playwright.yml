@@ -1,0 +1,23 @@
+name: Playwright Tests
+on:
+  deployment_status:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+      - name: Run your tests
+        run: yarn test
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-results
+          path: test-results
+        env:
+          PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          GOOGLE_REFRESH_TOKEN_TEST: ${{ secrets.GOOGLE_REFRESH_TOKEN_TEST }}
