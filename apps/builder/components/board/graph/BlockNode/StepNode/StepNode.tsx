@@ -44,7 +44,7 @@ export const StepNode = ({
   const { query } = useRouter()
   const { setConnectingIds, connectingIds, openedStepId, setOpenedStepId } =
     useGraph()
-  const { moveStep } = useTypebot()
+  const { detachStepFromBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [mouseDownEvent, setMouseDownEvent] =
     useState<{ absolute: Coordinates; relative: Coordinates }>()
@@ -116,8 +116,9 @@ export const StepNode = ({
       onMouseDown &&
       (event.movementX > 0 || event.movementY > 0)
     if (isMovingAndIsMouseDown && step.type !== 'start') {
+      console.log(step)
       onMouseDown(mouseDownEvent, step)
-      moveStep(step.id)
+      detachStepFromBlock(step.id)
       setMouseDownEvent(undefined)
     }
     const element = event.currentTarget as HTMLDivElement

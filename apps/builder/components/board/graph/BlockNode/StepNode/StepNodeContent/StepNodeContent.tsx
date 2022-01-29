@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react'
+import { Box, Image, Text } from '@chakra-ui/react'
 import {
   Step,
   StartStep,
@@ -7,9 +7,12 @@ import {
   LogicStepType,
   IntegrationStepType,
 } from 'models'
+import { isInputStep } from 'utils'
 import { ChoiceItemsList } from '../ChoiceInputStepNode/ChoiceItemsList'
 import { ConditionNodeContent } from './ConditionNodeContent'
 import { SetVariableNodeContent } from './SetVariableNodeContent'
+import { StepNodeContentWithVariable } from './StepNodeContentWithVariable'
+import { TextBubbleNodeContent } from './TextBubbleNodeContent'
 import { VideoStepNodeContent } from './VideoStepNodeContent'
 import { WebhookContent } from './WebhookContent'
 
@@ -18,21 +21,12 @@ type Props = {
   isConnectable?: boolean
 }
 export const StepNodeContent = ({ step }: Props) => {
+  if (isInputStep(step) && step.options.variableId) {
+    return <StepNodeContentWithVariable step={step} />
+  }
   switch (step.type) {
     case BubbleStepType.TEXT: {
-      return (
-        <Flex
-          flexDir={'column'}
-          opacity={step.content.html === '' ? '0.5' : '1'}
-          className="slate-html-container"
-          dangerouslySetInnerHTML={{
-            __html:
-              step.content.html === ''
-                ? `<p>Click to edit...</p>`
-                : step.content.html,
-          }}
-        />
-      )
+      return <TextBubbleNodeContent step={step} />
     }
     case BubbleStepType.IMAGE: {
       return !step.content?.url ? (

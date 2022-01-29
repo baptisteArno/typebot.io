@@ -10,7 +10,7 @@ import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { useStepDnd } from 'contexts/StepDndContext'
 import { StepsList } from './StepsList'
-import { filterTable, isDefined } from 'utils'
+import { isDefined } from 'utils'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -114,12 +114,7 @@ export const BlockNode = ({ block }: Props) => {
             />
             <EditableInput minW="0" px="1" />
           </Editable>
-          {typebot && (
-            <StepsList
-              blockId={block.id}
-              steps={filterTable(block.stepIds, typebot?.steps)}
-            />
-          )}
+          {typebot && <StepsList blockId={block.id} stepIds={block.stepIds} />}
         </Stack>
       )}
     </ContextMenu>

@@ -1,5 +1,5 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
-import { DraggableStep, Step, Table } from 'models'
+import { DraggableStep } from 'models'
 import { useStepDnd } from 'contexts/StepDndContext'
 import { Coordinates } from 'contexts/GraphContext'
 import { useMemo, useState } from 'react'
@@ -8,10 +8,10 @@ import { useTypebot } from 'contexts/TypebotContext'
 
 export const StepsList = ({
   blockId,
-  steps,
+  stepIds,
 }: {
   blockId: string
-  steps: Table<Step>
+  stepIds: string[]
 }) => {
   const {
     draggedStep,
@@ -21,7 +21,7 @@ export const StepsList = ({
     setDraggedStepType,
     setMouseOverBlockId,
   } = useStepDnd()
-  const { createStep } = useTypebot()
+  const { typebot, createStep } = useTypebot()
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
   >()
@@ -59,14 +59,14 @@ export const StepsList = ({
     e.stopPropagation()
     setMouseOverBlockId(undefined)
     setExpandedPlaceholderIndex(undefined)
-    if (draggedStepType) {
-      createStep(blockId, draggedStepType, expandedPlaceholderIndex)
-      setDraggedStepType(undefined)
-    }
-    if (draggedStep) {
-      createStep(blockId, draggedStep, expandedPlaceholderIndex)
-      setDraggedStep(undefined)
-    }
+    if (!draggedStep && !draggedStepType) return
+    createStep(
+      blockId,
+      draggedStep || draggedStepType,
+      expandedPlaceholderIndex
+    )
+    setDraggedStep(undefined)
+    setDraggedStepType(undefined)
   }
 
   const handleStepMouseDown = (
@@ -107,31 +107,32 @@ export const StepsList = ({
         rounded="lg"
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
       />
-      {steps.allIds.map((stepId, idx) => (
-        <Stack key={stepId} spacing={1}>
-          <StepNode
-            key={stepId}
-            step={steps.byId[stepId]}
-            isConnectable={steps.allIds.length - 1 === idx}
-            onMouseMoveTopOfElement={() => handleMouseOnTopOfStep(idx)}
-            onMouseMoveBottomOfElement={() => {
-              handleMouseOnBottomOfStep(idx)
-            }}
-            onMouseDown={handleStepMouseDown}
-          />
-          <Flex
-            h={
-              showSortPlaceholders && expandedPlaceholderIndex === idx + 1
-                ? '50px'
-                : '2px'
-            }
-            bgColor={'gray.300'}
-            visibility={showSortPlaceholders ? 'visible' : 'hidden'}
-            rounded="lg"
-            transition={showSortPlaceholders ? 'height 200ms' : 'none'}
-          />
-        </Stack>
-      ))}
+      {typebot &&
+        stepIds.map((stepId, idx) => (
+          <Stack key={stepId} spacing={1}>
+            <StepNode
+              key={stepId}
+              step={typebot?.steps.byId[stepId]}
+              isConnectable={stepIds.length - 1 === idx}
+              onMouseMoveTopOfElement={() => handleMouseOnTopOfStep(idx)}
+              onMouseMoveBottomOfElement={() => {
+                handleMouseOnBottomOfStep(idx)
+              }}
+              onMouseDown={handleStepMouseDown}
+            />
+            <Flex
+              h={
+                showSortPlaceholders && expandedPlaceholderIndex === idx + 1
+                  ? '50px'
+                  : '2px'
+              }
+              bgColor={'gray.300'}
+              visibility={showSortPlaceholders ? 'visible' : 'hidden'}
+              rounded="lg"
+              transition={showSortPlaceholders ? 'height 200ms' : 'none'}
+            />
+          </Stack>
+        ))}
       {draggedStep && draggedStep.blockId === blockId && (
         <Portal>
           <StepNodeOverlay

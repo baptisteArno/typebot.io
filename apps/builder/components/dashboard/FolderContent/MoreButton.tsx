@@ -16,8 +16,7 @@ export const MoreButton = ({ children, ...props }: Props) => {
       <MenuButton
         as={IconButton}
         icon={<MoreVerticalIcon />}
-        onMouseUp={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         colorScheme="gray"
         variant="outline"
         size="sm"

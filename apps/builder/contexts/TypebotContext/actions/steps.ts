@@ -17,23 +17,24 @@ import { deleteWebhookDraft } from './webhooks'
 export type StepsActions = {
   createStep: (
     blockId: string,
-    step: DraggableStep | DraggableStepType,
+    step?: DraggableStep | DraggableStepType,
     index?: number
   ) => void
   updateStep: (
     stepId: string,
     updates: Partial<Omit<Step, 'id' | 'type'>>
   ) => void
-  moveStep: (stepId: string) => void
+  detachStepFromBlock: (stepId: string) => void
   deleteStep: (stepId: string) => void
 }
 
 export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
   createStep: (
     blockId: string,
-    step: DraggableStep | DraggableStepType,
+    step?: DraggableStep | DraggableStepType,
     index?: number
   ) => {
+    if (!step) return
     setTypebot((typebot) => {
       createStepDraft(typebot, step, blockId, index)
       removeEmptyBlocks(typebot)
@@ -43,7 +44,7 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
     setTypebot((typebot) => {
       typebot.steps.byId[stepId] = { ...typebot.steps.byId[stepId], ...updates }
     }),
-  moveStep: (stepId: string) => {
+  detachStepFromBlock: (stepId: string) => {
     setTypebot((typebot) => {
       removeStepIdFromBlock(typebot, stepId)
     })
@@ -54,22 +55,12 @@ export const stepsAction = (setTypebot: Updater<Typebot>): StepsActions => ({
       if (isChoiceInput(step)) deleteChoiceItemsInsideStep(typebot, step)
       if (isWebhookStep(step))
         deleteWebhookDraft(step.options?.webhookId)(typebot)
-      deleteAssociatedEdges(typebot, stepId)
+      deleteEdgeDraft(typebot, step.edgeId)
       removeStepIdFromBlock(typebot, stepId)
       deleteStepDraft(typebot, stepId)
     })
   },
 })
-
-const deleteAssociatedEdges = (
-  typebot: WritableDraft<Typebot>,
-  stepId: string
-) => {
-  typebot.edges.allIds.forEach((edgeId) => {
-    if (typebot.edges.byId[edgeId].from.stepId === stepId)
-      deleteEdgeDraft(typebot, edgeId)
-  })
-}
 
 const removeStepIdFromBlock = (
   typebot: WritableDraft<Typebot>,
@@ -93,17 +84,31 @@ export const createStepDraft = (
   step: DraggableStep | DraggableStepType,
   blockId: string,
   index?: number
+) =>
+  typeof step === 'string'
+    ? createNewStep(typebot, step, blockId, index)
+    : moveStepToBlock(typebot, step, blockId, index)
+
+const createNewStep = (
+  typebot: WritableDraft<Typebot>,
+  type: DraggableStepType,
+  blockId: string,
+  index?: number
 ) => {
-  const newStep =
-    typeof step === 'string'
-      ? parseNewStep(step, blockId)
-      : { ...step, blockId }
+  const newStep = parseNewStep(type, blockId)
   typebot.steps.byId[newStep.id] = newStep
-  if (isChoiceInput(newStep) && newStep.options.itemIds.length === 0)
+  if (isChoiceInput(newStep))
     createChoiceItemDraft(typebot, { stepId: newStep.id })
   typebot.steps.allIds.push(newStep.id)
   typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, newStep.id)
 }
+
+const moveStepToBlock = (
+  typebot: WritableDraft<Typebot>,
+  step: DraggableStep,
+  blockId: string,
+  index?: number
+) => typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, step.id)
 
 const deleteChoiceItemsInsideStep = (
   typebot: WritableDraft<Typebot>,

@@ -32,7 +32,7 @@ import { edgesAction, EdgesActions } from './actions/edges'
 import { webhooksAction, WebhooksAction } from './actions/webhooks'
 import { useDebounce } from 'use-debounce'
 
-const autoSaveTimeout = 10000
+const autoSaveTimeout = 40000
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme

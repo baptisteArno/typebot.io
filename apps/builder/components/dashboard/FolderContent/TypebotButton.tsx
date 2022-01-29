@@ -18,6 +18,7 @@ import { GlobeIcon, GripIcon, ToolIcon } from 'assets/icons'
 import { deleteTypebot, duplicateTypebot } from 'services/typebots'
 import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import { useDebounce } from 'use-debounce'
 
 type ChatbotCardProps = {
   typebot: Typebot
@@ -32,6 +33,7 @@ export const TypebotButton = ({
 }: ChatbotCardProps) => {
   const router = useRouter()
   const { draggedTypebot } = useTypebotDnd()
+  const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
@@ -44,7 +46,7 @@ export const TypebotButton = ({
   })
 
   const handleTypebotClick = () => {
-    if (draggedTypebot) return
+    if (draggedTypebotDebounced) return
     router.push(
       isMobile
         ? `/typebots/${typebot.id}/results/responses`
@@ -72,10 +74,15 @@ export const TypebotButton = ({
     if (createdTypebot) router.push(`/typebots/${createdTypebot?.id}`)
   }
 
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onDeleteOpen()
+  }
+
   return (
     <Button
       as={WrapItem}
-      onMouseUp={handleTypebotClick}
+      onClick={handleTypebotClick}
       display="flex"
       flexDir="column"
       variant="outline"
@@ -108,13 +115,7 @@ export const TypebotButton = ({
         aria-label={`Show ${typebot.name} menu`}
       >
         <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
-        <MenuItem
-          color="red"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDeleteOpen()
-          }}
-        >
+        <MenuItem color="red" onClick={handleDeleteClick}>
           Delete
         </MenuItem>
       </MoreButton>

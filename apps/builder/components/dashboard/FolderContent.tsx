@@ -14,7 +14,7 @@ import {
 import { FolderPlusIcon } from 'assets/icons'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { Typebot } from 'models'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
 import { patchTypebot, useTypebots } from 'services/typebots'
 import { BackButton } from './FolderContent/BackButton'
