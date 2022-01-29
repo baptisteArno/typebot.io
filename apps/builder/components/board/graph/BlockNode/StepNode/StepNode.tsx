@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { BubbleStep, DraggableStep, Step, TextBubbleStep } from 'models'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import { StepIcon } from 'components/board/StepTypesList/StepIcon'
+import { StepIcon } from 'components/board/StepsSideBar/StepIcon'
 import { isBubbleStep, isTextBubbleStep } from 'utils'
 import { TextEditor } from './TextEditor/TextEditor'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
@@ -152,7 +152,7 @@ export const StepNode = ({
       renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
     >
       {(ref, isOpened) => (
-        <Popover placement="left" isLazy isOpen={openedStepId === step.id}>
+        <Popover placement="bottom" isLazy isOpen={openedStepId === step.id}>
           <PopoverTrigger>
             <Flex
               pos="relative"

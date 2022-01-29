@@ -31,31 +31,31 @@ type StepIconProps = { type: StepType } & IconProps
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT:
-      return <ChatIcon {...props} />
+      return <ChatIcon color="blue.500" {...props} />
     case BubbleStepType.IMAGE:
-      return <ImageIcon {...props} />
+      return <ImageIcon color="blue.500" {...props} />
     case BubbleStepType.VIDEO:
-      return <FilmIcon {...props} />
+      return <FilmIcon color="blue.500" {...props} />
     case InputStepType.TEXT:
-      return <TextIcon {...props} />
+      return <TextIcon color="orange.500" {...props} />
     case InputStepType.NUMBER:
-      return <NumberIcon {...props} />
+      return <NumberIcon color="orange.500" {...props} />
     case InputStepType.EMAIL:
-      return <EmailIcon {...props} />
+      return <EmailIcon color="orange.500" {...props} />
     case InputStepType.URL:
-      return <GlobeIcon {...props} />
+      return <GlobeIcon color="orange.500" {...props} />
     case InputStepType.DATE:
-      return <CalendarIcon {...props} />
+      return <CalendarIcon color="orange.500" {...props} />
     case InputStepType.PHONE:
-      return <PhoneIcon {...props} />
+      return <PhoneIcon color="orange.500" {...props} />
     case InputStepType.CHOICE:
-      return <CheckSquareIcon {...props} />
+      return <CheckSquareIcon color="orange.500" {...props} />
     case LogicStepType.SET_VARIABLE:
-      return <EditIcon {...props} />
+      return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:
-      return <FilterIcon {...props} />
+      return <FilterIcon color="purple.500" {...props} />
     case LogicStepType.REDIRECT:
-      return <ExternalLinkIcon {...props} />
+      return <ExternalLinkIcon color="purple.500" {...props} />
     case IntegrationStepType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationStepType.GOOGLE_ANALYTICS:

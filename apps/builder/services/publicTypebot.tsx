@@ -2,7 +2,7 @@ import { PublicTypebot, Typebot } from 'models'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon } from 'assets/icons'
-import { StepIcon } from 'components/board/StepTypesList/StepIcon'
+import { StepIcon } from 'components/board/StepsSideBar/StepIcon'
 import { isInputStep, sendRequest } from 'utils'
 
 export const parseTypebotToPublicTypebot = (

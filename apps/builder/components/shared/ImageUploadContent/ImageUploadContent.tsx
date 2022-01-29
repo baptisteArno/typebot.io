@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { Button, HStack, Input, Stack } from '@chakra-ui/react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { Button, Flex, HStack, Input, Stack } from '@chakra-ui/react'
 import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
@@ -79,7 +79,7 @@ type ContentProps = { initialUrl?: string; onNewUrl: (url: string) => void }
 const UploadFileContent = ({ onNewUrl }: ContentProps) => {
   const { typebot } = useTypebot()
   return (
-    <Stack>
+    <Flex justify="center" py="2">
       <UploadButton
         filePath={`typebots/${typebot?.id}`}
         onFileUploaded={onNewUrl}
@@ -88,7 +88,7 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
       >
         Choose an image
       </UploadButton>
-    </Stack>
+    </Flex>
   )
 }
 
@@ -106,11 +106,14 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
     setImageUrl(e.target.value)
 
   return (
-    <Input
-      placeholder={'Paste the image link...'}
-      onChange={handleImageUrlChange}
-      value={imageUrl}
-    />
+    <Stack py="2">
+      <Input
+        my="2"
+        placeholder={'Paste the image link...'}
+        onChange={handleImageUrlChange}
+        value={imageUrl}
+      />
+    </Stack>
   )
 }
 

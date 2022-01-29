@@ -43,7 +43,7 @@ export const DropdownList = <T,>({
           {currentItem ?? placeholder}
         </MenuButton>
         <Portal>
-          <MenuList maxW="500px" shadow="lg" zIndex={1500}>
+          <MenuList maxW="500px" zIndex={1500}>
             <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
               {items.map((item) => (
                 <MenuItem

@@ -90,6 +90,14 @@ const components = {
       _hover: { textDecoration: 'none' },
     },
   },
+  Menu: {
+    parts: ['list'],
+    defaultProps: {
+      list: {
+        shadow: 'lg',
+      },
+    },
+  },
 }
 
 export const customTheme = extendTheme({ colors, fonts, components })

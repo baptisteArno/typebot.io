@@ -94,6 +94,7 @@ export const ChoiceItemNode = ({
     >
       {(ref, isOpened) => (
         <Flex
+          ref={ref}
           align="center"
           pos="relative"
           onMouseEnter={handleMouseEnter}
@@ -109,7 +110,6 @@ export const ChoiceItemNode = ({
           borderColor={isOpened ? 'blue.400' : 'gray.300'}
         >
           <Editable
-            ref={ref}
             defaultValue={item.content ?? 'Click to edit'}
             flex="1"
             startWithEditView={!isDefined(item.content)}

@@ -1,6 +1,6 @@
 import { StackProps, HStack } from '@chakra-ui/react'
 import { StartStep, Step } from 'models'
-import { StepIcon } from 'components/board/StepTypesList/StepIcon'
+import { StepIcon } from 'components/board/StepsSideBar/StepIcon'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 
 export const StepNodeOverlay = ({

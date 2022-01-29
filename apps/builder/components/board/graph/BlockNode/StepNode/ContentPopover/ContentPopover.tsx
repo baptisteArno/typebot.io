@@ -27,7 +27,7 @@ export const ContentPopover = ({ step }: Props) => {
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown}>
+      <PopoverContent onMouseDown={handleMouseDown} w="500px">
         <PopoverArrow />
         <PopoverBody ref={ref} shadow="lg">
           <StepContent step={step} />
