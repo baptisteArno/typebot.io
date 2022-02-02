@@ -1,4 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
+import { generate } from 'short-uuid'
 import { createFolders, createTypebots } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
@@ -20,6 +21,7 @@ test.describe('Dashboard page', () => {
     await page.click('text="New folder"')
     await page.fill('input', 'My folder #2')
     await page.press('input', 'Enter')
+    await waitForNextApiCall(page)
 
     await page.click('li:has-text("My folder #2")')
     await expect(page.locator('h1 >> text="My folder #2"')).toBeVisible()
@@ -32,10 +34,7 @@ test.describe('Dashboard page', () => {
   })
 
   test('folders and typebots should be deletable', async ({ page }) => {
-    await createFolders([
-      { id: 'folder1', name: 'Folder #1' },
-      { id: 'folder2', name: 'Folder #2' },
-    ])
+    await createFolders([{ name: 'Folder #1' }, { name: 'Folder #2' }])
     await createTypebots([{ id: 'deletable-typebot', name: 'Typebot #1' }])
     await page.goto('/typebots')
     await page.click('button[aria-label="Show Folder #1 menu"]')
@@ -49,10 +48,9 @@ test.describe('Dashboard page', () => {
   })
 
   test('folders and typebots should be movable', async ({ page }) => {
-    await createFolders([{ id: 'droppable-folder', name: 'Droppable folder' }])
-    await createTypebots([
-      { id: 'draggable-typebot', name: 'Draggable typebot' },
-    ])
+    const droppableFolderId = generate()
+    await createFolders([{ id: droppableFolderId, name: 'Droppable folder' }])
+    await createTypebots([{ name: 'Draggable typebot' }])
     await page.goto('/typebots')
     const typebotButton = page.locator('li:has-text("Draggable typebot")')
     const folderButton = page.locator('li:has-text("Droppable folder")')
@@ -63,7 +61,7 @@ test.describe('Dashboard page', () => {
     await waitForNextApiCall(page)
     await expect(typebotButton).toBeHidden()
     await folderButton.click()
-    await expect(page).toHaveURL(/folders\/droppable-folder/)
+    await expect(page).toHaveURL(new RegExp(`/folders/${droppableFolderId}`))
     await expect(typebotButton).toBeVisible()
     await page.dragAndDrop(
       'li:has-text("Draggable typebot")',

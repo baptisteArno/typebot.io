@@ -1,7 +1,6 @@
 import { Flex, useToast } from '@chakra-ui/react'
-import AnalyticsGraph from 'components/analytics/graph/AnalyticsGraph'
 import { StatsCards } from 'components/analytics/StatsCards'
-import { AnalyticsGraphProvider } from 'contexts/AnalyticsGraphProvider'
+import { Graph } from 'components/shared/Graph'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Stats } from 'models'
 import React from 'react'
@@ -27,15 +26,13 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
       justifyContent="center"
     >
       {publishedTypebot && (
-        <AnalyticsGraphProvider initialTypebot={publishedTypebot}>
-          <AnalyticsGraph
-            flex="1"
-            answersCounts={[
-              { blockId: 'start-block', totalAnswers: stats?.totalViews ?? 0 },
-              ...(answersCounts ?? []),
-            ]}
-          />
-        </AnalyticsGraphProvider>
+        <Graph
+          flex="1"
+          answersCounts={[
+            { blockId: 'start-block', totalAnswers: stats?.totalViews ?? 0 },
+            ...(answersCounts ?? []),
+          ]}
+        />
       )}
       <StatsCards stats={stats} pos="absolute" top={10} />
     </Flex>

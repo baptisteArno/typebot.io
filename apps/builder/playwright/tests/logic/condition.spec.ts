@@ -1,9 +1,10 @@
-import test, { expect, Page } from '@playwright/test'
+import test, { expect } from '@playwright/test'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import { importTypebotInDatabase } from '../../services/database'
+import { generate } from 'short-uuid'
 
-const typebotId = 'condition-step'
+const typebotId = generate()
 
 test.describe('Condition step', () => {
   test('its configuration should work', async ({ page }) => {
@@ -16,6 +17,7 @@ test.describe('Condition step', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
+    await page.click('button:has-text("Add a comparison")')
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'
@@ -40,6 +42,7 @@ test.describe('Condition step', () => {
     )
 
     await page.click('text=Configure...')
+    await page.click('button:has-text("Add a comparison")')
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'

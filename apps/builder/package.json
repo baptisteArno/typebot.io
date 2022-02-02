@@ -34,6 +34,7 @@
     "bot-engine": "*",
     "browser-image-compression": "^1.0.17",
     "db": "*",
+    "deep-object-diff": "^1.1.7",
     "fast-equals": "^2.0.4",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",

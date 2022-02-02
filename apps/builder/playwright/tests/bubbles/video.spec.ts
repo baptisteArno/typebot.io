@@ -9,6 +9,7 @@ import {
   VideoBubbleContentType,
 } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
+import { generate } from 'short-uuid'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
@@ -18,7 +19,7 @@ const vimeoVideoSrc = 'https://vimeo.com/649301125'
 test.describe.parallel('Video bubble step', () => {
   test.describe('Content settings', () => {
     test('should import video url correctly', async ({ page }) => {
-      const typebotId = 'video-bubble-step-link'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -42,7 +43,7 @@ test.describe.parallel('Video bubble step', () => {
 
   test.describe('Preview', () => {
     test('should display video correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-preview-video'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -64,7 +65,7 @@ test.describe.parallel('Video bubble step', () => {
     })
 
     test('should display youtube video correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-preview-youtube'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -88,7 +89,7 @@ test.describe.parallel('Video bubble step', () => {
     })
 
     test('should display vimeo video correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-preview-vimeo'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,

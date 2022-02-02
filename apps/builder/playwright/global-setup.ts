@@ -1,4 +1,5 @@
 import { chromium, FullConfig, Page } from '@playwright/test'
+import { existsSync } from 'fs'
 import { setupDatabase, teardownDatabase } from './services/database'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -10,12 +11,14 @@ async function globalSetup(config: FullConfig) {
 
   await teardownDatabase()
 
-  const browser = await chromium.launch()
-  const page = await browser.newPage()
-  await signIn(page)
-  await page.context().storageState({
-    path: './playwright/authenticatedState.json',
-  })
+  if (!existsSync('./playwright/authenticatedState.json')) {
+    const browser = await chromium.launch()
+    const page = await browser.newPage()
+    await signIn(page)
+    await page.context().storageState({
+      path: './playwright/authenticatedState.json',
+    })
+  }
 
   await setupDatabase(process.env.GITHUB_EMAIL as string)
 }
@@ -23,7 +26,7 @@ async function globalSetup(config: FullConfig) {
 const signIn = async (page: Page) => {
   if (!process.env.GITHUB_EMAIL || !process.env.GITHUB_PASSWORD)
     throw new Error(
-      'GITHUB_USERNAME or GITHUB_PASSWORD are missing in the environment. They are required to log in.'
+      'GITHUB_EMAIL or GITHUB_PASSWORD are missing in the environment. They are required to log in.'
     )
   await page.goto(`${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/signin`)
   await page.click('text=Continue with GitHub')

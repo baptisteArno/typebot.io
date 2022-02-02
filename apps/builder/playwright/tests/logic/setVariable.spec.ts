@@ -2,8 +2,9 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import { importTypebotInDatabase } from '../../services/database'
+import { generate } from 'short-uuid'
 
-const typebotId = 'set-variable-step'
+const typebotId = generate()
 
 test.describe('Set variable step', () => {
   test('its configuration should work', async ({ page }) => {
@@ -24,7 +25,7 @@ test.describe('Set variable step', () => {
     await page.click('text=Create "Total"')
     await page.fill('textarea', '1000 * {{Num}}')
 
-    await page.click('text=Click to edit...')
+    await page.click('text=Click to edit...', { force: true })
     await page.fill(
       'input[placeholder="Select a variable"] >> nth=-1',
       'Custom var'

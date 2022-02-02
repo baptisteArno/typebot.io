@@ -16,7 +16,7 @@ import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useMemo, useEffect } from 'react'
 import { generate } from 'short-uuid'
 import { useDebounce } from 'use-debounce'
-import { isDefined } from 'utils'
+import { isNotDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
@@ -131,7 +131,7 @@ export const VariableSearchInput = ({
           shadow="lg"
         >
           {(inputValue?.length ?? 0) > 0 &&
-            !isDefined(variables.find((v) => v.name === inputValue)) && (
+            isNotDefined(variables.find((v) => v.name === inputValue)) && (
               <Button
                 role="menuitem"
                 minH="40px"

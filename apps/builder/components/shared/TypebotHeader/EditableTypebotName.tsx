@@ -3,7 +3,7 @@ import { Tooltip } from '@chakra-ui/tooltip'
 import React from 'react'
 
 type EditableProps = {
-  name?: string
+  name: string
   onNewName: (newName: string) => void
 }
 export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {

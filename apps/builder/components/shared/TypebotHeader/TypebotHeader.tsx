@@ -1,5 +1,5 @@
-import { Flex, HStack, Button, IconButton } from '@chakra-ui/react'
-import { ChevronLeftIcon } from 'assets/icons'
+import { Flex, HStack, Button, IconButton, Tooltip } from '@chakra-ui/react'
+import { ChevronLeftIcon, RedoIcon, UndoIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
@@ -13,10 +13,12 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
-  const { typebot, updateTypebot, save } = useTypebot()
+  const { typebot, updateTypebot, save, undo, redo, canUndo, canRedo } =
+    useTypebot()
   const { setRightPanel } = useEditor()
 
-  const handleBackClick = () => {
+  const handleBackClick = async () => {
+    await save()
     router.push({
       pathname: `/typebots`,
       query: { ...router.query, typebotId: [] },
@@ -85,18 +87,38 @@ export const TypebotHeader = () => {
         </Button>
       </HStack>
       <Flex pos="absolute" left="1rem" justify="center" align="center">
-        <Flex alignItems="center">
+        <HStack alignItems="center">
           <IconButton
             aria-label="Back"
             icon={<ChevronLeftIcon fontSize={30} />}
-            mr={2}
             onClick={handleBackClick}
           />
-          <EditableTypebotName
-            name={typebot?.name}
-            onNewName={handleNameSubmit}
-          />
-        </Flex>
+          {typebot?.name && (
+            <EditableTypebotName
+              name={typebot?.name}
+              onNewName={handleNameSubmit}
+            />
+          )}
+          <Tooltip label="Undo">
+            <IconButton
+              icon={<UndoIcon />}
+              size="sm"
+              aria-label="Undo"
+              onClick={undo}
+              isDisabled={!canUndo}
+            />
+          </Tooltip>
+
+          <Tooltip label="Redo">
+            <IconButton
+              icon={<RedoIcon />}
+              size="sm"
+              aria-label="Redo"
+              onClick={redo}
+              isDisabled={!canRedo}
+            />
+          </Tooltip>
+        </HStack>
       </Flex>
 
       <HStack right="40px" pos="absolute">

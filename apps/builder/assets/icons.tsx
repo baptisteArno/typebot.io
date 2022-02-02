@@ -311,3 +311,17 @@ export const UnlockedIcon = (props: IconProps) => (
     <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
   </Icon>
 )
+
+export const UndoIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M3 7v6h6"></path>
+    <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"></path>
+  </Icon>
+)
+
+export const RedoIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M21 7v6h-6"></path>
+    <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"></path>
+  </Icon>
+)

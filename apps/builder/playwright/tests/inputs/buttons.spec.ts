@@ -5,11 +5,11 @@ import {
 } from '../../services/database'
 import { defaultChoiceInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
-
-const typebotId = 'buttons-input-step'
+import { generate } from 'short-uuid'
 
 test.describe.parallel('Buttons input step', () => {
   test('can edit button items', async ({ page }) => {
+    const typebotId = generate()
     await createTypebots([
       {
         id: typebotId,

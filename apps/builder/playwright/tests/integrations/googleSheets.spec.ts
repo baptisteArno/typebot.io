@@ -2,10 +2,11 @@ import test, { expect, Page } from '@playwright/test'
 import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
+import { generate } from 'short-uuid'
 
 test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {
-    const typebotId = 'google-sheets-insert'
+    const typebotId = generate()
     await importTypebotInDatabase(
       path.join(
         __dirname,
@@ -20,10 +21,11 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Select an operation')
     await page.click('text=Insert a row')
 
+    await page.click('text=Add a value')
     await page.click('text=Select a column')
-    await page.click('text="Email" >> nth = 1')
+    await page.click('button >> text="Email"')
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('text="Email" >> nth = 2')
+    await page.click('button >> text="Email" >> nth=1')
 
     await page.click('text=Add a value')
     await page.click('text=Select a column')
@@ -54,7 +56,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Update row should work', async ({ page }) => {
-    const typebotId = 'google-sheets-update'
+    const typebotId = generate()
     await importTypebotInDatabase(
       path.join(
         __dirname,
@@ -69,11 +71,13 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Select an operation')
     await page.click('text=Update a row')
 
+    await page.click('text=Add a value')
     await page.click('text=Select a column')
-    await page.click('text="Email" >> nth = 1')
+    await page.click('button >> text="Email"')
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('text="Email" >> nth = 2')
+    await page.click('button >> text="Email" >> nth=1')
 
+    await page.click('text=Add a value')
     await page.click('text=Select a column')
     await page.click('text=Last name')
     await page.fill(
@@ -102,7 +106,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Get row should work', async ({ page }) => {
-    const typebotId = 'google-sheets-get'
+    const typebotId = generate()
     await importTypebotInDatabase(
       path.join(
         __dirname,
@@ -118,16 +122,16 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Get data from sheet')
 
     await page.click('text=Select a column')
-    await page.click('text="Email" >> nth = 1')
+    await page.click('button >> text="Email"')
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('text="Email" >> nth = 2')
+    await page.click('button >> text="Email" >> nth=1')
 
+    await page.click('text=Add a value')
     await page.click('text=Select a column')
     await page.click('text="First name"')
     await createNewVar(page, 'First name')
 
     await page.click('text=Add a value')
-
     await page.click('text=Select a column')
     await page.click('text="Last name"')
     await createNewVar(page, 'Last name')

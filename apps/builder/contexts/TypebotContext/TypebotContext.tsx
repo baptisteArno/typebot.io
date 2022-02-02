@@ -24,14 +24,14 @@ import { fetcher, omit, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
 import { isDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
-import { useImmer, Updater } from 'use-immer'
 import { stepsAction, StepsActions } from './actions/steps'
 import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { edgesAction, EdgesActions } from './actions/edges'
 import { webhooksAction, WebhooksAction } from './actions/webhooks'
+import { useRegisterActions } from 'kbar'
+import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
-
 const autoSaveTimeout = 40000
 
 type UpdateTypebotPayload = Partial<{
@@ -40,6 +40,8 @@ type UpdateTypebotPayload = Partial<{
   publicId: string
   name: string
 }>
+
+export type SetTypebot = (typebot: Typebot | undefined) => void
 const typebotContext = createContext<
   {
     typebot?: Typebot
@@ -50,6 +52,9 @@ const typebotContext = createContext<
     isSavingLoading: boolean
     save: () => Promise<ToastId | undefined>
     undo: () => void
+    redo: () => void
+    canRedo: boolean
+    canUndo: boolean
     updateTypebot: (updates: UpdateTypebotPayload) => void
     publishTypebot: () => void
   } & BlocksActions &
@@ -74,7 +79,6 @@ export const TypebotContext = ({
     position: 'top-right',
     status: 'error',
   })
-  const [undoStack, setUndoStack] = useState<Typebot[]>([])
   const { typebot, publishedTypebot, isLoading, mutate } = useFetchedTypebot({
     typebotId,
     onError: (error) =>
@@ -84,20 +88,28 @@ export const TypebotContext = ({
       }),
   })
 
-  const [localTypebot, setLocalTypebot] = useImmer<Typebot | undefined>(
-    undefined
-  )
+  const [
+    { present: localTypebot },
+    {
+      redo,
+      undo,
+      canRedo,
+      canUndo,
+      set: setLocalTypebot,
+      presentRef: currentTypebotRef,
+    },
+  ] = useUndo<Typebot | undefined>(undefined)
 
-  const [debouncedLocalTypebot] = useDebounce(localTypebot, autoSaveTimeout)
-  useEffect(() => {
-    if (hasUnsavedChanges) saveTypebot()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedLocalTypebot])
-
-  const [localPublishedTypebot, setLocalPublishedTypebot] =
-    useState<PublicTypebot>()
-  const [isSavingLoading, setIsSavingLoading] = useState(false)
-  const [isPublishing, setIsPublishing] = useState(false)
+  const saveTypebot = async () => {
+    const typebotToSave = currentTypebotRef.current
+    if (!typebotToSave) return
+    setIsSavingLoading(true)
+    const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
+    setIsSavingLoading(false)
+    if (error) return toast({ title: error.name, description: error.message })
+    mutate({ typebot: typebotToSave })
+    window.removeEventListener('beforeunload', preventUserFromRefreshing)
+  }
 
   const hasUnsavedChanges = useMemo(
     () =>
@@ -106,6 +118,18 @@ export const TypebotContext = ({
       !checkIfTypebotsAreEqual(localTypebot, typebot),
     [typebot, localTypebot]
   )
+
+  useAutoSave({
+    handler: saveTypebot,
+    item: localTypebot,
+    canSave: hasUnsavedChanges,
+    debounceTimeout: autoSaveTimeout,
+  })
+
+  const [localPublishedTypebot, setLocalPublishedTypebot] =
+    useState<PublicTypebot>()
+  const [isSavingLoading, setIsSavingLoading] = useState(false)
+  const [isPublishing, setIsPublishing] = useState(false)
 
   const isPublished = useMemo(
     () =>
@@ -117,8 +141,8 @@ export const TypebotContext = ({
 
   useEffect(() => {
     if (!localTypebot || !typebot) return
+    currentTypebotRef.current = localTypebot
     if (!checkIfTypebotsAreEqual(localTypebot, typebot)) {
-      pushNewTypebotInUndoStack(localTypebot)
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
       window.addEventListener('beforeunload', preventUserFromRefreshing)
     } else {
@@ -139,43 +163,30 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
-  const pushNewTypebotInUndoStack = (typebot: Typebot) => {
-    setUndoStack([...undoStack, typebot])
-  }
+  useRegisterActions(
+    [
+      {
+        id: 'save',
+        name: 'Save typebot',
+        perform: () => saveTypebot(),
+      },
+    ],
+    []
+  )
 
-  const undo = () => {
-    const lastTypebot = [...undoStack].pop()
-    setUndoStack(undoStack.slice(0, -1))
-    setLocalTypebot(lastTypebot)
-  }
+  useRegisterActions(
+    [
+      {
+        id: 'undo',
+        name: 'Undo changes',
+        perform: undo,
+      },
+    ],
+    [localTypebot]
+  )
 
-  const saveTypebot = async (typebot?: Typebot) => {
-    if (!localTypebot) return
-    setIsSavingLoading(true)
-    const { error } = await updateTypebot(
-      typebot?.id ?? localTypebot.id,
-      typebot ?? localTypebot
-    )
-    setIsSavingLoading(false)
-    if (error) return toast({ title: error.name, description: error.message })
-    mutate({ typebot: typebot ?? localTypebot })
-    window.removeEventListener('beforeunload', preventUserFromRefreshing)
-  }
-
-  const updateLocalTypebot = ({
-    publicId,
-    settings,
-    theme,
-    name,
-  }: UpdateTypebotPayload) => {
-    setLocalTypebot((typebot) => {
-      if (!typebot) return
-      if (publicId) typebot.publicId = publicId
-      if (settings) typebot.settings = settings
-      if (theme) typebot.theme = theme
-      if (name) typebot.name = name
-    })
-  }
+  const updateLocalTypebot = (updates: UpdateTypebotPayload) =>
+    localTypebot && setLocalTypebot({ ...localTypebot, ...updates })
 
   const publishTypebot = async () => {
     if (!localTypebot) return
@@ -188,8 +199,7 @@ export const TypebotContext = ({
       updateLocalTypebot({ publicId: newPublicId })
       newLocalTypebot.publicId = newPublicId
     }
-    if (hasUnsavedChanges || !localPublishedTypebot)
-      await saveTypebot(newLocalTypebot)
+    if (hasUnsavedChanges || !localPublishedTypebot) await saveTypebot()
     setIsPublishing(true)
     if (localPublishedTypebot) {
       const { error } = await updatePublishedTypebot(
@@ -218,16 +228,19 @@ export const TypebotContext = ({
         isSavingLoading,
         save: saveTypebot,
         undo,
+        redo,
+        canUndo,
+        canRedo,
         publishTypebot,
         isPublishing,
         isPublished,
         updateTypebot: updateLocalTypebot,
-        ...blocksActions(setLocalTypebot as Updater<Typebot>),
-        ...stepsAction(setLocalTypebot as Updater<Typebot>),
-        ...choiceItemsAction(setLocalTypebot as Updater<Typebot>),
-        ...variablesAction(setLocalTypebot as Updater<Typebot>),
-        ...edgesAction(setLocalTypebot as Updater<Typebot>),
-        ...webhooksAction(setLocalTypebot as Updater<Typebot>),
+        ...blocksActions(localTypebot as Typebot, setLocalTypebot),
+        ...stepsAction(localTypebot as Typebot, setLocalTypebot),
+        ...choiceItemsAction(localTypebot as Typebot, setLocalTypebot),
+        ...variablesAction(localTypebot as Typebot, setLocalTypebot),
+        ...edgesAction(localTypebot as Typebot, setLocalTypebot),
+        ...webhooksAction(localTypebot as Typebot, setLocalTypebot),
       }}
     >
       {children}
@@ -255,4 +268,23 @@ export const useFetchedTypebot = ({
     isLoading: !error && !data,
     mutate,
   }
+}
+
+const useAutoSave = <T,>({
+  handler,
+  item,
+  canSave,
+  debounceTimeout,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handler: (item?: T) => Promise<any>
+  item?: T
+  canSave: boolean
+  debounceTimeout: number
+}) => {
+  const [debouncedItem] = useDebounce(item, debounceTimeout)
+  return useEffect(() => {
+    if (canSave) handler(item)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedItem])
 }

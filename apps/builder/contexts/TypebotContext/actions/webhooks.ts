@@ -1,6 +1,7 @@
 import { Typebot, Webhook } from 'models'
-import { Updater } from 'use-immer'
 import { WritableDraft } from 'immer/dist/internal'
+import { SetTypebot } from '../TypebotContext'
+import { produce } from 'immer'
 
 export type WebhooksAction = {
   createWebhook: (webook: Webhook) => void
@@ -12,25 +13,31 @@ export type WebhooksAction = {
 }
 
 export const webhooksAction = (
-  setTypebot: Updater<Typebot>
+  typebot: Typebot,
+  setTypebot: SetTypebot
 ): WebhooksAction => ({
   createWebhook: (newWebhook: Webhook) => {
-    setTypebot((typebot) => {
-      typebot.webhooks.byId[newWebhook.id] = newWebhook
-      typebot.webhooks.allIds.push(newWebhook.id)
-    })
+    setTypebot(produce(typebot, createWebhookDraft(newWebhook)))
   },
   updateWebhook: (webhookId: string, updates: Partial<Omit<Webhook, 'id'>>) =>
-    setTypebot((typebot) => {
-      typebot.webhooks.byId[webhookId] = {
-        ...typebot.webhooks.byId[webhookId],
-        ...updates,
-      }
-    }),
+    setTypebot(
+      produce(typebot, (typebot) => {
+        typebot.webhooks.byId[webhookId] = {
+          ...typebot.webhooks.byId[webhookId],
+          ...updates,
+        }
+      })
+    ),
   deleteWebhook: (webhookId: string) => {
-    setTypebot(deleteWebhookDraft(webhookId))
+    setTypebot(produce(typebot, deleteWebhookDraft(webhookId)))
   },
 })
+
+export const createWebhookDraft =
+  (newWebhook: Webhook) => (typebot: WritableDraft<Typebot>) => {
+    typebot.webhooks.byId[newWebhook.id] = newWebhook
+    typebot.webhooks.allIds.push(newWebhook.id)
+  }
 
 export const deleteWebhookDraft =
   (webhookId?: string) => (typebot: WritableDraft<Typebot>) => {

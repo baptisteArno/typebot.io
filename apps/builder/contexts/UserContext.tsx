@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user'
 import { useToast } from '@chakra-ui/react'
 import { deepEqual } from 'fast-equals'
@@ -54,7 +54,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   })
 
   useEffect(() => {
-    if (isDefined(user) || !isDefined(session)) return
+    if (isDefined(user) || isNotDefined(session)) return
     setUser(session.user as User)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
@@ -70,12 +70,12 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
 
   const updateUser = (newUser: Partial<User>) => {
-    if (!isDefined(user)) return
+    if (isNotDefined(user)) return
     setUser({ ...user, ...newUser })
   }
 
   const saveUser = async () => {
-    if (!isDefined(user)) return
+    if (isNotDefined(user)) return
     setIsSaving(true)
     const { error } = await updateUserInDb(user.id, user)
     if (error) toast({ title: error.name, description: error.message })

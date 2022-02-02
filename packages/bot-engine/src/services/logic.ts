@@ -9,7 +9,7 @@ import {
   SetVariableStep,
   RedirectStep,
 } from 'models'
-import { isDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { sanitizeUrl } from './utils'
 import { isMathFormula, evaluateExpression, parseVariables } from './variable'
 
@@ -66,7 +66,7 @@ const executeComparison =
     if (!comparison?.variableId) return false
     const inputValue = variables.byId[comparison.variableId].value ?? ''
     const { value } = comparison
-    if (!isDefined(value)) return false
+    if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
         return inputValue.includes(value)

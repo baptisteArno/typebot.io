@@ -2,7 +2,7 @@ import { Box, BoxProps } from '@chakra-ui/react'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   value: string
@@ -19,6 +19,7 @@ export const CodeEditor = ({
 }: Props & Omit<BoxProps, 'onChange'>) => {
   const editorContainer = useRef<HTMLDivElement | null>(null)
   const editorView = useRef<EditorView | null>(null)
+  const [plainTextValue, setPlainTextValue] = useState(value)
 
   useEffect(() => {
     if (!editorView.current || !isReadOnly) return
@@ -29,10 +30,16 @@ export const CodeEditor = ({
   }, [value])
 
   useEffect(() => {
+    if (!onChange || plainTextValue === value) return
+    onChange(plainTextValue)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plainTextValue])
+
+  useEffect(() => {
     if (!editorContainer.current) return
     const updateListenerExtension = EditorView.updateListener.of((update) => {
       if (update.docChanged && onChange)
-        onChange(update.state.doc.toJSON().join(' '))
+        setPlainTextValue(update.state.doc.toJSON().join(' '))
     })
     const extensions = [
       updateListenerExtension,

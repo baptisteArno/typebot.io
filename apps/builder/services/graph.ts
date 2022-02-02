@@ -1,5 +1,5 @@
-import { Block, Edge, Table, Target, Typebot } from 'models'
-import { AnchorsPositionProps } from 'components/board/graph/Edges/Edge'
+import { Edge, Table, Target } from 'models'
+import { AnchorsPositionProps } from 'components/shared/Graph/Edges/Edge'
 import {
   stubLength,
   blockWidth,
@@ -7,6 +7,7 @@ import {
   ConnectingIds,
   Endpoint,
   Coordinates,
+  BlocksCoordinates,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
 import { headerHeight } from 'components/shared/TypebotHeader'
@@ -122,34 +123,32 @@ const computeFiveSegments = (
 }
 
 type GetAnchorsPositionParams = {
-  sourceBlock: Block
-  targetBlock: Block
+  sourceBlockCoordinates: Coordinates
+  targetBlockCoordinates: Coordinates
   sourceTop: number
-  targetTop: number
+  targetTop?: number
 }
 export const getAnchorsPosition = ({
-  sourceBlock,
-  targetBlock,
+  sourceBlockCoordinates,
+  targetBlockCoordinates,
   sourceTop,
   targetTop,
 }: GetAnchorsPositionParams): AnchorsPositionProps => {
-  const targetOffsetY = targetTop > 0 ? targetTop : undefined
-
   const sourcePosition = computeSourceCoordinates(
-    sourceBlock.graphCoordinates,
+    sourceBlockCoordinates,
     sourceTop
   )
   let sourceType: 'right' | 'left' = 'right'
-  if (sourceBlock.graphCoordinates.x > targetBlock.graphCoordinates.x) {
-    sourcePosition.x = sourceBlock.graphCoordinates.x
+  if (sourceBlockCoordinates.x > targetBlockCoordinates.x) {
+    sourcePosition.x = sourceBlockCoordinates.x
     sourceType = 'left'
   }
 
   const { targetPosition, totalSegments } = computeBlockTargetPosition(
-    sourceBlock.graphCoordinates,
-    targetBlock.graphCoordinates,
+    sourceBlockCoordinates,
+    targetBlockCoordinates,
     sourcePosition.y,
-    targetOffsetY
+    targetTop
   )
   return { sourcePosition, targetPosition, sourceType, totalSegments }
 }
@@ -157,11 +156,11 @@ export const getAnchorsPosition = ({
 const computeBlockTargetPosition = (
   sourceBlockPosition: Coordinates,
   targetBlockPosition: Coordinates,
-  offsetY: number,
+  sourceOffsetY: number,
   targetOffsetY?: number
 ): { targetPosition: Coordinates; totalSegments: number } => {
   const isTargetBlockBelow =
-    targetBlockPosition.y > offsetY &&
+    targetBlockPosition.y > sourceOffsetY &&
     targetBlockPosition.x < sourceBlockPosition.x + blockWidth + stubLength &&
     targetBlockPosition.x > sourceBlockPosition.x - blockWidth - stubLength
   const isTargetBlockToTheRight = targetBlockPosition.x < sourceBlockPosition.x
@@ -230,19 +229,24 @@ export const computeEdgePath = ({
   ).path
 }
 
-export const computeConnectingEdgePath = (
-  connectingIds: Omit<ConnectingIds, 'target'> & { target: Target },
-  sourceBlock: Block,
-  sourceTop: number,
-  targetTop: number,
-  typebot: Typebot
-) => {
-  if (!sourceBlock) return ``
-  const targetBlock = typebot.blocks.byId[connectingIds.target.blockId]
-
+export const computeConnectingEdgePath = ({
+  connectingIds,
+  sourceTop,
+  targetTop,
+  blocksCoordinates,
+}: {
+  connectingIds: Omit<ConnectingIds, 'target'> & { target: Target }
+  sourceTop: number
+  targetTop?: number
+  blocksCoordinates: BlocksCoordinates
+}) => {
+  const sourceBlockCoordinates =
+    blocksCoordinates.byId[connectingIds.source.blockId]
+  const targetBlockCoordinates =
+    blocksCoordinates.byId[connectingIds.target.blockId]
   const anchorsPosition = getAnchorsPosition({
-    sourceBlock,
-    targetBlock,
+    sourceBlockCoordinates,
+    targetBlockCoordinates,
     sourceTop,
     targetTop,
   })
@@ -282,10 +286,10 @@ export const getEndpointTopOffset = (
   graphPosition: Coordinates,
   endpoints: Table<Endpoint>,
   endpointId?: string
-): number => {
-  if (!endpointId) return 0
+): number | undefined => {
+  if (!endpointId) return
   const endpointRef = endpoints.byId[endpointId]?.ref
-  if (!endpointRef) return 0
+  if (!endpointRef) return
   return (
     8 +
     (endpointRef.current?.getBoundingClientRect().top ?? 0) -
@@ -295,4 +299,4 @@ export const getEndpointTopOffset = (
 }
 
 export const getSourceEndpointId = (edge?: Edge) =>
-  edge?.from.nodeId ?? edge?.from.stepId + `${edge?.from.conditionType ?? ''}`
+  edge?.from.buttonId ?? edge?.from.stepId + `${edge?.from.conditionType ?? ''}`

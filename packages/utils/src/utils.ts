@@ -46,6 +46,10 @@ export const isDefined = <T>(
   value: T | undefined | null
 ): value is NonNullable<T> => value !== undefined && value !== null
 
+export const isNotDefined = <T>(
+  value: T | undefined | null
+): value is undefined | null => value === undefined || value === null
+
 export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
   byId: ids.reduce((acc, id) => ({ ...acc, [id]: table.byId[id] }), {}),
   allIds: ids,

@@ -47,11 +47,12 @@ export enum GoogleSheetsAction {
 }
 
 export type GoogleSheetsOptions =
+  | GoogleSheetsOptionsBase
   | GoogleSheetsGetOptions
   | GoogleSheetsInsertRowOptions
   | GoogleSheetsUpdateRowOptions
 
-type GoogleSheetsOptionsBase = {
+export type GoogleSheetsOptionsBase = {
   credentialsId?: string
   spreadsheetId?: string
   sheetId?: string
@@ -60,29 +61,31 @@ type GoogleSheetsOptionsBase = {
 export type Cell = { column?: string; value?: string }
 export type ExtractingCell = { column?: string; variableId?: string }
 
-export type GoogleSheetsGetOptions = GoogleSheetsOptionsBase & {
-  action?: GoogleSheetsAction.GET
+export type GoogleSheetsGetOptions = NonNullable<GoogleSheetsOptionsBase> & {
+  action: GoogleSheetsAction.GET
   referenceCell?: Cell
-  cellsToExtract?: Table<ExtractingCell>
+  cellsToExtract: Table<ExtractingCell>
 }
 
-export type GoogleSheetsInsertRowOptions = GoogleSheetsOptionsBase & {
-  action?: GoogleSheetsAction.INSERT_ROW
-  cellsToInsert?: Table<Cell>
-}
+export type GoogleSheetsInsertRowOptions =
+  NonNullable<GoogleSheetsOptionsBase> & {
+    action: GoogleSheetsAction.INSERT_ROW
+    cellsToInsert: Table<Cell>
+  }
 
-export type GoogleSheetsUpdateRowOptions = GoogleSheetsOptionsBase & {
-  action?: GoogleSheetsAction.UPDATE_ROW
-  referenceCell?: Cell
-  cellsToUpsert?: Table<Cell>
-}
+export type GoogleSheetsUpdateRowOptions =
+  NonNullable<GoogleSheetsOptionsBase> & {
+    action: GoogleSheetsAction.UPDATE_ROW
+    referenceCell?: Cell
+    cellsToUpsert: Table<Cell>
+  }
 
 export type ResponseVariableMapping = { bodyPath?: string; variableId?: string }
 
 export type WebhookOptions = {
-  webhookId?: string
-  variablesForTest?: Table<VariableForTest>
-  responseVariableMapping?: Table<ResponseVariableMapping>
+  webhookId: string
+  variablesForTest: Table<VariableForTest>
+  responseVariableMapping: Table<ResponseVariableMapping>
 }
 
 export enum HttpMethod {
@@ -103,9 +106,9 @@ export type VariableForTest = { variableId?: string; value?: string }
 export type Webhook = {
   id: string
   url?: string
-  method?: HttpMethod
-  queryParams?: Table<KeyValue>
-  headers?: Table<KeyValue>
+  method: HttpMethod
+  queryParams: Table<KeyValue>
+  headers: Table<KeyValue>
   body?: string
 }
 
@@ -118,4 +121,13 @@ export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
 
 export const defaultGoogleAnalyticsOptions: GoogleAnalyticsOptions = {}
 
-export const defaultWebhookOptions: WebhookOptions = {}
+export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
+  responseVariableMapping: { byId: {}, allIds: [] },
+  variablesForTest: { byId: {}, allIds: [] },
+}
+
+export const defaultWebhookAttributes: Omit<Webhook, 'id'> = {
+  method: HttpMethod.GET,
+  headers: { byId: {}, allIds: [] },
+  queryParams: { byId: {}, allIds: [] },
+}

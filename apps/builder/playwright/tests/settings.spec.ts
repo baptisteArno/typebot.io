@@ -1,12 +1,13 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
+import { generate } from 'short-uuid'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = 'general-settings-typebot'
+      const typebotId = generate()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/theme.json'),
         {
@@ -27,7 +28,7 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Typing emulation', () => {
     test('should be fillable', async ({ page }) => {
-      const typebotId = 'typing-emulation-typebot'
+      const typebotId = generate()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/theme.json'),
         {
@@ -75,7 +76,7 @@ test.describe.parallel('Settings page', () => {
       // Website image
       const websiteImg = page.locator(':nth-match(img, 2)')
       await expect(websiteImg).toHaveAttribute('src', '/viewer-preview.png')
-      await websiteImg.click()
+      await websiteImg.click({ position: { x: 0, y: 180 } })
       await expect(page.locator('text=Giphy')).toBeHidden()
       await page.click('button:has-text("Embed link")')
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)

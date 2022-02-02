@@ -13,6 +13,8 @@ import 'assets/styles/custom.css'
 import { UserContext } from 'contexts/UserContext'
 import { TypebotContext } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
+import { KBarProvider } from 'kbar'
+import { actions } from 'libs/kbar'
 
 const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
@@ -20,13 +22,15 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ChakraProvider theme={customTheme}>
-      <SessionProvider>
-        <UserContext>
-          <TypebotContext typebotId={query.typebotId?.toString()}>
-            <Component {...pageProps} />
-          </TypebotContext>
-        </UserContext>
-      </SessionProvider>
+      <KBarProvider actions={actions}>
+        <SessionProvider>
+          <UserContext>
+            <TypebotContext typebotId={query.typebotId?.toString()}>
+              <Component {...pageProps} />
+            </TypebotContext>
+          </UserContext>
+        </SessionProvider>
+      </KBarProvider>
     </ChakraProvider>
   )
 }

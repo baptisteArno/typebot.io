@@ -1,14 +1,15 @@
 import { Coordinates } from 'contexts/GraphContext'
+import { produce } from 'immer'
 import { WritableDraft } from 'immer/dist/internal'
 import { Block, DraggableStep, DraggableStepType, Typebot } from 'models'
-import { parseNewBlock } from 'services/typebots'
-import { Updater } from 'use-immer'
+import { SetTypebot } from '../TypebotContext'
 import { deleteEdgeDraft } from './edges'
 import { createStepDraft, deleteStepDraft } from './steps'
 
 export type BlocksActions = {
   createBlock: (
     props: Coordinates & {
+      id: string
       step: DraggableStep | DraggableStepType
     }
   ) => void
@@ -16,38 +17,50 @@ export type BlocksActions = {
   deleteBlock: (blockId: string) => void
 }
 
-export const blocksActions = (setTypebot: Updater<Typebot>): BlocksActions => ({
+export const blocksActions = (
+  typebot: Typebot,
+  setTypebot: SetTypebot
+): BlocksActions => ({
   createBlock: ({
-    x,
-    y,
+    id,
     step,
+    ...graphCoordinates
   }: Coordinates & {
+    id: string
     step: DraggableStep | DraggableStepType
   }) => {
-    setTypebot((typebot) => {
-      const newBlock = parseNewBlock({
-        totalBlocks: typebot.blocks.allIds.length,
-        initialCoordinates: { x, y },
+    setTypebot(
+      produce(typebot, (typebot) => {
+        const newBlock: Block = {
+          id,
+          graphCoordinates,
+          title: `Block ${typebot.blocks.allIds.length}`,
+          stepIds: [],
+        }
+        typebot.blocks.byId[newBlock.id] = newBlock
+        typebot.blocks.allIds.push(newBlock.id)
+        createStepDraft(typebot, step, newBlock.id)
+        removeEmptyBlocks(typebot)
       })
-      typebot.blocks.byId[newBlock.id] = newBlock
-      typebot.blocks.allIds.push(newBlock.id)
-      createStepDraft(typebot, step, newBlock.id)
-      removeEmptyBlocks(typebot)
-    })
+    )
   },
   updateBlock: (blockId: string, updates: Partial<Omit<Block, 'id'>>) =>
-    setTypebot((typebot) => {
-      typebot.blocks.byId[blockId] = {
-        ...typebot.blocks.byId[blockId],
-        ...updates,
-      }
-    }),
+    setTypebot(
+      produce(typebot, (typebot) => {
+        typebot.blocks.byId[blockId] = {
+          ...typebot.blocks.byId[blockId],
+          ...updates,
+        }
+      })
+    ),
   deleteBlock: (blockId: string) =>
-    setTypebot((typebot) => {
-      deleteStepsInsideBlock(typebot, blockId)
-      deleteAssociatedEdges(typebot, blockId)
-      deleteBlockDraft(typebot)(blockId)
-    }),
+    setTypebot(
+      produce(typebot, (typebot) => {
+        deleteStepsInsideBlock(typebot, blockId)
+        deleteAssociatedEdges(typebot, blockId)
+        deleteBlockDraft(typebot)(blockId)
+      })
+    ),
 })
 
 export const removeEmptyBlocks = (typebot: WritableDraft<Typebot>) => {
@@ -72,7 +85,7 @@ const deleteStepsInsideBlock = (
   blockId: string
 ) => {
   const block = typebot.blocks.byId[blockId]
-  block.stepIds.forEach((stepId) => deleteStepDraft(typebot, stepId))
+  block.stepIds.forEach((stepId) => deleteStepDraft(stepId)(typebot))
 }
 
 export const deleteBlockDraft =

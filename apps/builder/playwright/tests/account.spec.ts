@@ -6,6 +6,7 @@ import { updateUser } from '../services/database'
 
 test.describe('Account page', () => {
   test('should edit user info properly', async ({ page }) => {
+    await updateUser({ name: 'Default Name' })
     await page.goto('/account')
     const saveButton = page.locator('button:has-text("Save")')
     await expect(saveButton).toBeHidden()

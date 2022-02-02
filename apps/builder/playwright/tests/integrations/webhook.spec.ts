@@ -1,8 +1,9 @@
 import test, { expect, Page } from '@playwright/test'
 import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
+import { generate } from 'short-uuid'
 
-const typebotId = 'webhook-step'
+const typebotId = generate()
 
 test.describe('Webhook step', () => {
   test('its configuration should work', async ({ page }) => {
@@ -23,6 +24,7 @@ test.describe('Webhook step', () => {
     )
 
     await page.click('text=Query params')
+    await page.click('text=Add a param')
     await page.fill('input[placeholder="e.g. email"]', 'firstParam')
     await page.fill('input[placeholder="e.g. {{Email}}"]', '{{secret 1}}')
 
@@ -34,6 +36,7 @@ test.describe('Webhook step', () => {
     )
 
     await page.click('text=Headers')
+    await page.click('text=Add a value')
     await page.fill('input[placeholder="e.g. Content-Type"]', 'Custom-Typebot')
     await page.fill(
       'input[placeholder="e.g. application/json"]',
@@ -45,11 +48,8 @@ test.describe('Webhook step', () => {
 
     await page.click('text=Variable values for test')
     await addTestVariable(page, 'secret 1', 'secret1')
-    await page.click('text=Add an entry')
     await addTestVariable(page, 'secret 2', 'secret2')
-    await page.click('text=Add an entry')
     await addTestVariable(page, 'secret 3', 'secret3')
-    await page.click('text=Add an entry')
     await addTestVariable(page, 'secret 4', 'secret4')
 
     await page.click('text=Test the request')
@@ -58,12 +58,14 @@ test.describe('Webhook step', () => {
     )
 
     await page.click('text=Save in variables')
+    await page.click('text=Add an entry >> nth=-1')
     await page.click('input[placeholder="Select the data"]')
     await page.click('text=data[0].name')
   })
 })
 
 const addTestVariable = async (page: Page, name: string, value: string) => {
+  await page.click('text=Add an entry')
   await page.click('[data-testid="variables-input"] >> nth=-1')
   await page.click(`text="${name}"`)
   await page.fill('input >> nth=-1', value)

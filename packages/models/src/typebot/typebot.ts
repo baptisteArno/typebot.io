@@ -40,7 +40,7 @@ export type Block = {
 export type Source = {
   blockId: string
   stepId: string
-  nodeId?: string
+  buttonId?: string
   conditionType?: 'true' | 'false'
 }
 export type Target = { blockId: string; stepId?: string }

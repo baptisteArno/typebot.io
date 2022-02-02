@@ -10,7 +10,11 @@ import { readFileSync } from 'fs'
 
 const prisma = new PrismaClient()
 
-export const teardownDatabase = async () => prisma.user.deleteMany()
+export const teardownDatabase = async () => {
+  await prisma.credentials.deleteMany()
+  await prisma.dashboardFolder.deleteMany()
+  return prisma.typebot.deleteMany()
+}
 
 export const setupDatabase = async (userEmail: string) => {
   const createdUser = await getSignedInUser(userEmail)
@@ -38,7 +42,6 @@ export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
     data: partialFolders.map((folder) => ({
       ownerId: process.env.PLAYWRIGHT_USER_ID as string,
       name: 'Folder #1',
-      id: 'folder',
       ...folder,
     })),
   })
@@ -56,7 +59,7 @@ const createCredentials = () =>
             'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
           // This token is linked to a mock Google account (typebot.test.user@gmail.com)
           refresh_token:
-            '1//03W5-TyIxXd7nCgYIARAAGAMSNwF-L9IrAGAmp5MG8RqVyk6YYmqDDn9x-4nHTkSUj4xZWuMs6mNeyjdS_bgO0CWuZEfJoAd_zIw',
+            '1//0379tIHBxszeXCgYIARAAGAMSNwF-L9Ir0zhkzhblwXqn3_jYqRP3pajcUpqkjRU3fKZZ_eQakOa28amUHSQ-Q9fMzk89MpRTvkc',
         },
       },
     ],
@@ -116,15 +119,6 @@ const parseTypebotToPublicTypebot = (
   variables: typebot.variables,
   edges: typebot.edges,
 })
-
-export const loadRawTypebotInDatabase = (typebot: Typebot) =>
-  prisma.typebot.create({
-    data: {
-      ...typebot,
-      id: 'typebot4',
-      ownerId: process.env.PLAYWRIGHT_USER_ID,
-    } as any,
-  })
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
@@ -216,14 +210,12 @@ export const importTypebotInDatabase = (
   path: string,
   updates?: Partial<Typebot>
 ) => {
-  const typebot: Typebot = JSON.parse(readFileSync(path).toString())
-  try {
-    return prisma.typebot.create({
-      data: {
-        ...typebot,
-        ...updates,
-        ownerId: process.env.PLAYWRIGHT_USER_ID,
-      } as any,
-    })
-  } catch {}
+  const typebot: any = {
+    ...JSON.parse(readFileSync(path).toString()),
+    ...updates,
+    ownerId: process.env.PLAYWRIGHT_USER_ID,
+  }
+  return prisma.typebot.create({
+    data: typebot,
+  })
 }

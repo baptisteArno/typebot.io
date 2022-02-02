@@ -1,4 +1,4 @@
-import { Block, Source, Step, Table, Target } from 'models'
+import { Block, Source, Step, Table, Target, Typebot } from 'models'
 import {
   createContext,
   Dispatch,
@@ -6,8 +6,10 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react'
+import { useImmer } from 'use-immer'
 
 export const stubLength = 20
 export const blockWidth = 300
@@ -48,13 +50,17 @@ export type ConnectingIds = {
 }
 
 type StepId = string
-type NodeId = string
+type ButtonId = string
 export type Endpoint = {
-  id: StepId | NodeId
+  id: StepId | ButtonId
   ref: MutableRefObject<HTMLDivElement | null>
 }
 
+export type BlocksCoordinates = { byId: { [key: string]: Coordinates } }
+
 const graphContext = createContext<{
+  blocksCoordinates?: BlocksCoordinates
+  updateBlockCoordinates: (blockId: string, newCoord: Coordinates) => void
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
@@ -67,6 +73,7 @@ const graphContext = createContext<{
   addTargetEndpoint: (endpoint: Endpoint) => void
   openedStepId?: string
   setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
+  isReadOnly: boolean
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -74,7 +81,15 @@ const graphContext = createContext<{
   connectingIds: null,
 })
 
-export const GraphProvider = ({ children }: { children: ReactNode }) => {
+export const GraphProvider = ({
+  children,
+  typebot,
+  isReadOnly = false,
+}: {
+  children: ReactNode
+  typebot?: Typebot
+  isReadOnly?: boolean
+}) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
   const [previewingEdgeId, setPreviewingEdgeId] = useState<string>()
@@ -87,6 +102,24 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
     allIds: [],
   })
   const [openedStepId, setOpenedStepId] = useState<string>()
+  const [blocksCoordinates, setBlocksCoordinates] = useImmer<
+    BlocksCoordinates | undefined
+  >(undefined)
+
+  useEffect(() => {
+    setBlocksCoordinates(
+      typebot?.blocks.allIds.reduce(
+        (coords, blockId) => ({
+          byId: {
+            ...coords.byId,
+            [blockId]: typebot.blocks.byId[blockId].graphCoordinates,
+          },
+        }),
+        { byId: {} }
+      )
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot?.blocks])
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
     setSourceEndpoints((endpoints) => ({
@@ -101,6 +134,12 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
       allIds: [...endpoints.allIds, endpoint.id],
     }))
   }
+
+  const updateBlockCoordinates = (blockId: string, newCoord: Coordinates) =>
+    setBlocksCoordinates((blocksCoordinates) => {
+      if (!blocksCoordinates) return
+      blocksCoordinates.byId[blockId] = newCoord
+    })
 
   return (
     <graphContext.Provider
@@ -117,6 +156,9 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
         addTargetEndpoint,
         openedStepId,
         setOpenedStepId,
+        blocksCoordinates,
+        updateBlockCoordinates,
+        isReadOnly,
       }}
     >
       {children}

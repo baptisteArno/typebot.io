@@ -25,6 +25,7 @@ export interface ContextMenuProps<T extends HTMLElement> {
   menuProps?: MenuProps
   portalProps?: PortalProps
   menuButtonProps?: MenuButtonProps
+  isDisabled?: boolean
 }
 
 export function ContextMenu<T extends HTMLElement = HTMLElement>(
@@ -56,6 +57,7 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
   useEventListener(
     'contextmenu',
     (e) => {
+      if (props.isDisabled) return
       if (e.currentTarget === targetRef.current) {
         e.preventDefault()
         e.stopPropagation()

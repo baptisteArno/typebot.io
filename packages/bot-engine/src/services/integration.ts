@@ -50,8 +50,8 @@ const executeGoogleSheetIntegration = async (
   variables: Table<Variable>,
   updateVariableValue: (variableId: string, value: string) => void
 ) => {
-  if (!step.options) return step.edgeId
-  switch (step.options?.action) {
+  if (!('action' in step.options)) return step.edgeId
+  switch (step.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
       await insertRowInGoogleSheets(step.options, variables)
       break

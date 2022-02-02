@@ -4,11 +4,11 @@ import {
   parseDefaultBlockWithStep,
 } from '../../services/database'
 import { defaultGoogleAnalyticsOptions, IntegrationStepType } from 'models'
-
-const typebotId = 'google-analytics-step'
+import { generate } from 'short-uuid'
 
 test.describe('Google Analytics step', () => {
   test('its configuration should work', async ({ page }) => {
+    const typebotId = generate()
     await createTypebots([
       {
         id: typebotId,

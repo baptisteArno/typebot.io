@@ -6,6 +6,7 @@ import {
 import { BubbleStepType, defaultImageBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import path from 'path'
+import { generate } from 'short-uuid'
 
 const unsplashImageSrc =
   'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
@@ -13,7 +14,7 @@ const unsplashImageSrc =
 test.describe.parallel('Image bubble step', () => {
   test.describe('Content settings', () => {
     test('should upload image file correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-image-upload'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -41,7 +42,7 @@ test.describe.parallel('Image bubble step', () => {
     })
 
     test('should import image link correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-image-link'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -64,7 +65,7 @@ test.describe.parallel('Image bubble step', () => {
     })
 
     test('should import gifs correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-gifs'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,
@@ -89,7 +90,7 @@ test.describe.parallel('Image bubble step', () => {
 
   test.describe('Preview', () => {
     test('should display correctly', async ({ page }) => {
-      const typebotId = 'image-bubble-step-preview'
+      const typebotId = generate()
       await createTypebots([
         {
           id: typebotId,

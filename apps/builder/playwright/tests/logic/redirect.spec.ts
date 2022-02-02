@@ -2,8 +2,9 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import { importTypebotInDatabase } from '../../services/database'
+import { generate } from 'short-uuid'
 
-const typebotId = 'redirect-step'
+const typebotId = generate()
 
 test.describe('Redirect step', () => {
   test('its configuration should work', async ({ page, context }) => {

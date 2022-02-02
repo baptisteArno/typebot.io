@@ -2,6 +2,7 @@ import test, { expect, Page } from '@playwright/test'
 import { readFileSync } from 'fs'
 import { InputStepType } from 'models'
 import { parse } from 'papaparse'
+import { generate } from 'short-uuid'
 import {
   createResults,
   createTypebots,
@@ -9,7 +10,7 @@ import {
 } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
-const typebotId = 'typebot-for-results'
+const typebotId = generate()
 
 test.describe('Results page', () => {
   test('results should be deletable', async ({ page }) => {

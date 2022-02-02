@@ -31,7 +31,7 @@ import {
   defaultWebhookOptions,
   StepWithOptionsType,
 } from 'models'
-import shortId from 'short-uuid'
+import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from './utils'
@@ -112,22 +112,6 @@ export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
     body: typebot,
   })
 
-export const parseNewBlock = ({
-  totalBlocks,
-  initialCoordinates,
-}: {
-  totalBlocks: number
-  initialCoordinates: { x: number; y: number }
-}): Block => {
-  const id = `b${shortId.generate()}`
-  return {
-    id,
-    title: `Block #${totalBlocks + 1}`,
-    graphCoordinates: initialCoordinates,
-    stepIds: [],
-  }
-}
-
 export const parseNewStep = (
   type: DraggableStepType,
   blockId: string
@@ -170,7 +154,7 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
     case InputStepType.URL:
       return defaultUrlInputOptions
     case InputStepType.CHOICE:
-      return defaultChoiceInputOptions
+      return { ...defaultChoiceInputOptions, itemIds: [generate()] }
     case LogicStepType.SET_VARIABLE:
       return defaultSetVariablesOptions
     case LogicStepType.CONDITION:
@@ -182,7 +166,7 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return defaultGoogleAnalyticsOptions
     case IntegrationStepType.WEBHOOK:
-      return defaultWebhookOptions
+      return { ...defaultWebhookOptions, webhookId: generate() }
   }
 }
 

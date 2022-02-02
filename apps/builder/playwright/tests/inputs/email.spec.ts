@@ -5,11 +5,11 @@ import {
 } from '../../services/database'
 import { defaultEmailInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
-
-const typebotId = 'email-input-step'
+import { generate } from 'short-uuid'
 
 test.describe('Email input step', () => {
   test('options should work', async ({ page }) => {
+    const typebotId = generate()
     await createTypebots([
       {
         id: typebotId,

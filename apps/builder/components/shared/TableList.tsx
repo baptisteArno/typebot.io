@@ -1,5 +1,6 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
+import { deepEqual } from 'fast-equals'
 import { Draft } from 'immer'
 import { Table } from 'models'
 import React, { useEffect, useState } from 'react'
@@ -31,11 +32,7 @@ export const TableList = <T,>({
   const [showDeleteId, setShowDeleteId] = useState<string | undefined>()
 
   useEffect(() => {
-    if (items.allIds.length === 0) createItem()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
+    if (deepEqual(items, initialItems)) return
     onItemsChange(items)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
