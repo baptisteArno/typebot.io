@@ -5,11 +5,12 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Block, PublicTypebot } from 'models'
+import { Answer, Edge, PublicBlock, PublicTypebot } from 'models'
+import { byId } from 'utils'
 
 type Props = {
   typebot: PublicTypebot
-  onNewBlockVisible: (edgeId: string) => void
+  onNewBlockVisible: (edge: Edge) => void
   onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
 }
@@ -21,30 +22,29 @@ export const ConversationContainer = ({
 }: Props) => {
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
-    { block: Block; startStepId?: string }[]
+    { block: PublicBlock; startStepIndex: number }[]
   >([])
   const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
   const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
 
   const displayNextBlock = (edgeId?: string) => {
-    const edge = typebot.edges.byId[edgeId ?? '']
-    if (!edge) return onCompleted()
-    const nextBlock = {
-      block: typebot.blocks.byId[edge.to.blockId],
-      startStepId: edge.to.stepId,
-    }
+    const nextEdge = typebot.edges.find(byId(edgeId))
+    if (!nextEdge) return onCompleted()
+    const nextBlock = typebot.blocks.find(byId(nextEdge.to.blockId))
     if (!nextBlock) return onCompleted()
-    onNewBlockVisible(edge.id)
-    setDisplayedBlocks([...displayedBlocks, nextBlock])
+    const startStepIndex = nextEdge.to.stepId
+      ? nextBlock.steps.findIndex(byId(nextEdge.to.stepId))
+      : 0
+    onNewBlockVisible(nextEdge)
+    setDisplayedBlocks([
+      ...displayedBlocks,
+      { block: nextBlock, startStepIndex },
+    ])
   }
 
   useEffect(() => {
-    const blocks = typebot.blocks
-    const firstEdgeId =
-      typebot.steps.byId[blocks.byId[blocks.allIds[0]].stepIds[0]].edgeId
-    if (!firstEdgeId) return
-    displayNextBlock(firstEdgeId)
+    displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -68,8 +68,9 @@ export const ConversationContainer = ({
       {displayedBlocks.map((displayedBlock, idx) => (
         <ChatBlock
           key={displayedBlock.block.id + idx}
-          stepIds={displayedBlock.block.stepIds}
-          startStepId={displayedBlock.startStepId}
+          steps={displayedBlock.block.steps}
+          startStepIndex={displayedBlock.startStepIndex}
+          blockIndex={idx}
           onBlockEnd={displayNextBlock}
         />
       ))}

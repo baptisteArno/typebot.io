@@ -10,12 +10,12 @@ import {
   LogicStep,
   LogicStepType,
   Step,
-  Table,
   TextInputStep,
   TextBubbleStep,
   WebhookStep,
   StepType,
   StepWithOptionsType,
+  PublicStep,
 } from 'models'
 
 export const sendRequest = async <ResponseData>({
@@ -50,39 +50,44 @@ export const isNotDefined = <T>(
   value: T | undefined | null
 ): value is undefined | null => value === undefined || value === null
 
-export const filterTable = <T>(ids: string[], table: Table<T>): Table<T> => ({
-  byId: ids.reduce((acc, id) => ({ ...acc, [id]: table.byId[id] }), {}),
-  allIds: ids,
-})
-
-export const isInputStep = (step: Step): step is InputStep =>
+export const isInputStep = (step: Step | PublicStep): step is InputStep =>
   (Object.values(InputStepType) as string[]).includes(step.type)
 
-export const isBubbleStep = (step: Step): step is BubbleStep =>
+export const isBubbleStep = (step: Step | PublicStep): step is BubbleStep =>
   (Object.values(BubbleStepType) as string[]).includes(step.type)
 
-export const isLogicStep = (step: Step): step is LogicStep =>
+export const isLogicStep = (step: Step | PublicStep): step is LogicStep =>
   (Object.values(LogicStepType) as string[]).includes(step.type)
 
-export const isTextBubbleStep = (step: Step): step is TextBubbleStep =>
-  step.type === BubbleStepType.TEXT
+export const isTextBubbleStep = (
+  step: Step | PublicStep
+): step is TextBubbleStep => step.type === BubbleStepType.TEXT
 
-export const isTextInputStep = (step: Step): step is TextInputStep =>
-  step.type === InputStepType.TEXT
+export const isTextInputStep = (
+  step: Step | PublicStep
+): step is TextInputStep => step.type === InputStepType.TEXT
 
-export const isChoiceInput = (step: Step): step is ChoiceInputStep =>
-  step.type === InputStepType.CHOICE
+export const isChoiceInput = (
+  step: Step | PublicStep
+): step is ChoiceInputStep => step.type === InputStepType.CHOICE
 
-export const isSingleChoiceInput = (step: Step): step is ChoiceInputStep =>
-  step.type === InputStepType.CHOICE && !step.options.isMultipleChoice
+export const isSingleChoiceInput = (
+  step: Step | PublicStep
+): step is ChoiceInputStep =>
+  step.type === InputStepType.CHOICE &&
+  'options' in step &&
+  !step.options.isMultipleChoice
 
-export const isConditionStep = (step: Step): step is ConditionStep =>
-  step.type === LogicStepType.CONDITION
+export const isConditionStep = (
+  step: Step | PublicStep
+): step is ConditionStep => step.type === LogicStepType.CONDITION
 
-export const isIntegrationStep = (step: Step): step is IntegrationStep =>
+export const isIntegrationStep = (
+  step: Step | PublicStep
+): step is IntegrationStep =>
   (Object.values(IntegrationStepType) as string[]).includes(step.type)
 
-export const isWebhookStep = (step: Step): step is WebhookStep =>
+export const isWebhookStep = (step: Step | PublicStep): step is WebhookStep =>
   step.type === IntegrationStepType.WEBHOOK
 
 export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
@@ -95,3 +100,18 @@ export const stepTypeHasOption = (
     .concat(Object.values(LogicStepType))
     .concat(Object.values(IntegrationStepType))
     .includes(type)
+
+export const stepTypeHasWebhook = (
+  type: StepType
+): type is IntegrationStepType.WEBHOOK => type === IntegrationStepType.WEBHOOK
+
+export const stepTypeHasItems = (
+  type: StepType
+): type is LogicStepType.CONDITION | InputStepType.CHOICE =>
+  type === LogicStepType.CONDITION || type === InputStepType.CHOICE
+
+export const stepHasItems = (
+  step: Step
+): step is ConditionStep | ChoiceInputStep => 'items' in step
+
+export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

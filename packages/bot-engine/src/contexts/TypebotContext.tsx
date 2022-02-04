@@ -20,13 +20,9 @@ export const TypebotContext = ({
   const updateVariableValue = (variableId: string, value: string) => {
     setLocalTypebot((typebot) => ({
       ...typebot,
-      variables: {
-        ...typebot.variables,
-        byId: {
-          ...typebot.variables.byId,
-          [variableId]: { ...typebot.variables.byId[variableId], value },
-        },
-      },
+      variables: typebot.variables.map((v) =>
+        v.id === variableId ? { ...v, value } : v
+      ),
     }))
   }
   return (

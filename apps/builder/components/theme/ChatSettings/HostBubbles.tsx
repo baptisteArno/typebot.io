@@ -15,7 +15,7 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
     onHostBubblesChange({ ...hostBubbles, color })
 
   return (
-    <Stack>
+    <Stack data-testid="host-bubbles-theme">
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker

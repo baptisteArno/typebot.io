@@ -100,11 +100,8 @@ export const removeUndefinedFields = <T>(obj: T): T =>
 
 export const stepHasOptions = (step: Step) => 'options' in step
 
-export const parseVariableHighlight = (content: string, typebot?: Typebot) => {
-  if (!typebot) return content
-  const varNames = typebot.variables.allIds.map(
-    (varId) => typebot.variables.byId[varId].name
-  )
+export const parseVariableHighlight = (content: string, typebot: Typebot) => {
+  const varNames = typebot.variables.map((v) => v.name)
   return content.replace(/\{\{(.*?)\}\}/g, (fullMatch, foundVar) => {
     if (varNames.some((val) => foundVar.includes(val))) {
       return `<span style="background-color:#ff8b1a; color:#ffffff; padding: 0.125rem 0.25rem; border-radius: 0.35rem">${fullMatch.replace(
@@ -115,3 +112,8 @@ export const parseVariableHighlight = (content: string, typebot?: Typebot) => {
     return fullMatch
   })
 }
+
+export const setMultipleRefs =
+  (refs: React.MutableRefObject<HTMLDivElement | null>[]) =>
+  (elem: HTMLDivElement) =>
+    refs.forEach((ref) => (ref.current = elem))

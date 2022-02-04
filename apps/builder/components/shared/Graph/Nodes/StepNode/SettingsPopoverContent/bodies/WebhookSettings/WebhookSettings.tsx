@@ -15,11 +15,12 @@ import { useTypebot } from 'contexts/TypebotContext'
 import {
   HttpMethod,
   KeyValue,
-  Table,
   WebhookOptions,
   VariableForTest,
   Webhook,
   ResponseVariableMapping,
+  WebhookStep,
+  StepIndices,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -34,19 +35,19 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 
 type Props = {
-  webhook: Webhook
-  options?: WebhookOptions
+  step: WebhookStep
   onOptionsChange: (options: WebhookOptions) => void
   onWebhookChange: (updates: Partial<Webhook>) => void
   onTestRequestClick: () => void
+  indices: StepIndices
 }
 
 export const WebhookSettings = ({
-  options,
+  step: { webhook, options },
   onOptionsChange,
-  webhook,
   onWebhookChange,
   onTestRequestClick,
+  indices,
 }: Props) => {
   const { typebot, save } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
@@ -62,23 +63,23 @@ export const WebhookSettings = ({
 
   const handleMethodChange = (method: HttpMethod) => onWebhookChange({ method })
 
-  const handleQueryParamsChange = (queryParams: Table<KeyValue>) =>
+  const handleQueryParamsChange = (queryParams: KeyValue[]) =>
     onWebhookChange({ queryParams })
 
-  const handleHeadersChange = (headers: Table<KeyValue>) =>
+  const handleHeadersChange = (headers: KeyValue[]) =>
     onWebhookChange({ headers })
 
   const handleBodyChange = (body: string) => onWebhookChange({ body })
 
-  const handleVariablesChange = (variablesForTest: Table<VariableForTest>) =>
-    options && onOptionsChange({ ...options, variablesForTest })
+  const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
+    onOptionsChange({ ...options, variablesForTest })
 
   const handleResponseMappingChange = (
-    responseVariableMapping: Table<ResponseVariableMapping>
-  ) => options && onOptionsChange({ ...options, responseVariableMapping })
+    responseVariableMapping: ResponseVariableMapping[]
+  ) => onOptionsChange({ ...options, responseVariableMapping })
 
   const handleTestRequestClick = async () => {
-    if (!typebot || !webhook) return
+    if (!typebot) return
     setIsTestResponseLoading(true)
     onTestRequestClick()
     await save()
@@ -86,9 +87,10 @@ export const WebhookSettings = ({
       typebot.id,
       webhook.id,
       convertVariableForTestToVariables(
-        options?.variablesForTest,
+        options.variablesForTest,
         typebot.variables
-      )
+      ),
+      indices
     )
     if (error) return toast({ title: error.name, description: error.message })
     setTestResponse(JSON.stringify(data, undefined, 2))
@@ -196,9 +198,7 @@ export const WebhookSettings = ({
             </AccordionButton>
             <AccordionPanel pb={4} as={Stack} spacing="6">
               <TableList<ResponseVariableMapping>
-                initialItems={
-                  options?.responseVariableMapping ?? { byId: {}, allIds: [] }
-                }
+                initialItems={options.responseVariableMapping}
                 onItemsChange={handleResponseMappingChange}
                 Item={ResponseMappingInputs}
                 addLabel="Add an entry"

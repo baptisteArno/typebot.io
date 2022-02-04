@@ -1,6 +1,8 @@
 import {
+  Block,
   defaultSettings,
   defaultTheme,
+  PublicBlock,
   PublicTypebot,
   Step,
   Typebot,
@@ -23,7 +25,7 @@ export const setupDatabase = async (userEmail: string) => {
   return createCredentials()
 }
 
-const getSignedInUser = (email: string) =>
+export const getSignedInUser = (email: string) =>
   prisma.user.findFirst({ where: { email } })
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
@@ -108,17 +110,23 @@ const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
   id,
-  blocks: typebot.blocks,
-  steps: typebot.steps,
   name: typebot.name,
+  blocks: parseBlocksToPublicBlocks(typebot.blocks),
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
   publicId: typebot.publicId,
-  choiceItems: typebot.choiceItems,
   variables: typebot.variables,
   edges: typebot.edges,
 })
+
+const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
+  blocks.map((b) => ({
+    ...b,
+    steps: b.steps.map((s) =>
+      'webhook' in s ? { ...s, webhook: s.webhook.id } : s
+    ),
+  }))
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
@@ -128,82 +136,54 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   theme: defaultTheme,
   settings: defaultSettings,
   createdAt: new Date(),
-  choiceItems: partialTypebot.choiceItems ?? {
-    byId: {
-      choice1: {
-        id: 'choice1',
-        stepId: 'step1',
-      },
-    },
-    allIds: ['choice1'],
-  },
   publicId: null,
   publishedTypebotId: null,
   updatedAt: new Date(),
-  variables: { byId: {}, allIds: [] },
-  webhooks: { byId: {}, allIds: [] },
-  edges: {
-    byId: {
-      edge1: {
-        id: 'edge1',
-        from: { blockId: 'block0', stepId: 'step0' },
-        to: { blockId: 'block1' },
-      },
-    },
-    allIds: ['edge1'],
-  },
+  variables: [],
   ...partialTypebot,
-  blocks: {
-    byId: {
-      block0: {
-        id: 'block0',
-        title: 'Block #0',
-        stepIds: ['step0'],
-        graphCoordinates: { x: 0, y: 0 },
-      },
-      ...partialTypebot.blocks?.byId,
+  edges: [
+    {
+      id: 'edge1',
+      from: { blockId: 'block0', stepId: 'step0' },
+      to: { blockId: 'block1' },
     },
-    allIds: ['block0', ...(partialTypebot.blocks?.allIds ?? [])],
-  },
-  steps: {
-    byId: {
-      step0: {
-        id: 'step0',
-        type: 'start',
-        blockId: 'block0',
-        label: 'Start',
-        edgeId: 'edge1',
-      },
-      ...partialTypebot.steps?.byId,
+  ],
+  blocks: [
+    {
+      id: 'block0',
+      title: 'Block #0',
+      steps: [
+        {
+          id: 'step0',
+          type: 'start',
+          blockId: 'block0',
+          label: 'Start',
+          outgoingEdgeId: 'edge1',
+        },
+      ],
+      graphCoordinates: { x: 0, y: 0 },
     },
-    allIds: ['step0', ...(partialTypebot.steps?.allIds ?? [])],
-  },
+    ...(partialTypebot.blocks ?? []),
+  ],
 })
 
 export const parseDefaultBlockWithStep = (
   step: Partial<Step>
-): Pick<Typebot, 'blocks' | 'steps'> => ({
-  blocks: {
-    byId: {
-      block1: {
-        graphCoordinates: { x: 200, y: 200 },
-        id: 'block1',
-        stepIds: ['step1'],
-        title: 'Block #1',
-      },
+): Pick<Typebot, 'blocks'> => ({
+  blocks: [
+    {
+      graphCoordinates: { x: 200, y: 200 },
+      id: 'block1',
+      steps: [
+        {
+          id: 'step1',
+          blockId: 'block1',
+          ...step,
+        } as Step,
+      ],
+      title: 'Block #1',
     },
-    allIds: ['block1'],
-  },
-  steps: {
-    byId: {
-      step1: {
-        id: 'step1',
-        blockId: 'block1',
-        ...step,
-      } as Step,
-    },
-    allIds: ['step1'],
-  },
+  ],
 })
 
 export const importTypebotInDatabase = (

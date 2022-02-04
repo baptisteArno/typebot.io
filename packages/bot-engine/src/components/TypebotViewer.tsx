@@ -10,11 +10,11 @@ import phoneNumberInputStyle from 'react-phone-number-input/style.css'
 import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
-import { Answer, BackgroundType, PublicTypebot } from 'models'
+import { Answer, BackgroundType, Edge, PublicTypebot } from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
-  onNewBlockVisible?: (edgeId: string) => void
+  onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onCompleted?: () => void
 }
@@ -31,8 +31,8 @@ export const TypebotViewer = ({
         : 'transparent',
     [typebot?.theme?.general?.background]
   )
-  const handleNewBlockVisible = (blockId: string) => {
-    if (onNewBlockVisible) onNewBlockVisible(blockId)
+  const handleNewBlockVisible = (edge: Edge) => {
+    if (onNewBlockVisible) onNewBlockVisible(edge)
   }
   const handleNewAnswer = (answer: Answer) => {
     if (onNewAnswer) onNewAnswer(answer)

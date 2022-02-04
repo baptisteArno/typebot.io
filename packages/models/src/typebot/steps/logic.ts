@@ -1,5 +1,5 @@
-import { StepBase } from '.'
-import { Table } from '../..'
+import { ItemType, StepBase } from '.'
+import { ItemBase } from './item'
 
 export type LogicStep = SetVariableStep | ConditionStep | RedirectStep
 
@@ -9,10 +9,7 @@ export enum LogicStepType {
   REDIRECT = 'Redirect',
 }
 
-export type LogicStepOptions =
-  | SetVariableOptions
-  | ConditionOptions
-  | RedirectOptions
+export type LogicStepOptions = SetVariableOptions | RedirectOptions
 
 export type SetVariableStep = StepBase & {
   type: LogicStepType.SET_VARIABLE
@@ -21,9 +18,12 @@ export type SetVariableStep = StepBase & {
 
 export type ConditionStep = StepBase & {
   type: LogicStepType.CONDITION
-  options: ConditionOptions
-  trueEdgeId?: string
-  falseEdgeId?: string
+  items: [ConditionItem]
+}
+
+export type ConditionItem = ItemBase & {
+  type: ItemType.CONDITION
+  content: ConditionContent
 }
 
 export type RedirectStep = StepBase & {
@@ -45,8 +45,8 @@ export enum ComparisonOperators {
   IS_SET = 'Is set',
 }
 
-export type ConditionOptions = {
-  comparisons: Table<Comparison>
+export type ConditionContent = {
+  comparisons: Comparison[]
   logicalOperator: LogicalOperator
 }
 
@@ -69,8 +69,8 @@ export type RedirectOptions = {
 
 export const defaultSetVariablesOptions: SetVariableOptions = {}
 
-export const defaultConditionOptions: ConditionOptions = {
-  comparisons: { byId: {}, allIds: [] },
+export const defaultConditionContent: ConditionContent = {
+  comparisons: [],
   logicalOperator: LogicalOperator.AND,
 }
 

@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import React from 'react'
-import { StepDndContext } from 'contexts/StepDndContext'
+import { GraphDndContext } from 'contexts/GraphDndContext'
 import { StepsSideBar } from '../../components/editor/StepsSideBar'
 import { PreviewDrawer } from '../../components/editor/preview/PreviewDrawer'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
@@ -15,14 +15,14 @@ export const Board = () => {
 
   return (
     <Flex flex="1" pos="relative" bgColor="gray.50" h="full">
-      <StepDndContext>
+      <GraphDndContext>
         <StepsSideBar />
-        <GraphProvider typebot={typebot}>
+        <GraphProvider blocks={typebot?.blocks ?? []}>
           <Graph flex="1" />
           <BoardMenuButton pos="absolute" right="40px" top="20px" />
           {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
         </GraphProvider>
-      </StepDndContext>
+      </GraphDndContext>
     </Flex>
   )
 }

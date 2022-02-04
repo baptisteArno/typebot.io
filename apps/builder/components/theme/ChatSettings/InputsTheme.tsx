@@ -17,7 +17,7 @@ export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
     onInputsChange({ ...inputs, placeholderColor })
 
   return (
-    <Stack>
+    <Stack data-testid="inputs-theme">
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker

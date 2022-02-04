@@ -41,6 +41,8 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
   const handleColorChange = (e: ChangeEvent<HTMLInputElement>) =>
     setColor(e.target.value)
 
+  const handleClick = (color: string) => () => setColor(color)
+
   return (
     <Popover variant="picker" placement="right" isLazy>
       <PopoverTrigger>
@@ -79,10 +81,8 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
                 minWidth="unset"
                 borderRadius={3}
                 _hover={{ background: c }}
-                onClick={() => {
-                  setColor(c)
-                }}
-              ></Button>
+                onClick={handleClick(c)}
+              />
             ))}
           </SimpleGrid>
           <Input

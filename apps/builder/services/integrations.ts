@@ -2,7 +2,7 @@ import { sendRequest } from 'utils'
 import { stringify } from 'qs'
 import useSWR from 'swr'
 import { fetcher } from './utils'
-import { Table, Variable, VariableForTest, WebhookResponse } from 'models'
+import { StepIndices, Variable, VariableForTest, WebhookResponse } from 'models'
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
@@ -69,10 +69,11 @@ export const useSheets = ({
 export const executeWebhook = (
   typebotId: string,
   webhookId: string,
-  variables: Table<Variable>
+  variables: Variable[],
+  { blockIndex, stepIndex }: StepIndices
 ) =>
   sendRequest<WebhookResponse>({
-    url: `/api/typebots/${typebotId}/webhooks/${webhookId}/execute`,
+    url: `/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
     method: 'POST',
     body: {
       variables,
@@ -80,28 +81,21 @@ export const executeWebhook = (
   })
 
 export const convertVariableForTestToVariables = (
-  variablesForTest: Table<VariableForTest> | undefined,
-  variables: Table<Variable>
-): Table<Variable> => {
-  if (!variablesForTest) return { byId: {}, allIds: [] }
-  return {
-    byId: {
-      ...variables.byId,
-      ...variablesForTest.allIds.reduce((obj, id) => {
-        const variableForTest = variablesForTest.byId[id]
-        if (!variableForTest.variableId) return {}
-        const variable = variables.byId[variableForTest.variableId ?? '']
-        return {
-          ...obj,
-          [variableForTest.variableId]: {
-            ...variable,
-            value: variableForTest.value,
-          },
-        }
+  variablesForTest: VariableForTest[],
+  variables: Variable[]
+): Variable[] => {
+  if (!variablesForTest) return []
+  return [
+    ...variables,
+    ...variablesForTest
+      .filter((v) => v.variableId)
+      .map((variableForTest) => {
+        const variable = variables.find(
+          (v) => v.id === variableForTest.variableId
+        ) as Variable
+        return { ...variable, value: variableForTest.value }
       }, {}),
-    },
-    allIds: variables.allIds,
-  }
+  ]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

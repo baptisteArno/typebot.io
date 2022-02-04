@@ -1,4 +1,4 @@
-import { Flex, FormLabel, Stack, Switch, Text } from '@chakra-ui/react'
+import { Flex, FormLabel, Stack, Switch } from '@chakra-ui/react'
 import { GeneralSettings } from 'models'
 import React from 'react'
 

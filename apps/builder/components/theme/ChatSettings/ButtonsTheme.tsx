@@ -15,7 +15,7 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
     onButtonsChange({ ...buttons, color })
 
   return (
-    <Stack>
+    <Stack data-testid="buttons-theme">
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker

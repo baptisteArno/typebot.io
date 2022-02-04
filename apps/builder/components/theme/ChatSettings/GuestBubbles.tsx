@@ -15,7 +15,7 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
     onGuestBubblesChange({ ...guestBubbles, color })
 
   return (
-    <Stack>
+    <Stack data-testid="guest-bubbles-theme">
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker

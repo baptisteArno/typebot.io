@@ -1,12 +1,12 @@
 import { Flex, FlexProps } from '@chakra-ui/react'
-import { ChoiceItem } from 'models'
+import { Item } from 'models'
 import React from 'react'
 
 type Props = {
-  item: ChoiceItem
+  item: Item
 } & FlexProps
 
-export const ButtonNodeOverlay = ({ item, ...props }: Props) => {
+export const ItemNodeOverlay = ({ item, ...props }: Props) => {
   return (
     <Flex
       px="4"

@@ -1,3 +1,5 @@
+import { ItemBase, ItemType } from '.'
+import { Item } from './item'
 import { StepBase } from './steps'
 
 export type InputStep =
@@ -62,14 +64,13 @@ export type PhoneNumberInputOptions = OptionBase & InputTextOptionsBase
 
 export type ChoiceInputStep = StepBase & {
   type: InputStepType.CHOICE
+  items: ButtonItem[]
   options: ChoiceInputOptions
 }
 
-export type ChoiceItem = {
-  id: string
-  stepId: string
+export type ButtonItem = ItemBase & {
+  type: ItemType.BUTTON
   content?: string
-  edgeId?: string
 }
 
 type OptionBase = { variableId?: string }
@@ -78,7 +79,6 @@ type InputTextOptionsBase = {
 }
 
 export type ChoiceInputOptions = OptionBase & {
-  itemIds: string[]
   isMultipleChoice: boolean
   buttonLabel: string
 }
@@ -140,5 +140,4 @@ export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
 export const defaultChoiceInputOptions: ChoiceInputOptions = {
   buttonLabel: defaultButtonLabel,
   isMultipleChoice: false,
-  itemIds: [],
 }

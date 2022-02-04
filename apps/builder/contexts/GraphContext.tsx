@@ -1,4 +1,4 @@
-import { Block, Source, Step, Table, Target, Typebot } from 'models'
+import { Block, Edge, IdMap, Source, Step, Target } from 'models'
 import {
   createContext,
   Dispatch,
@@ -9,7 +9,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { useImmer } from 'use-immer'
 
 export const stubLength = 20
 export const blockWidth = 300
@@ -56,20 +55,20 @@ export type Endpoint = {
   ref: MutableRefObject<HTMLDivElement | null>
 }
 
-export type BlocksCoordinates = { byId: { [key: string]: Coordinates } }
+export type BlocksCoordinates = IdMap<Coordinates>
 
 const graphContext = createContext<{
-  blocksCoordinates?: BlocksCoordinates
+  blocksCoordinates: BlocksCoordinates
   updateBlockCoordinates: (blockId: string, newCoord: Coordinates) => void
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
   setConnectingIds: Dispatch<SetStateAction<ConnectingIds | null>>
-  previewingEdgeId?: string
-  setPreviewingEdgeId: Dispatch<SetStateAction<string | undefined>>
-  sourceEndpoints: Table<Endpoint>
+  previewingEdge?: Edge
+  setPreviewingEdge: Dispatch<SetStateAction<Edge | undefined>>
+  sourceEndpoints: IdMap<Endpoint>
   addSourceEndpoint: (endpoint: Endpoint) => void
-  targetEndpoints: Table<Endpoint>
+  targetEndpoints: IdMap<Endpoint>
   addTargetEndpoint: (endpoint: Endpoint) => void
   openedStepId?: string
   setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
@@ -83,63 +82,55 @@ const graphContext = createContext<{
 
 export const GraphProvider = ({
   children,
-  typebot,
+  blocks,
   isReadOnly = false,
 }: {
   children: ReactNode
-  typebot?: Typebot
+  blocks: Block[]
   isReadOnly?: boolean
 }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
-  const [previewingEdgeId, setPreviewingEdgeId] = useState<string>()
-  const [sourceEndpoints, setSourceEndpoints] = useState<Table<Endpoint>>({
-    byId: {},
-    allIds: [],
-  })
-  const [targetEndpoints, setTargetEndpoints] = useState<Table<Endpoint>>({
-    byId: {},
-    allIds: [],
-  })
+  const [previewingEdge, setPreviewingEdge] = useState<Edge>()
+  const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
+  const [targetEndpoints, setTargetEndpoints] = useState<IdMap<Endpoint>>({})
   const [openedStepId, setOpenedStepId] = useState<string>()
-  const [blocksCoordinates, setBlocksCoordinates] = useImmer<
-    BlocksCoordinates | undefined
-  >(undefined)
+  const [blocksCoordinates, setBlocksCoordinates] = useState<BlocksCoordinates>(
+    {}
+  )
 
   useEffect(() => {
     setBlocksCoordinates(
-      typebot?.blocks.allIds.reduce(
-        (coords, blockId) => ({
-          byId: {
-            ...coords.byId,
-            [blockId]: typebot.blocks.byId[blockId].graphCoordinates,
-          },
+      blocks.reduce(
+        (coords, block) => ({
+          ...coords,
+          [block.id]: block.graphCoordinates,
         }),
-        { byId: {} }
+        {}
       )
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot?.blocks])
+  }, [blocks])
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
     setSourceEndpoints((endpoints) => ({
-      byId: { ...endpoints.byId, [endpoint.id]: endpoint },
-      allIds: [...endpoints.allIds, endpoint.id],
+      ...endpoints,
+      [endpoint.id]: endpoint,
     }))
   }
 
   const addTargetEndpoint = (endpoint: Endpoint) => {
     setTargetEndpoints((endpoints) => ({
-      byId: { ...endpoints.byId, [endpoint.id]: endpoint },
-      allIds: [...endpoints.allIds, endpoint.id],
+      ...endpoints,
+      [endpoint.id]: endpoint,
     }))
   }
 
   const updateBlockCoordinates = (blockId: string, newCoord: Coordinates) =>
-    setBlocksCoordinates((blocksCoordinates) => {
-      if (!blocksCoordinates) return
-      blocksCoordinates.byId[blockId] = newCoord
-    })
+    setBlocksCoordinates((blocksCoordinates) => ({
+      ...blocksCoordinates,
+      [blockId]: newCoord,
+    }))
 
   return (
     <graphContext.Provider
@@ -148,8 +139,8 @@ export const GraphProvider = ({
         setGraphPosition,
         connectingIds,
         setConnectingIds,
-        previewingEdgeId,
-        setPreviewingEdgeId,
+        previewingEdge,
+        setPreviewingEdge,
         sourceEndpoints,
         targetEndpoints,
         addSourceEndpoint,

@@ -16,8 +16,7 @@ test.describe('Condition step', () => {
     )
 
     await page.goto(`/typebots/${typebotId}/edit`)
-    await page.click('text=Configure...')
-    await page.click('button:has-text("Add a comparison")')
+    await page.click('text=Configure... >> nth=0', { force: true })
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'
@@ -41,8 +40,7 @@ test.describe('Condition step', () => {
       '100'
     )
 
-    await page.click('text=Configure...')
-    await page.click('button:has-text("Add a comparison")')
+    await page.click('text=Configure...', { force: true })
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'
@@ -54,7 +52,7 @@ test.describe('Condition step', () => {
 
     await page.click('text=Preview')
     await typebotViewer(page)
-      .locator('input[placeholder="Type your answer..."]')
+      .locator('input[placeholder="Type a number..."]')
       .fill('15')
     await typebotViewer(page).locator('text=Send').click()
     await expect(
@@ -63,7 +61,7 @@ test.describe('Condition step', () => {
 
     await page.click('text=Restart')
     await typebotViewer(page)
-      .locator('input[placeholder="Type your answer..."]')
+      .locator('input[placeholder="Type a number..."]')
       .fill('45')
     await typebotViewer(page).locator('text=Send').click()
     await expect(
@@ -72,7 +70,7 @@ test.describe('Condition step', () => {
 
     await page.click('text=Restart')
     await typebotViewer(page)
-      .locator('input[placeholder="Type your answer..."]')
+      .locator('input[placeholder="Type a number..."]')
       .fill('90')
     await typebotViewer(page).locator('text=Send').click()
     await expect(

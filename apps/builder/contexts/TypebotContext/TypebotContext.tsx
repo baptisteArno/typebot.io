@@ -25,13 +25,12 @@ import useSWR from 'swr'
 import { isDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
-import { choiceItemsAction, ChoiceItemsActions } from './actions/choiceItems'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { edgesAction, EdgesActions } from './actions/edges'
-import { webhooksAction, WebhooksAction } from './actions/webhooks'
 import { useRegisterActions } from 'kbar'
 import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
+import { itemsAction, ItemsActions } from './actions/items'
 const autoSaveTimeout = 40000
 
 type UpdateTypebotPayload = Partial<{
@@ -59,10 +58,9 @@ const typebotContext = createContext<
     publishTypebot: () => void
   } & BlocksActions &
     StepsActions &
-    ChoiceItemsActions &
+    ItemsActions &
     VariablesActions &
-    EdgesActions &
-    WebhooksAction
+    EdgesActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
@@ -72,7 +70,7 @@ export const TypebotContext = ({
   typebotId,
 }: {
   children: ReactNode
-  typebotId?: string
+  typebotId: string
 }) => {
   const router = useRouter()
   const toast = useToast({
@@ -237,10 +235,9 @@ export const TypebotContext = ({
         updateTypebot: updateLocalTypebot,
         ...blocksActions(localTypebot as Typebot, setLocalTypebot),
         ...stepsAction(localTypebot as Typebot, setLocalTypebot),
-        ...choiceItemsAction(localTypebot as Typebot, setLocalTypebot),
         ...variablesAction(localTypebot as Typebot, setLocalTypebot),
         ...edgesAction(localTypebot as Typebot, setLocalTypebot),
-        ...webhooksAction(localTypebot as Typebot, setLocalTypebot),
+        ...itemsAction(localTypebot as Typebot, setLocalTypebot),
       }}
     >
       {children}
@@ -254,13 +251,13 @@ export const useFetchedTypebot = ({
   typebotId,
   onError,
 }: {
-  typebotId?: string
+  typebotId: string
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
     { typebot: Typebot; publishedTypebot?: PublicTypebot },
     Error
-  >(typebotId ? `/api/typebots/${typebotId}` : null, fetcher)
+  >(`/api/typebots/${typebotId}`, fetcher)
   if (error) onError(error)
   return {
     typebot: data?.typebot,

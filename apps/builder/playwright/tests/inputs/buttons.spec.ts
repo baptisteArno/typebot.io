@@ -3,7 +3,7 @@ import {
   createTypebots,
   parseDefaultBlockWithStep,
 } from '../../services/database'
-import { defaultChoiceInputOptions, InputStepType } from 'models'
+import { defaultChoiceInputOptions, InputStepType, ItemType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import { generate } from 'short-uuid'
 
@@ -15,7 +15,14 @@ test.describe.parallel('Buttons input step', () => {
         id: typebotId,
         ...parseDefaultBlockWithStep({
           type: InputStepType.CHOICE,
-          options: { ...defaultChoiceInputOptions, itemIds: ['choice1'] },
+          items: [
+            {
+              id: 'choice1',
+              stepId: 'step1',
+              type: ItemType.BUTTON,
+            },
+          ],
+          options: { ...defaultChoiceInputOptions },
         }),
       },
     ])
@@ -23,14 +30,11 @@ test.describe.parallel('Buttons input step', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.fill('input[value="Click to edit"]', 'Item 1')
     await page.press('input[value="Item 1"]', 'Enter')
-    await page.locator('text=Item 1').hover()
-    await page.click('[aria-label="Add item"]')
     await page.fill('input[value="Click to edit"]', 'Item 2')
     await page.press('input[value="Item 2"]', 'Enter')
-    await page.locator('text=Item 2').hover()
-    await page.click('[aria-label="Add item"]')
     await page.fill('input[value="Click to edit"]', 'Item 3')
     await page.press('input[value="Item 3"]', 'Enter')
+    await page.press('input[value="Click to edit"]', 'Escape')
     await page.click('text=Item 2', { button: 'right' })
     await page.click('text=Delete')
     await expect(page.locator('text=Item 2')).toBeHidden()

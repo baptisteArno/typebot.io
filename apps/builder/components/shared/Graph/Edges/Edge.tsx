@@ -1,5 +1,4 @@
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo } from 'react'
 import {
   getAnchorsPosition,
@@ -7,6 +6,7 @@ import {
   getEndpointTopOffset,
   getSourceEndpointId,
 } from 'services/graph'
+import { Edge as EdgeProps } from 'models'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -15,28 +15,20 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export const Edge = ({ edgeId }: { edgeId: string }) => {
-  const { typebot } = useTypebot()
+export const Edge = ({ edge }: { edge: EdgeProps }) => {
   const {
-    previewingEdgeId,
+    previewingEdge,
     sourceEndpoints,
     targetEndpoints,
     graphPosition,
     blocksCoordinates,
   } = useGraph()
-  const edge = useMemo(
-    () => typebot?.edges.byId[edgeId],
-    [edgeId, typebot?.edges.byId]
-  )
-  const isPreviewing = previewingEdgeId === edgeId
-
-  const sourceBlock = edge && typebot?.blocks.byId[edge.from.blockId]
-  const targetBlock = edge && typebot?.blocks.byId[edge.to.blockId]
+  const isPreviewing = previewingEdge?.id === edge.id
 
   const sourceBlockCoordinates =
-    sourceBlock && blocksCoordinates?.byId[sourceBlock.id]
+    blocksCoordinates && blocksCoordinates[edge.from.blockId]
   const targetBlockCoordinates =
-    targetBlock && blocksCoordinates?.byId[targetBlock.id]
+    blocksCoordinates && blocksCoordinates[edge.to.blockId]
 
   const sourceTop = useMemo(
     () =>
@@ -77,6 +69,7 @@ export const Edge = ({ edgeId }: { edgeId: string }) => {
   if (sourceTop === 0) return <></>
   return (
     <path
+      data-testid="edge"
       d={path}
       stroke={isPreviewing ? '#1a5fff' : '#718096'}
       strokeWidth="2px"

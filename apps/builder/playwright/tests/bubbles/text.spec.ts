@@ -24,22 +24,22 @@ test.describe('Text bubble step', () => {
 
     await page.click('[data-testid="bold-button"]')
     await page.type('div[role="textbox"]', 'Bold text')
-    await page.press('div[role="textbox"]', 'Enter')
+    await page.press('div[role="textbox"]', 'Shift+Enter')
 
     await page.click('[data-testid="bold-button"]')
     await page.click('[data-testid="italic-button"]')
     await page.type('div[role="textbox"]', 'Italic text')
-    await page.press('div[role="textbox"]', 'Enter')
+    await page.press('div[role="textbox"]', 'Shift+Enter')
 
     await page.click('[data-testid="underline-button"]')
     await page.click('[data-testid="italic-button"]')
     await page.type('div[role="textbox"]', 'Underlined text')
-    await page.press('div[role="textbox"]', 'Enter')
+    await page.press('div[role="textbox"]', 'Shift+Enter')
 
     await page.click('[data-testid="bold-button"]')
     await page.click('[data-testid="italic-button"]')
     await page.type('div[role="textbox"]', 'Everything text')
-    await page.press('div[role="textbox"]', 'Enter')
+    await page.press('div[role="textbox"]', 'Shift+Enter')
 
     await page.click('text=Preview')
     await expect(

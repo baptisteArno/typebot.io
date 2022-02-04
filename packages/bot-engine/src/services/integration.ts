@@ -5,7 +5,6 @@ import {
   GoogleSheetsAction,
   GoogleSheetsInsertRowOptions,
   Variable,
-  Table,
   GoogleSheetsUpdateRowOptions,
   Cell,
   GoogleSheetsGetOptions,
@@ -19,10 +18,12 @@ import { parseVariables, parseVariablesInObject } from './variable'
 
 const safeEval = eval
 
+type Indices = { blockIndex: number; stepIndex: number }
 export const executeIntegration = (
   typebotId: string,
   step: IntegrationStep,
-  variables: Table<Variable>,
+  variables: Variable[],
+  indices: Indices,
   updateVariableValue: (variableId: string, value: string) => void
 ) => {
   switch (step.type) {
@@ -31,13 +32,19 @@ export const executeIntegration = (
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return executeGoogleAnalyticsIntegration(step, variables)
     case IntegrationStepType.WEBHOOK:
-      return executeWebhook(typebotId, step, variables, updateVariableValue)
+      return executeWebhook(
+        typebotId,
+        step,
+        variables,
+        indices,
+        updateVariableValue
+      )
   }
 }
 
 export const executeGoogleAnalyticsIntegration = async (
   step: GoogleAnalyticsStep,
-  variables: Table<Variable>
+  variables: Variable[]
 ) => {
   if (!step.options?.trackingId) return
   const { default: initGoogleAnalytics } = await import('../../lib/gtag')
@@ -47,10 +54,10 @@ export const executeGoogleAnalyticsIntegration = async (
 
 const executeGoogleSheetIntegration = async (
   step: GoogleSheetsStep,
-  variables: Table<Variable>,
+  variables: Variable[],
   updateVariableValue: (variableId: string, value: string) => void
 ) => {
-  if (!('action' in step.options)) return step.edgeId
+  if (!('action' in step.options)) return step.outgoingEdgeId
   switch (step.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
       await insertRowInGoogleSheets(step.options, variables)
@@ -62,12 +69,12 @@ const executeGoogleSheetIntegration = async (
       await getRowFromGoogleSheets(step.options, variables, updateVariableValue)
       break
   }
-  return step.edgeId
+  return step.outgoingEdgeId
 }
 
 const insertRowInGoogleSheets = async (
   options: GoogleSheetsInsertRowOptions,
-  variables: Table<Variable>
+  variables: Variable[]
 ) => {
   if (!options.cellsToInsert) return
   return sendRequest({
@@ -82,7 +89,7 @@ const insertRowInGoogleSheets = async (
 
 const updateRowInGoogleSheets = async (
   options: GoogleSheetsUpdateRowOptions,
-  variables: Table<Variable>
+  variables: Variable[]
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
   return sendRequest({
@@ -104,7 +111,7 @@ const updateRowInGoogleSheets = async (
 
 const getRowFromGoogleSheets = async (
   options: GoogleSheetsGetOptions,
-  variables: Table<Variable>,
+  variables: Variable[],
   updateVariableValue: (variableId: string, value: string) => void
 ) => {
   if (!options.referenceCell || !options.cellsToExtract) return
@@ -118,9 +125,7 @@ const getRowFromGoogleSheets = async (
           variables,
         }),
       },
-      columns: options.cellsToExtract.allIds.map(
-        (id) => options.cellsToExtract?.byId[id].column
-      ),
+      columns: options.cellsToExtract.map((cell) => cell.column),
     },
     { indices: false }
   )
@@ -129,18 +134,15 @@ const getRowFromGoogleSheets = async (
     method: 'GET',
   })
   if (!data) return
-  options.cellsToExtract.allIds.forEach((cellId) => {
-    const cell = options.cellsToExtract?.byId[cellId]
-    if (!cell) return
+  options.cellsToExtract.forEach((cell) =>
     updateVariableValue(cell.variableId ?? '', data[cell.column ?? ''])
-  })
+  )
 }
 const parseCellValues = (
-  cells: Table<Cell>,
-  variables: Table<Variable>
+  cells: Cell[],
+  variables: Variable[]
 ): { [key: string]: string } =>
-  cells.allIds.reduce((row, id) => {
-    const cell = cells.byId[id]
+  cells.reduce((row, cell) => {
     return !cell.column || !cell.value
       ? row
       : {
@@ -152,20 +154,21 @@ const parseCellValues = (
 const executeWebhook = async (
   typebotId: string,
   step: WebhookStep,
-  variables: Table<Variable>,
+  variables: Variable[],
+  indices: Indices,
   updateVariableValue: (variableId: string, value: string) => void
 ) => {
-  if (!step.options?.webhookId) return step.edgeId
+  if (!step.webhook) return step.outgoingEdgeId
+  const { blockIndex, stepIndex } = indices
   const { data, error } = await sendRequest({
-    url: `http://localhost:3000/api/typebots/${typebotId}/webhooks/${step.options?.webhookId}/execute`,
+    url: `http://localhost:3000/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
     method: 'POST',
     body: {
       variables,
     },
   })
   console.error(error)
-  step.options.responseVariableMapping?.allIds.forEach((varMappingId) => {
-    const varMapping = step.options?.responseVariableMapping?.byId[varMappingId]
+  step.options.responseVariableMapping.forEach((varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return
     const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
     updateVariableValue(varMapping.variableId, value)

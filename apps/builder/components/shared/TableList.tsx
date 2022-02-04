@@ -2,20 +2,20 @@ import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
 import { deepEqual } from 'fast-equals'
 import { Draft } from 'immer'
-import { Table } from 'models'
 import React, { useEffect, useState } from 'react'
 import { generate } from 'short-uuid'
 import { useImmer } from 'use-immer'
 
+type ItemWithId<T> = T & { id: string }
+
 export type TableListItemProps<T> = {
-  id: string
   item: T
   onItemChange: (item: T) => void
 }
 
 type Props<T> = {
-  initialItems: Table<T>
-  onItemsChange: (items: Table<T>) => void
+  initialItems: ItemWithId<T>[]
+  onItemsChange: (items: ItemWithId<T>[]) => void
   addLabel?: string
   Item: (props: TableListItemProps<T>) => JSX.Element
   ComponentBetweenItems?: (props: unknown) => JSX.Element
@@ -29,7 +29,7 @@ export const TableList = <T,>({
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
   const [items, setItems] = useImmer(initialItems)
-  const [showDeleteId, setShowDeleteId] = useState<string | undefined>()
+  const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
   useEffect(() => {
     if (deepEqual(items, initialItems)) return
@@ -40,55 +40,47 @@ export const TableList = <T,>({
   const createItem = () => {
     setItems((items) => {
       const id = generate()
-      items.byId[id] = { id } as unknown as Draft<T>
-      items.allIds.push(id)
+      const newItem = { id } as Draft<ItemWithId<T>>
+      items.push(newItem)
     })
   }
 
-  const updateItem = (itemId: string, updates: Partial<T>) =>
+  const updateItem = (itemIndex: number, updates: Partial<T>) =>
     setItems((items) => {
-      items.byId[itemId] = {
-        ...items.byId[itemId],
-        ...updates,
-      }
+      items[itemIndex] = { ...items[itemIndex], ...updates }
     })
 
-  const deleteItem = (itemId: string) => () => {
+  const deleteItem = (itemIndex: number) => () => {
     setItems((items) => {
-      delete items.byId[itemId]
-      const index = items.allIds.indexOf(itemId)
-      if (index !== -1) items.allIds.splice(index, 1)
+      items.splice(itemIndex, 1)
     })
   }
 
-  const handleMouseEnter = (itemId: string) => () => setShowDeleteId(itemId)
+  const handleMouseEnter = (itemIndex: number) => () =>
+    setShowDeleteIndex(itemIndex)
 
-  const handleCellChange = (itemId: string) => (item: T) =>
-    updateItem(itemId, item)
+  const handleCellChange = (itemIndex: number) => (item: T) =>
+    updateItem(itemIndex, item)
 
-  const handleMouseLeave = () => setShowDeleteId(undefined)
+  const handleMouseLeave = () => setShowDeleteIndex(null)
 
   return (
     <Stack spacing="4">
-      {items.allIds.map((itemId, idx) => (
-        <Box key={itemId}>
-          {idx !== 0 && <ComponentBetweenItems />}
+      {items.map((item, itemIndex) => (
+        <Box key={item.id}>
+          {itemIndex !== 0 && <ComponentBetweenItems />}
           <Flex
             pos="relative"
-            onMouseEnter={handleMouseEnter(itemId)}
+            onMouseEnter={handleMouseEnter(itemIndex)}
             onMouseLeave={handleMouseLeave}
-            mt={idx !== 0 && ComponentBetweenItems ? 4 : 0}
+            mt={itemIndex !== 0 && ComponentBetweenItems ? 4 : 0}
           >
-            <Item
-              id={itemId}
-              item={items.byId[itemId]}
-              onItemChange={handleCellChange(itemId)}
-            />
-            <Fade in={showDeleteId === itemId}>
+            <Item item={item} onItemChange={handleCellChange(itemIndex)} />
+            <Fade in={showDeleteIndex === itemIndex}>
               <IconButton
                 icon={<TrashIcon />}
                 aria-label="Remove cell"
-                onClick={deleteItem(itemId)}
+                onClick={deleteItem(itemIndex)}
                 pos="absolute"
                 left="-15px"
                 top="-15px"

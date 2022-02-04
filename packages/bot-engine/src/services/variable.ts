@@ -1,4 +1,4 @@
-import { Table, Variable } from 'models'
+import { Variable } from 'models'
 import { isDefined } from 'utils'
 
 const safeEval = eval
@@ -11,16 +11,16 @@ export const parseVariables = ({
   variables,
 }: {
   text?: string
-  variables: Table<Variable>
+  variables: Variable[]
 }): string => {
   if (!text || text === '') return ''
   return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
     const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
-    const matchedVariableId = variables.allIds.find((variableId) => {
-      const variable = variables.byId[variableId]
-      return matchedVarName === variable.name && isDefined(variable.value)
-    })
-    return variables.byId[matchedVariableId ?? '']?.value ?? ''
+    return (
+      variables.find((v) => {
+        return matchedVarName === v.name && isDefined(v.value)
+      })?.value ?? ''
+    )
   })
 }
 
@@ -50,7 +50,7 @@ const countDecimals = (value: number) => {
 
 export const parseVariablesInObject = (
   object: { [key: string]: string | number },
-  variables: Table<Variable>
+  variables: Variable[]
 ) =>
   Object.keys(object).reduce((newObj, key) => {
     const currentValue = object[key]

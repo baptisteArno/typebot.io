@@ -20,7 +20,6 @@ export const HeadersInputs = (props: TableListItemProps<KeyValue>) => (
 )
 
 export const KeyValueInputs = ({
-  id,
   item,
   onItemChange,
   keyPlaceholder,
@@ -40,18 +39,18 @@ export const KeyValueInputs = ({
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
-        <FormLabel htmlFor={'key' + id}>Key:</FormLabel>
+        <FormLabel htmlFor={'key' + item.id}>Key:</FormLabel>
         <InputWithVariableButton
-          id={'key' + id}
+          id={'key' + item.id}
           initialValue={item.key ?? ''}
           onChange={handleKeyChange}
           placeholder={keyPlaceholder}
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={'value' + id}>Value:</FormLabel>
+        <FormLabel htmlFor={'value' + item.id}>Value:</FormLabel>
         <InputWithVariableButton
-          id={'value' + id}
+          id={'value' + item.id}
           initialValue={item.value ?? ''}
           onChange={handleValueChange}
           placeholder={valuePlaceholder}

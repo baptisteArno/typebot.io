@@ -1,65 +1,61 @@
-import { ChoiceInputOptions } from 'models'
-import React, { useMemo, useState } from 'react'
-import { filterTable } from 'utils'
-import { useTypebot } from '../../../../contexts/TypebotContext'
+import { ChoiceInputStep } from 'models'
+import React, { useState } from 'react'
 import { SendButton } from './SendButton'
 
 type ChoiceFormProps = {
-  options?: ChoiceInputOptions
+  step: ChoiceInputStep
   onSubmit: (value: string) => void
 }
 
-export const ChoiceForm = ({ options, onSubmit }: ChoiceFormProps) => {
-  const { typebot } = useTypebot()
-  const items = useMemo(
-    () => filterTable(options?.itemIds ?? [], typebot.choiceItems),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+export const ChoiceForm = ({ step, onSubmit }: ChoiceFormProps) => {
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([])
 
-  const handleClick = (itemId: string) => (e: React.MouseEvent) => {
+  const handleClick = (itemIndex: number) => (e: React.MouseEvent) => {
     e.preventDefault()
-    if (options?.isMultipleChoice) toggleSelectedItemId(itemId)
-    else onSubmit(items.byId[itemId].content ?? '')
+    if (step.options?.isMultipleChoice) toggleSelectedItemIndex(itemIndex)
+    else onSubmit(step.items[itemIndex].content ?? '')
   }
 
-  const toggleSelectedItemId = (itemId: string) => {
-    const existingIndex = selectedIds.indexOf(itemId)
+  const toggleSelectedItemIndex = (itemIndex: number) => {
+    const existingIndex = selectedIndices.indexOf(itemIndex)
     if (existingIndex !== -1) {
-      selectedIds.splice(existingIndex, 1)
-      setSelectedIds([...selectedIds])
+      selectedIndices.splice(existingIndex, 1)
+      setSelectedIndices([...selectedIndices])
     } else {
-      setSelectedIds([...selectedIds, itemId])
+      setSelectedIndices([...selectedIndices, itemIndex])
     }
   }
 
   const handleSubmit = () =>
-    onSubmit(selectedIds.map((itemId) => items.byId[itemId].content).join(', '))
+    onSubmit(
+      selectedIndices
+        .map((itemIndex) => step.items[itemIndex].content)
+        .join(', ')
+    )
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <div className="flex flex-wrap">
-        {options?.itemIds.map((itemId) => (
+        {step.items.map((item, idx) => (
           <button
-            key={itemId}
-            role={options?.isMultipleChoice ? 'checkbox' : 'button'}
-            onClick={handleClick(itemId)}
+            key={item.id}
+            role={step.options?.isMultipleChoice ? 'checkbox' : 'button'}
+            onClick={handleClick(idx)}
             className={
               'py-2 px-4 font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none mr-2 mb-2 typebot-button ' +
-              (selectedIds.includes(itemId) || !options?.isMultipleChoice
+              (selectedIndices.includes(idx) || !step.options?.isMultipleChoice
                 ? 'active'
                 : '')
             }
             data-testid="button"
           >
-            {items.byId[itemId].content}
+            {item.content}
           </button>
         ))}
       </div>
       <div className="flex">
-        {selectedIds.length > 0 && (
-          <SendButton label={options?.buttonLabel ?? 'Send'} />
+        {selectedIndices.length > 0 && (
+          <SendButton label={step.options?.buttonLabel ?? 'Send'} />
         )}
       </div>
     </form>

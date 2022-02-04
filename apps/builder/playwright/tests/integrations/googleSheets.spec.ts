@@ -145,7 +145,7 @@ test.describe.parallel('Google sheets integration', () => {
       .press('Enter')
     await expect(
       typebotViewer(page).locator('text=Your name is: John Smith')
-    ).toBeVisible()
+    ).toBeVisible({ timeout: 30000 })
   })
 })
 

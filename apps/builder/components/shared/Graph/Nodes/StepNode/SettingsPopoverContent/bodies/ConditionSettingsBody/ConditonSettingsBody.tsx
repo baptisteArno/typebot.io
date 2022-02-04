@@ -1,33 +1,40 @@
 import { Flex } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList } from 'components/shared/TableList'
-import { Comparison, ConditionOptions, LogicalOperator, Table } from 'models'
+import {
+  Comparison,
+  ConditionItem,
+  ConditionStep,
+  LogicalOperator,
+} from 'models'
 import React from 'react'
 import { ComparisonItem } from './ComparisonsItem'
 
 type ConditionSettingsBodyProps = {
-  options: ConditionOptions
-  onOptionsChange: (options: ConditionOptions) => void
+  step: ConditionStep
+  onItemChange: (updates: Partial<ConditionItem>) => void
 }
 
 export const ConditionSettingsBody = ({
-  options,
-  onOptionsChange,
+  step,
+  onItemChange,
 }: ConditionSettingsBodyProps) => {
-  const handleComparisonsChange = (comparisons: Table<Comparison>) =>
-    onOptionsChange({ ...options, comparisons })
+  const itemContent = step.items[0].content
+
+  const handleComparisonsChange = (comparisons: Comparison[]) =>
+    onItemChange({ content: { ...itemContent, comparisons } })
   const handleLogicalOperatorChange = (logicalOperator: LogicalOperator) =>
-    onOptionsChange({ ...options, logicalOperator })
+    onItemChange({ content: { ...itemContent, logicalOperator } })
 
   return (
     <TableList<Comparison>
-      initialItems={options.comparisons}
+      initialItems={itemContent.comparisons}
       onItemsChange={handleComparisonsChange}
       Item={ComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
           <DropdownList<LogicalOperator>
-            currentItem={options.logicalOperator}
+            currentItem={itemContent.logicalOperator}
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
           />

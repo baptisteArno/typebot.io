@@ -2,7 +2,7 @@ import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './Nodes/BlockNode/BlockNode'
-import { useStepDnd } from 'contexts/StepDndContext'
+import { useStepDnd } from 'contexts/GraphDndContext'
 import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
@@ -58,6 +58,7 @@ export const Graph = ({
   useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
 
   const handleMouseUp = (e: MouseEvent) => {
+    if (!typebot) return
     if (!draggedStep && !draggedStepType) return
     const coordinates = {
       x: e.clientX - graphPosition.x - blockWidth / 3,
@@ -69,6 +70,7 @@ export const Graph = ({
       id,
       ...coordinates,
       step: draggedStep ?? (draggedStepType as DraggableStepType),
+      indices: { blockIndex: typebot.blocks.length, stepIndex: 0 },
     })
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
@@ -84,7 +86,6 @@ export const Graph = ({
   const handleClick = () => setOpenedStepId(undefined)
   useEventListener('click', handleClick, editorContainerRef.current)
 
-  if (!typebot) return <></>
   return (
     <Flex ref={graphContainerRef} {...props}>
       <Flex
@@ -95,9 +96,9 @@ export const Graph = ({
           transform,
         }}
       >
-        <Edges />
-        {typebot.blocks.allIds.map((blockId) => (
-          <BlockNode block={typebot.blocks.byId[blockId]} key={blockId} />
+        <Edges edges={typebot?.edges ?? []} />
+        {typebot?.blocks.map((block, idx) => (
+          <BlockNode block={block} blockIndex={idx} key={block.id} />
         ))}
         {answersCounts?.map((answersCount) => (
           <DropOffNode

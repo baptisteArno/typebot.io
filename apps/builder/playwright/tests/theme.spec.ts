@@ -31,7 +31,7 @@ test.describe.parallel('Theme page', () => {
       )
       await page.click('text=Color')
       await page.click('[aria-label="Pick a color"]')
-      await page.fill('[aria-label="Color value"]', '#2a9d8f')
+      await page.fill('[aria-label="Color value"] >> nth=-1', '#2a9d8f')
       await expect(chatContainer).toHaveCSS(
         'background-color',
         'rgb(42, 157, 143)'
@@ -56,10 +56,14 @@ test.describe.parallel('Theme page', () => {
       await page.waitForTimeout(300)
 
       // Host bubbles
-      await page.click(':nth-match([aria-label="Pick a color"], 1)')
-      await page.fill('[aria-label="Color value"]', '#2a9d8f')
-      await page.click(':nth-match([aria-label="Pick a color"], 2)')
-      await page.fill('[aria-label="Color value"]', '#ffffff')
+      await page.click(
+        '[data-testid="host-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=0'
+      )
+      await page.fill('input[value="#F7F8FF"]', '#2a9d8f')
+      await page.click(
+        '[data-testid="host-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=1'
+      )
+      await page.fill('input[value="#303235"]', '#ffffff')
       const hostBubble = typebotViewer(page).locator(
         '[data-testid="host-bubble"]'
       )
@@ -70,19 +74,27 @@ test.describe.parallel('Theme page', () => {
       await expect(hostBubble).toHaveCSS('color', 'rgb(255, 255, 255)')
 
       // Buttons
-      await page.click(':nth-match([aria-label="Pick a color"], 5)')
-      await page.fill('[aria-label="Color value"]', '#7209b7')
-      await page.click(':nth-match([aria-label="Pick a color"], 6)')
-      await page.fill('[aria-label="Color value"]', '#e9c46a')
+      await page.click(
+        '[data-testid="buttons-theme"] >> [aria-label="Pick a color"] >> nth=0'
+      )
+      await page.fill('input[value="#0042DA"]', '#7209b7')
+      await page.click(
+        '[data-testid="buttons-theme"] >> [aria-label="Pick a color"] >> nth=1'
+      )
+      await page.fill('input[value="#FFFFFF"]', '#e9c46a')
       const button = typebotViewer(page).locator('[data-testid="button"]')
       await expect(button).toHaveCSS('background-color', 'rgb(114, 9, 183)')
       await expect(button).toHaveCSS('color', 'rgb(233, 196, 106)')
 
       // Guest bubbles
-      await page.click(':nth-match([aria-label="Pick a color"], 3)')
-      await page.fill('[aria-label="Color value"]', '#d8f3dc')
-      await page.click(':nth-match([aria-label="Pick a color"], 4)')
-      await page.fill('[aria-label="Color value"]', '#264653')
+      await page.click(
+        '[data-testid="guest-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=0'
+      )
+      await page.fill('input[value="#FF8E21"]', '#d8f3dc')
+      await page.click(
+        '[data-testid="guest-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=1'
+      )
+      await page.fill('input[value="#FFFFFF"]', '#264653')
       await typebotViewer(page).locator('text=Go').click()
       const guestBubble = typebotViewer(page).locator(
         '[data-testid="guest-bubble"]'
@@ -94,10 +106,14 @@ test.describe.parallel('Theme page', () => {
       await expect(guestBubble).toHaveCSS('color', 'rgb(38, 70, 83)')
 
       // Input
-      await page.click(':nth-match([aria-label="Pick a color"], 7)')
-      await page.fill('[aria-label="Color value"]', '#ffe8d6')
-      await page.click(':nth-match([aria-label="Pick a color"], 8)')
-      await page.fill('[aria-label="Color value"]', '#023e8a')
+      await page.click(
+        '[data-testid="inputs-theme"] >> [aria-label="Pick a color"] >> nth=0'
+      )
+      await page.fill('input[value="#FFFFFF"]', '#ffe8d6')
+      await page.click(
+        '[data-testid="inputs-theme"] >> [aria-label="Pick a color"] >> nth=1'
+      )
+      await page.fill('input[value="#303235"]', '#023e8a')
       await typebotViewer(page).locator('text=Go').click()
       const input = typebotViewer(page).locator('.typebot-input')
       await expect(input).toHaveCSS('background-color', 'rgb(255, 232, 214)')

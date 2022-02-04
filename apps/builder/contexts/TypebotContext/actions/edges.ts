@@ -1,12 +1,13 @@
-import { Typebot, Edge, ConditionStep } from 'models'
+import { Typebot, Edge, StepWithItems, StepIndices, ItemIndices } from 'models'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { generate } from 'short-uuid'
 import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
+import { byId, isDefined, isNotDefined } from 'utils'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void
-  updateEdge: (edgeId: string, updates: Partial<Omit<Edge, 'id'>>) => void
+  updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, 'id'>>) => void
   deleteEdge: (edgeId: string) => void
 }
 
@@ -21,40 +22,37 @@ export const edgesAction = (
           ...edge,
           id: generate(),
         }
-        if (edge.from.buttonId) {
-          deleteEdgeDraft(
-            typebot,
-            typebot.choiceItems.byId[edge.from.buttonId].edgeId
-          )
-          typebot.choiceItems.byId[edge.from.buttonId].edgeId = newEdge.id
-        } else if (edge.from.conditionType === 'true') {
-          deleteEdgeDraft(
-            typebot,
-            (typebot.steps.byId[edge.from.stepId] as ConditionStep).trueEdgeId
-          )
-          ;(typebot.steps.byId[edge.from.stepId] as ConditionStep).trueEdgeId =
-            newEdge.id
-        } else if (edge.from.conditionType === 'false') {
-          deleteEdgeDraft(
-            typebot,
-            (typebot.steps.byId[edge.from.stepId] as ConditionStep).falseEdgeId
-          )
-          ;(typebot.steps.byId[edge.from.stepId] as ConditionStep).falseEdgeId =
-            newEdge.id
-        } else {
-          deleteEdgeDraft(typebot, typebot.steps.byId[edge.from.stepId].edgeId)
-          typebot.steps.byId[edge.from.stepId].edgeId = newEdge.id
-        }
-        typebot.edges.byId[newEdge.id] = newEdge
-        typebot.edges.allIds.push(newEdge.id)
+        removeExistingEdge(typebot, edge)
+        typebot.edges.push(newEdge)
+        const blockIndex = typebot.blocks.findIndex(byId(edge.from.blockId))
+        const stepIndex = typebot.blocks[blockIndex].steps.findIndex(
+          byId(edge.from.stepId)
+        )
+        const itemIndex = edge.from.itemId
+          ? (
+              typebot.blocks[blockIndex].steps[stepIndex] as StepWithItems
+            ).items.findIndex(byId(edge.from.itemId))
+          : null
+
+        isDefined(itemIndex)
+          ? addEdgeIdToItem(typebot, newEdge.id, {
+              blockIndex,
+              stepIndex,
+              itemIndex,
+            })
+          : addEdgeIdToStep(typebot, newEdge.id, {
+              blockIndex,
+              stepIndex,
+            })
       })
     )
   },
-  updateEdge: (edgeId: string, updates: Partial<Omit<Edge, 'id'>>) =>
+  updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, 'id'>>) =>
     setTypebot(
       produce(typebot, (typebot) => {
-        typebot.edges.byId[edgeId] = {
-          ...typebot.edges.byId[edgeId],
+        const currentEdge = typebot.edges[edgeIndex]
+        typebot.edges[edgeIndex] = {
+          ...currentEdge,
           ...updates,
         }
       })
@@ -68,12 +66,55 @@ export const edgesAction = (
   },
 })
 
+const addEdgeIdToStep = (
+  typebot: WritableDraft<Typebot>,
+  edgeId: string,
+  { blockIndex, stepIndex }: StepIndices
+) => {
+  typebot.blocks[blockIndex].steps[stepIndex].outgoingEdgeId = edgeId
+}
+
+const addEdgeIdToItem = (
+  typebot: WritableDraft<Typebot>,
+  edgeId: string,
+  { blockIndex, stepIndex, itemIndex }: ItemIndices
+) => {
+  ;(typebot.blocks[blockIndex].steps[stepIndex] as StepWithItems).items[
+    itemIndex
+  ].outgoingEdgeId = edgeId
+}
+
 export const deleteEdgeDraft = (
   typebot: WritableDraft<Typebot>,
-  edgeId?: string
+  edgeId: string
 ) => {
-  if (!edgeId) return
-  delete typebot.edges.byId[edgeId]
-  const index = typebot.edges.allIds.indexOf(edgeId)
-  if (index !== -1) typebot.edges.allIds.splice(index, 1)
+  const edgeIndex = typebot.edges.findIndex(byId(edgeId))
+  typebot.edges.splice(edgeIndex, 1)
+}
+
+export const cleanUpEdgeDraft = (
+  typebot: WritableDraft<Typebot>,
+  deletedNodeId: string
+) => {
+  typebot.edges = typebot.edges.filter(
+    (edge) =>
+      ![
+        edge.from.blockId,
+        edge.from.stepId,
+        edge.from.itemId,
+        edge.to.blockId,
+        edge.to.stepId,
+      ].includes(deletedNodeId)
+  )
+}
+
+const removeExistingEdge = (
+  typebot: WritableDraft<Typebot>,
+  edge: Omit<Edge, 'id'>
+) => {
+  typebot.edges = typebot.edges.filter((e) =>
+    edge.from.itemId
+      ? e.from.itemId !== edge.from.itemId
+      : isDefined(e.from.itemId) || e.from.stepId !== edge.from.stepId
+  )
 }

@@ -4,7 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { Step } from 'models'
+import { PublicStep } from 'models'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isBubbleStep,
@@ -14,26 +14,28 @@ import {
   isLogicStep,
 } from 'utils'
 import { executeLogic } from 'services/logic'
-import { getSingleChoiceTargetId } from 'services/inputs'
 import { executeIntegration } from 'services/integration'
 
 type ChatBlockProps = {
-  stepIds: string[]
-  startStepId?: string
+  steps: PublicStep[]
+  startStepIndex: number
+  blockIndex: number
   onBlockEnd: (edgeId?: string) => void
 }
 
 export const ChatBlock = ({
-  stepIds,
-  startStepId,
+  steps,
+  startStepIndex,
+  blockIndex,
   onBlockEnd,
 }: ChatBlockProps) => {
   const { typebot, updateVariableValue } = useTypebot()
-  const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
+  const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
+
+  const currentStepIndex = displayedSteps.length - 1
 
   useEffect(() => {
-    const nextStep =
-      typebot.steps.byId[startStepId ?? stepIds[displayedSteps.length]]
+    const nextStep = steps[startStepIndex]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -60,6 +62,7 @@ export const ChatBlock = ({
         typebot.typebotId,
         currentStep,
         typebot.variables,
+        { blockIndex, stepIndex: currentStepIndex },
         updateVariableValue
       )
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
@@ -85,18 +88,17 @@ export const ChatBlock = ({
       }
       const isSingleChoiceStep =
         isChoiceInput(currentStep) && !currentStep.options.isMultipleChoice
-      if (isSingleChoiceStep)
-        return onBlockEnd(
-          getSingleChoiceTargetId(
-            currentStep,
-            typebot.choiceItems,
-            answerContent
-          )
+      if (isSingleChoiceStep) {
+        onBlockEnd(
+          currentStep.items.find((i) => i.content === answerContent)
+            ?.outgoingEdgeId
         )
-      if (currentStep?.edgeId || displayedSteps.length === stepIds.length)
-        return onBlockEnd(currentStep.edgeId)
+      }
+
+      if (currentStep?.outgoingEdgeId || displayedSteps.length === steps.length)
+        return onBlockEnd(currentStep.outgoingEdgeId)
     }
-    const nextStep = typebot.steps.byId[stepIds[displayedSteps.length]]
+    const nextStep = steps[displayedSteps.length]
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
   }
 

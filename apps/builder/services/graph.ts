@@ -1,13 +1,11 @@
-import { Edge, Table, Target } from 'models'
+import { Edge, IdMap } from 'models'
 import { AnchorsPositionProps } from 'components/shared/Graph/Edges/Edge'
 import {
   stubLength,
   blockWidth,
   blockAnchorsOffset,
-  ConnectingIds,
   Endpoint,
   Coordinates,
-  BlocksCoordinates,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
 import { headerHeight } from 'components/shared/TypebotHeader'
@@ -230,20 +228,11 @@ export const computeEdgePath = ({
 }
 
 export const computeConnectingEdgePath = ({
-  connectingIds,
+  sourceBlockCoordinates,
+  targetBlockCoordinates,
   sourceTop,
   targetTop,
-  blocksCoordinates,
-}: {
-  connectingIds: Omit<ConnectingIds, 'target'> & { target: Target }
-  sourceTop: number
-  targetTop?: number
-  blocksCoordinates: BlocksCoordinates
-}) => {
-  const sourceBlockCoordinates =
-    blocksCoordinates.byId[connectingIds.source.blockId]
-  const targetBlockCoordinates =
-    blocksCoordinates.byId[connectingIds.target.blockId]
+}: GetAnchorsPositionParams) => {
   const anchorsPosition = getAnchorsPosition({
     sourceBlockCoordinates,
     targetBlockCoordinates,
@@ -254,23 +243,25 @@ export const computeConnectingEdgePath = ({
 }
 
 export const computeEdgePathToMouse = ({
-  blockPosition,
+  sourceBlockCoordinates,
   mousePosition,
   sourceTop,
 }: {
-  blockPosition: Coordinates
+  sourceBlockCoordinates: Coordinates
   mousePosition: Coordinates
   sourceTop: number
 }): string => {
   const sourcePosition = {
     x:
-      mousePosition.x - blockPosition.x > blockWidth / 2
-        ? blockPosition.x + blockWidth - 40
-        : blockPosition.x + 40,
+      mousePosition.x - sourceBlockCoordinates.x > blockWidth / 2
+        ? sourceBlockCoordinates.x + blockWidth - 40
+        : sourceBlockCoordinates.x + 40,
     y: sourceTop,
   }
   const sourceType =
-    mousePosition.x - blockPosition.x > blockWidth / 2 ? 'right' : 'left'
+    mousePosition.x - sourceBlockCoordinates.x > blockWidth / 2
+      ? 'right'
+      : 'left'
   const segments = computeThreeSegments(
     sourcePosition,
     mousePosition,
@@ -284,11 +275,11 @@ export const computeEdgePathToMouse = ({
 
 export const getEndpointTopOffset = (
   graphPosition: Coordinates,
-  endpoints: Table<Endpoint>,
+  endpoints: IdMap<Endpoint>,
   endpointId?: string
 ): number | undefined => {
   if (!endpointId) return
-  const endpointRef = endpoints.byId[endpointId]?.ref
+  const endpointRef = endpoints[endpointId]?.ref
   if (!endpointRef) return
   return (
     8 +
@@ -299,4 +290,4 @@ export const getEndpointTopOffset = (
 }
 
 export const getSourceEndpointId = (edge?: Edge) =>
-  edge?.from.buttonId ?? edge?.from.stepId + `${edge?.from.conditionType ?? ''}`
+  edge?.from.itemId ?? edge?.from.stepId

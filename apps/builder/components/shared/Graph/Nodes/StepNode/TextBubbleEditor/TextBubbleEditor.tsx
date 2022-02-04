@@ -8,21 +8,19 @@ import {
   withPlate,
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
-import { TextBubbleStep, Variable } from 'models'
+import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
 
 type Props = {
-  stepId: string
   initialValue: TDescendant[]
-  onClose: () => void
+  onClose: (newContent: TextBubbleContent) => void
 }
 
-export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
+export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
   const randomEditorId = useMemo(() => Math.random().toString(), [])
   const editor = useMemo(
     () =>
@@ -30,7 +28,6 @@ export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  const { updateStep } = useTypebot()
   const [value, setValue] = useState(initialValue)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
@@ -38,12 +35,11 @@ export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
 
   const textEditorRef = useRef<HTMLDivElement>(null)
 
+  const closeEditor = () => onClose(convertValueToStepContent(value))
+
   useOutsideClick({
     ref: textEditorRef,
-    handler: () => {
-      save(value)
-      onClose()
-    },
+    handler: closeEditor,
   })
 
   useEffect(() => {
@@ -69,18 +65,16 @@ export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
     }
   }
 
-  const save = (value: unknown[]) => {
-    if (value.length === 0) return
+  const convertValueToStepContent = (value: unknown[]): TextBubbleContent => {
+    if (value.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
       nodes: value,
     })
-    updateStep(stepId, {
-      content: {
-        html,
-        richText: value,
-        plainText: parseHtmlStringToPlainText(html),
-      },
-    } as TextBubbleStep)
+    return {
+      html,
+      richText: value,
+      plainText: parseHtmlStringToPlainText(html),
+    }
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -99,6 +93,11 @@ export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
     setValue(val)
     setIsVariableDropdownOpen(false)
   }
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.shiftKey) return
+    if (e.key === 'Enter') closeEditor()
+  }
+
   return (
     <Stack
       flex="1"
@@ -126,6 +125,7 @@ export const TextBubbleEditor = ({ initialValue, stepId, onClose }: Props) => {
           onBlur: () => {
             rememberedSelection.current = editor.selection
           },
+          onKeyDown: handleKeyDown,
         }}
         initialValue={
           initialValue.length === 0

@@ -1,3 +1,4 @@
+import { NotFoundPage } from 'layouts/NotFoundPage'
 import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
@@ -12,7 +13,6 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     if (!context.req.headers.host) return { props: {} }
     typebot = await getTypebotFromPublicId(context.query.publicId?.toString())
-    if (!typebot) return { props: {} }
     return {
       props: {
         typebot,
@@ -41,5 +41,7 @@ const getTypebotFromPublicId = async (
   return (typebot as unknown as PublicTypebot | undefined) ?? undefined
 }
 
-const App = (props: TypebotPageProps) => <TypebotPage {...props} />
+const App = ({ typebot, ...props }: TypebotPageProps) =>
+  typebot ? <TypebotPage typebot={typebot} {...props} /> : <NotFoundPage />
+
 export default App

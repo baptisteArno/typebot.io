@@ -1,25 +1,38 @@
-import { PublicTypebot, Typebot } from 'models'
+import {
+  Block,
+  InputStep,
+  PublicBlock,
+  PublicStep,
+  PublicTypebot,
+  Step,
+  Typebot,
+} from 'models'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon } from 'assets/icons'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 import { isInputStep, sendRequest } from 'utils'
+import { isDefined } from '@udecode/plate-common'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
+  ...typebot,
   id: shortId.generate(),
-  blocks: typebot.blocks,
-  steps: typebot.steps,
-  name: typebot.name,
   typebotId: typebot.id,
-  theme: typebot.theme,
-  settings: typebot.settings,
-  publicId: typebot.publicId,
-  choiceItems: typebot.choiceItems,
-  variables: typebot.variables,
-  edges: typebot.edges,
+  blocks: parseBlocksToPublicBlocks(typebot.blocks),
 })
+
+const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
+  blocks.map((b) => ({
+    ...b,
+    steps: b.steps.map(
+      (s) =>
+        ('webhook' in s && isDefined(s.webhook)
+          ? { ...s, webhook: s.webhook.id }
+          : s) as PublicStep
+    ),
+  }))
 
 export const createPublishedTypebot = async (
   typebot: Omit<PublicTypebot, 'id'>
@@ -41,12 +54,11 @@ export const updatePublishedTypebot = async (
   })
 
 export const parseSubmissionsColumns = (
-  typebot?: PublicTypebot
+  typebot: PublicTypebot
 ): {
   Header: JSX.Element
   accessor: string
 }[] => {
-  if (!typebot) return []
   return [
     {
       Header: (
@@ -57,14 +69,14 @@ export const parseSubmissionsColumns = (
       ),
       accessor: 'createdAt',
     },
-    ...typebot.blocks.allIds
-      .filter((blockId) => typebot && blockContainsInput(typebot, blockId))
-      .map((blockId) => {
-        const block = typebot.blocks.byId[blockId]
-        const inputStepId = block.stepIds.find((stepId) =>
-          isInputStep(typebot.steps.byId[stepId])
-        )
-        const inputStep = typebot.steps.byId[inputStepId as string]
+    ...typebot.blocks
+      .filter(
+        (block) => typebot && block.steps.some((step) => isInputStep(step))
+      )
+      .map((block) => {
+        const inputStep = block.steps.find((step) =>
+          isInputStep(step)
+        ) as InputStep
         return {
           Header: (
             <HStack>
@@ -72,16 +84,8 @@ export const parseSubmissionsColumns = (
               <Text>{block.title}</Text>
             </HStack>
           ),
-          accessor: blockId,
+          accessor: block.id,
         }
       }),
   ]
 }
-
-const blockContainsInput = (
-  typebot: PublicTypebot | Typebot,
-  blockId: string
-) =>
-  typebot.blocks.byId[blockId].stepIds.some((stepId) =>
-    isInputStep(typebot.steps.byId[stepId])
-  )

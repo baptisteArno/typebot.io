@@ -5,7 +5,6 @@ import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'
 import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
-import { NotFoundPage } from './NotFoundPage'
 
 export type TypebotPageProps = {
   typebot?: PublicTypebot
@@ -15,7 +14,11 @@ export type TypebotPageProps = {
 
 const sessionStorageKey = 'resultId'
 
-export const TypebotPage = ({ typebot, isIE, url }: TypebotPageProps) => {
+export const TypebotPage = ({
+  typebot,
+  isIE,
+  url,
+}: TypebotPageProps & { typebot: PublicTypebot }) => {
   const [error, setError] = useState<Error | undefined>(
     isIE ? new Error('Internet explorer is not supported') : undefined
   )
@@ -27,7 +30,6 @@ export const TypebotPage = ({ typebot, isIE, url }: TypebotPageProps) => {
   }, [])
 
   const initializeResult = async () => {
-    if (!typebot) return
     const resultIdFromSession = sessionStorage.getItem(sessionStorageKey)
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
@@ -52,9 +54,6 @@ export const TypebotPage = ({ typebot, isIE, url }: TypebotPageProps) => {
     if (error) setError(error)
   }
 
-  if (!typebot) {
-    return <NotFoundPage />
-  }
   if (error) {
     return <ErrorPage error={error} />
   }

@@ -1,228 +1,217 @@
 {
-  "id": "ckylsd52p0114z31aobllswmu",
-  "createdAt": "2022-01-19T16:55:13.393Z",
-  "updatedAt": "2022-01-19T16:55:13.393Z",
+  "id": "ckz8gpmgr10008no1a1mq4q1l2",
+  "createdAt": "2022-02-04T13:47:42.459Z",
+  "updatedAt": "2022-02-04T13:47:42.459Z",
   "name": "My typebot",
-  "ownerId": "ckylsbdf60088z31ayqytest6",
+  "ownerId": "ckz6t9iep0006k31a22j05fwq",
   "publishedTypebotId": null,
   "folderId": null,
-  "webhooks": { "byId": {}, "allIds": [] },
-  "blocks": {
-    "byId": {
-      "2x83WHtEBkiv7pk7KgqJwZ": {
-        "id": "2x83WHtEBkiv7pk7KgqJwZ",
-        "title": "Start",
-        "stepIds": ["1A76iZBgXG7hvkG2koCxe4"],
-        "graphCoordinates": { "x": 0, "y": 0 }
-      },
-      "bwga7RwqQWbowdHph27DM1N": {
-        "id": "bwga7RwqQWbowdHph27DM1N",
-        "title": "Block #2",
-        "graphCoordinates": { "x": 78, "y": 224 },
-        "stepIds": ["srwUKaUFFmehppJ2ZDqp4xG", "sxvzuo48GHi3AcAfmiFyYC1"]
-      },
-      "bu8whx817bJBG37FQrtD5dD": {
-        "id": "bu8whx817bJBG37FQrtD5dD",
-        "title": "Block #3",
-        "graphCoordinates": { "x": 430, "y": 287 },
-        "stepIds": ["ituVWW1AvQeVdFHTwsiVao", "5SLc4whZooZVUfr1bmTNSC"]
-      },
-      "b59jwmEdwZUvJszV394x44u": {
-        "id": "b59jwmEdwZUvJszV394x44u",
-        "title": "Block #4",
-        "graphCoordinates": { "x": 844, "y": 185 },
-        "stepIds": ["sm1YcKTL9cQMCGywzo1wyBB"]
-      },
-      "baVF9HqhuSnLDZqY9eRPpcp": {
-        "id": "baVF9HqhuSnLDZqY9eRPpcp",
-        "title": "Block #5",
-        "graphCoordinates": { "x": 841, "y": 356 },
-        "stepIds": ["sb3o6J8Fybg6u8KuayKviJq"]
-      },
-      "b9aEH46RHuZWTdQwZJ6KBWR": {
-        "id": "b9aEH46RHuZWTdQwZJ6KBWR",
-        "title": "Block #6",
-        "graphCoordinates": { "x": 839, "y": 523 },
-        "stepIds": ["scKogEJSTq4kPeHRhwTTjit"]
-      }
-    },
-    "allIds": [
-      "2x83WHtEBkiv7pk7KgqJwZ",
-      "bwga7RwqQWbowdHph27DM1N",
-      "bu8whx817bJBG37FQrtD5dD",
-      "b59jwmEdwZUvJszV394x44u",
-      "baVF9HqhuSnLDZqY9eRPpcp",
-      "b9aEH46RHuZWTdQwZJ6KBWR"
-    ]
-  },
-  "steps": {
-    "byId": {
-      "1A76iZBgXG7hvkG2koCxe4": {
-        "id": "1A76iZBgXG7hvkG2koCxe4",
-        "type": "start",
-        "label": "Start",
-        "blockId": "2x83WHtEBkiv7pk7KgqJwZ",
-        "edgeId": "jjNy2hYgrQgPS9EBMKA7MH"
-      },
-      "srwUKaUFFmehppJ2ZDqp4xG": {
-        "id": "srwUKaUFFmehppJ2ZDqp4xG",
-        "blockId": "bwga7RwqQWbowdHph27DM1N",
-        "type": "text",
-        "content": {
-          "html": "<div>How old are you?</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "How old are you?" }] }
-          ],
-          "plainText": "How old are you?"
+  "blocks": [
+    {
+      "id": "cN46uqNAR3ohjrS8jHJ6xT",
+      "steps": [
+        {
+          "id": "nzijwLtLTAZfNNCN7kEpn5",
+          "type": "start",
+          "label": "Start",
+          "blockId": "cN46uqNAR3ohjrS8jHJ6xT",
+          "outgoingEdgeId": "7wxB76VK81JsXMX9jU9dbQ"
         }
-      },
-      "sxvzuo48GHi3AcAfmiFyYC1": {
-        "id": "sxvzuo48GHi3AcAfmiFyYC1",
-        "blockId": "bwga7RwqQWbowdHph27DM1N",
-        "type": "number input",
-        "options": { "variableId": "dEz689uVm8AxUM8TrbQd2t" },
-        "edgeId": "7mcWaWohM9zGtLX8ZSnqFy"
-      },
-      "ituVWW1AvQeVdFHTwsiVao": {
-        "id": "ituVWW1AvQeVdFHTwsiVao",
-        "blockId": "bu8whx817bJBG37FQrtD5dD",
-        "type": "Condition",
-        "options": {
-          "comparisons": {
-            "byId": {},
-            "allIds": []
+      ],
+      "title": "Start",
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "eh2ohNATnGg6RTdjG9h5kb",
+      "steps": [
+        {
+          "id": "sb6xdkJRr6P6BxtTM3ku5JD",
+          "type": "text",
+          "blockId": "eh2ohNATnGg6RTdjG9h5kb",
+          "content": {
+            "html": "<div>How old are you?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "How old are you?" }] }
+            ],
+            "plainText": "How old are you?"
+          }
+        },
+        {
+          "id": "ssyBKZve7bihSxUASYTruZA",
+          "type": "number input",
+          "blockId": "eh2ohNATnGg6RTdjG9h5kb",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type a number..." },
+            "variableId": "iDJzzyzAY2jrapm3NwhGMz"
           },
-          "logicalOperator": "AND"
-        },
-        "trueEdgeId": "iBPsFyBsPv6Rbdfo2QdJyi"
-      },
-      "5SLc4whZooZVUfr1bmTNSC": {
-        "id": "5SLc4whZooZVUfr1bmTNSC",
-        "blockId": "bu8whx817bJBG37FQrtD5dD",
-        "type": "Condition",
-        "options": {
-          "comparisons": {
-            "byId": {},
-            "allIds": []
-          },
-          "logicalOperator": "AND"
-        },
-        "trueEdgeId": "354PJ2jD5U3J2APqLsPJrp",
-        "falseEdgeId": "94bmeCLigEUUpWYw2xsAVB"
-      },
-      "sm1YcKTL9cQMCGywzo1wyBB": {
-        "id": "sm1YcKTL9cQMCGywzo1wyBB",
-        "blockId": "b59jwmEdwZUvJszV394x44u",
-        "type": "text",
-        "content": {
-          "html": "<div>You are older than 80</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "You are older than 80" }] }
-          ],
-          "plainText": "You are older than 80"
+          "outgoingEdgeId": "r8LX7iuEXxjF5SW5dbS6qT"
         }
-      },
-      "sb3o6J8Fybg6u8KuayKviJq": {
-        "id": "sb3o6J8Fybg6u8KuayKviJq",
-        "blockId": "baVF9HqhuSnLDZqY9eRPpcp",
-        "type": "text",
-        "content": {
-          "html": "<div>You are older than 20</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "You are older than 20" }] }
+      ],
+      "title": "Block #1",
+      "graphCoordinates": { "x": 159, "y": 224 }
+    },
+    {
+      "id": "eMk84KvFM53sBxchTeackR",
+      "steps": [
+        {
+          "id": "s5hz7HQki66cwELvk2738MJ",
+          "blockId": "eMk84KvFM53sBxchTeackR",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "56s4R9THRKeoJtBdKzEGLn",
+              "stepId": "s5hz7HQki66cwELvk2738MJ",
+              "type": 1,
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "wxWqL7JuZhy9uwCZNPDJjM"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "nDjMjM11xPQF7c9Be6ukdY"
+            }
+          ]
+        },
+        {
+          "id": "sv8uvEXgYWQNMfZWcdbfyCs",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "ijYfW38tGhCMRrCtmR3bcr",
+              "type": 1,
+              "stepId": "sv8uvEXgYWQNMfZWcdbfyCs",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "3di6P3ypWf3XusgBLLHYBE"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "s1uVbzP1zMMJjsCguAfhGV"
+            }
           ],
-          "plainText": "You are older than 20"
+          "blockId": "eMk84KvFM53sBxchTeackR",
+          "outgoingEdgeId": "hVScFHNzToiEsMfYVv5AWZ"
         }
-      },
-      "scKogEJSTq4kPeHRhwTTjit": {
-        "id": "scKogEJSTq4kPeHRhwTTjit",
-        "blockId": "b9aEH46RHuZWTdQwZJ6KBWR",
-        "type": "text",
-        "content": {
-          "html": "<div>You are younger than 20</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "You are younger than 20" }] }
-          ],
-          "plainText": "You are younger than 20"
+      ],
+      "title": "Block #2",
+      "graphCoordinates": { "x": 561, "y": 295 }
+    },
+    {
+      "id": "fGrzjahWecA8hoNMRrLSwn",
+      "steps": [
+        {
+          "id": "soZqPdPUjYAht9nHmVpba1Q",
+          "type": "text",
+          "blockId": "fGrzjahWecA8hoNMRrLSwn",
+          "content": {
+            "html": "<div>You are older than 80</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "You are older than 80" }]
+              }
+            ],
+            "plainText": "You are older than 80"
+          }
         }
-      }
+      ],
+      "title": "Block #3",
+      "graphCoordinates": { "x": 936, "y": 63 }
     },
-    "allIds": [
-      "1A76iZBgXG7hvkG2koCxe4",
-      "srwUKaUFFmehppJ2ZDqp4xG",
-      "sxvzuo48GHi3AcAfmiFyYC1",
-      "ituVWW1AvQeVdFHTwsiVao",
-      "5SLc4whZooZVUfr1bmTNSC",
-      "sxvzuo48GHi3AcAfmiFyYC1",
-      "sm1YcKTL9cQMCGywzo1wyBB",
-      "sb3o6J8Fybg6u8KuayKviJq",
-      "scKogEJSTq4kPeHRhwTTjit"
-    ]
-  },
-  "choiceItems": { "byId": {}, "allIds": [] },
-  "variables": {
-    "byId": {
-      "dEz689uVm8AxUM8TrbQd2t": {
-        "id": "dEz689uVm8AxUM8TrbQd2t",
-        "name": "Age"
-      }
+    {
+      "id": "49Jv45UJi9R3U4FuWS8R2c",
+      "steps": [
+        {
+          "id": "svipUacs1sDk9KDxzaGhnsG",
+          "type": "text",
+          "blockId": "49Jv45UJi9R3U4FuWS8R2c",
+          "content": {
+            "html": "<div>You are older than 20</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "You are older than 20" }]
+              }
+            ],
+            "plainText": "You are older than 20"
+          }
+        }
+      ],
+      "title": "Block #4",
+      "graphCoordinates": { "x": 950, "y": 298 }
     },
-    "allIds": ["dEz689uVm8AxUM8TrbQd2t"]
-  },
-  "edges": {
-    "byId": {
-      "jjNy2hYgrQgPS9EBMKA7MH": {
-        "from": {
-          "blockId": "2x83WHtEBkiv7pk7KgqJwZ",
-          "stepId": "1A76iZBgXG7hvkG2koCxe4"
-        },
-        "to": { "blockId": "bwga7RwqQWbowdHph27DM1N" },
-        "id": "jjNy2hYgrQgPS9EBMKA7MH"
+    {
+      "id": "fD28kefdySKK7XA7SyTozC",
+      "steps": [
+        {
+          "id": "spHJ7v9bDdVrFfuF2zg3YNR",
+          "type": "text",
+          "blockId": "fD28kefdySKK7XA7SyTozC",
+          "content": {
+            "html": "<div>You are younger than 20</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "You are younger than 20" }]
+              }
+            ],
+            "plainText": "You are younger than 20"
+          }
+        }
+      ],
+      "title": "Block #5",
+      "graphCoordinates": { "x": 985, "y": 537 }
+    }
+  ],
+  "variables": [{ "id": "iDJzzyzAY2jrapm3NwhGMz", "name": "Age" }],
+  "edges": [
+    {
+      "from": {
+        "blockId": "eMk84KvFM53sBxchTeackR",
+        "stepId": "s5hz7HQki66cwELvk2738MJ",
+        "itemId": "56s4R9THRKeoJtBdKzEGLn"
       },
-      "iBPsFyBsPv6Rbdfo2QdJyi": {
-        "from": {
-          "blockId": "bu8whx817bJBG37FQrtD5dD",
-          "stepId": "ituVWW1AvQeVdFHTwsiVao",
-          "conditionType": "true"
-        },
-        "to": { "blockId": "b59jwmEdwZUvJszV394x44u" },
-        "id": "iBPsFyBsPv6Rbdfo2QdJyi"
-      },
-      "354PJ2jD5U3J2APqLsPJrp": {
-        "from": {
-          "blockId": "bu8whx817bJBG37FQrtD5dD",
-          "stepId": "5SLc4whZooZVUfr1bmTNSC",
-          "conditionType": "true"
-        },
-        "to": { "blockId": "baVF9HqhuSnLDZqY9eRPpcp" },
-        "id": "354PJ2jD5U3J2APqLsPJrp"
-      },
-      "94bmeCLigEUUpWYw2xsAVB": {
-        "from": {
-          "blockId": "bu8whx817bJBG37FQrtD5dD",
-          "stepId": "5SLc4whZooZVUfr1bmTNSC",
-          "conditionType": "false"
-        },
-        "to": { "blockId": "b9aEH46RHuZWTdQwZJ6KBWR" },
-        "id": "94bmeCLigEUUpWYw2xsAVB"
-      },
-      "7mcWaWohM9zGtLX8ZSnqFy": {
-        "from": {
-          "blockId": "bwga7RwqQWbowdHph27DM1N",
-          "stepId": "sxvzuo48GHi3AcAfmiFyYC1"
-        },
-        "to": { "blockId": "bu8whx817bJBG37FQrtD5dD" },
-        "id": "7mcWaWohM9zGtLX8ZSnqFy"
-      }
+      "to": { "blockId": "fGrzjahWecA8hoNMRrLSwn" },
+      "id": "nDjMjM11xPQF7c9Be6ukdY"
     },
-    "allIds": [
-      "jjNy2hYgrQgPS9EBMKA7MH",
-      "iBPsFyBsPv6Rbdfo2QdJyi",
-      "354PJ2jD5U3J2APqLsPJrp",
-      "94bmeCLigEUUpWYw2xsAVB",
-      "7mcWaWohM9zGtLX8ZSnqFy"
-    ]
-  },
+    {
+      "from": {
+        "blockId": "eMk84KvFM53sBxchTeackR",
+        "stepId": "sv8uvEXgYWQNMfZWcdbfyCs",
+        "itemId": "ijYfW38tGhCMRrCtmR3bcr"
+      },
+      "to": { "blockId": "49Jv45UJi9R3U4FuWS8R2c" },
+      "id": "s1uVbzP1zMMJjsCguAfhGV"
+    },
+    {
+      "from": {
+        "blockId": "eMk84KvFM53sBxchTeackR",
+        "stepId": "sv8uvEXgYWQNMfZWcdbfyCs"
+      },
+      "to": { "blockId": "fD28kefdySKK7XA7SyTozC" },
+      "id": "hVScFHNzToiEsMfYVv5AWZ"
+    },
+    {
+      "from": {
+        "blockId": "eh2ohNATnGg6RTdjG9h5kb",
+        "stepId": "ssyBKZve7bihSxUASYTruZA"
+      },
+      "to": { "blockId": "eMk84KvFM53sBxchTeackR" },
+      "id": "r8LX7iuEXxjF5SW5dbS6qT"
+    },
+    {
+      "from": {
+        "blockId": "cN46uqNAR3ohjrS8jHJ6xT",
+        "stepId": "nzijwLtLTAZfNNCN7kEpn5"
+      },
+      "to": { "blockId": "eh2ohNATnGg6RTdjG9h5kb" },
+      "id": "7wxB76VK81JsXMX9jU9dbQ"
+    }
+  ],
   "theme": {
     "chat": {
       "inputs": {

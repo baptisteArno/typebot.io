@@ -8,8 +8,8 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 5000,
   },
-  retries: 2,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.NO_RETRIES ? 0 : 2,
+  workers: process.env.CI ? 1 : 3,
   reporter: 'html',
   maxFailures: process.env.CI ? 10 : undefined,
   use: {

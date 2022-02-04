@@ -1,12 +1,13 @@
 import { chakra } from '@chakra-ui/system'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { Edge as EdgeProps } from 'models'
 import React from 'react'
 import { DrawingEdge } from './DrawingEdge'
 import { Edge } from './Edge'
 
-export const Edges = () => {
-  const { typebot } = useTypebot()
-
+type Props = {
+  edges: EdgeProps[]
+}
+export const Edges = ({ edges }: Props) => {
   return (
     <chakra.svg
       width="full"
@@ -17,8 +18,8 @@ export const Edges = () => {
       top="0"
     >
       <DrawingEdge />
-      {typebot?.edges.allIds.map((edgeId) => (
-        <Edge key={edgeId} edgeId={edgeId} />
+      {edges.map((edge) => (
+        <Edge key={edge.id} edge={edge} />
       ))}
       <marker
         id={'arrow'}

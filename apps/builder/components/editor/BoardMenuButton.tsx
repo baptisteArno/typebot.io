@@ -6,6 +6,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react'
+import assert from 'assert'
 import { DownloadIcon, MoreVerticalIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import React, { useState } from 'react'
@@ -16,7 +17,7 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
   const [isDownloading, setIsDownloading] = useState(false)
 
   const downloadFlow = () => {
-    if (!typebot) return
+    assert(typebot)
     setIsDownloading(true)
     const data =
       'data:application/json;charset=utf-8,' +
@@ -39,6 +40,7 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         colorScheme="blue"
         icon={<MoreVerticalIcon transform={'rotate(90deg)'} />}
         isLoading={isDownloading}
+        size="sm"
         {...props}
       />
       <MenuList>

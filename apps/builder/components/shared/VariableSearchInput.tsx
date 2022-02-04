@@ -13,10 +13,10 @@ import {
 import { PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import { Variable } from 'models'
-import React, { useState, useRef, ChangeEvent, useMemo, useEffect } from 'react'
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { generate } from 'short-uuid'
 import { useDebounce } from 'use-debounce'
-import { isNotDefined } from 'utils'
+import { byId, isNotDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
@@ -34,16 +34,14 @@ export const VariableSearchInput = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { typebot, createVariable, deleteVariable } = useTypebot()
-  const variables = useMemo(
-    () =>
-      typebot?.variables.allIds.map((id) => typebot.variables.byId[id]) ?? [],
-    [typebot?.variables]
-  )
+  const variables = typebot?.variables ?? []
   const [inputValue, setInputValue] = useState(
-    typebot?.variables.byId[initialVariableId ?? '']?.name ?? ''
+    variables.find(byId(initialVariableId))?.name ?? ''
   )
   const [debouncedInputValue] = useDebounce(inputValue, 200)
-  const [filteredItems, setFilteredItems] = useState<Variable[]>(variables)
+  const [filteredItems, setFilteredItems] = useState<Variable[]>(
+    variables ?? []
+  )
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
 

@@ -1,142 +1,108 @@
 import {
-  ChoiceInputStep,
   Step,
   Typebot,
   DraggableStep,
   DraggableStepType,
-  defaultWebhookAttributes,
+  StepIndices,
 } from 'models'
 import { parseNewStep } from 'services/typebots'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
-import { createChoiceItemDraft, deleteChoiceItemDraft } from './choiceItems'
-import { isChoiceInput, isWebhookStep } from 'utils'
-import { deleteEdgeDraft } from './edges'
-import { createWebhookDraft, deleteWebhookDraft } from './webhooks'
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
+import { cleanUpEdgeDraft } from './edges'
 
 export type StepsActions = {
   createStep: (
     blockId: string,
-    step?: DraggableStep | DraggableStepType,
-    index?: number
+    step: DraggableStep | DraggableStepType,
+    indices: StepIndices
   ) => void
   updateStep: (
-    stepId: string,
+    indices: StepIndices,
     updates: Partial<Omit<Step, 'id' | 'type'>>
   ) => void
-  detachStepFromBlock: (stepId: string) => void
-  deleteStep: (stepId: string) => void
+  detachStepFromBlock: (indices: StepIndices) => void
+  deleteStep: (indices: StepIndices) => void
 }
 
-export const stepsAction = (
+const stepsAction = (
   typebot: Typebot,
   setTypebot: SetTypebot
 ): StepsActions => ({
   createStep: (
     blockId: string,
-    step?: DraggableStep | DraggableStepType,
-    index?: number
+    step: DraggableStep | DraggableStepType,
+    indices: StepIndices
   ) => {
-    if (!step) return
     setTypebot(
       produce(typebot, (typebot) => {
-        createStepDraft(typebot, step, blockId, index)
+        createStepDraft(typebot, step, blockId, indices)
+      })
+    )
+  },
+  updateStep: (
+    { blockIndex, stepIndex }: StepIndices,
+    updates: Partial<Omit<Step, 'id' | 'type'>>
+  ) =>
+    setTypebot(
+      produce(typebot, (typebot) => {
+        const step = typebot.blocks[blockIndex].steps[stepIndex]
+        typebot.blocks[blockIndex].steps[stepIndex] = { ...step, ...updates }
+      })
+    ),
+  detachStepFromBlock: (indices: StepIndices) => {
+    setTypebot(produce(typebot, removeStepFromBlock(indices)))
+  },
+  deleteStep: (indices: StepIndices) => {
+    setTypebot(
+      produce(typebot, (typebot) => {
+        removeStepFromBlock(indices)(typebot)
         removeEmptyBlocks(typebot)
       })
     )
   },
-  updateStep: (stepId: string, updates: Partial<Omit<Step, 'id' | 'type'>>) =>
-    setTypebot(
-      produce(typebot, (typebot) => {
-        typebot.steps.byId[stepId] = {
-          ...typebot.steps.byId[stepId],
-          ...updates,
-        }
-      })
-    ),
-  detachStepFromBlock: (stepId: string) => {
-    setTypebot(
-      produce(typebot, (typebot) => {
-        removeStepIdFromBlock(typebot, stepId)
-      })
-    )
-  },
-  deleteStep: (stepId: string) => {
-    setTypebot(produce(typebot, deleteStepDraft(stepId)))
-  },
 })
 
-const removeStepIdFromBlock = (
-  typebot: WritableDraft<Typebot>,
-  stepId: string
-) => {
-  const containerBlock = typebot.blocks.byId[typebot.steps.byId[stepId].blockId]
-  containerBlock.stepIds.splice(containerBlock.stepIds.indexOf(stepId), 1)
-}
-
-export const deleteStepDraft =
-  (stepId: string) => (typebot: WritableDraft<Typebot>) => {
-    const step = typebot.steps.byId[stepId]
-    if (isChoiceInput(step)) deleteChoiceItemsInsideStep(typebot, step)
-    if (isWebhookStep(step))
-      deleteWebhookDraft(step.options?.webhookId)(typebot)
-    deleteEdgeDraft(typebot, step.edgeId)
-    removeStepIdFromBlock(typebot, stepId)
-    delete typebot.steps.byId[stepId]
-    const index = typebot.steps.allIds.indexOf(stepId)
-    if (index !== -1) typebot.steps.allIds.splice(index, 1)
-    removeEmptyBlocks(typebot)
+const removeStepFromBlock =
+  ({ blockIndex, stepIndex }: StepIndices) =>
+  (typebot: WritableDraft<Typebot>) => {
+    const removingStep = typebot.blocks[blockIndex].steps[stepIndex]
+    cleanUpEdgeDraft(typebot, removingStep.id)
+    typebot.blocks[blockIndex].steps.splice(stepIndex, 1)
   }
 
-export const createStepDraft = (
+const createStepDraft = (
   typebot: WritableDraft<Typebot>,
   step: DraggableStep | DraggableStepType,
   blockId: string,
-  index?: number
-) =>
+  indices: StepIndices
+) => {
   typeof step === 'string'
-    ? createNewStep(typebot, step, blockId, index)
-    : moveStepToBlock(typebot, step, blockId, index)
+    ? createNewStep(typebot, step, blockId, indices)
+    : moveStepToBlock(typebot, step, blockId, indices)
+  removeEmptyBlocks(typebot)
+}
 
 const createNewStep = (
   typebot: WritableDraft<Typebot>,
   type: DraggableStepType,
   blockId: string,
-  index?: number
+  { blockIndex, stepIndex }: StepIndices
 ) => {
   const newStep = parseNewStep(type, blockId)
-  typebot.steps.byId[newStep.id] = newStep
-  if (isChoiceInput(newStep)) {
-    createChoiceItemDraft(typebot, {
-      id: newStep.options.itemIds[0],
-      stepId: newStep.id,
-    })
-  } else if (isWebhookStep(newStep)) {
-    createWebhookDraft({
-      id: newStep.options.webhookId,
-      ...defaultWebhookAttributes,
-    })(typebot)
-  }
-  typebot.steps.allIds.push(newStep.id)
-  typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, newStep.id)
+  typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
 }
 
 const moveStepToBlock = (
   typebot: WritableDraft<Typebot>,
   step: DraggableStep,
   blockId: string,
-  index?: number
-) => {
-  typebot.steps.byId[step.id].blockId = blockId
-  typebot.blocks.byId[blockId].stepIds.splice(index ?? 0, 0, step.id)
-}
-
-const deleteChoiceItemsInsideStep = (
-  typebot: WritableDraft<Typebot>,
-  step: ChoiceInputStep
+  { blockIndex, stepIndex }: StepIndices
 ) =>
-  step.options?.itemIds.forEach((itemId) =>
-    deleteChoiceItemDraft(typebot, itemId)
-  )
+  typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, {
+    ...step,
+    blockId,
+  })
+
+export { stepsAction, createStepDraft }

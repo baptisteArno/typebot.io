@@ -1,23 +1,16 @@
+import { Block, Edge, Settings, Step, Theme, Variable } from './typebot'
 import { PublicTypebot as PublicTypebotFromPrisma } from 'db'
-import { Block, ChoiceItem, Edge, Settings, Step, Theme } from './typebot'
-import { Variable } from './typebot/variable'
-import { Table } from './utils'
 
 export type PublicTypebot = Omit<
   PublicTypebotFromPrisma,
-  | 'blocks'
-  | 'startBlock'
-  | 'theme'
-  | 'settings'
-  | 'steps'
-  | 'choiceItems'
-  | 'variables'
+  'blocks' | 'theme' | 'settings' | 'variables' | 'edges'
 > & {
-  blocks: Table<Block>
-  steps: Table<Step>
-  choiceItems: Table<ChoiceItem>
-  variables: Table<Variable>
-  edges: Table<Edge>
+  blocks: PublicBlock[]
+  variables: Variable[]
+  edges: Edge[]
   theme: Theme
   settings: Settings
 }
+
+export type PublicBlock = Omit<Block, 'steps'> & { steps: PublicStep[] }
+export type PublicStep = Omit<Step, 'webhook'> & { webhook?: string }

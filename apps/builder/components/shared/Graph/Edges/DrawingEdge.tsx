@@ -3,7 +3,6 @@ import assert from 'assert'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { useGraph, ConnectingIds } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { Target } from 'models'
 import React, { useMemo, useState } from 'react'
 import {
   computeConnectingEdgePath,
@@ -20,28 +19,26 @@ export const DrawingEdge = () => {
     targetEndpoints,
     blocksCoordinates,
   } = useGraph()
-  const { typebot, createEdge } = useTypebot()
+  const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
-  const sourceBlock = useMemo(
-    () => connectingIds && typebot?.blocks.byId[connectingIds.source.blockId],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [connectingIds]
-  )
+  const sourceBlockCoordinates =
+    blocksCoordinates && blocksCoordinates[connectingIds?.source.blockId ?? '']
+  const targetBlockCoordinates =
+    blocksCoordinates && blocksCoordinates[connectingIds?.target?.blockId ?? '']
 
   const sourceTop = useMemo(() => {
-    if (!sourceBlock || !connectingIds) return 0
+    if (!connectingIds) return 0
     return getEndpointTopOffset(
       graphPosition,
       sourceEndpoints,
-      connectingIds.source.buttonId ??
-        connectingIds.source.stepId + (connectingIds.source.conditionType ?? '')
+      connectingIds.source.itemId ?? connectingIds.source.stepId
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graphPosition, sourceEndpoints, connectingIds])
 
   const targetTop = useMemo(() => {
-    if (!sourceBlock || !connectingIds) return 0
+    if (!connectingIds) return 0
     return getEndpointTopOffset(
       graphPosition,
       targetEndpoints,
@@ -51,35 +48,24 @@ export const DrawingEdge = () => {
   }, [graphPosition, targetEndpoints, connectingIds])
 
   const path = useMemo(() => {
-    if (
-      !sourceBlock ||
-      !typebot ||
-      !connectingIds ||
-      !blocksCoordinates ||
-      !sourceTop
-    )
-      return ``
+    if (!sourceTop || !sourceBlockCoordinates) return ``
 
-    return connectingIds?.target
+    return targetBlockCoordinates
       ? computeConnectingEdgePath({
-          connectingIds: connectingIds as Omit<ConnectingIds, 'target'> & {
-            target: Target
-          },
+          sourceBlockCoordinates,
+          targetBlockCoordinates,
           sourceTop,
           targetTop,
-          blocksCoordinates,
         })
       : computeEdgePathToMouse({
-          blockPosition: blocksCoordinates.byId[sourceBlock.id],
+          sourceBlockCoordinates,
           mousePosition,
           sourceTop,
         })
   }, [
-    sourceBlock,
-    typebot,
-    connectingIds,
-    blocksCoordinates,
     sourceTop,
+    sourceBlockCoordinates,
+    targetBlockCoordinates,
     targetTop,
     mousePosition,
   ])

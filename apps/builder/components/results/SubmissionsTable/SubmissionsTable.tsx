@@ -24,7 +24,7 @@ export const SubmissionsTable = ({
 }: SubmissionsTableProps) => {
   const { publishedTypebot } = useTypebot()
   const columns: any = useMemo(
-    () => parseSubmissionsColumns(publishedTypebot),
+    () => (publishedTypebot ? parseSubmissionsColumns(publishedTypebot) : []),
     [publishedTypebot]
   )
 

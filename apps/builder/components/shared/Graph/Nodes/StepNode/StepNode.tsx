@@ -4,21 +4,19 @@ import {
   Popover,
   PopoverTrigger,
   useDisclosure,
-  useEventListener,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   BubbleStep,
   BubbleStepContent,
   DraggableStep,
   Step,
-  StepOptions,
+  TextBubbleContent,
   TextBubbleStep,
-  Webhook,
 } from 'models'
-import { Coordinates, useGraph } from 'contexts/GraphContext'
+import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isBubbleStep, isTextBubbleStep, isWebhookStep } from 'utils'
+import { isBubbleStep, isTextBubbleStep, stepHasItems } from 'utils'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
@@ -32,46 +30,41 @@ import { StepSettings } from './SettingsPopoverContent/SettingsPopoverContent'
 import { TextBubbleEditor } from './TextBubbleEditor'
 import { TargetEndpoint } from '../../Endpoints'
 import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
+import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
+import { setMultipleRefs } from 'services/utils'
 
 export const StepNode = ({
   step,
   isConnectable,
-  onMouseMoveBottomOfElement,
-  onMouseMoveTopOfElement,
+  indices,
   onMouseDown,
 }: {
   step: Step
   isConnectable: boolean
-  onMouseMoveBottomOfElement?: () => void
-  onMouseMoveTopOfElement?: () => void
-  onMouseDown?: (
-    stepNodePosition: { absolute: Coordinates; relative: Coordinates },
-    step: DraggableStep
-  ) => void
+  indices: { stepIndex: number; blockIndex: number }
+  onMouseDown?: (stepNodePosition: NodePosition, step: DraggableStep) => void
 }) => {
   const { query } = useRouter()
-  const {
-    setConnectingIds,
-    connectingIds,
-    openedStepId,
-    setOpenedStepId,
-    blocksCoordinates,
-  } = useGraph()
-  const { detachStepFromBlock, updateStep, typebot, updateWebhook } =
-    useTypebot()
+  const { setConnectingIds, connectingIds, openedStepId, setOpenedStepId } =
+    useGraph()
+  const { updateStep } = useTypebot()
   const [localStep, setLocalStep] = useState(step)
-  const [localWebhook, setLocalWebhook] = useState(
-    isWebhookStep(step)
-      ? typebot?.webhooks.byId[step.options.webhookId ?? '']
-      : undefined
-  )
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
+  const stepRef = useRef<HTMLDivElement | null>(null)
 
-  const [mouseDownEvent, setMouseDownEvent] =
-    useState<{ absolute: Coordinates; relative: Coordinates }>()
+  const onDrag = (position: NodePosition) => {
+    if (step.type === 'start' || !onMouseDown) return
+    onMouseDown(position, step)
+  }
+  useDragDistance({
+    ref: stepRef,
+    onDrag,
+    isDisabled: !onMouseDown || step.type === 'start',
+  })
+
   const [isEditing, setIsEditing] = useState<boolean>(
     isTextBubbleStep(step) && step.content.plainText === ''
   )
@@ -98,15 +91,15 @@ export const StepNode = ({
   }, [connectingIds, step.blockId, step.id])
 
   const handleModalClose = () => {
-    updateStep(localStep.id, { ...localStep })
+    updateStep(indices, { ...localStep })
     onModalClose()
   }
 
   const handleMouseEnter = () => {
-    if (connectingIds?.target)
+    if (connectingIds)
       setConnectingIds({
         ...connectingIds,
-        target: { ...connectingIds.target, stepId: step.id },
+        target: { blockId: step.blockId, stepId: step.id },
       })
   }
 
@@ -118,54 +111,16 @@ export const StepNode = ({
       })
   }
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!onMouseDown) return
-    e.stopPropagation()
-    const element = e.currentTarget as HTMLDivElement
-    const rect = element.getBoundingClientRect()
-    const relativeX = e.clientX - rect.left
-    const relativeY = e.clientY - rect.top
-    setMouseDownEvent({
-      absolute: { x: e.clientX + relativeX, y: e.clientY + relativeY },
-      relative: { x: relativeX, y: relativeY },
-    })
-  }
-
-  const handleGlobalMouseUp = () => {
-    setMouseDownEvent(undefined)
-  }
-  useEventListener('mouseup', handleGlobalMouseUp)
-
-  const handleMouseUp = () => {
-    if (mouseDownEvent) {
-      setIsEditing(true)
-    }
-  }
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!onMouseMoveBottomOfElement || !onMouseMoveTopOfElement) return
-    const isMovingAndIsMouseDown =
-      mouseDownEvent &&
-      onMouseDown &&
-      (event.movementX > 0 || event.movementY > 0)
-    if (isMovingAndIsMouseDown && step.type !== 'start') {
-      onMouseDown(mouseDownEvent, step)
-      detachStepFromBlock(step.id)
-      setMouseDownEvent(undefined)
-    }
-    const element = event.currentTarget as HTMLDivElement
-    const rect = element.getBoundingClientRect()
-    const y = event.clientY - rect.top
-    if (y > rect.height / 2) onMouseMoveBottomOfElement()
-    else onMouseMoveTopOfElement()
-  }
-
-  const handleCloseEditor = () => {
+  const handleCloseEditor = (content: TextBubbleContent) => {
+    const updatedStep = { ...localStep, content } as Step
+    setLocalStep(updatedStep)
+    updateStep(indices, updatedStep)
     setIsEditing(false)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+    if (isTextBubbleStep(step)) setIsEditing(true)
     setOpenedStepId(step.id)
   }
 
@@ -175,21 +130,15 @@ export const StepNode = ({
   }
 
   const updateOptions = () => {
-    updateStep(localStep.id, { ...localStep })
-    if (localWebhook) updateWebhook(localWebhook.id, { ...localWebhook })
+    updateStep(indices, { ...localStep })
   }
 
-  const handleOptionsChange = (options: StepOptions) => {
-    setLocalStep({ ...localStep, options } as Step)
+  const handleStepChange = (updates: Partial<Step>) => {
+    setLocalStep({ ...localStep, ...updates } as Step)
   }
 
   const handleContentChange = (content: BubbleStepContent) =>
     setLocalStep({ ...localStep, content } as Step)
-
-  const handleWebhookChange = (updates: Partial<Webhook>) => {
-    if (!localWebhook) return
-    setLocalWebhook({ ...localWebhook, ...updates })
-  }
 
   useEffect(() => {
     if (isPopoverOpened && openedStepId !== step.id) updateOptions()
@@ -199,13 +148,12 @@ export const StepNode = ({
 
   return isEditing && isTextBubbleStep(localStep) ? (
     <TextBubbleEditor
-      stepId={localStep.id}
       initialValue={localStep.content.richText}
       onClose={handleCloseEditor}
     />
   ) : (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <StepNodeContextMenu stepId={step.id} />}
+      renderMenu={() => <StepNodeContextMenu indices={indices} />}
     >
       {(ref, isOpened) => (
         <Popover
@@ -217,14 +165,11 @@ export const StepNode = ({
           <PopoverTrigger>
             <Flex
               pos="relative"
-              ref={ref}
-              onMouseMove={handleMouseMove}
-              onMouseDown={handleMouseDown}
+              ref={setMultipleRefs([ref, stepRef])}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
               onClick={handleClick}
-              data-testid={`step-${step.id}`}
+              data-testid={`step`}
               w="full"
             >
               <HStack
@@ -244,37 +189,34 @@ export const StepNode = ({
                   mt="1"
                   data-testid={`${localStep.id}-icon`}
                 />
-                <StepNodeContent step={localStep} />
+                <StepNodeContent step={localStep} indices={indices} />
                 <TargetEndpoint
                   pos="absolute"
                   left="-32px"
                   top="19px"
                   stepId={localStep.id}
                 />
-                {blocksCoordinates &&
-                  isConnectable &&
-                  hasDefaultConnector(localStep) && (
-                    <SourceEndpoint
-                      source={{
-                        blockId: localStep.blockId,
-                        stepId: localStep.id,
-                      }}
-                      pos="absolute"
-                      right="15px"
-                      bottom="18px"
-                    />
-                  )}
+                {isConnectable && hasDefaultConnector(localStep) && (
+                  <SourceEndpoint
+                    source={{
+                      blockId: localStep.blockId,
+                      stepId: localStep.id,
+                    }}
+                    pos="absolute"
+                    right="15px"
+                    bottom="18px"
+                  />
+                )}
               </HStack>
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(localStep) && (
             <SettingsPopoverContent
               step={localStep}
-              webhook={localWebhook}
               onExpandClick={handleExpandClick}
-              onOptionsChange={handleOptionsChange}
-              onWebhookChange={handleWebhookChange}
+              onStepChange={handleStepChange}
               onTestRequestClick={updateOptions}
+              indices={indices}
             />
           )}
           {isMediaBubbleStep(localStep) && (
@@ -286,10 +228,9 @@ export const StepNode = ({
           <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
             <StepSettings
               step={localStep}
-              webhook={localWebhook}
-              onOptionsChange={handleOptionsChange}
-              onWebhookChange={handleWebhookChange}
+              onStepChange={handleStepChange}
               onTestRequestClick={updateOptions}
+              indices={indices}
             />
           </SettingsModal>
         </Popover>

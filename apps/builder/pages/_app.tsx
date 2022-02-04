@@ -20,14 +20,19 @@ const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
   const { query } = useRouter()
 
+  const typebotId = query.typebotId?.toString()
   return (
     <ChakraProvider theme={customTheme}>
       <KBarProvider actions={actions}>
         <SessionProvider>
           <UserContext>
-            <TypebotContext typebotId={query.typebotId?.toString()}>
+            {typebotId ? (
+              <TypebotContext typebotId={typebotId}>
+                <Component />
+              </TypebotContext>
+            ) : (
               <Component {...pageProps} />
-            </TypebotContext>
+            )}
           </UserContext>
         </SessionProvider>
       </KBarProvider>

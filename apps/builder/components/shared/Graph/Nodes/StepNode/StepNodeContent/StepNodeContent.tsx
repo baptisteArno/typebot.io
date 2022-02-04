@@ -6,11 +6,11 @@ import {
   InputStepType,
   LogicStepType,
   IntegrationStepType,
+  StepIndices,
 } from 'models'
 import { isInputStep } from 'utils'
-import { ButtonNodesList } from '../../ButtonNode'
+import { ItemNodesList } from '../../ItemNode'
 import {
-  ConditionContent,
   SetVariableContent,
   TextBubbleContent,
   VideoBubbleContent,
@@ -23,9 +23,9 @@ import { PlaceholderContent } from './contents/PlaceholderContent'
 
 type Props = {
   step: Step | StartStep
-  isConnectable?: boolean
+  indices: StepIndices
 }
-export const StepNodeContent = ({ step }: Props) => {
+export const StepNodeContent = ({ step, indices }: Props) => {
   if (isInputStep(step) && step.options.variableId) {
     return <WithVariableContent step={step} />
   }
@@ -52,13 +52,13 @@ export const StepNodeContent = ({ step }: Props) => {
       return <Text color={'gray.500'}>Pick a date...</Text>
     }
     case InputStepType.CHOICE: {
-      return <ButtonNodesList step={step} />
+      return <ItemNodesList step={step} indices={indices} />
     }
     case LogicStepType.SET_VARIABLE: {
       return <SetVariableContent step={step} />
     }
     case LogicStepType.CONDITION: {
-      return <ConditionContent step={step} />
+      return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
     case LogicStepType.REDIRECT: {
       return (

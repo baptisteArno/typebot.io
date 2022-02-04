@@ -24,14 +24,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const answersCounts: { blockId: string; totalAnswers: number }[] =
       await Promise.all(
-        (
-          typebot.publishedTypebot as unknown as PublicTypebot
-        ).blocks.allIds.map(async (blockId) => {
-          const totalAnswers = await prisma.answer.count({
-            where: { blockId },
-          })
-          return { blockId, totalAnswers }
-        })
+        (typebot.publishedTypebot as unknown as PublicTypebot).blocks.map(
+          async (block) => {
+            const totalAnswers = await prisma.answer.count({
+              where: { blockId: block.id },
+            })
+            return { blockId: block.id, totalAnswers }
+          }
+        )
       )
     return res.status(200).send({ answersCounts })
   }

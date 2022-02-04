@@ -6,14 +6,12 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { CredentialsType } from 'db'
 import {
   Cell,
-  defaultTable,
   ExtractingCell,
   GoogleSheetsAction,
   GoogleSheetsGetOptions,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsOptions,
   GoogleSheetsUpdateRowOptions,
-  Table,
 } from 'models'
 import React, { useMemo } from 'react'
 import {
@@ -60,7 +58,7 @@ export const GoogleSheetsSettingsBody = ({
         const newOptions: GoogleSheetsGetOptions = {
           ...options,
           action,
-          cellsToExtract: defaultTable,
+          cellsToExtract: [],
         }
         return onOptionsChange({ ...newOptions })
       }
@@ -68,7 +66,7 @@ export const GoogleSheetsSettingsBody = ({
         const newOptions: GoogleSheetsInsertRowOptions = {
           ...options,
           action,
-          cellsToInsert: defaultTable,
+          cellsToInsert: [],
         }
         return onOptionsChange({ ...newOptions })
       }
@@ -76,7 +74,7 @@ export const GoogleSheetsSettingsBody = ({
         const newOptions: GoogleSheetsUpdateRowOptions = {
           ...options,
           action,
-          cellsToUpsert: defaultTable,
+          cellsToUpsert: [],
         }
         return onOptionsChange({ ...newOptions })
       }
@@ -155,16 +153,16 @@ const ActionOptions = ({
   sheet: Sheet
   onOptionsChange: (options: GoogleSheetsOptions) => void
 }) => {
-  const handleInsertColumnsChange = (cellsToInsert: Table<Cell>) =>
+  const handleInsertColumnsChange = (cellsToInsert: Cell[]) =>
     onOptionsChange({ ...options, cellsToInsert } as GoogleSheetsOptions)
 
-  const handleUpsertColumnsChange = (cellsToUpsert: Table<Cell>) =>
+  const handleUpsertColumnsChange = (cellsToUpsert: Cell[]) =>
     onOptionsChange({ ...options, cellsToUpsert } as GoogleSheetsOptions)
 
   const handleReferenceCellChange = (referenceCell: Cell) =>
     onOptionsChange({ ...options, referenceCell } as GoogleSheetsOptions)
 
-  const handleExtractingCellsChange = (cellsToExtract: Table<ExtractingCell>) =>
+  const handleExtractingCellsChange = (cellsToExtract: ExtractingCell[]) =>
     onOptionsChange({ ...options, cellsToExtract } as GoogleSheetsOptions)
 
   const UpdatingCellItem = useMemo(
@@ -194,9 +192,8 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            id={'reference'}
             columns={sheet.columns}
-            item={options.referenceCell ?? {}}
+            item={options.referenceCell ?? { id: 'reference' }}
             onItemChange={handleReferenceCellChange}
           />
           <Text>Cells to update</Text>
@@ -213,9 +210,8 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            id={'reference'}
             columns={sheet.columns}
-            item={options.referenceCell ?? {}}
+            item={options.referenceCell ?? { id: 'reference' }}
             onItemChange={handleReferenceCellChange}
           />
           <Text>Cells to extract</Text>

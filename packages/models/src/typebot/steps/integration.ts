@@ -1,5 +1,4 @@
 import { StepBase } from '.'
-import { Table } from '../..'
 
 export type IntegrationStep =
   | GoogleSheetsStep
@@ -30,6 +29,7 @@ export type GoogleAnalyticsStep = StepBase & {
 export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
   options: WebhookOptions
+  webhook: Webhook
 }
 
 export type GoogleAnalyticsOptions = {
@@ -58,34 +58,41 @@ export type GoogleSheetsOptionsBase = {
   sheetId?: string
 }
 
-export type Cell = { column?: string; value?: string }
-export type ExtractingCell = { column?: string; variableId?: string }
+export type Cell = { id: string; column?: string; value?: string }
+export type ExtractingCell = {
+  id: string
+  column?: string
+  variableId?: string
+}
 
 export type GoogleSheetsGetOptions = NonNullable<GoogleSheetsOptionsBase> & {
   action: GoogleSheetsAction.GET
   referenceCell?: Cell
-  cellsToExtract: Table<ExtractingCell>
+  cellsToExtract: ExtractingCell[]
 }
 
 export type GoogleSheetsInsertRowOptions =
   NonNullable<GoogleSheetsOptionsBase> & {
     action: GoogleSheetsAction.INSERT_ROW
-    cellsToInsert: Table<Cell>
+    cellsToInsert: Cell[]
   }
 
 export type GoogleSheetsUpdateRowOptions =
   NonNullable<GoogleSheetsOptionsBase> & {
     action: GoogleSheetsAction.UPDATE_ROW
     referenceCell?: Cell
-    cellsToUpsert: Table<Cell>
+    cellsToUpsert: Cell[]
   }
 
-export type ResponseVariableMapping = { bodyPath?: string; variableId?: string }
+export type ResponseVariableMapping = {
+  id: string
+  bodyPath?: string
+  variableId?: string
+}
 
 export type WebhookOptions = {
-  webhookId: string
-  variablesForTest: Table<VariableForTest>
-  responseVariableMapping: Table<ResponseVariableMapping>
+  variablesForTest: VariableForTest[]
+  responseVariableMapping: ResponseVariableMapping[]
 }
 
 export enum HttpMethod {
@@ -100,15 +107,19 @@ export enum HttpMethod {
   TRACE = 'TRACE',
 }
 
-export type KeyValue = { key?: string; value?: string }
-export type VariableForTest = { variableId?: string; value?: string }
+export type KeyValue = { id: string; key?: string; value?: string }
+export type VariableForTest = {
+  id: string
+  variableId?: string
+  value?: string
+}
 
 export type Webhook = {
   id: string
   url?: string
   method: HttpMethod
-  queryParams: Table<KeyValue>
-  headers: Table<KeyValue>
+  queryParams: KeyValue[]
+  headers: KeyValue[]
   body?: string
 }
 
@@ -122,12 +133,12 @@ export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
 export const defaultGoogleAnalyticsOptions: GoogleAnalyticsOptions = {}
 
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
-  responseVariableMapping: { byId: {}, allIds: [] },
-  variablesForTest: { byId: {}, allIds: [] },
+  responseVariableMapping: [],
+  variablesForTest: [],
 }
 
 export const defaultWebhookAttributes: Omit<Webhook, 'id'> = {
   method: HttpMethod.GET,
-  headers: { byId: {}, allIds: [] },
-  queryParams: { byId: {}, allIds: [] },
+  headers: [],
+  queryParams: [],
 }

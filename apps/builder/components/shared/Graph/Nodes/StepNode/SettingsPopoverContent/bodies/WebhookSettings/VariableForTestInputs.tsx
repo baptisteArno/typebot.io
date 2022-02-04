@@ -5,7 +5,6 @@ import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { VariableForTest, Variable } from 'models'
 
 export const VariableForTestInputs = ({
-  id,
   item,
   onItemChange,
 }: TableListItemProps<VariableForTest>) => {
@@ -18,17 +17,17 @@ export const VariableForTestInputs = ({
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
-        <FormLabel htmlFor={'name' + id}>Variable name:</FormLabel>
+        <FormLabel htmlFor={'name' + item.id}>Variable name:</FormLabel>
         <VariableSearchInput
-          id={'name' + id}
+          id={'name' + item.id}
           initialVariableId={item.variableId}
           onSelectVariable={handleVariableSelect}
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={'value' + id}>Test value:</FormLabel>
+        <FormLabel htmlFor={'value' + item.id}>Test value:</FormLabel>
         <DebouncedInput
-          id={'value' + id}
+          id={'value' + item.id}
           initialValue={item.value ?? ''}
           onChange={handleValueChange}
         />

@@ -8,13 +8,17 @@ import {
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import {
+  ConditionItem,
+  ConditionStep,
   InputStepType,
   IntegrationStepType,
   LogicStepType,
   Step,
+  StepIndices,
   StepOptions,
   TextBubbleStep,
   Webhook,
+  WebhookStep,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -37,9 +41,9 @@ type Props = {
   step: Exclude<Step, TextBubbleStep>
   webhook?: Webhook
   onExpandClick: () => void
-  onOptionsChange: (options: StepOptions) => void
-  onWebhookChange: (updates: Partial<Webhook>) => void
+  onStepChange: (updates: Partial<Step>) => void
   onTestRequestClick: () => void
+  indices: StepIndices
 }
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
@@ -79,23 +83,35 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 
 export const StepSettings = ({
   step,
-  webhook,
-  onOptionsChange,
-  onWebhookChange,
+  onStepChange,
   onTestRequestClick,
+  indices,
 }: {
   step: Step
   webhook?: Webhook
-  onOptionsChange: (options: StepOptions) => void
-  onWebhookChange: (updates: Partial<Webhook>) => void
+  onStepChange: (step: Partial<Step>) => void
   onTestRequestClick: () => void
+  indices: StepIndices
 }) => {
+  const handleOptionsChange = (options: StepOptions) => {
+    onStepChange({ options } as Partial<Step>)
+  }
+  const handleWebhookChange = (updates: Partial<Webhook>) => {
+    onStepChange({
+      webhook: { ...(step as WebhookStep).webhook, ...updates },
+    } as Partial<Step>)
+  }
+  const handleItemChange = (updates: Partial<ConditionItem>) => {
+    onStepChange({
+      items: [{ ...(step as ConditionStep).items[0], ...updates }],
+    } as Partial<Step>)
+  }
   switch (step.type) {
     case InputStepType.TEXT: {
       return (
         <TextInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -103,7 +119,7 @@ export const StepSettings = ({
       return (
         <NumberInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -111,7 +127,7 @@ export const StepSettings = ({
       return (
         <EmailInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -119,7 +135,7 @@ export const StepSettings = ({
       return (
         <UrlInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -127,7 +143,7 @@ export const StepSettings = ({
       return (
         <DateInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -135,7 +151,7 @@ export const StepSettings = ({
       return (
         <PhoneNumberSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -143,7 +159,7 @@ export const StepSettings = ({
       return (
         <ChoiceInputSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -151,23 +167,20 @@ export const StepSettings = ({
       return (
         <SetVariableSettings
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
     case LogicStepType.CONDITION: {
       return (
-        <ConditionSettingsBody
-          options={step.options}
-          onOptionsChange={onOptionsChange}
-        />
+        <ConditionSettingsBody step={step} onItemChange={handleItemChange} />
       )
     }
     case LogicStepType.REDIRECT: {
       return (
         <RedirectSettings
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
@@ -175,7 +188,7 @@ export const StepSettings = ({
       return (
         <GoogleSheetsSettingsBody
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
           stepId={step.id}
         />
       )
@@ -184,18 +197,18 @@ export const StepSettings = ({
       return (
         <GoogleAnalyticsSettings
           options={step.options}
-          onOptionsChange={onOptionsChange}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings
-          options={step.options}
-          webhook={webhook as Webhook}
-          onOptionsChange={onOptionsChange}
-          onWebhookChange={onWebhookChange}
+          step={step}
+          onOptionsChange={handleOptionsChange}
+          onWebhookChange={handleWebhookChange}
           onTestRequestClick={onTestRequestClick}
+          indices={indices}
         />
       )
     }

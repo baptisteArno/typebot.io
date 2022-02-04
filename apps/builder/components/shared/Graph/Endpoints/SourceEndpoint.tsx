@@ -19,29 +19,32 @@ export const SourceEndpoint = ({
   }
 
   useEffect(() => {
-    if (ranOnce || !ref.current) return
-    const id = source.buttonId ?? source.stepId + (source.conditionType ?? '')
+    if (ranOnce || !ref.current || Object.keys(blocksCoordinates).length === 0)
+      return
+    const id = source.itemId ?? source.stepId
     addSourceEndpoint({
       id,
       ref,
     })
     setRanOnce(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref.current])
+  }, [ref.current, blocksCoordinates])
 
   if (!blocksCoordinates) return <></>
   return (
     <Flex
       ref={ref}
+      data-testid="endpoint"
       boxSize="18px"
       rounded="full"
-      onMouseDown={handleMouseDown}
+      onMouseDownCapture={handleMouseDown}
       cursor="copy"
       borderWidth="1px"
       borderColor="gray.400"
       bgColor="white"
       justify="center"
       align="center"
+      pointerEvents="all"
       {...props}
     >
       <Box bgColor="gray.400" rounded="full" boxSize="6px" />

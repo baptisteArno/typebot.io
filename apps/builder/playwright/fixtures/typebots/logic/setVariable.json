@@ -1,152 +1,125 @@
 {
-  "id": "ckylrr3qh0030fn1a3nszzxiu",
-  "createdAt": "2022-01-19T16:38:05.225Z",
-  "updatedAt": "2022-01-19T16:38:05.225Z",
+  "id": "ckz8hovd511021no1apuuyjv7b",
+  "createdAt": "2022-02-04T14:15:06.953Z",
+  "updatedAt": "2022-02-04T14:15:06.953Z",
   "name": "My typebot",
-  "ownerId": "ckylrpsmt0006fn1ah956d0z1",
+  "ownerId": "ckz6t9iep0006k31a22j05fwq",
   "publishedTypebotId": null,
   "folderId": null,
-  "webhooks": { "byId": {}, "allIds": [] },
-  "blocks": {
-    "byId": {
-      "kmUzhRFzSKjkaipYNcku9S": {
-        "id": "kmUzhRFzSKjkaipYNcku9S",
-        "title": "Start",
-        "stepIds": ["6XgP3JoCh7Y4M8GCX9DKym"],
-        "graphCoordinates": { "x": 0, "y": 0 }
-      },
-      "bwWRAaX5m6NZyZ9jjpXmWSb": {
-        "id": "bwWRAaX5m6NZyZ9jjpXmWSb",
-        "title": "Block #2",
-        "graphCoordinates": { "x": -21, "y": 221 },
-        "stepIds": ["sqMVMXeRYp4inLcRqej2Wac", "s8n3nJajsBaYqrFeRYVvcf6"]
-      },
-      "baUyUnNBxZzPe1z5PqE4NkD": {
-        "id": "baUyUnNBxZzPe1z5PqE4NkD",
-        "title": "Block #3",
-        "graphCoordinates": { "x": 375, "y": 280 },
-        "stepIds": ["shfL5ueQDuj2RPcJPWZGArT", "sugJ6xN3jFys1CjWfsxGhiJ"]
-      },
-      "bwkKNpJmAFCCLbZSnPnnLnR": {
-        "id": "bwkKNpJmAFCCLbZSnPnnLnR",
-        "title": "Block #4",
-        "graphCoordinates": { "x": 421, "y": 42 },
-        "stepIds": ["shR7ae3iNEvB6arCSu7wVFF"]
-      }
+  "blocks": [
+    {
+      "id": "jvbBpKifJ3ssvKQxPqhBiD",
+      "steps": [
+        {
+          "id": "rqecLJCZT7gP2JgBhRpb3a",
+          "type": "start",
+          "label": "Start",
+          "blockId": "jvbBpKifJ3ssvKQxPqhBiD",
+          "outgoingEdgeId": "qnD38SqA7sYEh7efPZgDoR"
+        }
+      ],
+      "title": "Start",
+      "graphCoordinates": { "x": 0, "y": 0 }
     },
-    "allIds": [
-      "kmUzhRFzSKjkaipYNcku9S",
-      "bwWRAaX5m6NZyZ9jjpXmWSb",
-      "baUyUnNBxZzPe1z5PqE4NkD",
-      "bwkKNpJmAFCCLbZSnPnnLnR"
-    ]
-  },
-  "steps": {
-    "byId": {
-      "6XgP3JoCh7Y4M8GCX9DKym": {
-        "id": "6XgP3JoCh7Y4M8GCX9DKym",
-        "type": "start",
-        "label": "Start",
-        "blockId": "kmUzhRFzSKjkaipYNcku9S",
-        "edgeId": "ahfJ4fUuvxX2dcBMk876tf"
-      },
-      "s8n3nJajsBaYqrFeRYVvcf6": {
-        "id": "s8n3nJajsBaYqrFeRYVvcf6",
-        "blockId": "bwWRAaX5m6NZyZ9jjpXmWSb",
-        "type": "number input",
-        "edgeId": "dcJedLC7qsLtsmm1wbiFFc",
-        "options": {
-          "labels": {
-            "placeholder": "Type a number..."
+    {
+      "id": "roD9feCwx6jTDuVCThgzM2",
+      "graphCoordinates": { "x": 200, "y": 171 },
+      "title": "Block #1",
+      "steps": [
+        {
+          "id": "souEkLukHsYU9jrN2rAP7YT",
+          "blockId": "roD9feCwx6jTDuVCThgzM2",
+          "type": "text",
+          "content": {
+            "html": "<div>How old are you?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "How old are you?" }] }
+            ],
+            "plainText": "How old are you?"
+          }
+        },
+        {
+          "id": "skfn5McXVrTNpi2e62RtEEY",
+          "blockId": "roD9feCwx6jTDuVCThgzM2",
+          "type": "number input",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type a number..." }
+          },
+          "outgoingEdgeId": "5ZYDLyR1CUF6B8ESHrFXwK"
+        }
+      ]
+    },
+    {
+      "id": "tFFeBrrWxY4tvr11C8rjTw",
+      "graphCoordinates": { "x": 526, "y": 283 },
+      "title": "Block #2",
+      "steps": [
+        {
+          "id": "spgqbyvunY91Ct5kVgeLLkz",
+          "blockId": "tFFeBrrWxY4tvr11C8rjTw",
+          "type": "Set variable",
+          "options": {}
+        },
+        {
+          "id": "skeKC71L8C8wpfeuV4TTLCD",
+          "blockId": "tFFeBrrWxY4tvr11C8rjTw",
+          "type": "Set variable",
+          "options": {},
+          "outgoingEdgeId": "7A4BD2vJT87grt3xFw86bn"
+        }
+      ]
+    },
+    {
+      "id": "k6jFuKuSwy29LVwKxMWasv",
+      "graphCoordinates": { "x": 691, "y": 35 },
+      "title": "Block #3",
+      "steps": [
+        {
+          "id": "svpmd4uNoAXpoKyfYuuXTQe",
+          "blockId": "k6jFuKuSwy29LVwKxMWasv",
+          "type": "text",
+          "content": {
+            "html": "<div>Total: {{Total}}</div><div>Custom var: {{Custom var}}</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Total: {{Total}}" }] },
+              {
+                "type": "p",
+                "children": [{ "text": "Custom var: {{Custom var}}" }]
+              }
+            ],
+            "plainText": "Total: {{Total}}Custom var: {{Custom var}}"
           }
         }
+      ]
+    }
+  ],
+  "variables": [],
+  "edges": [
+    {
+      "from": {
+        "blockId": "jvbBpKifJ3ssvKQxPqhBiD",
+        "stepId": "rqecLJCZT7gP2JgBhRpb3a"
       },
-      "sqMVMXeRYp4inLcRqej2Wac": {
-        "id": "sqMVMXeRYp4inLcRqej2Wac",
-        "blockId": "bwWRAaX5m6NZyZ9jjpXmWSb",
-        "type": "text",
-        "content": {
-          "html": "<div>How old are you?</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "How old are you?" }] }
-          ],
-          "plainText": "How old are you?"
-        }
-      },
-      "shfL5ueQDuj2RPcJPWZGArT": {
-        "id": "shfL5ueQDuj2RPcJPWZGArT",
-        "blockId": "baUyUnNBxZzPe1z5PqE4NkD",
-        "type": "Set variable",
-        "options": {}
-      },
-      "sugJ6xN3jFys1CjWfsxGhiJ": {
-        "id": "sugJ6xN3jFys1CjWfsxGhiJ",
-        "blockId": "baUyUnNBxZzPe1z5PqE4NkD",
-        "type": "Set variable",
-        "edgeId": "sA5gvCVVBVYdGsdeSGF5ei",
-        "options": {}
-      },
-      "shR7ae3iNEvB6arCSu7wVFF": {
-        "id": "shR7ae3iNEvB6arCSu7wVFF",
-        "blockId": "bwkKNpJmAFCCLbZSnPnnLnR",
-        "type": "text",
-        "content": {
-          "html": "<div>Total: {{Total}}</div><div>Custom var: {{Custom var}}</div>",
-          "richText": [
-            { "type": "p", "children": [{ "text": "Total: {{Total}}" }] },
-            {
-              "type": "p",
-              "children": [{ "text": "Custom var: {{Custom var}}" }]
-            }
-          ],
-          "plainText": "Total: {{Total}}Custom var: {{Custom var}}"
-        }
-      }
+      "to": { "blockId": "roD9feCwx6jTDuVCThgzM2" },
+      "id": "qnD38SqA7sYEh7efPZgDoR"
     },
-    "allIds": [
-      "6XgP3JoCh7Y4M8GCX9DKym",
-      "s8n3nJajsBaYqrFeRYVvcf6",
-      "sqMVMXeRYp4inLcRqej2Wac",
-      "shfL5ueQDuj2RPcJPWZGArT",
-      "sugJ6xN3jFys1CjWfsxGhiJ",
-      "shR7ae3iNEvB6arCSu7wVFF"
-    ]
-  },
-  "choiceItems": { "byId": {}, "allIds": [] },
-  "variables": { "byId": {}, "allIds": [] },
-  "edges": {
-    "byId": {
-      "ahfJ4fUuvxX2dcBMk876tf": {
-        "from": {
-          "blockId": "kmUzhRFzSKjkaipYNcku9S",
-          "stepId": "6XgP3JoCh7Y4M8GCX9DKym"
-        },
-        "to": { "blockId": "bwWRAaX5m6NZyZ9jjpXmWSb" },
-        "id": "ahfJ4fUuvxX2dcBMk876tf"
+    {
+      "from": {
+        "blockId": "roD9feCwx6jTDuVCThgzM2",
+        "stepId": "skfn5McXVrTNpi2e62RtEEY"
       },
-      "dcJedLC7qsLtsmm1wbiFFc": {
-        "from": {
-          "blockId": "bwWRAaX5m6NZyZ9jjpXmWSb",
-          "stepId": "s8n3nJajsBaYqrFeRYVvcf6"
-        },
-        "to": { "blockId": "baUyUnNBxZzPe1z5PqE4NkD" },
-        "id": "dcJedLC7qsLtsmm1wbiFFc"
-      },
-      "sA5gvCVVBVYdGsdeSGF5ei": {
-        "from": {
-          "blockId": "baUyUnNBxZzPe1z5PqE4NkD",
-          "stepId": "sugJ6xN3jFys1CjWfsxGhiJ"
-        },
-        "to": { "blockId": "bwkKNpJmAFCCLbZSnPnnLnR" },
-        "id": "sA5gvCVVBVYdGsdeSGF5ei"
-      }
+      "to": { "blockId": "tFFeBrrWxY4tvr11C8rjTw" },
+      "id": "5ZYDLyR1CUF6B8ESHrFXwK"
     },
-    "allIds": [
-      "ahfJ4fUuvxX2dcBMk876tf",
-      "dcJedLC7qsLtsmm1wbiFFc",
-      "sA5gvCVVBVYdGsdeSGF5ei"
-    ]
-  },
+    {
+      "from": {
+        "blockId": "tFFeBrrWxY4tvr11C8rjTw",
+        "stepId": "skeKC71L8C8wpfeuV4TTLCD"
+      },
+      "to": { "blockId": "k6jFuKuSwy29LVwKxMWasv" },
+      "id": "7A4BD2vJT87grt3xFw86bn"
+    }
+  ],
   "theme": {
     "chat": {
       "inputs": {

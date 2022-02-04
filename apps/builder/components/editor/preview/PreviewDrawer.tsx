@@ -19,7 +19,7 @@ import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
   const { setRightPanel } = useEditor()
-  const { setPreviewingEdgeId } = useGraph()
+  const { setPreviewingEdge } = useGraph()
   const [isResizing, setIsResizing] = useState(false)
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
@@ -45,9 +45,12 @@ export const PreviewDrawer = () => {
   }
   useEventListener('mouseup', handleMouseUp)
 
-  const handleNewBlockVisible = (edgeId: string) => setPreviewingEdgeId(edgeId)
-
   const handleRestartClick = () => setRestartKey((key) => key + 1)
+
+  const handleCloseClick = () => {
+    setPreviewingEdge(undefined)
+    setRightPanel(undefined)
+  }
 
   return (
     <Flex
@@ -75,7 +78,7 @@ export const PreviewDrawer = () => {
       <VStack w="full" spacing={4}>
         <Flex justifyContent={'space-between'} w="full">
           <Button onClick={handleRestartClick}>Restart</Button>
-          <CloseButton onClick={() => setRightPanel(undefined)} />
+          <CloseButton onClick={handleCloseClick} />
         </Flex>
 
         {publicTypebot && (
@@ -89,7 +92,7 @@ export const PreviewDrawer = () => {
           >
             <TypebotViewer
               typebot={publicTypebot}
-              onNewBlockVisible={handleNewBlockVisible}
+              onNewBlockVisible={setPreviewingEdge}
             />
           </Flex>
         )}

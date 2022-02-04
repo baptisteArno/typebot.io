@@ -3,7 +3,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
 import { computeSourceCoordinates } from 'services/graph'
-import { isDefined } from 'utils'
+import { byId, isDefined } from 'utils'
 
 type Props = {
   answersCounts: AnswersCount[]
@@ -21,11 +21,10 @@ export const DropOffNode = ({ answersCounts, blockId }: Props) => {
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!typebot || totalAnswers === undefined)
       return { previousTotal: undefined, dropOffRate: undefined }
-    const previousBlockIds = typebot.edges.allIds
-      .map((edgeId) => {
-        const edge = typebot.edges.byId[edgeId]
-        return edge.to.blockId === blockId ? edge.from.blockId : undefined
-      })
+    const previousBlockIds = typebot.edges
+      .map((edge) =>
+        edge.to.blockId === blockId ? edge.from.blockId : undefined
+      )
       .filter((blockId) => isDefined(blockId))
     const previousTotal = answersCounts
       .filter((a) => previousBlockIds.includes(a.blockId))
@@ -41,12 +40,11 @@ export const DropOffNode = ({ answersCounts, blockId }: Props) => {
   }, [answersCounts, blockId, totalAnswers, typebot])
 
   const labelCoordinates = useMemo(() => {
-    if (!typebot) return { x: 0, y: 0 }
-    const sourceBlock = typebot?.blocks.byId[blockId]
+    const sourceBlock = typebot?.blocks.find(byId(blockId))
     if (!sourceBlock) return
     return computeSourceCoordinates(
       sourceBlock?.graphCoordinates,
-      sourceBlock?.stepIds.length - 1
+      sourceBlock?.steps.length - 1
     )
   }, [blockId, typebot])
 

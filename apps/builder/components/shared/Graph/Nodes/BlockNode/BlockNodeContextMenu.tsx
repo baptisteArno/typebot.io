@@ -2,10 +2,14 @@ import { MenuList, MenuItem } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
-export const BlockNodeContextMenu = ({ blockId }: { blockId: string }) => {
+export const BlockNodeContextMenu = ({
+  blockIndex,
+}: {
+  blockIndex: number
+}) => {
   const { deleteBlock } = useTypebot()
 
-  const handleDeleteClick = () => deleteBlock(blockId)
+  const handleDeleteClick = () => deleteBlock(blockIndex)
 
   return (
     <MenuList>

@@ -1,6 +1,6 @@
 import { Flex, HStack, StackProps, Text } from '@chakra-ui/react'
 import { StepType, DraggableStepType } from 'models'
-import { useStepDnd } from 'contexts/StepDndContext'
+import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useEffect, useState } from 'react'
 import { StepIcon } from './StepIcon'
 import { StepTypeLabel } from './StepTypeLabel'

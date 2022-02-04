@@ -3,20 +3,21 @@ import {
   LogicStepType,
   LogicalOperator,
   ConditionStep,
-  Table,
   Variable,
   ComparisonOperators,
   SetVariableStep,
   RedirectStep,
+  Comparison,
 } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 import { sanitizeUrl } from './utils'
 import { isMathFormula, evaluateExpression, parseVariables } from './variable'
 
 type EdgeId = string
+
 export const executeLogic = (
   step: LogicStep,
-  variables: Table<Variable>,
+  variables: Variable[],
   updateVariableValue: (variableId: string, expression: string) => void
 ): EdgeId | undefined => {
   switch (step.type) {
@@ -31,40 +32,36 @@ export const executeLogic = (
 
 const executeSetVariable = (
   step: SetVariableStep,
-  variables: Table<Variable>,
+  variables: Variable[],
   updateVariableValue: (variableId: string, expression: string) => void
 ): EdgeId | undefined => {
   if (!step.options?.variableId || !step.options.expressionToEvaluate)
-    return step.edgeId
+    return step.outgoingEdgeId
   const expression = step.options.expressionToEvaluate
   const evaluatedExpression = isMathFormula(expression)
     ? evaluateExpression(parseVariables({ text: expression, variables }))
     : expression
   updateVariableValue(step.options.variableId, evaluatedExpression)
-  return step.edgeId
+  return step.outgoingEdgeId
 }
 
 const executeCondition = (
   step: ConditionStep,
-  variables: Table<Variable>
+  variables: Variable[]
 ): EdgeId | undefined => {
+  const { content } = step.items[0]
   const isConditionPassed =
-    step.options?.logicalOperator === LogicalOperator.AND
-      ? step.options?.comparisons.allIds.every(
-          executeComparison(step, variables)
-        )
-      : step.options?.comparisons.allIds.some(
-          executeComparison(step, variables)
-        )
-  return isConditionPassed ? step.trueEdgeId : step.falseEdgeId
+    content.logicalOperator === LogicalOperator.AND
+      ? content.comparisons.every(executeComparison(variables))
+      : content.comparisons.some(executeComparison(variables))
+  return isConditionPassed ? step.items[0].outgoingEdgeId : step.outgoingEdgeId
 }
 
 const executeComparison =
-  (step: ConditionStep, variables: Table<Variable>) =>
-  (comparisonId: string) => {
-    const comparison = step.options?.comparisons.byId[comparisonId]
+  (variables: Variable[]) => (comparison: Comparison) => {
     if (!comparison?.variableId) return false
-    const inputValue = variables.byId[comparison.variableId].value ?? ''
+    const inputValue =
+      variables.find((v) => v.id === comparison.variableId)?.value ?? ''
     const { value } = comparison
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
@@ -91,12 +88,12 @@ const executeComparison =
 
 const executeRedirect = (
   step: RedirectStep,
-  variables: Table<Variable>
+  variables: Variable[]
 ): EdgeId | undefined => {
-  if (!step.options?.url) return step.edgeId
+  if (!step.options?.url) return step.outgoingEdgeId
   window.open(
     sanitizeUrl(parseVariables({ text: step.options?.url, variables })),
     step.options.isNewTab ? '_blank' : '_self'
   )
-  return step.edgeId
+  return step.outgoingEdgeId
 }

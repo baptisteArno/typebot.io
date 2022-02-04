@@ -10,6 +10,7 @@ type Props = {
 
 export const TextBubbleContent = ({ step }: Props) => {
   const { typebot } = useTypebot()
+  if (!typebot) return <></>
   return (
     <Flex
       flexDir={'column'}

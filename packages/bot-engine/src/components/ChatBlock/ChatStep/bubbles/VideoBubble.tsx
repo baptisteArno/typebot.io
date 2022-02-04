@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useHostAvatars } from 'contexts/HostAvatarsContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
-  Table,
   Variable,
   VideoBubbleContent,
   VideoBubbleContentType,
@@ -83,7 +82,7 @@ const VideoContent = ({
 }: {
   content?: VideoBubbleContent
   isTyping: boolean
-  variables: Table<Variable>
+  variables: Variable[]
 }) => {
   const url = useMemo(
     () => parseVariables({ text: content?.url, variables: variables }),

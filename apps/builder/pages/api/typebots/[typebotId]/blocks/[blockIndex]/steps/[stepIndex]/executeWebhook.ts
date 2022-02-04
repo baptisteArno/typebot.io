@@ -1,12 +1,5 @@
 import prisma from 'libs/prisma'
-import {
-  KeyValue,
-  Table,
-  Typebot,
-  Variable,
-  Webhook,
-  WebhookResponse,
-} from 'models'
+import { KeyValue, Typebot, Variable, Webhook, WebhookResponse } from 'models'
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
@@ -16,13 +9,21 @@ import { stringify } from 'qs'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId.toString()
-    const webhookId = req.query.id.toString()
-    const variables = JSON.parse(req.body).variables as Table<Variable>
+    const blockIndex = Number(req.query.blockIndex)
+    const stepIndex = Number(req.query.stepIndex)
+    const variables = JSON.parse(req.body).variables as Variable[]
     const typebot = await prisma.typebot.findUnique({
       where: { id: typebotId },
     })
-    const webhook = (typebot as Typebot).webhooks.byId[webhookId]
-    const result = await executeWebhook(webhook, variables)
+    const step = (typebot as unknown as Typebot).blocks[blockIndex].steps[
+      stepIndex
+    ]
+    if (!('webhook' in step))
+      return {
+        statusCode: 400,
+        data: { message: `Couldn't find webhook` },
+      }
+    const result = await executeWebhook(step.webhook, variables)
     return res.status(200).send(result)
   }
   return methodNotAllowed(res)
@@ -30,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const executeWebhook = async (
   webhook: Webhook,
-  variables: Table<Variable>
+  variables: Variable[]
 ): Promise<WebhookResponse> => {
   if (!webhook.url || !webhook.method)
     return {
@@ -87,12 +88,11 @@ const parseBody = (body: string) => {
 }
 
 const convertKeyValueTableToObject = (
-  keyValues: Table<KeyValue> | undefined,
-  variables: Table<Variable>
+  keyValues: KeyValue[] | undefined,
+  variables: Variable[]
 ) => {
   if (!keyValues) return
-  return keyValues.allIds.reduce((object, id) => {
-    const item = keyValues.byId[id]
+  return keyValues.reduce((object, item) => {
     if (!item.key) return {}
     return {
       ...object,

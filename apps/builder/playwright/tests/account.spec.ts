@@ -6,7 +6,11 @@ import { updateUser } from '../services/database'
 
 test.describe('Account page', () => {
   test('should edit user info properly', async ({ page }) => {
-    await updateUser({ name: 'Default Name' })
+    await updateUser({
+      name: 'Default Name',
+      image:
+        'https://images.unsplash.com/photo-1521119989659-a83eee488004?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1323&q=80',
+    })
     await page.goto('/account')
     const saveButton = page.locator('button:has-text("Save")')
     await expect(saveButton).toBeHidden()

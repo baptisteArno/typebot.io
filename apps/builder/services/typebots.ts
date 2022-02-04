@@ -24,18 +24,27 @@ import {
   defaultUrlInputOptions,
   defaultChoiceInputOptions,
   defaultSetVariablesOptions,
-  defaultConditionOptions,
   defaultRedirectOptions,
   defaultGoogleSheetsOptions,
   defaultGoogleAnalyticsOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
+  defaultWebhookAttributes,
+  Webhook,
+  Item,
+  ItemType,
+  defaultConditionContent,
 } from 'models'
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from './utils'
-import { isBubbleStepType, stepTypeHasOption } from 'utils'
+import {
+  isBubbleStepType,
+  stepTypeHasItems,
+  stepTypeHasOption,
+  stepTypeHasWebhook,
+} from 'utils'
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
@@ -125,7 +134,33 @@ export const parseNewStep = (
     options: stepTypeHasOption(type)
       ? parseDefaultStepOptions(type)
       : undefined,
+    webhook: stepTypeHasWebhook(type) ? parseDefaultWebhook() : undefined,
+    items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
+}
+
+const parseDefaultWebhook = (): Webhook => ({
+  id: generate(),
+  ...defaultWebhookAttributes,
+})
+
+const parseDefaultItems = (
+  type: LogicStepType.CONDITION | InputStepType.CHOICE,
+  stepId: string
+): Item[] => {
+  switch (type) {
+    case InputStepType.CHOICE:
+      return [{ id: generate(), stepId, type: ItemType.BUTTON }]
+    case LogicStepType.CONDITION:
+      return [
+        {
+          id: generate(),
+          stepId,
+          type: ItemType.CONDITION,
+          content: defaultConditionContent,
+        },
+      ]
+  }
 }
 
 const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
@@ -154,11 +189,9 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
     case InputStepType.URL:
       return defaultUrlInputOptions
     case InputStepType.CHOICE:
-      return { ...defaultChoiceInputOptions, itemIds: [generate()] }
+      return defaultChoiceInputOptions
     case LogicStepType.SET_VARIABLE:
       return defaultSetVariablesOptions
-    case LogicStepType.CONDITION:
-      return defaultConditionOptions
     case LogicStepType.REDIRECT:
       return defaultRedirectOptions
     case IntegrationStepType.GOOGLE_SHEETS:
@@ -166,7 +199,7 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return defaultGoogleAnalyticsOptions
     case IntegrationStepType.WEBHOOK:
-      return { ...defaultWebhookOptions, webhookId: generate() }
+      return defaultWebhookOptions
   }
 }
 
@@ -181,7 +214,6 @@ export const checkIfPublished = (
   publicTypebot: PublicTypebot
 ) =>
   deepEqual(typebot.blocks, publicTypebot.blocks) &&
-  deepEqual(typebot.steps, publicTypebot.steps) &&
   typebot.name === publicTypebot.name &&
   typebot.publicId === publicTypebot.publicId &&
   deepEqual(typebot.settings, publicTypebot.settings) &&
@@ -214,18 +246,15 @@ export const parseNewTypebot = ({
     id: startBlockId,
     title: 'Start',
     graphCoordinates: { x: 0, y: 0 },
-    stepIds: [startStepId],
+    steps: [startStep],
   }
   return {
     folderId,
     name,
     ownerId,
-    blocks: { byId: { [startBlockId]: startBlock }, allIds: [startBlockId] },
-    steps: { byId: { [startStepId]: startStep }, allIds: [startStepId] },
-    choiceItems: { byId: {}, allIds: [] },
-    variables: { byId: {}, allIds: [] },
-    edges: { byId: {}, allIds: [] },
-    webhooks: { byId: {}, allIds: [] },
+    blocks: [startBlock],
+    edges: [],
+    variables: [],
     theme: defaultTheme,
     settings: defaultSettings,
   }

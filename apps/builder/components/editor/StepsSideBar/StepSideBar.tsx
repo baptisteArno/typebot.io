@@ -16,7 +16,7 @@ import {
   IntegrationStepType,
   LogicStepType,
 } from 'models'
-import { useStepDnd } from 'contexts/StepDndContext'
+import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
 import { LockedIcon, UnlockedIcon } from 'assets/icons'

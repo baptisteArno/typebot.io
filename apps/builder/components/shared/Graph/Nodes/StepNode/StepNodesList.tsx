@@ -1,105 +1,123 @@
 import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
-import { DraggableStep } from 'models'
-import { useStepDnd } from 'contexts/StepDndContext'
+import { DraggableStep, DraggableStepType, Step } from 'models'
+import {
+  computeNearestPlaceholderIndex,
+  useStepDnd,
+} from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import { useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { StepNode } from './StepNode'
 import { StepNodeOverlay } from './StepNodeOverlay'
 
+type Props = {
+  blockId: string
+  steps: Step[]
+  blockIndex: number
+  blockRef: React.MutableRefObject<HTMLDivElement | null>
+  isStartBlock: boolean
+}
 export const StepNodesList = ({
   blockId,
-  stepIds,
-}: {
-  blockId: string
-  stepIds: string[]
-}) => {
+  steps,
+  blockIndex,
+  blockRef,
+  isStartBlock,
+}: Props) => {
   const {
     draggedStep,
     setDraggedStep,
     draggedStepType,
-    mouseOverBlockId,
+    mouseOverBlock,
     setDraggedStepType,
-    setMouseOverBlockId,
   } = useStepDnd()
-  const { typebot, createStep } = useTypebot()
+  const { typebot, createStep, detachStepFromBlock } = useTypebot()
   const { isReadOnly } = useGraph()
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
   >()
-  const showSortPlaceholders = useMemo(
-    () => mouseOverBlockId === blockId && (draggedStep || draggedStepType),
-    [mouseOverBlockId, blockId, draggedStep, draggedStepType]
-  )
+  const placeholderRefs = useRef<HTMLDivElement[]>([])
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
   })
-  const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
+  const [mousePositionInElement, setMousePositionInElement] = useState({
+    x: 0,
+    y: 0,
+  })
+  const isDraggingOnCurrentBlock =
+    (draggedStep || draggedStepType) && mouseOverBlock?.id === blockId
+  const showSortPlaceholders = !isStartBlock && (draggedStep || draggedStepType)
 
-  const handleStepMove = (event: MouseEvent) => {
-    if (!draggedStep) return
+  useEffect(() => {
+    if (mouseOverBlock?.id !== blockId) setExpandedPlaceholderIndex(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mouseOverBlock?.id])
+
+  const handleMouseMoveGlobal = (event: MouseEvent) => {
+    if (!draggedStep || draggedStep.blockId !== blockId) return
     const { clientX, clientY } = event
     setPosition({
-      ...position,
-      x: clientX - relativeCoordinates.x,
-      y: clientY - relativeCoordinates.y,
+      x: clientX - mousePositionInElement.x,
+      y: clientY - mousePositionInElement.y,
     })
   }
-  useEventListener('mousemove', handleStepMove)
+  useEventListener('mousemove', handleMouseMoveGlobal)
 
-  const handleMouseMove = (event: React.MouseEvent) => {
-    if (!draggedStep) return
-    const element = event.currentTarget as HTMLDivElement
-    const rect = element.getBoundingClientRect()
-    const y = event.clientY - rect.top
-    if (y < 20) setExpandedPlaceholderIndex(0)
+  const handleMouseMoveOnBlock = (event: MouseEvent) => {
+    if (!isDraggingOnCurrentBlock) return
+    setExpandedPlaceholderIndex(
+      computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
+    )
   }
+  useEventListener('mousemove', handleMouseMoveOnBlock, blockRef.current)
 
-  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (expandedPlaceholderIndex === undefined) return
-    e.stopPropagation()
-    setMouseOverBlockId(undefined)
+  const handleMouseUpOnBlock = (e: MouseEvent) => {
     setExpandedPlaceholderIndex(undefined)
-    if (!draggedStep && !draggedStepType) return
+    if (!isDraggingOnCurrentBlock) return
+    const stepIndex = computeNearestPlaceholderIndex(e.clientY, placeholderRefs)
     createStep(
       blockId,
-      draggedStep || draggedStepType,
-      expandedPlaceholderIndex
+      (draggedStep || draggedStepType) as DraggableStep | DraggableStepType,
+      {
+        blockIndex,
+        stepIndex,
+      }
     )
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
   }
+  useEventListener(
+    'mouseup',
+    handleMouseUpOnBlock,
+    mouseOverBlock?.ref.current,
+    {
+      capture: true,
+    }
+  )
 
-  const handleStepMouseDown = (
-    { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-    step: DraggableStep
-  ) => {
-    if (isReadOnly) return
-    setPosition(absolute)
-    setRelativeCoordinates(relative)
-    setMouseOverBlockId(blockId)
-    setDraggedStep(step)
-  }
+  const handleStepMouseDown =
+    (stepIndex: number) =>
+    (
+      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+      step: DraggableStep
+    ) => {
+      if (isReadOnly) return
+      detachStepFromBlock({ blockIndex, stepIndex })
+      setPosition(absolute)
+      setMousePositionInElement(relative)
+      setDraggedStep(step)
+    }
 
-  const handleMouseOnTopOfStep = (stepIndex: number) => () => {
-    if (!draggedStep && !draggedStepType) return
-    setExpandedPlaceholderIndex(stepIndex === 0 ? 0 : stepIndex)
-  }
-
-  const handleMouseOnBottomOfStep = (stepIndex: number) => () => {
-    if (!draggedStep && !draggedStepType) return
-    setExpandedPlaceholderIndex(stepIndex + 1)
-  }
+  const handlePushElementRef =
+    (idx: number) => (elem: HTMLDivElement | null) => {
+      elem && (placeholderRefs.current[idx] = elem)
+    }
 
   return (
-    <Stack
-      spacing={1}
-      onMouseUpCapture={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      transition="none"
-    >
+    <Stack spacing={1} transition="none">
       <Flex
+        ref={handlePushElementRef(0)}
         h={
           showSortPlaceholders && expandedPlaceholderIndex === 0
             ? '50px'
@@ -111,17 +129,17 @@ export const StepNodesList = ({
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
       />
       {typebot &&
-        stepIds.map((stepId, idx) => (
-          <Stack key={stepId} spacing={1}>
+        steps.map((step, idx) => (
+          <Stack key={step.id} spacing={1}>
             <StepNode
-              key={stepId}
-              step={typebot.steps.byId[stepId]}
-              isConnectable={!isReadOnly && stepIds.length - 1 === idx}
-              onMouseMoveTopOfElement={handleMouseOnTopOfStep(idx)}
-              onMouseMoveBottomOfElement={handleMouseOnBottomOfStep(idx)}
-              onMouseDown={handleStepMouseDown}
+              key={step.id}
+              step={step}
+              indices={{ blockIndex, stepIndex: idx }}
+              isConnectable={!isReadOnly && steps.length - 1 === idx}
+              onMouseDown={handleStepMouseDown(idx)}
             />
             <Flex
+              ref={handlePushElementRef(idx + 1)}
               h={
                 showSortPlaceholders && expandedPlaceholderIndex === idx + 1
                   ? '50px'
@@ -138,6 +156,7 @@ export const StepNodesList = ({
         <Portal>
           <StepNodeOverlay
             step={draggedStep}
+            indices={{ blockIndex, stepIndex: 0 }}
             pos="fixed"
             top="0"
             left="0"

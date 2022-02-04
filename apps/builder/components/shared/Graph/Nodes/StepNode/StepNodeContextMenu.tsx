@@ -1,11 +1,13 @@
 import { MenuList, MenuItem } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { StepIndices } from 'models'
 
-export const StepNodeContextMenu = ({ stepId }: { stepId: string }) => {
+type Props = { indices: StepIndices }
+export const StepNodeContextMenu = ({ indices }: Props) => {
   const { deleteStep } = useTypebot()
 
-  const handleDeleteClick = () => deleteStep(stepId)
+  const handleDeleteClick = () => deleteStep(indices)
 
   return (
     <MenuList>

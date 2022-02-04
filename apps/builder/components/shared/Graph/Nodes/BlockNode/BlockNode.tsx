@@ -5,45 +5,44 @@ import {
   Stack,
   useEventListener,
 } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
-import { useStepDnd } from 'contexts/StepDndContext'
+import { useStepDnd } from 'contexts/GraphDndContext'
 import { StepNodesList } from '../StepNode/StepNodesList'
 import { isNotDefined } from 'utils'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
 import { useDebounce } from 'use-debounce'
+import { setMultipleRefs } from 'services/utils'
 
 type Props = {
   block: Block
+  blockIndex: number
 }
 
-export const BlockNode = ({ block }: Props) => {
+export const BlockNode = ({ block, blockIndex }: Props) => {
   const {
     connectingIds,
     setConnectingIds,
-    previewingEdgeId,
+    previewingEdge,
     blocksCoordinates,
     updateBlockCoordinates,
     isReadOnly,
   } = useGraph()
   const { typebot, updateBlock } = useTypebot()
-  const { setMouseOverBlockId } = useStepDnd()
-  const { draggedStep, draggedStepType } = useStepDnd()
+  const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
-  const isPreviewing = useMemo(() => {
-    if (!previewingEdgeId) return
-    const edge = typebot?.edges.byId[previewingEdgeId]
-    return edge?.to.blockId === block.id || edge?.from.blockId === block.id
-  }, [block.id, previewingEdgeId, typebot?.edges.byId])
+  const isPreviewing =
+    previewingEdge?.to.blockId === block.id ||
+    previewingEdge?.from.blockId === block.id
+  const isStartBlock =
+    block.steps.length === 1 && block.steps[0].type === 'start'
 
-  const blockCoordinates = useMemo(
-    () => blocksCoordinates?.byId[block.id],
-    [block.id, blocksCoordinates?.byId]
-  )
+  const blockCoordinates = blocksCoordinates[block.id]
+  const blockRef = useRef<HTMLDivElement | null>(null)
   const [debouncedBlockPosition] = useDebounce(blockCoordinates, 100)
   useEffect(() => {
     if (!debouncedBlockPosition || isReadOnly) return
@@ -52,7 +51,7 @@ export const BlockNode = ({ block }: Props) => {
       debouncedBlockPosition.y === block.graphCoordinates.y
     )
       return
-    updateBlock(block.id, { graphCoordinates: debouncedBlockPosition })
+    updateBlock(blockIndex, { graphCoordinates: debouncedBlockPosition })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedBlockPosition])
 
@@ -63,7 +62,8 @@ export const BlockNode = ({ block }: Props) => {
     )
   }, [block.id, connectingIds])
 
-  const handleTitleSubmit = (title: string) => updateBlock(block.id, { title })
+  const handleTitleSubmit = (title: string) =>
+    updateBlock(blockIndex, { title })
 
   const handleMouseDown = () => {
     setIsMouseDown(true)
@@ -87,24 +87,26 @@ export const BlockNode = ({ block }: Props) => {
   useEventListener('mousemove', handleMouseMove)
 
   const handleMouseEnter = () => {
-    if (draggedStepType || draggedStep) setMouseOverBlockId(block.id)
+    if (mouseOverBlock?.id !== block.id && !isStartBlock)
+      setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { blockId: block.id } })
   }
 
   const handleMouseLeave = () => {
-    setMouseOverBlockId(undefined)
+    setMouseOverBlock(undefined)
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
   }
 
   return (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <BlockNodeContextMenu blockId={block.id} />}
+      renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
       isDisabled={isReadOnly}
     >
       {(ref, isOpened) => (
         <Stack
-          ref={ref}
+          ref={setMultipleRefs([ref, blockRef])}
+          data-testid="block"
           p="4"
           rounded="lg"
           bgColor="blue.50"
@@ -142,7 +144,13 @@ export const BlockNode = ({ block }: Props) => {
             <EditableInput minW="0" px="1" />
           </Editable>
           {typebot && (
-            <StepNodesList blockId={block.id} stepIds={block.stepIds} />
+            <StepNodesList
+              blockId={block.id}
+              steps={block.steps}
+              blockIndex={blockIndex}
+              blockRef={ref}
+              isStartBlock={isStartBlock}
+            />
           )}
         </Stack>
       )}

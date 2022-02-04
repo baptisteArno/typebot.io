@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { InputStep, InputStepType, Step } from 'models'
+import { InputStep, InputStepType, PublicStep, Step } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { TextForm } from './inputs/TextForm'
 import { isBubbleStep, isInputStep } from 'utils'
@@ -13,7 +13,7 @@ export const ChatStep = ({
   step,
   onTransitionEnd,
 }: {
-  step: Step
+  step: PublicStep
   onTransitionEnd: (answerContent?: string) => void
 }) => {
   const { addAnswer } = useAnswers()
@@ -63,6 +63,6 @@ const InputChatStep = ({
     case InputStepType.DATE:
       return <DateForm options={step.options} onSubmit={handleSubmit} />
     case InputStepType.CHOICE:
-      return <ChoiceForm options={step.options} onSubmit={handleSubmit} />
+      return <ChoiceForm step={step} onSubmit={handleSubmit} />
   }
 }
