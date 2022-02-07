@@ -325,3 +325,17 @@ export const RedoIcon = (props: IconProps) => (
     <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"></path>
   </Icon>
 )
+
+export const FileIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+    <polyline points="13 2 13 9 20 9"></polyline>
+  </Icon>
+)
+
+export const EyeIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </Icon>
+)

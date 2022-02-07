@@ -24,8 +24,9 @@ export const SettingsModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader />
-        <ModalCloseButton />
+        <ModalHeader mb="2">
+          <ModalCloseButton />
+        </ModalHeader>
         <ModalBody {...props}>{props.children}</ModalBody>
         <ModalFooter />
       </ModalContent>

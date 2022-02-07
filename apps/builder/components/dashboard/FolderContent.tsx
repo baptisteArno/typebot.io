@@ -144,7 +144,7 @@ export const FolderContent = ({ folder }: Props) => {
   useEventListener('mousemove', handleMouseMove)
 
   return (
-    <Flex w="full" flex="1" justify="center" pt={4}>
+    <Flex w="full" flex="1" justify="center">
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>

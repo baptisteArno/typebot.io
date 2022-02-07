@@ -117,3 +117,14 @@ export const setMultipleRefs =
   (refs: React.MutableRefObject<HTMLDivElement | null>[]) =>
   (elem: HTMLDivElement) =>
     refs.forEach((ref) => (ref.current = elem))
+
+export const readFile = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader()
+    fr.onload = () => {
+      fr.result && resolve(fr.result.toString())
+    }
+    fr.onerror = reject
+    fr.readAsText(file)
+  })
+}

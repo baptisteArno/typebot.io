@@ -84,6 +84,13 @@ export const createTypebot = async ({
   })
 }
 
+export const importTypebot = async (typebot: Typebot) =>
+  sendRequest<Typebot>({
+    url: `/api/typebots`,
+    method: 'POST',
+    body: typebot,
+  })
+
 export const duplicateTypebot = async ({
   folderId,
   ownerId,

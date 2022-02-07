@@ -108,6 +108,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
       onMouseDown={handleMouseDown}
       pos="relative"
       spacing={0}
+      cursor="text"
     >
       <ToolBar onVariablesButtonClick={() => setIsVariableDropdownOpen(true)} />
       <Plate

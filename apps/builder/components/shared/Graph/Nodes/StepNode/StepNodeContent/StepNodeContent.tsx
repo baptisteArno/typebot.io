@@ -39,7 +39,14 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case BubbleStepType.VIDEO: {
       return <VideoBubbleContent step={step} />
     }
-    case InputStepType.TEXT:
+    case InputStepType.TEXT: {
+      return (
+        <PlaceholderContent
+          placeholder={step.options.labels.placeholder}
+          isLong={step.options.isLong}
+        />
+      )
+    }
     case InputStepType.NUMBER:
     case InputStepType.EMAIL:
     case InputStepType.URL:

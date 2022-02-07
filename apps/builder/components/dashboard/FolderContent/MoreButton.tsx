@@ -12,8 +12,9 @@ type Props = { children: ReactNode } & ButtonProps
 
 export const MoreButton = ({ children, ...props }: Props) => {
   return (
-    <Menu>
+    <Menu isLazy>
       <MenuButton
+        data-testid="more-button"
         as={IconButton}
         icon={<MoreVerticalIcon />}
         onClick={(e) => e.stopPropagation()}

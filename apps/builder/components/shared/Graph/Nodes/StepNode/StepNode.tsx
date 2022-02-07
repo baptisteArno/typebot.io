@@ -16,7 +16,7 @@ import {
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isBubbleStep, isTextBubbleStep, stepHasItems } from 'utils'
+import { isBubbleStep, isTextBubbleStep } from 'utils'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
@@ -53,6 +53,9 @@ export const StepNode = ({
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
+  const [isEditing, setIsEditing] = useState<boolean>(
+    isTextBubbleStep(step) && step.content.plainText === ''
+  )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
   const onDrag = (position: NodePosition) => {
@@ -65,9 +68,6 @@ export const StepNode = ({
     isDisabled: !onMouseDown || step.type === 'start',
   })
 
-  const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleStep(step) && step.content.plainText === ''
-  )
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,

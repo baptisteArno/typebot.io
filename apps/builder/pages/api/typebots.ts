@@ -26,10 +26,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
       const data = JSON.parse(req.body)
       const typebot = await prisma.typebot.create({
-        data: parseNewTypebot({
-          ownerId: user.id,
-          ...data,
-        }) as Prisma.TypebotUncheckedCreateInput,
+        data:
+          'blocks' in data
+            ? data
+            : (parseNewTypebot({
+                ownerId: user.id,
+                ...data,
+              }) as Prisma.TypebotUncheckedCreateInput),
       })
       return res.send(typebot)
     }

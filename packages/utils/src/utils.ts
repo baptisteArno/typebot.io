@@ -16,22 +16,28 @@ import {
   StepType,
   StepWithOptionsType,
   PublicStep,
+  ImageBubbleStep,
+  VideoBubbleStep,
 } from 'models'
 
-export const sendRequest = async <ResponseData>({
-  url,
-  method,
-  body,
-}: {
-  url: string
-  method: string
-  body?: Record<string, unknown>
-}): Promise<{ data?: ResponseData; error?: Error }> => {
+export const sendRequest = async <ResponseData>(
+  params:
+    | {
+        url: string
+        method: string
+        body?: Record<string, unknown>
+      }
+    | string
+): Promise<{ data?: ResponseData; error?: Error }> => {
   try {
+    const url = typeof params === 'string' ? params : params.url
     const response = await fetch(url, {
-      method,
+      method: typeof params === 'string' ? 'GET' : params.method,
       mode: 'cors',
-      body: body ? JSON.stringify(body) : undefined,
+      body:
+        typeof params !== 'string' && isDefined(params.body)
+          ? JSON.stringify(params.body)
+          : undefined,
     })
     if (!response.ok) throw new Error(response.statusText)
     const data = await response.json()
@@ -62,6 +68,11 @@ export const isLogicStep = (step: Step | PublicStep): step is LogicStep =>
 export const isTextBubbleStep = (
   step: Step | PublicStep
 ): step is TextBubbleStep => step.type === BubbleStepType.TEXT
+
+export const isMediaBubbleStep = (
+  step: Step
+): step is ImageBubbleStep | VideoBubbleStep =>
+  step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.VIDEO
 
 export const isTextInputStep = (
   step: Step | PublicStep

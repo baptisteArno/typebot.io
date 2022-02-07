@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Button, Flex, HStack, Input, Stack } from '@chakra-ui/react'
+import { Button, Flex, HStack, Input, Stack, Text } from '@chakra-ui/react'
 import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
@@ -39,7 +39,7 @@ export const ImageUploadContent = ({
         >
           Embed link
         </Button>
-        {process.env.NEXT_PUBLIC_GIPHY_API_KEY && isGiphyEnabled && (
+        {isGiphyEnabled && (
           <Button
             variant={currentTab === 'giphy' ? 'solid' : 'ghost'}
             onClick={() => setCurrentTab('giphy')}
@@ -117,10 +117,14 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
   )
 }
 
-const GiphyContent = ({ onNewUrl }: ContentProps) => (
-  <SearchContextManager
-    apiKey={process.env.NEXT_PUBLIC_GIPHY_API_KEY as string}
-  >
-    <GiphySearch onSubmit={onNewUrl} />
-  </SearchContextManager>
-)
+const GiphyContent = ({ onNewUrl }: ContentProps) => {
+  if (!process.env.NEXT_PUBLIC_GIPHY_API_KEY)
+    return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
+  return (
+    <SearchContextManager
+      apiKey={process.env.NEXT_PUBLIC_GIPHY_API_KEY as string}
+    >
+      <GiphySearch onSubmit={onNewUrl} />
+    </SearchContextManager>
+  )
+}
