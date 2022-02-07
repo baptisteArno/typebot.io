@@ -1,5 +1,6 @@
 import {
   Block,
+  CredentialsType,
   defaultSettings,
   defaultTheme,
   PublicBlock,
@@ -7,8 +8,9 @@ import {
   Step,
   Typebot,
 } from 'models'
-import { CredentialsType, DashboardFolder, PrismaClient, User } from 'db'
+import { DashboardFolder, PrismaClient, User } from 'db'
 import { readFileSync } from 'fs'
+import { encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
@@ -48,24 +50,27 @@ export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
     })),
   })
 
-const createCredentials = () =>
-  prisma.credentials.createMany({
+const createCredentials = () => {
+  const { encryptedData, iv } = encrypt({
+    expiry_date: 1642441058842,
+    access_token:
+      'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
+    // This token is linked to a mock Google account (typebot.test.user@gmail.com)
+    refresh_token:
+      '1//0379tIHBxszeXCgYIARAAGAMSNwF-L9Ir0zhkzhblwXqn3_jYqRP3pajcUpqkjRU3fKZZ_eQakOa28amUHSQ-Q9fMzk89MpRTvkc',
+  })
+  return prisma.credentials.createMany({
     data: [
       {
         name: 'test2@gmail.com',
         ownerId: process.env.PLAYWRIGHT_USER_ID as string,
         type: CredentialsType.GOOGLE_SHEETS,
-        data: {
-          expiry_date: 1642441058842,
-          access_token:
-            'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
-          // This token is linked to a mock Google account (typebot.test.user@gmail.com)
-          refresh_token:
-            '1//0379tIHBxszeXCgYIARAAGAMSNwF-L9Ir0zhkzhblwXqn3_jYqRP3pajcUpqkjRU3fKZZ_eQakOa28amUHSQ-Q9fMzk89MpRTvkc',
-        },
+        data: encryptedData,
+        iv,
       },
     ],
   })
+}
 
 export const updateUser = (data: Partial<User>) =>
   prisma.user.update({

@@ -3,9 +3,9 @@ import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
 import { useTypebot } from 'contexts/TypebotContext'
-import { CredentialsType } from 'db'
 import {
   Cell,
+  CredentialsType,
   ExtractingCell,
   GoogleSheetsAction,
   GoogleSheetsGetOptions,

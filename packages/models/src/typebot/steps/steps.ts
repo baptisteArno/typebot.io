@@ -7,7 +7,6 @@ import {
   RedirectStep,
   SetVariableStep,
 } from '.'
-import { Edge } from '..'
 import { BubbleStep, BubbleStepType } from './bubble'
 import { InputStep, InputStepType } from './inputs'
 import { IntegrationStep } from './integration'

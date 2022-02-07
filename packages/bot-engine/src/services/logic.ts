@@ -39,7 +39,7 @@ const executeSetVariable = (
     return step.outgoingEdgeId
   const expression = step.options.expressionToEvaluate
   const evaluatedExpression = isMathFormula(expression)
-    ? evaluateExpression(parseVariables({ text: expression, variables }))
+    ? evaluateExpression(parseVariables(variables)(expression))
     : expression
   updateVariableValue(step.options.variableId, evaluatedExpression)
   return step.outgoingEdgeId
@@ -92,7 +92,7 @@ const executeRedirect = (
 ): EdgeId | undefined => {
   if (!step.options?.url) return step.outgoingEdgeId
   window.open(
-    sanitizeUrl(parseVariables({ text: step.options?.url, variables })),
+    sanitizeUrl(parseVariables(variables)(step.options?.url)),
     step.options.isNewTab ? '_blank' : '_self'
   )
   return step.outgoingEdgeId

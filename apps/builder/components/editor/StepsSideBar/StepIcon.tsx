@@ -13,6 +13,7 @@ import {
   ImageIcon,
   NumberIcon,
   PhoneIcon,
+  SendEmailIcon,
   TextIcon,
   WebhookIcon,
 } from 'assets/icons'
@@ -61,7 +62,9 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
-      return <WebhookIcon />
+      return <WebhookIcon {...props} />
+    case IntegrationStepType.EMAIL:
+      return <SendEmailIcon {...props} />
     case 'start':
       return <FlagIcon {...props} />
     default:

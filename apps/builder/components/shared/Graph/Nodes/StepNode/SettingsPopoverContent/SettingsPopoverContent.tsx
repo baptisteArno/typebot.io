@@ -34,6 +34,7 @@ import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
+import { SendEmailSettings } from './bodies/SendEmailSettings/SendEmailSettings'
 import { SetVariableSettings } from './bodies/SetVariableSettings'
 import { WebhookSettings } from './bodies/WebhookSettings'
 
@@ -210,6 +211,14 @@ export const StepSettings = ({
           onWebhookChange={handleWebhookChange}
           onTestRequestClick={onTestRequestClick}
           indices={indices}
+        />
+      )
+    }
+    case IntegrationStepType.EMAIL: {
+      return (
+        <SendEmailSettings
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }

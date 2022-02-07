@@ -36,7 +36,7 @@ export const TextBoxWithVariableButton = ({
   const [carretPosition, setCarretPosition] = useState<number>(0)
 
   useEffect(() => {
-    if (value !== initialValue) onChange(value)
+    onChange(value)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 

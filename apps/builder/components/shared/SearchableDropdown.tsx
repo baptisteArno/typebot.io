@@ -107,7 +107,6 @@ export const SearchableDropdown = ({
         <PopoverContent
           maxH="35vh"
           overflowY="scroll"
-          spacing="0"
           role="menu"
           w="inherit"
           shadow="lg"

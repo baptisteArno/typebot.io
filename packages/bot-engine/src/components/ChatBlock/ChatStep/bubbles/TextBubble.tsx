@@ -26,8 +26,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const [isTyping, setIsTyping] = useState(true)
 
   const content = useMemo(
-    () =>
-      parseVariables({ text: step.content.html, variables: typebot.variables }),
+    () => parseVariables(typebot.variables)(step.content.html),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [typebot.variables]
   )

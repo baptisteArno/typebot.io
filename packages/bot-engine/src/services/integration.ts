@@ -10,6 +10,7 @@ import {
   GoogleSheetsGetOptions,
   GoogleAnalyticsStep,
   WebhookStep,
+  SendEmailStep,
 } from 'models'
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
@@ -25,7 +26,7 @@ export const executeIntegration = (
   variables: Variable[],
   indices: Indices,
   updateVariableValue: (variableId: string, value: string) => void
-) => {
+): Promise<string | undefined> => {
   switch (step.type) {
     case IntegrationStepType.GOOGLE_SHEETS:
       return executeGoogleSheetIntegration(step, variables, updateVariableValue)
@@ -39,6 +40,8 @@ export const executeIntegration = (
         indices,
         updateVariableValue
       )
+    case IntegrationStepType.EMAIL:
+      return sendEmail(step, variables)
   }
 }
 
@@ -46,10 +49,11 @@ export const executeGoogleAnalyticsIntegration = async (
   step: GoogleAnalyticsStep,
   variables: Variable[]
 ) => {
-  if (!step.options?.trackingId) return
+  if (!step.options?.trackingId) return step.outgoingEdgeId
   const { default: initGoogleAnalytics } = await import('../../lib/gtag')
   await initGoogleAnalytics(step.options.trackingId)
   sendGaEvent(parseVariablesInObject(step.options, variables))
+  return step.outgoingEdgeId
 }
 
 const executeGoogleSheetIntegration = async (
@@ -100,10 +104,7 @@ const updateRowInGoogleSheets = async (
       values: parseCellValues(options.cellsToUpsert, variables),
       referenceCell: {
         column: options.referenceCell.column,
-        value: parseVariables({
-          text: options.referenceCell.value ?? '',
-          variables,
-        }),
+        value: parseVariables(variables)(options.referenceCell.value ?? ''),
       },
     },
   })
@@ -120,10 +121,7 @@ const getRowFromGoogleSheets = async (
       credentialsId: options.credentialsId,
       referenceCell: {
         column: options.referenceCell.column,
-        value: parseVariables({
-          text: options.referenceCell.value ?? '',
-          variables,
-        }),
+        value: parseVariables(variables)(options.referenceCell.value ?? ''),
       },
       columns: options.cellsToExtract.map((cell) => cell.column),
     },
@@ -147,7 +145,7 @@ const parseCellValues = (
       ? row
       : {
           ...row,
-          [cell.column]: parseVariables({ text: cell.value, variables }),
+          [cell.column]: parseVariables(variables)(cell.value),
         }
   }, {})
 
@@ -173,4 +171,20 @@ const executeWebhook = async (
     const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
     updateVariableValue(varMapping.variableId, value)
   })
+}
+
+const sendEmail = async (step: SendEmailStep, variables: Variable[]) => {
+  const { options } = step
+  const { error } = await sendRequest({
+    url: `http://localhost:3001/api/integrations/email`,
+    method: 'POST',
+    body: {
+      credentialsId: options.credentialsId,
+      recipients: options.recipients.map(parseVariables(variables)),
+      subject: parseVariables(variables)(options.subject ?? ''),
+      body: parseVariables(variables)(options.body ?? ''),
+    },
+  })
+  console.error(error)
+  return step.outgoingEdgeId
 }

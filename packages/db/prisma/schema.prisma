@@ -56,15 +56,12 @@ model Credentials {
   id      String          @id @default(cuid())
   ownerId String
   owner   User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  data    Json
+  data    String // Encrypted data
   name    String
-  type    CredentialsType
+  type    String
+  iv      String
 
   @@unique([name, type, ownerId])
-}
-
-enum CredentialsType {
-  GOOGLE_SHEETS
 }
 
 enum Plan {

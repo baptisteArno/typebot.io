@@ -47,17 +47,17 @@ const executeWebhook = async (
   const contentType = headers ? headers['Content-Type'] : undefined
   try {
     const response = await got(
-      parseVariables({ text: webhook.url + `?${queryParams}`, variables }),
+      parseVariables(variables)(webhook.url + `?${queryParams}`),
       {
         method: webhook.method as Method,
         headers,
         json:
           contentType !== 'x-www-form-urlencoded' && webhook.body
-            ? JSON.parse(parseVariables({ text: webhook.body, variables }))
+            ? JSON.parse(parseVariables(variables)(webhook.body))
             : undefined,
         form:
           contentType === 'x-www-form-urlencoded' && webhook.body
-            ? JSON.parse(parseVariables({ text: webhook.body, variables }))
+            ? JSON.parse(parseVariables(variables)(webhook.body))
             : undefined,
       }
     )
@@ -96,7 +96,7 @@ const convertKeyValueTableToObject = (
     if (!item.key) return {}
     return {
       ...object,
-      [item.key]: parseVariables({ text: item.value, variables }),
+      [item.key]: parseVariables(variables)(item.value ?? ''),
     }
   }, {})
 }

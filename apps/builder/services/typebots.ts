@@ -34,6 +34,7 @@ import {
   Item,
   ItemType,
   defaultConditionContent,
+  defaultSendEmailOptions,
 } from 'models'
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
@@ -207,6 +208,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultGoogleAnalyticsOptions
     case IntegrationStepType.WEBHOOK:
       return defaultWebhookOptions
+    case IntegrationStepType.EMAIL:
+      return defaultSendEmailOptions
   }
 }
 

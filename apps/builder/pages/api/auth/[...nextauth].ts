@@ -11,14 +11,14 @@ import { NextApiRequest, NextApiResponse } from 'next'
 const providers: Provider[] = [
   EmailProvider({
     server: {
-      host: process.env.EMAIL_SERVER_HOST,
-      port: Number(process.env.EMAIL_SERVER_PORT),
+      host: process.env.AUTH_EMAIL_SERVER_HOST,
+      port: Number(process.env.AUTH_EMAIL_SERVER_PORT),
       auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
+        user: process.env.AUTH_EMAIL_SERVER_USER,
+        pass: process.env.AUTH_EMAIL_SERVER_PASSWORD,
       },
     },
-    from: process.env.EMAIL_FROM,
+    from: `"${process.env.AUTH_EMAIL_FROM_NAME}" <${process.env.AUTH_EMAIL_FROM_EMAIL}>`,
   }),
 ]
 

@@ -4,16 +4,19 @@ export type IntegrationStep =
   | GoogleSheetsStep
   | GoogleAnalyticsStep
   | WebhookStep
+  | SendEmailStep
 
 export type IntegrationStepOptions =
   | GoogleSheetsOptions
   | GoogleAnalyticsOptions
   | WebhookOptions
+  | SendEmailOptions
 
 export enum IntegrationStepType {
   GOOGLE_SHEETS = 'Google Sheets',
   GOOGLE_ANALYTICS = 'Google Analytics',
   WEBHOOK = 'Webhook',
+  EMAIL = 'Email',
 }
 
 export type GoogleSheetsStep = StepBase & {
@@ -30,6 +33,18 @@ export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
   options: WebhookOptions
   webhook: Webhook
+}
+
+export type SendEmailStep = StepBase & {
+  type: IntegrationStepType.EMAIL
+  options: SendEmailOptions
+}
+
+export type SendEmailOptions = {
+  credentialsId: string | 'default'
+  recipients: string[]
+  subject?: string
+  body?: string
 }
 
 export type GoogleAnalyticsOptions = {
@@ -141,4 +156,9 @@ export const defaultWebhookAttributes: Omit<Webhook, 'id'> = {
   method: HttpMethod.GET,
   headers: [],
   queryParams: [],
+}
+
+export const defaultSendEmailOptions: SendEmailOptions = {
+  credentialsId: 'default',
+  recipients: [],
 }

@@ -1,5 +1,6 @@
-import { Credentials } from 'db'
+import { Credentials } from 'models'
 import useSWR from 'swr'
+import { sendRequest } from 'utils'
 import { fetcher } from './utils'
 
 export const useCredentials = ({
@@ -20,3 +21,15 @@ export const useCredentials = ({
     mutate,
   }
 }
+
+export const createCredentials = async (
+  userId: string,
+  credentials: Omit<Credentials, 'ownerId' | 'id' | 'iv'>
+) =>
+  sendRequest<{
+    credentials: Credentials
+  }>({
+    url: `/api/users/${userId}/credentials`,
+    method: 'POST',
+    body: credentials,
+  })

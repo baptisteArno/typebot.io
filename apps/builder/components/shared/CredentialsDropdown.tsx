@@ -11,14 +11,15 @@ import {
 import { ChevronLeftIcon, PlusIcon } from 'assets/icons'
 import React, { useEffect, useMemo } from 'react'
 import { useUser } from 'contexts/UserContext'
-import { CredentialsType } from 'db'
 import { useRouter } from 'next/router'
+import { CredentialsType } from 'models'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   type: CredentialsType
   currentCredentialsId?: string
   onCredentialsSelect: (credentialId: string) => void
   onCreateNewClick: () => void
+  defaultCredentialLabel?: string
 }
 
 export const CredentialsDropdown = ({
@@ -26,10 +27,13 @@ export const CredentialsDropdown = ({
   currentCredentialsId,
   onCredentialsSelect,
   onCreateNewClick,
+  defaultCredentialLabel,
   ...props
 }: Props) => {
   const router = useRouter()
   const { credentials } = useUser()
+
+  const defaultCredentialsLabel = defaultCredentialLabel ?? `Select an account`
 
   const credentialsList = useMemo(() => {
     return credentials.filter((credential) => credential.type === type)
@@ -70,11 +74,22 @@ export const CredentialsDropdown = ({
         {...props}
       >
         <Text isTruncated overflowY="visible" h="20px">
-          {currentCredential ? currentCredential.name : 'Select an account'}
+          {currentCredential ? currentCredential.name : defaultCredentialsLabel}
         </Text>
       </MenuButton>
       <MenuList maxW="500px">
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+          {defaultCredentialLabel && (
+            <MenuItem
+              maxW="500px"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              onClick={handleMenuItemClick('default')}
+            >
+              {defaultCredentialLabel}
+            </MenuItem>
+          )}
           {credentialsList.map((credentials) => (
             <MenuItem
               key={credentials.id}

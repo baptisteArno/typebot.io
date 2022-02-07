@@ -1,0 +1,112 @@
+{
+  "id": "ckzcj4tfu1686gg1ae4fdj8uv",
+  "createdAt": "2022-02-07T10:06:35.274Z",
+  "updatedAt": "2022-02-07T10:06:35.274Z",
+  "name": "My typebot",
+  "ownerId": "ckz6t9iep0006k31a22j05fwq",
+  "publishedTypebotId": null,
+  "folderId": null,
+  "blocks": [
+    {
+      "id": "kSDJqC9TmM25eAM3a2yn3o",
+      "steps": [
+        {
+          "id": "phSmjJU2gYq7b11hpima8b",
+          "type": "start",
+          "label": "Start",
+          "blockId": "kSDJqC9TmM25eAM3a2yn3o",
+          "outgoingEdgeId": "vKtpPmbmqgeGC4vwCfPEdv"
+        }
+      ],
+      "title": "Start",
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "b5r2MMyftV1nv9vyr6VkZh",
+      "graphCoordinates": { "x": 242, "y": 174 },
+      "title": "Block #2",
+      "steps": [
+        {
+          "id": "sb7ibhNAKfvs8yy8fz3XRMT",
+          "blockId": "b5r2MMyftV1nv9vyr6VkZh",
+          "type": "text",
+          "content": {
+            "html": "<div>Send email</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Send email" }] }
+            ],
+            "plainText": "Send email"
+          }
+        },
+        {
+          "id": "svM58drFcdtdJ7DaJCfTLXm",
+          "blockId": "b5r2MMyftV1nv9vyr6VkZh",
+          "type": "choice input",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
+          "items": [
+            {
+              "id": "nxQEmdaQXc9eFjrbrVBavH",
+              "stepId": "svM58drFcdtdJ7DaJCfTLXm",
+              "type": 0,
+              "content": "Go"
+            }
+          ],
+          "outgoingEdgeId": "ioB4s1iRBb8wXiRam8Pp4s"
+        }
+      ]
+    },
+    {
+      "id": "6jr7XM9GbVkJ2Ru1WyL45v",
+      "graphCoordinates": { "x": 609, "y": 429 },
+      "title": "Block #2",
+      "steps": [
+        {
+          "id": "sr2sdAzN5dGao1gCiDWCG8i",
+          "blockId": "6jr7XM9GbVkJ2Ru1WyL45v",
+          "type": "Email",
+          "options": { "credentialsId": "default", "recipients": [] }
+        }
+      ]
+    }
+  ],
+  "variables": [],
+  "edges": [
+    {
+      "from": {
+        "blockId": "kSDJqC9TmM25eAM3a2yn3o",
+        "stepId": "phSmjJU2gYq7b11hpima8b"
+      },
+      "to": { "blockId": "b5r2MMyftV1nv9vyr6VkZh" },
+      "id": "vKtpPmbmqgeGC4vwCfPEdv"
+    },
+    {
+      "from": {
+        "blockId": "b5r2MMyftV1nv9vyr6VkZh",
+        "stepId": "svM58drFcdtdJ7DaJCfTLXm"
+      },
+      "to": { "blockId": "6jr7XM9GbVkJ2Ru1WyL45v" },
+      "id": "ioB4s1iRBb8wXiRam8Pp4s"
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": { "font": "Open Sans", "background": { "type": "None" } }
+  },
+  "settings": {
+    "general": { "isBrandingEnabled": true },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null
+}

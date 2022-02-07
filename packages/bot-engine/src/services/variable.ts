@@ -6,23 +6,19 @@ const safeEval = eval
 export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)
 
-export const parseVariables = ({
-  text,
-  variables,
-}: {
-  text?: string
-  variables: Variable[]
-}): string => {
-  if (!text || text === '') return ''
-  return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
-    const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
-    return (
-      variables.find((v) => {
-        return matchedVarName === v.name && isDefined(v.value)
-      })?.value ?? ''
-    )
-  })
-}
+export const parseVariables =
+  (variables: Variable[]) =>
+  (text?: string): string => {
+    if (!text || text === '') return ''
+    return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
+      const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
+      return (
+        variables.find((v) => {
+          return matchedVarName === v.name && isDefined(v.value)
+        })?.value ?? ''
+      )
+    })
+  }
 
 export const isMathFormula = (str?: string) =>
   ['*', '/', '+', '-'].some((val) => str && str.includes(val))
@@ -58,7 +54,7 @@ export const parseVariablesInObject = (
       ...newObj,
       [key]:
         typeof currentValue === 'string'
-          ? parseVariables({ text: currentValue, variables })
+          ? parseVariables(variables)(currentValue)
           : currentValue,
     }
   }, {})

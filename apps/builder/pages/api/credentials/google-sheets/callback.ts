@@ -1,10 +1,12 @@
-import { oauth2Client } from 'libs/google-sheets'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { CredentialsType, Prisma, User } from 'db'
+import { Prisma, User } from 'db'
 import prisma from 'libs/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
+import { CredentialsType } from 'models'
+import { encrypt } from 'utils'
+import { oauth2Client } from 'libs/google-sheets'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
@@ -35,12 +37,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res
         .status(400)
         .send({ message: "User didn't accepted required scopes" })
+    const { encryptedData, iv } = encrypt(tokens)
     const credentials = {
       name: email,
       type: CredentialsType.GOOGLE_SHEETS,
       ownerId: user.id,
-      data: tokens as Prisma.InputJsonValue,
-    }
+      data: encryptedData,
+      iv,
+    } as Prisma.CredentialsUncheckedCreateInput
     const { id: credentialsId } = await prisma.credentials.upsert({
       create: credentials,
       update: credentials,

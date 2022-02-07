@@ -22,8 +22,7 @@ export const ImageBubble = ({ step, onTransitionEnd }: Props) => {
   const [isTyping, setIsTyping] = useState(true)
 
   const url = useMemo(
-    () =>
-      parseVariables({ text: step.content?.url, variables: typebot.variables }),
+    () => parseVariables(typebot.variables)(step.content?.url),
     [step.content?.url, typebot.variables]
   )
 

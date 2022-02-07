@@ -20,6 +20,7 @@ import {
 import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
+import { SendEmailContent } from './contents/SendEmailContent'
 
 type Props = {
   step: Step | StartStep
@@ -100,6 +101,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case IntegrationStepType.WEBHOOK: {
       return <WebhookContent step={step} />
+    }
+    case IntegrationStepType.EMAIL: {
+      return <SendEmailContent step={step} />
     }
     case 'start': {
       return <Text>Start</Text>

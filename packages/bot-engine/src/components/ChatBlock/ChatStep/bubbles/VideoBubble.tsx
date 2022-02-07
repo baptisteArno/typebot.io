@@ -85,7 +85,7 @@ const VideoContent = ({
   variables: Variable[]
 }) => {
   const url = useMemo(
-    () => parseVariables({ text: content?.url, variables: variables }),
+    () => parseVariables(variables)(content?.url),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [variables]
   )

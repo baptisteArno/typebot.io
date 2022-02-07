@@ -9,7 +9,7 @@ const config: PlaywrightTestConfig = {
     timeout: 5000,
   },
   retries: process.env.NO_RETRIES ? 0 : 2,
-  workers: process.env.CI ? 1 : 3,
+  workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   maxFailures: process.env.CI ? 10 : undefined,
   use: {
