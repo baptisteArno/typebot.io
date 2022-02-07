@@ -55,7 +55,9 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const sendAvatarOffset = () => {
     if (!messageContainer.current) return
     const containerDimensions = messageContainer.current.getBoundingClientRect()
-    updateLastAvatarOffset(containerDimensions.top + containerDimensions.height)
+    updateLastAvatarOffset(
+      messageContainer.current.offsetTop + containerDimensions.height
+    )
   }
 
   return (

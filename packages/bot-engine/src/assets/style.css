@@ -154,6 +154,13 @@ textarea {
 .typebot-button {
   color: var(--typebot-button-color);
   background-color: var(--typebot-button-bg-color);
+  border: 1px solid var(--typebot-button-bg-color);
+}
+
+.typebot-button.selectable {
+  color: var(--typebot-host-bubble-color);
+  background-color: var(--typebot-host-bubble-bg-color);
+  border: 1px solid var(--typebot-button-bg-color);
 }
 
 .typebot-host-bubble {

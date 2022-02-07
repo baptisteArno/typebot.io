@@ -7,6 +7,7 @@ import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
 import { Answer, Edge, PublicBlock, PublicTypebot } from 'models'
 import { byId } from 'utils'
+import { animateScroll as scroll } from 'react-scroll'
 
 type Props = {
   typebot: PublicTypebot
@@ -27,6 +28,7 @@ export const ConversationContainer = ({
   const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
   const { answers } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
+  const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
   const displayNextBlock = (edgeId?: string) => {
     const nextEdge = typebot.edges.find(byId(edgeId))
@@ -60,10 +62,18 @@ export const ConversationContainer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers])
 
+  const autoScrollToBottom = () => {
+    if (!scrollableContainer.current) return
+    scroll.scrollToBottom({
+      duration: 500,
+      container: scrollableContainer.current,
+    })
+  }
+
   return (
     <div
+      ref={scrollableContainer}
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
-      id="scrollable-container"
     >
       {displayedBlocks.map((displayedBlock, idx) => (
         <ChatBlock
@@ -71,11 +81,12 @@ export const ConversationContainer = ({
           steps={displayedBlock.block.steps}
           startStepIndex={displayedBlock.startStepIndex}
           blockIndex={idx}
+          onScroll={autoScrollToBottom}
           onBlockEnd={displayNextBlock}
         />
       ))}
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
-      <div className="w-full" ref={bottomAnchor} />
+      <div className="w-full h-32" ref={bottomAnchor} />
     </div>
   )
 }

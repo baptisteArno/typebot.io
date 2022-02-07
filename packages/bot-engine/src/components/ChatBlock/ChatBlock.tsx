@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { animateScroll as scroll } from 'react-scroll'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
@@ -20,6 +19,7 @@ type ChatBlockProps = {
   steps: PublicStep[]
   startStepIndex: number
   blockIndex: number
+  onScroll: () => void
   onBlockEnd: (edgeId?: string) => void
 }
 
@@ -27,6 +27,7 @@ export const ChatBlock = ({
   steps,
   startStepIndex,
   blockIndex,
+  onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
   const { typebot, updateVariableValue } = useTypebot()
@@ -41,7 +42,7 @@ export const ChatBlock = ({
   }, [])
 
   useEffect(() => {
-    autoScrollToBottom()
+    onScroll()
     onNewStepDisplayed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayedSteps])
@@ -67,13 +68,6 @@ export const ChatBlock = ({
       )
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
-  }
-
-  const autoScrollToBottom = () => {
-    scroll.scrollToBottom({
-      duration: 500,
-      containerId: 'scrollable-container',
-    })
   }
 
   const displayNextStep = (answerContent?: string) => {

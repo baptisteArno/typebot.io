@@ -38,10 +38,10 @@ export const AvatarSideContainer = () => {
               unmountOnExit
             >
               <div
-                className="fixed w-6 h-6 xs:w-10 xs:h-10 mb-4 xs:mb-2 flex items-center top-0"
+                className="absolute w-6 h-6 xs:w-10 xs:h-10 mb-4 xs:mb-2 flex items-center top-0"
                 style={{
                   top: `calc(${topOffset}px - ${marginBottom}px)`,
-                  transition: 'top 500ms ease-out',
+                  transition: 'top 350ms ease-out',
                 }}
               >
                 <HostAvatar typebotName={typebot.name} />
