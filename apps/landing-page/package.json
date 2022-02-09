@@ -1,0 +1,35 @@
+{
+  "name": "typebot.io",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev -p 3002",
+    "start": "next start",
+    "build": "next build",
+    "analyze": "cross-env ANALYZE=true next build"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.8.3",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "focus-visible": "^5.2.0",
+    "framer-motion": "^4",
+    "keen-slider": "^6.6.3",
+    "next": "^12.0.10",
+    "notion-blocks-chakra-ui": "^0.0.15",
+    "posthog-js": "1.17.8",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "typebot-js": "^2.0.21",
+    "@notionhq/client": "^0.3.1"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^12.0.10",
+    "@types/node": "^17.0.16",
+    "@types/react": "^17.0.39",
+    "autoprefixer": "^10.4.2",
+    "cross-env": "^7.0.3",
+    "eslint": "<8.0.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
+  }
+}
