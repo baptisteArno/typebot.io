@@ -5,7 +5,7 @@ import { TypebotHeader } from 'components/shared/TypebotHeader'
 import React from 'react'
 
 const SharePage = () => (
-  <Flex overflow="hidden" h="100vh" flexDir="column">
+  <Flex flexDir="column" pb="40">
     <Seo title="Share" />
     <TypebotHeader />
     <ShareContent />

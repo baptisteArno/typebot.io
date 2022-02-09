@@ -126,3 +126,5 @@ export const stepHasItems = (
 ): step is ConditionStep | ChoiceInputStep => 'items' in step
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id
+
+export const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)

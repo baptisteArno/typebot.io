@@ -35,3 +35,5 @@ workspace.code-workspace
 
 .turbo
 apps/builder/tsconfig.tsbuildinfo
+
+yarn-error.log

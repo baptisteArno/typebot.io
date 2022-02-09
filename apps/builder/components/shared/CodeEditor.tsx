@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   value: string
-  lang: 'css' | 'json'
+  lang?: 'css' | 'json'
   onChange?: (value: string) => void
   isReadOnly?: boolean
 }
@@ -46,7 +46,8 @@ export const CodeEditor = ({
       basicSetup,
       EditorState.readOnly.of(isReadOnly),
     ]
-    extensions.push(lang === 'json' ? json() : css())
+    if (lang === 'json') extensions.push(json())
+    if (lang === 'css') extensions.push(css())
     const editor = new EditorView({
       state: EditorState.create({
         extensions,

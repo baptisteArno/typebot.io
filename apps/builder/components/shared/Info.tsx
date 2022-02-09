@@ -7,3 +7,7 @@ export const Info = (props: AlertProps) => (
     {props.children}
   </Alert>
 )
+
+export const PublishFirstInfo = (props: AlertProps) => (
+  <Info {...props}>You need to publish your typebot first</Info>
+)
