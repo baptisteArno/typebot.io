@@ -61,8 +61,12 @@ module.exports = withBundleAnalyzer({
       ],
       fallback: [
         {
-          source: '/:user*',
-          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/:user*',
+          source: '/:typebotId*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/:typebotId*',
+        },
+        {
+          source: '/api/:path*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/api/:path*',
         },
       ],
     }

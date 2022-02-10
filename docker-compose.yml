@@ -8,7 +8,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: 'typebot'
+      POSTGRES_PASSWORD: ''
       POSTGRES_HOST_AUTH_METHOD: trust
 volumes:
   db_data:

@@ -13,7 +13,7 @@
     "@prisma/client": "^3.8.1"
   },
   "scripts": {
-    "dev": "yarn prisma db push && BROWSER=none yarn prisma studio",
+    "dev": "dotenv -e .env yarn prisma db push && BROWSER=none yarn prisma studio",
     "build": "yarn migration:push",
     "migration:push": "dotenv -e ../../.env yarn prisma db push",
     "migration:create": "dotenv -e ../../.env yarn prisma migrate dev",

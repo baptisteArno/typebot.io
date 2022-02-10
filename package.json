@@ -9,8 +9,8 @@
   "scripts": {
     "docker:up": "docker-compose up -d",
     "db:nuke": "docker-compose down --volumes --remove-orphans",
-    "dev": "dotenv -e .env yarn docker:up && dotenv -e .env turbo run dev --parallel",
-    "build": "dotenv -e .env turbo run build",
+    "dev": "yarn docker:up && turbo run dev --parallel",
+    "build": "yarn docker:up && turbo run build",
     "test:builder": "cd apps/builder && yarn test",
     "lint": "turbo run lint"
   },
