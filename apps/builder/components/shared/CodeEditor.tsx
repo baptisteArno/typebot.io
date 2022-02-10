@@ -2,11 +2,13 @@ import { Box, BoxProps } from '@chakra-ui/react'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
+import { javascript } from '@codemirror/lang-javascript'
+import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   value: string
-  lang?: 'css' | 'json'
+  lang?: 'css' | 'json' | 'js' | 'html'
   onChange?: (value: string) => void
   isReadOnly?: boolean
 }
@@ -24,7 +26,11 @@ export const CodeEditor = ({
   useEffect(() => {
     if (!editorView.current || !isReadOnly) return
     editorView.current.dispatch({
-      changes: { from: 0, insert: value },
+      changes: {
+        from: 0,
+        to: editorView.current.state.doc.length,
+        insert: value,
+      },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
@@ -36,6 +42,14 @@ export const CodeEditor = ({
   }, [plainTextValue])
 
   useEffect(() => {
+    const editor = initEditor(value)
+    return () => {
+      editor?.destroy()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const initEditor = (value: string) => {
     if (!editorContainer.current) return
     const updateListenerExtension = EditorView.updateListener.of((update) => {
       if (update.docChanged && onChange)
@@ -48,6 +62,8 @@ export const CodeEditor = ({
     ]
     if (lang === 'json') extensions.push(json())
     if (lang === 'css') extensions.push(css())
+    if (lang === 'js') extensions.push(javascript())
+    if (lang === 'html') extensions.push(html())
     const editor = new EditorView({
       state: EditorState.create({
         extensions,
@@ -58,13 +74,8 @@ export const CodeEditor = ({
       changes: { from: 0, insert: value },
     })
     editorView.current = editor
-    return () => {
-      editor.destroy()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return editor
+  }
 
-  return (
-    <Box ref={editorContainer} h="200px" data-testid="code-editor" {...props} />
-  )
+  return <Box ref={editorContainer} data-testid="code-editor" {...props} />
 }

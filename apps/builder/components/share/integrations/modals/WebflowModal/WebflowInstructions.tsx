@@ -1,4 +1,11 @@
 import { OrderedList, ListItem, Tag, Text, Stack } from '@chakra-ui/react'
+import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { ContainerEmbedCode } from 'components/share/codeSnippets/Container/EmbedCode'
+import { PopupEmbedCode } from 'components/share/codeSnippets/Popup/EmbedCode'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
+import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
 
 type WebflowInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
@@ -21,8 +28,22 @@ export const WebflowInstructions = ({ type }: WebflowInstructionsProps) => {
 }
 
 const StandardInstructions = () => (
-  <Stack>
-    <Text>In the Webflow editor:</Text>
+  <OrderedList spacing={2} mb={4}>
+    <ListItem>
+      Press <Tag>A</Tag> to open the <Tag>Add elements</Tag> panel
+    </ListItem>
+    <ListItem>
+      Add an <Tag>embed</Tag> element from the <Tag>components</Tag>
+      section and paste this code:
+      <ContainerEmbedCode widthLabel="100%" heightLabel="100%" my={4} />
+    </ListItem>
+  </OrderedList>
+)
+
+const PopupInstructions = () => {
+  const [inputValue, setInputValue] = useState(0)
+
+  return (
     <OrderedList spacing={2} mb={4}>
       <ListItem>
         Press <Tag>A</Tag> to open the <Tag>Add elements</Tag> panel
@@ -30,78 +51,41 @@ const StandardInstructions = () => (
       <ListItem>
         Add an <Tag>embed</Tag> element from the <Tag>components</Tag>
         section and paste this code:
-        {/* <ContainerEmbedCode
-          widthLabel="100%"
-          heightLabel="100%"
-          mt={4}
-          onCopied={() => sendWebflowCopyEvent('standard')}
-        /> */}
+        <PopupEmbedSettings
+          onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+          my={4}
+        />
+        <PopupEmbedCode delay={inputValue} mt={4} />
       </ListItem>
     </OrderedList>
-  </Stack>
-)
-
-const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
-
-  return (
-    <Stack>
-      <Text>In the Webflow editor</Text>
-      <OrderedList spacing={2} mb={4}>
-        <ListItem>
-          Press <Tag>A</Tag> to open the <Tag>Add elements</Tag> panel
-        </ListItem>
-        <ListItem>
-          Add an <Tag>embed</Tag> element from the <Tag>components</Tag>
-          section and paste this code:
-          {/* <PopupEmbedSettings
-            onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
-            mt={4}
-          />
-          <PopupEmbedCode
-            delay={inputValue}
-            mt={4}
-            onCopied={() => sendWebflowCopyEvent('popup')}
-          /> */}
-        </ListItem>
-      </OrderedList>
-    </Stack>
   )
 }
 
 const BubbleInstructions = () => {
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
-    <Stack>
-      <Text>In the Webflow editor</Text>
-      <OrderedList spacing={2} mb={4}>
-        <ListItem>
-          Press <Tag>A</Tag> to open the <Tag>Add elements</Tag> panel
-        </ListItem>
-        <ListItem>
-          Add an <Tag>embed</Tag> element from the <Tag>components</Tag>
-          section and paste this code:
-          {/* <ChatEmbedSettings
-            onUpdateSettings={(settings) => setInputValues({ ...settings })}
-            mt={4}
-          />
-          <ChatEmbedCode
-            withStarterVariables={true}
-            {...inputValues}
-            mt={4}
-            onCopied={() => sendWebflowCopyEvent('bubble')}
-          /> */}
-        </ListItem>
-      </OrderedList>
-    </Stack>
+    <OrderedList spacing={2} mb={4}>
+      <ListItem>
+        Press <Tag>A</Tag> to open the <Tag>Add elements</Tag> panel
+      </ListItem>
+      <ListItem>
+        Add an <Tag>embed</Tag> element from the <Tag>components</Tag>
+        section and paste this code:
+        <ChatEmbedSettings
+          onUpdateSettings={(settings) => setInputValues({ ...settings })}
+          my={4}
+        />
+        <ChatEmbedCode withStarterVariables={true} {...inputValues} my={4} />
+      </ListItem>
+    </OrderedList>
   )
 }

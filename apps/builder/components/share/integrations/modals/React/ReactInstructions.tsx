@@ -1,5 +1,15 @@
 import { Stack, Text } from '@chakra-ui/react'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { StandardEmbedWindowSettings } from 'components/share/codeSnippets/Container/EmbedSettings'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
+import {
+  ChatReactCode,
+  PopupReactCode,
+  StandardReactDiv,
+} from 'components/share/codeSnippets/ReactCode'
 import { CodeEditor } from 'components/shared/CodeEditor'
+import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
 
 type Props = {
   type: 'standard' | 'popup' | 'bubble'
@@ -20,58 +30,57 @@ export const ReactInstructions = ({ type }: Props) => {
 }
 
 const StandardInstructions = () => {
-  // const [inputValues, setInputValues] = useState({
-  //   heightLabel: '100%',
-  //   widthLabel: '100%',
-  // })
+  const [inputValues, setInputValues] = useState({
+    heightLabel: '100%',
+    widthLabel: '100%',
+  })
 
   return (
     <Stack spacing={4}>
-      {/* <InstallPackageInstruction /> */}
-      {/* <StandardEmbedWindowSettings
+      <InstallPackageInstruction />
+      <StandardEmbedWindowSettings
         onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
-      /> */}
-      {/* <Text>{t('insert-the-typebot-container')}</Text>
-      <StandardReactDiv {...inputValues} /> */}
+      />
+      <Text>Insert the typebot container</Text>
+      <StandardReactDiv {...inputValues} />
     </Stack>
   )
 }
 
 const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState(0)
 
   return (
     <Stack spacing={4}>
-      {/* <InstallPackageInstruction />
+      <InstallPackageInstruction />
       <PopupEmbedSettings
         onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
       />
-      <Text>{t('initialize-the-typebot')}</Text>
-      <PopupReactCode withStarterVariables={true} delay={inputValue} /> */}
+      <Text>Initialize the typebot</Text>
+      <PopupReactCode withStarterVariables={true} delay={inputValue} />
     </Stack>
   )
 }
 
 const BubbleInstructions = () => {
-  // const { t } = useTranslation()
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
     <Stack spacing={4}>
-      {/* <InstallPackageInstruction />
+      <InstallPackageInstruction />
       <ChatEmbedSettings
         onUpdateSettings={(settings) => setInputValues({ ...settings })}
       />
-      <Text>{t('initialize-the-typebot')}</Text>
-      <ChatReactCode withStarterVariables={true} {...inputValues} mt={4} /> */}
+      <Text>Initialize the typebot</Text>
+      <ChatReactCode withStarterVariables={true} {...inputValues} mt={4} />
     </Stack>
   )
 }

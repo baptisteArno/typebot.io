@@ -18,7 +18,12 @@ import { capitalize } from 'utils'
 import { PublishFirstInfo } from 'components/shared/Info'
 import { GtmInstructions } from './GtmInstructions'
 
-export const GtmModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
+export const GtmModal = ({
+  isOpen,
+  onClose,
+  isPublished,
+  publicId,
+}: ModalProps) => {
   const [chosenEmbedType, setChosenEmbedType] = useState<
     'standard' | 'popup' | 'bubble' | undefined
   >()
@@ -53,7 +58,7 @@ export const GtmModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
           {!chosenEmbedType ? (
             <ChooseEmbedTypeList onSelectEmbedType={setChosenEmbedType} />
           ) : (
-            <GtmInstructions type={chosenEmbedType} />
+            <GtmInstructions type={chosenEmbedType} publicId={publicId} />
           )}
         </ModalBody>
         <ModalFooter />

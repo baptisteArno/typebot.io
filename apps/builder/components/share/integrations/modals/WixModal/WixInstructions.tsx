@@ -1,5 +1,11 @@
 import { ListItem, OrderedList, Tag } from '@chakra-ui/react'
+import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { ContainerEmbedCode } from 'components/share/codeSnippets/Container/EmbedCode'
+import { PopupEmbedCode } from 'components/share/codeSnippets/Popup/EmbedCode'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
 import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
 
 type WixInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
@@ -21,24 +27,23 @@ export const WixInstructions = ({ type }: WixInstructionsProps) => {
 
 const StandardInstructions = () => {
   return (
-    <>
-      <OrderedList spacing={2} mb={4}>
-        <ListItem>
-          In the Wix Website Editor:
-          <Tag>
-            Add {'>'} Embed {'>'} Embed a Widget
-          </Tag>
-        </ListItem>
-        <ListItem>
-          Click on <Tag>Enter code</Tag> and paste this code:
-        </ListItem>
-      </OrderedList>
-    </>
+    <OrderedList spacing={2} mb={4}>
+      <ListItem>
+        In the Wix Website Editor:
+        <Tag>
+          Add {'>'} Embed {'>'} Embed a Widget
+        </Tag>
+      </ListItem>
+      <ListItem>
+        Click on <Tag>Enter code</Tag> and paste this code:
+      </ListItem>
+      <ContainerEmbedCode widthLabel="100%" heightLabel="100%" />
+    </OrderedList>
   )
 }
 
 const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState(0)
 
   return (
     <>
@@ -52,45 +57,49 @@ const PopupInstructions = () => {
         <ListItem>
           Click <Tag>+ Add Custom Code</Tag> at the top right.
         </ListItem>
-        <ListItem>Paste this snippet in the code box:</ListItem>
+        <ListItem>
+          Paste this snippet in the code box:
+          <PopupEmbedSettings
+            onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+            my={4}
+          />
+          <PopupEmbedCode delay={inputValue} />
+        </ListItem>
       </OrderedList>
     </>
   )
 }
 
 const BubbleInstructions = () => {
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
-    <>
-      <OrderedList spacing={2} mb={4}>
-        <ListItem>
-          Go to <Tag>Settings</Tag> in your dashboard on Wix
-        </ListItem>
-        <ListItem>
-          Click on <Tag>Custom Code</Tag> under <Tag>Advanced</Tag>
-        </ListItem>
-        <ListItem>
-          Click <Tag>+ Add Custom Code</Tag> at the top right.
-        </ListItem>
-        <ListItem>Paste this snippet in the code box:</ListItem>
-      </OrderedList>
-      {/* <ChatEmbedSettings
-        onUpdateSettings={(settings) => setInputValues({ ...settings })}
-      />
-      <ChatEmbedCode
-        mt={4}
-        {...inputValues}
-        onCopied={() => sendWixCopyEvent('bubble')}
-      /> */}
-    </>
+    <OrderedList spacing={2} mb={4}>
+      <ListItem>
+        Go to <Tag>Settings</Tag> in your dashboard on Wix
+      </ListItem>
+      <ListItem>
+        Click on <Tag>Custom Code</Tag> under <Tag>Advanced</Tag>
+      </ListItem>
+      <ListItem>
+        Click <Tag>+ Add Custom Code</Tag> at the top right.
+      </ListItem>
+      <ListItem>
+        Paste this snippet in the code box:{' '}
+        <ChatEmbedSettings
+          my="4"
+          onUpdateSettings={(settings) => setInputValues({ ...settings })}
+        />
+        <ChatEmbedCode {...inputValues} />
+      </ListItem>
+    </OrderedList>
   )
 }

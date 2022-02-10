@@ -1,5 +1,4 @@
 import { ItemBase, ItemType } from '.'
-import { Item } from './item'
 import { StepBase } from './steps'
 
 export type InputStep =

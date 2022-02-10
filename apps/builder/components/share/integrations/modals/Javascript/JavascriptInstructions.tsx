@@ -1,4 +1,12 @@
 import { Stack, Tag, Text } from '@chakra-ui/react'
+import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { ContainerEmbedCode } from 'components/share/codeSnippets/Container/EmbedCode'
+import { StandardEmbedWindowSettings } from 'components/share/codeSnippets/Container/EmbedSettings'
+import { PopupEmbedCode } from 'components/share/codeSnippets/Popup/EmbedCode'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
+import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
 
 type JavascriptInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
@@ -21,75 +29,61 @@ export const JavascriptInstructions = ({
 }
 
 const StandardInstructions = () => {
-  // const [inputValues, setInputValues] = useState({
-  //   heightLabel: '100%',
-  //   widthLabel: '100%',
-  // })
+  const [inputValues, setInputValues] = useState({
+    heightLabel: '100%',
+    widthLabel: '100%',
+  })
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       <Text>
         Paste this anywhere in the <Tag>body</Tag>
       </Text>
-      {/* <StandardEmbedWindowSettings
+      <StandardEmbedWindowSettings
         onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
       />
-      <ContainerEmbedCode
-        withStarterVariables={true}
-        {...inputValues}
-        mt={4}
-        onCopied={() => sendJsCopyEvent('standard')}
-      /> */}
+      <ContainerEmbedCode withStarterVariables={true} {...inputValues} mt={4} />
     </Stack>
   )
 }
 
 const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState(0)
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       <Text>
         Paste this anywhere in the <Tag>body</Tag>
       </Text>
-      {/* <StandardEmbedWindowSettings
-        onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
+      <PopupEmbedSettings
+        mb={4}
+        onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
       />
-      <ContainerEmbedCode
-        withStarterVariables={true}
-        {...inputValues}
-        mt={4}
-        onCopied={() => sendJsCopyEvent('standard')}
-      /> */}
+      <PopupEmbedCode delay={inputValue} />
     </Stack>
   )
 }
 
 const BubbleInstructions = () => {
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       <Text>
         Paste this anywhere in the <Tag>body</Tag>
       </Text>
-      {/* <StandardEmbedWindowSettings
-        onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
+      <ChatEmbedSettings
+        onUpdateSettings={(settings) => setInputValues({ ...settings })}
       />
-      <ContainerEmbedCode
-        withStarterVariables={true}
-        {...inputValues}
-        mt={4}
-        onCopied={() => sendJsCopyEvent('standard')}
-      /> */}
+      <ChatEmbedCode {...inputValues} />
     </Stack>
   )
 }

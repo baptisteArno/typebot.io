@@ -1,13 +1,32 @@
 import { OrderedList, ListItem, Tag } from '@chakra-ui/react'
+import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { StandardEmbedWindowSettings } from 'components/share/codeSnippets/Container/EmbedSettings'
+import {
+  parseInitContainerCode,
+  typebotJsHtml,
+} from 'components/share/codeSnippets/params'
+import { PopupEmbedCode } from 'components/share/codeSnippets/Popup/EmbedCode'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
+import { CodeEditor } from 'components/shared/CodeEditor'
+import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
+import { ModalProps } from '../../EmbedButton'
+import parserHtml from 'prettier/parser-html'
+import prettier from 'prettier/standalone'
 
 type ShopifyInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
+  publicId: string
 }
 
-export const ShopifyInstructions = ({ type }: ShopifyInstructionsProps) => {
+export const ShopifyInstructions = ({
+  type,
+  publicId,
+}: ShopifyInstructionsProps) => {
   switch (type) {
     case 'standard': {
-      return <StandardInstructions />
+      return <StandardInstructions publicId={publicId} />
     }
     case 'popup': {
       return <PopupInstructions />
@@ -18,24 +37,30 @@ export const ShopifyInstructions = ({ type }: ShopifyInstructionsProps) => {
   }
 }
 
-const StandardInstructions = () => {
-  // const backgroundColor = chatbot?.themeColors.siteBackground.value
-  // const [windowSizes, setWindowSizes] = useState({
-  //   height: '100%',
-  //   width: '100%',
-  // })
+const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
+  const [windowSizes, setWindowSizes] = useState({
+    height: '100%',
+    width: '100%',
+  })
 
-  // const jsCode = parseInitContainerCode({
-  //   publishId: chatbot?.publishId ?? '',
-  //   customDomain: chatbot?.customDomains[0],
-  //   backgroundColor: chatbot?.themeColors.chatbotBackground.value,
-  // })
-  // const headCode = `${typebotJsHtml}
-  // <script>
-  //   ${jsCode}
-  // </script>`
+  const jsCode = parseInitContainerCode({
+    publishId: publicId,
+  })
+  const headCode = prettier.format(
+    `${typebotJsHtml}<script>${jsCode}</script>`,
+    {
+      parser: 'html',
+      plugins: [parserHtml],
+    }
+  )
 
-  // const elementCode = `<div id="typebot-container" style="background-color: ${backgroundColor}; height: ${windowSizes.height}; width: ${windowSizes.width}"></div>`
+  const elementCode = prettier.format(
+    `<div id="typebot-container" style="height: ${windowSizes.height}; width: ${windowSizes.width}"></div>`,
+    {
+      parser: 'html',
+      plugins: [parserHtml],
+    }
+  )
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -46,17 +71,13 @@ const StandardInstructions = () => {
       <ListItem>
         In <Tag>Layout {'>'} theme.liquid</Tag> file, paste this code just
         before the closing <Tag>head</Tag> tag:
-        {/* <CodeBlock
-          code={headCode}
-          mt={2}
-          onCopied={() => sendShopifyCopyEvent('standard')}
-        /> */}
+        <CodeEditor value={headCode} mt={2} lang="html" isReadOnly />
       </ListItem>
       <ListItem>
         Then, you can place an element on which the typebot will go in any file
         in the <Tag>body</Tag> tags. It needs to have the id{' '}
         <Tag>typebot-container</Tag>:
-        {/* <StandardEmbedWindowSettings
+        <StandardEmbedWindowSettings
           my={4}
           onUpdateWindowSettings={(sizes) =>
             setWindowSizes({
@@ -65,14 +86,14 @@ const StandardInstructions = () => {
             })
           }
         />
-        <CodeBlock code={elementCode} mt={2} /> */}
+        <CodeEditor value={elementCode} mt={2} lang="html" isReadOnly />
       </ListItem>
     </OrderedList>
   )
 }
 
 const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState(0)
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -83,29 +104,26 @@ const PopupInstructions = () => {
       <ListItem>
         In <Tag>Layout {'>'} theme.liquid</Tag> file, paste this code just
         before the closing <Tag>head</Tag> tag:
-        {/* <PopupEmbedSettings
-            mb={4}
-            onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
-          />
-          <PopupEmbedCode
-            delay={inputValue}
-            onCopied={() => sendShopifyCopyEvent('popup')}
-          /> */}
+        <PopupEmbedSettings
+          my="4"
+          onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+        />
+        <PopupEmbedCode delay={inputValue} />
       </ListItem>
     </OrderedList>
   )
 }
 
 const BubbleInstructions = () => {
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -116,14 +134,11 @@ const BubbleInstructions = () => {
       <ListItem>
         In <Tag>Layout {'>'} theme.liquid</Tag> file, paste this code just
         before the closing <Tag>head</Tag> tag:
-        {/* <ChatEmbedSettings
-        onUpdateSettings={(settings) => setInputValues({ ...settings })}
-      />
-      <ChatEmbedCode
-        mt={4}
-        {...inputValues}
-        onCopied={() => sendShopifyCopyEvent('bubble')}
-      /> */}
+        <ChatEmbedSettings
+          my="4"
+          onUpdateSettings={(settings) => setInputValues({ ...settings })}
+        />
+        <ChatEmbedCode mt={4} {...inputValues} />
       </ListItem>
     </OrderedList>
   )

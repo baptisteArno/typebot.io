@@ -1,14 +1,27 @@
 import { OrderedList, ListItem, Tag } from '@chakra-ui/react'
+import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
+import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
+import { StandardEmbedWindowSettings } from 'components/share/codeSnippets/Container/EmbedSettings'
+import {
+  parseInitContainerCode,
+  typebotJsHtml,
+} from 'components/share/codeSnippets/params'
+import { PopupEmbedCode } from 'components/share/codeSnippets/Popup/EmbedCode'
+import { PopupEmbedSettings } from 'components/share/codeSnippets/Popup/EmbedSettings'
+import { CodeEditor } from 'components/shared/CodeEditor'
 import { useState } from 'react'
+import { BubbleParams } from 'typebot-js'
+import { ModalProps } from '../../EmbedButton'
 
 type GtmInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
+  publicId: string
 }
 
-export const GtmInstructions = ({ type }: GtmInstructionsProps) => {
+export const GtmInstructions = ({ type, publicId }: GtmInstructionsProps) => {
   switch (type) {
     case 'standard': {
-      return <StandardInstructions />
+      return <StandardInstructions publicId={publicId} />
     }
     case 'popup': {
       return <PopupInstructions />
@@ -19,23 +32,21 @@ export const GtmInstructions = ({ type }: GtmInstructionsProps) => {
   }
 }
 
-const StandardInstructions = () => {
-  // const [windowSizes, setWindowSizes] = useState({
-  //   height: '100%',
-  //   width: '100%',
-  // })
+const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
+  const [windowSizes, setWindowSizes] = useState({
+    height: '100%',
+    width: '100%',
+  })
 
-  // const jsCode = parseInitContainerCode({
-  //   publishId: chatbot?.publishId ?? '',
-  //   backgroundColor: chatbot?.themeColors.chatbotBackground.value,
-  //   customDomain: chatbot?.customDomains[0],
-  // })
-  // const headCode = `${typebotJsHtml}
-  // <script>
-  //   ${jsCode}
-  // </script>`
+  const jsCode = parseInitContainerCode({
+    publishId: publicId,
+  })
+  const headCode = `${typebotJsHtml}
+  <script>
+    ${jsCode}
+  </script>`
 
-  // const elementCode = `<div id="typebot-container" style="background-color: ${backgroundColor}; height: ${windowSizes.height}; width: ${windowSizes.width}"></div>`
+  const elementCode = `<div id="typebot-container" style="height: ${windowSizes.height}; width: ${windowSizes.width}"></div>`
   return (
     <OrderedList spacing={2} mb={4}>
       <ListItem>
@@ -46,16 +57,12 @@ const StandardInstructions = () => {
       </ListItem>
       <ListItem>
         Paste the code below:
-        {/* <CodeEditor
-          code={headCode}
-          mt={2}
-          onCopied={() => sendGtmCopyEvent('standard')}
-        /> */}
+        <CodeEditor value={headCode} mt={2} isReadOnly lang="html" />
       </ListItem>
       <ListItem>
         On your webpage, you need to have an element on which the typebot will
         go. It needs to have the id <Tag>typebot-container</Tag>:
-        {/* <StandardEmbedWindowSettings
+        <StandardEmbedWindowSettings
           my={4}
           onUpdateWindowSettings={(sizes) =>
             setWindowSizes({
@@ -64,14 +71,14 @@ const StandardInstructions = () => {
             })
           }
         />
-        <CodeBlock code={elementCode} mt={2} /> */}
+        <CodeEditor value={elementCode} mt={2} isReadOnly lang="html" />
       </ListItem>
     </OrderedList>
   )
 }
 
 const PopupInstructions = () => {
-  // const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState(0)
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -83,29 +90,26 @@ const PopupInstructions = () => {
       </ListItem>
       <ListItem>
         Paste the code below:
-        {/* <PopupEmbedSettings
-          mb={4}
+        <PopupEmbedSettings
+          my={4}
           onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
         />
-        <PopupEmbedCode
-          delay={inputValue}
-          onCopied={() => sendGtmCopyEvent('popup')}
-        /> */}
+        <PopupEmbedCode delay={inputValue} />
       </ListItem>
     </OrderedList>
   )
 }
 
 const BubbleInstructions = () => {
-  // const [inputValues, setInputValues] = useState<
-  //   Pick<BubbleParams, 'proactiveMessage' | 'button'>
-  // >({
-  //   proactiveMessage: undefined,
-  //   button: {
-  //     color: '',
-  //     iconUrl: '',
-  //   },
-  // })
+  const [inputValues, setInputValues] = useState<
+    Pick<BubbleParams, 'proactiveMessage' | 'button'>
+  >({
+    proactiveMessage: undefined,
+    button: {
+      color: '',
+      iconUrl: '',
+    },
+  })
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -117,14 +121,10 @@ const BubbleInstructions = () => {
       </ListItem>
       <ListItem>
         Paste the code below:
-        {/* <ChatEmbedSettings
+        <ChatEmbedSettings
           onUpdateSettings={(settings) => setInputValues({ ...settings })}
         />
-        <ChatEmbedCode
-          mt={4}
-          {...inputValues}
-          onCopied={() => sendGtmCopyEvent('bubble')}
-        /> */}
+        <ChatEmbedCode my={4} {...inputValues} />
       </ListItem>
     </OrderedList>
   )

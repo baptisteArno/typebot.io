@@ -21,6 +21,7 @@ import {
   ReactModal,
   NotionModal,
   IframeModal,
+  WixModal,
 } from './modals'
 
 export type ModalProps = {
@@ -82,7 +83,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<WixLogo height={100} width="90px" />}
       label="Wix"
-      Modal={WebflowModal}
+      Modal={WixModal}
       {...props}
     />
   ),
@@ -128,7 +129,7 @@ export const integrationsList = [
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton
-      logo={<IframeLogo height={100} width={80} />}
+      logo={<IframeLogo height={100} width="70px" />}
       label="Iframe"
       Modal={IframeModal}
       {...props}
@@ -136,7 +137,7 @@ export const integrationsList = [
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton
-      logo={<OtherLogo height={100} width={80} />}
+      logo={<OtherLogo height={100} width="70px" />}
       label="Other"
       Modal={JavascriptModal}
       {...props}

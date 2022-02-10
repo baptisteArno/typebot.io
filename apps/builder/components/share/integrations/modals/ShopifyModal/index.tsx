@@ -18,7 +18,12 @@ import { capitalize } from 'utils'
 import { PublishFirstInfo } from 'components/shared/Info'
 import { ShopifyInstructions } from './ShopifyInstructions'
 
-export const ShopifyModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
+export const ShopifyModal = ({
+  isOpen,
+  onClose,
+  isPublished,
+  publicId,
+}: ModalProps) => {
   const [chosenEmbedType, setChosenEmbedType] = useState<
     'standard' | 'popup' | 'bubble' | undefined
   >()
@@ -53,7 +58,7 @@ export const ShopifyModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
           {!chosenEmbedType ? (
             <ChooseEmbedTypeList onSelectEmbedType={setChosenEmbedType} />
           ) : (
-            <ShopifyInstructions type={chosenEmbedType} />
+            <ShopifyInstructions type={chosenEmbedType} publicId={publicId} />
           )}
         </ModalBody>
         <ModalFooter />

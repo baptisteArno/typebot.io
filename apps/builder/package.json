@@ -15,6 +15,8 @@
     "@chakra-ui/react": "^1.8.1",
     "@codemirror/basic-setup": "^0.19.1",
     "@codemirror/lang-css": "^0.19.3",
+    "@codemirror/lang-html": "^0.19.4",
+    "@codemirror/lang-javascript": "^0.19.7",
     "@codemirror/lang-json": "^0.19.1",
     "@codemirror/text": "^0.19.6",
     "@emotion/react": "^11.7.1",
@@ -69,7 +71,8 @@
     "swr": "^1.2.0",
     "use-debounce": "^7.0.1",
     "use-immer": "^0.6.0",
-    "utils": "*"
+    "utils": "*",
+    "typebot-js": "2.0.21"
   },
   "devDependencies": {
     "@playwright/test": "^1.18.1",
@@ -79,6 +82,7 @@
     "@types/node": "^16.11.9",
     "@types/nprogress": "^0.2.0",
     "@types/papaparse": "^5.3.1",
+    "@types/prettier": "^2.4.4",
     "@types/qs": "^6.9.7",
     "@types/react": "^17.0.38",
     "@types/react-table": "^7.7.9",
