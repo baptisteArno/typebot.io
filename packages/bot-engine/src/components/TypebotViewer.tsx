@@ -74,7 +74,7 @@ export const TypebotViewer = ({
           >
             <div className="flex w-full h-full justify-center">
               <ConversationContainer
-                typebot={typebot}
+                theme={typebot.theme}
                 onNewBlockVisible={handleNewBlockVisible}
                 onNewAnswer={handleNewAnswer}
                 onCompleted={handleCompleted}

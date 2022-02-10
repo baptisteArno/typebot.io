@@ -57,7 +57,7 @@ const createCredentials = () => {
       'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
     // This token is linked to a mock Google account (typebot.test.user@gmail.com)
     refresh_token:
-      '1//0379tIHBxszeXCgYIARAAGAMSNwF-L9Ir0zhkzhblwXqn3_jYqRP3pajcUpqkjRU3fKZZ_eQakOa28amUHSQ-Q9fMzk89MpRTvkc',
+      '1//03NRE9V8T-aayCgYIARAAGAMSNwF-L9Ir6zVzF-wm30psz0lbDJj5Y9OgqTO0cvBISODMW4QTR0VK40BLnOQgcHCHkb9c769TAhQ',
   })
   return prisma.credentials.createMany({
     data: [

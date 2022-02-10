@@ -1,9 +1,10 @@
-import { PublicTypebot } from 'models'
+import { Edge, PublicTypebot } from 'models'
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 const typebotContext = createContext<{
   typebot: PublicTypebot
   updateVariableValue: (variableId: string, value: string) => void
+  createEdge: (edge: Edge) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -25,11 +26,20 @@ export const TypebotContext = ({
       ),
     }))
   }
+
+  const createEdge = (edge: Edge) => {
+    setLocalTypebot((typebot) => ({
+      ...typebot,
+      edges: [...typebot.edges, edge],
+    }))
+  }
+
   return (
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
         updateVariableValue,
+        createEdge,
       }}
     >
       {children}

@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { InputStep, InputStepType, PublicStep, Step } from 'models'
+import { InputStep, InputStepType, PublicStep } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { TextForm } from './inputs/TextForm'
 import { isBubbleStep, isInputStep } from 'utils'
 import { DateForm } from './inputs/DateForm'
 import { ChoiceForm } from './inputs/ChoiceForm'
 import { HostBubble } from './bubbles/HostBubble'
+import { isInputValid } from 'services/inputs'
 
 export const ChatStep = ({
   step,
   onTransitionEnd,
 }: {
   step: PublicStep
-  onTransitionEnd: (answerContent?: string) => void
+  onTransitionEnd: (answerContent?: string, isRetry?: boolean) => void
 }) => {
   const { addAnswer } = useAnswers()
 
-  const handleInputSubmit = (content: string) => {
-    addAnswer({ stepId: step.id, blockId: step.blockId, content })
-    onTransitionEnd(content)
+  const handleInputSubmit = (content: string, isRetry: boolean) => {
+    if (!isRetry) addAnswer({ stepId: step.id, blockId: step.blockId, content })
+    onTransitionEnd(content, isRetry)
   }
 
   if (isBubbleStep(step))
@@ -35,7 +36,7 @@ const InputChatStep = ({
   onSubmit,
 }: {
   step: InputStep
-  onSubmit: (value: string) => void
+  onSubmit: (value: string, isRetry: boolean) => void
 }) => {
   const { addNewAvatarOffset } = useHostAvatars()
   const [answer, setAnswer] = useState<string>()
@@ -47,7 +48,7 @@ const InputChatStep = ({
 
   const handleSubmit = (value: string) => {
     setAnswer(value)
-    onSubmit(value)
+    onSubmit(value, !isInputValid(value, step.type))
   }
 
   if (answer) {

@@ -34,10 +34,25 @@ test.describe('Email input step', () => {
     await page.fill('#placeholder', 'Your email...')
     await expect(page.locator('text=Your email...')).toBeVisible()
     await page.fill('#button', 'Go')
+    await page.fill(
+      `input[value="${defaultEmailInputOptions.retryMessageContent}"]`,
+      'Try again bro'
+    )
 
     await page.click('text=Restart')
+    await typebotViewer(page)
+      .locator(`input[placeholder="Your email..."]`)
+      .fill('test@test')
+    await typebotViewer(page).locator('text=Go').click()
     await expect(
-      typebotViewer(page).locator(`input[placeholder="Your email..."]`)
+      typebotViewer(page).locator('text=Try again bro')
+    ).toBeVisible()
+    await typebotViewer(page)
+      .locator(`input[placeholder="Your email..."]`)
+      .fill('test@test.com')
+    await typebotViewer(page).locator('text=Go').click()
+    await expect(
+      typebotViewer(page).locator('text=test@test.com')
     ).toBeVisible()
   })
 })

@@ -56,10 +56,8 @@ export type DateInputStep = StepBase & {
 
 export type PhoneNumberInputStep = StepBase & {
   type: InputStepType.PHONE
-  options: OptionBase & InputTextOptionsBase
+  options: PhoneNumberInputOptions
 }
-
-export type PhoneNumberInputOptions = OptionBase & InputTextOptionsBase
 
 export type ChoiceInputStep = StepBase & {
   type: InputStepType.CHOICE
@@ -73,6 +71,7 @@ export type ButtonItem = ItemBase & {
 }
 
 type OptionBase = { variableId?: string }
+
 type InputTextOptionsBase = {
   labels: { placeholder: string; button: string }
 }
@@ -88,9 +87,20 @@ export type DateInputOptions = OptionBase & {
   isRange: boolean
 }
 
-export type EmailInputOptions = OptionBase & InputTextOptionsBase
+export type EmailInputOptions = OptionBase & {
+  labels: { placeholder: string; button: string }
+  retryMessageContent: string
+}
 
-export type UrlInputOptions = OptionBase & InputTextOptionsBase
+export type UrlInputOptions = OptionBase & {
+  labels: { placeholder: string; button: string }
+  retryMessageContent: string
+}
+
+export type PhoneNumberInputOptions = OptionBase & {
+  labels: { placeholder: string; button: string }
+  retryMessageContent: string
+}
 
 export type TextInputOptions = OptionBase &
   InputTextOptionsBase & {
@@ -116,11 +126,21 @@ export const defaultNumberInputOptions: NumberInputOptions = {
 }
 
 export const defaultEmailInputOptions: EmailInputOptions = {
-  labels: { button: defaultButtonLabel, placeholder: 'Type your email...' },
+  labels: {
+    button: defaultButtonLabel,
+    placeholder: 'Type your email...',
+  },
+  retryMessageContent:
+    "This email doesn't seem to be valid. Can you type it again?",
 }
 
 export const defaultUrlInputOptions: UrlInputOptions = {
-  labels: { button: defaultButtonLabel, placeholder: 'Type a URL...' },
+  labels: {
+    button: defaultButtonLabel,
+    placeholder: 'Type a URL...',
+  },
+  retryMessageContent:
+    "This email doesn't seem to be valid. Can you type it again?",
 }
 
 export const defaultDateInputOptions: DateInputOptions = {
@@ -134,6 +154,8 @@ export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
     button: defaultButtonLabel,
     placeholder: 'Type your phone number...',
   },
+  retryMessageContent:
+    "This email doesn't seem to be valid. Can you type it again?",
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {

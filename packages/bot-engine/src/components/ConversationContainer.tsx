@@ -5,22 +5,24 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Edge, PublicBlock, PublicTypebot } from 'models'
+import { Answer, Edge, PublicBlock, Theme } from 'models'
 import { byId } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
+import { useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
-  typebot: PublicTypebot
+  theme: Theme
   onNewBlockVisible: (edge: Edge) => void
   onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
 }
 export const ConversationContainer = ({
-  typebot,
+  theme,
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
 }: Props) => {
+  const { typebot } = useTypebot()
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
     { block: PublicBlock; startStepIndex: number }[]
@@ -51,8 +53,8 @@ export const ConversationContainer = ({
   }, [])
 
   useEffect(() => {
-    setCssVariablesValue(typebot.theme, frameDocument.body.style)
-  }, [typebot.theme, frameDocument])
+    setCssVariablesValue(theme, frameDocument.body.style)
+  }, [theme, frameDocument])
 
   useEffect(() => {
     const answer = [...answers].pop()

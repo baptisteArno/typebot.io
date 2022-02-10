@@ -33,16 +33,27 @@ test.describe('Phone input step', () => {
     await page.click(`text=${defaultPhoneInputOptions.labels.placeholder}`)
     await page.fill('#placeholder', '+33 XX XX XX XX')
     await page.fill('#button', 'Go')
+    await page.fill(
+      `input[value="${defaultPhoneInputOptions.retryMessageContent}"]`,
+      'Try again bro'
+    )
 
     await page.click('text=Restart')
     await typebotViewer(page)
       .locator(`input[placeholder="+33 XX XX XX XX"]`)
-      .fill('+33 6 73 18 45 36')
+      .fill('+33 6 73')
     await expect(typebotViewer(page).locator(`img`)).toHaveAttribute(
       'alt',
       'France'
     )
-    await typebotViewer(page).locator('text="Go"').click()
-    await expect(typebotViewer(page).locator('text=+33673184536')).toBeVisible()
+    await typebotViewer(page).locator('button >> text="Go"').click()
+    await expect(
+      typebotViewer(page).locator('text=Try again bro')
+    ).toBeVisible()
+    await typebotViewer(page)
+      .locator(`input[placeholder="+33 XX XX XX XX"]`)
+      .fill('+33 6 73 54 45 67')
+    await typebotViewer(page).locator('button >> text="Go"').click()
+    await expect(typebotViewer(page).locator('text=+33673544567')).toBeVisible()
   })
 })

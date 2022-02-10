@@ -9,3 +9,4 @@ yarn-error.log
 authenticatedState.json
 playwright-report
 dist
+test-results

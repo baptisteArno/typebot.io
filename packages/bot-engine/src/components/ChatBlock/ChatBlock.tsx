@@ -14,6 +14,7 @@ import {
 } from 'utils'
 import { executeLogic } from 'services/logic'
 import { executeIntegration } from 'services/integration'
+import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 
 type ChatBlockProps = {
   steps: PublicStep[]
@@ -30,7 +31,7 @@ export const ChatBlock = ({
   onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
-  const { typebot, updateVariableValue } = useTypebot()
+  const { typebot, updateVariableValue, createEdge } = useTypebot()
   const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
 
   const currentStepIndex = displayedSteps.length - 1
@@ -70,9 +71,15 @@ export const ChatBlock = ({
     }
   }
 
-  const displayNextStep = (answerContent?: string) => {
+  const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
     const currentStep = [...displayedSteps].pop()
+    console.log(currentStep)
     if (currentStep) {
+      if (isRetry && stepCanBeRetried(currentStep))
+        return setDisplayedSteps([
+          ...displayedSteps,
+          parseRetryStep(currentStep, typebot.variables, createEdge),
+        ])
       if (
         isInputStep(currentStep) &&
         currentStep.options?.variableId &&
