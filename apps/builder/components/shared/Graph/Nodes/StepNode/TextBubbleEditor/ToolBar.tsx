@@ -48,7 +48,9 @@ export const ToolBar = (props: Props) => {
           icon={<UnderlineIcon />}
         />
       </span>
-      <LinkToolbarButton icon={<LinkIcon />} />
+      <span data-testid="link-button">
+        <LinkToolbarButton icon={<LinkIcon />} />
+      </span>
     </HStack>
   )
 }

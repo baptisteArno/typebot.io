@@ -1,4 +1,3 @@
-import { Link } from '@chakra-ui/react'
 import {
   createBoldPlugin,
   createItalicPlugin,
@@ -21,5 +20,18 @@ export const platePlugins = createPlugins(
     createUnderlinePlugin(),
     createLinkPlugin(),
   ],
-  { components: { [ELEMENT_LINK]: Link } }
+  {
+    components: {
+      [ELEMENT_LINK]: (props) => (
+        <a
+          href={props.element.url}
+          target="_blank"
+          rel="noreferrer"
+          className={props.className}
+        >
+          {props.children}
+        </a>
+      ),
+    },
+  }
 )

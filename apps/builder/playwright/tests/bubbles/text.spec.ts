@@ -41,6 +41,14 @@ test.describe('Text bubble step', () => {
     await page.type('div[role="textbox"]', 'Everything text')
     await page.press('div[role="textbox"]', 'Shift+Enter')
 
+    await page.type('div[role="textbox"]', 'My super link')
+    await page.press('div[role="textbox"]', 'Shift+Meta+ArrowLeft')
+    await page.waitForTimeout(200)
+    page.on('dialog', async (dialog) => {
+      await dialog.accept('https://github.com')
+    })
+    await page.click('[data-testid="link-button"]')
+
     await page.click('text=Preview')
     await expect(
       typebotViewer(page).locator('span.slate-bold >> nth=0')
@@ -51,5 +59,8 @@ test.describe('Text bubble step', () => {
     await expect(
       typebotViewer(page).locator('span.slate-underline >> nth=0')
     ).toHaveText('Underlined text')
+    await expect(
+      typebotViewer(page).locator('a[href="https://github.com"]')
+    ).toHaveText('My super link')
   })
 })
