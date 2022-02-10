@@ -33,7 +33,7 @@ module.exports = withBundleAnalyzer({
     return [
       {
         source: '/:path*',
-        destination: `${process.env.VIEWER_HOST}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_VIEWER_HOST}/:path*`,
       },
     ]
   },
