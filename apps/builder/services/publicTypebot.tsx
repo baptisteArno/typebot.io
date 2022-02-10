@@ -4,7 +4,6 @@ import {
   PublicBlock,
   PublicStep,
   PublicTypebot,
-  Step,
   Typebot,
 } from 'models'
 import shortId from 'short-uuid'
@@ -17,10 +16,15 @@ import { isDefined } from '@udecode/plate-common'
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
-  ...typebot,
   id: shortId.generate(),
   typebotId: typebot.id,
   blocks: parseBlocksToPublicBlocks(typebot.blocks),
+  edges: typebot.edges,
+  name: typebot.name,
+  publicId: typebot.publicId,
+  settings: typebot.settings,
+  theme: typebot.theme,
+  variables: typebot.variables,
 })
 
 const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>

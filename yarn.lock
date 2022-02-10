@@ -8073,7 +8073,7 @@ turbo-windows-64@1.1.2:
   resolved "https://registry.yarnpkg.com/turbo-windows-64/-/turbo-windows-64-1.1.2.tgz#8eb3f77ab7e04b077752ae2204114c82e5c74697"
   integrity sha512-0Ncx/iKhnKrdAU8hJ+8NUcF9jtFr8KoW5mMWfiFzy+mgUbVKbpzWT2eoGR6zJExedQsRvYOejbEX5iihbnj5bA==
 
-turbo@^1.1.1:
+turbo@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.1.2.tgz#751b9651dc3ebe469898db76afab6405666ad0ff"
   integrity sha512-3ViHKyAkaBKNKwHASTa1zkVT3tVVhQNLrpxBS7LoN+794ouQUYmy6lf0rTqzG3iTZHtIDwC+piZSdTl4XjEVMg==

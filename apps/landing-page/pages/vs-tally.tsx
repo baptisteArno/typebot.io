@@ -12,7 +12,7 @@ import {
   Th,
   Flex,
 } from '@chakra-ui/react'
-import Typebot from 'typebot-js'
+import { initContainer } from 'typebot-js'
 import { ArticleCallToAction } from 'components/common/ArticleCta'
 import { roadmapLink, Footer } from 'components/common/Footer'
 import { Navbar } from 'components/common/Navbar/Navbar'
@@ -22,7 +22,7 @@ import { Yes, No } from 'components/common/TableCells'
 
 const VsTypebot = () => {
   useEffect(() => {
-    Typebot.initContainer('typebot-container', {
+    initContainer('typebot-container', {
       publishId: 'example-vs-other-tools',
     })
   }, [])

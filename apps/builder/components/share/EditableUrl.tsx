@@ -30,7 +30,7 @@ export const EditableUrl = ({
       onSubmit={onPublicIdChange}
     >
       <HStack spacing={1}>
-        <Text>https://</Text>
+        <Text>{process.env.NEXT_PUBLIC_VIEWER_HOST}/</Text>
         <Tooltip label="Edit">
           <EditablePreview
             mx={1}
@@ -43,15 +43,15 @@ export const EditableUrl = ({
             fontWeight="semibold"
           />
         </Tooltip>
-
         <EditableInput px={2} />
-
-        <Text>.typebot.io/</Text>
       </HStack>
 
       <HStack>
         <EditButton size="xs" />
-        <CopyButton size="xs" textToCopy={`https://${publicId}.typebot.io/`} />
+        <CopyButton
+          size="xs"
+          textToCopy={`${process.env.NEXT_PUBLIC_VIEWER_HOST}/${publicId}`}
+        />
       </HStack>
     </Editable>
   )

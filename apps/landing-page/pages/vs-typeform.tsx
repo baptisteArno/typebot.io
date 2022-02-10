@@ -12,7 +12,7 @@ import {
   Th,
   Flex,
 } from '@chakra-ui/react'
-import Typebot from 'typebot-js'
+import { initContainer } from 'typebot-js'
 import { CheckIcon } from 'assets/icons/CheckIcon'
 import { CloseIcon } from 'assets/icons/CloseIcon'
 import { ArticleCallToAction } from 'components/common/ArticleCta'
@@ -25,7 +25,7 @@ import loadTypeform from 'lib/typeform'
 const VsTypebot = () => {
   useEffect(() => {
     loadTypeform().then()
-    Typebot.initContainer('typebot-container', {
+    initContainer('typebot-container', {
       publishId: 'example-vs-other-tools',
     })
   }, [])

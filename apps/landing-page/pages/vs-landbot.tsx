@@ -15,13 +15,14 @@ import {
 } from '@chakra-ui/react'
 import loadLandbot from '../lib/landbot'
 import Image from 'next/image'
-import Typebot from 'typebot-js'
+import { initContainer } from 'typebot-js'
 import { ArticleCallToAction } from 'components/common/ArticleCta'
 import { Footer } from 'components/common/Footer'
 import { Navbar } from 'components/common/Navbar/Navbar'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { Yes, No } from 'components/common/TableCells'
+import landbotVisualFlowSrc from 'public/images/landbot/visual-flow.png'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const Landbot: any
@@ -35,7 +36,7 @@ const VsTypebot = () => {
           'https://chats.landbot.io/v3/H-937813-ZLZEY720UH1TWN5S/index.json',
       })
     })
-    Typebot.initContainer('typebot-container', {
+    initContainer('typebot-container', {
       publishId: 'example-vs-other-tools',
     })
   }, [])
@@ -91,7 +92,7 @@ const VsTypebot = () => {
             </Text>
             <Box h="400px" pos="relative">
               <Image
-                src="landbotVisualFlowSrc"
+                src={landbotVisualFlowSrc}
                 layout="fill"
                 objectFit="contain"
                 alt="Visual flow screenshot"

@@ -7,7 +7,7 @@ import prisma from '../libs/prisma'
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  let typebot: PublicTypebot | undefined
+  let typebot: PublicTypebot | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
   try {
@@ -33,12 +33,12 @@ export const getServerSideProps: GetServerSideProps = async (
 
 const getTypebotFromPublicId = async (
   publicId?: string
-): Promise<PublicTypebot | undefined> => {
-  if (!publicId) return
+): Promise<PublicTypebot | null> => {
+  if (!publicId) return null
   const typebot = await prisma.publicTypebot.findUnique({
     where: { publicId },
   })
-  return (typebot as unknown as PublicTypebot | undefined) ?? undefined
+  return (typebot as unknown as PublicTypebot) ?? null
 }
 
 const App = ({ typebot, ...props }: TypebotPageProps) =>

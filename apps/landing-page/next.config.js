@@ -10,6 +10,16 @@ const securityHeaders = [
   },
 ]
 
+const pages = [
+  'blog',
+  'pricing',
+  'privacy-policies',
+  'terms-of-service',
+  'vs-landbot',
+  'vs-tally',
+  'vs-typeform',
+]
+
 module.exports = withBundleAnalyzer({
   async headers() {
     return [
@@ -30,11 +40,31 @@ module.exports = withBundleAnalyzer({
     ]
   },
   async rewrites() {
-    return [
-      {
-        source: '/:path*',
-        destination: `${process.env.NEXT_PUBLIC_VIEWER_HOST}/:path*`,
-      },
-    ]
+    return {
+      beforeFiles: [
+        {
+          source: '/_next/static/:static*',
+          destination:
+            process.env.NEXT_PUBLIC_VIEWER_HOST + '/_next/static/:static*',
+          has: [
+            {
+              type: 'header',
+              key: 'referer',
+              value:
+                process.env.LANDING_PAGE_HOST +
+                '/(?!' +
+                pages.join('|') +
+                '|\\?).+',
+            },
+          ],
+        },
+      ],
+      fallback: [
+        {
+          source: '/:user*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/:user*',
+        },
+      ],
+    }
   },
 })
