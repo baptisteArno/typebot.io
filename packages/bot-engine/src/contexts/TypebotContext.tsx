@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 const typebotContext = createContext<{
   typebot: PublicTypebot
+  apiHost: string
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -12,9 +13,11 @@ const typebotContext = createContext<{
 export const TypebotContext = ({
   children,
   typebot,
+  apiHost,
 }: {
   children: ReactNode
   typebot: PublicTypebot
+  apiHost: string
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
 
@@ -38,6 +41,7 @@ export const TypebotContext = ({
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
+        apiHost,
         updateVariableValue,
         createEdge,
       }}

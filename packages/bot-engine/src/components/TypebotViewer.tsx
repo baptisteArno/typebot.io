@@ -14,12 +14,14 @@ import { Answer, BackgroundType, Edge, PublicTypebot } from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
+  apiHost?: string
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onCompleted?: () => void
 }
 export const TypebotViewer = ({
   typebot,
+  apiHost = process.env.NEXT_PUBLIC_VIEWER_HOST,
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
@@ -41,6 +43,8 @@ export const TypebotViewer = ({
     if (onCompleted) onCompleted()
   }
 
+  if (!apiHost)
+    return <p>process.env.NEXT_PUBLIC_VIEWER_HOST is missing in env</p>
   return (
     <Frame
       id="typebot-iframe"
@@ -62,7 +66,7 @@ export const TypebotViewer = ({
           }:wght@300;400;600&display=swap');`,
         }}
       />
-      <TypebotContext typebot={typebot}>
+      <TypebotContext typebot={typebot} apiHost={apiHost}>
         <AnswersContext>
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"

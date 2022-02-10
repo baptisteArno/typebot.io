@@ -31,7 +31,7 @@ export const ChatBlock = ({
   onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
-  const { typebot, updateVariableValue, createEdge } = useTypebot()
+  const { typebot, updateVariableValue, createEdge, apiHost } = useTypebot()
   const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
 
   const currentStepIndex = displayedSteps.length - 1
@@ -60,13 +60,16 @@ export const ChatBlock = ({
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
-      const nextEdgeId = await executeIntegration(
-        typebot.typebotId,
-        currentStep,
-        typebot.variables,
-        { blockIndex, stepIndex: currentStepIndex },
-        updateVariableValue
-      )
+      const nextEdgeId = await executeIntegration({
+        step: currentStep,
+        context: {
+          apiHost,
+          typebotId: typebot.id,
+          indices: { blockIndex, stepIndex: currentStepIndex },
+          variables: typebot.variables,
+          updateVariableValue,
+        },
+      })
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
   }

@@ -20,34 +20,35 @@ import { parseVariables, parseVariablesInObject } from './variable'
 const safeEval = eval
 
 type Indices = { blockIndex: number; stepIndex: number }
-export const executeIntegration = (
-  typebotId: string,
-  step: IntegrationStep,
-  variables: Variable[],
-  indices: Indices,
+type IntegrationContext = {
+  apiHost: string
+  typebotId: string
+  indices: Indices
+  variables: Variable[]
   updateVariableValue: (variableId: string, value: string) => void
-): Promise<string | undefined> => {
+}
+export const executeIntegration = ({
+  step,
+  context,
+}: {
+  step: IntegrationStep
+  context: IntegrationContext
+}): Promise<string | undefined> => {
   switch (step.type) {
     case IntegrationStepType.GOOGLE_SHEETS:
-      return executeGoogleSheetIntegration(step, variables, updateVariableValue)
+      return executeGoogleSheetIntegration(step, context)
     case IntegrationStepType.GOOGLE_ANALYTICS:
-      return executeGoogleAnalyticsIntegration(step, variables)
+      return executeGoogleAnalyticsIntegration(step, context)
     case IntegrationStepType.WEBHOOK:
-      return executeWebhook(
-        typebotId,
-        step,
-        variables,
-        indices,
-        updateVariableValue
-      )
+      return executeWebhook(step, context)
     case IntegrationStepType.EMAIL:
-      return sendEmail(step, variables)
+      return sendEmail(step, context)
   }
 }
 
 export const executeGoogleAnalyticsIntegration = async (
   step: GoogleAnalyticsStep,
-  variables: Variable[]
+  { variables }: IntegrationContext
 ) => {
   if (!step.options?.trackingId) return step.outgoingEdgeId
   const { default: initGoogleAnalytics } = await import('../../lib/gtag')
@@ -58,19 +59,18 @@ export const executeGoogleAnalyticsIntegration = async (
 
 const executeGoogleSheetIntegration = async (
   step: GoogleSheetsStep,
-  variables: Variable[],
-  updateVariableValue: (variableId: string, value: string) => void
+  context: IntegrationContext
 ) => {
   if (!('action' in step.options)) return step.outgoingEdgeId
   switch (step.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
-      await insertRowInGoogleSheets(step.options, variables)
+      await insertRowInGoogleSheets(step.options, context)
       break
     case GoogleSheetsAction.UPDATE_ROW:
-      await updateRowInGoogleSheets(step.options, variables)
+      await updateRowInGoogleSheets(step.options, context)
       break
     case GoogleSheetsAction.GET:
-      await getRowFromGoogleSheets(step.options, variables, updateVariableValue)
+      await getRowFromGoogleSheets(step.options, context)
       break
   }
   return step.outgoingEdgeId
@@ -78,11 +78,11 @@ const executeGoogleSheetIntegration = async (
 
 const insertRowInGoogleSheets = async (
   options: GoogleSheetsInsertRowOptions,
-  variables: Variable[]
+  { variables, apiHost }: IntegrationContext
 ) => {
   if (!options.cellsToInsert) return
   return sendRequest({
-    url: `http://localhost:3001/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,
@@ -93,11 +93,11 @@ const insertRowInGoogleSheets = async (
 
 const updateRowInGoogleSheets = async (
   options: GoogleSheetsUpdateRowOptions,
-  variables: Variable[]
+  { variables, apiHost }: IntegrationContext
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
   return sendRequest({
-    url: `http://localhost:3001/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'PATCH',
     body: {
       credentialsId: options.credentialsId,
@@ -112,8 +112,7 @@ const updateRowInGoogleSheets = async (
 
 const getRowFromGoogleSheets = async (
   options: GoogleSheetsGetOptions,
-  variables: Variable[],
-  updateVariableValue: (variableId: string, value: string) => void
+  { variables, updateVariableValue, apiHost }: IntegrationContext
 ) => {
   if (!options.referenceCell || !options.cellsToExtract) return
   const queryParams = stringify(
@@ -128,7 +127,7 @@ const getRowFromGoogleSheets = async (
     { indices: false }
   )
   const { data } = await sendRequest<{ [key: string]: string }>({
-    url: `http://localhost:3001/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${queryParams}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${queryParams}`,
     method: 'GET',
   })
   if (!data) return
@@ -150,16 +149,19 @@ const parseCellValues = (
   }, {})
 
 const executeWebhook = async (
-  typebotId: string,
   step: WebhookStep,
-  variables: Variable[],
-  indices: Indices,
-  updateVariableValue: (variableId: string, value: string) => void
+  {
+    indices,
+    variables,
+    updateVariableValue,
+    typebotId,
+    apiHost,
+  }: IntegrationContext
 ) => {
   if (!step.webhook) return step.outgoingEdgeId
   const { blockIndex, stepIndex } = indices
   const { data, error } = await sendRequest({
-    url: `http://localhost:3000/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
+    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
     method: 'POST',
     body: {
       variables,
@@ -173,10 +175,13 @@ const executeWebhook = async (
   })
 }
 
-const sendEmail = async (step: SendEmailStep, variables: Variable[]) => {
+const sendEmail = async (
+  step: SendEmailStep,
+  { variables, apiHost }: IntegrationContext
+) => {
   const { options } = step
   const { error } = await sendRequest({
-    url: `http://localhost:3001/api/integrations/email`,
+    url: `${apiHost}/api/integrations/email`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,
