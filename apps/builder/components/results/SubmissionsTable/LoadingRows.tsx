@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Skeleton } from '@chakra-ui/react'
+import { chakra, Checkbox, Flex, Skeleton } from '@chakra-ui/react'
 import React from 'react'
 
 type LoadingRowsProps = {
@@ -9,35 +9,32 @@ export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
   return (
     <>
       {Array.from(Array(3)).map((row, idx) => (
-        <Flex as="tr" key={idx}>
-          <Flex
-            key={idx}
-            py={2}
-            px={4}
+        <tr key={idx}>
+          <chakra.td
+            px="4"
+            py="2"
             border="1px"
-            as="td"
             borderColor="gray.200"
             width="50px"
           >
-            <Checkbox isDisabled />
-          </Flex>
+            <Flex>
+              <Checkbox isDisabled />
+            </Flex>
+          </chakra.td>
           {Array.from(Array(totalColumns)).map((cell, idx) => {
             return (
-              <Flex
+              <chakra.td
                 key={idx}
-                py={2}
-                px={4}
+                px="4"
+                py="2"
                 border="1px"
-                as="td"
                 borderColor="gray.200"
-                width="180px"
-                align="center"
               >
                 <Skeleton height="5px" w="full" />
-              </Flex>
+              </chakra.td>
             )
           })}
-        </Flex>
+        </tr>
       ))}
     </>
   )

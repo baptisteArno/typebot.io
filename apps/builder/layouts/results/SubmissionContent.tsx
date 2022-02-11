@@ -106,11 +106,11 @@ export const SubmissionsContent = ({
   const tableData: { [key: string]: string }[] = useMemo(
     () => convertResultsToTableData(results),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [results?.length]
+    [results]
   )
 
   return (
-    <Stack maxW="1200px" w="full">
+    <Stack maxW="1200px" w="full" pb="28">
       <Flex w="full" justifyContent="flex-end">
         <ResultsActionButtons
           isDeleteLoading={isDeleteLoading}

@@ -78,18 +78,25 @@ export const parseSubmissionsColumns = (
         (block) => typebot && block.steps.some((step) => isInputStep(step))
       )
       .map((block) => {
-        const inputStep = block.steps.find((step) =>
-          isInputStep(step)
-        ) as InputStep
+        const inputStep = block.steps.find((step) => isInputStep(step))
+        if (!inputStep || !isInputStep(inputStep)) return
         return {
           Header: (
-            <HStack>
+            <HStack
+              minW={
+                'isLong' in inputStep.options && inputStep.options.isLong
+                  ? '400px'
+                  : '150px'
+              }
+              maxW="500px"
+            >
               <StepIcon type={inputStep.type} />
               <Text>{block.title}</Text>
             </HStack>
           ),
           accessor: block.id,
         }
-      }),
+      })
+      .filter(isDefined),
   ]
 }

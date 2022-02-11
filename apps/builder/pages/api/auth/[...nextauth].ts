@@ -49,13 +49,13 @@ if (process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET)
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   NextAuth(req, res, {
     adapter: PrismaAdapter(prisma),
-    secret: process.env.SECRET,
+    secret: process.env.ENCRYPTION_SECRET,
     providers,
     session: {
       strategy: 'database',
     },
     callbacks: {
-      session: async ({ session, user }) => ({ ...session, user }),
+      session: ({ session, user }) => ({ ...session, user }),
     },
   })
 }

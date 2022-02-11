@@ -5,6 +5,8 @@ import { stringify } from 'qs'
 import { Answer } from 'db'
 import { sendRequest } from 'utils'
 
+const paginationLimit = 50
+
 const getKey = (
   typebotId: string,
   pageIndex: number,
@@ -16,7 +18,7 @@ const getKey = (
   if (pageIndex === 0) return `/api/typebots/${typebotId}/results?limit=50`
   return `/api/typebots/${typebotId}/results?lastResultId=${
     previousPageData.results[previousPageData.results.length - 1].id
-  }&limit=50`
+  }&limit=${paginationLimit}`
 }
 
 export type ResultWithAnswers = Result & { answers: Answer[] }
@@ -49,7 +51,10 @@ export const useResults = ({
     setSize,
     size,
     hasMore:
-      data && data.length > 0 && data[data.length - 1].results.length > 0,
+      data &&
+      data.length > 0 &&
+      data[data.length - 1].results.length > 0 &&
+      data.length === paginationLimit,
   }
 }
 

@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
-import { Box, Checkbox, Flex } from '@chakra-ui/react'
+import { chakra, Checkbox, Flex } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useEffect, useMemo, useRef } from 'react'
-import { Hooks, useFlexLayout, useRowSelect, useTable } from 'react-table'
+import { Hooks, useRowSelect, useTable } from 'react-table'
 import { parseSubmissionsColumns } from 'services/publicTypebot'
 import { LoadingRows } from './LoadingRows'
-
-const defaultCellWidth = 180
 
 type SubmissionsTableProps = {
   data?: any
@@ -38,12 +36,7 @@ export const SubmissionsTable = ({
     prepareRow,
     getTableBodyProps,
     selectedFlatRows,
-  } = useTable(
-    { columns, data, defaultColumn: { width: defaultCellWidth } },
-    useRowSelect,
-    checkboxColumnHook,
-    useFlexLayout
-  ) as any
+  } = useTable({ columns, data }, useRowSelect, checkboxColumnHook) as any
 
   useEffect(() => {
     onNewSelection(selectedFlatRows.map((row: any) => row.index))
@@ -68,81 +61,69 @@ export const SubmissionsTable = ({
 
   return (
     <Flex
-      overflow="scroll"
       maxW="full"
-      maxH="full"
+      overflow="scroll"
+      ref={tableWrapper}
       className="table-wrapper"
       rounded="md"
-      data-testid="table-wrapper"
-      pb="20"
-      ref={tableWrapper}
     >
-      <Box as="table" rounded="md" {...getTableProps()} w="full" h="full">
-        <Box as="thead" pos="sticky" top="0" zIndex={2}>
+      <chakra.table rounded="md" {...getTableProps()}>
+        <thead>
           {headerGroups.map((headerGroup: any) => {
             return (
-              <Flex as="tr" {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column: any, idx: number) => {
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column: any) => {
                   return (
-                    <Flex
-                      py={2}
-                      px={4}
+                    <chakra.th
+                      px="4"
+                      py="2"
                       border="1px"
                       borderColor="gray.200"
-                      as="th"
-                      color="gray.500"
                       fontWeight="normal"
-                      textAlign="left"
-                      bgColor={'white'}
+                      whiteSpace="nowrap"
                       {...column.getHeaderProps()}
-                      style={{
-                        width: idx === 0 ? '50px' : `${defaultCellWidth}px`,
-                      }}
                     >
                       {column.render('Header')}
-                    </Flex>
+                    </chakra.th>
                   )
                 })}
-              </Flex>
+              </tr>
             )
           })}
-        </Box>
+        </thead>
 
-        <Box as="tbody" {...getTableBodyProps()}>
+        <tbody {...getTableBodyProps()}>
           {rows.map((row: any, idx: number) => {
             prepareRow(row)
             return (
-              <Flex
-                as="tr"
+              <tr
                 {...row.getRowProps()}
                 ref={(ref) => {
                   if (idx === data.length - 10) bottomElement.current = ref
                 }}
               >
-                {row.cells.map((cell: any, idx: number) => {
+                {row.cells.map((cell: any) => {
                   return (
-                    <Flex
-                      py={2}
-                      px={4}
+                    <chakra.td
+                      px="4"
+                      py="2"
                       border="1px"
-                      as="td"
                       borderColor="gray.200"
-                      bgColor={'white'}
+                      whiteSpace={
+                        cell?.value?.length > 100 ? 'normal' : 'nowrap'
+                      }
                       {...cell.getCellProps()}
-                      style={{
-                        width: idx === 0 ? '50px' : `${defaultCellWidth}px`,
-                      }}
                     >
                       {cell.render('Cell')}
-                    </Flex>
+                    </chakra.td>
                   )
                 })}
-              </Flex>
+              </tr>
             )
           })}
           {hasMore === true && <LoadingRows totalColumns={columns.length} />}
-        </Box>
-      </Box>
+        </tbody>
+      </chakra.table>
     </Flex>
   )
 }
@@ -168,12 +149,14 @@ const IndeterminateCheckbox = React.forwardRef(
     const resolvedRef: any = ref || defaultRef
 
     return (
-      <Checkbox
-        ref={resolvedRef}
-        {...rest}
-        isIndeterminate={indeterminate}
-        isChecked={checked}
-      />
+      <Flex justify="center">
+        <Checkbox
+          ref={resolvedRef}
+          {...rest}
+          isIndeterminate={indeterminate}
+          isChecked={checked}
+        />
+      </Flex>
     )
   }
 )

@@ -1,6 +1,6 @@
 import test, { expect, Page } from '@playwright/test'
 import { readFileSync } from 'fs'
-import { InputStepType } from 'models'
+import { defaultTextInputOptions, InputStepType } from 'models'
 import { parse } from 'papaparse'
 import { generate } from 'short-uuid'
 import {
@@ -17,7 +17,10 @@ test.describe('Results page', () => {
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({ type: InputStepType.TEXT }),
+        ...parseDefaultBlockWithStep({
+          type: InputStepType.TEXT,
+          options: defaultTextInputOptions,
+        }),
       },
     ])
     await createResults({ typebotId })

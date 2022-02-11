@@ -1,7 +1,7 @@
 import { randomBytes, createCipheriv, createDecipheriv } from 'crypto'
 
 const algorithm = 'aes-256-gcm'
-const secretKey = process.env.SECRET
+const secretKey = process.env.ENCRYPTION_SECRET
 
 export const encrypt = (
   data: object

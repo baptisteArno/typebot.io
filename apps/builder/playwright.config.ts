@@ -4,7 +4,7 @@ import path from 'path'
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve(path.join(__dirname, 'playwright/global-setup')),
   testDir: path.join(__dirname, 'playwright/tests'),
-  timeout: 10 * 1000,
+  timeout: 10 * 2000,
   expect: {
     timeout: 5000,
   },

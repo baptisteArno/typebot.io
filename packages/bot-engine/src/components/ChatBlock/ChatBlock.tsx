@@ -76,7 +76,6 @@ export const ChatBlock = ({
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
     const currentStep = [...displayedSteps].pop()
-    console.log(currentStep)
     if (currentStep) {
       if (isRetry && stepCanBeRetried(currentStep))
         return setDisplayedSteps([
