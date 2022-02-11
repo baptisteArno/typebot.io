@@ -12,9 +12,9 @@ import { headerHeight } from 'components/shared/TypebotHeader'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
-  sourceStepIndex: number
+  sourceTop: number
 ) => {
-  const sourceCoord = computeSourceCoordinates(sourcePosition, sourceStepIndex)
+  const sourceCoord = computeSourceCoordinates(sourcePosition, sourceTop)
   const segments = computeTwoSegments(sourceCoord, {
     x: sourceCoord.x + 20,
     y: sourceCoord.y + 80,
@@ -276,7 +276,8 @@ export const computeEdgePathToMouse = ({
 export const getEndpointTopOffset = (
   graphPosition: Coordinates,
   endpoints: IdMap<Endpoint>,
-  endpointId?: string
+  endpointId?: string,
+  isAnalytics?: boolean
 ): number | undefined => {
   if (!endpointId) return
   const endpointRef = endpoints[endpointId]?.ref
@@ -285,7 +286,8 @@ export const getEndpointTopOffset = (
     8 +
     (endpointRef.current?.getBoundingClientRect().top ?? 0) -
     graphPosition.y -
-    headerHeight
+    headerHeight -
+    (isAnalytics ? 60 : 0)
   )
 }
 

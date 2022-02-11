@@ -18,7 +18,7 @@ export const Board = () => {
       <GraphDndContext>
         <StepsSideBar />
         <GraphProvider blocks={typebot?.blocks ?? []}>
-          <Graph flex="1" />
+          {typebot && <Graph flex="1" typebot={typebot} />}
           <BoardMenuButton pos="absolute" right="40px" top="20px" />
           {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
         </GraphProvider>

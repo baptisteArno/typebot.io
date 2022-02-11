@@ -6,20 +6,23 @@ import { useStepDnd } from 'contexts/GraphDndContext'
 import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
-import { DraggableStepType } from 'models'
+import { Block, DraggableStepType, PublicTypebot, Typebot } from 'models'
 import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
-import { DropOffNode } from './Nodes/DropOffNode'
 
 export const Graph = ({
+  typebot,
   answersCounts,
   ...props
-}: { answersCounts?: AnswersCount[] } & FlexProps) => {
+}: {
+  typebot?: Typebot | PublicTypebot
+  answersCounts?: AnswersCount[]
+} & FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
     useStepDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
-  const { createBlock, typebot } = useTypebot()
+  const { createBlock } = useTypebot()
   const {
     graphPosition,
     setGraphPosition,
@@ -96,16 +99,9 @@ export const Graph = ({
           transform,
         }}
       >
-        <Edges edges={typebot?.edges ?? []} />
+        <Edges edges={typebot?.edges ?? []} answersCounts={answersCounts} />
         {typebot?.blocks.map((block, idx) => (
-          <BlockNode block={block} blockIndex={idx} key={block.id} />
-        ))}
-        {answersCounts?.map((answersCount) => (
-          <DropOffNode
-            key={answersCount.blockId}
-            answersCounts={answersCounts}
-            blockId={answersCount.blockId}
-          />
+          <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
         ))}
       </Flex>
     </Flex>

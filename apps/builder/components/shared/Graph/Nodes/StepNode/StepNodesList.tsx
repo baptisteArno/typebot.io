@@ -115,7 +115,11 @@ export const StepNodesList = ({
     }
 
   return (
-    <Stack spacing={1} transition="none">
+    <Stack
+      spacing={1}
+      transition="none"
+      pointerEvents={isReadOnly ? 'none' : 'auto'}
+    >
       <Flex
         ref={handlePushElementRef(0)}
         h={
@@ -135,7 +139,7 @@ export const StepNodesList = ({
               key={step.id}
               step={step}
               indices={{ blockIndex, stepIndex: idx }}
-              isConnectable={!isReadOnly && steps.length - 1 === idx}
+              isConnectable={steps.length - 1 === idx}
               onMouseDown={handleStepMouseDown(idx)}
             />
             <Flex

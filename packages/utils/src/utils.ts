@@ -70,7 +70,7 @@ export const isTextBubbleStep = (
 ): step is TextBubbleStep => step.type === BubbleStepType.TEXT
 
 export const isMediaBubbleStep = (
-  step: Step
+  step: Step | PublicStep
 ): step is ImageBubbleStep | VideoBubbleStep =>
   step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.VIDEO
 
@@ -122,7 +122,7 @@ export const stepTypeHasItems = (
   type === LogicStepType.CONDITION || type === InputStepType.CHOICE
 
 export const stepHasItems = (
-  step: Step
+  step: Step | PublicStep
 ): step is ConditionStep | ChoiceInputStep => 'items' in step
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression'
 import { Parser } from 'htmlparser2'
-import { Step, Typebot } from 'models'
+import { PublicStep, Step, Typebot } from 'models'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)
@@ -98,7 +98,7 @@ export const removeUndefinedFields = <T>(obj: T): T =>
     {} as T
   )
 
-export const stepHasOptions = (step: Step) => 'options' in step
+export const stepHasOptions = (step: Step | PublicStep) => 'options' in step
 
 export const parseVariableHighlight = (content: string, typebot: Typebot) => {
   const varNames = typebot.variables.map((v) => v.name)

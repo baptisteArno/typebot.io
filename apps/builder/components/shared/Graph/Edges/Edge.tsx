@@ -22,6 +22,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     targetEndpoints,
     graphPosition,
     blocksCoordinates,
+    isReadOnly,
   } = useGraph()
   const isPreviewing = previewingEdge?.id === edge.id
 
@@ -35,14 +36,21 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
       getEndpointTopOffset(
         graphPosition,
         sourceEndpoints,
-        getSourceEndpointId(edge)
+        getSourceEndpointId(edge),
+        isReadOnly
       ),
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [edge, graphPosition, sourceEndpoints, sourceBlockCoordinates?.y]
   )
   const targetTop = useMemo(
-    () => getEndpointTopOffset(graphPosition, targetEndpoints, edge?.to.stepId),
+    () =>
+      getEndpointTopOffset(
+        graphPosition,
+        targetEndpoints,
+        edge?.to.stepId,
+        isReadOnly
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [graphPosition, targetEndpoints, edge?.to.stepId, targetBlockCoordinates?.y]
   )

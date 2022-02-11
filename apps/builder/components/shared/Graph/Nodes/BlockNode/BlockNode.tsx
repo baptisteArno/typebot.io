@@ -87,6 +87,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   useEventListener('mousemove', handleMouseMove)
 
   const handleMouseEnter = () => {
+    if (isReadOnly) return
     if (mouseOverBlock?.id !== block.id && !isStartBlock)
       setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)
@@ -94,6 +95,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   }
 
   const handleMouseLeave = () => {
+    if (isReadOnly) return
     setMouseOverBlock(undefined)
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
   }
@@ -134,7 +136,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
             defaultValue={block.title}
             onSubmit={handleTitleSubmit}
             fontWeight="semibold"
-            isDisabled={isReadOnly}
+            pointerEvents={isReadOnly ? 'none' : 'auto'}
           >
             <EditablePreview
               _hover={{ bgColor: 'gray.300' }}

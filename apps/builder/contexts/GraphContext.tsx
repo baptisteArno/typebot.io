@@ -1,4 +1,4 @@
-import { Block, Edge, IdMap, Source, Step, Target } from 'models'
+import { Block, Edge, IdMap, PublicBlock, Source, Step, Target } from 'models'
 import {
   createContext,
   Dispatch,
@@ -86,7 +86,7 @@ export const GraphProvider = ({
   isReadOnly = false,
 }: {
   children: ReactNode
-  blocks: Block[]
+  blocks: (Block | PublicBlock)[]
   isReadOnly?: boolean
 }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
