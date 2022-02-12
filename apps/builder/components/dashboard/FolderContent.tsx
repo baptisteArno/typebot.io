@@ -1,6 +1,5 @@
 import { DashboardFolder } from '.prisma/client'
 import {
-  Button,
   Flex,
   Heading,
   HStack,
@@ -11,7 +10,6 @@ import {
   useToast,
   Wrap,
 } from '@chakra-ui/react'
-import { FolderPlusIcon } from 'assets/icons'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { Typebot } from 'models'
 import React, { useState } from 'react'
@@ -19,6 +17,7 @@ import { createFolder, useFolders } from 'services/folders'
 import { patchTypebot, useTypebots } from 'services/typebots'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
+import { CreateFolderButton } from './FolderContent/CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderContent/FolderButton'
 import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
@@ -152,13 +151,10 @@ export const FolderContent = ({ folder }: Props) => {
         <Stack>
           <HStack>
             {folder && <BackButton id={folder.parentFolderId} />}
-            <Button
-              leftIcon={<FolderPlusIcon />}
+            <CreateFolderButton
               onClick={handleCreateFolder}
               isLoading={isCreatingFolder || isFolderLoading}
-            >
-              Create a folder
-            </Button>
+            />
           </HStack>
           <Wrap spacing={4}>
             <CreateBotButton

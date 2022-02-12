@@ -27,7 +27,7 @@ const createCheckoutSession = async (
         },
       ],
     })
-    res.status(201).json(session)
+    res.status(201).send({ sessionId: session.id })
   }
   return methodNotAllowed(res)
 }

@@ -1,4 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
+import path from 'path'
 import { generate } from 'short-uuid'
 import { createFolders, createTypebots } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
@@ -71,6 +72,20 @@ test.describe('Dashboard page', () => {
     await expect(typebotButton).toBeHidden()
     await page.click('a:has-text("Back")')
     await expect(typebotButton).toBeVisible()
+  })
+
+  test.describe('Free user', () => {
+    test.use({
+      storageState: path.join(__dirname, '../freeUser.json'),
+    })
+    test("create folder shouldn't be available", async ({ page }) => {
+      await page.goto('/typebots')
+      await page.click('text=Create a folder')
+      await expect(
+        page.locator('text="You can\'t create folders with the basic plan"')
+      ).toBeVisible()
+      await expect(page.locator('text=Upgrade now')).toBeVisible()
+    })
   })
 })
 

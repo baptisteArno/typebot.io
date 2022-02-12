@@ -29,6 +29,7 @@
     "@giphy/react-components": "^5.4.0",
     "@googleapis/drive": "^2.1.0",
     "@next-auth/prisma-adapter": "1.0.1",
+    "@stripe/stripe-js": "^1.22.0",
     "@udecode/plate-basic-marks": "^10.0.0",
     "@udecode/plate-common": "^7.0.2",
     "@udecode/plate-core": "^10.0.0",
