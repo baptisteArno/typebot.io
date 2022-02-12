@@ -149,7 +149,7 @@ const IndeterminateCheckbox = React.forwardRef(
     const resolvedRef: any = ref || defaultRef
 
     return (
-      <Flex justify="center">
+      <Flex justify="center" data-testid="checkbox">
         <Checkbox
           ref={resolvedRef}
           {...rest}

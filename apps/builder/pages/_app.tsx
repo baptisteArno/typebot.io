@@ -15,6 +15,9 @@ import { TypebotContext } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import { KBarProvider } from 'kbar'
 import { actions } from 'libs/kbar'
+import { enableMocks } from 'mocks'
+
+if (process.env.NEXT_PUBLIC_AUTH_MOCKING === 'enabled') enableMocks()
 
 const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()

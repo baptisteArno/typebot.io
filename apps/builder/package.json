@@ -10,6 +10,9 @@
     "test": "dotenv -e ./playwright/.env -e .env.local -- yarn playwright test",
     "test:open": "dotenv -e ./playwright/.env -e .env.local -v PWDEBUG=1 -- yarn playwright test"
   },
+  "msw": {
+    "workerDirectory": "public"
+  },
   "dependencies": {
     "@chakra-ui/css-reset": "^1.1.1",
     "@chakra-ui/react": "^1.8.1",
@@ -50,6 +53,7 @@
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
     "models": "*",
+    "msw": "^0.36.8",
     "next": "^12.0.9",
     "next-auth": "4.1.2",
     "nodemailer": "^6.7.2",
@@ -69,10 +73,10 @@
     "styled-components": "^5.3.3",
     "svg-round-corners": "^0.3.0",
     "swr": "^1.2.0",
+    "typebot-js": "2.0.21",
     "use-debounce": "^7.0.1",
     "use-immer": "^0.6.0",
-    "utils": "*",
-    "typebot-js": "2.0.21"
+    "utils": "*"
   },
   "devDependencies": {
     "@playwright/test": "^1.18.1",

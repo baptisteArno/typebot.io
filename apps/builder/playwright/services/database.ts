@@ -15,17 +15,24 @@ import { encrypt } from 'utils'
 const prisma = new PrismaClient()
 
 export const teardownDatabase = async () => {
+  await prisma.user.deleteMany()
   await prisma.credentials.deleteMany()
   await prisma.dashboardFolder.deleteMany()
   return prisma.typebot.deleteMany()
 }
 
-export const setupDatabase = async (userEmail: string) => {
-  const createdUser = await getSignedInUser(userEmail)
-  if (!createdUser) throw new Error("Couldn't find user")
-  process.env.PLAYWRIGHT_USER_ID = createdUser.id
+export const setupDatabase = async () => {
+  await createUsers()
   return createCredentials()
 }
+
+export const createUsers = () =>
+  prisma.user.createMany({
+    data: [
+      { id: 'freeUser', email: 'free-user@email.com', name: 'Free user' },
+      { id: 'proUser', email: 'pro-user@email.com', name: 'Pro user' },
+    ],
+  })
 
 export const getSignedInUser = (email: string) =>
   prisma.user.findFirst({ where: { email } })
@@ -44,7 +51,7 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
 export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
   prisma.dashboardFolder.createMany({
     data: partialFolders.map((folder) => ({
-      ownerId: process.env.PLAYWRIGHT_USER_ID as string,
+      ownerId: 'proUser',
       name: 'Folder #1',
       ...folder,
     })),
@@ -63,7 +70,7 @@ const createCredentials = () => {
     data: [
       {
         name: 'test2@gmail.com',
-        ownerId: process.env.PLAYWRIGHT_USER_ID as string,
+        ownerId: 'proUser',
         type: CredentialsType.GOOGLE_SHEETS,
         data: encryptedData,
         iv,
@@ -75,10 +82,13 @@ const createCredentials = () => {
 export const updateUser = (data: Partial<User>) =>
   prisma.user.update({
     data,
-    where: { id: process.env.PLAYWRIGHT_USER_ID as string },
+    where: {
+      id: 'proUser',
+    },
   })
 
 export const createResults = async ({ typebotId }: { typebotId: string }) => {
+  await prisma.result.deleteMany()
   await prisma.result.createMany({
     data: [
       ...Array.from(Array(200)).map((_, idx) => {
@@ -137,7 +147,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  ownerId: process.env.PLAYWRIGHT_USER_ID as string,
+  ownerId: 'proUser',
   theme: defaultTheme,
   settings: defaultSettings,
   createdAt: new Date(),
@@ -198,7 +208,7 @@ export const importTypebotInDatabase = (
   const typebot: any = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
-    ownerId: process.env.PLAYWRIGHT_USER_ID,
+    ownerId: 'proUser',
   }
   return prisma.typebot.create({
     data: typebot,

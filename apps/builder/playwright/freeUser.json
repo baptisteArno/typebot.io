@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "authenticatedUser",
+          "value": "{\"id\":\"freeUser\",\"name\":\"John Smith\",\"email\":\"john@smith.fr\",\"emailVerified\":null,\"image\":\"https://avatars.githubusercontent.com/u/16015833?v=4\",\"plan\":\"FREE\",\"stripeId\":null}"
+        }
+      ]
+    }
+  ]
+}

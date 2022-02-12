@@ -30,7 +30,7 @@ test.describe('Results page', () => {
     await deleteButtonInConfirmDialog(page).click()
     await expect(page.locator('text=content199')).toBeHidden()
     await expect(page.locator('text=content198')).toBeHidden()
-    await page.check(':nth-match(input[type="checkbox"], 1)', { force: true })
+    await page.click('[data-testid="checkbox"] >> nth=0')
     await page.click('button:has-text("Delete198")')
     await deleteButtonInConfirmDialog(page).click()
     await expect(page.locator(':nth-match(tr, 2)')).toBeHidden()
@@ -75,7 +75,7 @@ test.describe('Results page', () => {
     const { data } = parse(file)
     validateExportSelection(data)
 
-    await page.check(':nth-match(input[type="checkbox"], 1)', { force: true })
+    await page.click('[data-testid="checkbox"] >> nth=0')
     const [downloadAll] = await Promise.all([
       page.waitForEvent('download'),
       page.locator('button:has-text("Export200")').click(),
@@ -101,6 +101,6 @@ const validateExportAll = (data: unknown[]) => {
 }
 
 const selectFirstResults = async (page: Page) => {
-  await page.check(':nth-match(input[type="checkbox"], 2)', { force: true })
-  return page.check(':nth-match(input[type="checkbox"], 3)', { force: true })
+  await page.click('[data-testid="checkbox"] >> nth=1')
+  return page.click('[data-testid="checkbox"] >> nth=2')
 }
