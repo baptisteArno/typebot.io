@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stats: Stats = {
       totalViews,
       totalStarts,
-      completionRate: Math.round((totalCompleted / totalStarts) * 100),
+      totalCompleted,
     }
     return res.status(200).send({ stats })
   }

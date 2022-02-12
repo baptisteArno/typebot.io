@@ -13,8 +13,8 @@ import {
 } from '@chakra-ui/react'
 import { PricingCard } from './PricingCard'
 import { ActionButton } from './ActionButton'
-import { User } from 'db'
 import { pay } from 'services/stripe'
+import { useUser } from 'contexts/UserContext'
 
 export enum LimitReached {
   BRAND = 'Remove branding',
@@ -24,18 +24,13 @@ export enum LimitReached {
 }
 
 type UpgradeModalProps = {
-  user: User
-  type: LimitReached
+  type?: LimitReached
   isOpen: boolean
   onClose: () => void
 }
 
-export const UpgradeModal = ({
-  type,
-  user,
-  onClose,
-  isOpen,
-}: UpgradeModalProps) => {
+export const UpgradeModal = ({ type, onClose, isOpen }: UpgradeModalProps) => {
+  const { user } = useUser()
   const [payLoading, setPayLoading] = useState(false)
   const [userLanguage, setUserLanguage] = useState<string>('en')
 

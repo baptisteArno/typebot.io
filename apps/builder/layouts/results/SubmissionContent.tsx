@@ -10,15 +10,18 @@ import {
   useResults,
 } from 'services/results'
 import { unparse } from 'papaparse'
+import { UnlockProPlanInfo } from 'components/shared/Info'
 
 type Props = {
   typebotId: string
   totalResults: number
+  totalHiddenResults?: number
   onDeleteResults: (total: number) => void
 }
 export const SubmissionsContent = ({
   typebotId,
   totalResults,
+  totalHiddenResults,
   onDeleteResults,
 }: Props) => {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
@@ -65,13 +68,10 @@ export const SubmissionsContent = ({
     setIsDeleteLoading(false)
   }
 
-  const totalSelected = useMemo(
-    () =>
-      selectedIndices.length === results?.length
-        ? totalResults
-        : selectedIndices.length,
-    [results?.length, selectedIndices.length, totalResults]
-  )
+  const totalSelected =
+    selectedIndices.length > 0 && selectedIndices.length === results?.length
+      ? totalResults - (totalHiddenResults ?? 0)
+      : selectedIndices.length
 
   const handleScrolledToBottom = useCallback(
     () => setSize((state) => state + 1),
@@ -111,6 +111,12 @@ export const SubmissionsContent = ({
 
   return (
     <Stack maxW="1200px" w="full" pb="28">
+      {totalHiddenResults && (
+        <UnlockProPlanInfo
+          buttonLabel={`Unlock ${totalHiddenResults} results`}
+          contentLabel="You are seeing complete submissions only."
+        />
+      )}
       <Flex w="full" justifyContent="flex-end">
         <ResultsActionButtons
           isDeleteLoading={isDeleteLoading}

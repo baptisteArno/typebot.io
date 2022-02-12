@@ -92,10 +92,10 @@ export const ChatBlock = ({
       const isSingleChoiceStep =
         isChoiceInput(currentStep) && !currentStep.options.isMultipleChoice
       if (isSingleChoiceStep) {
-        onBlockEnd(
-          currentStep.items.find((i) => i.content === answerContent)
-            ?.outgoingEdgeId
-        )
+        const nextEdgeId = currentStep.items.find(
+          (i) => i.content === answerContent
+        )?.outgoingEdgeId
+        if (nextEdgeId) return onBlockEnd(nextEdgeId)
       }
 
       if (currentStep?.outgoingEdgeId || displayedSteps.length === steps.length)

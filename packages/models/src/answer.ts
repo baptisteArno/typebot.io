@@ -5,5 +5,5 @@ export type Answer = Omit<AnswerFromPrisma, 'resultId' | 'createdAt'>
 export type Stats = {
   totalViews: number
   totalStarts: number
-  completionRate: number
+  totalCompleted: number
 }

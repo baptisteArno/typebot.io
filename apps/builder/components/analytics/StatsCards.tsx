@@ -34,7 +34,9 @@ export const StatsCards = ({
       <Stat bgColor="white" p="4" rounded="md" boxShadow="md">
         <StatLabel>Completion rate</StatLabel>
         {stats ? (
-          <StatNumber>{stats.completionRate}%</StatNumber>
+          <StatNumber>
+            {Math.round((stats.totalCompleted / stats.totalStarts) * 100)}%
+          </StatNumber>
         ) : (
           <Skeleton w="50%" h="10px" mt="2" />
         )}

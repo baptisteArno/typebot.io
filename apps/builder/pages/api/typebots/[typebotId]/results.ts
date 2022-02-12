@@ -2,6 +2,7 @@ import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import { isFreePlan } from 'services/user'
 import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         typebotId,
         typebot: { ownerId: user.id },
         answers: { some: {} },
+        isCompleted: isFreePlan(user),
       },
       orderBy: {
         createdAt: 'desc',

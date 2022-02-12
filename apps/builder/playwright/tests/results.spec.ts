@@ -2,6 +2,7 @@ import test, { expect, Page } from '@playwright/test'
 import { readFileSync } from 'fs'
 import { defaultTextInputOptions, InputStepType } from 'models'
 import { parse } from 'papaparse'
+import path from 'path'
 import { generate } from 'short-uuid'
 import {
   createResults,
@@ -85,6 +86,17 @@ test.describe('Results page', () => {
     const fileAll = readFileSync(pathAll as string).toString()
     const { data: dataAll } = parse(fileAll)
     validateExportAll(dataAll)
+  })
+
+  test.describe('Free user', () => {
+    test.use({
+      storageState: path.join(__dirname, '../freeUser.json'),
+    })
+    test("Incomplete results shouldn't be displayed", async ({ page }) => {
+      await page.goto(`/typebots/${typebotId}/results`)
+      await page.click('text=Unlock 200 results')
+      await expect(page.locator('text=Upgrade now')).toBeVisible()
+    })
   })
 })
 

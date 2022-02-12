@@ -26,14 +26,11 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
         <Text>Create a folder</Text>
         {isFreePlan(user) && <Tag colorScheme="orange">Pro</Tag>}
       </HStack>
-      {user && (
-        <UpgradeModal
-          isOpen={isOpen}
-          onClose={onClose}
-          user={user}
-          type={LimitReached.FOLDER}
-        />
-      )}
+      <UpgradeModal
+        isOpen={isOpen}
+        onClose={onClose}
+        type={LimitReached.FOLDER}
+      />
     </Button>
   )
 }
