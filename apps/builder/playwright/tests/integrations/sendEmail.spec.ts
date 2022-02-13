@@ -70,11 +70,8 @@ test.describe('Send email step', () => {
 
     await page.click('text=Preview')
     await typebotViewer(page).locator('text=Go').click()
-    await page.waitForResponse(
-      (resp) =>
-        resp.request().url().includes('/api/integrations/email') &&
-        resp.status() === 200 &&
-        resp.request().method() === 'POST'
-    )
+    await expect(
+      page.locator('text=Emails are not sent in preview mode')
+    ).toBeVisible()
   })
 })

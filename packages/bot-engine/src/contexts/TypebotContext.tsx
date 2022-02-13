@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 const typebotContext = createContext<{
   typebot: PublicTypebot
   apiHost: string
+  isPreview: boolean
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -14,10 +15,12 @@ export const TypebotContext = ({
   children,
   typebot,
   apiHost,
+  isPreview,
 }: {
   children: ReactNode
   typebot: PublicTypebot
   apiHost: string
+  isPreview: boolean
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
 
@@ -42,6 +45,7 @@ export const TypebotContext = ({
       value={{
         typebot: localTypebot,
         apiHost,
+        isPreview,
         updateVariableValue,
         createEdge,
       }}

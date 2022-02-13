@@ -14,6 +14,7 @@ import { Answer, BackgroundType, Edge, PublicTypebot } from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
+  isPreview?: boolean
   apiHost?: string
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
@@ -22,6 +23,7 @@ export type TypebotViewerProps = {
 export const TypebotViewer = ({
   typebot,
   apiHost = process.env.NEXT_PUBLIC_VIEWER_HOST,
+  isPreview = false,
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
@@ -66,7 +68,7 @@ export const TypebotViewer = ({
           }:wght@300;400;600&display=swap');`,
         }}
       />
-      <TypebotContext typebot={typebot} apiHost={apiHost}>
+      <TypebotContext typebot={typebot} apiHost={apiHost} isPreview={isPreview}>
         <AnswersContext>
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"

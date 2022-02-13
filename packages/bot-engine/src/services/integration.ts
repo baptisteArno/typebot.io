@@ -15,6 +15,7 @@ import {
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
+import { sendInfoMessage } from './postMessage'
 import { parseVariables, parseVariablesInObject } from './variable'
 
 const safeEval = eval
@@ -24,6 +25,7 @@ type IntegrationContext = {
   apiHost: string
   typebotId: string
   indices: Indices
+  isPreview: boolean
   variables: Variable[]
   updateVariableValue: (variableId: string, value: string) => void
 }
@@ -177,8 +179,10 @@ const executeWebhook = async (
 
 const sendEmail = async (
   step: SendEmailStep,
-  { variables, apiHost }: IntegrationContext
+  { variables, apiHost, isPreview }: IntegrationContext
 ) => {
+  if (isPreview) sendInfoMessage('Emails are not sent in preview mode')
+  if (isPreview) return step.outgoingEdgeId
   const { options } = step
   const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/email`,
