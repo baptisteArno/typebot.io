@@ -13,10 +13,12 @@ import { AnswersCount } from 'services/analytics'
 export const Graph = ({
   typebot,
   answersCounts,
+  onUnlockProPlanClick,
   ...props
 }: {
   typebot?: Typebot | PublicTypebot
   answersCounts?: AnswersCount[]
+  onUnlockProPlanClick?: () => void
 } & FlexProps) => {
   const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
     useStepDnd()
@@ -99,7 +101,11 @@ export const Graph = ({
           transform,
         }}
       >
-        <Edges edges={typebot?.edges ?? []} answersCounts={answersCounts} />
+        <Edges
+          edges={typebot?.edges ?? []}
+          answersCounts={answersCounts}
+          onUnlockProPlanClick={onUnlockProPlanClick}
+        />
         {typebot?.blocks.map((block, idx) => (
           <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
         ))}

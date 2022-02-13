@@ -1,6 +1,7 @@
-import { VStack, Tag, Text } from '@chakra-ui/react'
+import { VStack, Tag, Text, Tooltip } from '@chakra-ui/react'
 import { useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
+import { useUser } from 'contexts/UserContext'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
 import {
@@ -8,16 +9,25 @@ import {
   computeSourceCoordinates,
   computeDropOffPath,
 } from 'services/graph'
+import { isFreePlan } from 'services/user'
 import { byId, isDefined } from 'utils'
 
 type Props = {
   blockId: string
   answersCounts: AnswersCount[]
+  onUnlockProPlanClick?: () => void
 }
 
-export const DropOffEdge = ({ answersCounts, blockId }: Props) => {
+export const DropOffEdge = ({
+  answersCounts,
+  blockId,
+  onUnlockProPlanClick,
+}: Props) => {
+  const { user } = useUser()
   const { sourceEndpoints, graphPosition, blocksCoordinates } = useGraph()
   const { publishedTypebot } = useTypebot()
+
+  const isUserOnFreePlan = isFreePlan(user)
 
   const totalAnswers = useMemo(
     () => answersCounts.find((a) => a.blockId === blockId)?.totalAnswers,
@@ -77,23 +87,33 @@ export const DropOffEdge = ({ answersCounts, blockId }: Props) => {
         fill="none"
       />
       <foreignObject
-        width="80"
+        width="100"
         height="80"
-        x={labelCoordinates.x - 20}
+        x={labelCoordinates.x - 30}
         y={labelCoordinates.y + 80}
       >
-        <VStack
-          bgColor={'red.500'}
-          color="white"
-          rounded="md"
-          p="2"
-          justifyContent="center"
-          w="full"
-          h="full"
+        <Tooltip
+          label="Unlock Drop-off rate by upgrading to Pro plan"
+          isDisabled={!isUserOnFreePlan}
         >
-          <Text>{dropOffRate}%</Text>
-          <Tag colorScheme="red">{totalDroppedUser} users</Tag>
-        </VStack>
+          <VStack
+            bgColor={'red.500'}
+            color="white"
+            rounded="md"
+            p="2"
+            justifyContent="center"
+            w="full"
+            h="full"
+            filter={isUserOnFreePlan ? 'blur(4px)' : ''}
+            onClick={isUserOnFreePlan ? onUnlockProPlanClick : undefined}
+            cursor={isUserOnFreePlan ? 'pointer' : 'auto'}
+          >
+            <Text>{isUserOnFreePlan ? 'X' : dropOffRate}%</Text>
+            <Tag colorScheme="red">
+              {isUserOnFreePlan ? 'n' : totalDroppedUser} users
+            </Tag>
+          </VStack>
+        </Tooltip>
       </foreignObject>
     </>
   )

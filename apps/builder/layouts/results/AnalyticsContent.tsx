@@ -1,6 +1,7 @@
-import { Flex, useToast } from '@chakra-ui/react'
+import { Flex, useDisclosure, useToast } from '@chakra-ui/react'
 import { StatsCards } from 'components/analytics/StatsCards'
 import { Graph } from 'components/shared/Graph'
+import { UpgradeModal } from 'components/shared/modals/UpgradeModal.'
 import { GraphProvider } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Stats } from 'models'
@@ -8,6 +9,7 @@ import React from 'react'
 import { useAnswersCount } from 'services/analytics'
 
 export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
 
   const toast = useToast({
@@ -31,6 +33,7 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
           <Graph
             flex="1"
             typebot={publishedTypebot}
+            onUnlockProPlanClick={onOpen}
             answersCounts={[
               { ...answersCounts[0], totalAnswers: stats?.totalStarts },
               ...answersCounts?.slice(1),
@@ -38,6 +41,7 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
           />
         </GraphProvider>
       )}
+      <UpgradeModal onClose={onClose} isOpen={isOpen} />
       <StatsCards stats={stats} pos="absolute" top={10} />
     </Flex>
   )

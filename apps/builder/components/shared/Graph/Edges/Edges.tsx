@@ -9,8 +9,13 @@ import { Edge } from './Edge'
 type Props = {
   edges: EdgeProps[]
   answersCounts?: AnswersCount[]
+  onUnlockProPlanClick?: () => void
 }
-export const Edges = ({ edges, answersCounts }: Props) => {
+export const Edges = ({
+  edges,
+  answersCounts,
+  onUnlockProPlanClick,
+}: Props) => {
   return (
     <chakra.svg
       width="full"
@@ -29,6 +34,7 @@ export const Edges = ({ edges, answersCounts }: Props) => {
           key={answerCount.blockId}
           answersCounts={answersCounts}
           blockId={answerCount.blockId}
+          onUnlockProPlanClick={onUnlockProPlanClick}
         />
       ))}
       <marker

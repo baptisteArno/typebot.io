@@ -20,7 +20,6 @@ export enum LimitReached {
   BRAND = 'Remove branding',
   CUSTOM_DOMAIN = 'Custom domain',
   FOLDER = 'Create folders',
-  ANALYTICS = 'Unlock analytics',
 }
 
 type UpgradeModalProps = {
