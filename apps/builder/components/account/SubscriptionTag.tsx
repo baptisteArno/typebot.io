@@ -13,7 +13,7 @@ export const SubscriptionTag = ({ plan }: { plan?: Plan }) => {
       return <Tag>Offered</Tag>
     }
     case Plan.PRO: {
-      return <Tag colorScheme="blue">Pro plan</Tag>
+      return <Tag colorScheme="orange">Pro plan</Tag>
     }
     default: {
       return <Tag>Free plan</Tag>

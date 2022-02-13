@@ -89,4 +89,24 @@ test.describe.parallel('Settings page', () => {
       await page.fill('textarea#description', 'Lorem ipsum')
     })
   })
+
+  test.describe('Free user', () => {
+    test.use({
+      storageState: path.join(__dirname, '../freeUser.json'),
+    })
+    test("can't remove branding", async ({ page }) => {
+      const typebotId = 'free-branding-typebot'
+      await importTypebotInDatabase(
+        path.join(__dirname, '../fixtures/typebots/theme.json'),
+        {
+          id: typebotId,
+        }
+      )
+      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.click('button:has-text("General")')
+      await expect(page.locator('text=Pro')).toBeVisible()
+      await page.click('text=Typebot.io branding')
+      await expect(page.locator('text=Upgrade now')).toBeVisible()
+    })
+  })
 })
