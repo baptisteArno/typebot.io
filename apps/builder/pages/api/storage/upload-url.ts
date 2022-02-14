@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs'
 import aws from 'aws-sdk'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -39,4 +40,4 @@ const handler = async (
   return methodNotAllowed(res)
 }
 
-export default handler
+export default withSentry(handler)

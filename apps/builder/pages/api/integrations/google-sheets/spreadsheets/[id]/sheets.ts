@@ -4,6 +4,7 @@ import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { methodNotAllowed } from 'utils'
 import { getSession } from 'next-auth/react'
 import { User } from 'db'
+import { withSentry } from '@sentry/nextjs'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
@@ -38,4 +39,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default handler
+export default withSentry(handler)

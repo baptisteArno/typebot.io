@@ -7,6 +7,7 @@ import { stringify } from 'querystring'
 import { CredentialsType } from 'models'
 import { encrypt } from 'utils'
 import { oauth2Client } from 'libs/google-sheets'
+import { withSentry } from '@sentry/nextjs'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
@@ -57,10 +58,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
     const queryParams = stringify({ stepId, credentialsId })
-    return res.redirect(
+    res.redirect(
       `${redirectUrl}?${queryParams}` ?? `${process.env.NEXTAUTH_URL}`
     )
   }
 }
 
-export default handler
+export default withSentry(handler)

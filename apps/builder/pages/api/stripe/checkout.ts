@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
+import { withSentry } from '@sentry/nextjs'
 
 const usdPriceIdTest = 'price_1Jc4TQKexUFvKTWyGvsH4Ff5'
-const createCheckoutSession = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     if (!process.env.STRIPE_SECRET_KEY)
       throw Error('STRIPE_SECRET_KEY var is missing')
@@ -32,4 +30,4 @@ const createCheckoutSession = async (
   return methodNotAllowed(res)
 }
 
-export default createCheckoutSession
+export default withSentry(handler)

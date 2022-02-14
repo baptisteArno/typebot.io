@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, Tag, Text, Stack } from '@chakra-ui/react'
+import { OrderedList, ListItem, Tag } from '@chakra-ui/react'
 import { ChatEmbedCode } from 'components/share/codeSnippets/Chat/EmbedCode'
 import { ChatEmbedSettings } from 'components/share/codeSnippets/Chat/EmbedSettings'
 import { ContainerEmbedCode } from 'components/share/codeSnippets/Container/EmbedCode'

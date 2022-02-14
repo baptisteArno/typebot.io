@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
 import { methodNotAllowed } from 'utils'
 import { stringify } from 'qs'
+import { withSentry } from '@sentry/nextjs'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
@@ -19,10 +20,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       stepIndex
     ]
     if (!('webhook' in step))
-      return {
-        statusCode: 400,
-        data: { message: `Couldn't find webhook` },
-      }
+      return res
+        .status(404)
+        .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const result = await executeWebhook(step.webhook, variables)
     return res.status(200).send(result)
   }
@@ -101,4 +101,4 @@ const convertKeyValueTableToObject = (
   }, {})
 }
 
-export default handler
+export default withSentry(handler)

@@ -3,11 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
+import { withSentry } from '@sentry/nextjs'
 
-const createCheckoutSession = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
   if (!session?.user)
     return res.status(401).json({ message: 'Not authenticated' })
@@ -29,4 +27,4 @@ const createCheckoutSession = async (
   return methodNotAllowed(res)
 }
 
-export default createCheckoutSession
+export default withSentry(handler)

@@ -5,6 +5,7 @@ import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from 'libs/prisma'
 import { Plan } from 'db'
+import { withSentry } from '@sentry/nextjs'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -70,4 +71,4 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default cors(webhookHandler as any)
+export default withSentry(cors(webhookHandler as any))

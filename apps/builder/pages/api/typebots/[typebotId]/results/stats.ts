@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs'
 import { User } from 'db'
 import prisma from 'libs/prisma'
 import { Stats } from 'models'
@@ -45,4 +46,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default handler
+export default withSentry(handler)

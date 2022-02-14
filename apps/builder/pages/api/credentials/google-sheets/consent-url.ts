@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs'
 import { oauth2Client } from 'libs/google-sheets'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -15,8 +16,8 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       prompt: 'consent',
       state: Buffer.from(JSON.stringify(req.query)).toString('base64'),
     })
-    return res.status(301).redirect(url)
+    res.status(301).redirect(url)
   }
 }
 
-export default handler
+export default withSentry(handler)

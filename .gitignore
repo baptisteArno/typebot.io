@@ -11,3 +11,5 @@ playwright-report
 dist
 test-results
 **/api/scripts
+.sentryclirc
+sentry.properties

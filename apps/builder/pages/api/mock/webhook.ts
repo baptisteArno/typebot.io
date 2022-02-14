@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from 'utils'
 
@@ -23,4 +24,4 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default handler
+export default withSentry(handler)
