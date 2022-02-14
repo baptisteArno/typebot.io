@@ -9380,10 +9380,15 @@ type-fest@^1.2.2:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
   integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
 
-typebot-js@2.0.21, typebot-js@^2.0.21:
+typebot-js@^2.0.21:
   version "2.0.21"
   resolved "https://registry.yarnpkg.com/typebot-js/-/typebot-js-2.0.21.tgz#1211ef4ffbf8f69facf538721073ec17660283b9"
   integrity sha512-7a0vODc1MLYe2u9TtaO7u0Sz9V9+3Tk+YeY2cXjDgWEhFWNcUPyBZOJZMB5EDir5/togTMTIYr/TCm6fyGRi2Q==
+
+typebot-js@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typebot-js/-/typebot-js-2.1.0.tgz#e6e53e2fe83b7ac0f19cebfbba645fccc62ef8d3"
+  integrity sha512-0TavPmB8TFnmzopb9CaUCWjf0HZ6YYElnz7S6FJ08qE82SmUkx/vJ6+EhClVbV0ERBbNt5iSiSFFc8hnw1Xarg==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"

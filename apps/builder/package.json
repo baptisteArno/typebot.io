@@ -75,7 +75,7 @@
     "styled-components": "^5.3.3",
     "svg-round-corners": "^0.3.0",
     "swr": "^1.2.0",
-    "typebot-js": "2.0.21",
+    "typebot-js": "^2.1.0",
     "use-debounce": "^7.0.1",
     "use-immer": "^0.6.0",
     "utils": "*"

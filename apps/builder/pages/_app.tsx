@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import { KBarProvider } from 'kbar'
 import { actions } from 'libs/kbar'
 import { enableMocks } from 'mocks'
+import { SupportBubble } from 'components/shared/SupportBubble'
 
 if (process.env.NEXT_PUBLIC_AUTH_MOCKING === 'enabled') enableMocks()
 
@@ -36,6 +37,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             ) : (
               <Component {...pageProps} />
             )}
+            <SupportBubble />
           </UserContext>
         </SessionProvider>
       </KBarProvider>

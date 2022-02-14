@@ -139,4 +139,4 @@ export const parseInitBubbleCode = ({
   )
 }
 
-export const typebotJsHtml = `<script src="https://unpkg.com/typebot-js@2.0.20"></script>`
+export const typebotJsHtml = `<script src="https://unpkg.com/typebot-js@2.1.0"></script>`
