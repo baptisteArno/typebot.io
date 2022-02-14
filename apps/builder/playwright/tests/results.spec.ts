@@ -94,7 +94,7 @@ test.describe('Results page', () => {
     })
     test("Incomplete results shouldn't be displayed", async ({ page }) => {
       await page.goto(`/typebots/${typebotId}/results`)
-      await page.click('text=Unlock 200 results')
+      await page.click('text=Unlock')
       await expect(page.locator('text=Upgrade now')).toBeVisible()
     })
   })

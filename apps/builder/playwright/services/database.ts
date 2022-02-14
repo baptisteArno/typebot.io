@@ -98,13 +98,14 @@ export const createResults = async ({ typebotId }: { typebotId: string }) => {
     data: [
       ...Array.from(Array(200)).map((_, idx) => {
         const today = new Date()
+        const rand = Math.random()
         return {
           id: `result${idx}`,
           typebotId,
           createdAt: new Date(
             today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx)
           ),
-          isCompleted: false,
+          isCompleted: rand > 0.5,
         }
       }),
     ],

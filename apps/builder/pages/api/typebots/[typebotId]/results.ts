@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         typebotId,
         typebot: { ownerId: user.id },
         answers: { some: {} },
-        isCompleted: isFreePlan(user),
+        isCompleted: isFreePlan(user) ? false : undefined,
       },
       orderBy: {
         createdAt: 'desc',
