@@ -3,7 +3,6 @@ import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
 import { withSentry } from '@sentry/nextjs'
 
-const usdPriceIdTest = 'price_1Jc4TQKexUFvKTWyGvsH4Ff5'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     if (!process.env.STRIPE_SECRET_KEY)
@@ -11,21 +10,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2020-08-27',
     })
-    const { email } = req.body
+    const { email, currency } = JSON.parse(req.body)
     const session = await stripe.checkout.sessions.create({
       success_url: `${req.headers.origin}/typebots?stripe=success`,
       cancel_url: `${req.headers.origin}/typebots?stripe=cancel`,
       automatic_tax: { enabled: true },
       allow_promotion_codes: true,
       customer_email: email,
+      mode: 'subscription',
       line_items: [
         {
-          price: usdPriceIdTest,
+          price:
+            currency === 'eur'
+              ? process.env.STRIPE_PRICE_EUR_ID
+              : process.env.STRIPE_PRICE_USD_ID,
           quantity: 1,
         },
       ],
     })
-    res.status(201).send({ sessionId: session.id })
+    return res.status(201).send({ sessionId: session.id })
   }
   return methodNotAllowed(res)
 }

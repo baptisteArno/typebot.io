@@ -47,6 +47,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             where: { email: customer_email },
             data: { plan: Plan.PRO, stripeId: session.customer as string },
           })
+          return res.status(200).send({ message: 'user upgraded in DB' })
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
@@ -58,6 +59,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               plan: Plan.FREE,
             },
           })
+          return res.status(200).send({ message: 'user downgraded in DB' })
+        }
+        default: {
+          return res.status(304).send({ message: 'event not handled' })
         }
       }
     } catch (err) {

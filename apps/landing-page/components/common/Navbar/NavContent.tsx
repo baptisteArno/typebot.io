@@ -64,7 +64,7 @@ const MobileNavContext = ({
         </Button>
         <Button
           as={NextChakraLink}
-          href="https://app.typebot.io/signup"
+          href="https://app.typebot.io/register"
           colorScheme="blue"
           w="full"
           size="lg"
@@ -125,7 +125,7 @@ const DesktopNavContent = ({
         </Box>
         <Button
           as={NextChakraLink}
-          href="https://app.typebot.io/signup"
+          href="https://app.typebot.io/register"
           colorScheme="blue"
           fontWeight="bold"
         >

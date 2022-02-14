@@ -12,3 +12,6 @@ dist
 test-results
 **/api/scripts
 .sentryclirc
+.docusaurus
+.cache-loader
+build

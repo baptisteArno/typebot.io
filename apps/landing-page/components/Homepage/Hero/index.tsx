@@ -46,7 +46,7 @@ export const Hero = () => {
             </Text>
             <Button
               as={NextChakraLink}
-              href="https://app.typebot.io/signup"
+              href="https://app.typebot.io/register"
               colorScheme="orange"
               bgColor="#FF8E20"
               _hover={{ bgColor: 'orange.500' }}

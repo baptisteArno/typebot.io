@@ -8,6 +8,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useUser } from 'contexts/UserContext'
 import { Plan } from 'db'
 import { useRouter } from 'next/router'
@@ -54,9 +55,7 @@ export const BillingSection = () => {
             Manage my subscription
           </Button>
         )}
-        {user?.plan === Plan.FREE && (
-          <Button colorScheme="blue">Upgrade</Button>
-        )}
+        {user?.plan === Plan.FREE && <UpgradeButton />}
         {user?.plan === Plan.FREE && (
           <HStack as="form" onSubmit={handleCouponCodeRedeem}>
             <Input name="coupon" placeholder="Coupon code..." />

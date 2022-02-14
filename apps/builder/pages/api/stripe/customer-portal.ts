@@ -20,9 +20,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const session = await stripe.billingPortal.sessions.create({
       customer: user.stripeId,
-      return_url: `${req.headers.origin}/account`,
+      return_url: req.headers.referer,
     })
-    res.status(201).redirect(session.url)
+    res.redirect(session.url)
+    return
   }
   return methodNotAllowed(res)
 }

@@ -28,7 +28,8 @@ export const SignInForm = ({
   })
 
   useEffect(() => {
-    if (status === 'authenticated') router.replace('/typebots')
+    if (status === 'authenticated')
+      router.replace({ pathname: '/typebots', query: router.query })
   }, [status, router])
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>

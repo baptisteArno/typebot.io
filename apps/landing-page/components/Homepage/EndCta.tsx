@@ -21,7 +21,7 @@ export const EndCta = () => {
         </Text>
         <Button
           as="a"
-          href="https://app.typebot.io/signup"
+          href="https://app.typebot.io/register"
           mt="8"
           size="lg"
           colorScheme="blue"

@@ -31,10 +31,12 @@ type UpgradeModalProps = {
 export const UpgradeModal = ({ type, onClose, isOpen }: UpgradeModalProps) => {
   const { user } = useUser()
   const [payLoading, setPayLoading] = useState(false)
-  const [userLanguage, setUserLanguage] = useState<string>('en')
+  const [currency, setCurrency] = useState<'usd' | 'eur'>('usd')
 
   useEffect(() => {
-    setUserLanguage(navigator.language.toLowerCase())
+    setCurrency(
+      navigator.languages.find((l) => l.includes('fr')) ? 'eur' : 'usd'
+    )
   }, [])
 
   let limitLabel
@@ -55,7 +57,7 @@ export const UpgradeModal = ({ type, onClose, isOpen }: UpgradeModalProps) => {
   const handlePayClick = async () => {
     if (!user) return
     setPayLoading(true)
-    await pay(user)
+    await pay(user, currency)
   }
 
   return (
@@ -73,7 +75,7 @@ export const UpgradeModal = ({ type, onClose, isOpen }: UpgradeModalProps) => {
           )}
           <PricingCard
             data={{
-              price: userLanguage.includes('fr') ? '25€' : '$30',
+              price: currency === 'eur' ? '25€' : '$30',
               name: 'Pro plan',
               features: [
                 'Branding removed',

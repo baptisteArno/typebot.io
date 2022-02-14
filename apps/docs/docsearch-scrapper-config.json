@@ -1,0 +1,19 @@
+{
+  "index_name": "typebot",
+  "start_urls": ["https://docs.typebot.io/"],
+  "stop_urls": ["open-typebot=true$"],
+  "selectors": {
+    "lvl0": {
+      "selector": ".menu__link--sublist.menu__link--active",
+      "global": true,
+      "default_value": "Documentation"
+    },
+    "lvl1": "[class^='docItemContainer_'] h1",
+    "lvl2": "[class^='docItemContainer_'] h2",
+    "lvl3": "[class^='docItemContainer_'] h3",
+    "lvl4": "[class^='docItemContainer_'] h4",
+    "lvl5": "[class^='docItemContainer_'] h5",
+    "text": "[class^='docItemContainer_'] p, [class^='docItemContainer_'] li"
+  },
+  "selectors_exclude": [".hash-link"]
+}

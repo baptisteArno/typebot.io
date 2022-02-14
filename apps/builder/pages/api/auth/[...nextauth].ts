@@ -19,6 +19,13 @@ const providers: Provider[] = [
       },
     },
     from: `"${process.env.AUTH_EMAIL_FROM_NAME}" <${process.env.AUTH_EMAIL_FROM_EMAIL}>`,
+    // sendVerificationRequest({
+    //   identifier: email,
+    //   url,
+    //   provider: { server, from },
+    // }) {
+    //   console.log(url)
+    // },
   }),
 ]
 

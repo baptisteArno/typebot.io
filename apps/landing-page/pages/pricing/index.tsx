@@ -8,10 +8,14 @@ import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
 import { PricingCard } from 'components/PricingPage/PricingCard'
 import { ActionButton } from 'components/PricingPage/PricingCard/ActionButton'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 const Pricing = () => {
-  const router = useRouter()
+  const [price, setPrice] = useState<'$30' | '25€' | ''>('')
+
+  useEffect(() => {
+    setPrice(navigator.languages.find((l) => l.includes('fr')) ? '25€' : '$30')
+  }, [])
 
   return (
     <Stack overflowX="hidden">
@@ -28,12 +32,8 @@ const Pricing = () => {
           description={
             "99% of Typebot's features are available to all users for free."
           }
-          currentUrl={`https://www.typebot.io/${
-            router.locale === 'fr' ? 'fr/' : ''
-          }pricing`}
-          imagePreviewUrl={`https://www.typebot.io/images/previews/pricing${
-            router.locale === 'fr' ? '-fr' : ''
-          }.png`}
+          currentUrl={`https://www.typebot.io/pricing`}
+          imagePreviewUrl={`https://www.typebot.io/images/previews/pricing.png`}
         />
         <Head>
           <link
@@ -77,7 +77,7 @@ const Pricing = () => {
               }}
               button={
                 <NextChakraLink
-                  href="https://app.typebot.io/signup"
+                  href="https://app.typebot.io/register"
                   _hover={{ textDecor: 'none' }}
                 >
                   <ActionButton variant="outline">Try now</ActionButton>
@@ -86,7 +86,7 @@ const Pricing = () => {
             />
             <PricingCard
               data={{
-                price: '$30',
+                price,
                 name: 'Pro',
                 features: [
                   'Everything in Basic',
@@ -102,7 +102,7 @@ const Pricing = () => {
               beforeButtonLabel={"The only form builder you'll need"}
               button={
                 <NextChakraLink
-                  href="https://app.typebot.io/signup?chosen_plan=scale"
+                  href="https://app.typebot.io/register?subscribe=true"
                   _hover={{ textDecor: 'none' }}
                 >
                   <ActionButton>Subscribe now</ActionButton>

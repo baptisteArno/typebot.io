@@ -1,16 +1,28 @@
 import { Stack, Button } from '@chakra-ui/react'
 import { FacebookIcon, GithubIcon, GoogleIcon } from 'assets/icons'
 import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import React from 'react'
+import { stringify } from 'qs'
 
 export const SocialLoginButtons = () => {
+  const { query } = useRouter()
   const { status } = useSession()
 
-  const handleGitHubClick = async () => signIn('github')
+  const handleGitHubClick = async () =>
+    signIn('github', {
+      callbackUrl: `/typebots?${stringify(query)}`,
+    })
 
-  const handleGoogleClick = async () => signIn('google')
+  const handleGoogleClick = async () =>
+    signIn('google', {
+      callbackUrl: `/typebots?${stringify(query)}`,
+    })
 
-  const handleFacebookClick = async () => signIn('facebook')
+  const handleFacebookClick = async () =>
+    signIn('facebook', {
+      callbackUrl: `/typebots?${stringify(query)}`,
+    })
 
   return (
     <Stack>
