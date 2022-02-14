@@ -10,3 +10,4 @@ authenticatedState.json
 playwright-report
 dist
 test-results
+**/api/scripts

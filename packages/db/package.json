@@ -2,21 +2,22 @@
   "name": "db",
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "devDependencies": {
-    "prisma": "^3.8.1",
-    "ts-node": "^10.4.0",
+    "prisma": "^3.9.2",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "@prisma/client": "^3.8.1"
+    "@prisma/client": "^3.9.2"
   },
   "scripts": {
-    "dev": "dotenv -e .env yarn prisma db push && BROWSER=none yarn prisma studio",
+    "dev": "dotenv -e ../../apps/builder/.env.local yarn prisma db push && yarn start:sutdio  ",
+    "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none yarn prisma studio",
     "build": "yarn migration:push",
-    "migration:push": "dotenv -e .env yarn prisma db push",
-    "migration:create": "dotenv -e .env yarn prisma migrate dev",
-    "migration:reset": "dotenv -e .env yarn prisma migrate reset"
+    "migration:push": "dotenv -e ../../apps/builder/.env.local yarn prisma db push",
+    "migration:create": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate dev",
+    "migration:reset": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate reset"
   }
 }
