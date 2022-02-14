@@ -8,7 +8,6 @@ import {
   Coordinates,
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
-import { headerHeight } from 'components/shared/TypebotHeader'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
@@ -274,20 +273,18 @@ export const computeEdgePathToMouse = ({
 }
 
 export const getEndpointTopOffset = (
-  graphPosition: Coordinates,
   endpoints: IdMap<Endpoint>,
-  endpointId?: string,
-  isAnalytics?: boolean
+  graphOffsetY: number,
+  endpointId?: string
 ): number | undefined => {
   if (!endpointId) return
   const endpointRef = endpoints[endpointId]?.ref
-  if (!endpointRef) return
+  if (!endpointRef?.current) return
+  const endpointHeight = 18
   return (
-    8 +
-    (endpointRef.current?.getBoundingClientRect().top ?? 0) -
-    graphPosition.y -
-    headerHeight -
-    (isAnalytics ? 60 : 0)
+    endpointRef.current.getBoundingClientRect().top +
+    endpointHeight / 2 -
+    graphOffsetY
   )
 }
 

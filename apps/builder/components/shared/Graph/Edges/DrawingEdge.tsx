@@ -18,6 +18,7 @@ export const DrawingEdge = () => {
     sourceEndpoints,
     targetEndpoints,
     blocksCoordinates,
+    graphOffsetY,
   } = useGraph()
   const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -30,22 +31,20 @@ export const DrawingEdge = () => {
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0
     return getEndpointTopOffset(
-      graphPosition,
       sourceEndpoints,
+      graphOffsetY,
       connectingIds.source.itemId ?? connectingIds.source.stepId
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphPosition, sourceEndpoints, connectingIds])
+  }, [connectingIds, sourceEndpoints, graphOffsetY])
 
   const targetTop = useMemo(() => {
     if (!connectingIds) return 0
     return getEndpointTopOffset(
-      graphPosition,
       targetEndpoints,
+      graphOffsetY,
       connectingIds.target?.stepId
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphPosition, targetEndpoints, connectingIds])
+  }, [connectingIds, targetEndpoints, graphOffsetY])
 
   const path = useMemo(() => {
     if (!sourceTop || !sourceBlockCoordinates) return ``

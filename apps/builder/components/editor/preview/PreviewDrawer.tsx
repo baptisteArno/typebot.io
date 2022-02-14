@@ -59,7 +59,6 @@ export const PreviewDrawer = () => {
 
   useEffect(() => {
     const onMessageFromBot = (event: MessageEvent) => {
-      console.log(event)
       if (event.data.typebotInfo) {
         toast({ description: event.data.typebotInfo })
       }

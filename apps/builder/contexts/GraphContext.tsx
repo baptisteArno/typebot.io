@@ -41,7 +41,7 @@ export type Node = Omit<Block, 'steps'> & {
   })[]
 }
 
-const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
+export const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
 
 export type ConnectingIds = {
   source: Source
@@ -73,6 +73,8 @@ const graphContext = createContext<{
   openedStepId?: string
   setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
   isReadOnly: boolean
+  graphOffsetY: number
+  setGraphOffsetY: Dispatch<SetStateAction<number>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -98,6 +100,7 @@ export const GraphProvider = ({
   const [blocksCoordinates, setBlocksCoordinates] = useState<BlocksCoordinates>(
     {}
   )
+  const [graphOffsetY, setGraphOffsetY] = useState(0)
 
   useEffect(() => {
     setBlocksCoordinates(
@@ -150,6 +153,8 @@ export const GraphProvider = ({
         blocksCoordinates,
         updateBlockCoordinates,
         isReadOnly,
+        graphOffsetY,
+        setGraphOffsetY,
       }}
     >
       {children}

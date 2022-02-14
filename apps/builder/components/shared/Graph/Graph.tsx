@@ -9,6 +9,7 @@ import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { Block, DraggableStepType, PublicTypebot, Typebot } from 'models'
 import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
+import { useDebounce } from 'use-debounce'
 
 export const Graph = ({
   typebot,
@@ -30,7 +31,9 @@ export const Graph = ({
     setGraphPosition,
     setOpenedStepId,
     updateBlockCoordinates,
+    setGraphOffsetY,
   } = useGraph()
+  const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(
     () =>
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
@@ -42,7 +45,17 @@ export const Graph = ({
     editorContainerRef.current = document.getElementById(
       'editor-container'
     ) as HTMLDivElement
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!graphContainerRef.current) return
+    setGraphOffsetY(
+      graphContainerRef.current.getBoundingClientRect().top +
+        debouncedGraphPosition.y
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedGraphPosition])
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
@@ -112,15 +125,19 @@ export const Graph = ({
       ref={graphContainerRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
+      position="relative"
       {...props}
     >
       <Flex
         flex="1"
-        boxSize={'200px'}
-        maxW={'200px'}
+        w="full"
+        h="full"
+        position="absolute"
         style={{
           transform,
         }}
+        willChange="transform"
+        transformOrigin="0px 0px 0px"
       >
         <Edges
           edges={typebot?.edges ?? []}
