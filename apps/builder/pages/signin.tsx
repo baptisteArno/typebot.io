@@ -8,7 +8,13 @@ const SignInPage = () => {
   return (
     <VStack spacing={4} h="100vh" justifyContent="center">
       <Seo title="Sign in" />
-      <Heading>Sign in</Heading>
+      <Heading
+        onClick={() => {
+          throw new Error('Sentry is working')
+        }}
+      >
+        Sign in
+      </Heading>
       <AuthSwitcher type="signin" />
       <SignInForm />
     </VStack>

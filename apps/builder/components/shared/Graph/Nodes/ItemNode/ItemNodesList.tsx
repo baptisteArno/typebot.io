@@ -95,6 +95,7 @@ export const ItemNodesList = ({
       item: ButtonItem
     ) => {
       if (!typebot || isReadOnly) return
+      placeholderRefs.current.splice(itemIndex + 1, 1)
       deleteItem({ blockIndex, stepIndex, itemIndex })
       setPosition(absolute)
       setRelativeCoordinates(relative)

@@ -1,4 +1,4 @@
-import test, { expect, Page } from '@playwright/test'
+import test, { expect } from '@playwright/test'
 import {
   createTypebots,
   importTypebotInDatabase,
@@ -65,7 +65,9 @@ test.describe.parallel('Editor', () => {
     await expect(page.locator('[data-testid="step"] >> nth=1')).toHaveText(
       'Hello!'
     )
-    await page.dragAndDrop('text=Hello', 'text=Item 1')
+    await page.dragAndDrop('text=Hello', '[data-testid="step"] >> nth=3', {
+      targetPosition: { x: 100, y: 0 },
+    })
     await expect(page.locator('[data-testid="step"] >> nth=2')).toHaveText(
       'Hello!'
     )

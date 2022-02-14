@@ -62,7 +62,6 @@ export const StepNodesList = ({
       y: clientY - mousePositionInElement.y,
     })
   }
-  useEventListener('mousemove', handleMouseMoveGlobal)
 
   const handleMouseMoveOnBlock = (event: MouseEvent) => {
     if (!isDraggingOnCurrentBlock) return
@@ -70,7 +69,6 @@ export const StepNodesList = ({
       computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
     )
   }
-  useEventListener('mousemove', handleMouseMoveOnBlock, blockRef.current)
 
   const handleMouseUpOnBlock = (e: MouseEvent) => {
     setExpandedPlaceholderIndex(undefined)
@@ -87,14 +85,6 @@ export const StepNodesList = ({
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
   }
-  useEventListener(
-    'mouseup',
-    handleMouseUpOnBlock,
-    mouseOverBlock?.ref.current,
-    {
-      capture: true,
-    }
-  )
 
   const handleStepMouseDown =
     (stepIndex: number) =>
@@ -103,6 +93,7 @@ export const StepNodesList = ({
       step: DraggableStep
     ) => {
       if (isReadOnly) return
+      placeholderRefs.current.splice(stepIndex + 1, 1)
       detachStepFromBlock({ blockIndex, stepIndex })
       setPosition(absolute)
       setMousePositionInElement(relative)
@@ -114,6 +105,16 @@ export const StepNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
+  useEventListener('mousemove', handleMouseMoveGlobal)
+  useEventListener('mousemove', handleMouseMoveOnBlock, blockRef.current)
+  useEventListener(
+    'mouseup',
+    handleMouseUpOnBlock,
+    mouseOverBlock?.ref.current,
+    {
+      capture: true,
+    }
+  )
   return (
     <Stack
       spacing={1}

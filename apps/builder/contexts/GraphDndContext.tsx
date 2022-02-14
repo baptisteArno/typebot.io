@@ -117,7 +117,7 @@ export const computeNearestPlaceholderIndex = (
         ? { closestIndex: index, value: mouseDistanceFromPlaceholder }
         : prev
     },
-    { closestIndex: 0, value: 100 }
+    { closestIndex: 0, value: 999999999999 }
   )
   return closestIndex
 }
