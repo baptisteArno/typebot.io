@@ -65,7 +65,8 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const handleTitleSubmit = (title: string) =>
     updateBlock(blockIndex, { title })
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation()
     setIsMouseDown(true)
   }
   const handleMouseUp = () => {

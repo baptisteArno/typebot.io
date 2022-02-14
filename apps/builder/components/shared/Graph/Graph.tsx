@@ -1,5 +1,5 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
-import React, { useRef, useMemo, useEffect } from 'react'
+import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { blockWidth, useGraph } from 'contexts/GraphContext'
 import { BlockNode } from './Nodes/BlockNode/BlockNode'
 import { useStepDnd } from 'contexts/GraphDndContext'
@@ -36,6 +36,7 @@ export const Graph = ({
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
+  const [isMouseDown, setIsMouseDown] = useState(false)
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -60,8 +61,8 @@ export const Graph = ({
         y: graphPosition.y - e.deltaY,
       })
   }
-  useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
 
+  const handleGlobalMouseUp = () => setIsMouseDown(false)
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
     if (!draggedStep && !draggedStepType) return
@@ -80,19 +81,39 @@ export const Graph = ({
     setDraggedStep(undefined)
     setDraggedStepType(undefined)
   }
-  useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleCaptureMouseDown = (e: MouseEvent) => {
     const isRightClick = e.button === 2
     if (isRightClick) e.stopPropagation()
   }
-  useEventListener('mousedown', handleMouseDown, undefined, { capture: true })
 
   const handleClick = () => setOpenedStepId(undefined)
-  useEventListener('click', handleClick, editorContainerRef.current)
 
+  const handleMouseDown = () => setIsMouseDown(true)
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (!isMouseDown) return
+    const { movementX, movementY } = event
+    setGraphPosition({
+      x: graphPosition.x + movementX,
+      y: graphPosition.y + movementY,
+      scale: 1,
+    })
+  }
+
+  useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
+  useEventListener('mousedown', handleCaptureMouseDown, undefined, {
+    capture: true,
+  })
+  useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
+  useEventListener('mouseup', handleGlobalMouseUp)
+  useEventListener('click', handleClick, editorContainerRef.current)
   return (
-    <Flex ref={graphContainerRef} {...props}>
+    <Flex
+      ref={graphContainerRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      {...props}
+    >
       <Flex
         flex="1"
         boxSize={'200px'}
