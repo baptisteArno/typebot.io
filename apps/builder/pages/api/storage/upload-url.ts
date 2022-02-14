@@ -16,15 +16,15 @@ const handler = async (
       return
     }
     aws.config.update({
-      accessKeyId: process.env.S3_UPLOAD_KEY,
-      secretAccessKey: process.env.S3_UPLOAD_SECRET,
-      region: process.env.S3_UPLOAD_REGION,
+      accessKeyId: process.env.S3_ACCESS_KEY,
+      secretAccessKey: process.env.S3_SECRET_KEY,
+      region: process.env.S3_REGION,
       signatureVersion: 'v4',
     })
 
     const s3 = new aws.S3()
     const post = s3.createPresignedPost({
-      Bucket: process.env.S3_UPLOAD_BUCKET,
+      Bucket: process.env.S3_BUCKET,
       Fields: {
         ACL: 'public-read',
         key: req.query.key,
