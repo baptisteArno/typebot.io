@@ -53,9 +53,9 @@ model User {
 }
 
 model Credentials {
-  id      String          @id @default(cuid())
+  id      String @id @default(cuid())
   ownerId String
-  owner   User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   data    String // Encrypted data
   name    String
   type    String
@@ -142,4 +142,10 @@ model Answer {
   content   String
 
   @@unique([resultId, blockId, stepId])
+}
+
+model Coupon {
+  userPropertiesToUpdate Json
+  code                   String    @id
+  dateRedeemed           DateTime?
 }

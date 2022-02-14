@@ -15,8 +15,8 @@
   "scripts": {
     "dev": "dotenv -e .env yarn prisma db push && BROWSER=none yarn prisma studio",
     "build": "yarn migration:push",
-    "migration:push": "dotenv -e ../../.env yarn prisma db push",
-    "migration:create": "dotenv -e ../../.env yarn prisma migrate dev",
-    "migration:reset": "dotenv -e ../../.env yarn prisma migrate reset"
+    "migration:push": "dotenv -e .env yarn prisma db push",
+    "migration:create": "dotenv -e .env yarn prisma migrate dev",
+    "migration:reset": "dotenv -e .env yarn prisma migrate reset"
   }
 }
