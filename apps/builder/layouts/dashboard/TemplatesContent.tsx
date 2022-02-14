@@ -7,8 +7,7 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react'
-import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
-import { ImportFromFileMenuItem } from 'components/templates/ImportFileMenuItem'
+import { CreateTypebotMoreButton } from 'components/templates/ImportFileMenuItem'
 import { TemplateButton } from 'components/templates/TemplateButton'
 import { useUser } from 'contexts/UserContext'
 import { Typebot } from 'models'
@@ -63,11 +62,7 @@ export const TemplatesContent = () => {
           >
             Start from scratch
           </Button>
-          <MoreButton>
-            <ImportFromFileMenuItem onNewTypebot={handleCreateSubmit}>
-              Import from file
-            </ImportFromFileMenuItem>
-          </MoreButton>
+          <CreateTypebotMoreButton onNewTypebot={handleCreateSubmit} />
         </Flex>
         <Divider />
         <Text>Or start from a template</Text>

@@ -15,10 +15,15 @@ import { encrypt } from 'utils'
 const prisma = new PrismaClient()
 
 export const teardownDatabase = async () => {
-  await prisma.user.deleteMany()
-  await prisma.credentials.deleteMany()
-  await prisma.dashboardFolder.deleteMany()
-  return prisma.typebot.deleteMany()
+  const ownerFilter = {
+    where: { ownerId: { in: ['freeUser', 'proUser'] } },
+  }
+  await prisma.user.deleteMany({
+    where: { id: { in: ['freeUser', 'proUser'] } },
+  })
+  await prisma.credentials.deleteMany(ownerFilter)
+  await prisma.dashboardFolder.deleteMany(ownerFilter)
+  return prisma.typebot.deleteMany(ownerFilter)
 }
 
 export const setupDatabase = async () => {

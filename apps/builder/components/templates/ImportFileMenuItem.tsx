@@ -1,15 +1,15 @@
 import { chakra, MenuItem, MenuItemProps, useToast } from '@chakra-ui/react'
 import { FileIcon } from 'assets/icons'
+import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
 import { Typebot } from 'models'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 import { readFile } from 'services/utils'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
 } & MenuItemProps
 
-export const ImportFromFileMenuItem = ({ onNewTypebot, ...props }: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
+export const CreateTypebotMoreButton = ({ onNewTypebot }: Props) => {
   const toast = useToast({
     position: 'top-right',
     status: 'error',
@@ -17,7 +17,6 @@ export const ImportFromFileMenuItem = ({ onNewTypebot, ...props }: Props) => {
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return
-    setIsLoading(true)
     const file = e.target.files[0]
     const fileContent = await readFile(file)
     try {
@@ -26,7 +25,6 @@ export const ImportFromFileMenuItem = ({ onNewTypebot, ...props }: Props) => {
       console.error(err)
       toast({ description: 'Failed to parse the file' })
     }
-    setIsLoading(false)
   }
 
   return (
@@ -38,14 +36,16 @@ export const ImportFromFileMenuItem = ({ onNewTypebot, ...props }: Props) => {
         onChange={handleInputChange}
         accept=".json"
       />
-      <MenuItem
-        icon={<FileIcon />}
-        id="file-input"
-        isLoading={isLoading}
-        {...props}
-      >
-        {props.children}
-      </MenuItem>
+      <MoreButton>
+        <MenuItem
+          as="label"
+          cursor="pointer"
+          icon={<FileIcon />}
+          htmlFor="file-input"
+        >
+          Import from file
+        </MenuItem>
+      </MoreButton>
     </>
   )
 }
