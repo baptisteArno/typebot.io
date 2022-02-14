@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Flex, Stack } from '@chakra-ui/layout'
+import { Flex, Link, Stack, Text } from '@chakra-ui/layout'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
@@ -9,6 +9,7 @@ import { redeemCoupon } from 'services/coupons'
 import { Spinner, useToast } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
+import { Banner } from 'components/shared/Banner'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -50,6 +51,14 @@ const DashboardPage = () => {
 
   return (
     <Stack minH="100vh">
+      <Banner id={'v1-navigation'}>
+        <Text>
+          You are on Typebot 2.0. To access the old version, navigate to
+        </Text>
+        <Link href="https://old.typebot.io" isExternal textDecor="underline">
+          https://old.typebot.io
+        </Link>
+      </Banner>
       <Seo title="My typebots" />
       <DashboardHeader />
       <TypebotDndContext>
