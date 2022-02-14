@@ -3,13 +3,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const securityHeaders = [
-  {
-    key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
-  },
-]
-
 const pages = [
   'blog',
   'pricing',
@@ -21,14 +14,6 @@ const pages = [
 ]
 
 module.exports = withBundleAnalyzer({
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: securityHeaders,
-      },
-    ]
-  },
   async redirects() {
     return [
       {
