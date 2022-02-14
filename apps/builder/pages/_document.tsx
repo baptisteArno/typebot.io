@@ -23,6 +23,11 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
+          <script
+            defer
+            data-domain="app.typebot.io"
+            src="https://plausible.baptistearno.com/js/plausible.js"
+          />
         </Head>
         <body>
           <Main />
