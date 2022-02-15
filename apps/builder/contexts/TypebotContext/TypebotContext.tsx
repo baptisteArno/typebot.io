@@ -20,7 +20,7 @@ import {
   parseDefaultPublicId,
   updateTypebot,
 } from 'services/typebots'
-import { fetcher, omit, preventUserFromRefreshing } from 'services/utils'
+import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
 import { isDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
@@ -31,6 +31,7 @@ import { useRegisterActions } from 'kbar'
 import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
+import { generate } from 'short-uuid'
 const autoSaveTimeout = 40000
 
 type UpdateTypebotPayload = Partial<{
@@ -38,6 +39,7 @@ type UpdateTypebotPayload = Partial<{
   settings: Settings
   publicId: string
   name: string
+  publishedTypebotId: string
 }>
 
 export type SetTypebot = (typebot: Typebot | undefined) => void
@@ -213,13 +215,14 @@ export const TypebotContext = ({
 
   const publishTypebot = async () => {
     if (!localTypebot) return
+    const publishedTypebotId = generate()
     const newLocalTypebot = { ...localTypebot }
     if (!localPublishedTypebot) {
       const newPublicId = parseDefaultPublicId(
         localTypebot.name,
         localTypebot.id
       )
-      updateLocalTypebot({ publicId: newPublicId })
+      updateLocalTypebot({ publicId: newPublicId, publishedTypebotId })
       newLocalTypebot.publicId = newPublicId
     }
     if (hasUnsavedChanges || !localPublishedTypebot) await saveTypebot()
@@ -230,9 +233,10 @@ export const TypebotContext = ({
       })
     } else {
       setIsPublishing(true)
-      const { data, error } = await createPublishedTypebot(
-        omit(parseTypebotToPublicTypebot(newLocalTypebot), 'id')
-      )
+      const { data, error } = await createPublishedTypebot({
+        ...parseTypebotToPublicTypebot(newLocalTypebot),
+        id: publishedTypebotId,
+      })
       setLocalPublishedTypebot(data)
       setIsPublishing(false)
       if (error) return toast({ title: error.name, description: error.message })

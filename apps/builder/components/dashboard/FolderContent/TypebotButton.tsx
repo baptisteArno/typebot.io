@@ -129,7 +129,7 @@ export const TypebotButton = ({
           color="white"
         >
           {typebot.publishedTypebotId ? (
-            <GlobeIcon fill="white" fontSize="20px" />
+            <GlobeIcon fontSize="20px" />
           ) : (
             <ToolIcon fill="white" fontSize="20px" />
           )}

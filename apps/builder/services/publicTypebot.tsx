@@ -1,11 +1,4 @@
-import {
-  Block,
-  InputStep,
-  PublicBlock,
-  PublicStep,
-  PublicTypebot,
-  Typebot,
-} from 'models'
+import { Block, PublicBlock, PublicStep, PublicTypebot, Typebot } from 'models'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon } from 'assets/icons'
@@ -38,9 +31,7 @@ const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
     ),
   }))
 
-export const createPublishedTypebot = async (
-  typebot: Omit<PublicTypebot, 'id'>
-) =>
+export const createPublishedTypebot = async (typebot: PublicTypebot) =>
   sendRequest<PublicTypebot>({
     url: `/api/publicTypebots`,
     method: 'POST',
