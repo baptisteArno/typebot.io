@@ -20,7 +20,7 @@ export const parseTypebotToPublicTypebot = (
   variables: typebot.variables,
 })
 
-const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
+export const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
   blocks.map((b) => ({
     ...b,
     steps: b.steps.map(
