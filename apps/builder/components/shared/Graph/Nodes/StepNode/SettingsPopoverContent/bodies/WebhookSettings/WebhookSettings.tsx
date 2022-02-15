@@ -156,7 +156,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <CodeEditor
-              value={'test'}
+              value={webhook.body ?? ''}
               lang="json"
               onChange={handleBodyChange}
             />

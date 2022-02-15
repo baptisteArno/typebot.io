@@ -8,7 +8,7 @@ import {
   IntegrationStepType,
   StepIndices,
 } from 'models'
-import { isInputStep } from 'utils'
+import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../ItemNode'
 import {
   SetVariableContent,
@@ -27,7 +27,7 @@ type Props = {
   indices: StepIndices
 }
 export const StepNodeContent = ({ step, indices }: Props) => {
-  if (isInputStep(step) && step.options.variableId) {
+  if (isInputStep(step) && !isChoiceInput(step) && step.options.variableId) {
     return <WithVariableContent step={step} />
   }
   switch (step.type) {
