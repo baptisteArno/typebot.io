@@ -11,6 +11,8 @@ import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 
+declare const window: { chrome: unknown | undefined }
+
 export const Graph = ({
   typebot,
   answersCounts,
@@ -60,19 +62,12 @@ export const Graph = ({
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
     const isPinchingTrackpad = e.ctrlKey
-    if (isPinchingTrackpad) {
-      const scale = graphPosition.scale - e.deltaY * 0.01
-      if (scale <= 0.2 || scale >= 1) return
-      setGraphPosition({
-        ...graphPosition,
-        scale,
-      })
-    } else
-      setGraphPosition({
-        ...graphPosition,
-        x: graphPosition.x - e.deltaX,
-        y: graphPosition.y - e.deltaY,
-      })
+    if (isPinchingTrackpad) return
+    setGraphPosition({
+      ...graphPosition,
+      x: graphPosition.x - e.deltaX / (window.chrome ? 2 : 1),
+      y: graphPosition.y - e.deltaY / (window.chrome ? 2 : 1),
+    })
   }
 
   const handleGlobalMouseUp = () => setIsMouseDown(false)
@@ -107,8 +102,8 @@ export const Graph = ({
     if (!isMouseDown) return
     const { movementX, movementY } = event
     setGraphPosition({
-      x: graphPosition.x + movementX,
-      y: graphPosition.y + movementY,
+      x: graphPosition.x + movementX / (window.chrome ? 2 : 1),
+      y: graphPosition.y + movementY / (window.chrome ? 2 : 1),
       scale: 1,
     })
   }
