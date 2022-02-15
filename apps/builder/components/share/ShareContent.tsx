@@ -7,11 +7,11 @@ import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './integrations/EmbedButton'
 
 export const ShareContent = () => {
-  const { typebot, updateTypebot } = useTypebot()
+  const { typebot, updateOnBothTypebots } = useTypebot()
 
   const handlePublicIdChange = (publicId: string) => {
     if (publicId === typebot?.publicId) return
-    updateTypebot({ publicId })
+    updateOnBothTypebots({ publicId })
   }
 
   const publicId = typebot

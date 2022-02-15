@@ -55,6 +55,10 @@ const typebotContext = createContext<
     canRedo: boolean
     canUndo: boolean
     updateTypebot: (updates: UpdateTypebotPayload) => void
+    updateOnBothTypebots: (updates: {
+      publicId?: string
+      name?: string
+    }) => void
     publishTypebot: () => void
   } & BlocksActions &
     StepsActions &
@@ -107,6 +111,20 @@ export const TypebotContext = ({
     if (error) return toast({ title: error.name, description: error.message })
     mutate({ typebot: typebotToSave })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
+  }
+
+  const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {
+    setIsPublishing(true)
+    const { error } = await updatePublishedTypebot(
+      newPublishedTypebot.id,
+      newPublishedTypebot
+    )
+    setIsPublishing(false)
+    if (error) return toast({ title: error.name, description: error.message })
+    mutate({
+      typebot: currentTypebotRef.current as Typebot,
+      publishedTypebot: newPublishedTypebot,
+    })
   }
 
   const hasUnsavedChanges = useMemo(
@@ -186,6 +204,13 @@ export const TypebotContext = ({
   const updateLocalTypebot = (updates: UpdateTypebotPayload) =>
     localTypebot && setLocalTypebot({ ...localTypebot, ...updates })
 
+  const updateLocalPublishedTypebot = (updates: UpdateTypebotPayload) =>
+    publishedTypebot &&
+    setLocalPublishedTypebot({
+      ...localPublishedTypebot,
+      ...(updates as PublicTypebot),
+    })
+
   const publishTypebot = async () => {
     if (!localTypebot) return
     const newLocalTypebot = { ...localTypebot }
@@ -198,23 +223,35 @@ export const TypebotContext = ({
       newLocalTypebot.publicId = newPublicId
     }
     if (hasUnsavedChanges || !localPublishedTypebot) await saveTypebot()
-    setIsPublishing(true)
     if (localPublishedTypebot) {
-      const { error } = await updatePublishedTypebot(
-        localPublishedTypebot.id,
-        omit(parseTypebotToPublicTypebot(newLocalTypebot), 'id')
-      )
-      setIsPublishing(false)
-      if (error) return toast({ title: error.name, description: error.message })
+      await savePublishedTypebot({
+        ...parseTypebotToPublicTypebot(newLocalTypebot),
+        id: localPublishedTypebot.id,
+      })
     } else {
+      setIsPublishing(true)
       const { data, error } = await createPublishedTypebot(
         omit(parseTypebotToPublicTypebot(newLocalTypebot), 'id')
       )
       setLocalPublishedTypebot(data)
       setIsPublishing(false)
       if (error) return toast({ title: error.name, description: error.message })
+      mutate({ typebot: localTypebot })
     }
-    mutate({ typebot: localTypebot })
+  }
+
+  const updateOnBothTypebots = async (updates: {
+    publicId?: string
+    name?: string
+  }) => {
+    updateLocalTypebot(updates)
+    await saveTypebot()
+    if (!localPublishedTypebot) return
+    updateLocalPublishedTypebot(updates)
+    await savePublishedTypebot({
+      ...localPublishedTypebot,
+      ...(updates as PublicTypebot),
+    })
   }
 
   return (
@@ -233,6 +270,7 @@ export const TypebotContext = ({
         isPublishing,
         isPublished,
         updateTypebot: updateLocalTypebot,
+        updateOnBothTypebots,
         ...blocksActions(localTypebot as Typebot, setLocalTypebot),
         ...stepsAction(localTypebot as Typebot, setLocalTypebot),
         ...variablesAction(localTypebot as Typebot, setLocalTypebot),

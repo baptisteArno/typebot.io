@@ -13,7 +13,7 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
-  const { typebot, updateTypebot, save, undo, redo, canUndo, canRedo } =
+  const { typebot, updateOnBothTypebots, save, undo, redo, canUndo, canRedo } =
     useTypebot()
   const { setRightPanel } = useEditor()
 
@@ -25,7 +25,7 @@ export const TypebotHeader = () => {
     })
   }
 
-  const handleNameSubmit = (name: string) => updateTypebot({ name })
+  const handleNameSubmit = (name: string) => updateOnBothTypebots({ name })
 
   const handlePreviewClick = async () => {
     save().then()
