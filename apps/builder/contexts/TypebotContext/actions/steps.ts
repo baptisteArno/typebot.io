@@ -10,7 +10,7 @@ import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
-import { cleanUpEdgeDraft } from './edges'
+import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 
 export type StepsActions = {
   createStep: (
@@ -76,11 +76,18 @@ const createStepDraft = (
   typebot: WritableDraft<Typebot>,
   step: DraggableStep | DraggableStepType,
   blockId: string,
-  indices: StepIndices
+  { blockIndex, stepIndex }: StepIndices
 ) => {
+  const steps = typebot.blocks[blockIndex].steps
+  if (
+    stepIndex === steps.length &&
+    stepIndex > 0 &&
+    steps[stepIndex - 1].outgoingEdgeId
+  )
+    deleteEdgeDraft(typebot, steps[stepIndex - 1].outgoingEdgeId as string)
   typeof step === 'string'
-    ? createNewStep(typebot, step, blockId, indices)
-    : moveStepToBlock(typebot, step, blockId, indices)
+    ? createNewStep(typebot, step, blockId, { blockIndex, stepIndex })
+    : moveStepToBlock(typebot, step, blockId, { blockIndex, stepIndex })
   removeEmptyBlocks(typebot)
 }
 

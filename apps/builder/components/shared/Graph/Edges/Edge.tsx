@@ -75,7 +75,6 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     sourceTop,
   ])
 
-  if (sourceTop === 0) return <></>
   return (
     <path
       data-testid="edge"

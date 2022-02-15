@@ -3,7 +3,7 @@ import { WritableDraft } from 'immer/dist/types/types-external'
 import { generate } from 'short-uuid'
 import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
-import { byId, isDefined } from 'utils'
+import { byId, isDefined, stepHasItems } from 'utils'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void
@@ -89,7 +89,32 @@ export const deleteEdgeDraft = (
   edgeId: string
 ) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId))
+  deleteOutgoingEdgeIdProps(typebot, edgeIndex)
   typebot.edges.splice(edgeIndex, 1)
+}
+
+const deleteOutgoingEdgeIdProps = (
+  typebot: WritableDraft<Typebot>,
+  edgeIndex: number
+) => {
+  const edge = typebot.edges[edgeIndex]
+  const fromBlockIndex = typebot.blocks.findIndex(byId(edge.from.blockId))
+  const fromStepIndex = typebot.blocks[fromBlockIndex].steps.findIndex(
+    byId(edge.from.stepId)
+  )
+  const step = typebot.blocks[fromBlockIndex].steps[fromStepIndex]
+  const fromItemIndex =
+    edge.from.itemId && stepHasItems(step)
+      ? step.items.findIndex(byId(edge.from.itemId))
+      : -1
+  if (fromStepIndex !== -1)
+    typebot.blocks[fromBlockIndex].steps[fromStepIndex].outgoingEdgeId =
+      undefined
+  if (fromItemIndex !== -1) {
+    ;(
+      typebot.blocks[fromBlockIndex].steps[fromStepIndex] as StepWithItems
+    ).items[fromItemIndex].outgoingEdgeId = undefined
+  }
 }
 
 export const cleanUpEdgeDraft = (
