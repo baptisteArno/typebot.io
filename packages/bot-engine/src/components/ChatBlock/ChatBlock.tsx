@@ -19,7 +19,6 @@ import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 type ChatBlockProps = {
   steps: PublicStep[]
   startStepIndex: number
-  blockIndex: number
   onScroll: () => void
   onBlockEnd: (edgeId?: string) => void
 }
@@ -27,15 +26,12 @@ type ChatBlockProps = {
 export const ChatBlock = ({
   steps,
   startStepIndex,
-  blockIndex,
   onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
   const { typebot, updateVariableValue, createEdge, apiHost, isPreview } =
     useTypebot()
   const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
-
-  const currentStepIndex = displayedSteps.length - 1
 
   useEffect(() => {
     const nextStep = steps[startStepIndex]
@@ -65,8 +61,9 @@ export const ChatBlock = ({
         step: currentStep,
         context: {
           apiHost,
-          typebotId: typebot.id,
-          indices: { blockIndex, stepIndex: currentStepIndex },
+          typebotId: typebot.typebotId,
+          blockId: currentStep.blockId,
+          stepId: currentStep.id,
           variables: typebot.variables,
           isPreview,
           updateVariableValue,

@@ -216,7 +216,6 @@ export const StepNode = ({
               onExpandClick={handleExpandClick}
               onStepChange={handleStepChange}
               onTestRequestClick={updateOptions}
-              indices={indices}
             />
           )}
           {isMediaBubbleStep(localStep) && (
@@ -230,7 +229,6 @@ export const StepNode = ({
               step={localStep}
               onStepChange={handleStepChange}
               onTestRequestClick={updateOptions}
-              indices={indices}
             />
           </SettingsModal>
         </Popover>

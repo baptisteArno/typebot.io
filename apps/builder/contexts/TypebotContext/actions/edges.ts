@@ -3,7 +3,7 @@ import { WritableDraft } from 'immer/dist/types/types-external'
 import { generate } from 'short-uuid'
 import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
-import { byId, isDefined, isNotDefined } from 'utils'
+import { byId, isDefined } from 'utils'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void

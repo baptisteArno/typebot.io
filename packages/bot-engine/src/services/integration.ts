@@ -20,11 +20,11 @@ import { parseVariables, parseVariablesInObject } from './variable'
 
 const safeEval = eval
 
-type Indices = { blockIndex: number; stepIndex: number }
 type IntegrationContext = {
   apiHost: string
   typebotId: string
-  indices: Indices
+  blockId: string
+  stepId: string
   isPreview: boolean
   variables: Variable[]
   updateVariableValue: (variableId: string, value: string) => void
@@ -153,7 +153,8 @@ const parseCellValues = (
 const executeWebhook = async (
   step: WebhookStep,
   {
-    indices,
+    blockId,
+    stepId,
     variables,
     updateVariableValue,
     typebotId,
@@ -161,9 +162,8 @@ const executeWebhook = async (
   }: IntegrationContext
 ) => {
   if (!step.webhook) return step.outgoingEdgeId
-  const { blockIndex, stepIndex } = indices
   const { data, error } = await sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
+    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,

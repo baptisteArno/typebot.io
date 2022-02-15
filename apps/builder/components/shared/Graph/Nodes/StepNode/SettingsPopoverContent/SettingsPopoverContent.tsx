@@ -14,7 +14,6 @@ import {
   IntegrationStepType,
   LogicStepType,
   Step,
-  StepIndices,
   StepOptions,
   TextBubbleStep,
   Webhook,
@@ -44,7 +43,6 @@ type Props = {
   onExpandClick: () => void
   onStepChange: (updates: Partial<Step>) => void
   onTestRequestClick: () => void
-  indices: StepIndices
 }
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
@@ -87,13 +85,11 @@ export const StepSettings = ({
   step,
   onStepChange,
   onTestRequestClick,
-  indices,
 }: {
   step: Step
   webhook?: Webhook
   onStepChange: (step: Partial<Step>) => void
   onTestRequestClick: () => void
-  indices: StepIndices
 }) => {
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
@@ -210,7 +206,6 @@ export const StepSettings = ({
           onOptionsChange={handleOptionsChange}
           onWebhookChange={handleWebhookChange}
           onTestRequestClick={onTestRequestClick}
-          indices={indices}
         />
       )
     }

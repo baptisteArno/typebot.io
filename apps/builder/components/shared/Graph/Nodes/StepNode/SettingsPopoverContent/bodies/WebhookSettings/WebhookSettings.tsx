@@ -20,7 +20,6 @@ import {
   Webhook,
   ResponseVariableMapping,
   WebhookStep,
-  StepIndices,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -39,15 +38,13 @@ type Props = {
   onOptionsChange: (options: WebhookOptions) => void
   onWebhookChange: (updates: Partial<Webhook>) => void
   onTestRequestClick: () => void
-  indices: StepIndices
 }
 
 export const WebhookSettings = ({
-  step: { webhook, options },
+  step: { webhook, options, blockId, id: stepId },
   onOptionsChange,
   onWebhookChange,
   onTestRequestClick,
-  indices,
 }: Props) => {
   const { typebot, save } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
@@ -85,12 +82,11 @@ export const WebhookSettings = ({
     await save()
     const { data, error } = await executeWebhook(
       typebot.id,
-      webhook.id,
       convertVariableForTestToVariables(
         options.variablesForTest,
         typebot.variables
       ),
-      indices
+      { blockId, stepId }
     )
     if (error) return toast({ title: error.name, description: error.message })
     setTestResponse(JSON.stringify(data, undefined, 2))

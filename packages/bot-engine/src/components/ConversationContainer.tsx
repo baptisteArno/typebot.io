@@ -82,7 +82,6 @@ export const ConversationContainer = ({
           key={displayedBlock.block.id + idx}
           steps={displayedBlock.block.steps}
           startStepIndex={displayedBlock.startStepIndex}
-          blockIndex={idx}
           onScroll={autoScrollToBottom}
           onBlockEnd={displayNextBlock}
         />

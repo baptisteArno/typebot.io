@@ -2,7 +2,7 @@ import { sendRequest } from 'utils'
 import { stringify } from 'qs'
 import useSWR from 'swr'
 import { fetcher } from './utils'
-import { StepIndices, Variable, VariableForTest, WebhookResponse } from 'models'
+import { Variable, VariableForTest, WebhookResponse } from 'models'
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
@@ -68,12 +68,11 @@ export const useSheets = ({
 
 export const executeWebhook = (
   typebotId: string,
-  webhookId: string,
   variables: Variable[],
-  { blockIndex, stepIndex }: StepIndices
+  { blockId, stepId }: { blockId: string; stepId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `/api/typebots/${typebotId}/blocks/${blockIndex}/steps/${stepIndex}/executeWebhook`,
+    url: `${process.env.NEXT_PUBLIC_VIEWER_HOST}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,
