@@ -39,7 +39,7 @@ import {
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
-import { fetcher, toKebabCase } from './utils'
+import { fetcher, omit, toKebabCase } from './utils'
 import {
   isBubbleStepType,
   stepTypeHasItems,
@@ -92,20 +92,20 @@ export const importTypebot = async (typebot: Typebot) =>
     body: typebot,
   })
 
-export const duplicateTypebot = async ({
-  folderId,
-  ownerId,
-  name,
-}: Typebot) => {
-  const typebot = {
-    folderId,
-    ownerId,
-    name: `${name} copy`,
-  }
+export const duplicateTypebot = async (typebot: Typebot) => {
+  const duplicatedTypebot: Omit<Typebot, 'id'> = omit(
+    {
+      ...typebot,
+      name: `${typebot.name} copy`,
+      publishedTypebotId: null,
+      publicId: null,
+    },
+    'id'
+  )
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: typebot,
+    body: duplicatedTypebot,
   })
 }
 

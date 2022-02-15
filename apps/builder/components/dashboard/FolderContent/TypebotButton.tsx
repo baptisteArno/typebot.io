@@ -64,14 +64,15 @@ export const TypebotButton = ({
     onTypebotDeleted()
   }
 
-  const handleDuplicateClick = async () => {
+  const handleDuplicateClick = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     const { data: createdTypebot, error } = await duplicateTypebot(typebot)
     if (error)
       return toast({
         title: "Couldn't duplicate typebot",
         description: error.message,
       })
-    if (createdTypebot) router.push(`/typebots/${createdTypebot?.id}`)
+    if (createdTypebot) router.push(`/typebots/${createdTypebot?.id}/edit`)
   }
 
   const handleDeleteClick = (e: React.MouseEvent) => {
