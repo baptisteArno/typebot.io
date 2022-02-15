@@ -4,6 +4,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'
 import Cors from 'cors'
+import { withSentry } from '@sentry/nextjs'
 
 const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -74,4 +75,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default handler
+export default withSentry(handler)

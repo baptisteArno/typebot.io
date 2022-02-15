@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^6.17.8",
     "bot-engine": "*",
     "cors": "^2.8.5",
     "db": "*",

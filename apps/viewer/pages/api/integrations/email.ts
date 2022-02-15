@@ -5,6 +5,7 @@ import { createTransport } from 'nodemailer'
 import { decrypt, initMiddleware } from 'utils'
 
 import Cors from 'cors'
+import { withSentry } from '@sentry/nextjs'
 
 const cors = initMiddleware(Cors())
 
@@ -74,4 +75,4 @@ const getEmailInfo = async (
   return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
 }
 
-export default handler
+export default withSentry(handler)
