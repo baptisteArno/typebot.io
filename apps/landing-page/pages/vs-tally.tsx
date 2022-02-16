@@ -23,7 +23,7 @@ import { Yes, No } from 'components/common/TableCells'
 const VsTypebot = () => {
   useEffect(() => {
     initContainer('typebot-container', {
-      publishId: 'example-vs-other-tools',
+      publishId: 'request-class',
     })
   }, [])
   return (

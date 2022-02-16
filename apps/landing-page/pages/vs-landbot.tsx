@@ -37,7 +37,7 @@ const VsTypebot = () => {
       })
     })
     initContainer('typebot-container', {
-      publishId: 'example-vs-other-tools',
+      publishId: 'request-class',
     })
   }, [])
   return (

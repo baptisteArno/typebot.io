@@ -26,7 +26,7 @@ const VsTypebot = () => {
   useEffect(() => {
     loadTypeform().then()
     initContainer('typebot-container', {
-      publishId: 'example-vs-other-tools',
+      publishId: 'request-class',
     })
   }, [])
   return (
