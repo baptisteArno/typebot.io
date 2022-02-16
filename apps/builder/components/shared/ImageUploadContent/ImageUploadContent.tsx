@@ -1,10 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-import { Button, Flex, HStack, Input, Stack, Text } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useDebounce } from 'use-debounce'
+import { InputWithVariableButton } from '../TextboxWithVariableButton'
 
 type Props = {
   url?: string
@@ -102,16 +103,12 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedImageUrl])
 
-  const handleImageUrlChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setImageUrl(e.target.value)
-
   return (
     <Stack py="2">
-      <Input
-        my="2"
+      <InputWithVariableButton
         placeholder={'Paste the image link...'}
-        onChange={handleImageUrlChange}
-        value={imageUrl}
+        onChange={setImageUrl}
+        initialValue={imageUrl}
       />
     </Stack>
   )

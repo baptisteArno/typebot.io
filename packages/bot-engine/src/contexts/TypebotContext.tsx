@@ -1,5 +1,11 @@
 import { Edge, PublicTypebot } from 'models'
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
 const typebotContext = createContext<{
   typebot: PublicTypebot
@@ -23,6 +29,11 @@ export const TypebotContext = ({
   isPreview: boolean
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
+
+  useEffect(() => {
+    setLocalTypebot({ ...localTypebot, theme: typebot.theme })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot.theme])
 
   const updateVariableValue = (variableId: string, value: string) => {
     setLocalTypebot((typebot) => ({

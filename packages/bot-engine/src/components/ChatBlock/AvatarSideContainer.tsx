@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useTypebot } from '../../contexts/TypebotContext'
-import { HostAvatar } from '../avatars/HostAvatar'
+import { Avatar } from '../avatars/Avatar'
 import { useFrame } from 'react-frame-component'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useHostAvatars } from '../../contexts/HostAvatarsContext'
 
-export const AvatarSideContainer = () => {
+export const AvatarSideContainer = ({
+  hostAvatarSrc,
+}: {
+  hostAvatarSrc: string
+}) => {
   const { lastBubblesTopOffset } = useHostAvatars()
-  const { typebot } = useTypebot()
   const { window, document } = useFrame()
   const [marginBottom, setMarginBottom] = useState(
     window.innerWidth < 400 ? 38 : 48
@@ -44,7 +46,7 @@ export const AvatarSideContainer = () => {
                   transition: 'top 350ms ease-out',
                 }}
               >
-                <HostAvatar typebotName={typebot.name} />
+                <Avatar avatarSrc={hostAvatarSrc} />
               </div>
             </CSSTransition>
           ))}

@@ -4,6 +4,11 @@ import { generate } from 'short-uuid'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 
+const hostAvatarUrl =
+  'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
+const guestAvatarUrl =
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
+
 test.describe.parallel('Theme page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
@@ -40,7 +45,7 @@ test.describe.parallel('Theme page', () => {
   })
 
   test.describe('Chat', () => {
-    test('should reflect change in real-time', async ({ page }) => {
+    test.only('should reflect change in real-time', async ({ page }) => {
       const typebotId = 'chat-theme-typebot'
       try {
         await importTypebotInDatabase(
@@ -53,7 +58,23 @@ test.describe.parallel('Theme page', () => {
 
       await page.goto(`/typebots/${typebotId}/theme`)
       await page.click('button:has-text("Chat")')
-      await page.waitForTimeout(300)
+
+      // Host avatar
+      await expect(
+        typebotViewer(page).locator('[data-testid="default-avatar"]')
+      ).toBeVisible()
+      await page.click('[data-testid="default-avatar"]')
+      await page.click('button:has-text("Embed link")')
+      await page.fill(
+        'input[placeholder="Paste the image link..."]',
+        hostAvatarUrl
+      )
+      await expect(typebotViewer(page).locator('img')).toHaveAttribute(
+        'src',
+        hostAvatarUrl
+      )
+      await page.click('text=Bot avatar')
+      await expect(typebotViewer(page).locator('img')).toBeHidden()
 
       // Host bubbles
       await page.click(
@@ -104,6 +125,22 @@ test.describe.parallel('Theme page', () => {
         'rgb(216, 243, 220)'
       )
       await expect(guestBubble).toHaveCSS('color', 'rgb(38, 70, 83)')
+
+      // Guest avatar
+      await page.click('text=User avatar')
+      await expect(
+        typebotViewer(page).locator('[data-testid="default-avatar"]')
+      ).toBeVisible()
+      await page.click('[data-testid="default-avatar"]')
+      await page.click('button:has-text("Embed link")')
+      await page.fill(
+        'input[placeholder="Paste the image link..."]',
+        guestAvatarUrl
+      )
+      await expect(typebotViewer(page).locator('img')).toHaveAttribute(
+        'src',
+        guestAvatarUrl
+      )
 
       // Input
       await page.click(

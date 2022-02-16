@@ -15,6 +15,7 @@ import {
 import { executeLogic } from 'services/logic'
 import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
+import { parseVariables } from 'index'
 
 type ChatBlockProps = {
   steps: PublicStep[]
@@ -108,7 +109,13 @@ export const ChatBlock = ({
   return (
     <div className="flex">
       <HostAvatarsContext>
-        <AvatarSideContainer />
+        {(typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
+          <AvatarSideContainer
+            hostAvatarSrc={parseVariables(typebot.variables)(
+              typebot.theme.chat.hostAvatar?.url
+            )}
+          />
+        )}
         <div className="flex flex-col w-full">
           <TransitionGroup>
             {displayedSteps

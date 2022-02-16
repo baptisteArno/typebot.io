@@ -9,7 +9,14 @@ export type GeneralTheme = {
   background: Background
 }
 
+export type AvatarProps = {
+  isEnabled: boolean
+  url?: string
+}
+
 export type ChatTheme = {
+  hostAvatar?: AvatarProps
+  guestAvatar?: AvatarProps
   hostBubbles: ContainerColors
   guestBubbles: ContainerColors
   buttons: ContainerColors

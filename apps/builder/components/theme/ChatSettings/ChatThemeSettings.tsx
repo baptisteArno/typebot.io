@@ -1,6 +1,7 @@
 import { Heading, Stack } from '@chakra-ui/react'
-import { ChatTheme, ContainerColors, InputColors } from 'models'
+import { AvatarProps, ChatTheme, ContainerColors, InputColors } from 'models'
 import React from 'react'
+import { AvatarForm } from './AvatarForm'
 import { ButtonsTheme } from './ButtonsTheme'
 import { GuestBubbles } from './GuestBubbles'
 import { HostBubbles } from './HostBubbles'
@@ -21,8 +22,24 @@ export const ChatThemeSettings = ({ chatTheme, onChatThemeChange }: Props) => {
   const handleInputsChange = (inputs: InputColors) =>
     onChatThemeChange({ ...chatTheme, inputs })
 
+  const handleHostAvatarChange = (hostAvatar: AvatarProps) =>
+    onChatThemeChange({ ...chatTheme, hostAvatar })
+  const handleGuestAvatarChange = (guestAvatar: AvatarProps) =>
+    onChatThemeChange({ ...chatTheme, guestAvatar })
+
   return (
     <Stack spacing={6}>
+      <AvatarForm
+        title="Bot avatar"
+        avatarProps={chatTheme.hostAvatar}
+        isDefaultCheck
+        onAvatarChange={handleHostAvatarChange}
+      />
+      <AvatarForm
+        title="User avatar"
+        avatarProps={chatTheme.guestAvatar}
+        onAvatarChange={handleGuestAvatarChange}
+      />
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Bot bubbles</Heading>
         <HostBubbles

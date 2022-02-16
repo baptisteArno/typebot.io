@@ -9,6 +9,8 @@ import { DateForm } from './inputs/DateForm'
 import { ChoiceForm } from './inputs/ChoiceForm'
 import { HostBubble } from './bubbles/HostBubble'
 import { isInputValid } from 'services/inputs'
+import { useTypebot } from 'contexts/TypebotContext'
+import { parseVariables } from 'index'
 
 export const ChatStep = ({
   step,
@@ -38,6 +40,7 @@ const InputChatStep = ({
   step: InputStep
   onSubmit: (value: string, isRetry: boolean) => void
 }) => {
+  const { typebot } = useTypebot()
   const { addNewAvatarOffset } = useHostAvatars()
   const [answer, setAnswer] = useState<string>()
 
@@ -52,7 +55,15 @@ const InputChatStep = ({
   }
 
   if (answer) {
-    return <GuestBubble message={answer} />
+    return (
+      <GuestBubble
+        message={answer}
+        showAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
+        avatarSrc={parseVariables(typebot.variables)(
+          typebot.theme.chat.guestAvatar?.url
+        )}
+      />
+    )
   }
   switch (step.type) {
     case InputStepType.TEXT:
