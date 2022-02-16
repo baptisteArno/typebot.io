@@ -9,7 +9,7 @@ import { redeemCoupon } from 'services/coupons'
 import { Spinner, useToast } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
-import { Banner } from 'components/shared/Banner'
+import { Banner } from 'components/dashboard/annoucements/AnnoucementBanner'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)

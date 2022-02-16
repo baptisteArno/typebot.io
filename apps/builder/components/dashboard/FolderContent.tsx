@@ -6,15 +6,17 @@ import {
   Portal,
   Skeleton,
   Stack,
+  useDisclosure,
   useEventListener,
   useToast,
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { Typebot } from 'models'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
 import { patchTypebot, useTypebots } from 'services/typebots'
+import { AnnoucementModal } from './annoucements/AnnoucementModal'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
 import { CreateFolderButton } from './FolderContent/CreateFolderButton'
@@ -41,6 +43,7 @@ export const FolderContent = ({ folder }: Props) => {
     y: 0,
   })
   const [typebotDragCandidate, setTypebotDragCandidate] = useState<Typebot>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const toast = useToast({
     position: 'top-right',
@@ -67,6 +70,18 @@ export const FolderContent = ({ folder }: Props) => {
       toast({ title: "Couldn't fetch typebots", description: error.message })
     },
   })
+
+  useEffect(() => {
+    if (
+      typebots &&
+      typebots.length === 0 &&
+      folders &&
+      folders.length === 0 &&
+      folder?.id === undefined
+    )
+      onOpen()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebots, folders, folder])
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebots) return
@@ -144,6 +159,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
+      <AnnoucementModal isOpen={isOpen} onClose={onClose} />
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>
