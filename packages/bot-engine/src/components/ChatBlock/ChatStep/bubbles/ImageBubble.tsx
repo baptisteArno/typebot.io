@@ -27,6 +27,7 @@ export const ImageBubble = ({ step, onTransitionEnd }: Props) => {
   )
 
   useEffect(() => {
+    sendAvatarOffset()
     showContentAfterMediaLoad()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -55,7 +56,9 @@ export const ImageBubble = ({ step, onTransitionEnd }: Props) => {
   const sendAvatarOffset = () => {
     if (!messageContainer.current) return
     const containerDimensions = messageContainer.current.getBoundingClientRect()
-    updateLastAvatarOffset(containerDimensions.top + containerDimensions.height)
+    updateLastAvatarOffset(
+      messageContainer.current.offsetTop + containerDimensions.height
+    )
   }
 
   return (

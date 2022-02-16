@@ -74,6 +74,7 @@ export const ChatBlock = ({
   }
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
+    onScroll()
     const currentStep = [...displayedSteps].pop()
     if (currentStep) {
       if (isRetry && stepCanBeRetried(currentStep))
