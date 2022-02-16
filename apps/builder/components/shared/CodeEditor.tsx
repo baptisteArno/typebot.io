@@ -53,7 +53,7 @@ export const CodeEditor = ({
     if (!editorContainer.current) return
     const updateListenerExtension = EditorView.updateListener.of((update) => {
       if (update.docChanged && onChange)
-        setPlainTextValue(update.state.doc.toJSON().join(' '))
+        setPlainTextValue(update.state.doc.toJSON().join('\n'))
     })
     const extensions = [
       updateListenerExtension,
@@ -77,5 +77,12 @@ export const CodeEditor = ({
     return editor
   }
 
-  return <Box ref={editorContainer} data-testid="code-editor" {...props} />
+  return (
+    <Box
+      ref={editorContainer}
+      data-testid="code-editor"
+      h={isReadOnly ? 'auto' : '250px'}
+      {...props}
+    />
+  )
 }
