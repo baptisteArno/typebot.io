@@ -10,7 +10,7 @@ import {
   useResults,
 } from 'services/results'
 import { unparse } from 'papaparse'
-import { UnlockProPlanInfo } from 'components/shared/Info'
+import { PublishFirstInfo, UnlockProPlanInfo } from 'components/shared/Info'
 
 type Props = {
   typebotId: string
@@ -111,6 +111,7 @@ export const SubmissionsContent = ({
 
   return (
     <Stack maxW="1200px" w="full" pb="28">
+      <PublishFirstInfo />
       {totalHiddenResults && (
         <UnlockProPlanInfo
           buttonLabel={`Unlock ${totalHiddenResults} results`}

@@ -17,7 +17,7 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
     status: 'error',
   })
   const { answersCounts } = useAnswersCount({
-    typebotId: typebot?.id,
+    typebotId: publishedTypebot && typebot?.id,
     onError: (err) => toast({ title: err.name, description: err.message }),
   })
   return (
