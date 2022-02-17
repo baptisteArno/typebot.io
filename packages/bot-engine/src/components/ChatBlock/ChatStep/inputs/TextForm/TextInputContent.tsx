@@ -22,10 +22,11 @@ type TextInputProps = {
     | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep
+  defaultValue: string
   onChange: (value: string) => void
 }
 
-export const TextInput = ({ step, onChange }: TextInputProps) => {
+export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
   const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
+          defaultValue={defaultValue}
           onChange={handleInputChange}
         />
       ) : (
@@ -57,6 +59,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
+          defaultValue={defaultValue}
           onChange={handleInputChange}
         />
       )
@@ -68,6 +71,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your email...'
           }
+          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="email"
         />
@@ -80,6 +84,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
+          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="number"
           style={{ appearance: 'auto' }}
@@ -94,6 +99,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
         <ShortTextInput
           ref={inputRef}
           placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
+          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="url"
         />
@@ -105,6 +111,7 @@ export const TextInput = ({ step, onChange }: TextInputProps) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={inputRef as any}
           onChange={handlePhoneNumberChange}
+          defaultValue={defaultValue}
           placeholder={
             step.options?.labels?.placeholder ?? 'Your phone number...'
           }
@@ -131,7 +138,11 @@ const ShortTextInput = React.forwardRef(
 
 const LongTextInput = React.forwardRef(
   (
-    props: { placeholder: string; onChange: ChangeEventHandler },
+    props: {
+      placeholder: string
+      defaultValue: string
+      onChange: ChangeEventHandler
+    },
     ref: React.ForwardedRef<HTMLTextAreaElement>
   ) => (
     <textarea

@@ -6,13 +6,14 @@ import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useStats } from 'services/analytics'
 import { isFreePlan } from 'services/user'
+import { isDefined } from 'utils'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
 
 export const ResultsContent = () => {
   const router = useRouter()
   const { user } = useUser()
-  const { typebot } = useTypebot()
+  const { typebot, publishedTypebot } = useTypebot()
   const isAnalytics = useMemo(
     () => router.pathname.endsWith('analytics'),
     [router.pathname]
@@ -23,7 +24,7 @@ export const ResultsContent = () => {
   })
 
   const { stats, mutate } = useStats({
-    typebotId: typebot?.id,
+    typebotId: publishedTypebot?.typebotId,
     onError: (err) => toast({ title: err.name, description: err.message }),
   })
 
@@ -71,12 +72,12 @@ export const ResultsContent = () => {
         </HStack>
       </Flex>
       <Flex pt="60px" w="full" justify="center">
-        {typebot &&
+        {publishedTypebot &&
           (isAnalytics ? (
             <AnalyticsContent stats={stats} />
           ) : (
             <SubmissionsContent
-              typebotId={typebot.id}
+              typebotId={publishedTypebot.typebotId}
               onDeleteResults={handleDeletedResults}
               totalResults={stats?.totalStarts ?? 0}
               totalHiddenResults={

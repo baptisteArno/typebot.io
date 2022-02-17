@@ -13,8 +13,16 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
-  const { typebot, updateOnBothTypebots, save, undo, redo, canUndo, canRedo } =
-    useTypebot()
+  const {
+    typebot,
+    updateOnBothTypebots,
+    save,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    publishedTypebot,
+  } = useTypebot()
   const { setRightPanel } = useEditor()
 
   const handleBackClick = async () => {
@@ -77,14 +85,16 @@ export const TypebotHeader = () => {
         >
           Share
         </Button>
-        <Button
-          as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/results`}
-          colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
-          variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
-        >
-          Results
-        </Button>
+        {typebot?.publishedTypebotId && (
+          <Button
+            as={NextChakraLink}
+            href={`/typebots/${typebot?.id}/results`}
+            colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
+            variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
+          >
+            Results
+          </Button>
+        )}
       </HStack>
       <Flex pos="absolute" left="1rem" justify="center" align="center">
         <HStack alignItems="center">

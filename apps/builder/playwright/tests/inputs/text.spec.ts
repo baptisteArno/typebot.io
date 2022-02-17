@@ -7,7 +7,7 @@ import { defaultTextInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import { generate } from 'short-uuid'
 
-test.describe('Text input step', () => {
+test.describe.parallel('Text input step', () => {
   test('options should work', async ({ page }) => {
     const typebotId = generate()
     await createTypebots([
@@ -40,5 +40,27 @@ test.describe('Text input step', () => {
       typebotViewer(page).locator(`textarea[placeholder="Your name..."]`)
     ).toBeVisible()
     await expect(typebotViewer(page).locator(`text=Go`)).toBeVisible()
+  })
+
+  test('variable in URL should prefill the input', async ({ page }) => {
+    const typebotId = generate()
+    await createTypebots([
+      {
+        id: typebotId,
+        ...parseDefaultBlockWithStep({
+          type: InputStepType.TEXT,
+          options: { ...defaultTextInputOptions, variableId: 'var1' },
+        }),
+      },
+    ])
+
+    await page.goto(`/typebots/${typebotId}/edit?var1=My prefilled answer`)
+    await page.click('text=Preview')
+    await expect(
+      typebotViewer(page).locator(
+        `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+      )
+    ).toHaveAttribute('value', 'My prefilled answer')
+    await expect(typebotViewer(page).locator(`button`)).toBeEnabled()
   })
 })

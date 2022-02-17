@@ -22,7 +22,7 @@ import {
 } from 'services/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -217,6 +217,13 @@ export const TypebotContext = ({
     if (!localTypebot) return
     const publishedTypebotId = generate()
     const newLocalTypebot = { ...localTypebot }
+    if (
+      localPublishedTypebot &&
+      isNotDefined(localTypebot.publishedTypebotId)
+    ) {
+      updateLocalTypebot({ publishedTypebotId: localPublishedTypebot.id })
+      await saveTypebot()
+    }
     if (!localPublishedTypebot) {
       const newPublicId = parseDefaultPublicId(
         localTypebot.name,
@@ -224,8 +231,8 @@ export const TypebotContext = ({
       )
       updateLocalTypebot({ publicId: newPublicId, publishedTypebotId })
       newLocalTypebot.publicId = newPublicId
+      await saveTypebot()
     }
-    if (hasUnsavedChanges || !localPublishedTypebot) await saveTypebot()
     if (localPublishedTypebot) {
       await savePublishedTypebot({
         ...parseTypebotToPublicTypebot(newLocalTypebot),

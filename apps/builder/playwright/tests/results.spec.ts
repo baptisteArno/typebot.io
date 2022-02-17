@@ -7,6 +7,7 @@ import { generate } from 'short-uuid'
 import {
   createResults,
   createTypebots,
+  importTypebotInDatabase,
   parseDefaultBlockWithStep,
 } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
@@ -14,6 +15,30 @@ import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 const typebotId = generate()
 
 test.describe('Results page', () => {
+  test('Submission table header should be parsed correctly', async ({
+    page,
+  }) => {
+    const typebotId = generate()
+    await importTypebotInDatabase(
+      path.join(
+        __dirname,
+        '../fixtures/typebots/results/submissionHeader.json'
+      ),
+      {
+        id: typebotId,
+      }
+    )
+    await page.goto(`/typebots/${typebotId}/results`)
+    await expect(page.locator('text=Submitted at')).toBeVisible()
+    await expect(page.locator('text=Welcome')).toBeVisible()
+    await expect(page.locator('text=Email')).toBeVisible()
+    await expect(page.locator('text=Name')).toBeVisible()
+    await expect(page.locator('text=Services')).toBeVisible()
+    await expect(page.locator('text=Additional information')).toBeVisible()
+    await expect(page.locator('text=utm_source')).toBeVisible()
+    await expect(page.locator('text=utm_userid')).toBeVisible()
+  })
+
   test('results should be deletable', async ({ page }) => {
     await createTypebots([
       {

@@ -22,7 +22,7 @@ export const ConversationContainer = ({
   onNewAnswer,
   onCompleted,
 }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot, updateVariableValue } = useTypebot()
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
     { block: PublicBlock; startStepIndex: number }[]
@@ -48,9 +48,20 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
+    injectUrlParamsIntoVariables()
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const injectUrlParamsIntoVariables = () => {
+    const urlParams = new URLSearchParams(location.search)
+    urlParams.forEach((value, key) => {
+      const matchingVariable = typebot.variables.find(
+        (v) => v.name.toLowerCase() === key.toLowerCase()
+      )
+      if (matchingVariable) updateVariableValue(matchingVariable?.id, value)
+    })
+  }
 
   useEffect(() => {
     setCssVariablesValue(theme, frameDocument.body.style)

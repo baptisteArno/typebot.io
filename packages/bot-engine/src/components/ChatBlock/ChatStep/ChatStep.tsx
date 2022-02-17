@@ -4,7 +4,7 @@ import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
 import { InputStep, InputStepType, PublicStep } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { TextForm } from './inputs/TextForm'
-import { isBubbleStep, isInputStep } from 'utils'
+import { byId, isBubbleStep, isInputStep } from 'utils'
 import { DateForm } from './inputs/DateForm'
 import { ChoiceForm } from './inputs/ChoiceForm'
 import { HostBubble } from './bubbles/HostBubble'
@@ -43,6 +43,9 @@ const InputChatStep = ({
   const { typebot } = useTypebot()
   const { addNewAvatarOffset } = useHostAvatars()
   const [answer, setAnswer] = useState<string>()
+  const { variableId } = step.options
+  const defaultValue =
+    variableId && typebot.variables.find(byId(variableId))?.value
 
   useEffect(() => {
     addNewAvatarOffset()
@@ -71,7 +74,13 @@ const InputChatStep = ({
     case InputStepType.EMAIL:
     case InputStepType.URL:
     case InputStepType.PHONE:
-      return <TextForm step={step} onSubmit={handleSubmit} />
+      return (
+        <TextForm
+          step={step}
+          onSubmit={handleSubmit}
+          defaultValue={defaultValue}
+        />
+      )
     case InputStepType.DATE:
       return <DateForm options={step.options} onSubmit={handleSubmit} />
     case InputStepType.CHOICE:

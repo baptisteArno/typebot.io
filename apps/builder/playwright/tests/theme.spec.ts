@@ -45,7 +45,7 @@ test.describe.parallel('Theme page', () => {
   })
 
   test.describe('Chat', () => {
-    test.only('should reflect change in real-time', async ({ page }) => {
+    test('should reflect change in real-time', async ({ page }) => {
       const typebotId = 'chat-theme-typebot'
       try {
         await importTypebotInDatabase(

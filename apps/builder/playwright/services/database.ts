@@ -160,7 +160,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   publicId: null,
   publishedTypebotId: null,
   updatedAt: new Date(),
-  variables: [],
+  variables: [{ id: 'var1', name: 'var1' }],
   ...partialTypebot,
   edges: [
     {
@@ -207,7 +207,7 @@ export const parseDefaultBlockWithStep = (
   ],
 })
 
-export const importTypebotInDatabase = (
+export const importTypebotInDatabase = async (
   path: string,
   updates?: Partial<Typebot>
 ) => {
@@ -216,7 +216,13 @@ export const importTypebotInDatabase = (
     ...updates,
     ownerId: 'proUser',
   }
-  return prisma.typebot.create({
+  await prisma.typebot.create({
     data: typebot,
+  })
+  return prisma.publicTypebot.create({
+    data: parseTypebotToPublicTypebot(
+      updates?.id ? `${updates?.id}-public` : 'publicBot',
+      typebot
+    ),
   })
 }

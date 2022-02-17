@@ -31,7 +31,10 @@ export const TypebotContext = ({
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
 
   useEffect(() => {
-    setLocalTypebot({ ...localTypebot, theme: typebot.theme })
+    setLocalTypebot((localTypebot) => ({
+      ...localTypebot,
+      theme: typebot.theme,
+    }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot.theme])
 

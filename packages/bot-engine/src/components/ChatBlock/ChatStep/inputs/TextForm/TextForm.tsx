@@ -17,10 +17,11 @@ type TextFormProps = {
     | UrlInputStep
     | PhoneNumberInputStep
   onSubmit: (value: string) => void
+  defaultValue?: string
 }
 
-export const TextForm = ({ step, onSubmit }: TextFormProps) => {
-  const [inputValue, setInputValue] = useState('')
+export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
+  const [inputValue, setInputValue] = useState(defaultValue ?? '')
 
   const handleChange = (inputValue: string) => setInputValue(inputValue)
 
@@ -38,7 +39,11 @@ export const TextForm = ({ step, onSubmit }: TextFormProps) => {
           onSubmit={handleSubmit}
           data-testid="input"
         >
-          <TextInput step={step} onChange={handleChange} />
+          <TextInput
+            step={step}
+            onChange={handleChange}
+            defaultValue={defaultValue ?? ''}
+          />
           <SendButton
             label={step.options?.labels?.button ?? 'Send'}
             isDisabled={inputValue === ''}
