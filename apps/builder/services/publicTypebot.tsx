@@ -3,7 +3,7 @@ import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon, CodeIcon } from 'assets/icons'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isInputStep, sendRequest } from 'utils'
+import { byId, isInputStep, sendRequest } from 'utils'
 import { isDefined } from '@udecode/plate-common'
 
 export const parseTypebotToPublicTypebot = (
@@ -48,12 +48,14 @@ export const updatePublishedTypebot = async (
     body: typebot,
   })
 
-export const parseSubmissionsColumns = (
-  typebot: PublicTypebot
-): {
+type HeaderCell = {
   Header: JSX.Element
   accessor: string
-}[] => {
+}
+export const parseSubmissionsColumns = (
+  typebot: PublicTypebot
+): HeaderCell[] => {
+  const parsedBlocks = parseBlocksHeaders(typebot)
   return [
     {
       Header: (
@@ -64,51 +66,58 @@ export const parseSubmissionsColumns = (
       ),
       accessor: 'createdAt',
     },
-    ...parseBlocksHeaders(typebot),
-    ...parseVariablesHeaders(typebot),
+    ...parsedBlocks,
+    ...parseVariablesHeaders(typebot, parsedBlocks),
   ]
 }
 
 const parseBlocksHeaders = (typebot: PublicTypebot) =>
   typebot.blocks
     .filter((block) => typebot && block.steps.some((step) => isInputStep(step)))
-    .map((block) => {
+    .reduce<HeaderCell[]>((headers, block) => {
       const inputStep = block.steps.find((step) => isInputStep(step))
-      if (!inputStep || !isInputStep(inputStep)) return
-      return {
-        Header: (
-          <HStack
-            minW={
-              'isLong' in inputStep.options && inputStep.options.isLong
-                ? '400px'
-                : '150px'
-            }
-            maxW="500px"
-          >
-            <StepIcon type={inputStep.type} />
-            <Text>{block.title}</Text>
-          </HStack>
-        ),
-        accessor: block.id,
-      }
-    })
-    .filter(isDefined)
-
-const parseVariablesHeaders = (typebot: PublicTypebot) =>
-  typebot.variables
-    .map((v) => {
-      const isVariableInInputStep = isDefined(
-        typebot.blocks.find((b) => {
-          const inputStep = b.steps.find((step) => isInputStep(step))
-          return (
-            inputStep &&
-            isInputStep(inputStep) &&
-            inputStep.options.variableId === v.id
-          )
-        })
+      if (
+        !inputStep ||
+        !isInputStep(inputStep) ||
+        headers.find((h) => h.accessor === inputStep.options.variableId)
       )
-      if (isVariableInInputStep) return
-      return {
+        return headers
+      const matchedVariableName =
+        inputStep.options.variableId &&
+        typebot.variables.find(byId(inputStep.options.variableId))?.name
+      return [
+        ...headers,
+        {
+          Header: (
+            <HStack
+              minW={
+                'isLong' in inputStep.options && inputStep.options.isLong
+                  ? '400px'
+                  : '150px'
+              }
+              maxW="500px"
+            >
+              <StepIcon type={inputStep.type} />
+              <Text>{matchedVariableName ?? block.title}</Text>
+            </HStack>
+          ),
+          accessor: inputStep.options.variableId ?? block.id,
+        },
+      ]
+    }, [])
+
+const parseVariablesHeaders = (
+  typebot: PublicTypebot,
+  parsedBlocks: {
+    Header: JSX.Element
+    accessor: string
+  }[]
+) =>
+  typebot.variables.reduce<HeaderCell[]>((headers, v) => {
+    if (parsedBlocks.find((b) => b.accessor === v.id)) return headers
+    return [
+      ...headers,
+      {
         Header: (
           <HStack minW={'150px'} maxW="500px">
             <CodeIcon />
@@ -116,6 +125,6 @@ const parseVariablesHeaders = (typebot: PublicTypebot) =>
           </HStack>
         ),
         accessor: v.id,
-      }
-    })
-    .filter(isDefined)
+      },
+    ]
+  }, [])

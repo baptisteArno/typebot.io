@@ -67,9 +67,9 @@ const createCredentials = () => {
     expiry_date: 1642441058842,
     access_token:
       'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
-    // This token is linked to a mock Google account (typebot.test.user@gmail.com)
+    // This token is linked to a test Google account (typebot.test.user@gmail.com)
     refresh_token:
-      '1//03NRE9V8T-aayCgYIARAAGAMSNwF-L9Ir6zVzF-wm30psz0lbDJj5Y9OgqTO0cvBISODMW4QTR0VK40BLnOQgcHCHkb9c769TAhQ',
+      '1//039xWRt8YaYa3CgYIARAAGAMSNwF-L9Iru9FyuTrDSa7lkSceggPho83kJt2J29G69iEhT1C6XV1vmo6bQS9puL_R2t8FIwR3gek',
   })
   return prisma.credentials.createMany({
     data: [

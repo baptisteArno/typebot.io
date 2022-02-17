@@ -12,7 +12,7 @@ export const SetVariableContent = ({ step }: { step: SetVariableStep }) => {
     <Text color={'gray.500'}>
       {variableName === '' && expression === ''
         ? 'Click to edit...'
-        : `${variableName} = ${expression}`}
+        : `${variableName} ${expression ? `= ${expression}` : ``}`}
     </Text>
   )
 }

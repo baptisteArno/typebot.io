@@ -3,3 +3,7 @@ export type Variable = {
   name: string
   value?: string
 }
+
+export type VariableWithValue = Omit<Variable, 'value'> & {
+  value: string
+}

@@ -5,8 +5,8 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Edge, PublicBlock, Theme } from 'models'
-import { byId } from 'utils'
+import { Answer, Edge, PublicBlock, Theme, VariableWithValue } from 'models'
+import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { useTypebot } from 'contexts/TypebotContext'
 
@@ -15,12 +15,14 @@ type Props = {
   onNewBlockVisible: (edge: Edge) => void
   onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
+  onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
 export const ConversationContainer = ({
   theme,
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
+  onVariablesPrefilled,
 }: Props) => {
   const { typebot, updateVariableValue } = useTypebot()
   const { document: frameDocument } = useFrame()
@@ -48,19 +50,24 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
-    injectUrlParamsIntoVariables()
+    const prefilledVariables = injectUrlParamsIntoVariables()
+    if (onVariablesPrefilled) onVariablesPrefilled(prefilledVariables)
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const injectUrlParamsIntoVariables = () => {
     const urlParams = new URLSearchParams(location.search)
+    const prefilledVariables: VariableWithValue[] = []
     urlParams.forEach((value, key) => {
       const matchingVariable = typebot.variables.find(
         (v) => v.name.toLowerCase() === key.toLowerCase()
       )
-      if (matchingVariable) updateVariableValue(matchingVariable?.id, value)
+      if (isNotDefined(matchingVariable)) return
+      updateVariableValue(matchingVariable?.id, value)
+      prefilledVariables.push({ ...matchingVariable, value })
     })
+    return prefilledVariables
   }
 
   useEffect(() => {

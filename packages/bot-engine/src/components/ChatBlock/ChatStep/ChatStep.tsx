@@ -21,8 +21,18 @@ export const ChatStep = ({
 }) => {
   const { addAnswer } = useAnswers()
 
-  const handleInputSubmit = (content: string, isRetry: boolean) => {
-    if (!isRetry) addAnswer({ stepId: step.id, blockId: step.blockId, content })
+  const handleInputSubmit = (
+    content: string,
+    isRetry: boolean,
+    variableId?: string
+  ) => {
+    if (!isRetry)
+      addAnswer({
+        stepId: step.id,
+        blockId: step.blockId,
+        content,
+        variableId: variableId ?? null,
+      })
     onTransitionEnd(content, isRetry)
   }
 
@@ -38,7 +48,7 @@ const InputChatStep = ({
   onSubmit,
 }: {
   step: InputStep
-  onSubmit: (value: string, isRetry: boolean) => void
+  onSubmit: (value: string, isRetry: boolean, variableId?: string) => void
 }) => {
   const { typebot } = useTypebot()
   const { addNewAvatarOffset } = useHostAvatars()
@@ -54,7 +64,7 @@ const InputChatStep = ({
 
   const handleSubmit = (value: string) => {
     setAnswer(value)
-    onSubmit(value, !isInputValid(value, step.type))
+    onSubmit(value, !isInputValid(value, step.type), step.options.variableId)
   }
 
   if (answer) {

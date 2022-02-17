@@ -1,13 +1,17 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
+import { VariableWithValue } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { typebotId } = JSON.parse(req.body) as { typebotId: string }
+    const resultData = JSON.parse(req.body) as {
+      typebotId: string
+      prefilledVariables: VariableWithValue[]
+    }
     const result = await prisma.result.create({
-      data: { typebotId, isCompleted: false },
+      data: { ...resultData, isCompleted: false },
     })
     return res.send(result)
   }

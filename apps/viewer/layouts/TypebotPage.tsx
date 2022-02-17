@@ -1,5 +1,5 @@
 import { TypebotViewer } from 'bot-engine'
-import { Answer, PublicTypebot } from 'models'
+import { Answer, PublicTypebot, VariableWithValue } from 'models'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'
@@ -19,21 +19,25 @@ export const TypebotPage = ({
   isIE,
   url,
 }: TypebotPageProps & { typebot: PublicTypebot }) => {
+  const [showTypebot, setShowTypebot] = useState(false)
   const [error, setError] = useState<Error | undefined>(
     isIE ? new Error('Internet explorer is not supported') : undefined
   )
   const [resultId, setResultId] = useState<string | undefined>()
 
+  // Workaround for react-frame-component bug (https://github.com/ryanseddon/react-frame-component/pull/207)
   useEffect(() => {
-    initializeResult()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setShowTypebot(true)
   }, [])
 
-  const initializeResult = async () => {
+  const initializeResult = async (variables: VariableWithValue[]) => {
     const resultIdFromSession = sessionStorage.getItem(sessionStorageKey)
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
-      const { error, data: result } = await createResult(typebot.typebotId)
+      const { error, data: result } = await createResult(
+        typebot.typebotId,
+        variables
+      )
       if (error) setError(error)
       if (result) {
         setResultId(result.id)
@@ -60,11 +64,12 @@ export const TypebotPage = ({
   return (
     <div style={{ height: '100vh' }}>
       <SEO url={url} chatbotName={typebot.name} />
-      {resultId && (
+      {showTypebot && (
         <TypebotViewer
           typebot={typebot}
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
+          onVariablesPrefilled={initializeResult}
         />
       )}
     </div>

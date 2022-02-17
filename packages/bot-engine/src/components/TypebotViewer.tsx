@@ -10,7 +10,13 @@ import phoneNumberInputStyle from 'react-phone-number-input/style.css'
 import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
-import { Answer, BackgroundType, Edge, PublicTypebot } from 'models'
+import {
+  Answer,
+  BackgroundType,
+  Edge,
+  PublicTypebot,
+  VariableWithValue,
+} from 'models'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -19,6 +25,7 @@ export type TypebotViewerProps = {
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onCompleted?: () => void
+  onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
 export const TypebotViewer = ({
   typebot,
@@ -27,6 +34,7 @@ export const TypebotViewer = ({
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
+  onVariablesPrefilled,
 }: TypebotViewerProps) => {
   const containerBgColor = useMemo(
     () =>
@@ -84,6 +92,7 @@ export const TypebotViewer = ({
                 onNewBlockVisible={handleNewBlockVisible}
                 onNewAnswer={handleNewAnswer}
                 onCompleted={handleCompleted}
+                onVariablesPrefilled={onVariablesPrefilled}
               />
             </div>
             {typebot.settings.general.isBrandingEnabled && (

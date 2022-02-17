@@ -125,21 +125,23 @@ model PublicTypebot {
 }
 
 model Result {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  typebotId   String
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers     Answer[]
-  isCompleted Boolean
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  typebotId          String
+  typebot            Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers            Answer[]
+  prefilledVariables Json[]
+  isCompleted        Boolean
 }
 
 model Answer {
-  createdAt DateTime @default(now())
-  resultId  String
-  result    Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
-  stepId    String
-  blockId   String
-  content   String
+  createdAt  DateTime @default(now())
+  resultId   String
+  result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  stepId     String
+  blockId    String
+  variableId String?
+  content    String
 
   @@unique([resultId, blockId, stepId])
 }
