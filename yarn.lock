@@ -11953,10 +11953,10 @@ react-focus-lock@2.5.2:
     use-callback-ref "^1.2.5"
     use-sidecar "^1.0.5"
 
-react-frame-component@5.2.2-alpha.0:
-  version "5.2.2-alpha.0"
-  resolved "https://registry.yarnpkg.com/react-frame-component/-/react-frame-component-5.2.2-alpha.0.tgz#33d2743ee6f559ac9763490b15e38dbb102c2cb8"
-  integrity sha512-WCbYSTm6JxOrtw4jE30qvHCUv3lFB6DZVNE9npLxNcLxRi3LYbgG0bGOterDk/399MERnYppLr9LmGM0bzmQDw==
+react-frame-component@5.2.2-alpha.1:
+  version "5.2.2-alpha.1"
+  resolved "https://registry.yarnpkg.com/react-frame-component/-/react-frame-component-5.2.2-alpha.1.tgz#fcfec38e0670ea78b3e9b6d00ef7a18613b3b089"
+  integrity sha512-pCXLlBDO8+yh4qbax8M2U+Cl+5tFxyZ0p6HzD0MP+P47u3ZK4fPiOzWQIOi7Eand4tq6nawKZC+vsSHC2KT1Zg==
 
 react-frame-component@^5.2.1:
   version "5.2.1"

@@ -10,7 +10,7 @@
     "fast-equals": "^3.0.0",
     "models": "*",
     "qs": "^6.10.3",
-    "react-frame-component": "5.2.2-alpha.0",
+    "react-frame-component": "5.2.2-alpha.1",
     "react-phone-number-input": "^3.1.46",
     "react-scroll": "^1.8.4",
     "react-transition-group": "^4.4.2",
