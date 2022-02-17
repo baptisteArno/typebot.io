@@ -196,8 +196,7 @@ export const StepNode = ({
                   top="19px"
                   stepId={localStep.id}
                 />
-                {(localStep.outgoingEdgeId ||
-                  (isConnectable && hasDefaultConnector(localStep))) && (
+                {isConnectable && hasDefaultConnector(localStep) && (
                   <SourceEndpoint
                     source={{
                       blockId: localStep.blockId,
