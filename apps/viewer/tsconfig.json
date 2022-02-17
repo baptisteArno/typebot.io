@@ -17,6 +17,12 @@
     "baseUrl": ".",
     "composite": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/404.js",
+    "pages/_error.js"
+  ],
   "exclude": ["node_modules", "cypress"]
 }
