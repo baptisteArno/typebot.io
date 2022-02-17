@@ -1,9 +1,10 @@
 import { Stack, Button } from '@chakra-ui/react'
-import { FacebookIcon, GithubIcon, GoogleIcon } from 'assets/icons'
+import { GithubIcon } from 'assets/icons'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { stringify } from 'qs'
+import { FacebookLogo, GoogleLogo } from 'assets/logos'
 
 export const SocialLoginButtons = () => {
   const { query } = useRouter()
@@ -35,7 +36,7 @@ export const SocialLoginButtons = () => {
         Continue with GitHub
       </Button>
       <Button
-        leftIcon={<GoogleIcon />}
+        leftIcon={<GoogleLogo />}
         onClick={handleGoogleClick}
         data-testid="google"
         isLoading={['loading', 'authenticated'].includes(status)}
@@ -43,7 +44,7 @@ export const SocialLoginButtons = () => {
         Continue with Google
       </Button>
       <Button
-        leftIcon={<FacebookIcon />}
+        leftIcon={<FacebookLogo />}
         onClick={handleFacebookClick}
         data-testid="facebook"
         isLoading={['loading', 'authenticated'].includes(status)}
