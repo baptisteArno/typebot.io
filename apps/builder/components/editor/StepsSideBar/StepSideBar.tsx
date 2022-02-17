@@ -91,11 +91,12 @@ export const StepsSideBar = () => {
         shadow="xl"
         borderWidth="1px"
         pt="2"
-        pb="4"
+        pb="10"
         px="2"
         bgColor="gray.50"
         spacing={6}
         userSelect="none"
+        overflowY="scroll"
       >
         <Flex justifyContent="flex-end">
           <Tooltip label={isLocked ? 'Unlock sidebar' : 'Lock sidebar'}>

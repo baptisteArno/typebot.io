@@ -89,6 +89,7 @@ const executeWebhook = async (
         data: parseBody(error.response.body as string),
       }
     }
+    console.error(error)
     return {
       statusCode: 500,
       data: { message: `Error from Typebot server: ${error}` },
