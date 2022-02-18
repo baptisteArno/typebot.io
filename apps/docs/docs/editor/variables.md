@@ -1,0 +1,36 @@
+# Variables
+
+Variables are placeholders for content that you can then use anywhere in the Typebot. It's a very important concept to understand to truly create a customized experience for the user.
+
+## Save an answer in a variable
+
+You can tell your input step to save the answer into a variable and reuse then in a further bubble for example:
+<img src="/img/variables/question.png" width="800" alt="Iframe preview"/>
+
+## Advanced concepts
+
+Here is a quick video that showcase advanced concepts about variables:
+
+<iframe width="900" height="500" src="https://www.youtube.com/embed/o715Tjv1ijI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Prefilled variables
+
+By default, any declared variables in the bot can be prefilled by passing initial values in the URL.
+
+Let's say I have a variable named "Email" somewhere in my bot. If I'm launching my bot using this URL:
+
+`https://typebot.io/my-bot?Email=test@test.com`
+
+Then if an input step is saving the answer into this variable, it will be first prefilled with this initial value. It can greatly improve the user experience if you already have data about him.
+
+### Hidden variables
+
+These are simply variables that are declared in the bot flow but aren't displayed to the user anywhere. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
+
+These can be simply declared with "Set variable" steps:
+
+<img src="/img/variables/declaring.png" width="300" alt="Iframe preview"/>
+
+Then the values will be available on the Results page in specific columns:
+
+<img src="/img/variables/hiddenVariablesResults.png" width="500" alt="Iframe preview"/>
