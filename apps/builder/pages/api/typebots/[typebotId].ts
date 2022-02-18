@@ -1,4 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
+import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -11,9 +12,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ message: 'Not authenticated' })
 
   const typebotId = req.query.typebotId.toString()
+  const user = session.user as User
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findUnique({
-      where: { id: typebotId },
+      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
       include: {
         publishedTypebot: true,
       },
@@ -24,14 +26,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'DELETE') {
     const typebots = await prisma.typebot.delete({
-      where: { id: typebotId },
+      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
     })
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({
-      where: { id: typebotId },
+      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
       data: {
         ...data,
         theme: data.theme ?? undefined,
@@ -43,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     const data = JSON.parse(req.body)
     const typebots = await prisma.typebot.update({
-      where: { id: typebotId },
+      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
       data,
     })
     return res.send({ typebots })

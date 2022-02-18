@@ -96,6 +96,7 @@ model DashboardFolder {
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
+  @@unique([id, ownerId])
 }
 
 model Typebot {
@@ -117,6 +118,7 @@ model Typebot {
   settings           Json
   publicId           String?          @unique
   customDomain       String?          @unique
+  @@unique([id, ownerId])
 }
 
 model PublicTypebot {
@@ -157,6 +159,6 @@ model Answer {
 
 model Coupon {
   userPropertiesToUpdate Json
-  code                   String    @id
+  code                   String    @id @unique
   dateRedeemed           DateTime?
 }
