@@ -67,7 +67,7 @@ export const ShareContent = () => {
                 pathname={typebot.customDomain.split('/')[1]}
                 onPathnameChange={(pathname) =>
                   handleCustomDomainChange(
-                    typebot.customDomain?.split('/')[0] + pathname
+                    typebot.customDomain?.split('/')[0] + '/' + pathname
                   )
                 }
               />
