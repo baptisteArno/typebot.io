@@ -12,7 +12,13 @@ export const getServerSideProps: GetServerSideProps = async (
   const pathname = context.resolvedUrl.split('?')[0]
   try {
     if (!context.req.headers.host) return { props: {} }
-    typebot = await getTypebotFromPublicId(context.query.publicId?.toString())
+    typebot = context.req.headers.host.includes(
+      (process.env.NEXT_PUBLIC_VIEWER_HOST ?? '').split('//')[1]
+    )
+      ? await getTypebotFromPublicId(context.query.publicId?.toString())
+      : await getTypebotFromCustomDomain(
+          `${context.req.headers.host}${pathname}`
+        )
     return {
       props: {
         typebot,
@@ -31,12 +37,17 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const getTypebotFromPublicId = async (
-  publicId?: string
-): Promise<PublicTypebot | null> => {
+const getTypebotFromPublicId = async (publicId?: string) => {
   if (!publicId) return null
   const typebot = await prisma.publicTypebot.findUnique({
     where: { publicId },
+  })
+  return (typebot as unknown as PublicTypebot) ?? null
+}
+
+const getTypebotFromCustomDomain = async (customDomain: string) => {
+  const typebot = await prisma.publicTypebot.findUnique({
+    where: { customDomain },
   })
   return (typebot as unknown as PublicTypebot) ?? null
 }

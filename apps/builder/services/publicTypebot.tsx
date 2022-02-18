@@ -18,6 +18,7 @@ export const parseTypebotToPublicTypebot = (
   settings: typebot.settings,
   theme: typebot.theme,
   variables: typebot.variables,
+  customDomain: typebot.customDomain,
 })
 
 export const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>

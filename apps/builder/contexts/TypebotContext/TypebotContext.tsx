@@ -60,6 +60,7 @@ const typebotContext = createContext<
     updateOnBothTypebots: (updates: {
       publicId?: string
       name?: string
+      customDomain?: string | null
     }) => void
     publishTypebot: () => void
   } & BlocksActions &
@@ -144,8 +145,6 @@ export const TypebotContext = ({
     debounceTimeout: autoSaveTimeout,
   })
 
-  const [localPublishedTypebot, setLocalPublishedTypebot] =
-    useState<PublicTypebot>()
   const [isSavingLoading, setIsSavingLoading] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
 
@@ -177,7 +176,6 @@ export const TypebotContext = ({
       return
     }
     setLocalTypebot({ ...typebot })
-    if (publishedTypebot) setLocalPublishedTypebot({ ...publishedTypebot })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
@@ -206,25 +204,15 @@ export const TypebotContext = ({
   const updateLocalTypebot = (updates: UpdateTypebotPayload) =>
     localTypebot && setLocalTypebot({ ...localTypebot, ...updates })
 
-  const updateLocalPublishedTypebot = (updates: UpdateTypebotPayload) =>
-    publishedTypebot &&
-    setLocalPublishedTypebot({
-      ...localPublishedTypebot,
-      ...(updates as PublicTypebot),
-    })
-
   const publishTypebot = async () => {
     if (!localTypebot) return
     const publishedTypebotId = generate()
     const newLocalTypebot = { ...localTypebot }
-    if (
-      localPublishedTypebot &&
-      isNotDefined(localTypebot.publishedTypebotId)
-    ) {
-      updateLocalTypebot({ publishedTypebotId: localPublishedTypebot.id })
+    if (publishedTypebot && isNotDefined(localTypebot.publishedTypebotId)) {
+      updateLocalTypebot({ publishedTypebotId: publishedTypebot.id })
       await saveTypebot()
     }
-    if (!localPublishedTypebot) {
+    if (!publishedTypebot) {
       const newPublicId = parseDefaultPublicId(
         localTypebot.name,
         localTypebot.id
@@ -233,10 +221,10 @@ export const TypebotContext = ({
       newLocalTypebot.publicId = newPublicId
       await saveTypebot()
     }
-    if (localPublishedTypebot) {
+    if (publishedTypebot) {
       await savePublishedTypebot({
         ...parseTypebotToPublicTypebot(newLocalTypebot),
-        id: localPublishedTypebot.id,
+        id: publishedTypebot.id,
       })
     } else {
       setIsPublishing(true)
@@ -244,24 +232,23 @@ export const TypebotContext = ({
         ...parseTypebotToPublicTypebot(newLocalTypebot),
         id: publishedTypebotId,
       })
-      setLocalPublishedTypebot(data)
       setIsPublishing(false)
       if (error) return toast({ title: error.name, description: error.message })
-      mutate({ typebot: localTypebot })
+      mutate({ typebot: localTypebot, publishedTypebot: data })
     }
   }
 
   const updateOnBothTypebots = async (updates: {
     publicId?: string
     name?: string
+    customDomain?: string | null
   }) => {
     updateLocalTypebot(updates)
     await saveTypebot()
-    if (!localPublishedTypebot) return
-    updateLocalPublishedTypebot(updates)
+    if (!publishedTypebot) return
     await savePublishedTypebot({
-      ...localPublishedTypebot,
-      ...(updates as PublicTypebot),
+      ...publishedTypebot,
+      ...updates,
     })
   }
 
@@ -269,7 +256,7 @@ export const TypebotContext = ({
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
-        publishedTypebot: localPublishedTypebot,
+        publishedTypebot,
         hasUnsavedChanges,
         isSavingLoading,
         save: saveTypebot,

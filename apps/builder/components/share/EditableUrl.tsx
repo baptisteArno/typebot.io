@@ -14,23 +14,25 @@ import { CopyButton } from 'components/shared/buttons/CopyButton'
 import React from 'react'
 
 type EditableUrlProps = {
-  publicId?: string
-  onPublicIdChange: (publicId: string) => void
+  hostname: string
+  pathname?: string
+  onPathnameChange: (pathname: string) => void
 }
 
 export const EditableUrl = ({
-  publicId,
-  onPublicIdChange,
+  hostname,
+  pathname,
+  onPathnameChange,
 }: EditableUrlProps) => {
   return (
     <Editable
       as={HStack}
       spacing={3}
-      defaultValue={publicId}
-      onSubmit={onPublicIdChange}
+      defaultValue={pathname}
+      onSubmit={onPathnameChange}
     >
       <HStack spacing={1}>
-        <Text>{process.env.NEXT_PUBLIC_VIEWER_HOST}/</Text>
+        <Text>{hostname}/</Text>
         <Tooltip label="Edit">
           <EditablePreview
             mx={1}
@@ -48,10 +50,7 @@ export const EditableUrl = ({
 
       <HStack>
         <EditButton size="xs" />
-        <CopyButton
-          size="xs"
-          textToCopy={`${process.env.NEXT_PUBLIC_VIEWER_HOST}/${publicId}`}
-        />
+        <CopyButton size="xs" textToCopy={`${hostname}/${pathname}`} />
       </HStack>
     </Editable>
   )

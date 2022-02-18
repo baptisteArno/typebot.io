@@ -37,11 +37,16 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [user, setUser] = useState<User | undefined>()
-  const { credentials, mutate } = useCredentials({
+  const toast = useToast({
+    position: 'top-right',
+    status: 'error',
+  })
+  const { credentials, mutate: mutateCredentials } = useCredentials({
     userId: user?.id,
     onError: (error) =>
       toast({ title: error.name, description: error.message }),
   })
+
   const [isSaving, setIsSaving] = useState(false)
   const isOAuthProvider = useMemo(
     () => (session?.providerType as boolean | undefined) ?? false,
@@ -52,11 +57,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     () => !deepEqual(session?.user, user),
     [session?.user, user]
   )
-
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
 
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return
@@ -92,14 +92,14 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     <userContext.Provider
       value={{
         user,
-        updateUser,
-        saveUser,
         isSaving,
         isLoading: status === 'loading',
         hasUnsavedChanges,
         isOAuthProvider,
         credentials: credentials ?? [],
-        mutateCredentials: mutate,
+        mutateCredentials,
+        updateUser,
+        saveUser,
       }}
     >
       {children}

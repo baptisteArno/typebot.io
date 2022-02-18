@@ -241,7 +241,12 @@ export const parseNewTypebot = ({
   name: string
 }): Omit<
   Typebot,
-  'createdAt' | 'updatedAt' | 'id' | 'publishedTypebotId' | 'publicId'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'id'
+  | 'publishedTypebotId'
+  | 'publicId'
+  | 'customDomain'
 > => {
   const startBlockId = shortId.generate()
   const startStepId = shortId.generate()

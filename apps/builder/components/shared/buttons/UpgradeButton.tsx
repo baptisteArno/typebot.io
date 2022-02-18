@@ -9,7 +9,7 @@ export const UpgradeButton = ({ type, ...props }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Button colorScheme="blue" {...props} onClick={onOpen}>
-      Upgrade
+      {props.children ?? 'Upgrade'}
       <UpgradeModal isOpen={isOpen} onClose={onClose} type={type} />
     </Button>
   )

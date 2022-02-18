@@ -139,6 +139,7 @@ const parseTypebotToPublicTypebot = (
   publicId: typebot.publicId,
   variables: typebot.variables,
   edges: typebot.edges,
+  customDomain: null,
 })
 
 const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
@@ -160,6 +161,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   publicId: null,
   publishedTypebotId: null,
   updatedAt: new Date(),
+  customDomain: null,
   variables: [{ id: 'var1', name: 'var1' }],
   ...partialTypebot,
   edges: [
