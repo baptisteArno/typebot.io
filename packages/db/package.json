@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "dotenv -e ../../apps/builder/.env.local yarn prisma db push && yarn start:sutdio  ",
     "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none yarn prisma studio",
-    "build": "yarn migration:deploy",
+    "build": "DATABASE_URL=$MIGRATION_DATABASE_URL yarn migration:deploy",
     "migration:push": "dotenv -e ../../apps/builder/.env.local yarn prisma db push",
     "migration:create": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate dev",
     "migration:reset": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate reset",
