@@ -226,7 +226,8 @@ export const checkIfPublished = (
 ) =>
   deepEqual(parseBlocksToPublicBlocks(typebot.blocks), publicTypebot.blocks) &&
   deepEqual(typebot.settings, publicTypebot.settings) &&
-  deepEqual(typebot.theme, publicTypebot.theme)
+  deepEqual(typebot.theme, publicTypebot.theme) &&
+  deepEqual(typebot.variables, publicTypebot.variables)
 
 export const parseDefaultPublicId = (name: string, id: string) =>
   toKebabCase(name) + `-${id?.slice(-7)}`

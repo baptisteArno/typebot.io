@@ -33,11 +33,14 @@ const App = ({ Component, pageProps }: AppProps) => {
             {typebotId ? (
               <TypebotContext typebotId={typebotId}>
                 <Component />
+                <SupportBubble />
               </TypebotContext>
             ) : (
-              <Component {...pageProps} />
+              <>
+                <Component {...pageProps} />
+                <SupportBubble />
+              </>
             )}
-            <SupportBubble />
           </UserContext>
         </SessionProvider>
       </KBarProvider>
