@@ -32,6 +32,7 @@ export const SocialLoginButtons = () => {
         onClick={handleGitHubClick}
         data-testid="github"
         isLoading={['loading', 'authenticated'].includes(status)}
+        variant="outline"
       >
         Continue with GitHub
       </Button>
@@ -40,6 +41,7 @@ export const SocialLoginButtons = () => {
         onClick={handleGoogleClick}
         data-testid="google"
         isLoading={['loading', 'authenticated'].includes(status)}
+        variant="outline"
       >
         Continue with Google
       </Button>
@@ -48,6 +50,7 @@ export const SocialLoginButtons = () => {
         onClick={handleFacebookClick}
         data-testid="facebook"
         isLoading={['loading', 'authenticated'].includes(status)}
+        variant="outline"
       >
         Continue with Facebook
       </Button>
