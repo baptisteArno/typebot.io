@@ -20,10 +20,13 @@ export const SettingsModal = ({
   onClose,
   ...props
 }: Props & ModalBodyProps) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation()
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent onMouseDown={handleMouseDown}>
         <ModalHeader mb="2">
           <ModalCloseButton />
         </ModalHeader>
