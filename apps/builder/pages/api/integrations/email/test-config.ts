@@ -6,15 +6,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { from, port, isTlsEnabled, username, password, host, to } =
       JSON.parse(req.body) as SmtpCredentialsData & { to: string }
-    console.log({
-      host,
-      port,
-      secure: isTlsEnabled ?? undefined,
-      auth: {
-        user: username,
-        pass: password,
-      },
-    })
     const transporter = createTransport({
       host,
       port,

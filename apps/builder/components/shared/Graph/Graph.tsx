@@ -10,6 +10,7 @@ import { Block, DraggableStepType, PublicTypebot, Typebot } from 'models'
 import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
+import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 
 declare const window: { chrome: unknown | undefined }
 
@@ -115,34 +116,46 @@ export const Graph = ({
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
   useEventListener('mouseup', handleGlobalMouseUp)
   useEventListener('click', handleClick, editorContainerRef.current)
+
+  const onDrag = (event: DraggableEvent, draggableData: DraggableData) => {
+    const { deltaX, deltaY } = draggableData
+    setGraphPosition({
+      x: graphPosition.x + deltaX,
+      y: graphPosition.y + deltaY,
+      scale: 1,
+    })
+  }
+
   return (
-    <Flex
-      ref={graphContainerRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      position="relative"
-      {...props}
-    >
+    <DraggableCore onDrag={onDrag}>
       <Flex
-        flex="1"
-        w="full"
-        h="full"
-        position="absolute"
-        style={{
-          transform,
-        }}
-        willChange="transform"
-        transformOrigin="0px 0px 0px"
+        ref={graphContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        position="relative"
+        {...props}
       >
-        <Edges
-          edges={typebot?.edges ?? []}
-          answersCounts={answersCounts}
-          onUnlockProPlanClick={onUnlockProPlanClick}
-        />
-        {typebot?.blocks.map((block, idx) => (
-          <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
-        ))}
+        <Flex
+          flex="1"
+          w="full"
+          h="full"
+          position="absolute"
+          style={{
+            transform,
+          }}
+          willChange="transform"
+          transformOrigin="0px 0px 0px"
+        >
+          <Edges
+            edges={typebot?.edges ?? []}
+            answersCounts={answersCounts}
+            onUnlockProPlanClick={onUnlockProPlanClick}
+          />
+          {typebot?.blocks.map((block, idx) => (
+            <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
+          ))}
+        </Flex>
       </Flex>
-    </Flex>
+    </DraggableCore>
   )
 }

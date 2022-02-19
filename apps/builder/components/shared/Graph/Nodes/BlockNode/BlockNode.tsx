@@ -3,7 +3,6 @@ import {
   EditableInput,
   EditablePreview,
   Stack,
-  useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Block } from 'models'
@@ -16,6 +15,7 @@ import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
 import { useDebounce } from 'use-debounce'
 import { setMultipleRefs } from 'services/utils'
+import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 
 type Props = {
   block: Block
@@ -67,25 +67,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
-    setIsMouseDown(true)
   }
-  const handleMouseUp = () => {
-    setIsMouseDown(false)
-  }
-  useEventListener('mouseup', handleMouseUp)
-
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!isMouseDown) return
-    const { movementX, movementY } = event
-
-    if (!blockCoordinates) return
-    updateBlockCoordinates(block.id, {
-      x: blockCoordinates.x + movementX,
-      y: blockCoordinates.y + movementY,
-    })
-  }
-
-  useEventListener('mousemove', handleMouseMove)
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
@@ -101,61 +83,71 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
   }
 
+  const onDrag = (event: DraggableEvent, draggableData: DraggableData) => {
+    const { deltaX, deltaY } = draggableData
+    updateBlockCoordinates(block.id, {
+      x: blockCoordinates.x + deltaX,
+      y: blockCoordinates.y + deltaY,
+    })
+  }
+
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
       isDisabled={isReadOnly}
     >
       {(ref, isOpened) => (
-        <Stack
-          ref={setMultipleRefs([ref, blockRef])}
-          data-testid="block"
-          p="4"
-          rounded="lg"
-          bgColor="blue.50"
-          backgroundImage="linear-gradient(rgb(235, 239, 244), rgb(231, 234, 241))"
-          borderWidth="2px"
-          borderColor={
-            isConnecting || isOpened || isPreviewing ? 'blue.400' : 'white'
-          }
-          w="300px"
-          transition="border 300ms, box-shadow 200ms"
-          pos="absolute"
-          style={{
-            transform: `translate(${blockCoordinates?.x ?? 0}px, ${
-              blockCoordinates?.y ?? 0
-            }px)`,
-          }}
-          onMouseDown={handleMouseDown}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          cursor={isMouseDown ? 'grabbing' : 'pointer'}
-          boxShadow="0px 0px 0px 1px #e9edf3;"
-          _hover={{ shadow: 'lg' }}
-        >
-          <Editable
-            defaultValue={block.title}
-            onSubmit={handleTitleSubmit}
-            fontWeight="semibold"
-            pointerEvents={isReadOnly ? 'none' : 'auto'}
+        <DraggableCore onDrag={onDrag} onMouseDown={(e) => e.stopPropagation()}>
+          <Stack
+            ref={setMultipleRefs([ref, blockRef])}
+            data-testid="block"
+            p="4"
+            rounded="lg"
+            bgColor="blue.50"
+            backgroundImage="linear-gradient(rgb(235, 239, 244), rgb(231, 234, 241))"
+            borderWidth="2px"
+            borderColor={
+              isConnecting || isOpened || isPreviewing ? 'blue.400' : 'white'
+            }
+            w="300px"
+            transition="border 300ms, box-shadow 200ms"
+            pos="absolute"
+            style={{
+              transform: `translate(${blockCoordinates?.x ?? 0}px, ${
+                blockCoordinates?.y ?? 0
+              }px)`,
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            cursor={isMouseDown ? 'grabbing' : 'pointer'}
+            boxShadow="0px 0px 0px 1px #e9edf3;"
+            _hover={{ shadow: 'lg' }}
           >
-            <EditablePreview
-              _hover={{ bgColor: 'gray.300' }}
-              px="1"
-              userSelect={'none'}
-            />
-            <EditableInput minW="0" px="1" />
-          </Editable>
-          {typebot && (
-            <StepNodesList
-              blockId={block.id}
-              steps={block.steps}
-              blockIndex={blockIndex}
-              blockRef={ref}
-              isStartBlock={isStartBlock}
-            />
-          )}
-        </Stack>
+            <Editable
+              defaultValue={block.title}
+              onSubmit={handleTitleSubmit}
+              fontWeight="semibold"
+              pointerEvents={isReadOnly ? 'none' : 'auto'}
+            >
+              <EditablePreview
+                _hover={{ bgColor: 'gray.300' }}
+                px="1"
+                userSelect={'none'}
+              />
+              <EditableInput minW="0" px="1" />
+            </Editable>
+            {typebot && (
+              <StepNodesList
+                blockId={block.id}
+                steps={block.steps}
+                blockIndex={blockIndex}
+                blockRef={ref}
+                isStartBlock={isStartBlock}
+              />
+            )}
+          </Stack>
+        </DraggableCore>
       )}
     </ContextMenu>
   )

@@ -1,5 +1,5 @@
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import React, { useMemo } from 'react'
+import React, { useLayoutEffect, useMemo, useState } from 'react'
 import {
   getAnchorsPosition,
   computeEdgePath,
@@ -38,23 +38,22 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
         getSourceEndpointId(edge)
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      sourceBlockCoordinates?.x,
-      sourceBlockCoordinates?.y,
-      edge,
-      sourceEndpoints,
-    ]
+    [sourceBlockCoordinates?.y, edge, sourceEndpoints]
   )
-  const targetTop = useMemo(
-    () => getEndpointTopOffset(targetEndpoints, graphOffsetY, edge?.to.stepId),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      targetBlockCoordinates?.x,
-      targetBlockCoordinates?.y,
-      edge?.to.stepId,
-      targetEndpoints,
-    ]
+
+  const [targetTop, setTargetTop] = useState(
+    getEndpointTopOffset(targetEndpoints, graphOffsetY, edge?.to.stepId)
   )
+  useLayoutEffect(() => {
+    setTargetTop(
+      getEndpointTopOffset(targetEndpoints, graphOffsetY, edge?.to.stepId)
+    )
+  }, [
+    targetBlockCoordinates?.y,
+    targetEndpoints,
+    graphOffsetY,
+    edge?.to.stepId,
+  ])
 
   const path = useMemo(() => {
     if (!sourceBlockCoordinates || !targetBlockCoordinates || !sourceTop)
