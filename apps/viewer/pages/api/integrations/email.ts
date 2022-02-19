@@ -27,7 +27,7 @@ const defaultFrom = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
-    const { credentialsId, recipients, body, subject } = JSON.parse(
+    const { credentialsId, recipients, body, subject, cc, bcc } = JSON.parse(
       req.body
     ) as SendEmailOptions
 
@@ -47,6 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const info = await transporter.sendMail({
       from: `"${from.name}" <${from.email}>`,
+      cc: cc?.join(''),
+      bcc: bcc?.join(''),
       to: recipients.join(', '),
       subject,
       text: body,

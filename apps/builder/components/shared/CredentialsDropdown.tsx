@@ -1,5 +1,6 @@
 import {
   Button,
+  IconButton,
   Menu,
   MenuButton,
   MenuButtonProps,
@@ -7,19 +8,22 @@ import {
   MenuList,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react'
-import { ChevronLeftIcon, PlusIcon } from 'assets/icons'
-import React, { useEffect, useMemo } from 'react'
+import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useUser } from 'contexts/UserContext'
 import { useRouter } from 'next/router'
 import { CredentialsType } from 'models'
+import { deleteCredentials, useCredentials } from 'services/credentials'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   type: CredentialsType
   currentCredentialsId?: string
-  onCredentialsSelect: (credentialId: string) => void
+  onCredentialsSelect: (credentialId?: string) => void
   onCreateNewClick: () => void
   defaultCredentialLabel?: string
+  refreshDropdownKey?: number
 }
 
 export const CredentialsDropdown = ({
@@ -28,10 +32,21 @@ export const CredentialsDropdown = ({
   onCredentialsSelect,
   onCreateNewClick,
   defaultCredentialLabel,
+  refreshDropdownKey,
   ...props
 }: Props) => {
   const router = useRouter()
-  const { credentials } = useUser()
+  const { user } = useUser()
+  const toast = useToast({
+    position: 'top-right',
+    status: 'error',
+  })
+  const { credentials, mutate } = useCredentials({
+    userId: user?.id,
+    onError: (error) =>
+      toast({ title: error.name, description: error.message }),
+  })
+  const [isDeleting, setIsDeleting] = useState<string>()
 
   const defaultCredentialsLabel = defaultCredentialLabel ?? `Select an account`
 
@@ -44,9 +59,14 @@ export const CredentialsDropdown = ({
     [currentCredentialsId, credentials]
   )
 
-  const handleMenuItemClick = (credentialId: string) => () => {
-    onCredentialsSelect(credentialId)
+  const handleMenuItemClick = (credentialsId: string) => () => {
+    onCredentialsSelect(credentialsId)
   }
+
+  useEffect(() => {
+    if ((refreshDropdownKey ?? 0) > 0) mutate({ credentials })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshDropdownKey])
 
   useEffect(() => {
     if (!router.isReady) return
@@ -61,6 +81,16 @@ export const CredentialsDropdown = ({
     const hasQueryParams = router.asPath.includes('?')
     if (hasQueryParams)
       router.push(router.asPath.split('?')[0], undefined, { shallow: true })
+  }
+
+  const handleDeleteDomainClick = (credentialsId: string) => async () => {
+    if (!user?.id) return
+    setIsDeleting(credentialsId)
+    const { error } = await deleteCredentials(user?.id, credentialsId)
+    setIsDeleting(undefined)
+    if (error) return toast({ title: error.name, description: error.message })
+    onCredentialsSelect(undefined)
+    mutate({ credentials: credentials.filter((c) => c.id !== credentialsId) })
   }
 
   return (
@@ -91,16 +121,27 @@ export const CredentialsDropdown = ({
             </MenuItem>
           )}
           {credentialsList.map((credentials) => (
-            <MenuItem
+            <Button
+              role="menuitem"
+              minH="40px"
               key={credentials.id}
-              maxW="500px"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
               onClick={handleMenuItemClick(credentials.id)}
+              fontSize="16px"
+              fontWeight="normal"
+              rounded="none"
+              colorScheme="gray"
+              variant="ghost"
+              justifyContent="space-between"
             >
               {credentials.name}
-            </MenuItem>
+              <IconButton
+                icon={<TrashIcon />}
+                aria-label="Remove credentials"
+                size="xs"
+                onClick={handleDeleteDomainClick(credentials.id)}
+                isLoading={isDeleting === credentials.id}
+              />
+            </Button>
           ))}
           <MenuItem
             maxW="500px"

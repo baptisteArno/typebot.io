@@ -2,7 +2,12 @@ import { sendRequest } from 'utils'
 import { stringify } from 'qs'
 import useSWR from 'swr'
 import { fetcher } from './utils'
-import { Variable, VariableForTest, WebhookResponse } from 'models'
+import {
+  SmtpCredentialsData,
+  Variable,
+  VariableForTest,
+  WebhookResponse,
+} from 'models'
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
@@ -123,3 +128,13 @@ export const getDeepKeys = (obj: any): string[] => {
   }
   return keys
 }
+
+export const testSmtpConfig = (smtpData: SmtpCredentialsData, to: string) =>
+  sendRequest({
+    method: 'POST',
+    url: '/api/integrations/email/test-config',
+    body: {
+      ...smtpData,
+      to,
+    },
+  })

@@ -12,10 +12,7 @@ import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user'
 import { useToast } from '@chakra-ui/react'
 import { deepEqual } from 'fast-equals'
-import { useCredentials } from 'services/credentials'
 import { User } from 'db'
-import { KeyedMutator } from 'swr'
-import { Credentials } from 'models'
 
 const userContext = createContext<{
   user?: User
@@ -23,12 +20,8 @@ const userContext = createContext<{
   isSaving: boolean
   hasUnsavedChanges: boolean
   isOAuthProvider: boolean
-  credentials: Credentials[]
   updateUser: (newUser: Partial<User>) => void
   saveUser: () => void
-  mutateCredentials: KeyedMutator<{
-    credentials: Credentials[]
-  }>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -40,11 +33,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   const toast = useToast({
     position: 'top-right',
     status: 'error',
-  })
-  const { credentials, mutate: mutateCredentials } = useCredentials({
-    userId: user?.id,
-    onError: (error) =>
-      toast({ title: error.name, description: error.message }),
   })
 
   const [isSaving, setIsSaving] = useState(false)
@@ -96,8 +84,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
         isLoading: status === 'loading',
         hasUnsavedChanges,
         isOAuthProvider,
-        credentials: credentials ?? [],
-        mutateCredentials,
         updateUser,
         saveUser,
       }}

@@ -5,7 +5,7 @@ import {
   TextareaWithVariableButton,
 } from 'components/shared/TextboxWithVariableButton'
 import { CredentialsType, SendEmailOptions } from 'models'
-import React from 'react'
+import React, { useState } from 'react'
 import { SmtpConfigModal } from './SmtpConfigModal'
 
 type Props = {
@@ -15,11 +15,15 @@ type Props = {
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const handleCredentialsSelect = (credentialsId: string) =>
+  const [refreshCredentialsKey, setRefreshCredentialsKey] = useState(0)
+
+  const handleCredentialsSelect = (credentialsId?: string) => {
+    setRefreshCredentialsKey(refreshCredentialsKey + 1)
     onOptionsChange({
       ...options,
-      credentialsId,
+      credentialsId: credentialsId === undefined ? 'default' : credentialsId,
     })
+  }
 
   const handleToChange = (recipientsStr: string) => {
     const recipients: string[] = recipientsStr
@@ -28,6 +32,22 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({
       ...options,
       recipients,
+    })
+  }
+
+  const handleCcChange = (ccStr: string) => {
+    const cc: string[] = ccStr.split(',').map((str) => str.trim())
+    onOptionsChange({
+      ...options,
+      cc,
+    })
+  }
+
+  const handleBccChange = (bccStr: string) => {
+    const bcc: string[] = bccStr.split(',').map((str) => str.trim())
+    onOptionsChange({
+      ...options,
+      bcc,
     })
   }
 
@@ -55,6 +75,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           defaultCredentialLabel={
             process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_FROM_EMAIL
           }
+          refreshDropdownKey={refreshCredentialsKey}
         />
       </Stack>
       <Stack>
@@ -62,6 +83,22 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         <InputWithVariableButton
           onChange={handleToChange}
           initialValue={options.recipients.join(', ')}
+          placeholder="email1@gmail.com, email2@gmail.com"
+        />
+      </Stack>
+      <Stack>
+        <Text>Cc: </Text>
+        <InputWithVariableButton
+          onChange={handleCcChange}
+          initialValue={options.cc?.join(', ') ?? ''}
+          placeholder="email1@gmail.com, email2@gmail.com"
+        />
+      </Stack>
+      <Stack>
+        <Text>Bcc: </Text>
+        <InputWithVariableButton
+          onChange={handleBccChange}
+          initialValue={options.bcc?.join(', ') ?? ''}
           placeholder="email1@gmail.com, email2@gmail.com"
         />
       </Stack>

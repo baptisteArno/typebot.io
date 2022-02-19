@@ -13,6 +13,7 @@ import { useUser } from 'contexts/UserContext'
 import { CredentialsType, SmtpCredentialsData } from 'models'
 import React, { useState } from 'react'
 import { createCredentials } from 'services/credentials'
+import { testSmtpConfig } from 'services/integrations'
 import { isNotDefined } from 'utils'
 import { SmtpConfigForm } from './SmtpConfigForm'
 
@@ -27,7 +28,7 @@ export const SmtpConfigModal = ({
   onNewCredentials,
   onClose,
 }: Props) => {
-  const { user, mutateCredentials } = useUser()
+  const { user } = useUser()
   const [isCreating, setIsCreating] = useState(false)
   const toast = useToast({
     position: 'top-right',
@@ -39,14 +40,24 @@ export const SmtpConfigModal = ({
   })
 
   const handleCreateClick = async () => {
-    if (!user) return
+    if (!user?.email) return
     setIsCreating(true)
+    const { error: testSmtpError } = await testSmtpConfig(
+      smtpConfig,
+      user.email
+    )
+    if (testSmtpError) {
+      setIsCreating(false)
+      return toast({
+        title: 'Invalid configuration',
+        description: "We couldn't send the test email with your configuration",
+      })
+    }
     const { data, error } = await createCredentials(user.id, {
       data: smtpConfig,
       name: smtpConfig.from.email as string,
       type: CredentialsType.SMTP,
     })
-    await mutateCredentials()
     setIsCreating(false)
     if (error) return toast({ title: error.name, description: error.message })
     if (!data?.credentials)

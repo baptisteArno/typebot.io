@@ -1,5 +1,4 @@
 import { Divider, Stack, Text } from '@chakra-ui/react'
-import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -24,6 +23,8 @@ import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
 import { CellWithVariableIdStack } from './CellWithVariableIdStack'
+import { omit } from 'services/utils'
+import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 
 type Props = {
   options: GoogleSheetsOptions
@@ -45,8 +46,8 @@ export const GoogleSheetsSettingsBody = ({
     () => sheets?.find((s) => s.id === options?.sheetId),
     [sheets, options?.sheetId]
   )
-  const handleCredentialsIdChange = (credentialsId: string) =>
-    onOptionsChange({ ...options, credentialsId })
+  const handleCredentialsIdChange = (credentialsId?: string) =>
+    onOptionsChange({ ...omit(options, 'credentialsId'), credentialsId })
   const handleSpreadsheetIdChange = (spreadsheetId: string) =>
     onOptionsChange({ ...options, spreadsheetId })
   const handleSheetIdChange = (sheetId: string) =>

@@ -192,6 +192,8 @@ const sendEmail = async (
       recipients: options.recipients.map(parseVariables(variables)),
       subject: parseVariables(variables)(options.subject ?? ''),
       body: parseVariables(variables)(options.body ?? ''),
+      cc: (options.cc ?? []).map(parseVariables(variables)),
+      bcc: (options.bcc ?? []).map(parseVariables(variables)),
     },
   })
   console.error(error)

@@ -16,7 +16,7 @@ export const useCredentials = ({
   )
   if (error) onError(error)
   return {
-    credentials: data?.credentials,
+    credentials: data?.credentials ?? [],
     isLoading: !error && !data,
     mutate,
   }
@@ -32,4 +32,15 @@ export const createCredentials = async (
     url: `/api/users/${userId}/credentials`,
     method: 'POST',
     body: credentials,
+  })
+
+export const deleteCredentials = async (
+  userId: string,
+  credentialsId: string
+) =>
+  sendRequest<{
+    credentials: Credentials
+  }>({
+    url: `/api/users/${userId}/credentials/${credentialsId}`,
+    method: 'DELETE',
   })
