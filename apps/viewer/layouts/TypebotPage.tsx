@@ -63,7 +63,11 @@ export const TypebotPage = ({
   }
   return (
     <div style={{ height: '100vh' }}>
-      <SEO url={url} chatbotName={typebot.name} />
+      <SEO
+        url={url}
+        typebotName={typebot.name}
+        metadata={typebot.settings.metadata}
+      />
       {showTypebot && (
         <TypebotViewer
           typebot={typebot}

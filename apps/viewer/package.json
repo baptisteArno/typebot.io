@@ -6,7 +6,9 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "dotenv -e ./playwright/.env -e .env.local -- yarn playwright test",
+    "test:open": "dotenv -e ./playwright/.env -e .env.local -v PWDEBUG=1 -- yarn playwright test"
   },
   "dependencies": {
     "@sentry/nextjs": "^6.17.8",
