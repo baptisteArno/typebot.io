@@ -140,7 +140,7 @@ export const defaultUrlInputOptions: UrlInputOptions = {
     placeholder: 'Type a URL...',
   },
   retryMessageContent:
-    "This email doesn't seem to be valid. Can you type it again?",
+    "This URL doesn't seem to be valid. Can you type it again?",
 }
 
 export const defaultDateInputOptions: DateInputOptions = {
@@ -155,7 +155,7 @@ export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
     placeholder: 'Type your phone number...',
   },
   retryMessageContent:
-    "This email doesn't seem to be valid. Can you type it again?",
+    "This phone number doesn't seem to be valid. Can you type it again?",
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {
