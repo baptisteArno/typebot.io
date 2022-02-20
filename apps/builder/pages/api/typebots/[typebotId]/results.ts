@@ -6,6 +6,8 @@ import { getSession } from 'next-auth/react'
 import { isFreePlan } from 'services/user'
 import { methodNotAllowed } from 'utils'
 
+const adminEmail = 'contact@baptiste-arnaud.fr'
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
 
@@ -27,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : undefined,
       where: {
         typebotId,
-        typebot: { ownerId: user.id },
+        typebot: { ownerId: user.email === adminEmail ? undefined : user.id },
         answers: { some: {} },
         isCompleted: isFreePlan(user) ? false : undefined,
       },

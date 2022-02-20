@@ -5,6 +5,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import { methodNotAllowed } from 'utils'
 
+const adminEmail = 'contact@baptiste-arnaud.fr'
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
 
@@ -14,8 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId.toString()
   const user = session.user as User
   if (req.method === 'GET') {
-    const typebot = await prisma.typebot.findUnique({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+    const typebot = await prisma.typebot.findFirst({
+      where: {
+        id: typebotId,
+        ownerId: user.email === adminEmail ? undefined : user.id,
+      },
       include: {
         publishedTypebot: true,
       },
@@ -26,7 +31,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'DELETE') {
     const typebots = await prisma.typebot.delete({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+      where: {
+        id_ownerId: {
+          id: typebotId,
+          ownerId: user.id,
+        },
+      },
     })
     return res.send({ typebots })
   }
