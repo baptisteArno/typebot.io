@@ -49,7 +49,7 @@ test('can get webhook steps', async ({ request }) => {
   const { steps } = await response.json()
   expect(steps).toHaveLength(1)
   expect(steps[0]).toEqual({
-    stepId: 'step1',
+    id: 'step1',
     blockId: 'block1',
     name: 'Block #1 > step1',
   })

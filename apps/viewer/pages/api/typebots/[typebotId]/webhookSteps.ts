@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       select: { blocks: true },
     })
     const emptyWebhookSteps = (typebot?.blocks as Block[]).reduce<
-      { blockId: string; stepId: string; name: string }[]
+      { blockId: string; id: string; name: string }[]
     >((emptyWebhookSteps, block) => {
       const steps = block.steps.filter(
         (step) => step.type === IntegrationStepType.WEBHOOK && !step.webhook.url
@@ -23,8 +23,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return [
         ...emptyWebhookSteps,
         ...steps.map((s) => ({
+          id: s.id,
           blockId: s.blockId,
-          stepId: s.id,
           name: `${block.title} > ${s.id}`,
         })),
       ]
