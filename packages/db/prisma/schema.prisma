@@ -51,6 +51,7 @@ model User {
   stripeId      String?           @unique
   credentials   Credentials[]
   customDomains CustomDomain[]
+  apiToken      String?
 }
 
 model CustomDomain {
@@ -96,6 +97,7 @@ model DashboardFolder {
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
+
   @@unique([id, ownerId])
 }
 
@@ -118,6 +120,7 @@ model Typebot {
   settings           Json
   publicId           String?          @unique
   customDomain       String?          @unique
+
   @@unique([id, ownerId])
 }
 

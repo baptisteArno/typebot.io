@@ -11,5 +11,5 @@
   
   For more info on what fields you can add: https://developers.mailerlite.com/reference/create-a-subscriber
 
-4. Replace "YOUR_TOKEN" with your API token. It can be found here: https://app.mailerlite.com/integrations/api/
+4. Replace "YOUR_TOKEN" with your API key. It can be found here: https://app.mailerlite.com/integrations/api/
 5. Whenever the user enters his email it should add it to your subscribers' list on MailerLite

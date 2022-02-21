@@ -7,6 +7,9 @@ import FacebookProvider from 'next-auth/providers/facebook'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { isNotDefined } from 'utils'
+import { User } from 'db'
+import { randomUUID } from 'crypto'
 
 const providers: Provider[] = [
   EmailProvider({
@@ -19,13 +22,6 @@ const providers: Provider[] = [
       },
     },
     from: `"${process.env.AUTH_EMAIL_FROM_NAME}" <${process.env.AUTH_EMAIL_FROM_EMAIL}>`,
-    // sendVerificationRequest({
-    //   identifier: email,
-    //   url,
-    //   provider: { server, from },
-    // }) {
-    //   console.log(url)
-    // },
   }),
 ]
 
@@ -62,9 +58,23 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       strategy: 'database',
     },
     callbacks: {
-      session: ({ session, user }) => ({ ...session, user }),
+      session: async ({ session, user }) => {
+        const userFromDb = user as User
+        if (isNotDefined(userFromDb.apiToken))
+          userFromDb.apiToken = await generateApiToken(userFromDb.id)
+        return { ...session, user: userFromDb }
+      },
     },
   })
+}
+
+const generateApiToken = async (userId: string) => {
+  const apiToken = randomUUID()
+  await prisma.user.update({
+    where: { id: userId },
+    data: { apiToken },
+  })
+  return apiToken
 }
 
 export default handler
