@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs'
 import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
@@ -25,4 +26,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default handler
+export default withSentry(handler)

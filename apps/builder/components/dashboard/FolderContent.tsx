@@ -12,10 +12,13 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
-import { Typebot } from 'models'
 import React, { useEffect, useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
-import { patchTypebot, useTypebots } from 'services/typebots'
+import {
+  patchTypebot,
+  TypebotInDashboard,
+  useTypebots,
+} from 'services/typebots'
 import { AnnoucementModal } from './annoucements/AnnoucementModal'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
@@ -42,7 +45,8 @@ export const FolderContent = ({ folder }: Props) => {
     x: 0,
     y: 0,
   })
-  const [typebotDragCandidate, setTypebotDragCandidate] = useState<Typebot>()
+  const [typebotDragCandidate, setTypebotDragCandidate] =
+    useState<TypebotInDashboard>()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const toast = useToast({
@@ -130,16 +134,17 @@ export const FolderContent = ({ folder }: Props) => {
   }
   useEventListener('mouseup', handleMouseUp)
 
-  const handleMouseDown = (typebot: Typebot) => (e: React.MouseEvent) => {
-    const element = e.currentTarget as HTMLDivElement
-    const rect = element.getBoundingClientRect()
-    setDraggablePosition({ x: rect.left, y: rect.top })
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    setRelativeDraggablePosition({ x, y })
-    setMouseDownPosition({ x: e.screenX, y: e.screenY })
-    setTypebotDragCandidate(typebot)
-  }
+  const handleMouseDown =
+    (typebot: TypebotInDashboard) => (e: React.MouseEvent) => {
+      const element = e.currentTarget as HTMLDivElement
+      const rect = element.getBoundingClientRect()
+      setDraggablePosition({ x: rect.left, y: rect.top })
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      setRelativeDraggablePosition({ x, y })
+      setMouseDownPosition({ x: e.screenX, y: e.screenY })
+      setTypebotDragCandidate(typebot)
+    }
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!typebotDragCandidate) return

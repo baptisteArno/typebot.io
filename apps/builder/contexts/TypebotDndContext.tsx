@@ -1,4 +1,3 @@
-import { Typebot } from 'models'
 import {
   createContext,
   Dispatch,
@@ -8,10 +7,11 @@ import {
   useEffect,
   useState,
 } from 'react'
+import { TypebotInDashboard } from 'services/typebots'
 
 const typebotDndContext = createContext<{
-  draggedTypebot?: Typebot
-  setDraggedTypebot: Dispatch<SetStateAction<Typebot | undefined>>
+  draggedTypebot?: TypebotInDashboard
+  setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>
   mouseOverFolderId?: string | null
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,7 +19,7 @@ const typebotDndContext = createContext<{
 }>({})
 
 export const TypebotDndContext = ({ children }: { children: ReactNode }) => {
-  const [draggedTypebot, setDraggedTypebot] = useState<Typebot>()
+  const [draggedTypebot, setDraggedTypebot] = useState<TypebotInDashboard>()
   const [mouseOverFolderId, setMouseOverFolderId] = useState<string | null>()
 
   useEffect(() => {

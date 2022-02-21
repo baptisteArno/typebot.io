@@ -10,6 +10,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { isNotDefined } from 'utils'
 import { User } from 'db'
 import { randomUUID } from 'crypto'
+import { withSentry } from '@sentry/nextjs'
 
 const providers: Provider[] = [
   EmailProvider({
@@ -77,4 +78,4 @@ const generateApiToken = async (userId: string) => {
   return apiToken
 }
 
-export default handler
+export default withSentry(handler)

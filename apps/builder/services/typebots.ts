@@ -51,6 +51,10 @@ import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
 import { parseBlocksToPublicBlocks } from './publicTypebot'
 
+export type TypebotInDashboard = Pick<
+  Typebot,
+  'id' | 'name' | 'publishedTypebotId'
+>
 export const useTypebots = ({
   folderId,
   onError,
@@ -59,11 +63,10 @@ export const useTypebots = ({
   onError: (error: Error) => void
 }) => {
   const params = stringify({ folderId })
-  const { data, error, mutate } = useSWR<{ typebots: Typebot[] }, Error>(
-    `/api/typebots?${params}`,
-    fetcher,
-    { dedupingInterval: 0 }
-  )
+  const { data, error, mutate } = useSWR<
+    { typebots: TypebotInDashboard[] },
+    Error
+  >(`/api/typebots?${params}`, fetcher, { dedupingInterval: 0 })
   if (error) onError(error)
   return {
     typebots: data?.typebots,
@@ -93,11 +96,13 @@ export const importTypebot = async (typebot: Typebot) =>
     body: typebot,
   })
 
-export const duplicateTypebot = async (typebot: Typebot) => {
+export const duplicateTypebot = async (typebotId: string) => {
+  const { data: typebotToDuplicate } = await getTypebot(typebotId)
+  if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
   const duplicatedTypebot: Omit<Typebot, 'id'> = omit(
     {
-      ...typebot,
-      name: `${typebot.name} copy`,
+      ...typebotToDuplicate,
+      name: `${typebotToDuplicate.name} copy`,
       publishedTypebotId: null,
       publicId: null,
     },
@@ -109,6 +114,12 @@ export const duplicateTypebot = async (typebot: Typebot) => {
     body: duplicatedTypebot,
   })
 }
+
+const getTypebot = (typebotId: string) =>
+  sendRequest<Typebot>({
+    url: `/api/typebots/${typebotId}`,
+    method: 'GET',
+  })
 
 export const deleteTypebot = async (id: string) =>
   sendRequest({

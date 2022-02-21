@@ -21,7 +21,7 @@ import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
 
 type ChatbotCardProps = {
-  typebot: Typebot
+  typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name'>
   onTypebotDeleted: () => void
   onMouseDown: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -66,7 +66,7 @@ export const TypebotButton = ({
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    const { data: createdTypebot, error } = await duplicateTypebot(typebot)
+    const { data: createdTypebot, error } = await duplicateTypebot(typebot.id)
     if (error)
       return toast({
         title: "Couldn't duplicate typebot",

@@ -1,6 +1,5 @@
 import {
   Block,
-  CredentialsType,
   defaultSettings,
   defaultTheme,
   PublicBlock,
@@ -8,38 +7,30 @@ import {
   Step,
   Typebot,
 } from 'models'
-import { PrismaClient, User } from 'db'
+import { PrismaClient } from 'db'
 import { readFileSync } from 'fs'
-import { encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
-export const teardownDatabase = async () => {
-  const ownerFilter = {
-    where: { ownerId: { in: ['freeUser', 'proUser'] } },
-  }
-  await prisma.user.deleteMany({
-    where: { id: { in: ['freeUser', 'proUser'] } },
-  })
-  await prisma.credentials.deleteMany(ownerFilter)
-  return prisma.typebot.deleteMany(ownerFilter)
+export const teardownDatabase = () => {
+  try {
+    return prisma.user.delete({
+      where: { id: 'user' },
+    })
+  } catch {}
 }
 
-export const setupDatabase = async () => {
-  await createUsers()
-  return createCredentials()
-}
+export const setupDatabase = () => createUser()
 
-export const createUsers = () =>
-  prisma.user.createMany({
-    data: [
-      { id: 'freeUser', email: 'free-user@email.com', name: 'Free user' },
-      { id: 'proUser', email: 'pro-user@email.com', name: 'Pro user' },
-    ],
+export const createUser = () =>
+  prisma.user.create({
+    data: {
+      id: 'user',
+      email: 'user@email.com',
+      name: 'User',
+      apiToken: 'userToken',
+    },
   })
-
-export const getSignedInUser = (email: string) =>
-  prisma.user.findFirst({ where: { email } })
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   await prisma.typebot.createMany({
@@ -51,36 +42,6 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
     ) as any[],
   })
 }
-
-const createCredentials = () => {
-  const { encryptedData, iv } = encrypt({
-    expiry_date: 1642441058842,
-    access_token:
-      'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',
-    // This token is linked to a test Google account (typebot.test.user@gmail.com)
-    refresh_token:
-      '1//039xWRt8YaYa3CgYIARAAGAMSNwF-L9Iru9FyuTrDSa7lkSceggPho83kJt2J29G69iEhT1C6XV1vmo6bQS9puL_R2t8FIwR3gek',
-  })
-  return prisma.credentials.createMany({
-    data: [
-      {
-        name: 'test2@gmail.com',
-        ownerId: 'proUser',
-        type: CredentialsType.GOOGLE_SHEETS,
-        data: encryptedData,
-        iv,
-      },
-    ],
-  })
-}
-
-export const updateUser = (data: Partial<User>) =>
-  prisma.user.update({
-    data,
-    where: {
-      id: 'proUser',
-    },
-  })
 
 const parseTypebotToPublicTypebot = (
   id: string,
@@ -110,7 +71,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  ownerId: 'proUser',
+  ownerId: 'user',
   theme: defaultTheme,
   settings: defaultSettings,
   createdAt: new Date(),
@@ -172,7 +133,7 @@ export const importTypebotInDatabase = async (
   const typebot: any = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
-    ownerId: 'proUser',
+    ownerId: 'user',
   }
   await prisma.typebot.create({
     data: typebot,

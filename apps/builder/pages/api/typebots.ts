@@ -21,6 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ownerId: user.id,
           folderId,
         },
+        select: { name: true, publishedTypebotId: true, id: true },
       })
       return res.send({ typebots })
     }

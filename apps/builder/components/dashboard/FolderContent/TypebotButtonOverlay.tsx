@@ -1,9 +1,9 @@
 import { Box, BoxProps, Flex, Text, VStack } from '@chakra-ui/react'
 import { GlobeIcon, ToolIcon } from 'assets/icons'
-import { Typebot } from 'models'
+import { TypebotInDashboard } from 'services/typebots'
 
 type Props = {
-  typebot: Typebot
+  typebot: TypebotInDashboard
 } & BoxProps
 
 export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
