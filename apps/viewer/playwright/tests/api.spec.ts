@@ -1,28 +1,14 @@
 import test, { expect } from '@playwright/test'
-import {
-  createResults,
-  createTypebots,
-  parseDefaultBlockWithStep,
-} from '../services/database'
-import {
-  IntegrationStepType,
-  defaultWebhookOptions,
-  defaultWebhookAttributes,
-} from 'models'
+import { createResults, importTypebotInDatabase } from '../services/database'
+import path from 'path'
 
 const typebotId = 'webhook-flow'
 test.beforeAll(async () => {
   try {
-    await createTypebots([
-      {
-        id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: IntegrationStepType.WEBHOOK,
-          options: defaultWebhookOptions,
-          webhook: { id: 'webhookId', ...defaultWebhookAttributes },
-        }),
-      },
-    ])
+    await importTypebotInDatabase(
+      path.join(__dirname, '../fixtures/typebots/api.json'),
+      { id: typebotId }
+    )
     await createResults({ typebotId })
   } catch (err) {}
 })
@@ -54,9 +40,9 @@ test('can get webhook steps', async ({ request }) => {
   const { steps } = await response.json()
   expect(steps).toHaveLength(1)
   expect(steps[0]).toEqual({
-    id: 'step1',
-    blockId: 'block1',
-    name: 'Block #1 > step1',
+    id: 'webhookStep',
+    blockId: 'webhookBlock',
+    name: 'Webhook > webhookStep',
   })
 })
 
@@ -64,13 +50,13 @@ test('can subscribe webhook', async ({ request }) => {
   expect(
     (
       await request.patch(
-        `/api/typebots/${typebotId}/blocks/block1/steps/step1/subscribeWebhook`,
+        `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/subscribeWebhook`,
         { data: { url: 'https://test.com' } }
       )
     ).status()
   ).toBe(401)
   const response = await request.patch(
-    `/api/typebots/${typebotId}/blocks/block1/steps/step1/subscribeWebhook`,
+    `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/subscribeWebhook`,
     {
       headers: {
         Authorization: 'Bearer userToken',
@@ -88,12 +74,12 @@ test('can unsubscribe webhook', async ({ request }) => {
   expect(
     (
       await request.delete(
-        `/api/typebots/${typebotId}/blocks/block1/steps/step1/unsubscribeWebhook`
+        `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/unsubscribeWebhook`
       )
     ).status()
   ).toBe(401)
   const response = await request.delete(
-    `/api/typebots/${typebotId}/blocks/block1/steps/step1/unsubscribeWebhook`,
+    `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/unsubscribeWebhook`,
     {
       headers: { Authorization: 'Bearer userToken' },
     }
@@ -101,6 +87,31 @@ test('can unsubscribe webhook', async ({ request }) => {
   const body = await response.json()
   expect(body).toEqual({
     message: 'success',
+  })
+})
+
+test('can get a sample result', async ({ request }) => {
+  expect(
+    (
+      await request.get(
+        `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/sampleResult`
+      )
+    ).status()
+  ).toBe(401)
+  const response = await request.get(
+    `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/sampleResult`,
+    {
+      headers: { Authorization: 'Bearer userToken' },
+    }
+  )
+  const data = await response.json()
+  expect(data).toMatchObject({
+    message: 'This is a sample result, it has been generated ⬇️',
+    Welcome: 'Item 1, Item 2, Item3',
+    Email: 'test@email.com',
+    Name: 'answer value',
+    Services: 'Item 1, Item 2, Item3',
+    'Additional information': 'answer value',
   })
 })
 
@@ -116,5 +127,4 @@ test('can list results', async ({ request }) => {
   )
   const { results } = await response.json()
   expect(results).toHaveLength(10)
-  expect(results[0]).toMatchObject({ 'Block #1': 'content199' })
 })
