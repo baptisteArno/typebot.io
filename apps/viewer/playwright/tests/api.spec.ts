@@ -1,5 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
+import {
+  createResults,
+  createTypebots,
+  parseDefaultBlockWithStep,
+} from '../services/database'
 import {
   IntegrationStepType,
   defaultWebhookOptions,
@@ -19,6 +23,7 @@ test.beforeAll(async () => {
         }),
       },
     ])
+    await createResults({ typebotId })
   } catch (err) {}
 })
 
@@ -97,4 +102,19 @@ test('can unsubscribe webhook', async ({ request }) => {
   expect(body).toEqual({
     message: 'success',
   })
+})
+
+test('can list results', async ({ request }) => {
+  expect(
+    (await request.get(`/api/typebots/${typebotId}/results`)).status()
+  ).toBe(401)
+  const response = await request.get(
+    `/api/typebots/${typebotId}/results?limit=10`,
+    {
+      headers: { Authorization: 'Bearer userToken' },
+    }
+  )
+  const { results } = await response.json()
+  expect(results).toHaveLength(10)
+  expect(results[0]).toMatchObject({ 'Block #1': 'content199' })
 })

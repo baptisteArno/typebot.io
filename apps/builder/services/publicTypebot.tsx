@@ -53,6 +53,7 @@ type HeaderCell = {
   Header: JSX.Element
   accessor: string
 }
+
 export const parseSubmissionsColumns = (
   typebot: PublicTypebot
 ): HeaderCell[] => {
