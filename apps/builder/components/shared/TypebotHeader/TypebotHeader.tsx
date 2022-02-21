@@ -1,4 +1,12 @@
-import { Flex, HStack, Button, IconButton, Tooltip } from '@chakra-ui/react'
+import {
+  Flex,
+  HStack,
+  Button,
+  IconButton,
+  Tooltip,
+  Spinner,
+  Text,
+} from '@chakra-ui/react'
 import { ChevronLeftIcon, RedoIcon, UndoIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
@@ -7,7 +15,6 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { PublishButton } from '../buttons/PublishButton'
 import { EditableTypebotName } from './EditableTypebotName'
-import { SaveButton } from './SaveButton'
 
 export const headerHeight = 56
 
@@ -21,7 +28,7 @@ export const TypebotHeader = () => {
     redo,
     canUndo,
     canRedo,
-    publishedTypebot,
+    isSavingLoading,
   } = useTypebot()
   const { setRightPanel } = useEditor()
 
@@ -96,7 +103,13 @@ export const TypebotHeader = () => {
           </Button>
         )}
       </HStack>
-      <Flex pos="absolute" left="1rem" justify="center" align="center">
+      <HStack
+        pos="absolute"
+        left="1rem"
+        justify="center"
+        align="center"
+        spacing="6"
+      >
         <HStack alignItems="center">
           <IconButton
             aria-label="Back"
@@ -129,10 +142,17 @@ export const TypebotHeader = () => {
             />
           </Tooltip>
         </HStack>
-      </Flex>
+        {isSavingLoading && (
+          <HStack>
+            <Spinner speed="0.7s" size="sm" color="gray.400" />
+            <Text fontSize="sm" color="gray.400">
+              Saving...
+            </Text>
+          </HStack>
+        )}
+      </HStack>
 
       <HStack right="40px" pos="absolute">
-        <SaveButton />
         <Button onClick={handlePreviewClick}>Preview</Button>
         <PublishButton />
       </HStack>

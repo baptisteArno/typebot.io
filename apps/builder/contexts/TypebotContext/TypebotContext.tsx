@@ -1,4 +1,4 @@
-import { ToastId, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { PublicTypebot, Settings, Theme, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import {
@@ -32,7 +32,8 @@ import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
 import { generate } from 'short-uuid'
-const autoSaveTimeout = 40000
+import { deepEqual } from 'fast-equals'
+const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -49,9 +50,8 @@ const typebotContext = createContext<
     publishedTypebot?: PublicTypebot
     isPublished: boolean
     isPublishing: boolean
-    hasUnsavedChanges: boolean
     isSavingLoading: boolean
-    save: () => Promise<ToastId | undefined>
+    save: () => Promise<void>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -93,6 +93,13 @@ export const TypebotContext = ({
       }),
   })
 
+  useEffect(() => {
+    if (!typebot || !localTypebot || deepEqual(typebot, localTypebot)) return
+    if (typebot?.blocks.length === localTypebot?.blocks.length)
+      setLocalTypebot({ ...typebot })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot])
+
   const [
     { present: localTypebot },
     {
@@ -106,12 +113,16 @@ export const TypebotContext = ({
   ] = useUndo<Typebot | undefined>(undefined)
 
   const saveTypebot = async () => {
+    if (deepEqual(typebot, localTypebot)) return
     const typebotToSave = currentTypebotRef.current
     if (!typebotToSave) return
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
     setIsSavingLoading(false)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error) {
+      toast({ title: error.name, description: error.message })
+      return
+    }
     mutate({ typebot: typebotToSave })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
   }
@@ -130,18 +141,9 @@ export const TypebotContext = ({
     })
   }
 
-  const hasUnsavedChanges = useMemo(
-    () =>
-      isDefined(typebot) &&
-      isDefined(localTypebot) &&
-      !checkIfTypebotsAreEqual(localTypebot, typebot),
-    [typebot, localTypebot]
-  )
-
   useAutoSave({
     handler: saveTypebot,
     item: localTypebot,
-    canSave: hasUnsavedChanges,
     debounceTimeout: autoSaveTimeout,
   })
 
@@ -257,7 +259,6 @@ export const TypebotContext = ({
       value={{
         typebot: localTypebot,
         publishedTypebot,
-        hasUnsavedChanges,
         isSavingLoading,
         save: saveTypebot,
         undo,
@@ -306,18 +307,24 @@ export const useFetchedTypebot = ({
 const useAutoSave = <T,>({
   handler,
   item,
-  canSave,
   debounceTimeout,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handler: (item?: T) => Promise<any>
   item?: T
-  canSave: boolean
   debounceTimeout: number
 }) => {
   const [debouncedItem] = useDebounce(item, debounceTimeout)
+  useEffect(() => {
+    const save = () => handler(item)
+    document.addEventListener('visibilitychange', save)
+    return () => {
+      document.removeEventListener('visibilitychange', save)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return useEffect(() => {
-    if (canSave) handler(item)
+    handler(item)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedItem])
 }

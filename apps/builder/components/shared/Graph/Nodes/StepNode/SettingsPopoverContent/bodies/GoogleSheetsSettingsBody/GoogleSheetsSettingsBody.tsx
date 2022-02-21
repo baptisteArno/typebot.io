@@ -37,7 +37,7 @@ export const GoogleSheetsSettingsBody = ({
   onOptionsChange,
   stepId,
 }: Props) => {
-  const { save, hasUnsavedChanges } = useTypebot()
+  const { save } = useTypebot()
   const { sheets, isLoading } = useSheets({
     credentialsId: options?.credentialsId,
     spreadsheetId: options?.spreadsheetId,
@@ -83,10 +83,7 @@ export const GoogleSheetsSettingsBody = ({
   }
 
   const handleCreateNewClick = async () => {
-    if (hasUnsavedChanges) {
-      const errorToastId = await save()
-      if (errorToastId) return
-    }
+    await save()
     const linkElement = document.createElement('a')
     linkElement.href = getGoogleSheetsConsentScreenUrl(
       window.location.href,
