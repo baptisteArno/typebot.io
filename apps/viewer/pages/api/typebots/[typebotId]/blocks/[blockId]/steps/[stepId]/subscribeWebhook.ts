@@ -7,7 +7,7 @@ import { authenticateUser } from 'services/api/utils'
 import { isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'PATCH') {
+  if (req.method === 'POST') {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
     const body = req.body as Record<string, string>

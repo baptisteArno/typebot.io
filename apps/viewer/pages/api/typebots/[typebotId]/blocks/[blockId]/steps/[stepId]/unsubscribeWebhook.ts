@@ -8,7 +8,7 @@ import { omit } from 'services/utils'
 import { isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'DELETE') {
+  if (req.method === 'POST') {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
     const typebotId = req.query.typebotId.toString()
