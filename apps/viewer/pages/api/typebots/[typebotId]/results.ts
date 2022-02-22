@@ -20,7 +20,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       take: limit,
       include: { answers: true },
     })) as unknown as ResultWithAnswers[]
-    res.send({ results: results.map(parseAnswers(typebot as Typebot)) })
+    res.send({
+      results: results.map(parseAnswers(typebot as unknown as Typebot)),
+    })
   }
   methodNotAllowed(res)
 }

@@ -23,7 +23,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ credentials })
   }
   if (req.method === 'POST') {
-    const data = JSON.parse(req.body) as Omit<Credentials, 'ownerId'>
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Omit<Credentials, 'ownerId'>
     const { encryptedData, iv } = encrypt(data.data)
     const credentials = await prisma.credentials.create({
       data: {

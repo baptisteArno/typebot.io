@@ -1,10 +1,6 @@
-import { Answer, ResultWithAnswers, VariableWithValue } from 'models'
+import { Answer, ResultValues, VariableWithValue } from 'models'
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 
-export type ResultValues = Pick<
-  ResultWithAnswers,
-  'answers' | 'createdAt' | 'prefilledVariables'
->
 const answersContext = createContext<{
   resultValues: ResultValues
   addAnswer: (answer: Answer) => void

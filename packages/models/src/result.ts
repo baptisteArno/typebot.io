@@ -7,3 +7,8 @@ export type Result = Omit<
 > & { createdAt: string; prefilledVariables: VariableWithValue[] }
 
 export type ResultWithAnswers = Result & { answers: Answer[] }
+
+export type ResultValues = Pick<
+  ResultWithAnswers,
+  'answers' | 'createdAt' | 'prefilledVariables'
+>

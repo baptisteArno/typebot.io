@@ -74,7 +74,6 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   ownerId: 'user',
   theme: defaultTheme,
   settings: defaultSettings,
-  createdAt: new Date(),
   publicId: partialTypebot.id + '-public',
   publishedTypebotId: null,
   updatedAt: new Date(),

@@ -1,4 +1,3 @@
-import { ResultValues } from 'contexts/AnswersContext'
 import {
   IntegrationStep,
   IntegrationStepType,
@@ -14,9 +13,10 @@ import {
   SendEmailStep,
   PublicBlock,
   ZapierStep,
+  ResultValues,
 } from 'models'
 import { stringify } from 'qs'
-import { parseAnswers, sendRequest } from 'utils'
+import { sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
 import { sendErrorMessage, sendInfoMessage } from './postMessage'
 import { parseVariables, parseVariablesInObject } from './variable'
@@ -166,6 +166,8 @@ const executeWebhook = async (
     updateVariableValue,
     typebotId,
     apiHost,
+    resultValues,
+    isPreview,
   }: IntegrationContext
 ) => {
   if (!step.webhook) return step.outgoingEdgeId
@@ -174,9 +176,11 @@ const executeWebhook = async (
     method: 'POST',
     body: {
       variables,
+      resultValues,
     },
   })
   console.error(error)
+  if (isPreview && error) sendErrorMessage(`Webhook failed: ${error.message}`)
   step.options.responseVariableMapping.forEach((varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return
     const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
@@ -186,7 +190,7 @@ const executeWebhook = async (
 
 const sendEmail = async (
   step: SendEmailStep,
-  { variables, apiHost, isPreview, resultValues, blocks }: IntegrationContext
+  { variables, apiHost, isPreview }: IntegrationContext
 ) => {
   if (isPreview) sendInfoMessage('Emails are not sent in preview mode')
   if (isPreview) return step.outgoingEdgeId
@@ -198,15 +202,11 @@ const sendEmail = async (
       credentialsId: options.credentialsId,
       recipients: options.recipients.map(parseVariables(variables)),
       subject: parseVariables(variables)(options.subject ?? ''),
-      body:
-        options.body === '{{state}}'
-          ? parseAnswers({ variables, blocks })(resultValues)
-          : parseVariables(variables)(options.body ?? ''),
+      body: parseVariables(variables)(options.body ?? ''),
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
     },
   })
   console.error(error)
-  if (isPreview && error) sendErrorMessage(`Webhook failed: ${error.message}`)
   return step.outgoingEdgeId
 }

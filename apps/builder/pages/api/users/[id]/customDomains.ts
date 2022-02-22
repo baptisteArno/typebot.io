@@ -22,7 +22,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ customDomains })
   }
   if (req.method === 'POST') {
-    const data = JSON.parse(req.body) as Omit<CustomDomain, 'ownerId'>
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Omit<CustomDomain, 'ownerId'>
     try {
       await createDomainOnVercel(data.name)
     } catch (err) {

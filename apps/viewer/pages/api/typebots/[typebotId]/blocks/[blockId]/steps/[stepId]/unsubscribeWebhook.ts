@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stepId = req.query.stepId.toString()
     const typebot = (await prisma.typebot.findUnique({
       where: { id_ownerId: { id: typebotId, ownerId: user.id } },
-    })) as Typebot | undefined
+    })) as unknown as Typebot | undefined
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
     try {
       const updatedTypebot = removeUrlFromWebhookStep(typebot, stepId)

@@ -6,7 +6,7 @@ import { Variable } from './variable'
 
 export type Typebot = Omit<
   TypebotFromPrisma,
-  'blocks' | 'theme' | 'settings' | 'variables' | 'edges'
+  'blocks' | 'theme' | 'settings' | 'variables' | 'edges' | 'createdAt'
 > & {
   blocks: Block[]
   variables: Variable[]

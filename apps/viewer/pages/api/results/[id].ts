@@ -5,7 +5,9 @@ import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
-    const data = JSON.parse(req.body) as { isCompleted: true }
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as { isCompleted: true }
     const id = req.query.id.toString()
     const result = await prisma.result.update({
       where: { id },

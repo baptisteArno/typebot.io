@@ -27,8 +27,8 @@ const defaultFrom = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
-    const { credentialsId, recipients, body, subject, cc, bcc } = JSON.parse(
-      req.body
+    const { credentialsId, recipients, body, subject, cc, bcc } = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as SendEmailOptions
 
     const { host, port, isTlsEnabled, username, password, from } =

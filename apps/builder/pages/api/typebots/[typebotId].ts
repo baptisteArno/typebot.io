@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {
-    const data = JSON.parse(req.body)
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.update({
       where: { id_ownerId: { id: typebotId, ownerId: user.id } },
       data: {
@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebots })
   }
   if (req.method === 'PATCH') {
-    const data = JSON.parse(req.body)
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.update({
       where: { id_ownerId: { id: typebotId, ownerId: user.id } },
       data,

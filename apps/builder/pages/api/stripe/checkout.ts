@@ -10,7 +10,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2020-08-27',
     })
-    const { email, currency } = JSON.parse(req.body)
+    const { email, currency } =
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const session = await stripe.checkout.sessions.create({
       success_url: `${req.headers.origin}/typebots?stripe=success`,
       cancel_url: `${req.headers.origin}/typebots?stripe=cancel`,

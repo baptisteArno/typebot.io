@@ -6,7 +6,7 @@ import path from 'path'
 
 const typebotId = generate()
 test.describe('Dashboard page', () => {
-  test('folders navigation should work', async ({ page }) => {
+  test('should be able to connect custom domain', async ({ page }) => {
     await createTypebots([
       {
         id: typebotId,

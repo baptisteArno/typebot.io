@@ -6,7 +6,9 @@ import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
-    const answer = JSON.parse(req.body) as Answer
+    const answer = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Answer
     const result = await prisma.answer.upsert({
       where: {
         resultId_blockId_stepId: {

@@ -12,7 +12,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(401).json({ message: 'Not authenticated' })
 
     const user = session.user as User
-    const { code } = JSON.parse(req.body)
+    const { code } =
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const coupon = await prisma.coupon.findFirst({
       where: { code, dateRedeemed: null },
     })

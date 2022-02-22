@@ -26,7 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send({ typebots })
     }
     if (req.method === 'POST') {
-      const data = JSON.parse(req.body)
+      const data =
+        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
       const typebot = await prisma.typebot.create({
         data:
           'blocks' in data

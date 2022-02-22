@@ -26,7 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ folders })
   }
   if (req.method === 'PATCH') {
-    const data = JSON.parse(req.body) as Partial<DashboardFolder>
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Partial<DashboardFolder>
     const folders = await prisma.dashboardFolder.update({
       where: { id_ownerId: { id, ownerId: user.id } },
       data,

@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.query.id.toString()
   if (req.method === 'PUT') {
-    const data = JSON.parse(req.body)
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.publicTypebot.update({
       where: { id },
       data,

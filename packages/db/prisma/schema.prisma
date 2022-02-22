@@ -90,6 +90,7 @@ model VerificationToken {
 model DashboardFolder {
   id             String            @id @default(cuid())
   createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
   name           String
   owner          User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId        String
@@ -104,7 +105,7 @@ model DashboardFolder {
 model Typebot {
   id                 String           @id @default(cuid())
   createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now()) @updatedAt
   name               String
   ownerId            String
   owner              User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -125,22 +126,25 @@ model Typebot {
 }
 
 model PublicTypebot {
-  id           String  @id @default(cuid())
-  typebotId    String  @unique
-  typebot      Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  typebotId    String   @unique
+  typebot      Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   name         String
   blocks       Json[]
   variables    Json[]
   edges        Json[]
   theme        Json
   settings     Json
-  publicId     String? @unique
-  customDomain String? @unique
+  publicId     String?  @unique
+  customDomain String?  @unique
 }
 
 model Result {
   id                 String   @id @default(cuid())
   createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
   typebotId          String
   typebot            Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers            Answer[]

@@ -26,7 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ folders })
   }
   if (req.method === 'POST') {
-    const data = JSON.parse(req.body) as Pick<DashboardFolder, 'parentFolderId'>
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Pick<DashboardFolder, 'parentFolderId'>
     const folder = await prisma.dashboardFolder.create({
       data: { ...data, ownerId: user.id, name: 'New folder' },
     })

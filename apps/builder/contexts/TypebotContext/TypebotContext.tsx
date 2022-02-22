@@ -94,9 +94,14 @@ export const TypebotContext = ({
   })
 
   useEffect(() => {
-    if (!typebot || !localTypebot || deepEqual(typebot, localTypebot)) return
-    if (typebot?.blocks.length === localTypebot?.blocks.length)
-      setLocalTypebot({ ...typebot })
+    if (
+      !typebot ||
+      !localTypebot ||
+      typebot.updatedAt <= localTypebot.updatedAt ||
+      deepEqual(typebot, localTypebot)
+    )
+      return
+    setLocalTypebot({ ...typebot })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
@@ -113,8 +118,8 @@ export const TypebotContext = ({
   ] = useUndo<Typebot | undefined>(undefined)
 
   const saveTypebot = async () => {
-    if (deepEqual(typebot, localTypebot)) return
     const typebotToSave = currentTypebotRef.current
+    if (deepEqual(typebot, typebotToSave)) return
     if (!typebotToSave) return
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)

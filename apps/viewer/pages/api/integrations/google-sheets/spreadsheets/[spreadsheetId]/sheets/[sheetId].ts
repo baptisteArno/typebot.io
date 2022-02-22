@@ -37,7 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const spreadsheetId = req.query.spreadsheetId.toString()
     const sheetId = req.query.sheetId.toString()
-    const { credentialsId, values } = JSON.parse(req.body) as {
+    const { credentialsId, values } = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as {
       credentialsId: string
       values: { [key: string]: string }
     }
@@ -51,7 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     const spreadsheetId = req.query.spreadsheetId.toString()
     const sheetId = req.query.sheetId.toString()
-    const { credentialsId, values, referenceCell } = JSON.parse(req.body) as {
+    const { credentialsId, values, referenceCell } = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as {
       credentialsId: string
       referenceCell: Cell
       values: { [key: string]: string }

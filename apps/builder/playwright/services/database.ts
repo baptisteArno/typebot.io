@@ -129,7 +129,7 @@ const createAnswers = () => {
 const parseTypebotToPublicTypebot = (
   id: string,
   typebot: Typebot
-): PublicTypebot => ({
+): Omit<PublicTypebot, 'createdAt' | 'updatedAt'> => ({
   id,
   name: typebot.name,
   blocks: parseBlocksToPublicBlocks(typebot.blocks),
@@ -157,10 +157,9 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   ownerId: 'proUser',
   theme: defaultTheme,
   settings: defaultSettings,
-  createdAt: new Date(),
   publicId: null,
-  publishedTypebotId: null,
   updatedAt: new Date(),
+  publishedTypebotId: null,
   customDomain: null,
   variables: [{ id: 'var1', name: 'var1' }],
   ...partialTypebot,

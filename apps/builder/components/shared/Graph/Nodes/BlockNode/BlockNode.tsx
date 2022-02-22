@@ -91,13 +91,20 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     })
   }
 
+  const onDragStart = () => setIsMouseDown(true)
+  const onDragStop = () => setIsMouseDown(false)
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
       isDisabled={isReadOnly}
     >
       {(ref, isOpened) => (
-        <DraggableCore onDrag={onDrag} onMouseDown={(e) => e.stopPropagation()}>
+        <DraggableCore
+          onDrag={onDrag}
+          onStart={onDragStart}
+          onStop={onDragStop}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
           <Stack
             ref={setMultipleRefs([ref, blockRef])}
             data-testid="block"

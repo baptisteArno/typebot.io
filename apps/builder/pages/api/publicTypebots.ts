@@ -12,7 +12,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     if (req.method === 'POST') {
-      const data = JSON.parse(req.body)
+      const data =
+        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
       const typebot = await prisma.publicTypebot.create({
         data: { ...data },
       })

@@ -6,7 +6,9 @@ import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const resultData = JSON.parse(req.body) as {
+    const resultData = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as {
       typebotId: string
       prefilledVariables: VariableWithValue[]
     }

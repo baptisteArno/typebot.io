@@ -3,7 +3,13 @@ import { PublicTypebot as PublicTypebotFromPrisma } from 'db'
 
 export type PublicTypebot = Omit<
   PublicTypebotFromPrisma,
-  'blocks' | 'theme' | 'settings' | 'variables' | 'edges'
+  | 'blocks'
+  | 'theme'
+  | 'settings'
+  | 'variables'
+  | 'edges'
+  | 'createdAt'
+  | 'updatedAt'
 > & {
   blocks: PublicBlock[]
   variables: Variable[]
