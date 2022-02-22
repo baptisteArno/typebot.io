@@ -5,17 +5,17 @@
  * work well for content-centric websites.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600;700&display=swap');
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Epilogue", sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 
 img {
@@ -40,6 +40,6 @@ img {
   padding: 0 var(--ifm-pre-padding);
 }
 
-html[data-theme="dark"] .docusaurus-highlight-code-line {
+html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }

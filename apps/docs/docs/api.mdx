@@ -1,0 +1,130 @@
+import { Required, Optional, Tag } from '../src/js/api-helpers.js'
+
+# API documentation
+
+Each request must be authenticated with an API key using the Bearer Token method. You can obtain an API key for your account by going to your user settings page https://app.typebot.io/account.
+
+The API is a work in progress. The current version is dedicated to Automation services that wish to implement a native Typebot integration.
+
+## Endpoints
+
+### <Tag color="green">GET</Tag> /api/users/me
+
+Get authenticated user information:
+
+```bash title="Try it yourself"
+curl -i -X GET https://typebot.io/api/users/me \
+  -H 'Authorization: Bearer ${TOKEN}'
+```
+
+```json title="Response 200 OK"
+{ "id": "userid", "email": "user@email.com" }
+```
+
+### <Tag color="green">GET</Tag> /api/typebots
+
+List user's typebots:
+
+```bash title="Try it yourself"
+curl -i -X GET https://typebot.io/api/typebots \
+  -H 'Authorization: Bearer ${TOKEN}'
+```
+
+```json title="Response 200 OK"
+{
+  "typebots": [
+    {
+      "name": "My typebot 1",
+      "id": "typebot1"
+    },
+    {
+      "name": "My typebot 2",
+      "id": "typebot2"
+    }
+  ]
+}
+```
+
+### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/webhookSteps
+
+List webhook steps in a typebot. These are the steps you can, later on, register your Webhook URL:
+
+```bash title="Try it yourself"
+curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+  -H 'Authorization: Bearer ${TOKEN}'
+```
+
+```json title="Response 200 OK"
+{
+  "steps": [
+    {
+      "blockId": "blockId",
+      "id": "stepId",
+      "name": "Block #2 > stepId"
+    }
+  ]
+}
+```
+
+### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/sampleResult
+
+Get a sample of what the webhook body will look like when triggered
+
+```bash title="Try it yourself"
+curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/blocks/$BLOCK_ID/steps/$STEP_ID/sampleResult \
+  -H 'Authorization: Bearer ${TOKEN}'
+```
+
+```json title="Response 200 OK"
+{
+  "steps": [
+    {
+      "blockId": "blockId",
+      "id": "stepId",
+      "name": "Block #2 > stepId"
+    }
+  ]
+}
+```
+
+### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/subscribeWebhook
+
+Subscribe the step to a specified webhook URL
+
+```bash title="Try it yourself"
+curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+  -H 'Authorization: Bearer ${TOKEN}'\
+  --header 'Content-Type: application/json' \
+  --data '{"url": "https://domain.com/my-webhook"}'
+```
+
+```json title="Response 200 OK"
+{
+  "message": "success"
+}
+```
+
+#### JSON body data
+
+<hr />
+
+**url** <Required />
+
+The url you want to subscribe to.
+
+<hr />
+
+### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/unsubscribeWebhook
+
+Unsubscribe the current webhook on step
+
+```bash title="Try it yourself"
+curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+  -H 'Authorization: Bearer ${TOKEN}'\
+```
+
+```json title="Response 200 OK"
+{
+  "message": "success"
+}
+```
