@@ -30,7 +30,10 @@ export const ConversationContainer = ({
     { block: PublicBlock; startStepIndex: number }[]
   >([])
   const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
-  const { answers } = useAnswers()
+  const {
+    resultValues: { answers },
+    setPrefilledVariables,
+  } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
@@ -51,7 +54,10 @@ export const ConversationContainer = ({
 
   useEffect(() => {
     const prefilledVariables = injectUrlParamsIntoVariables()
-    if (onVariablesPrefilled) onVariablesPrefilled(prefilledVariables)
+    if (onVariablesPrefilled) {
+      onVariablesPrefilled(prefilledVariables)
+      setPrefilledVariables(prefilledVariables)
+    }
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import { Prisma } from 'db'
 import prisma from 'libs/prisma'
-import { IntegrationStepType, Typebot } from 'models'
+import { HttpMethod, IntegrationStepType, Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
 import { methodNotAllowed } from 'utils'
@@ -47,7 +47,15 @@ const addUrlToWebhookStep = (
     steps: b.steps.map((s) => {
       if (s.id === stepId) {
         if (s.type !== IntegrationStepType.WEBHOOK) throw new Error()
-        return { ...s, webhook: { ...s.webhook, url } }
+        return {
+          ...s,
+          webhook: {
+            ...s.webhook,
+            url,
+            method: HttpMethod.POST,
+            body: '{{state}}',
+          },
+        }
       }
       return s
     }),

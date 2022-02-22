@@ -1,24 +1,43 @@
-import { Answer } from 'models'
+import { Answer, ResultWithAnswers, VariableWithValue } from 'models'
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 
+export type ResultValues = Pick<
+  ResultWithAnswers,
+  'answers' | 'createdAt' | 'prefilledVariables'
+>
 const answersContext = createContext<{
-  answers: Answer[]
+  resultValues: ResultValues
   addAnswer: (answer: Answer) => void
+  setPrefilledVariables: (variables: VariableWithValue[]) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
 export const AnswersContext = ({ children }: { children: ReactNode }) => {
-  const [answers, setAnswers] = useState<Answer[]>([])
+  const [resultValues, setResultValues] = useState<ResultValues>({
+    answers: [],
+    prefilledVariables: [],
+    createdAt: new Date().toISOString(),
+  })
 
   const addAnswer = (answer: Answer) =>
-    setAnswers((answers) => [...answers, answer])
+    setResultValues((resultValues) => ({
+      ...resultValues,
+      answers: [...resultValues.answers, answer],
+    }))
+
+  const setPrefilledVariables = (variables: VariableWithValue[]) =>
+    setResultValues((resultValues) => ({
+      ...resultValues,
+      prefilledVariables: variables,
+    }))
 
   return (
     <answersContext.Provider
       value={{
-        answers,
+        resultValues,
         addAnswer,
+        setPrefilledVariables,
       }}
     >
       {children}

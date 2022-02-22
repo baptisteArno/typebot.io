@@ -62,6 +62,9 @@ export const PreviewDrawer = () => {
       if (event.data.typebotInfo) {
         toast({ description: event.data.typebotInfo })
       }
+      if (event.data.typebotError) {
+        toast({ description: event.data.typebotError, status: 'error' })
+      }
     }
     window.addEventListener('message', onMessageFromBot)
     return () => {

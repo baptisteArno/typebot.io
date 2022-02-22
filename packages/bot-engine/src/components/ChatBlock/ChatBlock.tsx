@@ -16,6 +16,7 @@ import { executeLogic } from 'services/logic'
 import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from 'index'
+import { useAnswers } from 'contexts/AnswersContext'
 
 type ChatBlockProps = {
   steps: PublicStep[]
@@ -32,6 +33,7 @@ export const ChatBlock = ({
 }: ChatBlockProps) => {
   const { typebot, updateVariableValue, createEdge, apiHost, isPreview } =
     useTypebot()
+  const { resultValues } = useAnswers()
   const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
 
   useEffect(() => {
@@ -68,6 +70,8 @@ export const ChatBlock = ({
           variables: typebot.variables,
           isPreview,
           updateVariableValue,
+          resultValues,
+          blocks: typebot.blocks,
         },
       })
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()

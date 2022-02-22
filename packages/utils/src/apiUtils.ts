@@ -1,4 +1,11 @@
-import { Typebot, Answer, VariableWithValue, ResultWithAnswers } from 'models'
+import {
+  Typebot,
+  Answer,
+  VariableWithValue,
+  ResultWithAnswers,
+  PublicTypebot,
+  Block,
+} from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { byId, isDefined } from '.'
 
@@ -24,17 +31,27 @@ export const initMiddleware =
     })
 
 export const parseAnswers =
-  ({ blocks, variables }: Pick<Typebot, 'blocks' | 'variables'>) =>
-  (result: ResultWithAnswers) => ({
-    submittedAt: result.createdAt,
-    ...[...result.answers, ...result.prefilledVariables].reduce<{
+  ({
+    blocks,
+    variables,
+  }: Pick<Typebot | PublicTypebot, 'blocks' | 'variables'>) =>
+  ({
+    createdAt,
+    answers,
+    prefilledVariables,
+  }: Pick<
+    ResultWithAnswers,
+    'createdAt' | 'answers' | 'prefilledVariables'
+  >) => ({
+    submittedAt: createdAt,
+    ...[...answers, ...prefilledVariables].reduce<{
       [key: string]: string
     }>((o, answerOrVariable) => {
       if ('blockId' in answerOrVariable) {
         const answer = answerOrVariable as Answer
         const key = answer.variableId
           ? variables.find(byId(answer.variableId))?.name
-          : blocks.find(byId(answer.blockId))?.title
+          : (blocks as Block[]).find(byId(answer.blockId))?.title
         if (!key) return o
         return {
           ...o,

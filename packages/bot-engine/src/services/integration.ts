@@ -1,3 +1,4 @@
+import { ResultValues } from 'contexts/AnswersContext'
 import {
   IntegrationStep,
   IntegrationStepType,
@@ -11,11 +12,12 @@ import {
   GoogleAnalyticsStep,
   WebhookStep,
   SendEmailStep,
+  PublicBlock,
 } from 'models'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { parseAnswers, sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
-import { sendInfoMessage } from './postMessage'
+import { sendErrorMessage, sendInfoMessage } from './postMessage'
 import { parseVariables, parseVariablesInObject } from './variable'
 
 const safeEval = eval
@@ -27,8 +29,11 @@ type IntegrationContext = {
   stepId: string
   isPreview: boolean
   variables: Variable[]
+  resultValues: ResultValues
+  blocks: PublicBlock[]
   updateVariableValue: (variableId: string, value: string) => void
 }
+
 export const executeIntegration = ({
   step,
   context,
@@ -179,7 +184,7 @@ const executeWebhook = async (
 
 const sendEmail = async (
   step: SendEmailStep,
-  { variables, apiHost, isPreview }: IntegrationContext
+  { variables, apiHost, isPreview, resultValues, blocks }: IntegrationContext
 ) => {
   if (isPreview) sendInfoMessage('Emails are not sent in preview mode')
   if (isPreview) return step.outgoingEdgeId
@@ -191,11 +196,15 @@ const sendEmail = async (
       credentialsId: options.credentialsId,
       recipients: options.recipients.map(parseVariables(variables)),
       subject: parseVariables(variables)(options.subject ?? ''),
-      body: parseVariables(variables)(options.body ?? ''),
+      body:
+        options.body === '{{state}}'
+          ? parseAnswers({ variables, blocks })(resultValues)
+          : parseVariables(variables)(options.body ?? ''),
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
     },
   })
   console.error(error)
+  if (isPreview && error) sendErrorMessage(`Webhook failed: ${error.message}`)
   return step.outgoingEdgeId
 }
