@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { methodNotAllowed } from 'utils'
+import { isDefined, methodNotAllowed } from 'utils'
 import { getSession } from 'next-auth/react'
 import { User } from 'db'
 import { withSentry } from '@sentry/nextjs'
@@ -23,17 +23,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
     await doc.loadInfo()
     return res.send({
-      sheets: await Promise.all(
-        Array.from(Array(doc.sheetCount)).map(async (_, idx) => {
-          const sheet = doc.sheetsByIndex[idx]
-          await sheet.loadHeaderRow()
-          return {
-            id: sheet.sheetId,
-            name: sheet.title,
-            columns: sheet.headerValues,
-          }
-        })
-      ),
+      sheets: (
+        await Promise.all(
+          Array.from(Array(doc.sheetCount)).map(async (_, idx) => {
+            const sheet = doc.sheetsByIndex[idx]
+            try {
+              await sheet.loadHeaderRow()
+            } catch (err) {
+              return
+            }
+            return {
+              id: sheet.sheetId,
+              name: sheet.title,
+              columns: sheet.headerValues,
+            }
+          })
+        )
+      ).filter(isDefined),
     })
   }
   return methodNotAllowed(res)

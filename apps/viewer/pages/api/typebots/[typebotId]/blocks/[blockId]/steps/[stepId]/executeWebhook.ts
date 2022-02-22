@@ -66,7 +66,7 @@ const executeWebhook =
     const basicAuthHeaderIdx = webhook.headers.findIndex(
       (h) =>
         h.key?.toLowerCase() === 'authorization' &&
-        h.value?.toLowerCase().includes('basic')
+        h.value?.toLowerCase()?.includes('basic')
     )
     if (basicAuthHeaderIdx !== -1) {
       const [username, password] =

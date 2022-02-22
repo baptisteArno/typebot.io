@@ -17,13 +17,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         pass: password,
       },
     })
-    const info = await transporter.sendMail({
-      from: `"${from.name}" <${from.email}>`,
-      to,
-      subject: 'Your SMTP configuration is working 🤩',
-      text: 'This email has been sent to test out your SMTP config.\n\nIf your read this then it has been successful.🚀',
-    })
-    res.status(200).send({ message: 'Email sent!', info })
+    try {
+      const info = await transporter.sendMail({
+        from: `"${from.name}" <${from.email}>`,
+        to,
+        subject: 'Your SMTP configuration is working 🤩',
+        text: 'This email has been sent to test out your SMTP config.\n\nIf your read this then it has been successful.🚀',
+      })
+      res.status(200).send({ message: 'Email sent!', info })
+    } catch (err) {
+      res.status(500).send(err)
+    }
   }
 }
 

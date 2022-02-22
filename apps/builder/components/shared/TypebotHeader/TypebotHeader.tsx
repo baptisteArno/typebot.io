@@ -153,7 +153,9 @@ export const TypebotHeader = () => {
       </HStack>
 
       <HStack right="40px" pos="absolute">
-        <Button onClick={handlePreviewClick}>Preview</Button>
+        {router.pathname.includes('/edit') && (
+          <Button onClick={handlePreviewClick}>Preview</Button>
+        )}
         <PublishButton />
       </HStack>
     </Flex>
