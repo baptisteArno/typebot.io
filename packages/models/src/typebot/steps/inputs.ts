@@ -100,6 +100,7 @@ export type UrlInputOptions = OptionBase & {
 export type PhoneNumberInputOptions = OptionBase & {
   labels: { placeholder: string; button: string }
   retryMessageContent: string
+  defaultCountryCode?: string
 }
 
 export type TextInputOptions = OptionBase &

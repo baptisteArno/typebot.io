@@ -2,12 +2,13 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
-import { EmailInputOptions, Variable } from 'models'
+import { PhoneNumberInputOptions, Variable } from 'models'
 import React from 'react'
+import { CountryCodeSelect } from './CountryCodeSelect'
 
 type PhoneNumberSettingsBodyProps = {
-  options: EmailInputOptions
-  onOptionsChange: (options: EmailInputOptions) => void
+  options: PhoneNumberInputOptions
+  onOptionsChange: (options: PhoneNumberInputOptions) => void
 }
 
 export const PhoneNumberSettingsBody = ({
@@ -22,6 +23,8 @@ export const PhoneNumberSettingsBody = ({
     onOptionsChange({ ...options, variableId: variable?.id })
   const handleRetryMessageChange = (retryMessageContent: string) =>
     onOptionsChange({ ...options, retryMessageContent })
+  const handleDefaultCountryChange = (defaultCountryCode: string) =>
+    onOptionsChange({ ...options, defaultCountryCode })
 
   return (
     <Stack spacing={4}>
@@ -43,6 +46,15 @@ export const PhoneNumberSettingsBody = ({
           id="button"
           initialValue={options.labels.button}
           onChange={handleButtonLabelChange}
+        />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="button">
+          Default country:
+        </FormLabel>
+        <CountryCodeSelect
+          onSelect={handleDefaultCountryChange}
+          countryCode={options.defaultCountryCode}
         />
       </Stack>
       <Stack>

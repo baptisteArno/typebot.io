@@ -13,7 +13,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react'
-import PhoneInput, { Value } from 'react-phone-number-input'
+import PhoneInput, { Value, Country } from 'react-phone-number-input'
 
 type TextInputProps = {
   step:
@@ -113,8 +113,9 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
           onChange={handlePhoneNumberChange}
           defaultValue={defaultValue}
           placeholder={
-            step.options?.labels?.placeholder ?? 'Your phone number...'
+            step.options.labels.placeholder ?? 'Your phone number...'
           }
+          defaultCountry={step.options.defaultCountryCode as Country}
         />
       )
     }
