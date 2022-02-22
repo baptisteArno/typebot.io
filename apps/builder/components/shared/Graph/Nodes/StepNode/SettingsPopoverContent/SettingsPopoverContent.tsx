@@ -36,6 +36,7 @@ import { RedirectSettings } from './bodies/RedirectSettings'
 import { SendEmailSettings } from './bodies/SendEmailSettings/SendEmailSettings'
 import { SetVariableSettings } from './bodies/SetVariableSettings'
 import { WebhookSettings } from './bodies/WebhookSettings'
+import { ZapierSettings } from './bodies/ZapierSettings'
 
 type Props = {
   step: Exclude<Step, TextBubbleStep>
@@ -198,6 +199,9 @@ export const StepSettings = ({
           onOptionsChange={handleOptionsChange}
         />
       )
+    }
+    case IntegrationStepType.ZAPIER: {
+      return <ZapierSettings step={step} />
     }
     case IntegrationStepType.WEBHOOK: {
       return (

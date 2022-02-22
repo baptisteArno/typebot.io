@@ -1,11 +1,11 @@
 import { withSentry } from '@sentry/nextjs'
 import { Prisma } from 'db'
 import prisma from 'libs/prisma'
-import { IntegrationStepType, Typebot } from 'models'
+import { Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
 import { omit } from 'services/utils'
-import { methodNotAllowed } from 'utils'
+import { isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'DELETE') {
@@ -44,7 +44,7 @@ const removeUrlFromWebhookStep = (
     ...b,
     steps: b.steps.map((s) => {
       if (s.id === stepId) {
-        if (s.type !== IntegrationStepType.WEBHOOK) throw new Error()
+        if (!isWebhookStep(s)) throw new Error()
         return { ...s, webhook: omit(s.webhook, 'url') }
       }
       return s

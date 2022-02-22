@@ -99,7 +99,7 @@ export const isIntegrationStep = (
   (Object.values(IntegrationStepType) as string[]).includes(step.type)
 
 export const isWebhookStep = (step: Step | PublicStep): step is WebhookStep =>
-  step.type === IntegrationStepType.WEBHOOK
+  'webhook' in step
 
 export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
   (Object.values(BubbleStepType) as string[]).includes(type)
@@ -114,7 +114,11 @@ export const stepTypeHasOption = (
 
 export const stepTypeHasWebhook = (
   type: StepType
-): type is IntegrationStepType.WEBHOOK => type === IntegrationStepType.WEBHOOK
+): type is IntegrationStepType.WEBHOOK =>
+  Object.values([
+    IntegrationStepType.WEBHOOK,
+    IntegrationStepType.ZAPIER,
+  ] as string[]).includes(type)
 
 export const stepTypeHasItems = (
   type: StepType

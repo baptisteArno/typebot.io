@@ -218,6 +218,7 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultGoogleSheetsOptions
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return defaultGoogleAnalyticsOptions
+    case IntegrationStepType.ZAPIER:
     case IntegrationStepType.WEBHOOK:
       return defaultWebhookOptions
     case IntegrationStepType.EMAIL:

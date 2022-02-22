@@ -1,9 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
-import { Block, IntegrationStepType } from 'models'
+import { Block } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { methodNotAllowed } from 'utils'
+import { isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       { blockId: string; id: string; name: string }[]
     >((emptyWebhookSteps, block) => {
       const steps = block.steps.filter(
-        (step) => step.type === IntegrationStepType.WEBHOOK && !step.webhook.url
+        (step) => isWebhookStep(step) && !step.webhook.url
       )
       return [
         ...emptyWebhookSteps,

@@ -1,10 +1,10 @@
 import { withSentry } from '@sentry/nextjs'
 import { Prisma } from 'db'
 import prisma from 'libs/prisma'
-import { HttpMethod, IntegrationStepType, Typebot } from 'models'
+import { HttpMethod, Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { methodNotAllowed } from 'utils'
+import { isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
@@ -46,7 +46,7 @@ const addUrlToWebhookStep = (
     ...b,
     steps: b.steps.map((s) => {
       if (s.id === stepId) {
-        if (s.type !== IntegrationStepType.WEBHOOK) throw new Error()
+        if (!isWebhookStep(s)) throw new Error()
         return {
           ...s,
           webhook: {

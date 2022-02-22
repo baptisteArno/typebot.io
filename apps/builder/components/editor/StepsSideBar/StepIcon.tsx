@@ -17,7 +17,7 @@ import {
   TextIcon,
   WebhookIcon,
 } from 'assets/icons'
-import { GoogleAnalyticsLogo, GoogleSheetsLogo } from 'assets/logos'
+import { GoogleAnalyticsLogo, GoogleSheetsLogo, ZapierLogo } from 'assets/logos'
 import {
   BubbleStepType,
   InputStepType,
@@ -63,6 +63,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
+    case IntegrationStepType.ZAPIER:
+      return <ZapierLogo {...props} />
     case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
     case 'start':

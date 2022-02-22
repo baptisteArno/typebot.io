@@ -13,6 +13,7 @@ import {
   WebhookStep,
   SendEmailStep,
   PublicBlock,
+  ZapierStep,
 } from 'models'
 import { stringify } from 'qs'
 import { parseAnswers, sendRequest } from 'utils'
@@ -46,6 +47,7 @@ export const executeIntegration = ({
       return executeGoogleSheetIntegration(step, context)
     case IntegrationStepType.GOOGLE_ANALYTICS:
       return executeGoogleAnalyticsIntegration(step, context)
+    case IntegrationStepType.ZAPIER:
     case IntegrationStepType.WEBHOOK:
       return executeWebhook(step, context)
     case IntegrationStepType.EMAIL:
@@ -156,7 +158,7 @@ const parseCellValues = (
   }, {})
 
 const executeWebhook = async (
-  step: WebhookStep,
+  step: WebhookStep | ZapierStep,
   {
     blockId,
     stepId,

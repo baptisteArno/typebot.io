@@ -51,6 +51,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       )
     case IntegrationStepType.WEBHOOK:
       return <Text>Webhook</Text>
+    case IntegrationStepType.ZAPIER:
+      return <Text>Zapier</Text>
     case IntegrationStepType.EMAIL:
       return <Text>Email</Text>
     default:

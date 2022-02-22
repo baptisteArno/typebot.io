@@ -5,6 +5,7 @@ export type IntegrationStep =
   | GoogleAnalyticsStep
   | WebhookStep
   | SendEmailStep
+  | ZapierStep
 
 export type IntegrationStepOptions =
   | GoogleSheetsOptions
@@ -17,6 +18,7 @@ export enum IntegrationStepType {
   GOOGLE_ANALYTICS = 'Google Analytics',
   WEBHOOK = 'Webhook',
   EMAIL = 'Email',
+  ZAPIER = 'Zapier',
 }
 
 export type GoogleSheetsStep = StepBase & {
@@ -33,6 +35,10 @@ export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
   options: WebhookOptions
   webhook: Webhook
+}
+
+export type ZapierStep = Omit<WebhookStep, 'type'> & {
+  type: IntegrationStepType.ZAPIER
 }
 
 export type SendEmailStep = StepBase & {
