@@ -4,7 +4,8 @@ export const computeTypingTimeout = (
   bubbleContent: string,
   typingSettings: TypingEmulation
 ) => {
-  const wordCount = bubbleContent.match(/(\w+)/g)?.length ?? 0
+  let wordCount = bubbleContent.match(/(\w+)/g)?.length ?? 0
+  if (wordCount === 0) wordCount = bubbleContent.length
   const typedWordsPerMinute = typingSettings.speed
   let typingTimeout = typingSettings.enabled
     ? (wordCount / typedWordsPerMinute) * 60000
