@@ -97,7 +97,8 @@ export const importTypebot = async (typebot: Typebot) =>
   })
 
 export const duplicateTypebot = async (typebotId: string) => {
-  const { data: typebotToDuplicate } = await getTypebot(typebotId)
+  const { data } = await getTypebot(typebotId)
+  const typebotToDuplicate = data?.typebot
   if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
   const duplicatedTypebot: Omit<Typebot, 'id'> = omit(
     {
@@ -108,6 +109,7 @@ export const duplicateTypebot = async (typebotId: string) => {
     },
     'id'
   )
+  console.log(duplicatedTypebot)
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
@@ -116,7 +118,7 @@ export const duplicateTypebot = async (typebotId: string) => {
 }
 
 const getTypebot = (typebotId: string) =>
-  sendRequest<Typebot>({
+  sendRequest<{ typebot: Typebot }>({
     url: `/api/typebots/${typebotId}`,
     method: 'GET',
   })
