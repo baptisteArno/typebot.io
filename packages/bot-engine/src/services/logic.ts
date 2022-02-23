@@ -66,13 +66,13 @@ const executeComparison =
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
-        return inputValue.includes(value)
+        return inputValue.toString().includes(value.toString())
       }
       case ComparisonOperators.EQUAL: {
-        return inputValue === value
+        return inputValue.toString() === value.toString()
       }
       case ComparisonOperators.NOT_EQUAL: {
-        return inputValue !== value
+        return inputValue.toString() !== value.toString()
       }
       case ComparisonOperators.GREATER: {
         return parseFloat(inputValue) >= parseFloat(value)
