@@ -12,7 +12,7 @@ import {
 import { useUser } from 'contexts/UserContext'
 import { CredentialsType, SmtpCredentialsData } from 'models'
 import React, { useState } from 'react'
-import { createCredentials } from 'services/credentials'
+import { createCredentials } from 'services/user'
 import { testSmtpConfig } from 'services/integrations'
 import { isNotDefined } from 'utils'
 import { SmtpConfigForm } from './SmtpConfigForm'

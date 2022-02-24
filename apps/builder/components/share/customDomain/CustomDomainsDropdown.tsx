@@ -15,7 +15,7 @@ import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import React, { useState } from 'react'
 import { useUser } from 'contexts/UserContext'
 import { CustomDomainModal } from './CustomDomainModal'
-import { deleteCustomDomain, useCustomDomains } from 'services/customDomains'
+import { deleteCustomDomain, useCustomDomains } from 'services/user'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   currentCustomDomain?: string

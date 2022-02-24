@@ -17,7 +17,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
-import { createCustomDomain } from 'services/customDomains'
+import { createCustomDomain } from 'services/user'
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/

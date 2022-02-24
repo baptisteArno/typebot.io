@@ -15,7 +15,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useUser } from 'contexts/UserContext'
 import { useRouter } from 'next/router'
 import { CredentialsType } from 'models'
-import { deleteCredentials, useCredentials } from 'services/credentials'
+import { deleteCredentials, useCredentials } from 'services/user'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   type: CredentialsType

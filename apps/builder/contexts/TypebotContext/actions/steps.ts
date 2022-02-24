@@ -5,7 +5,7 @@ import {
   DraggableStepType,
   StepIndices,
 } from 'models'
-import { parseNewStep } from 'services/typebots'
+import { parseNewStep } from 'services/typebots/typebots'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotContext'

@@ -10,14 +10,14 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { Graph } from 'components/shared/Graph'
 
 export const Board = () => {
-  const { typebot } = useTypebot()
+  const { typebot, isReadOnly } = useTypebot()
   const { rightPanel } = useEditor()
 
   return (
     <Flex flex="1" pos="relative" bgColor="gray.50" h="full">
       <GraphDndContext>
         <StepsSideBar />
-        <GraphProvider blocks={typebot?.blocks ?? []}>
+        <GraphProvider blocks={typebot?.blocks ?? []} isReadOnly={isReadOnly}>
           {typebot && <Graph flex="1" typebot={typebot} />}
           <BoardMenuButton pos="absolute" right="40px" top="20px" />
           {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}

@@ -39,7 +39,7 @@ import {
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
-import { fetcher, omit, toKebabCase } from './utils'
+import { fetcher, omit, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
   stepTypeHasItems,
@@ -49,7 +49,7 @@ import {
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
-import { parseBlocksToPublicBlocks } from './publicTypebot'
+import { parseBlocksToPublicBlocks } from '../publicTypebot'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -66,7 +66,9 @@ export const useTypebots = ({
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
-  >(`/api/typebots?${params}`, fetcher, { dedupingInterval: 0 })
+  >(`/api/typebots?${params}`, fetcher, {
+    dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,
+  })
   if (error) onError(error)
   return {
     typebots: data?.typebots,
@@ -109,7 +111,6 @@ export const duplicateTypebot = async (typebotId: string) => {
     },
     'id'
   )
-  console.log(duplicatedTypebot)
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',

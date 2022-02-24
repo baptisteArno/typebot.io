@@ -8,7 +8,7 @@ import {
   Step,
   Typebot,
 } from 'models'
-import { DashboardFolder, PrismaClient, User } from 'db'
+import { CollaborationType, DashboardFolder, PrismaClient, User } from 'db'
 import { readFileSync } from 'fs'
 import { encrypt } from 'utils'
 
@@ -38,6 +38,13 @@ export const createUsers = () =>
       { id: 'proUser', email: 'pro-user@email.com', name: 'Pro user' },
     ],
   })
+
+export const createCollaboration = (
+  userId: string,
+  typebotId: string,
+  type: CollaborationType
+) =>
+  prisma.collaboratorsOnTypebots.create({ data: { userId, typebotId, type } })
 
 export const getSignedInUser = (email: string) =>
   prisma.user.findFirst({ where: { email } })

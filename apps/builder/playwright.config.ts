@@ -1,6 +1,13 @@
 import { devices, PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({
+  path: path.join(__dirname, 'playwright/.env'),
+})
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({ path: path.join(__dirname, '.env.local') })
+
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve(path.join(__dirname, 'playwright/global-setup')),
   testDir: path.join(__dirname, 'playwright/tests'),

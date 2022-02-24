@@ -1,7 +1,7 @@
 import { Credentials } from 'models'
 import useSWR from 'swr'
 import { sendRequest } from 'utils'
-import { fetcher } from './utils'
+import { fetcher } from '../utils'
 
 export const useCredentials = ({
   userId,

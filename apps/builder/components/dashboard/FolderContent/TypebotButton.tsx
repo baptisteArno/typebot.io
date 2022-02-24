@@ -22,13 +22,15 @@ import { useDebounce } from 'use-debounce'
 
 type ChatbotCardProps = {
   typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name'>
-  onTypebotDeleted: () => void
-  onMouseDown: (e: React.MouseEvent<HTMLButtonElement>) => void
+  isReadOnly?: boolean
+  onTypebotDeleted?: () => void
+  onMouseDown?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const TypebotButton = ({
   typebot,
   onTypebotDeleted,
+  isReadOnly = false,
   onMouseDown,
 }: ChatbotCardProps) => {
   const router = useRouter()
@@ -55,13 +57,14 @@ export const TypebotButton = ({
   }
 
   const handleDeleteTypebotClick = async () => {
+    if (isReadOnly) return
     const { error } = await deleteTypebot(typebot.id)
     if (error)
       return toast({
         title: "Couldn't delete typebot",
         description: error.message,
       })
-    onTypebotDeleted()
+    if (onTypebotDeleted) onTypebotDeleted()
   }
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
@@ -98,28 +101,32 @@ export const TypebotButton = ({
       onMouseDown={onMouseDown}
       cursor="pointer"
     >
-      <IconButton
-        icon={<GripIcon />}
-        pos="absolute"
-        top="20px"
-        left="20px"
-        aria-label="Drag"
-        cursor="grab"
-        variant="ghost"
-        colorScheme="blue"
-        size="sm"
-      />
-      <MoreButton
-        pos="absolute"
-        top="20px"
-        right="20px"
-        aria-label={`Show ${typebot.name} menu`}
-      >
-        <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
-        <MenuItem color="red" onClick={handleDeleteClick}>
-          Delete
-        </MenuItem>
-      </MoreButton>
+      {!isReadOnly && (
+        <>
+          <IconButton
+            icon={<GripIcon />}
+            pos="absolute"
+            top="20px"
+            left="20px"
+            aria-label="Drag"
+            cursor="grab"
+            variant="ghost"
+            colorScheme="blue"
+            size="sm"
+          />
+          <MoreButton
+            pos="absolute"
+            top="20px"
+            right="20px"
+            aria-label={`Show ${typebot.name} menu`}
+          >
+            <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
+            <MenuItem color="red" onClick={handleDeleteClick}>
+              Delete
+            </MenuItem>
+          </MoreButton>
+        </>
+      )}
       <VStack spacing="4">
         <Flex
           boxSize="45px"
@@ -137,20 +144,22 @@ export const TypebotButton = ({
         </Flex>
         <Text>{typebot.name}</Text>
       </VStack>
-      <ConfirmModal
-        message={
-          <Text>
-            Are you sure you want to delete your Typebot &quot;{typebot.name}
-            &quot;.
-            <br />
-            All associated data will be lost.
-          </Text>
-        }
-        confirmButtonLabel="Delete"
-        onConfirm={handleDeleteTypebotClick}
-        isOpen={isDeleteOpen}
-        onClose={onDeleteClose}
-      />
+      {!isReadOnly && (
+        <ConfirmModal
+          message={
+            <Text>
+              Are you sure you want to delete your Typebot &quot;{typebot.name}
+              &quot;.
+              <br />
+              All associated data will be lost.
+            </Text>
+          }
+          confirmButtonLabel="Delete"
+          onConfirm={handleDeleteTypebotClick}
+          isOpen={isDeleteOpen}
+          onClose={onDeleteClose}
+        />
+      )}
     </Button>
   )
 }

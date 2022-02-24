@@ -8,7 +8,7 @@ import {
   deleteResults,
   getAllResults,
   useResults,
-} from 'services/results'
+} from 'services/typebots'
 import { unparse } from 'papaparse'
 import { UnlockProPlanInfo } from 'components/shared/Info'
 

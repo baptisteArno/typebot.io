@@ -10,7 +10,7 @@
     "docker:up": "docker-compose up -d",
     "db:nuke": "docker-compose down --volumes --remove-orphans",
     "dev": "yarn docker:up && turbo run dev --parallel",
-    "dev:mocking": "yarn docker:up && NEXT_PUBLIC_AUTH_MOCKING=enabled turbo run dev --parallel",
+    "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dev --parallel",
     "build": "yarn docker:up && turbo run build",
     "test:builder": "cd apps/builder && yarn test",
     "lint": "turbo run lint"

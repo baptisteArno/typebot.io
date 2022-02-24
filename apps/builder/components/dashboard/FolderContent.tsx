@@ -12,6 +12,7 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import { useUser } from 'contexts/UserContext'
 import React, { useEffect, useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
 import {
@@ -19,11 +20,13 @@ import {
   TypebotInDashboard,
   useTypebots,
 } from 'services/typebots'
+import { useSharedTypebotsCount } from 'services/user/sharedTypebots'
 import { AnnoucementModal } from './annoucements/AnnoucementModal'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
 import { CreateFolderButton } from './FolderContent/CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderContent/FolderButton'
+import { SharedTypebotsButton } from './FolderContent/SharedTypebotsButton'
 import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
 
@@ -32,6 +35,7 @@ type Props = { folder: DashboardFolder | null }
 const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
+  const { user } = useUser()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
     setDraggedTypebot,
@@ -74,6 +78,17 @@ export const FolderContent = ({ folder }: Props) => {
       toast({ title: "Couldn't fetch typebots", description: error.message })
     },
   })
+
+  const { totalSharedTypebots, isLoading: isSharedTypebotsCountLoading } =
+    useSharedTypebotsCount({
+      userId: folder === null ? user?.id : undefined,
+      onError: (error) => {
+        toast({
+          title: "Couldn't fetch shared typebots",
+          description: error.message,
+        })
+      },
+    })
 
   useEffect(() => {
     if (
@@ -182,6 +197,8 @@ export const FolderContent = ({ folder }: Props) => {
               folderId={folder?.id}
               isLoading={isTypebotLoading}
             />
+            {isSharedTypebotsCountLoading && <ButtonSkeleton />}
+            {totalSharedTypebots > 0 && <SharedTypebotsButton />}
             {isFolderLoading && <ButtonSkeleton />}
             {folders &&
               folders.map((folder) => (

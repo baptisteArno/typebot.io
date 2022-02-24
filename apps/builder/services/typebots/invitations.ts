@@ -1,0 +1,51 @@
+import { CollaborationType, Invitation } from 'db'
+import { fetcher } from 'services/utils'
+import useSWR from 'swr'
+import { sendRequest } from 'utils'
+
+export const useInvitations = ({
+  typebotId,
+  onError,
+}: {
+  typebotId?: string
+  onError: (error: Error) => void
+}) => {
+  const { data, error, mutate } = useSWR<{ invitations: Invitation[] }, Error>(
+    typebotId ? `/api/typebots/${typebotId}/invitations` : null,
+    fetcher,
+    { dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined }
+  )
+  if (error) onError(error)
+  return {
+    invitations: data?.invitations,
+    isLoading: !error && !data,
+    mutate,
+  }
+}
+
+export const sendInvitation = (
+  typebotId: string,
+  { email, type }: { email: string; type: CollaborationType }
+) =>
+  sendRequest({
+    method: 'POST',
+    url: `/api/typebots/${typebotId}/invitations`,
+    body: { email, type },
+  })
+
+export const updateInvitation = (
+  typebotId: string,
+  userId: string,
+  updates: Partial<Invitation>
+) =>
+  sendRequest({
+    method: 'PUT',
+    url: `/api/typebots/${typebotId}/invitations/${userId}`,
+    body: updates,
+  })
+
+export const deleteInvitation = (typebotId: string, userId: string) =>
+  sendRequest({
+    method: 'DELETE',
+    url: `/api/typebots/${typebotId}/invitations/${userId}`,
+  })

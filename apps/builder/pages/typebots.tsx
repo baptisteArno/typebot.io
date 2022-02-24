@@ -13,7 +13,7 @@ import { Banner } from 'components/dashboard/annoucements/AnnoucementBanner'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { query, isReady } = useRouter()
+  const { query, isReady, push } = useRouter()
   const { user } = useUser()
   const toast = useToast({
     position: 'top-right',
@@ -35,17 +35,20 @@ const DashboardPage = () => {
     if (!isReady) return
     const couponCode = query.coupon?.toString()
     const stripeStatus = query.stripe?.toString()
+    const redirectPath = query.redirectPath as string | undefined
 
     if (stripeStatus === 'success')
       toast({
         title: 'Typebot Pro',
         description: "You've successfully subscribed 🎉",
       })
-    if (!couponCode) return
-    setIsLoading(true)
-    redeemCoupon(couponCode).then(() => {
-      location.href = '/typebots'
-    })
+    if (couponCode) {
+      setIsLoading(true)
+      redeemCoupon(couponCode).then(() => {
+        location.href = '/typebots'
+      })
+    }
+    if (redirectPath) push(redirectPath)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady])
 

@@ -14,6 +14,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { PublishButton } from '../buttons/PublishButton'
+import { CollaborationMenuButton } from './CollaborationMenuButton'
 import { EditableTypebotName } from './EditableTypebotName'
 
 export const headerHeight = 56
@@ -153,6 +154,7 @@ export const TypebotHeader = () => {
       </HStack>
 
       <HStack right="40px" pos="absolute">
+        <CollaborationMenuButton />
         {router.pathname.includes('/edit') && (
           <Button onClick={handlePreviewClick}>Preview</Button>
         )}

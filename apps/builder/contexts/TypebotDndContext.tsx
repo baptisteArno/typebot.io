@@ -7,16 +7,21 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { TypebotInDashboard } from 'services/typebots'
+import { TypebotInDashboard } from 'services/typebots/typebots'
 
 const typebotDndContext = createContext<{
   draggedTypebot?: TypebotInDashboard
   setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>
   mouseOverFolderId?: string | null
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-}>({})
+}>({
+  setDraggedTypebot: () => {
+    console.log('Not implemented')
+  },
+  setMouseOverFolderId: () => {
+    console.log('Not implemented')
+  },
+})
 
 export const TypebotDndContext = ({ children }: { children: ReactNode }) => {
   const [draggedTypebot, setDraggedTypebot] = useState<TypebotInDashboard>()

@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react'
 import { isDefined, isNotDefined } from 'utils'
-import { updateUser as updateUserInDb } from 'services/user'
+import { updateUser as updateUserInDb } from 'services/user/user'
 import { useToast } from '@chakra-ui/react'
 import { deepEqual } from 'fast-equals'
 import { User } from 'db'
@@ -56,7 +56,15 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     if (!router.isReady) return
     if (status === 'loading') return
     if (status === 'unauthenticated' && !isSigningIn())
-      router.replace('/signin')
+      router.replace({
+        pathname: '/signin',
+        query:
+          router.pathname !== '/typebots'
+            ? {
+                redirectPath: router.asPath,
+              }
+            : undefined,
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, router])
 

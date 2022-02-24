@@ -3,7 +3,7 @@ import { Prisma, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { parseNewTypebot } from 'services/typebots'
+import { parseNewTypebot } from 'services/typebots/typebots'
 import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,0 +1,36 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif" font-size="16px" padding="0" line-height="23px"></mj-all>
+      <mj-section background-color="#ffffff" padding-bottom="20px"></mj-section>
+      <mj-text padding="10px 40px"></mj-text>
+    </mj-attributes>
+    <mj-style inline="inline">
+      .footer-link {
+        color: #A0AEC0
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-wrapper border="1px solid #E2E8F0">
+      <mj-section padding-bottom="0px">
+        <mj-column width="100%">
+          <mj-image src="https://typebot.s3.eu-west-3.amazonaws.com/assets/invitation-banner.png" alt="header image" padding="0px"></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="20px">
+        <mj-column>
+          <mj-text>You have been invited to collaborate on a typebot created by ${email}</mj-text>
+          <mj-text>From now on you will see this typebot in your dashboard under the "Shared with me "button 👍</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-button background-color="#0042da" color="white" href="${url}" font-weight="500" border-radius="5px">See the typebot</mj-button>
+        </mj-column>
+      </mj-section>
+
+    </mj-wrapper>
+
+  </mj-body>
+</mjml>

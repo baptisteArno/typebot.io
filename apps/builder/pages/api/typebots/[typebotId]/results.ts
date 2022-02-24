@@ -3,7 +3,7 @@ import { User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/user/user'
 import { methodNotAllowed } from 'utils'
 
 const adminEmail = 'contact@baptiste-arnaud.fr'

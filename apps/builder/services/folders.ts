@@ -15,7 +15,7 @@ export const useFolders = ({
   const { data, error, mutate } = useSWR<{ folders: DashboardFolder[] }, Error>(
     `/api/folders?${params}`,
     fetcher,
-    { dedupingInterval: 0 }
+    { dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined }
   )
   if (error) onError(error)
   return {

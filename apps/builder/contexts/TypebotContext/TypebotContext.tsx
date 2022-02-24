@@ -19,7 +19,7 @@ import {
   checkIfTypebotsAreEqual,
   parseDefaultPublicId,
   updateTypebot,
-} from 'services/typebots'
+} from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
 import { isDefined, isNotDefined } from 'utils'
@@ -33,6 +33,7 @@ import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
 import { generate } from 'short-uuid'
 import { deepEqual } from 'fast-equals'
+import { User } from 'db'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -48,6 +49,8 @@ const typebotContext = createContext<
   {
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
+    owner?: User
+    isReadOnly?: boolean
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
@@ -84,14 +87,16 @@ export const TypebotContext = ({
     position: 'top-right',
     status: 'error',
   })
-  const { typebot, publishedTypebot, isLoading, mutate } = useFetchedTypebot({
-    typebotId,
-    onError: (error) =>
-      toast({
-        title: 'Error while fetching typebot',
-        description: error.message,
-      }),
-  })
+
+  const { typebot, publishedTypebot, owner, isReadOnly, isLoading, mutate } =
+    useFetchedTypebot({
+      typebotId,
+      onError: (error) =>
+        toast({
+          title: 'Error while fetching typebot',
+          description: error.message,
+        }),
+    })
 
   useEffect(() => {
     if (
@@ -264,6 +269,8 @@ export const TypebotContext = ({
       value={{
         typebot: localTypebot,
         publishedTypebot,
+        owner,
+        isReadOnly,
         isSavingLoading,
         save: saveTypebot,
         undo,
@@ -297,13 +304,20 @@ export const useFetchedTypebot = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
-    { typebot: Typebot; publishedTypebot?: PublicTypebot },
+    {
+      typebot: Typebot
+      publishedTypebot?: PublicTypebot
+      owner?: User
+      isReadOnly?: boolean
+    },
     Error
   >(`/api/typebots/${typebotId}`, fetcher)
   if (error) onError(error)
   return {
     typebot: data?.typebot,
     publishedTypebot: data?.publishedTypebot,
+    owner: data?.owner,
+    isReadOnly: data?.isReadOnly,
     isLoading: !error && !data,
     mutate,
   }

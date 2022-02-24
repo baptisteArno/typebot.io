@@ -1,5 +1,4 @@
 import NextAuth from 'next-auth'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
@@ -7,10 +6,8 @@ import FacebookProvider from 'next-auth/providers/facebook'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isNotDefined } from 'utils'
-import { User } from 'db'
-import { randomUUID } from 'crypto'
 import { withSentry } from '@sentry/nextjs'
+import { CustomAdapter } from './adapter'
 
 const providers: Provider[] = [
   EmailProvider({
@@ -52,30 +49,19 @@ if (process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET)
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   NextAuth(req, res, {
-    adapter: PrismaAdapter(prisma),
+    adapter: CustomAdapter(prisma),
     secret: process.env.ENCRYPTION_SECRET,
     providers,
     session: {
       strategy: 'database',
     },
     callbacks: {
-      session: async ({ session, user }) => {
-        const userFromDb = user as User
-        if (isNotDefined(userFromDb.apiToken))
-          userFromDb.apiToken = await generateApiToken(userFromDb.id)
-        return { ...session, user: userFromDb }
-      },
+      session: async ({ session, user }) => ({
+        ...session,
+        user,
+      }),
     },
   })
-}
-
-const generateApiToken = async (userId: string) => {
-  const apiToken = randomUUID()
-  await prisma.user.update({
-    where: { id: userId },
-    data: { apiToken },
-  })
-  return apiToken
 }
 
 export default withSentry(handler)

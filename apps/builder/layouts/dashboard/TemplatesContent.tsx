@@ -13,7 +13,7 @@ import { useUser } from 'contexts/UserContext'
 import { Typebot } from 'models'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { createTypebot, importTypebot } from 'services/typebots'
+import { createTypebot, importTypebot } from 'services/typebots/typebots'
 import { generate } from 'short-uuid'
 
 export type TemplateProps = { name: string; emoji: string; fileName: string }

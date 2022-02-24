@@ -5,7 +5,7 @@ import { useUser } from 'contexts/UserContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useStats } from 'services/analytics'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/user/user'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
 

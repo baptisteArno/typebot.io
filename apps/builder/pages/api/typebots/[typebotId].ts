@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { User } from 'db'
+import { CollaborationType, Prisma, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -17,33 +17,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = session.user as User
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
-      where: {
-        id: typebotId,
-        ownerId: user.email === adminEmail ? undefined : user.id,
-      },
+      where: parseWhereFilter(typebotId, user, 'read'),
       include: {
         publishedTypebot: true,
+        owner: { select: { email: true, name: true, image: true } },
+        collaborators: { select: { userId: true, type: true } },
       },
     })
     if (!typebot) return res.send({ typebot: null })
-    const { publishedTypebot, ...restOfTypebot } = typebot
-    return res.send({ typebot: restOfTypebot, publishedTypebot })
+    const { publishedTypebot, owner, collaborators, ...restOfTypebot } = typebot
+    const isReadOnly =
+      collaborators.find((c) => c.userId === user.id)?.type ===
+      CollaborationType.READ
+    return res.send({
+      typebot: restOfTypebot,
+      publishedTypebot,
+      owner,
+      isReadOnly,
+    })
   }
+
+  const canEditTypebot = parseWhereFilter(typebotId, user, 'write')
   if (req.method === 'DELETE') {
-    const typebots = await prisma.typebot.delete({
-      where: {
-        id_ownerId: {
-          id: typebotId,
-          ownerId: user.id,
-        },
-      },
+    const typebots = await prisma.typebot.deleteMany({
+      where: canEditTypebot,
     })
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.typebot.update({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+    const typebots = await prisma.typebot.updateMany({
+      where: canEditTypebot,
       data: {
         ...data,
         theme: data.theme ?? undefined,
@@ -54,13 +58,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PATCH') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.typebot.update({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+    const typebots = await prisma.typebot.updateMany({
+      where: canEditTypebot,
       data,
     })
     return res.send({ typebots })
   }
   return methodNotAllowed(res)
 }
+
+const parseWhereFilter = (
+  typebotId: string,
+  user: User,
+  type: 'read' | 'write'
+): Prisma.TypebotWhereInput => ({
+  OR: [
+    {
+      id: typebotId,
+      ownerId: user.email === adminEmail ? undefined : user.id,
+    },
+    {
+      id: typebotId,
+      collaborators: {
+        every: {
+          userId: user.id,
+          type: type === 'write' ? CollaborationType.WRITE : undefined,
+        },
+      },
+    },
+  ],
+})
 
 export default withSentry(handler)
