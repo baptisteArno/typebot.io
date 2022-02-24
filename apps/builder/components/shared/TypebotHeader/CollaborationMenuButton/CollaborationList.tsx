@@ -41,7 +41,6 @@ export const CollaborationList = () => {
   const [invitationEmail, setInvitationEmail] = useState('')
   const [isSendingInvitation, setIsSendingInvitation] = useState(false)
 
-  console.log(user, owner)
   const isOwner = user?.email === owner?.email
 
   const toast = useToast({

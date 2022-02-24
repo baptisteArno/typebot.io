@@ -8,6 +8,7 @@ import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
+import { User } from 'db'
 
 const providers: Provider[] = [
   EmailProvider({
@@ -56,12 +57,29 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       strategy: 'database',
     },
     callbacks: {
-      session: async ({ session, user }) => ({
-        ...session,
-        user,
-      }),
+      session: async ({ session, user }) => {
+        const userFromDb = user as User
+        await updateLastActivityDate(userFromDb)
+        return {
+          ...session,
+          userFromDb,
+        }
+      },
     },
   })
+}
+
+const updateLastActivityDate = async (user: User) => {
+  const datesAreOnSameDay = (first: Date, second: Date) =>
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate()
+
+  if (!datesAreOnSameDay(user.lastActivityAt, new Date()))
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastActivityAt: new Date() },
+    })
 }
 
 export default withSentry(handler)

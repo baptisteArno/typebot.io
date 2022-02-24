@@ -39,6 +39,9 @@ model Session {
 
 model User {
   id                      String                    @id @default(cuid())
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  lastActivityAt          DateTime                  @default(now())
   name                    String?
   email                   String?                   @unique
   emailVerified           DateTime?
@@ -56,19 +59,21 @@ model User {
 }
 
 model CustomDomain {
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  name    String @unique
+  createdAt DateTime @default(now())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name      String   @unique
 }
 
 model Credentials {
-  id      String @id @default(cuid())
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  data    String // Encrypted data
-  name    String
-  type    String
-  iv      String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  data      String // Encrypted data
+  name      String
+  type      String
+  iv        String
 
   @@unique([name, type, ownerId])
 }
@@ -129,6 +134,7 @@ model Typebot {
 }
 
 model Invitation {
+  createdAt DateTime          @default(now())
   email     String
   typebotId String
   typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)

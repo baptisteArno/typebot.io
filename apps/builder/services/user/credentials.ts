@@ -24,7 +24,7 @@ export const useCredentials = ({
 
 export const createCredentials = async (
   userId: string,
-  credentials: Omit<Credentials, 'ownerId' | 'id' | 'iv'>
+  credentials: Omit<Credentials, 'ownerId' | 'id' | 'iv' | 'createdAt'>
 ) =>
   sendRequest<{
     credentials: Credentials

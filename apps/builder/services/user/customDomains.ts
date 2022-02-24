@@ -12,7 +12,7 @@ export const useCustomDomains = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
-    { customDomains: CustomDomain[] },
+    { customDomains: Omit<CustomDomain, 'createdAt'>[] },
     Error
   >(userId ? `/api/users/${userId}/customDomains` : null, fetcher)
   if (error) onError(error)
@@ -25,7 +25,7 @@ export const useCustomDomains = ({
 
 export const createCustomDomain = async (
   userId: string,
-  customDomain: Omit<CustomDomain, 'ownerId'>
+  customDomain: Omit<CustomDomain, 'ownerId' | 'createdAt'>
 ) =>
   sendRequest<{
     credentials: Credentials
