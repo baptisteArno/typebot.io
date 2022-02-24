@@ -3,7 +3,7 @@
 ## How do I move my typebots from the old version to the new version?
 
 Because Typebot is built on a new infrastructure that allows maximum freedom and performance, you won't be able to migrate your typebots from v1 to v2.
-Rest assured, 1.0 bots will still be available (for at least 3 months).
+Rest assured, 1.0 bots will still be available.
 
 The best strategy is to keep your v1 bots in v1 and create your new bots on v2 😃
 
