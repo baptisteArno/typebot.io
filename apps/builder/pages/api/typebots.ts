@@ -8,11 +8,10 @@ import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
-
   if (!session?.user)
     return res.status(401).json({ message: 'Not authenticated' })
-
   const user = session.user as User
+  if (!user.id) return res.status(401).json({ message: 'Not authenticated' })
   try {
     if (req.method === 'GET') {
       const folderId = req.query.folderId ? req.query.folderId.toString() : null
