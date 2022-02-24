@@ -23,7 +23,7 @@ module.exports = {
       version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
     },
   },
-  plugins: ['prettier', 'react', 'cypress', '@typescript-eslint'],
+  plugins: ['prettier', 'react', '@typescript-eslint'],
   ignorePatterns: 'dist',
   rules: {
     'react/no-unescaped-entities': [0],

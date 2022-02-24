@@ -6,5 +6,6 @@ export const getAuthenticatedUser = async (
   req: NextApiRequest
 ): Promise<User | undefined> => {
   const session = await getSession({ req })
-  return session?.user as User | undefined
+  if (session?.user && !('id' in session.user)) return
+  return session?.user as User
 }

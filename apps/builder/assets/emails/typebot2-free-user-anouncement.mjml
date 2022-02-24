@@ -1,0 +1,91 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif" font-size="16px" padding="0" line-height="23px"></mj-all>
+      <mj-section background-color="#ffffff" padding-bottom="20px"></mj-section>
+      <mj-text padding="10px 40px"></mj-text>
+    </mj-attributes>
+    <mj-style inline="inline">
+      .footer-link {
+        color: #A0AEC0
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-wrapper border="1px solid #E2E8F0">
+      <mj-section padding-bottom="0px">
+        <mj-column width="100%">
+          <mj-image src="https://typebot.s3.eu-west-3.amazonaws.com/assets/typebot2-banner.png" alt="header image" padding="0px"></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="20px">
+        <mj-column>
+          <mj-text>Hey 👋</mj-text>
+          <mj-text>I’m super excited to announce that Typebot 2.0 is finally available after 3 months of deep work. </mj-text>
+          <mj-text>It comes with a brand new building experience and it has been implemented from the ground up with “Freedom” in mind, allowing you to create truly customized conversational applications.</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-image src="https://typebot.s3.eu-west-3.amazonaws.com/assets/newsletter-builder.gif"></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-text>Typebot 2.0 also comes with new advanced features, including:</mj-text>
+          <mj-text>- Data fetching from a Google Sheet</mj-text>
+          <mj-text>- Custom emails</mj-text>
+          <mj-text>- Custom CSS</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-text>Typebot still allows you to create unique conversational experiences for your user. This leads to:</mj-text>
+          <mj-text>😍 An increase in customer satisfaction and retention.</mj-text>
+          <mj-text>🚀 A 3x conversion increase on average on your lead qualification forms.</mj-text>
+          <mj-text font-weight="bold">And it still comes with a generous unlimited free plan 💙</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-button background-color="#0042da" color="white" href="https://app.typebot.io/register" font-weight="500" border-radius="5px">Try it out</mj-button>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="20px">
+        <mj-column>
+          <mj-text>I’m inviting you to join our Facebook community where you’ll get updates on the product.</mj-text>
+          <mj-text>It’s also a place where we share our metrics and forms templates 💪</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-button background-color="#ffffff" color="#0042da" border="1px solid #0042da" href="https://app.typebot.io/register" font-weight="500" border-radius="5px">Join the community</mj-button>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="20px">
+        <mj-column>
+          <mj-text>If you have any question, just hit "reply"! I'm super approachable 😁. Look, here is a selfie 👇</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-image src="https://typebot.s3.eu-west-3.amazonaws.com/assets/selfie-newsletter.jpeg" width="300px" border-radius="5px"></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="20px">
+        <mj-column>
+          <mj-text padding-bottom="0px">Baptiste,</mj-text>
+          <mj-text padding-top="0px">Founder of Typebot.</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-text font-size="13px" text-decoration="underline">
+            <a class="footer-link" href="%unsubscribe_url%" color="#fffff">Unsubscribe from all future emails</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+  </mj-body>
+</mjml>
