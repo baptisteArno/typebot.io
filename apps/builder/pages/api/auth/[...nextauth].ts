@@ -62,7 +62,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         await updateLastActivityDate(userFromDb)
         return {
           ...session,
-          userFromDb,
+          user: userFromDb,
         }
       },
     },
