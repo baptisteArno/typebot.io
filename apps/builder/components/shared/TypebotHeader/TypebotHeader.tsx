@@ -33,14 +33,6 @@ export const TypebotHeader = () => {
   } = useTypebot()
   const { setRightPanel } = useEditor()
 
-  const handleBackClick = async () => {
-    await save()
-    router.push({
-      pathname: `/typebots`,
-      query: { ...router.query, typebotId: [] },
-    })
-  }
-
   const handleNameSubmit = (name: string) => updateOnBothTypebots({ name })
 
   const handlePreviewClick = async () => {
@@ -113,9 +105,10 @@ export const TypebotHeader = () => {
       >
         <HStack alignItems="center">
           <IconButton
+            as={NextChakraLink}
             aria-label="Back"
             icon={<ChevronLeftIcon fontSize={30} />}
-            onClick={handleBackClick}
+            href="/typebots"
           />
           {typebot?.name && (
             <EditableTypebotName

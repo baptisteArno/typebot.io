@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import { PublicTypebot, Settings, Theme, Typebot } from 'models'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import {
   createContext,
   ReactNode,
@@ -156,6 +156,14 @@ export const TypebotContext = ({
     item: localTypebot,
     debounceTimeout: autoSaveTimeout,
   })
+
+  useEffect(() => {
+    Router.events.on('routeChangeStart', saveTypebot)
+    return () => {
+      Router.events.off('routeChangeStart', saveTypebot)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const [isSavingLoading, setIsSavingLoading] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
