@@ -184,7 +184,7 @@ textarea {
 }
 
 .typebot-button > .send-icon {
-  fill: var(--typebot-button-active-color);
+  fill: var(--typebot-button-color);
 }
 
 .typebot-chat-view {

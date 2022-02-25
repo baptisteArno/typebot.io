@@ -68,13 +68,12 @@ const InputChatStep = ({
   }
 
   if (answer) {
+    const avatarUrl = typebot.theme.chat.guestAvatar?.url
     return (
       <GuestBubble
         message={answer}
         showAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
-        avatarSrc={parseVariables(typebot.variables)(
-          typebot.theme.chat.guestAvatar?.url
-        )}
+        avatarSrc={avatarUrl && parseVariables(typebot.variables)(avatarUrl)}
       />
     )
   }

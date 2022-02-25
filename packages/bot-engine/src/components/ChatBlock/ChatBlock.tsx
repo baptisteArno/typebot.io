@@ -110,17 +110,18 @@ export const ChatBlock = ({
     if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
   }
 
+  const avatarSrc = typebot.theme.chat.hostAvatar?.url
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <HostAvatarsContext>
         {(typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
           <AvatarSideContainer
-            hostAvatarSrc={parseVariables(typebot.variables)(
-              typebot.theme.chat.hostAvatar?.url
-            )}
+            hostAvatarSrc={
+              avatarSrc && parseVariables(typebot.variables)(avatarSrc)
+            }
           />
         )}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full min-w-0">
           <TransitionGroup>
             {displayedSteps
               .filter((step) => isInputStep(step) || isBubbleStep(step))

@@ -34,6 +34,8 @@ export const AvatarForm = ({
     onAvatarChange({ ...avatarProps, isEnabled: !isChecked })
   const handleImageUrl = (url: string) =>
     onAvatarChange({ isEnabled: isChecked, url })
+
+  const isDefaultAvatar = !avatarProps?.url || avatarProps.url.includes('{{')
   return (
     <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
       <Flex justifyContent="space-between">
@@ -46,7 +48,14 @@ export const AvatarForm = ({
         {isChecked && (
           <Popover isLazy>
             <PopoverTrigger>
-              {avatarProps?.url ? (
+              {isDefaultAvatar ? (
+                <Box>
+                  <DefaultAvatar
+                    cursor="pointer"
+                    _hover={{ filter: 'brightness(.9)' }}
+                  />
+                </Box>
+              ) : (
                 <Image
                   src={avatarProps.url}
                   alt="Website image"
@@ -57,13 +66,6 @@ export const AvatarForm = ({
                   boxSize="40px"
                   objectFit="cover"
                 />
-              ) : (
-                <Box>
-                  <DefaultAvatar
-                    cursor="pointer"
-                    _hover={{ filter: 'brightness(.9)' }}
-                  />
-                </Box>
               )}
             </PopoverTrigger>
             <Portal>

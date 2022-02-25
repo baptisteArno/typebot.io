@@ -61,7 +61,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
 
   return (
     <div className="flex flex-col" ref={messageContainer}>
-      <div className="flex mb-2 w-full lg:w-11/12 items-center">
+      <div className="flex mb-2 w-full items-center">
         <div className={'flex relative z-10 items-start typebot-host-bubble'}>
           <div
             className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "

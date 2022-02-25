@@ -7,7 +7,7 @@ import { useHostAvatars } from '../../contexts/HostAvatarsContext'
 export const AvatarSideContainer = ({
   hostAvatarSrc,
 }: {
-  hostAvatarSrc: string
+  hostAvatarSrc?: string
 }) => {
   const { lastBubblesTopOffset } = useHostAvatars()
   const { window, document } = useFrame()
