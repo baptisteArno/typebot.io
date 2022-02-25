@@ -15,3 +15,7 @@ test-results
 .docusaurus
 .cache-loader
 build
+
+# Wordpress
+.svn
+tags

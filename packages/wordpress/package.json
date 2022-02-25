@@ -1,0 +1,16 @@
+{
+  "name": "wordpress",
+  "version": "2.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/typebot-io/wordpress.git",
+  "author": "Baptiste Arnaud <contact@baptiste-arnaud.fr>",
+  "license": "MIT",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.17.3"
+  },
+  "scripts": {
+    "deploy": "yarn copy && yarn commit",
+    "copy": "svn copy ./trunk ./tags/2.0.0",
+    "commit": "svn ci -m 'Support Typebot 2.0'"
+  }
+}
