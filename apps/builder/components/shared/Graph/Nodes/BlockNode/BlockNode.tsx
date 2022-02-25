@@ -38,8 +38,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const isPreviewing =
     previewingEdge?.to.blockId === block.id ||
     previewingEdge?.from.blockId === block.id
-  const isStartBlock =
-    block.steps.length === 1 && block.steps[0].type === 'start'
+  const isStartBlock = block.steps[0].type === 'start'
 
   const blockCoordinates = blocksCoordinates[block.id]
   const blockRef = useRef<HTMLDivElement | null>(null)
@@ -96,7 +95,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
-      isDisabled={isReadOnly}
+      isDisabled={isReadOnly || isStartBlock}
     >
       {(ref, isOpened) => (
         <DraggableCore
@@ -135,7 +134,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               defaultValue={block.title}
               onSubmit={handleTitleSubmit}
               fontWeight="semibold"
-              pointerEvents={isReadOnly ? 'none' : 'auto'}
+              pointerEvents={isReadOnly || isStartBlock ? 'none' : 'auto'}
             >
               <EditablePreview
                 _hover={{ bgColor: 'gray.300' }}
