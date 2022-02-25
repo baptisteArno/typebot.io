@@ -18,6 +18,7 @@ export const SupportBubble = () => {
         Name: user?.name ?? undefined,
         Email: user?.email ?? undefined,
         'Typebot ID': typebot?.id,
+        'Avatar URL': user?.image ?? undefined,
       },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
