@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { initMiddleware, methodNotAllowed } from 'utils'
+import { badRequest, initMiddleware, methodNotAllowed } from 'utils'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'
@@ -17,7 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
     } as Cell
-    const extractingColumns = req.query.columns as string[]
+    const extractingColumns = req.query.columns as string[] | undefined
+    if (!Array.isArray(extractingColumns)) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))
     await doc.loadInfo()

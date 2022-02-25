@@ -31,7 +31,7 @@ export const TypebotPage = ({
   }, [])
 
   const initializeResult = async (variables: VariableWithValue[]) => {
-    const resultIdFromSession = sessionStorage.getItem(sessionStorageKey)
+    const resultIdFromSession = getExistingResultFromSession()
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
       const { error, data: result } = await createResult(
@@ -41,7 +41,7 @@ export const TypebotPage = ({
       if (error) setError(error)
       if (result) {
         setResultId(result.id)
-        sessionStorage.setItem(sessionStorageKey, result.id)
+        setResultInSession(result.id)
       }
     }
   }
@@ -78,4 +78,16 @@ export const TypebotPage = ({
       )}
     </div>
   )
+}
+
+const getExistingResultFromSession = () => {
+  try {
+    return sessionStorage.getItem(sessionStorageKey)
+  } catch {}
+}
+
+const setResultInSession = (resultId: string) => {
+  try {
+    return sessionStorage.setItem(sessionStorageKey, resultId)
+  } catch {}
 }

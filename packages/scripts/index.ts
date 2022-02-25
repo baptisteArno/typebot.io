@@ -1,5 +1,4 @@
 import { PrismaClient } from 'db'
-import { randomUUID } from 'crypto'
 import path from 'path'
 
 require('dotenv').config({
@@ -10,11 +9,6 @@ require('dotenv').config({
 })
 
 const prisma = new PrismaClient()
-const main = async () => {
-  await prisma.user.updateMany({
-    where: { apiToken: null },
-    data: { apiToken: randomUUID() },
-  })
-}
+const main = async () => {}
 
 main().then()

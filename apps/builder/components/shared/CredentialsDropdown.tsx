@@ -83,15 +83,17 @@ export const CredentialsDropdown = ({
       router.push(router.asPath.split('?')[0], undefined, { shallow: true })
   }
 
-  const handleDeleteDomainClick = (credentialsId: string) => async () => {
-    if (!user?.id) return
-    setIsDeleting(credentialsId)
-    const { error } = await deleteCredentials(user?.id, credentialsId)
-    setIsDeleting(undefined)
-    if (error) return toast({ title: error.name, description: error.message })
-    onCredentialsSelect(undefined)
-    mutate({ credentials: credentials.filter((c) => c.id !== credentialsId) })
-  }
+  const handleDeleteDomainClick =
+    (credentialsId: string) => async (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (!user?.id) return
+      setIsDeleting(credentialsId)
+      const { error } = await deleteCredentials(user?.id, credentialsId)
+      setIsDeleting(undefined)
+      if (error) return toast({ title: error.name, description: error.message })
+      onCredentialsSelect(undefined)
+      mutate({ credentials: credentials.filter((c) => c.id !== credentialsId) })
+    }
 
   return (
     <Menu isLazy placement="bottom-end" matchWidth>
@@ -121,7 +123,7 @@ export const CredentialsDropdown = ({
             </MenuItem>
           )}
           {credentialsList.map((credentials) => (
-            <Button
+            <MenuItem
               role="menuitem"
               minH="40px"
               key={credentials.id}
@@ -129,8 +131,6 @@ export const CredentialsDropdown = ({
               fontSize="16px"
               fontWeight="normal"
               rounded="none"
-              colorScheme="gray"
-              variant="ghost"
               justifyContent="space-between"
             >
               {credentials.name}
@@ -141,7 +141,7 @@ export const CredentialsDropdown = ({
                 onClick={handleDeleteDomainClick(credentials.id)}
                 isLoading={isDeleting === credentials.id}
               />
-            </Button>
+            </MenuItem>
           ))}
           <MenuItem
             maxW="500px"

@@ -89,6 +89,7 @@ export const deleteEdgeDraft = (
   edgeId: string
 ) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId))
+  if (edgeIndex === -1) return
   deleteOutgoingEdgeIdProps(typebot, edgeIndex)
   typebot.edges.splice(edgeIndex, 1)
 }

@@ -16,14 +16,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const credentialsId = req.query.credentialsId.toString()
     const auth = await getAuthenticatedGoogleClient(user.id, credentialsId)
-    const { data } = await drive({
+    const response = await drive({
       version: 'v3',
       auth,
     }).files.list({
       q: "mimeType='application/vnd.google-apps.spreadsheet'",
       fields: 'nextPageToken, files(id, name)',
     })
-    return res.send(data)
+    return res.send(response.data)
   }
   return methodNotAllowed(res)
 }

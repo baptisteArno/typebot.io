@@ -11,5 +11,8 @@
   "devDependencies": {
     "db": "*",
     "ts-node": "^10.5.0"
+  },
+  "dependencies": {
+    "firebase-admin": "^10.0.2"
   }
 }

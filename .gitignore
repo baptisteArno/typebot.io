@@ -16,6 +16,7 @@ test-results
 .docusaurus
 .cache-loader
 build
+firebaseServiceAccount.json
 
 # Wordpress
 .svn
