@@ -22,6 +22,11 @@ module.exports = withBundleAnalyzer({
           'https://unpkg.com/typebot-js@2.0.21/dist/index.umd.min.js',
         permanent: true,
       },
+      {
+        source: '/typebot-lib/v2',
+        destination: 'https://unpkg.com/typebot-js@2.1.1/dist/index.umd.min.js',
+        permanent: true,
+      },
     ]
   },
   async rewrites() {

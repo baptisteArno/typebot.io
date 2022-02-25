@@ -62,6 +62,12 @@
           <mj-button background-color="#ffffff" color="#0042da" border="1px solid #0042da" href="https://app.typebot.io/register" font-weight="500" border-radius="5px">Join the community</mj-button>
         </mj-column>
       </mj-section>
+
+      <mj-section>
+        <mj-column>
+          <mj-image width="500px" src="https://typebot.s3.eu-west-3.amazonaws.com/assets/facebook-post2.jpeg" border-radius="5px"></mj-image>
+        </mj-column>
+      </mj-section>
       <mj-section padding-top="20px">
         <mj-column>
           <mj-text>If you have any question, just hit "reply"! I'm super approachable 😁. Look, here is a selfie 👇</mj-text>
