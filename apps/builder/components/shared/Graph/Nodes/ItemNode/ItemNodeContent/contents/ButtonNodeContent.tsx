@@ -65,6 +65,7 @@ export const ButtonNodeContent = ({
         onChange={setItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
+        maxW="180px"
       >
         <EditablePreview
           w="full"
