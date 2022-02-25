@@ -1,0 +1,15 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start:local": "ts-node index.ts",
+    "start:prod": "NODE_ENV=production ts-node index.ts"
+  },
+  "devDependencies": {
+    "db": "*",
+    "ts-node": "^10.5.0"
+  }
+}
