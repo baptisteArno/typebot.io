@@ -10,7 +10,7 @@ const TypebotEditPage = () => (
   <EditorContext>
     <Seo title="Editor" />
     <KBar />
-    <Flex overflow="hidden" h="100vh" flexDir="column" id="editor-container">
+    <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
       <TypebotHeader />
       <Board />
     </Flex>
