@@ -22,11 +22,11 @@ type TextInputProps = {
     | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep
-  defaultValue: string
+  value: string
   onChange: (value: string) => void
 }
 
-export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
+export const TextInput = ({ step, value, onChange }: TextInputProps) => {
   const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -47,19 +47,19 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
       return step.options?.isLong ? (
         <LongTextInput
           ref={inputRef as unknown as RefObject<HTMLTextAreaElement>}
+          value={value}
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
-          defaultValue={defaultValue}
           onChange={handleInputChange}
         />
       ) : (
         <ShortTextInput
           ref={inputRef}
+          value={value}
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
-          defaultValue={defaultValue}
           onChange={handleInputChange}
         />
       )
@@ -68,10 +68,10 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
       return (
         <ShortTextInput
           ref={inputRef}
+          value={value}
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your email...'
           }
-          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="email"
         />
@@ -81,10 +81,10 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
       return (
         <ShortTextInput
           ref={inputRef}
+          value={value}
           placeholder={
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
-          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="number"
           style={{ appearance: 'auto' }}
@@ -98,8 +98,8 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
       return (
         <ShortTextInput
           ref={inputRef}
+          value={value}
           placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
-          defaultValue={defaultValue}
           onChange={handleInputChange}
           type="url"
         />
@@ -110,8 +110,8 @@ export const TextInput = ({ step, defaultValue, onChange }: TextInputProps) => {
         <PhoneInput
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={inputRef as any}
+          value={value}
           onChange={handlePhoneNumberChange}
-          defaultValue={defaultValue}
           placeholder={
             step.options.labels.placeholder ?? 'Your phone number...'
           }
@@ -141,7 +141,7 @@ const LongTextInput = React.forwardRef(
   (
     props: {
       placeholder: string
-      defaultValue: string
+      value: string
       onChange: ChangeEventHandler
     },
     ref: React.ForwardedRef<HTMLTextAreaElement>

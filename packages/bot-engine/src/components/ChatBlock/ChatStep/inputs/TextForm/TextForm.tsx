@@ -1,5 +1,6 @@
 import {
   EmailInputStep,
+  InputStepType,
   NumberInputStep,
   PhoneNumberInputStep,
   TextInputStep,
@@ -23,7 +24,14 @@ type TextFormProps = {
 export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
   const [inputValue, setInputValue] = useState(defaultValue ?? '')
 
-  const handleChange = (inputValue: string) => setInputValue(inputValue)
+  const handleChange = (inputValue: string) => {
+    if (step.type === InputStepType.URL && !inputValue.startsWith('https://'))
+      return inputValue === 'https:/'
+        ? undefined
+        : setInputValue(`https://${inputValue}`)
+
+    setInputValue(inputValue)
+  }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -39,11 +47,7 @@ export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
           onSubmit={handleSubmit}
           data-testid="input"
         >
-          <TextInput
-            step={step}
-            onChange={handleChange}
-            defaultValue={defaultValue ?? ''}
-          />
+          <TextInput step={step} onChange={handleChange} value={inputValue} />
           <SendButton
             label={step.options?.labels?.button ?? 'Send'}
             isDisabled={inputValue === ''}

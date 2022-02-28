@@ -42,7 +42,7 @@ test.describe('Url input step', () => {
     await page.click('text=Restart')
     await typebotViewer(page)
       .locator(`input[placeholder="Your URL..."]`)
-      .fill('gg://test.com')
+      .fill('https://https://test')
     await typebotViewer(page).locator('button >> text="Go"').click()
     await expect(
       typebotViewer(page).locator('text=Try again bro')

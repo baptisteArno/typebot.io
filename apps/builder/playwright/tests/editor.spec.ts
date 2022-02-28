@@ -71,8 +71,6 @@ test.describe.parallel('Editor', () => {
     await expect(page.locator('[data-testid="step"] >> nth=2')).toHaveText(
       'Hello!'
     )
-    await page.dragAndDrop('text=Hello', '[data-testid="step"] >> text=Start')
-    await expect(page.locator('text=Block #4')).toBeVisible()
     await page.dragAndDrop('text=Hello', 'text=Block #2')
     await expect(page.locator('[data-testid="step"] >> nth=3')).toHaveText(
       'Hello!'
