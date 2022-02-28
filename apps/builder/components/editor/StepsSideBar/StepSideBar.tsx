@@ -97,6 +97,7 @@ export const StepsSideBar = () => {
         spacing={6}
         userSelect="none"
         overflowY="scroll"
+        className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
           <Tooltip label={isLocked ? 'Unlock sidebar' : 'Lock sidebar'}>

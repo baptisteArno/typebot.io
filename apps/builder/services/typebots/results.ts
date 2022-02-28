@@ -28,7 +28,7 @@ export const useResults = ({
   typebotId: string
   onError: (error: Error) => void
 }) => {
-  const { data, error, mutate, setSize, size } = useSWRInfinite<
+  const { data, error, mutate, setSize, size, isValidating } = useSWRInfinite<
     { results: ResultWithAnswers[] },
     Error
   >(
@@ -50,10 +50,11 @@ export const useResults = ({
     setSize,
     size,
     hasMore:
-      data &&
-      data.length > 0 &&
-      data[data.length - 1].results.length > 0 &&
-      data.length === paginationLimit,
+      isValidating ||
+      (data &&
+        data.length > 0 &&
+        data[data.length - 1].results.length > 0 &&
+        data.length === paginationLimit),
   }
 }
 
