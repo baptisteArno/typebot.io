@@ -108,7 +108,11 @@ export const TypebotHeader = () => {
             as={NextChakraLink}
             aria-label="Back"
             icon={<ChevronLeftIcon fontSize={30} />}
-            href="/typebots"
+            href={
+              typebot?.folderId
+                ? `/typebots/folders/${typebot.folderId}`
+                : '/typebots'
+            }
           />
           {typebot?.name && (
             <EditableTypebotName

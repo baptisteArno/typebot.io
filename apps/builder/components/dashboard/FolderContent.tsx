@@ -79,16 +79,15 @@ export const FolderContent = ({ folder }: Props) => {
     },
   })
 
-  const { totalSharedTypebots, isLoading: isSharedTypebotsCountLoading } =
-    useSharedTypebotsCount({
-      userId: folder === null ? user?.id : undefined,
-      onError: (error) => {
-        toast({
-          title: "Couldn't fetch shared typebots",
-          description: error.message,
-        })
-      },
-    })
+  const { totalSharedTypebots } = useSharedTypebotsCount({
+    userId: folder === null ? user?.id : undefined,
+    onError: (error) => {
+      toast({
+        title: "Couldn't fetch shared typebots",
+        description: error.message,
+      })
+    },
+  })
 
   useEffect(() => {
     if (
@@ -197,7 +196,6 @@ export const FolderContent = ({ folder }: Props) => {
               folderId={folder?.id}
               isLoading={isTypebotLoading}
             />
-            {isSharedTypebotsCountLoading && <ButtonSkeleton />}
             {totalSharedTypebots > 0 && <SharedTypebotsButton />}
             {isFolderLoading && <ButtonSkeleton />}
             {folders &&
