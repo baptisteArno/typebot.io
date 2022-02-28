@@ -39,7 +39,6 @@ export const TemplatesContent = () => {
     const { error, data } = typebot
       ? await importTypebot({
           ...typebot,
-          id: generate(),
           ownerId: user.id,
           folderId,
         })

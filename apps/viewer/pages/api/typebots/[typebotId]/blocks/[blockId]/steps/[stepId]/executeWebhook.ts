@@ -68,7 +68,10 @@ const executeWebhook =
         h.key?.toLowerCase() === 'authorization' &&
         h.value?.toLowerCase()?.includes('basic')
     )
-    if (basicAuthHeaderIdx !== -1) {
+    const isUsernamePasswordBasicAuth =
+      basicAuthHeaderIdx !== -1 &&
+      webhook.headers[basicAuthHeaderIdx].value?.includes(':')
+    if (isUsernamePasswordBasicAuth) {
       const [username, password] =
         webhook.headers[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
       basicAuth.username = username

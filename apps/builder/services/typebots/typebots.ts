@@ -91,12 +91,21 @@ export const createTypebot = async ({
   })
 }
 
-export const importTypebot = async (typebot: Typebot) =>
-  sendRequest<Typebot>({
+export const importTypebot = async (typebot: Typebot) => {
+  const typebotToImport: Omit<Typebot, 'id'> = omit(
+    {
+      ...typebot,
+      publishedTypebotId: null,
+      publicId: null,
+    },
+    'id'
+  )
+  return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: typebot,
+    body: typebotToImport,
   })
+}
 
 export const duplicateTypebot = async (typebotId: string) => {
   const { data } = await getTypebot(typebotId)
