@@ -75,14 +75,19 @@ const parseWhereFilter = (
   OR: [
     {
       id: typebotId,
-      ownerId: user.email === adminEmail ? undefined : user.id,
+      ownerId:
+        (type === 'read' && user.email === adminEmail) ||
+        process.env.NEXT_PUBLIC_E2E_TEST
+          ? undefined
+          : user.id,
     },
     {
       id: typebotId,
       collaborators: {
-        every: {
+        some: {
           userId: user.id,
-          type: type === 'write' ? CollaborationType.WRITE : undefined,
+          type:
+            type === 'write' ? CollaborationType.WRITE : CollaborationType.READ,
         },
       },
     },
