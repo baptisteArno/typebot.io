@@ -129,7 +129,7 @@ model Typebot {
   customDomain       String?                   @unique
   collaborators      CollaboratorsOnTypebots[]
   invitations        Invitation[]
-  webhooks Webhook[]
+  webhooks           Webhook[]
 
   @@unique([id, ownerId])
 }
@@ -184,6 +184,17 @@ model Result {
   answers            Answer[]
   prefilledVariables Json[]
   isCompleted        Boolean
+  logs               Log[]
+}
+
+model Log {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  resultId    String
+  result      Result    @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  status      String
+  description String
+  details     String?
 }
 
 model Answer {

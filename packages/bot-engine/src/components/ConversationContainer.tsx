@@ -4,8 +4,7 @@ import { ChatBlock } from './ChatBlock/ChatBlock'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
-import { deepEqual } from 'fast-equals'
-import { Answer, Block, Edge, Theme, VariableWithValue } from 'models'
+import { Block, Edge, Theme, VariableWithValue } from 'models'
 import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -13,14 +12,12 @@ import { useTypebot } from 'contexts/TypebotContext'
 type Props = {
   theme: Theme
   onNewBlockVisible: (edge: Edge) => void
-  onNewAnswer: (answer: Answer) => void
   onCompleted: () => void
   onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
 export const ConversationContainer = ({
   theme,
   onNewBlockVisible,
-  onNewAnswer,
   onCompleted,
   onVariablesPrefilled,
 }: Props) => {
@@ -29,11 +26,7 @@ export const ConversationContainer = ({
   const [displayedBlocks, setDisplayedBlocks] = useState<
     { block: Block; startStepIndex: number }[]
   >([])
-  const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
-  const {
-    resultValues: { answers },
-    setPrefilledVariables,
-  } = useAnswers()
+  const { setPrefilledVariables } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
@@ -79,14 +72,6 @@ export const ConversationContainer = ({
   useEffect(() => {
     setCssVariablesValue(theme, frameDocument.body.style)
   }, [theme, frameDocument])
-
-  useEffect(() => {
-    const answer = [...answers].pop()
-    if (!answer || deepEqual(localAnswer, answer)) return
-    setLocalAnswer(answer)
-    onNewAnswer(answer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answers])
 
   const autoScrollToBottom = () => {
     if (!scrollableContainer.current) return

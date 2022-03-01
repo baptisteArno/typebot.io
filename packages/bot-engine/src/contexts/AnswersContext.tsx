@@ -9,18 +9,26 @@ const answersContext = createContext<{
   //@ts-ignore
 }>({})
 
-export const AnswersContext = ({ children }: { children: ReactNode }) => {
+export const AnswersContext = ({
+  children,
+  onNewAnswer,
+}: {
+  onNewAnswer: (answer: Answer) => void
+  children: ReactNode
+}) => {
   const [resultValues, setResultValues] = useState<ResultValues>({
     answers: [],
     prefilledVariables: [],
     createdAt: new Date().toISOString(),
   })
 
-  const addAnswer = (answer: Answer) =>
+  const addAnswer = (answer: Answer) => {
     setResultValues((resultValues) => ({
       ...resultValues,
       answers: [...resultValues.answers, answer],
     }))
+    onNewAnswer(answer)
+  }
 
   const setPrefilledVariables = (variables: VariableWithValue[]) =>
     setResultValues((resultValues) => ({

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
-import { chakra, Checkbox, Flex } from '@chakra-ui/react'
+import { Button, chakra, Checkbox, Flex, HStack, Text } from '@chakra-ui/react'
+import { AlignLeftTextIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useRowSelect, useTable } from 'react-table'
@@ -12,6 +13,7 @@ type SubmissionsTableProps = {
   hasMore?: boolean
   onNewSelection: (indices: number[]) => void
   onScrollToBottom: () => void
+  onLogOpenIndex: (index: number) => () => void
 }
 
 export const SubmissionsTable = ({
@@ -19,13 +21,13 @@ export const SubmissionsTable = ({
   hasMore,
   onNewSelection,
   onScrollToBottom,
+  onLogOpenIndex,
 }: SubmissionsTableProps) => {
   const { publishedTypebot } = useTypebot()
   const columns: any = useMemo(
     () => (publishedTypebot ? parseSubmissionsColumns(publishedTypebot) : []),
     [publishedTypebot]
   )
-
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)
 
@@ -87,6 +89,19 @@ export const SubmissionsTable = ({
                     </chakra.th>
                   )
                 })}
+                <chakra.th
+                  px="4"
+                  py="2"
+                  border="1px"
+                  borderColor="gray.200"
+                  fontWeight="normal"
+                  whiteSpace="nowrap"
+                >
+                  <HStack>
+                    <AlignLeftTextIcon />
+                    <Text>Logs</Text>
+                  </HStack>
+                </chakra.th>
               </tr>
             )
           })}
@@ -118,10 +133,17 @@ export const SubmissionsTable = ({
                     </chakra.td>
                   )
                 })}
+                <chakra.td px="4" py="2" border="1px" borderColor="gray.200">
+                  <Button size="sm" onClick={onLogOpenIndex(idx)}>
+                    See logs
+                  </Button>
+                </chakra.td>
               </tr>
             )
           })}
-          {hasMore === true && <LoadingRows totalColumns={columns.length} />}
+          {hasMore === true && (
+            <LoadingRows totalColumns={columns.length + 1} />
+          )}
         </tbody>
       </chakra.table>
     </Flex>

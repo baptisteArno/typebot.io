@@ -17,6 +17,7 @@ import {
   PublicTypebot,
   VariableWithValue,
 } from 'models'
+import { Log } from 'db'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -24,6 +25,7 @@ export type TypebotViewerProps = {
   apiHost?: string
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
+  onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
   onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
@@ -31,6 +33,7 @@ export const TypebotViewer = ({
   typebot,
   apiHost = process.env.NEXT_PUBLIC_VIEWER_HOST,
   isPreview = false,
+  onNewLog,
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
@@ -43,15 +46,15 @@ export const TypebotViewer = ({
         : 'transparent',
     [typebot?.theme?.general?.background]
   )
-  const handleNewBlockVisible = (edge: Edge) => {
-    if (onNewBlockVisible) onNewBlockVisible(edge)
-  }
-  const handleNewAnswer = (answer: Answer) => {
-    if (onNewAnswer) onNewAnswer(answer)
-  }
-  const handleCompleted = () => {
-    if (onCompleted) onCompleted()
-  }
+  const handleNewBlockVisible = (edge: Edge) =>
+    onNewBlockVisible && onNewBlockVisible(edge)
+
+  const handleNewAnswer = (answer: Answer) => onNewAnswer && onNewAnswer(answer)
+
+  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
+    onNewLog && onNewLog(log)
+
+  const handleCompleted = () => onCompleted && onCompleted()
 
   if (!apiHost)
     return <p>process.env.NEXT_PUBLIC_VIEWER_HOST is missing in env</p>
@@ -76,8 +79,13 @@ export const TypebotViewer = ({
           }:wght@300;400;600&display=swap');`,
         }}
       />
-      <TypebotContext typebot={typebot} apiHost={apiHost} isPreview={isPreview}>
-        <AnswersContext>
+      <TypebotContext
+        typebot={typebot}
+        apiHost={apiHost}
+        isPreview={isPreview}
+        onNewLog={handleNewLog}
+      >
+        <AnswersContext onNewAnswer={handleNewAnswer}>
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
@@ -90,7 +98,6 @@ export const TypebotViewer = ({
               <ConversationContainer
                 theme={typebot.theme}
                 onNewBlockVisible={handleNewBlockVisible}
-                onNewAnswer={handleNewAnswer}
                 onCompleted={handleCompleted}
                 onVariablesPrefilled={onVariablesPrefilled}
               />

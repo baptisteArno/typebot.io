@@ -7,6 +7,7 @@ import {
   InputStepType,
   Metadata,
 } from 'models'
+import { typebotViewer } from '../services/selectorUtils'
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = generate()
@@ -48,4 +49,9 @@ test('Should correctly parse metadata', async ({ page }) => {
       (document.querySelector('link[rel="icon"]') as any).getAttribute('href')
     )
   ).toBe(customMetadata.favIconUrl)
+  await expect(
+    typebotViewer(page).locator(
+      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+    )
+  ).toBeVisible()
 })

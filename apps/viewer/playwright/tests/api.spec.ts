@@ -15,7 +15,9 @@ test.beforeAll(async () => {
     )
     await createWebhook(typebotId)
     await createResults({ typebotId })
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
 })
 
 test('can list typebots', async ({ request }) => {
@@ -112,10 +114,10 @@ test('can get a sample result', async ({ request }) => {
   const data = await response.json()
   expect(data).toMatchObject({
     message: 'This is a sample result, it has been generated ⬇️',
-    Welcome: 'Item 1, Item 2, Item3',
+    Welcome: 'Hi!',
     Email: 'test@email.com',
     Name: 'answer value',
-    Services: 'Item 1, Item 2, Item3',
+    Services: 'Website dev, Content Marketing, Social Media, UI / UX Design',
     'Additional information': 'answer value',
   })
 })

@@ -1,10 +1,9 @@
 import { Answer } from 'models'
 import { sendRequest } from 'utils'
 
-export const upsertAnswer = async (answer: Answer & { resultId: string }) => {
-  return sendRequest<Answer>({
-    url: `/api/answers`,
+export const upsertAnswer = async (answer: Answer & { resultId: string }) =>
+  sendRequest<Answer>({
+    url: `/api/typebots/t/results/r/answers`,
     method: 'PUT',
     body: answer,
   })
-}

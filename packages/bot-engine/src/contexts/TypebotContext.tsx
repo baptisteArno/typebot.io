@@ -1,3 +1,4 @@
+import { Log } from 'db'
 import { Edge, PublicTypebot } from 'models'
 import React, {
   createContext,
@@ -13,6 +14,7 @@ const typebotContext = createContext<{
   isPreview: boolean
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
+  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -22,11 +24,13 @@ export const TypebotContext = ({
   typebot,
   apiHost,
   isPreview,
+  onNewLog,
 }: {
   children: ReactNode
   typebot: PublicTypebot
   apiHost: string
   isPreview: boolean
+  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
 
@@ -63,6 +67,7 @@ export const TypebotContext = ({
         isPreview,
         updateVariableValue,
         createEdge,
+        onNewLog,
       }}
     >
       {children}

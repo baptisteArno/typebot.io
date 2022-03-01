@@ -1,3 +1,4 @@
+import { Log } from 'db'
 import {
   IntegrationStep,
   IntegrationStepType,
@@ -18,7 +19,6 @@ import {
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
-import { sendErrorMessage, sendInfoMessage } from './postMessage'
 import { parseVariables, parseVariablesInObject } from './variable'
 
 const safeEval = eval
@@ -33,6 +33,7 @@ type IntegrationContext = {
   resultValues: ResultValues
   blocks: Block[]
   updateVariableValue: (variableId: string, value: string) => void
+  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }
 
 export const executeIntegration = ({
@@ -87,10 +88,17 @@ const executeGoogleSheetIntegration = async (
 
 const insertRowInGoogleSheets = async (
   options: GoogleSheetsInsertRowOptions,
-  { variables, apiHost }: IntegrationContext
+  { variables, apiHost, onNewLog }: IntegrationContext
 ) => {
-  if (!options.cellsToInsert) return
-  return sendRequest({
+  if (!options.cellsToInsert) {
+    onNewLog({
+      status: 'warning',
+      description: 'Cells to insert are undefined',
+      details: null,
+    })
+    return
+  }
+  const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'POST',
     body: {
@@ -98,14 +106,21 @@ const insertRowInGoogleSheets = async (
       values: parseCellValues(options.cellsToInsert, variables),
     },
   })
+  onNewLog(
+    parseLog(
+      error,
+      'Succesfully inserted a row in the sheet',
+      'Failed to insert a row in the sheet'
+    )
+  )
 }
 
 const updateRowInGoogleSheets = async (
   options: GoogleSheetsUpdateRowOptions,
-  { variables, apiHost }: IntegrationContext
+  { variables, apiHost, onNewLog }: IntegrationContext
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
-  return sendRequest({
+  const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'PATCH',
     body: {
@@ -117,11 +132,18 @@ const updateRowInGoogleSheets = async (
       },
     },
   })
+  onNewLog(
+    parseLog(
+      error,
+      'Succesfully updated a row in the sheet',
+      'Failed to update a row in the sheet'
+    )
+  )
 }
 
 const getRowFromGoogleSheets = async (
   options: GoogleSheetsGetOptions,
-  { variables, updateVariableValue, apiHost }: IntegrationContext
+  { variables, updateVariableValue, apiHost, onNewLog }: IntegrationContext
 ) => {
   if (!options.referenceCell || !options.cellsToExtract) return
   const queryParams = stringify(
@@ -135,10 +157,17 @@ const getRowFromGoogleSheets = async (
     },
     { indices: false }
   )
-  const { data } = await sendRequest<{ [key: string]: string }>({
+  const { data, error } = await sendRequest<{ [key: string]: string }>({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${queryParams}`,
     method: 'GET',
   })
+  onNewLog(
+    parseLog(
+      error,
+      'Succesfully fetched data from sheet',
+      'Failed to fetch data from sheet'
+    )
+  )
   if (!data) return
   options.cellsToExtract.forEach((cell) =>
     updateVariableValue(cell.variableId ?? '', data[cell.column ?? ''])
@@ -167,7 +196,7 @@ const executeWebhook = async (
     typebotId,
     apiHost,
     resultValues,
-    isPreview,
+    onNewLog,
   }: IntegrationContext
 ) => {
   const { data, error } = await sendRequest({
@@ -178,8 +207,15 @@ const executeWebhook = async (
       resultValues,
     },
   })
-  console.error(error)
-  if (isPreview && error) sendErrorMessage(`Webhook failed: ${error.message}`)
+  const statusCode = (data as Record<string, string>).statusCode.toString()
+  const isError = statusCode.startsWith('4') || statusCode.startsWith('5')
+  onNewLog({
+    status: error ? 'error' : isError ? 'warning' : 'success',
+    description: isError
+      ? 'Webhook returned an error'
+      : 'Webhook successfuly executed',
+    details: JSON.stringify(error ?? data, null, 2).substring(0, 1000),
+  })
   step.options.responseVariableMapping.forEach((varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return
     const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
@@ -190,10 +226,16 @@ const executeWebhook = async (
 
 const sendEmail = async (
   step: SendEmailStep,
-  { variables, apiHost, isPreview }: IntegrationContext
+  { variables, apiHost, isPreview, onNewLog }: IntegrationContext
 ) => {
-  if (isPreview) sendInfoMessage('Emails are not sent in preview mode')
-  if (isPreview) return step.outgoingEdgeId
+  if (isPreview) {
+    onNewLog({
+      status: 'info',
+      description: 'Emails are not sent in preview mode',
+      details: null,
+    })
+    return step.outgoingEdgeId
+  }
   const { options } = step
   const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/email`,
@@ -207,6 +249,18 @@ const sendEmail = async (
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
     },
   })
-  console.error(error)
+  onNewLog(
+    parseLog(error, 'Succesfully sent an email', 'Failed to send an email')
+  )
   return step.outgoingEdgeId
 }
+
+const parseLog = (
+  error: Error | undefined,
+  successMessage: string,
+  errorMessage: string
+): Omit<Log, 'id' | 'createdAt' | 'resultId'> => ({
+  status: error ? 'error' : 'success',
+  description: error ? errorMessage : successMessage,
+  details: (error && JSON.stringify(error, null, 2).substring(0, 1000)) ?? null,
+})

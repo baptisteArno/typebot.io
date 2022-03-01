@@ -1,5 +1,5 @@
 import prisma from 'libs/prisma'
-import { ResultWithAnswers, Typebot } from 'models'
+import { ResultWithAnswers, Typebot, VariableWithValue } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
 import { methodNotAllowed, parseAnswers } from 'utils'
@@ -14,15 +14,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
     const limit = Number(req.query.limit)
+    console.log(limit, typebot.id)
     const results = (await prisma.result.findMany({
       where: { typebotId: typebot.id },
       orderBy: { createdAt: 'desc' },
       take: limit,
       include: { answers: true },
     })) as unknown as ResultWithAnswers[]
-    res.send({
+    console.log(results)
+    return res.send({
       results: results.map(parseAnswers(typebot as unknown as Typebot)),
     })
+  }
+  if (req.method === 'POST') {
+    const typebotId = req.query.typebotId as string
+    const resultData = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as {
+      prefilledVariables: VariableWithValue[]
+    }
+    const result = await prisma.result.create({
+      data: { ...resultData, typebotId, isCompleted: false },
+    })
+    return res.send(result)
   }
   methodNotAllowed(res)
 }

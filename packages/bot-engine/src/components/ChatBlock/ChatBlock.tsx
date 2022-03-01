@@ -31,8 +31,14 @@ export const ChatBlock = ({
   onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
-  const { typebot, updateVariableValue, createEdge, apiHost, isPreview } =
-    useTypebot()
+  const {
+    typebot,
+    updateVariableValue,
+    createEdge,
+    apiHost,
+    isPreview,
+    onNewLog,
+  } = useTypebot()
   const { resultValues } = useAnswers()
   const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
 
@@ -72,6 +78,7 @@ export const ChatBlock = ({
           updateVariableValue,
           resultValues,
           blocks: typebot.blocks,
+          onNewLog,
         },
       })
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()

@@ -7,6 +7,7 @@ import {
   FlexProps,
   useEventListener,
   useToast,
+  UseToastOptions,
   VStack,
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
@@ -14,7 +15,8 @@ import { headerHeight } from 'components/shared/TypebotHeader'
 import { useEditor } from 'contexts/EditorContext'
 import { useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import React, { useEffect, useMemo, useState } from 'react'
+import { Log } from 'db'
+import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 
 export const PreviewDrawer = () => {
@@ -57,20 +59,10 @@ export const PreviewDrawer = () => {
     setRightPanel(undefined)
   }
 
-  useEffect(() => {
-    const onMessageFromBot = (event: MessageEvent) => {
-      if (event.data.typebotInfo) {
-        toast({ description: event.data.typebotInfo })
-      }
-      if (event.data.typebotError) {
-        toast({ description: event.data.typebotError, status: 'error' })
-      }
-    }
-    window.addEventListener('message', onMessageFromBot)
-    return () => {
-      window.removeEventListener('message', onMessageFromBot)
-    }
-  })
+  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => {
+    toast(log as UseToastOptions)
+    console.log(log.details)
+  }
 
   return (
     <Flex
@@ -113,6 +105,7 @@ export const PreviewDrawer = () => {
             <TypebotViewer
               typebot={publicTypebot}
               onNewBlockVisible={setPreviewingEdge}
+              onNewLog={handleNewLog}
               isPreview
             />
           </Flex>

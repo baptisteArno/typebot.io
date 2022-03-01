@@ -11,6 +11,7 @@ import {
 } from 'services/typebots'
 import { unparse } from 'papaparse'
 import { UnlockProPlanInfo } from 'components/shared/Info'
+import { LogsModal } from './LogsModal'
 
 type Props = {
   typebotId: string
@@ -27,6 +28,7 @@ export const SubmissionsContent = ({
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isExportLoading, setIsExportLoading] = useState(false)
+  const [inspectingLogsResultId, setInspectingLogsResultId] = useState<string>()
 
   const toast = useToast({
     position: 'top-right',
@@ -109,6 +111,13 @@ export const SubmissionsContent = ({
     [results]
   )
 
+  const handleLogsModalClose = () => setInspectingLogsResultId(undefined)
+
+  const handleLogOpenIndex = (index: number) => () => {
+    if (!results) return
+    setInspectingLogsResultId(results[index].id)
+  }
+
   return (
     <Stack maxW="1200px" w="full" pb="28">
       {totalHiddenResults && (
@@ -117,6 +126,10 @@ export const SubmissionsContent = ({
           contentLabel="You are seeing complete submissions only."
         />
       )}
+      <LogsModal
+        resultId={inspectingLogsResultId}
+        onClose={handleLogsModalClose}
+      />
       <Flex w="full" justifyContent="flex-end">
         <ResultsActionButtons
           isDeleteLoading={isDeleteLoading}
@@ -132,6 +145,7 @@ export const SubmissionsContent = ({
         onNewSelection={handleNewSelection}
         onScrollToBottom={handleScrolledToBottom}
         hasMore={hasMore}
+        onLogOpenIndex={handleLogOpenIndex}
       />
     </Stack>
   )
