@@ -7,7 +7,6 @@ import {
   Input,
   PopoverContent,
   Button,
-  Text,
   InputProps,
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
@@ -17,14 +16,12 @@ type Props = {
   selectedItem?: string
   items: string[]
   onValueChange?: (value: string) => void
-  isLoading?: boolean
 } & InputProps
 
 export const SearchableDropdown = ({
   selectedItem,
   items,
   onValueChange,
-  isLoading = false,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
@@ -66,6 +63,7 @@ export const SearchableDropdown = ({
   }, [debouncedInputValue])
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!isOpen) onOpen()
     setInputValue(e.target.value)
     if (e.target.value === '') {
       setFilteredItems([...items.slice(0, 50)])
@@ -111,7 +109,7 @@ export const SearchableDropdown = ({
           w="inherit"
           shadow="lg"
         >
-          {filteredItems.length > 0 ? (
+          {filteredItems.length > 0 && (
             <>
               {filteredItems.map((item, idx) => {
                 return (
@@ -132,10 +130,6 @@ export const SearchableDropdown = ({
                 )
               })}
             </>
-          ) : (
-            <Text p={4} color="gray.500">
-              {isLoading ? 'Loading...' : 'Not found.'}
-            </Text>
           )}
         </PopoverContent>
       </Popover>

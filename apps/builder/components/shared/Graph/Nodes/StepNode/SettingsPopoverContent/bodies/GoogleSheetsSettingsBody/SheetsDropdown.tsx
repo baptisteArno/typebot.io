@@ -1,3 +1,4 @@
+import { Input } from '@chakra-ui/react'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { useMemo } from 'react'
 import { Sheet } from 'services/integrations'
@@ -25,13 +26,15 @@ export const SheetsDropdown = ({
     const id = sheets?.find((s) => s.name === name)?.id
     if (isDefined(id)) onSelectSheetId(id)
   }
+
+  if (isLoading) return <Input value="Loading..." isDisabled />
+  if (!sheets) return <Input value="No sheets found" isDisabled />
   return (
     <SearchableDropdown
       selectedItem={currentSheet?.name}
       items={(sheets ?? []).map((s) => s.name)}
       onValueChange={handleSpreadsheetSelect}
       placeholder={'Select the sheet'}
-      isLoading={isLoading}
     />
   )
 }
