@@ -20,6 +20,7 @@ type Props = {
 export const ZapierSettings = ({ step }: Props) => {
   const { webhooks } = useTypebot()
   const webhook = webhooks.find(byId(step.webhookId))
+
   return (
     <Stack spacing={4}>
       <Alert

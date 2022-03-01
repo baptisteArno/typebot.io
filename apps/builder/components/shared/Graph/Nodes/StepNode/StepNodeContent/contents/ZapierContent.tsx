@@ -1,15 +1,30 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ZapierStep } from 'models'
+import { defaultWebhookAttributes, Webhook, ZapierStep } from 'models'
+import { useEffect } from 'react'
 import { byId, isNotDefined } from 'utils'
 
 type Props = {
   step: ZapierStep
 }
 
-export const ZapierContent = ({ step: { webhookId } }: Props) => {
-  const { webhooks } = useTypebot()
-  const webhook = webhooks.find(byId(webhookId))
+export const ZapierContent = ({ step }: Props) => {
+  const { webhooks, typebot, updateWebhook } = useTypebot()
+  const webhook = webhooks.find(byId(step.webhookId))
+
+  useEffect(() => {
+    if (!typebot) return
+    if (!webhook) {
+      const { webhookId } = step
+      const newWebhook = {
+        id: webhookId,
+        ...defaultWebhookAttributes,
+        typebotId: typebot.id,
+      } as Webhook
+      updateWebhook(webhookId, newWebhook)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>
