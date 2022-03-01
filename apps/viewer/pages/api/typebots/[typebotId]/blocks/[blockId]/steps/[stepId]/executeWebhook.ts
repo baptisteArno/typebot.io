@@ -95,7 +95,9 @@ const executeWebhook =
     })
     try {
       const response = await got(
-        parseVariables(variables)(webhook.url + `?${queryParams}`),
+        parseVariables(variables)(
+          webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
+        ),
         {
           method: webhook.method as Method,
           headers,

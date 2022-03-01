@@ -207,8 +207,12 @@ const executeWebhook = async (
       resultValues,
     },
   })
-  const statusCode = (data as Record<string, string>).statusCode.toString()
-  const isError = statusCode.startsWith('4') || statusCode.startsWith('5')
+  const statusCode = (
+    data as Record<string, string> | undefined
+  )?.statusCode.toString()
+  const isError = statusCode
+    ? statusCode?.startsWith('4') || statusCode?.startsWith('5')
+    : true
   onNewLog({
     status: error ? 'error' : isError ? 'warning' : 'success',
     description: isError
