@@ -1,8 +1,8 @@
-import { ResultWithAnswers, VariableWithValue } from 'models'
+import { PublicTypebot, ResultWithAnswers, VariableWithValue } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
-import { isDefined, sendRequest } from 'utils'
+import { byId, isDefined, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 
 const paginationLimit = 50
@@ -95,21 +95,28 @@ export const parseDateToReadable = (dateStr: string): string => {
   )
 }
 
-export const convertResultsToTableData = (results?: ResultWithAnswers[]) =>
-  (results ?? []).map((result) => ({
-    createdAt: parseDateToReadable(result.createdAt),
-    ...[...result.answers, ...result.prefilledVariables].reduce<{
-      [key: string]: string
-    }>((o, answerOrVariable) => {
-      if ('blockId' in answerOrVariable) {
-        const answer = answerOrVariable as Answer
-        return {
-          ...o,
-          [answer.variableId ?? answer.blockId]: answer.content,
+export const convertResultsToTableData =
+  ({ variables, blocks }: PublicTypebot) =>
+  (results: ResultWithAnswers[] | undefined) =>
+    (results ?? []).map((result) => ({
+      'Submitted at': parseDateToReadable(result.createdAt),
+      ...[...result.answers, ...result.prefilledVariables].reduce<{
+        [key: string]: string
+      }>((o, answerOrVariable) => {
+        if ('blockId' in answerOrVariable) {
+          const answer = answerOrVariable as Answer
+          const key =
+            (answer.variableId
+              ? variables.find(byId(answer.variableId))?.name
+              : blocks.find(byId(answer.blockId))?.title) ?? ''
+          return {
+            ...o,
+            [key]: answer.content,
+          }
         }
-      }
-      const variable = answerOrVariable as VariableWithValue
-      if (isDefined(o[variable.id])) return o
-      return { ...o, [variable.id]: variable.value }
-    }, {}),
-  }))
+        const variable = answerOrVariable as VariableWithValue
+        if (isDefined(o[variable.id])) return o
+        const key = variables.find(byId(variable.id))?.name ?? ''
+        return { ...o, [key]: variable.value }
+      }, {}),
+    }))

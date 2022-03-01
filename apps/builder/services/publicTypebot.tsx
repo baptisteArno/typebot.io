@@ -76,7 +76,7 @@ export const parseSubmissionsColumns = (
           <Text>Submitted at</Text>
         </HStack>
       ),
-      accessor: 'createdAt',
+      accessor: 'Submitted at',
     },
     ...parsedBlocks,
     ...parseVariablesHeaders(typebot, parsedBlocks),
@@ -91,7 +91,11 @@ const parseBlocksHeaders = (typebot: PublicTypebot) =>
       if (
         !inputStep ||
         !isInputStep(inputStep) ||
-        headers.find((h) => h.accessor === inputStep.options.variableId)
+        headers.find(
+          (h) =>
+            h.accessor ===
+            typebot.variables.find(byId(inputStep.options.variableId))?.name
+        )
       )
         return headers
       const matchedVariableName =
@@ -113,7 +117,7 @@ const parseBlocksHeaders = (typebot: PublicTypebot) =>
               <Text>{matchedVariableName ?? block.title}</Text>
             </HStack>
           ),
-          accessor: inputStep.options.variableId ?? block.id,
+          accessor: matchedVariableName ?? block.title,
         },
       ]
     }, [])
@@ -126,7 +130,7 @@ const parseVariablesHeaders = (
   }[]
 ) =>
   typebot.variables.reduce<HeaderCell[]>((headers, v) => {
-    if (parsedBlocks.find((b) => b.accessor === v.id)) return headers
+    if (parsedBlocks.find((b) => b.accessor === v.name)) return headers
     return [
       ...headers,
       {
@@ -136,7 +140,7 @@ const parseVariablesHeaders = (
             <Text>{v.name}</Text>
           </HStack>
         ),
-        accessor: v.id,
+        accessor: v.name,
       },
     ]
   }, [])

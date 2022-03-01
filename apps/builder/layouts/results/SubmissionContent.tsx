@@ -12,6 +12,7 @@ import {
 import { unparse } from 'papaparse'
 import { UnlockProPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
+import { useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
   typebotId: string
@@ -25,6 +26,7 @@ export const SubmissionsContent = ({
   totalHiddenResults,
   onDeleteResults,
 }: Props) => {
+  const { publishedTypebot } = useTypebot()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isExportLoading, setIsExportLoading] = useState(false)
@@ -100,13 +102,17 @@ export const SubmissionsContent = ({
   }
 
   const getAllTableData = async () => {
+    if (!publishedTypebot) return []
     const { data, error } = await getAllResults(typebotId)
     if (error) toast({ description: error.message, title: error.name })
-    return convertResultsToTableData(data?.results)
+    return convertResultsToTableData(publishedTypebot)(data?.results)
   }
 
   const tableData: { [key: string]: string }[] = useMemo(
-    () => convertResultsToTableData(results),
+    () =>
+      publishedTypebot
+        ? convertResultsToTableData(publishedTypebot)(results)
+        : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [results]
   )
