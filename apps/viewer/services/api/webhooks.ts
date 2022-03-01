@@ -38,7 +38,9 @@ const parseBlocksResultSample = (
 const getSampleValue = (step: InputStep) => {
   switch (step.type) {
     case InputStepType.CHOICE:
-      return 'Item 1, Item 2, Item3'
+      return step.options.isMultipleChoice
+        ? step.items.map((i) => i.content).join(', ')
+        : step.items[0].content ?? 'Item'
     case InputStepType.DATE:
       return new Date().toUTCString()
     case InputStepType.EMAIL:
