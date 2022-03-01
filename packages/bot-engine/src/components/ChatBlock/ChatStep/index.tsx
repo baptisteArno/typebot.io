@@ -1,1 +1,1 @@
-export { ChatStep } from './ChatStep'
+export { InputChatStep } from './InputChatStep'

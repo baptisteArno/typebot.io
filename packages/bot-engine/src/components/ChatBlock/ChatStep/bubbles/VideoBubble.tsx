@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useHostAvatars } from 'contexts/HostAvatarsContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   Variable,
@@ -21,12 +20,10 @@ export const mediaLoadingFallbackTimeout = 5000
 
 export const VideoBubble = ({ step, onTransitionEnd }: Props) => {
   const { typebot } = useTypebot()
-  const { updateLastAvatarOffset } = useHostAvatars()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
   useEffect(() => {
-    sendAvatarOffset()
     showContentAfterMediaLoad()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -41,17 +38,8 @@ export const VideoBubble = ({ step, onTransitionEnd }: Props) => {
   const onTypingEnd = () => {
     setIsTyping(false)
     setTimeout(() => {
-      sendAvatarOffset()
       onTransitionEnd()
     }, showAnimationDuration)
-  }
-
-  const sendAvatarOffset = () => {
-    if (!messageContainer.current) return
-    const containerDimensions = messageContainer.current.getBoundingClientRect()
-    updateLastAvatarOffset(
-      messageContainer.current.offsetTop + containerDimensions.height
-    )
   }
 
   return (

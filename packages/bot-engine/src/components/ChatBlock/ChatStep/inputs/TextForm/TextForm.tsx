@@ -40,7 +40,7 @@ export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
   }
 
   return (
-    <div className="flex flex-col w-full lg:w-4/6">
+    <div className="flex flex-col w-full lg:w-4/6 mb-2">
       <div className="flex items-center">
         <form
           className="flex items-end justify-between rounded-lg pr-2 typebot-input"

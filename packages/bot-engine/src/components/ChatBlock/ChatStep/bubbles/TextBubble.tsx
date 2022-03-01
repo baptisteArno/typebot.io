@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useHostAvatars } from 'contexts/HostAvatarsContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { BubbleStepType, TextBubbleStep } from 'models'
 import { computeTypingTimeout } from 'services/chat'
@@ -21,7 +20,6 @@ const defaultTypingEmulation = {
 
 export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const { typebot } = useTypebot()
-  const { updateLastAvatarOffset } = useHostAvatars()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
@@ -32,7 +30,6 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   )
 
   useEffect(() => {
-    sendAvatarOffset()
     const typingTimeout = computeTypingTimeout(
       step.content.plainText,
       typebot.settings?.typingEmulation ?? defaultTypingEmulation
@@ -46,17 +43,8 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const onTypingEnd = () => {
     setIsTyping(false)
     setTimeout(() => {
-      sendAvatarOffset()
       onTransitionEnd()
     }, showAnimationDuration)
-  }
-
-  const sendAvatarOffset = () => {
-    if (!messageContainer.current) return
-    const containerDimensions = messageContainer.current.getBoundingClientRect()
-    updateLastAvatarOffset(
-      messageContainer.current.offsetTop + containerDimensions.height
-    )
   }
 
   return (

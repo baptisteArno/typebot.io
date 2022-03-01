@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
-import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isBubbleStep,
@@ -16,7 +14,9 @@ import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from 'index'
 import { useAnswers } from 'contexts/AnswersContext'
-import { Step } from 'models'
+import { BubbleStep, InputStep, Step } from 'models'
+import { HostBubble } from './ChatStep/bubbles/HostBubble'
+import { InputChatStep } from './ChatStep/InputChatStep'
 
 type ChatBlockProps = {
   steps: Step[]
@@ -41,6 +41,13 @@ export const ChatBlock = ({
   } = useTypebot()
   const { resultValues } = useAnswers()
   const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
+  const bubbleSteps = displayedSteps.filter((step) =>
+    isBubbleStep(step)
+  ) as BubbleStep[]
+  const inputSteps = displayedSteps.filter((step) =>
+    isInputStep(step)
+  ) as InputStep[]
+  const avatarSideContainerRef = useRef<any>()
 
   useEffect(() => {
     const nextStep = steps[startStepIndex]
@@ -49,6 +56,7 @@ export const ChatBlock = ({
   }, [])
 
   useEffect(() => {
+    avatarSideContainerRef.current?.refreshTopOffset()
     onScroll()
     onNewStepDisplayed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,33 +126,49 @@ export const ChatBlock = ({
   }
 
   const avatarSrc = typebot.theme.chat.hostAvatar?.url
+
   return (
     <div className="flex w-full">
-      <HostAvatarsContext>
-        {(typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
-          <AvatarSideContainer
-            hostAvatarSrc={
-              avatarSrc && parseVariables(typebot.variables)(avatarSrc)
-            }
-          />
-        )}
-        <div className="flex flex-col w-full min-w-0">
+      <div className="flex flex-col w-full min-w-0">
+        <div className="flex">
+          {(typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
+            <AvatarSideContainer
+              ref={avatarSideContainerRef}
+              hostAvatarSrc={
+                avatarSrc && parseVariables(typebot.variables)(avatarSrc)
+              }
+            />
+          )}
           <TransitionGroup>
-            {displayedSteps
-              .filter((step) => isInputStep(step) || isBubbleStep(step))
-              .map((step) => (
-                <CSSTransition
-                  key={step.id}
-                  classNames="bubble"
-                  timeout={500}
-                  unmountOnExit
-                >
-                  <ChatStep step={step} onTransitionEnd={displayNextStep} />
-                </CSSTransition>
-              ))}
+            {bubbleSteps.map((step) => (
+              <CSSTransition
+                key={step.id}
+                classNames="bubble"
+                timeout={500}
+                unmountOnExit
+              >
+                <HostBubble step={step} onTransitionEnd={displayNextStep} />
+              </CSSTransition>
+            ))}
           </TransitionGroup>
         </div>
-      </HostAvatarsContext>
+        <TransitionGroup>
+          {inputSteps.map((step) => (
+            <CSSTransition
+              key={step.id}
+              classNames="bubble"
+              timeout={500}
+              unmountOnExit
+            >
+              <InputChatStep
+                step={step}
+                onTransitionEnd={displayNextStep}
+                hasAvatar={typebot.theme.chat.hostAvatar?.isEnabled ?? true}
+              />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
     </div>
   )
 }

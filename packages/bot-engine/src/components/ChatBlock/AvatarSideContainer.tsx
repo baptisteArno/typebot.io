@@ -1,56 +1,69 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { Avatar } from '../avatars/Avatar'
 import { useFrame } from 'react-frame-component'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { useHostAvatars } from '../../contexts/HostAvatarsContext'
+import { CSSTransition } from 'react-transition-group'
 
-export const AvatarSideContainer = ({
-  hostAvatarSrc,
-}: {
-  hostAvatarSrc?: string
-}) => {
-  const { lastBubblesTopOffset } = useHostAvatars()
-  const { window, document } = useFrame()
-  const [marginBottom, setMarginBottom] = useState(
-    window.innerWidth < 400 ? 38 : 48
-  )
+type Props = { hostAvatarSrc?: string }
 
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      const isMobile = window.innerWidth < 400
-      setMarginBottom(isMobile ? 38 : 48)
-    })
-    resizeObserver.observe(document.body)
-    return () => {
-      resizeObserver.disconnect()
+export const AvatarSideContainer = forwardRef(
+  ({ hostAvatarSrc }: Props, ref: ForwardedRef<unknown>) => {
+    const { document } = useFrame()
+    const [show, setShow] = useState(false)
+    const [avatarTopOffset, setAvatarTopOffset] = useState(0)
+
+    const refreshTopOffset = () => {
+      if (!scrollingSideBlockRef.current || !avatarContainer.current) return
+      const { height } = scrollingSideBlockRef.current.getBoundingClientRect()
+      const { height: avatarHeight } =
+        avatarContainer.current.getBoundingClientRect()
+      setAvatarTopOffset(height - avatarHeight)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const scrollingSideBlockRef = useRef<HTMLDivElement>(null)
+    const avatarContainer = useRef<HTMLDivElement>(null)
+    useImperativeHandle(ref, () => ({
+      refreshTopOffset,
+    }))
 
-  return (
-    <div className="flex w-6 xs:w-10 mr-2 flex-shrink-0 items-center">
-      <TransitionGroup>
-        {lastBubblesTopOffset
-          .filter((n) => n !== -1)
-          .map((topOffset, idx) => (
-            <CSSTransition
-              key={idx}
-              classNames="bubble"
-              timeout={500}
-              unmountOnExit
-            >
-              <div
-                className="absolute w-6 h-6 xs:w-10 xs:h-10 mb-4 xs:mb-2 flex items-center top-0"
-                style={{
-                  top: `calc(${topOffset}px - ${marginBottom}px)`,
-                  transition: 'top 350ms ease-out',
-                }}
-              >
-                <Avatar avatarSrc={hostAvatarSrc} />
-              </div>
-            </CSSTransition>
-          ))}
-      </TransitionGroup>
-    </div>
-  )
-}
+    useEffect(() => {
+      setShow(true)
+      const resizeObserver = new ResizeObserver(refreshTopOffset)
+      resizeObserver.observe(document.body)
+      return () => {
+        resizeObserver.disconnect()
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    return (
+      <div
+        className="flex w-6 xs:w-10 mr-2 mb-2 flex-shrink-0 items-center relative "
+        ref={scrollingSideBlockRef}
+      >
+        <CSSTransition
+          classNames="bubble"
+          timeout={500}
+          in={show}
+          unmountOnExit
+        >
+          <div
+            className="absolute w-6 xs:w-10 h-6 xs:h-10 mb-4 xs:mb-2 flex items-center top-0"
+            ref={avatarContainer}
+            style={{
+              top: `${avatarTopOffset}px`,
+              transition: 'top 350ms ease-out, opacity 500ms',
+            }}
+          >
+            <Avatar avatarSrc={hostAvatarSrc} />
+          </div>
+        </CSSTransition>
+      </div>
+    )
+  }
+)
