@@ -5,7 +5,7 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { deepEqual } from 'fast-equals'
-import { Answer, Edge, PublicBlock, Theme, VariableWithValue } from 'models'
+import { Answer, Block, Edge, Theme, VariableWithValue } from 'models'
 import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -27,7 +27,7 @@ export const ConversationContainer = ({
   const { typebot, updateVariableValue } = useTypebot()
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
-    { block: PublicBlock; startStepIndex: number }[]
+    { block: Block; startStepIndex: number }[]
   >([])
   const [localAnswer, setLocalAnswer] = useState<Answer | undefined>()
   const {

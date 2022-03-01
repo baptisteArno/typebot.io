@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression'
 import { Parser } from 'htmlparser2'
-import { PublicStep, Step, Typebot } from 'models'
+import { Step, Typebot } from 'models'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)
@@ -34,26 +34,6 @@ export const toKebabCase = (value: string) => {
   )
   if (!matched) return ''
   return matched.map((x) => x.toLowerCase()).join('-')
-}
-
-interface Omit {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  <T extends object, K extends [...(keyof T)[]]>(obj: T, ...keys: K): {
-    [K2 in Exclude<keyof T, K[number]>]: T[K2]
-  }
-}
-
-export const omit: Omit = (obj, ...keys) => {
-  const ret = {} as {
-    [K in keyof typeof obj]: typeof obj[K]
-  }
-  let key: keyof typeof obj
-  for (key in obj) {
-    if (!keys.includes(key)) {
-      ret[key] = obj[key]
-    }
-  }
-  return ret
 }
 
 export const uploadFile = async (file: File, key: string) => {
@@ -98,7 +78,7 @@ export const removeUndefinedFields = <T>(obj: T): T =>
     {} as T
   )
 
-export const stepHasOptions = (step: Step | PublicStep) => 'options' in step
+export const stepHasOptions = (step: Step) => 'options' in step
 
 export const parseVariableHighlight = (content: string, typebot: Typebot) => {
   const varNames = typebot.variables.map((v) => v.name)
@@ -127,4 +107,33 @@ export const readFile = (file: File): Promise<string> => {
     fr.onerror = reject
     fr.readAsText(file)
   })
+}
+
+export const timeSince = (date: string) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000)
+
+  let interval = seconds / 31536000
+
+  if (interval > 1) {
+    return Math.floor(interval) + ' years'
+  }
+  interval = seconds / 2592000
+  if (interval > 1) {
+    return Math.floor(interval) + ' months'
+  }
+  interval = seconds / 86400
+  if (interval > 1) {
+    return Math.floor(interval) + ' days'
+  }
+  interval = seconds / 3600
+  if (interval > 1) {
+    return Math.floor(interval) + ' hours'
+  }
+  interval = seconds / 60
+  if (interval > 1) {
+    return Math.floor(interval) + ' minutes'
+  }
+  return Math.floor(seconds) + ' seconds'
 }

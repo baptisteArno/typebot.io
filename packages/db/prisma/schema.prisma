@@ -129,6 +129,7 @@ model Typebot {
   customDomain       String?                   @unique
   collaborators      CollaboratorsOnTypebots[]
   invitations        Invitation[]
+  webhooks Webhook[]
 
   @@unique([id, ownerId])
 }
@@ -201,4 +202,15 @@ model Coupon {
   userPropertiesToUpdate Json
   code                   String    @id @unique
   dateRedeemed           DateTime?
+}
+
+model Webhook {
+  id          String  @id @default(cuid())
+  url         String?
+  method      String
+  queryParams Json[]
+  headers     Json[]
+  body        String?
+  typebotId   String
+  typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }

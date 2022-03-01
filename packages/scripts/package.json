@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "db": "*",
+    "models": "*",
+    "utils": "*",
     "ts-node": "^10.5.0"
   },
   "dependencies": {

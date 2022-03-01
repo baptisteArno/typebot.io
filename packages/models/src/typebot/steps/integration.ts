@@ -34,7 +34,7 @@ export type GoogleAnalyticsStep = StepBase & {
 export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
   options: WebhookOptions
-  webhook: Webhook
+  webhookId: string
 }
 
 export type ZapierStep = Omit<WebhookStep, 'type'> & {
@@ -118,37 +118,10 @@ export type WebhookOptions = {
   responseVariableMapping: ResponseVariableMapping[]
 }
 
-export enum HttpMethod {
-  POST = 'POST',
-  GET = 'GET',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-  PATCH = 'PATCH',
-  HEAD = 'HEAD',
-  CONNECT = 'CONNECT',
-  OPTIONS = 'OPTIONS',
-  TRACE = 'TRACE',
-}
-
-export type KeyValue = { id: string; key?: string; value?: string }
 export type VariableForTest = {
   id: string
   variableId?: string
   value?: string
-}
-
-export type Webhook = {
-  id: string
-  url?: string
-  method: HttpMethod
-  queryParams: KeyValue[]
-  headers: KeyValue[]
-  body?: string
-}
-
-export type WebhookResponse = {
-  statusCode: number
-  data?: unknown
 }
 
 export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
@@ -158,12 +131,6 @@ export const defaultGoogleAnalyticsOptions: GoogleAnalyticsOptions = {}
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   responseVariableMapping: [],
   variablesForTest: [],
-}
-
-export const defaultWebhookAttributes: Omit<Webhook, 'id'> = {
-  method: HttpMethod.GET,
-  headers: [],
-  queryParams: [],
 }
 
 export const defaultSendEmailOptions: SendEmailOptions = {

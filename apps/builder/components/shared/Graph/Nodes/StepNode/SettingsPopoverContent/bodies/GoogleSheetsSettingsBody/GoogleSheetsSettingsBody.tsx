@@ -18,12 +18,11 @@ import {
   Sheet,
   useSheets,
 } from 'services/integrations'
-import { isDefined } from 'utils'
+import { isDefined, omit } from 'utils'
 import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
 import { CellWithVariableIdStack } from './CellWithVariableIdStack'
-import { omit } from 'services/utils'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 
 type Props = {

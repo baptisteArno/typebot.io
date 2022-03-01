@@ -1,17 +1,16 @@
-import { Block, PublicBlock, PublicStep, PublicTypebot, Typebot } from 'models'
+import { PublicTypebot, Typebot } from 'models'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon, CodeIcon } from 'assets/icons'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 import { byId, isInputStep, sendRequest } from 'utils'
-import { isDefined } from '@udecode/plate-common'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
   id: shortId.generate(),
   typebotId: typebot.id,
-  blocks: parseBlocksToPublicBlocks(typebot.blocks),
+  blocks: typebot.blocks,
   edges: typebot.edges,
   name: typebot.name,
   publicId: typebot.publicId,
@@ -19,18 +18,29 @@ export const parseTypebotToPublicTypebot = (
   theme: typebot.theme,
   variables: typebot.variables,
   customDomain: typebot.customDomain,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 })
 
-export const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
-  blocks.map((b) => ({
-    ...b,
-    steps: b.steps.map(
-      (s) =>
-        ('webhook' in s && isDefined(s.webhook)
-          ? { ...s, webhook: s.webhook.id }
-          : s) as PublicStep
-    ),
-  }))
+export const parsePublicTypebotToTypebot = (
+  typebot: PublicTypebot,
+  existingTypebot: Typebot
+): Typebot => ({
+  id: typebot.typebotId,
+  blocks: typebot.blocks,
+  edges: typebot.edges,
+  name: typebot.name,
+  publicId: typebot.publicId,
+  settings: typebot.settings,
+  theme: typebot.theme,
+  variables: typebot.variables,
+  customDomain: typebot.customDomain,
+  createdAt: existingTypebot.createdAt,
+  updatedAt: existingTypebot.updatedAt,
+  publishedTypebotId: typebot.id,
+  folderId: existingTypebot.folderId,
+  ownerId: existingTypebot.ownerId,
+})
 
 export const createPublishedTypebot = async (typebot: PublicTypebot) =>
   sendRequest<PublicTypebot>({

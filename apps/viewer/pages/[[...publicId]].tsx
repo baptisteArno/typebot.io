@@ -1,13 +1,14 @@
 import { NotFoundPage } from 'layouts/NotFoundPage'
 import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { isDefined, isNotDefined, omit } from 'utils'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
 import prisma from '../libs/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  let typebot: PublicTypebot | null
+  let typebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
   try {
@@ -42,17 +43,23 @@ const getTypebotFromPublicId = async (publicId?: string) => {
   const typebot = await prisma.publicTypebot.findUnique({
     where: { publicId },
   })
-  return (typebot as unknown as PublicTypebot) ?? null
+  if (isNotDefined(typebot)) return null
+  return omit(typebot as PublicTypebot, 'createdAt', 'updatedAt')
 }
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
   const typebot = await prisma.publicTypebot.findUnique({
     where: { customDomain },
   })
-  return (typebot as unknown as PublicTypebot) ?? null
+  if (isNotDefined(typebot)) return null
+  return omit(typebot as PublicTypebot, 'createdAt', 'updatedAt')
 }
 
 const App = ({ typebot, ...props }: TypebotPageProps) =>
-  typebot ? <TypebotPage typebot={typebot} {...props} /> : <NotFoundPage />
+  isDefined(typebot) ? (
+    <TypebotPage typebot={typebot} {...props} />
+  ) : (
+    <NotFoundPage />
+  )
 
 export default App

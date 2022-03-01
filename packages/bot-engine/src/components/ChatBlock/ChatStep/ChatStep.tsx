@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAnswers } from '../../../contexts/AnswersContext'
 import { useHostAvatars } from '../../../contexts/HostAvatarsContext'
-import { InputStep, InputStepType, PublicStep } from 'models'
+import { InputStep, InputStepType, Step } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { TextForm } from './inputs/TextForm'
 import { byId, isBubbleStep, isInputStep } from 'utils'
@@ -16,7 +16,7 @@ export const ChatStep = ({
   step,
   onTransitionEnd,
 }: {
-  step: PublicStep
+  step: Step
   onTransitionEnd: (answerContent?: string, isRetry?: boolean) => void
 }) => {
   const { addAnswer } = useAnswers()

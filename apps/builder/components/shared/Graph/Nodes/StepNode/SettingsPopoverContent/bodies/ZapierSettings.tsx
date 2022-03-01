@@ -8,23 +8,27 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
+import { useTypebot } from 'contexts/TypebotContext'
 import { ZapierStep } from 'models'
 import React from 'react'
+import { byId } from 'utils'
 
 type Props = {
   step: ZapierStep
 }
 
 export const ZapierSettings = ({ step }: Props) => {
+  const { webhooks } = useTypebot()
+  const webhook = webhooks.find(byId(step.webhookId))
   return (
     <Stack spacing={4}>
       <Alert
-        status={step.webhook.url ? 'success' : 'info'}
-        bgColor={step.webhook.url ? undefined : 'blue.50'}
+        status={webhook?.url ? 'success' : 'info'}
+        bgColor={webhook?.url ? undefined : 'blue.50'}
         rounded="md"
       >
         <AlertIcon />
-        {step.webhook.url ? (
+        {webhook?.url ? (
           <>Your zap is correctly configured 🚀</>
         ) : (
           <Stack>
@@ -40,7 +44,7 @@ export const ZapierSettings = ({ step }: Props) => {
           </Stack>
         )}
       </Alert>
-      {step.webhook.url && <Input value={step.webhook.url} isDisabled />}
+      {webhook?.url && <Input value={webhook?.url} isDisabled />}
     </Stack>
   )
 }

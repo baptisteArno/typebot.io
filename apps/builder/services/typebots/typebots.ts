@@ -29,8 +29,6 @@ import {
   defaultGoogleAnalyticsOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
-  defaultWebhookAttributes,
-  Webhook,
   Item,
   ItemType,
   defaultConditionContent,
@@ -39,7 +37,7 @@ import {
 import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
-import { fetcher, omit, toKebabCase } from '../utils'
+import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
   stepTypeHasItems,
@@ -48,8 +46,8 @@ import {
 } from 'utils'
 import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
-import { parseBlocksToPublicBlocks } from '../publicTypebot'
+import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
+import cuid from 'cuid'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -173,15 +171,10 @@ export const parseNewStep = (
     options: stepTypeHasOption(type)
       ? parseDefaultStepOptions(type)
       : undefined,
-    webhook: stepTypeHasWebhook(type) ? parseDefaultWebhook() : undefined,
+    webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
 }
-
-const parseDefaultWebhook = (): Webhook => ({
-  id: generate(),
-  ...defaultWebhookAttributes,
-})
 
 const parseDefaultItems = (
   type: LogicStepType.CONDITION | InputStepType.CHOICE,
@@ -255,7 +248,7 @@ export const checkIfPublished = (
   typebot: Typebot,
   publicTypebot: PublicTypebot
 ) =>
-  deepEqual(parseBlocksToPublicBlocks(typebot.blocks), publicTypebot.blocks) &&
+  deepEqual(typebot.blocks, publicTypebot.blocks) &&
   deepEqual(typebot.settings, publicTypebot.settings) &&
   deepEqual(typebot.theme, publicTypebot.theme) &&
   deepEqual(typebot.variables, publicTypebot.variables)

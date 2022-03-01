@@ -17,7 +17,6 @@ import {
   StepOptions,
   TextBubbleStep,
   Webhook,
-  WebhookStep,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -94,11 +93,6 @@ export const StepSettings = ({
 }) => {
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
-  }
-  const handleWebhookChange = (updates: Partial<Webhook>) => {
-    onStepChange({
-      webhook: { ...(step as WebhookStep).webhook, ...updates },
-    } as Partial<Step>)
   }
   const handleItemChange = (updates: Partial<ConditionItem>) => {
     onStepChange({
@@ -208,7 +202,6 @@ export const StepSettings = ({
         <WebhookSettings
           step={step}
           onOptionsChange={handleOptionsChange}
-          onWebhookChange={handleWebhookChange}
           onTestRequestClick={onTestRequestClick}
         />
       )

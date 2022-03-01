@@ -7,7 +7,7 @@ import {
   Block,
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId, isDefined } from '.'
+import { byId, isDefined } from './utils'
 
 export const methodNotAllowed = (res: NextApiResponse) =>
   res.status(405).json({ message: 'Method Not Allowed' })

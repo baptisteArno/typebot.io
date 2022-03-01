@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react'
-import { PublicTypebot, Settings, Theme, Typebot } from 'models'
+import { PublicTypebot, Settings, Theme, Typebot, Webhook } from 'models'
 import { Router, useRouter } from 'next/router'
 import {
   createContext,
@@ -11,6 +11,7 @@ import {
 } from 'react'
 import {
   createPublishedTypebot,
+  parsePublicTypebotToTypebot,
   parseTypebotToPublicTypebot,
   updatePublishedTypebot,
 } from 'services/publicTypebot'
@@ -34,6 +35,7 @@ import { itemsAction, ItemsActions } from './actions/items'
 import { generate } from 'short-uuid'
 import { deepEqual } from 'fast-equals'
 import { User } from 'db'
+import { saveWebhook } from 'services/webhook'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -50,6 +52,7 @@ const typebotContext = createContext<
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
     owner?: User
+    webhooks: Webhook[]
     isReadOnly?: boolean
     isPublished: boolean
     isPublishing: boolean
@@ -59,6 +62,10 @@ const typebotContext = createContext<
     redo: () => void
     canRedo: boolean
     canUndo: boolean
+    updateWebhook: (
+      webhookId: string,
+      webhook: Partial<Webhook>
+    ) => Promise<void>
     updateTypebot: (updates: UpdateTypebotPayload) => void
     updateOnBothTypebots: (updates: {
       publicId?: string
@@ -66,6 +73,7 @@ const typebotContext = createContext<
       customDomain?: string | null
     }) => void
     publishTypebot: () => void
+    restorePublishedTypebot: () => void
   } & BlocksActions &
     StepsActions &
     ItemsActions &
@@ -88,27 +96,22 @@ export const TypebotContext = ({
     status: 'error',
   })
 
-  const { typebot, publishedTypebot, owner, isReadOnly, isLoading, mutate } =
-    useFetchedTypebot({
-      typebotId,
-      onError: (error) =>
-        toast({
-          title: 'Error while fetching typebot',
-          description: error.message,
-        }),
-    })
-
-  useEffect(() => {
-    if (
-      !typebot ||
-      !localTypebot ||
-      typebot.updatedAt <= localTypebot.updatedAt ||
-      deepEqual(typebot, localTypebot)
-    )
-      return
-    setLocalTypebot({ ...typebot })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot])
+  const {
+    typebot,
+    publishedTypebot,
+    owner,
+    webhooks,
+    isReadOnly,
+    isLoading,
+    mutate,
+  } = useFetchedTypebot({
+    typebotId,
+    onError: (error) =>
+      toast({
+        title: 'Error while fetching typebot',
+        description: error.message,
+      }),
+  })
 
   const [
     { present: localTypebot },
@@ -133,7 +136,7 @@ export const TypebotContext = ({
       toast({ title: error.name, description: error.message })
       return
     }
-    mutate({ typebot: typebotToSave })
+    mutate({ typebot: typebotToSave, webhooks: webhooks ?? [] })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
   }
 
@@ -148,6 +151,7 @@ export const TypebotContext = ({
     mutate({
       typebot: currentTypebotRef.current as Typebot,
       publishedTypebot: newPublishedTypebot,
+      webhooks: webhooks ?? [],
     })
   }
 
@@ -254,7 +258,11 @@ export const TypebotContext = ({
       })
       setIsPublishing(false)
       if (error) return toast({ title: error.name, description: error.message })
-      mutate({ typebot: localTypebot, publishedTypebot: data })
+      mutate({
+        typebot: localTypebot,
+        publishedTypebot: data,
+        webhooks: webhooks ?? [],
+      })
     }
   }
 
@@ -272,12 +280,35 @@ export const TypebotContext = ({
     })
   }
 
+  const restorePublishedTypebot = () => {
+    if (!publishedTypebot || !localTypebot) return
+    setLocalTypebot(parsePublicTypebotToTypebot(publishedTypebot, localTypebot))
+    return saveTypebot()
+  }
+
+  const updateWebhook = async (
+    webhookId: string,
+    updates: Partial<Webhook>
+  ) => {
+    if (!typebot) return
+    const { data } = await saveWebhook(webhookId, updates)
+    if (data)
+      mutate({
+        typebot,
+        publishedTypebot,
+        webhooks: (webhooks ?? []).map((w) =>
+          w.id === webhookId ? data.webhook : w
+        ),
+      })
+  }
+
   return (
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
         publishedTypebot,
         owner,
+        webhooks: webhooks ?? [],
         isReadOnly,
         isSavingLoading,
         save: saveTypebot,
@@ -289,7 +320,9 @@ export const TypebotContext = ({
         isPublishing,
         isPublished,
         updateTypebot: updateLocalTypebot,
+        restorePublishedTypebot,
         updateOnBothTypebots,
+        updateWebhook,
         ...blocksActions(localTypebot as Typebot, setLocalTypebot),
         ...stepsAction(localTypebot as Typebot, setLocalTypebot),
         ...variablesAction(localTypebot as Typebot, setLocalTypebot),
@@ -314,6 +347,7 @@ export const useFetchedTypebot = ({
   const { data, error, mutate } = useSWR<
     {
       typebot: Typebot
+      webhooks: Webhook[]
       publishedTypebot?: PublicTypebot
       owner?: User
       isReadOnly?: boolean
@@ -323,6 +357,7 @@ export const useFetchedTypebot = ({
   if (error) onError(error)
   return {
     typebot: data?.typebot,
+    webhooks: data?.webhooks,
     publishedTypebot: data?.publishedTypebot,
     owner: data?.owner,
     isReadOnly: data?.isReadOnly,

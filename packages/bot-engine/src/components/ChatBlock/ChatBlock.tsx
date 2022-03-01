@@ -3,7 +3,6 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { ChatStep } from './ChatStep'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { HostAvatarsContext } from '../../contexts/HostAvatarsContext'
-import { PublicStep } from 'models'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isBubbleStep,
@@ -17,9 +16,10 @@ import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from 'index'
 import { useAnswers } from 'contexts/AnswersContext'
+import { Step } from 'models'
 
 type ChatBlockProps = {
-  steps: PublicStep[]
+  steps: Step[]
   startStepIndex: number
   onScroll: () => void
   onBlockEnd: (edgeId?: string) => void
@@ -34,7 +34,7 @@ export const ChatBlock = ({
   const { typebot, updateVariableValue, createEdge, apiHost, isPreview } =
     useTypebot()
   const { resultValues } = useAnswers()
-  const [displayedSteps, setDisplayedSteps] = useState<PublicStep[]>([])
+  const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
 
   useEffect(() => {
     const nextStep = steps[startStepIndex]

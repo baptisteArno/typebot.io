@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -7,6 +7,7 @@ import {
   AccordionPanel,
   Button,
   Flex,
+  Spinner,
   Stack,
   useToast,
 } from '@chakra-ui/react'
@@ -17,9 +18,10 @@ import {
   KeyValue,
   WebhookOptions,
   VariableForTest,
-  Webhook,
   ResponseVariableMapping,
   WebhookStep,
+  defaultWebhookAttributes,
+  Webhook,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -32,21 +34,21 @@ import {
 import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
+import { byId } from 'utils'
+import { deepEqual } from 'fast-equals'
 
 type Props = {
   step: WebhookStep
   onOptionsChange: (options: WebhookOptions) => void
-  onWebhookChange: (updates: Partial<Webhook>) => void
   onTestRequestClick: () => void
 }
 
 export const WebhookSettings = ({
-  step: { webhook, options, blockId, id: stepId },
+  step: { options, blockId, id: stepId, webhookId },
   onOptionsChange,
-  onWebhookChange,
   onTestRequestClick,
 }: Props) => {
-  const { typebot, save } = useTypebot()
+  const { typebot, save, webhooks, updateWebhook } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
@@ -55,18 +57,52 @@ export const WebhookSettings = ({
     position: 'top-right',
     status: 'error',
   })
+  const [localWebhook, setLocalWebhook] = useState(
+    webhooks.find(byId(webhookId))
+  )
 
-  const handleUrlChange = (url?: string) => onWebhookChange({ url })
+  useEffect(() => {
+    const incomingWebhook = webhooks.find(byId(webhookId))
+    if (deepEqual(incomingWebhook, localWebhook)) return
+    setLocalWebhook(incomingWebhook)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [webhooks])
 
-  const handleMethodChange = (method: HttpMethod) => onWebhookChange({ method })
+  useEffect(() => {
+    if (!typebot) return
+    if (!localWebhook) {
+      const newWebhook = {
+        id: webhookId,
+        ...defaultWebhookAttributes,
+        typebotId: typebot.id,
+      } as Webhook
+      updateWebhook(webhookId, newWebhook)
+    }
+
+    return () => {
+      setLocalWebhook((localWebhook) => {
+        if (!localWebhook) return
+        updateWebhook(webhookId, localWebhook).then()
+        return localWebhook
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleUrlChange = (url?: string) =>
+    localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null })
+
+  const handleMethodChange = (method: HttpMethod) =>
+    localWebhook && setLocalWebhook({ ...localWebhook, method })
 
   const handleQueryParamsChange = (queryParams: KeyValue[]) =>
-    onWebhookChange({ queryParams })
+    localWebhook && setLocalWebhook({ ...localWebhook, queryParams })
 
   const handleHeadersChange = (headers: KeyValue[]) =>
-    onWebhookChange({ headers })
+    localWebhook && setLocalWebhook({ ...localWebhook, headers })
 
-  const handleBodyChange = (body: string) => onWebhookChange({ body })
+  const handleBodyChange = (body: string) =>
+    localWebhook && setLocalWebhook({ ...localWebhook, body })
 
   const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
     onOptionsChange({ ...options, variablesForTest })
@@ -76,10 +112,10 @@ export const WebhookSettings = ({
   ) => onOptionsChange({ ...options, responseVariableMapping })
 
   const handleTestRequestClick = async () => {
-    if (!typebot) return
+    if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
     onTestRequestClick()
-    await save()
+    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
     const { data, error } = await executeWebhook(
       typebot.id,
       convertVariableForTestToVariables(
@@ -100,19 +136,20 @@ export const WebhookSettings = ({
     [responseKeys]
   )
 
+  if (!localWebhook) return <Spinner />
   return (
     <Stack spacing={4}>
       <Stack>
         <Flex>
           <DropdownList<HttpMethod>
-            currentItem={webhook.method}
+            currentItem={localWebhook.method as HttpMethod}
             onItemSelect={handleMethodChange}
             items={Object.values(HttpMethod)}
           />
         </Flex>
         <InputWithVariableButton
           placeholder="Your Webhook URL..."
-          initialValue={webhook.url ?? ''}
+          initialValue={localWebhook.url ?? ''}
           onChange={handleUrlChange}
         />
       </Stack>
@@ -124,7 +161,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TableList<KeyValue>
-              initialItems={webhook.queryParams}
+              initialItems={localWebhook.queryParams}
               onItemsChange={handleQueryParamsChange}
               Item={QueryParamsInputs}
               addLabel="Add a param"
@@ -138,7 +175,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TableList<KeyValue>
-              initialItems={webhook.headers}
+              initialItems={localWebhook.headers}
               onItemsChange={handleHeadersChange}
               Item={HeadersInputs}
               addLabel="Add a value"
@@ -152,7 +189,7 @@ export const WebhookSettings = ({
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <CodeEditor
-              value={webhook.body ?? ''}
+              value={localWebhook.body ?? ''}
               lang="json"
               onChange={handleBodyChange}
             />

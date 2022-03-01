@@ -3,7 +3,7 @@ import prisma from 'libs/prisma'
 import { Block } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { isWebhookStep, methodNotAllowed } from 'utils'
+import { byId, isNotDefined, isWebhookStep, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -12,13 +12,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId.toString()
     const typebot = await prisma.typebot.findUnique({
       where: { id_ownerId: { id: typebotId, ownerId: user.id } },
-      select: { blocks: true },
+      select: { blocks: true, webhooks: true },
     })
     const emptyWebhookSteps = (typebot?.blocks as Block[]).reduce<
       { blockId: string; id: string; name: string }[]
     >((emptyWebhookSteps, block) => {
       const steps = block.steps.filter(
-        (step) => isWebhookStep(step) && !step.webhook.url
+        (step) =>
+          isWebhookStep(step) &&
+          isNotDefined(typebot?.webhooks.find(byId(step.webhookId))?.url)
       )
       return [
         ...emptyWebhookSteps,

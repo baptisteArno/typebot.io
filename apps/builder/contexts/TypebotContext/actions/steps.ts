@@ -54,10 +54,10 @@ const stepsAction = (
   detachStepFromBlock: (indices: StepIndices) => {
     setTypebot(produce(typebot, removeStepFromBlock(indices)))
   },
-  deleteStep: (indices: StepIndices) => {
+  deleteStep: ({ blockIndex, stepIndex }: StepIndices) => {
     setTypebot(
       produce(typebot, (typebot) => {
-        removeStepFromBlock(indices)(typebot)
+        removeStepFromBlock({ blockIndex, stepIndex })(typebot)
         removeEmptyBlocks(typebot)
       })
     )
@@ -91,7 +91,7 @@ const createStepDraft = (
   removeEmptyBlocks(typebot)
 }
 
-const createNewStep = (
+const createNewStep = async (
   typebot: WritableDraft<Typebot>,
   type: DraggableStepType,
   blockId: string,

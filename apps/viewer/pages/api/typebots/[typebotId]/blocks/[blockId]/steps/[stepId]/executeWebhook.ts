@@ -7,6 +7,7 @@ import {
   Variable,
   Webhook,
   WebhookResponse,
+  WebhookStep,
 } from 'models'
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -32,14 +33,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
-    })) as unknown as Typebot
+      include: { webhooks: true },
+    })) as unknown as Typebot & { webhooks: Webhook[] }
     const step = typebot.blocks.find(byId(blockId))?.steps.find(byId(stepId))
-    if (!step || !('webhook' in step))
+    const webhook = typebot.webhooks.find(byId((step as WebhookStep).webhookId))
+    if (!webhook)
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const result = await executeWebhook(typebot)(
-      step.webhook,
+      webhook,
       variables,
       blockId,
       resultValues
@@ -133,7 +136,7 @@ const getBodyContent =
     resultValues,
     blockId,
   }: {
-    body?: string
+    body?: string | null
     resultValues?: ResultValues
     blockId: string
   }): string | undefined => {

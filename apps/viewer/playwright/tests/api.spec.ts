@@ -1,5 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { createResults, importTypebotInDatabase } from '../services/database'
+import {
+  createResults,
+  createWebhook,
+  importTypebotInDatabase,
+} from '../services/database'
 import path from 'path'
 
 const typebotId = 'webhook-flow'
@@ -9,6 +13,7 @@ test.beforeAll(async () => {
       path.join(__dirname, '../fixtures/typebots/api.json'),
       { id: typebotId }
     )
+    await createWebhook(typebotId)
     await createResults({ typebotId })
   } catch (err) {}
 })
@@ -49,13 +54,13 @@ test('can get webhook steps', async ({ request }) => {
 test('can subscribe webhook', async ({ request }) => {
   expect(
     (
-      await request.patch(
+      await request.post(
         `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/subscribeWebhook`,
         { data: { url: 'https://test.com' } }
       )
     ).status()
   ).toBe(401)
-  const response = await request.patch(
+  const response = await request.post(
     `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/subscribeWebhook`,
     {
       headers: {
@@ -73,12 +78,12 @@ test('can subscribe webhook', async ({ request }) => {
 test('can unsubscribe webhook', async ({ request }) => {
   expect(
     (
-      await request.delete(
+      await request.post(
         `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/unsubscribeWebhook`
       )
     ).status()
   ).toBe(401)
-  const response = await request.delete(
+  const response = await request.post(
     `/api/typebots/${typebotId}/blocks/webhookBlock/steps/webhookStep/unsubscribeWebhook`,
     {
       headers: { Authorization: 'Bearer userToken' },

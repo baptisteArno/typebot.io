@@ -1,9 +1,7 @@
 import {
-  Block,
   CredentialsType,
   defaultSettings,
   defaultTheme,
-  PublicBlock,
   PublicTypebot,
   Step,
   Typebot,
@@ -38,6 +36,9 @@ export const createUsers = () =>
       { id: 'proUser', email: 'pro-user@email.com', name: 'Pro user' },
     ],
   })
+
+export const createWebhook = (typebotId: string) =>
+  prisma.webhook.create({ data: { method: 'GET', typebotId, id: 'webhook1' } })
 
 export const createCollaboration = (
   userId: string,
@@ -139,7 +140,7 @@ const parseTypebotToPublicTypebot = (
 ): Omit<PublicTypebot, 'createdAt' | 'updatedAt'> => ({
   id,
   name: typebot.name,
-  blocks: parseBlocksToPublicBlocks(typebot.blocks),
+  blocks: typebot.blocks,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
@@ -148,14 +149,6 @@ const parseTypebotToPublicTypebot = (
   edges: typebot.edges,
   customDomain: null,
 })
-
-const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
-  blocks.map((b) => ({
-    ...b,
-    steps: b.steps.map((s) =>
-      'webhook' in s ? { ...s, webhook: s.webhook.id } : s
-    ),
-  }))
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
@@ -232,6 +225,6 @@ export const importTypebotInDatabase = async (
     data: parseTypebotToPublicTypebot(
       updates?.id ? `${updates?.id}-public` : 'publicBot',
       typebot
-    ),
+    ) as any,
   })
 }

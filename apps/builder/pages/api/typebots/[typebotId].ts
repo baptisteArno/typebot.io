@@ -22,10 +22,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         publishedTypebot: true,
         owner: { select: { email: true, name: true, image: true } },
         collaborators: { select: { userId: true, type: true } },
+        webhooks: true,
       },
     })
     if (!typebot) return res.send({ typebot: null })
-    const { publishedTypebot, owner, collaborators, ...restOfTypebot } = typebot
+    const {
+      publishedTypebot,
+      owner,
+      collaborators,
+      webhooks,
+      ...restOfTypebot
+    } = typebot
     const isReadOnly =
       collaborators.find((c) => c.userId === user.id)?.type ===
       CollaborationType.READ
@@ -34,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       publishedTypebot,
       owner,
       isReadOnly,
+      webhooks,
     })
   }
 

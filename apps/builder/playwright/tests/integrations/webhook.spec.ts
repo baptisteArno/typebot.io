@@ -1,5 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from '../../services/database'
+import { createWebhook, importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { generate } from 'short-uuid'
 
@@ -13,6 +13,7 @@ test.describe('Webhook step', () => {
         id: typebotId,
       }
     )
+    await createWebhook(typebotId)
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')

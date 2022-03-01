@@ -11,9 +11,9 @@ import {
   GoogleAnalyticsStep,
   WebhookStep,
   SendEmailStep,
-  PublicBlock,
   ZapierStep,
   ResultValues,
+  Block,
 } from 'models'
 import { stringify } from 'qs'
 import { sendRequest } from 'utils'
@@ -31,7 +31,7 @@ type IntegrationContext = {
   isPreview: boolean
   variables: Variable[]
   resultValues: ResultValues
-  blocks: PublicBlock[]
+  blocks: Block[]
   updateVariableValue: (variableId: string, value: string) => void
 }
 
@@ -170,7 +170,6 @@ const executeWebhook = async (
     isPreview,
   }: IntegrationContext
 ) => {
-  if (!step.webhook) return step.outgoingEdgeId
   const { data, error } = await sendRequest({
     url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
     method: 'POST',
@@ -186,6 +185,7 @@ const executeWebhook = async (
     const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
     updateVariableValue(varMapping.variableId, value)
   })
+  return step.outgoingEdgeId
 }
 
 const sendEmail = async (

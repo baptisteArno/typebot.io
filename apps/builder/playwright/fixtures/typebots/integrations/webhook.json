@@ -63,12 +63,7 @@
           "blockId": "8XnDM1QsqPms4LQHh8q3Jo",
           "type": "Webhook",
           "options": { "responseVariableMapping": [], "variablesForTest": [] },
-          "webhook": {
-            "id": "2L9mPYsLAXdXwcnGVK6pv9",
-            "method": "GET",
-            "headers": [],
-            "queryParams": []
-          }
+          "webhookId": "webhook1"
         }
       ]
     }

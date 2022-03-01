@@ -1,8 +1,6 @@
 import {
-  Block,
   defaultSettings,
   defaultTheme,
-  PublicBlock,
   PublicTypebot,
   Step,
   Typebot,
@@ -12,12 +10,13 @@ import { readFileSync } from 'fs'
 
 const prisma = new PrismaClient()
 
-export const teardownDatabase = () => {
+export const teardownDatabase = async () => {
   try {
-    return prisma.user.delete({
+    await prisma.user.delete({
       where: { id: 'user' },
     })
   } catch {}
+  return
 }
 
 export const setupDatabase = () => createUser()
@@ -29,6 +28,15 @@ export const createUser = () =>
       email: 'user@email.com',
       name: 'User',
       apiToken: 'userToken',
+    },
+  })
+
+export const createWebhook = (typebotId: string) =>
+  prisma.webhook.create({
+    data: {
+      id: 'webhook1',
+      typebotId: typebotId,
+      method: 'GET',
     },
   })
 
@@ -49,7 +57,7 @@ const parseTypebotToPublicTypebot = (
 ): PublicTypebot => ({
   id,
   name: typebot.name,
-  blocks: parseBlocksToPublicBlocks(typebot.blocks),
+  blocks: typebot.blocks,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
@@ -57,15 +65,9 @@ const parseTypebotToPublicTypebot = (
   variables: typebot.variables,
   edges: typebot.edges,
   customDomain: null,
+  createdAt: typebot.createdAt,
+  updatedAt: typebot.updatedAt,
 })
-
-const parseBlocksToPublicBlocks = (blocks: Block[]): PublicBlock[] =>
-  blocks.map((b) => ({
-    ...b,
-    steps: b.steps.map((s) =>
-      'webhook' in s ? { ...s, webhook: s.webhook.id } : s
-    ),
-  }))
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',

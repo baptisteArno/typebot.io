@@ -5,7 +5,7 @@ import {
   EmailInputStep,
   InputStepType,
   PhoneNumberInputStep,
-  PublicStep,
+  Step,
   UrlInputStep,
   Variable,
 } from 'models'
@@ -34,7 +34,7 @@ export const isInputValid = (
 }
 
 export const stepCanBeRetried = (
-  step: PublicStep
+  step: Step
 ): step is EmailInputStep | UrlInputStep | PhoneNumberInputStep =>
   isInputStep(step) && 'retryMessageContent' in step.options
 
