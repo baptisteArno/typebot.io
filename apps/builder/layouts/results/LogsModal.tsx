@@ -40,6 +40,9 @@ export const LogsModal = ({
             <LogCard key={idx} log={log} />
           ))}
           {isLoading && <Spinner />}
+          {!isLoading && (logs ?? []).length === 0 && (
+            <Text>No logs found.</Text>
+          )}
         </ModalBody>
 
         <ModalFooter />
