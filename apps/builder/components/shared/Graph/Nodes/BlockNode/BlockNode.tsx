@@ -9,7 +9,7 @@ import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import { StepNodesList } from '../StepNode/StepNodesList'
-import { isNotDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -38,7 +38,8 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const isPreviewing =
     previewingEdge?.to.blockId === block.id ||
     previewingEdge?.from.blockId === block.id
-  const isStartBlock = block.steps[0].type === 'start'
+  const isStartBlock =
+    isDefined(block.steps[0]) && block.steps[0].type === 'start'
 
   const blockCoordinates = blocksCoordinates[block.id]
   const blockRef = useRef<HTMLDivElement | null>(null)
