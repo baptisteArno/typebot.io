@@ -155,11 +155,14 @@ export const TypebotContext = ({
     })
   }
 
-  useAutoSave({
-    handler: saveTypebot,
-    item: localTypebot,
-    debounceTimeout: autoSaveTimeout,
-  })
+  useAutoSave(
+    {
+      handler: saveTypebot,
+      item: localTypebot,
+      debounceTimeout: autoSaveTimeout,
+    },
+    [typebot, publishedTypebot, webhooks]
+  )
 
   useEffect(() => {
     Router.events.on('routeChangeStart', saveTypebot)
@@ -167,7 +170,7 @@ export const TypebotContext = ({
       Router.events.off('routeChangeStart', saveTypebot)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [typebot, publishedTypebot, webhooks])
 
   const [isSavingLoading, setIsSavingLoading] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
@@ -211,7 +214,7 @@ export const TypebotContext = ({
         perform: () => saveTypebot(),
       },
     ],
-    []
+    [typebot, publishedTypebot, webhooks]
   )
 
   useRegisterActions(
@@ -366,16 +369,19 @@ export const useFetchedTypebot = ({
   }
 }
 
-const useAutoSave = <T,>({
-  handler,
-  item,
-  debounceTimeout,
-}: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handler: (item?: T) => Promise<any>
-  item?: T
-  debounceTimeout: number
-}) => {
+const useAutoSave = <T,>(
+  {
+    handler,
+    item,
+    debounceTimeout,
+  }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: (item?: T) => Promise<any>
+    item?: T
+    debounceTimeout: number
+  },
+  dependencies: unknown[]
+) => {
   const [debouncedItem] = useDebounce(item, debounceTimeout)
   useEffect(() => {
     const save = () => handler(item)
@@ -384,7 +390,7 @@ const useAutoSave = <T,>({
       document.removeEventListener('visibilitychange', save)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, dependencies)
   return useEffect(() => {
     handler(item)
     // eslint-disable-next-line react-hooks/exhaustive-deps
