@@ -131,14 +131,15 @@ export const ChatBlock = ({
     <div className="flex w-full">
       <div className="flex flex-col w-full min-w-0">
         <div className="flex">
-          {(typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
-            <AvatarSideContainer
-              ref={avatarSideContainerRef}
-              hostAvatarSrc={
-                avatarSrc && parseVariables(typebot.variables)(avatarSrc)
-              }
-            />
-          )}
+          {bubbleSteps.length > 0 &&
+            (typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
+              <AvatarSideContainer
+                ref={avatarSideContainerRef}
+                hostAvatarSrc={
+                  avatarSrc && parseVariables(typebot.variables)(avatarSrc)
+                }
+              />
+            )}
           <TransitionGroup>
             {bubbleSteps.map((step) => (
               <CSSTransition
