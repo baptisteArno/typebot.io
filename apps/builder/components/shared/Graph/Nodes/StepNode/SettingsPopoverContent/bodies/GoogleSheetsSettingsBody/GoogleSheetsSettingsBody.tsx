@@ -1,4 +1,4 @@
-import { Divider, Stack, Text } from '@chakra-ui/react'
+import { Divider, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -13,17 +13,14 @@ import {
   GoogleSheetsUpdateRowOptions,
 } from 'models'
 import React, { useMemo } from 'react'
-import {
-  getGoogleSheetsConsentScreenUrl,
-  Sheet,
-  useSheets,
-} from 'services/integrations'
+import { Sheet, useSheets } from 'services/integrations'
 import { isDefined, omit } from 'utils'
 import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
 import { CellWithVariableIdStack } from './CellWithVariableIdStack'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
+import { GoogleSheetConnectModal } from './GoogleSheetsConnectModal'
 
 type Props = {
   options: GoogleSheetsOptions
@@ -41,6 +38,7 @@ export const GoogleSheetsSettingsBody = ({
     credentialsId: options?.credentialsId,
     spreadsheetId: options?.spreadsheetId,
   })
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const sheet = useMemo(
     () => sheets?.find((s) => s.id === options?.sheetId),
     [sheets, options?.sheetId]
@@ -83,12 +81,7 @@ export const GoogleSheetsSettingsBody = ({
 
   const handleCreateNewClick = async () => {
     await save()
-    const linkElement = document.createElement('a')
-    linkElement.href = getGoogleSheetsConsentScreenUrl(
-      window.location.href,
-      stepId
-    )
-    linkElement.click()
+    onOpen()
   }
 
   return (
@@ -98,6 +91,11 @@ export const GoogleSheetsSettingsBody = ({
         currentCredentialsId={options?.credentialsId}
         onCredentialsSelect={handleCredentialsIdChange}
         onCreateNewClick={handleCreateNewClick}
+      />
+      <GoogleSheetConnectModal
+        stepId={stepId}
+        isOpen={isOpen}
+        onClose={onClose}
       />
       {options?.credentialsId && (
         <SpreadsheetsDropdown
