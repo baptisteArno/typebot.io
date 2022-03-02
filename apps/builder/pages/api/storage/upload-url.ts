@@ -1,10 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
-import aws from 'aws-sdk'
+import { Client } from 'minio'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { methodNotAllowed } from 'utils'
+import { badRequest, methodNotAllowed } from 'utils'
 
-const maxUploadFileSize = 10485760 // 10 MB
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -16,26 +15,36 @@ const handler = async (
       res.status(401)
       return
     }
-    aws.config.update({
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_KEY,
+
+    if (
+      !process.env.S3_ENDPOINT ||
+      !process.env.S3_ACCESS_KEY ||
+      !process.env.S3_SECRET_KEY ||
+      !process.env.S3_BUCKET
+    )
+      return res.send({
+        message:
+          'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_ACCESS_KEY, S3_BUCKET',
+      })
+
+    const s3 = new Client({
+      endPoint: process.env.S3_ENDPOINT,
+      port: process.env.S3_PORT ? Number(process.env.S3_PORT) : undefined,
+      useSSL:
+        process.env.S3_SSL && process.env.S3_SSL === 'false' ? false : true,
+      accessKey: process.env.S3_ACCESS_KEY,
+      secretKey: process.env.S3_SECRET_KEY,
       region: process.env.S3_REGION,
-      signatureVersion: 'v4',
     })
 
-    const s3 = new aws.S3()
-    const post = s3.createPresignedPost({
-      Bucket: process.env.S3_BUCKET,
-      Fields: {
-        ACL: 'public-read',
-        key: req.query.key,
-        'Content-Type': req.query.fileType,
-      },
-      Expires: 120, // seconds
-      Conditions: [['content-length-range', 0, maxUploadFileSize]],
-    })
+    const filePath = req.query.filePath as string | undefined
+    if (!filePath) return badRequest(res)
+    const presignedUrl = await s3.presignedPutObject(
+      process.env.S3_BUCKET as string,
+      filePath
+    )
 
-    return res.status(200).json(post)
+    return res.status(200).send({ presignedUrl })
   }
   return methodNotAllowed(res)
 }

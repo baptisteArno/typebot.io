@@ -11,5 +11,17 @@ services:
       POSTGRES_DB: 'typebot'
       POSTGRES_PASSWORD: ''
       POSTGRES_HOST_AUTH_METHOD: trust
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - s3_data:/data
 volumes:
   db_data:
+  s3_data:

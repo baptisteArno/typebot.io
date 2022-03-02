@@ -1,6 +1,7 @@
 import imageCompression from 'browser-image-compression'
 import { Parser } from 'htmlparser2'
 import { Step, Typebot } from 'models'
+import { sendRequest } from 'utils'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)
@@ -36,26 +37,23 @@ export const toKebabCase = (value: string) => {
   return matched.map((x) => x.toLowerCase()).join('-')
 }
 
-export const uploadFile = async (file: File, key: string) => {
-  const res = await fetch(
-    `/api/storage/upload-url?key=${encodeURIComponent(
-      key
-    )}&fileType=${encodeURIComponent(file.type)}`
+export const uploadFile = async (file: File, filePath: string) => {
+  const { data } = await sendRequest<{ presignedUrl: string }>(
+    `/api/storage/upload-url?filePath=${encodeURIComponent(filePath)}`
   )
-  const { url, fields } = await res.json()
-  const formData = new FormData()
 
-  Object.entries({ ...fields, file }).forEach(([key, value]) => {
-    formData.append(key, value as string | Blob)
-  })
+  if (!data?.presignedUrl)
+    return {
+      url: null,
+    }
 
-  const upload = await fetch(url, {
-    method: 'POST',
-    body: formData,
+  await fetch(data.presignedUrl, {
+    method: 'PUT',
+    body: file,
   })
 
   return {
-    url: upload.ok ? `${url}/${key}` : null,
+    url: data.presignedUrl.split('?')[0],
   }
 }
 

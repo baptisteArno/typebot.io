@@ -61,7 +61,7 @@ export const PersonalInfoForm = () => {
           <Stack>
             <UploadButton
               size="sm"
-              filePath={`users/${user?.id}/avatar`}
+              filePath={`public/users/${user?.id}/avatar`}
               leftIcon={<UploadIcon />}
               onFileUploaded={handleFileUploaded}
             >

@@ -82,7 +82,7 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
   return (
     <Flex justify="center" py="2">
       <UploadButton
-        filePath={`typebots/${typebot?.id}`}
+        filePath={`public/typebots/${typebot?.id}`}
         onFileUploaded={onNewUrl}
         includeFileName
         colorScheme="blue"
