@@ -73,8 +73,6 @@ const graphContext = createContext<{
   openedStepId?: string
   setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
   isReadOnly: boolean
-  graphOffsetY: number
-  setGraphOffsetY: Dispatch<SetStateAction<number>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -100,8 +98,6 @@ export const GraphProvider = ({
   const [blocksCoordinates, setBlocksCoordinates] = useState<BlocksCoordinates>(
     {}
   )
-  const [graphOffsetY, setGraphOffsetY] = useState(0)
-
   useEffect(() => {
     setBlocksCoordinates(
       blocks.reduce(
@@ -153,8 +149,6 @@ export const GraphProvider = ({
         blocksCoordinates,
         updateBlockCoordinates,
         isReadOnly,
-        graphOffsetY,
-        setGraphOffsetY,
       }}
     >
       {children}

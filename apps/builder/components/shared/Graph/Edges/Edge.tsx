@@ -25,7 +25,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     sourceEndpoints,
     targetEndpoints,
     blocksCoordinates,
-    graphOffsetY,
+    graphPosition,
   } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,7 +42,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     () =>
       getEndpointTopOffset(
         sourceEndpoints,
-        graphOffsetY,
+        graphPosition.y,
         getSourceEndpointId(edge)
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,16 +50,16 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
   )
 
   const [targetTop, setTargetTop] = useState(
-    getEndpointTopOffset(targetEndpoints, graphOffsetY, edge?.to.stepId)
+    getEndpointTopOffset(targetEndpoints, graphPosition.y, edge?.to.stepId)
   )
   useLayoutEffect(() => {
     setTargetTop(
-      getEndpointTopOffset(targetEndpoints, graphOffsetY, edge?.to.stepId)
+      getEndpointTopOffset(targetEndpoints, graphPosition.y, edge?.to.stepId)
     )
   }, [
     targetBlockCoordinates?.y,
     targetEndpoints,
-    graphOffsetY,
+    graphPosition.y,
     edge?.to.stepId,
   ])
 

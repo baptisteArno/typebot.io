@@ -1,16 +1,19 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
-import { blockWidth, useGraph } from 'contexts/GraphContext'
-import { BlockNode } from './Nodes/BlockNode/BlockNode'
+import {
+  blockWidth,
+  graphPositionDefaultValue,
+  useGraph,
+} from 'contexts/GraphContext'
 import { useStepDnd } from 'contexts/GraphDndContext'
-import { Edges } from './Edges'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
-import { Block, DraggableStepType, PublicTypebot, Typebot } from 'models'
+import { DraggableStepType, PublicTypebot, Typebot } from 'models'
 import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
+import GraphContent from './GraphContent'
 
 declare const window: { chrome: unknown | undefined }
 
@@ -30,19 +33,17 @@ export const Graph = ({
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
   const { createBlock } = useTypebot()
   const {
-    graphPosition,
-    setGraphPosition,
+    setGraphPosition: setGlobalGraphPosition,
     setOpenedStepId,
     updateBlockCoordinates,
-    setGraphOffsetY,
   } = useGraph()
+  const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(
     () =>
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
-  const [isMouseDown, setIsMouseDown] = useState(false)
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -53,10 +54,12 @@ export const Graph = ({
 
   useEffect(() => {
     if (!graphContainerRef.current) return
-    setGraphOffsetY(
-      graphContainerRef.current.getBoundingClientRect().top +
-        debouncedGraphPosition.y
-    )
+    const { top, left } = graphContainerRef.current.getBoundingClientRect()
+    setGlobalGraphPosition({
+      x: left + debouncedGraphPosition.x,
+      y: top + debouncedGraphPosition.y,
+      scale: 1,
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedGraphPosition])
 
@@ -71,7 +74,6 @@ export const Graph = ({
     })
   }
 
-  const handleGlobalMouseUp = () => setIsMouseDown(false)
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
     if (!draggedStep && !draggedStepType) return
@@ -98,26 +100,14 @@ export const Graph = ({
 
   const handleClick = () => setOpenedStepId(undefined)
 
-  const handleMouseDown = () => setIsMouseDown(true)
-  const handleMouseMove = (event: React.MouseEvent) => {
-    if (!isMouseDown) return
-    const { movementX, movementY } = event
-    setGraphPosition({
-      x: graphPosition.x + movementX / (window.chrome ? 2 : 1),
-      y: graphPosition.y + movementY / (window.chrome ? 2 : 1),
-      scale: 1,
-    })
-  }
-
   useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
   useEventListener('mousedown', handleCaptureMouseDown, undefined, {
     capture: true,
   })
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
-  useEventListener('mouseup', handleGlobalMouseUp)
   useEventListener('click', handleClick, editorContainerRef.current)
 
-  const onDrag = (event: DraggableEvent, draggableData: DraggableData) => {
+  const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     const { deltaX, deltaY } = draggableData
     setGraphPosition({
       x: graphPosition.x + deltaX,
@@ -128,13 +118,7 @@ export const Graph = ({
 
   return (
     <DraggableCore onDrag={onDrag}>
-      <Flex
-        ref={graphContainerRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        position="relative"
-        {...props}
-      >
+      <Flex ref={graphContainerRef} position="relative" {...props}>
         <Flex
           flex="1"
           w="full"
@@ -146,14 +130,10 @@ export const Graph = ({
           willChange="transform"
           transformOrigin="0px 0px 0px"
         >
-          <Edges
-            edges={typebot?.edges ?? []}
+          <GraphContent
             answersCounts={answersCounts}
             onUnlockProPlanClick={onUnlockProPlanClick}
           />
-          {typebot?.blocks.map((block, idx) => (
-            <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
-          ))}
         </Flex>
       </Flex>
     </DraggableCore>

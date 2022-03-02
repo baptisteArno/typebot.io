@@ -1,6 +1,5 @@
 import { useEventListener } from '@chakra-ui/hooks'
 import assert from 'assert'
-import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { useGraph, ConnectingIds } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import React, { useMemo, useState } from 'react'
@@ -18,7 +17,6 @@ export const DrawingEdge = () => {
     sourceEndpoints,
     targetEndpoints,
     blocksCoordinates,
-    graphOffsetY,
   } = useGraph()
   const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -32,19 +30,21 @@ export const DrawingEdge = () => {
     if (!connectingIds) return 0
     return getEndpointTopOffset(
       sourceEndpoints,
-      graphOffsetY,
+      graphPosition.y,
       connectingIds.source.itemId ?? connectingIds.source.stepId
     )
-  }, [connectingIds, sourceEndpoints, graphOffsetY])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectingIds, sourceEndpoints])
 
   const targetTop = useMemo(() => {
     if (!connectingIds) return 0
     return getEndpointTopOffset(
       targetEndpoints,
-      graphOffsetY,
+      graphPosition.y,
       connectingIds.target?.stepId
     )
-  }, [connectingIds, targetEndpoints, graphOffsetY])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectingIds, targetEndpoints])
 
   const path = useMemo(() => {
     if (!sourceTop || !sourceBlockCoordinates) return ``
@@ -72,7 +72,7 @@ export const DrawingEdge = () => {
   const handleMouseMove = (e: MouseEvent) => {
     setMousePosition({
       x: e.clientX - graphPosition.x,
-      y: e.clientY - graphPosition.y - headerHeight,
+      y: e.clientY - graphPosition.y,
     })
   }
   useEventListener('mousemove', handleMouseMove)

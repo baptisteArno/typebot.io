@@ -24,7 +24,7 @@ export const DropOffEdge = ({
   onUnlockProPlanClick,
 }: Props) => {
   const { user } = useUser()
-  const { sourceEndpoints, blocksCoordinates, graphOffsetY } = useGraph()
+  const { sourceEndpoints, blocksCoordinates, graphPosition } = useGraph()
   const { publishedTypebot } = useTypebot()
 
   const isUserOnFreePlan = isFreePlan(user)
@@ -60,7 +60,7 @@ export const DropOffEdge = ({
     () =>
       getEndpointTopOffset(
         sourceEndpoints,
-        graphOffsetY,
+        graphPosition.y,
         block?.steps[block.steps.length - 1].id
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
