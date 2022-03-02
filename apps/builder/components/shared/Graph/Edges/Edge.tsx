@@ -7,6 +7,9 @@ import {
   getSourceEndpointId,
 } from 'services/graph'
 import { Edge as EdgeProps } from 'models'
+import { Portal, useDisclosure } from '@chakra-ui/react'
+import { useTypebot } from 'contexts/TypebotContext'
+import { EdgeMenu } from './EdgeMenu'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -16,6 +19,7 @@ export type AnchorsPositionProps = {
 }
 
 export const Edge = ({ edge }: { edge: EdgeProps }) => {
+  const { deleteEdge } = useTypebot()
   const {
     previewingEdge,
     sourceEndpoints,
@@ -23,7 +27,11 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     blocksCoordinates,
     graphOffsetY,
   } = useGraph()
-  const isPreviewing = previewingEdge?.id === edge.id
+  const [isMouseOver, setIsMouseOver] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })
+
+  const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
   const sourceBlockCoordinates =
     blocksCoordinates && blocksCoordinates[edge.from.blockId]
@@ -74,14 +82,47 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     sourceTop,
   ])
 
+  const handleMouseEnter = () => setIsMouseOver(true)
+
+  const handleMouseLeave = () => setIsMouseOver(false)
+
+  const handleEdgeClick = (e: React.MouseEvent) => {
+    setEdgeMenuPosition({ x: e.clientX, y: e.clientY })
+    onOpen()
+  }
+
+  const handleDeleteEdge = () => deleteEdge(edge.id)
+
   return (
-    <path
-      data-testid="edge"
-      d={path}
-      stroke={isPreviewing ? '#1a5fff' : '#718096'}
-      strokeWidth="2px"
-      markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
-      fill="none"
-    />
+    <>
+      <path
+        data-testid="clickable-edge"
+        d={path}
+        strokeWidth="12px"
+        stroke="white"
+        fill="none"
+        pointerEvents="stroke"
+        style={{ cursor: 'pointer', visibility: 'hidden' }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleEdgeClick}
+      />
+      <path
+        data-testid="edge"
+        d={path}
+        stroke={isPreviewing ? '#1a5fff' : '#718096'}
+        strokeWidth="2px"
+        markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
+        fill="none"
+      />
+      <Portal>
+        <EdgeMenu
+          isOpen={isOpen}
+          position={edgeMenuPosition}
+          onDeleteEdge={handleDeleteEdge}
+          onClose={onClose}
+        />
+      </Portal>
+    </>
   )
 }
