@@ -17,8 +17,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
     } as Cell
-    const extractingColumns = req.query.columns as string[] | undefined
-    if (!Array.isArray(extractingColumns)) return badRequest(res)
+
+    const extractingColumns = getExtractingColumns(
+      req.query.columns as string[] | string | undefined
+    )
+    if (!extractingColumns) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))
     await doc.loadInfo()
@@ -78,6 +81,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ message: 'Success' })
   }
   return methodNotAllowed(res)
+}
+
+const getExtractingColumns = (columns: string | string[] | undefined) => {
+  if (typeof columns === 'string') return [columns]
+  if (Array.isArray(columns)) return columns
 }
 
 export default withSentry(handler)
