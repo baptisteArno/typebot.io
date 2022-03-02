@@ -9,7 +9,7 @@ export const SetVariableContent = ({ step }: { step: SetVariableStep }) => {
     typebot?.variables.find(byId(step.options.variableId))?.name ?? ''
   const expression = step.options.expressionToEvaluate ?? ''
   return (
-    <Text color={'gray.500'}>
+    <Text color={'gray.500'} isTruncated>
       {variableName === '' && expression === ''
         ? 'Click to edit...'
         : `${variableName} ${expression ? `= ${expression}` : ``}`}

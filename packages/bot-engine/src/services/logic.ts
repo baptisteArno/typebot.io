@@ -11,7 +11,7 @@ import {
 } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 import { sanitizeUrl } from './utils'
-import { isMathFormula, evaluateExpression, parseVariables } from './variable'
+import { evaluateExpression, parseVariables } from './variable'
 
 type EdgeId = string
 
@@ -38,9 +38,9 @@ const executeSetVariable = (
   if (!step.options?.variableId || !step.options.expressionToEvaluate)
     return step.outgoingEdgeId
   const expression = step.options.expressionToEvaluate
-  const evaluatedExpression = isMathFormula(expression)
-    ? evaluateExpression(parseVariables(variables)(expression))
-    : expression
+  const evaluatedExpression = evaluateExpression(
+    parseVariables(variables)(expression)
+  )
   updateVariableValue(step.options.variableId, evaluatedExpression)
   return step.outgoingEdgeId
 }
