@@ -110,6 +110,7 @@ const moveStepToBlock = (
   typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, {
     ...step,
     blockId,
+    outgoingEdgeId: undefined,
   })
 
 export { stepsAction, createStepDraft }
