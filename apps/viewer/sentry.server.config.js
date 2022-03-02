@@ -9,5 +9,6 @@ Sentry.init({
   ignoreErrors: [
     'ResizeObserver loop limit exceeded',
     'ResizeObserver loop completed with undelivered notifications.',
+    'ResizeObserver is not defined',
   ],
 })

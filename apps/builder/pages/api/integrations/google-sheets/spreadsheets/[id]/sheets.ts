@@ -4,7 +4,7 @@ import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { isDefined, methodNotAllowed } from 'utils'
 import { getSession } from 'next-auth/react'
 import { User } from 'db'
-import { withSentry } from '@sentry/nextjs'
+import { withSentry, setUser } from '@sentry/nextjs'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
@@ -13,6 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ message: 'Not authenticated' })
 
   const user = session.user as User
+  setUser({ email: user.email ?? undefined, id: user.id })
   if (req.method === 'GET') {
     const credentialsId = req.query.credentialsId.toString()
 
