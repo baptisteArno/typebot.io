@@ -192,7 +192,7 @@ const ChatChunks = ({
   return (
     <>
       <div className="flex">
-        {hostAvatar.isEnabled && (
+        {hostAvatar.isEnabled && bubbles.length > 0 && (
           <AvatarSideContainer
             ref={avatarSideContainerRef}
             hostAvatarSrc={hostAvatar.src}
