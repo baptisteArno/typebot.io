@@ -1,4 +1,12 @@
-import { TypingEmulation } from 'models'
+import {
+  BubbleStep,
+  BubbleStepType,
+  InputStep,
+  InputStepType,
+  Step,
+  TypingEmulation,
+} from 'models'
+import { isBubbleStep, isInputStep } from 'utils'
 
 export const computeTypingTimeout = (
   bubbleContent: string,
@@ -13,4 +21,13 @@ export const computeTypingTimeout = (
   if (typingTimeout > typingSettings.maxDelay * 1000)
     typingTimeout = typingSettings.maxDelay * 1000
   return typingTimeout
+}
+
+export const getLastChatStepType = (
+  steps: Step[]
+): BubbleStepType | InputStepType | undefined => {
+  const displayedSteps = steps.filter(
+    (s) => isBubbleStep(s) || isInputStep(s)
+  ) as (BubbleStep | InputStep)[]
+  return displayedSteps.pop()?.type
 }

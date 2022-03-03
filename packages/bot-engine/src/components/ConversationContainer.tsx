@@ -75,10 +75,12 @@ export const ConversationContainer = ({
 
   const autoScrollToBottom = () => {
     if (!scrollableContainer.current) return
-    scroll.scrollToBottom({
-      duration: 500,
-      container: scrollableContainer.current,
-    })
+    setTimeout(() => {
+      scroll.scrollToBottom({
+        duration: 500,
+        container: scrollableContainer.current,
+      })
+    }, 1)
   }
 
   return (

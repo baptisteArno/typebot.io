@@ -35,7 +35,7 @@ test.describe.parallel('Image bubble step', () => {
       await expect(page.locator('img')).toHaveAttribute(
         'src',
         new RegExp(
-          `https://s3.eu-west-3.amazonaws.com/typebot/typebots/${typebotId}/avatar.jpg`,
+          `http://localhost:9000/typebot/public/typebots/${typebotId}/avatar.jpg`,
           'gm'
         )
       )

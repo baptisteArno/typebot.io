@@ -90,15 +90,16 @@ export const deleteEdgeDraft = (
 ) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId))
   if (edgeIndex === -1) return
-  deleteOutgoingEdgeIdProps(typebot, edgeIndex)
+  deleteOutgoingEdgeIdProps(typebot, edgeId)
   typebot.edges.splice(edgeIndex, 1)
 }
 
 const deleteOutgoingEdgeIdProps = (
   typebot: WritableDraft<Typebot>,
-  edgeIndex: number
+  edgeId: string
 ) => {
-  const edge = typebot.edges[edgeIndex]
+  const edge = typebot.edges.find(byId(edgeId))
+  if (!edge) return
   const fromBlockIndex = typebot.blocks.findIndex(byId(edge.from.blockId))
   const fromStepIndex = typebot.blocks[fromBlockIndex].steps.findIndex(
     byId(edge.from.stepId)
@@ -122,16 +123,16 @@ export const cleanUpEdgeDraft = (
   typebot: WritableDraft<Typebot>,
   deletedNodeId: string
 ) => {
-  typebot.edges = typebot.edges.filter(
-    (edge) =>
-      ![
-        edge.from.blockId,
-        edge.from.stepId,
-        edge.from.itemId,
-        edge.to.blockId,
-        edge.to.stepId,
-      ].includes(deletedNodeId)
+  const edgesToDelete = typebot.edges.filter((edge) =>
+    [
+      edge.from.blockId,
+      edge.from.stepId,
+      edge.from.itemId,
+      edge.to.blockId,
+      edge.to.stepId,
+    ].includes(deletedNodeId)
   )
+  edgesToDelete.forEach((edge) => deleteEdgeDraft(typebot, edge.id))
 }
 
 const removeExistingEdge = (

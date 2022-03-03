@@ -4,7 +4,9 @@ import { AvatarSideContainer } from './AvatarSideContainer'
 import { useTypebot } from '../../contexts/TypebotContext'
 import {
   isBubbleStep,
+  isBubbleStepType,
   isChoiceInput,
+  isDefined,
   isInputStep,
   isIntegrationStep,
   isLogicStep,
@@ -17,6 +19,7 @@ import { useAnswers } from 'contexts/AnswersContext'
 import { BubbleStep, InputStep, Step } from 'models'
 import { HostBubble } from './ChatStep/bubbles/HostBubble'
 import { InputChatStep } from './ChatStep/InputChatStep'
+import { getLastChatStepType } from 'services/chat'
 
 type ChatBlockProps = {
   steps: Step[]
@@ -24,6 +27,8 @@ type ChatBlockProps = {
   onScroll: () => void
   onBlockEnd: (edgeId?: string) => void
 }
+
+type ChatDisplayChunk = { bubbles: BubbleStep[]; input?: InputStep }
 
 export const ChatBlock = ({
   steps,
@@ -40,30 +45,52 @@ export const ChatBlock = ({
     onNewLog,
   } = useTypebot()
   const { resultValues } = useAnswers()
-  const [displayedSteps, setDisplayedSteps] = useState<Step[]>([])
-  const bubbleSteps = displayedSteps.filter((step) =>
-    isBubbleStep(step)
-  ) as BubbleStep[]
-  const inputSteps = displayedSteps.filter((step) =>
-    isInputStep(step)
-  ) as InputStep[]
-  const avatarSideContainerRef = useRef<any>()
+  const [processedSteps, setProcessedSteps] = useState<Step[]>([])
+  const [displayedChunks, setDisplayedChunks] = useState<ChatDisplayChunk[]>([])
+
+  const insertStepInStack = (nextStep: Step) => {
+    setProcessedSteps([...processedSteps, nextStep])
+    if (isBubbleStep(nextStep)) {
+      const lastStepType = getLastChatStepType(processedSteps)
+      lastStepType && isBubbleStepType(lastStepType)
+        ? setDisplayedChunks(
+            displayedChunks.map((c, idx) =>
+              idx === displayedChunks.length - 1
+                ? { bubbles: [...c.bubbles, nextStep] }
+                : c
+            )
+          )
+        : setDisplayedChunks([...displayedChunks, { bubbles: [nextStep] }])
+    }
+    if (isInputStep(nextStep)) {
+      return displayedChunks.length === 0 ||
+        isDefined(displayedChunks[displayedChunks.length - 1].input)
+        ? setDisplayedChunks([
+            ...displayedChunks,
+            { bubbles: [], input: nextStep },
+          ])
+        : setDisplayedChunks(
+            displayedChunks.map((c, idx) =>
+              idx === displayedChunks.length - 1 ? { ...c, input: nextStep } : c
+            )
+          )
+    }
+  }
 
   useEffect(() => {
     const nextStep = steps[startStepIndex]
-    if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
+    if (nextStep) insertStepInStack(nextStep)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    avatarSideContainerRef.current?.refreshTopOffset()
     onScroll()
     onNewStepDisplayed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayedSteps])
+  }, [processedSteps])
 
   const onNewStepDisplayed = async () => {
-    const currentStep = [...displayedSteps].pop()
+    const currentStep = [...processedSteps].pop()
     if (!currentStep) return
     if (isLogicStep(currentStep)) {
       const nextEdgeId = executeLogic(
@@ -95,13 +122,12 @@ export const ChatBlock = ({
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
     onScroll()
-    const currentStep = [...displayedSteps].pop()
+    const currentStep = [...processedSteps].pop()
     if (currentStep) {
       if (isRetry && stepCanBeRetried(currentStep))
-        return setDisplayedSteps([
-          ...displayedSteps,
-          parseRetryStep(currentStep, typebot.variables, createEdge),
-        ])
+        return insertStepInStack(
+          parseRetryStep(currentStep, typebot.variables, createEdge)
+        )
       if (
         isInputStep(currentStep) &&
         currentStep.options?.variableId &&
@@ -118,11 +144,11 @@ export const ChatBlock = ({
         if (nextEdgeId) return onBlockEnd(nextEdgeId)
       }
 
-      if (currentStep?.outgoingEdgeId || displayedSteps.length === steps.length)
+      if (currentStep?.outgoingEdgeId || processedSteps.length === steps.length)
         return onBlockEnd(currentStep.outgoingEdgeId)
     }
-    const nextStep = steps[displayedSteps.length]
-    if (nextStep) setDisplayedSteps([...displayedSteps, nextStep])
+    const nextStep = steps[processedSteps.length]
+    if (nextStep) insertStepInStack(nextStep)
   }
 
   const avatarSrc = typebot.theme.chat.hostAvatar?.url
@@ -130,46 +156,75 @@ export const ChatBlock = ({
   return (
     <div className="flex w-full">
       <div className="flex flex-col w-full min-w-0">
-        <div className="flex">
-          {bubbleSteps.length > 0 &&
-            (typebot.theme.chat.hostAvatar?.isEnabled ?? true) && (
-              <AvatarSideContainer
-                ref={avatarSideContainerRef}
-                hostAvatarSrc={
-                  avatarSrc && parseVariables(typebot.variables)(avatarSrc)
-                }
-              />
-            )}
-          <TransitionGroup>
-            {bubbleSteps.map((step) => (
-              <CSSTransition
-                key={step.id}
-                classNames="bubble"
-                timeout={500}
-                unmountOnExit
-              >
-                <HostBubble step={step} onTransitionEnd={displayNextStep} />
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </div>
+        {displayedChunks.map((chunk, idx) => (
+          <ChatChunks
+            key={idx}
+            displayChunk={chunk}
+            hostAvatar={{
+              isEnabled: typebot.theme.chat.hostAvatar?.isEnabled ?? true,
+              src: avatarSrc && parseVariables(typebot.variables)(avatarSrc),
+            }}
+            onDisplayNextStep={displayNextStep}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+type Props = {
+  displayChunk: ChatDisplayChunk
+  hostAvatar: { isEnabled: boolean; src?: string }
+  onDisplayNextStep: (answerContent?: string, isRetry?: boolean) => void
+}
+const ChatChunks = ({
+  displayChunk: { bubbles, input },
+  hostAvatar,
+  onDisplayNextStep,
+}: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const avatarSideContainerRef = useRef<any>()
+
+  useEffect(() => {
+    avatarSideContainerRef.current?.refreshTopOffset()
+  })
+
+  return (
+    <>
+      <div className="flex">
+        {hostAvatar.isEnabled && (
+          <AvatarSideContainer
+            ref={avatarSideContainerRef}
+            hostAvatarSrc={hostAvatar.src}
+          />
+        )}
         <TransitionGroup>
-          {inputSteps.map((step) => (
+          {bubbles.map((step) => (
             <CSSTransition
               key={step.id}
               classNames="bubble"
               timeout={500}
               unmountOnExit
             >
-              <InputChatStep
-                step={step}
-                onTransitionEnd={displayNextStep}
-                hasAvatar={typebot.theme.chat.hostAvatar?.isEnabled ?? true}
-              />
+              <HostBubble step={step} onTransitionEnd={onDisplayNextStep} />
             </CSSTransition>
           ))}
         </TransitionGroup>
       </div>
-    </div>
+      <CSSTransition
+        classNames="bubble"
+        timeout={500}
+        unmountOnExit
+        in={isDefined(input)}
+      >
+        {input && (
+          <InputChatStep
+            step={input}
+            onTransitionEnd={onDisplayNextStep}
+            hasAvatar={hostAvatar.isEnabled}
+          />
+        )}
+      </CSSTransition>
+    </>
   )
 }
