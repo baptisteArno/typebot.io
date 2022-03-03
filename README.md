@@ -1,44 +1,24 @@
-<div align="center">
-  <h1>Typebot</h1>
-  <a href="https://github.com/prisma/prisma/blob/main/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
-  <a href="https://github.com/baptisteArno/typebot-io/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-blue" /></a>
-  <br />
-  <a href="https://docs.typebot.io">Quickstart</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.typebot.io/">Website</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://docs.typebot.io">Docs</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.typebot.io/blog">Blog</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://twitter.com/Typebot_io">Twitter</a>
-  <br />
-  <hr />
-</div>
+<p>
+  <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
+    <img src="./.github/readme-illustration-light.png" alt="Typebot illustration">
+  </a>
+  <a href="https://typebot.io/#gh-dark-mode-only" target="_blank">
+    <img src="./.github/readme-illustration-dark.png" alt="Typebot illustration">
+  </a>
+</p>
 
-## Development (localhost)
+Typebot is an open-source alternative to Landbot. It allows you to create conversational apps (Lead qualification, Product launch, User onboarding, Customer support), embed them anywhere on your web apps, and collect results in real-time.
 
-1. Clone the repo
+## Getting started with Typebot
 
-   ```sh
-   git clone https://github.com/Typebot-io/typebot.git
-   ```
+The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). It takes 1 minute to try out the builder for free. You'll have high availability, backups, security, and maintenance all managed for you by me, @baptisteArno, Typebot's founder.
 
-2. Install packages with yarn
+That's also the best way to support my work, open-source software, and you'll get great service!
 
-   ```sh
-   yarn set version berry
-   yarn install
-   ```
+## Self-hosting
 
-3. Copy `.env.example` to `.env`
-4. Configure environment variables in the `.env` file.
-5. Run the applications
+Interested in self-hosting Typebot on your server? Take a look at our self-hosting installation instructions.
 
-   ```sh
-   yarn dx
-   ```
+## Technology
 
-## Deployment
-
-TO-DO
+Typebot is a monorepo powered by TurboRepo. Apps are built with state-of-the-art web technologies. These include Typescript, Next.js, Prisma (PostgresDB), Chakra UI, TailwindCSS.
