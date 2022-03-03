@@ -26,6 +26,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     targetEndpoints,
     blocksCoordinates,
     graphPosition,
+    isReadOnly,
   } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -87,6 +88,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
   const handleMouseLeave = () => setIsMouseOver(false)
 
   const handleEdgeClick = (e: React.MouseEvent) => {
+    if (isReadOnly) return
     setEdgeMenuPosition({ x: e.clientX, y: e.clientY })
     onOpen()
   }
