@@ -10,5 +10,6 @@ Sentry.init({
     'ResizeObserver loop limit exceeded',
     'ResizeObserver loop completed with undelivered notifications.',
     'ResizeObserver is not defined',
+    "Can't find variable: ResizeObserver",
   ],
 })

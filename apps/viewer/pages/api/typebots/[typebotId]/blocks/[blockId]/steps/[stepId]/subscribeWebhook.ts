@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ?.steps.find(byId(stepId)) as WebhookStep
       await prisma.webhook.update({
         where: { id: webhookId },
-        data: { url, body: '{{state}}' },
+        data: { url, body: '{{state}}', method: 'POST' },
       })
 
       return res.send({ message: 'success' })
