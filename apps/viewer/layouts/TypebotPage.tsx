@@ -27,9 +27,11 @@ export const TypebotPage = ({
   const [resultId, setResultId] = useState<string | undefined>()
 
   // Workaround for react-frame-component bug (https://github.com/ryanseddon/react-frame-component/pull/207)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    if (showTypebot) return
     setShowTypebot(true)
-  }, [])
+  })
 
   const initializeResult = async (variables: VariableWithValue[]) => {
     const resultIdFromSession = getExistingResultFromSession()
