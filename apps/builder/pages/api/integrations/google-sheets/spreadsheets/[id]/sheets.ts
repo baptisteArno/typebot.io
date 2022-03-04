@@ -19,9 +19,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const spreadsheetId = req.query.id.toString()
     const doc = new GoogleSpreadsheet(spreadsheetId)
-    doc.useOAuth2Client(
-      await getAuthenticatedGoogleClient(user.id, credentialsId)
-    )
+    const client = await getAuthenticatedGoogleClient(user.id, credentialsId)
+    if (!client)
+      return res
+        .status(404)
+        .send({ message: "Couldn't find credentials in database" })
+    doc.useOAuth2Client(client)
     await doc.loadInfo()
     return res.send({
       sheets: (

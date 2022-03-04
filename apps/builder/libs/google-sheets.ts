@@ -13,10 +13,11 @@ export const oauth2Client = new OAuth2Client(
 export const getAuthenticatedGoogleClient = async (
   userId: string,
   credentialsId: string
-): Promise<OAuth2Client> => {
+): Promise<OAuth2Client | undefined> => {
   const credentials = (await prisma.credentials.findFirst({
     where: { id: credentialsId, ownerId: userId },
-  })) as CredentialsFromDb
+  })) as CredentialsFromDb | undefined
+  if (!credentials) return
   const data = decrypt(
     credentials.data,
     credentials.iv

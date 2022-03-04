@@ -23,7 +23,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
     if (!extractingColumns) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
-    doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))
+    const client = await getAuthenticatedGoogleClient(credentialsId)
+    if (!client)
+      return res.status(404).send("Couldn't find credentials in database")
+    doc.useOAuth2Client(client)
     await doc.loadInfo()
     const sheet = doc.sheetsById[sheetId]
     const rows = await sheet.getRows()
@@ -48,7 +51,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string }
     }
     const doc = new GoogleSpreadsheet(spreadsheetId)
-    doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))
+    const auth = await getAuthenticatedGoogleClient(credentialsId)
+    if (!auth)
+      return res.status(404).send("Couldn't find credentials in database")
+    doc.useOAuth2Client(auth)
     await doc.loadInfo()
     const sheet = doc.sheetsById[sheetId]
     await sheet.addRow(values)
@@ -65,7 +71,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string }
     }
     const doc = new GoogleSpreadsheet(spreadsheetId)
-    doc.useOAuth2Client(await getAuthenticatedGoogleClient(credentialsId))
+    const auth = await getAuthenticatedGoogleClient(credentialsId)
+    if (!auth)
+      return res.status(404).send("Couldn't find credentials in database")
+    doc.useOAuth2Client(auth)
     await doc.loadInfo()
     const sheet = doc.sheetsById[sheetId]
     const rows = await sheet.getRows()

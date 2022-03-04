@@ -12,14 +12,14 @@ export const oauth2Client = new OAuth2Client(
 
 export const getAuthenticatedGoogleClient = async (
   credentialsId: string
-): Promise<OAuth2Client> => {
+): Promise<OAuth2Client | undefined> => {
   const credentials = (await prisma.credentials.findFirst({
     where: { id: credentialsId },
   })) as CredentialsFromDb
-  const data = decrypt(
-    credentials.data,
-    credentials.iv
-  ) as GoogleSheetsCredentialsData
+  const data = decrypt(credentials.data, credentials.iv) as
+    | GoogleSheetsCredentialsData
+    | undefined
+  if (!data) return
   oauth2Client.setCredentials(data)
   oauth2Client.on('tokens', updateTokens(credentialsId))
   return oauth2Client

@@ -1,4 +1,4 @@
-import { Input } from '@chakra-ui/react'
+import { Input, Tooltip, useToast } from '@chakra-ui/react'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { useMemo } from 'react'
 import { useSpreadsheets } from 'services/integrations'
@@ -14,7 +14,14 @@ export const SpreadsheetsDropdown = ({
   spreadsheetId,
   onSelectSpreadsheetId,
 }: Props) => {
-  const { spreadsheets, isLoading } = useSpreadsheets({ credentialsId })
+  const toast = useToast({
+    position: 'top-right',
+    status: 'error',
+  })
+  const { spreadsheets, isLoading } = useSpreadsheets({
+    credentialsId,
+    onError: (e) => toast({ title: e.name, description: e.message }),
+  })
   const currentSpreadsheet = useMemo(
     () => spreadsheets?.find((s) => s.id === spreadsheetId),
     [spreadsheetId, spreadsheets]
@@ -25,7 +32,14 @@ export const SpreadsheetsDropdown = ({
     if (id) onSelectSpreadsheetId(id)
   }
   if (isLoading) return <Input value="Loading..." isDisabled />
-  if (!spreadsheets) return <Input value="No spreadsheets found" isDisabled />
+  if (!spreadsheets || spreadsheets.length === 0)
+    return (
+      <Tooltip label="No spreadsheets found, make sure you have at least one spreadsheet that contains a header row">
+        <span>
+          <Input value="No spreadsheets found" isDisabled />
+        </span>
+      </Tooltip>
+    )
   return (
     <SearchableDropdown
       selectedItem={currentSpreadsheet?.name}

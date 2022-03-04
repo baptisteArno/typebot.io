@@ -17,6 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const credentialsId = req.query.credentialsId.toString()
     const auth = await getAuthenticatedGoogleClient(user.id, credentialsId)
+    if (!auth)
+      return res.status(404).send("Couldn't find credentials in database")
     const response = await drive({
       version: 'v3',
       auth,
