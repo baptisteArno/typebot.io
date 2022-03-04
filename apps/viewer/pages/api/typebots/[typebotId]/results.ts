@@ -14,14 +14,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
     const limit = Number(req.query.limit)
-    console.log(limit, typebot.id)
     const results = (await prisma.result.findMany({
       where: { typebotId: typebot.id },
       orderBy: { createdAt: 'desc' },
       take: limit,
       include: { answers: true },
     })) as unknown as ResultWithAnswers[]
-    console.log(results)
     return res.send({
       results: results.map(parseAnswers(typebot as unknown as Typebot)),
     })
