@@ -1,18 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { isDefined, methodNotAllowed } from 'utils'
-import { getSession } from 'next-auth/react'
-import { User } from 'db'
+import { isDefined, methodNotAllowed, notAuthenticated } from 'utils'
 import { withSentry, setUser } from '@sentry/nextjs'
+import { getAuthenticatedUser } from 'services/api/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req })
+  const user = await getAuthenticatedUser(req)
+  if (!user) return notAuthenticated(res)
 
-  if (!session?.user)
-    return res.status(401).json({ message: 'Not authenticated' })
-
-  const user = session.user as User
   setUser({ email: user.email ?? undefined, id: user.id })
   if (req.method === 'GET') {
     const credentialsId = req.query.credentialsId.toString()

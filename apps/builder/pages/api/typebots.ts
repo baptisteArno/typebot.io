@@ -1,17 +1,14 @@
 import { withSentry } from '@sentry/nextjs'
-import { Prisma, User } from 'db'
+import { Prisma } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
+import { getAuthenticatedUser } from 'services/api/utils'
 import { parseNewTypebot } from 'services/typebots/typebots'
-import { methodNotAllowed } from 'utils'
+import { methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req })
-  if (!session?.user)
-    return res.status(401).json({ message: 'Not authenticated' })
-  const user = session.user as User
-  if (!user.id) return res.status(401).json({ message: 'Not authenticated' })
+  const user = await getAuthenticatedUser(req)
+  if (!user) return notAuthenticated(res)
   try {
     if (req.method === 'GET') {
       const folderId = req.query.folderId ? req.query.folderId.toString() : null

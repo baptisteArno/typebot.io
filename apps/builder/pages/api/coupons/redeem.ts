@@ -1,17 +1,14 @@
 import { withSentry } from '@sentry/nextjs'
-import { Prisma, User } from 'db'
+import { Prisma } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
+import { getAuthenticatedUser } from 'services/api/utils'
+import { notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const session = await getSession({ req })
-
-    if (!session?.user)
-      return res.status(401).json({ message: 'Not authenticated' })
-
-    const user = session.user as User
+    const user = await getAuthenticatedUser(req)
+    if (!user) return notAuthenticated(res)
     const { code } =
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const coupon = await prisma.coupon.findFirst({

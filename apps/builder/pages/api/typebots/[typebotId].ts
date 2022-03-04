@@ -2,19 +2,16 @@ import { withSentry } from '@sentry/nextjs'
 import { CollaborationType, Prisma, User } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
-import { methodNotAllowed } from 'utils'
+import { getAuthenticatedUser } from 'services/api/utils'
+import { methodNotAllowed, notAuthenticated } from 'utils'
 
 const adminEmail = 'contact@baptiste-arnaud.fr'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req })
-
-  if (!session?.user)
-    return res.status(401).json({ message: 'Not authenticated' })
+  const user = await getAuthenticatedUser(req)
+  if (!user) return notAuthenticated(res)
 
   const typebotId = req.query.typebotId.toString()
-  const user = session.user as User
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
       where: parseWhereFilter(typebotId, user, 'read'),

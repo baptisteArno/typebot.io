@@ -1,16 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
-import { Prisma, User } from 'db'
+import { Prisma } from 'db'
 import prisma from 'libs/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
 import { CredentialsType } from 'models'
-import { encrypt } from 'utils'
+import { encrypt, notAuthenticated } from 'utils'
 import { oauth2Client } from 'libs/google-sheets'
 import { withSentry } from '@sentry/nextjs'
+import { getAuthenticatedUser } from 'services/api/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req })
+  const user = await getAuthenticatedUser(req)
+  if (!user) return notAuthenticated(res)
   const { redirectUrl, stepId } = JSON.parse(
     Buffer.from(req.query.state.toString(), 'base64').toString()
   )
@@ -18,9 +19,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const code = req.query.code.toString()
     if (!code)
       return res.status(400).send({ message: "Bad request, couldn't get code" })
-    if (!session?.user)
-      return res.status(401).json({ message: 'Not authenticated' })
-    const user = session.user as User
     const { tokens } = await oauth2Client.getToken(code)
     if (!tokens?.access_token) {
       console.error('Error getting oAuth tokens:')
