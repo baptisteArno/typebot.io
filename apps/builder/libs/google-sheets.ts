@@ -1,5 +1,5 @@
 import { Credentials as CredentialsFromDb } from 'db'
-import { OAuth2Client } from 'google-auth-library'
+import { OAuth2Client, Credentials } from 'google-auth-library'
 import { GoogleSheetsCredentialsData } from 'models'
 import { decrypt, encrypt } from 'utils'
 import prisma from './prisma'
@@ -22,16 +22,21 @@ export const getAuthenticatedGoogleClient = async (
     credentials.data,
     credentials.iv
   ) as GoogleSheetsCredentialsData
+
   oauth2Client.setCredentials(data)
-  oauth2Client.on('tokens', updateTokens(credentialsId))
+  oauth2Client.on('tokens', updateTokens(credentialsId, data))
   return oauth2Client
 }
 
 const updateTokens =
-  (credentialsId: string) =>
-  async (credentials: GoogleSheetsCredentialsData) => {
-    const { encryptedData, iv } = encrypt(credentials)
-    return prisma.credentials.update({
+  (credentialsId: string, existingCredentials: GoogleSheetsCredentialsData) =>
+  async (credentials: Credentials) => {
+    const newCredentials = {
+      refresh_token: existingCredentials.refresh_token,
+      ...credentials,
+    }
+    const { encryptedData, iv } = encrypt(newCredentials)
+    await prisma.credentials.update({
       where: { id: credentialsId },
       data: { data: encryptedData, iv },
     })
