@@ -1,5 +1,6 @@
 import { useTypebot } from 'contexts/TypebotContext'
 import { useUser } from 'contexts/UserContext'
+import { Plan } from 'db'
 import React, { useEffect } from 'react'
 import { initBubble } from 'typebot-js'
 
@@ -19,10 +20,25 @@ export const SupportBubble = () => {
         Email: user?.email ?? undefined,
         'Typebot ID': typebot?.id,
         'Avatar URL': user?.image ?? undefined,
+        Plan: planToReadable(user?.plan),
       },
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, typebot])
 
   return <></>
+}
+
+const planToReadable = (plan?: Plan) => {
+  if (!plan) return
+  switch (plan) {
+    case 'FREE':
+      return 'Free'
+    case 'LIFETIME':
+      return 'Lifetime'
+    case 'OFFERED':
+      return 'Offered'
+    case 'PRO':
+      return 'Pro'
+  }
 }
