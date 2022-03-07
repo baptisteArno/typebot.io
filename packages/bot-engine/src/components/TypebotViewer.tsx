@@ -7,6 +7,8 @@ import style from '../assets/style.css'
 //@ts-ignore
 import phoneNumberInputStyle from 'react-phone-number-input/style.css'
 //@ts-ignore
+import importantStyles from '../assets/importantStyles.css'
+//@ts-ignore
 import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
@@ -67,6 +69,7 @@ export const TypebotViewer = ({
           {phoneSyle}
           {style}
           {typebot.theme?.customCss}
+          {importantStyles}
         </style>
       }
       name="Typebot viewer"
@@ -107,7 +110,7 @@ export const TypebotViewer = ({
                 href={'https://www.typebot.io/?utm_source=litebadge'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="fixed py-1 px-2 bg-white z-50 rounded shadow-md"
+                className="fixed py-1 px-2 bg-white z-50 rounded shadow-md lite-badge"
                 style={{ bottom: '20px' }}
               >
                 Made with <span className="text-blue-500">Typebot</span>.
