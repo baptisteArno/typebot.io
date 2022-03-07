@@ -62,7 +62,12 @@
           "id": "soSmiE7zyb3WF77GxFxAjYX",
           "blockId": "8XnDM1QsqPms4LQHh8q3Jo",
           "type": "Webhook",
-          "options": { "responseVariableMapping": [], "variablesForTest": [] },
+          "options": {
+            "responseVariableMapping": [],
+            "variablesForTest": [],
+            "isAdvancedConfig": false,
+            "isCustomBody": false
+          },
           "webhookId": "webhook1"
         }
       ]

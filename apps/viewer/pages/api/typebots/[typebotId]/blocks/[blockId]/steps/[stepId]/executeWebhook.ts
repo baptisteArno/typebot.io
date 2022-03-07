@@ -1,11 +1,13 @@
 import prisma from 'libs/prisma'
 import {
+  defaultWebhookAttributes,
   KeyValue,
   PublicTypebot,
   ResultValues,
   Typebot,
   Variable,
   Webhook,
+  WebhookOptions,
   WebhookResponse,
   WebhookStep,
 } from 'models'
@@ -35,14 +37,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id: typebotId },
       include: { webhooks: true },
     })) as unknown as Typebot & { webhooks: Webhook[] }
-    const step = typebot.blocks.find(byId(blockId))?.steps.find(byId(stepId))
-    const webhook = typebot.webhooks.find(byId((step as WebhookStep).webhookId))
+    const step = typebot.blocks
+      .find(byId(blockId))
+      ?.steps.find(byId(stepId)) as WebhookStep
+    const webhook = typebot.webhooks.find(byId(step.webhookId))
     if (!webhook)
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
+    const preparedWebhook = prepareWebhookAttributes(webhook, step.options)
     const result = await executeWebhook(typebot)(
-      webhook,
+      preparedWebhook,
       variables,
       blockId,
       resultValues
@@ -50,6 +55,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send(result)
   }
   return methodNotAllowed(res)
+}
+
+const prepareWebhookAttributes = (
+  webhook: Webhook,
+  options: WebhookOptions
+): Webhook => {
+  if (options.isAdvancedConfig === false) {
+    return { ...webhook, body: '{{state}}', ...defaultWebhookAttributes }
+  } else if (options.isCustomBody === false) {
+    return { ...webhook, body: '{{state}}' }
+  }
+  return webhook
 }
 
 const executeWebhook =

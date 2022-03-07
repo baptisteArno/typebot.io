@@ -32,7 +32,7 @@ export const defaultWebhookAttributes: Omit<
   Webhook,
   'id' | 'body' | 'url' | 'typebotId'
 > = {
-  method: HttpMethod.GET,
+  method: HttpMethod.POST,
   headers: [],
   queryParams: [],
 }

@@ -2,11 +2,31 @@ import test, { expect, Page } from '@playwright/test'
 import { createWebhook, importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { generate } from 'short-uuid'
-
-const typebotId = generate()
+import { HttpMethod } from 'models'
 
 test.describe('Webhook step', () => {
-  test('its configuration should work', async ({ page }) => {
+  test('easy configuration should work', async ({ page }) => {
+    const typebotId = generate()
+    await importTypebotInDatabase(
+      path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
+      {
+        id: typebotId,
+      }
+    )
+    await createWebhook(typebotId, { method: HttpMethod.POST })
+    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.click('text=Configure...')
+    await page.fill(
+      'input[placeholder="Your Webhook URL..."]',
+      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
+    )
+    await page.click('text=Test the request')
+    await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
+      '"statusCode": 200'
+    )
+  })
+  test('Generated body should work', async ({ page }) => {
+    const typebotId = generate()
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
       {
@@ -17,12 +37,38 @@ test.describe('Webhook step', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
+    await page.fill(
+      'input[placeholder="Your Webhook URL..."]',
+      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
+    )
+    await page.click('text=Advanced configuration')
     await page.click('text=GET')
     await page.click('text=POST')
+
+    await page.click('text=Test the request')
+    await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
+      '"message": "This is a sample result, it has been generated ⬇️"'
+    )
+  })
+  test('its configuration should work', async ({ page }) => {
+    const typebotId = generate()
+    await importTypebotInDatabase(
+      path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
+      {
+        id: typebotId,
+      }
+    )
+    await createWebhook(typebotId)
+
+    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Your Webhook URL..."]',
       `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook`
     )
+    await page.click('text=Advanced configuration')
+    await page.click('text=GET')
+    await page.click('text=POST')
 
     await page.click('text=Query params')
     await page.click('text=Add a param')
@@ -45,6 +91,7 @@ test.describe('Webhook step', () => {
     )
 
     await page.click('text=Body')
+    await page.click('text=Custom body')
     await page.fill('div[role="textbox"]', '{ "customField": "{{secret 4}}" }')
 
     await page.click('text=Variable values for test')

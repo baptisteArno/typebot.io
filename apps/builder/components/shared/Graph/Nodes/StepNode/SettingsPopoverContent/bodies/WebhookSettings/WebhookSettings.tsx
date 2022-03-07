@@ -6,10 +6,11 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  Flex,
+  HStack,
   Spinner,
   Stack,
   useToast,
+  Text,
 } from '@chakra-ui/react'
 import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -36,6 +37,7 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId } from 'utils'
 import { deepEqual } from 'fast-equals'
+import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 
 type Props = {
   step: WebhookStep
@@ -111,6 +113,12 @@ export const WebhookSettings = ({
     responseVariableMapping: ResponseVariableMapping[]
   ) => onOptionsChange({ ...options, responseVariableMapping })
 
+  const handleAdvancedConfigChange = (isAdvancedConfig: boolean) =>
+    onOptionsChange({ ...options, isAdvancedConfig })
+
+  const handleBodyFormStateChange = (isCustomBody: boolean) =>
+    onOptionsChange({ ...options, isCustomBody })
+
   const handleTestRequestClick = async () => {
     if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
@@ -139,107 +147,126 @@ export const WebhookSettings = ({
   if (!localWebhook) return <Spinner />
   return (
     <Stack spacing={4}>
+      <InputWithVariableButton
+        placeholder="Your Webhook URL..."
+        initialValue={localWebhook.url ?? ''}
+        onChange={handleUrlChange}
+      />
+      <SwitchWithLabel
+        id={'easy-config'}
+        label="Advanced configuration"
+        initialValue={options.isAdvancedConfig ?? true}
+        onCheckChange={handleAdvancedConfigChange}
+      />
+      {(options.isAdvancedConfig ?? true) && (
+        <Stack>
+          <HStack justify="space-between">
+            <Text>Method:</Text>
+            <DropdownList<HttpMethod>
+              currentItem={localWebhook.method as HttpMethod}
+              onItemSelect={handleMethodChange}
+              items={Object.values(HttpMethod)}
+            />
+          </HStack>
+          <Accordion allowToggle allowMultiple>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                Query params
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <TableList<KeyValue>
+                  initialItems={localWebhook.queryParams}
+                  onItemsChange={handleQueryParamsChange}
+                  Item={QueryParamsInputs}
+                  addLabel="Add a param"
+                />
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                Headers
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <TableList<KeyValue>
+                  initialItems={localWebhook.headers}
+                  onItemsChange={handleHeadersChange}
+                  Item={HeadersInputs}
+                  addLabel="Add a value"
+                />
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                Body
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <SwitchWithLabel
+                  id={'custom-body'}
+                  label="Custom body"
+                  initialValue={options.isCustomBody ?? true}
+                  onCheckChange={handleBodyFormStateChange}
+                />
+                {(options.isCustomBody ?? true) && (
+                  <CodeEditor
+                    value={localWebhook.body ?? ''}
+                    lang="json"
+                    onChange={handleBodyChange}
+                  />
+                )}
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                Variable values for test
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <TableList<VariableForTest>
+                  initialItems={
+                    options?.variablesForTest ?? { byId: {}, allIds: [] }
+                  }
+                  onItemsChange={handleVariablesChange}
+                  Item={VariableForTestInputs}
+                  addLabel="Add an entry"
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </Stack>
+      )}
       <Stack>
-        <Flex>
-          <DropdownList<HttpMethod>
-            currentItem={localWebhook.method as HttpMethod}
-            onItemSelect={handleMethodChange}
-            items={Object.values(HttpMethod)}
-          />
-        </Flex>
-        <InputWithVariableButton
-          placeholder="Your Webhook URL..."
-          initialValue={localWebhook.url ?? ''}
-          onChange={handleUrlChange}
-        />
+        <Button
+          onClick={handleTestRequestClick}
+          colorScheme="blue"
+          isLoading={isTestResponseLoading}
+        >
+          Test the request
+        </Button>
+        {testResponse && (
+          <CodeEditor isReadOnly lang="json" value={testResponse} />
+        )}
+        {(testResponse || options?.responseVariableMapping) && (
+          <Accordion allowToggle allowMultiple>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                Save in variables
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <TableList<ResponseVariableMapping>
+                  initialItems={options.responseVariableMapping}
+                  onItemsChange={handleResponseMappingChange}
+                  Item={ResponseMappingInputs}
+                  addLabel="Add an entry"
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        )}
       </Stack>
-      <Accordion allowToggle allowMultiple>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Query params
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
-            <TableList<KeyValue>
-              initialItems={localWebhook.queryParams}
-              onItemsChange={handleQueryParamsChange}
-              Item={QueryParamsInputs}
-              addLabel="Add a param"
-            />
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Headers
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
-            <TableList<KeyValue>
-              initialItems={localWebhook.headers}
-              onItemsChange={handleHeadersChange}
-              Item={HeadersInputs}
-              addLabel="Add a value"
-            />
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Body
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
-            <CodeEditor
-              value={localWebhook.body ?? ''}
-              lang="json"
-              onChange={handleBodyChange}
-            />
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Variable values for test
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
-            <TableList<VariableForTest>
-              initialItems={
-                options?.variablesForTest ?? { byId: {}, allIds: [] }
-              }
-              onItemsChange={handleVariablesChange}
-              Item={VariableForTestInputs}
-              addLabel="Add an entry"
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-      <Button
-        onClick={handleTestRequestClick}
-        colorScheme="blue"
-        isLoading={isTestResponseLoading}
-      >
-        Test the request
-      </Button>
-      {testResponse && (
-        <CodeEditor isReadOnly lang="json" value={testResponse} />
-      )}
-      {(testResponse || options?.responseVariableMapping) && (
-        <Accordion allowToggle allowMultiple>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Save in variables
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel pb={4} as={Stack} spacing="6">
-              <TableList<ResponseVariableMapping>
-                initialItems={options.responseVariableMapping}
-                onItemsChange={handleResponseMappingChange}
-                Item={ResponseMappingInputs}
-                addLabel="Add an entry"
-              />
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      )}
     </Stack>
   )
 }

@@ -116,6 +116,8 @@ export type ResponseVariableMapping = {
 export type WebhookOptions = {
   variablesForTest: VariableForTest[]
   responseVariableMapping: ResponseVariableMapping[]
+  isAdvancedConfig?: boolean
+  isCustomBody?: boolean
 }
 
 export type VariableForTest = {
@@ -131,6 +133,8 @@ export const defaultGoogleAnalyticsOptions: GoogleAnalyticsOptions = {}
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   responseVariableMapping: [],
   variablesForTest: [],
+  isAdvancedConfig: false,
+  isCustomBody: false,
 }
 
 export const defaultSendEmailOptions: SendEmailOptions = {

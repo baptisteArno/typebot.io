@@ -5,6 +5,7 @@ import {
   PublicTypebot,
   Step,
   Typebot,
+  Webhook,
 } from 'models'
 import { CollaborationType, DashboardFolder, PrismaClient, User } from 'db'
 import { readFileSync } from 'fs'
@@ -19,6 +20,7 @@ export const teardownDatabase = async () => {
   await prisma.user.deleteMany({
     where: { id: { in: ['freeUser', 'proUser'] } },
   })
+  await prisma.webhook.deleteMany()
   await prisma.credentials.deleteMany(ownerFilter)
   await prisma.dashboardFolder.deleteMany(ownerFilter)
   return prisma.typebot.deleteMany(ownerFilter)
@@ -37,8 +39,17 @@ export const createUsers = () =>
     ],
   })
 
-export const createWebhook = (typebotId: string) =>
-  prisma.webhook.create({ data: { method: 'GET', typebotId, id: 'webhook1' } })
+export const createWebhook = async (
+  typebotId: string,
+  webhookProps?: Partial<Webhook>
+) => {
+  try {
+    await prisma.webhook.delete({ where: { id: 'webhook1' } })
+  } catch {}
+  return prisma.webhook.create({
+    data: { method: 'GET', typebotId, id: 'webhook1', ...webhookProps },
+  })
+}
 
 export const createCollaboration = (
   userId: string,
