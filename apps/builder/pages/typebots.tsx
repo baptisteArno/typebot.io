@@ -10,10 +10,11 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
 import { Banner } from 'components/dashboard/annoucements/AnnoucementBanner'
+import { NextPageContext } from 'next/types'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { query, isReady, push } = useRouter()
+  const { query, isReady } = useRouter()
   const { user } = useUser()
   const toast = useToast({
     position: 'top-right',
@@ -35,14 +36,7 @@ const DashboardPage = () => {
     if (!isReady) return
     const couponCode = query.coupon?.toString()
     const stripeStatus = query.stripe?.toString()
-    const sleekplan = query.sleekplan?.toString()
-    const redirectPath = query.redirectPath as string | undefined
 
-    if (sleekplan) {
-      setIsLoading(true)
-      push('/api/auth/sleekplan')
-      return
-    }
     if (stripeStatus === 'success')
       toast({
         title: 'Typebot Pro',
@@ -54,7 +48,6 @@ const DashboardPage = () => {
         location.href = '/typebots'
       })
     }
-    if (redirectPath) push(redirectPath)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady])
 
@@ -82,6 +75,18 @@ const DashboardPage = () => {
       </TypebotDndContext>
     </Stack>
   )
+}
+
+export async function getServerSideProps(context: NextPageContext) {
+  const redirectPath = context.query.redirectPath?.toString()
+  return redirectPath
+    ? {
+        redirect: {
+          permanent: false,
+          destination: redirectPath,
+        },
+      }
+    : { props: {} }
 }
 
 export default DashboardPage

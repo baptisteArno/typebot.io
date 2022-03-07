@@ -20,7 +20,7 @@ import { SupportBubble } from 'components/shared/SupportBubble'
 
 if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   useRouterProgressBar()
   const { query } = useRouter()
 
@@ -28,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={customTheme}>
       <KBarProvider actions={actions}>
-        <SessionProvider>
+        <SessionProvider session={session}>
           <UserContext>
             {typebotId ? (
               <TypebotContext typebotId={typebotId}>
