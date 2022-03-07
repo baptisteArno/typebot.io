@@ -31,14 +31,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         | undefined) ?? {}
     if (!email || !type) return badRequest(res)
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: email.toLowerCase() },
       select: { id: true },
     })
     if (existingUser)
       await prisma.collaboratorsOnTypebots.create({
         data: { type, typebotId, userId: existingUser.id },
       })
-    else await prisma.invitation.create({ data: { email, type, typebotId } })
+    else
+      await prisma.invitation.create({
+        data: { email: email.toLowerCase(), type, typebotId },
+      })
     if (isNotDefined(process.env.NEXT_PUBLIC_E2E_TEST))
       await sendEmailNotification({
         to: email,

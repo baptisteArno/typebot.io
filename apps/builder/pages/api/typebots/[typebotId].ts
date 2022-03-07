@@ -91,8 +91,7 @@ const parseWhereFilter = (
       collaborators: {
         some: {
           userId: user.id,
-          type:
-            type === 'write' ? CollaborationType.WRITE : CollaborationType.READ,
+          type: type === 'write' ? CollaborationType.WRITE : undefined,
         },
       },
     },
