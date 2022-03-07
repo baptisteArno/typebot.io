@@ -51,6 +51,7 @@
     "htmlparser2": "^7.2.0",
     "immer": "^9.0.12",
     "js-video-url-parser": "^0.5.1",
+    "jsonwebtoken": "^8.5.1",
     "kbar": "^0.1.0-beta.27",
     "micro": "^9.3.4",
     "micro-cors": "^0.1.1",
@@ -84,6 +85,7 @@
   "devDependencies": {
     "@playwright/test": "^1.19.0",
     "@types/google-spreadsheet": "^3.1.5",
+    "@types/jsonwebtoken": "8.5.1",
     "@types/micro-cors": "^0.1.2",
     "@types/minio": "^7.0.12",
     "@types/node": "^17.0.17",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Flex, Link, Stack, Text } from '@chakra-ui/layout'
+import { Link, Stack, Text, VStack } from '@chakra-ui/layout'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
@@ -35,8 +35,14 @@ const DashboardPage = () => {
     if (!isReady) return
     const couponCode = query.coupon?.toString()
     const stripeStatus = query.stripe?.toString()
+    const sleekplan = query.sleekplan?.toString()
     const redirectPath = query.redirectPath as string | undefined
 
+    if (sleekplan) {
+      setIsLoading(true)
+      push('/api/auth/sleekplan')
+      return
+    }
     if (stripeStatus === 'success')
       toast({
         title: 'Typebot Pro',
@@ -66,9 +72,10 @@ const DashboardPage = () => {
       <DashboardHeader />
       <TypebotDndContext>
         {isLoading ? (
-          <Flex w="full" justifyContent="center" pt="10">
+          <VStack w="full" justifyContent="center" pt="10" spacing={6}>
+            <Text>You are being redirected...</Text>
             <Spinner />
-          </Flex>
+          </VStack>
         ) : (
           <FolderContent folder={null} />
         )}
