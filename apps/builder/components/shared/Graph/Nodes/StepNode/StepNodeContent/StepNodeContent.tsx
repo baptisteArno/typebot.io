@@ -78,6 +78,16 @@ export const StepNodeContent = ({ step, indices }: Props) => {
         />
       )
     }
+    case LogicStepType.CODE: {
+      return (
+        <ConfigureContent
+          label={
+            step.options?.content ? `Run ${step.options?.name}` : undefined
+          }
+        />
+      )
+    }
+
     case IntegrationStepType.GOOGLE_SHEETS: {
       return (
         <ConfigureContent

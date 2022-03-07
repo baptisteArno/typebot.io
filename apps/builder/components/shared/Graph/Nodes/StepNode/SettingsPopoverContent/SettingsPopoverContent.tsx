@@ -27,6 +27,7 @@ import {
   DateInputSettingsBody,
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
+import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
@@ -172,6 +173,14 @@ export const StepSettings = ({
     case LogicStepType.REDIRECT: {
       return (
         <RedirectSettings
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case LogicStepType.CODE: {
+      return (
+        <CodeSettings
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

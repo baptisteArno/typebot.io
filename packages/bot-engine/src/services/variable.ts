@@ -1,8 +1,6 @@
 import { Variable } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 
-const safeEval = eval
-
 export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)
 
@@ -22,7 +20,7 @@ export const parseVariables =
 
 export const evaluateExpression = (str: string) => {
   try {
-    const evaluatedResult = safeEval(str)
+    const evaluatedResult = Function('return' + str)()
     return isNotDefined(evaluatedResult) ? '' : evaluatedResult.toString()
   } catch (err) {
     console.log(err)

@@ -4,13 +4,11 @@ import {
   IntegrationStepType,
   Item,
   LogicStepOptions,
-  RedirectStep,
-  SetVariableStep,
 } from '.'
 import { BubbleStep, BubbleStepType } from './bubble'
 import { InputStep, InputStepType } from './inputs'
 import { IntegrationStep } from './integration'
-import { LogicStep, LogicStepType } from './logic'
+import { ConditionStep, LogicStep, LogicStepType } from './logic'
 
 export type Step =
   | StartStep
@@ -36,14 +34,12 @@ export type DraggableStepType =
 
 export type StepWithOptions =
   | InputStep
-  | SetVariableStep
-  | RedirectStep
+  | Exclude<LogicStep, ConditionStep>
   | IntegrationStep
 
 export type StepWithOptionsType =
   | InputStepType
-  | LogicStepType.REDIRECT
-  | LogicStepType.SET_VARIABLE
+  | Exclude<LogicStepType, LogicStepType.CONDITION>
   | IntegrationStepType
 
 export type StepOptions =

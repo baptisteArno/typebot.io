@@ -1,15 +1,23 @@
 import { ItemType, StepBase } from '.'
 import { ItemBase } from './item'
 
-export type LogicStep = SetVariableStep | ConditionStep | RedirectStep
+export type LogicStep =
+  | SetVariableStep
+  | ConditionStep
+  | RedirectStep
+  | CodeStep
+
+export type LogicStepOptions =
+  | SetVariableOptions
+  | RedirectOptions
+  | CodeOptions
 
 export enum LogicStepType {
   SET_VARIABLE = 'Set variable',
   CONDITION = 'Condition',
   REDIRECT = 'Redirect',
+  CODE = 'Code',
 }
-
-export type LogicStepOptions = SetVariableOptions | RedirectOptions
 
 export type SetVariableStep = StepBase & {
   type: LogicStepType.SET_VARIABLE
@@ -29,6 +37,11 @@ export type ConditionItem = ItemBase & {
 export type RedirectStep = StepBase & {
   type: LogicStepType.REDIRECT
   options: RedirectOptions
+}
+
+export type CodeStep = StepBase & {
+  type: LogicStepType.CODE
+  options: CodeOptions
 }
 
 export enum LogicalOperator {
@@ -67,6 +80,11 @@ export type RedirectOptions = {
   isNewTab: boolean
 }
 
+export type CodeOptions = {
+  name: string
+  content?: string
+}
+
 export const defaultSetVariablesOptions: SetVariableOptions = {}
 
 export const defaultConditionContent: ConditionContent = {
@@ -75,3 +93,5 @@ export const defaultConditionContent: ConditionContent = {
 }
 
 export const defaultRedirectOptions: RedirectOptions = { isNewTab: false }
+
+export const defaultCodeOptions: CodeOptions = { name: 'Code snippet' }

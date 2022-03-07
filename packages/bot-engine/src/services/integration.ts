@@ -21,8 +21,6 @@ import { sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
 import { parseVariables, parseVariablesInObject } from './variable'
 
-const safeEval = eval
-
 type IntegrationContext = {
   apiHost: string
   typebotId: string
@@ -222,7 +220,9 @@ const executeWebhook = async (
   })
   step.options.responseVariableMapping.forEach((varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return
-    const value = safeEval(`(${JSON.stringify(data)}).${varMapping?.bodyPath}`)
+    const value = Function(
+      `return (${JSON.stringify(data)}).${varMapping?.bodyPath}`
+    )()
     updateVariableValue(varMapping.variableId, value)
   })
   return step.outgoingEdgeId

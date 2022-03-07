@@ -37,6 +37,12 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Condition</Text>
     case LogicStepType.REDIRECT:
       return <Text>Redirect</Text>
+    case LogicStepType.CODE:
+      return (
+        <Tooltip label="Run Javascript code">
+          <Text>Code</Text>
+        </Tooltip>
+      )
     case IntegrationStepType.GOOGLE_SHEETS:
       return (
         <Tooltip label="Google Sheets">

@@ -8,6 +8,7 @@ import {
   SetVariableStep,
   RedirectStep,
   Comparison,
+  CodeStep,
 } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 import { sanitizeUrl } from './utils'
@@ -27,6 +28,8 @@ export const executeLogic = (
       return executeCondition(step, variables)
     case LogicStepType.REDIRECT:
       return executeRedirect(step, variables)
+    case LogicStepType.CODE:
+      return executeCode(step)
   }
 }
 
@@ -95,5 +98,11 @@ const executeRedirect = (
     sanitizeUrl(parseVariables(variables)(step.options?.url)),
     step.options.isNewTab ? '_blank' : '_self'
   )
+  return step.outgoingEdgeId
+}
+
+const executeCode = (step: CodeStep) => {
+  if (!step.options.content) return
+  Function(step.options.content)()
   return step.outgoingEdgeId
 }

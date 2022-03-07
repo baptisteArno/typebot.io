@@ -3,6 +3,7 @@ import {
   CalendarIcon,
   ChatIcon,
   CheckSquareIcon,
+  CodeIcon,
   EditIcon,
   EmailIcon,
   ExternalLinkIcon,
@@ -57,6 +58,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <FilterIcon color="purple.500" {...props} />
     case LogicStepType.REDIRECT:
       return <ExternalLinkIcon color="purple.500" {...props} />
+    case LogicStepType.CODE:
+      return <CodeIcon color="purple.500" {...props} />
     case IntegrationStepType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationStepType.GOOGLE_ANALYTICS:

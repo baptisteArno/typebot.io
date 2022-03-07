@@ -27,6 +27,7 @@ import {
   defaultRedirectOptions,
   defaultGoogleSheetsOptions,
   defaultGoogleAnalyticsOptions,
+  defaultCodeOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
   Item,
@@ -226,6 +227,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultSetVariablesOptions
     case LogicStepType.REDIRECT:
       return defaultRedirectOptions
+    case LogicStepType.CODE:
+      return defaultCodeOptions
     case IntegrationStepType.GOOGLE_SHEETS:
       return defaultGoogleSheetsOptions
     case IntegrationStepType.GOOGLE_ANALYTICS:
