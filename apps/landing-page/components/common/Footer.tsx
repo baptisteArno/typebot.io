@@ -8,7 +8,7 @@ const facebookGroupUrl = 'https://www.facebook.com/groups/typebot'
 const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
 const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
 export const contactUrl = 'https://bot.typebot.io/landing-page-bubble-en'
-export const roadmapLink = 'https://feedback.typebot.io/roadmap'
+export const roadmapLink = 'https://app.typebot.io/feedback'
 
 export const Footer = () => {
   return (
