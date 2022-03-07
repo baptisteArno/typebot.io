@@ -1,5 +1,5 @@
 import { Variable } from 'models'
-import { isDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 
 const safeEval = eval
 
@@ -23,8 +23,9 @@ export const parseVariables =
 export const evaluateExpression = (str: string) => {
   try {
     const evaluatedResult = safeEval(str)
-    return evaluatedResult.toString()
+    return isNotDefined(evaluatedResult) ? '' : evaluatedResult.toString()
   } catch (err) {
+    console.log(err)
     return str
   }
 }
