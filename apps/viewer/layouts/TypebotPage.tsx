@@ -44,7 +44,8 @@ export const TypebotPage = ({
       if (error) setError(error)
       if (result) {
         setResultId(result.id)
-        setResultInSession(result.id)
+        if (typebot.settings.general.isNewResultOnRefreshEnabled !== true)
+          setResultInSession(result.id)
       }
     }
   }

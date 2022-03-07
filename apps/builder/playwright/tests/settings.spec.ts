@@ -23,6 +23,10 @@ test.describe.parallel('Settings page', () => {
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
       ).toBeHidden()
+      await page.click('text=Create new session on page refresh')
+      await expect(
+        page.locator('input[type="checkbox"] >> nth=-1')
+      ).toHaveAttribute('checked', '')
     })
   })
 

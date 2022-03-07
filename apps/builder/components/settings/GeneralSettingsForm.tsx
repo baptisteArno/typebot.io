@@ -7,6 +7,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { UpgradeModal } from 'components/shared/modals/UpgradeModal.'
+import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { useUser } from 'contexts/UserContext'
 import { GeneralSettings } from 'models'
 import React from 'react'
@@ -27,9 +28,18 @@ export const GeneralSettingsForm = ({
   const handleSwitchChange = () => {
     if (generalSettings?.isBrandingEnabled && isUserFreePlan) return
     onGeneralSettingsChange({
+      ...generalSettings,
       isBrandingEnabled: !generalSettings?.isBrandingEnabled,
     })
   }
+
+  const handleNewResultOnRefreshChange = (
+    isNewResultOnRefreshEnabled: boolean
+  ) =>
+    onGeneralSettingsChange({
+      ...generalSettings,
+      isNewResultOnRefreshEnabled,
+    })
 
   return (
     <Stack spacing={6}>
@@ -49,6 +59,12 @@ export const GeneralSettingsForm = ({
           onChange={handleSwitchChange}
         />
       </Flex>
+      <SwitchWithLabel
+        id="new-result"
+        label="Create new session on page refresh"
+        initialValue={generalSettings.isNewResultOnRefreshEnabled ?? false}
+        onCheckChange={handleNewResultOnRefreshChange}
+      />
     </Stack>
   )
 }
