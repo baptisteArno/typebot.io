@@ -4,7 +4,7 @@ export const DefaultAvatar = (): JSX.Element => {
   return (
     <figure
       className={
-        'flex justify-center items-center rounded-full text-white w-6 h-6 text-sm relative xs:w-full xs:h-full xs:text-xl'
+        'flex justify-center items-center rounded-full text-white w-6 h-6 text-sm relative xs:w-10 xs:h-10 xs:text-xl'
       }
       data-testid="default-avatar"
     >
