@@ -24,10 +24,7 @@ export type BlocksActions = {
   deleteBlock: (blockIndex: number) => void
 }
 
-const blocksActions = (
-  typebot: Typebot,
-  setTypebot: SetTypebot
-): BlocksActions => ({
+const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
   createBlock: ({
     id,
     step,
@@ -37,8 +34,8 @@ const blocksActions = (
     id: string
     step: DraggableStep | DraggableStepType
     indices: StepIndices
-  }) => {
-    setTypebot(
+  }) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newBlock: Block = {
           id,
@@ -49,17 +46,17 @@ const blocksActions = (
         typebot.blocks.push(newBlock)
         createStepDraft(typebot, step, newBlock.id, indices)
       })
-    )
-  },
+    ),
   updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) =>
-    setTypebot(
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = typebot.blocks[blockIndex]
         typebot.blocks[blockIndex] = { ...block, ...updates }
       })
     ),
+
   deleteBlock: (blockIndex: number) =>
-    setTypebot(
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteBlockDraft(typebot)(blockIndex)
       })

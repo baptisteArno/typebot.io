@@ -25,8 +25,9 @@ export const NumberInputSettingsBody = ({
     onOptionsChange(removeUndefinedFields({ ...options, max }))
   const handleStepChange = (step?: number) =>
     onOptionsChange(removeUndefinedFields({ ...options, step }))
-  const handleVariableChange = (variable?: Variable) =>
+  const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id })
+  }
 
   return (
     <Stack spacing={4}>

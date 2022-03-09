@@ -11,7 +11,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return notAuthenticated(res)
   try {
     if (req.method === 'GET') {
-      const folderId = req.query.folderId ? req.query.folderId.toString() : null
+      const folderId = req.query.allFolders
+        ? undefined
+        : req.query.folderId
+        ? req.query.folderId.toString()
+        : null
+      const typebotIds = req.query.typebotIds as string[] | undefined
+      if (typebotIds) {
+        const typebots = await prisma.typebot.findMany({
+          where: {
+            OR: [
+              {
+                ownerId: user.id,
+                id: { in: typebotIds },
+              },
+              {
+                id: { in: typebotIds },
+                collaborators: {
+                  some: {
+                    userId: user.id,
+                  },
+                },
+              },
+            ],
+          },
+          orderBy: { createdAt: 'desc' },
+          select: { name: true, id: true, blocks: true },
+        })
+        return res.send({ typebots })
+      }
       const typebots = await prisma.typebot.findMany({
         where: {
           ownerId: user.id,

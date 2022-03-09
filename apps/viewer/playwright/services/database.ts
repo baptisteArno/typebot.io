@@ -13,9 +13,11 @@ const prisma = new PrismaClient()
 export const teardownDatabase = async () => {
   try {
     await prisma.user.delete({
-      where: { id: 'user' },
+      where: { id: 'proUser' },
     })
-  } catch {}
+  } catch (err) {
+    console.error(err)
+  }
   return
 }
 
@@ -24,7 +26,7 @@ export const setupDatabase = () => createUser()
 export const createUser = () =>
   prisma.user.create({
     data: {
-      id: 'user',
+      id: 'proUser',
       email: 'user@email.com',
       name: 'User',
       apiToken: 'userToken',
@@ -73,13 +75,13 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  ownerId: 'user',
+  ownerId: 'proUser',
   theme: defaultTheme,
   settings: defaultSettings,
   publicId: partialTypebot.id + '-public',
   publishedTypebotId: null,
-  updatedAt: new Date(),
-  createdAt: new Date(),
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
   customDomain: null,
   variables: [{ id: 'var1', name: 'var1' }],
   ...partialTypebot,
@@ -135,7 +137,7 @@ export const importTypebotInDatabase = async (
   const typebot: any = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
-    ownerId: 'user',
+    ownerId: 'proUser',
   }
   await prisma.typebot.create({
     data: typebot,

@@ -1,3 +1,5 @@
+import { LinkedTypebot } from 'contexts/TypebotContext'
+import { Log } from 'db'
 import {
   LogicStep,
   LogicStepType,
@@ -9,34 +11,52 @@ import {
   RedirectStep,
   Comparison,
   CodeStep,
+  TypebotLinkStep,
+  PublicTypebot,
+  Typebot,
+  Edge,
 } from 'models'
-import { isDefined, isNotDefined } from 'utils'
+import { byId, isDefined, isNotDefined, sendRequest } from 'utils'
 import { sanitizeUrl } from './utils'
 import { evaluateExpression, parseVariables } from './variable'
 
 type EdgeId = string
 
-export const executeLogic = (
+type LogicContext = {
+  isPreview: boolean
+  apiHost: string
+  typebot: PublicTypebot
+  linkedTypebots: LinkedTypebot[]
+  updateVariableValue: (variableId: string, value: string) => void
+  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
+  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
+  createEdge: (edge: Edge) => void
+}
+
+export const executeLogic = async (
   step: LogicStep,
-  variables: Variable[],
-  updateVariableValue: (variableId: string, expression: string) => void
-): EdgeId | undefined => {
+  context: LogicContext
+): Promise<{
+  nextEdgeId?: EdgeId
+  linkedTypebot?: PublicTypebot | LinkedTypebot
+}> => {
   switch (step.type) {
     case LogicStepType.SET_VARIABLE:
-      return executeSetVariable(step, variables, updateVariableValue)
+      return { nextEdgeId: executeSetVariable(step, context) }
     case LogicStepType.CONDITION:
-      return executeCondition(step, variables)
+      return { nextEdgeId: executeCondition(step, context) }
     case LogicStepType.REDIRECT:
-      return executeRedirect(step, variables)
+      return { nextEdgeId: executeRedirect(step, context) }
     case LogicStepType.CODE:
-      return executeCode(step)
+      return { nextEdgeId: executeCode(step) }
+    case LogicStepType.TYPEBOT_LINK:
+      return await executeTypebotLink(step, context)
   }
 }
 
 const executeSetVariable = (
   step: SetVariableStep,
-  variables: Variable[],
-  updateVariableValue: (variableId: string, expression: string) => void
+  { typebot: { variables }, updateVariableValue }: LogicContext
 ): EdgeId | undefined => {
   if (!step.options?.variableId || !step.options.expressionToEvaluate)
     return step.outgoingEdgeId
@@ -50,7 +70,7 @@ const executeSetVariable = (
 
 const executeCondition = (
   step: ConditionStep,
-  variables: Variable[]
+  { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
   const { content } = step.items[0]
   const isConditionPassed =
@@ -91,7 +111,7 @@ const executeComparison =
 
 const executeRedirect = (
   step: RedirectStep,
-  variables: Variable[]
+  { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
   if (!step.options?.url) return step.outgoingEdgeId
   window.open(
@@ -105,4 +125,60 @@ const executeCode = (step: CodeStep) => {
   if (!step.options.content) return
   Function(step.options.content)()
   return step.outgoingEdgeId
+}
+
+const executeTypebotLink = async (
+  step: TypebotLinkStep,
+  context: LogicContext
+): Promise<{
+  nextEdgeId?: EdgeId
+  linkedTypebot?: PublicTypebot | LinkedTypebot
+}> => {
+  const { typebot, linkedTypebots, onNewLog, createEdge } = context
+  const linkedTypebot =
+    [typebot, ...linkedTypebots].find(byId(step.options.typebotId)) ??
+    (await fetchAndInjectTypebot(step, context))
+  if (!linkedTypebot) {
+    onNewLog({
+      status: 'error',
+      description: 'Failed to link typebot',
+      details: '',
+    })
+    return { nextEdgeId: step.outgoingEdgeId }
+  }
+  const nextBlockId =
+    step.options.blockId ??
+    linkedTypebot.blocks.find((b) => b.steps.some((s) => s.type === 'start'))
+      ?.id
+  if (!nextBlockId) return { nextEdgeId: step.outgoingEdgeId }
+  const newEdge: Edge = {
+    id: (Math.random() * 1000).toString(),
+    from: { stepId: '', blockId: '' },
+    to: {
+      blockId: nextBlockId,
+    },
+  }
+  createEdge(newEdge)
+  return {
+    nextEdgeId: newEdge.id,
+    linkedTypebot: {
+      ...linkedTypebot,
+      edges: [...linkedTypebot.edges, newEdge],
+    },
+  }
+}
+
+const fetchAndInjectTypebot = async (
+  step: TypebotLinkStep,
+  { apiHost, injectLinkedTypebot, isPreview }: LogicContext
+): Promise<LinkedTypebot | undefined> => {
+  const { data, error } = isPreview
+    ? await sendRequest<{ typebot: Typebot }>(
+        `/api/typebots/${step.options.typebotId}`
+      )
+    : await sendRequest<{ typebot: PublicTypebot }>(
+        `${apiHost}/api/publicTypebots/${step.options.typebotId}`
+      )
+  if (!data || error) return
+  return injectLinkedTypebot(data.typebot)
 }

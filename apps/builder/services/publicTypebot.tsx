@@ -1,4 +1,4 @@
-import { PublicTypebot, Typebot } from 'models'
+import { Block, PublicTypebot, Typebot, Variable } from 'models'
 import shortId from 'short-uuid'
 import { HStack, Text } from '@chakra-ui/react'
 import { CalendarIcon, CodeIcon } from 'assets/icons'
@@ -18,8 +18,8 @@ export const parseTypebotToPublicTypebot = (
   theme: typebot.theme,
   variables: typebot.variables,
   customDomain: typebot.customDomain,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 })
 
 export const parsePublicTypebotToTypebot = (
@@ -64,10 +64,11 @@ type HeaderCell = {
   accessor: string
 }
 
-export const parseSubmissionsColumns = (
-  typebot: PublicTypebot
-): HeaderCell[] => {
-  const parsedBlocks = parseBlocksHeaders(typebot)
+export const parseSubmissionsColumns = (blocksAndVariables: {
+  blocks: Block[]
+  variables: Variable[]
+}): HeaderCell[] => {
+  const parsedBlocks = parseBlocksHeaders(blocksAndVariables)
   return [
     {
       Header: (
@@ -79,13 +80,19 @@ export const parseSubmissionsColumns = (
       accessor: 'Submitted at',
     },
     ...parsedBlocks,
-    ...parseVariablesHeaders(typebot, parsedBlocks),
+    ...parseVariablesHeaders(blocksAndVariables.variables, parsedBlocks),
   ]
 }
 
-const parseBlocksHeaders = (typebot: PublicTypebot) =>
-  typebot.blocks
-    .filter((block) => typebot && block.steps.some((step) => isInputStep(step)))
+const parseBlocksHeaders = ({
+  blocks,
+  variables,
+}: {
+  blocks: Block[]
+  variables: Variable[]
+}) =>
+  blocks
+    .filter((block) => block.steps.some((step) => isInputStep(step)))
     .reduce<HeaderCell[]>((headers, block) => {
       const inputStep = block.steps.find((step) => isInputStep(step))
       if (
@@ -94,13 +101,13 @@ const parseBlocksHeaders = (typebot: PublicTypebot) =>
         headers.find(
           (h) =>
             h.accessor ===
-            typebot.variables.find(byId(inputStep.options.variableId))?.name
+            variables.find(byId(inputStep.options.variableId))?.name
         )
       )
         return headers
       const matchedVariableName =
         inputStep.options.variableId &&
-        typebot.variables.find(byId(inputStep.options.variableId))?.name
+        variables.find(byId(inputStep.options.variableId))?.name
       return [
         ...headers,
         {
@@ -123,13 +130,13 @@ const parseBlocksHeaders = (typebot: PublicTypebot) =>
     }, [])
 
 const parseVariablesHeaders = (
-  typebot: PublicTypebot,
+  variables: Variable[],
   parsedBlocks: {
     Header: JSX.Element
     accessor: string
   }[]
 ) =>
-  typebot.variables.reduce<HeaderCell[]>((headers, v) => {
+  variables.reduce<HeaderCell[]>((headers, v) => {
     if (parsedBlocks.find((b) => b.accessor === v.name)) return headers
     return [
       ...headers,

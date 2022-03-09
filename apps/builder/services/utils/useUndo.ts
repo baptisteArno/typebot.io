@@ -8,12 +8,14 @@ enum ActionType {
   Undo = 'UNDO',
   Redo = 'REDO',
   Set = 'SET',
+  Flush = 'FLUSH',
 }
 
 export interface Actions<T> {
-  set: (newPresent: T) => void
+  set: (newPresent: T | ((current: T) => T)) => void
   undo: () => void
   redo: () => void
+  flush: () => void
   canUndo: boolean
   canRedo: boolean
   presentRef: React.MutableRefObject<T>
@@ -85,7 +87,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       // console.log(
       //   diff(
       //     JSON.parse(JSON.stringify(newPresent)),
-      //     JSON.parse(JSON.stringify(present))
+      //     present ? JSON.parse(JSON.stringify(present)) : {}
       //   )
       // )
       return {
@@ -94,6 +96,9 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
         future: [],
       }
     }
+
+    case ActionType.Flush:
+      return { ...initialState, present }
   }
 }
 
@@ -106,22 +111,33 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
 
   const canUndo = state.past.length !== 0
   const canRedo = state.future.length !== 0
+
   const undo = useCallback(() => {
     if (canUndo) {
       dispatch({ type: ActionType.Undo })
     }
   }, [canUndo])
+
   const redo = useCallback(() => {
     if (canRedo) {
       dispatch({ type: ActionType.Redo })
     }
   }, [canRedo])
-  const set = useCallback((newPresent: T) => {
-    presentRef.current = newPresent
-    dispatch({ type: ActionType.Set, newPresent })
+
+  const set = useCallback((newPresent: T | ((current: T) => T)) => {
+    const updatedTypebot =
+      'id' in newPresent
+        ? newPresent
+        : (newPresent as (current: T) => T)(presentRef.current)
+    presentRef.current = updatedTypebot
+    dispatch({ type: ActionType.Set, newPresent: updatedTypebot })
   }, [])
 
-  return [state, { set, undo, redo, canUndo, canRedo, presentRef }]
+  const flush = useCallback(() => {
+    dispatch({ type: ActionType.Flush })
+  }, [])
+
+  return [state, { set, undo, redo, flush, canUndo, canRedo, presentRef }]
 }
 
 export default useUndo

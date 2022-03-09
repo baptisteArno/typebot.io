@@ -106,10 +106,12 @@ export const TypebotHeader = () => {
         <HStack alignItems="center">
           <IconButton
             as={NextChakraLink}
-            aria-label="Back"
+            aria-label="Navigate back"
             icon={<ChevronLeftIcon fontSize={30} />}
             href={
-              typebot?.folderId
+              router.query.parentId
+                ? `/typebots/${router.query.parentId}/edit`
+                : typebot?.folderId
                 ? `/typebots/folders/${typebot.folderId}`
                 : '/typebots'
             }

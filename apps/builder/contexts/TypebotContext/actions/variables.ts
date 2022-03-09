@@ -12,35 +12,30 @@ export type VariablesActions = {
   deleteVariable: (variableId: string) => void
 }
 
-export const variablesAction = (
-  typebot: Typebot,
-  setTypebot: SetTypebot
-): VariablesActions => ({
-  createVariable: (newVariable: Variable) => {
-    setTypebot(
+export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
+  createVariable: (newVariable: Variable) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         typebot.variables.push(newVariable)
       })
-    )
-  },
+    ),
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>
   ) =>
-    setTypebot(
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         typebot.variables.map((v) =>
           v.id === variableId ? { ...v, ...updates } : v
         )
       })
     ),
-  deleteVariable: (itemId: string) => {
-    setTypebot(
+  deleteVariable: (itemId: string) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteVariableDraft(typebot, itemId)
       })
-    )
-  },
+    ),
 })
 
 export const deleteVariableDraft = (

@@ -1,15 +1,22 @@
 import { Editable, EditablePreview, EditableInput } from '@chakra-ui/editable'
 import { Tooltip } from '@chakra-ui/tooltip'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 type EditableProps = {
   name: string
   onNewName: (newName: string) => void
 }
 export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
+  const [localName, setLocalName] = useState(name)
+
+  useEffect(() => {
+    if (name !== localName) setLocalName(name)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name])
+
   return (
     <Tooltip label="Rename">
-      <Editable defaultValue={name} onSubmit={onNewName}>
+      <Editable value={localName} onChange={setLocalName} onSubmit={onNewName}>
         <EditablePreview
           isTruncated
           cursor="pointer"

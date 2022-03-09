@@ -1,5 +1,12 @@
 import { useToast } from '@chakra-ui/react'
-import { PublicTypebot, Settings, Theme, Typebot, Webhook } from 'models'
+import {
+  LogicStepType,
+  PublicTypebot,
+  Settings,
+  Theme,
+  Typebot,
+  Webhook,
+} from 'models'
 import { Router, useRouter } from 'next/router'
 import {
   createContext,
@@ -23,7 +30,7 @@ import {
 } from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined, isNotDefined } from 'utils'
+import { isDefined, isNotDefined, omit } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -36,6 +43,7 @@ import { generate } from 'short-uuid'
 import { deepEqual } from 'fast-equals'
 import { User } from 'db'
 import { saveWebhook } from 'services/webhook'
+import { stringify } from 'qs'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -46,11 +54,14 @@ type UpdateTypebotPayload = Partial<{
   publishedTypebotId: string
 }>
 
-export type SetTypebot = (typebot: Typebot | undefined) => void
+export type SetTypebot = (
+  newPresent: Typebot | ((current: Typebot) => Typebot)
+) => void
 const typebotContext = createContext<
   {
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
+    linkedTypebots?: Typebot[]
     owner?: User
     webhooks: Webhook[]
     isReadOnly?: boolean
@@ -118,6 +129,7 @@ export const TypebotContext = ({
     {
       redo,
       undo,
+      flush,
       canRedo,
       canUndo,
       set: setLocalTypebot,
@@ -125,10 +137,50 @@ export const TypebotContext = ({
     },
   ] = useUndo<Typebot | undefined>(undefined)
 
-  const saveTypebot = async () => {
-    const typebotToSave = currentTypebotRef.current
-    if (deepEqual(typebot, typebotToSave)) return
-    if (!typebotToSave) return
+  const linkedTypebotIds = localTypebot?.blocks
+    .flatMap((b) => b.steps)
+    .reduce<string[]>(
+      (typebotIds, step) =>
+        step.type === LogicStepType.TYPEBOT_LINK &&
+        isDefined(step.options.typebotId)
+          ? [...typebotIds, step.options.typebotId]
+          : typebotIds,
+      []
+    )
+
+  const { typebots: linkedTypebots } = useLinkedTypebots({
+    typebotId,
+    typebotIds: linkedTypebotIds,
+    onError: (error) =>
+      toast({
+        title: 'Error while fetching linkedTypebots',
+        description: error.message,
+      }),
+  })
+
+  useEffect(() => {
+    if (!typebot || !currentTypebotRef.current) return
+    if (typebotId !== currentTypebotRef.current.id) {
+      setLocalTypebot({ ...typebot })
+      flush()
+    } else if (
+      new Date(typebot.updatedAt) >
+      new Date(currentTypebotRef.current.updatedAt)
+    ) {
+      setLocalTypebot({ ...typebot })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typebot])
+
+  const saveTypebot = async (options?: { disableMutation: boolean }) => {
+    if (!currentTypebotRef.current || !typebot) return
+    const typebotToSave = {
+      ...currentTypebotRef.current,
+      updatedAt: new Date().toISOString(),
+    }
+    if (deepEqual(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
+      return
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
     setIsSavingLoading(false)
@@ -136,7 +188,12 @@ export const TypebotContext = ({
       toast({ title: error.name, description: error.message })
       return
     }
-    mutate({ typebot: typebotToSave, webhooks: webhooks ?? [] })
+    if (!options?.disableMutation)
+      mutate({
+        typebot: typebotToSave,
+        publishedTypebot,
+        webhooks: webhooks ?? [],
+      })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
   }
 
@@ -165,9 +222,10 @@ export const TypebotContext = ({
   )
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', saveTypebot)
+    const save = () => saveTypebot({ disableMutation: true })
+    Router.events.on('routeChangeStart', save)
     return () => {
-      Router.events.off('routeChangeStart', saveTypebot)
+      Router.events.off('routeChangeStart', save)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot, publishedTypebot, webhooks])
@@ -177,10 +235,10 @@ export const TypebotContext = ({
 
   const isPublished = useMemo(
     () =>
-      isDefined(typebot) &&
+      isDefined(localTypebot) &&
       isDefined(publishedTypebot) &&
-      checkIfPublished(typebot, publishedTypebot),
-    [typebot, publishedTypebot]
+      checkIfPublished(localTypebot, publishedTypebot),
+    [localTypebot, publishedTypebot]
   )
 
   useEffect(() => {
@@ -310,6 +368,7 @@ export const TypebotContext = ({
       value={{
         typebot: localTypebot,
         publishedTypebot,
+        linkedTypebots,
         owner,
         webhooks: webhooks ?? [],
         isReadOnly,
@@ -326,11 +385,11 @@ export const TypebotContext = ({
         restorePublishedTypebot,
         updateOnBothTypebots,
         updateWebhook,
-        ...blocksActions(localTypebot as Typebot, setLocalTypebot),
-        ...stepsAction(localTypebot as Typebot, setLocalTypebot),
-        ...variablesAction(localTypebot as Typebot, setLocalTypebot),
-        ...edgesAction(localTypebot as Typebot, setLocalTypebot),
-        ...itemsAction(localTypebot as Typebot, setLocalTypebot),
+        ...blocksActions(setLocalTypebot as SetTypebot),
+        ...stepsAction(setLocalTypebot as SetTypebot),
+        ...variablesAction(setLocalTypebot as SetTypebot),
+        ...edgesAction(setLocalTypebot as SetTypebot),
+        ...itemsAction(setLocalTypebot as SetTypebot),
       }}
     >
       {children}
@@ -356,7 +415,7 @@ export const useFetchedTypebot = ({
       isReadOnly?: boolean
     },
     Error
-  >(`/api/typebots/${typebotId}`, fetcher)
+  >(`/api/typebots/${typebotId}`, fetcher, { dedupingInterval: 0 })
   if (error) onError(error)
   return {
     typebot: data?.typebot,
@@ -369,6 +428,35 @@ export const useFetchedTypebot = ({
   }
 }
 
+const useLinkedTypebots = ({
+  typebotId,
+  typebotIds,
+  onError,
+}: {
+  typebotId?: string
+  typebotIds?: string[]
+  onError: (error: Error) => void
+}) => {
+  const params = stringify({ typebotIds }, { indices: false })
+  const { data, error, mutate } = useSWR<
+    {
+      typebots: Typebot[]
+    },
+    Error
+  >(
+    typebotIds?.every((id) => typebotId === id)
+      ? undefined
+      : `/api/typebots?${params}`,
+    fetcher
+  )
+  if (error) onError(error)
+  return {
+    typebots: data?.typebots,
+    isLoading: !error && !data,
+    mutate,
+  }
+}
+
 const useAutoSave = <T,>(
   {
     handler,
@@ -376,7 +464,7 @@ const useAutoSave = <T,>(
     debounceTimeout,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: (item?: T) => Promise<any>
+    handler: () => Promise<any>
     item?: T
     debounceTimeout: number
   },
@@ -384,7 +472,7 @@ const useAutoSave = <T,>(
 ) => {
   const [debouncedItem] = useDebounce(item, debounceTimeout)
   useEffect(() => {
-    const save = () => handler(item)
+    const save = () => handler()
     document.addEventListener('visibilitychange', save)
     return () => {
       document.removeEventListener('visibilitychange', save)
@@ -392,7 +480,7 @@ const useAutoSave = <T,>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies)
   return useEffect(() => {
-    handler(item)
+    handler()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedItem])
 }

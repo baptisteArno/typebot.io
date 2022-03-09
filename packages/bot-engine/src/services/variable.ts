@@ -20,7 +20,7 @@ export const parseVariables =
 
 export const evaluateExpression = (str: string) => {
   try {
-    const evaluatedResult = Function('return' + str)()
+    const evaluatedResult = Function('return ' + str)()
     return isNotDefined(evaluatedResult) ? '' : evaluatedResult.toString()
   } catch (err) {
     console.log(err)

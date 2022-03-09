@@ -1,5 +1,6 @@
 import { IconProps } from '@chakra-ui/react'
 import {
+  BoxIcon,
   CalendarIcon,
   ChatIcon,
   CheckSquareIcon,
@@ -60,6 +61,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ExternalLinkIcon color="purple.500" {...props} />
     case LogicStepType.CODE:
       return <CodeIcon color="purple.500" {...props} />
+    case LogicStepType.TYPEBOT_LINK:
+      return <BoxIcon color="purple.500" {...props} />
     case IntegrationStepType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationStepType.GOOGLE_ANALYTICS:

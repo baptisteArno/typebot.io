@@ -21,6 +21,7 @@ import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
 import { SendEmailContent } from './contents/SendEmailContent'
+import { TypebotLinkContent } from './contents/TypebotLinkContent'
 import { ZapierContent } from './contents/ZapierContent'
 
 type Props = {
@@ -87,6 +88,8 @@ export const StepNodeContent = ({ step, indices }: Props) => {
         />
       )
     }
+    case LogicStepType.TYPEBOT_LINK:
+      return <TypebotLinkContent step={step} />
 
     case IntegrationStepType.GOOGLE_SHEETS: {
       return (

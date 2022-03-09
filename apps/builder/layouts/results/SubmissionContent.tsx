@@ -13,6 +13,7 @@ import { unparse } from 'papaparse'
 import { UnlockProPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
+import { isDefined } from 'utils'
 
 type Props = {
   typebotId: string
@@ -26,7 +27,7 @@ export const SubmissionsContent = ({
   totalHiddenResults,
   onDeleteResults,
 }: Props) => {
-  const { publishedTypebot } = useTypebot()
+  const { publishedTypebot, linkedTypebots } = useTypebot()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isExportLoading, setIsExportLoading] = useState(false)
@@ -36,6 +37,17 @@ export const SubmissionsContent = ({
     position: 'top-right',
     status: 'error',
   })
+
+  const blocksAndVariables = {
+    blocks: [
+      ...(publishedTypebot?.blocks ?? []),
+      ...(linkedTypebots?.flatMap((t) => t.blocks) ?? []),
+    ].filter(isDefined),
+    variables: [
+      ...(publishedTypebot?.variables ?? []),
+      ...(linkedTypebots?.flatMap((t) => t.variables) ?? []),
+    ].filter(isDefined),
+  }
 
   const { data, mutate, setSize, hasMore } = useResults({
     typebotId,
@@ -105,13 +117,13 @@ export const SubmissionsContent = ({
     if (!publishedTypebot) return []
     const { data, error } = await getAllResults(typebotId)
     if (error) toast({ description: error.message, title: error.name })
-    return convertResultsToTableData(publishedTypebot)(data?.results)
+    return convertResultsToTableData(blocksAndVariables)(data?.results)
   }
 
   const tableData: { [key: string]: string }[] = useMemo(
     () =>
       publishedTypebot
-        ? convertResultsToTableData(publishedTypebot)(results)
+        ? convertResultsToTableData(blocksAndVariables)(results)
         : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [results]
@@ -147,6 +159,7 @@ export const SubmissionsContent = ({
       </Flex>
 
       <SubmissionsTable
+        blocksAndVariables={blocksAndVariables}
         data={tableData}
         onNewSelection={handleNewSelection}
         onScrollToBottom={handleScrolledToBottom}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { AvatarSideContainer } from './AvatarSideContainer'
-import { useTypebot } from '../../contexts/TypebotContext'
+import { LinkedTypebot, useTypebot } from '../../contexts/TypebotContext'
 import {
   isBubbleStep,
   isBubbleStepType,
@@ -14,18 +14,21 @@ import {
 import { executeLogic } from 'services/logic'
 import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
-import { parseVariables } from 'index'
+import { parseVariables } from '../../services/variable'
 import { useAnswers } from 'contexts/AnswersContext'
-import { BubbleStep, InputStep, Step } from 'models'
+import { BubbleStep, InputStep, PublicTypebot, Step } from 'models'
 import { HostBubble } from './ChatStep/bubbles/HostBubble'
 import { InputChatStep } from './ChatStep/InputChatStep'
-import { getLastChatStepType } from 'services/chat'
+import { getLastChatStepType } from '../../services/chat'
 
 type ChatBlockProps = {
   steps: Step[]
   startStepIndex: number
   onScroll: () => void
-  onBlockEnd: (edgeId?: string) => void
+  onBlockEnd: (
+    edgeId?: string,
+    updatedTypebot?: PublicTypebot | LinkedTypebot
+  ) => void
 }
 
 type ChatDisplayChunk = { bubbles: BubbleStep[]; input?: InputStep }
@@ -43,6 +46,8 @@ export const ChatBlock = ({
     apiHost,
     isPreview,
     onNewLog,
+    injectLinkedTypebot,
+    linkedTypebots,
   } = useTypebot()
   const { resultValues } = useAnswers()
   const [processedSteps, setProcessedSteps] = useState<Step[]>([])
@@ -93,12 +98,17 @@ export const ChatBlock = ({
     const currentStep = [...processedSteps].pop()
     if (!currentStep) return
     if (isLogicStep(currentStep)) {
-      const nextEdgeId = executeLogic(
-        currentStep,
-        typebot.variables,
-        updateVariableValue
-      )
-      nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
+      const { nextEdgeId, linkedTypebot } = await executeLogic(currentStep, {
+        isPreview,
+        apiHost,
+        typebot,
+        linkedTypebots,
+        updateVariableValue,
+        injectLinkedTypebot,
+        onNewLog,
+        createEdge,
+      })
+      nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
       const nextEdgeId = await executeIntegration({
@@ -118,6 +128,7 @@ export const ChatBlock = ({
       })
       nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
     }
+    if (currentStep.type === 'start') onBlockEnd(currentStep.outgoingEdgeId)
   }
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {

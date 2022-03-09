@@ -38,7 +38,10 @@ export const VariableSearchInput = ({
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
   )
-  const [debouncedInputValue] = useDebounce(inputValue, 200)
+  const [debouncedInputValue] = useDebounce(
+    inputValue,
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+  )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []
   )
@@ -57,7 +60,7 @@ export const VariableSearchInput = ({
 
   useEffect(() => {
     const variable = variables.find((v) => v.name === debouncedInputValue)
-    if (variable) onSelectVariable(variable)
+    onSelectVariable(variable)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedInputValue])
 
@@ -66,7 +69,6 @@ export const VariableSearchInput = ({
     onOpen()
     if (e.target.value === '') {
       setFilteredItems([...variables.slice(0, 50)])
-      onSelectVariable(undefined)
       return
     }
     setFilteredItems([
@@ -80,15 +82,14 @@ export const VariableSearchInput = ({
 
   const handleVariableNameClick = (variable: Variable) => () => {
     setInputValue(variable.name)
-    onSelectVariable(variable)
     onClose()
   }
 
   const handleCreateNewVariableClick = () => {
     if (!inputValue || inputValue === '') return
     const id = generate()
-    createVariable({ id, name: inputValue })
     onSelectVariable({ id, name: inputValue })
+    createVariable({ id, name: inputValue })
     onClose()
   }
 

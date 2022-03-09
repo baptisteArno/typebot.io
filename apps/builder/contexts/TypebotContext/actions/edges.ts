@@ -11,12 +11,9 @@ export type EdgesActions = {
   deleteEdge: (edgeId: string) => void
 }
 
-export const edgesAction = (
-  typebot: Typebot,
-  setTypebot: SetTypebot
-): EdgesActions => ({
-  createEdge: (edge: Omit<Edge, 'id'>) => {
-    setTypebot(
+export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
+  createEdge: (edge: Omit<Edge, 'id'>) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newEdge = {
           ...edge,
@@ -45,10 +42,9 @@ export const edgesAction = (
               stepIndex,
             })
       })
-    )
-  },
+    ),
   updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, 'id'>>) =>
-    setTypebot(
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const currentEdge = typebot.edges[edgeIndex]
         typebot.edges[edgeIndex] = {
@@ -57,13 +53,12 @@ export const edgesAction = (
         }
       })
     ),
-  deleteEdge: (edgeId: string) => {
-    setTypebot(
+  deleteEdge: (edgeId: string) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteEdgeDraft(typebot, edgeId)
       })
-    )
-  },
+    ),
 })
 
 const addEdgeIdToStep = (

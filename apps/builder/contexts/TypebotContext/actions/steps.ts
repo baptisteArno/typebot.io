@@ -26,42 +26,36 @@ export type StepsActions = {
   deleteStep: (indices: StepIndices) => void
 }
 
-const stepsAction = (
-  typebot: Typebot,
-  setTypebot: SetTypebot
-): StepsActions => ({
+const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
   createStep: (
     blockId: string,
     step: DraggableStep | DraggableStepType,
     indices: StepIndices
-  ) => {
-    setTypebot(
+  ) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         createStepDraft(typebot, step, blockId, indices)
       })
-    )
-  },
+    ),
   updateStep: (
     { blockIndex, stepIndex }: StepIndices,
     updates: Partial<Omit<Step, 'id' | 'type'>>
   ) =>
-    setTypebot(
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
         typebot.blocks[blockIndex].steps[stepIndex] = { ...step, ...updates }
       })
     ),
-  detachStepFromBlock: (indices: StepIndices) => {
-    setTypebot(produce(typebot, removeStepFromBlock(indices)))
-  },
-  deleteStep: ({ blockIndex, stepIndex }: StepIndices) => {
-    setTypebot(
+  detachStepFromBlock: (indices: StepIndices) =>
+    setTypebot((typebot) => produce(typebot, removeStepFromBlock(indices))),
+  deleteStep: ({ blockIndex, stepIndex }: StepIndices) =>
+    setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         removeStepFromBlock({ blockIndex, stepIndex })(typebot)
         removeEmptyBlocks(typebot)
       })
-    )
-  },
+    ),
 })
 
 const removeStepFromBlock =

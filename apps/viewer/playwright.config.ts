@@ -18,6 +18,7 @@ const config: PlaywrightTestConfig = {
   use: {
     actionTimeout: 0,
     baseURL: process.env.NEXT_PUBLIC_VIEWER_HOST,
+    storageState: path.join(__dirname, 'playwright/proUser.json'),
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     locale: 'en-US',

@@ -1,4 +1,4 @@
-import { PublicTypebot, ResultWithAnswers, VariableWithValue } from 'models'
+import { Block, ResultWithAnswers, Variable, VariableWithValue } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
@@ -96,7 +96,7 @@ export const parseDateToReadable = (dateStr: string): string => {
 }
 
 export const convertResultsToTableData =
-  ({ variables, blocks }: PublicTypebot) =>
+  ({ variables, blocks }: { variables: Variable[]; blocks: Block[] }) =>
   (results: ResultWithAnswers[] | undefined) =>
     (results ?? []).map((result) => ({
       'Submitted at': parseDateToReadable(result.createdAt),

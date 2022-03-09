@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react'
+import { useDebounce } from 'use-debounce'
 
 type Props = Omit<InputProps, 'onChange' | 'value'> & {
   initialValue: string
@@ -18,16 +19,19 @@ export const DebouncedInput = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [currentValue, setCurrentValue] = useState(initialValue)
+    const [debouncedValue] = useDebounce(
+      currentValue,
+      process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    )
 
     useEffect(() => {
-      if (currentValue === initialValue) return
-      onChange(currentValue)
+      if (debouncedValue === initialValue) return
+      onChange(debouncedValue)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentValue])
+    }, [debouncedValue])
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
       setCurrentValue(e.target.value)
-    }
 
     return (
       <Input

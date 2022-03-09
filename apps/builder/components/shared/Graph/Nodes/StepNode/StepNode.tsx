@@ -48,7 +48,6 @@ export const StepNode = ({
   const { setConnectingIds, connectingIds, openedStepId, setOpenedStepId } =
     useGraph()
   const { updateStep } = useTypebot()
-  const [localStep, setLocalStep] = useState(step)
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
@@ -75,10 +74,6 @@ export const StepNode = ({
   } = useDisclosure()
 
   useEffect(() => {
-    setLocalStep(step)
-  }, [step])
-
-  useEffect(() => {
     if (query.stepId?.toString() === step.id) setOpenedStepId(step.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query])
@@ -91,7 +86,7 @@ export const StepNode = ({
   }, [connectingIds, step.blockId, step.id])
 
   const handleModalClose = () => {
-    updateStep(indices, { ...localStep })
+    updateStep(indices, { ...step })
     onModalClose()
   }
 
@@ -112,8 +107,7 @@ export const StepNode = ({
   }
 
   const handleCloseEditor = (content: TextBubbleContent) => {
-    const updatedStep = { ...localStep, content } as Step
-    setLocalStep(updatedStep)
+    const updatedStep = { ...step, content } as Step
     updateStep(indices, updatedStep)
     setIsEditing(false)
   }
@@ -129,26 +123,20 @@ export const StepNode = ({
     onModalOpen()
   }
 
-  const updateOptions = () => {
-    updateStep(indices, { ...localStep })
-  }
-
-  const handleStepChange = (updates: Partial<Step>) => {
-    setLocalStep({ ...localStep, ...updates } as Step)
-  }
+  const handleStepUpdate = (updates: Partial<Step>) =>
+    updateStep(indices, { ...step, ...updates })
 
   const handleContentChange = (content: BubbleStepContent) =>
-    setLocalStep({ ...localStep, content } as Step)
+    updateStep(indices, { ...step, content } as Step)
 
   useEffect(() => {
-    if (isPopoverOpened && openedStepId !== step.id) updateOptions()
     setIsPopoverOpened(openedStepId === step.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openedStepId])
 
-  return isEditing && isTextBubbleStep(localStep) ? (
+  return isEditing && isTextBubbleStep(step) ? (
     <TextBubbleEditor
-      initialValue={localStep.content.richText}
+      initialValue={step.content.richText}
       onClose={handleCloseEditor}
     />
   ) : (
@@ -185,22 +173,22 @@ export const StepNode = ({
                 w="full"
               >
                 <StepIcon
-                  type={localStep.type}
+                  type={step.type}
                   mt="1"
-                  data-testid={`${localStep.id}-icon`}
+                  data-testid={`${step.id}-icon`}
                 />
-                <StepNodeContent step={localStep} indices={indices} />
+                <StepNodeContent step={step} indices={indices} />
                 <TargetEndpoint
                   pos="absolute"
                   left="-32px"
                   top="19px"
-                  stepId={localStep.id}
+                  stepId={step.id}
                 />
-                {isConnectable && hasDefaultConnector(localStep) && (
+                {isConnectable && hasDefaultConnector(step) && (
                   <SourceEndpoint
                     source={{
-                      blockId: localStep.blockId,
-                      stepId: localStep.id,
+                      blockId: step.blockId,
+                      stepId: step.id,
                     }}
                     pos="absolute"
                     right="15px"
@@ -210,26 +198,21 @@ export const StepNode = ({
               </HStack>
             </Flex>
           </PopoverTrigger>
-          {hasSettingsPopover(localStep) && (
+          {hasSettingsPopover(step) && (
             <SettingsPopoverContent
-              step={localStep}
+              step={step}
               onExpandClick={handleExpandClick}
-              onStepChange={handleStepChange}
-              onTestRequestClick={updateOptions}
+              onStepChange={handleStepUpdate}
             />
           )}
-          {isMediaBubbleStep(localStep) && (
+          {isMediaBubbleStep(step) && (
             <MediaBubblePopoverContent
-              step={localStep}
+              step={step}
               onContentChange={handleContentChange}
             />
           )}
           <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-            <StepSettings
-              step={localStep}
-              onStepChange={handleStepChange}
-              onTestRequestClick={updateOptions}
-            />
+            <StepSettings step={step} onStepChange={handleStepUpdate} />
           </SettingsModal>
         </Popover>
       )}

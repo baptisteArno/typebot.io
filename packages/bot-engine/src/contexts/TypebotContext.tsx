@@ -1,5 +1,5 @@
 import { Log } from 'db'
-import { Edge, PublicTypebot } from 'models'
+import { Edge, PublicTypebot, Typebot } from 'models'
 import React, {
   createContext,
   ReactNode,
@@ -8,12 +8,18 @@ import React, {
   useState,
 } from 'react'
 
+export type LinkedTypebot = Pick<
+  PublicTypebot | Typebot,
+  'id' | 'blocks' | 'variables' | 'edges'
+>
 const typebotContext = createContext<{
   typebot: PublicTypebot
+  linkedTypebots: LinkedTypebot[]
   apiHost: string
   isPreview: boolean
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
+  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -33,6 +39,7 @@ export const TypebotContext = ({
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
+  const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
@@ -59,14 +66,34 @@ export const TypebotContext = ({
     }))
   }
 
+  const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
+    const typebotToInject = {
+      id: typebot.id,
+      blocks: typebot.blocks,
+      edges: typebot.edges,
+      variables: typebot.variables,
+    }
+    setLinkedTypebots((typebots) => [...typebots, typebotToInject])
+    const updatedTypebot = {
+      ...localTypebot,
+      blocks: [...localTypebot.blocks, ...typebotToInject.blocks],
+      variables: [...localTypebot.variables, ...typebotToInject.variables],
+      edges: [...localTypebot.edges, ...typebotToInject.edges],
+    }
+    setLocalTypebot(updatedTypebot)
+    return typebotToInject
+  }
+
   return (
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
+        linkedTypebots,
         apiHost,
         isPreview,
         updateVariableValue,
         createEdge,
+        injectLinkedTypebot,
         onNewLog,
       }}
     >

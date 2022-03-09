@@ -7,7 +7,7 @@ import { byId } from 'utils'
 import { DateForm } from './inputs/DateForm'
 import { ChoiceForm } from './inputs/ChoiceForm'
 import { useTypebot } from 'contexts/TypebotContext'
-import { parseVariables } from 'index'
+import { parseVariables } from '../../../services/variable'
 import { isInputValid } from 'services/inputs'
 
 export const InputChatStep = ({

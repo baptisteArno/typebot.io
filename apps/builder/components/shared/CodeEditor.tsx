@@ -5,6 +5,7 @@ import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
+import { useDebounce } from 'use-debounce'
 
 type Props = {
   value: string
@@ -22,6 +23,10 @@ export const CodeEditor = ({
   const editorContainer = useRef<HTMLDivElement | null>(null)
   const editorView = useRef<EditorView | null>(null)
   const [plainTextValue, setPlainTextValue] = useState(value)
+  const [debouncedValue] = useDebounce(
+    plainTextValue,
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+  )
 
   useEffect(() => {
     if (!editorView.current || !isReadOnly) return
@@ -36,10 +41,10 @@ export const CodeEditor = ({
   }, [value])
 
   useEffect(() => {
-    if (!onChange || plainTextValue === value) return
-    onChange(plainTextValue)
+    if (!onChange || debouncedValue === value) return
+    onChange(debouncedValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plainTextValue])
+  }, [debouncedValue])
 
   useEffect(() => {
     const editor = initEditor(value)

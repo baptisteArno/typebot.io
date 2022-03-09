@@ -42,13 +42,11 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 type Props = {
   step: WebhookStep
   onOptionsChange: (options: WebhookOptions) => void
-  onTestRequestClick: () => void
 }
 
 export const WebhookSettings = ({
   step: { options, blockId, id: stepId, webhookId },
   onOptionsChange,
-  onTestRequestClick,
 }: Props) => {
   const { typebot, save, webhooks, updateWebhook } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
@@ -122,7 +120,6 @@ export const WebhookSettings = ({
   const handleTestRequestClick = async () => {
     if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
-    onTestRequestClick()
     await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
     const { data, error } = await executeWebhook(
       typebot.id,

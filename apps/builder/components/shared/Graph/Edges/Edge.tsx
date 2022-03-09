@@ -1,5 +1,5 @@
 import { Coordinates, useGraph } from 'contexts/GraphContext'
-import React, { useLayoutEffect, useMemo, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import {
   getAnchorsPosition,
   computeEdgePath,
@@ -31,6 +31,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })
+  const [refreshEdge, setRefreshEdge] = useState(false)
 
   const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
@@ -47,8 +48,12 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
         getSourceEndpointId(edge)
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceBlockCoordinates?.y, edge, sourceEndpoints]
+    [sourceBlockCoordinates?.y, edge, sourceEndpoints, refreshEdge]
   )
+
+  useEffect(() => {
+    setTimeout(() => setRefreshEdge(true), 50)
+  }, [])
 
   const [targetTop, setTargetTop] = useState(
     getEndpointTopOffset(targetEndpoints, graphPosition.y, edge?.to.stepId)

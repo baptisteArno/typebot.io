@@ -6,17 +6,20 @@ export type LogicStep =
   | ConditionStep
   | RedirectStep
   | CodeStep
+  | TypebotLinkStep
 
 export type LogicStepOptions =
   | SetVariableOptions
   | RedirectOptions
   | CodeOptions
+  | TypebotLinkOptions
 
 export enum LogicStepType {
   SET_VARIABLE = 'Set variable',
   CONDITION = 'Condition',
   REDIRECT = 'Redirect',
   CODE = 'Code',
+  TYPEBOT_LINK = 'Typebot link',
 }
 
 export type SetVariableStep = StepBase & {
@@ -42,6 +45,11 @@ export type RedirectStep = StepBase & {
 export type CodeStep = StepBase & {
   type: LogicStepType.CODE
   options: CodeOptions
+}
+
+export type TypebotLinkStep = StepBase & {
+  type: LogicStepType.TYPEBOT_LINK
+  options: TypebotLinkOptions
 }
 
 export enum LogicalOperator {
@@ -85,6 +93,11 @@ export type CodeOptions = {
   content?: string
 }
 
+export type TypebotLinkOptions = {
+  typebotId?: string
+  blockId?: string
+}
+
 export const defaultSetVariablesOptions: SetVariableOptions = {}
 
 export const defaultConditionContent: ConditionContent = {
@@ -95,3 +108,5 @@ export const defaultConditionContent: ConditionContent = {
 export const defaultRedirectOptions: RedirectOptions = { isNewTab: false }
 
 export const defaultCodeOptions: CodeOptions = { name: 'Code snippet' }
+
+export const defaultTypebotLinkOptions: TypebotLinkOptions = {}

@@ -80,7 +80,7 @@ test.describe.parallel('Image bubble step', () => {
 
       await page.click('text=Click to edit...')
       await page.click('text=Giphy')
-      await page.click('img >> nth=3')
+      await page.click('img >> nth=3', { force: true })
       await expect(page.locator('img[alt="Step image"]')).toHaveAttribute(
         'src',
         new RegExp('giphy.com/media', 'gm')

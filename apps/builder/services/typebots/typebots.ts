@@ -56,12 +56,14 @@ export type TypebotInDashboard = Pick<
 >
 export const useTypebots = ({
   folderId,
+  allFolders,
   onError,
 }: {
   folderId?: string
+  allFolders?: boolean
   onError: (error: Error) => void
 }) => {
-  const params = stringify({ folderId })
+  const params = stringify({ folderId, allFolders })
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
@@ -229,6 +231,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultRedirectOptions
     case LogicStepType.CODE:
       return defaultCodeOptions
+    case LogicStepType.TYPEBOT_LINK:
+      return {}
     case IntegrationStepType.GOOGLE_SHEETS:
       return defaultGoogleSheetsOptions
     case IntegrationStepType.GOOGLE_ANALYTICS:

@@ -6,13 +6,21 @@ import { Variable } from './variable'
 
 export type Typebot = Omit<
   TypebotFromPrisma,
-  'blocks' | 'theme' | 'settings' | 'variables' | 'edges'
+  | 'blocks'
+  | 'theme'
+  | 'settings'
+  | 'variables'
+  | 'edges'
+  | 'createdAt'
+  | 'updatedAt'
 > & {
   blocks: Block[]
   variables: Variable[]
   edges: Edge[]
   theme: Theme
   settings: Settings
+  createdAt: string
+  updatedAt: string
 }
 
 export type Block = {

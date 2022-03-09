@@ -33,8 +33,9 @@ import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
-import { SendEmailSettings } from './bodies/SendEmailSettings/SendEmailSettings'
+import { SendEmailSettings } from './bodies/SendEmailSettings'
 import { SetVariableSettings } from './bodies/SetVariableSettings'
+import { TypebotLinkSettingsForm } from './bodies/TypebotLinkSettingsForm'
 import { WebhookSettings } from './bodies/WebhookSettings'
 import { ZapierSettings } from './bodies/ZapierSettings'
 
@@ -43,7 +44,6 @@ type Props = {
   webhook?: Webhook
   onExpandClick: () => void
   onStepChange: (updates: Partial<Step>) => void
-  onTestRequestClick: () => void
 }
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
@@ -85,12 +85,10 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 export const StepSettings = ({
   step,
   onStepChange,
-  onTestRequestClick,
 }: {
   step: Step
   webhook?: Webhook
   onStepChange: (step: Partial<Step>) => void
-  onTestRequestClick: () => void
 }) => {
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
@@ -186,6 +184,14 @@ export const StepSettings = ({
         />
       )
     }
+    case LogicStepType.TYPEBOT_LINK: {
+      return (
+        <TypebotLinkSettingsForm
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
     case IntegrationStepType.GOOGLE_SHEETS: {
       return (
         <GoogleSheetsSettingsBody
@@ -208,11 +214,7 @@ export const StepSettings = ({
     }
     case IntegrationStepType.WEBHOOK: {
       return (
-        <WebhookSettings
-          step={step}
-          onOptionsChange={handleOptionsChange}
-          onTestRequestClick={onTestRequestClick}
-        />
+        <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />
       )
     }
     case IntegrationStepType.EMAIL: {

@@ -44,7 +44,7 @@ const getTypebotFromPublicId = async (publicId?: string) => {
     where: { publicId },
   })
   if (isNotDefined(typebot)) return null
-  return omit(typebot as PublicTypebot, 'createdAt', 'updatedAt')
+  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
 }
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
@@ -52,7 +52,7 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
     where: { customDomain },
   })
   if (isNotDefined(typebot)) return null
-  return omit(typebot as PublicTypebot, 'createdAt', 'updatedAt')
+  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
 }
 
 const App = ({ typebot, ...props }: TypebotPageProps) =>

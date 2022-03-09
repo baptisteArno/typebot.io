@@ -43,7 +43,7 @@ test.describe.parallel('Settings page', () => {
       await page.click('button:has-text("Typing emulation")')
       await page.fill('[data-testid="speed"] input', '350')
       await page.fill('[data-testid="max-delay"] input', '1.5')
-      await page.uncheck(':nth-match(input[type="checkbox"], 2)', {
+      await page.uncheck('input[type="checkbox"] >> nth=-1', {
         force: true,
       })
       await expect(page.locator('[data-testid="speed"]')).toBeHidden()

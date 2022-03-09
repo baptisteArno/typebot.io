@@ -26,7 +26,10 @@ export const SearchableDropdown = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
-  const [debouncedInputValue] = useDebounce(inputValue, 200)
+  const [debouncedInputValue] = useDebounce(
+    inputValue,
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+  )
   const [filteredItems, setFilteredItems] = useState([
     ...items
       .filter((item) =>

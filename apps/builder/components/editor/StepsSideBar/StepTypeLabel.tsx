@@ -43,6 +43,12 @@ export const StepTypeLabel = ({ type }: Props) => {
           <Text>Code</Text>
         </Tooltip>
       )
+    case LogicStepType.TYPEBOT_LINK:
+      return (
+        <Tooltip label="Link to another of your typebots">
+          <Text>Typebot</Text>
+        </Tooltip>
+      )
     case IntegrationStepType.GOOGLE_SHEETS:
       return (
         <Tooltip label="Google Sheets">

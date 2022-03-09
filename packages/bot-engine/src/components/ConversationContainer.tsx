@@ -4,10 +4,10 @@ import { ChatBlock } from './ChatBlock/ChatBlock'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
-import { Block, Edge, Theme, VariableWithValue } from 'models'
+import { Block, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
 import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
-import { useTypebot } from 'contexts/TypebotContext'
+import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
   theme: Theme
@@ -30,10 +30,14 @@ export const ConversationContainer = ({
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = (edgeId?: string) => {
-    const nextEdge = typebot.edges.find(byId(edgeId))
+  const displayNextBlock = (
+    edgeId?: string,
+    updatedTypebot?: PublicTypebot | LinkedTypebot
+  ) => {
+    const currentTypebot = updatedTypebot ?? typebot
+    const nextEdge = currentTypebot.edges.find(byId(edgeId))
     if (!nextEdge) return onCompleted()
-    const nextBlock = typebot.blocks.find(byId(nextEdge.to.blockId))
+    const nextBlock = currentTypebot.blocks.find(byId(nextEdge.to.blockId))
     if (!nextBlock) return onCompleted()
     const startStepIndex = nextEdge.to.stepId
       ? nextBlock.steps.findIndex(byId(nextEdge.to.stepId))
