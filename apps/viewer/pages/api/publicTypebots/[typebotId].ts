@@ -1,9 +1,13 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notFound } from 'utils'
+import Cors from 'cors'
+import { initMiddleware, methodNotAllowed, notFound } from 'utils'
+
+const cors = initMiddleware(Cors())
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await cors(req, res)
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId as string
     const typebot = await prisma.publicTypebot.findUnique({
