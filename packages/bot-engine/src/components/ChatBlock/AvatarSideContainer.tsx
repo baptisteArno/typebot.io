@@ -43,7 +43,7 @@ export const AvatarSideContainer = forwardRef(
 
     return (
       <div
-        className="flex w-6 xs:w-10 mr-2 mb-2 flex-shrink-0 items-center relative "
+        className="flex w-6 xs:w-10 mr-2 mb-2 flex-shrink-0 items-center relative typebot-avatar-container "
         ref={scrollingSideBlockRef}
       >
         <CSSTransition
