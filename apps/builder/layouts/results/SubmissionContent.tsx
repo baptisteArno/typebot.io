@@ -7,6 +7,7 @@ import {
   deleteAllResults,
   deleteResults,
   getAllResults,
+  parseResultHeader,
   useResults,
 } from 'services/typebots'
 import { unparse } from 'papaparse'
@@ -48,6 +49,8 @@ export const SubmissionsContent = ({
       ...(linkedTypebots?.flatMap((t) => t.variables) ?? []),
     ].filter(isDefined),
   }
+
+  const resultHeader = parseResultHeader(blocksAndVariables)
 
   const { data, mutate, setSize, hasMore } = useResults({
     typebotId,
@@ -117,14 +120,12 @@ export const SubmissionsContent = ({
     if (!publishedTypebot) return []
     const { data, error } = await getAllResults(typebotId)
     if (error) toast({ description: error.message, title: error.name })
-    return convertResultsToTableData(blocksAndVariables)(data?.results)
+    return convertResultsToTableData(data?.results, resultHeader)
   }
 
   const tableData: { [key: string]: string }[] = useMemo(
     () =>
-      publishedTypebot
-        ? convertResultsToTableData(blocksAndVariables)(results)
-        : [],
+      publishedTypebot ? convertResultsToTableData(results, resultHeader) : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [results]
   )
@@ -159,7 +160,7 @@ export const SubmissionsContent = ({
       </Flex>
 
       <SubmissionsTable
-        blocksAndVariables={blocksAndVariables}
+        resultHeader={resultHeader}
         data={tableData}
         onNewSelection={handleNewSelection}
         onScrollToBottom={handleScrolledToBottom}

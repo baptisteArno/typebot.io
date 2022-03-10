@@ -2,14 +2,13 @@
 /* eslint-disable react/jsx-key */
 import { Button, chakra, Checkbox, Flex, HStack, Text } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from 'assets/icons'
-import { PublicTypebot } from 'models'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useRowSelect, useTable } from 'react-table'
-import { parseSubmissionsColumns } from 'services/publicTypebot'
+import { parseSubmissionsColumns, ResultHeaderCell } from 'services/typebots'
 import { LoadingRows } from './LoadingRows'
 
 type SubmissionsTableProps = {
-  blocksAndVariables: Pick<PublicTypebot, 'blocks' | 'variables'>
+  resultHeader: ResultHeaderCell[]
   data?: any
   hasMore?: boolean
   onNewSelection: (indices: number[]) => void
@@ -18,7 +17,7 @@ type SubmissionsTableProps = {
 }
 
 export const SubmissionsTable = ({
-  blocksAndVariables,
+  resultHeader,
   data,
   hasMore,
   onNewSelection,
@@ -26,8 +25,8 @@ export const SubmissionsTable = ({
   onLogOpenIndex,
 }: SubmissionsTableProps) => {
   const columns: any = useMemo(
-    () => parseSubmissionsColumns(blocksAndVariables),
-    [blocksAndVariables]
+    () => parseSubmissionsColumns(resultHeader),
+    [resultHeader]
   )
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)

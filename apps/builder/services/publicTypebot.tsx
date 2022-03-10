@@ -1,9 +1,6 @@
-import { Block, PublicTypebot, Typebot, Variable } from 'models'
+import { PublicTypebot, Typebot } from 'models'
 import shortId from 'short-uuid'
-import { HStack, Text } from '@chakra-ui/react'
-import { CalendarIcon, CodeIcon } from 'assets/icons'
-import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { byId, isInputStep, sendRequest } from 'utils'
+import { sendRequest } from 'utils'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
@@ -58,96 +55,3 @@ export const updatePublishedTypebot = async (
     method: 'PUT',
     body: typebot,
   })
-
-type HeaderCell = {
-  Header: JSX.Element
-  accessor: string
-}
-
-export const parseSubmissionsColumns = (blocksAndVariables: {
-  blocks: Block[]
-  variables: Variable[]
-}): HeaderCell[] => {
-  const parsedBlocks = parseBlocksHeaders(blocksAndVariables)
-  return [
-    {
-      Header: (
-        <HStack>
-          <CalendarIcon />
-          <Text>Submitted at</Text>
-        </HStack>
-      ),
-      accessor: 'Submitted at',
-    },
-    ...parsedBlocks,
-    ...parseVariablesHeaders(blocksAndVariables.variables, parsedBlocks),
-  ]
-}
-
-const parseBlocksHeaders = ({
-  blocks,
-  variables,
-}: {
-  blocks: Block[]
-  variables: Variable[]
-}) =>
-  blocks
-    .filter((block) => block.steps.some((step) => isInputStep(step)))
-    .reduce<HeaderCell[]>((headers, block) => {
-      const inputStep = block.steps.find((step) => isInputStep(step))
-      if (
-        !inputStep ||
-        !isInputStep(inputStep) ||
-        headers.find(
-          (h) =>
-            h.accessor ===
-            variables.find(byId(inputStep.options.variableId))?.name
-        )
-      )
-        return headers
-      const matchedVariableName =
-        inputStep.options.variableId &&
-        variables.find(byId(inputStep.options.variableId))?.name
-      return [
-        ...headers,
-        {
-          Header: (
-            <HStack
-              minW={
-                'isLong' in inputStep.options && inputStep.options.isLong
-                  ? '400px'
-                  : '150px'
-              }
-              maxW="500px"
-            >
-              <StepIcon type={inputStep.type} />
-              <Text>{matchedVariableName ?? block.title}</Text>
-            </HStack>
-          ),
-          accessor: matchedVariableName ?? block.title,
-        },
-      ]
-    }, [])
-
-const parseVariablesHeaders = (
-  variables: Variable[],
-  parsedBlocks: {
-    Header: JSX.Element
-    accessor: string
-  }[]
-) =>
-  variables.reduce<HeaderCell[]>((headers, v) => {
-    if (parsedBlocks.find((b) => b.accessor === v.name)) return headers
-    return [
-      ...headers,
-      {
-        Header: (
-          <HStack minW={'150px'} maxW="500px">
-            <CodeIcon />
-            <Text>{v.name}</Text>
-          </HStack>
-        ),
-        accessor: v.name,
-      },
-    ]
-  }, [])
