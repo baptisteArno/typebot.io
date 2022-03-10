@@ -45,7 +45,7 @@ import {
   stepTypeHasOption,
   stepTypeHasWebhook,
 } from 'utils'
-import { deepEqual } from 'fast-equals'
+import { dequal } from 'dequal'
 import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
 import cuid from 'cuid'
@@ -247,7 +247,7 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
 }
 
 export const checkIfTypebotsAreEqual = (typebotA: Typebot, typebotB: Typebot) =>
-  deepEqual(
+  dequal(
     JSON.parse(JSON.stringify(typebotA)),
     JSON.parse(JSON.stringify(typebotB))
   )
@@ -265,19 +265,19 @@ export const checkIfPublished = (
       )
     )
   return (
-    deepEqual(
+    dequal(
       JSON.parse(JSON.stringify(typebot.blocks)),
       JSON.parse(JSON.stringify(publicTypebot.blocks))
     ) &&
-    deepEqual(
+    dequal(
       JSON.parse(JSON.stringify(typebot.settings)),
       JSON.parse(JSON.stringify(publicTypebot.settings))
     ) &&
-    deepEqual(
+    dequal(
       JSON.parse(JSON.stringify(typebot.theme)),
       JSON.parse(JSON.stringify(publicTypebot.theme))
     ) &&
-    deepEqual(
+    dequal(
       JSON.parse(JSON.stringify(typebot.variables)),
       JSON.parse(JSON.stringify(publicTypebot.variables))
     )

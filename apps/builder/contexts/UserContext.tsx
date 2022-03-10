@@ -11,7 +11,7 @@ import {
 import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user/user'
 import { useToast } from '@chakra-ui/react'
-import { deepEqual } from 'fast-equals'
+import { dequal } from 'dequal'
 import { User } from 'db'
 
 const userContext = createContext<{
@@ -42,7 +42,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   )
 
   const hasUnsavedChanges = useMemo(
-    () => !deepEqual(session?.user, user),
+    () => !dequal(session?.user, user),
     [session?.user, user]
   )
 

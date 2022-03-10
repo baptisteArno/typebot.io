@@ -1,5 +1,5 @@
 import { isDefined } from '@udecode/plate-core'
-import { deepEqual } from 'fast-equals'
+import { dequal } from 'dequal'
 // import { diff } from 'deep-object-diff'
 import { useReducer, useCallback, useRef } from 'react'
 import { isNotDefined } from 'utils'
@@ -76,7 +76,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       if (
         isNotDefined(newPresent) ||
         (present &&
-          deepEqual(
+          dequal(
             JSON.parse(JSON.stringify(newPresent)),
             JSON.parse(JSON.stringify(present))
           ))

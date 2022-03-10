@@ -42,7 +42,7 @@
     "cuid": "^2.1.8",
     "db": "*",
     "deep-object-diff": "^1.1.7",
-    "fast-equals": "^3.0.0",
+    "dequal": "^2.0.2",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4",
     "google-auth-library": "^7.12.0",

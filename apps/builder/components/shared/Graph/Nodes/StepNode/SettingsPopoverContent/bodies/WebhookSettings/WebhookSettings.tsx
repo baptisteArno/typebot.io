@@ -36,7 +36,7 @@ import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId } from 'utils'
-import { deepEqual } from 'fast-equals'
+import { dequal } from 'dequal'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 
 type Props = {
@@ -63,7 +63,7 @@ export const WebhookSettings = ({
 
   useEffect(() => {
     const incomingWebhook = webhooks.find(byId(webhookId))
-    if (deepEqual(incomingWebhook, localWebhook)) return
+    if (dequal(incomingWebhook, localWebhook)) return
     setLocalWebhook(incomingWebhook)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webhooks])

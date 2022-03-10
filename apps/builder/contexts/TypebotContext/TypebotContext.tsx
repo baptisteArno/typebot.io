@@ -40,7 +40,7 @@ import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
 import { generate } from 'short-uuid'
-import { deepEqual } from 'fast-equals'
+import { dequal } from 'dequal'
 import { User } from 'db'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
@@ -179,7 +179,7 @@ export const TypebotContext = ({
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
     }
-    if (deepEqual(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
+    if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
       return
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
