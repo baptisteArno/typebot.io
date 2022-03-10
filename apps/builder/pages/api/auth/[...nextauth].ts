@@ -49,6 +49,10 @@ if (process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET)
   )
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === 'HEAD') {
+    res.status(200)
+    return
+  }
   NextAuth(req, res, {
     adapter: CustomAdapter(prisma),
     secret: process.env.ENCRYPTION_SECRET,
