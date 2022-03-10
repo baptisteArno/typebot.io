@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "moduleResolution": "Node",
+    "declarationDir": ".",
+    "strict": true
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./tests/**/*"]
+}
