@@ -5,7 +5,7 @@ import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useDebounce } from 'use-debounce'
-import { InputWithVariableButton } from '../TextboxWithVariableButton'
+import { Input } from '../Textbox'
 
 type Props = {
   url?: string
@@ -105,10 +105,10 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
 
   return (
     <Stack py="2">
-      <InputWithVariableButton
+      <Input
         placeholder={'Paste the image link...'}
         onChange={setImageUrl}
-        initialValue={imageUrl}
+        defaultValue={imageUrl}
       />
     </Stack>
   )

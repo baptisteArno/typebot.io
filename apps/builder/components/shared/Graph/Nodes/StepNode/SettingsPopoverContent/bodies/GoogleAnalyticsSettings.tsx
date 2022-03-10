@@ -9,8 +9,7 @@ import {
   Stack,
   Tag,
 } from '@chakra-ui/react'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
+import { Input } from 'components/shared/Textbox'
 import { GoogleAnalyticsOptions } from 'models'
 import React from 'react'
 
@@ -47,9 +46,9 @@ export const GoogleAnalyticsSettings = ({
         <FormLabel mb="0" htmlFor="tracking-id">
           Tracking ID:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="tracking-id"
-          initialValue={options?.trackingId ?? ''}
+          defaultValue={options?.trackingId ?? ''}
           placeholder="G-123456..."
           onChange={handleTrackingIdChange}
         />
@@ -58,9 +57,9 @@ export const GoogleAnalyticsSettings = ({
         <FormLabel mb="0" htmlFor="category">
           Event category:
         </FormLabel>
-        <InputWithVariableButton
+        <Input
           id="category"
-          initialValue={options?.category ?? ''}
+          defaultValue={options?.category ?? ''}
           placeholder="Example: Typebot"
           onChange={handleCategoryChange}
         />
@@ -69,9 +68,9 @@ export const GoogleAnalyticsSettings = ({
         <FormLabel mb="0" htmlFor="action">
           Event action:
         </FormLabel>
-        <InputWithVariableButton
+        <Input
           id="action"
-          initialValue={options?.action ?? ''}
+          defaultValue={options?.action ?? ''}
           placeholder="Example: Submit email"
           onChange={handleActionChange}
         />
@@ -91,9 +90,9 @@ export const GoogleAnalyticsSettings = ({
               <FormLabel mb="0" htmlFor="label">
                 Event label <Tag>Optional</Tag>:
               </FormLabel>
-              <InputWithVariableButton
+              <Input
                 id="label"
-                initialValue={options?.label ?? ''}
+                defaultValue={options?.label ?? ''}
                 placeholder="Example: Campaign Z"
                 onChange={handleLabelChange}
               />
@@ -102,9 +101,9 @@ export const GoogleAnalyticsSettings = ({
               <FormLabel mb="0" htmlFor="value">
                 Event value <Tag>Optional</Tag>:
               </FormLabel>
-              <InputWithVariableButton
+              <Input
                 id="value"
-                initialValue={options?.value?.toString() ?? ''}
+                defaultValue={options?.value?.toString() ?? ''}
                 placeholder="Example: 0"
                 onChange={handleValueChange}
               />

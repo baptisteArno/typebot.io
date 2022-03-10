@@ -1,6 +1,6 @@
 import { FormLabel, Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
+import { Input } from 'components/shared/Textbox'
 import { CodeOptions } from 'models'
 import React from 'react'
 
@@ -20,10 +20,11 @@ export const CodeSettings = ({ options, onOptionsChange }: Props) => {
         <FormLabel mb="0" htmlFor="name">
           Name:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="name"
-          initialValue={options.name}
+          defaultValue={options.name}
           onChange={handleNameChange}
+          withVariableButton={false}
         />
       </Stack>
       <Stack>

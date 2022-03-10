@@ -1,8 +1,8 @@
 import { FormControl, FormLabel, HStack, Stack } from '@chakra-ui/react'
 import { isDefined } from '@udecode/plate-common'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SmartNumberInput } from 'components/shared/SmartNumberInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { Input } from 'components/shared/Textbox'
 import { SmtpCredentialsData } from 'models'
 import React from 'react'
 
@@ -30,43 +30,48 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
     <Stack as="form" spacing={4}>
       <FormControl isRequired>
         <FormLabel>From email:</FormLabel>
-        <DebouncedInput
-          initialValue={config.from.email ?? ''}
+        <Input
+          defaultValue={config.from.email ?? ''}
           onChange={handleFromEmailChange}
           placeholder="notifications@provider.com"
+          withVariableButton={false}
         />
       </FormControl>
       <FormControl isRequired>
         <FormLabel>From name:</FormLabel>
-        <DebouncedInput
-          initialValue={config.from.name ?? ''}
+        <Input
+          defaultValue={config.from.name ?? ''}
           onChange={handleFromNameChange}
           placeholder="John Smith"
+          withVariableButton={false}
         />
       </FormControl>
       <FormControl isRequired>
         <FormLabel>Host:</FormLabel>
-        <DebouncedInput
-          initialValue={config.host ?? ''}
+        <Input
+          defaultValue={config.host ?? ''}
           onChange={handleHostChange}
           placeholder="mail.provider.com"
+          withVariableButton={false}
         />
       </FormControl>
       <FormControl isRequired>
         <FormLabel>Username / Email:</FormLabel>
-        <DebouncedInput
+        <Input
           type="email"
-          initialValue={config.username ?? ''}
+          defaultValue={config.username ?? ''}
           onChange={handleUsernameChange}
           placeholder="user@provider.com"
+          withVariableButton={false}
         />
       </FormControl>
       <FormControl isRequired>
         <FormLabel>Password:</FormLabel>
-        <DebouncedInput
+        <Input
           type="password"
-          initialValue={config.password ?? ''}
+          defaultValue={config.password ?? ''}
           onChange={handlePasswordChange}
+          withVariableButton={false}
         />
       </FormControl>
       <SwitchWithLabel

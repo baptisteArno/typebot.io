@@ -12,38 +12,49 @@ import {
 } from '@chakra-ui/react'
 import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
-import { useDebounce } from 'use-debounce'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import { VariableSearchInput } from '../VariableSearchInput'
 
-export type TextBoxWithVariableButtonProps = {
-  initialValue: string
+export type TextBoxProps = {
   onChange: (value: string) => void
   TextBox:
     | ComponentWithAs<'textarea', TextareaProps>
     | ComponentWithAs<'input', InputProps>
+  withVariableButton?: boolean
 } & Omit<InputProps & TextareaProps, 'onChange'>
 
-export const TextBoxWithVariableButton = ({
-  initialValue,
+export const TextBox = ({
   onChange,
   TextBox,
+  withVariableButton = true,
   ...props
-}: TextBoxWithVariableButtonProps) => {
+}: TextBoxProps) => {
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
     null
   )
-  const [value, setValue] = useState(initialValue)
-  const [debouncedValue] = useDebounce(
-    value,
+  const [carretPosition, setCarretPosition] = useState<number>(0)
+  const [value, setValue] = useState(props.defaultValue)
+  const debounced = useDebouncedCallback(
+    (value) => {
+      onChange(value)
+    },
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
   )
-  const [carretPosition, setCarretPosition] = useState<number>(0)
 
-  useEffect(() => {
-    onChange(value)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
+  useEffect(
+    () => () => {
+      debounced.flush()
+    },
+    [debounced]
+  )
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
+  ) => {
+    setValue(e.target.value)
+    debounced(e.target.value)
+  }
 
   const handleVariableSelected = (variable?: Variable) => {
     if (!textBoxRef.current || !variable) return
@@ -56,11 +67,12 @@ export const TextBoxWithVariableButton = ({
       cursorPosition,
       textBoxRef.current.value.length
     )
-    setValue(
+    const newValue =
       textBeforeCursorPosition +
-        `{{${variable.name}}}` +
-        textAfterCursorPosition
-    )
+      `{{${variable.name}}}` +
+      textAfterCursorPosition
+    setValue(newValue)
+    debounced(newValue)
     textBoxRef.current.focus()
     setTimeout(() => {
       if (!textBoxRef.current) return
@@ -75,17 +87,24 @@ export const TextBoxWithVariableButton = ({
     setCarretPosition(textBoxRef.current.selectionStart)
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => setValue(e.target.value)
-
+  if (!withVariableButton) {
+    return (
+      <TextBox
+        ref={textBoxRef}
+        onChange={handleChange}
+        bgColor={'white'}
+        value={value}
+        {...props}
+      />
+    )
+  }
   return (
     <HStack spacing={0} align={'flex-end'}>
       <TextBox
         ref={textBoxRef}
+        value={value}
         onKeyUp={handleKeyUp}
         onClick={handleKeyUp}
-        value={value}
         onChange={handleChange}
         bgColor={'white'}
         {...props}

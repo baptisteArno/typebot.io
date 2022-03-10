@@ -1,6 +1,6 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { TableListItemProps } from 'components/shared/TableList'
+import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { VariableForTest, Variable } from 'models'
 
@@ -26,9 +26,9 @@ export const VariableForTestInputs = ({
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={'value' + item.id}>Test value:</FormLabel>
-        <DebouncedInput
+        <Input
           id={'value' + item.id}
-          initialValue={item.value ?? ''}
+          defaultValue={item.value ?? ''}
           onChange={handleValueChange}
         />
       </FormControl>

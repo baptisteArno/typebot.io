@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { DateInputOptions, Variable } from 'models'
 import React from 'react'
@@ -46,9 +46,9 @@ export const DateInputSettingsBody = ({
           <FormLabel mb="0" htmlFor="from">
             From label:
           </FormLabel>
-          <DebouncedInput
+          <Input
             id="from"
-            initialValue={options.labels.from}
+            defaultValue={options.labels.from}
             onChange={handleFromChange}
           />
         </Stack>
@@ -58,9 +58,9 @@ export const DateInputSettingsBody = ({
           <FormLabel mb="0" htmlFor="to">
             To label:
           </FormLabel>
-          <DebouncedInput
+          <Input
             id="to"
-            initialValue={options.labels.to}
+            defaultValue={options.labels.to}
             onChange={handleToChange}
           />
         </Stack>
@@ -69,9 +69,9 @@ export const DateInputSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Button label:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="button"
-          initialValue={options.labels.button}
+          defaultValue={options.labels.button}
           onChange={handleButtonLabelChange}
         />
       </Stack>

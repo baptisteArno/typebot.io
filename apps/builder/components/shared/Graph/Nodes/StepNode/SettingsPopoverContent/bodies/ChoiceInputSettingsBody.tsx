@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ChoiceInputOptions, Variable } from 'models'
 import React from 'react'
@@ -34,9 +34,9 @@ export const ChoiceInputSettingsBody = ({
           <FormLabel mb="0" htmlFor="button">
             Button label:
           </FormLabel>
-          <DebouncedInput
+          <Input
             id="button"
-            initialValue={options?.buttonLabel ?? 'Send'}
+            defaultValue={options?.buttonLabel ?? 'Send'}
             onChange={handleButtonLabelChange}
           />
         </Stack>

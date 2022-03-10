@@ -1,5 +1,5 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
+import { Input } from 'components/shared/Textbox'
 import { TableListItemProps } from 'components/shared/TableList'
 import { KeyValue } from 'models'
 
@@ -40,18 +40,18 @@ export const KeyValueInputs = ({
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
         <FormLabel htmlFor={'key' + item.id}>Key:</FormLabel>
-        <InputWithVariableButton
+        <Input
           id={'key' + item.id}
-          initialValue={item.key ?? ''}
+          defaultValue={item.key ?? ''}
           onChange={handleKeyChange}
           placeholder={keyPlaceholder}
         />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor={'value' + item.id}>Value:</FormLabel>
-        <InputWithVariableButton
+        <Input
           id={'value' + item.id}
-          initialValue={item.value ?? ''}
+          defaultValue={item.value ?? ''}
           onChange={handleValueChange}
           placeholder={valuePlaceholder}
         />

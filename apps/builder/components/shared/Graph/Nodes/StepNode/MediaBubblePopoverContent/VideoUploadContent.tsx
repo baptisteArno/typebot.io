@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
+import { Input } from 'components/shared/Textbox/Input'
 import { VideoBubbleContent, VideoBubbleContentType } from 'models'
 import urlParser from 'js-video-url-parser/lib/base'
 import 'js-video-url-parser/lib/provider/vimeo'
@@ -24,9 +24,9 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   }
   return (
     <Stack p="2">
-      <InputWithVariableButton
+      <Input
         placeholder="Paste the video link..."
-        initialValue={content?.url ?? ''}
+        defaultValue={content?.url ?? ''}
         onChange={handleUrlChange}
       />
       <Text fontSize="sm" color="gray.400" textAlign="center">

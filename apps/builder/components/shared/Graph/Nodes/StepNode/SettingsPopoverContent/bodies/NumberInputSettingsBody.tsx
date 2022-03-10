@@ -1,6 +1,6 @@
 import { FormLabel, HStack, Stack } from '@chakra-ui/react'
 import { SmartNumberInput } from 'components/shared/SmartNumberInput'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
+import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { NumberInputOptions, Variable } from 'models'
 import React from 'react'
@@ -35,9 +35,9 @@ export const NumberInputSettingsBody = ({
         <FormLabel mb="0" htmlFor="placeholder">
           Placeholder:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="placeholder"
-          initialValue={options.labels.placeholder}
+          defaultValue={options.labels.placeholder}
           onChange={handlePlaceholderChange}
         />
       </Stack>
@@ -45,9 +45,9 @@ export const NumberInputSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Button label:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="button"
-          initialValue={options?.labels?.button ?? 'Send'}
+          defaultValue={options?.labels?.button ?? 'Send'}
           onChange={handleButtonLabelChange}
         />
       </Stack>

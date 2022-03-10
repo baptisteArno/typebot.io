@@ -12,7 +12,7 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
+import { Input } from 'components/shared/Textbox'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   HttpMethod,
@@ -144,9 +144,9 @@ export const WebhookSettings = ({
   if (!localWebhook) return <Spinner />
   return (
     <Stack spacing={4}>
-      <InputWithVariableButton
+      <Input
         placeholder="Your Webhook URL..."
-        initialValue={localWebhook.url ?? ''}
+        defaultValue={localWebhook.url ?? ''}
         onChange={handleUrlChange}
       />
       <SwitchWithLabel

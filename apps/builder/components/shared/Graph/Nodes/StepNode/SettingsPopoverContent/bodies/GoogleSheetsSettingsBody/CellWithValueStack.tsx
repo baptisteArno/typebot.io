@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton/InputWithVariableButton'
+import { Input } from 'components/shared/Textbox/Input'
 import { TableListItemProps } from 'components/shared/TableList'
 import { Cell } from 'models'
 
@@ -25,8 +25,8 @@ export const CellWithValueStack = ({
         items={columns}
         placeholder="Select a column"
       />
-      <InputWithVariableButton
-        initialValue={item.value ?? ''}
+      <Input
+        defaultValue={item.value ?? ''}
         onChange={handleValueChange}
         placeholder="Type a value..."
       />

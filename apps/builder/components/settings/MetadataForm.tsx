@@ -9,10 +9,7 @@ import {
   PopoverContent,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from 'components/shared/ImageUploadContent'
-import {
-  InputWithVariableButton,
-  TextareaWithVariableButton,
-} from 'components/shared/TextboxWithVariableButton'
+import { Input, Textarea } from 'components/shared/Textbox'
 
 type Props = {
   typebotName: string
@@ -89,9 +86,9 @@ export const MetadataForm = ({
         <FormLabel mb="0" htmlFor="title">
           Title:
         </FormLabel>
-        <InputWithVariableButton
+        <Input
           id="title"
-          initialValue={metadata.title ?? typebotName}
+          defaultValue={metadata.title ?? typebotName}
           onChange={handleTitleChange}
         />
       </Stack>
@@ -99,9 +96,9 @@ export const MetadataForm = ({
         <FormLabel mb="0" htmlFor="description">
           Description:
         </FormLabel>
-        <TextareaWithVariableButton
+        <Textarea
           id="description"
-          initialValue={metadata.description}
+          defaultValue={metadata.description}
           onChange={handleDescriptionChange}
         />
       </Stack>

@@ -1,9 +1,6 @@
 import { Stack, useDisclosure, Text } from '@chakra-ui/react'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
-import {
-  InputWithVariableButton,
-  TextareaWithVariableButton,
-} from 'components/shared/TextboxWithVariableButton'
+import { Input, Textarea } from 'components/shared/Textbox'
 import { CredentialsType, SendEmailOptions } from 'models'
 import React, { useState } from 'react'
 import { SmtpConfigModal } from './SmtpConfigModal'
@@ -80,43 +77,43 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       </Stack>
       <Stack>
         <Text>To: </Text>
-        <InputWithVariableButton
+        <Input
           onChange={handleToChange}
-          initialValue={options.recipients.join(', ')}
+          defaultValue={options.recipients.join(', ')}
           placeholder="email1@gmail.com, email2@gmail.com"
         />
       </Stack>
       <Stack>
         <Text>Cc: </Text>
-        <InputWithVariableButton
+        <Input
           onChange={handleCcChange}
-          initialValue={options.cc?.join(', ') ?? ''}
+          defaultValue={options.cc?.join(', ') ?? ''}
           placeholder="email1@gmail.com, email2@gmail.com"
         />
       </Stack>
       <Stack>
         <Text>Bcc: </Text>
-        <InputWithVariableButton
+        <Input
           onChange={handleBccChange}
-          initialValue={options.bcc?.join(', ') ?? ''}
+          defaultValue={options.bcc?.join(', ') ?? ''}
           placeholder="email1@gmail.com, email2@gmail.com"
         />
       </Stack>
       <Stack>
         <Text>Subject: </Text>
-        <InputWithVariableButton
+        <Input
           data-testid="subject-input"
           onChange={handleSubjectChange}
-          initialValue={options.subject ?? ''}
+          defaultValue={options.subject ?? ''}
         />
       </Stack>
       <Stack>
         <Text>Body: </Text>
-        <TextareaWithVariableButton
+        <Textarea
           data-testid="body-input"
           minH="300px"
           onChange={handleBodyChange}
-          initialValue={options.body ?? ''}
+          defaultValue={options.body ?? ''}
         />
       </Stack>
       <SmtpConfigModal

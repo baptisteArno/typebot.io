@@ -1,6 +1,5 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { DebouncedInput } from 'components/shared/DebouncedInput'
-import { InputWithVariableButton } from 'components/shared/TextboxWithVariableButton'
+import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { PhoneNumberInputOptions, Variable } from 'models'
 import React from 'react'
@@ -32,9 +31,9 @@ export const PhoneNumberSettingsBody = ({
         <FormLabel mb="0" htmlFor="placeholder">
           Placeholder:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="placeholder"
-          initialValue={options.labels.placeholder}
+          defaultValue={options.labels.placeholder}
           onChange={handlePlaceholderChange}
         />
       </Stack>
@@ -42,9 +41,9 @@ export const PhoneNumberSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Button label:
         </FormLabel>
-        <DebouncedInput
+        <Input
           id="button"
-          initialValue={options.labels.button}
+          defaultValue={options.labels.button}
           onChange={handleButtonLabelChange}
         />
       </Stack>
@@ -61,9 +60,9 @@ export const PhoneNumberSettingsBody = ({
         <FormLabel mb="0" htmlFor="retry">
           Retry message:
         </FormLabel>
-        <InputWithVariableButton
+        <Input
           id="retry"
-          initialValue={options.retryMessageContent}
+          defaultValue={options.retryMessageContent}
           onChange={handleRetryMessageChange}
         />
       </Stack>

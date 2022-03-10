@@ -1,5 +1,5 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { DebouncedTextarea } from 'components/shared/DebouncedTextarea'
+import { Textarea } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { SetVariableOptions, Variable } from 'models'
 import React from 'react'
@@ -31,9 +31,9 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         <FormLabel mb="0" htmlFor="expression">
           Value / Expression:
         </FormLabel>
-        <DebouncedTextarea
+        <Textarea
           id="expression"
-          initialValue={options.expressionToEvaluate ?? ''}
+          defaultValue={options.expressionToEvaluate ?? ''}
           onChange={handleExpressionChange}
         />
       </Stack>
