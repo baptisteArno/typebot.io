@@ -49,6 +49,11 @@ test.describe('Text bubble step', () => {
     })
     await page.click('[data-testid="link-button"]')
 
+    await page.press('div[role="textbox"]', 'Shift+Enter')
+    await page.click('button >> text=Variables')
+    await page.fill('[data-testid="variables-input"]', 'test')
+    await page.click('text=Create "test"')
+
     await page.click('text=Preview')
     await expect(
       typebotViewer(page).locator('span.slate-bold >> nth=0')

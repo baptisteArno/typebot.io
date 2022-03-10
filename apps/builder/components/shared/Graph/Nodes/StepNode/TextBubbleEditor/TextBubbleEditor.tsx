@@ -144,6 +144,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
           rounded="md"
           bgColor="white"
           w="250px"
+          zIndex={10}
         >
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}

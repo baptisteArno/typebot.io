@@ -60,7 +60,7 @@ export const VariableSearchInput = ({
 
   useEffect(() => {
     const variable = variables.find((v) => v.name === debouncedInputValue)
-    onSelectVariable(variable)
+    if (variable) onSelectVariable(variable)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedInputValue])
 
