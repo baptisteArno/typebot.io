@@ -12,9 +12,11 @@ import { useDebounce } from 'use-debounce'
 export const SmartNumberInput = ({
   value,
   onValueChange,
+  debounceTimeout = 1000,
   ...props
 }: {
   value?: number
+  debounceTimeout?: number
   onValueChange: (value?: number) => void
 } & NumberInputProps) => {
   const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
@@ -23,7 +25,7 @@ export const SmartNumberInput = ({
   )
   const [debouncedValue] = useDebounce(
     valueToReturn,
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(() => {

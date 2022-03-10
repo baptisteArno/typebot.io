@@ -20,16 +20,18 @@ import { byId, isNotDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
+  debounceTimeout?: number
+  isDefaultOpen?: boolean
   onSelectVariable: (
     variable: Pick<Variable, 'id' | 'name'> | undefined
   ) => void
-  isDefaultOpen?: boolean
 } & InputProps
 
 export const VariableSearchInput = ({
   initialVariableId,
   onSelectVariable,
   isDefaultOpen,
+  debounceTimeout = 1000,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
@@ -40,7 +42,7 @@ export const VariableSearchInput = ({
   )
   const [debouncedInputValue] = useDebounce(
     inputValue,
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []

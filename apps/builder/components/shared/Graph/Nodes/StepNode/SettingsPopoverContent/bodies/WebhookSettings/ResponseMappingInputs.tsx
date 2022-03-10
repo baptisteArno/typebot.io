@@ -8,6 +8,7 @@ export const DataVariableInputs = ({
   item,
   onItemChange,
   dataItems,
+  debounceTimeout,
 }: TableListItemProps<ResponseVariableMapping> & { dataItems: string[] }) => {
   const handleBodyPathChange = (bodyPath: string) =>
     onItemChange({ ...item, bodyPath })
@@ -23,6 +24,7 @@ export const DataVariableInputs = ({
           value={item.bodyPath}
           onValueChange={handleBodyPathChange}
           placeholder="Select the data"
+          debounceTimeout={debounceTimeout}
         />
       </FormControl>
       <FormControl>
@@ -31,6 +33,7 @@ export const DataVariableInputs = ({
           onSelectVariable={handleVariableChange}
           placeholder="Search for a variable"
           initialVariableId={item.variableId}
+          debounceTimeout={debounceTimeout}
         />
       </FormControl>
     </Stack>

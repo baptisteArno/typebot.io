@@ -15,12 +15,14 @@ import { useDebounce } from 'use-debounce'
 type Props = {
   selectedItem?: string
   items: string[]
+  debounceTimeout?: number
   onValueChange?: (value: string) => void
 } & InputProps
 
 export const SearchableDropdown = ({
   selectedItem,
   items,
+  debounceTimeout = 1000,
   onValueChange,
   ...inputProps
 }: Props) => {
@@ -28,7 +30,7 @@ export const SearchableDropdown = ({
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
   const [debouncedInputValue] = useDebounce(
     inputValue,
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState([
     ...items

@@ -24,6 +24,7 @@ export const KeyValueInputs = ({
   onItemChange,
   keyPlaceholder,
   valuePlaceholder,
+  debounceTimeout,
 }: TableListItemProps<KeyValue> & {
   keyPlaceholder?: string
   valuePlaceholder?: string
@@ -45,6 +46,7 @@ export const KeyValueInputs = ({
           defaultValue={item.key ?? ''}
           onChange={handleKeyChange}
           placeholder={keyPlaceholder}
+          debounceTimeout={debounceTimeout}
         />
       </FormControl>
       <FormControl>
@@ -54,6 +56,7 @@ export const KeyValueInputs = ({
           defaultValue={item.value ?? ''}
           onChange={handleValueChange}
           placeholder={valuePlaceholder}
+          debounceTimeout={debounceTimeout}
         />
       </FormControl>
     </Stack>

@@ -10,13 +10,15 @@ type ItemWithId<T> = T & { id: string }
 
 export type TableListItemProps<T> = {
   item: T
+  debounceTimeout?: number
   onItemChange: (item: T) => void
 }
 
 type Props<T> = {
   initialItems: ItemWithId<T>[]
-  onItemsChange: (items: ItemWithId<T>[]) => void
   addLabel?: string
+  debounceTimeout?: number
+  onItemsChange: (items: ItemWithId<T>[]) => void
   Item: (props: TableListItemProps<T>) => JSX.Element
   ComponentBetweenItems?: (props: unknown) => JSX.Element
 }
@@ -25,6 +27,7 @@ export const TableList = <T,>({
   initialItems,
   onItemsChange,
   addLabel = 'Add',
+  debounceTimeout,
   Item,
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
@@ -75,7 +78,11 @@ export const TableList = <T,>({
             onMouseLeave={handleMouseLeave}
             mt={itemIndex !== 0 && ComponentBetweenItems ? 4 : 0}
           >
-            <Item item={item} onItemChange={handleCellChange(itemIndex)} />
+            <Item
+              item={item}
+              onItemChange={handleCellChange(itemIndex)}
+              debounceTimeout={debounceTimeout}
+            />
             <Fade in={showDeleteIndex === itemIndex}>
               <IconButton
                 icon={<TrashIcon />}

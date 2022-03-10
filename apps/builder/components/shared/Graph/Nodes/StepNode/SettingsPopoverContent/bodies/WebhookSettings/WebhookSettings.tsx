@@ -81,6 +81,7 @@ export const WebhookSettings = ({
 
     return () => {
       setLocalWebhook((localWebhook) => {
+        console.log(localWebhook)
         if (!localWebhook) return
         updateWebhook(webhookId, localWebhook).then()
         return localWebhook
@@ -148,6 +149,7 @@ export const WebhookSettings = ({
         placeholder="Your Webhook URL..."
         defaultValue={localWebhook.url ?? ''}
         onChange={handleUrlChange}
+        debounceTimeout={0}
       />
       <SwitchWithLabel
         id={'easy-config'}
@@ -177,6 +179,7 @@ export const WebhookSettings = ({
                   onItemsChange={handleQueryParamsChange}
                   Item={QueryParamsInputs}
                   addLabel="Add a param"
+                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -191,6 +194,7 @@ export const WebhookSettings = ({
                   onItemsChange={handleHeadersChange}
                   Item={HeadersInputs}
                   addLabel="Add a value"
+                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -211,6 +215,7 @@ export const WebhookSettings = ({
                     value={localWebhook.body ?? ''}
                     lang="json"
                     onChange={handleBodyChange}
+                    debounceTimeout={0}
                   />
                 )}
               </AccordionPanel>
@@ -228,6 +233,7 @@ export const WebhookSettings = ({
                   onItemsChange={handleVariablesChange}
                   Item={VariableForTestInputs}
                   addLabel="Add an entry"
+                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -258,6 +264,7 @@ export const WebhookSettings = ({
                   onItemsChange={handleResponseMappingChange}
                   Item={ResponseMappingInputs}
                   addLabel="Add an entry"
+                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>

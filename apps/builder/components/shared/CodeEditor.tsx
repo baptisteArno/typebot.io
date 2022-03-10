@@ -10,14 +10,16 @@ import { useDebouncedCallback } from 'use-debounce'
 type Props = {
   value: string
   lang?: 'css' | 'json' | 'js' | 'html'
-  onChange?: (value: string) => void
   isReadOnly?: boolean
+  debounceTimeout?: number
+  onChange?: (value: string) => void
 }
 export const CodeEditor = ({
   value,
   lang,
   onChange,
   isReadOnly = false,
+  debounceTimeout = 1000,
   ...props
 }: Props & Omit<BoxProps, 'onChange'>) => {
   const editorContainer = useRef<HTMLDivElement | null>(null)
@@ -28,7 +30,7 @@ export const CodeEditor = ({
       setPlainTextValue(value)
       onChange && onChange(value)
     },
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(

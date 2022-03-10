@@ -224,12 +224,14 @@ const CollaborationTypeMenuButton = ({
         {convertCollaborationTypeEnumToReadable(type)}
       </MenuButton>
       <MenuList minW={0}>
-        <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-          {convertCollaborationTypeEnumToReadable(CollaborationType.READ)}
-        </MenuItem>
-        <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-          {convertCollaborationTypeEnumToReadable(CollaborationType.WRITE)}
-        </MenuItem>
+        <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+          <MenuItem onClick={() => onChange(CollaborationType.READ)}>
+            {convertCollaborationTypeEnumToReadable(CollaborationType.READ)}
+          </MenuItem>
+          <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
+            {convertCollaborationTypeEnumToReadable(CollaborationType.WRITE)}
+          </MenuItem>
+        </Stack>
       </MenuList>
     </Menu>
   )

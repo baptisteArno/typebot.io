@@ -22,12 +22,14 @@ export type TextBoxProps = {
     | ComponentWithAs<'textarea', TextareaProps>
     | ComponentWithAs<'input', InputProps>
   withVariableButton?: boolean
+  debounceTimeout?: number
 } & Omit<InputProps & TextareaProps, 'onChange'>
 
 export const TextBox = ({
   onChange,
   TextBox,
   withVariableButton = true,
+  debounceTimeout = 1000,
   ...props
 }: TextBoxProps) => {
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
@@ -39,7 +41,7 @@ export const TextBox = ({
     (value) => {
       onChange(value)
     },
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(
