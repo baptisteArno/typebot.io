@@ -49,6 +49,7 @@ import { deepEqual } from 'fast-equals'
 import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
 import cuid from 'cuid'
+import { diff } from 'deep-object-diff'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -253,12 +254,35 @@ export const checkIfTypebotsAreEqual = (typebotA: Typebot, typebotB: Typebot) =>
 
 export const checkIfPublished = (
   typebot: Typebot,
-  publicTypebot: PublicTypebot
-) =>
-  deepEqual(typebot.blocks, publicTypebot.blocks) &&
-  deepEqual(typebot.settings, publicTypebot.settings) &&
-  deepEqual(typebot.theme, publicTypebot.theme) &&
-  deepEqual(typebot.variables, publicTypebot.variables)
+  publicTypebot: PublicTypebot,
+  debug?: boolean
+) => {
+  if (debug)
+    console.log(
+      diff(
+        JSON.parse(JSON.stringify(typebot.blocks)),
+        JSON.parse(JSON.stringify(publicTypebot.blocks))
+      )
+    )
+  return (
+    deepEqual(
+      JSON.parse(JSON.stringify(typebot.blocks)),
+      JSON.parse(JSON.stringify(publicTypebot.blocks))
+    ) &&
+    deepEqual(
+      JSON.parse(JSON.stringify(typebot.settings)),
+      JSON.parse(JSON.stringify(publicTypebot.settings))
+    ) &&
+    deepEqual(
+      JSON.parse(JSON.stringify(typebot.theme)),
+      JSON.parse(JSON.stringify(publicTypebot.theme))
+    ) &&
+    deepEqual(
+      JSON.parse(JSON.stringify(typebot.variables)),
+      JSON.parse(JSON.stringify(publicTypebot.variables))
+    )
+  )
+}
 
 export const parseDefaultPublicId = (name: string, id: string) =>
   toKebabCase(name) + `-${id?.slice(-7)}`

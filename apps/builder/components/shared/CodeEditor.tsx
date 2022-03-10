@@ -5,7 +5,7 @@ import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebouncedCallback } from 'use-debounce'
 
 type Props = {
   value: string
@@ -22,10 +22,20 @@ export const CodeEditor = ({
 }: Props & Omit<BoxProps, 'onChange'>) => {
   const editorContainer = useRef<HTMLDivElement | null>(null)
   const editorView = useRef<EditorView | null>(null)
-  const [plainTextValue, setPlainTextValue] = useState(value)
-  const [debouncedValue] = useDebounce(
-    plainTextValue,
+  const [, setPlainTextValue] = useState(value)
+  const debounced = useDebouncedCallback(
+    (value) => {
+      setPlainTextValue(value)
+      onChange && onChange(value)
+    },
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : 1000
+  )
+
+  useEffect(
+    () => () => {
+      debounced.flush()
+    },
+    [debounced]
   )
 
   useEffect(() => {
@@ -41,12 +51,6 @@ export const CodeEditor = ({
   }, [value])
 
   useEffect(() => {
-    if (!onChange || debouncedValue === value) return
-    onChange(debouncedValue)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
-
-  useEffect(() => {
     const editor = initEditor(value)
     return () => {
       editor?.destroy()
@@ -58,7 +62,7 @@ export const CodeEditor = ({
     if (!editorContainer.current) return
     const updateListenerExtension = EditorView.updateListener.of((update) => {
       if (update.docChanged && onChange)
-        setPlainTextValue(update.state.doc.toJSON().join('\n'))
+        debounced(update.state.doc.toJSON().join('\n'))
     })
     const extensions = [
       updateListenerExtension,
