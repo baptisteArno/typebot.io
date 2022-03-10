@@ -26,7 +26,9 @@ export const InputChatStep = ({
 
   const { variableId } = step.options
   const defaultValue =
-    variableId && typebot.variables.find(byId(variableId))?.value
+    typebot.settings.general.isInputPrefillEnabled ?? true
+      ? variableId && typebot.variables.find(byId(variableId))?.value
+      : undefined
 
   const handleSubmit = (content: string) => {
     setAnswer(content)

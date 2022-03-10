@@ -7,6 +7,7 @@ export type Settings = {
 export type GeneralSettings = {
   isBrandingEnabled: boolean
   isNewResultOnRefreshEnabled?: boolean
+  isInputPrefillEnabled?: boolean
 }
 
 export type TypingEmulation = {
@@ -23,7 +24,11 @@ export type Metadata = {
 }
 
 export const defaultSettings: Settings = {
-  general: { isBrandingEnabled: true, isNewResultOnRefreshEnabled: false },
+  general: {
+    isBrandingEnabled: true,
+    isNewResultOnRefreshEnabled: false,
+    isInputPrefillEnabled: true,
+  },
   typingEmulation: { enabled: true, speed: 300, maxDelay: 1.5 },
   metadata: {
     description:

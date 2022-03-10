@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { BubbleStepType, TextBubbleStep } from 'models'
 import { computeTypingTimeout } from 'services/chat'
@@ -23,10 +23,8 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
-  const content = useMemo(
-    () => parseVariables(typebot.variables)(step.content.html),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typebot.variables]
+  const [content] = useState(
+    parseVariables(typebot.variables)(step.content.html)
   )
 
   useEffect(() => {

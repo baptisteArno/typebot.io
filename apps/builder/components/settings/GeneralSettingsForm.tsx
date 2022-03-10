@@ -41,6 +41,12 @@ export const GeneralSettingsForm = ({
       isNewResultOnRefreshEnabled,
     })
 
+  const handleInputPrefillChange = (isInputPrefillEnabled: boolean) =>
+    onGeneralSettingsChange({
+      ...generalSettings,
+      isInputPrefillEnabled,
+    })
+
   return (
     <Stack spacing={6}>
       <UpgradeModal isOpen={isOpen} onClose={onClose} />
@@ -59,6 +65,13 @@ export const GeneralSettingsForm = ({
           onChange={handleSwitchChange}
         />
       </Flex>
+      <SwitchWithLabel
+        id="prefill"
+        label="Prefill input"
+        initialValue={generalSettings.isInputPrefillEnabled ?? true}
+        onCheckChange={handleInputPrefillChange}
+        moreInfoContent="Inputs are automatically pre-filled whenever its saving variable has a value"
+      />
       <SwitchWithLabel
         id="new-result"
         label="Create new session on page refresh"

@@ -1,4 +1,5 @@
 import test, { expect } from '@playwright/test'
+import { defaultTextInputOptions } from 'models'
 import path from 'path'
 import { generate } from 'short-uuid'
 import { importTypebotInDatabase } from '../services/database'
@@ -9,11 +10,12 @@ test.describe.parallel('Settings page', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = generate()
       await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/theme.json'),
+        path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
         }
       )
+
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
@@ -23,10 +25,24 @@ test.describe.parallel('Settings page', () => {
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
       ).toBeHidden()
+
       await page.click('text=Create new session on page refresh')
       await expect(
         page.locator('input[type="checkbox"] >> nth=-1')
       ).toHaveAttribute('checked', '')
+
+      await expect(
+        typebotViewer(page).locator('input[value="Baptiste"]')
+      ).toBeVisible()
+      await page.click('text=Prefill input')
+      await page.click('text=Theme')
+      await page.waitForTimeout(1000)
+      await page.click('text=Settings')
+      await expect(
+        typebotViewer(page).locator(
+          `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+        )
+      ).toHaveValue('')
     })
   })
 
@@ -34,7 +50,7 @@ test.describe.parallel('Settings page', () => {
     test('should be fillable', async ({ page }) => {
       const typebotId = generate()
       await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/theme.json'),
+        path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
         }
@@ -57,7 +73,7 @@ test.describe.parallel('Settings page', () => {
       const imageUrl = 'https://www.baptistearno.com/images/site-preview.png'
       const typebotId = 'metadata-typebot'
       await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/theme.json'),
+        path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
         }
@@ -101,7 +117,7 @@ test.describe.parallel('Settings page', () => {
     test("can't remove branding", async ({ page }) => {
       const typebotId = 'free-branding-typebot'
       await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/theme.json'),
+        path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
         }
