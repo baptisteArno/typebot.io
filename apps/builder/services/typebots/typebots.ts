@@ -41,6 +41,7 @@ import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
+  isWebhookStep,
   stepTypeHasItems,
   stepTypeHasOption,
   stepTypeHasWebhook,
@@ -108,7 +109,7 @@ export const importTypebot = async (typebot: Typebot) => {
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: typebotToImport,
+    body: cleanUpTypebot(typebotToImport),
   })
 }
 
@@ -132,9 +133,21 @@ export const duplicateTypebot = async (typebotId: string) => {
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: duplicatedTypebot,
+    body: cleanUpTypebot(duplicatedTypebot),
   })
 }
+
+const cleanUpTypebot = (
+  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>
+) => ({
+  ...typebot,
+  blocks: typebot.blocks.map((b) => ({
+    ...b,
+    steps: b.steps.map((s) =>
+      isWebhookStep(s) ? { ...s, webhookId: cuid() } : s
+    ),
+  })),
+})
 
 const getTypebot = (typebotId: string) =>
   sendRequest<{ typebot: Typebot }>({
