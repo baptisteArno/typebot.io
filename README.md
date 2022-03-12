@@ -7,12 +7,12 @@
   </a>
 </p>
 
-Typebot is an open-source alternative to Landbot. It allows you to create conversational apps (Lead qualification, Product launch, User onboarding, Customer support), embed them anywhere on your web apps, and collect results in real-time.
+Typebot is an open-source alternative to Landbot. It allows you to create conversational apps/forms (Lead qualification, Product launch, User onboarding, Customer support), embed them anywhere on your web/mobile apps, and collect results in real-time.
 
 ## Features
 
 - Text, image, video bubble messages
-- Text, URL, email, phone number, date input fields
+- Text, URL, email, phone number, date... input fields
 - Native integrations including Google Sheets, Webhooks, Send email (more to come)
 - Conditional branching, URL redirections
 - Beautiful animations
@@ -48,27 +48,26 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
    Copy `apps/viewer/.env.local.example` to `apps/viewer/.env.local`
 
-3. Install packages and start the applications.
+   Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
+
+3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
+4. Start the applications.
 
    ```sh
-   yarn
+   yarn && yarn dev
    ```
 
-4. Make sure your have [docker-compose](https://docs.docker.com/compose/install/) installed
+   Builder is available at `http://localhost:3000`
 
-5. Start the applications:
+   Viewer is available at `http://localhost:3001`
 
-   ```sh
-   yarn dev
-   ```
+   Database inspector is available at `http://localhost:5555`
 
-   Builder will be available at `http://localhost:3000`
+   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
 
-   Viewer will be available at `http://localhost:3001`
+## Contribute
 
-   Database inspector will be available at `http://localhost:5555`
-
-   By default, you can easily authenticate in the builder using the "Github Sign In" button.
+Another great way to support Typebot is to contribute to the project. Head over to the [Contribute guidelines](https://github.com/baptisteArno/typebot.io/blob/main/CONTRIBUTING.md) to get started. 😍
 
 ## Technology
 
