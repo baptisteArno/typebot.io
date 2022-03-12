@@ -1,0 +1,38 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:13
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: 'typebot'
+      POSTGRES_PASSWORD: 'typebot'
+  minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - '9000:9000'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - s3_data:/data
+  # This service just make sure a bucket with the right policies is created
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
+      /usr/bin/mc mb minio/typebot;
+      /usr/bin/mc policy set public minio/typebot/public;
+      exit 0;
+      "
+volumes:
+  db_data:
+  s3_data:

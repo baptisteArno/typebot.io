@@ -6,14 +6,14 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "devDependencies": {
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
-    "next": "^12.0.10",
+    "next": "^12.1.0",
     "db": "*"
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput"
+    "dx": "tsc --watch --preserveWatchOutput"
   }
 }

@@ -7,16 +7,18 @@
     "apps/*"
   ],
   "scripts": {
-    "docker:up": "docker-compose up -d",
-    "db:nuke": "docker-compose down --volumes --remove-orphans",
-    "dev": "yarn docker:up && turbo run dev --parallel",
+    "docker:up": "docker compose -f docker-compose.dev.yml up -d",
+    "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
+    "dev:prepare": "turbo run build --scope=bot-engine --no-deps --include-dependencies",
+    "dev": "yarn docker:up && yarn dev:prepare && turbo run dx --parallel",
     "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dev --parallel",
     "build": "yarn docker:up && turbo run build",
     "test:builder": "cd apps/builder && yarn test",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "db:migrate": "yarn workspace db migration:deploy"
   },
   "devDependencies": {
-    "turbo": "^1.1.5"
+    "turbo": "^1.1.6"
   },
   "packageManager": "yarn@1.22.17"
 }

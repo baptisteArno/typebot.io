@@ -1,5 +1,5 @@
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
-import type { PrismaClient, Prisma, Invitation } from 'db'
+import { PrismaClient, Prisma, Invitation, Plan } from 'db'
 import { randomUUID } from 'crypto'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
@@ -12,7 +12,12 @@ export function CustomAdapter(p: PrismaClient): Adapter {
         where: { email: user.email },
       })
       const createdUser = await p.user.create({
-        data: { ...data, id: user.id, apiToken: randomUUID() },
+        data: {
+          ...data,
+          id: user.id,
+          apiToken: randomUUID(),
+          plan: process.env.ADMIN_EMAIL === data.email ? Plan.PRO : Plan.FREE,
+        },
       })
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)

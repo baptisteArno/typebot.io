@@ -5,21 +5,22 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "prisma": "^3.9.2",
-    "ts-node": "^10.5.0",
-    "typescript": "^4.5.5",
+    "prisma": "^3.10.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2",
     "dotenv-cli": "5.0.0"
   },
   "dependencies": {
-    "@prisma/client": "^3.9.2"
+    "@prisma/client": "^3.10.0"
   },
   "scripts": {
-    "dev": "dotenv -e ../../apps/builder/.env.local yarn prisma db push && yarn start:sutdio  ",
-    "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none yarn prisma studio",
-    "build": "DATABASE_URL=$MIGRATION_DATABASE_URL yarn migration:deploy",
-    "migration:push": "dotenv -e ../../apps/builder/.env.local yarn prisma db push",
-    "migration:create": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate dev",
-    "migration:reset": "dotenv -e ../../apps/builder/.env.local yarn prisma migrate reset",
-    "migration:deploy": "yarn prisma migrate deploy"
+    "dx": "dotenv -e ../../apps/builder/.env.local prisma db push && yarn start:sutdio  ",
+    "build": "yarn generate:schema",
+    "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none prisma studio",
+    "generate:schema": "dotenv -e ../../apps/builder/.env.local prisma generate",
+    "migration:push": "dotenv -e ../../apps/builder/.env.local prisma db push",
+    "migration:create": "dotenv -e ../../apps/builder/.env.local prisma migrate dev",
+    "migration:reset": "dotenv -e ../../apps/builder/.env.local prisma migrate reset",
+    "migration:deploy": "prisma migrate deploy"
   }
 }

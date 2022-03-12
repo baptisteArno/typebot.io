@@ -5,8 +5,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils'
 
-const adminEmail = 'contact@baptiste-arnaud.fr'
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
@@ -81,7 +79,7 @@ const parseWhereFilter = (
     {
       id: typebotId,
       ownerId:
-        (type === 'read' && user.email === adminEmail) ||
+        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
         process.env.NEXT_PUBLIC_E2E_TEST
           ? undefined
           : user.id,

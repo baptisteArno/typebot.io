@@ -8,7 +8,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'next/core-web-vitals',
-    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -23,10 +22,9 @@ module.exports = {
       version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
     },
   },
-  plugins: ['prettier', 'react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/no-unescaped-entities': [0],
-    'prettier/prettier': 'error',
     'react/display-name': [0],
   },
 }

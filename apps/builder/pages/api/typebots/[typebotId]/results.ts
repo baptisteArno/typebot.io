@@ -5,8 +5,6 @@ import { getAuthenticatedUser } from 'services/api/utils'
 import { isFreePlan } from 'services/user/user'
 import { methodNotAllowed, notAuthenticated } from 'utils'
 
-const adminEmail = 'contact@baptiste-arnaud.fr'
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
@@ -24,7 +22,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : undefined,
       where: {
         typebotId,
-        typebot: { ownerId: user.email === adminEmail ? undefined : user.id },
+        typebot: {
+          ownerId: user.email === process.env.ADMIN_EMAIL ? undefined : user.id,
+        },
         answers: { some: {} },
         isCompleted: isFreePlan(user) ? true : undefined,
       },

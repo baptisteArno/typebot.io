@@ -2,7 +2,9 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 
 const moduleExports = {
-  // Your existing module.exports
+  experimental: {
+    outputStandalone: true,
+  },
 }
 
 const sentryWebpackPluginOptions = {
@@ -11,4 +13,6 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
 
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions)
+module.exports = process.env.SENTRY_AUTH_TOKEN
+  ? withSentryConfig(moduleExports, sentryWebpackPluginOptions)
+  : moduleExports

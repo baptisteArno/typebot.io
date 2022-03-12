@@ -7,20 +7,21 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-node-resolve": "^13.1.3",
-    "@rollup/plugin-typescript": "^8.3.0",
-    "rollup": "^2.67.2",
-    "rollup-plugin-dts": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "rollup": "^2.70.0",
+    "rollup-plugin-dts": "^4.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "typescript": "^4.5.5"
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.2"
   },
   "dependencies": {
     "models": "*",
-    "next": "^12.0.10"
+    "next": "^12.1.0"
   },
   "scripts": {
     "build": "yarn rollup -c",
-    "dev": "yarn rollup -c --watch"
+    "dx": "yarn rollup -c --watch"
   }
 }

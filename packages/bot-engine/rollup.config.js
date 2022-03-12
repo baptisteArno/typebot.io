@@ -28,7 +28,7 @@ export default [
     ],
     plugins: [
       peerDepsExternal(),
-      resolve(),
+      resolve({ preferBuiltins: true }),
       json(),
       commonjs(),
       typescript({ tsconfig: './tsconfig.json' }),
