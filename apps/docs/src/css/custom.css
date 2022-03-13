@@ -21,17 +21,6 @@ h4 {
 img {
   border-radius: 0.5rem;
 }
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #0042da;
-  --ifm-color-primary-dark: #003bc4;
-  --ifm-color-primary-darker: #0038b9;
-  --ifm-color-primary-darkest: #002e99;
-  --ifm-color-primary-light: #0049f0;
-  --ifm-color-primary-lighter: #004cfb;
-  --ifm-color-primary-lightest: #1c61ff;
-  --ifm-code-font-size: 95%;
-}
 
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);

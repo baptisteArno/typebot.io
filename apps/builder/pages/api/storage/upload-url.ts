@@ -19,12 +19,11 @@ const handler = async (
     if (
       !process.env.S3_ENDPOINT ||
       !process.env.S3_ACCESS_KEY ||
-      !process.env.S3_SECRET_KEY ||
-      !process.env.S3_BUCKET
+      !process.env.S3_SECRET_KEY
     )
       return res.send({
         message:
-          'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_ACCESS_KEY, S3_BUCKET',
+          'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
     const s3 = new Client({
@@ -40,7 +39,7 @@ const handler = async (
     const filePath = req.query.filePath as string | undefined
     if (!filePath) return badRequest(res)
     const presignedUrl = await s3.presignedPutObject(
-      process.env.S3_BUCKET as string,
+      process.env.S3_BUCKET ?? 'typebot',
       filePath
     )
 

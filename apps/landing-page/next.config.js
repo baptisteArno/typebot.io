@@ -35,7 +35,7 @@ module.exports = withBundleAnalyzer({
         {
           source: '/_next/static/:static*',
           destination:
-            process.env.NEXT_PUBLIC_VIEWER_HOST + '/_next/static/:static*',
+            process.env.NEXT_PUBLIC_VIEWER_URL + '/_next/static/:static*',
           has: [
             {
               type: 'header',
@@ -52,11 +52,11 @@ module.exports = withBundleAnalyzer({
       fallback: [
         {
           source: '/:typebotId*',
-          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/:typebotId*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/:typebotId*',
         },
         {
           source: '/api/:path*',
-          destination: process.env.NEXT_PUBLIC_VIEWER_HOST + '/api/:path*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/api/:path*',
         },
       ],
     }

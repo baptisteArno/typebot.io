@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     if (!context.req.headers.host) return { props: {} }
     typebot = context.req.headers.host.includes(
-      (process.env.NEXT_PUBLIC_VIEWER_HOST ?? '').split('//')[1]
+      (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split('//')[1]
     )
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(

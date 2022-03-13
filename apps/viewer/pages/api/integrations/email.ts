@@ -10,18 +10,18 @@ import { withSentry } from '@sentry/nextjs'
 const cors = initMiddleware(Cors())
 
 const defaultTransportOptions = {
-  host: process.env.EMAIL_NOTIFICATIONS_SERVER_HOST,
-  port: Number(process.env.EMAIL_NOTIFICATIONS_SERVER_PORT),
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
   secure: false,
   auth: {
-    user: process.env.EMAIL_NOTIFICATIONS_SERVER_USER,
-    pass: process.env.EMAIL_NOTIFICATIONS_SERVER_PASSWORD,
+    user: process.env.SMTP_USERNAME,
+    pass: process.env.SMTP_PASSWORD,
   },
 }
 
 const defaultFrom = {
-  name: process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_FROM_NAME,
-  email: process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_FROM_EMAIL,
+  name: process.env.NEXT_PUBLIC_SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
+  email: process.env.NEXT_PUBLIC_SMTP_FROM?.match(/\<(.*)\>/)?.pop(),
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

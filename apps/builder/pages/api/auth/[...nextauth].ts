@@ -10,40 +10,51 @@ import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
 
-const providers: Provider[] = [
-  EmailProvider({
-    server: {
-      host: process.env.AUTH_EMAIL_SERVER_HOST,
-      port: Number(process.env.AUTH_EMAIL_SERVER_PORT),
-      auth: {
-        user: process.env.AUTH_EMAIL_SERVER_USER,
-        pass: process.env.AUTH_EMAIL_SERVER_PASSWORD,
-      },
-    },
-    from: `"${process.env.AUTH_EMAIL_FROM_NAME}" <${process.env.AUTH_EMAIL_FROM_EMAIL}>`,
-  }),
-]
+const providers: Provider[] = []
 
-if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET)
+providers.push(
+  GitHubProvider({
+    clientId:
+      process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID ?? '534b549dd17709a743a2',
+    clientSecret:
+      process.env.GITHUB_CLIENT_SECRET ??
+      '7adb03507504fb1a54422f6c3c697277cfd000a9',
+  })
+)
+
+if (process.env.NEXT_PUBLIC_SMTP_FROM)
   providers.push(
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    EmailProvider({
+      server: {
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 25,
+        auth: {
+          user: process.env.SMTP_USERNAME,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
+      from: process.env.NEXT_PUBLIC_SMTP_FROM,
     })
   )
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+if (
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
+  process.env.GOOGLE_CLIENT_SECRET
+)
   providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     })
   )
 
-if (process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET)
+if (
+  process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
+  process.env.FACEBOOK_CLIENT_SECRET
+)
   providers.push(
     FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     })
   )

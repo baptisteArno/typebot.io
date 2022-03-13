@@ -5,7 +5,7 @@ import { decrypt, encrypt } from 'utils'
 import prisma from './prisma'
 
 export const oauth2Client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
   `${process.env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
 )

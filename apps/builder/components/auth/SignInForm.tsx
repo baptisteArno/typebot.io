@@ -52,26 +52,30 @@ export const SignInForm = ({
   return (
     <Stack spacing="4">
       <SocialLoginButtons />
-      <DividerWithText mt="6">Or with your email</DividerWithText>
-      <HStack as="form" onSubmit={handleEmailSubmit}>
-        <Input
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="email@company.com"
-          required
-          value={emailValue}
-          onChange={handleEmailChange}
-        />
-        <Button
-          type="submit"
-          isLoading={
-            ['loading', 'authenticated'].includes(status) || authLoading
-          }
-        >
-          Submit
-        </Button>
-      </HStack>
+      {process.env.NEXT_PUBLIC_SMTP_FROM && (
+        <>
+          <DividerWithText mt="6">Or with your email</DividerWithText>
+          <HStack as="form" onSubmit={handleEmailSubmit}>
+            <Input
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="email@company.com"
+              required
+              value={emailValue}
+              onChange={handleEmailChange}
+            />
+            <Button
+              type="submit"
+              isLoading={
+                ['loading', 'authenticated'].includes(status) || authLoading
+              }
+            >
+              Submit
+            </Button>
+          </HStack>
+        </>
+      )}
     </Stack>
   )
 }

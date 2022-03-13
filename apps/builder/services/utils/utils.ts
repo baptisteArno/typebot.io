@@ -135,3 +135,6 @@ export const timeSince = (date: string) => {
   }
   return Math.floor(seconds) + ' seconds'
 }
+
+export const isCloudProdInstance = () =>
+  window.location.hostname === 'app.typebot.io'

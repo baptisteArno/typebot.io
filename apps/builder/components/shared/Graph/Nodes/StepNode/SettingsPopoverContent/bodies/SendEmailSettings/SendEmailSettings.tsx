@@ -69,9 +69,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           currentCredentialsId={options.credentialsId}
           onCredentialsSelect={handleCredentialsSelect}
           onCreateNewClick={onOpen}
-          defaultCredentialLabel={
-            process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_FROM_EMAIL
-          }
+          defaultCredentialLabel={process.env.NEXT_PUBLIC_SMTP_FROM?.match(
+            /\<(.*)\>/
+          )?.pop()}
           refreshDropdownKey={refreshCredentialsKey}
         />
       </Stack>

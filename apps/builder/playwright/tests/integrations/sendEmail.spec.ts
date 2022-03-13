@@ -29,7 +29,7 @@ test.describe('Send email step', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.click(
-      `text=${process.env.NEXT_PUBLIC_EMAIL_NOTIFICATIONS_FROM_EMAIL}`
+      `text=${process.env.NEXT_PUBLIC_SMTP_FROM?.match(/\<(.*)\>/)?.pop()}`
     )
     await page.click('text=Connect new')
     const createButton = page.locator('button >> text=Create')

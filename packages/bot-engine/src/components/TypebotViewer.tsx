@@ -33,7 +33,7 @@ export type TypebotViewerProps = {
 }
 export const TypebotViewer = ({
   typebot,
-  apiHost = process.env.NEXT_PUBLIC_VIEWER_HOST,
+  apiHost = process.env.NEXT_PUBLIC_VIEWER_URL,
   isPreview = false,
   onNewLog,
   onNewBlockVisible,
@@ -59,7 +59,7 @@ export const TypebotViewer = ({
   const handleCompleted = () => onCompleted && onCompleted()
 
   if (!apiHost)
-    return <p>process.env.NEXT_PUBLIC_VIEWER_HOST is missing in env</p>
+    return <p>process.env.NEXT_PUBLIC_VIEWER_URL is missing in env</p>
   return (
     <Frame
       id="typebot-iframe"

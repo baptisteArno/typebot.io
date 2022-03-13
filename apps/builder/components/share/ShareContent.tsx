@@ -54,7 +54,7 @@ export const ShareContent = () => {
           {typebot && (
             <EditableUrl
               hostname={
-                process.env.NEXT_PUBLIC_VIEWER_HOST ?? 'https://typebot.io'
+                process.env.NEXT_PUBLIC_VIEWER_URL ?? 'https://typebot.io'
               }
               pathname={publicId}
               onPathnameChange={handlePublicIdChange}

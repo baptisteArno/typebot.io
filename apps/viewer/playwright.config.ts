@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
   maxFailures: process.env.CI ? 10 : undefined,
   use: {
     actionTimeout: 0,
-    baseURL: process.env.NEXT_PUBLIC_VIEWER_HOST,
+    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL,
     storageState: path.join(__dirname, 'playwright/proUser.json'),
     trace: 'on-first-retry',
     video: 'retain-on-failure',

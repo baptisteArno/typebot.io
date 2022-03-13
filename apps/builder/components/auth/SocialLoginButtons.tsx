@@ -36,24 +36,28 @@ export const SocialLoginButtons = () => {
       >
         Continue with GitHub
       </Button>
-      <Button
-        leftIcon={<GoogleLogo />}
-        onClick={handleGoogleClick}
-        data-testid="google"
-        isLoading={['loading', 'authenticated'].includes(status)}
-        variant="outline"
-      >
-        Continue with Google
-      </Button>
-      <Button
-        leftIcon={<FacebookLogo />}
-        onClick={handleFacebookClick}
-        data-testid="facebook"
-        isLoading={['loading', 'authenticated'].includes(status)}
-        variant="outline"
-      >
-        Continue with Facebook
-      </Button>
+      {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+        <Button
+          leftIcon={<GoogleLogo />}
+          onClick={handleGoogleClick}
+          data-testid="google"
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with Google
+        </Button>
+      )}
+      {process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID && (
+        <Button
+          leftIcon={<FacebookLogo />}
+          onClick={handleFacebookClick}
+          data-testid="facebook"
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with Facebook
+        </Button>
+      )}
     </Stack>
   )
 }

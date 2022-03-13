@@ -10,16 +10,16 @@ export const sendEmailNotification = ({
   content: string
 }) => {
   const transporter = createTransport({
-    host: process.env.AUTH_EMAIL_SERVER_HOST,
-    port: Number(process.env.AUTH_EMAIL_SERVER_PORT),
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
     auth: {
-      user: process.env.AUTH_EMAIL_SERVER_USER,
-      pass: process.env.AUTH_EMAIL_SERVER_PASSWORD,
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD,
     },
   })
 
   return transporter.sendMail({
-    from: `"${process.env.AUTH_EMAIL_FROM_NAME}" <${process.env.AUTH_EMAIL_FROM_EMAIL}>`,
+    from: process.env.NEXT_PUBLIC_SMTP_FROM,
     to,
     subject,
     html: content,

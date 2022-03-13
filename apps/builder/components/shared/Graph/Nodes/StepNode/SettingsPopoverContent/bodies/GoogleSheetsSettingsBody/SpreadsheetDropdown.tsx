@@ -20,7 +20,9 @@ export const SpreadsheetsDropdown = ({
   })
   const { spreadsheets, isLoading } = useSpreadsheets({
     credentialsId,
-    onError: (e) => toast({ title: e.name, description: e.message }),
+    onError: (e) =>
+      !toast.isActive('spreadsheets') &&
+      toast({ id: 'spreadsheets', title: e.name, description: e.message }),
   })
   const currentSpreadsheet = useMemo(
     () => spreadsheets?.find((s) => s.id === spreadsheetId),

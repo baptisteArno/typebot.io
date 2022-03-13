@@ -2,6 +2,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { useUser } from 'contexts/UserContext'
 import { Plan } from 'db'
 import React, { useEffect } from 'react'
+import { isCloudProdInstance } from 'services/utils'
 import { initBubble } from 'typebot-js'
 
 export const SupportBubble = () => {
@@ -9,20 +10,21 @@ export const SupportBubble = () => {
   const { user } = useUser()
 
   useEffect(() => {
-    initBubble({
-      publishId: 'typebot-support',
-      viewerHost: process.env.NEXT_PUBLIC_VIEWER_HOST,
-      backgroundColor: '#ffffff',
-      button: { color: '#0042DA' },
-      hiddenVariables: {
-        'User ID': user?.id,
-        Name: user?.name ?? undefined,
-        Email: user?.email ?? undefined,
-        'Typebot ID': typebot?.id,
-        'Avatar URL': user?.image ?? undefined,
-        Plan: planToReadable(user?.plan),
-      },
-    })
+    if (isCloudProdInstance())
+      initBubble({
+        publishId: 'typebot-support',
+        viewerHost: process.env.NEXT_PUBLIC_VIEWER_URL,
+        backgroundColor: '#ffffff',
+        button: { color: '#0042DA' },
+        hiddenVariables: {
+          'User ID': user?.id,
+          Name: user?.name ?? undefined,
+          Email: user?.email ?? undefined,
+          'Typebot ID': typebot?.id,
+          'Avatar URL': user?.image ?? undefined,
+          Plan: planToReadable(user?.plan),
+        },
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, typebot])
 

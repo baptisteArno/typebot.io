@@ -80,7 +80,8 @@ module.exports = {
       ],
     },
     colorMode: {
-      disableSwitch: true,
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
   },
   presets: [
