@@ -34,7 +34,8 @@ export const DateForm = ({
                 <p className="font-semibold mr-2">{labels?.from ?? 'From:'}</p>
               )}
               <input
-                className="focus:outline-none bg-transparent flex-1 w-full text-input"
+                className="focus:outline-none flex-1 w-full text-input"
+                style={{ minHeight: '2rem', minWidth: '100px' }}
                 type={hasTime ? 'datetime-local' : 'date'}
                 onChange={(e) =>
                   setInputValues({ ...inputValues, from: e.target.value })
@@ -48,7 +49,8 @@ export const DateForm = ({
                   <p className="font-semibold">{labels?.to ?? 'To:'}</p>
                 )}
                 <input
-                  className="focus:outline-none bg-transparent flex-1 w-full text-input ml-2"
+                  className="focus:outline-none flex-1 w-full text-input ml-2"
+                  style={{ minHeight: '2rem', minWidth: '100px' }}
                   type={hasTime ? 'datetime-local' : 'date'}
                   onChange={(e) =>
                     setInputValues({ ...inputValues, to: e.target.value })
