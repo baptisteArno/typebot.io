@@ -1,7 +1,5 @@
 export type IframeParams = {
-  publishId: string
-  isV1?: boolean
-  viewerHost?: string
+  url: string
   backgroundColor?: string
   hiddenVariables?: { [key: string]: string | undefined }
   customDomain?: string

@@ -3,18 +3,16 @@ import './style.css'
 
 export const createIframe = ({
   backgroundColor,
-  viewerHost = 'https://typebot-viewer.vercel.app',
-  isV1,
+  url,
   ...iframeParams
 }: IframeParams): HTMLIFrameElement => {
-  const { publishId, loadWhenVisible, hiddenVariables } = iframeParams
-  const host = isV1 ? `https://bot.typebot.io` : viewerHost
-  const iframeUrl = `${host}/${publishId}${parseQueryParams(hiddenVariables)}`
+  const { loadWhenVisible, hiddenVariables } = iframeParams
+  const iframeUrl = `${url}${parseQueryParams(hiddenVariables)}`
   const iframe = document.createElement('iframe')
   iframe.setAttribute(loadWhenVisible ? 'data-src' : 'src', iframeUrl)
-  iframe.setAttribute('data-id', iframeParams.publishId)
+  iframe.setAttribute('data-id', url)
   const randomThreeLettersId = Math.random().toString(36).substring(7)
-  const uniqueId = `${publishId}-${randomThreeLettersId}`
+  const uniqueId = `${url}-${randomThreeLettersId}`
   iframe.setAttribute('id', uniqueId)
   if (backgroundColor) iframe.style.backgroundColor = backgroundColor
   iframe.classList.add('typebot-iframe')

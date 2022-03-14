@@ -7,7 +7,7 @@ describe('initBubble', () => {
 
   it('should initialize a bubble embed', () => {
     expect.assertions(2)
-    Typebot.initBubble({ publishId: 'typebot-id' })
+    Typebot.initBubble({ url: 'https://typebot.io/typebot-id' })
     const bubbleElement = document.getElementById('typebot-bubble')
     const frame = document.getElementsByTagName('iframe')[0]
     expect(frame).toBeDefined()
@@ -17,14 +17,14 @@ describe('initBubble', () => {
   it('should overwrite bubble if exists', () => {
     expect.assertions(2)
     Typebot.initBubble({
-      publishId: 'typebot-id',
+      url: 'https://typebot.io/typebot-id',
       hiddenVariables: { var1: 'test' },
     })
-    Typebot.initBubble({ publishId: 'typebot-id2' })
+    Typebot.initBubble({ url: 'https://typebot.io/typebot-id2' })
     const frames = document.getElementsByTagName('iframe')
     expect(frames).toHaveLength(1)
     expect(frames[0].dataset.src).toBe(
-      'https://typebot-viewer.vercel.app/typebot-id2?hn=localhost'
+      'https://typebot.io/typebot-id2?hn=localhost'
     )
   })
 
@@ -32,7 +32,7 @@ describe('initBubble', () => {
     expect.assertions(3)
     Typebot.initBubble({
       autoOpenDelay: 1000,
-      publishId: 'typebot-id',
+      url: 'https://typebot.io/typebot-id',
     })
     const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
@@ -49,7 +49,7 @@ describe('initBubble', () => {
     localStorage.setItem(Typebot.localStorageKeys.rememberClose, 'true')
     Typebot.initBubble({
       autoOpenDelay: 1000,
-      publishId: 'typebot-id',
+      url: 'https://typebot.io/typebot-id',
     })
     const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
     await new Promise((r) => setTimeout(r, 1500))
