@@ -26,6 +26,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 2.1.0 =
+* Added auto open delay for bubble embed
+
 = 2.0.0 =
 * Support for Typebot 2.0
 

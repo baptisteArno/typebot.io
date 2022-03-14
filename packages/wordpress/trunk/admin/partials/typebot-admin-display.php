@@ -43,30 +43,30 @@
   <a style="text-decoration: underline" href="https://app.typebot.io/typebots" target="_blank">First, you need to create a Typebot with our builder. It's free.</a>
   <form method="post" action="options.php" style="margin-top: 1rem">
     <?php
-    settings_fields("typebot");
-    do_settings_sections("typebot");
+    settings_fields('typebot');
+    do_settings_sections('typebot');
     ?>
       <div style="display: flex; flex-direction: column;">
         <label>
           <input type="radio" name="config_type" onclick="handleClick(this);" value="easy" <?php if (
-            esc_attr(get_option("config_type")) == "easy"
+            esc_attr(get_option('config_type')) == 'easy'
           ) {
-            echo esc_attr("checked");
+            echo esc_attr('checked');
           } ?>>
           Easy setup
         </label>
         <div id="easy-block" style="display: <?php if (
-          esc_attr(get_option("config_type")) == "easy"
+          esc_attr(get_option('config_type')) == 'easy'
         ) {
-          echo esc_attr("block");
+          echo esc_attr('block');
         } else {
-          echo esc_attr("none");
+          echo esc_attr('none');
         } ?>; margin-top:0.5rem">
           <div class="field">
-            <label class="label">Publish ID or Full URL</label>
+            <label class="label">Your typebot URL</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Found in 'Share' page of your typebot" name="publish_id" value="<?php echo esc_attr(
-                get_option("publish_id")
+              <input class="input" type="url" placeholder="Found in 'Share' page of your typebot" name="url" value="<?php echo esc_attr(
+                get_option('url')
               ); ?>">
             </div>
           </div>
@@ -91,9 +91,9 @@
               </svg>
               <p style="text-align: center; font-size: 20px; margin-bottom: .5rem">Container</p>
               <input type="radio" onclick="onRadioClick(event)" name="embed_type" id="radio-container" style="display:flex; margin:auto" <?php if (
-                esc_attr(get_option("embed_type")) === "container"
+                esc_attr(get_option('embed_type')) === 'container'
               ) {
-                echo esc_attr("checked");
+                echo esc_attr('checked');
               } ?> value="container">
             </label>
             <label class="box is-flex-direction-column" style="margin-bottom: 0; margin-right: 1rem; padding: 3rem">
@@ -110,9 +110,9 @@
               </svg>
               <p style="text-align: center; font-size: 20px; margin-bottom: .5rem">Popup</p>
               <input type="radio" onclick="onRadioClick(event)" name="embed_type" id="radio-popup" style="display:flex; margin:auto" <?php if (
-                esc_attr(get_option("embed_type")) === "popup"
+                esc_attr(get_option('embed_type')) === 'popup'
               ) {
-                echo esc_attr("checked");
+                echo esc_attr('checked');
               } ?> value="popup">
             </label>
             <label class="box is-flex-direction-column" style="margin-bottom: 0; padding: 3rem">
@@ -122,9 +122,9 @@
               </svg>
               <p style="text-align: center; font-size: 20px; margin-bottom: .5rem">Bubble</p>
               <input type="radio" onclick="onRadioClick(event)" name="embed_type" id="radio-bubble" style="display:flex; margin:auto" <?php if (
-                esc_attr(get_option("embed_type")) === "bubble"
+                esc_attr(get_option('embed_type')) === 'bubble'
               ) {
-                echo esc_attr("checked");
+                echo esc_attr('checked');
               } ?> value="bubble">
             </label>
           </div>
@@ -134,7 +134,7 @@
               <label class="label">Delay before apparition in seconds</label>
               <div class="control" style="margin-bottom: 1rem;">
                 <input class="input" type="number" placeholder="0" name="popup_delay" value="<?php echo esc_attr(
-                  get_option("popup_delay")
+                  get_option('popup_delay')
                 ); ?>">
               </div>
             </div>
@@ -142,7 +142,7 @@
               <label class="label">Pages to include separated by a comma (optionnal)</label>
               <div class="control" style="margin-bottom: 1rem;">
                 <input class="input" type="text" placeholder="/my-page/*,/my-other-page" name="popup_included_pages" value="<?php echo esc_attr(
-                  get_option("popup_included_pages")
+                  get_option('popup_included_pages')
                 ); ?>">
               </div>
             </div>
@@ -155,7 +155,15 @@
               <label class="label">Bubble button color</label>
               <div class="control">
                 <input class="input" type="text" placeholder="#0042DA" name="button_color" value="<?php echo esc_attr(
-                  get_option("button_color")
+                  get_option('button_color')
+                ); ?>">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Auto open delay (optional)</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="Delay before the chat opens up (5)" name="chat_delay" value="<?php echo esc_attr(
+                  get_option('chat_delay')
                 ); ?>">
               </div>
             </div>
@@ -163,7 +171,7 @@
               <label class="label">Bubble button icon (optional)</label>
               <div class="control">
                 <input class="input" type="text" placeholder="Type an image URL..." name="chat_icon" value="<?php echo esc_attr(
-                  get_option("chat_icon")
+                  get_option('chat_icon')
                 ); ?>">
               </div>
             </div>
@@ -171,24 +179,24 @@
               <label class="label">Proactive message (optional)</label>
               <div class="control">
                 <input class="input" type="text" placeholder="Message (Hey, I have some questions for you 👋)" name="text_content" value="<?php echo esc_attr(
-                  get_option("text_content")
+                  get_option('text_content')
                 ); ?>">
               </div>
               <div class="control" style="margin-top: .5rem">
                 <input class="input" type="text" placeholder="Avatar photo URL (https://...)" name="avatar" value="<?php echo esc_attr(
-                  get_option("avatar")
+                  get_option('avatar')
                 ); ?>">
               </div>
               <div class="control" style="margin-top: .5rem; margin-bottom: 1rem">
                 <input class="input" type="number" placeholder="Delay before message apparition (5)" name="bubble_delay" value="<?php echo esc_attr(
-                  get_option("bubble_delay")
+                  get_option('bubble_delay')
                 ); ?>">
               </div>
               <label>
                 <input type="checkbox" <?php if (
-                  esc_attr(get_option("dont_show_callout_twice"))
+                  esc_attr(get_option('dont_show_callout_twice'))
                 ) {
-                  echo esc_attr("checked");
+                  echo esc_attr('checked');
                 } ?> name="dont_show_callout_twice">
                 Don't show callout message when opened or closed once
               </label>
@@ -197,12 +205,12 @@
               <label class="label">Pages to include separated by a comma (optionnal)</label>
               <div class="control" style="margin-bottom: 1rem;">
                 <input class="input" type="text" placeholder="/my-page/*,/my-other-page" name="chat_included_pages" value="<?php echo esc_attr(
-                  get_option("chat_included_pages")
+                  get_option('chat_included_pages')
                 ); ?>">
               </div>
             </div>
           </div>
-          <?php if (esc_attr(get_option("embed_type")) === "container"): ?>
+          <?php if (esc_attr(get_option('embed_type')) === 'container'): ?>
           <div class="notification is-link" style="margin-bottom: 1rem;">
             You can now place your typebot container anywhere in your site using [typebot] shortcode.
             <br><br>
@@ -217,22 +225,22 @@
         
         <label>
           <input type="radio" name="config_type" onclick="handleClick(this);" value="advanced" <?php if (
-            esc_attr(get_option("config_type")) == "advanced"
+            esc_attr(get_option('config_type')) == 'advanced'
           ) {
-            echo esc_attr("checked");
+            echo esc_attr('checked');
           } ?>>
           Advanced setup (with code)
         </label>
         <div id="code-block" style="display: <?php if (
-          esc_attr(get_option("config_type")) == "advanced"
+          esc_attr(get_option('config_type')) == 'advanced'
         ) {
-          echo esc_attr("block");
+          echo esc_attr('block');
         } else {
-          echo esc_attr("none");
+          echo esc_attr('none');
         } ?>">
           <label>Paste the code from "HTML & Js" in Typebot in the Share tab:</label>
           <textarea class="textarea" style="margin-top:0.5rem" name="custom_code"><?php echo esc_attr(
-            get_option("custom_code")
+            get_option('custom_code')
           ); ?></textarea>
         </div>
 

@@ -4,7 +4,10 @@ class Typebot_Public
 {
   public function add_head_code()
   {
-    wp_enqueue_script('typebot', 'https://www.typebot.io/typebot-lib/v2');
+    wp_enqueue_script(
+      'typebot',
+      'https://unpkg.com/typebot-js@2.2.0/dist/index.umd.min.js'
+    );
     wp_add_inline_script('typebot', $this->parse_wp_user());
     if (get_option('config_type') === 'advanced') {
       echo esc_html(get_option('custom_code'));
@@ -19,7 +22,7 @@ class Typebot_Public
 
   private function parse_popup_head_code()
   {
-    $publish_id = get_option('publish_id');
+    $url = get_option('url');
     if (
       get_option('popup_included_pages') !== null &&
       get_option('popup_included_pages') !== ''
@@ -36,8 +39,8 @@ class Typebot_Public
     }
     $params =
       '{
-					publishId: "' .
-      $publish_id .
+					url: "' .
+      $url .
       '",
 			hiddenVariables: typebotWpUser,
 				}';
@@ -47,8 +50,8 @@ class Typebot_Public
     ) {
       $params =
         '{
-					publishId: "' .
-        $publish_id .
+					url: "' .
+        $url .
         '",
 					delay: ' .
         get_option('popup_delay') * 1000 .
@@ -86,7 +89,7 @@ class Typebot_Public
 
   private function parse_bubble_head_code()
   {
-    $publish_id = get_option('publish_id');
+    $url = get_option('url');
     $chat_icon = get_option('chat_icon');
     if (
       get_option('chat_included_pages') !== null &&
@@ -111,9 +114,12 @@ class Typebot_Public
     }
     $params =
       '{
-					publishId: "' .
-      $publish_id .
+					url: "' .
+      $url .
       '",
+						autoOpenDelay: ' .
+      get_option('chat_delay') * 1000 .
+      ',
       button: {
         color: "' .
       $button_color .
@@ -132,9 +138,12 @@ class Typebot_Public
         get_option('dont_show_callout_twice') === 'on' ? 'true' : 'false';
       $params =
         '{
-					publishId: "' .
-        $publish_id .
+					url: "' .
+        $url .
         '",
+						autoOpenDelay: ' .
+        get_option('chat_delay') * 1000 .
+        ',
 					proactiveMessage: {
 						avatarUrl: "' .
         get_option('avatar') .
@@ -218,7 +227,7 @@ class Typebot_Public
     $width = '100%';
     $height = '500px';
     $bg_color = 'rgba(255, 255, 255, 0)';
-    $publish_id = get_option('publish_id');
+    $url = sanitize_text_field($attributes['url']);
     if (is_array($attributes)) {
       if (array_key_exists('width', $attributes)) {
         $width = sanitize_text_field($attributes['width']);
@@ -228,9 +237,6 @@ class Typebot_Public
       }
       if (array_key_exists('background-color', $attributes)) {
         $bg_color = sanitize_text_field($attributes['background-color']);
-      }
-      if (array_key_exists('url', $attributes)) {
-        $publish_id = sanitize_text_field($attributes['url']);
       }
     }
     $container_id = 'typebot-container-' . $this->generateRandomString(4);
@@ -256,8 +262,8 @@ class Typebot_Public
       $container_id .
       '",{
       hiddenVariables: typebotWpUser,
-						publishId: "' .
-      $publish_id .
+						url: "' .
+      $url .
       '",
 					})}) 
 		</script>';
