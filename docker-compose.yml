@@ -19,7 +19,11 @@ services:
       - '8080:3000'
     env_file:
       - typebot-config.env
-    command: 'sleep 10 && npx prisma migrate deploy && node server.js'
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      npx prisma migrate deploy;
+      node server.js;"
   typebot_viewer:
     depends_on:
       - typebot_db

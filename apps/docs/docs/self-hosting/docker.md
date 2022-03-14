@@ -16,19 +16,17 @@ You need a server with Docker installed. If your server doesn't come with Docker
 
 ## Getting started
 
-1. Fork the repository
-
 On your server:
 
-2. Clone the forked repo:
+1. Clone the forked repo:
 
    ```sh
-    git clone https://github.com/<your-fork>/typebot.io.git
+    git clone https://github.com/baptistearno/typebot.io.git
    ```
 
-3. Edit the `typebot-config.env` file. ([Check out the configuration guide](/self-hosting/configuration))
+2. Edit the `typebot-config.env` file. ([Check out the configuration guide](/self-hosting/configuration))
 
-4. Start the applications:
+3. Start the applications:
 
    ```sh
    docker-compose up -d
@@ -41,4 +39,4 @@ On your server:
    - Start the builder on port 8080
    - Start the viewer on port 8081
 
-You should see the login screen if you navigate to `http://{hostname}:8080`. Login with the `${ADMIN_EMAIL}` in order to have access to a Pro account automatically.
+You should see the login screen if you navigate to `http://{hostname}:8080`. Login with the `${ADMIN_EMAIL}` to have access to a Pro account automatically.
