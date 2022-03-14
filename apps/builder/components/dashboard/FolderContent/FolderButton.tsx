@@ -1,4 +1,4 @@
-import { DashboardFolder } from '.prisma/client'
+import { DashboardFolder } from 'db'
 import {
   Button,
   Editable,

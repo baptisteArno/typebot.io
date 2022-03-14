@@ -21,7 +21,7 @@ export const ContainerEmbedCode = ({
 
   const snippet = prettier.format(
     parseSnippet({
-      publishId: typebot?.publicId ?? '',
+      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
       heightLabel,
       widthLabel,
     }),
@@ -38,7 +38,7 @@ type SnippetProps = IframeParams &
   Pick<ContainerEmbedCodeProps, 'widthLabel' | 'heightLabel'>
 
 const parseSnippet = ({
-  publishId,
+  url,
   customDomain,
   backgroundColor,
   hiddenVariables,
@@ -48,7 +48,7 @@ const parseSnippet = ({
     customDomain,
     hiddenVariables,
     backgroundColor,
-    publishId,
+    url,
   })
   return `${typebotJsHtml}
       <div id="typebot-container" style="width: ${embedProps.widthLabel}; height: ${embedProps.heightLabel};"></div>

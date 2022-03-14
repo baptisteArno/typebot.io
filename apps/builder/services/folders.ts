@@ -1,4 +1,4 @@
-import { DashboardFolder } from '.prisma/client'
+import { DashboardFolder } from 'db'
 import useSWR from 'swr'
 import { fetcher } from './utils'
 import { stringify } from 'qs'

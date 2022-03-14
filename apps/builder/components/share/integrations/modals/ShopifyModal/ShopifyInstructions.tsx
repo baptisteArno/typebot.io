@@ -44,7 +44,7 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
   })
 
   const jsCode = parseInitContainerCode({
-    publishId: publicId,
+    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`,
   })
   const headCode = prettier.format(
     `${typebotJsHtml}<script>${jsCode}</script>`,

@@ -76,7 +76,7 @@ const parseBubbleParams = ({
 })
 
 export const parseInitContainerCode = ({
-  publishId,
+  url,
   customDomain,
   backgroundColor,
   hiddenVariables,
@@ -89,14 +89,14 @@ export const parseInitContainerCode = ({
     })
   return prettier.format(
     `Typebot.initContainer("typebot-container", {
-    url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}
+    url: "${url}",${bgColorString}${customDomainString}${hiddenVariablesString}
   });`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }
 
 export const parseInitPopupCode = ({
-  publishId,
+  url,
   customDomain,
   hiddenVariables,
   backgroundColor,
@@ -110,13 +110,13 @@ export const parseInitPopupCode = ({
     })
   const { delayString } = parsePopupParams({ delay })
   return prettier.format(
-    `var typebotCommands = Typebot.initPopup({url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
+    `var typebotCommands = Typebot.initPopup({url: "${url}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }
 
 export const parseInitBubbleCode = ({
-  publishId,
+  url,
   customDomain,
   hiddenVariables,
   backgroundColor,
@@ -134,7 +134,7 @@ export const parseInitBubbleCode = ({
     proactiveMessage,
   })
   return prettier.format(
-    `var typebotCommands = Typebot.initBubble({url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
+    `var typebotCommands = Typebot.initBubble({url: "${url}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }

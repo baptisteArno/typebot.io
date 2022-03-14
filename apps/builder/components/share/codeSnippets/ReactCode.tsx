@@ -19,7 +19,7 @@ export const StandardReactDiv = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseContainerSnippet({
-      publishId: typebot?.publicId ?? '',
+      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
       heightLabel,
       widthLabel,
     }),
@@ -35,14 +35,14 @@ type SnippetProps = IframeParams &
   Pick<StandardReactDivProps, 'widthLabel' | 'heightLabel'>
 
 const parseContainerSnippet = ({
-  publishId,
+  url,
   customDomain,
   backgroundColor,
   hiddenVariables,
   ...embedProps
 }: SnippetProps): string => {
   const jsCode = parseInitContainerCode({
-    publishId,
+    url,
     customDomain,
     backgroundColor,
     hiddenVariables,
@@ -67,7 +67,7 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parsePopupSnippet({
-      publishId: typebot?.publicId ?? '',
+      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
       delay,
     }),
     {
@@ -79,14 +79,14 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
 }
 
 const parsePopupSnippet = ({
-  publishId,
+  url,
   customDomain,
   backgroundColor,
   hiddenVariables,
   delay,
 }: PopupParams): string => {
   const jsCode = parseInitPopupCode({
-    publishId,
+    url,
     customDomain,
     backgroundColor,
     hiddenVariables,
@@ -114,7 +114,7 @@ export const ChatReactCode = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseBubbleSnippet({
-      publishId: typebot?.publicId ?? '',
+      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
       button,
       proactiveMessage,
     }),
@@ -127,7 +127,7 @@ export const ChatReactCode = ({
 }
 
 const parseBubbleSnippet = ({
-  publishId,
+  url,
   customDomain,
   backgroundColor,
   hiddenVariables,
@@ -135,7 +135,7 @@ const parseBubbleSnippet = ({
   button,
 }: BubbleParams): string => {
   const jsCode = parseInitBubbleCode({
-    publishId,
+    url,
     customDomain,
     backgroundColor,
     hiddenVariables,

@@ -12,8 +12,7 @@ export const SupportBubble = () => {
   useEffect(() => {
     if (isCloudProdInstance())
       initBubble({
-        publishId: 'typebot-support',
-        viewerHost: process.env.NEXT_PUBLIC_VIEWER_URL,
+        url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/typebot-support`,
         backgroundColor: '#ffffff',
         button: { color: '#0042DA' },
         hiddenVariables: {
