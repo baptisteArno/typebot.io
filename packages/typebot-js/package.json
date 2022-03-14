@@ -1,6 +1,6 @@
 {
   "name": "typebot-js",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "main": "dist/index.js",
   "unpkg": "dist/index.umd.min.js",
   "license": "MIT",

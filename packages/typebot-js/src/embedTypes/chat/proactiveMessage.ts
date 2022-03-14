@@ -1,66 +1,64 @@
-import { localStorageKeys, ProactiveMessageParams } from "../../types";
-import { closeSvgPath } from "./button";
+import { setRememberCloseInStorage } from '../chat/index'
+import { ProactiveMessageParams } from '../../types'
+import { closeSvgPath } from './button'
 
 const createProactiveMessage = (
   params: ProactiveMessageParams,
   bubble: HTMLDivElement
 ): HTMLDivElement => {
-  const container = document.createElement("div");
-  container.classList.add("proactive-message");
-  if (params.delay !== undefined) setOpenTimeout(bubble, params);
-  if (params.avatarUrl) container.appendChild(createAvatar(params.avatarUrl));
-  if (params.rememberClose) setRememberCloseInStorage();
-  container.appendChild(createTextElement(params.textContent));
-  container.appendChild(createCloseButton(bubble));
-  return container;
-};
+  const container = document.createElement('div')
+  container.classList.add('proactive-message')
+  if (params.delay !== undefined) setOpenTimeout(bubble, params)
+  if (params.avatarUrl) container.appendChild(createAvatar(params.avatarUrl))
+  container.appendChild(createTextElement(params.textContent))
+  container.appendChild(createCloseButton(bubble))
+  return container
+}
 
 const setOpenTimeout = (
   bubble: HTMLDivElement,
   params: ProactiveMessageParams
 ) => {
   setTimeout(() => {
-    openProactiveMessage(bubble);
-  }, params.delay);
-};
+    openProactiveMessage(bubble)
+  }, params.delay)
+}
 
 const createAvatar = (avatarUrl: string): HTMLImageElement => {
-  const element = document.createElement("img");
-  element.src = avatarUrl;
-  return element;
-};
+  const element = document.createElement('img')
+  element.src = avatarUrl
+  return element
+}
 
 const createTextElement = (text: string): HTMLParagraphElement => {
-  const element = document.createElement("p");
-  element.innerHTML = text;
-  return element;
-};
+  const element = document.createElement('p')
+  element.innerHTML = text
+  return element
+}
 
 const createCloseButton = (bubble: HTMLDivElement): HTMLButtonElement => {
-  const button = document.createElement("button");
-  button.classList.add("close-button");
-  button.innerHTML = `<svg viewBox="0 0 512 512">${closeSvgPath}</svg>`;
-  button.addEventListener("click", (e) => onCloseButtonClick(e, bubble));
-  return button;
-};
+  const button = document.createElement('button')
+  button.classList.add('close-button')
+  button.innerHTML = `<svg viewBox="0 0 512 512">${closeSvgPath}</svg>`
+  button.addEventListener('click', (e) => onCloseButtonClick(e, bubble))
+  return button
+}
 
 const openProactiveMessage = (bubble: HTMLDivElement): void => {
-  bubble.classList.add("message-opened");
-};
+  bubble.classList.add('message-opened')
+}
 
 const onCloseButtonClick = (
   e: Event,
   proactiveMessageElement: HTMLDivElement
 ) => {
-  e.stopPropagation();
-  closeProactiveMessage(proactiveMessageElement);
-};
+  e.stopPropagation()
+  closeProactiveMessage(proactiveMessageElement)
+}
 
 const closeProactiveMessage = (bubble: HTMLDivElement): void => {
-  bubble.classList.remove("message-opened");
-};
+  setRememberCloseInStorage()
+  bubble.classList.remove('message-opened')
+}
 
-const setRememberCloseInStorage = () =>
-  localStorage.setItem(localStorageKeys.rememberClose, "true");
-
-export { createProactiveMessage, openProactiveMessage, closeProactiveMessage };
+export { createProactiveMessage, openProactiveMessage, closeProactiveMessage }

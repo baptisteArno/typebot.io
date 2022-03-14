@@ -3,7 +3,7 @@ name: Publish package to NPM
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'js-lib-v*.*.*'
 
 jobs:
   publish:
@@ -15,10 +15,11 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - run: yarn
       - run: yarn test
       - run: yarn build
       - uses: JS-DevTools/npm-publish@v1
         with:
+          package: './packages/typebot-js/package.json'
           token: ${{ secrets.NPM_TOKEN }}

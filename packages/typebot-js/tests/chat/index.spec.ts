@@ -1,30 +1,58 @@
-import * as Typebot from "../../src";
+import * as Typebot from '../../src'
 
-describe("initBubble", () => {
+describe('initBubble', () => {
   beforeEach(() => {
-    document.body.innerHTML = "";
-  });
+    document.body.innerHTML = ''
+  })
 
-  it("should initialize a bubble embed", () => {
-    expect.assertions(2);
-    Typebot.initBubble({ publishId: "typebot-id" });
-    const bubbleElement = document.getElementById("typebot-bubble");
-    const frame = document.getElementsByTagName("iframe")[0];
-    expect(frame).toBeDefined();
-    expect(bubbleElement).toBeDefined();
-  });
+  it('should initialize a bubble embed', () => {
+    expect.assertions(2)
+    Typebot.initBubble({ publishId: 'typebot-id' })
+    const bubbleElement = document.getElementById('typebot-bubble')
+    const frame = document.getElementsByTagName('iframe')[0]
+    expect(frame).toBeDefined()
+    expect(bubbleElement).toBeDefined()
+  })
 
-  it("should overwrite bubble if exists", () => {
-    expect.assertions(2);
+  it('should overwrite bubble if exists', () => {
+    expect.assertions(2)
     Typebot.initBubble({
-      publishId: "typebot-id",
-      hiddenVariables: { var1: "test" },
-    });
-    Typebot.initBubble({ publishId: "typebot-id2" });
-    const frames = document.getElementsByTagName("iframe");
-    expect(frames).toHaveLength(1);
+      publishId: 'typebot-id',
+      hiddenVariables: { var1: 'test' },
+    })
+    Typebot.initBubble({ publishId: 'typebot-id2' })
+    const frames = document.getElementsByTagName('iframe')
+    expect(frames).toHaveLength(1)
     expect(frames[0].dataset.src).toBe(
-      "https://typebot-viewer.vercel.app/typebot-id2?hn=localhost"
-    );
-  });
-});
+      'https://typebot-viewer.vercel.app/typebot-id2?hn=localhost'
+    )
+  })
+
+  it('show open after the corresponding delay', async () => {
+    expect.assertions(3)
+    Typebot.initBubble({
+      autoOpenDelay: 1000,
+      publishId: 'typebot-id',
+    })
+    const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
+    expect(bubble.classList.contains('iframe-opened')).toBe(false)
+    await new Promise((r) => setTimeout(r, 1000))
+    expect(bubble.classList.contains('iframe-opened')).toBe(true)
+    const rememberCloseDecisionFromStorage = localStorage.getItem(
+      Typebot.localStorageKeys.rememberClose
+    )
+    expect(rememberCloseDecisionFromStorage).toBe('true')
+  })
+
+  it('should remember close decision if set to true', async () => {
+    expect.assertions(1)
+    localStorage.setItem(Typebot.localStorageKeys.rememberClose, 'true')
+    Typebot.initBubble({
+      autoOpenDelay: 1000,
+      publishId: 'typebot-id',
+    })
+    const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
+    await new Promise((r) => setTimeout(r, 1500))
+    expect(bubble.classList.contains('iframe-opened')).toBe(false)
+  })
+})

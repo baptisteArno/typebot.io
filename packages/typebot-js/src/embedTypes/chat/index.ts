@@ -3,85 +3,91 @@ import {
   BubbleParams,
   localStorageKeys,
   ProactiveMessageParams,
-} from "../../types";
-import { createButton } from "./button";
+} from '../../types'
+import { createButton } from './button'
 import {
   closeIframe,
   createIframeContainer,
   loadTypebotIfFirstOpen,
   openIframe,
-} from "./iframe";
+} from './iframe'
 import {
   createProactiveMessage,
   openProactiveMessage,
-} from "./proactiveMessage";
-import "./style.css";
+} from './proactiveMessage'
+import './style.css'
 
 export const initBubble = (params: BubbleParams): BubbleActions => {
-  if (document.readyState !== "complete") {
-    window.addEventListener("load", () => initBubble(params));
-    return { close: () => {}, open: () => {} };
+  if (document.readyState !== 'complete') {
+    window.addEventListener('load', () => initBubble(params))
+    return { close: () => {}, open: () => {} }
   }
-  const existingBubble = document.getElementById("typebot-bubble") as
+  const existingBubble = document.getElementById('typebot-bubble') as
     | HTMLDivElement
-    | undefined;
-  if (existingBubble) existingBubble.remove();
+    | undefined
+  if (existingBubble) existingBubble.remove()
   const { bubbleElement, proactiveMessageElement, iframeElement } =
-    createBubble(params);
+    createBubble(params)
+  if (
+    (params.autoOpenDelay || params.autoOpenDelay === 0) &&
+    !hasBeenClosed()
+  ) {
+    setRememberCloseInStorage()
+    setTimeout(
+      () => openIframe(bubbleElement, iframeElement),
+      params.autoOpenDelay
+    )
+  }
   !document.body
     ? (window.onload = () => document.body.appendChild(bubbleElement))
-    : document.body.appendChild(bubbleElement);
-  return getBubbleActions(
-    bubbleElement,
-    iframeElement,
-    proactiveMessageElement
-  );
-};
+    : document.body.appendChild(bubbleElement)
+  return getBubbleActions(bubbleElement, iframeElement, proactiveMessageElement)
+}
 
 const createBubble = (
   params: BubbleParams
 ): {
-  bubbleElement: HTMLDivElement;
-  iframeElement: HTMLIFrameElement;
-  proactiveMessageElement?: HTMLDivElement;
+  bubbleElement: HTMLDivElement
+  iframeElement: HTMLIFrameElement
+  proactiveMessageElement?: HTMLDivElement
 } => {
-  const bubbleElement = document.createElement("div");
-  bubbleElement.id = "typebot-bubble";
-  const buttonElement = createButton(params.button);
-  bubbleElement.appendChild(buttonElement);
+  const bubbleElement = document.createElement('div')
+  bubbleElement.id = 'typebot-bubble'
+  const buttonElement = createButton(params.button)
+  bubbleElement.appendChild(buttonElement)
   const proactiveMessageElement =
     params.proactiveMessage && !hasBeenClosed()
       ? addProactiveMessage(params.proactiveMessage, bubbleElement)
-      : undefined;
-  const iframeElement = createIframeContainer(params);
-  buttonElement.addEventListener("click", () =>
+      : undefined
+  const iframeElement = createIframeContainer(params)
+  buttonElement.addEventListener('click', () =>
     onBubbleButtonClick(bubbleElement, iframeElement)
-  );
+  )
   if (proactiveMessageElement)
-    proactiveMessageElement.addEventListener("click", () =>
+    proactiveMessageElement.addEventListener('click', () =>
       onProactiveMessageClick(bubbleElement, iframeElement)
-    );
-  bubbleElement.appendChild(iframeElement);
-  return { bubbleElement, proactiveMessageElement, iframeElement };
-};
+    )
+  bubbleElement.appendChild(iframeElement)
+  return { bubbleElement, proactiveMessageElement, iframeElement }
+}
 
 const onBubbleButtonClick = (
   bubble: HTMLDivElement,
   iframe: HTMLIFrameElement
 ): void => {
-  loadTypebotIfFirstOpen(iframe);
-  bubble.classList.toggle("iframe-opened");
-  bubble.classList.remove("message-opened");
-};
+  loadTypebotIfFirstOpen(iframe)
+  bubble.classList.toggle('iframe-opened')
+  bubble.classList.remove('message-opened')
+}
 
 const onProactiveMessageClick = (
   bubble: HTMLDivElement,
   iframe: HTMLIFrameElement
 ): void => {
-  loadTypebotIfFirstOpen(iframe);
-  bubble.classList.add("iframe-opened");
-  bubble.classList.remove("message-opened");
-};
+  loadTypebotIfFirstOpen(iframe)
+  bubble.classList.add('iframe-opened')
+  bubble.classList.remove('message-opened')
+}
 
 export const getBubbleActions = (
   bubbleElement?: HTMLDivElement,
@@ -90,29 +96,29 @@ export const getBubbleActions = (
 ): BubbleActions => {
   const existingBubbleElement =
     bubbleElement ??
-    (document.querySelector("#typebot-bubble") as HTMLDivElement);
+    (document.querySelector('#typebot-bubble') as HTMLDivElement)
   const existingIframeElement =
     iframeElement ??
     (existingBubbleElement.querySelector(
-      ".typebot-iframe"
-    ) as HTMLIFrameElement);
+      '.typebot-iframe'
+    ) as HTMLIFrameElement)
   const existingProactiveMessage =
     proactiveMessageElement ??
-    document.querySelector("#typebot-bubble .proactive-message");
+    document.querySelector('#typebot-bubble .proactive-message')
   return {
     openProactiveMessage: existingProactiveMessage
       ? () => {
-          openProactiveMessage(existingBubbleElement);
+          openProactiveMessage(existingBubbleElement)
         }
       : undefined,
     open: () => {
-      openIframe(existingBubbleElement, existingIframeElement);
+      openIframe(existingBubbleElement, existingIframeElement)
     },
     close: () => {
-      closeIframe(existingBubbleElement);
+      closeIframe(existingBubbleElement)
     },
-  };
-};
+  }
+}
 
 const addProactiveMessage = (
   proactiveMessage: ProactiveMessageParams,
@@ -121,14 +127,17 @@ const addProactiveMessage = (
   const proactiveMessageElement = createProactiveMessage(
     proactiveMessage,
     bubbleElement
-  );
-  bubbleElement.appendChild(proactiveMessageElement);
-  return proactiveMessageElement;
-};
+  )
+  bubbleElement.appendChild(proactiveMessageElement)
+  return proactiveMessageElement
+}
 
 const hasBeenClosed = () => {
   const closeDecisionFromStorage = localStorage.getItem(
     localStorageKeys.rememberClose
-  );
-  return closeDecisionFromStorage ? true : false;
-};
+  )
+  return closeDecisionFromStorage ? true : false
+}
+
+export const setRememberCloseInStorage = () =>
+  localStorage.setItem(localStorageKeys.rememberClose, 'true')
