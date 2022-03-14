@@ -89,7 +89,7 @@ export const parseInitContainerCode = ({
     })
   return prettier.format(
     `Typebot.initContainer("typebot-container", {
-    publishId: "${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}
+    url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}
   });`,
     { parser: 'babel', plugins: [parserBabel] }
   )
@@ -110,7 +110,7 @@ export const parseInitPopupCode = ({
     })
   const { delayString } = parsePopupParams({ delay })
   return prettier.format(
-    `var typebotCommands = Typebot.initPopup({publishId: "${publishId}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
+    `var typebotCommands = Typebot.initPopup({url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }
@@ -134,9 +134,9 @@ export const parseInitBubbleCode = ({
     proactiveMessage,
   })
   return prettier.format(
-    `var typebotCommands = Typebot.initBubble({publishId: "${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
+    `var typebotCommands = Typebot.initBubble({url: "${process.env.NEXT_PUBLIC_VIEWER_URL}/${publishId}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }
 
-export const typebotJsHtml = `<script src="https://unpkg.com/typebot-js@2.1.3"></script>`
+export const typebotJsHtml = `<script src="https://unpkg.com/typebot-js@2.2.0"></script>`

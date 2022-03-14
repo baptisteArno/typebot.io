@@ -44,11 +44,11 @@ export const NotionModal = ({
                 <Input
                   pr="4.5rem"
                   type={'text'}
-                  defaultValue={`https://bot.typebot.io/${publicId}`}
+                  defaultValue={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
                 />
                 <InputRightElement width="4.5rem">
                   <CopyButton
-                    textToCopy={`https://bot.typebot.io/${publicId}`}
+                    textToCopy={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
                   />
                 </InputRightElement>
               </InputGroup>

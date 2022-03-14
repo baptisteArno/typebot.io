@@ -48,11 +48,17 @@ export const WordpressModal = ({
               </Link>
             </ListItem>
             <ListItem>
-              Copy your typebot ID
+              Copy your typebot URL
               <InputGroup size="md" mt={2}>
-                <Input pr="4.5rem" type={'text'} defaultValue={publicId} />
+                <Input
+                  pr="4.5rem"
+                  type={'text'}
+                  defaultValue={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
+                />
                 <InputRightElement width="4.5rem">
-                  <CopyButton textToCopy={publicId} />
+                  <CopyButton
+                    textToCopy={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
+                  />
                 </InputRightElement>
               </InputGroup>
             </ListItem>
