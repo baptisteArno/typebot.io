@@ -11,14 +11,16 @@ export const getServerSideProps: GetServerSideProps = async (
   let typebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
+  console.log('pathname:', pathname)
   try {
     if (!context.req.headers.host) return { props: {} }
+    console.log('context.req.headers.host:', context.req.headers.host)
     typebot = context.req.headers.host.includes(
       (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split('//')[1]
     )
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(
-          `${context.req.headers.host}${pathname}`
+          `${context.req.headers.host}${pathname === '/' ? '' : pathname}`
         )
     return {
       props: {
@@ -48,8 +50,8 @@ const getTypebotFromPublicId = async (publicId?: string) => {
 }
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
-  const typebot = await prisma.publicTypebot.findUnique({
-    where: { customDomain },
+  const typebot = await prisma.publicTypebot.findFirst({
+    where: { customDomain: { contains: customDomain } },
   })
   if (isNotDefined(typebot)) return null
   return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
