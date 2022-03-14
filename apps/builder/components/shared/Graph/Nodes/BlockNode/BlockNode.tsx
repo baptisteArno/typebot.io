@@ -100,6 +100,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     >
       {(ref, isOpened) => (
         <DraggableCore
+          enableUserSelectHack={false}
           onDrag={onDrag}
           onStart={onDragStart}
           onStop={onDragStop}

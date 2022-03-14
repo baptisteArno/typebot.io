@@ -117,7 +117,7 @@ export const Graph = ({
   }
 
   return (
-    <DraggableCore onDrag={onDrag}>
+    <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
         <Flex
           flex="1"
