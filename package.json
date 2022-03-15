@@ -11,7 +11,7 @@
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "dev:prepare": "turbo run build --scope=bot-engine --no-deps --include-dependencies",
     "dev": "yarn docker:up && yarn dev:prepare && turbo run dx --parallel",
-    "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dev --parallel",
+    "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dx --parallel",
     "build": "yarn docker:up && turbo run build",
     "test:builder": "cd apps/builder && yarn test",
     "lint": "turbo run lint",

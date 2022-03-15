@@ -1,11 +1,14 @@
 import { Box, BoxProps } from '@chakra-ui/react'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
-import { json } from '@codemirror/lang-json'
+import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import { linter } from '@codemirror/lint'
+
+const linterExtension = linter(jsonParseLinter())
 
 type Props = {
   value: string
@@ -71,7 +74,10 @@ export const CodeEditor = ({
       basicSetup,
       EditorState.readOnly.of(isReadOnly),
     ]
-    if (lang === 'json') extensions.push(json())
+    if (lang === 'json') {
+      extensions.push(json())
+      extensions.push(linterExtension)
+    }
     if (lang === 'css') extensions.push(css())
     if (lang === 'js') extensions.push(javascript())
     if (lang === 'html') extensions.push(html())

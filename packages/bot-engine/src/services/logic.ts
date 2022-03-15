@@ -48,7 +48,7 @@ export const executeLogic = async (
     case LogicStepType.REDIRECT:
       return { nextEdgeId: executeRedirect(step, context) }
     case LogicStepType.CODE:
-      return { nextEdgeId: executeCode(step) }
+      return { nextEdgeId: executeCode(step, context) }
     case LogicStepType.TYPEBOT_LINK:
       return await executeTypebotLink(step, context)
   }
@@ -121,9 +121,12 @@ const executeRedirect = (
   return step.outgoingEdgeId
 }
 
-const executeCode = (step: CodeStep) => {
+const executeCode = (
+  step: CodeStep,
+  { typebot: { variables } }: LogicContext
+) => {
   if (!step.options.content) return
-  Function(step.options.content)()
+  Function(parseVariables(variables)(step.options.content))()
   return step.outgoingEdgeId
 }
 
