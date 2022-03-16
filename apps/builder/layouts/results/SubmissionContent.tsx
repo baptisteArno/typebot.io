@@ -103,9 +103,17 @@ export const SubmissionsContent = ({
     const dataToUnparse = isSelectAll
       ? await getAllTableData()
       : tableData.filter((_, idx) => selectedIndices.includes(idx))
-    const csvData = new Blob([unparse(dataToUnparse)], {
-      type: 'text/csv;charset=utf-8;',
-    })
+    const csvData = new Blob(
+      [
+        unparse({
+          data: dataToUnparse,
+          fields: resultHeader.map((h) => h.label),
+        }),
+      ],
+      {
+        type: 'text/csv;charset=utf-8;',
+      }
+    )
     const fileName =
       `typebot-export_${new Date().toLocaleDateString().replaceAll('/', '-')}` +
       (isSelectAll ? `_all` : ``)
