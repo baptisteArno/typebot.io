@@ -8,12 +8,7 @@ const PrivacyPolicies = () => {
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
       <Navbar />
-      <SocialMetaTags
-        title="Privacy Policies for Typebot"
-        description="Create beautiful conversational forms"
-        currentUrl={`https://www.typebot.io/privacy-policies`}
-        imagePreviewUrl={`https://www.typebot.io/images/previews/home.png`}
-      />
+      <SocialMetaTags currentUrl={`https://www.typebot.io/privacy-policies`} />
       <Stack spacing={10} mx="auto" maxW="3xl" my="20">
         <Heading as="h1">Privacy Policy for Typebot</Heading>
 

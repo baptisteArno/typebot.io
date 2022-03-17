@@ -14,12 +14,7 @@ import { Testimonials } from 'components/Homepage/Testimonials'
 const App = () => {
   return (
     <Stack w="full" overflowX="hidden" bgColor="gray.900">
-      <SocialMetaTags
-        title="Typebot: Conversational Form Builder"
-        description="Convert 4x more with beautiful conversational forms. Embed them directly in your applications without a line of code."
-        currentUrl={`https://www.typebot.io/`}
-        imagePreviewUrl={`https://www.typebot.io/images/previews/home.png`}
-      />
+      <SocialMetaTags currentUrl={`https://www.typebot.io/`} />
       <Hero />
       <IntroducingChatApps />
       <EasyBuildingExperience />

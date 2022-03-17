@@ -27,14 +27,7 @@ const Pricing = () => {
         bgGradient="linear(to-b, gray.900, gray.800)"
         pb={40}
       >
-        <SocialMetaTags
-          title={'Pricing'}
-          description={
-            "99% of Typebot's features are available to all users for free."
-          }
-          currentUrl={`https://www.typebot.io/pricing`}
-          imagePreviewUrl={`https://www.typebot.io/images/previews/pricing.png`}
-        />
+        <SocialMetaTags currentUrl={`https://www.typebot.io/pricing`} />
         <Head>
           <link
             rel="alternate"

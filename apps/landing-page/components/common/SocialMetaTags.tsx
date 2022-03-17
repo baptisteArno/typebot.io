@@ -2,15 +2,15 @@ import Head from 'next/head'
 import React from 'react'
 
 export const SocialMetaTags = ({
-  title,
-  description,
+  title = 'Typebot - Open-source conversational apps builder',
+  description = 'Powerful blocks to create unique chat experiences. Embed them anywhere on your apps and start collecting results like magic.',
   currentUrl,
-  imagePreviewUrl,
+  imagePreviewUrl = 'https://www.typebot.io/images/preview.png',
 }: {
-  title: string
-  description: string
+  title?: string
+  description?: string
   currentUrl: string
-  imagePreviewUrl: string
+  imagePreviewUrl?: string
 }) => (
   <Head>
     <title>{title}</title>
