@@ -3,7 +3,7 @@
   "version": "2.2.0",
   "main": "dist/index.js",
   "unpkg": "dist/index.umd.min.js",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "build": "yarn lint && rollup -c",
     "lint": "eslint src --ext .ts && eslint tests --ext .ts",

@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/typebot-io/wordpress.git",
   "author": "baptisteArno",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@prettier/plugin-php": "^0.18.3"
   },

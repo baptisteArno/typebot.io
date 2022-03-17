@@ -17,16 +17,16 @@ Typebot is an open-source alternative to Landbot. It allows you to create conver
 - Conditional branching, URL redirections
 - Beautiful animations
 - Theme is 100% customizable
-- Embed as a container, popup, or chat bubble with a native JS library
+- Embed as a container, popup, or chat bubble easily with the native JS library
 - In-depth analytics
 
-#### VIDEO
+For more info, visit the [landing page](https://www.typebot.io)
 
 ## Getting started with Typebot
 
 The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io).
 
-It takes 1 minute to try out the builder for free. You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste Arnaud, Typebot's founder.
+It takes 1 minute to try out the builder for free. You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
 
 That's also the best way to support my work, open-source software, and you'll get great service!
 
