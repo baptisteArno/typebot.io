@@ -1,5 +1,5 @@
-import Icon, { IconProps } from "@chakra-ui/icon";
-import React from "react";
+import Icon, { IconProps } from '@chakra-ui/icon'
+import React from 'react'
 
 export const ChevronRightIcon = (props: IconProps) => (
   <Icon
@@ -18,4 +18,4 @@ export const ChevronRightIcon = (props: IconProps) => (
       d="M184 112l144 144-144 144"
     />
   </Icon>
-);
+)

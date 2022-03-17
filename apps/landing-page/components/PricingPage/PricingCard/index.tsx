@@ -21,17 +21,16 @@ export interface PricingCardData {
 interface PricingCardProps extends CardProps {
   data: PricingCardData
   icon?: JSX.Element
-  beforeButtonLabel?: string
   button: React.ReactElement
 }
 
 export const PricingCard = (props: PricingCardProps) => {
-  const { data, icon, button, beforeButtonLabel, ...rest } = props
+  const { data, icon, button, ...rest } = props
   const { features, price, name } = data
-  const accentColor = useColorModeValue('blue.500', 'blue.200')
+  const accentColor = useColorModeValue('blue.500', 'white')
 
   return (
-    <Card rounded="xl" {...rest}>
+    <Card rounded="xl" bgColor="gray.800" {...rest}>
       <VStack spacing={6}>
         {icon}
         <Heading size="md" fontWeight="extrabold">
@@ -62,17 +61,12 @@ export const PricingCard = (props: PricingCardProps) => {
               as={CheckIcon}
               marginEnd={2}
               color={accentColor}
-              fill="#0042da"
+              fill="blue.200"
             />
             {feature}
           </ListItem>
         ))}
       </List>
-      {beforeButtonLabel && (
-        <Text textAlign="center" mb="4" color="gray.600">
-          {beforeButtonLabel}
-        </Text>
-      )}
       {button}
     </Card>
   )

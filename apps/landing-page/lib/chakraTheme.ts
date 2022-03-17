@@ -1,5 +1,7 @@
 import { extendTheme } from '@chakra-ui/react'
 
+const config = { initialColorMode: 'dark', useSystemColorMode: false }
+
 const fonts = {
   heading: 'Outfit',
   body: 'Open Sans',
@@ -75,4 +77,9 @@ const components = {
   },
 }
 
-export const theme = extendTheme({ fonts, components, colors })
+export const theme = extendTheme({
+  fonts,
+  components,
+  colors,
+  config,
+})

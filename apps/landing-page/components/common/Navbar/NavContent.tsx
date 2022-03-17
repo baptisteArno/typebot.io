@@ -65,7 +65,7 @@ const MobileNavContext = ({
         <Button
           as={NextChakraLink}
           href="https://app.typebot.io/register"
-          colorScheme="blue"
+          colorScheme="orange"
           w="full"
           size="lg"
           mt="5"
@@ -90,43 +90,44 @@ const DesktopNavContent = ({
       color={mode('bg.gray800', 'white')}
     >
       <HStack as={NextChakraLink} href="/" rel="home">
-        <Logo boxSize="35px" isDark={mode(false, true)} />
+        <Logo boxSize="35px" />
         <Heading as="p" fontSize="lg">
           Typebot
         </Heading>
       </HStack>
-      <HStack
-        as="ul"
-        id="nav__primary-menu"
-        aria-label="Main Menu"
-        listStyleType="none"
-      >
-        {links.map((link, idx) => (
-          <Box as="li" key={idx} id={`nav__menuitem-${idx}`}>
-            {link.children ? (
-              <Submenu.Desktop link={link} />
-            ) : (
-              <NavLink.Desktop href={link.href ?? '#'}>
-                {link.label}
-              </NavLink.Desktop>
-            )}
-          </Box>
-        ))}
-      </HStack>
-      <HStack spacing="8" minW="240px" justify="space-between">
-        <Box
+
+      <HStack spacing="4" minW="240px" justify="space-between">
+        <HStack
+          as="ul"
+          id="nav__primary-menu"
+          aria-label="Main Menu"
+          listStyleType="none"
+        >
+          {links.map((link, idx) => (
+            <Box as="li" key={idx} id={`nav__menuitem-${idx}`}>
+              {link.children ? (
+                <Submenu.Desktop link={link} />
+              ) : (
+                <NavLink.Desktop href={link.href ?? '#'}>
+                  {link.label}
+                </NavLink.Desktop>
+              )}
+            </Box>
+          ))}
+        </HStack>
+        <Button
           as={NextChakraLink}
           href="https://app.typebot.io/signin"
           colorScheme="blue"
-          variant="ghost"
+          variant="outline"
           fontWeight="bold"
         >
           Sign in
-        </Box>
+        </Button>
         <Button
           as={NextChakraLink}
           href="https://app.typebot.io/register"
-          colorScheme="blue"
+          colorScheme="orange"
           fontWeight="bold"
         >
           Create a typebot

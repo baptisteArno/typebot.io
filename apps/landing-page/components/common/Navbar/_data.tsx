@@ -1,4 +1,4 @@
-import { BookIcon } from 'assets/icons/BookIcon'
+import { GitHubIcon } from 'assets/icons'
 import { DocIcon } from 'assets/icons/DocIcon'
 import { MapIcon } from 'assets/icons/MapIcon'
 import { PeopleCircleIcon } from 'assets/icons/PeopleCircleIcon'
@@ -20,11 +20,10 @@ export const links = [
     label: 'Resources',
     children: [
       {
-        label: 'Blog',
-        description:
-          "Content about high-performing forms and guides on how to leverage Typebot's power",
-        href: '/blog',
-        icon: <BookIcon />,
+        label: 'GitHub repository',
+        description: 'Check out the entire source code of the project',
+        href: 'https://github.com/baptisteArno/typebot.io',
+        icon: <GitHubIcon fill="blue.300" />,
       },
       {
         label: 'Documentation',

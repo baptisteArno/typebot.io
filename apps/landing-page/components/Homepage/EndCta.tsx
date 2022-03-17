@@ -1,12 +1,21 @@
-import { Box, Heading, Button, Text } from '@chakra-ui/react'
+import { Heading, Button, Text, Flex, VStack } from '@chakra-ui/react'
+import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import React from 'react'
 import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
 export const EndCta = () => {
   return (
-    <Box as="section" py={32} pos="relative">
+    <VStack
+      as="section"
+      py={32}
+      pos="relative"
+      bgGradient="linear(to-b, gray.900, gray.800)"
+      height="100vh"
+      justifyContent="center"
+    >
       <BackgroundPolygons />
-      <Box
+      <VStack
+        spacing="6"
         maxW="2xl"
         mx="auto"
         px={{ base: '6', lg: '8' }}
@@ -16,20 +25,22 @@ export const EndCta = () => {
         <Heading fontWeight="extrabold" letterSpacing="tight">
           Take your forms to the next level
         </Heading>
-        <Text mt="4" fontSize="lg">
-          Try Typebot for free and start improving the performance of your form
+        <Flex>
+          <Button
+            as={NextChakraLink}
+            href="https://app.typebot.io/register"
+            size="lg"
+            colorScheme="orange"
+            height="4rem"
+          >
+            Create a typebot
+          </Button>
+        </Flex>
+
+        <Text color="gray.400">
+          No trial. Generous, unlimited <strong>free</strong> plan.
         </Text>
-        <Button
-          as="a"
-          href="https://app.typebot.io/register"
-          mt="8"
-          size="lg"
-          colorScheme="blue"
-          fontWeight="bold"
-        >
-          Create a typebot
-        </Button>
-      </Box>
-    </Box>
+      </VStack>
+    </VStack>
   )
 }

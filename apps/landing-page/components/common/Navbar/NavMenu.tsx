@@ -9,7 +9,7 @@ export const NavMenu = (props: MotionBoxProps) => (
     variants={variants}
     outline="0"
     opacity="0"
-    bg={useColorModeValue('white', 'gray.700')}
+    bg={useColorModeValue('white', 'gray.800')}
     w="full"
     shadow="lg"
     px="4"

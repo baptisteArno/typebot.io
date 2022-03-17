@@ -43,7 +43,7 @@ export const SubmenuItem = (props: SubmenuItemProps) => {
         w="10"
         h="10"
         fontSize="3xl"
-        color={mode('blue.600', 'blue.400')}
+        color={'blue.300'}
       >
         {icon}
       </Center>

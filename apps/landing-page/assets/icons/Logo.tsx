@@ -1,22 +1,14 @@
-import Icon, { IconProps } from "@chakra-ui/icon";
-import React from "react";
+import Icon, { IconProps } from '@chakra-ui/icon'
+import React from 'react'
 
-export const Logo = ({
-  isDark,
-  ...props
-}: { isDark?: boolean } & IconProps) => (
+export const Logo = (props: IconProps) => (
   <Icon
     viewBox="0 0 500 500"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <rect
-      width="500"
-      height="500"
-      rx="75"
-      fill={!isDark ? "#0042DA" : "white"}
-    />
+    <rect width="500" height="500" rx="75" fill={'#0042DA'} />
     <rect
       x="438.709"
       y="170.968"
@@ -39,13 +31,13 @@ export const Logo = ({
       height="290.323"
       rx="32.2581"
       transform="rotate(-90 61.29 332.259)"
-      fill={!isDark ? "white" : "#0042DA"}
+      fill={'white'}
     />
     <path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M406.451 267.742C388.635 267.742 374.193 282.184 374.193 300C374.193 317.815 388.635 332.258 406.451 332.258C424.267 332.258 438.709 317.815 438.709 300C438.709 282.184 424.267 267.742 406.451 267.742Z"
-      fill={!isDark ? "white" : "#0042DA"}
+      fill={'white'}
     />
   </Icon>
-);
+)

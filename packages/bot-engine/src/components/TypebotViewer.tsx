@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useMemo } from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
 //@ts-ignore
-import style from '../assets/style.css'
+import styles from '../assets/style.css'
 //@ts-ignore
 import phoneNumberInputStyle from 'react-phone-number-input/style.css'
 //@ts-ignore
@@ -25,6 +25,7 @@ export type TypebotViewerProps = {
   typebot: PublicTypebot
   isPreview?: boolean
   apiHost?: string
+  style?: CSSProperties
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -35,6 +36,7 @@ export const TypebotViewer = ({
   typebot,
   apiHost = process.env.NEXT_PUBLIC_VIEWER_URL,
   isPreview = false,
+  style,
   onNewLog,
   onNewBlockVisible,
   onNewAnswer,
@@ -67,13 +69,13 @@ export const TypebotViewer = ({
         <style>
           {phoneNumberInputStyle}
           {phoneSyle}
-          {style}
+          {styles}
           {typebot.theme?.customCss}
           {importantStyles}
         </style>
       }
       name="Typebot viewer"
-      style={{ width: '100%', height: '100%', border: 'none' }}
+      style={{ width: '100%', height: '100%', border: 'none', ...style }}
     >
       <style
         dangerouslySetInnerHTML={{
