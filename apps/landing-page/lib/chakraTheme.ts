@@ -51,6 +51,16 @@ const components = {
     defaultProps: {
       colorScheme: 'blue',
     },
+    variants: {
+      solid: () => ({
+        bg: 'blue.400',
+        color: 'white',
+        shadow: 'inset 0 1px 0 0 rgb(255 255 255/.2)',
+        _hover: {
+          bg: 'blue.300',
+        },
+      }),
+    },
   },
   NumberInput: {
     defaultProps: {
