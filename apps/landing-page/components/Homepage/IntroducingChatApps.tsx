@@ -47,6 +47,7 @@ export const IntroducingChatApps = () => {
           <Heading
             fontSize={{ base: '3xl', lg: '5xl', xl: '6xl' }}
             textAlign="center"
+            data-aos="fade"
           >
             Introducing Conversational Apps
           </Heading>
@@ -54,6 +55,7 @@ export const IntroducingChatApps = () => {
             textAlign="center"
             fontSize={{ base: 'lg', xl: 'xl' }}
             color="gray.400"
+            data-aos="fade"
           >
             Typebot is a better way to ask for information. It leads to an
             increase in customer satisfaction and retention and multiply by 3
@@ -61,7 +63,12 @@ export const IntroducingChatApps = () => {
           </Text>
         </Stack>
 
-        <Stack direction={['column', 'row']} w="full" spacing="6">
+        <Stack
+          direction={['column', 'row']}
+          w="full"
+          spacing="6"
+          data-aos="fade"
+        >
           <VStack spacing={6} flex="1">
             <DontIcon />
             <FakeLeadGenForm />

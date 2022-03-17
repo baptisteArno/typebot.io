@@ -22,7 +22,11 @@ export const EndCta = () => {
         py={{ base: '16', sm: '20' }}
         textAlign="center"
       >
-        <Heading fontWeight="extrabold" letterSpacing="tight">
+        <Heading
+          fontWeight="extrabold"
+          letterSpacing="tight"
+          data-aos="fade-up"
+        >
           Take your forms to the next level
         </Heading>
         <Flex>
@@ -32,12 +36,14 @@ export const EndCta = () => {
             size="lg"
             colorScheme="orange"
             height="4rem"
+            data-aos="fade-up"
+            data-aos-delay="300"
           >
             Create a typebot
           </Button>
         </Flex>
 
-        <Text color="gray.400">
+        <Text color="gray.400" data-aos="fade-up" data-aos-delay="400">
           No trial. Generous, unlimited <strong>free</strong> plan.
         </Text>
       </VStack>

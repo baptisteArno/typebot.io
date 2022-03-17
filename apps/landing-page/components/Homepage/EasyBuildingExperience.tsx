@@ -9,7 +9,14 @@ import { Flare } from 'assets/illustrations/Flare'
 export const EasyBuildingExperience = () => {
   return (
     <Flex as="section" justify="center" pos="relative">
-      <Flare color="blue" pos="absolute" left="-200px" top="-50px" />
+      <Flare
+        color="blue"
+        pos="absolute"
+        left="-200px"
+        top="-50px"
+        data-aos="fade"
+        data-aos-delay="500"
+      />
       <Stack
         style={{ maxWidth: '1000px' }}
         pt={'52'}
@@ -21,10 +28,14 @@ export const EasyBuildingExperience = () => {
         alignItems="center"
       >
         <Stack spacing="6" maxW="300px">
-          <Stack>
-            <Heading as="h1">Easy building experience</Heading>
-          </Stack>
-          <Text color="gray.400" fontSize={{ base: 'lg', xl: 'xl' }}>
+          <Heading as="h1" data-aos="fade">
+            Easy building experience
+          </Heading>
+          <Text
+            color="gray.400"
+            fontSize={{ base: 'lg', xl: 'xl' }}
+            data-aos="fade"
+          >
             All you have to do is drag and drop blocks to create your app. Even
             if you have custom needs, you can always add custom code.
           </Text>
@@ -34,12 +45,13 @@ export const EasyBuildingExperience = () => {
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"
+              data-aos="fade"
             >
               Try it now
             </Button>
           </Flex>
         </Stack>
-        <Box rounded="md">
+        <Box rounded="md" data-aos="fade">
           <Image
             src={builderDndSrc}
             alt="incomplete results illustration"

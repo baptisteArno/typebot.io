@@ -8,7 +8,7 @@ export const Testimonials = () => {
   return (
     <Flex as="section" justify="center">
       <VStack spacing={12} pt={'52'} px="4">
-        <Heading textAlign={'center'}>
+        <Heading textAlign={'center'} data-aos="fade">
           They've tried, they never looked back. 💙
         </Heading>
         <Stack
@@ -20,6 +20,7 @@ export const Testimonials = () => {
             name="Joshua Lim"
             role="Growth Strategist @ Socialhackrs Media"
             image={joshuaPictureSrc}
+            data-aos="fade"
           >
             I upgraded my typeforms to typebots and saw a conversion rate
             increase{' '}
@@ -33,6 +34,7 @@ export const Testimonials = () => {
             name="Nicolai Grut"
             role="Growth Strategist @ X"
             image={joshuaPictureSrc}
+            data-aos="fade"
           >
             I am really loving using Typebot! I have used so many bot builders
             (ActiveChat, Botstar, Uchat, Monkeybot) and Typebot is definitely
@@ -42,6 +44,7 @@ export const Testimonials = () => {
             name="Julien Muratot"
             role="Growth Manager @ Hornetwork"
             image={julienPictureSrc}
+            data-aos="fade"
           >
             I run Google ads all year long on our landing page that contains a
             typebot. I saw a{' '}

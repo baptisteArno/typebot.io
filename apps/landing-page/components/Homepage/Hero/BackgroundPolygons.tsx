@@ -10,6 +10,8 @@ export const BackgroundPolygons = () => {
         pos="absolute"
         left="0px"
         top="100px"
+        data-aos="fade"
+        data-aos-delay="200"
       >
         <Triangle />
       </chakra.div>
@@ -19,6 +21,8 @@ export const BackgroundPolygons = () => {
         pos="absolute"
         right="-10px"
         top="30px"
+        data-aos="fade"
+        data-aos-delay="200"
       >
         <DemiCircle />
       </chakra.div>

@@ -12,6 +12,14 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
+          <noscript>
+            {/*
+              Here we ignore the following recommendation to solve possible SSR problems with noscript browsers/visitors
+              https://nextjs.org/docs/messages/no-css-tags
+            */}
+            {/* eslint-disable-next-line @next/next/no-css-tags */}
+            <link href="./styles/aos-noscript.css" rel="stylesheet" />
+          </noscript>
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

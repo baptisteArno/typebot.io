@@ -32,15 +32,26 @@ export const Hero = () => {
               maxW="1000px"
               bgGradient="linear(to-r, blue.300, purple.300)"
               bgClip="text"
+              data-aos="fade-up"
             >
               Open-source conversational apps builder
             </Heading>
-            <Text fontSize={['lg', 'xl']} maxW="800px" textAlign="center">
+            <Text
+              fontSize={['lg', 'xl']}
+              maxW="800px"
+              textAlign="center"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
               Typebot gives you powerful blocks to create unique chat
               experiences. Embed them anywhere on your web/mobile apps and start
               collecting results like magic.
             </Text>
-            <Stack direction={['column-reverse', 'row']}>
+            <Stack
+              direction={['column-reverse', 'row']}
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               <Button
                 as={NextChakraLink}
                 href="https://app.typebot.io/register"
@@ -66,7 +77,7 @@ export const Hero = () => {
               </Button>
             </Stack>
 
-            <Text color="gray.400">
+            <Text color="gray.400" data-aos="fade-up" data-aos-delay="300">
               No trial. Generous, unlimited <strong>free</strong> plan.
             </Text>
           </VStack>
@@ -80,6 +91,8 @@ export const Hero = () => {
               filter="blur(40px)"
               opacity="0.7"
               className="animated-blob animation-delay-2000"
+              data-aos="fade"
+              data-aos-delay="1200"
             />
             <Box
               pos="absolute"
@@ -90,8 +103,15 @@ export const Hero = () => {
               filter="blur(40px)"
               opacity="0.7"
               className="animated-blob animation-delay-4000"
+              data-aos="fade"
+              data-aos-delay="1200"
             />
-            <Box as="figure" shadow="lg">
+            <Box
+              as="figure"
+              shadow="lg"
+              data-aos="zoom-out-up"
+              data-aos-delay="800"
+            >
               <Image
                 src={builderScreenshotSrc}
                 alt="Builder screenshot"
@@ -103,7 +123,7 @@ export const Hero = () => {
       </Stack>
       <Flex justify="center" bgGradient="linear(to-b, gray.900, gray.800)">
         <VStack spacing="12" pb="32" maxW="7xl" px={4}>
-          <Heading fontSize="25px" fontWeight="semibold">
+          <Heading fontSize="25px" fontWeight="semibold" data-aos="fade">
             Loved by teams and creators from all around the world
           </Heading>
           <SimpleGrid
@@ -112,6 +132,7 @@ export const Hero = () => {
             alignItems="center"
             spacing={12}
             fontSize="4xl"
+            data-aos="fade"
           >
             <Logos.IbanFirst />
             <Logos.Lemlist />

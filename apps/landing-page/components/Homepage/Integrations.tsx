@@ -49,6 +49,7 @@ export const Integrations = () => (
           h="full"
           bgGradient="linear(to-r, rgba(23,25,35,1), rgba(23,25,35,0))"
           pointerEvents="none"
+          zIndex={100}
         />
         <Flex
           pos="absolute"
@@ -57,6 +58,7 @@ export const Integrations = () => (
           h="full"
           bgGradient="linear(to-l, rgba(23,25,35,1), rgba(23,25,35,0))"
           pointerEvents="none"
+          zIndex={100}
         />
         <HStack w="full" spacing={[4, 16]}>
           {firstRowIcons.map((Icon, idx) => (
@@ -71,6 +73,8 @@ export const Integrations = () => (
               justifyContent="center"
               align="center"
               borderWidth="1px"
+              data-aos="fade"
+              data-aos-delay={idx * 100}
             >
               <Icon w="full" h="full" />
             </Flex>
@@ -89,6 +93,8 @@ export const Integrations = () => (
               justifyContent="center"
               align="center"
               borderWidth="1px"
+              data-aos="fade"
+              data-aos-delay={(secondRowIcons.length - idx) * 100}
             >
               <Icon w="full" h="full" />
             </Flex>
@@ -97,8 +103,15 @@ export const Integrations = () => (
       </Stack>
 
       <Stack w="full" maxWidth="1200px" px="4">
-        <Heading fontSize={['3xl', '4xl']}>Integrate with any platform</Heading>
-        <Text color="gray.400" maxW="700px" fontSize={['lg', 'xl']}>
+        <Heading fontSize={['3xl', '4xl']} data-aos="fade-up">
+          Integrate with any platform
+        </Heading>
+        <Text
+          color="gray.400"
+          maxW="700px"
+          fontSize={['lg', 'xl']}
+          data-aos="fade-up"
+        >
           Typebot offers several native integrations blocks as well as
           instructions on how to embed typebot on particular platforms
         </Text>

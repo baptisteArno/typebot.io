@@ -9,7 +9,14 @@ import { Flare } from 'assets/illustrations/Flare'
 export const EasyEmbed = () => {
   return (
     <Flex as="section" justify="center" pos="relative">
-      <Flare color="orange" pos="absolute" right="-200px" top="100px" />
+      <Flare
+        color="orange"
+        pos="absolute"
+        right="-200px"
+        top="100px"
+        data-aos="fade"
+        data-aos-delay="500"
+      />
       <Stack
         style={{ maxWidth: '1000px' }}
         pt={32}
@@ -21,13 +28,19 @@ export const EasyEmbed = () => {
         alignItems="center"
       >
         <Stack spacing="6" maxW="300px">
-          <Heading as="h1">Embed it in a click</Heading>
-          <Text color="gray.400" fontSize={{ base: 'lg', xl: 'xl' }}>
+          <Heading as="h1" data-aos="fade">
+            Embed it in a click
+          </Heading>
+          <Text
+            color="gray.400"
+            fontSize={{ base: 'lg', xl: 'xl' }}
+            data-aos="fade"
+          >
             Embedding your typebot in your applications is a walk in the park.
             Typebot gives you several step-by-step platform-specific
             instructions. Your typebot will always feel "native".
           </Text>
-          <Flex>
+          <Flex data-aos="fade">
             <Button
               as={NextChakraLink}
               rightIcon={<ArrowRight />}
@@ -39,7 +52,7 @@ export const EasyEmbed = () => {
             </Button>
           </Flex>
         </Stack>
-        <Box rounded="md">
+        <Box rounded="md" data-aos="fade">
           <Image
             src={nativeFeelingSrc}
             alt="incomplete results illustration"

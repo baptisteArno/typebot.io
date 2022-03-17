@@ -53,7 +53,11 @@ export const RealTimeResults = () => {
         alignItems="center"
       >
         <VStack spacing={6}>
-          <Heading fontSize={{ base: '4xl', xl: '6xl' }} textAlign="center">
+          <Heading
+            fontSize={{ base: '4xl', xl: '6xl' }}
+            textAlign="center"
+            data-aos="fade"
+          >
             Collect results in real-time
           </Heading>
           <Text
@@ -61,6 +65,7 @@ export const RealTimeResults = () => {
             color="gray.400"
             maxW="1000px"
             fontSize={{ base: 'lg', xl: 'xl' }}
+            data-aos="fade"
           >
             One of the main advantage of a chat application is that you collect
             the user's responses on each question.{' '}
@@ -73,13 +78,19 @@ export const RealTimeResults = () => {
               href={`https://app.typebot.io/register`}
               variant="ghost"
               colorScheme="blue"
+              data-aos="fade"
             >
               Try it now
             </Button>
           </Flex>
         </VStack>
 
-        <Stack w="full" direction={['column', 'row']} spacing="4">
+        <Stack
+          w="full"
+          direction={['column', 'row']}
+          spacing="4"
+          data-aos="fade"
+        >
           {typebot && (
             <Flex w="full" h="full" minH="300" borderWidth="1px" rounded="md">
               <TypebotViewer

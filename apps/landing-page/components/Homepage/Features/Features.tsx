@@ -61,14 +61,19 @@ export const Features = () => {
         spacing={12}
       >
         <VStack>
-          <Heading as="h1" textAlign="center">
+          <Heading as="h1" textAlign="center" data-aos="fade">
             And many more features
           </Heading>
-          <Text color="gray.500" fontSize={['lg', 'xl']} textAlign="center">
+          <Text
+            color="gray.500"
+            fontSize={['lg', 'xl']}
+            textAlign="center"
+            data-aos="fade"
+          >
             Typebot makes form building easy and comes with powerful features
           </Text>
         </VStack>
-        <SimpleGrid columns={[1, 3]} spacing="10" pt="10">
+        <SimpleGrid columns={[1, 3]} spacing="10" pt="10" data-aos="fade">
           {features.map((feature, idx) => (
             <FeatureCard key={idx} {...feature} />
           ))}
