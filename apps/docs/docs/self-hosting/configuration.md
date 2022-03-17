@@ -47,6 +47,11 @@ Used authentication in the builder and for the Google Sheets integration step. M
 | NEXT_PUBLIC_GOOGLE_CLIENT_ID | --      | The Client ID from the Google API Console     |
 | GOOGLE_CLIENT_SECRET         | --      | The Client secret from the Google API Console |
 
+Used for Google Fonts:
+| Parameter | Default | Description |
+| ---------------------------- | ------- | --------------------------------------------- |
+| NEXT_PUBLIC_GOOGLE_API_KEY | -- | The API Key from the Google API Console |
+
 ## Builder
 
 The following variables are only used for the builder.

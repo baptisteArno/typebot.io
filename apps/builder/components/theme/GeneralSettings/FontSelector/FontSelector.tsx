@@ -20,7 +20,7 @@ export const FontSelector = ({
 
   const fetchPopularFonts = async () => {
     const response = await fetch(
-      `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyD2YAiipBLNYg058Wm-sPE-e2dPDn_zX8w&sort=popularity`
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
     )
     return (await response.json()).items.map(
       (item: { family: string }) => item.family
