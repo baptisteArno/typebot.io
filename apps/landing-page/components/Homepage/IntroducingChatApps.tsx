@@ -9,7 +9,6 @@ import {
   Input,
   Checkbox,
   Textarea,
-  VStack,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { TypebotViewer } from 'bot-engine'
@@ -17,6 +16,7 @@ import { PublicTypebot } from 'models'
 import { sendRequest } from 'utils'
 import { DontIcon } from 'assets/icons/DontIcon'
 import { DoIcon } from 'assets/icons/DoIcon'
+import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
 
 export const IntroducingChatApps = () => {
   const [typebot, setTypebot] = useState<PublicTypebot>()
@@ -69,12 +69,18 @@ export const IntroducingChatApps = () => {
           spacing="6"
           data-aos="fade"
         >
-          <VStack spacing={6} flex="1">
+          <Stack spacing={6} flex="1" align={['flex-start', 'center']}>
             <DontIcon />
             <FakeLeadGenForm />
-          </VStack>
+          </Stack>
 
-          <VStack spacing={6} flex="1" h="full">
+          <Stack
+            spacing={6}
+            flex="1"
+            h="full"
+            pos="relative"
+            align={['flex-start', 'center']}
+          >
             <DoIcon />
             {typebot && (
               <Flex
@@ -90,7 +96,19 @@ export const IntroducingChatApps = () => {
                 />
               </Flex>
             )}
-          </VStack>
+            <Flex top="-20px" right="40px" pos="absolute">
+              <Text fontFamily="'Indie Flower'" fontSize="2xl">
+                Try it out!
+              </Text>
+              <HandDrawnArrow
+                transform="rotate(30deg)"
+                boxSize="100px"
+                top="15px"
+                right="-60px"
+                pos="absolute"
+              />
+            </Flex>
+          </Stack>
         </Stack>
       </Stack>
     </Flex>

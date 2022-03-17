@@ -25,25 +25,6 @@
       "id": "nrFcoNFtGcGJNifcjiEFya",
       "steps": [
         {
-          "id": "s7x5riciJaWVdvmHUbBmyqY",
-          "type": "text",
-          "blockId": "nrFcoNFtGcGJNifcjiEFya",
-          "content": {
-            "html": "<div>With a typebot, you collect the result as soon as your user answers the first question. 🤯</div>",
-            "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "With a typebot, you collect the result as soon as your user answers the first question. 🤯"
-                  }
-                ]
-              }
-            ],
-            "plainText": "With a typebot, you collect the result as soon as your user answers the first question. 🤯"
-          }
-        },
-        {
           "id": "sjigBF5rKat4BForNiMfPwb",
           "type": "text",
           "blockId": "nrFcoNFtGcGJNifcjiEFya",
