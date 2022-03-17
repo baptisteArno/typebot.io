@@ -13,8 +13,7 @@ export const Card = (props: CardProps) => {
       bg={useColorModeValue('white', 'gray.700')}
       position="relative"
       px="6"
-      pb="6"
-      pt="16"
+      py="6"
       overflow="hidden"
       shadow="lg"
       maxW="md"

@@ -21,7 +21,7 @@ class MyDocument extends Document {
             <link href="./styles/aos-noscript.css" rel="stylesheet" />
           </noscript>
         </Head>
-        <body>
+        <body style={{ backgroundColor: '#171923' }}>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />

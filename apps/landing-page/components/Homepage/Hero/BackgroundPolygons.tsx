@@ -6,7 +6,7 @@ export const BackgroundPolygons = () => {
     <>
       <chakra.div
         display={{ base: 'none', xl: 'block' }}
-        animation="float 6s ease-in-out infinite;"
+        className="floating animation-delay-3000"
         pos="absolute"
         left="0px"
         top="100px"
@@ -17,7 +17,7 @@ export const BackgroundPolygons = () => {
       </chakra.div>
       <chakra.div
         display={{ base: 'none', xl: 'block' }}
-        animation="float 6s ease-in-out 700ms infinite;"
+        className="floating animation-delay-4000"
         pos="absolute"
         right="-10px"
         top="30px"

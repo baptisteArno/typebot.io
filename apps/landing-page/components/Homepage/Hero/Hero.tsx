@@ -15,7 +15,6 @@ import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
 import Image from 'next/image'
 import builderScreenshotSrc from 'public/images/homepage/builder.png'
-import { GitHubIcon } from 'assets/icons'
 
 export const Hero = () => {
   return (
@@ -62,23 +61,10 @@ export const Hero = () => {
               >
                 Create a typebot
               </Button>
-              <Button
-                as={NextChakraLink}
-                href="https://github.com/baptisteArno/typebot.io"
-                isExternal={true}
-                colorScheme="gray"
-                size="lg"
-                height="4rem"
-                px="2rem"
-                variant="outline"
-                leftIcon={<GitHubIcon />}
-              >
-                Star us on GitHub
-              </Button>
             </Stack>
 
             <Text color="gray.400" data-aos="fade-up" data-aos-delay="300">
-              No trial. Generous, unlimited <strong>free</strong> plan.
+              Generous, unlimited <strong>free</strong> plan.
             </Text>
           </VStack>
           <Box maxW="1200px" pos="relative">
@@ -90,7 +76,7 @@ export const Hero = () => {
               rounded="full"
               filter="blur(40px)"
               opacity="0.7"
-              className="animated-blob animation-delay-2000"
+              className="animated-blob"
               data-aos="fade"
               data-aos-delay="1200"
             />
@@ -102,7 +88,7 @@ export const Hero = () => {
               rounded="full"
               filter="blur(40px)"
               opacity="0.7"
-              className="animated-blob animation-delay-4000"
+              className="animated-blob animation-delay-5000"
               data-aos="fade"
               data-aos-delay="1200"
             />

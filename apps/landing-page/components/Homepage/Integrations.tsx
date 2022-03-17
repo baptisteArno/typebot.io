@@ -74,7 +74,7 @@ export const Integrations = () => (
               align="center"
               borderWidth="1px"
               data-aos="fade"
-              data-aos-delay={idx * 100}
+              data-aos-delay={idx * 200}
             >
               <Icon w="full" h="full" />
             </Flex>
@@ -94,7 +94,7 @@ export const Integrations = () => (
               align="center"
               borderWidth="1px"
               data-aos="fade"
-              data-aos-delay={(secondRowIcons.length - idx) * 100}
+              data-aos-delay={(secondRowIcons.length - idx) * 200}
             >
               <Icon w="full" h="full" />
             </Flex>

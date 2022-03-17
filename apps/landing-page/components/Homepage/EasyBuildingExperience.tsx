@@ -27,7 +27,7 @@ export const EasyBuildingExperience = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Stack spacing="6" maxW="300px">
+        <Stack spacing="6" maxW="300px" minW={[0, '300px']}>
           <Heading as="h1" data-aos="fade">
             Easy building experience
           </Heading>

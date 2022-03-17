@@ -30,7 +30,7 @@ export const Testimonials = () => {
             on my marketing campaigns. I noticed the improvement on day one.
             That was a game-changer.
           </Testimonial>
-          <Testimonial
+          {/* <Testimonial
             name="Nicolai Grut"
             role="Growth Strategist @ X"
             image={joshuaPictureSrc}
@@ -39,7 +39,7 @@ export const Testimonials = () => {
             I am really loving using Typebot! I have used so many bot builders
             (ActiveChat, Botstar, Uchat, Monkeybot) and Typebot is definitely
             the most user-friendly, and yet still powerful.
-          </Testimonial>
+          </Testimonial> */}
           <Testimonial
             name="Julien Muratot"
             role="Growth Manager @ Hornetwork"

@@ -1,5 +1,14 @@
-import { VStack } from '@chakra-ui/layout'
-import { DarkMode, Flex, Stack } from '@chakra-ui/react'
+import { Box, Heading, VStack } from '@chakra-ui/layout'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  DarkMode,
+  Flex,
+  Stack,
+} from '@chakra-ui/react'
 import { Footer } from 'components/common/Footer'
 import { Navbar } from 'components/common/Navbar/Navbar'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
@@ -28,19 +37,6 @@ const Pricing = () => {
         pb={40}
       >
         <SocialMetaTags currentUrl={`https://www.typebot.io/pricing`} />
-        <Head>
-          <link
-            rel="alternate"
-            hrefLang="en"
-            href="https://www.typebot.io/pricing"
-          />
-          <link
-            rel="alternate"
-            hrefLang="fr"
-            href="https://www.typebot.io/fr/pricing"
-          />
-        </Head>
-
         <BackgroundPolygons />
         <DarkMode>
           <Navbar />
@@ -49,7 +45,7 @@ const Pricing = () => {
         <VStack spacing={40} w="full">
           <Stack
             direction={['column', 'row']}
-            alignItems={['stretch', 'flex-start']}
+            alignItems={['stretch']}
             spacing={10}
             px={[4, 0]}
             mt={[20, 32]}
@@ -63,9 +59,9 @@ const Pricing = () => {
                 features: [
                   'Unlimited typebots',
                   'Unlimited responses',
-                  'Custom JS / CSS',
-                  'Native integrations (Google Sheets, Webhooks, Zapier...)',
-                  'Basic analytics (Sessions, time, completion...)',
+                  'Native integrations',
+                  'Webhooks',
+                  'Custom Javascript & CSS',
                 ],
               }}
               button={
@@ -105,10 +101,89 @@ const Pricing = () => {
               }
             />
           </Stack>
+          <VStack w="full" maxW="900px" spacing="10" px="4">
+            <Heading textAlign="center">Frequently asked questions</Heading>
+            <Faq />
+          </VStack>
         </VStack>
       </Flex>
       <Footer />
     </Stack>
+  )
+}
+
+const Faq = () => {
+  return (
+    <Accordion w="full" allowToggle defaultIndex={0}>
+      <AccordionItem>
+        <Heading as="h2">
+          <AccordionButton py="6">
+            <Box flex="1" textAlign="left" fontSize="2xl">
+              How can I use Typebot with my team?
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </Heading>
+        <AccordionPanel pb={4}>
+          Typebot allows you to invite your colleagues to collaborate on any of
+          your typebot. You can give him access as a reader or an editor. Your
+          colleague's account can be a free account. <br />
+          <br />
+          I'm working on a better solution for teams with shared workspaces and
+          other team-oriented features.
+        </AccordionPanel>
+      </AccordionItem>
+
+      <AccordionItem>
+        <Heading as="h2">
+          <AccordionButton py="6">
+            <Box flex="1" textAlign="left" fontSize="2xl">
+              How many seats will I have with the Pro plan?
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </Heading>
+        <AccordionPanel pb={4}>
+          You'll have only one seat. You can invite your colleagues to
+          collaborate on your typebots even though they have a free account.
+        </AccordionPanel>
+      </AccordionItem>
+      <AccordionItem>
+        <Heading as="h2">
+          <AccordionButton py="6">
+            <Box flex="1" textAlign="left" fontSize="2xl">
+              Why is there no trial?
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </Heading>
+        <AccordionPanel pb={4}>
+          For now, Typebot offers a Freemium based business model. My goal is to
+          make sure you have time to create awesome bots and collect valuable
+          results. If you need advanced features then you can upgrade any time.
+        </AccordionPanel>
+      </AccordionItem>
+      <AccordionItem>
+        <Heading as="h2">
+          <AccordionButton py="6">
+            <Box flex="1" textAlign="left" fontSize="2xl">
+              If I change my mind, can I get a refund?
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </Heading>
+        <AccordionPanel pb={4}>
+          Sure! Just{' '}
+          <NextChakraLink
+            href="mailto:baptiste@typebot.io"
+            textDecor="underline"
+          >
+            shoot me an email
+          </NextChakraLink>{' '}
+          and we'll figure things out 😀
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
   )
 }
 

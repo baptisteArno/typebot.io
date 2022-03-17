@@ -109,6 +109,7 @@ export const RealTimeResults = () => {
               borderRadius: '0.5rem',
               border: 'none',
               backgroundColor: 'white',
+              pointerEvents: 'none',
             }}
           />
         </Stack>

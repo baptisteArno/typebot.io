@@ -31,43 +31,48 @@ export const PricingCard = (props: PricingCardProps) => {
 
   return (
     <Card rounded="xl" bgColor="gray.800" {...rest}>
-      <VStack spacing={6}>
-        {icon}
-        <Heading size="md" fontWeight="extrabold">
-          {name}
-        </Heading>
-      </VStack>
-      <Flex
-        align="flex-end"
-        justify="center"
-        fontWeight="extrabold"
-        color={accentColor}
-        my="8"
-      >
-        <Heading size="2xl" fontWeight="inherit" lineHeight="0.9em">
-          {price}
-        </Heading>
-        {(price.includes('$') || price.includes('€')) && (
-          <Text fontWeight="inherit" fontSize="xl">
-            / mo
-          </Text>
-        )}
+      <Flex justifyContent="space-between" flexDir="column" h="full">
+        <Flex flexDir="column">
+          <VStack spacing={6}>
+            {icon}
+            <Heading size="md" fontWeight="extrabold">
+              {name}
+            </Heading>
+          </VStack>
+          <Flex
+            align="flex-end"
+            justify="center"
+            fontWeight="extrabold"
+            color={accentColor}
+            my="8"
+          >
+            <Heading size="2xl" fontWeight="inherit" lineHeight="0.9em">
+              {price}
+            </Heading>
+            {(price.includes('$') || price.includes('€')) && (
+              <Text fontWeight="inherit" fontSize="xl">
+                / month
+              </Text>
+            )}
+          </Flex>
+          <List spacing="4" mb="8" maxW="30ch" mx="auto">
+            {features.map((feature, index) => (
+              <ListItem fontWeight="medium" key={index}>
+                <ListIcon
+                  fontSize="xl"
+                  as={CheckIcon}
+                  marginEnd={2}
+                  color={accentColor}
+                  fill="blue.200"
+                />
+                {feature}
+              </ListItem>
+            ))}
+          </List>
+        </Flex>
+
+        {button}
       </Flex>
-      <List spacing="4" mb="8" maxW="30ch" mx="auto">
-        {features.map((feature, index) => (
-          <ListItem fontWeight="medium" key={index}>
-            <ListIcon
-              fontSize="xl"
-              as={CheckIcon}
-              marginEnd={2}
-              color={accentColor}
-              fill="blue.200"
-            />
-            {feature}
-          </ListItem>
-        ))}
-      </List>
-      {button}
     </Card>
   )
 }
