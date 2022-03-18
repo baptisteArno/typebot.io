@@ -1,9 +1,9 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
+import cuid from 'cuid'
 import { dequal } from 'dequal'
 import { Draft } from 'immer'
 import React, { useEffect, useState } from 'react'
-import { generate } from 'short-uuid'
 import { useImmer } from 'use-immer'
 
 type ItemWithId<T> = T & { id: string }
@@ -42,7 +42,7 @@ export const TableList = <T,>({
 
   const createItem = () => {
     setItems((items) => {
-      const id = generate()
+      const id = cuid()
       const newItem = { id } as Draft<ItemWithId<T>>
       items.push(newItem)
     })

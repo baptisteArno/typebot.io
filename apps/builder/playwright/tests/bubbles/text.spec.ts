@@ -5,11 +5,11 @@ import {
 } from '../../services/database'
 import { BubbleStepType, defaultTextBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 test.describe('Text bubble step', () => {
   test('rich text features should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,

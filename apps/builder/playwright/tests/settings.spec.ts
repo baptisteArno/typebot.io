@@ -1,14 +1,14 @@
 import test, { expect } from '@playwright/test'
+import cuid from 'cuid'
 import { defaultTextInputOptions } from 'models'
 import path from 'path'
-import { generate } from 'short-uuid'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = generate()
+      const typebotId = cuid()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
@@ -48,7 +48,7 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Typing emulation', () => {
     test('should be fillable', async ({ page }) => {
-      const typebotId = generate()
+      const typebotId = cuid()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {

@@ -2,11 +2,11 @@ import test, { expect, Page } from '@playwright/test'
 import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(
         __dirname,
@@ -56,7 +56,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Update row should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(
         __dirname,
@@ -106,7 +106,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Get row should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(
         __dirname,

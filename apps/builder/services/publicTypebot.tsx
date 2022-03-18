@@ -1,11 +1,11 @@
+import cuid from 'cuid'
 import { PublicTypebot, Typebot } from 'models'
-import shortId from 'short-uuid'
 import { sendRequest } from 'utils'
 
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
-  id: shortId.generate(),
+  id: cuid(),
   typebotId: typebot.id,
   blocks: typebot.blocks,
   edges: typebot.edges,

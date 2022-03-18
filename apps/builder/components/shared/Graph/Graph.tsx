@@ -9,11 +9,11 @@ import { useStepDnd } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { DraggableStepType, PublicTypebot, Typebot } from 'models'
-import { generate } from 'short-uuid'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import GraphContent from './GraphContent'
+import cuid from 'cuid'
 
 declare const window: { chrome: unknown | undefined }
 
@@ -81,7 +81,7 @@ export const Graph = ({
       x: e.clientX - graphPosition.x - blockWidth / 3,
       y: e.clientY - graphPosition.y - 20 - headerHeight,
     }
-    const id = generate()
+    const id = cuid()
     updateBlockCoordinates(id, coordinates)
     createBlock({
       id,

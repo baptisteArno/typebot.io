@@ -48,9 +48,10 @@ Used authentication in the builder and for the Google Sheets integration step. M
 | GOOGLE_CLIENT_SECRET         | --      | The Client secret from the Google API Console |
 
 Used for Google Fonts:
-| Parameter | Default | Description |
-| ---------------------------- | ------- | --------------------------------------------- |
-| NEXT_PUBLIC_GOOGLE_API_KEY | -- | The API Key from the Google API Console |
+
+| Parameter                  | Default | Description                             |
+| -------------------------- | ------- | --------------------------------------- |
+| NEXT_PUBLIC_GOOGLE_API_KEY | --      | The API Key from the Google API Console |
 
 ## Builder
 

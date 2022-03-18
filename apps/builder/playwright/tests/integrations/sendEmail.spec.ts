@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
-import { generate } from 'short-uuid'
 import { typebotViewer } from '../../services/selectorUtils'
+import cuid from 'cuid'
 
-const typebotId = generate()
+const typebotId = cuid()
 
 test.describe('Send email step', () => {
   test('its configuration should work', async ({ page }) => {

@@ -5,11 +5,11 @@ import {
 } from '../../services/database'
 import { defaultPhoneInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 test.describe('Phone input step', () => {
   test('options should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,

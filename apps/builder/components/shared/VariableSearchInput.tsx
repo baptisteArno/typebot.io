@@ -12,9 +12,9 @@ import {
 } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
+import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { generate } from 'short-uuid'
 import { useDebounce } from 'use-debounce'
 import { byId, isNotDefined } from 'utils'
 
@@ -89,7 +89,7 @@ export const VariableSearchInput = ({
 
   const handleCreateNewVariableClick = () => {
     if (!inputValue || inputValue === '') return
-    const id = generate()
+    const id = cuid()
     onSelectVariable({ id, name: inputValue })
     createVariable({ id, name: inputValue })
     onClose()

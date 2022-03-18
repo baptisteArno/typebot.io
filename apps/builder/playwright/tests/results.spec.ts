@@ -1,9 +1,9 @@
 import test, { expect, Page } from '@playwright/test'
+import cuid from 'cuid'
 import { readFileSync } from 'fs'
 import { defaultTextInputOptions, InputStepType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
-import { generate } from 'short-uuid'
 import {
   createResults,
   createTypebots,
@@ -12,13 +12,13 @@ import {
 } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
-const typebotId = generate()
+const typebotId = cuid()
 
 test.describe('Results page', () => {
   test('Submission table header should be parsed correctly', async ({
     page,
   }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(
         __dirname,

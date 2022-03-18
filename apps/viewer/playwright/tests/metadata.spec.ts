@@ -1,6 +1,5 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
-import { generate } from 'short-uuid'
 import {
   defaultSettings,
   defaultTextInputOptions,
@@ -8,9 +7,10 @@ import {
   Metadata,
 } from 'models'
 import { typebotViewer } from '../services/selectorUtils'
+import cuid from 'cuid'
 
 test('Should correctly parse metadata', async ({ page }) => {
-  const typebotId = generate()
+  const typebotId = cuid()
   const customMetadata: Metadata = {
     description: 'My custom description',
     title: 'Custom title',

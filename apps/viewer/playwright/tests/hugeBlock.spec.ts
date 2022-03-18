@@ -2,10 +2,10 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 test('should work as expected', async ({ page }) => {
-  const typebotId = generate()
+  const typebotId = cuid()
   await importTypebotInDatabase(
     path.join(__dirname, '../fixtures/typebots/hugeBlock.json'),
     { id: typebotId, publicId: `${typebotId}-public` }

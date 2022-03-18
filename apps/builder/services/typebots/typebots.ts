@@ -35,7 +35,6 @@ import {
   defaultConditionContent,
   defaultSendEmailOptions,
 } from 'models'
-import shortId, { generate } from 'short-uuid'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
@@ -179,7 +178,7 @@ export const parseNewStep = (
   type: DraggableStepType,
   blockId: string
 ): DraggableStep => {
-  const id = `s${shortId.generate()}`
+  const id = cuid()
   return {
     id,
     blockId,
@@ -199,11 +198,11 @@ const parseDefaultItems = (
 ): Item[] => {
   switch (type) {
     case InputStepType.CHOICE:
-      return [{ id: generate(), stepId, type: ItemType.BUTTON }]
+      return [{ id: cuid(), stepId, type: ItemType.BUTTON }]
     case LogicStepType.CONDITION:
       return [
         {
-          id: generate(),
+          id: cuid(),
           stepId,
           type: ItemType.CONDITION,
           content: defaultConditionContent,
@@ -317,8 +316,8 @@ export const parseNewTypebot = ({
   | 'publicId'
   | 'customDomain'
 > => {
-  const startBlockId = shortId.generate()
-  const startStepId = shortId.generate()
+  const startBlockId = cuid()
+  const startStepId = cuid()
   const startStep: StartStep = {
     blockId: startBlockId,
     id: startStepId,

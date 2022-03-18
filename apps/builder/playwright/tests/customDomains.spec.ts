@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { InputStepType, defaultTextInputOptions } from 'models'
 import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
-import { generate } from 'short-uuid'
 import path from 'path'
+import cuid from 'cuid'
 
-const typebotId = generate()
+const typebotId = cuid()
 test.describe('Dashboard page', () => {
   test('should be able to connect custom domain', async ({ page }) => {
     await createTypebots([

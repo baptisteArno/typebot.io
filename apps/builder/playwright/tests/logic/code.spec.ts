@@ -2,9 +2,9 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import { importTypebotInDatabase } from '../../services/database'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
-const typebotId = generate()
+const typebotId = cuid()
 
 test.describe('Code step', () => {
   test('code should trigger', async ({ page }) => {

@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
+import cuid from 'cuid'
 import { InputStepType, defaultTextInputOptions } from 'models'
 import path from 'path'
-import { generate } from 'short-uuid'
 import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
 
-const typebotId = generate()
+const typebotId = cuid()
 
 test.beforeAll(async () => {
   await createTypebots([

@@ -1,12 +1,12 @@
 import test, { expect } from '@playwright/test'
 import { typebotViewer } from '../../services/selectorUtils'
-import { generate } from 'short-uuid'
 import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
+import cuid from 'cuid'
 
 test('should be configurable', async ({ page }) => {
-  const typebotId = generate()
-  const linkedTypebotId = generate()
+  const typebotId = cuid()
+  const linkedTypebotId = cuid()
   await importTypebotInDatabase(
     path.join(__dirname, '../../fixtures/typebots/logic/linkTypebots/1.json'),
     { id: typebotId }

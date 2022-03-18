@@ -1,6 +1,6 @@
 import test, { expect, Page } from '@playwright/test'
+import cuid from 'cuid'
 import path from 'path'
-import { generate } from 'short-uuid'
 import { createFolders, createTypebots } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
@@ -49,7 +49,7 @@ test.describe('Dashboard page', () => {
   })
 
   test('folders and typebots should be movable', async ({ page }) => {
-    const droppableFolderId = generate()
+    const droppableFolderId = cuid()
     await createFolders([{ id: droppableFolderId, name: 'Droppable folder' }])
     await createTypebots([{ name: 'Draggable typebot' }])
     await page.goto('/typebots')

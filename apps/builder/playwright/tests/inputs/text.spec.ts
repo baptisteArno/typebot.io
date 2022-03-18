@@ -5,11 +5,11 @@ import {
 } from '../../services/database'
 import { defaultTextInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 test.describe.parallel('Text input step', () => {
   test('options should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
@@ -43,7 +43,7 @@ test.describe.parallel('Text input step', () => {
   })
 
   test('variable in URL should prefill the input', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,

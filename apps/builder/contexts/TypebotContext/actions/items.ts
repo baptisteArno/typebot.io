@@ -9,7 +9,7 @@ import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { stepHasItems } from 'utils'
-import { generate } from 'short-uuid'
+import cuid from 'cuid'
 
 export type ItemsActions = {
   createItem: (item: Omit<ButtonItem, 'id'>, indices: ItemIndices) => void
@@ -29,7 +29,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         step.items.splice(itemIndex, 0, {
           ...item,
           stepId: step.id,
-          id: generate(),
+          id: cuid(),
         })
       })
     ),

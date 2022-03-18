@@ -5,12 +5,12 @@ import {
   parseDefaultBlockWithStep,
 } from '../services/database'
 import { defaultTextInputOptions, InputStepType } from 'models'
-import { generate } from 'short-uuid'
 import path from 'path'
+import cuid from 'cuid'
 
 test.describe.parallel('Editor', () => {
   test('Edges connection should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
@@ -57,7 +57,7 @@ test.describe.parallel('Editor', () => {
     expect(total).toBe(1)
   })
   test('Drag and drop steps and items should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(__dirname, '../fixtures/typebots/editor/buttonsDnd.json'),
       {
@@ -98,7 +98,7 @@ test.describe.parallel('Editor', () => {
     )
   })
   test('Undo / Redo buttons should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,

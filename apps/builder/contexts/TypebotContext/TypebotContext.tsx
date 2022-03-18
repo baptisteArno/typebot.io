@@ -39,11 +39,11 @@ import { useRegisterActions } from 'kbar'
 import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
-import { generate } from 'short-uuid'
 import { dequal } from 'dequal'
 import { User } from 'db'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
+import cuid from 'cuid'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -291,7 +291,7 @@ export const TypebotContext = ({
 
   const publishTypebot = async () => {
     if (!localTypebot) return
-    const publishedTypebotId = generate()
+    const publishedTypebotId = cuid()
     const newLocalTypebot = { ...localTypebot }
     if (publishedTypebot && isNotDefined(localTypebot.publishedTypebotId)) {
       updateLocalTypebot({ publishedTypebotId: publishedTypebot.id })

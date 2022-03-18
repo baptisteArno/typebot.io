@@ -1,12 +1,12 @@
 import test, { expect, Page } from '@playwright/test'
 import { createWebhook, importTypebotInDatabase } from '../../services/database'
 import path from 'path'
-import { generate } from 'short-uuid'
 import { HttpMethod } from 'models'
+import cuid from 'cuid'
 
 test.describe('Webhook step', () => {
   test('easy configuration should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
       {
@@ -26,7 +26,7 @@ test.describe('Webhook step', () => {
     )
   })
   test('Generated body should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
       {
@@ -51,7 +51,7 @@ test.describe('Webhook step', () => {
     )
   })
   test('its configuration should work', async ({ page }) => {
-    const typebotId = generate()
+    const typebotId = cuid()
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
       {
