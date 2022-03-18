@@ -24,9 +24,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const { webhookId } = typebot.blocks
         .find(byId(blockId))
         ?.steps.find(byId(stepId)) as WebhookStep
-      await prisma.webhook.update({
+      await prisma.webhook.upsert({
         where: { id: webhookId },
-        data: { url, body: '{{state}}', method: 'POST' },
+        update: { url, body: '{{state}}', method: 'POST' },
+        create: { url, body: '{{state}}', method: 'POST', typebotId },
       })
 
       return res.send({ message: 'success' })
