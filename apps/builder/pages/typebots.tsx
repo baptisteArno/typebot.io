@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Stack, Text, VStack } from '@chakra-ui/layout'
+import { Stack, Text, VStack } from '@chakra-ui/layout'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
@@ -9,12 +9,10 @@ import { redeemCoupon } from 'services/coupons'
 import { Spinner, useToast } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
-import { Banner } from 'components/dashboard/annoucements/AnnoucementBanner'
 import { NextPageContext } from 'next/types'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [showBanner, setShowBanner] = useState(false)
   const { query, isReady } = useRouter()
   const { user } = useUser()
   const toast = useToast({
@@ -38,9 +36,6 @@ const DashboardPage = () => {
     const couponCode = query.coupon?.toString()
     const stripeStatus = query.stripe?.toString()
 
-    if (document.location.hostname.includes('app.typebot.io'))
-      setShowBanner(true)
-
     if (stripeStatus === 'success')
       toast({
         title: 'Typebot Pro',
@@ -57,16 +52,6 @@ const DashboardPage = () => {
 
   return (
     <Stack minH="100vh">
-      {showBanner && (
-        <Banner id={'v1-navigation'}>
-          <Text>
-            You are on Typebot 2.0. To access the old version, navigate to
-          </Text>
-          <Link href="https://old.typebot.io" isExternal textDecor="underline">
-            https://old.typebot.io
-          </Link>
-        </Banner>
-      )}
       <Seo title="My typebots" />
       <DashboardHeader />
       <TypebotDndContext>

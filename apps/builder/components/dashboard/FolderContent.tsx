@@ -6,14 +6,13 @@ import {
   Portal,
   Skeleton,
   Stack,
-  useDisclosure,
   useEventListener,
   useToast,
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useUser } from 'contexts/UserContext'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { createFolder, useFolders } from 'services/folders'
 import {
   patchTypebot,
@@ -21,7 +20,6 @@ import {
   useTypebots,
 } from 'services/typebots'
 import { useSharedTypebotsCount } from 'services/user/sharedTypebots'
-import { AnnoucementModal } from './annoucements/AnnoucementModal'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
 import { CreateFolderButton } from './FolderContent/CreateFolderButton'
@@ -51,7 +49,6 @@ export const FolderContent = ({ folder }: Props) => {
   })
   const [typebotDragCandidate, setTypebotDragCandidate] =
     useState<TypebotInDashboard>()
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const toast = useToast({
     position: 'top-right',
@@ -88,18 +85,6 @@ export const FolderContent = ({ folder }: Props) => {
       })
     },
   })
-
-  useEffect(() => {
-    if (
-      typebots &&
-      typebots.length === 0 &&
-      folders &&
-      folders.length === 0 &&
-      folder?.id === undefined
-    )
-      onOpen()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebots, folders, folder])
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebots) return
@@ -178,7 +163,6 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
-      <AnnoucementModal isOpen={isOpen} onClose={onClose} />
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>
