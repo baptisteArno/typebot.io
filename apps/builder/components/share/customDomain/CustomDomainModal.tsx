@@ -136,7 +136,7 @@ export const CustomDomainModal = ({
                     </Stack>
                     <Stack>
                       <Text fontWeight="bold">Name</Text>
-                      <Text>*</Text>
+                      <Text>@</Text>
                     </Stack>
                     <Stack>
                       <Text fontWeight="bold">Value</Text>
