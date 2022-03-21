@@ -1,6 +1,6 @@
 {
   "name": "wordpress",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "index.js",
   "repository": "https://github.com/typebot-io/wordpress.git",
   "author": "baptisteArno",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "deploy": "yarn copy && yarn commit",
-    "copy": "svn copy ./trunk ./tags/2.1.1",
-    "commit": "svn ci -m 'Deploy 2.1'"
+    "copy": "svn copy ./trunk ./tags/2.1.2",
+    "commit": "svn ci -m 'Fix shortcode default url'"
   }
 }

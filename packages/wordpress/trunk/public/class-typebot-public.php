@@ -227,7 +227,7 @@ class Typebot_Public
     $width = '100%';
     $height = '500px';
     $bg_color = 'rgba(255, 255, 255, 0)';
-    $url = sanitize_text_field($attributes['url']);
+    $url = get_option('url');
     if (is_array($attributes)) {
       if (array_key_exists('width', $attributes)) {
         $width = sanitize_text_field($attributes['width']);
@@ -237,6 +237,9 @@ class Typebot_Public
       }
       if (array_key_exists('background-color', $attributes)) {
         $bg_color = sanitize_text_field($attributes['background-color']);
+      }
+      if (array_key_exists('url', $attributes)) {
+        $url = sanitize_text_field($attributes['url']);
       }
     }
     $container_id = 'typebot-container-' . $this->generateRandomString(4);
