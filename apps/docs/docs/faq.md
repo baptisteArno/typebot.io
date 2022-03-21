@@ -22,3 +22,9 @@ It is also built a more powerful and scalable infrastructure that unlocks many p
 Try to click again on the “Create my account” button on the email I sent you (with subject "Unlock your Typebot 2.0 plan"). It should unlock your plan.
 
 Otherwise, shoot an email to support@typebot.io with the email associated to your v1 account.
+
+## Is human takeover is available on Typebot?
+
+No, Typebot is specifically built for async chats. I believe Live Chat is a whole other product.
+
+You can still implement great customer support with Typebot by using a ticketing system such as [Freshdesk](https://freshdesk.com/) or [Zendesk](https://www.zendesk.com/). You can create a ticket each time your user answers the bot.
