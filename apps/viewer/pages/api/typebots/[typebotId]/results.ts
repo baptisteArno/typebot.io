@@ -1,8 +1,8 @@
 import prisma from 'libs/prisma'
-import { ResultWithAnswers, Typebot, VariableWithValue } from 'models'
+import { ResultWithAnswers, VariableWithValue } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { methodNotAllowed, parseAnswers } from 'utils'
+import { methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -20,9 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       take: limit,
       include: { answers: true },
     })) as unknown as ResultWithAnswers[]
-    return res.send({
-      results: results.map(parseAnswers(typebot as unknown as Typebot)),
-    })
+    return res.send({ results })
   }
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string

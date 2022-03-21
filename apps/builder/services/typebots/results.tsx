@@ -1,15 +1,8 @@
-import {
-  Block,
-  InputStep,
-  InputStepType,
-  ResultWithAnswers,
-  Variable,
-  VariableWithValue,
-} from 'models'
+import { ResultWithAnswers, VariableWithValue, ResultHeaderCell } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
-import { byId, isDefined, isInputStep, sendRequest } from 'utils'
+import { isDefined, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text } from '@chakra-ui/react'
 import { CodeIcon, CalendarIcon } from 'assets/icons'
@@ -110,14 +103,6 @@ type HeaderCell = {
   accessor: string
 }
 
-export type ResultHeaderCell = {
-  label: string
-  stepId?: string
-  stepType?: InputStepType
-  isLong?: boolean
-  variableId?: string
-}
-
 export const parseSubmissionsColumns = (
   resultHeader: ResultHeaderCell[]
 ): HeaderCell[] =>
@@ -139,83 +124,6 @@ const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
   ) : (
     <CalendarIcon />
   )
-
-export const parseResultHeader = ({
-  blocks,
-  variables,
-}: {
-  blocks: Block[]
-  variables: Variable[]
-}): ResultHeaderCell[] => {
-  const parsedBlocks = parseInputsResultHeader({ blocks, variables })
-  return [
-    { label: 'Submitted at' },
-    ...parsedBlocks,
-    ...parseVariablesHeaders(variables, parsedBlocks),
-  ]
-}
-
-const parseInputsResultHeader = ({
-  blocks,
-  variables,
-}: {
-  blocks: Block[]
-  variables: Variable[]
-}): ResultHeaderCell[] =>
-  (
-    blocks
-      .flatMap((b) =>
-        b.steps.map((s) => ({
-          ...s,
-          blockTitle: b.title,
-        }))
-      )
-      .filter((step) => isInputStep(step)) as (InputStep & {
-      blockTitle: string
-    })[]
-  ).reduce<ResultHeaderCell[]>((headers, inputStep) => {
-    if (
-      headers.find(
-        (h) =>
-          isDefined(h.variableId) &&
-          h.variableId ===
-            variables.find(byId(inputStep.options.variableId))?.id
-      )
-    )
-      return headers
-    const matchedVariableName =
-      inputStep.options.variableId &&
-      variables.find(byId(inputStep.options.variableId))?.name
-
-    let label = matchedVariableName ?? inputStep.blockTitle
-    const totalPrevious = headers.filter((h) => h.label.includes(label)).length
-    if (totalPrevious > 0) label = label + ` (${totalPrevious})`
-    return [
-      ...headers,
-      {
-        stepType: inputStep.type,
-        stepId: inputStep.id,
-        variableId: inputStep.options.variableId,
-        label,
-        isLong: 'isLong' in inputStep.options && inputStep.options.isLong,
-      },
-    ]
-  }, [])
-
-const parseVariablesHeaders = (
-  variables: Variable[],
-  stepResultHeader: ResultHeaderCell[]
-) =>
-  variables.reduce<ResultHeaderCell[]>((headers, v) => {
-    if (stepResultHeader.find((h) => h.variableId === v.id)) return headers
-    return [
-      ...headers,
-      {
-        label: v.name,
-        variableId: v.id,
-      },
-    ]
-  }, [])
 
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,

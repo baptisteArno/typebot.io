@@ -7,14 +7,13 @@ import {
   deleteAllResults,
   deleteResults,
   getAllResults,
-  parseResultHeader,
   useResults,
 } from 'services/typebots'
 import { unparse } from 'papaparse'
 import { UnlockProPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
-import { isDefined } from 'utils'
+import { isDefined, parseResultHeader } from 'utils'
 
 type Props = {
   typebotId: string

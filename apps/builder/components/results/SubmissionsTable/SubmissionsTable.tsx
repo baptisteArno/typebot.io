@@ -2,9 +2,10 @@
 /* eslint-disable react/jsx-key */
 import { Button, chakra, Checkbox, Flex, HStack, Text } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from 'assets/icons'
+import { ResultHeaderCell } from 'models'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useRowSelect, useTable } from 'react-table'
-import { parseSubmissionsColumns, ResultHeaderCell } from 'services/typebots'
+import { parseSubmissionsColumns } from 'services/typebots'
 import { LoadingRows } from './LoadingRows'
 
 type SubmissionsTableProps = {

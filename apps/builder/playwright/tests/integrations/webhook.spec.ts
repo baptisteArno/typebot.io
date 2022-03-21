@@ -8,7 +8,10 @@ test.describe('Webhook step', () => {
   test('easy configuration should work', async ({ page }) => {
     const typebotId = cuid()
     await importTypebotInDatabase(
-      path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
+      path.join(
+        __dirname,
+        '../../fixtures/typebots/integrations/easyConfigWebhook.json'
+      ),
       {
         id: typebotId,
       }
@@ -22,7 +25,7 @@ test.describe('Webhook step', () => {
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
-      '"statusCode": 200'
+      `"Block #1": "answer value", "Block #2": "20", "Block #2 (1)": "Yes"`
     )
   })
   test('Generated body should work', async ({ page }) => {

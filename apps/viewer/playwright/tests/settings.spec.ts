@@ -14,13 +14,15 @@ test('Result should be in storage by default', async ({ page }) => {
       }),
     },
   ])
-  await page.goto(`/${typebotId}-public`)
-  await page.waitForResponse(
-    (resp) =>
-      resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-      resp.status() === 200 &&
-      resp.request().method() === 'POST'
-  )
+  await Promise.all([
+    page.goto(`/${typebotId}-public`),
+    page.waitForResponse(
+      (resp) =>
+        resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
+        resp.status() === 200 &&
+        resp.request().method() === 'POST'
+    ),
+  ])
   await page.reload()
   const resultId = await page.evaluate(() => sessionStorage.getItem('resultId'))
   expect(resultId).toBeDefined()
@@ -45,20 +47,24 @@ test.describe('Create result on page refresh enabled', () => {
         }),
       },
     ])
-    await page.goto(`/${typebotId}-public`)
-    await page.waitForResponse(
-      (resp) =>
-        resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'POST'
-    )
-    await page.reload()
-    await page.waitForResponse(
-      (resp) =>
-        resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'POST'
-    )
+    await Promise.all([
+      page.goto(`/${typebotId}-public`),
+      page.waitForResponse(
+        (resp) =>
+          resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
+          resp.status() === 200 &&
+          resp.request().method() === 'POST'
+      ),
+    ])
+    await Promise.all([
+      page.reload(),
+      page.waitForResponse(
+        (resp) =>
+          resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
+          resp.status() === 200 &&
+          resp.request().method() === 'POST'
+      ),
+    ])
     const resultId = await page.evaluate(() =>
       sessionStorage.getItem('resultId')
     )
