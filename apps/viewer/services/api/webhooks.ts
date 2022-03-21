@@ -65,32 +65,36 @@ const getSampleValue = (step: InputStep) => {
 
 const getPreviousInputSteps =
   (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
-  ({ blockId, stepId }: { blockId: string; stepId?: string }): InputStep[] => {
+  ({ blockId }: { blockId: string }): InputStep[] => {
     const previousInputSteps = getPreviousInputStepsInBlock(typebot)({
       blockId,
-      stepId,
     })
     const previousBlockIds = getPreviousBlockIds(typebot)(blockId)
     return [
       ...previousInputSteps,
       ...previousBlockIds.flatMap((blockId) =>
-        getPreviousInputSteps(typebot)({ blockId })
+        getPreviousInputStepsInBlock(typebot)({ blockId })
       ),
     ]
   }
 
 const getPreviousBlockIds =
-  (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
+  (
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    existingBlockIds?: string[]
+  ) =>
   (blockId: string): string[] => {
     const previousBlocks = typebot.edges.reduce<string[]>(
       (blockIds, edge) =>
+        (!existingBlockIds || !existingBlockIds.includes(edge.from.blockId)) &&
         edge.to.blockId === blockId
           ? [...blockIds, edge.from.blockId]
           : blockIds,
       []
     )
+    const newBlocks = [...(existingBlockIds ?? []), ...previousBlocks]
     return previousBlocks.concat(
-      previousBlocks.flatMap(getPreviousBlockIds(typebot))
+      previousBlocks.flatMap(getPreviousBlockIds(typebot, newBlocks))
     )
   }
 
