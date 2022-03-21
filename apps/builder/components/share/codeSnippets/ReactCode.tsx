@@ -19,7 +19,10 @@ export const StandardReactDiv = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseContainerSnippet({
-      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
+      url: `${
+        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+        process.env.NEXT_PUBLIC_VIEWER_URL
+      }/${typebot?.publicId}`,
       heightLabel,
       widthLabel,
     }),
@@ -67,7 +70,10 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parsePopupSnippet({
-      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
+      url: `${
+        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+        process.env.NEXT_PUBLIC_VIEWER_URL
+      }/${typebot?.publicId}`,
       delay,
     }),
     {
@@ -114,7 +120,10 @@ export const ChatReactCode = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseBubbleSnippet({
-      url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/${typebot?.publicId}`,
+      url: `${
+        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+        process.env.NEXT_PUBLIC_VIEWER_URL
+      }/${typebot?.publicId}`,
       button,
       proactiveMessage,
     }),

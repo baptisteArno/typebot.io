@@ -44,11 +44,17 @@ export const NotionModal = ({
                 <Input
                   pr="4.5rem"
                   type={'text'}
-                  defaultValue={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
+                  defaultValue={`${
+                    process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+                    process.env.NEXT_PUBLIC_VIEWER_URL
+                  }/${publicId}`}
                 />
                 <InputRightElement width="4.5rem">
                   <CopyButton
-                    textToCopy={`${process.env.NEXT_PUBLIC_VIEWER_URL}/${publicId}`}
+                    textToCopy={`${
+                      process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+                      process.env.NEXT_PUBLIC_VIEWER_URL
+                    }/${publicId}`}
                   />
                 </InputRightElement>
               </InputGroup>

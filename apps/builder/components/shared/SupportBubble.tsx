@@ -12,7 +12,10 @@ export const SupportBubble = () => {
   useEffect(() => {
     if (isCloudProdInstance())
       initBubble({
-        url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/typebot-support`,
+        url: `${
+          process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+          process.env.NEXT_PUBLIC_VIEWER_URL
+        }/typebot-support`,
         backgroundColor: '#ffffff',
         button: { color: '#0042DA' },
         hiddenVariables: {
