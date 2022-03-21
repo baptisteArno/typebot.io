@@ -50,6 +50,7 @@ import { stringify } from 'qs'
 import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
+import { duplicateWebhook } from 'services/webhook'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -132,7 +133,7 @@ export const duplicateTypebot = async (typebotId: string) => {
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: cleanUpTypebot(duplicatedTypebot),
+    body: await cleanAndDuplicateWebhooks(duplicatedTypebot),
   })
 }
 
@@ -146,6 +147,26 @@ const cleanUpTypebot = (
       isWebhookStep(s) ? { ...s, webhookId: cuid() } : s
     ),
   })),
+})
+
+const cleanAndDuplicateWebhooks = async (
+  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>
+) => ({
+  ...typebot,
+  blocks: await Promise.all(
+    typebot.blocks.map(async (b) => ({
+      ...b,
+      steps: await Promise.all(
+        b.steps.map(async (s) => {
+          if (isWebhookStep(s)) {
+            const newWebhook = await duplicateWebhook(s.webhookId)
+            return { ...s, webhookId: newWebhook ? newWebhook.id : cuid() }
+          }
+          return s
+        })
+      ),
+    }))
+  ),
 })
 
 const getTypebot = (typebotId: string) =>
