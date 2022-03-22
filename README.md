@@ -22,6 +22,12 @@ Typebot is an open-source alternative to Landbot. It allows you to create conver
 
 For more info, visit the [landing page](https://www.typebot.io)
 
+## Stay up-to-date
+
+Lots of new features are being implemented on a day-to-day basis. Make sure to hit the **Star** button and watch **Releases** to be notified of future features.
+
+<img src="./.github/images/star-project.gif" alt="Typebot illustration" style="border-radius: 10px" width="500">
+
 ## Getting started with Typebot
 
 The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io).
