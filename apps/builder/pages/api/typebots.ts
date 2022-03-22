@@ -59,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             ? data
             : (parseNewTypebot({
                 ownerId: user.id,
+                ownerAvatarUrl: user.image,
                 ...data,
               }) as Prisma.TypebotUncheckedCreateInput),
       })

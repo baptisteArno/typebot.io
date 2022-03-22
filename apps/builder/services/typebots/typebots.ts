@@ -324,10 +324,12 @@ export const parseNewTypebot = ({
   ownerId,
   folderId,
   name,
+  ownerAvatarUrl,
 }: {
   ownerId: string
   folderId: string | null
   name: string
+  ownerAvatarUrl?: string
 }): Omit<
   Typebot,
   | 'createdAt'
@@ -358,7 +360,13 @@ export const parseNewTypebot = ({
     blocks: [startBlock],
     edges: [],
     variables: [],
-    theme: defaultTheme,
+    theme: {
+      ...defaultTheme,
+      chat: {
+        ...defaultTheme.chat,
+        hostAvatar: { isEnabled: true, url: ownerAvatarUrl },
+      },
+    },
     settings: defaultSettings,
   }
 }

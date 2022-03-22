@@ -15,7 +15,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebouncedCallback } from 'use-debounce'
 import { byId, isNotDefined } from 'utils'
 
 type Props = {
@@ -40,8 +40,11 @@ export const VariableSearchInput = ({
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
   )
-  const [debouncedInputValue] = useDebounce(
-    inputValue,
+  const debounced = useDebouncedCallback(
+    (value) => {
+      const variable = variables.find((v) => v.name === value)
+      if (variable) onSelectVariable(variable)
+    },
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
@@ -60,14 +63,16 @@ export const VariableSearchInput = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    const variable = variables.find((v) => v.name === debouncedInputValue)
-    if (variable) onSelectVariable(variable)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedInputValue])
+  useEffect(
+    () => () => {
+      debounced.flush()
+    },
+    [debounced]
+  )
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
+    debounced(e.target.value)
     onOpen()
     if (e.target.value === '') {
       setFilteredItems([...variables.slice(0, 50)])
@@ -84,6 +89,7 @@ export const VariableSearchInput = ({
 
   const handleVariableNameClick = (variable: Variable) => () => {
     setInputValue(variable.name)
+    onSelectVariable(variable)
     onClose()
   }
 
@@ -100,7 +106,10 @@ export const VariableSearchInput = ({
       e.stopPropagation()
       deleteVariable(variable.id)
       setFilteredItems(filteredItems.filter((item) => item.id !== variable.id))
-      if (variable.name === inputValue) setInputValue('')
+      if (variable.name === inputValue) {
+        setInputValue('')
+        debounced('')
+      }
     }
 
   return (

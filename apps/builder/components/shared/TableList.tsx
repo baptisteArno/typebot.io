@@ -1,10 +1,7 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
 import cuid from 'cuid'
-import { dequal } from 'dequal'
-import { Draft } from 'immer'
-import React, { useEffect, useState } from 'react'
-import { useImmer } from 'use-immer'
+import React, { useState } from 'react'
 
 type ItemWithId<T> = T & { id: string }
 
@@ -31,32 +28,28 @@ export const TableList = <T,>({
   Item,
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
-  const [items, setItems] = useImmer(initialItems)
+  const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
-  useEffect(() => {
-    if (dequal(items, initialItems)) return
-    onItemsChange(items)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items])
-
   const createItem = () => {
-    setItems((items) => {
-      const id = cuid()
-      const newItem = { id } as Draft<ItemWithId<T>>
-      items.push(newItem)
-    })
+    const id = cuid()
+    const newItem = { id } as ItemWithId<T>
+    setItems([...items, newItem])
+    onItemsChange([...items, newItem])
   }
 
-  const updateItem = (itemIndex: number, updates: Partial<T>) =>
-    setItems((items) => {
-      items[itemIndex] = { ...items[itemIndex], ...updates }
-    })
+  const updateItem = (itemIndex: number, updates: Partial<T>) => {
+    const newItems = items.map((item, idx) =>
+      idx === itemIndex ? { ...item, ...updates } : item
+    )
+    setItems(newItems)
+    onItemsChange(newItems)
+  }
 
   const deleteItem = (itemIndex: number) => () => {
-    setItems((items) => {
-      items.splice(itemIndex, 1)
-    })
+    items.splice(itemIndex, 1)
+    setItems([...items])
+    onItemsChange([...items])
   }
 
   const handleMouseEnter = (itemIndex: number) => () =>

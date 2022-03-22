@@ -10,7 +10,7 @@ import {
 import { CreateTypebotMoreButton } from 'components/templates/ImportFileMenuItem'
 import { TemplateButton } from 'components/templates/TemplateButton'
 import { useUser } from 'contexts/UserContext'
-import { Typebot } from 'models'
+import { defaultTheme, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { createTypebot, importTypebot } from 'services/typebots/typebots'
@@ -40,6 +40,13 @@ export const TemplatesContent = () => {
           ...typebot,
           ownerId: user.id,
           folderId,
+          theme: {
+            ...defaultTheme,
+            chat: {
+              ...defaultTheme.chat,
+              hostAvatar: { isEnabled: true, url: user.image ?? undefined },
+            },
+          },
         })
       : await createTypebot({
           folderId,
