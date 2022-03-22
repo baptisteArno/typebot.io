@@ -59,10 +59,10 @@ model User {
 }
 
 model CustomDomain {
+  name      String   @id
   createdAt DateTime @default(now())
   ownerId   String
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  name      String   @unique
 }
 
 model Credentials {
