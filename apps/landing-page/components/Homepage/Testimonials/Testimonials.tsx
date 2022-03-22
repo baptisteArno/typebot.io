@@ -2,6 +2,7 @@ import { chakra, Flex, Heading, Stack, VStack } from '@chakra-ui/react'
 import * as React from 'react'
 import joshuaPictureSrc from 'public/images/homepage/joshua.jpg'
 import julienPictureSrc from 'public/images/homepage/julien.jpeg'
+import nicolaiPictureSrc from 'public/images/homepage/nicolai.jpg'
 import { Testimonial } from './Testimonial'
 
 export const Testimonials = () => {
@@ -30,16 +31,23 @@ export const Testimonials = () => {
             on my marketing campaigns. I noticed the improvement on day one.
             That was a game-changer.
           </Testimonial>
-          {/* <Testimonial
+          <Testimonial
             name="Nicolai Grut"
-            role="Growth Strategist @ X"
-            image={joshuaPictureSrc}
+            role="CEO @ EcommerceNotebook.com"
+            image={nicolaiPictureSrc}
             data-aos="fade"
           >
-            I am really loving using Typebot! I have used so many bot builders
-            (ActiveChat, Botstar, Uchat, Monkeybot) and Typebot is definitely
-            the most user-friendly, and yet still powerful.
-          </Testimonial> */}
+            I am really loving using Typebot! So good. I have used all the top
+            bots and yours is definitely the{' '}
+            <chakra.span fontWeight="bold" color="orange.300">
+              most user friendly
+            </chakra.span>
+            , and yet still so{' '}
+            <chakra.span fontWeight="bold" color="orange.300">
+              powerful
+            </chakra.span>
+            .
+          </Testimonial>
           <Testimonial
             name="Julien Muratot"
             role="Growth Manager @ Hornetwork"
