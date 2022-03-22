@@ -49,6 +49,7 @@ export type SendEmailStep = StepBase & {
 export type SendEmailOptions = {
   credentialsId: string | 'default'
   recipients: string[]
+  replyTo?: string
   cc?: string[]
   bcc?: string[]
   subject?: string

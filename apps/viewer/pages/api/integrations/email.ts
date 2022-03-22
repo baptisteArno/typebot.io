@@ -27,7 +27,7 @@ const defaultFrom = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
-    const { credentialsId, recipients, body, subject, cc, bcc } = (
+    const { credentialsId, recipients, body, subject, cc, bcc, replyTo } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as SendEmailOptions
 
@@ -50,6 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       cc: cc?.join(''),
       bcc: bcc?.join(''),
       to: recipients.join(', '),
+      replyTo,
       subject,
       text: body,
     })

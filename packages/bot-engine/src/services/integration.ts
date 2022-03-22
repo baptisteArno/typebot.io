@@ -241,6 +241,7 @@ const sendEmail = async (
     return step.outgoingEdgeId
   }
   const { options } = step
+  const replyTo = parseVariables(variables)(options.replyTo)
   const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/email`,
     method: 'POST',
@@ -251,6 +252,7 @@ const sendEmail = async (
       body: parseVariables(variables)(options.body ?? ''),
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
+      replyTo: replyTo !== '' ? replyTo : undefined,
     },
   })
   onNewLog(

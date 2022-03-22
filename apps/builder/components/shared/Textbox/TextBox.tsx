@@ -36,13 +36,20 @@ export const TextBox = ({
     null
   )
   const [carretPosition, setCarretPosition] = useState<number>(0)
-  const [value, setValue] = useState(props.defaultValue)
+  const [value, setValue] = useState(props.defaultValue ?? '')
+  const [isTouched, setIsTouched] = useState(false)
   const debounced = useDebouncedCallback(
     (value) => {
       onChange(value)
     },
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
+
+  useEffect(() => {
+    if (props.defaultValue !== value && value === '' && !isTouched)
+      setValue(props.defaultValue ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.defaultValue])
 
   useEffect(
     () => () => {
@@ -54,12 +61,14 @@ export const TextBox = ({
   const handleChange = (
     e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
   ) => {
+    setIsTouched(true)
     setValue(e.target.value)
     debounced(e.target.value)
   }
 
   const handleVariableSelected = (variable?: Variable) => {
     if (!textBoxRef.current || !variable) return
+    setIsTouched(true)
     const cursorPosition = carretPosition
     const textBeforeCursorPosition = textBoxRef.current.value.substring(
       0,

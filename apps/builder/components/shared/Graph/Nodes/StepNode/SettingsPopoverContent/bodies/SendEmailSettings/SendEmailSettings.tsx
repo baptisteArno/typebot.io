@@ -1,8 +1,10 @@
 import { Stack, useDisclosure, Text } from '@chakra-ui/react'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { Input, Textarea } from 'components/shared/Textbox'
+import { useTypebot } from 'contexts/TypebotContext'
 import { CredentialsType, SendEmailOptions } from 'models'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { isDefined } from 'utils'
 import { SmtpConfigModal } from './SmtpConfigModal'
 
 type Props = {
@@ -11,8 +13,15 @@ type Props = {
 }
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
+  const { owner } = useTypebot()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [refreshCredentialsKey, setRefreshCredentialsKey] = useState(0)
+
+  useEffect(() => {
+    if (isDefined(options.replyTo) || !owner?.email) return
+    handleReplyToChange(owner.email)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleCredentialsSelect = (credentialsId?: string) => {
     setRefreshCredentialsKey(refreshCredentialsKey + 1)
@@ -60,6 +69,12 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       body,
     })
 
+  const handleReplyToChange = (replyTo: string) =>
+    onOptionsChange({
+      ...options,
+      replyTo,
+    })
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -73,6 +88,14 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
             /\<(.*)\>/
           )?.pop()}
           refreshDropdownKey={refreshCredentialsKey}
+        />
+      </Stack>
+      <Stack>
+        <Text>Reply to: </Text>
+        <Input
+          onChange={handleReplyToChange}
+          defaultValue={options.replyTo}
+          placeholder={owner?.email ?? 'email@gmail.com'}
         />
       </Stack>
       <Stack>
