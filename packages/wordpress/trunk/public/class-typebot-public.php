@@ -22,7 +22,9 @@ class Typebot_Public
 
   private function parse_popup_head_code()
   {
-    $url = get_option('url');
+    $url = str_starts_with(get_option('url'), 'https://typebot.io')
+      ? 'https://viewer.typebot.io' . '/' . explode('/', get_option('url'))[3]
+      : get_option('url');
     if (
       get_option('popup_included_pages') !== null &&
       get_option('popup_included_pages') !== ''
@@ -89,7 +91,9 @@ class Typebot_Public
 
   private function parse_bubble_head_code()
   {
-    $url = get_option('url');
+    $url = str_starts_with(get_option('url'), 'https://typebot.io')
+      ? 'https://viewer.typebot.io' . '/' . explode('/', get_option('url'))[3]
+      : get_option('url');
     $chat_icon = get_option('chat_icon');
     if (
       get_option('chat_included_pages') !== null &&
@@ -227,7 +231,9 @@ class Typebot_Public
     $width = '100%';
     $height = '500px';
     $bg_color = 'rgba(255, 255, 255, 0)';
-    $url = get_option('url');
+    $url = str_starts_with(get_option('url'), 'https://typebot.io')
+      ? 'https://viewer.typebot.io' . '/' . explode('/', get_option('url'))[3]
+      : get_option('url');
     if (is_array($attributes)) {
       if (array_key_exists('width', $attributes)) {
         $width = sanitize_text_field($attributes['width']);
