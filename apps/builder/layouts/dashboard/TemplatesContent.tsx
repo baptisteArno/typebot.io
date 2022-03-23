@@ -52,9 +52,9 @@ export const TemplatesContent = () => {
             ownerId: user.id,
             folderId,
             theme: {
-              ...defaultTheme,
+              ...typebot.theme,
               chat: {
-                ...defaultTheme.chat,
+                ...typebot.theme.chat,
                 hostAvatar: { isEnabled: true, url: user.image ?? undefined },
               },
             },
