@@ -3,6 +3,7 @@ import { PrismaClient, Prisma, Invitation, Plan } from 'db'
 import { randomUUID } from 'crypto'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
+import { got } from 'got'
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
@@ -19,6 +20,10 @@ export function CustomAdapter(p: PrismaClient): Adapter {
           plan: process.env.ADMIN_EMAIL === data.email ? Plan.PRO : Plan.FREE,
         },
       })
+      if (process.env.USER_CREATED_WEBHOOK_URL)
+        await got.post(process.env.USER_CREATED_WEBHOOK_URL, {
+          json: data,
+        })
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
       return createdUser

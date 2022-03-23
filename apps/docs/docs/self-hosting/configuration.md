@@ -181,3 +181,12 @@ These can also be added to the `viewer` environment
 | SLEEKPLAN_SSO_KEY | --      | Sleekplan SSO key used to automatically authenticate a user in Sleekplan |
 
 </p></details>
+
+<details><summary>Webhooks</summary>
+<p>
+
+| Parameter                | Default | Description                                                                                   |
+| ------------------------ | ------- | --------------------------------------------------------------------------------------------- |
+| USER_CREATED_WEBHOOK_URL | --      | Webhook URL called whenever a new user is created (used for importing a new SendGrid contact) |
+
+</p></details>
