@@ -11,12 +11,11 @@ export const getServerSideProps: GetServerSideProps = async (
   let typebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
-  console.log('pathname:', pathname)
   try {
     if (!context.req.headers.host) return { props: {} }
-    console.log('context.req.headers.host:', context.req.headers.host)
-    typebot = context.req.headers.host.includes(
-      (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split('//')[1]
+    const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
+    typebot = viewerUrls.some((url) =>
+      context.req.headers.host?.includes(url.split('//')[1])
     )
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(
