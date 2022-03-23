@@ -51,6 +51,7 @@ import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
+import { Plan, User } from 'db'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -94,7 +95,7 @@ export const createTypebot = async ({
   })
 }
 
-export const importTypebot = async (typebot: Typebot) => {
+export const importTypebot = async (typebot: Typebot, user: User) => {
   const typebotToImport: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'> = omit(
     {
       ...typebot,
@@ -109,7 +110,7 @@ export const importTypebot = async (typebot: Typebot) => {
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: cleanUpTypebot(typebotToImport),
+    body: cleanUpTypebot(typebotToImport, user),
   })
 }
 
@@ -138,8 +139,9 @@ export const duplicateTypebot = async (typebotId: string) => {
 }
 
 const cleanUpTypebot = (
-  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>
-) => ({
+  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>,
+  user: User
+): Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'> => ({
   ...typebot,
   blocks: typebot.blocks.map((b) => ({
     ...b,
@@ -147,6 +149,14 @@ const cleanUpTypebot = (
       isWebhookStep(s) ? { ...s, webhookId: cuid() } : s
     ),
   })),
+  settings:
+    typebot.settings.general.isBrandingEnabled === false &&
+    user.plan === Plan.FREE
+      ? {
+          ...typebot.settings,
+          general: { ...typebot.settings.general, isBrandingEnabled: true },
+        }
+      : typebot.settings,
 })
 
 const cleanAndDuplicateWebhooks = async (

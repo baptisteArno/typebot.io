@@ -46,18 +46,21 @@ export const TemplatesContent = () => {
     setIsLoading(true)
     const folderId = router.query.folderId?.toString() ?? null
     const { error, data } = typebot
-      ? await importTypebot({
-          ...typebot,
-          ownerId: user.id,
-          folderId,
-          theme: {
-            ...defaultTheme,
-            chat: {
-              ...defaultTheme.chat,
-              hostAvatar: { isEnabled: true, url: user.image ?? undefined },
+      ? await importTypebot(
+          {
+            ...typebot,
+            ownerId: user.id,
+            folderId,
+            theme: {
+              ...defaultTheme,
+              chat: {
+                ...defaultTheme.chat,
+                hostAvatar: { isEnabled: true, url: user.image ?? undefined },
+              },
             },
           },
-        })
+          user
+        )
       : await createTypebot({
           folderId,
         })
