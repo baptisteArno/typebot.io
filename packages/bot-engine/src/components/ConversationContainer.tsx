@@ -11,12 +11,14 @@ import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
   theme: Theme
+  predefinedVariables?: { [key: string]: string | undefined }
   onNewBlockVisible: (edge: Edge) => void
   onCompleted: () => void
   onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
 export const ConversationContainer = ({
   theme,
+  predefinedVariables,
   onNewBlockVisible,
   onCompleted,
   onVariablesPrefilled,
@@ -50,23 +52,28 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
-    const prefilledVariables = injectUrlParamsIntoVariables()
-    if (onVariablesPrefilled) {
-      onVariablesPrefilled(prefilledVariables)
-      setPrefilledVariables(prefilledVariables)
+    if (predefinedVariables) {
+      const prefilledVariables = injectPredefinedVariables(predefinedVariables)
+      if (onVariablesPrefilled) {
+        onVariablesPrefilled(prefilledVariables)
+        setPrefilledVariables(prefilledVariables)
+      }
     }
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const injectUrlParamsIntoVariables = () => {
-    const urlParams = new URLSearchParams(location.search)
+  const injectPredefinedVariables = (predefinedVariables: {
+    [key: string]: string | undefined
+  }) => {
     const prefilledVariables: VariableWithValue[] = []
-    urlParams.forEach((value, key) => {
+    Object.keys(predefinedVariables).forEach((key) => {
       const matchingVariable = typebot.variables.find(
         (v) => v.name.toLowerCase() === key.toLowerCase()
       )
       if (isNotDefined(matchingVariable)) return
+      const value = predefinedVariables[key]
+      if (!value) return
       updateVariableValue(matchingVariable?.id, value)
       prefilledVariables.push({ ...matchingVariable, value })
     })

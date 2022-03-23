@@ -27,6 +27,7 @@ import { ButtonSkeleton, FolderButton } from './FolderContent/FolderButton'
 import { SharedTypebotsButton } from './FolderContent/SharedTypebotsButton'
 import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
+import { OnboardingModal } from './OnboardingModal'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -163,6 +164,9 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
+      {typebots && user && folder === null && (
+        <OnboardingModal totalTypebots={typebots.length} />
+      )}
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>
@@ -179,6 +183,7 @@ export const FolderContent = ({ folder }: Props) => {
             <CreateBotButton
               folderId={folder?.id}
               isLoading={isTypebotLoading}
+              isFirstBot={typebots?.length === 0 && folder === null}
             />
             {totalSharedTypebots > 0 && <SharedTypebotsButton />}
             {isFolderLoading && <ButtonSkeleton />}

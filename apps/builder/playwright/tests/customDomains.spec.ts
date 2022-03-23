@@ -54,7 +54,7 @@ test.describe('Dashboard page', () => {
     test.use({
       storageState: path.join(__dirname, '../freeUser.json'),
     })
-    test("create folder shouldn't be available", async ({ page }) => {
+    test("Add my domain shouldn't be available", async ({ page }) => {
       await page.goto(`/typebots/${typebotId}/share`)
       await page.click('text=Add my domain')
       await expect(page.locator('text=Upgrade now')).toBeVisible()

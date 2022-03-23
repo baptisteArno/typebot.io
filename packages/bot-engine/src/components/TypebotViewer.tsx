@@ -26,17 +26,20 @@ export type TypebotViewerProps = {
   isPreview?: boolean
   apiHost?: string
   style?: CSSProperties
+  predefinedVariables?: { [key: string]: string | undefined }
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
   onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
+
 export const TypebotViewer = ({
   typebot,
   apiHost = process.env.NEXT_PUBLIC_VIEWER_URL,
   isPreview = false,
   style,
+  predefinedVariables,
   onNewLog,
   onNewBlockVisible,
   onNewAnswer,
@@ -104,6 +107,7 @@ export const TypebotViewer = ({
                 theme={typebot.theme}
                 onNewBlockVisible={handleNewBlockVisible}
                 onCompleted={handleCompleted}
+                predefinedVariables={predefinedVariables}
                 onVariablesPrefilled={onVariablesPrefilled}
               />
             </div>

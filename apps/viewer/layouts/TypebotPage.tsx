@@ -21,10 +21,21 @@ export const TypebotPage = ({
   url,
 }: TypebotPageProps & { typebot: PublicTypebot }) => {
   const [showTypebot, setShowTypebot] = useState(false)
+  const [predefinedVariables, setPredefinedVariables] =
+    useState<{ [key: string]: string }>()
   const [error, setError] = useState<Error | undefined>(
     isIE ? new Error('Internet explorer is not supported') : undefined
   )
   const [resultId, setResultId] = useState<string | undefined>()
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search)
+    const predefinedVariables: { [key: string]: string } = {}
+    urlParams.forEach((value, key) => {
+      predefinedVariables[key] = value
+    })
+    setPredefinedVariables(predefinedVariables)
+  }, [])
 
   // Workaround for react-frame-component bug (https://github.com/ryanseddon/react-frame-component/pull/207)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,6 +94,7 @@ export const TypebotPage = ({
       {showTypebot && (
         <TypebotViewer
           typebot={typebot}
+          predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
           onVariablesPrefilled={initializeResult}

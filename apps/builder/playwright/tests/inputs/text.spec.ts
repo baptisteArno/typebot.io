@@ -41,26 +41,4 @@ test.describe.parallel('Text input step', () => {
     ).toBeVisible()
     await expect(typebotViewer(page).locator(`text=Go`)).toBeVisible()
   })
-
-  test('variable in URL should prefill the input', async ({ page }) => {
-    const typebotId = cuid()
-    await createTypebots([
-      {
-        id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
-          options: { ...defaultTextInputOptions, variableId: 'var1' },
-        }),
-      },
-    ])
-
-    await page.goto(`/typebots/${typebotId}/edit?var1=My prefilled answer`)
-    await page.click('text=Preview')
-    await expect(
-      typebotViewer(page).locator(
-        `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
-      )
-    ).toHaveAttribute('value', 'My prefilled answer')
-    await expect(typebotViewer(page).locator(`button`)).toBeEnabled()
-  })
 })

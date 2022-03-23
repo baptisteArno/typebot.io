@@ -46,7 +46,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const preparedWebhook = prepareWebhookAttributes(webhook, step.options)
-    console.log(preparedWebhook)
     const result = await executeWebhook(typebot)(
       preparedWebhook,
       variables,

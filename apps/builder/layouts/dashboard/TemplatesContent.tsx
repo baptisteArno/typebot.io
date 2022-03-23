@@ -6,13 +6,14 @@ import {
   Text,
   Stack,
   useToast,
+  Tooltip,
 } from '@chakra-ui/react'
 import { CreateTypebotMoreButton } from 'components/templates/ImportFileMenuItem'
 import { TemplateButton } from 'components/templates/TemplateButton'
 import { useUser } from 'contexts/UserContext'
 import { defaultTheme, Typebot } from 'models'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createTypebot, importTypebot } from 'services/typebots/typebots'
 
 export type TemplateProps = { name: string; emoji: string; fileName: string }
@@ -22,6 +23,8 @@ const templates: TemplateProps[] = [
 export const TemplatesContent = () => {
   const { user } = useUser()
   const router = useRouter()
+  const [isFromScratchTooltipOpened, setIsFromScratchTooltipOpened] =
+    useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -30,6 +33,13 @@ export const TemplatesContent = () => {
     status: 'error',
     title: 'An error occured',
   })
+
+  useEffect(() => {
+    if (!router.isReady) return
+    const isFirstBot = router.query.isFirstBot as string | undefined
+    if (isFirstBot) setIsFromScratchTooltipOpened(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady])
 
   const handleCreateSubmit = async (typebot?: Typebot) => {
     if (!user) return
@@ -60,13 +70,23 @@ export const TemplatesContent = () => {
     <Flex w="full" justifyContent="center">
       <Stack maxW="1000px" flex="1" pt="6" spacing={4}>
         <Flex justifyContent="space-between">
-          <Button
-            onClick={() => handleCreateSubmit()}
-            isLoading={isLoading}
-            colorScheme="blue"
+          <Tooltip
+            isOpen={isFromScratchTooltipOpened}
+            label="Strongly suggested if you're new to Typebot."
+            maxW="200px"
+            hasArrow
+            placement="right"
+            rounded="md"
           >
-            Start from scratch
-          </Button>
+            <Button
+              onClick={() => handleCreateSubmit()}
+              isLoading={isLoading}
+              colorScheme="blue"
+            >
+              Start from scratch
+            </Button>
+          </Tooltip>
+
           <CreateTypebotMoreButton onNewTypebot={handleCreateSubmit} />
         </Flex>
         <Divider />

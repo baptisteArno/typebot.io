@@ -59,10 +59,8 @@ export const PreviewDrawer = () => {
     setRightPanel(undefined)
   }
 
-  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => {
+  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
     toast(log as UseToastOptions)
-    console.log(log.details)
-  }
 
   return (
     <Flex

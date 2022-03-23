@@ -40,6 +40,7 @@
     "@udecode/plate-ui-toolbar": "^10.2.2",
     "bot-engine": "*",
     "browser-image-compression": "^1.0.17",
+    "canvas-confetti": "^1.5.1",
     "cuid": "^2.1.8",
     "db": "*",
     "deep-object-diff": "^1.1.7",
@@ -85,6 +86,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.19.2",
+    "@types/canvas-confetti": "^1.4.2",
     "@types/google-spreadsheet": "^3.1.5",
     "@types/jsonwebtoken": "8.5.8",
     "@types/micro-cors": "^0.1.2",

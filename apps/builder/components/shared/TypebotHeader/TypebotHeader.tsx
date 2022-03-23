@@ -13,6 +13,7 @@ import { RightPanel, useEditor } from 'contexts/EditorContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { isNotDefined } from 'utils'
 import { PublishButton } from '../buttons/PublishButton'
 import { CollaborationMenuButton } from './CollaborationMenuButton'
 import { EditableTypebotName } from './EditableTypebotName'
@@ -21,6 +22,7 @@ export const headerHeight = 56
 
 export const TypebotHeader = () => {
   const router = useRouter()
+  const { rightPanel } = useEditor()
   const {
     typebot,
     updateOnBothTypebots,
@@ -154,7 +156,7 @@ export const TypebotHeader = () => {
 
       <HStack right="40px" pos="absolute">
         <CollaborationMenuButton />
-        {router.pathname.includes('/edit') && (
+        {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
           <Button onClick={handlePreviewClick}>Preview</Button>
         )}
         <PublishButton />

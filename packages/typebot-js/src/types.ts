@@ -29,6 +29,7 @@ export type BubbleParams = {
 export type ButtonParams = {
   color?: string
   iconUrl?: string
+  iconStyle?: string
 }
 
 export type ProactiveMessageParams = {

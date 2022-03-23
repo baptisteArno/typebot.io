@@ -18,5 +18,6 @@
     "dx": {
       "cache": false
     }
-  }
+  },
+  "globalDependencies": ["$NEXT_PUBLIC_E2E_TEST"]
 }

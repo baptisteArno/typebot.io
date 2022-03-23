@@ -12,10 +12,12 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { useRouter } from 'next/router'
 import { timeSince } from 'services/utils'
 import { isNotDefined } from 'utils'
 
 export const PublishButton = () => {
+  const { push, query } = useRouter()
   const {
     isPublishing,
     isPublished,
@@ -23,6 +25,11 @@ export const PublishButton = () => {
     publishedTypebot,
     restorePublishedTypebot,
   } = useTypebot()
+
+  const handlePublishClick = () => {
+    publishTypebot()
+    if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+  }
 
   return (
     <HStack spacing="1px">
@@ -47,7 +54,7 @@ export const PublishButton = () => {
           colorScheme="blue"
           isLoading={isPublishing}
           isDisabled={isPublished}
-          onClick={publishTypebot}
+          onClick={handlePublishClick}
           borderRightRadius={publishedTypebot && !isPublished ? 0 : undefined}
         >
           {isPublished ? 'Published' : 'Publish'}

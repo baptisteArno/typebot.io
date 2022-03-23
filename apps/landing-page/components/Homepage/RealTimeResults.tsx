@@ -32,7 +32,6 @@ export const RealTimeResults = () => {
   }, [])
 
   const processMessage = (event: MessageEvent) => {
-    console.log(event.data)
     if (event.data.from === 'typebot') refreshIframeContent()
   }
 

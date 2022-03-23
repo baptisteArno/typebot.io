@@ -158,7 +158,7 @@ export const ChatBlock = ({
       if (currentStep?.outgoingEdgeId || processedSteps.length === steps.length)
         return onBlockEnd(currentStep.outgoingEdgeId)
     }
-    const nextStep = steps[processedSteps.length]
+    const nextStep = steps[processedSteps.length + startStepIndex]
     if (nextStep) insertStepInStack(nextStep)
   }
 

@@ -21,7 +21,7 @@ const userContext = createContext<{
   hasUnsavedChanges: boolean
   isOAuthProvider: boolean
   updateUser: (newUser: Partial<User>) => void
-  saveUser: () => void
+  saveUser: (newUser?: Partial<User>) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -75,10 +75,11 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     setUser({ ...user, ...newUser })
   }
 
-  const saveUser = async () => {
+  const saveUser = async (newUser?: Partial<User>) => {
     if (isNotDefined(user)) return
     setIsSaving(true)
-    const { error } = await updateUserInDb(user.id, user)
+    if (newUser) updateUser(newUser)
+    const { error } = await updateUserInDb(user.id, { ...user, ...newUser })
     if (error) toast({ title: error.name, description: error.message })
     await refreshUser()
     setIsSaving(false)

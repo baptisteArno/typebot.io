@@ -80,7 +80,6 @@ export const WebhookSettings = ({
 
     return () => {
       setLocalWebhook((localWebhook) => {
-        console.log(localWebhook)
         if (!localWebhook) return
         updateWebhook(webhookId, localWebhook).then()
         return localWebhook

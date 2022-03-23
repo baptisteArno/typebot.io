@@ -122,7 +122,11 @@ export const PersonalInfoForm = () => {
 
         {hasUnsavedChanges && (
           <Flex justifyContent="flex-end">
-            <Button colorScheme="blue" onClick={saveUser} isLoading={isSaving}>
+            <Button
+              colorScheme="blue"
+              onClick={() => saveUser()}
+              isLoading={isSaving}
+            >
               Save
             </Button>
           </Flex>
