@@ -197,8 +197,11 @@ const ChatChunks = ({
   const avatarSideContainerRef = useRef<any>()
 
   useEffect(() => {
-    avatarSideContainerRef.current?.refreshTopOffset()
+    refreshTopOffset()
   })
+
+  const refreshTopOffset = () =>
+    avatarSideContainerRef.current?.refreshTopOffset()
 
   return (
     <>
@@ -209,18 +212,26 @@ const ChatChunks = ({
             hostAvatarSrc={hostAvatar.src}
           />
         )}
-        <TransitionGroup>
-          {bubbles.map((step) => (
-            <CSSTransition
-              key={step.id}
-              classNames="bubble"
-              timeout={500}
-              unmountOnExit
-            >
-              <HostBubble step={step} onTransitionEnd={onDisplayNextStep} />
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+        <div className="flex-1">
+          <TransitionGroup>
+            {bubbles.map((step) => (
+              <CSSTransition
+                key={step.id}
+                classNames="bubble"
+                timeout={500}
+                unmountOnExit
+              >
+                <HostBubble
+                  step={step}
+                  onTransitionEnd={() => {
+                    onDisplayNextStep()
+                    refreshTopOffset()
+                  }}
+                />
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </div>
       </div>
       <CSSTransition
         classNames="bubble"

@@ -1,5 +1,6 @@
 import { BubbleStep, BubbleStepType } from 'models'
 import React from 'react'
+import { EmbedBubble } from './EmbedBubble'
 import { ImageBubble } from './ImageBubble'
 import { TextBubble } from './TextBubble'
 import { VideoBubble } from './VideoBubble'
@@ -17,5 +18,7 @@ export const HostBubble = ({ step, onTransitionEnd }: Props) => {
       return <ImageBubble step={step} onTransitionEnd={onTransitionEnd} />
     case BubbleStepType.VIDEO:
       return <VideoBubble step={step} onTransitionEnd={onTransitionEnd} />
+    case BubbleStepType.EMBED:
+      return <EmbedBubble step={step} onTransitionEnd={onTransitionEnd} />
   }
 }

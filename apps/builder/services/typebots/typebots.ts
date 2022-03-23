@@ -34,6 +34,7 @@ import {
   ItemType,
   defaultConditionContent,
   defaultSendEmailOptions,
+  defaultEmbedBubbleContent,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -250,6 +251,8 @@ const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
       return defaultImageBubbleContent
     case BubbleStepType.VIDEO:
       return defaultVideoBubbleContent
+    case BubbleStepType.EMBED:
+      return defaultEmbedBubbleContent
   }
 }
 

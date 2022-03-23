@@ -149,3 +149,11 @@ export const omit: Omit = (obj, ...keys) => {
   }
   return ret
 }
+
+export const sanitizeUrl = (url: string): string =>
+  url.startsWith('http') ||
+  url.startsWith('mailto:') ||
+  url.startsWith('tel:') ||
+  url.startsWith('sms:')
+    ? url
+    : `https://${url}`

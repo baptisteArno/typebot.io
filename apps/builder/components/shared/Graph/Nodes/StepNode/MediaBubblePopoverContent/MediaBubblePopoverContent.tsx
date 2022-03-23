@@ -12,6 +12,7 @@ import {
   TextBubbleStep,
 } from 'models'
 import { useRef } from 'react'
+import { EmbedUploadContent } from './EmbedUploadContent'
 import { VideoUploadContent } from './VideoUploadContent'
 
 type Props = {
@@ -25,7 +26,10 @@ export const MediaBubblePopoverContent = (props: Props) => {
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} w="500px">
+      <PopoverContent
+        onMouseDown={handleMouseDown}
+        w={props.step.type === BubbleStepType.IMAGE ? '500px' : '400px'}
+      >
         <PopoverArrow />
         <PopoverBody ref={ref} shadow="lg">
           <MediaBubbleContent {...props} />
@@ -50,6 +54,11 @@ export const MediaBubbleContent = ({ step, onContentChange }: Props) => {
     case BubbleStepType.VIDEO: {
       return (
         <VideoUploadContent content={step.content} onSubmit={onContentChange} />
+      )
+    }
+    case BubbleStepType.EMBED: {
+      return (
+        <EmbedUploadContent content={step.content} onSubmit={onContentChange} />
       )
     }
   }

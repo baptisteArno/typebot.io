@@ -19,6 +19,12 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Image</Text>
     case BubbleStepType.VIDEO:
       return <Text>Video</Text>
+    case BubbleStepType.EMBED:
+      return (
+        <Tooltip label="Embed a pdf, an iframe, a website...">
+          <Text>Embed</Text>
+        </Tooltip>
+      )
     case InputStepType.NUMBER:
       return <Text>Number</Text>
     case InputStepType.EMAIL:

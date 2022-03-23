@@ -13,6 +13,7 @@ import {
   FlagIcon,
   GlobeIcon,
   ImageIcon,
+  LayoutIcon,
   NumberIcon,
   PhoneIcon,
   SendEmailIcon,
@@ -39,6 +40,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ImageIcon color="blue.500" {...props} />
     case BubbleStepType.VIDEO:
       return <FilmIcon color="blue.500" {...props} />
+    case BubbleStepType.EMBED:
+      return <LayoutIcon color="blue.500" {...props} />
     case InputStepType.TEXT:
       return <TextIcon color="orange.500" {...props} />
     case InputStepType.NUMBER:

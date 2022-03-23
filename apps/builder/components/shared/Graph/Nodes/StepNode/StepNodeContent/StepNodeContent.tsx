@@ -11,6 +11,7 @@ import {
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../ItemNode'
 import {
+  EmbedBubbleContent,
   SetVariableContent,
   TextBubbleContent,
   VideoBubbleContent,
@@ -41,6 +42,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case BubbleStepType.VIDEO: {
       return <VideoBubbleContent step={step} />
+    }
+    case BubbleStepType.EMBED: {
+      return <EmbedBubbleContent step={step} />
     }
     case InputStepType.TEXT: {
       return (
