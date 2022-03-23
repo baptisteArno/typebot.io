@@ -11,6 +11,7 @@ import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
+import cuid from 'cuid'
 
 export type StepsActions = {
   createStep: (
@@ -22,6 +23,7 @@ export type StepsActions = {
     indices: StepIndices,
     updates: Partial<Omit<Step, 'id' | 'type'>>
   ) => void
+  duplicateStep: (indices: StepIndices) => void
   detachStepFromBlock: (indices: StepIndices) => void
   deleteStep: (indices: StepIndices) => void
 }
@@ -45,6 +47,18 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
         typebot.blocks[blockIndex].steps[stepIndex] = { ...step, ...updates }
+      })
+    ),
+  duplicateStep: ({ blockIndex, stepIndex }: StepIndices) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        const step = typebot.blocks[blockIndex].steps[stepIndex]
+        const id = cuid()
+        const newStep: Step = {
+          ...step,
+          id,
+        }
+        typebot.blocks[blockIndex].steps.splice(stepIndex + 1, 0, newStep)
       })
     ),
   detachStepFromBlock: (indices: StepIndices) =>

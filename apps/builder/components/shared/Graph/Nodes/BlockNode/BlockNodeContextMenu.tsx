@@ -1,5 +1,5 @@
 import { MenuList, MenuItem } from '@chakra-ui/react'
-import { TrashIcon } from 'assets/icons'
+import { CopyIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
 export const BlockNodeContextMenu = ({
@@ -7,12 +7,17 @@ export const BlockNodeContextMenu = ({
 }: {
   blockIndex: number
 }) => {
-  const { deleteBlock } = useTypebot()
+  const { deleteBlock, duplicateBlock } = useTypebot()
 
   const handleDeleteClick = () => deleteBlock(blockIndex)
 
+  const handleDuplicateClick = () => duplicateBlock(blockIndex)
+
   return (
     <MenuList>
+      <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
+        Duplicate
+      </MenuItem>
       <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
         Delete
       </MenuItem>

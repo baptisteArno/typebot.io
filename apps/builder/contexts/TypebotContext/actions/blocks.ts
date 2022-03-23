@@ -1,4 +1,5 @@
 import { Coordinates } from 'contexts/GraphContext'
+import cuid from 'cuid'
 import { produce } from 'immer'
 import { WritableDraft } from 'immer/dist/internal'
 import {
@@ -21,6 +22,7 @@ export type BlocksActions = {
     }
   ) => void
   updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) => void
+  duplicateBlock: (blockIndex: number) => void
   deleteBlock: (blockIndex: number) => void
 }
 
@@ -54,7 +56,24 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         typebot.blocks[blockIndex] = { ...block, ...updates }
       })
     ),
-
+  duplicateBlock: (blockIndex: number) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        const block = typebot.blocks[blockIndex]
+        const id = cuid()
+        const newBlock: Block = {
+          ...block,
+          title: `${block.title} copy`,
+          id,
+          steps: block.steps.map((s) => ({ ...s, blockId: id })),
+          graphCoordinates: {
+            x: block.graphCoordinates.x + 200,
+            y: block.graphCoordinates.y + 100,
+          },
+        }
+        typebot.blocks.splice(blockIndex + 1, 0, newBlock)
+      })
+    ),
   deleteBlock: (blockIndex: number) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
