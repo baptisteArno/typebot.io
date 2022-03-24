@@ -4,6 +4,7 @@ import {
   DraggableStep,
   DraggableStepType,
   StepIndices,
+  IntegrationStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots/typebots'
 import { removeEmptyBlocks } from './blocks'
@@ -54,10 +55,17 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
         const id = cuid()
-        const newStep: Step = {
-          ...step,
-          id,
-        }
+        const newStep: Step =
+          step.type === IntegrationStepType.WEBHOOK
+            ? {
+                ...step,
+                id,
+                webhookId: cuid(),
+              }
+            : {
+                ...step,
+                id,
+              }
         typebot.blocks[blockIndex].steps.splice(stepIndex + 1, 0, newStep)
       })
     ),

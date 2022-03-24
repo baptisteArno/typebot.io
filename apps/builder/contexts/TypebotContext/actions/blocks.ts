@@ -6,6 +6,7 @@ import {
   Block,
   DraggableStep,
   DraggableStepType,
+  IntegrationStepType,
   StepIndices,
   Typebot,
 } from 'models'
@@ -65,7 +66,11 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
           ...block,
           title: `${block.title} copy`,
           id,
-          steps: block.steps.map((s) => ({ ...s, blockId: id })),
+          steps: block.steps.map((s) =>
+            s.type === IntegrationStepType.WEBHOOK
+              ? { ...s, blockId: id, id: cuid(), webhookId: cuid() }
+              : { ...s, blockId: id, id: cuid() }
+          ),
           graphCoordinates: {
             x: block.graphCoordinates.x + 200,
             y: block.graphCoordinates.y + 100,
