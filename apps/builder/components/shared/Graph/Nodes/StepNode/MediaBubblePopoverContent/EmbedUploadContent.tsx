@@ -11,12 +11,9 @@ type Props = {
 
 export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
   const handleUrlChange = (url: string) => {
-    let iframeUrl = sanitizeUrl(
+    const iframeUrl = sanitizeUrl(
       url.trim().startsWith('<iframe') ? extractUrlFromIframe(url) : url
     )
-    if (iframeUrl.endsWith('.pdf')) {
-      iframeUrl = `https://docs.google.com/viewer?embedded=true&url=${iframeUrl}`
-    }
     onSubmit({ ...content, url: iframeUrl })
   }
 
