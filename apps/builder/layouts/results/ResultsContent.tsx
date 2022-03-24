@@ -43,6 +43,7 @@ export const ResultsContent = () => {
         w="full"
         justifyContent="center"
         h="60px"
+        display={['none', 'flex']}
       >
         <HStack maxW="1200px" w="full">
           <Button
@@ -70,7 +71,7 @@ export const ResultsContent = () => {
           </Button>
         </HStack>
       </Flex>
-      <Flex pt="60px" w="full" justify="center">
+      <Flex pt={['10px', '60px']} w="full" justify="center">
         {publishedTypebot &&
           (isAnalytics ? (
             <AnalyticsContent stats={stats} />

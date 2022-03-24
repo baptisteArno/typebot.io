@@ -36,6 +36,7 @@ export const Graph = ({
     setGraphPosition: setGlobalGraphPosition,
     setOpenedStepId,
     updateBlockCoordinates,
+    setPreviewingEdge,
   } = useGraph()
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
@@ -98,7 +99,10 @@ export const Graph = ({
     if (isRightClick) e.stopPropagation()
   }
 
-  const handleClick = () => setOpenedStepId(undefined)
+  const handleClick = () => {
+    setOpenedStepId(undefined)
+    setPreviewingEdge(undefined)
+  }
 
   useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
   useEventListener('mousedown', handleCaptureMouseDown, undefined, {

@@ -56,7 +56,7 @@ export const ButtonNodeContent = ({
   }
 
   return (
-    <Flex px={4} py={2} justify="center" w="full">
+    <Flex px={4} py={2} justify="center" w="90%">
       <Editable
         ref={editableRef}
         flex="1"

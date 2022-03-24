@@ -27,6 +27,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     blocksCoordinates,
     graphPosition,
     isReadOnly,
+    setPreviewingEdge,
   } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -92,8 +93,13 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
 
   const handleMouseLeave = () => setIsMouseOver(false)
 
-  const handleEdgeClick = (e: React.MouseEvent) => {
+  const handleEdgeClick = () => {
+    setPreviewingEdge(edge)
+  }
+
+  const handleContextMenuTrigger = (e: React.MouseEvent) => {
     if (isReadOnly) return
+    e.preventDefault()
     setEdgeMenuPosition({ x: e.clientX, y: e.clientY })
     onOpen()
   }
@@ -113,6 +119,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleEdgeClick}
+        onContextMenu={handleContextMenuTrigger}
       />
       <path
         data-testid="edge"

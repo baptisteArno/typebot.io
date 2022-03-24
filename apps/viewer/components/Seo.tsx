@@ -15,6 +15,7 @@ export const SEO = ({
 }: SEOProps) => (
   <Head>
     <title>{title ?? typebotName}</title>
+    <meta name="robots" content="noindex" />
     <link
       rel="icon"
       type="image/png"

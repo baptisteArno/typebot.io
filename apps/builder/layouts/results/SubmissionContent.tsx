@@ -145,7 +145,7 @@ export const SubmissionsContent = ({
   }
 
   return (
-    <Stack maxW="1200px" w="full" pb="28">
+    <Stack maxW="1200px" w="full" pb="28" px={['4', '0']}>
       {totalHiddenResults && (
         <UnlockProPlanInfo
           buttonLabel={`Unlock ${totalHiddenResults} results`}

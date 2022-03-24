@@ -51,7 +51,7 @@ export const TypebotButton = ({
     if (draggedTypebotDebounced) return
     router.push(
       isMobile
-        ? `/typebots/${typebot.id}/results/responses`
+        ? `/typebots/${typebot.id}/results`
         : `/typebots/${typebot.id}/edit`
     )
   }

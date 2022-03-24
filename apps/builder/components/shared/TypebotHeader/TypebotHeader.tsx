@@ -54,7 +54,7 @@ export const TypebotHeader = () => {
       bgColor="white"
       flexShrink={0}
     >
-      <HStack>
+      <HStack display={['none', 'flex']}>
         <Button
           as={NextChakraLink}
           href={`/typebots/${typebot?.id}/edit`}
@@ -126,6 +126,7 @@ export const TypebotHeader = () => {
           )}
           <Tooltip label="Undo">
             <IconButton
+              display={['none', 'flex']}
               icon={<UndoIcon />}
               size="sm"
               aria-label="Undo"
@@ -136,6 +137,7 @@ export const TypebotHeader = () => {
 
           <Tooltip label="Redo">
             <IconButton
+              display={['none', 'flex']}
               icon={<RedoIcon />}
               size="sm"
               aria-label="Redo"
@@ -154,7 +156,7 @@ export const TypebotHeader = () => {
         )}
       </HStack>
 
-      <HStack right="40px" pos="absolute">
+      <HStack right="40px" pos="absolute" display={['none', 'flex']}>
         <CollaborationMenuButton />
         {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
           <Button onClick={handlePreviewClick}>Preview</Button>
