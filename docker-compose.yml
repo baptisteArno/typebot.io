@@ -22,7 +22,7 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 10;
-      npx prisma migrate deploy;
+      ./node_modules/.bin/prisma migrate deploy;
       node server.js;"
   typebot_viewer:
     depends_on:
