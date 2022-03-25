@@ -13,7 +13,7 @@ export const TextBubbleContent = ({ step }: Props) => {
   if (!typebot) return <></>
   return (
     <Flex
-      isTruncated
+      w="90%"
       flexDir={'column'}
       opacity={step.content.html === '' ? '0.5' : '1'}
       className="slate-html-container"

@@ -1,16 +1,23 @@
 import { useTypebot } from 'contexts/TypebotContext'
 import { useUser } from 'contexts/UserContext'
 import { Plan } from 'db'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isCloudProdInstance } from 'services/utils'
 import { initBubble } from 'typebot-js'
 
 export const SupportBubble = () => {
   const { typebot } = useTypebot()
   const { user } = useUser()
+  const [localTypebotId, setLocalTypebotId] = useState(typebot?.id)
+  const [localUserId, setLocalUserId] = useState(user?.id)
 
   useEffect(() => {
-    if (isCloudProdInstance())
+    if (
+      isCloudProdInstance() &&
+      (localTypebotId !== typebot?.id || localUserId !== user?.id)
+    ) {
+      setLocalTypebotId(typebot?.id)
+      setLocalUserId(user?.id)
       initBubble({
         url: `${
           process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
@@ -32,6 +39,7 @@ export const SupportBubble = () => {
           Plan: planToReadable(user?.plan),
         },
       })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, typebot])
 
