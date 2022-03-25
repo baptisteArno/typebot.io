@@ -177,6 +177,7 @@ export const CustomDomainModal = ({
 const splitHostname = (
   hostname: string
 ): { domain: string; type: string; subdomain: string } | undefined => {
+  if (!hostname.includes('.')) return
   const urlParts = /([a-z-0-9]{2,63}).([a-z.]{2,5})$/.exec(hostname)
   if (!urlParts) return
   const [, domain, type] = urlParts
