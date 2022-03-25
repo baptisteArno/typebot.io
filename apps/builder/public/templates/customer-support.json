@@ -1,0 +1,460 @@
+{
+  "id": "cl16la7p900990b1a72qjqbb3",
+  "createdAt": "2022-03-25T15:39:33.885Z",
+  "updatedAt": "2022-03-25T15:42:12.544Z",
+  "name": "My typebot",
+  "ownerId": "cl13od3wt0000pl1aat7bdrxf",
+  "publishedTypebotId": null,
+  "folderId": null,
+  "blocks": [
+    {
+      "id": "uG1tt8JdDyu2nju3oJ4wc1",
+      "steps": [
+        {
+          "id": "bFHwV7tnY5dke8pQeFY8v6",
+          "type": "start",
+          "label": "Start",
+          "blockId": "uG1tt8JdDyu2nju3oJ4wc1",
+          "outgoingEdgeId": "2dzxChB1qm9WGfzNF91tfg"
+        }
+      ],
+      "title": "Start",
+      "graphCoordinates": { "x": -281, "y": -89 }
+    },
+    {
+      "id": "vLUAPaxKwPF49iZhg4XZYa",
+      "steps": [
+        {
+          "id": "spud6U3K1omh2dZG8yN2CW4",
+          "type": "text",
+          "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+          "content": {
+            "html": "<div>Hey friend 👋</div><div>How can I help you?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hey friend 👋" }] },
+              { "type": "p", "children": [{ "text": "How can I help you?" }] }
+            ],
+            "plainText": "Hey friend 👋How can I help you?"
+          }
+        },
+        {
+          "id": "s6kp2Z4igeY3kL7B64qBdUg",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "fQ8oLDnKmDBuPDK7riJ2kt",
+              "type": 0,
+              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "content": "I have a feature request ✨",
+              "outgoingEdgeId": "dhniFxrsH5r54aEE5JXwK2"
+            },
+            {
+              "id": "h2rFDX2UnKS4Kdu3Eyuqq3",
+              "type": 0,
+              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "content": "There is a bug 🐛",
+              "outgoingEdgeId": "2C4mhU5o2Hdm7dztR9xNE9"
+            },
+            {
+              "id": "hcUFBPeQA3gSyXRprRk2v9",
+              "type": 0,
+              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "content": "I have a question 💭",
+              "outgoingEdgeId": "bTo6CZD1YapDDyVdvJgFDV"
+            }
+          ],
+          "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        }
+      ],
+      "title": "Menu",
+      "graphCoordinates": { "x": -7, "y": 90 }
+    },
+    {
+      "id": "7MuqF6nen1ZTwGB53Mz8VY",
+      "steps": [
+        {
+          "id": "sjsECyfSBMkUnoWaEnBTmJX",
+          "type": "text",
+          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "content": {
+            "html": "<div>Shoot! 🤪</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Shoot! 🤪" }] }
+            ],
+            "plainText": "Shoot! 🤪"
+          }
+        },
+        {
+          "id": "seomQsnPWgiMzQVeZ3us7x2",
+          "type": "text",
+          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "content": {
+            "html": "<div>Can you describe the bug with as many details as possible?</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Can you describe the bug with as many details as possible?"
+                  }
+                ]
+              }
+            ],
+            "plainText": "Can you describe the bug with as many details as possible?"
+          }
+        },
+        {
+          "id": "s3LYyyYtjdQ88jkMMV5DSW7",
+          "type": "text input",
+          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "options": {
+            "isLong": true,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Describe the bug..."
+            },
+            "variableId": "51BcuecnB6kRU1tsttaGyR"
+          },
+          "outgoingEdgeId": "cl1571jhh00022e6dk77f52wg"
+        }
+      ],
+      "title": "Bug",
+      "graphCoordinates": { "x": 476, "y": 76 }
+    },
+    {
+      "id": "kyK8JQ77NodUYaz3JLS88A",
+      "steps": [
+        {
+          "id": "s9bgHcWdobb8Z5cTbrnTz6R",
+          "type": "text",
+          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "content": {
+            "html": "<div>Awesome!</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }],
+            "plainText": "Awesome!"
+          }
+        },
+        {
+          "id": "s2NbNaBGKhMvdEUdVPXKZjy",
+          "type": "text",
+          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "content": {
+            "html": "<div>Head up to the feedback board.</div><div></div><div>👉 <a href=\"https://app.typebot.io/feedback\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">https://app.typebot.io/feedback</a></div><div></div><div>There, you&#x27;ll be able to check existing feature requests and submit yours if it&#x27;s missing 💪</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Head up to the feedback board." }]
+              },
+              { "type": "p", "children": [{ "text": "" }] },
+              {
+                "type": "p",
+                "children": [
+                  { "text": "👉 " },
+                  {
+                    "url": "https://app.typebot.io/feedback",
+                    "type": "a",
+                    "children": [{ "text": "https://app.typebot.io/feedback" }]
+                  },
+                  { "text": "" }
+                ]
+              },
+              { "type": "p", "children": [{ "text": "" }] },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "There, you'll be able to check existing feature requests and submit yours if it's missing 💪"
+                  }
+                ]
+              }
+            ],
+            "plainText": "Head up to the feedback board.👉 https://app.typebot.io/feedbackThere, you'll be able to check existing feature requests and submit yours if it's missing 💪"
+          }
+        },
+        {
+          "id": "cl16lb3b300092e6dh4h01vxw",
+          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "type": "choice input",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
+          "items": [
+            {
+              "id": "cl16lb3b3000a2e6dy8zdhzpz",
+              "stepId": "cl16lb3b300092e6dh4h01vxw",
+              "type": 0,
+              "content": "Restart"
+            }
+          ]
+        },
+        {
+          "id": "cl16lablb00082e6dadk55sxv",
+          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "current",
+            "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+          }
+        }
+      ],
+      "title": "Feature request",
+      "graphCoordinates": { "x": 477, "y": -563 }
+    },
+    {
+      "id": "puWCBhGWSQRbqTkVH89RCf",
+      "steps": [
+        {
+          "id": "sm4iHhLQs9yNdRG3b7xqV8Y",
+          "type": "text",
+          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "content": {
+            "html": "<div>First, don&#x27;t forget to check out the <a href=\"https://docs.typebot.io/\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">Documentation 🙏</a></div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "First, don't forget to check out the " },
+                  {
+                    "url": "https://docs.typebot.io/",
+                    "type": "a",
+                    "children": [{ "text": "Documentation 🙏" }]
+                  },
+                  { "text": "" }
+                ]
+              }
+            ],
+            "plainText": "First, don't forget to check out the Documentation 🙏"
+          }
+        },
+        {
+          "id": "sreX6rwMevEmbTpnkGCtp3k",
+          "type": "text",
+          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "content": {
+            "html": "<div>Otherwise, I&#x27;m all ears!</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Otherwise, I'm all ears!" }]
+              }
+            ],
+            "plainText": "Otherwise, I'm all ears!"
+          }
+        },
+        {
+          "id": "so4GiKFWWjKCjXgmMJYCGbe",
+          "type": "image",
+          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "content": {
+            "url": "https://media0.giphy.com/media/rhgwg4qBu97ISgbfni/giphy-downsized.gif?cid=fe3852a3wimy48e55djt23j44uto7gdlu8ksytylafisvr0q&rid=giphy-downsized.gif&ct=g"
+          }
+        },
+        {
+          "id": "sjd4qACugMarB7gJC8nMhb3",
+          "type": "text input",
+          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "options": {
+            "isLong": true,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "51BcuecnB6kRU1tsttaGyR"
+          },
+          "outgoingEdgeId": "cl1571ktd00032e6dyti22850"
+        }
+      ],
+      "title": "Question",
+      "graphCoordinates": { "x": 476, "y": 399 }
+    },
+    {
+      "id": "1GvxCAAEysxJMxrVngud3X",
+      "steps": [
+        {
+          "id": "s6uLw72EAKbACrpYHr7DSyY",
+          "type": "text",
+          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "content": {
+            "html": "<div>Thank you so much for your submission 💙</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Thank you so much for your submission 💙" }
+                ]
+              }
+            ],
+            "plainText": "Thank you so much for your submission 💙"
+          }
+        },
+        {
+          "id": "stM7cTBFCLhpQagRHT64K6u",
+          "type": "text",
+          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "content": {
+            "html": "<div>I&#x27;ll get back to you ASAP (usually within 24 hours)</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "I'll get back to you ASAP (usually within 24 hours)"
+                  }
+                ]
+              }
+            ],
+            "plainText": "I'll get back to you ASAP (usually within 24 hours)"
+          }
+        },
+        {
+          "id": "s4JATFkBxzmcqqEKQB2xFfa",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "jqm8wZa5yYb73493n5s3Uc",
+              "type": 0,
+              "stepId": "s4JATFkBxzmcqqEKQB2xFfa",
+              "content": "Restart"
+            }
+          ],
+          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        },
+        {
+          "id": "cl14qlt8600072e69rez236gx",
+          "type": "Typebot link",
+          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "options": {
+            "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+            "typebotId": "current"
+          }
+        }
+      ],
+      "title": "Bye",
+      "graphCoordinates": { "x": 1177, "y": 113 }
+    },
+    {
+      "id": "wncvzVDFJDvhh1M3CXJ6aL",
+      "steps": [
+        {
+          "id": "soiDpBL5r1dbvHxuT2Sd3mH",
+          "type": "text",
+          "blockId": "wncvzVDFJDvhh1M3CXJ6aL",
+          "content": {
+            "html": "<div>On which email can I contact you?</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "On which email can I contact you?" }]
+              }
+            ],
+            "plainText": "On which email can I contact you?"
+          }
+        },
+        {
+          "id": "s5Fh7zHUw3j4zDM5xjzwsXB",
+          "type": "email input",
+          "blockId": "wncvzVDFJDvhh1M3CXJ6aL",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "variableId": "t2k6cj3uYfNdJX13APA4b9",
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
+          },
+          "outgoingEdgeId": "cl1571xtc00042e6dcptam5jw"
+        }
+      ],
+      "title": "Email",
+      "graphCoordinates": { "x": 830, "y": 115 }
+    }
+  ],
+  "variables": [
+    { "id": "t2k6cj3uYfNdJX13APA4b9", "name": "Email" },
+    { "id": "51BcuecnB6kRU1tsttaGyR", "name": "Content" }
+  ],
+  "edges": [
+    {
+      "id": "2dzxChB1qm9WGfzNF91tfg",
+      "to": { "blockId": "vLUAPaxKwPF49iZhg4XZYa" },
+      "from": {
+        "stepId": "bFHwV7tnY5dke8pQeFY8v6",
+        "blockId": "uG1tt8JdDyu2nju3oJ4wc1"
+      }
+    },
+    {
+      "id": "dhniFxrsH5r54aEE5JXwK2",
+      "to": { "blockId": "kyK8JQ77NodUYaz3JLS88A" },
+      "from": {
+        "itemId": "fQ8oLDnKmDBuPDK7riJ2kt",
+        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+      }
+    },
+    {
+      "id": "2C4mhU5o2Hdm7dztR9xNE9",
+      "to": { "blockId": "7MuqF6nen1ZTwGB53Mz8VY" },
+      "from": {
+        "itemId": "h2rFDX2UnKS4Kdu3Eyuqq3",
+        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+      }
+    },
+    {
+      "id": "bTo6CZD1YapDDyVdvJgFDV",
+      "to": { "blockId": "puWCBhGWSQRbqTkVH89RCf" },
+      "from": {
+        "itemId": "hcUFBPeQA3gSyXRprRk2v9",
+        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+      }
+    },
+    {
+      "id": "cl1571jhh00022e6dk77f52wg",
+      "to": { "blockId": "wncvzVDFJDvhh1M3CXJ6aL" },
+      "from": {
+        "stepId": "s3LYyyYtjdQ88jkMMV5DSW7",
+        "blockId": "7MuqF6nen1ZTwGB53Mz8VY"
+      }
+    },
+    {
+      "id": "cl1571ktd00032e6dyti22850",
+      "to": { "blockId": "wncvzVDFJDvhh1M3CXJ6aL" },
+      "from": {
+        "stepId": "sjd4qACugMarB7gJC8nMhb3",
+        "blockId": "puWCBhGWSQRbqTkVH89RCf"
+      }
+    },
+    {
+      "id": "cl1571xtc00042e6dcptam5jw",
+      "to": { "blockId": "1GvxCAAEysxJMxrVngud3X" },
+      "from": {
+        "stepId": "s5Fh7zHUw3j4zDM5xjzwsXB",
+        "blockId": "wncvzVDFJDvhh1M3CXJ6aL"
+      }
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "isEnabled": true
+      },
+      "guestAvatar": { "isEnabled": false },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": { "font": "Open Sans", "background": { "type": "None" } }
+  },
+  "settings": {
+    "general": { "isBrandingEnabled": true },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null
+}

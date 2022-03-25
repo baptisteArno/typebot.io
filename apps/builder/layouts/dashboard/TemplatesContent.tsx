@@ -11,7 +11,7 @@ import {
 import { CreateTypebotMoreButton } from 'components/templates/ImportFileMenuItem'
 import { TemplateButton } from 'components/templates/TemplateButton'
 import { useUser } from 'contexts/UserContext'
-import { defaultTheme, Typebot } from 'models'
+import { Typebot } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { createTypebot, importTypebot } from 'services/typebots/typebots'
@@ -19,6 +19,7 @@ import { createTypebot, importTypebot } from 'services/typebots/typebots'
 export type TemplateProps = { name: string; emoji: string; fileName: string }
 const templates: TemplateProps[] = [
   { name: 'Lead Generation', emoji: '🤝', fileName: 'lead-gen.json' },
+  { name: 'Customer Support', emoji: '😍', fileName: 'customer-support.json' },
 ]
 export const TemplatesContent = () => {
   const { user } = useUser()
@@ -94,7 +95,7 @@ export const TemplatesContent = () => {
         </Flex>
         <Divider />
         <Text>Or start from a template</Text>
-        <SimpleGrid columns={2} spacing={4}>
+        <SimpleGrid columns={4} spacing={4}>
           {templates.map((template) => (
             <TemplateButton
               key={template.name}
