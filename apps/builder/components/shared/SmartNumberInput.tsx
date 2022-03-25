@@ -7,7 +7,7 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebouncedCallback } from 'use-debounce'
 
 export const SmartNumberInput = ({
   value,
@@ -20,26 +20,25 @@ export const SmartNumberInput = ({
   onValueChange: (value?: number) => void
 } & NumberInputProps) => {
   const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
-  const [valueToReturn, setValueToReturn] = useState<number | undefined>(
-    parseFloat(currentValue)
-  )
-  const [debouncedValue] = useDebounce(
-    valueToReturn,
+  const debounced = useDebouncedCallback(
+    onValueChange,
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(() => {
-    onValueChange(debouncedValue)
+    return () => {
+      debounced.flush()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue])
+  }, [])
 
   const handleValueChange = (value: string) => {
     setCurrentValue(value)
     if (value.endsWith('.') || value.endsWith(',')) return
-    if (value === '') return setValueToReturn(undefined)
+    if (value === '') return debounced(undefined)
     const newValue = parseFloat(value)
     if (isNaN(newValue)) return
-    setValueToReturn(newValue)
+    debounced(newValue)
   }
 
   return (

@@ -10,7 +10,7 @@ import {
   InputProps,
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebouncedCallback } from 'use-debounce'
 
 type Props = {
   selectedItem?: string
@@ -28,8 +28,9 @@ export const SearchableDropdown = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
-  const [debouncedInputValue] = useDebounce(
-    inputValue,
+  const debounced = useDebouncedCallback(
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onValueChange ? onValueChange : () => {},
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState([
@@ -60,16 +61,10 @@ export const SearchableDropdown = ({
     handler: onClose,
   })
 
-  useEffect(() => {
-    onValueChange &&
-      debouncedInputValue !== selectedItem &&
-      onValueChange(debouncedInputValue)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedInputValue])
-
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isOpen) onOpen()
     setInputValue(e.target.value)
+    debounced(e.target.value)
     if (e.target.value === '') {
       setFilteredItems([...items.slice(0, 50)])
       return
@@ -85,6 +80,7 @@ export const SearchableDropdown = ({
 
   const handleItemClick = (item: string) => () => {
     setInputValue(item)
+    debounced(item)
     onClose()
   }
 
