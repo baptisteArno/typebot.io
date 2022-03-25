@@ -4,7 +4,6 @@ import {
   DraggableStep,
   DraggableStepType,
   StepIndices,
-  IntegrationStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots/typebots'
 import { removeEmptyBlocks } from './blocks'
@@ -13,7 +12,8 @@ import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import cuid from 'cuid'
-import { byId } from 'utils'
+import { byId, isWebhookStep, stepHasItems } from 'utils'
+import { duplicateItemDraft } from './items'
 
 export type StepsActions = {
   createStep: (
@@ -54,19 +54,8 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
   duplicateStep: ({ blockIndex, stepIndex }: StepIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const step = typebot.blocks[blockIndex].steps[stepIndex]
-        const id = cuid()
-        const newStep: Step =
-          step.type === IntegrationStepType.WEBHOOK
-            ? {
-                ...step,
-                id,
-                webhookId: cuid(),
-              }
-            : {
-                ...step,
-                id,
-              }
+        const step = { ...typebot.blocks[blockIndex].steps[stepIndex] }
+        const newStep = duplicateStepDraft(step.blockId)(step)
         typebot.blocks[blockIndex].steps.splice(stepIndex + 1, 0, newStep)
       })
     ),
@@ -125,6 +114,13 @@ const moveStepToBlock = (
   { blockIndex, stepIndex }: StepIndices
 ) => {
   const newStep = { ...step, blockId }
+  const items = stepHasItems(step) ? step.items : []
+  items.forEach((item) => {
+    const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
+    edgeIndex !== -1
+      ? (typebot.edges[edgeIndex].from.blockId = blockId)
+      : (newStep.outgoingEdgeId = undefined)
+  })
   if (step.outgoingEdgeId) {
     if (typebot.blocks[blockIndex].steps.length > stepIndex ?? 0) {
       deleteEdgeDraft(typebot, step.outgoingEdgeId)
@@ -139,4 +135,22 @@ const moveStepToBlock = (
   typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
 }
 
-export { stepsAction, createStepDraft }
+const duplicateStepDraft =
+  (blockId: string) =>
+  (step: Step): Step => {
+    const stepId = cuid()
+    return {
+      ...step,
+      blockId,
+      id: stepId,
+      items: stepHasItems(step)
+        ? step.items.map(duplicateItemDraft(stepId))
+        : undefined,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      webhookId: isWebhookStep(step) ? cuid() : undefined,
+      outgoingEdgeId: undefined,
+    }
+  }
+
+export { stepsAction, createStepDraft, duplicateStepDraft }

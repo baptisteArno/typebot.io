@@ -86,4 +86,11 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
     ),
 })
 
-export { itemsAction }
+const duplicateItemDraft = (stepId: string) => (item: Item) => ({
+  ...item,
+  id: cuid(),
+  stepId,
+  outgoingEdgeId: undefined,
+})
+
+export { itemsAction, duplicateItemDraft }

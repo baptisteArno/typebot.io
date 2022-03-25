@@ -38,7 +38,7 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
             ).items.findIndex(byId(edge.from.itemId))
           : null
 
-        isDefined(itemIndex)
+        isDefined(itemIndex) && itemIndex !== -1
           ? addEdgeIdToItem(typebot, newEdge.id, {
               blockIndex,
               stepIndex,

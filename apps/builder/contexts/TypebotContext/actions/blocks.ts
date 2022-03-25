@@ -6,13 +6,12 @@ import {
   Block,
   DraggableStep,
   DraggableStepType,
-  IntegrationStepType,
   StepIndices,
   Typebot,
 } from 'models'
 import { SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
-import { createStepDraft } from './steps'
+import { createStepDraft, duplicateStepDraft } from './steps'
 
 export type BlocksActions = {
   createBlock: (
@@ -66,11 +65,7 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
           ...block,
           title: `${block.title} copy`,
           id,
-          steps: block.steps.map((s) =>
-            s.type === IntegrationStepType.WEBHOOK
-              ? { ...s, blockId: id, id: cuid(), webhookId: cuid() }
-              : { ...s, blockId: id, id: cuid() }
-          ),
+          steps: block.steps.map(duplicateStepDraft(id)),
           graphCoordinates: {
             x: block.graphCoordinates.x + 200,
             y: block.graphCoordinates.y + 100,
