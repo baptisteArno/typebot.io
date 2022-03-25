@@ -1,15 +1,10 @@
 import { Log, Result } from 'db'
-import { VariableWithValue } from 'models'
 import { sendRequest } from 'utils'
 
-export const createResult = async (
-  typebotId: string,
-  prefilledVariables: VariableWithValue[]
-) => {
+export const createResult = async (typebotId: string) => {
   return sendRequest<Result>({
     url: `/api/typebots/${typebotId}/results`,
     method: 'POST',
-    body: { prefilledVariables },
   })
 }
 

@@ -35,23 +35,15 @@ export const TypebotPage = ({
       predefinedVariables[key] = value
     })
     setPredefinedVariables(predefinedVariables)
+    initializeResult().then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Workaround for react-frame-component bug (https://github.com/ryanseddon/react-frame-component/pull/207)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (showTypebot) return
-    setShowTypebot(true)
-  })
-
-  const initializeResult = async (variables: VariableWithValue[]) => {
+  const initializeResult = async () => {
     const resultIdFromSession = getExistingResultFromSession()
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
-      const { error, data: result } = await createResult(
-        typebot.typebotId,
-        variables
-      )
+      const { error, data: result } = await createResult(typebot.typebotId)
       if (error) setError(error)
       if (result) {
         setResultId(result.id)
@@ -59,6 +51,15 @@ export const TypebotPage = ({
           setResultInSession(result.id)
       }
     }
+    setShowTypebot(true)
+  }
+
+  const handleVariablesPrefilled = async (
+    prefilledVariables: VariableWithValue[]
+  ) => {
+    if (!resultId) return setError(new Error('Result was not created'))
+    const { error } = await updateResult(resultId, { prefilledVariables })
+    if (error) setError(error)
   }
 
   const handleNewAnswer = async (answer: Answer) => {
@@ -97,7 +98,7 @@ export const TypebotPage = ({
           predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
-          onVariablesPrefilled={initializeResult}
+          onVariablesPrefilled={handleVariablesPrefilled}
           onNewLog={handleNewLog}
         />
       )}

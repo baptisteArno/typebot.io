@@ -1,5 +1,5 @@
 import prisma from 'libs/prisma'
-import { ResultWithAnswers, VariableWithValue } from 'models'
+import { ResultWithAnswers } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
 import { methodNotAllowed } from 'utils'
@@ -24,13 +24,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string
-    const resultData = (
-      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as {
-      prefilledVariables: VariableWithValue[]
-    }
     const result = await prisma.result.create({
-      data: { ...resultData, typebotId, isCompleted: false },
+      data: { typebotId, isCompleted: false },
     })
     return res.send(result)
   }

@@ -52,26 +52,22 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
-    if (predefinedVariables) {
-      const prefilledVariables = injectPredefinedVariables(predefinedVariables)
-      if (onVariablesPrefilled) {
-        onVariablesPrefilled(prefilledVariables)
-        setPrefilledVariables(prefilledVariables)
-      }
-    }
+    const prefilledVariables = injectPredefinedVariables(predefinedVariables)
+    if (onVariablesPrefilled) onVariablesPrefilled(prefilledVariables)
+    setPrefilledVariables(prefilledVariables)
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const injectPredefinedVariables = (predefinedVariables: {
+  const injectPredefinedVariables = (predefinedVariables?: {
     [key: string]: string | undefined
   }) => {
     const prefilledVariables: VariableWithValue[] = []
-    Object.keys(predefinedVariables).forEach((key) => {
+    Object.keys(predefinedVariables ?? {}).forEach((key) => {
       const matchingVariable = typebot.variables.find(
         (v) => v.name.toLowerCase() === key.toLowerCase()
       )
-      if (isNotDefined(matchingVariable)) return
+      if (!predefinedVariables || isNotDefined(matchingVariable)) return
       const value = predefinedVariables[key]
       if (!value) return
       updateVariableValue(matchingVariable?.id, value)
