@@ -16,7 +16,7 @@ export const TypebotLinkSettingsForm = ({
 }: Props) => {
   const { linkedTypebots, typebot } = useTypebot()
 
-  const handleTypebotIdChange = (typebotId: string) =>
+  const handleTypebotIdChange = (typebotId: string | 'current') =>
     onOptionsChange({ ...options, typebotId })
   const handleBlockIdChange = (blockId: string) =>
     onOptionsChange({ ...options, blockId })
@@ -29,7 +29,8 @@ export const TypebotLinkSettingsForm = ({
       />
       <BlocksDropdown
         blocks={
-          typebot && options.typebotId === typebot.id
+          typebot &&
+          (options.typebotId === typebot.id || options.typebotId === 'current')
             ? typebot.blocks
             : linkedTypebots?.find(byId(options.typebotId))?.blocks ?? []
         }

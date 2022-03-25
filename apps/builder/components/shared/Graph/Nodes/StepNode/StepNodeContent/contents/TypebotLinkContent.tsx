@@ -10,7 +10,10 @@ type Props = {
 
 export const TypebotLinkContent = ({ step }: Props) => {
   const { linkedTypebots, typebot } = useTypebot()
-  const isCurrentTypebot = typebot && step.options.typebotId === typebot.id
+  const isCurrentTypebot =
+    typebot &&
+    (step.options.typebotId === typebot.id ||
+      step.options.typebotId === 'current')
   const linkedTypebot = isCurrentTypebot
     ? typebot
     : linkedTypebots?.find(byId(step.options.typebotId))

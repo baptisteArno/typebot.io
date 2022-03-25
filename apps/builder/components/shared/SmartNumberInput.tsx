@@ -25,12 +25,13 @@ export const SmartNumberInput = ({
     process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       debounced.flush()
-    }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    []
+  )
 
   const handleValueChange = (value: string) => {
     setCurrentValue(value)

@@ -43,6 +43,14 @@ export const SearchableDropdown = ({
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
 
+  useEffect(
+    () => () => {
+      debounced.flush()
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   useEffect(() => {
     if (filteredItems.length > 0) return
     setFilteredItems([

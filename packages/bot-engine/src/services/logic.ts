@@ -139,8 +139,10 @@ const executeTypebotLink = async (
 }> => {
   const { typebot, linkedTypebots, onNewLog, createEdge } = context
   const linkedTypebot =
-    [typebot, ...linkedTypebots].find(byId(step.options.typebotId)) ??
-    (await fetchAndInjectTypebot(step, context))
+    step.options.typebotId === 'current'
+      ? typebot
+      : [typebot, ...linkedTypebots].find(byId(step.options.typebotId)) ??
+        (await fetchAndInjectTypebot(step, context))
   if (!linkedTypebot) {
     onNewLog({
       status: 'error',

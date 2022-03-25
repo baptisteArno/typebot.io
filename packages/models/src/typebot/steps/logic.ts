@@ -94,7 +94,7 @@ export type CodeOptions = {
 }
 
 export type TypebotLinkOptions = {
-  typebotId?: string
+  typebotId?: string | 'current'
   blockId?: string
 }
 
