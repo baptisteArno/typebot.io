@@ -37,7 +37,10 @@ const parseStarterVariables = (starterVariables?: {
   starterVariables
     ? `&${Object.keys(starterVariables)
         .filter((key) => starterVariables[key])
-        .map((key) => `${key}=${starterVariables[key]}`)
+        .map(
+          (key) =>
+            `${key}=${encodeURIComponent(starterVariables[key] as string)}`
+        )
         .join('&')}`
     : ''
 
