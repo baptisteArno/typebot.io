@@ -22,7 +22,7 @@ export const ItemNodesList = ({
   indices: { blockIndex, stepIndex },
   isReadOnly = false,
 }: Props) => {
-  const { typebot, createItem, deleteItem } = useTypebot()
+  const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
   const placeholderRefs = useRef<HTMLDivElement[]>([])
   const blockId = typebot?.blocks[blockIndex].id
@@ -96,7 +96,7 @@ export const ItemNodesList = ({
     ) => {
       if (!typebot || isReadOnly) return
       placeholderRefs.current.splice(itemIndex + 1, 1)
-      deleteItem({ blockIndex, stepIndex, itemIndex })
+      detachItemFromStep({ blockIndex, stepIndex, itemIndex })
       setPosition(absolute)
       setRelativeCoordinates(relative)
       setDraggedItem(item)

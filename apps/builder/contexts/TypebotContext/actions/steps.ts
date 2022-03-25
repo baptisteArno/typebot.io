@@ -13,6 +13,7 @@ import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import cuid from 'cuid'
+import { byId } from 'utils'
 
 export type StepsActions = {
   createStep: (
@@ -74,7 +75,9 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
   deleteStep: ({ blockIndex, stepIndex }: StepIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
+        const removingStep = typebot.blocks[blockIndex].steps[stepIndex]
         removeStepFromBlock({ blockIndex, stepIndex })(typebot)
+        cleanUpEdgeDraft(typebot, removingStep.id)
         removeEmptyBlocks(typebot)
       })
     ),
@@ -83,8 +86,6 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
 const removeStepFromBlock =
   ({ blockIndex, stepIndex }: StepIndices) =>
   (typebot: WritableDraft<Typebot>) => {
-    const removingStep = typebot.blocks[blockIndex].steps[stepIndex]
-    cleanUpEdgeDraft(typebot, removingStep.id)
     typebot.blocks[blockIndex].steps.splice(stepIndex, 1)
   }
 
@@ -122,11 +123,20 @@ const moveStepToBlock = (
   step: DraggableStep,
   blockId: string,
   { blockIndex, stepIndex }: StepIndices
-) =>
-  typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, {
-    ...step,
-    blockId,
-    outgoingEdgeId: undefined,
-  })
+) => {
+  const newStep = { ...step, blockId }
+  if (step.outgoingEdgeId) {
+    if (typebot.blocks[blockIndex].steps.length > stepIndex ?? 0) {
+      deleteEdgeDraft(typebot, step.outgoingEdgeId)
+      newStep.outgoingEdgeId = undefined
+    } else {
+      const edgeIndex = typebot.edges.findIndex(byId(step.outgoingEdgeId))
+      edgeIndex !== -1
+        ? (typebot.edges[edgeIndex].from.blockId = blockId)
+        : (newStep.outgoingEdgeId = undefined)
+    }
+  }
+  typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
+}
 
 export { stepsAction, createStepDraft }

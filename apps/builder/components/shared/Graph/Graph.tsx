@@ -27,8 +27,14 @@ export const Graph = ({
   answersCounts?: AnswersCount[]
   onUnlockProPlanClick?: () => void
 } & FlexProps) => {
-  const { draggedStepType, setDraggedStepType, draggedStep, setDraggedStep } =
-    useStepDnd()
+  const {
+    draggedStepType,
+    setDraggedStepType,
+    draggedStep,
+    setDraggedStep,
+    draggedItem,
+    setDraggedItem,
+  } = useStepDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
   const { createBlock } = useTypebot()
@@ -77,6 +83,7 @@ export const Graph = ({
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
+    if (draggedItem) setDraggedItem(undefined)
     if (!draggedStep && !draggedStepType) return
     const coordinates = {
       x: e.clientX - graphPosition.x - blockWidth / 3,

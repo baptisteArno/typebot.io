@@ -8,29 +8,44 @@ import {
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
-import { stepHasItems } from 'utils'
+import { byId, stepHasItems } from 'utils'
 import cuid from 'cuid'
 
 export type ItemsActions = {
-  createItem: (item: Omit<ButtonItem, 'id'>, indices: ItemIndices) => void
+  createItem: (
+    item: ButtonItem | Omit<ButtonItem, 'id'>,
+    indices: ItemIndices
+  ) => void
   updateItem: (indices: ItemIndices, updates: Partial<Omit<Item, 'id'>>) => void
+  detachItemFromStep: (indices: ItemIndices) => void
   deleteItem: (indices: ItemIndices) => void
 }
 
 const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   createItem: (
-    item: Omit<ButtonItem, 'id'>,
+    item: ButtonItem | Omit<ButtonItem, 'id'>,
     { blockIndex, stepIndex, itemIndex }: ItemIndices
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
         if (step.type !== InputStepType.CHOICE) return
-        step.items.splice(itemIndex, 0, {
+        const newItem = {
           ...item,
           stepId: step.id,
-          id: cuid(),
-        })
+          id: 'id' in item ? item.id : cuid(),
+        }
+        if (item.outgoingEdgeId) {
+          const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
+          edgeIndex !== -1
+            ? (typebot.edges[edgeIndex].from = {
+                blockId: step.blockId,
+                stepId: step.id,
+                itemId: newItem.id,
+              })
+            : (newItem.outgoingEdgeId = undefined)
+        }
+        step.items.splice(itemIndex, 0, newItem)
       })
     ),
   updateItem: (
@@ -49,7 +64,15 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         } as Item
       })
     ),
-
+  detachItemFromStep: ({ blockIndex, stepIndex, itemIndex }: ItemIndices) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        const step = typebot.blocks[blockIndex].steps[
+          stepIndex
+        ] as StepWithItems
+        step.items.splice(itemIndex, 1)
+      })
+    ),
   deleteItem: ({ blockIndex, stepIndex, itemIndex }: ItemIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {

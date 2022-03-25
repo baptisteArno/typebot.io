@@ -1,4 +1,11 @@
-import { Typebot, Edge, StepWithItems, StepIndices, ItemIndices } from 'models'
+import {
+  Typebot,
+  Edge,
+  StepWithItems,
+  StepIndices,
+  ItemIndices,
+  Step,
+} from 'models'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
@@ -98,9 +105,11 @@ const deleteOutgoingEdgeIdProps = (
   const fromStepIndex = typebot.blocks[fromBlockIndex].steps.findIndex(
     byId(edge.from.stepId)
   )
-  const step = typebot.blocks[fromBlockIndex].steps[fromStepIndex]
+  const step = typebot.blocks[fromBlockIndex].steps[fromStepIndex] as
+    | Step
+    | undefined
   const fromItemIndex =
-    edge.from.itemId && stepHasItems(step)
+    edge.from.itemId && step && stepHasItems(step)
       ? step.items.findIndex(byId(edge.from.itemId))
       : -1
   if (fromStepIndex !== -1)

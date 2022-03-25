@@ -51,7 +51,10 @@ test.describe.parallel('Editor', () => {
     await expect(page.locator('[data-testid="edge"] >> nth=0')).toBeVisible()
     await expect(page.locator('[data-testid="edge"] >> nth=1')).toBeVisible()
 
-    await page.click('[data-testid="clickable-edge"] >> nth=0', { force: true })
+    await page.click('[data-testid="clickable-edge"] >> nth=0', {
+      force: true,
+      button: 'right',
+    })
     await page.click('text=Delete')
     const total = await page.locator('[data-testid="edge"]').count()
     expect(total).toBe(1)

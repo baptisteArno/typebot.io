@@ -30,7 +30,7 @@ test.describe.parallel('Embed bubble step', () => {
       await page.fill('input[placeholder="Paste the link or code..."]', pdfSrc)
       await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
         'src',
-        `https://docs.google.com/viewer?embedded=true&url=${pdfSrc}`
+        pdfSrc
       )
       await page.fill(
         'input[placeholder="Paste the link or code..."]',
