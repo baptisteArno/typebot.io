@@ -31,8 +31,9 @@ COPY --from=installer /app/node_modules ./node_modules
 COPY --from=builder /app/apps/${SCOPE}/next.config.js ./
 COPY --from=builder /app/apps/${SCOPE}/public ./public
 COPY --from=builder /app/apps/${SCOPE}/package.json ./package.json
-COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/.next/static ./.next/static
+COPY --from=builder /app/apps/${SCOPE}/.next/standalone ./
+COPY --from=builder /app/apps/${SCOPE}/.next/static ./.next/static
+RUN chown -Rf nextjs:nodejs /app
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
