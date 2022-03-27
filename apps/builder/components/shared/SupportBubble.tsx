@@ -32,7 +32,7 @@ export const SupportBubble = () => {
         },
         hiddenVariables: {
           'User ID': user?.id,
-          Name: user?.name ?? undefined,
+          'First name': user?.name?.split(' ')[0] ?? undefined,
           Email: user?.email ?? undefined,
           'Typebot ID': typebot?.id,
           'Avatar URL': user?.image ?? undefined,
