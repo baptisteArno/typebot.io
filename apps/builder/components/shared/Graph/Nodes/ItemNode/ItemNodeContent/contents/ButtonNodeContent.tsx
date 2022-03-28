@@ -9,7 +9,7 @@ import {
 import { PlusIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ButtonItem, ItemIndices, ItemType } from 'models'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
 type Props = {
@@ -29,6 +29,12 @@ export const ButtonNodeContent = ({
   const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
   const editableRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (itemValue !== item.content)
+      setItemValue(item.content ?? 'Click to edit')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item])
 
   const handleInputSubmit = () => {
     if (itemValue === '') deleteItem(indices)
