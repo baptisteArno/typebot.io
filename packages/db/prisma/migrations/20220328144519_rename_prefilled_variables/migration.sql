@@ -1,3 +1,3 @@
 -- AlterTable
 ALTER TABLE "Result"
-RENAME COLUMN "prefilledVariables" "variables"
+RENAME COLUMN "prefilledVariables" TO "variables"
