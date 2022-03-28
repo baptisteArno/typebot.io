@@ -124,7 +124,8 @@ export const stepTypeHasItems = (
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep => 'items' in step
+): step is ConditionStep | ChoiceInputStep =>
+  'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id
 
