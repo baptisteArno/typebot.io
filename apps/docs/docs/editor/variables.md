@@ -23,6 +23,19 @@ Let's say I have a variable named "Email" somewhere in my bot. If I'm launching 
 
 Then if an input step is saving the answer into this variable, it will be first prefilled with this initial value. It can greatly improve the user experience if you already have data about him.
 
+Prefilling variables using the embed library is even easier. You need to add an object named `hiddenVariables` that contains a dictionary of your values. For example:
+
+```js
+Typebot.initBubble({
+  url: `https://viewer.typebot.io/typebot-support`,
+  hiddenVariables: {
+    'User ID': '123',
+    'First name': 'John',
+    Email: 'test@test.com',
+  },
+})
+```
+
 ### Hidden variables
 
 These are simply variables that are declared in the bot flow but aren't displayed to the user anywhere. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
