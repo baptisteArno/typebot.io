@@ -117,9 +117,8 @@ const moveStepToBlock = (
   const items = stepHasItems(step) ? step.items : []
   items.forEach((item) => {
     const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
-    edgeIndex !== -1
-      ? (typebot.edges[edgeIndex].from.blockId = blockId)
-      : (newStep.outgoingEdgeId = undefined)
+    if (edgeIndex === -1) return
+    typebot.edges[edgeIndex].from.blockId = blockId
   })
   if (step.outgoingEdgeId) {
     if (typebot.blocks[blockIndex].steps.length > stepIndex ?? 0) {

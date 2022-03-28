@@ -72,12 +72,12 @@ export const ItemNodesList = ({
     if (!isDraggingOnCurrentBlock) return
     const itemIndex = computeNearestPlaceholderIndex(e.pageY, placeholderRefs)
     e.stopPropagation()
+    setDraggedItem(undefined)
     createItem(draggedItem as ButtonItem, {
       blockIndex,
       stepIndex,
       itemIndex,
     })
-    setDraggedItem(undefined)
   }
   useEventListener(
     'mouseup',
