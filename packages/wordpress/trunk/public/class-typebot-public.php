@@ -25,6 +25,9 @@ class Typebot_Public
     $url = str_starts_with(get_option('url'), 'https://typebot.io')
       ? 'https://viewer.typebot.io' . '/' . explode('/', get_option('url'))[3]
       : get_option('url');
+    if (!$url) {
+      return;
+    }
     if (
       get_option('popup_included_pages') !== null &&
       get_option('popup_included_pages') !== ''
@@ -94,6 +97,9 @@ class Typebot_Public
     $url = str_starts_with(get_option('url'), 'https://typebot.io')
       ? 'https://viewer.typebot.io' . '/' . explode('/', get_option('url'))[3]
       : get_option('url');
+    if (!$url) {
+      return;
+    }
     $chat_icon = get_option('chat_icon');
     if (
       get_option('chat_included_pages') !== null &&
@@ -247,6 +253,9 @@ class Typebot_Public
       if (array_key_exists('url', $attributes)) {
         $url = sanitize_text_field($attributes['url']);
       }
+    }
+    if (!$url) {
+      return;
     }
     $container_id = 'typebot-container-' . $this->generateRandomString(4);
 
