@@ -15,9 +15,10 @@ import {
   ZapierStep,
   ResultValues,
   Block,
+  VariableWithValue,
 } from 'models'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { byId, sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
 import { parseVariables, parseVariablesInObject } from './variable'
 
@@ -30,6 +31,7 @@ type IntegrationContext = {
   variables: Variable[]
   resultValues: ResultValues
   blocks: Block[]
+  updateVariables: (variables: VariableWithValue[]) => void
   updateVariableValue: (variableId: string, value: string) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }
@@ -141,7 +143,13 @@ const updateRowInGoogleSheets = async (
 
 const getRowFromGoogleSheets = async (
   options: GoogleSheetsGetOptions,
-  { variables, updateVariableValue, apiHost, onNewLog }: IntegrationContext
+  {
+    variables,
+    updateVariableValue,
+    updateVariables,
+    apiHost,
+    onNewLog,
+  }: IntegrationContext
 ) => {
   if (!options.referenceCell || !options.cellsToExtract) return
   const queryParams = stringify(
@@ -167,9 +175,23 @@ const getRowFromGoogleSheets = async (
     )
   )
   if (!data) return
-  options.cellsToExtract.forEach((cell) =>
-    updateVariableValue(cell.variableId ?? '', data[cell.column ?? ''])
+  const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
+    (newVariables, cell) => {
+      const existingVariable = variables.find(byId(cell.variableId))
+      const value = data[cell.column ?? '']
+      if (!existingVariable || !value) return newVariables
+      updateVariableValue(existingVariable.id, value)
+      return [
+        ...newVariables,
+        {
+          ...existingVariable,
+          value,
+        },
+      ]
+    },
+    []
   )
+  updateVariables(newVariables)
 }
 const parseCellValues = (
   cells: Cell[],
@@ -191,6 +213,7 @@ const executeWebhook = async (
     stepId,
     variables,
     updateVariableValue,
+    updateVariables,
     typebotId,
     apiHost,
     resultValues,
@@ -218,13 +241,19 @@ const executeWebhook = async (
       : 'Webhook successfuly executed',
     details: JSON.stringify(error ?? data, null, 2).substring(0, 1000),
   })
-  step.options.responseVariableMapping.forEach((varMapping) => {
-    if (!varMapping?.bodyPath || !varMapping.variableId) return
+  const newVariables = step.options.responseVariableMapping.reduce<
+    VariableWithValue[]
+  >((newVariables, varMapping) => {
+    if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
+    const existingVariable = variables.find(byId(varMapping.variableId))
+    if (!existingVariable) return newVariables
     const value = Function(
       `return (${JSON.stringify(data)}).${varMapping?.bodyPath}`
     )()
-    updateVariableValue(varMapping.variableId, value)
-  })
+    updateVariableValue(existingVariable?.id, value)
+    return [...newVariables, { ...existingVariable, value }]
+  }, [])
+  updateVariables(newVariables)
   return step.outgoingEdgeId
 }
 

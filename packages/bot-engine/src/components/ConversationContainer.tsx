@@ -14,21 +14,19 @@ type Props = {
   predefinedVariables?: { [key: string]: string | undefined }
   onNewBlockVisible: (edge: Edge) => void
   onCompleted: () => void
-  onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
 }
 export const ConversationContainer = ({
   theme,
   predefinedVariables,
   onNewBlockVisible,
   onCompleted,
-  onVariablesPrefilled,
 }: Props) => {
   const { typebot, updateVariableValue } = useTypebot()
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
     { block: Block; startStepIndex: number }[]
   >([])
-  const { setPrefilledVariables } = useAnswers()
+  const { updateVariables } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
@@ -53,8 +51,7 @@ export const ConversationContainer = ({
 
   useEffect(() => {
     const prefilledVariables = injectPredefinedVariables(predefinedVariables)
-    if (onVariablesPrefilled) onVariablesPrefilled(prefilledVariables)
-    setPrefilledVariables(prefilledVariables)
+    updateVariables(prefilledVariables)
     displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

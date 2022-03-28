@@ -91,14 +91,14 @@ export const parseAnswers =
   ({
     createdAt,
     answers,
-    prefilledVariables,
-  }: Pick<ResultWithAnswers, 'createdAt' | 'answers' | 'prefilledVariables'>): {
+    variables: resultVariables,
+  }: Pick<ResultWithAnswers, 'createdAt' | 'answers' | 'variables'>): {
     [key: string]: string
   } => {
     const header = parseResultHeader({ blocks, variables })
     return {
       submittedAt: createdAt,
-      ...[...answers, ...prefilledVariables].reduce<{
+      ...[...answers, ...resultVariables].reduce<{
         [key: string]: string
       }>((o, answerOrVariable) => {
         if ('blockId' in answerOrVariable) {

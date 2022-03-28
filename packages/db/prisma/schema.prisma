@@ -56,8 +56,8 @@ model User {
   customDomains           CustomDomain[]
   apiToken                String?
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
-  company String?
-  onboardingCategories String[]
+  company                 String?
+  onboardingCategories    String[]
 }
 
 model CustomDomain {
@@ -178,22 +178,22 @@ model PublicTypebot {
 }
 
 model Result {
-  id                 String   @id @default(cuid())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now()) @updatedAt
-  typebotId          String
-  typebot            Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers            Answer[]
-  prefilledVariables Json[]
-  isCompleted        Boolean
-  logs               Log[]
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  typebotId   String
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  variables   Json[]
+  isCompleted Boolean
+  logs        Log[]
 }
 
 model Log {
-  id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
   resultId    String
-  result      Result    @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
   status      String
   description String
   details     String?

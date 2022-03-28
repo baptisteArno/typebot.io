@@ -31,7 +31,7 @@ export type TypebotViewerProps = {
   onNewAnswer?: (answer: Answer) => void
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
-  onVariablesPrefilled?: (prefilledVariables: VariableWithValue[]) => void
+  onVariablesUpdated?: (variables: VariableWithValue[]) => void
 }
 
 export const TypebotViewer = ({
@@ -44,7 +44,7 @@ export const TypebotViewer = ({
   onNewBlockVisible,
   onNewAnswer,
   onCompleted,
-  onVariablesPrefilled,
+  onVariablesUpdated,
 }: TypebotViewerProps) => {
   const containerBgColor = useMemo(
     () =>
@@ -93,7 +93,10 @@ export const TypebotViewer = ({
         isPreview={isPreview}
         onNewLog={handleNewLog}
       >
-        <AnswersContext onNewAnswer={handleNewAnswer}>
+        <AnswersContext
+          onNewAnswer={handleNewAnswer}
+          onVariablesUpdated={onVariablesUpdated}
+        >
           <div
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
@@ -108,7 +111,6 @@ export const TypebotViewer = ({
                 onNewBlockVisible={handleNewBlockVisible}
                 onCompleted={handleCompleted}
                 predefinedVariables={predefinedVariables}
-                onVariablesPrefilled={onVariablesPrefilled}
               />
             </div>
             {typebot.settings.general.isBrandingEnabled && (

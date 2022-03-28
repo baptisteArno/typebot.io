@@ -54,11 +54,9 @@ export const TypebotPage = ({
     setShowTypebot(true)
   }
 
-  const handleVariablesPrefilled = async (
-    prefilledVariables: VariableWithValue[]
-  ) => {
+  const handleNewVariables = async (variables: VariableWithValue[]) => {
     if (!resultId) return setError(new Error('Result was not created'))
-    const { error } = await updateResult(resultId, { prefilledVariables })
+    const { error } = await updateResult(resultId, { variables })
     if (error) setError(error)
   }
 
@@ -98,7 +96,7 @@ export const TypebotPage = ({
           predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
-          onVariablesPrefilled={handleVariablesPrefilled}
+          onVariablesUpdated={handleNewVariables}
           onNewLog={handleNewLog}
         />
       )}

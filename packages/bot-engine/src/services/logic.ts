@@ -15,6 +15,7 @@ import {
   PublicTypebot,
   Typebot,
   Edge,
+  VariableWithValue,
 } from 'models'
 import { byId, isDefined, isNotDefined, sendRequest } from 'utils'
 import { sanitizeUrl } from './utils'
@@ -28,6 +29,7 @@ type LogicContext = {
   typebot: PublicTypebot
   linkedTypebots: LinkedTypebot[]
   updateVariableValue: (variableId: string, value: string) => void
+  updateVariables: (variables: VariableWithValue[]) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   createEdge: (edge: Edge) => void
@@ -56,7 +58,7 @@ export const executeLogic = async (
 
 const executeSetVariable = (
   step: SetVariableStep,
-  { typebot: { variables }, updateVariableValue }: LogicContext
+  { typebot: { variables }, updateVariableValue, updateVariables }: LogicContext
 ): EdgeId | undefined => {
   if (!step.options?.variableId || !step.options.expressionToEvaluate)
     return step.outgoingEdgeId
@@ -64,7 +66,10 @@ const executeSetVariable = (
   const evaluatedExpression = evaluateExpression(
     parseVariables(variables)(expression)
   )
-  updateVariableValue(step.options.variableId, evaluatedExpression)
+  const existingVariable = variables.find(byId(step.options.variableId))
+  if (!existingVariable) return step.outgoingEdgeId
+  updateVariableValue(existingVariable.id, evaluatedExpression)
+  updateVariables([{ ...existingVariable, value: evaluatedExpression }])
   return step.outgoingEdgeId
 }
 

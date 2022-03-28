@@ -49,7 +49,7 @@ export const ChatBlock = ({
     injectLinkedTypebot,
     linkedTypebots,
   } = useTypebot()
-  const { resultValues } = useAnswers()
+  const { resultValues, updateVariables } = useAnswers()
   const [processedSteps, setProcessedSteps] = useState<Step[]>([])
   const [displayedChunks, setDisplayedChunks] = useState<ChatDisplayChunk[]>([])
 
@@ -104,6 +104,7 @@ export const ChatBlock = ({
         typebot,
         linkedTypebots,
         updateVariableValue,
+        updateVariables,
         injectLinkedTypebot,
         onNewLog,
         createEdge,
@@ -121,6 +122,7 @@ export const ChatBlock = ({
           variables: typebot.variables,
           isPreview,
           updateVariableValue,
+          updateVariables,
           resultValues,
           blocks: typebot.blocks,
           onNewLog,

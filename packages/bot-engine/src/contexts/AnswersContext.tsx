@@ -4,7 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 const answersContext = createContext<{
   resultValues: ResultValues
   addAnswer: (answer: Answer) => void
-  setPrefilledVariables: (variables: VariableWithValue[]) => void
+  updateVariables: (variables: VariableWithValue[]) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -12,13 +12,15 @@ const answersContext = createContext<{
 export const AnswersContext = ({
   children,
   onNewAnswer,
+  onVariablesUpdated,
 }: {
   onNewAnswer: (answer: Answer) => void
+  onVariablesUpdated?: (variables: VariableWithValue[]) => void
   children: ReactNode
 }) => {
   const [resultValues, setResultValues] = useState<ResultValues>({
     answers: [],
-    prefilledVariables: [],
+    variables: [],
     createdAt: new Date().toISOString(),
   })
 
@@ -30,18 +32,22 @@ export const AnswersContext = ({
     onNewAnswer(answer)
   }
 
-  const setPrefilledVariables = (variables: VariableWithValue[]) =>
-    setResultValues((resultValues) => ({
-      ...resultValues,
-      prefilledVariables: variables,
-    }))
+  const updateVariables = (variables: VariableWithValue[]) =>
+    setResultValues((resultValues) => {
+      const updatedVariables = [...resultValues.variables, ...variables]
+      if (onVariablesUpdated) onVariablesUpdated(updatedVariables)
+      return {
+        ...resultValues,
+        variables: updatedVariables,
+      }
+    })
 
   return (
     <answersContext.Provider
       value={{
         resultValues,
         addAnswer,
-        setPrefilledVariables,
+        updateVariables,
       }}
     >
       {children}

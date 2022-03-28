@@ -131,7 +131,7 @@ export const convertResultsToTableData = (
 ): { [key: string]: string }[] =>
   (results ?? []).map((result) => ({
     'Submitted at': parseDateToReadable(result.createdAt),
-    ...[...result.answers, ...result.prefilledVariables].reduce<{
+    ...[...result.answers, ...result.variables].reduce<{
       [key: string]: string
     }>((o, answerOrVariable) => {
       if ('blockId' in answerOrVariable) {
