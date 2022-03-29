@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  typebot_db:
+  db:
     image: postgres:13
     restart: always
     volumes:
@@ -8,25 +8,29 @@ services:
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
-  typebot_builder:
+  builder:
     depends_on:
-      - typebot_db
+      - db
     build:
       context: .
       args:
         - SCOPE=builder
     ports:
       - '8080:3000'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     env_file:
-      - typebot-config.env
+      - './apps/builder/.env.production'
     entrypoint: >
       /bin/sh -c "
-      sleep 10;
+      ./node_modules/bin/prisma generate;
+      echo 'Waiting 5s for db to be ready...';
+      sleep 5;
       ./node_modules/.bin/prisma migrate deploy;
       node server.js;"
-  typebot_viewer:
+  viewer:
     depends_on:
-      - typebot_db
+      - db
     restart: always
     build:
       context: .
@@ -35,7 +39,11 @@ services:
     ports:
       - '8081:3000'
     env_file:
-      - typebot-config.env
+      - './apps/viewer/.env.production'
+    entrypoint: >
+      /bin/sh -c "
+      ./node_modules/bin/prisma generate;
+      node server.js;"
 volumes:
   db_data:
   s3_data:

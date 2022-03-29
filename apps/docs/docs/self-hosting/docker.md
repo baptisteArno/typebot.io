@@ -18,13 +18,19 @@ You need a server with Docker installed. If your server doesn't come with Docker
 
 On your server:
 
-1. Clone the forked repo:
+1. Clone the repo:
 
    ```sh
     git clone https://github.com/baptistearno/typebot.io.git
    ```
 
-2. Edit the `typebot-config.env` file. ([Check out the configuration guide](/self-hosting/configuration))
+2. Set up environment variables
+
+   Copy `apps/builder/.env.production.example` to `apps/builder/.env.production`
+
+   Copy `apps/viewer/.env.production.example` to `apps/viewer/.env.production`
+
+   Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) to add your environment variables
 
 3. Start the applications:
 

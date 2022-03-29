@@ -4,7 +4,7 @@ import path from 'path'
 require('dotenv').config({
   path: path.join(
     __dirname,
-    process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.local'
+    process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local'
   ),
 })
 

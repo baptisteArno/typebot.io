@@ -24,6 +24,7 @@ These variables are shared between builder and viewer. If you host them in a dif
 | ENCRYPTION_SECRET      | SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6 | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. |
 | ADMIN_EMAIL            | --                               | The email that will get a "Pro" plan on user creation                                                                                                                             |
 | NEXTAUTH_URL           | http://localhost:3000            | The builder base URL                                                                                                                                                              |
+| NEXTAUTH_URL_INTERNAL  | --                               | The internal builder base URL when `NEXTAUTH_URL` isn't publicly accessible (optionnal)                                                                                           |
 | NEXT_PUBLIC_VIEWER_URL | http://localhost:3001            | The viewer base URL                                                                                                                                                               |
 
 ### SMTP (optional)
