@@ -20,6 +20,7 @@ import {
   VariableWithValue,
 } from 'models'
 import { Log } from 'db'
+import { LiteBadge } from './LiteBadge'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -113,17 +114,7 @@ export const TypebotViewer = ({
                 predefinedVariables={predefinedVariables}
               />
             </div>
-            {typebot.settings.general.isBrandingEnabled && (
-              <a
-                href={'https://www.typebot.io/?utm_source=litebadge'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fixed py-1 px-2 bg-white z-50 rounded shadow-md lite-badge"
-                style={{ bottom: '20px' }}
-              >
-                Made with <span className="text-blue-500">Typebot</span>.
-              </a>
-            )}
+            {typebot.settings.general.isBrandingEnabled && <LiteBadge />}
           </div>
         </AnswersContext>
       </TypebotContext>
