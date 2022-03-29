@@ -24,6 +24,7 @@ import { getLastChatStepType } from '../../services/chat'
 type ChatBlockProps = {
   steps: Step[]
   startStepIndex: number
+  blockTitle: string
   onScroll: () => void
   onBlockEnd: (
     edgeId?: string,
@@ -36,6 +37,7 @@ type ChatDisplayChunk = { bubbles: BubbleStep[]; input?: InputStep }
 export const ChatBlock = ({
   steps,
   startStepIndex,
+  blockTitle,
   onScroll,
   onBlockEnd,
 }: ChatBlockProps) => {
@@ -167,7 +169,7 @@ export const ChatBlock = ({
   const avatarSrc = typebot.theme.chat.hostAvatar?.url
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full" data-block-name={blockTitle}>
       <div className="flex flex-col w-full min-w-0">
         {displayedChunks.map((chunk, idx) => (
           <ChatChunks

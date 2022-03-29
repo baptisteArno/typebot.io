@@ -99,6 +99,7 @@ export const ConversationContainer = ({
           startStepIndex={displayedBlock.startStepIndex}
           onScroll={autoScrollToBottom}
           onBlockEnd={displayNextBlock}
+          blockTitle={displayedBlock.block.title}
         />
       ))}
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
