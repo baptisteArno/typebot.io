@@ -2,6 +2,8 @@
   padding: 1rem 0.5rem;
   outline: none !important;
   background: transparent;
+  flex: 1 1 0%;
+  width: 100%;
 }
 
 .PhoneInputCountry {
