@@ -2,6 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { Stats } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { canReadTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils'
 
@@ -14,20 +15,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const totalViews = await prisma.result.count({
       where: {
         typebotId,
-        typebot: { ownerId: user.id },
+        typebot: canReadTypebot(typebotId, user),
       },
     })
     const totalStarts = await prisma.result.count({
       where: {
         typebotId,
-        typebot: { ownerId: user.id },
+        typebot: canReadTypebot(typebotId, user),
         answers: { some: {} },
       },
     })
     const totalCompleted = await prisma.result.count({
       where: {
         typebotId,
-        typebot: { ownerId: user.id },
+        typebot: canReadTypebot(typebotId, user),
         isCompleted: true,
       },
     })

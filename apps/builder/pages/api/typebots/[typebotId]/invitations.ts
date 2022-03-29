@@ -3,10 +3,12 @@ import { invitationToCollaborate } from 'assets/emails/invitationToCollaborate'
 import { CollaborationType } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { sendEmailNotification } from 'services/api/emails'
 import { getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
+  forbidden,
   isNotDefined,
   methodNotAllowed,
   notAuthenticated,
@@ -18,13 +20,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
     const invitations = await prisma.invitation.findMany({
-      where: { typebotId },
+      where: { typebotId, typebot: canReadTypebot(typebotId, user) },
     })
     return res.send({
       invitations,
     })
   }
   if (req.method === 'POST') {
+    const typebot = await prisma.typebot.findFirst({
+      where: canWriteTypebot(typebotId, user),
+    })
+    if (!typebot) return forbidden(res)
     const { email, type } =
       (req.body as
         | { email: string | undefined; type: CollaborationType | undefined }
@@ -36,7 +42,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (existingUser)
       await prisma.collaboratorsOnTypebots.create({
-        data: { type, typebotId, userId: existingUser.id },
+        data: {
+          type,
+          typebotId,
+          userId: existingUser.id,
+        },
       })
     else
       await prisma.invitation.create({

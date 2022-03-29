@@ -2,7 +2,11 @@ import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { InputStepType, defaultTextInputOptions } from 'models'
 import path from 'path'
-import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
+import {
+  createResults,
+  createTypebots,
+  parseDefaultBlockWithStep,
+} from '../services/database'
 
 const typebotId = cuid()
 
@@ -18,6 +22,7 @@ test.beforeAll(async () => {
       }),
     },
   ])
+  await createResults({ typebotId })
 })
 
 test.describe('Typebot owner', () => {
@@ -67,5 +72,7 @@ test.describe('Collaborator', () => {
     await expect(page.locator('text=Free user')).toBeVisible()
     await page.click('text=Block #1', { force: true })
     await expect(page.locator('input[value="Block #1"]')).toBeHidden()
+    await page.goto(`/typebots/${typebotId}/results`)
+    await expect(page.locator('text="content199"')).toBeVisible()
   })
 })

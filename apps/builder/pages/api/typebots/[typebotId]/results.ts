@@ -1,6 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { isFreePlan } from 'services/user/user'
 import { methodNotAllowed, notAuthenticated } from 'utils'
@@ -21,10 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         : undefined,
       where: {
-        typebotId,
-        typebot: {
-          ownerId: user.email === process.env.ADMIN_EMAIL ? undefined : user.id,
-        },
+        typebot: canReadTypebot(typebotId, user),
         answers: { some: {} },
         isCompleted: isFreePlan(user) ? true : undefined,
       },
@@ -39,7 +37,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId.toString()
     const ids = req.query.ids as string[]
     const results = await prisma.result.deleteMany({
-      where: { id: { in: ids }, typebotId, typebot: { ownerId: user.id } },
+      where: {
+        id: { in: ids },
+        typebot: canWriteTypebot(typebotId, user),
+      },
     })
     return res.status(200).send({ results })
   }

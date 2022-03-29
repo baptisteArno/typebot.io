@@ -1,6 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { canReadTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated, notFound } from 'utils'
 
@@ -9,8 +10,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return notAuthenticated(res)
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId as string
-    const typebot = await prisma.typebot.findUnique({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+    const typebot = await prisma.typebot.findFirst({
+      where: canReadTypebot(typebotId, user),
     })
     if (!typebot) return notFound(res)
     return res.send({ blocks: typebot.blocks })

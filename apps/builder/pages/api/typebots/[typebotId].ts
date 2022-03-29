@@ -1,7 +1,8 @@
 import { withSentry } from '@sentry/nextjs'
-import { CollaborationType, Prisma, User } from 'db'
+import { CollaborationType } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils'
 
@@ -12,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId.toString()
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
-      where: parseWhereFilter(typebotId, user, 'read'),
+      where: canReadTypebot(typebotId, user),
       include: {
         publishedTypebot: true,
         owner: { select: { email: true, name: true, image: true } },
@@ -40,17 +41,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  const canEditTypebot = parseWhereFilter(typebotId, user, 'write')
   if (req.method === 'DELETE') {
     const typebots = await prisma.typebot.deleteMany({
-      where: canEditTypebot,
+      where: canWriteTypebot(typebotId, user),
     })
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.updateMany({
-      where: canEditTypebot,
+      where: canWriteTypebot(typebotId, user),
       data: {
         ...data,
         theme: data.theme ?? undefined,
@@ -62,38 +62,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.updateMany({
-      where: canEditTypebot,
+      where: canWriteTypebot(typebotId, user),
       data,
     })
     return res.send({ typebots })
   }
   return methodNotAllowed(res)
 }
-
-const parseWhereFilter = (
-  typebotId: string,
-  user: User,
-  type: 'read' | 'write'
-): Prisma.TypebotWhereInput => ({
-  OR: [
-    {
-      id: typebotId,
-      ownerId:
-        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        process.env.NEXT_PUBLIC_E2E_TEST
-          ? undefined
-          : user.id,
-    },
-    {
-      id: typebotId,
-      collaborators: {
-        some: {
-          userId: user.id,
-          type: type === 'write' ? CollaborationType.WRITE : undefined,
-        },
-      },
-    },
-  ],
-})
 
 export default withSentry(handler)

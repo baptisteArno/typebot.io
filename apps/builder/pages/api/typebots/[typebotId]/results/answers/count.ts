@@ -4,20 +4,18 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from 'utils'
 import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
+import { canReadTypebot } from 'services/api/dbRules'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId.toString()
-    const typebot = await prisma.typebot.findUnique({
-      where: { id: typebotId },
+    const typebot = await prisma.typebot.findFirst({
+      where: canReadTypebot(typebotId, user),
       include: { publishedTypebot: true },
     })
     if (!typebot) return res.status(404).send({ answersCounts: [] })
-    if (typebot?.ownerId !== user.id)
-      return res.status(403).send({ message: 'Forbidden' })
-
     const answersCounts: { blockId: string; totalAnswers: number }[] =
       await Promise.all(
         (typebot.publishedTypebot as unknown as PublicTypebot).blocks.map(

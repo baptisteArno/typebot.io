@@ -161,7 +161,7 @@ export const ChatBlock = ({
         return onBlockEnd(currentStep.outgoingEdgeId)
     }
     const nextStep = steps[processedSteps.length + startStepIndex]
-    if (nextStep) insertStepInStack(nextStep)
+    nextStep ? insertStepInStack(nextStep) : onBlockEnd()
   }
 
   const avatarSrc = typebot.theme.chat.hostAvatar?.url
