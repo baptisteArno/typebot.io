@@ -35,7 +35,11 @@ export const DateForm = ({
               )}
               <input
                 className="focus:outline-none flex-1 w-full text-input"
-                style={{ minHeight: '2rem', minWidth: '100px' }}
+                style={{
+                  minHeight: '2rem',
+                  minWidth: '100px',
+                  fontSize: '16px',
+                }}
                 type={hasTime ? 'datetime-local' : 'date'}
                 onChange={(e) =>
                   setInputValues({ ...inputValues, from: e.target.value })
@@ -50,7 +54,11 @@ export const DateForm = ({
                 )}
                 <input
                   className="focus:outline-none flex-1 w-full text-input ml-2"
-                  style={{ minHeight: '2rem', minWidth: '100px' }}
+                  style={{
+                    minHeight: '2rem',
+                    minWidth: '100px',
+                    fontSize: '16px',
+                  }}
                   type={hasTime ? 'datetime-local' : 'date'}
                   onChange={(e) =>
                     setInputValues({ ...inputValues, to: e.target.value })

@@ -132,6 +132,7 @@ const ShortTextInput = React.forwardRef(
       className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       type="text"
       required
+      style={{ fontSize: '16px' }}
       {...props}
     />
   )
@@ -152,6 +153,7 @@ const LongTextInput = React.forwardRef(
       rows={4}
       data-testid="textarea"
       required
+      style={{ fontSize: '16px' }}
       {...props}
     />
   )
