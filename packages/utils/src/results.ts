@@ -110,7 +110,7 @@ export const parseAnswers =
           if (!key) return o
           return {
             ...o,
-            [key]: answer.content,
+            [key]: answer.content.toString(),
           }
         }
         const variable = answerOrVariable as VariableWithValue
