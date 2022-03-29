@@ -81,6 +81,13 @@ export const CodeEditor = ({
     if (lang === 'css') extensions.push(css())
     if (lang === 'js') extensions.push(javascript())
     if (lang === 'html') extensions.push(html())
+    extensions.push(
+      EditorView.theme({
+        '&': { maxHeight: '500px' },
+        '.cm-gutter,.cm-content': { minHeight: isReadOnly ? '0' : '250px' },
+        '.cm-scroller': { overflow: 'auto' },
+      })
+    )
     const editor = new EditorView({
       state: EditorState.create({
         extensions,
@@ -94,12 +101,5 @@ export const CodeEditor = ({
     return editor
   }
 
-  return (
-    <Box
-      ref={editorContainer}
-      data-testid="code-editor"
-      h={isReadOnly ? 'auto' : '250px'}
-      {...props}
-    />
-  )
+  return <Box ref={editorContainer} data-testid="code-editor" {...props} />
 }
