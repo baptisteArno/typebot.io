@@ -30,6 +30,8 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     blocksCoordinates,
     updateBlockCoordinates,
     isReadOnly,
+    focusedBlockId,
+    setFocusedBlockId,
   } = useGraph()
   const { typebot, updateBlock } = useTypebot()
   const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
@@ -91,7 +93,10 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     })
   }
 
-  const onDragStart = () => setIsMouseDown(true)
+  const onDragStart = () => {
+    setFocusedBlockId(block.id)
+    setIsMouseDown(true)
+  }
   const onDragStop = () => setIsMouseDown(false)
   return (
     <ContextMenu<HTMLDivElement>
@@ -131,6 +136,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
             cursor={isMouseDown ? 'grabbing' : 'pointer'}
             boxShadow="0px 0px 0px 1px #e9edf3;"
             _hover={{ shadow: 'lg' }}
+            zIndex={focusedBlockId === block.id ? 10 : 1}
           >
             <Editable
               defaultValue={block.title}

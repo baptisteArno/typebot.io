@@ -75,6 +75,7 @@ export const VariableSearchInput = ({
     debounced(e.target.value)
     onOpen()
     if (e.target.value === '') {
+      onSelectVariable(undefined)
       setFilteredItems([...variables.slice(0, 50)])
       return
     }

@@ -45,8 +45,13 @@ export const StepNode = ({
   onMouseDown?: (stepNodePosition: NodePosition, step: DraggableStep) => void
 }) => {
   const { query } = useRouter()
-  const { setConnectingIds, connectingIds, openedStepId, setOpenedStepId } =
-    useGraph()
+  const {
+    setConnectingIds,
+    connectingIds,
+    openedStepId,
+    setOpenedStepId,
+    setFocusedBlockId,
+  } = useGraph()
   const { updateStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
@@ -113,6 +118,7 @@ export const StepNode = ({
   }
 
   const handleClick = (e: React.MouseEvent) => {
+    setFocusedBlockId(step.blockId)
     e.stopPropagation()
     if (isTextBubbleStep(step)) setIsEditing(true)
     setOpenedStepId(step.id)
