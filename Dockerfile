@@ -18,7 +18,7 @@ FROM base AS builder
 COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full/ .
 RUN apt-get -qy update && apt-get -qy install openssl
-RUN yarn turbo run build --scope=${SCOPE} --include-dependencies
+RUN yarn turbo run build --scope=${SCOPE} --include-dependencies --no-deps
 RUN find . -name node_modules | xargs rm -rf
 
 FROM base AS runner
