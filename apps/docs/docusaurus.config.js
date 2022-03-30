@@ -17,7 +17,7 @@ module.exports = {
       },
       items: [
         {
-          href: 'https://github.com/typebot-io/docs',
+          href: 'https://github.com/baptisteArno/typebot.io/tree/main/apps/docs',
           label: 'Contribute',
           position: 'right',
         },
@@ -41,10 +41,6 @@ module.exports = {
               label: 'Roadmap',
               to: 'https://app.typebot.io/feedback',
             },
-            {
-              label: 'Blog',
-              to: 'https://www.typebot.io/blog',
-            },
           ],
         },
         {
@@ -63,10 +59,6 @@ module.exports = {
         {
           title: 'Company',
           items: [
-            {
-              label: 'About',
-              to: 'https://www.typebot.io/about',
-            },
             {
               label: 'Terms of Service',
               href: 'https://www.typebot.io/terms-of-service',
