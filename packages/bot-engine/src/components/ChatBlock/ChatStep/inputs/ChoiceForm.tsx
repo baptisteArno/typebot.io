@@ -42,7 +42,7 @@ export const ChoiceForm = ({ step, onSubmit }: ChoiceFormProps) => {
             role={step.options?.isMultipleChoice ? 'checkbox' : 'button'}
             onClick={handleClick(idx)}
             className={
-              'py-2 px-4 font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none mr-2 mb-2 typebot-button ' +
+              'py-2 px-4 text-left font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none mr-2 mb-2 typebot-button ' +
               (selectedIndices.includes(idx) || !step.options?.isMultipleChoice
                 ? ''
                 : 'selectable')

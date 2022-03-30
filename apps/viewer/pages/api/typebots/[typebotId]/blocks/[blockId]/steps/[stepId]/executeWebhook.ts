@@ -1,6 +1,7 @@
 import prisma from 'libs/prisma'
 import {
   defaultWebhookAttributes,
+  HttpMethod,
   KeyValue,
   PublicTypebot,
   ResultValues,
@@ -105,11 +106,14 @@ const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const body = getBodyContent(typebot)({
-      body: webhook.body,
-      resultValues,
-      blockId,
-    })
+    const body =
+      webhook.method !== HttpMethod.GET
+        ? getBodyContent(typebot)({
+            body: webhook.body,
+            resultValues,
+            blockId,
+          })
+        : undefined
     try {
       const response = await got(
         parseVariables(variables)(

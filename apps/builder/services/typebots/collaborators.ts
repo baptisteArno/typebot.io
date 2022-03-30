@@ -33,12 +33,12 @@ export const useCollaborators = ({
 export const updateCollaborator = (
   typebotId: string,
   userId: string,
-  updates: Partial<CollaboratorsOnTypebots>
+  collaborator: CollaboratorsOnTypebots
 ) =>
   sendRequest({
     method: 'PUT',
     url: `/api/typebots/${typebotId}/collaborators/${userId}`,
-    body: updates,
+    body: collaborator,
   })
 
 export const deleteCollaborator = (typebotId: string, userId: string) =>

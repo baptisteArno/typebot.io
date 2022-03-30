@@ -72,7 +72,11 @@ export const CollaborationList = () => {
   const handleChangeInvitationCollabType =
     (email: string) => async (type: CollaborationType) => {
       if (!typebot || !isOwner) return
-      const { error } = await updateInvitation(typebot?.id, email, { type })
+      const { error } = await updateInvitation(typebot?.id, email, {
+        email,
+        typebotId: typebot.id,
+        type,
+      })
       if (error) return toast({ title: error.name, description: error.message })
       mutateInvitations({
         invitations: (invitations ?? []).map((i) =>
@@ -92,7 +96,11 @@ export const CollaborationList = () => {
   const handleChangeCollaborationType =
     (userId: string) => async (type: CollaborationType) => {
       if (!typebot || !isOwner) return
-      const { error } = await updateCollaborator(typebot?.id, userId, { type })
+      const { error } = await updateCollaborator(typebot?.id, userId, {
+        userId,
+        type,
+        typebotId: typebot.id,
+      })
       if (error) return toast({ title: error.name, description: error.message })
       mutateCollaborators({
         collaborators: (collaborators ?? []).map((c) =>

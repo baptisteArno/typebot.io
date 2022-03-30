@@ -35,17 +35,17 @@ export const sendInvitation = (
 
 export const updateInvitation = (
   typebotId: string,
-  userId: string,
-  updates: Partial<Invitation>
+  email: string,
+  invitation: Omit<Invitation, 'createdAt'>
 ) =>
   sendRequest({
     method: 'PUT',
-    url: `/api/typebots/${typebotId}/invitations/${userId}`,
-    body: updates,
+    url: `/api/typebots/${typebotId}/invitations/${email}`,
+    body: invitation,
   })
 
-export const deleteInvitation = (typebotId: string, userId: string) =>
+export const deleteInvitation = (typebotId: string, email: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/api/typebots/${typebotId}/invitations/${userId}`,
+    url: `/api/typebots/${typebotId}/invitations/${email}`,
   })
