@@ -152,10 +152,13 @@ export const SubmissionsContent = ({
           contentLabel="You are seeing complete submissions only."
         />
       )}
-      <LogsModal
-        resultId={inspectingLogsResultId}
-        onClose={handleLogsModalClose}
-      />
+      {publishedTypebot && (
+        <LogsModal
+          typebotId={publishedTypebot?.typebotId}
+          resultId={inspectingLogsResultId}
+          onClose={handleLogsModalClose}
+        />
+      )}
       <Flex w="full" justifyContent="flex-end">
         <ResultsActionButtons
           isDeleteLoading={isDeleteLoading}

@@ -21,14 +21,13 @@ import { Log } from 'db'
 import { useLogs } from 'services/typebots/logs'
 import { isDefined } from 'utils'
 
-export const LogsModal = ({
-  resultId,
-  onClose,
-}: {
+type Props = {
+  typebotId: string
   resultId?: string
   onClose: () => void
-}) => {
-  const { isLoading, logs } = useLogs(resultId)
+}
+export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
+  const { isLoading, logs } = useLogs(typebotId, resultId)
   return (
     <Modal isOpen={isDefined(resultId)} onClose={onClose} size="xl">
       <ModalOverlay />

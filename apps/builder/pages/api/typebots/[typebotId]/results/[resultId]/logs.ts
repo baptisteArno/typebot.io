@@ -12,7 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId as string
     const resultId = req.query.resultId as string
     const logs = await prisma.log.findMany({
-      where: { resultId, result: { typebot: canReadTypebot(typebotId, user) } },
+      where: {
+        result: { id: resultId, typebot: canReadTypebot(typebotId, user) },
+      },
     })
     return res.send({ logs })
   }
