@@ -42,7 +42,7 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         const newBlock: Block = {
           id,
           graphCoordinates,
-          title: `Block #${typebot.blocks.length}`,
+          title: `Group #${typebot.blocks.length}`,
           steps: [],
         }
         typebot.blocks.push(newBlock)
