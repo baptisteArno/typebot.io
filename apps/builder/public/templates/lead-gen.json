@@ -111,7 +111,7 @@
           "blockId": "o4SH1UtKANnW5N5D67oZUz",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "variableId": "3VFChNVSCXQ2rXv4DrJ8Ah"
+            "variableId": "v3VFChNVSCXQ2rXv4DrJ8Ah"
           },
           "outgoingEdgeId": "w3MiN1Ct38jT5NykVsgmb5"
         }
@@ -276,7 +276,7 @@
   ],
   "variables": [
     { "id": "giiLFGw5xXBCHzvp1qAbdX", "name": "Name" },
-    { "id": "3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" }
+    { "id": "v3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" }
   ],
   "edges": [
     {

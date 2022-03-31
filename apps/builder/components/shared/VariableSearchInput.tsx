@@ -96,7 +96,7 @@ export const VariableSearchInput = ({
 
   const handleCreateNewVariableClick = () => {
     if (!inputValue || inputValue === '') return
-    const id = cuid()
+    const id = 'v' + cuid()
     onSelectVariable({ id, name: inputValue })
     createVariable({ id, name: inputValue })
     onClose()

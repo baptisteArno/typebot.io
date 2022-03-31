@@ -114,7 +114,7 @@
               "button": "Send",
               "placeholder": "Describe the bug..."
             },
-            "variableId": "51BcuecnB6kRU1tsttaGyR"
+            "variableId": "v51BcuecnB6kRU1tsttaGyR"
           },
           "outgoingEdgeId": "cl1571jhh00022e6dk77f52wg"
         }
@@ -258,7 +258,7 @@
               "button": "Send",
               "placeholder": "Type your answer..."
             },
-            "variableId": "51BcuecnB6kRU1tsttaGyR"
+            "variableId": "v51BcuecnB6kRU1tsttaGyR"
           },
           "outgoingEdgeId": "cl1571ktd00032e6dyti22850"
         }
@@ -368,7 +368,7 @@
   ],
   "variables": [
     { "id": "t2k6cj3uYfNdJX13APA4b9", "name": "Email" },
-    { "id": "51BcuecnB6kRU1tsttaGyR", "name": "Content" }
+    { "id": "v51BcuecnB6kRU1tsttaGyR", "name": "Content" }
   ],
   "edges": [
     {
