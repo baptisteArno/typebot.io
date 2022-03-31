@@ -42,7 +42,7 @@ export const TypebotContext = ({
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
   const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
-  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.id)
+  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
