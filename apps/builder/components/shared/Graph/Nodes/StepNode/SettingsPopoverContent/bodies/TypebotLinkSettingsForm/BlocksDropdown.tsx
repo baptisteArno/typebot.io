@@ -23,7 +23,6 @@ export const BlocksDropdown = ({
   )
 
   const handleBlockSelect = (title: string) => {
-    console.log(title)
     const id = blocks?.find((b) => b.title === title)?.id
     if (id) onBlockIdSelected(id)
   }

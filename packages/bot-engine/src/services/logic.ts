@@ -63,9 +63,8 @@ const executeSetVariable = (
 ): EdgeId | undefined => {
   if (!step.options?.variableId || !step.options.expressionToEvaluate)
     return step.outgoingEdgeId
-  const expression = step.options.expressionToEvaluate
-  const evaluatedExpression = evaluateExpression(
-    parseVariables(variables)(expression)
+  const evaluatedExpression = evaluateExpression(variables)(
+    step.options.expressionToEvaluate
   )
   const existingVariable = variables.find(byId(step.options.variableId))
   if (!existingVariable) return step.outgoingEdgeId
@@ -132,7 +131,11 @@ const executeCode = async (
   { typebot: { variables } }: LogicContext
 ) => {
   if (!step.options.content) return
-  await Function(parseVariables(variables)(step.options.content))()
+  const func = Function(
+    ...variables.map((v) => v.id),
+    parseVariables(variables, { fieldToParse: 'id' })(step.options.content)
+  )
+  await func(...variables.map((v) => v.value))
   return step.outgoingEdgeId
 }
 

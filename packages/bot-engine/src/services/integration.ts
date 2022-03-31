@@ -247,9 +247,8 @@ const executeWebhook = async (
     if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
     const existingVariable = variables.find(byId(varMapping.variableId))
     if (!existingVariable) return newVariables
-    const value = Function(
-      `return (${JSON.stringify(data)}).${varMapping?.bodyPath}`
-    )()
+    const func = Function('data', `return data.${varMapping?.bodyPath}`)
+    const value = func(JSON.stringify(data))
     updateVariableValue(existingVariable?.id, value)
     return [...newVariables, { ...existingVariable, value }]
   }, [])

@@ -144,7 +144,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               pointerEvents={isReadOnly || isStartBlock ? 'none' : 'auto'}
             >
               <EditablePreview
-                _hover={{ bgColor: 'gray.300' }}
+                _hover={{ bgColor: 'gray.200' }}
                 px="1"
                 userSelect={'none'}
               />

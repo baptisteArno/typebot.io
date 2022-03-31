@@ -98,7 +98,7 @@
           "blockId": "cl1267q1z000d2e6d949f2ge4",
           "options": {
             "name": "Store Name in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeName\", content: \"{{Name}}\"}, \"*\")"
+            "content": "postMessage({from: \"typebot\", action: \"storeName\", content: {{Name}}}, \"*\")"
           },
           "outgoingEdgeId": "cl12bk56s000d2e69oll3nqxm"
         }
@@ -239,7 +239,7 @@
           "blockId": "cl126jioj000u2e6dqssno3hv",
           "options": {
             "name": "Store company in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeCompany\", content: \"{{Company}}\"}, \"*\")"
+            "content": "postMessage({from: \"typebot\", action: \"storeCompany\", content: {{Company}}}, \"*\")"
           },
           "outgoingEdgeId": "cl128ag8i00162e6dufv3tgo0"
         }
@@ -335,7 +335,7 @@
           "blockId": "cl126krbp00102e6dnjelmfa1",
           "options": {
             "name": "Store categories in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeCategories\", content: \"{{Categories}}\"}, \"*\")"
+            "content": "postMessage({from: \"typebot\", action: \"storeCategories\", content: {{Categories}}}, \"*\")"
           },
           "outgoingEdgeId": "cl128azam00182e6dct61k7v5"
         }
@@ -458,7 +458,7 @@
           "blockId": "cl126pv6w001n2e6dp0qkvthu",
           "options": {
             "name": "Store Other categories in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeOtherCategories\", content: \"{{Other categories}}\"}, \"*\")"
+            "content": "postMessage({from: \"typebot\", action: \"storeOtherCategories\", content: {{Other categories}}}, \"*\")"
           },
           "outgoingEdgeId": "cl128c0fu001a2e6droq69g6z"
         }

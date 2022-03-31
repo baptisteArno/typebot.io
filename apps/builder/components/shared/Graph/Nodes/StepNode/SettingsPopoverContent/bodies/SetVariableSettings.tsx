@@ -1,4 +1,5 @@
-import { FormLabel, Stack } from '@chakra-ui/react'
+import { FormLabel, HStack, Stack, Switch, Text } from '@chakra-ui/react'
+import { CodeEditor } from 'components/shared/CodeEditor'
 import { Textarea } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { SetVariableOptions, Variable } from 'models'
@@ -14,6 +15,11 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id })
   const handleExpressionChange = (expressionToEvaluate: string) =>
     onOptionsChange({ ...options, expressionToEvaluate })
+  const handleValueTypeChange = () =>
+    onOptionsChange({
+      ...options,
+      isCode: options.isCode ? !options.isCode : true,
+    })
 
   return (
     <Stack spacing={4}>
@@ -28,14 +34,34 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <Stack>
-        <FormLabel mb="0" htmlFor="expression">
-          Value / Expression:
-        </FormLabel>
-        <Textarea
-          id="expression"
-          defaultValue={options.expressionToEvaluate ?? ''}
-          onChange={handleExpressionChange}
-        />
+        <HStack justify="space-between">
+          <FormLabel mb="0" htmlFor="expression">
+            Value:
+          </FormLabel>
+          <HStack>
+            <Text fontSize="sm">Text</Text>
+            <Switch
+              size="sm"
+              isChecked={options.isCode ?? false}
+              onChange={handleValueTypeChange}
+            />
+            <Text fontSize="sm">Code</Text>
+          </HStack>
+        </HStack>
+
+        {options.isCode ?? false ? (
+          <CodeEditor
+            value={options.expressionToEvaluate ?? ''}
+            onChange={handleExpressionChange}
+            lang="js"
+          />
+        ) : (
+          <Textarea
+            id="expression"
+            defaultValue={options.expressionToEvaluate ?? ''}
+            onChange={handleExpressionChange}
+          />
+        )}
       </Stack>
     </Stack>
   )

@@ -5,22 +5,33 @@ export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)
 
 export const parseVariables =
-  (variables: Variable[]) =>
-  (text?: string): string => {
+  (
+    variables: Variable[],
+    options: { fieldToParse: 'value' | 'id' } = { fieldToParse: 'value' }
+  ) =>
+  (text: string | undefined): string => {
     if (!text || text === '') return ''
     return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
       const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
+      const variable = variables.find((v) => {
+        return matchedVarName === v.name && isDefined(v.value)
+      })
+      if (!variable) return ''
       return (
-        variables.find((v) => {
-          return matchedVarName === v.name && isDefined(v.value)
-        })?.value ?? ''
+        (options.fieldToParse === 'value' ? variable.value : variable.id) || ''
       )
     })
   }
 
-export const evaluateExpression = (str: string) => {
+export const evaluateExpression = (variables: Variable[]) => (str: string) => {
   try {
-    const evaluatedResult = Function('return ' + str)()
+    const func = Function(
+      ...variables.map((v) => v.id),
+      parseVariables(variables, { fieldToParse: 'id' })(
+        str.includes('return ') ? str : `return ${str}`
+      )
+    )
+    const evaluatedResult = func(...variables.map((v) => v.value))
     return isNotDefined(evaluatedResult) ? '' : evaluatedResult.toString()
   } catch (err) {
     console.log(err)

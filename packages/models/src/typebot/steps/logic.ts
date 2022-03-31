@@ -81,6 +81,7 @@ export type Comparison = {
 export type SetVariableOptions = {
   variableId?: string
   expressionToEvaluate?: string
+  isCode?: boolean
 }
 
 export type RedirectOptions = {

@@ -1,20 +1,13 @@
 import {
   ComponentWithAs,
-  Flex,
   HStack,
-  IconButton,
   InputProps,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   TextareaProps,
-  Tooltip,
 } from '@chakra-ui/react'
-import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { VariableSearchInput } from '../VariableSearchInput'
+import { VariablesButton } from '../buttons/VariablesButton'
 
 export type TextBoxProps = {
   onChange: (value: string) => void
@@ -120,27 +113,7 @@ export const TextBox = ({
         bgColor={'white'}
         {...props}
       />
-      <Popover matchWidth isLazy>
-        <PopoverTrigger>
-          <Flex>
-            <Tooltip label="Insert a variable">
-              <IconButton
-                aria-label="Insert a variable"
-                icon={<UserIcon />}
-                pos="relative"
-              />
-            </Tooltip>
-          </Flex>
-        </PopoverTrigger>
-        <PopoverContent w="full">
-          <VariableSearchInput
-            onSelectVariable={handleVariableSelected}
-            placeholder="Search for a variable"
-            shadow="lg"
-            isDefaultOpen
-          />
-        </PopoverContent>
-      </Popover>
+      <VariablesButton onSelectVariable={handleVariableSelected} />
     </HStack>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@chakra-ui/react'
+import { Box, BoxProps, HStack } from '@chakra-ui/react'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
@@ -7,6 +7,8 @@ import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { linter } from '@codemirror/lint'
+import { VariablesButton } from './buttons/VariablesButton'
+import { Variable } from 'models'
 
 const linterExtension = linter(jsonParseLinter())
 
@@ -15,12 +17,14 @@ type Props = {
   lang?: 'css' | 'json' | 'js' | 'html'
   isReadOnly?: boolean
   debounceTimeout?: number
+  withVariableButton?: boolean
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
   value,
   lang,
   onChange,
+  withVariableButton = true,
   isReadOnly = false,
   debounceTimeout = 1000,
   ...props
@@ -28,6 +32,9 @@ export const CodeEditor = ({
   const editorContainer = useRef<HTMLDivElement | null>(null)
   const editorView = useRef<EditorView | null>(null)
   const [, setPlainTextValue] = useState(value)
+  const [carretPosition, setCarretPosition] = useState<number>(0)
+  const isVariableButtonDisplayed = withVariableButton && !isReadOnly
+
   const debounced = useDebouncedCallback(
     (value) => {
       setPlainTextValue(value)
@@ -101,5 +108,35 @@ export const CodeEditor = ({
     return editor
   }
 
-  return <Box ref={editorContainer} data-testid="code-editor" {...props} />
+  const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name'>) => {
+    editorView.current?.focus()
+    const insert = `{{${variable?.name}}}`
+    editorView.current?.dispatch({
+      changes: {
+        from: carretPosition,
+        insert,
+      },
+      selection: { anchor: carretPosition + insert.length },
+    })
+  }
+
+  const handleKeyUp = () => {
+    if (!editorContainer.current) return
+    setCarretPosition(editorView.current?.state.selection.main.from ?? 0)
+  }
+
+  return (
+    <HStack align="flex-end" spacing={0}>
+      <Box
+        w={isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%'}
+        ref={editorContainer}
+        data-testid="code-editor"
+        {...props}
+        onKeyUp={handleKeyUp}
+      />
+      {isVariableButtonDisplayed && (
+        <VariablesButton onSelectVariable={handleVariableSelected} size="sm" />
+      )}
+    </HStack>
+  )
 }
