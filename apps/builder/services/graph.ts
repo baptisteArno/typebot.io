@@ -9,6 +9,8 @@ import {
 } from 'contexts/GraphContext'
 import { roundCorners } from 'svg-round-corners'
 
+const roundSize = 20
+
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
   sourceTop: number
@@ -18,7 +20,10 @@ export const computeDropOffPath = (
     x: sourceCoord.x + 20,
     y: sourceCoord.y + 80,
   })
-  return roundCorners(`M${sourceCoord.x},${sourceCoord.y} ${segments}`, 10).path
+  return roundCorners(
+    `M${sourceCoord.x},${sourceCoord.y} ${segments}`,
+    roundSize
+  ).path
 }
 
 export const computeSourceCoordinates = (
@@ -222,7 +227,7 @@ export const computeEdgePath = ({
   })
   return roundCorners(
     `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
-    10
+    roundSize
   ).path
 }
 
@@ -268,7 +273,7 @@ export const computeEdgePathToMouse = ({
   )
   return roundCorners(
     `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
-    10
+    roundSize
   ).path
 }
 
@@ -280,7 +285,7 @@ export const getEndpointTopOffset = (
   if (!endpointId) return
   const endpointRef = endpoints[endpointId]?.ref
   if (!endpointRef?.current) return
-  const endpointHeight = 18
+  const endpointHeight = 28
   return (
     endpointRef.current.getBoundingClientRect().top +
     endpointHeight / 2 -

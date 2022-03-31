@@ -3,7 +3,13 @@ import { ContextMenu } from 'components/shared/ContextMenu'
 import { Coordinates } from 'contexts/GraphContext'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, Item, ItemIndices, ItemType } from 'models'
+import {
+  ButtonItem,
+  ChoiceInputStep,
+  Item,
+  ItemIndices,
+  ItemType,
+} from 'models'
 import React, { useRef, useState } from 'react'
 import { setMultipleRefs } from 'services/utils'
 import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
@@ -31,6 +37,11 @@ export const ItemNode = ({
   const { typebot } = useTypebot()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const itemRef = useRef<HTMLDivElement | null>(null)
+  const isConnectable = !(
+    typebot?.blocks[indices.blockIndex].steps[
+      indices.stepIndex
+    ] as ChoiceInputStep
+  )?.options?.isMultipleChoice
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown || item.type !== ItemType.BUTTON) return
     onMouseDown(position, item)
@@ -61,8 +72,9 @@ export const ItemNode = ({
           transition="box-shadow 200ms"
           borderWidth="1px"
           rounded="md"
-          borderColor={isOpened ? 'blue.400' : 'gray.300'}
+          borderColor={isOpened ? 'blue.400' : 'gray.100'}
           pointerEvents={isReadOnly ? 'none' : 'all'}
+          bgColor="white"
           w="full"
         >
           <ItemNodeContent
@@ -71,7 +83,7 @@ export const ItemNode = ({
             indices={indices}
             isLastItem={isLastItem}
           />
-          {typebot && (
+          {typebot && isConnectable && (
             <SourceEndpoint
               source={{
                 blockId: typebot.blocks[indices.blockIndex].id,
@@ -79,7 +91,7 @@ export const ItemNode = ({
                 itemId: item.id,
               }}
               pos="absolute"
-              right="15px"
+              right="-49px"
               pointerEvents="all"
             />
           )}

@@ -14,7 +14,15 @@ export const Board = () => {
   const { rightPanel } = useEditor()
 
   return (
-    <Flex flex="1" pos="relative" bgColor="gray.50" h="full">
+    <Flex
+      flex="1"
+      pos="relative"
+      h="full"
+      background="#f4f5f8"
+      backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
+      backgroundSize="40px 40px"
+      backgroundPosition="-19px -19px"
+    >
       <GraphDndContext>
         <StepsSideBar />
         <GraphProvider blocks={typebot?.blocks ?? []} isReadOnly={isReadOnly}>

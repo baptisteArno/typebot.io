@@ -25,13 +25,13 @@ export const StepCard = ({
     <Flex pos="relative">
       <HStack
         borderWidth="1px"
+        borderColor="gray.200"
         rounded="lg"
         flex="1"
         cursor={'grab'}
         opacity={isMouseDown ? '0.4' : '1'}
         onMouseDown={handleMouseDown}
-        bgColor="white"
-        shadow="sm"
+        bgColor="gray.50"
         px="4"
         py="2"
         _hover={{ shadow: 'md' }}

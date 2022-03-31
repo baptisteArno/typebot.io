@@ -115,12 +115,11 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
             ref={setMultipleRefs([ref, blockRef])}
             data-testid="block"
             p="4"
-            rounded="lg"
-            bgColor="blue.50"
-            backgroundImage="linear-gradient(rgb(235, 239, 244), rgb(231, 234, 241))"
+            rounded="xl"
+            bgColor="#ffffff"
             borderWidth="2px"
             borderColor={
-              isConnecting || isOpened || isPreviewing ? 'blue.400' : 'white'
+              isConnecting || isOpened || isPreviewing ? 'blue.400' : '#ffffff'
             }
             w="300px"
             transition="border 300ms, box-shadow 200ms"
@@ -134,7 +133,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             cursor={isMouseDown ? 'grabbing' : 'pointer'}
-            boxShadow="0px 0px 0px 1px #e9edf3;"
+            shadow="md"
             _hover={{ shadow: 'lg' }}
             zIndex={focusedBlockId === block.id ? 10 : 1}
           >

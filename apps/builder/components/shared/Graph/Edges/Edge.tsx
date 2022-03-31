@@ -10,6 +10,7 @@ import { Edge as EdgeProps } from 'models'
 import { Portal, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { EdgeMenu } from './EdgeMenu'
+import { colors } from 'libs/theme'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -124,7 +125,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
       <path
         data-testid="edge"
         d={path}
-        stroke={isPreviewing ? '#1a5fff' : '#718096'}
+        stroke={isPreviewing ? colors.blue[400] : colors.gray[400]}
         strokeWidth="2px"
         markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
         fill="none"

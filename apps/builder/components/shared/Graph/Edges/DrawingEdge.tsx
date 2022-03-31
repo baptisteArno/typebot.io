@@ -2,6 +2,7 @@ import { useEventListener } from '@chakra-ui/hooks'
 import assert from 'assert'
 import { useGraph, ConnectingIds } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { colors } from 'libs/theme'
 import React, { useMemo, useState } from 'react'
 import {
   computeConnectingEdgePath,
@@ -91,7 +92,7 @@ export const DrawingEdge = () => {
   return (
     <path
       d={path}
-      stroke="#1a5fff"
+      stroke={colors.blue[400]}
       strokeWidth="2px"
       markerEnd="url(#blue-arrow)"
       fill="none"

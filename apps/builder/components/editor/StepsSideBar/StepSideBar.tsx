@@ -74,7 +74,7 @@ export const StepsSideBar = () => {
 
   return (
     <Flex
-      w="340px"
+      w="360px"
       pos="absolute"
       left="0"
       h={`calc(100vh - ${headerHeight}px)`}
@@ -82,7 +82,7 @@ export const StepsSideBar = () => {
       pl="4"
       py="4"
       onMouseLeave={handleMouseLeave}
-      transform={isExtended ? 'translateX(0)' : 'translateX(-340px)'}
+      transform={isExtended ? 'translateX(0)' : 'translateX(-350px)'}
       transition="transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s"
     >
       <Stack
@@ -92,8 +92,8 @@ export const StepsSideBar = () => {
         borderWidth="1px"
         pt="2"
         pb="10"
-        px="2"
-        bgColor="gray.50"
+        px="4"
+        bgColor="white"
         spacing={6}
         userSelect="none"
         overflowY="scroll"
@@ -115,7 +115,7 @@ export const StepsSideBar = () => {
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Bubbles
           </Text>
-          <SimpleGrid columns={2} spacing="2">
+          <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
@@ -126,7 +126,7 @@ export const StepsSideBar = () => {
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Inputs
           </Text>
-          <SimpleGrid columns={2} spacing="2">
+          <SimpleGrid columns={2} spacing="3">
             {Object.values(InputStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
@@ -137,7 +137,7 @@ export const StepsSideBar = () => {
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Logic
           </Text>
-          <SimpleGrid columns={2} spacing="2">
+          <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
@@ -148,7 +148,7 @@ export const StepsSideBar = () => {
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Integrations
           </Text>
-          <SimpleGrid columns={2} spacing="2">
+          <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}

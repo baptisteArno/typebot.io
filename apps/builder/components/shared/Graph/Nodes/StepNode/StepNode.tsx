@@ -171,12 +171,13 @@ export const StepNode = ({
                 userSelect="none"
                 p="3"
                 borderWidth="1px"
-                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.300'}
+                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.200'}
                 rounded="lg"
                 cursor={'pointer'}
-                bgColor="white"
+                bgColor="gray.50"
                 align="flex-start"
                 w="full"
+                transition="border-color 0.2s"
               >
                 <StepIcon
                   type={step.type}
@@ -197,8 +198,8 @@ export const StepNode = ({
                       stepId: step.id,
                     }}
                     pos="absolute"
-                    right="15px"
-                    bottom="18px"
+                    right="-34px"
+                    bottom="10px"
                   />
                 )}
               </HStack>

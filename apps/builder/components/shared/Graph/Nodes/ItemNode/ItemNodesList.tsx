@@ -30,6 +30,9 @@ export const ItemNodesList = ({
     (draggedItem && mouseOverBlock?.id === blockId) ?? false
   const showPlaceholders = draggedItem && !isReadOnly
 
+  const isLastStep =
+    typebot?.blocks[blockIndex].steps[stepIndex + 1] === undefined
+
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -148,7 +151,7 @@ export const ItemNodesList = ({
           />
         </Stack>
       ))}
-      <Stack>
+      {isLastStep && (
         <Flex
           px="4"
           py="2"
@@ -167,10 +170,10 @@ export const ItemNodesList = ({
               stepId: step.id,
             }}
             pos="absolute"
-            right="15px"
+            right="-49px"
           />
         </Flex>
-      </Stack>
+      )}
 
       {draggedItem && draggedItem.stepId === step.id && (
         <Portal>

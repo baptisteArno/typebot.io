@@ -62,7 +62,7 @@ export const ButtonNodeContent = ({
   }
 
   return (
-    <Flex px={4} py={2} justify="center" w="90%">
+    <Flex px={4} py={2} justify="center" w="90%" pos="relative">
       <Editable
         ref={editableRef}
         flex="1"
@@ -82,7 +82,12 @@ export const ButtonNodeContent = ({
       </Editable>
       <Fade
         in={isMouseOver}
-        style={{ position: 'absolute', bottom: '-15px', zIndex: 3 }}
+        style={{
+          position: 'absolute',
+          bottom: '-15px',
+          zIndex: 3,
+          left: '90px',
+        }}
         unmountOnExit
       >
         <IconButton
@@ -90,7 +95,7 @@ export const ButtonNodeContent = ({
           icon={<PlusIcon />}
           size="xs"
           shadow="md"
-          colorScheme="blue"
+          colorScheme="gray"
           onClick={handlePlusClick}
         />
       </Fade>

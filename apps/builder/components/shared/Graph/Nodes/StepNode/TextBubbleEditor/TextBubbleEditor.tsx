@@ -103,7 +103,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
       flex="1"
       ref={textEditorRef}
       borderWidth="2px"
-      borderColor="blue.500"
+      borderColor="blue.400"
       rounded="md"
       onMouseDown={handleMouseDown}
       pos="relative"
