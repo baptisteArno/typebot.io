@@ -42,6 +42,7 @@ export const ChatBlock = ({
   onBlockEnd,
 }: ChatBlockProps) => {
   const {
+    currentTypebotId,
     typebot,
     updateVariableValue,
     createEdge,
@@ -50,6 +51,7 @@ export const ChatBlock = ({
     onNewLog,
     injectLinkedTypebot,
     linkedTypebots,
+    setCurrentTypebotId,
   } = useTypebot()
   const { resultValues, updateVariables } = useAnswers()
   const [processedSteps, setProcessedSteps] = useState<Step[]>([])
@@ -110,6 +112,7 @@ export const ChatBlock = ({
         injectLinkedTypebot,
         onNewLog,
         createEdge,
+        setCurrentTypebotId,
       })
       nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
     }
@@ -118,7 +121,7 @@ export const ChatBlock = ({
         step: currentStep,
         context: {
           apiHost,
-          typebotId: typebot.typebotId,
+          typebotId: currentTypebotId,
           blockId: currentStep.blockId,
           stepId: currentStep.id,
           variables: typebot.variables,

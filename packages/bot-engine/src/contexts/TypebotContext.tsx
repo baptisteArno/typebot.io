@@ -13,10 +13,12 @@ export type LinkedTypebot = Pick<
   'id' | 'blocks' | 'variables' | 'edges'
 >
 const typebotContext = createContext<{
+  currentTypebotId: string
   typebot: PublicTypebot
   linkedTypebots: LinkedTypebot[]
   apiHost: string
   isPreview: boolean
+  setCurrentTypebotId: (id: string) => void
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
@@ -40,6 +42,7 @@ export const TypebotContext = ({
 }) => {
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
   const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
+  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.id)
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
@@ -95,6 +98,8 @@ export const TypebotContext = ({
         createEdge,
         injectLinkedTypebot,
         onNewLog,
+        currentTypebotId,
+        setCurrentTypebotId,
       }}
     >
       {children}
