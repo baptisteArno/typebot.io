@@ -173,6 +173,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   createdAt: new Date().toISOString(),
   publishedTypebotId: null,
   customDomain: null,
+  icon: null,
   variables: [{ id: 'var1', name: 'var1' }],
   ...partialTypebot,
   edges: [

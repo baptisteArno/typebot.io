@@ -125,4 +125,28 @@ test.describe.parallel('Editor', () => {
     await page.click('button[aria-label="Redo"]')
     await expect(page.locator('text="Block #1"')).toBeHidden()
   })
+
+  test('Rename and icon change should work', async ({ page }) => {
+    const typebotId = cuid()
+    await createTypebots([
+      {
+        id: typebotId,
+        name: 'My awesome typebot',
+        ...parseDefaultBlockWithStep({
+          type: InputStepType.TEXT,
+          options: defaultTextInputOptions,
+        }),
+      },
+    ])
+
+    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.click('text="My awesome typebot"')
+    await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
+    await page.click('[data-testid="editable-icon"]')
+    await page.fill('input[placeholder="Search..."]', 'love')
+    await page.click('text="😍"')
+    await page.goto(`/typebots`)
+    await expect(page.locator('text="😍"')).toBeVisible()
+    await expect(page.locator('text="My superb typebot"')).toBeVisible()
+  })
 })

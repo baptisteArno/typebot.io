@@ -52,6 +52,7 @@ type UpdateTypebotPayload = Partial<{
   publicId: string
   name: string
   publishedTypebotId: string
+  icon: string
 }>
 
 export type SetTypebot = (
@@ -167,10 +168,6 @@ export const TypebotContext = ({
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
-      console.log(
-        new Date(typebot.updatedAt),
-        new Date(currentTypebotRef.current.updatedAt)
-      )
       setLocalTypebot({ ...typebot })
     }
 

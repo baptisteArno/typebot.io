@@ -14,7 +14,7 @@
     "@prisma/client": "^3.10.0"
   },
   "scripts": {
-    "dx": "dotenv -e ../../apps/builder/.env.local prisma db push && yarn start:sutdio  ",
+    "dx": "dotenv -e ../../apps/builder/.env.local prisma db push && yarn generate:schema && yarn start:sutdio  ",
     "build": "yarn generate:schema",
     "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none prisma studio",
     "generate:schema": "dotenv -e ../../apps/builder/.env.local prisma generate",

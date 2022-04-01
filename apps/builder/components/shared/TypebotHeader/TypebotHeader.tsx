@@ -16,6 +16,7 @@ import React from 'react'
 import { isNotDefined } from 'utils'
 import { PublishButton } from '../buttons/PublishButton'
 import { CollaborationMenuButton } from './CollaborationMenuButton'
+import { EditableTypebotIcon } from './EditableTypebotIcons'
 import { EditableTypebotName } from './EditableTypebotName'
 
 export const headerHeight = 56
@@ -26,6 +27,7 @@ export const TypebotHeader = () => {
   const {
     typebot,
     updateOnBothTypebots,
+    updateTypebot,
     save,
     undo,
     redo,
@@ -36,6 +38,8 @@ export const TypebotHeader = () => {
   const { setRightPanel } = useEditor()
 
   const handleNameSubmit = (name: string) => updateOnBothTypebots({ name })
+
+  const handleChangeIcon = (icon: string) => updateTypebot({ icon })
 
   const handlePreviewClick = async () => {
     save().then()
@@ -50,7 +54,7 @@ export const TypebotHeader = () => {
       align="center"
       pos="relative"
       h={`${headerHeight}px`}
-      zIndex={2}
+      zIndex={100}
       bgColor="white"
       flexShrink={0}
     >
@@ -105,7 +109,7 @@ export const TypebotHeader = () => {
         align="center"
         spacing="6"
       >
-        <HStack alignItems="center">
+        <HStack alignItems="center" spacing={4}>
           <IconButton
             as={NextChakraLink}
             aria-label="Navigate back"
@@ -118,33 +122,42 @@ export const TypebotHeader = () => {
                 : '/typebots'
             }
           />
-          {typebot?.name && (
-            <EditableTypebotName
-              name={typebot?.name}
-              onNewName={handleNameSubmit}
+          <HStack spacing={1}>
+            <EditableTypebotIcon
+              icon={typebot?.icon}
+              onChangeIcon={handleChangeIcon}
             />
-          )}
-          <Tooltip label="Undo">
-            <IconButton
-              display={['none', 'flex']}
-              icon={<UndoIcon />}
-              size="sm"
-              aria-label="Undo"
-              onClick={undo}
-              isDisabled={!canUndo}
-            />
-          </Tooltip>
+            {typebot?.name && (
+              <EditableTypebotName
+                name={typebot?.name}
+                onNewName={handleNameSubmit}
+              />
+            )}
+          </HStack>
 
-          <Tooltip label="Redo">
-            <IconButton
-              display={['none', 'flex']}
-              icon={<RedoIcon />}
-              size="sm"
-              aria-label="Redo"
-              onClick={redo}
-              isDisabled={!canRedo}
-            />
-          </Tooltip>
+          <HStack>
+            <Tooltip label="Undo">
+              <IconButton
+                display={['none', 'flex']}
+                icon={<UndoIcon />}
+                size="sm"
+                aria-label="Undo"
+                onClick={undo}
+                isDisabled={!canUndo}
+              />
+            </Tooltip>
+
+            <Tooltip label="Redo">
+              <IconButton
+                display={['none', 'flex']}
+                icon={<RedoIcon />}
+                size="sm"
+                aria-label="Redo"
+                onClick={redo}
+                isDisabled={!canRedo}
+              />
+            </Tooltip>
+          </HStack>
         </HStack>
         {isSavingLoading && (
           <HStack>

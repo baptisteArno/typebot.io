@@ -18,7 +18,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const sharedTypebots = await prisma.collaboratorsOnTypebots.findMany({
       where: { userId: user.id },
       include: {
-        typebot: { select: { name: true, publishedTypebotId: true, id: true } },
+        typebot: {
+          select: {
+            name: true,
+            publishedTypebotId: true,
+            id: true,
+            icon: true,
+          },
+        },
       },
     })
     return res.send({

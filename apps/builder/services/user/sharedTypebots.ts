@@ -30,7 +30,12 @@ export const useSharedTypebots = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
-    { sharedTypebots: Pick<Typebot, 'name' | 'id' | 'publishedTypebotId'>[] },
+    {
+      sharedTypebots: Pick<
+        Typebot,
+        'name' | 'id' | 'publishedTypebotId' | 'icon'
+      >[]
+    },
     Error
   >(userId ? `/api/users/${userId}/sharedTypebots` : null, fetcher)
   if (error) onError(error)

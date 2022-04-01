@@ -56,7 +56,7 @@ import { Plan, User } from 'db'
 
 export type TypebotInDashboard = Pick<
   Typebot,
-  'id' | 'name' | 'publishedTypebotId'
+  'id' | 'name' | 'publishedTypebotId' | 'icon'
 >
 export const useTypebots = ({
   folderId,
@@ -351,6 +351,7 @@ export const parseNewTypebot = ({
   | 'publishedTypebotId'
   | 'publicId'
   | 'customDomain'
+  | 'icon'
 > => {
   const startBlockId = cuid()
   const startStepId = cuid()

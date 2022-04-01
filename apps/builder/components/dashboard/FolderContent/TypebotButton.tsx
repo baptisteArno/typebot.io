@@ -4,6 +4,7 @@ import {
   Flex,
   IconButton,
   MenuItem,
+  Tag,
   Text,
   useDisclosure,
   useToast,
@@ -14,14 +15,15 @@ import { useRouter } from 'next/router'
 import { isMobile } from 'services/utils'
 import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
-import { GlobeIcon, GripIcon, ToolIcon } from 'assets/icons'
+import { GripIcon } from 'assets/icons'
 import { deleteTypebot, duplicateTypebot } from 'services/typebots'
 import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
+import { TypebotIcon } from 'components/shared/TypebotHeader/TypebotIcon'
 
 type ChatbotCardProps = {
-  typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name'>
+  typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
   isReadOnly?: boolean
   onTypebotDeleted?: () => void
   onMouseDown?: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -101,6 +103,18 @@ export const TypebotButton = ({
       onMouseDown={onMouseDown}
       cursor="pointer"
     >
+      {typebot.publishedTypebotId && (
+        <Tag
+          colorScheme="blue"
+          variant="solid"
+          rounded="full"
+          pos="absolute"
+          top="27px"
+          size="sm"
+        >
+          Live
+        </Tag>
+      )}
       {!isReadOnly && (
         <>
           <IconButton
@@ -129,18 +143,12 @@ export const TypebotButton = ({
       )}
       <VStack spacing="4">
         <Flex
-          boxSize="45px"
           rounded="full"
           justifyContent="center"
           alignItems="center"
-          bgColor={typebot.publishedTypebotId ? 'blue.500' : 'gray.400'}
-          color="white"
+          fontSize={'4xl'}
         >
-          {typebot.publishedTypebotId ? (
-            <GlobeIcon fontSize="20px" />
-          ) : (
-            <ToolIcon fill="white" fontSize="20px" />
-          )}
+          {<TypebotIcon icon={typebot.icon} boxSize={'35px'} />}
         </Flex>
         <Text>{typebot.name}</Text>
       </VStack>

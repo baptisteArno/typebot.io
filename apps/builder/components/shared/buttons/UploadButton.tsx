@@ -36,7 +36,7 @@ export const UploadButton = ({
         id="file-input"
         display="none"
         onChange={handleInputChange}
-        accept=".jpg, .jpeg, .png"
+        accept=".jpg, .jpeg, .png, .svg"
       />
       <Button
         as="label"

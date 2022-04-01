@@ -24,7 +24,6 @@ export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
           overflow="hidden"
           display="flex"
           alignItems="center"
-          minW="100px"
         />
         <EditableInput />
       </Editable>
