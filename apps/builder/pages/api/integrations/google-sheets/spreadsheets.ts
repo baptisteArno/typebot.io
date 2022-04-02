@@ -17,7 +17,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).send("Couldn't find credentials in database")
     const response = await drive({
       version: 'v3',
-      auth,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      auth: auth,
     }).files.list({
       q: "mimeType='application/vnd.google-apps.spreadsheet'",
       fields: 'nextPageToken, files(id, name)',

@@ -16,7 +16,6 @@ import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
 import { PricingCard } from 'components/PricingPage/PricingCard'
 import { ActionButton } from 'components/PricingPage/PricingCard/ActionButton'
-import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
 const Pricing = () => {

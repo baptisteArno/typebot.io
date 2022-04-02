@@ -166,7 +166,7 @@ export const CollaborationList = () => {
             size="sm"
             colorScheme="blue"
             isLoading={isSendingInvitation}
-            flexShrink="0"
+            flexShrink={0}
             type="submit"
           >
             Invite

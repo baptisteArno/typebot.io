@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import * as React from 'react'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import { QuoteLeftIcon } from 'assets/icons/QuoteLeftIcon'
 
 interface TestimonialProps {
