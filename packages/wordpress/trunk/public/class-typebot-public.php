@@ -128,7 +128,9 @@ class Typebot_Public
       $url .
       '",
 						autoOpenDelay: ' .
-      get_option('chat_delay') * 1000 .
+      (get_option('chat_delay') === '' || get_option('chat_delay') === null
+        ? 'undefined'
+        : get_option('chat_delay') * 1000) .
       ',
       button: {
         color: "' .
