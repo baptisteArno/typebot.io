@@ -3,15 +3,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const pages = [
-  'blog',
-  'pricing',
-  'privacy-policies',
-  'terms-of-service',
-  'vs-landbot',
-  'vs-tally',
-  'vs-typeform',
-]
+const pages = ['pricing', 'privacy-policies', 'terms-of-service']
 
 module.exports = withBundleAnalyzer({
   async redirects() {
