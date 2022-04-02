@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { ContextMenu } from 'components/shared/ContextMenu'
-import { Coordinates } from 'contexts/GraphContext'
+import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
@@ -35,8 +35,10 @@ export const ItemNode = ({
   onMouseDown,
 }: Props) => {
   const { typebot } = useTypebot()
+  const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const itemRef = useRef<HTMLDivElement | null>(null)
+  const isPreviewing = previewingEdge?.from.itemId === item.id
   const isConnectable = !(
     typebot?.blocks[indices.blockIndex].steps[
       indices.stepIndex
@@ -62,39 +64,43 @@ export const ItemNode = ({
       {(ref, isOpened) => (
         <Flex
           data-testid="item"
-          ref={setMultipleRefs([ref, itemRef])}
-          align="center"
           pos="relative"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          shadow="sm"
-          _hover={isReadOnly ? {} : { shadow: 'md' }}
-          transition="box-shadow 200ms"
-          borderWidth="1px"
-          rounded="md"
-          borderColor={isOpened ? 'blue.400' : 'gray.100'}
-          pointerEvents={isReadOnly ? 'none' : 'all'}
-          bgColor="white"
-          w="full"
+          ref={setMultipleRefs([ref, itemRef])}
         >
-          <ItemNodeContent
-            item={item}
-            isMouseOver={isMouseOver}
-            indices={indices}
-            isLastItem={isLastItem}
-          />
-          {typebot && isConnectable && (
-            <SourceEndpoint
-              source={{
-                blockId: typebot.blocks[indices.blockIndex].id,
-                stepId: item.stepId,
-                itemId: item.id,
-              }}
-              pos="absolute"
-              right="-49px"
-              pointerEvents="all"
+          <Flex
+            align="center"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            shadow="sm"
+            _hover={isReadOnly ? {} : { shadow: 'md' }}
+            transition="box-shadow 200ms, border-color 200ms"
+            rounded="md"
+            borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
+            borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.100'}
+            margin={isOpened || isPreviewing ? '-1px' : 0}
+            pointerEvents={isReadOnly ? 'none' : 'all'}
+            bgColor="white"
+            w="full"
+          >
+            <ItemNodeContent
+              item={item}
+              isMouseOver={isMouseOver}
+              indices={indices}
+              isLastItem={isLastItem}
             />
-          )}
+            {typebot && isConnectable && (
+              <SourceEndpoint
+                source={{
+                  blockId: typebot.blocks[indices.blockIndex].id,
+                  stepId: item.stepId,
+                  itemId: item.id,
+                }}
+                pos="absolute"
+                right="-49px"
+                pointerEvents="all"
+              />
+            )}
+          </Flex>
         </Flex>
       )}
     </ContextMenu>

@@ -38,8 +38,9 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
   const isPreviewing =
-    previewingEdge?.to.blockId === block.id ||
-    previewingEdge?.from.blockId === block.id
+    previewingEdge?.from.blockId === block.id ||
+    (previewingEdge?.to.blockId === block.id &&
+      isNotDefined(previewingEdge.to.stepId))
   const isStartBlock =
     isDefined(block.steps[0]) && block.steps[0].type === 'start'
 

@@ -51,6 +51,7 @@ export const StepNode = ({
     openedStepId,
     setOpenedStepId,
     setFocusedBlockId,
+    previewingEdge,
   } = useGraph()
   const { updateStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
@@ -61,6 +62,8 @@ export const StepNode = ({
     isTextBubbleStep(step) && step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
+
+  const isPreviewing = isConnecting || previewingEdge?.to.stepId === step.id
 
   const onDrag = (position: NodePosition) => {
     if (step.type === 'start' || !onMouseDown) return
@@ -170,8 +173,9 @@ export const StepNode = ({
                 flex="1"
                 userSelect="none"
                 p="3"
-                borderWidth="1px"
-                borderColor={isConnecting || isOpened ? 'blue.400' : 'gray.200'}
+                borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
+                borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.200'}
+                margin={isOpened || isPreviewing ? '-1px' : 0}
                 rounded="lg"
                 cursor={'pointer'}
                 bgColor="gray.50"
