@@ -148,11 +148,12 @@ const executeTypebotLink = async (
 }> => {
   const { typebot, linkedTypebots, onNewLog, createEdge, setCurrentTypebotId } =
     context
-  const linkedTypebot =
+  const linkedTypebot = (
     step.options.typebotId === 'current'
       ? typebot
       : [typebot, ...linkedTypebots].find(byId(step.options.typebotId)) ??
         (await fetchAndInjectTypebot(step, context))
+  ) as PublicTypebot | LinkedTypebot | undefined
   if (!linkedTypebot) {
     onNewLog({
       status: 'error',
@@ -161,7 +162,9 @@ const executeTypebotLink = async (
     })
     return { nextEdgeId: step.outgoingEdgeId }
   }
-  setCurrentTypebotId(linkedTypebot.id)
+  setCurrentTypebotId(
+    'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
+  )
   const nextBlockId =
     step.options.blockId ??
     linkedTypebot.blocks.find((b) => b.steps.some((s) => s.type === 'start'))
