@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -22,7 +22,13 @@ if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   useRouterProgressBar()
-  const { query } = useRouter()
+  const { query, pathname } = useRouter()
+
+  useEffect(() => {
+    pathname.endsWith('/edit')
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto')
+  }, [pathname])
 
   const typebotId = query.typebotId?.toString()
   return (
