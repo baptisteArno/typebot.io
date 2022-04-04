@@ -20,20 +20,13 @@ type Props = {
   item: Item
   indices: ItemIndices
   isReadOnly: boolean
-  isLastItem: boolean
   onMouseDown?: (
     stepNodePosition: { absolute: Coordinates; relative: Coordinates },
     item: ButtonItem
   ) => void
 }
 
-export const ItemNode = ({
-  item,
-  indices,
-  isReadOnly,
-  isLastItem,
-  onMouseDown,
-}: Props) => {
+export const ItemNode = ({ item, indices, isReadOnly, onMouseDown }: Props) => {
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -86,7 +79,6 @@ export const ItemNode = ({
               item={item}
               isMouseOver={isMouseOver}
               indices={indices}
-              isLastItem={isLastItem}
             />
             {typebot && isConnectable && (
               <SourceEndpoint

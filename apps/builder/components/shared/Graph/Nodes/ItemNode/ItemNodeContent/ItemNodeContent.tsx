@@ -7,15 +7,9 @@ type Props = {
   item: Item
   indices: ItemIndices
   isMouseOver: boolean
-  isLastItem: boolean
 }
 
-export const ItemNodeContent = ({
-  item,
-  indices,
-  isMouseOver,
-  isLastItem,
-}: Props) => {
+export const ItemNodeContent = ({ item, indices, isMouseOver }: Props) => {
   switch (item.type) {
     case ItemType.BUTTON:
       return (
@@ -23,7 +17,6 @@ export const ItemNodeContent = ({
           item={item}
           isMouseOver={isMouseOver}
           indices={indices}
-          isLastItem={isLastItem}
         />
       )
     case ItemType.CONDITION:

@@ -135,7 +135,6 @@ export const ItemNodesList = ({
             indices={{ blockIndex, stepIndex, itemIndex: idx }}
             onMouseDown={handleStepMouseDown(idx)}
             isReadOnly={isReadOnly}
-            isLastItem={idx === step.items.length - 1}
           />
           <Flex
             ref={handlePushElementRef(idx + 1)}

@@ -15,16 +15,10 @@ import { isNotDefined } from 'utils'
 type Props = {
   item: ButtonItem
   indices: ItemIndices
-  isLastItem: boolean
   isMouseOver: boolean
 }
 
-export const ButtonNodeContent = ({
-  item,
-  indices,
-  isMouseOver,
-  isLastItem,
-}: Props) => {
+export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
@@ -44,12 +38,7 @@ export const ButtonNodeContent = ({
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape' && itemValue === 'Click to edit') deleteItem(indices)
-    if (
-      e.key === 'Enter' &&
-      itemValue !== '' &&
-      isLastItem &&
-      initialContent === ''
-    )
+    if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
 
