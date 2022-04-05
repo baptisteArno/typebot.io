@@ -1,15 +1,15 @@
 import React from 'react'
-import { Stack } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 import { Seo } from 'components/Seo'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
-import { TemplatesContent } from 'layouts/dashboard/TemplatesContent'
+import { CreateNewTypebotButtons } from 'components/templates/CreateNewTypebotButtons'
 
 const TemplatesPage = () => (
-  <Stack>
+  <VStack>
     <Seo title="Templates" />
     <DashboardHeader />
-    <TemplatesContent />
-  </Stack>
+    <CreateNewTypebotButtons />
+  </VStack>
 )
 
 export default TemplatesPage

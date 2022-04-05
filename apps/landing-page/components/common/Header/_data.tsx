@@ -4,17 +4,6 @@ import { MapIcon } from 'assets/icons/MapIcon'
 import { PeopleCircleIcon } from 'assets/icons/PeopleCircleIcon'
 import * as React from 'react'
 
-export interface Link {
-  label: string
-  href?: string
-  children?: Array<{
-    label: string
-    description?: string
-    href: string
-    icon?: React.ReactElement
-  }>
-}
-
 export const links = [
   {
     label: 'Resources',

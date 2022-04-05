@@ -9,10 +9,10 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
-import { TemplateProps } from 'layouts/dashboard/TemplatesContent'
 import { Typebot } from 'models'
 import React from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
+import { TemplateProps } from './data'
 
 type Props = {
   template: TemplateProps

@@ -10,7 +10,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { Footer } from 'components/common/Footer'
-import { Navbar } from 'components/common/Navbar/Navbar'
+import { Header } from 'components/common/Header/Header'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
@@ -38,7 +38,7 @@ const Pricing = () => {
         <SocialMetaTags currentUrl={`https://www.typebot.io/pricing`} />
         <BackgroundPolygons />
         <DarkMode>
-          <Navbar />
+          <Header />
         </DarkMode>
 
         <VStack spacing={40} w="full">

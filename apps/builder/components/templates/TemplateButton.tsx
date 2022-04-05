@@ -8,10 +8,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { EyeIcon } from 'assets/icons'
-import { TemplateProps } from 'layouts/dashboard/TemplatesContent'
 import { Typebot } from 'models'
 import React, { useEffect, useState } from 'react'
 import { sendRequest } from 'utils'
+import { TemplateProps } from './data'
 import { PreviewModal } from './PreviewModal'
 
 type Props = {

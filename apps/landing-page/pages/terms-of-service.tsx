@@ -1,12 +1,12 @@
 import { Stack, Heading } from '@chakra-ui/react'
-import { Navbar } from 'components/common/Navbar/Navbar'
+import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 
 const PrivacyPolicies = () => {
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
       <SocialMetaTags currentUrl={`https://www.typebot.io/terms-of-service`} />
-      <Navbar />
+      <Header />
       <Stack spacing={10} mx="auto" maxW="3xl" my="20">
         <Heading as="h1">Website Terms and Conditions of Use</Heading>
 

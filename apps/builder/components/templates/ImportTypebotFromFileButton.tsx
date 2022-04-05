@@ -1,15 +1,16 @@
-import { chakra, MenuItem, MenuItemProps, useToast } from '@chakra-ui/react'
-import { FileIcon } from 'assets/icons'
-import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
+import { Button, ButtonProps, chakra, useToast } from '@chakra-ui/react'
 import { Typebot } from 'models'
 import React, { ChangeEvent } from 'react'
 import { readFile } from 'services/utils'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
-} & MenuItemProps
+} & ButtonProps
 
-export const CreateTypebotMoreButton = ({ onNewTypebot }: Props) => {
+export const ImportTypebotFromFileButton = ({
+  onNewTypebot,
+  ...props
+}: Props) => {
   const toast = useToast({
     position: 'top-right',
     status: 'error',
@@ -36,16 +37,9 @@ export const CreateTypebotMoreButton = ({ onNewTypebot }: Props) => {
         onChange={handleInputChange}
         accept=".json"
       />
-      <MoreButton>
-        <MenuItem
-          as="label"
-          cursor="pointer"
-          icon={<FileIcon />}
-          htmlFor="file-input"
-        >
-          Import from file
-        </MenuItem>
-      </MoreButton>
+      <Button as="label" htmlFor="file-input" cursor="pointer" {...props}>
+        {props.children}
+      </Button>
     </>
   )
 }

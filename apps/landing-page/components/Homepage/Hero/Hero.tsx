@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import * as React from 'react'
-import { Navbar } from '../../common/Navbar/Navbar'
+import { Header } from '../../common/Header/Header'
 import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
 import Image from 'next/image'
@@ -19,7 +19,7 @@ import builderScreenshotSrc from 'public/images/homepage/builder.png'
 export const Hero = () => {
   return (
     <Box as="section" overflow="hidden">
-      <Navbar />
+      <Header />
       <Stack mx="auto" py="10" pos="relative" pb="32" px={[4, 0]}>
         <BackgroundPolygons />
         <VStack mb="20" spacing={20} alignItems="center">
