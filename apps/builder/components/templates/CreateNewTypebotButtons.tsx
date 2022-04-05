@@ -113,7 +113,11 @@ export const CreateNewTypebotButtons = () => {
           Import a file
         </ImportTypebotFromFileButton>
       </Stack>
-      <TemplatesModal isOpen={isOpen} onClose={onClose} />
+      <TemplatesModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onTypebotChoose={handleCreateSubmit}
+      />
     </VStack>
   )
 }

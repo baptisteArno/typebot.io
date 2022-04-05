@@ -140,11 +140,13 @@ test.describe.parallel('Editor', () => {
     ])
 
     await page.goto(`/typebots/${typebotId}/edit`)
-    await page.click('text="My awesome typebot"')
-    await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
+
     await page.click('[data-testid="editable-icon"]')
     await page.fill('input[placeholder="Search..."]', 'love')
     await page.click('text="😍"')
+    await page.click('text="My awesome typebot"')
+    await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
+    await page.press('input[value="My superb typebot"]', 'Enter')
     await page.goto(`/typebots`)
     await expect(page.locator('text="😍"')).toBeVisible()
     await expect(page.locator('text="My superb typebot"')).toBeVisible()

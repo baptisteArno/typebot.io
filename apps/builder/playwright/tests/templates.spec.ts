@@ -11,7 +11,6 @@ test.describe.parallel('Templates page', () => {
 
   test('From file should import correctly', async ({ page }) => {
     await page.goto('/typebots/create')
-    await page.click('[data-testid="more-button"]')
     await page.setInputFiles(
       'input[type="file"]',
       path.join(__dirname, '../fixtures/typebots/singleChoiceTarget.json')
@@ -21,8 +20,11 @@ test.describe.parallel('Templates page', () => {
 
   test('Templates should be previewable and usable', async ({ page }) => {
     await page.goto('/typebots/create')
-    await page.click('[aria-label="Preview"] >> nth=0')
-    await expect(typebotViewer(page).locator('text=Hi!')).toBeVisible()
+    await page.click('text=Start from a template')
+    await page.click('text=Customer Support')
+    await expect(
+      typebotViewer(page).locator('text=How can I help you?')
+    ).toBeVisible()
     await page.click('text=Use this template')
     await expect(page).toHaveURL(new RegExp(`/edit`))
   })
