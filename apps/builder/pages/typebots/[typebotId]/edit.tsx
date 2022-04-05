@@ -1,7 +1,11 @@
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
-import { EditorContext, RightPanel, useEditor } from 'contexts/EditorContext'
+import {
+  EditorContext,
+  RightPanel as RightPanelEnum,
+  useEditor,
+} from 'contexts/EditorContext'
 import React from 'react'
 import { KBar } from 'components/shared/KBar'
 import { BoardMenuButton } from 'components/editor/BoardMenuButton'
@@ -15,7 +19,6 @@ import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
 const TypebotEditPage = () => {
   const { typebot, isReadOnly } = useTypebot()
-  const { rightPanel } = useEditor()
 
   return (
     <EditorContext>
@@ -41,13 +44,18 @@ const TypebotEditPage = () => {
             >
               {typebot && <Graph flex="1" typebot={typebot} />}
               <BoardMenuButton pos="absolute" right="40px" top="20px" />
-              {rightPanel === RightPanel.PREVIEW && <PreviewDrawer />}
+              <RightPanel />
             </GraphProvider>
           </GraphDndContext>
         </Flex>
       </Flex>
     </EditorContext>
   )
+}
+
+const RightPanel = () => {
+  const { rightPanel } = useEditor()
+  return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
 }
 
 export default TypebotEditPage
