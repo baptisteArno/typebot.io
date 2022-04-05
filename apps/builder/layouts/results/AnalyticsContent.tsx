@@ -1,7 +1,7 @@
 import { Flex, useDisclosure, useToast } from '@chakra-ui/react'
 import { StatsCards } from 'components/analytics/StatsCards'
 import { Graph } from 'components/shared/Graph'
-import { UpgradeModal } from 'components/shared/modals/UpgradeModal.'
+import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
 import { GraphProvider } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Stats } from 'models'

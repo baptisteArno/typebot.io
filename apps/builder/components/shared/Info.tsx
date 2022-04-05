@@ -8,8 +8,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
-import { UpgradeModal } from './modals/UpgradeModal.'
-import { LimitReached } from './modals/UpgradeModal./UpgradeModal'
+import { UpgradeModal } from './modals/UpgradeModal'
+import { LimitReached } from './modals/UpgradeModal/UpgradeModal'
 
 export const Info = (props: AlertProps) => (
   <Alert status="info" bgColor={'blue.50'} rounded="md" {...props}>
