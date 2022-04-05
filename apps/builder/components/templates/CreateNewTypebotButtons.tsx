@@ -2,7 +2,6 @@ import {
   VStack,
   Heading,
   Stack,
-  Tooltip,
   Button,
   useDisclosure,
   useToast,
@@ -11,7 +10,7 @@ import { ToolIcon, TemplateIcon, DownloadIcon } from 'assets/icons'
 import { useUser } from 'contexts/UserContext'
 import { Typebot } from 'models'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { importTypebot, createTypebot } from 'services/typebots'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { TemplatesModal } from './TemplatesModal'
@@ -20,8 +19,6 @@ export const CreateNewTypebotButtons = () => {
   const { user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [isFromScratchTooltipOpened, setIsFromScratchTooltipOpened] =
-    useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -30,13 +27,6 @@ export const CreateNewTypebotButtons = () => {
     status: 'error',
     title: 'An error occured',
   })
-
-  useEffect(() => {
-    if (!router.isReady) return
-    const isFirstBot = router.query.isFirstBot as string | undefined
-    if (isFirstBot) setIsFromScratchTooltipOpened(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady])
 
   const handleCreateSubmit = async (typebot?: Typebot) => {
     if (!user) return
@@ -62,7 +52,11 @@ export const CreateNewTypebotButtons = () => {
           folderId,
         })
     if (error) toast({ description: error.message })
-    if (data) router.push(`/typebots/${data.id}/edit`)
+    if (data)
+      router.push({
+        pathname: `/typebots/${data.id}/edit`,
+        query: { isFirstBot: router.query.isFirstBot },
+      })
     setIsLoading(false)
   }
 
@@ -70,26 +64,17 @@ export const CreateNewTypebotButtons = () => {
     <VStack maxW="600px" w="full" flex="1" pt="20" spacing={10}>
       <Heading>Create a new typebot</Heading>
       <Stack w="full" spacing={6}>
-        <Tooltip
-          isOpen={isFromScratchTooltipOpened}
-          label="Strongly suggested if you're new to Typebot."
-          maxW="200px"
-          hasArrow
-          placement="right"
-          rounded="md"
+        <Button
+          variant="outline"
+          w="full"
+          py="8"
+          fontSize="lg"
+          leftIcon={<ToolIcon color="blue.500" boxSize="25px" mr="2" />}
+          onClick={() => handleCreateSubmit()}
+          isLoading={isLoading}
         >
-          <Button
-            variant="outline"
-            w="full"
-            py="8"
-            fontSize="lg"
-            leftIcon={<ToolIcon color="blue.500" boxSize="25px" mr="2" />}
-            onClick={() => handleCreateSubmit()}
-            isLoading={isLoading}
-          >
-            Start from scratch
-          </Button>
-        </Tooltip>
+          Start from scratch
+        </Button>
         <Button
           variant="outline"
           w="full"
