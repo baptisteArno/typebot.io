@@ -1,7 +1,7 @@
 import { Button, ButtonProps, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
-import { UpgradeModal } from '../modals/UpgradeModal.'
-import { LimitReached } from '../modals/UpgradeModal./UpgradeModal'
+import { UpgradeModal } from '../modals/UpgradeModal'
+import { LimitReached } from '../modals/UpgradeModal/UpgradeModal'
 
 type Props = { type?: LimitReached } & ButtonProps
 

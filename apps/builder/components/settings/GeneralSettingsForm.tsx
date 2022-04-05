@@ -6,7 +6,7 @@ import {
   Tag,
   useDisclosure,
 } from '@chakra-ui/react'
-import { UpgradeModal } from 'components/shared/modals/UpgradeModal.'
+import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { useUser } from 'contexts/UserContext'
 import { GeneralSettings } from 'models'
