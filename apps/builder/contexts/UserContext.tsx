@@ -55,7 +55,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!router.isReady) return
     if (status === 'loading') return
-    if (status === 'unauthenticated' && !isSigningIn())
+    if (!user && status === 'unauthenticated' && !isSigningIn())
       router.replace({
         pathname: '/signin',
         query:
