@@ -10,8 +10,11 @@ import {
   SimpleGrid,
   Input,
   Button,
+  Stack,
+  ButtonProps,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, useEffect, useState } from 'react'
+import tinyColor from 'tinycolor2'
 
 const colorsSelection: `#${string}`[] = [
   '#264653',
@@ -48,7 +51,9 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
       <PopoverTrigger>
         <Button
           aria-label={'Pick a color'}
-          background={color}
+          bgColor={color}
+          _hover={{ bgColor: `#${tinyColor(color).darken(10).toHex()}` }}
+          _active={{ bgColor: `#${tinyColor(color).darken(30).toHex()}` }}
           height="22px"
           width="22px"
           padding={0}
@@ -64,11 +69,11 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
           backgroundColor={color}
           borderTopLeftRadius={5}
           borderTopRightRadius={5}
-          color={color === '#ffffff' ? 'gray.800' : 'white'}
+          color={tinyColor(color).isLight() ? 'gray.800' : 'white'}
         >
           <Center height="100%">{color}</Center>
         </PopoverHeader>
-        <PopoverBody height="120px">
+        <PopoverBody as={Stack}>
           <SimpleGrid columns={5} spacing={2}>
             {colorsSelection.map((c) => (
               <Button
@@ -94,8 +99,39 @@ export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
             value={color}
             onChange={handleColorChange}
           />
+          <NativeColorPicker
+            size="sm"
+            color={color}
+            onColorChange={handleColorChange}
+          >
+            Advanced picker
+          </NativeColorPicker>
         </PopoverBody>
       </PopoverContent>
     </Popover>
+  )
+}
+
+const NativeColorPicker = ({
+  color,
+  onColorChange,
+  ...props
+}: {
+  color: string
+  onColorChange: (e: ChangeEvent<HTMLInputElement>) => void
+} & ButtonProps) => {
+  return (
+    <>
+      <Button as="label" htmlFor="native-picker" {...props}>
+        {props.children}
+      </Button>
+      <Input
+        type="color"
+        display="none"
+        id="native-picker"
+        value={color}
+        onChange={onColorChange}
+      />
+    </>
   )
 }

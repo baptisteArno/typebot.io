@@ -77,6 +77,7 @@
     "styled-components": "^5.3.5",
     "svg-round-corners": "^0.3.0",
     "swr": "^1.2.2",
+    "tinycolor2": "^1.4.2",
     "typebot-js": "*",
     "use-debounce": "^7.0.1",
     "utils": "*"
@@ -96,11 +97,12 @@
     "@types/prettier": "^2.4.4",
     "@types/react": "^17.0.43",
     "@types/react-table": "^7.7.10",
+    "@types/tinycolor2": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "dotenv": "^16.0.0",
     "eslint": "<8.0.0",
     "eslint-config-next": "12.1.4",
-    "typescript": "^4.6.3",
-    "msw": "^0.39.2"
+    "msw": "^0.39.2",
+    "typescript": "^4.6.3"
   }
 }
