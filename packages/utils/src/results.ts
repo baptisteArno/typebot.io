@@ -114,8 +114,8 @@ export const parseAnswers =
           }
         }
         const variable = answerOrVariable as VariableWithValue
-        if (isDefined(o[variable.id])) return o
-        return { ...o, [variable.id]: variable.value }
+        if (isDefined(o[variable.name])) return o
+        return { ...o, [variable.name]: variable.value }
       }, {}),
     }
   }

@@ -31,6 +31,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0]
   )
+  const [isLoading, setIsLoading] = useState(false)
 
   const toast = useToast({
     position: 'top-right',
@@ -78,7 +79,10 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             <Stack spacing={4}>
               <Button
                 colorScheme="blue"
-                onClick={() => typebot && onTypebotChoose(typebot)}
+                onClick={() =>
+                  typebot && onTypebotChoose(typebot) && setIsLoading(true)
+                }
+                isLoading={isLoading}
               >
                 Use this template
               </Button>
