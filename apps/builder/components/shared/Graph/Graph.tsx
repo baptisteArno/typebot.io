@@ -81,7 +81,7 @@ export const Graph = ({
     e.preventDefault()
     const isPinchingTrackpad = e.ctrlKey
     user?.graphNavigation === GraphNavigation.MOUSE
-      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+      ? zoom(-e.deltaY * 0.001, { x: e.clientX, y: e.clientY })
       : isPinchingTrackpad
       ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
       : setGraphPosition({
