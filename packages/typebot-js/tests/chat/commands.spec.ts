@@ -5,7 +5,7 @@ beforeEach(() => {
 })
 
 describe('openBubble', () => {
-  it('should add the opened bubble', () => {
+  it('should add the opened bubble', async () => {
     expect.assertions(3)
     const { open } = Typebot.initBubble({
       url: 'https://typebot.io/typebot-id',
@@ -13,6 +13,7 @@ describe('openBubble', () => {
     const bubble = document.getElementById('typebot-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
     open()
+    await new Promise((resolve) => setTimeout(resolve, 50))
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
     expect(open).not.toThrow()
   })
@@ -35,13 +36,14 @@ describe('openBubble', () => {
 })
 
 describe('closeBubble', () => {
-  it('should remove the corresponding class', () => {
+  it('should remove the corresponding class', async () => {
     expect.assertions(2)
     const { close, open } = Typebot.initBubble({
       url: 'https://typebot.io/typebot-id',
     })
     open()
     const bubble = document.getElementById('typebot-bubble') as HTMLDivElement
+    await new Promise((resolve) => setTimeout(resolve, 50))
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
     close()
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
@@ -72,7 +74,7 @@ describe('openProactiveMessage', () => {
 })
 
 describe('Request commands afterwards', () => {
-  it('should return defined commands', () => {
+  it('should return defined commands', async () => {
     Typebot.initBubble({
       proactiveMessage: {
         textContent: 'Hi click here!',
@@ -85,6 +87,7 @@ describe('Request commands afterwards', () => {
     expect(open).toBeDefined()
     expect(openProactiveMessage).toBeDefined()
     open()
+    await new Promise((resolve) => setTimeout(resolve, 50))
     const bubble = document.getElementById('typebot-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
   })

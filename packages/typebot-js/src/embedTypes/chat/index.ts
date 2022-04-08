@@ -60,24 +60,17 @@ const createBubble = (
       ? addProactiveMessage(params.proactiveMessage, bubbleElement)
       : undefined
   const iframeElement = createIframeContainer(params)
-  buttonElement.addEventListener('click', () =>
-    onBubbleButtonClick(bubbleElement, iframeElement)
-  )
+  buttonElement.addEventListener('click', () => {
+    iframeElement.style.display === 'none'
+      ? openIframe(bubbleElement, iframeElement)
+      : closeIframe(bubbleElement, iframeElement)
+  })
   if (proactiveMessageElement)
     proactiveMessageElement.addEventListener('click', () =>
       onProactiveMessageClick(bubbleElement, iframeElement)
     )
   bubbleElement.appendChild(iframeElement)
   return { bubbleElement, proactiveMessageElement, iframeElement }
-}
-
-const onBubbleButtonClick = (
-  bubble: HTMLDivElement,
-  iframe: HTMLIFrameElement
-): void => {
-  loadTypebotIfFirstOpen(iframe)
-  bubble.classList.toggle('iframe-opened')
-  bubble.classList.remove('message-opened')
 }
 
 const onProactiveMessageClick = (
@@ -115,7 +108,7 @@ export const getBubbleActions = (
       openIframe(existingBubbleElement, existingIframeElement)
     },
     close: () => {
-      closeIframe(existingBubbleElement)
+      closeIframe(existingBubbleElement, existingIframeElement)
     },
   }
 }

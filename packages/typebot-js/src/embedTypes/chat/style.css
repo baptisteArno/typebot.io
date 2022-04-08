@@ -61,7 +61,6 @@
 }
 
 #typebot-bubble > iframe {
-  visibility: hidden;
   opacity: 0;
   display: flex;
   border-radius: 10px;
@@ -83,7 +82,6 @@
 
 #typebot-bubble.iframe-opened > iframe {
   transform: translate(0, 0);
-  visibility: visible;
   opacity: 1;
 }
 

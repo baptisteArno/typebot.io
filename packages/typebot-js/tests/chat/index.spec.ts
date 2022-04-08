@@ -36,7 +36,7 @@ describe('initBubble', () => {
     })
     const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
-    await new Promise((r) => setTimeout(r, 1000))
+    await new Promise((r) => setTimeout(r, 1050))
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
     const rememberCloseDecisionFromStorage = localStorage.getItem(
       Typebot.localStorageKeys.rememberClose
