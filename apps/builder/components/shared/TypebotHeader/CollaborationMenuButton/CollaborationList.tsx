@@ -200,7 +200,7 @@ export const CollaborationList = () => {
           name={user.name ?? undefined}
           type={type}
           isOwner={isOwner}
-          onDeleteClick={handleDeleteCollaboration(user.email ?? '')}
+          onDeleteClick={handleDeleteCollaboration(userId ?? '')}
           onChangeCollaborationType={handleChangeCollaborationType(userId)}
         />
       ))}
