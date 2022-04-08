@@ -129,6 +129,7 @@ type GetAnchorsPositionParams = {
   targetBlockCoordinates: Coordinates
   sourceTop: number
   targetTop?: number
+  graphScale: number
 }
 export const getAnchorsPosition = ({
   sourceBlockCoordinates,
@@ -236,12 +237,14 @@ export const computeConnectingEdgePath = ({
   targetBlockCoordinates,
   sourceTop,
   targetTop,
+  graphScale,
 }: GetAnchorsPositionParams) => {
   const anchorsPosition = getAnchorsPosition({
     sourceBlockCoordinates,
     targetBlockCoordinates,
     sourceTop,
     targetTop,
+    graphScale,
   })
   return computeEdgePath(anchorsPosition)
 }
@@ -258,8 +261,8 @@ export const computeEdgePathToMouse = ({
   const sourcePosition = {
     x:
       mousePosition.x - sourceBlockCoordinates.x > blockWidth / 2
-        ? sourceBlockCoordinates.x + blockWidth - 40
-        : sourceBlockCoordinates.x + 40,
+        ? sourceBlockCoordinates.x + blockWidth
+        : sourceBlockCoordinates.x,
     y: sourceTop,
   }
   const sourceType =
@@ -277,19 +280,26 @@ export const computeEdgePathToMouse = ({
   ).path
 }
 
-export const getEndpointTopOffset = (
-  endpoints: IdMap<Endpoint>,
-  graphOffsetY: number,
+export const getEndpointTopOffset = ({
+  endpoints,
+  graphOffsetY,
+  endpointId,
+  graphScale,
+}: {
+  endpoints: IdMap<Endpoint>
+  graphOffsetY: number
   endpointId?: string
-): number | undefined => {
+  graphScale: number
+}): number | undefined => {
   if (!endpointId) return
   const endpointRef = endpoints[endpointId]?.ref
   if (!endpointRef?.current) return
-  const endpointHeight = 28
+  const endpointHeight = 28 * graphScale
   return (
-    endpointRef.current.getBoundingClientRect().top +
-    endpointHeight / 2 -
-    graphOffsetY
+    (endpointRef.current.getBoundingClientRect().y +
+      endpointHeight / 2 -
+      graphOffsetY) /
+    graphScale
   )
 }
 

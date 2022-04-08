@@ -29,21 +29,23 @@ export const DrawingEdge = () => {
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0
-    return getEndpointTopOffset(
-      sourceEndpoints,
-      graphPosition.y,
-      connectingIds.source.itemId ?? connectingIds.source.stepId
-    )
+    return getEndpointTopOffset({
+      endpoints: sourceEndpoints,
+      graphOffsetY: graphPosition.y,
+      endpointId: connectingIds.source.itemId ?? connectingIds.source.stepId,
+      graphScale: graphPosition.scale,
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectingIds, sourceEndpoints])
 
   const targetTop = useMemo(() => {
     if (!connectingIds) return 0
-    return getEndpointTopOffset(
-      targetEndpoints,
-      graphPosition.y,
-      connectingIds.target?.stepId
-    )
+    return getEndpointTopOffset({
+      endpoints: targetEndpoints,
+      graphOffsetY: graphPosition.y,
+      endpointId: connectingIds.target?.stepId,
+      graphScale: graphPosition.scale,
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectingIds, targetEndpoints])
 
@@ -56,6 +58,7 @@ export const DrawingEdge = () => {
           targetBlockCoordinates,
           sourceTop,
           targetTop,
+          graphScale: graphPosition.scale,
         })
       : computeEdgePathToMouse({
           sourceBlockCoordinates,
@@ -68,13 +71,15 @@ export const DrawingEdge = () => {
     targetBlockCoordinates,
     targetTop,
     mousePosition,
+    graphPosition.scale,
   ])
 
   const handleMouseMove = (e: MouseEvent) => {
-    setMousePosition({
-      x: e.clientX - graphPosition.x,
-      y: e.clientY - graphPosition.y,
-    })
+    const coordinates = {
+      x: (e.clientX - graphPosition.x) / graphPosition.scale,
+      y: (e.clientY - graphPosition.y) / graphPosition.scale,
+    }
+    setMousePosition(coordinates)
   }
   useEventListener('mousemove', handleMouseMove)
   useEventListener('mouseup', () => {

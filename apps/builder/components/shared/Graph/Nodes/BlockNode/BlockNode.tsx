@@ -32,6 +32,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     isReadOnly,
     focusedBlockId,
     setFocusedBlockId,
+    graphPosition,
   } = useGraph()
   const { typebot, updateBlock } = useTypebot()
   const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
@@ -86,11 +87,11 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
   }
 
-  const onDrag = (event: DraggableEvent, draggableData: DraggableData) => {
+  const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     const { deltaX, deltaY } = draggableData
     updateBlockCoordinates(block.id, {
-      x: blockCoordinates.x + deltaX,
-      y: blockCoordinates.y + deltaY,
+      x: blockCoordinates.x + deltaX / graphPosition.scale,
+      y: blockCoordinates.y + deltaY / graphPosition.scale,
     })
   }
 

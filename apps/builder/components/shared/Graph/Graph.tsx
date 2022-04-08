@@ -2,20 +2,26 @@ import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import {
   blockWidth,
+  Coordinates,
   graphPositionDefaultValue,
   useGraph,
 } from 'contexts/GraphContext'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { headerHeight } from 'components/shared/TypebotHeader/TypebotHeader'
 import { DraggableStepType, PublicTypebot, Typebot } from 'models'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import GraphContent from './GraphContent'
 import cuid from 'cuid'
+import { headerHeight } from '../TypebotHeader'
+import { useUser } from 'contexts/UserContext'
+import { GraphNavigation } from 'db'
+import { ZoomButtons } from './ZoomButtons'
 
-declare const window: { chrome: unknown | undefined }
+const maxScale = 1.5
+const minScale = 0.1
+const zoomButtonsScaleStep = 0.2
 
 export const Graph = ({
   typebot,
@@ -51,6 +57,7 @@ export const Graph = ({
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
+  const { user } = useUser()
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -65,7 +72,7 @@ export const Graph = ({
     setGlobalGraphPosition({
       x: left + debouncedGraphPosition.x,
       y: top + debouncedGraphPosition.y,
-      scale: 1,
+      scale: debouncedGraphPosition.scale,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedGraphPosition])
@@ -73,22 +80,26 @@ export const Graph = ({
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
     const isPinchingTrackpad = e.ctrlKey
-    if (isPinchingTrackpad) return
-    setGraphPosition({
-      ...graphPosition,
-      x: graphPosition.x - e.deltaX / (window.chrome ? 2 : 1),
-      y: graphPosition.y - e.deltaY / (window.chrome ? 2 : 1),
-    })
+    user?.graphNavigation === GraphNavigation.MOUSE
+      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+      : isPinchingTrackpad
+      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+      : setGraphPosition({
+          ...graphPosition,
+          x: graphPosition.x - e.deltaX,
+          y: graphPosition.y - e.deltaY,
+        })
   }
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
     if (draggedItem) setDraggedItem(undefined)
     if (!draggedStep && !draggedStepType) return
-    const coordinates = {
-      x: e.clientX - graphPosition.x - blockWidth / 3,
-      y: e.clientY - graphPosition.y - 20 - headerHeight,
-    }
+
+    const coordinates = projectMouse(
+      { x: e.clientX, y: e.clientY },
+      graphPosition
+    )
     const id = cuid()
     updateBlockCoordinates(id, coordinates)
     createBlock({
@@ -121,15 +132,40 @@ export const Graph = ({
   const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     const { deltaX, deltaY } = draggableData
     setGraphPosition({
+      ...graphPosition,
       x: graphPosition.x + deltaX,
       y: graphPosition.y + deltaY,
-      scale: 1,
+    })
+  }
+
+  const zoom = (delta = zoomButtonsScaleStep, mousePosition?: Coordinates) => {
+    const { x: mouseX, y } = mousePosition ?? { x: 0, y: 0 }
+    const mouseY = y - headerHeight
+    let scale = graphPosition.scale + delta
+    if (
+      (scale >= maxScale && graphPosition.scale === maxScale) ||
+      (scale <= minScale && graphPosition.scale === minScale)
+    )
+      return
+    scale = scale >= maxScale ? maxScale : scale <= minScale ? minScale : scale
+
+    const xs = (mouseX - graphPosition.x) / graphPosition.scale
+    const ys = (mouseY - graphPosition.y) / graphPosition.scale
+    setGraphPosition({
+      ...graphPosition,
+      x: mouseX - xs * scale,
+      y: mouseY - ys * scale,
+      scale,
     })
   }
 
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
+        <ZoomButtons
+          onZoomIn={() => zoom(zoomButtonsScaleStep)}
+          onZoomOut={() => zoom(-zoomButtonsScaleStep)}
+        />
         <Flex
           flex="1"
           w="full"
@@ -149,4 +185,22 @@ export const Graph = ({
       </Flex>
     </DraggableCore>
   )
+}
+
+const projectMouse = (
+  mouseCoordinates: Coordinates,
+  graphPosition: Coordinates & { scale: number }
+) => {
+  return {
+    x:
+      (mouseCoordinates.x -
+        graphPosition.x -
+        blockWidth / (3 / graphPosition.scale)) /
+      graphPosition.scale,
+    y:
+      (mouseCoordinates.y -
+        graphPosition.y -
+        (headerHeight + 20 * graphPosition.scale)) /
+      graphPosition.scale,
+  }
 }

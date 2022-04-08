@@ -403,3 +403,35 @@ export const TemplateIcon = (props: IconProps) => (
     <rect x="3" y="14" width="7" height="7"></rect>
   </Icon>
 )
+
+export const MinusIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </Icon>
+)
+
+export const LaptopIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path
+      d="M3.2 14.2222V4C3.2 2.89543 4.09543 2 5.2 2H18.8C19.9046 2 20.8 2.89543 20.8 4V14.2222M3.2 14.2222H20.8M3.2 14.2222L1.71969 19.4556C1.35863 20.7321 2.31762 22 3.64418 22H20.3558C21.6824 22 22.6414 20.7321 22.2803 19.4556L20.8 14.2222"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
+    <path
+      d="M11 19L13 19"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Icon>
+)
+
+export const MouseIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path
+      d="M12 2V2C16.4183 2 20 5.58172 20 10V14C20 18.4183 16.4183 22 12 22V22C7.58172 22 4 18.4183 4 14V10C4 5.58172 7.58172 2 12 2V2ZM12 2V9"
+      stroke="currentColor"
+      strokeLinecap="round"
+    />
+  </Icon>
+)
