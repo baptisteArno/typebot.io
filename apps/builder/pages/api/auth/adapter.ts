@@ -22,7 +22,10 @@ export function CustomAdapter(p: PrismaClient): Adapter {
       })
       if (process.env.USER_CREATED_WEBHOOK_URL)
         await got.post(process.env.USER_CREATED_WEBHOOK_URL, {
-          json: data,
+          json: {
+            email: data.email,
+            name: data.name ? (data.name as string).split(' ')[0] : undefined,
+          },
         })
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
