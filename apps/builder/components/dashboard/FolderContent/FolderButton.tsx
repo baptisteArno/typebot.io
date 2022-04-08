@@ -119,7 +119,11 @@ export const FolderButton = ({
           onClick={(e) => e.stopPropagation()}
           onSubmit={onRenameSubmit}
         >
-          <EditablePreview _hover={{ bgColor: 'gray.300' }} px="2" />
+          <EditablePreview
+            _hover={{ bgColor: 'gray.300' }}
+            px="2"
+            textAlign="center"
+          />
           <EditableInput textAlign="center" />
         </Editable>
       </VStack>
