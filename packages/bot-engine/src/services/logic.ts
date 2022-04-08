@@ -88,19 +88,22 @@ const executeCondition = (
 const executeComparison =
   (variables: Variable[]) => (comparison: Comparison) => {
     if (!comparison?.variableId) return false
-    const inputValue =
+    const inputValue = (
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
-    const value = parseVariables(variables)(comparison.value)
+    )
+      .toString()
+      .trim()
+    const value = parseVariables(variables)(comparison.value).toString().trim()
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
-        return inputValue.toString().includes(value.toString())
+        return inputValue.toLowerCase().includes(value.toLowerCase())
       }
       case ComparisonOperators.EQUAL: {
-        return inputValue.toString() === value.toString()
+        return inputValue === value
       }
       case ComparisonOperators.NOT_EQUAL: {
-        return inputValue.toString() !== value.toString()
+        return inputValue !== value
       }
       case ComparisonOperators.GREATER: {
         return parseFloat(inputValue) >= parseFloat(value)
