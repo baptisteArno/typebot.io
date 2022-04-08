@@ -13,6 +13,7 @@ import { updateUser as updateUserInDb } from 'services/user/user'
 import { useToast } from '@chakra-ui/react'
 import { dequal } from 'dequal'
 import { User } from 'db'
+import { setUser as setSentryUser } from '@sentry/nextjs'
 
 const userContext = createContext<{
   user?: User
@@ -48,7 +49,9 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return
-    setUser(session.user as User)
+    const parsedUser = session.user as User
+    setUser(parsedUser)
+    setSentryUser({ id: parsedUser.id })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
