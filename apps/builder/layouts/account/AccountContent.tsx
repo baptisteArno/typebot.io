@@ -4,10 +4,11 @@ import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import React from 'react'
 import { PersonalInfoForm } from 'components/account/PersonalInfoForm'
 import { BillingSection } from 'components/account/BillingSection'
+import { EditorSection } from 'components/account/EditorSection'
 
 export const AccountContent = () => {
   return (
-    <Flex h="full" w="full" justifyContent="center" align="flex-start">
+    <Flex h="full" w="full" justifyContent="center" align="flex-start" pb="20">
       <Stack maxW="600px" w="full" pt="4" spacing={10}>
         <Flex>
           <Button
@@ -28,6 +29,8 @@ export const AccountContent = () => {
         <PersonalInfoForm />
         <Divider />
         <BillingSection />
+        <Divider />
+        <EditorSection />
       </Stack>
     </Flex>
   )

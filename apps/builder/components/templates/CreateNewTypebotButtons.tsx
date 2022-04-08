@@ -55,7 +55,12 @@ export const CreateNewTypebotButtons = () => {
     if (data)
       router.push({
         pathname: `/typebots/${data.id}/edit`,
-        query: { isFirstBot: router.query.isFirstBot },
+        query:
+          router.query.isFirstBot === 'true'
+            ? {
+                isFirstBot: 'true',
+              }
+            : {},
       })
     setIsLoading(false)
   }

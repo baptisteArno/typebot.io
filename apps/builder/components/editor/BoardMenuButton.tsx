@@ -10,14 +10,29 @@ import {
 import assert from 'assert'
 import { DownloadIcon, MoreVerticalIcon, SettingsIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
-import React, { useState } from 'react'
+import { useUser } from 'contexts/UserContext'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
+import { isNotDefined } from 'utils'
 import { EditorSettingsModal } from './EditorSettingsModal'
 
 export const BoardMenuButton = (props: MenuButtonProps) => {
+  const { query } = useRouter()
   const { typebot } = useTypebot()
+  const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  useEffect(() => {
+    if (
+      user &&
+      isNotDefined(user.graphNavigation) &&
+      isNotDefined(query.isFirstBot)
+    )
+      onOpen()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const downloadFlow = () => {
     assert(typebot)
