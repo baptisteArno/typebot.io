@@ -58,11 +58,12 @@ export const DropOffEdge = ({
   const block = publishedTypebot?.blocks.find(byId(blockId))
   const sourceTop = useMemo(
     () =>
-      getEndpointTopOffset(
-        sourceEndpoints,
-        graphPosition.y,
-        block?.steps[block.steps.length - 1].id
-      ),
+      getEndpointTopOffset({
+        endpoints: sourceEndpoints,
+        graphOffsetY: graphPosition.y,
+        endpointId: block?.steps[block.steps.length - 1].id,
+        graphScale: graphPosition.scale,
+      }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [block?.steps, sourceEndpoints, blocksCoordinates]
   )

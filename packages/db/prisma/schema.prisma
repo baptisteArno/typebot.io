@@ -58,6 +58,12 @@ model User {
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   company                 String?
   onboardingCategories    String[]
+  graphNavigation         GraphNavigation?
+}
+
+enum GraphNavigation {
+  MOUSE
+  TRACKPAD
 }
 
 model CustomDomain {

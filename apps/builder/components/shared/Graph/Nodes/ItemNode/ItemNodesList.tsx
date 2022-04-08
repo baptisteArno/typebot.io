@@ -3,7 +3,7 @@ import {
   computeNearestPlaceholderIndex,
   useStepDnd,
 } from 'contexts/GraphDndContext'
-import { Coordinates } from 'contexts/GraphContext'
+import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ButtonItem, StepIndices, StepWithItems } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
@@ -25,6 +25,7 @@ export const ItemNodesList = ({
   const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
   const placeholderRefs = useRef<HTMLDivElement[]>([])
+  const { graphPosition } = useGraph()
   const blockId = typebot?.blocks[blockIndex].id
   const isDraggingOnCurrentBlock =
     (draggedItem && mouseOverBlock?.id === blockId) ?? false
@@ -182,8 +183,9 @@ export const ItemNodesList = ({
             top="0"
             left="0"
             style={{
-              transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
+              transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg) scale(${graphPosition.scale})`,
             }}
+            transformOrigin="0 0 0"
           />
         </Portal>
       )}

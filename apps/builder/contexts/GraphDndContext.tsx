@@ -68,8 +68,10 @@ export const useDragDistance = ({
   distanceTolerance?: number
   isDisabled: boolean
 }) => {
-  const mouseDownPosition =
-    useRef<{ absolute: Coordinates; relative: Coordinates }>()
+  const mouseDownPosition = useRef<{
+    absolute: Coordinates
+    relative: Coordinates
+  }>()
 
   const handleMouseUp = () => {
     if (mouseDownPosition) mouseDownPosition.current = undefined

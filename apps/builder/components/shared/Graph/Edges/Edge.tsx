@@ -44,11 +44,12 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
 
   const sourceTop = useMemo(
     () =>
-      getEndpointTopOffset(
-        sourceEndpoints,
-        graphPosition.y,
-        getSourceEndpointId(edge)
-      ),
+      getEndpointTopOffset({
+        endpoints: sourceEndpoints,
+        graphOffsetY: graphPosition.y,
+        endpointId: getSourceEndpointId(edge),
+        graphScale: graphPosition.scale,
+      }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [sourceBlockCoordinates?.y, edge, sourceEndpoints, refreshEdge]
   )
@@ -58,17 +59,28 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
   }, [])
 
   const [targetTop, setTargetTop] = useState(
-    getEndpointTopOffset(targetEndpoints, graphPosition.y, edge?.to.stepId)
+    getEndpointTopOffset({
+      endpoints: targetEndpoints,
+      graphOffsetY: graphPosition.y,
+      endpointId: edge?.to.stepId,
+      graphScale: graphPosition.scale,
+    })
   )
   useLayoutEffect(() => {
     setTargetTop(
-      getEndpointTopOffset(targetEndpoints, graphPosition.y, edge?.to.stepId)
+      getEndpointTopOffset({
+        endpoints: targetEndpoints,
+        graphOffsetY: graphPosition.y,
+        endpointId: edge?.to.stepId,
+        graphScale: graphPosition.scale,
+      })
     )
   }, [
     targetBlockCoordinates?.y,
     targetEndpoints,
     graphPosition.y,
     edge?.to.stepId,
+    graphPosition.scale,
   ])
 
   const path = useMemo(() => {
@@ -79,6 +91,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
       targetBlockCoordinates,
       sourceTop,
       targetTop,
+      graphScale: graphPosition.scale,
     })
     return computeEdgePath(anchorsPosition)
     // eslint-disable-next-line react-hooks/exhaustive-deps
