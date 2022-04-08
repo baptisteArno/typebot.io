@@ -9,7 +9,6 @@ import {
   Heading,
   List,
   ListItem,
-  ListIcon,
   Text,
   Accordion,
   AccordionButton,
@@ -17,8 +16,9 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  HStack,
+  Flex,
 } from '@chakra-ui/react'
-import { CheckSquareIcon } from 'assets/icons'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -40,24 +40,79 @@ export const GettingStartedModal = () => {
           <Stack spacing={4}>
             <Heading fontSize="xl">Editor basics</Heading>
             <List spacing={4}>
-              <ListItem>
-                <ListIcon as={CheckSquareIcon} color="blue.500" mb="0.5" />
-                The left side bar contains blocks that you can drag and drop to
-                the board.
-              </ListItem>
-              <ListItem>
-                <ListIcon as={CheckSquareIcon} color="blue.500" mb="0.5" />
-                You can group blocks together by dropping them below or above
-                each other
-              </ListItem>
-              <ListItem>
-                <ListIcon as={CheckSquareIcon} color="blue.500" mb="0.5" />
-                Connect the groups together
-              </ListItem>
-              <ListItem>
-                <ListIcon as={CheckSquareIcon} color="blue.500" mb="0.5" />
-                Preview your bot by clicking the preview button on the top right
-              </ListItem>
+              <HStack as={ListItem}>
+                <Flex
+                  bgColor="blue.500"
+                  rounded="full"
+                  boxSize="25px"
+                  justify="center"
+                  align="center"
+                  color="white"
+                  fontWeight="bold"
+                  flexShrink={0}
+                  fontSize="13px"
+                >
+                  1
+                </Flex>
+                <Text>
+                  The left side bar contains blocks that you can drag and drop
+                  to the board.
+                </Text>
+              </HStack>
+              <HStack as={ListItem}>
+                <Flex
+                  bgColor="blue.500"
+                  rounded="full"
+                  boxSize="25px"
+                  fontSize="13px"
+                  justify="center"
+                  align="center"
+                  color="white"
+                  fontWeight="bold"
+                  flexShrink={0}
+                >
+                  2
+                </Flex>
+                <Text>
+                  You can group blocks together by dropping them below or above
+                  each other
+                </Text>
+              </HStack>
+              <HStack as={ListItem}>
+                <Flex
+                  bgColor="blue.500"
+                  rounded="full"
+                  boxSize="25px"
+                  justify="center"
+                  align="center"
+                  color="white"
+                  fontWeight="bold"
+                  flexShrink={0}
+                  fontSize="13px"
+                >
+                  3
+                </Flex>
+                <Text>Connect the groups together</Text>
+              </HStack>
+              <HStack as={ListItem}>
+                <Flex
+                  bgColor="blue.500"
+                  rounded="full"
+                  boxSize="25px"
+                  justify="center"
+                  align="center"
+                  color="white"
+                  fontWeight="bold"
+                  flexShrink={0}
+                  fontSize="13px"
+                >
+                  4
+                </Flex>
+                <Text>
+                  Preview your bot by clicking the preview button on the top
+                  right
+                </Text>
+              </HStack>
             </List>
           </Stack>
 
