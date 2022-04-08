@@ -66,7 +66,11 @@ export const InputChatStep = ({
       {hasAvatar && (
         <div className="flex w-6 xs:w-10 h-6 xs:h-10 mr-2 mb-2 mt-1 flex-shrink-0 items-center" />
       )}
-      <Input step={step} onSubmit={handleSubmit} defaultValue={defaultValue} />
+      <Input
+        step={step}
+        onSubmit={handleSubmit}
+        defaultValue={defaultValue?.toString()}
+      />
     </div>
   )
 }

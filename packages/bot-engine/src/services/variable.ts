@@ -18,7 +18,9 @@ export const parseVariables =
       })
       if (!variable) return ''
       return (
-        (options.fieldToParse === 'value' ? variable.value : variable.id) || ''
+        (options.fieldToParse === 'value'
+          ? variable.value?.toString()
+          : variable.id) || ''
       )
     })
   }
@@ -32,7 +34,7 @@ export const evaluateExpression = (variables: Variable[]) => (str: string) => {
       )
     )
     const evaluatedResult = func(...variables.map((v) => v.value))
-    return isNotDefined(evaluatedResult) ? '' : evaluatedResult.toString()
+    return isNotDefined(evaluatedResult) ? '' : evaluatedResult
   } catch (err) {
     console.log(err)
     return str
