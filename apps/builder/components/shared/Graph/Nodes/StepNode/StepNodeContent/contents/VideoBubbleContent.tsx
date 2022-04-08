@@ -42,6 +42,7 @@ export const VideoBubbleContent = ({ step }: { step: VideoBubbleStep }) => {
               left: '0',
               top: '0',
               borderRadius: '10px',
+              pointerEvents: 'none',
             }}
           />
         </Box>
