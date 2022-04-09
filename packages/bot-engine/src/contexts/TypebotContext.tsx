@@ -71,7 +71,7 @@ export const TypebotContext = ({
 
   const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
     const typebotToInject = {
-      id: typebot.id,
+      id: 'typebotId' in typebot ? typebot.typebotId : typebot.id,
       blocks: typebot.blocks,
       edges: typebot.edges,
       variables: typebot.variables,
