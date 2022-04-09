@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { drive } from '@googleapis/drive'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { methodNotAllowed, notAuthenticated } from 'utils'
+import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
 import { setUser, withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 
@@ -11,7 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   setUser({ email: user.email ?? undefined, id: user.id })
   if (req.method === 'GET') {
-    const credentialsId = req.query.credentialsId.toString()
+    const credentialsId = req.query.credentialsId as string | undefined
+    if (!credentialsId) return badRequest(res)
     const auth = await getAuthenticatedGoogleClient(user.id, credentialsId)
     if (!auth)
       return res.status(404).send("Couldn't find credentials in database")

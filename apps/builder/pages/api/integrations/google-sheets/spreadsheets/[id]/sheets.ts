@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { isDefined, methodNotAllowed, notAuthenticated } from 'utils'
+import {
+  badRequest,
+  isDefined,
+  methodNotAllowed,
+  notAuthenticated,
+} from 'utils'
 import { withSentry, setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 
@@ -11,7 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   setUser({ email: user.email ?? undefined, id: user.id })
   if (req.method === 'GET') {
-    const credentialsId = req.query.credentialsId.toString()
+    const credentialsId = req.query.credentialsId as string | undefined
+    if (!credentialsId) return badRequest(res)
 
     const spreadsheetId = req.query.id.toString()
     const doc = new GoogleSpreadsheet(spreadsheetId)
