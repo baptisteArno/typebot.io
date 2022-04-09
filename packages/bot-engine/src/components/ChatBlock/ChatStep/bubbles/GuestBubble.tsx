@@ -19,7 +19,11 @@ export const GuestBubble = ({
 
   return (
     <CSSTransition classNames="bubble" timeout={1000}>
-      <div className="flex justify-end mb-2 items-end" onClick={onClick}>
+      <div
+        className="flex justify-end mb-2 items-end"
+        onClick={onClick}
+        style={{ marginLeft: '50px' }}
+      >
         <span
           className="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble cursor-pointer hover:brightness-90 active:brightness-75"
           data-testid="guest-bubble"

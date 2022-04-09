@@ -219,7 +219,7 @@ const ChatChunks = ({
             hostAvatarSrc={hostAvatar.src}
           />
         )}
-        <div className="flex-1">
+        <div className="flex-1" style={{ marginRight: '50px' }}>
           <TransitionGroup>
             {bubbles.map((step) => (
               <CSSTransition
