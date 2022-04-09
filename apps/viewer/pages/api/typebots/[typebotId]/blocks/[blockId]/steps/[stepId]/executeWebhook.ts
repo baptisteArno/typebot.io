@@ -15,7 +15,13 @@ import {
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import { byId, initMiddleware, methodNotAllowed, parseAnswers } from 'utils'
+import {
+  byId,
+  initMiddleware,
+  methodNotAllowed,
+  notFound,
+  parseAnswers,
+} from 'utils'
 import { stringify } from 'qs'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
@@ -37,7 +43,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
       include: { webhooks: true },
-    })) as unknown as Typebot & { webhooks: Webhook[] }
+    })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
+    if (!typebot) return notFound(res)
     const step = typebot.blocks
       .find(byId(blockId))
       ?.steps.find(byId(stepId)) as WebhookStep
