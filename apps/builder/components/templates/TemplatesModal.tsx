@@ -51,7 +51,12 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="6xl"
+      blockScrollOnMount={false}
+    >
       <ModalOverlay />
       <ModalContent h="85vh">
         <ModalBody as={HStack} p="0">
