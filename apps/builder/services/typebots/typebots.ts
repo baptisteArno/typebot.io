@@ -35,6 +35,8 @@ import {
   defaultConditionContent,
   defaultSendEmailOptions,
   defaultEmbedBubbleContent,
+  ChoiceInputStep,
+  ConditionStep,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -42,6 +44,7 @@ import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
   isWebhookStep,
+  stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
   stepTypeHasWebhook,
@@ -53,6 +56,7 @@ import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'db'
+import { isDefined } from '@chakra-ui/utils'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -129,6 +133,29 @@ const duplicateTypebot = async (
                 ? edgeIdsMapping.get(s.outgoingEdgeId)
                 : undefined,
             }
+            if (
+              s.type === LogicStepType.TYPEBOT_LINK &&
+              s.options.typebotId === 'current' &&
+              isDefined(s.options.blockId)
+            )
+              return {
+                ...s,
+                options: {
+                  ...s.options,
+                  blockId: blockIdsMapping.get(s.options.blockId as string),
+                },
+              }
+            if (stepHasItems(s))
+              return {
+                ...s,
+                items: s.items.map((item) => ({
+                  ...item,
+                  outgoingEdgeId: item.outgoingEdgeId
+                    ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
+                    : undefined,
+                })),
+                ...newIds,
+              } as ChoiceInputStep | ConditionStep
             if (isWebhookStep(s)) {
               const newWebhook = await duplicateWebhook(s.webhookId)
               return {
