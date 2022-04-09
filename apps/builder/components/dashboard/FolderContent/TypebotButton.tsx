@@ -16,11 +16,13 @@ import { isMobile } from 'services/utils'
 import { MoreButton } from 'components/dashboard/FolderContent/MoreButton'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { GripIcon } from 'assets/icons'
-import { deleteTypebot, duplicateTypebot } from 'services/typebots'
+import { deleteTypebot, importTypebot, getTypebot } from 'services/typebots'
 import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
 import { TypebotIcon } from 'components/shared/TypebotHeader/TypebotIcon'
+import { useUser } from 'contexts/UserContext'
+import { Plan } from 'db'
 
 type ChatbotCardProps = {
   typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
@@ -36,6 +38,7 @@ export const TypebotButton = ({
   onMouseDown,
 }: ChatbotCardProps) => {
   const router = useRouter()
+  const { user } = useUser()
   const { draggedTypebot } = useTypebotDnd()
   const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
   const {
@@ -71,7 +74,13 @@ export const TypebotButton = ({
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    const { data: createdTypebot, error } = await duplicateTypebot(typebot.id)
+    const { data } = await getTypebot(typebot.id)
+    const typebotToDuplicate = data?.typebot
+    if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
+    const { data: createdTypebot, error } = await importTypebot(
+      data.typebot,
+      user?.plan ?? Plan.FREE
+    )
     if (error)
       return toast({
         title: "Couldn't duplicate typebot",

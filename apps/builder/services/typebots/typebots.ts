@@ -48,11 +48,11 @@ import {
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest, omit } from 'utils'
+import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
-import { Plan, User } from 'db'
+import { Plan } from 'db'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -96,91 +96,84 @@ export const createTypebot = async ({
   })
 }
 
-export const importTypebot = async (typebot: Typebot, user: User) => {
-  const typebotToImport: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'> = omit(
-    {
-      ...typebot,
-      publishedTypebotId: null,
-      publicId: null,
-      customDomain: null,
-    },
-    'id',
-    'updatedAt',
-    'createdAt'
-  )
+export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
   return sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: cleanUpTypebot(typebotToImport, user),
+    body: await duplicateTypebot(typebot, userPlan),
   })
 }
 
-export const duplicateTypebot = async (typebotId: string) => {
-  const { data } = await getTypebot(typebotId)
-  const typebotToDuplicate = data?.typebot
-  if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
-  const duplicatedTypebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'> =
-    omit(
-      {
-        ...typebotToDuplicate,
-        name: `${typebotToDuplicate.name} copy`,
-        publishedTypebotId: null,
-        publicId: null,
-        customDomain: null,
-      },
-      'id',
-      'updatedAt',
-      'createdAt'
-    )
-  return sendRequest<Typebot>({
-    url: `/api/typebots`,
-    method: 'POST',
-    body: await cleanAndDuplicateWebhooks(duplicatedTypebot),
-  })
-}
-
-const cleanUpTypebot = (
-  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>,
-  user: User
-): Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'> => ({
-  ...typebot,
-  blocks: typebot.blocks.map((b) => ({
-    ...b,
-    steps: b.steps.map((s) =>
-      isWebhookStep(s) ? { ...s, webhookId: cuid() } : s
+const duplicateTypebot = async (
+  typebot: Typebot,
+  userPlan: Plan
+): Promise<Typebot> => {
+  const blockIdsMapping = generateOldNewIdsMapping(typebot.blocks)
+  const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
+  return {
+    ...typebot,
+    id: cuid(),
+    name: `${typebot.name} copy`,
+    publishedTypebotId: null,
+    publicId: null,
+    customDomain: null,
+    blocks: await Promise.all(
+      typebot.blocks.map(async (b) => ({
+        ...b,
+        id: blockIdsMapping.get(b.id) as string,
+        steps: await Promise.all(
+          b.steps.map(async (s) => {
+            const newIds = {
+              blockId: blockIdsMapping.get(s.blockId) as string,
+              outgoingEdgeId: s.outgoingEdgeId
+                ? edgeIdsMapping.get(s.outgoingEdgeId)
+                : undefined,
+            }
+            if (isWebhookStep(s)) {
+              const newWebhook = await duplicateWebhook(s.webhookId)
+              return {
+                ...s,
+                webhookId: newWebhook ? newWebhook.id : cuid(),
+                ...newIds,
+              }
+            }
+            return {
+              ...s,
+              ...newIds,
+            }
+          })
+        ),
+      }))
     ),
-  })),
-  settings:
-    typebot.settings.general.isBrandingEnabled === false &&
-    user.plan === Plan.FREE
-      ? {
-          ...typebot.settings,
-          general: { ...typebot.settings.general, isBrandingEnabled: true },
-        }
-      : typebot.settings,
-})
-
-const cleanAndDuplicateWebhooks = async (
-  typebot: Omit<Typebot, 'id' | 'updatedAt' | 'createdAt'>
-) => ({
-  ...typebot,
-  blocks: await Promise.all(
-    typebot.blocks.map(async (b) => ({
-      ...b,
-      steps: await Promise.all(
-        b.steps.map(async (s) => {
-          if (isWebhookStep(s)) {
-            const newWebhook = await duplicateWebhook(s.webhookId)
-            return { ...s, webhookId: newWebhook ? newWebhook.id : cuid() }
+    edges: typebot.edges.map((e) => ({
+      ...e,
+      id: edgeIdsMapping.get(e.id) as string,
+      from: {
+        ...e.from,
+        blockId: blockIdsMapping.get(e.from.blockId) as string,
+      },
+      to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
+    })),
+    settings:
+      typebot.settings.general.isBrandingEnabled === false &&
+      userPlan === Plan.FREE
+        ? {
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
           }
-          return s
-        })
-      ),
-    }))
-  ),
-})
+        : typebot.settings,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+}
 
-const getTypebot = (typebotId: string) =>
+const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
+  const idsMapping: Map<string, string> = new Map()
+  itemWithId.forEach((item) => idsMapping.set(item.id, cuid()))
+  return idsMapping
+}
+
+export const getTypebot = (typebotId: string) =>
   sendRequest<{ typebot: Typebot }>({
     url: `/api/typebots/${typebotId}`,
     method: 'GET',

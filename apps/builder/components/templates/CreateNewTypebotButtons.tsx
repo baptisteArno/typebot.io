@@ -11,7 +11,7 @@ import { useUser } from 'contexts/UserContext'
 import { Typebot } from 'models'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { importTypebot, createTypebot } from 'services/typebots'
+import { createTypebot, importTypebot } from 'services/typebots'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { TemplatesModal } from './TemplatesModal'
 
@@ -46,7 +46,7 @@ export const CreateNewTypebotButtons = () => {
               },
             },
           },
-          user
+          user.plan
         )
       : await createTypebot({
           folderId,
