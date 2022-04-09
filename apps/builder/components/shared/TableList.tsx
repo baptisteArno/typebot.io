@@ -47,9 +47,10 @@ export const TableList = <T,>({
   }
 
   const deleteItem = (itemIndex: number) => () => {
-    items.splice(itemIndex, 1)
-    setItems([...items])
-    onItemsChange([...items])
+    const newItems = [...items]
+    newItems.splice(itemIndex, 1)
+    setItems([...newItems])
+    onItemsChange([...newItems])
   }
 
   const handleMouseEnter = (itemIndex: number) => () =>
