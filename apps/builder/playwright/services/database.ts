@@ -7,7 +7,13 @@ import {
   Typebot,
   Webhook,
 } from 'models'
-import { CollaborationType, DashboardFolder, PrismaClient, User } from 'db'
+import {
+  CollaborationType,
+  DashboardFolder,
+  GraphNavigation,
+  PrismaClient,
+  User,
+} from 'db'
 import { readFileSync } from 'fs'
 import { encrypt } from 'utils'
 
@@ -34,8 +40,18 @@ export const setupDatabase = async () => {
 export const createUsers = () =>
   prisma.user.createMany({
     data: [
-      { id: 'freeUser', email: 'free-user@email.com', name: 'Free user' },
-      { id: 'proUser', email: 'pro-user@email.com', name: 'Pro user' },
+      {
+        id: 'freeUser',
+        email: 'free-user@email.com',
+        name: 'Free user',
+        graphNavigation: GraphNavigation.TRACKPAD,
+      },
+      {
+        id: 'proUser',
+        email: 'pro-user@email.com',
+        name: 'Pro user',
+        graphNavigation: GraphNavigation.TRACKPAD,
+      },
     ],
   })
 

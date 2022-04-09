@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "authenticatedUser",
-          "value": "{\"id\":\"proUser\",\"name\":\"Pro user\",\"email\":\"pro-user@email.com\",\"emailVerified\":null,\"image\":\"https://avatars.githubusercontent.com/u/16015833?v=4\",\"plan\":\"PRO\",\"stripeId\":null}"
+          "value": "{\"id\":\"proUser\",\"name\":\"Pro user\",\"email\":\"pro-user@email.com\",\"emailVerified\":null,\"image\":\"https://avatars.githubusercontent.com/u/16015833?v=4\",\"plan\":\"PRO\",\"stripeId\":null,\"graphNavigation\": \"TRACKPAD\"}"
         },
         {
           "name": "typebot-20-modal",
