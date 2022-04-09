@@ -21,8 +21,9 @@ export const TypebotPage = ({
   url,
 }: TypebotPageProps & { typebot: PublicTypebot }) => {
   const [showTypebot, setShowTypebot] = useState(false)
-  const [predefinedVariables, setPredefinedVariables] =
-    useState<{ [key: string]: string }>()
+  const [predefinedVariables, setPredefinedVariables] = useState<{
+    [key: string]: string
+  }>()
   const [error, setError] = useState<Error | undefined>(
     isIE ? new Error('Internet explorer is not supported') : undefined
   )
@@ -44,7 +45,7 @@ export const TypebotPage = ({
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
       const { error, data: result } = await createResult(typebot.typebotId)
-      if (error) setError(error)
+      if (error) return setError(error)
       if (result) {
         setResultId(result.id)
         if (typebot.settings.general.isNewResultOnRefreshEnabled !== true)
@@ -56,6 +57,7 @@ export const TypebotPage = ({
 
   const handleNewVariables = async (variables: VariableWithValue[]) => {
     if (!resultId) return setError(new Error('Result was not created'))
+    if (variables.length === 0) return
     const { error } = await updateResult(resultId, { variables })
     if (error) setError(error)
   }
