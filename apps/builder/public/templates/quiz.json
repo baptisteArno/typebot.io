@@ -962,7 +962,6 @@
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
       "hostAvatar": {
-        "url": "https://lh3.googleusercontent.com/a-/AOh14GhZu4OG2Brh1TgRjJQYMLKTPuA6NE5viARvKsM5bw=s96-c",
         "isEnabled": true
       },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
