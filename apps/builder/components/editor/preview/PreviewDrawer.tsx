@@ -75,6 +75,7 @@ export const PreviewDrawer = () => {
       onMouseOver={() => setIsResizeHandleVisible(true)}
       onMouseLeave={() => setIsResizeHandleVisible(false)}
       p="6"
+      zIndex={10}
     >
       <Fade in={isResizeHandleVisible}>
         <ResizeHandle
