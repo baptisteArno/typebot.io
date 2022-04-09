@@ -1,3 +1,5 @@
+import { YoutubeEmbed } from '../../src/js/YoutubeEmbed.jsx'
+
 # Variables
 
 Variables are placeholders for content that you can then use anywhere in the Typebot. It's a very important concept to understand to truly create a customized experience for the user.
@@ -5,13 +7,14 @@ Variables are placeholders for content that you can then use anywhere in the Typ
 ## Save an answer in a variable
 
 You can tell your input step to save the answer into a variable and reuse then in a further bubble for example:
-<img src="/img/variables/question.png" width="800" alt="Iframe preview"/>
+
+<img src="/img/variables/question.png" width="800" alt="Iframe preview" />
 
 ## Advanced concepts
 
 Here is a quick video that showcase advanced concepts about variables:
 
-<iframe width="900" height="500" src="https://www.youtube.com/embed/o715Tjv1ijI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<YoutubeEmbed videoId="o715Tjv1ijI" />
 
 ### Prefilled variables
 
@@ -42,8 +45,12 @@ These are simply variables that are declared in the bot flow but aren't displaye
 
 These can be simply declared with "Set variable" steps:
 
-<img src="/img/variables/declaring.png" width="300" alt="Iframe preview"/>
+<img src="/img/variables/declaring.png" width="300" alt="Iframe preview" />
 
 Then the values will be available on the Results page in specific columns:
 
-<img src="/img/variables/hiddenVariablesResults.png" width="500" alt="Iframe preview"/>
+<img
+  src="/img/variables/hiddenVariablesResults.png"
+  width="500"
+  alt="Iframe preview"
+/>
