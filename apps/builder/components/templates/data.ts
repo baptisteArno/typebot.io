@@ -9,12 +9,7 @@ export const templates: TemplateProps[] = [
   { name: 'Lead Generation', emoji: '🤝', fileName: 'lead-gen.json' },
   { name: 'Customer Support', emoji: '😍', fileName: 'customer-support.json' },
   { name: 'Quiz', emoji: '🕹️', fileName: 'quiz.json' },
-  {
-    name: 'Lead Scoring',
-    emoji: '🏆',
-    fileName: 'customer-support.json',
-    isComingSoon: true,
-  },
+  { name: 'Lead Scoring', emoji: '🏆', fileName: 'lead-scoring.json' },
   {
     name: 'FAQ',
     emoji: '💬',
