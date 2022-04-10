@@ -81,6 +81,9 @@ export const Footer = () => {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Company</ListHeader>
+            <NextChakraLink href="/about" color="gray.400">
+              About
+            </NextChakraLink>
             <NextChakraLink href="mailto:baptiste@typebot.io" color="gray.400">
               Contact
             </NextChakraLink>
