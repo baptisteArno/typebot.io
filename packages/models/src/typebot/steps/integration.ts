@@ -6,6 +6,7 @@ export type IntegrationStep =
   | WebhookStep
   | SendEmailStep
   | ZapierStep
+  | MakeComStep
 
 export type IntegrationStepOptions =
   | GoogleSheetsOptions
@@ -19,6 +20,7 @@ export enum IntegrationStepType {
   WEBHOOK = 'Webhook',
   EMAIL = 'Email',
   ZAPIER = 'Zapier',
+  MAKE_COM = 'Make.com',
 }
 
 export type GoogleSheetsStep = StepBase & {
@@ -39,6 +41,10 @@ export type WebhookStep = StepBase & {
 
 export type ZapierStep = Omit<WebhookStep, 'type'> & {
   type: IntegrationStepType.ZAPIER
+}
+
+export type MakeComStep = Omit<WebhookStep, 'type'> & {
+  type: IntegrationStepType.MAKE_COM
 }
 
 export type SendEmailStep = StepBase & {

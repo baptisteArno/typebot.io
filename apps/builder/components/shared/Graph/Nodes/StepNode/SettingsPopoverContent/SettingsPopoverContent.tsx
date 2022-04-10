@@ -212,6 +212,18 @@ export const StepSettings = ({
     case IntegrationStepType.ZAPIER: {
       return <ZapierSettings step={step} />
     }
+    case IntegrationStepType.MAKE_COM: {
+      return (
+        <WebhookSettings
+          step={step}
+          onOptionsChange={handleOptionsChange}
+          provider={{
+            name: 'Make.com',
+            url: 'https://eu1.make.com/app/invite/43fa76a621f67ea27f96cffc3a2477e1',
+          }}
+        />
+      )
+    }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />

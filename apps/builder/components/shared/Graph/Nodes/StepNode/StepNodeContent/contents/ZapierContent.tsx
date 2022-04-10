@@ -1,14 +1,20 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { defaultWebhookAttributes, Webhook, ZapierStep } from 'models'
+import {
+  defaultWebhookAttributes,
+  MakeComStep,
+  Webhook,
+  ZapierStep,
+} from 'models'
 import { useEffect } from 'react'
 import { byId, isNotDefined } from 'utils'
 
 type Props = {
-  step: ZapierStep
+  step: ZapierStep | MakeComStep
+  configuredLabel: string
 }
 
-export const ZapierContent = ({ step }: Props) => {
+export const ProviderWebhookContent = ({ step, configuredLabel }: Props) => {
   const { webhooks, typebot, updateWebhook } = useTypebot()
   const webhook = webhooks.find(byId(step.webhookId))
 
@@ -30,7 +36,7 @@ export const ZapierContent = ({ step }: Props) => {
     return <Text color="gray.500">Configure...</Text>
   return (
     <Text isTruncated pr="6">
-      {webhook?.url ? 'Enabled' : 'Disabled'}
+      {webhook?.url ? configuredLabel : 'Disabled'}
     </Text>
   )
 }

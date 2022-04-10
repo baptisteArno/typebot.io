@@ -11,6 +11,9 @@ import {
   Stack,
   useToast,
   Text,
+  Alert,
+  AlertIcon,
+  Link,
 } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -23,6 +26,7 @@ import {
   WebhookStep,
   defaultWebhookAttributes,
   Webhook,
+  MakeComStep,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -37,15 +41,22 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
+import { ExternalLinkIcon } from 'assets/icons'
 
+type Provider = {
+  name: 'Make.com'
+  url: string
+}
 type Props = {
-  step: WebhookStep
+  step: WebhookStep | MakeComStep
   onOptionsChange: (options: WebhookOptions) => void
+  provider?: Provider
 }
 
 export const WebhookSettings = ({
   step: { options, blockId, id: stepId, webhookId },
   onOptionsChange,
+  provider,
 }: Props) => {
   const { typebot, save, webhooks, updateWebhook } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
@@ -143,11 +154,23 @@ export const WebhookSettings = ({
   if (!localWebhook) return <Spinner />
   return (
     <Stack spacing={4}>
+      {provider && (
+        <Alert status={'info'} bgColor={'blue.50'} rounded="md">
+          <AlertIcon />
+          <Stack>
+            <Text>Head up to {provider.name} to configure this block:</Text>
+            <Button as={Link} href={provider.url} isExternal colorScheme="blue">
+              <Text mr="2">{provider.name}</Text> <ExternalLinkIcon />
+            </Button>
+          </Stack>
+        </Alert>
+      )}
       <Input
-        placeholder="Your Webhook URL..."
+        placeholder="Paste webhook URL..."
         defaultValue={localWebhook.url ?? ''}
         onChange={handleUrlChange}
         debounceTimeout={0}
+        withVariableButton={!provider}
       />
       <SwitchWithLabel
         id={'easy-config'}
@@ -239,17 +262,19 @@ export const WebhookSettings = ({
         </Stack>
       )}
       <Stack>
-        <Button
-          onClick={handleTestRequestClick}
-          colorScheme="blue"
-          isLoading={isTestResponseLoading}
-        >
-          Test the request
-        </Button>
+        {localWebhook.url && (
+          <Button
+            onClick={handleTestRequestClick}
+            colorScheme="blue"
+            isLoading={isTestResponseLoading}
+          >
+            Test the request
+          </Button>
+        )}
         {testResponse && (
           <CodeEditor isReadOnly lang="json" value={testResponse} />
         )}
-        {(testResponse || options?.responseVariableMapping) && (
+        {(testResponse || options?.responseVariableMapping.length > 0) && (
           <Accordion allowToggle allowMultiple>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">

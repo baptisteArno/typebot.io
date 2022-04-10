@@ -23,7 +23,7 @@ import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
 import { SendEmailContent } from './contents/SendEmailContent'
 import { TypebotLinkContent } from './contents/TypebotLinkContent'
-import { ZapierContent } from './contents/ZapierContent'
+import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
   step: Step | StartStep
@@ -121,7 +121,17 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       return <WebhookContent step={step} />
     }
     case IntegrationStepType.ZAPIER: {
-      return <ZapierContent step={step} />
+      return (
+        <ProviderWebhookContent step={step} configuredLabel="Trigger zap" />
+      )
+    }
+    case IntegrationStepType.MAKE_COM: {
+      return (
+        <ProviderWebhookContent
+          step={step}
+          configuredLabel="Trigger scenario"
+        />
+      )
     }
     case IntegrationStepType.EMAIL: {
       return <SendEmailContent step={step} />

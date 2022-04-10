@@ -115,6 +115,7 @@ export const stepTypeHasWebhook = (
   Object.values([
     IntegrationStepType.WEBHOOK,
     IntegrationStepType.ZAPIER,
+    IntegrationStepType.MAKE_COM,
   ] as string[]).includes(type)
 
 export const stepTypeHasItems = (
