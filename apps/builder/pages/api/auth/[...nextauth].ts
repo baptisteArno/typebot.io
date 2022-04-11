@@ -22,7 +22,10 @@ providers.push(
   })
 )
 
-if (process.env.NEXT_PUBLIC_SMTP_FROM)
+if (
+  process.env.NEXT_PUBLIC_SMTP_FROM &&
+  process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true'
+)
   providers.push(
     EmailProvider({
       server: {

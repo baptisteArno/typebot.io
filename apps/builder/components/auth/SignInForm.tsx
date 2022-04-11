@@ -50,32 +50,33 @@ export const SignInForm = ({
     setAuthLoading(false)
   }
   return (
-    <Stack spacing="4">
+    <Stack spacing="4" w="330px">
       <SocialLoginButtons />
-      {process.env.NEXT_PUBLIC_SMTP_FROM && (
-        <>
-          <DividerWithText mt="6">Or with your email</DividerWithText>
-          <HStack as="form" onSubmit={handleEmailSubmit}>
-            <Input
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="email@company.com"
-              required
-              value={emailValue}
-              onChange={handleEmailChange}
-            />
-            <Button
-              type="submit"
-              isLoading={
-                ['loading', 'authenticated'].includes(status) || authLoading
-              }
-            >
-              Submit
-            </Button>
-          </HStack>
-        </>
-      )}
+      {process.env.NEXT_PUBLIC_SMTP_FROM &&
+        process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true' && (
+          <>
+            <DividerWithText mt="6">Or with your email</DividerWithText>
+            <HStack as="form" onSubmit={handleEmailSubmit}>
+              <Input
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="email@company.com"
+                required
+                value={emailValue}
+                onChange={handleEmailChange}
+              />
+              <Button
+                type="submit"
+                isLoading={
+                  ['loading', 'authenticated'].includes(status) || authLoading
+                }
+              >
+                Submit
+              </Button>
+            </HStack>
+          </>
+        )}
     </Stack>
   )
 }
