@@ -58,6 +58,12 @@ Used for Google Fonts:
 
 The following variables are only used for the builder.
 
+### Email
+
+| Parameter                      | Default | Description                            |
+| ------------------------------ | ------- | -------------------------------------- |
+| NEXT_PUBLIC_SMTP_AUTH_DISABLED | false   | To disable the authentication by email |
+
 ### GitHub (optional)
 
 Used for authenticating with GitHub. By default, it uses the credentials of a Typebot-dev app.
