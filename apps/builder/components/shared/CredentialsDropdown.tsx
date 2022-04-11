@@ -43,8 +43,6 @@ export const CredentialsDropdown = ({
   })
   const { credentials, mutate } = useCredentials({
     userId: user?.id,
-    onError: (error) =>
-      toast({ title: error.name, description: error.message }),
   })
   const [isDeleting, setIsDeleting] = useState<string>()
 

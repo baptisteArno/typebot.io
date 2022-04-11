@@ -125,7 +125,7 @@ export const GoogleSheetsSettingsBody = ({
             />
           </>
         )}
-      {sheet && 'action' in options && (
+      {'action' in options && (
         <ActionOptions
           options={options}
           sheet={sheet}
@@ -145,7 +145,7 @@ const ActionOptions = ({
     | GoogleSheetsGetOptions
     | GoogleSheetsInsertRowOptions
     | GoogleSheetsUpdateRowOptions
-  sheet: Sheet
+  sheet?: Sheet
   onOptionsChange: (options: GoogleSheetsOptions) => void
 }) => {
   const handleInsertColumnsChange = (cellsToInsert: Cell[]) =>
@@ -162,14 +162,14 @@ const ActionOptions = ({
 
   const UpdatingCellItem = useMemo(
     () => (props: TableListItemProps<Cell>) =>
-      <CellWithValueStack {...props} columns={sheet.columns} />,
-    [sheet.columns]
+      <CellWithValueStack {...props} columns={sheet?.columns ?? []} />,
+    [sheet?.columns]
   )
 
   const ExtractingCellItem = useMemo(
     () => (props: TableListItemProps<ExtractingCell>) =>
-      <CellWithVariableIdStack {...props} columns={sheet.columns} />,
-    [sheet.columns]
+      <CellWithVariableIdStack {...props} columns={sheet?.columns ?? []} />,
+    [sheet?.columns]
   )
 
   switch (options.action) {
@@ -187,7 +187,7 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            columns={sheet.columns}
+            columns={sheet?.columns ?? []}
             item={options.referenceCell ?? { id: 'reference' }}
             onItemChange={handleReferenceCellChange}
           />
@@ -205,7 +205,7 @@ const ActionOptions = ({
         <Stack>
           <Text>Row to select</Text>
           <CellWithValueStack
-            columns={sheet.columns}
+            columns={sheet?.columns ?? []}
             item={options.referenceCell ?? { id: 'reference' }}
             onItemChange={handleReferenceCellChange}
           />

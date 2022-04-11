@@ -18,7 +18,7 @@ export const CellWithValueStack = ({
     onItemChange({ ...item, value })
   }
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <Stack p="4" rounded="md" flex="1" borderWidth="1px" w="full">
       <DropdownList<string>
         currentItem={item.column}
         onItemSelect={handleColumnSelect}

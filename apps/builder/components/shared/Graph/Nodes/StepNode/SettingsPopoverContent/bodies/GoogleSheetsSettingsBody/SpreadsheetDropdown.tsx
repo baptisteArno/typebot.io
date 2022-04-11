@@ -1,4 +1,4 @@
-import { Input, Tooltip, useToast } from '@chakra-ui/react'
+import { Input, Tooltip } from '@chakra-ui/react'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { useMemo } from 'react'
 import { useSpreadsheets } from 'services/integrations'
@@ -14,15 +14,8 @@ export const SpreadsheetsDropdown = ({
   spreadsheetId,
   onSelectSpreadsheetId,
 }: Props) => {
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
   const { spreadsheets, isLoading } = useSpreadsheets({
     credentialsId,
-    onError: (e) =>
-      !toast.isActive('spreadsheets') &&
-      toast({ id: 'spreadsheets', title: e.name, description: e.message }),
   })
   const currentSpreadsheet = useMemo(
     () => spreadsheets?.find((s) => s.id === spreadsheetId),

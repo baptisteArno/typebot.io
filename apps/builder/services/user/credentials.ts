@@ -8,13 +8,13 @@ export const useCredentials = ({
   onError,
 }: {
   userId?: string
-  onError: (error: Error) => void
+  onError?: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ credentials: Credentials[] }, Error>(
     userId ? `/api/users/${userId}/credentials` : null,
     fetcher
   )
-  if (error) onError(error)
+  if (error && onError) onError(error)
   return {
     credentials: data?.credentials ?? [],
     isLoading: !error && !data,
