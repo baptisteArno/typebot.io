@@ -49,6 +49,7 @@ export const Graph = ({
     setOpenedStepId,
     updateBlockCoordinates,
     setPreviewingEdge,
+    connectingIds,
   } = useGraph()
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
@@ -58,6 +59,11 @@ export const Graph = ({
     [graphPosition]
   )
   const { user } = useUser()
+
+  const [autoMoveDirection, setAutoMoveDirection] = useState<
+    'top' | 'right' | 'bottom' | 'left' | undefined
+  >()
+  useAutoMoveBoard(autoMoveDirection, setGraphPosition)
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -122,13 +128,6 @@ export const Graph = ({
     setPreviewingEdge(undefined)
   }
 
-  useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
-  useEventListener('mousedown', handleCaptureMouseDown, undefined, {
-    capture: true,
-  })
-  useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
-  useEventListener('click', handleClick, editorContainerRef.current)
-
   const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     const { deltaX, deltaY } = draggableData
     setGraphPosition({
@@ -159,6 +158,25 @@ export const Graph = ({
     })
   }
 
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!connectingIds)
+      return autoMoveDirection ? setAutoMoveDirection(undefined) : undefined
+    if (e.clientX <= 50) return setAutoMoveDirection('left')
+    if (e.clientY <= 50 + headerHeight) return setAutoMoveDirection('top')
+    if (e.clientX >= window.innerWidth - 50)
+      return setAutoMoveDirection('right')
+    if (e.clientY >= window.innerHeight - 50)
+      return setAutoMoveDirection('bottom')
+    setAutoMoveDirection(undefined)
+  }
+
+  useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
+  useEventListener('mousedown', handleCaptureMouseDown, undefined, {
+    capture: true,
+  })
+  useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
+  useEventListener('click', handleClick, editorContainerRef.current)
+  useEventListener('mousemove', handleMouseMove)
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
@@ -204,3 +222,39 @@ const projectMouse = (
       graphPosition.scale,
   }
 }
+
+const useAutoMoveBoard = (
+  autoMoveDirection: 'top' | 'right' | 'bottom' | 'left' | undefined,
+  setGraphPosition: React.Dispatch<
+    React.SetStateAction<{
+      x: number
+      y: number
+      scale: number
+    }>
+  >
+) =>
+  useEffect(() => {
+    if (!autoMoveDirection) return
+    const interval = setInterval(() => {
+      setGraphPosition((prev) => ({
+        ...prev,
+        x:
+          autoMoveDirection === 'right'
+            ? prev.x - 5
+            : autoMoveDirection === 'left'
+            ? prev.x + 5
+            : prev.x,
+        y:
+          autoMoveDirection === 'bottom'
+            ? prev.y - 5
+            : autoMoveDirection === 'top'
+            ? prev.y + 5
+            : prev.y,
+      }))
+    }, 5)
+
+    return () => {
+      clearInterval(interval)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoMoveDirection])

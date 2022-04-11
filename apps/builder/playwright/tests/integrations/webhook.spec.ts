@@ -20,7 +20,7 @@ test.describe('Webhook step', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
-      'input[placeholder="Your Webhook URL..."]',
+      'input[placeholder="Paste webhook URL..."]',
       `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
     )
     await page.click('text=Test the request')
@@ -41,7 +41,7 @@ test.describe('Webhook step', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
-      'input[placeholder="Your Webhook URL..."]',
+      'input[placeholder="Paste webhook URL..."]',
       `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
     )
     await page.click('text=Advanced configuration')
@@ -66,7 +66,7 @@ test.describe('Webhook step', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
-      'input[placeholder="Your Webhook URL..."]',
+      'input[placeholder="Paste webhook URL..."]',
       `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook`
     )
     await page.click('text=Advanced configuration')
