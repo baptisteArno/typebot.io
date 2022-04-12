@@ -224,6 +224,18 @@ export const StepSettings = ({
         />
       )
     }
+    case IntegrationStepType.PABBLY_CONNECT: {
+      return (
+        <WebhookSettings
+          step={step}
+          onOptionsChange={handleOptionsChange}
+          provider={{
+            name: 'Pabbly Connect',
+            url: 'https://www.pabbly.com/connect/integrations/typebot/',
+          }}
+        />
+      )
+    }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />

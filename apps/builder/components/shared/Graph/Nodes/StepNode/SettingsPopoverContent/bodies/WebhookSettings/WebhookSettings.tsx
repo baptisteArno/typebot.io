@@ -27,6 +27,7 @@ import {
   defaultWebhookAttributes,
   Webhook,
   MakeComStep,
+  PabblyConnectStep,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -44,11 +45,11 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
 
 type Provider = {
-  name: 'Make.com'
+  name: 'Make.com' | 'Pabbly Connect'
   url: string
 }
 type Props = {
-  step: WebhookStep | MakeComStep
+  step: WebhookStep | MakeComStep | PabblyConnectStep
   onOptionsChange: (options: WebhookOptions) => void
   provider?: Provider
 }

@@ -24,6 +24,7 @@ import {
   GoogleAnalyticsLogo,
   GoogleSheetsLogo,
   MakeComLogo,
+  PabblyConnectLogo,
   ZapierLogo,
 } from 'assets/logos'
 import {
@@ -81,6 +82,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ZapierLogo {...props} />
     case IntegrationStepType.MAKE_COM:
       return <MakeComLogo {...props} />
+    case IntegrationStepType.PABBLY_CONNECT:
+      return <PabblyConnectLogo {...props} />
     case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
     case 'start':

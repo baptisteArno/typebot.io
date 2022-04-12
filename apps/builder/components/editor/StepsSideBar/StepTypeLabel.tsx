@@ -73,6 +73,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Zapier</Text>
     case IntegrationStepType.MAKE_COM:
       return <Text>Make.com</Text>
+    case IntegrationStepType.PABBLY_CONNECT:
+      return <Text>Pabbly</Text>
     case IntegrationStepType.EMAIL:
       return <Text>Email</Text>
     default:

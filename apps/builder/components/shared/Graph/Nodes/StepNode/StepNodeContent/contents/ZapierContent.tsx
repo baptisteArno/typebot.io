@@ -3,6 +3,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import {
   defaultWebhookAttributes,
   MakeComStep,
+  PabblyConnectStep,
   Webhook,
   ZapierStep,
 } from 'models'
@@ -10,7 +11,7 @@ import { useEffect } from 'react'
 import { byId, isNotDefined } from 'utils'
 
 type Props = {
-  step: ZapierStep | MakeComStep
+  step: ZapierStep | MakeComStep | PabblyConnectStep
   configuredLabel: string
 }
 

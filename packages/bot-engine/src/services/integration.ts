@@ -17,6 +17,7 @@ import {
   Block,
   VariableWithValue,
   MakeComStep,
+  PabblyConnectStep,
 } from 'models'
 import { stringify } from 'qs'
 import { byId, sendRequest } from 'utils'
@@ -51,6 +52,7 @@ export const executeIntegration = ({
       return executeGoogleAnalyticsIntegration(step, context)
     case IntegrationStepType.ZAPIER:
     case IntegrationStepType.MAKE_COM:
+    case IntegrationStepType.PABBLY_CONNECT:
     case IntegrationStepType.WEBHOOK:
       return executeWebhook(step, context)
     case IntegrationStepType.EMAIL:
@@ -209,7 +211,7 @@ const parseCellValues = (
   }, {})
 
 const executeWebhook = async (
-  step: WebhookStep | ZapierStep | MakeComStep,
+  step: WebhookStep | ZapierStep | MakeComStep | PabblyConnectStep,
   {
     blockId,
     stepId,

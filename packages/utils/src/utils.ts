@@ -116,6 +116,7 @@ export const stepTypeHasWebhook = (
     IntegrationStepType.WEBHOOK,
     IntegrationStepType.ZAPIER,
     IntegrationStepType.MAKE_COM,
+    IntegrationStepType.PABBLY_CONNECT,
   ] as string[]).includes(type)
 
 export const stepTypeHasItems = (

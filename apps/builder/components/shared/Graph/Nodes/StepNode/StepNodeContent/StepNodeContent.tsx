@@ -125,6 +125,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
         <ProviderWebhookContent step={step} configuredLabel="Trigger zap" />
       )
     }
+    case IntegrationStepType.PABBLY_CONNECT:
     case IntegrationStepType.MAKE_COM: {
       return (
         <ProviderWebhookContent
