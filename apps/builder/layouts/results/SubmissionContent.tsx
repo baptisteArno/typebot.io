@@ -98,7 +98,8 @@ export const SubmissionsContent = ({
 
   const handleExportSelection = async () => {
     setIsExportLoading(true)
-    const isSelectAll = totalSelected === totalResults
+    const isSelectAll =
+      totalSelected === totalResults - (totalHiddenResults ?? 0)
     const dataToUnparse = isSelectAll
       ? await getAllTableData()
       : tableData.filter((_, idx) => selectedIndices.includes(idx))
@@ -145,7 +146,7 @@ export const SubmissionsContent = ({
   }
 
   return (
-    <Stack maxW="1200px" w="full" pb="28" px={['4', '0']}>
+    <Stack maxW="1200px" w="full" pb="28" px={['4', '0']} spacing="4">
       {totalHiddenResults && (
         <UnlockProPlanInfo
           buttonLabel={`Unlock ${totalHiddenResults} results`}

@@ -38,6 +38,7 @@ export const UnlockProPlanInfo = ({
       bgColor={'blue.50'}
       rounded="md"
       justifyContent="space-between"
+      flexShrink={0}
     >
       <HStack>
         <AlertIcon />
