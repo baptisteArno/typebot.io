@@ -1,12 +1,15 @@
 import {
+  CredentialsType,
   defaultSettings,
   defaultTheme,
   PublicTypebot,
+  SmtpCredentialsData,
   Step,
   Typebot,
 } from 'models'
 import { PrismaClient } from 'db'
 import { readFileSync } from 'fs'
+import { encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
@@ -182,5 +185,22 @@ const createAnswers = () => {
         blockId: 'block1',
       })),
     ],
+  })
+}
+
+export const createSmtpCredentials = (
+  id: string,
+  smtpData: SmtpCredentialsData
+) => {
+  const { encryptedData, iv } = encrypt(smtpData)
+  return prisma.credentials.create({
+    data: {
+      id,
+      data: encryptedData,
+      iv,
+      name: smtpData.from.email as string,
+      type: CredentialsType.SMTP,
+      ownerId: 'proUser',
+    },
   })
 }

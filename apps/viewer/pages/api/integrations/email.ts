@@ -1,7 +1,7 @@
 import prisma from 'libs/prisma'
 import { SendEmailOptions, SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createTransport } from 'nodemailer'
+import { createTransport, getTestMessageUrl } from 'nodemailer'
 import { decrypt, initMiddleware } from 'utils'
 
 import Cors from 'cors'
@@ -47,15 +47,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const info = await transporter.sendMail({
       from: `"${from.name}" <${from.email}>`,
-      cc: cc?.join(''),
-      bcc: bcc?.join(''),
-      to: recipients.join(', '),
+      cc,
+      bcc,
+      to: recipients,
       replyTo,
       subject,
       text: body,
     })
 
-    res.status(200).send({ message: 'Email sent!', info })
+    res.status(200).send({
+      message: 'Email sent!',
+      info,
+      previewUrl: getTestMessageUrl(info),
+    })
   }
 }
 
