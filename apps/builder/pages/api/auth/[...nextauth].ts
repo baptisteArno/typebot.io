@@ -12,15 +12,13 @@ import { User } from 'db'
 
 const providers: Provider[] = []
 
-providers.push(
-  GitHubProvider({
-    clientId:
-      process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID ?? '534b549dd17709a743a2',
-    clientSecret:
-      process.env.GITHUB_CLIENT_SECRET ??
-      '7adb03507504fb1a54422f6c3c697277cfd000a9',
-  })
-)
+if (process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID)
+  providers.push(
+    GitHubProvider({
+      clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    })
+  )
 
 if (
   process.env.NEXT_PUBLIC_SMTP_FROM &&

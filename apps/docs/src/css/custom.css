@@ -32,3 +32,17 @@ img {
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+summary h3,
+summary h4 {
+  margin-bottom: 0;
+}
+
+summary h4 {
+  padding-top: 3px;
+}
+
+details {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}

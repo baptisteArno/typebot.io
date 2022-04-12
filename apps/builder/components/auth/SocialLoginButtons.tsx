@@ -27,15 +27,17 @@ export const SocialLoginButtons = () => {
 
   return (
     <Stack>
-      <Button
-        leftIcon={<GithubIcon />}
-        onClick={handleGitHubClick}
-        data-testid="github"
-        isLoading={['loading', 'authenticated'].includes(status)}
-        variant="outline"
-      >
-        Continue with GitHub
-      </Button>
+      {process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID && (
+        <Button
+          leftIcon={<GithubIcon />}
+          onClick={handleGitHubClick}
+          data-testid="github"
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with GitHub
+        </Button>
+      )}
       {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
         <Button
           leftIcon={<GoogleLogo />}

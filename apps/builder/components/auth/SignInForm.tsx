@@ -5,6 +5,7 @@ import {
   Stack,
   HStack,
   useToast,
+  Text,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
@@ -12,6 +13,14 @@ import { signIn, useSession } from 'next-auth/react'
 import { DividerWithText } from './DividerWithText'
 import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
+import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+
+const hasNoAuthProvider =
+  (!process.env.NEXT_PUBLIC_SMTP_FROM ||
+    process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED === 'true') &&
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
+  process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
+  process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID
 
 type Props = {
   defaultEmail?: string
@@ -49,6 +58,21 @@ export const SignInForm = ({
     })
     setAuthLoading(false)
   }
+  if (hasNoAuthProvider)
+    return (
+      <Text>
+        You need to{' '}
+        <NextChakraLink
+          href="https://docs.typebot.io/self-hosting/configuration"
+          isExternal
+          color="blue.400"
+          textDecor="underline"
+        >
+          configure at least one auth provider
+        </NextChakraLink>{' '}
+        (Email, Google, GitHub or Facebook).
+      </Text>
+    )
   return (
     <Stack spacing="4" w="330px">
       <SocialLoginButtons />
