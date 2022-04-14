@@ -21,7 +21,12 @@ export const ConversationContainer = ({
   onNewBlockVisible,
   onCompleted,
 }: Props) => {
-  const { typebot, updateVariableValue } = useTypebot()
+  const {
+    typebot,
+    updateVariableValue,
+    linkedBotEdgeIdsQueue,
+    popEdgeIdFromLinkedTypebotQueue,
+  } = useTypebot()
   const { document: frameDocument } = useFrame()
   const [displayedBlocks, setDisplayedBlocks] = useState<
     { block: Block; startStepIndex: number }[]
@@ -36,7 +41,14 @@ export const ConversationContainer = ({
   ) => {
     const currentTypebot = updatedTypebot ?? typebot
     const nextEdge = currentTypebot.edges.find(byId(edgeId))
-    if (!nextEdge) return onCompleted()
+    if (!nextEdge) {
+      if (linkedBotEdgeIdsQueue.length > 0) {
+        const nextEdgeId = linkedBotEdgeIdsQueue[0]
+        popEdgeIdFromLinkedTypebotQueue()
+        displayNextBlock(nextEdgeId)
+      }
+      return onCompleted()
+    }
     const nextBlock = currentTypebot.blocks.find(byId(nextEdge.to.blockId))
     if (!nextBlock) return onCompleted()
     const startStepIndex = nextEdge.to.stepId
