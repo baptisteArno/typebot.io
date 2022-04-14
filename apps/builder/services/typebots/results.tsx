@@ -80,11 +80,22 @@ export const deleteAllResults = async (typebotId: string) =>
     method: 'DELETE',
   })
 
-export const getAllResults = async (typebotId: string) =>
-  sendRequest<{ results: ResultWithAnswers[] }>({
-    url: `/api/typebots/${typebotId}/results`,
-    method: 'GET',
-  })
+export const getAllResults = async (typebotId: string) => {
+  const results = []
+  let hasMore = true
+  let lastResultId: string | undefined = undefined
+  do {
+    const query = stringify({ limit: 200, lastResultId })
+    const { data } = await sendRequest<{ results: ResultWithAnswers[] }>({
+      url: `/api/typebots/${typebotId}/results?${query}`,
+      method: 'GET',
+    })
+    results.push(...(data?.results ?? []))
+    lastResultId = results[results.length - 1]?.id as string | undefined
+    if (data?.results.length === 0) hasMore = false
+  } while (hasMore)
+  return results
+}
 
 export const parseDateToReadable = (dateStr: string): string => {
   const date = new Date(dateStr)

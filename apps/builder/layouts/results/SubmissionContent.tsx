@@ -126,9 +126,8 @@ export const SubmissionsContent = ({
 
   const getAllTableData = async () => {
     if (!publishedTypebot) return []
-    const { data, error } = await getAllResults(typebotId)
-    if (error) toast({ description: error.message, title: error.name })
-    return convertResultsToTableData(data?.results, resultHeader)
+    const results = await getAllResults(typebotId)
+    return convertResultsToTableData(results, resultHeader)
   }
 
   const tableData: { [key: string]: string }[] = useMemo(
