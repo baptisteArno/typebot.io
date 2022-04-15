@@ -45,54 +45,42 @@ curl -i -X GET https://typebot.io/api/typebots \
 }
 ```
 
-### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/webhookSteps
+### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/webhookBlocks
 
-List webhook steps in a typebot. These are the steps you can, later on, register your Webhook URL:
+List webhook blocks in a typebot. These are the blocks you can register a Webhook URL:
 
 ```bash title="Try it yourself"
-curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/webhookBlocks \
   -H 'Authorization: Bearer ${TOKEN}'
 ```
 
 ```json title="Response 200 OK"
 {
-  "steps": [
+  "blocks": [
     {
       "blockId": "blockId",
-      "id": "stepId",
-      "name": "Block #2 > stepId"
+      "name": "Group #2 > blockId",
+      "url": "https://my-webhook.com/webhook"
     }
   ]
 }
 ```
 
-### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/sampleResult
+### <Tag color="green">GET</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/sampleResult
 
 Get a sample of what the webhook body will look like when triggered
 
 ```bash title="Try it yourself"
-curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/blocks/$BLOCK_ID/steps/$STEP_ID/sampleResult \
+curl -i -X GET https://typebot.io/api/typebots/$TYPEBOT_ID/blocks/$BLOCK_ID/sampleResult \
   -H 'Authorization: Bearer ${TOKEN}'
 ```
 
-```json title="Response 200 OK"
-{
-  "steps": [
-    {
-      "blockId": "blockId",
-      "id": "stepId",
-      "name": "Block #2 > stepId"
-    }
-  ]
-}
-```
+### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/subscribeWebhook
 
-### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/subscribeWebhook
-
-Subscribe the step to a specified webhook URL
+Subscribe the block to a specified webhook URL
 
 ```bash title="Try it yourself"
-curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/blocks/$BLOCK_ID/subscribeWebhook \
   -H 'Authorization: Bearer ${TOKEN}'\
   --header 'Content-Type: application/json' \
   --data '{"url": "https://domain.com/my-webhook"}'
@@ -114,12 +102,12 @@ The url you want to subscribe to.
 
 <hr />
 
-### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/steps/<Tag>stepId</Tag>/unsubscribeWebhook
+### <Tag color="orange">POST</Tag> /api/typebots/<Tag>typebotId</Tag>/blocks/<Tag>blockId</Tag>/unsubscribeWebhook
 
-Unsubscribe the current webhook on step
+Unsubscribe the current webhook on block
 
 ```bash title="Try it yourself"
-curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/webhookSteps \
+curl -i -X POST https://typebot.io/api/typebots/$TYPEBOT_ID/blocks/$BLOCK_ID/unsubscribeWebhook \
   -H 'Authorization: Bearer ${TOKEN}'\
 ```
 

@@ -1,5 +1,6 @@
 // Taken from https://github.com/plausible/docs/blob/master/src/js/api-helpers.js 💙
 import React from 'react'
+import { useColorMode } from '@docusaurus/theme-common'
 
 export const Required = () => (
   <span
@@ -30,7 +31,8 @@ export const Optional = () => (
 )
 
 export const Tag = ({ children, color }) => {
-  let backgroundColor = '#CBD5E0'
+  const { isDarkTheme } = useColorMode()
+  let backgroundColor = isDarkTheme ? '#2d60b4' : '#CBD5E0'
   switch (color) {
     case 'green':
       backgroundColor = '#68D391'
