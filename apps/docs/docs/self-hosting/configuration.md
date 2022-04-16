@@ -51,6 +51,7 @@ Used for sending email notifications and authentication
 <p>
 
 Used authentication in the builder and for the Google Sheets integration step. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
+The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/google/callback`
 
 | Parameter                    | Default | Description                                   |
 | ---------------------------- | ------- | --------------------------------------------- |
@@ -70,7 +71,7 @@ Used for Google Fonts:
 
 Used for authenticating with GitHub. By default, it uses the credentials of a Typebot-dev app.
 
-You can create your own GitHub OAuth app [here](https://github.com/settings/developers).
+You can create your own GitHub OAuth app [here](https://github.com/settings/developers). The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/github/callback`
 
 | Parameter                    | Default | Description                                                                 |
 | ---------------------------- | ------- | --------------------------------------------------------------------------- |
@@ -83,6 +84,7 @@ You can create your own GitHub OAuth app [here](https://github.com/settings/deve
 <p>
 
 You can create your own Facebook OAuth app [here](https://developers.facebook.com/apps/create/).
+The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/facebook/callback`
 
 | Parameter                      | Default | Description                                                                 |
 | ------------------------------ | ------- | --------------------------------------------------------------------------- |
