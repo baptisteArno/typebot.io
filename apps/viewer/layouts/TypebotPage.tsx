@@ -1,5 +1,6 @@
 import { TypebotViewer } from 'bot-engine'
 import { Answer, PublicTypebot, VariableWithValue } from 'models'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'
@@ -19,6 +20,7 @@ export const TypebotPage = ({
   isIE,
   url,
 }: TypebotPageProps & { typebot: PublicTypebot }) => {
+  const { asPath, push } = useRouter()
   const [showTypebot, setShowTypebot] = useState(false)
   const [predefinedVariables, setPredefinedVariables] = useState<{
     [key: string]: string
@@ -30,6 +32,7 @@ export const TypebotPage = ({
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search)
+    clearQueryParams()
     const predefinedVariables: { [key: string]: string } = {}
     urlParams.forEach((value, key) => {
       predefinedVariables[key] = value
@@ -38,6 +41,11 @@ export const TypebotPage = ({
     initializeResult().then()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const clearQueryParams = () => {
+    const hasQueryParams = asPath.includes('?')
+    if (hasQueryParams) push(asPath.split('?')[0], undefined, { shallow: true })
+  }
 
   const initializeResult = async () => {
     const resultIdFromSession = getExistingResultFromSession()
