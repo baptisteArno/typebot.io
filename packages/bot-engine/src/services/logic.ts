@@ -127,10 +127,10 @@ const executeRedirect = (
   { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
   if (!step.options?.url) return step.outgoingEdgeId
-  window.open(
-    sanitizeUrl(parseVariables(variables)(step.options?.url)),
-    step.options.isNewTab ? '_blank' : '_self'
-  )
+  const tempLink = document.createElement('a')
+  tempLink.href = sanitizeUrl(parseVariables(variables)(step.options?.url))
+  tempLink.setAttribute('target', step.options.isNewTab ? '_blank' : '_self')
+  tempLink.click()
   return step.outgoingEdgeId
 }
 
