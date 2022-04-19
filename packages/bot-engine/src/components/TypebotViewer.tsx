@@ -28,6 +28,7 @@ export type TypebotViewerProps = {
   apiHost?: string
   style?: CSSProperties
   predefinedVariables?: { [key: string]: string | undefined }
+  resultId?: string
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => void
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -40,6 +41,7 @@ export const TypebotViewer = ({
   apiHost = process.env.NEXT_PUBLIC_VIEWER_URL?.split(',')[0],
   isPreview = false,
   style,
+  resultId,
   predefinedVariables,
   onNewLog,
   onNewBlockVisible,
@@ -95,6 +97,7 @@ export const TypebotViewer = ({
         onNewLog={handleNewLog}
       >
         <AnswersContext
+          resultId={resultId}
           onNewAnswer={handleNewAnswer}
           onVariablesUpdated={onVariablesUpdated}
         >

@@ -2,10 +2,11 @@ import prisma from 'libs/prisma'
 import { SendEmailOptions, SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { decrypt, initMiddleware } from 'utils'
+import { decrypt, initMiddleware, methodNotAllowed } from 'utils'
 
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'
+import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
 
 const cors = initMiddleware(Cors())
 
@@ -27,6 +28,7 @@ const defaultFrom = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
+    const resultId = req.query.resultId as string | undefined
     const { credentialsId, recipients, body, subject, cc, bcc, replyTo } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as SendEmailOptions
@@ -36,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!from)
       return res.status(404).send({ message: "Couldn't find credentials" })
 
-    const transporter = createTransport({
+    const transportConfig = {
       host,
       port,
       secure: isTlsEnabled ?? undefined,
@@ -44,8 +46,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         user: username,
         pass: password,
       },
-    })
-    const info = await transporter.sendMail({
+    }
+    const transporter = createTransport(transportConfig)
+    const email = {
       from: `"${from.name}" <${from.email}>`,
       cc,
       bcc,
@@ -53,14 +56,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       replyTo,
       subject,
       text: body,
-    })
-
-    res.status(200).send({
-      message: 'Email sent!',
-      info,
-      previewUrl: getTestMessageUrl(info),
-    })
+    }
+    try {
+      const info = await transporter.sendMail(email)
+      await saveSuccessLog(resultId, 'Email successfully sent')
+      return res.status(200).send({
+        message: 'Email sent!',
+        info,
+        previewUrl: getTestMessageUrl(info),
+      })
+    } catch (err) {
+      await saveErrorLog(resultId, 'Email not sent', {
+        transportConfig,
+        email,
+      })
+      return res.status(500).send({
+        message: `Email not sent. Error: ${err}`,
+      })
+    }
   }
+  return methodNotAllowed(res)
 }
 
 const getEmailInfo = async (

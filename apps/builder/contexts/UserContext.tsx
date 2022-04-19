@@ -51,7 +51,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     if (isDefined(user) || isNotDefined(session)) return
     const parsedUser = session.user as User
     setUser(parsedUser)
-    setSentryUser({ id: parsedUser.id })
+    if (parsedUser?.id) setSentryUser({ id: parsedUser.id })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 

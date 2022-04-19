@@ -14,13 +14,3 @@ export const updateResult = async (resultId: string, result: Partial<Result>) =>
     method: 'PATCH',
     body: result,
   })
-
-export const createLog = (
-  resultId: string,
-  log: Omit<Log, 'id' | 'createdAt' | 'resultId'>
-) =>
-  sendRequest<Result>({
-    url: `/api/typebots/t/results/${resultId}/logs`,
-    method: 'POST',
-    body: log,
-  })

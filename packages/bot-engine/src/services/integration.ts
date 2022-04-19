@@ -33,6 +33,7 @@ type IntegrationContext = {
   variables: Variable[]
   resultValues: ResultValues
   blocks: Block[]
+  resultId?: string
   updateVariables: (variables: VariableWithValue[]) => void
   updateVariableValue: (variableId: string, value: string) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -92,7 +93,7 @@ const executeGoogleSheetIntegration = async (
 
 const insertRowInGoogleSheets = async (
   options: GoogleSheetsInsertRowOptions,
-  { variables, apiHost, onNewLog }: IntegrationContext
+  { variables, apiHost, onNewLog, resultId }: IntegrationContext
 ) => {
   if (!options.cellsToInsert) {
     onNewLog({
@@ -102,8 +103,9 @@ const insertRowInGoogleSheets = async (
     })
     return
   }
+  const params = stringify({ resultId })
   const { error } = await sendRequest({
-    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,
@@ -121,11 +123,12 @@ const insertRowInGoogleSheets = async (
 
 const updateRowInGoogleSheets = async (
   options: GoogleSheetsUpdateRowOptions,
-  { variables, apiHost, onNewLog }: IntegrationContext
+  { variables, apiHost, onNewLog, resultId }: IntegrationContext
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
+  const params = stringify({ resultId })
   const { error } = await sendRequest({
-    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
     method: 'PATCH',
     body: {
       credentialsId: options.credentialsId,
@@ -153,6 +156,7 @@ const getRowFromGoogleSheets = async (
     updateVariables,
     apiHost,
     onNewLog,
+    resultId,
   }: IntegrationContext
 ) => {
   if (!options.referenceCell || !options.cellsToExtract) return
@@ -164,6 +168,7 @@ const getRowFromGoogleSheets = async (
         value: parseVariables(variables)(options.referenceCell.value ?? ''),
       },
       columns: options.cellsToExtract.map((cell) => cell.column),
+      resultId,
     },
     { indices: false }
   )
@@ -222,10 +227,12 @@ const executeWebhook = async (
     apiHost,
     resultValues,
     onNewLog,
+    resultId,
   }: IntegrationContext
 ) => {
+  const params = stringify({ resultId })
   const { data, error } = await sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
+    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook?${params}`,
     method: 'POST',
     body: {
       variables,
@@ -266,7 +273,7 @@ const executeWebhook = async (
 
 const sendEmail = async (
   step: SendEmailStep,
-  { variables, apiHost, isPreview, onNewLog }: IntegrationContext
+  { variables, apiHost, isPreview, onNewLog, resultId }: IntegrationContext
 ) => {
   if (isPreview) {
     onNewLog({
@@ -279,7 +286,7 @@ const sendEmail = async (
   const { options } = step
   const replyTo = parseVariables(variables)(options.replyTo)
   const { error } = await sendRequest({
-    url: `${apiHost}/api/integrations/email`,
+    url: `${apiHost}/api/integrations/email?resultId=${resultId}`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,

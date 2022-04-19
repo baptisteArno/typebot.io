@@ -42,4 +42,7 @@ test('should send an email', async ({ page }) => {
   await expect(
     page.locator('text="<baptiste.arnaud95@gmail.com>" >> nth=0')
   ).toBeVisible()
+  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.click('text="See logs"')
+  await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

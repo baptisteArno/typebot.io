@@ -6,6 +6,7 @@ import {
   SmtpCredentialsData,
   Step,
   Typebot,
+  Webhook,
 } from 'models'
 import { PrismaClient } from 'db'
 import { readFileSync } from 'fs'
@@ -36,12 +37,13 @@ export const createUser = () =>
     },
   })
 
-export const createWebhook = (typebotId: string) =>
+export const createWebhook = (typebotId: string, webhook?: Partial<Webhook>) =>
   prisma.webhook.create({
     data: {
       id: 'webhook1',
-      typebotId: typebotId,
+      typebotId,
       method: 'GET',
+      ...webhook,
     },
   })
 

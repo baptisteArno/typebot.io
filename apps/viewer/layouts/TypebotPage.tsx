@@ -1,10 +1,9 @@
 import { TypebotViewer } from 'bot-engine'
-import { Log } from 'db'
 import { Answer, PublicTypebot, VariableWithValue } from 'models'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
 import { SEO } from '../components/Seo'
-import { createLog, createResult, updateResult } from '../services/result'
+import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
 
 export type TypebotPageProps = {
@@ -74,14 +73,6 @@ export const TypebotPage = ({
     if (error) setError(error)
   }
 
-  const handleNewLog = async (
-    log: Omit<Log, 'id' | 'createdAt' | 'resultId'>
-  ) => {
-    if (!resultId) return setError(new Error('Result was not created'))
-    const { error } = await createLog(resultId, log)
-    if (error) setError(error)
-  }
-
   if (error) {
     return <ErrorPage error={error} />
   }
@@ -95,11 +86,11 @@ export const TypebotPage = ({
       {showTypebot && (
         <TypebotViewer
           typebot={typebot}
+          resultId={resultId}
           predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
           onVariablesUpdated={handleNewVariables}
-          onNewLog={handleNewLog}
         />
       )}
     </div>

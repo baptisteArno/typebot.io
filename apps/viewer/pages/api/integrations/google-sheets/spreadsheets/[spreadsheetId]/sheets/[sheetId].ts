@@ -5,10 +5,12 @@ import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'
+import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
 
 const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
+  const resultId = req.query.resultId as string | undefined
   if (req.method === 'GET') {
     const spreadsheetId = req.query.spreadsheetId.toString()
     const sheetId = req.query.sheetId.toString()
@@ -29,17 +31,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     doc.useOAuth2Client(client)
     await doc.loadInfo()
     const sheet = doc.sheetsById[sheetId]
-    const rows = await sheet.getRows()
-    const row = rows.find(
-      (row) => row[referenceCell.column as string] === referenceCell.value
-    )
-    if (!row) return res.status(404).send({ message: "Couldn't find row" })
-    return res.send({
-      ...extractingColumns.reduce(
-        (obj, column) => ({ ...obj, [column]: row[column] }),
-        {}
-      ),
-    })
+    try {
+      const rows = await sheet.getRows()
+      const row = rows.find(
+        (row) => row[referenceCell.column as string] === referenceCell.value
+      )
+      if (!row) {
+        await saveErrorLog(resultId, "Couldn't find reference cell")
+        return res.status(404).send({ message: "Couldn't find row" })
+      }
+      const response = {
+        ...extractingColumns.reduce(
+          (obj, column) => ({ ...obj, [column]: row[column] }),
+          {}
+        ),
+      }
+      await saveSuccessLog(resultId, 'Succesfully fetched spreadsheet data')
+      return res.send(response)
+    } catch (err) {
+      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      return res.status(500).send(err)
+    }
   }
   if (req.method === 'POST') {
     const spreadsheetId = req.query.spreadsheetId.toString()
@@ -55,10 +67,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!auth)
       return res.status(404).send("Couldn't find credentials in database")
     doc.useOAuth2Client(auth)
-    await doc.loadInfo()
-    const sheet = doc.sheetsById[sheetId]
-    await sheet.addRow(values)
-    return res.send({ message: 'Success' })
+    try {
+      await doc.loadInfo()
+      const sheet = doc.sheetsById[sheetId]
+      await sheet.addRow(values)
+      await saveSuccessLog(resultId, 'Succesfully inserted row')
+      return res.send({ message: 'Success' })
+    } catch (err) {
+      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      return res.status(500).send(err)
+    }
   }
   if (req.method === 'PATCH') {
     const spreadsheetId = req.query.spreadsheetId.toString()
@@ -75,19 +93,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!auth)
       return res.status(404).send("Couldn't find credentials in database")
     doc.useOAuth2Client(auth)
-    await doc.loadInfo()
-    const sheet = doc.sheetsById[sheetId]
-    const rows = await sheet.getRows()
-    const updatingRowIndex = rows.findIndex(
-      (row) => row[referenceCell.column as string] === referenceCell.value
-    )
-    if (updatingRowIndex === -1)
-      return res.status(404).send({ message: "Couldn't find row to update" })
-    for (const key in values) {
-      rows[updatingRowIndex][key] = values[key]
+    try {
+      await doc.loadInfo()
+      const sheet = doc.sheetsById[sheetId]
+      const rows = await sheet.getRows()
+      const updatingRowIndex = rows.findIndex(
+        (row) => row[referenceCell.column as string] === referenceCell.value
+      )
+      if (updatingRowIndex === -1)
+        return res.status(404).send({ message: "Couldn't find row to update" })
+      for (const key in values) {
+        rows[updatingRowIndex][key] = values[key]
+      }
+      await rows[updatingRowIndex].save()
+      await saveSuccessLog(resultId, 'Succesfully updated row')
+      return res.send({ message: 'Success' })
+    } catch (err) {
+      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      return res.status(500).send(err)
     }
-    await rows[updatingRowIndex].save()
-    return res.send({ message: 'Success' })
   }
   return methodNotAllowed(res)
 }

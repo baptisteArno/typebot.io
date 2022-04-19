@@ -1,0 +1,130 @@
+{
+  "id": "cl26li8fl0407iez0w2tlw8fn",
+  "createdAt": "2022-04-19T20:25:30.417Z",
+  "updatedAt": "2022-04-19T20:40:48.366Z",
+  "icon": null,
+  "name": "My typebot",
+  "ownerId": "proUser",
+  "publishedTypebotId": null,
+  "folderId": null,
+  "blocks": [
+    {
+      "id": "cl26li8fj0000iez05x7razkg",
+      "steps": [
+        {
+          "id": "cl26li8fj0001iez0bqfraw9h",
+          "type": "start",
+          "label": "Start",
+          "blockId": "cl26li8fj0000iez05x7razkg",
+          "outgoingEdgeId": "cl26liqj6000g2e6ed2cwkvse"
+        }
+      ],
+      "title": "Start",
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "cl26lidjz000a2e6etf4v03hv",
+      "steps": [
+        {
+          "id": "cl26lidk4000b2e6es2fos0nl",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "cl26lidk5000c2e6e39wyc7wq",
+              "type": 0,
+              "stepId": "cl26lidk4000b2e6es2fos0nl",
+              "content": "Send success webhook"
+            }
+          ],
+          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        },
+        {
+          "id": "cl26lip76000e2e6ebmph843a",
+          "type": "Webhook",
+          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "options": {
+            "isCustomBody": false,
+            "isAdvancedConfig": false,
+            "variablesForTest": [],
+            "responseVariableMapping": []
+          },
+          "webhookId": "success-webhook"
+        },
+        {
+          "id": "cl26m0pdz00042e6ebjdoclaa",
+          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "type": "choice input",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
+          "items": [
+            {
+              "id": "cl26m0pdz00052e6ecmxwfz44",
+              "stepId": "cl26m0pdz00042e6ebjdoclaa",
+              "type": 0,
+              "content": "Send failed webhook"
+            }
+          ]
+        },
+        {
+          "id": "cl26m0w9b00072e6eld1ei291",
+          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "type": "Webhook",
+          "options": {
+            "responseVariableMapping": [],
+            "variablesForTest": [],
+            "isAdvancedConfig": false,
+            "isCustomBody": false
+          },
+          "webhookId": "failed-webhook"
+        }
+      ],
+      "title": "Group #1",
+      "graphCoordinates": { "x": 386, "y": 117 }
+    }
+  ],
+  "variables": [
+    { "id": "vcl26lzmg100012e6e9rn57c3o", "name": "var1" },
+    { "id": "vcl26lzo7q00022e6edw3pe7lf", "name": "var2" },
+    { "id": "vcl26lzq6s00032e6ecuhh80qz", "name": "var3" }
+  ],
+  "edges": [
+    {
+      "id": "cl26liqj6000g2e6ed2cwkvse",
+      "to": { "blockId": "cl26lidjz000a2e6etf4v03hv" },
+      "from": {
+        "stepId": "cl26li8fj0001iez0bqfraw9h",
+        "blockId": "cl26li8fj0000iez05x7razkg"
+      }
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": { "font": "Open Sans", "background": { "type": "None" } }
+  },
+  "settings": {
+    "general": {
+      "isBrandingEnabled": true,
+      "isInputPrefillEnabled": true,
+      "isNewResultOnRefreshEnabled": false
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null
+}

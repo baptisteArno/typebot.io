@@ -20,12 +20,14 @@ import {
   initMiddleware,
   methodNotAllowed,
   notFound,
+  omit,
   parseAnswers,
 } from 'utils'
 import { stringify } from 'qs'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import { parseSampleResult } from 'services/api/webhooks'
+import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
 
 const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -33,6 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId.toString()
     const stepId = req.query.blockId.toString()
+    const resultId = req.query.resultId as string | undefined
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
@@ -57,7 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       preparedWebhook,
       variables,
       step.blockId,
-      resultValues
+      resultValues,
+      resultId
     )
     return res.status(200).send(result)
   }
@@ -76,13 +80,14 @@ const prepareWebhookAttributes = (
   return webhook
 }
 
-const executeWebhook =
+export const executeWebhook =
   (typebot: Typebot) =>
   async (
     webhook: Webhook,
     variables: Variable[],
     blockId: string,
-    resultValues?: ResultValues
+    resultValues?: ResultValues,
+    resultId?: string
   ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
       return {
@@ -120,41 +125,55 @@ const executeWebhook =
             blockId,
           })
         : undefined
+    const request = {
+      url: parseVariables(variables)(
+        webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
+      ),
+      method: webhook.method as Method,
+      headers,
+      ...basicAuth,
+      json:
+        contentType !== 'x-www-form-urlencoded' && body
+          ? JSON.parse(parseVariables(variables)(body))
+          : undefined,
+      form:
+        contentType === 'x-www-form-urlencoded' && body
+          ? JSON.parse(parseVariables(variables)(body))
+          : undefined,
+    }
     try {
-      const response = await got(
-        parseVariables(variables)(
-          webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
-        ),
-        {
-          method: webhook.method as Method,
-          headers,
-          ...basicAuth,
-          json:
-            contentType !== 'x-www-form-urlencoded' && body
-              ? JSON.parse(parseVariables(variables)(body))
-              : undefined,
-          form:
-            contentType === 'x-www-form-urlencoded' && body
-              ? JSON.parse(parseVariables(variables)(body))
-              : undefined,
-        }
-      )
+      const response = await got(request.url, omit(request, 'url'))
+      await saveSuccessLog(resultId, 'Webhook successfuly executed.', {
+        statusCode: response.statusCode,
+        request,
+        response: parseBody(response.body),
+      })
       return {
         statusCode: response.statusCode,
         data: parseBody(response.body),
       }
     } catch (error) {
       if (error instanceof HTTPError) {
-        return {
+        const response = {
           statusCode: error.response.statusCode,
           data: parseBody(error.response.body as string),
         }
+        await saveErrorLog(resultId, 'Webhook returned an error', {
+          request,
+          response,
+        })
+        return response
       }
-      console.error(error)
-      return {
+      const response = {
         statusCode: 500,
         data: { message: `Error from Typebot server: ${error}` },
       }
+      console.error(error)
+      await saveErrorLog(resultId, 'Webhook failed to execute', {
+        request,
+        response,
+      })
+      return response
     }
   }
 
