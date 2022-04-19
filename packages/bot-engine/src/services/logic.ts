@@ -28,7 +28,11 @@ type LogicContext = {
   apiHost: string
   typebot: PublicTypebot
   linkedTypebots: LinkedTypebot[]
-  pushEdgeIdInLinkedTypebotQueue: (edgeId: EdgeId) => void
+  currentTypebotId: string
+  pushEdgeIdInLinkedTypebotQueue: (bot: {
+    edgeId: string
+    typebotId: string
+  }) => void
   setCurrentTypebotId: (id: string) => void
   updateVariableValue: (variableId: string, value: string) => void
   updateVariables: (variables: VariableWithValue[]) => void
@@ -157,6 +161,7 @@ const executeTypebotLink = async (
     createEdge,
     setCurrentTypebotId,
     pushEdgeIdInLinkedTypebotQueue,
+    currentTypebotId,
   } = context
   const linkedTypebot = (
     step.options.typebotId === 'current'
@@ -172,7 +177,11 @@ const executeTypebotLink = async (
     })
     return { nextEdgeId: step.outgoingEdgeId }
   }
-  if (step.outgoingEdgeId) pushEdgeIdInLinkedTypebotQueue(step.outgoingEdgeId)
+  if (step.outgoingEdgeId)
+    pushEdgeIdInLinkedTypebotQueue({
+      edgeId: step.outgoingEdgeId,
+      typebotId: currentTypebotId,
+    })
   setCurrentTypebotId(
     'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
   )

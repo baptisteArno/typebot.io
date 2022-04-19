@@ -115,6 +115,7 @@ export const ChatBlock = ({
         createEdge,
         setCurrentTypebotId,
         pushEdgeIdInLinkedTypebotQueue,
+        currentTypebotId,
       })
       nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
     }

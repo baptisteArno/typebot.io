@@ -12,19 +12,28 @@ export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
   'id' | 'blocks' | 'variables' | 'edges'
 >
+
+export type LinkedTypebotQueue = {
+  typebotId: string
+  edgeId: string
+}[]
+
 const typebotContext = createContext<{
   currentTypebotId: string
   typebot: PublicTypebot
   linkedTypebots: LinkedTypebot[]
   apiHost: string
   isPreview: boolean
-  linkedBotEdgeIdsQueue: string[]
+  linkedBotQueue: LinkedTypebotQueue
   setCurrentTypebotId: (id: string) => void
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   popEdgeIdFromLinkedTypebotQueue: () => void
-  pushEdgeIdInLinkedTypebotQueue: (edgeId: string) => void
+  pushEdgeIdInLinkedTypebotQueue: (bot: {
+    typebotId: string
+    edgeId: string
+  }) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -46,9 +55,7 @@ export const TypebotContext = ({
   const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
   const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
   const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
-  const [linkedBotEdgeIdsQueue, setLinkedBotEdgeIdsQueue] = useState<string[]>(
-    []
-  )
+  const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([])
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
@@ -93,11 +100,15 @@ export const TypebotContext = ({
     return typebotToInject
   }
 
-  const pushEdgeIdInLinkedTypebotQueue = (edgeId: string) =>
-    setLinkedBotEdgeIdsQueue((queue) => [...queue, edgeId])
+  const pushEdgeIdInLinkedTypebotQueue = (bot: {
+    typebotId: string
+    edgeId: string
+  }) => setLinkedBotQueue((queue) => [...queue, bot])
 
-  const popEdgeIdFromLinkedTypebotQueue = () =>
-    setLinkedBotEdgeIdsQueue((queue) => queue.slice(1))
+  const popEdgeIdFromLinkedTypebotQueue = () => {
+    setLinkedBotQueue((queue) => queue.slice(1))
+    const typebot = setCurrentTypebotId(linkedBotQueue[0].typebotId)
+  }
 
   return (
     <typebotContext.Provider
@@ -110,7 +121,7 @@ export const TypebotContext = ({
         createEdge,
         injectLinkedTypebot,
         onNewLog,
-        linkedBotEdgeIdsQueue,
+        linkedBotQueue,
         pushEdgeIdInLinkedTypebotQueue,
         popEdgeIdFromLinkedTypebotQueue,
         currentTypebotId,

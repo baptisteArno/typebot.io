@@ -24,7 +24,7 @@ export const ConversationContainer = ({
   const {
     typebot,
     updateVariableValue,
-    linkedBotEdgeIdsQueue,
+    linkedBotQueue,
     popEdgeIdFromLinkedTypebotQueue,
   } = useTypebot()
   const { document: frameDocument } = useFrame()
@@ -42,8 +42,8 @@ export const ConversationContainer = ({
     const currentTypebot = updatedTypebot ?? typebot
     const nextEdge = currentTypebot.edges.find(byId(edgeId))
     if (!nextEdge) {
-      if (linkedBotEdgeIdsQueue.length > 0) {
-        const nextEdgeId = linkedBotEdgeIdsQueue[0]
+      if (linkedBotQueue.length > 0) {
+        const nextEdgeId = linkedBotQueue[0].edgeId
         popEdgeIdFromLinkedTypebotQueue()
         displayNextBlock(nextEdgeId)
       }
