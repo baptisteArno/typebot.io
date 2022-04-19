@@ -37,7 +37,12 @@ export const AnswersContext = ({
 
   const updateVariables = (variables: VariableWithValue[]) =>
     setResultValues((resultValues) => {
-      const updatedVariables = [...resultValues.variables, ...variables]
+      const updatedVariables = [
+        ...resultValues.variables.filter((v) =>
+          variables.every((variable) => variable.id !== v.id)
+        ),
+        ...variables,
+      ]
       if (onVariablesUpdated) onVariablesUpdated(updatedVariables)
       return {
         ...resultValues,
