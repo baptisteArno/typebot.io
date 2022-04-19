@@ -171,8 +171,7 @@
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
-          },
-          "webhookId": "cl1r0eril001a2e6dv25rx2mr"
+          }
         },
         {
           "id": "cl1r0eril001b2e6dh43cqhv5",
@@ -184,8 +183,7 @@
               { "type": "p", "children": [{ "text": "Well done!" }] }
             ],
             "plainText": "Well done!"
-          },
-          "webhookId": "cl1r0eril001c2e6dbh80qiwd"
+          }
         },
         {
           "id": "cl1r0eril001d2e6d3gay9cls",
@@ -197,8 +195,7 @@
               { "type": "p", "children": [{ "text": "What is a persona ?" }] }
             ],
             "plainText": "What is a persona ?"
-          },
-          "webhookId": "cl1r0eril001e2e6drvndjnle"
+          }
         },
         {
           "id": "cl1r0eril001f2e6dk0fd0qpw",
@@ -232,7 +229,6 @@
           ],
           "blockId": "cl1r0erik00182e6dfzezujj0",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "webhookId": "cl1r0erim001k2e6dhymd2bpa",
           "outgoingEdgeId": "cl1r0khb6002c2e6ddssbpj9z"
         }
       ],
@@ -249,8 +245,7 @@
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
-          },
-          "webhookId": "cl1r0j8u2001v2e6dgdaoejo7"
+          }
         },
         {
           "id": "cl1r0j8u2001w2e6d3wnpzcj5",
@@ -262,8 +257,7 @@
               { "type": "p", "children": [{ "text": "Well done!" }] }
             ],
             "plainText": "Well done!"
-          },
-          "webhookId": "cl1r0j8u2001x2e6dwmsdfjc5"
+          }
         },
         {
           "id": "cl1r0j8u2001y2e6dr24ieifw",
@@ -278,8 +272,7 @@
               }
             ],
             "plainText": "What does CTA stand for?"
-          },
-          "webhookId": "cl1r0j8u2001z2e6d343g7x82"
+          }
         },
         {
           "id": "cl1r0j8u200202e6dun2d04gu",
@@ -313,7 +306,6 @@
           ],
           "blockId": "cl1r0j8u1001t2e6d42mjfcqo",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "webhookId": "cl1r0j8u300252e6da9tyu8mr",
           "outgoingEdgeId": "cl1r0ktet002i2e6d5sh8gd2b"
         }
       ],
@@ -366,8 +358,7 @@
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
             "plainText": "WRONG!"
-          },
-          "webhookId": "cl1r0exdi001n2e6dnva1ju5y"
+          }
         },
         {
           "id": "cl1r0exdi001o2e6d70s7si5y",
@@ -387,7 +378,6 @@
             ],
             "plainText": "Anchor text is the visible text that is hyperlinked to another page"
           },
-          "webhookId": "cl1r0exdi001p2e6d0eoo46n4",
           "outgoingEdgeId": "cl1r0ic5f001s2e6dw777scrq"
         }
       ],
@@ -405,8 +395,7 @@
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
             "plainText": "WRONG!"
-          },
-          "webhookId": "cl1r0k3tq00292e6dudt7nu2v"
+          }
         },
         {
           "id": "cl1r0k3tq002a2e6dv3s1eb6d",
@@ -426,7 +415,6 @@
             ],
             "plainText": "A persona is a fictional representation of a group of customers"
           },
-          "webhookId": "cl1r0k3tq002b2e6ducddzol5",
           "outgoingEdgeId": "cl1r0l7oa002j2e6dgtx0y1gh"
         }
       ],
@@ -444,8 +432,7 @@
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
             "plainText": "WRONG!"
-          },
-          "webhookId": "cl1r0kqof002f2e6dbkmt2n47"
+          }
         },
         {
           "id": "cl1r0kqog002g2e6dizmxvz64",
@@ -465,7 +452,6 @@
             ],
             "plainText": "Anchor text is the visible text that is hyperlinked to another page"
           },
-          "webhookId": "cl1r0kqog002h2e6divrrpeu2",
           "outgoingEdgeId": "cl1r0p4my00312e6d1wsgwohi"
         }
       ],
@@ -482,8 +468,7 @@
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
-          },
-          "webhookId": "cl1r0lo97002o2e6dtegt9gxn"
+          }
         },
         {
           "id": "cl1r0oqrr002y2e6dsg0sa64g",

@@ -280,7 +280,6 @@
             "variableId": "vcl1sezzln002b2e6e6ssxh9bf",
             "expressionToEvaluate": "{{Lead Score}} + 10"
           },
-          "webhookId": "cl1sf36ib002w2e6evfgnknot",
           "outgoingEdgeId": "cl1sfeog5004g2e6eiil842nb"
         }
       ]
@@ -496,7 +495,6 @@
             "variableId": "vcl1sezzln002b2e6e6ssxh9bf",
             "expressionToEvaluate": "{{Lead Score}} + 20"
           },
-          "webhookId": "cl1sfe2kn00492e6e5llrghnq",
           "outgoingEdgeId": "cl1sfeik5004d2e6ejj03f1gn"
         }
       ]
