@@ -45,16 +45,20 @@ export function CustomAdapter(p: PrismaClient): Adapter {
     linkAccount: (data) => {
       return p.account.create({
         data: {
-          provider: data.provider,
+          userId: data.userId,
           type: data.type,
+          provider: data.provider,
           providerAccountId: data.providerAccountId,
-          access_token: data.access_token,
-          token_type: data.token_type,
-          expires_at: data.expires_at,
           refresh_token: data.refresh_token,
+          access_token: data.access_token,
+          expires_at: data.expires_at,
+          token_type: data.token_type,
           scope: data.scope,
           id_token: data.id_token,
-          userId: data.userId,
+          session_state: data.session_state,
+          oauth_token_secret: data.oauth_token_secret as string,
+          oauth_token: data.oauth_token as string,
+          refresh_token_expires_in: data.refresh_token_expires_in as number,
         }
       }) as any
     },
