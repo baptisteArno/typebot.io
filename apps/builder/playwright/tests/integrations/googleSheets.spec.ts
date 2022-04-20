@@ -152,7 +152,7 @@ test.describe.parallel('Google sheets integration', () => {
 const fillInSpreadsheetInfo = async (page: Page) => {
   await page.click('text=Configure...')
   await page.click('text=Select an account')
-  await page.click('text=test2@gmail.com')
+  await page.click('text=pro-user@email.com')
 
   await page.fill('input[placeholder="Search for spreadsheet"]', 'CR')
   await page.click('text=CRM')

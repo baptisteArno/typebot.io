@@ -13,9 +13,11 @@ export const oauth2Client = new OAuth2Client(
 export const getAuthenticatedGoogleClient = async (
   userId: string,
   credentialsId: string
-): Promise<OAuth2Client | undefined> => {
-  const credentials = (await prisma.credentials.findUnique({
-    where: { id: credentialsId },
+): Promise<
+  { client: OAuth2Client; credentials: CredentialsFromDb } | undefined
+> => {
+  const credentials = (await prisma.credentials.findFirst({
+    where: { id: credentialsId, ownerId: userId },
   })) as CredentialsFromDb | undefined
   if (!credentials || credentials.ownerId !== userId) return
   const data = decrypt(
@@ -25,7 +27,7 @@ export const getAuthenticatedGoogleClient = async (
 
   oauth2Client.setCredentials(data)
   oauth2Client.on('tokens', updateTokens(credentialsId, data))
-  return oauth2Client
+  return { client: oauth2Client, credentials }
 }
 
 const updateTokens =

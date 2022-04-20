@@ -109,7 +109,7 @@ const createCredentials = () => {
   return prisma.credentials.createMany({
     data: [
       {
-        name: 'test2@gmail.com',
+        name: 'pro-user@email.com',
         ownerId: 'proUser',
         type: CredentialsType.GOOGLE_SHEETS,
         data: encryptedData,

@@ -6,7 +6,7 @@ const handlers = () => [
     const authenticatedUser = JSON.parse(
       typeof localStorage !== 'undefined'
         ? (localStorage.getItem('authenticatedUser') as string)
-        : '{"id":"proUser","name":"John Smith","email":"john@smith.com","emailVerified":null,"image":"https://avatars.githubusercontent.com/u/16015833?v=4","plan":"PRO","stripeId":null}'
+        : '{"id":"proUser","name":"Pro user","email":"pro-user@email.com","emailVerified":null,"image":"https://avatars.githubusercontent.com/u/16015833?v=4","plan":"PRO","stripeId":null}'
     )
     return res(
       ctx.json({
