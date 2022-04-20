@@ -26,17 +26,15 @@ export const parseVariables =
   }
 
 export const evaluateExpression = (variables: Variable[]) => (str: string) => {
+  const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
+    str.includes('return ') ? str : `return ${str}`
+  )
   try {
-    const func = Function(
-      ...variables.map((v) => v.id),
-      parseVariables(variables, { fieldToParse: 'id' })(
-        str.includes('return ') ? str : `return ${str}`
-      )
-    )
+    const func = Function(...variables.map((v) => v.id), evaluating)
     const evaluatedResult = func(...variables.map((v) => v.value))
     return isNotDefined(evaluatedResult) ? '' : evaluatedResult
   } catch (err) {
-    console.log(err)
+    console.log(`Evaluating: ${evaluating}`, err)
     return str
   }
 }
