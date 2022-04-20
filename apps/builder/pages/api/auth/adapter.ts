@@ -42,7 +42,26 @@ export function CustomAdapter(p: PrismaClient): Adapter {
     },
     updateUser: (data) => p.user.update({ where: { id: data.id }, data }),
     deleteUser: (id) => p.user.delete({ where: { id } }),
-    linkAccount: (data) => p.account.create({ data }) as any,
+    linkAccount: (data) => {
+      return p.account.create({
+        data: {
+          userId: data.userId,
+          type: data.type,
+          provider: data.provider,
+          providerAccountId: data.providerAccountId,
+          refresh_token: data.refresh_token,
+          access_token: data.access_token,
+          expires_at: data.expires_at,
+          token_type: data.token_type,
+          scope: data.scope,
+          id_token: data.id_token,
+          session_state: data.session_state,
+          oauth_token_secret: data.oauth_token_secret as string,
+          oauth_token: data.oauth_token as string,
+          refresh_token_expires_in: data.refresh_token_expires_in as number,
+        }
+      }) as any
+    },
     unlinkAccount: (provider_providerAccountId) =>
       p.account.delete({ where: { provider_providerAccountId } }) as any,
     async getSessionAndUser(sessionToken) {
