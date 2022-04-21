@@ -1,8 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { drive } from '@googleapis/drive'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
-import { setUser, withSentry } from '@sentry/nextjs'
+import {
+  badRequest,
+  forbidden,
+  methodNotAllowed,
+  notAuthenticated,
+} from 'utils'
+import { captureException, setUser, withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,7 +21,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const auth = await getAuthenticatedGoogleClient(user.id, credentialsId)
     if (!auth)
       return res.status(404).send("Couldn't find credentials in database")
-    console.log(auth.credentials.name, user.email)
+    if (auth.credentials.ownerId !== user.id) {
+      // It should never happen but for some reason it does in rare cases... Currently under investigation.
+      captureException(
+        new Error(
+          `Credentials ownerId does not match user id ${auth.credentials.ownerId} !== ${user.id}`
+        )
+      )
+      return forbidden(res)
+    }
     const response = await drive({
       version: 'v3',
       auth: auth.client,
