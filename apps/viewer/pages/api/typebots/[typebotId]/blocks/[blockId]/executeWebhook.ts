@@ -27,7 +27,11 @@ import { stringify } from 'qs'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import { parseSampleResult } from 'services/api/webhooks'
-import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
+import {
+  getLinkedTypebots,
+  saveErrorLog,
+  saveSuccessLog,
+} from 'services/api/utils'
 
 const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -117,9 +121,13 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
+    const linkedTypebots = await getLinkedTypebots(typebot)
     const body =
       webhook.method !== HttpMethod.GET
-        ? getBodyContent(typebot)({
+        ? await getBodyContent(
+            typebot,
+            linkedTypebots
+          )({
             body: webhook.body,
             resultValues,
             blockId,
@@ -178,8 +186,11 @@ export const executeWebhook =
   }
 
 const getBodyContent =
-  (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
-  ({
+  (
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    linkedTypebots: (Typebot | PublicTypebot)[]
+  ) =>
+  async ({
     body,
     resultValues,
     blockId,
@@ -187,13 +198,22 @@ const getBodyContent =
     body?: string | null
     resultValues?: ResultValues
     blockId: string
-  }): string | undefined => {
+  }): Promise<string | undefined> => {
     if (!body) return
     return body === '{{state}}'
       ? JSON.stringify(
           resultValues
-            ? parseAnswers(typebot)(resultValues)
-            : parseSampleResult(typebot)(blockId)
+            ? parseAnswers({
+                blocks: [
+                  ...typebot.blocks,
+                  ...linkedTypebots.flatMap((t) => t.blocks),
+                ],
+                variables: [
+                  ...typebot.variables,
+                  ...linkedTypebots.flatMap((t) => t.variables),
+                ],
+              })(resultValues)
+            : await parseSampleResult(typebot, linkedTypebots)(blockId)
         )
       : body
   }

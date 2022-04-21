@@ -1,13 +1,4 @@
-import {
-  Typebot,
-  Answer,
-  VariableWithValue,
-  ResultWithAnswers,
-  PublicTypebot,
-} from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { parseResultHeader } from './results'
-import { isDefined } from './utils'
 
 export const methodNotAllowed = (res: NextApiResponse) =>
   res.status(405).json({ message: 'Method Not Allowed' })

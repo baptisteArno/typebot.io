@@ -1,4 +1,4 @@
 export * from './utils'
-export * from './apiUtils'
+export * from './api'
 export * from './encryption'
 export * from './results'

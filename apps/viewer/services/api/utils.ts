@@ -1,6 +1,9 @@
 import { User } from 'db'
 import prisma from 'libs/prisma'
+import { LogicStepType, Typebot, TypebotLinkStep, PublicTypebot } from 'models'
 import { NextApiRequest } from 'next'
+import { isDefined } from 'utils'
+import { canReadTypebots } from './dbRules'
 
 export const authenticateUser = async (
   req: NextApiRequest
@@ -51,4 +54,35 @@ const formatDetails = (details: any) => {
   } catch {
     return details
   }
+}
+
+export const getLinkedTypebots = async (
+  typebot: Typebot | PublicTypebot,
+  user?: User
+): Promise<(Typebot | PublicTypebot)[]> => {
+  const linkedTypebotIds = (
+    typebot.blocks
+      .flatMap((b) => b.steps)
+      .filter(
+        (s) =>
+          s.type === LogicStepType.TYPEBOT_LINK &&
+          isDefined(s.options.typebotId)
+      ) as TypebotLinkStep[]
+  ).map((s) => s.options.typebotId as string)
+  if (linkedTypebotIds.length === 0) return []
+  const typebots = (await ('typebotId' in typebot
+    ? prisma.publicTypebot.findMany({
+        where: { id: { in: linkedTypebotIds } },
+      })
+    : prisma.typebot.findMany({
+        where: user
+          ? {
+              AND: [
+                { id: { in: linkedTypebotIds } },
+                canReadTypebots(linkedTypebotIds, user as User),
+              ],
+            }
+          : { id: { in: linkedTypebotIds } },
+      }))) as unknown as (Typebot | PublicTypebot)[]
+  return typebots
 }

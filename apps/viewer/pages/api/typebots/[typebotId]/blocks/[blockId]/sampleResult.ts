@@ -1,7 +1,7 @@
 import prisma from 'libs/prisma'
 import { Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { authenticateUser } from 'services/api/utils'
+import { authenticateUser, getLinkedTypebots } from 'services/api/utils'
 import { parseSampleResult } from 'services/api/webhooks'
 import { methodNotAllowed } from 'utils'
 
@@ -19,7 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .flatMap((b) => b.steps)
       .find((s) => s.id === stepId)
     if (!step) return res.status(404).send({ message: 'Block not found' })
-    return res.send(parseSampleResult(typebot)(step.blockId))
+    const linkedTypebots = await getLinkedTypebots(typebot, user)
+    return res.send(
+      await parseSampleResult(typebot, linkedTypebots)(step.blockId)
+    )
   }
   methodNotAllowed(res)
 }

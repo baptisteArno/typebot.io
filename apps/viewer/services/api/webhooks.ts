@@ -1,24 +1,82 @@
 import {
   InputStep,
   InputStepType,
+  LogicStepType,
   PublicTypebot,
   ResultHeaderCell,
+  Step,
   Typebot,
+  TypebotLinkStep,
 } from 'models'
 import { isInputStep, byId, parseResultHeader, isNotDefined } from 'utils'
 
 export const parseSampleResult =
-  (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
-  (currentBlockId: string): Record<string, string> => {
-    const header = parseResultHeader(typebot)
-    const previousInputSteps = getPreviousInputSteps(typebot)({
-      blockId: currentBlockId,
+  (
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    linkedTypebots: (Typebot | PublicTypebot)[]
+  ) =>
+  async (currentBlockId: string): Promise<Record<string, string>> => {
+    const header = parseResultHeader({
+      blocks: [...typebot.blocks, ...linkedTypebots.flatMap((t) => t.blocks)],
+      variables: [
+        ...typebot.variables,
+        ...linkedTypebots.flatMap((t) => t.variables),
+      ],
     })
+    const linkedInputSteps = await extractLinkedInputSteps(
+      typebot,
+      linkedTypebots
+    )(currentBlockId)
+
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       'Submitted at': new Date().toISOString(),
-      ...parseBlocksResultSample(previousInputSteps, header),
+      ...parseBlocksResultSample(linkedInputSteps, header),
     }
+  }
+
+const extractLinkedInputSteps =
+  (
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    linkedTypebots: (Typebot | PublicTypebot)[]
+  ) =>
+  async (
+    currentBlockId?: string,
+    direction: 'backward' | 'forward' = 'backward'
+  ): Promise<InputStep[]> => {
+    const previousLinkedTypebotSteps = walkEdgesAndExtract(
+      'linkedBot',
+      direction,
+      typebot
+    )({
+      blockId: currentBlockId,
+    }) as TypebotLinkStep[]
+
+    const linkedBotInputs =
+      previousLinkedTypebotSteps.length > 0
+        ? await Promise.all(
+            previousLinkedTypebotSteps.map((linkedBot) =>
+              extractLinkedInputSteps(
+                linkedTypebots.find((t) =>
+                  'typebotId' in t
+                    ? t.typebotId === linkedBot.options.typebotId
+                    : t.id === linkedBot.options.typebotId
+                ) as Typebot | PublicTypebot,
+                linkedTypebots
+              )(linkedBot.options.blockId, 'forward')
+            )
+          )
+        : []
+
+    return (
+      walkEdgesAndExtract(
+        'input',
+        direction,
+        typebot
+      )({
+        blockId: currentBlockId,
+      }) as InputStep[]
+    ).concat(linkedBotInputs.flatMap((l) => l))
   }
 
 const parseBlocksResultSample = (
@@ -63,50 +121,71 @@ const getSampleValue = (step: InputStep) => {
   }
 }
 
-const getPreviousInputSteps =
-  (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
-  ({ blockId }: { blockId: string }): InputStep[] => {
-    const previousInputSteps = getPreviousInputStepsInBlock(typebot)({
-      blockId,
+const walkEdgesAndExtract =
+  (
+    type: 'input' | 'linkedBot',
+    direction: 'backward' | 'forward',
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>
+  ) =>
+  ({ blockId }: { blockId?: string }): Step[] => {
+    const currentBlockId =
+      blockId ??
+      (typebot.blocks.find((b) => b.steps[0].type === 'start')?.id as string)
+    const stepsInBlock = extractStepsInBlock(
+      type,
+      typebot
+    )({
+      blockId: currentBlockId,
     })
-    const previousBlockIds = getPreviousBlockIds(typebot)(blockId)
+    const otherBlockIds = getBlockIds(typebot, direction)(currentBlockId)
     return [
-      ...previousInputSteps,
-      ...previousBlockIds.flatMap((blockId) =>
-        getPreviousInputStepsInBlock(typebot)({ blockId })
+      ...stepsInBlock,
+      ...otherBlockIds.flatMap((blockId) =>
+        extractStepsInBlock(type, typebot)({ blockId })
       ),
     ]
   }
 
-const getPreviousBlockIds =
+const getBlockIds =
   (
     typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    direction: 'backward' | 'forward',
     existingBlockIds?: string[]
   ) =>
   (blockId: string): string[] => {
-    const previousBlocks = typebot.edges.reduce<string[]>(
-      (blockIds, edge) =>
-        (!existingBlockIds || !existingBlockIds.includes(edge.from.blockId)) &&
+    const blocks = typebot.edges.reduce<string[]>((blockIds, edge) => {
+      if (direction === 'forward')
+        return (!existingBlockIds ||
+          !existingBlockIds?.includes(edge.to.blockId)) &&
+          edge.from.blockId === blockId
+          ? [...blockIds, edge.to.blockId]
+          : blockIds
+      return (!existingBlockIds ||
+        !existingBlockIds.includes(edge.from.blockId)) &&
         edge.to.blockId === blockId
-          ? [...blockIds, edge.from.blockId]
-          : blockIds,
-      []
-    )
-    const newBlocks = [...(existingBlockIds ?? []), ...previousBlocks]
-    return previousBlocks.concat(
-      previousBlocks.flatMap(getPreviousBlockIds(typebot, newBlocks))
+        ? [...blockIds, edge.from.blockId]
+        : blockIds
+    }, [])
+    const newBlocks = [...(existingBlockIds ?? []), ...blocks]
+    return blocks.concat(
+      blocks.flatMap(getBlockIds(typebot, direction, newBlocks))
     )
   }
 
-const getPreviousInputStepsInBlock =
-  (typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>) =>
+const extractStepsInBlock =
+  (
+    type: 'input' | 'linkedBot',
+    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>
+  ) =>
   ({ blockId, stepId }: { blockId: string; stepId?: string }) => {
     const currentBlock = typebot.blocks.find(byId(blockId))
     if (!currentBlock) return []
-    const inputSteps: InputStep[] = []
+    const steps: Step[] = []
     for (const step of currentBlock.steps) {
       if (step.id === stepId) break
-      if (isInputStep(step)) inputSteps.push(step)
+      if (type === 'input' && isInputStep(step)) steps.push(step)
+      if (type === 'linkedBot' && step.type === LogicStepType.TYPEBOT_LINK)
+        steps.push(step)
     }
-    return inputSteps
+    return steps
   }

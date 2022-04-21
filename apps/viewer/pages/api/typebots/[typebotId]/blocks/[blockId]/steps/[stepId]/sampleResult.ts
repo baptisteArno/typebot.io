@@ -1,7 +1,7 @@
 import prisma from 'libs/prisma'
 import { Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { authenticateUser } from 'services/api/utils'
+import { authenticateUser, getLinkedTypebots } from 'services/api/utils'
 import { parseSampleResult } from 'services/api/webhooks'
 import { methodNotAllowed } from 'utils'
 
@@ -15,7 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id_ownerId: { id: typebotId, ownerId: user.id } },
     })) as unknown as Typebot | undefined
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
-    return res.send(parseSampleResult(typebot)(blockId))
+    const linkedTypebots = await getLinkedTypebots(typebot, user)
+    return res.send(await parseSampleResult(typebot, linkedTypebots)(blockId))
   }
   methodNotAllowed(res)
 }
