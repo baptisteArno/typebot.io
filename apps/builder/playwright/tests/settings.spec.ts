@@ -82,7 +82,7 @@ test.describe.parallel('Settings page', () => {
       await page.click('button:has-text("Metadata")')
 
       // Fav icon
-      const favIconImg = page.locator(':nth-match(img, 1)')
+      const favIconImg = page.locator('img >> nth=0')
       await expect(favIconImg).toHaveAttribute('src', '/favicon.png')
       await favIconImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
@@ -94,11 +94,11 @@ test.describe.parallel('Settings page', () => {
       await expect(favIconImg).toHaveAttribute('src', favIconUrl)
 
       // Website image
-      const websiteImg = page.locator(':nth-match(img, 2)')
+      const websiteImg = page.locator('img >> nth=1')
       await expect(websiteImg).toHaveAttribute('src', '/viewer-preview.png')
-      await websiteImg.click({ position: { x: 0, y: 180 } })
+      await websiteImg.click({ position: { x: 0, y: 160 }, force: true })
       await expect(page.locator('text=Giphy')).toBeHidden()
-      await page.click('button:has-text("Embed link")')
+      await page.click('button >> text="Embed link"')
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)
       await expect(websiteImg).toHaveAttribute('src', imageUrl)
 
@@ -107,6 +107,12 @@ test.describe.parallel('Settings page', () => {
 
       // Description
       await page.fill('textarea#description', 'Lorem ipsum')
+
+      // Custom head code
+      await page.fill(
+        'div[contenteditable=true]',
+        '<script>Lorem ipsum</script>'
+      )
     })
   })
 

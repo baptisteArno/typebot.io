@@ -3,9 +3,11 @@ import { Answer, PublicTypebot, VariableWithValue } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
+import { isDefined } from 'utils'
 import { SEO } from '../components/Seo'
 import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
+import sanitizeHtml from 'sanitize-html'
 
 export type TypebotPageProps = {
   typebot?: PublicTypebot
@@ -39,6 +41,13 @@ export const TypebotPage = ({
     })
     setPredefinedVariables(predefinedVariables)
     initializeResult().then()
+    const { customHeadCode } = typebot.settings.metadata
+    if (isDefined(customHeadCode) && customHeadCode !== '')
+      document.head.innerHTML =
+        document.head.innerHTML +
+        sanitizeHtml(customHeadCode ?? '', {
+          allowedTags: ['script', 'meta'],
+        })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

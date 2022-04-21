@@ -21,6 +21,7 @@ export type Metadata = {
   description: string
   imageUrl?: string
   favIconUrl?: string
+  customHeadCode?: string
 }
 
 export const defaultSettings: Settings = {

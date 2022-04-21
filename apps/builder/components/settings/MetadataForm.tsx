@@ -7,9 +7,15 @@ import {
   Stack,
   Image,
   PopoverContent,
+  Tooltip,
+  HStack,
+  Text,
+  Flex,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from 'components/shared/ImageUploadContent'
 import { Input, Textarea } from 'components/shared/Textbox'
+import { CodeEditor } from 'components/shared/CodeEditor'
+import { HelpCircleIcon } from 'assets/icons'
 
 type Props = {
   typebotName: string
@@ -30,6 +36,8 @@ export const MetadataForm = ({
     onMetadataChange({ ...metadata, favIconUrl })
   const handleImageSubmit = (imageUrl: string) =>
     onMetadataChange({ ...metadata, imageUrl })
+  const handleHeadCodeChange = (customHeadCode: string) =>
+    onMetadataChange({ ...metadata, customHeadCode })
 
   return (
     <Stack spacing="6">
@@ -37,7 +45,7 @@ export const MetadataForm = ({
         <FormLabel mb="0" htmlFor="icon">
           Icon:
         </FormLabel>
-        <Popover isLazy>
+        <Popover isLazy placement="top">
           <PopoverTrigger>
             <Image
               src={metadata.favIconUrl ?? '/favicon.png'}
@@ -62,7 +70,7 @@ export const MetadataForm = ({
         <FormLabel mb="0" htmlFor="image">
           Image:
         </FormLabel>
-        <Popover isLazy>
+        <Popover isLazy placement="top">
           <PopoverTrigger>
             <Image
               src={metadata.imageUrl ?? '/viewer-preview.png'}
@@ -100,6 +108,29 @@ export const MetadataForm = ({
           id="description"
           defaultValue={metadata.description}
           onChange={handleDescriptionChange}
+        />
+      </Stack>
+      <Stack>
+        <HStack as={FormLabel} mb="0" htmlFor="head">
+          <Text>Custom head code:</Text>
+          <Tooltip
+            label={
+              'Will be pasted at the bottom of the header section, just above the closing head tag. Only `meta` and `script` tags are allowed.'
+            }
+            placement="top"
+            hasArrow
+          >
+            <Flex cursor="pointer">
+              <HelpCircleIcon />
+            </Flex>
+          </Tooltip>
+        </HStack>
+        <CodeEditor
+          id="head"
+          value={metadata.customHeadCode ?? ''}
+          onChange={handleHeadCodeChange}
+          lang="html"
+          withVariableButton={false}
         />
       </Stack>
     </Stack>
