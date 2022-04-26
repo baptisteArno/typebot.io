@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Account } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
@@ -96,6 +96,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
           user: userFromDb,
         }
       },
+      signIn: async ({ account }) => {
+        const requiredGroups = getRequiredGroups(account.provider)
+        if (requiredGroups.length > 0) {
+          const userGroups = await getUserGroups(account)
+          return checkHasGroups(userGroups, requiredGroups)
+        }
+        return true
+      },
     },
   })
 }
@@ -111,6 +119,31 @@ const updateLastActivityDate = async (user: User) => {
       where: { id: user.id },
       data: { lastActivityAt: new Date() },
     })
+}
+
+async function getUserGroups(account: Account): Promise<string[]> {
+  switch (account.provider) {
+    case 'gitlab': {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_GITLAB_BASE_URL || 'gitlab.com'}/api/v4/groups`,
+        { headers: { 'Authorization': `Bearer ${account.access_token}` } },
+      )
+      const userGroups: string[] = (await res.json())
+      return userGroups.map((group: any) => group.full_path)
+    }
+    default: return []
+  }
+}
+
+function getRequiredGroups(provider: string): string[] {
+  switch (provider) {
+    case 'gitlab': return process.env.GITLAB_REQUIRED_GROUPS?.split(',') || []
+    default: return []
+  }
+}
+
+function checkHasGroups(userGroups: string[], requiredGroups: string[]) {
+  return userGroups?.some(userGroup => requiredGroups?.includes(userGroup))
 }
 
 export default withSentry(handler)
