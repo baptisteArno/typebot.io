@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
+import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import prisma from 'libs/prisma'
@@ -59,6 +60,20 @@ if (
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     })
   )
+
+if (
+  process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID &&
+  process.env.GITLAB_CLIENT_SECRET
+) {
+  const BASE_URL = process.env.NEXT_PUBLIC_GITLAB_BASE_URL || 'gitlab.com'
+  providers.push(GitlabProvider({
+    clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
+    clientSecret: process.env.GITLAB_CLIENT_SECRET,
+    authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
+    token: `${BASE_URL}/oauth/token`,
+    userinfo: `${BASE_URL}/api/v4/user`,
+  }))
+}
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'HEAD') {

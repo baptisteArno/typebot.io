@@ -1,4 +1,5 @@
 export * from './GiphyLogo'
+export * from './GitlabLogo'
 export * from './GoogleAnalyticsLogo'
 export * from './GoogleSheetsLogo'
 export * from './GtmLogo'
