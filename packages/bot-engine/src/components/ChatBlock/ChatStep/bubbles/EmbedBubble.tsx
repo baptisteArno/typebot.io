@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { EmbedBubbleStep } from 'models'
 import { TypingContent } from './TypingContent'
+import { parseVariables } from 'services/variable'
+import { useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
   step: EmbedBubbleStep
@@ -10,8 +12,14 @@ type Props = {
 export const showAnimationDuration = 400
 
 export const EmbedBubble = ({ step, onTransitionEnd }: Props) => {
+  const { typebot } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
+
+  const url = useMemo(
+    () => parseVariables(typebot.variables)(step.content?.url),
+    [step.content?.url, typebot.variables]
+  )
 
   useEffect(() => {
     showContentAfterMediaLoad()
@@ -51,7 +59,7 @@ export const EmbedBubble = ({ step, onTransitionEnd }: Props) => {
           </div>
           <iframe
             id="embed-bubble-content"
-            src={step.content.url}
+            src={url}
             className={
               'w-full z-20 p-4 content-opacity ' +
               (isTyping ? 'opacity-0' : 'opacity-100')
