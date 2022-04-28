@@ -7,7 +7,15 @@ export const createIframe = ({
   ...iframeParams
 }: IframeParams): HTMLIFrameElement => {
   const { loadWhenVisible, hiddenVariables } = iframeParams
-  const iframeUrl = `${url}${parseQueryParams(hiddenVariables)}`
+  const hostUrlParams = new URLSearchParams(document.location.search)
+  const hostQueryObj: { [key: string]: string } = {}
+  hostUrlParams.forEach((value, key) => {
+    hostQueryObj[key] = value
+  })
+  const iframeUrl = `${url}${parseQueryParams({
+    ...hiddenVariables,
+    ...hostQueryObj,
+  })}`
   const iframe = document.createElement('iframe')
   iframe.setAttribute(loadWhenVisible ? 'data-src' : 'src', iframeUrl)
   iframe.setAttribute('data-id', url)
@@ -25,11 +33,7 @@ export const createIframe = ({
 const parseQueryParams = (starterVariables?: {
   [key: string]: string | undefined
 }): string => {
-  return parseHostnameQueryParam() + parseStarterVariables(starterVariables)
-}
-
-const parseHostnameQueryParam = () => {
-  return `?hn=${window.location.hostname}`
+  return parseStarterVariables(starterVariables)
 }
 
 const parseStarterVariables = (starterVariables?: {
