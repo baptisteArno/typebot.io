@@ -154,30 +154,32 @@ class Typebot_Public
         $url .
         '",
 						autoOpenDelay: ' .
-        get_option('chat_delay') * 1000 .
-        ',
+        empty(get_option('chat_delay'))
+          ? 'undefined'
+          : get_option('chat_delay') * 1000 .
+            ',
 					proactiveMessage: {
 						avatarUrl: "' .
-        get_option('avatar') .
-        '",
+            get_option('avatar') .
+            '",
 						textContent: "' .
-        get_option('text_content') .
-        '",
+            get_option('text_content') .
+            '",
 						delay: ' .
-        get_option('bubble_delay') * 1000 .
-        ',
+            get_option('bubble_delay') * 1000 .
+            ',
         rememberClose: ' .
-        $remember .
-        '
+            $remember .
+            '
 					},
 					hiddenVariables: typebotWpUser,
 					button: {
             color: "' .
-        $button_color .
-        '",
+            $button_color .
+            '",
             iconUrl: "' .
-        $chat_icon .
-        '",
+            $chat_icon .
+            '",
           },
 				}';
     }
