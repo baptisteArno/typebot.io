@@ -87,13 +87,13 @@ Used for authenticating with GitLab.
 Follow the official GitLab guide for creating OAuth2 applications [here](https://docs.gitlab.com/ee/integration/oauth_provider.html).
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab`
 
-| Parameter                    | Default | Description                                                                          |
-| ---------------------------- | ------- | -------------------------------------------------------------------------------------|
-| NEXT_PUBLIC_GITLAB_CLIENT_ID | --      | Application client ID. Also used to check if it is enabled in the front-end          |
-| GITLAB_CLIENT_SECRET         | --      | Application secret                                                                   |
-| NEXT_PUBLIC_GITLAB_BASE_URL  | --      | Base URL of the GitLab instance, e.g. `https://gitlab.com`                           |
-| NEXT_PUBLIC_GITLAB_NAME      | --      | Name of the GitLab instance, used for the SSO Login Button, e.g. `GitLab`            |
-| GITLAB_REQUIRED_GROUPS       | --      | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
+| Parameter                    | Default            | Description                                                                          |
+| ---------------------------- | ------------------ | ------------------------------------------------------------------------------------ | --- |
+| NEXT_PUBLIC_GITLAB_CLIENT_ID | --                 | Application client ID. Also used to check if it is enabled in the front-end          |
+| GITLAB_CLIENT_SECRET         | --                 | Application secret                                                                   |
+| GITLAB_BASE_URL              | https://gitlab.com | Base URL of the GitLab instance                                                      |     |
+| GITLAB_REQUIRED_GROUPS       | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
+| NEXT_PUBLIC_GITLAB_NAME      | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
 
 </p></details>
 

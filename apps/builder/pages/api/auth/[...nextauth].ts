@@ -65,14 +65,16 @@ if (
   process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID &&
   process.env.GITLAB_CLIENT_SECRET
 ) {
-  const BASE_URL = process.env.NEXT_PUBLIC_GITLAB_BASE_URL || 'gitlab.com'
-  providers.push(GitlabProvider({
-    clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
-    clientSecret: process.env.GITLAB_CLIENT_SECRET,
-    authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
-    token: `${BASE_URL}/oauth/token`,
-    userinfo: `${BASE_URL}/api/v4/user`,
-  }))
+  const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+  providers.push(
+    GitlabProvider({
+      clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
+      clientSecret: process.env.GITLAB_CLIENT_SECRET,
+      authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
+      token: `${BASE_URL}/oauth/token`,
+      userinfo: `${BASE_URL}/api/v4/user`,
+    })
+  )
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
@@ -121,29 +123,31 @@ const updateLastActivityDate = async (user: User) => {
     })
 }
 
-async function getUserGroups(account: Account): Promise<string[]> {
+const getUserGroups = async (account: Account): Promise<string[]> => {
   switch (account.provider) {
     case 'gitlab': {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_GITLAB_BASE_URL || 'gitlab.com'}/api/v4/groups`,
-        { headers: { 'Authorization': `Bearer ${account.access_token}` } },
+        `${process.env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/groups`,
+        { headers: { Authorization: `Bearer ${account.access_token}` } }
       )
-      const userGroups: string[] = (await res.json())
-      return userGroups.map((group: any) => group.full_path)
+      const userGroups = await res.json()
+      return userGroups.map((group: { full_path: string }) => group.full_path)
     }
-    default: return []
+    default:
+      return []
   }
 }
 
-function getRequiredGroups(provider: string): string[] {
+const getRequiredGroups = (provider: string): string[] => {
   switch (provider) {
-    case 'gitlab': return process.env.GITLAB_REQUIRED_GROUPS?.split(',') || []
-    default: return []
+    case 'gitlab':
+      return process.env.GITLAB_REQUIRED_GROUPS?.split(',') || []
+    default:
+      return []
   }
 }
 
-function checkHasGroups(userGroups: string[], requiredGroups: string[]) {
-  return userGroups?.some(userGroup => requiredGroups?.includes(userGroup))
-}
+const checkHasGroups = (userGroups: string[], requiredGroups: string[]) =>
+  userGroups?.some((userGroup) => requiredGroups?.includes(userGroup))
 
 export default withSentry(handler)
