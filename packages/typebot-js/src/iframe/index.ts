@@ -39,8 +39,8 @@ const parseQueryParams = (starterVariables?: {
 const parseStarterVariables = (starterVariables?: {
   [key: string]: string | undefined
 }) =>
-  starterVariables
-    ? `&${Object.keys(starterVariables)
+  starterVariables && Object.keys(starterVariables).length > 0
+    ? `?${Object.keys(starterVariables)
         .filter((key) => starterVariables[key])
         .map(
           (key) =>

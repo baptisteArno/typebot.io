@@ -23,9 +23,7 @@ describe('initBubble', () => {
     Typebot.initBubble({ url: 'https://typebot.io/typebot-id2' })
     const frames = document.getElementsByTagName('iframe')
     expect(frames).toHaveLength(1)
-    expect(frames[0].dataset.src).toBe(
-      'https://typebot.io/typebot-id2?hn=localhost'
-    )
+    expect(frames[0].dataset.src).toBe('https://typebot.io/typebot-id2')
   })
 
   it('show open after the corresponding delay', async () => {
@@ -36,7 +34,7 @@ describe('initBubble', () => {
     })
     const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
-    await new Promise((r) => setTimeout(r, 1050))
+    await new Promise((r) => setTimeout(r, 1100))
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
     const rememberCloseDecisionFromStorage = localStorage.getItem(
       Typebot.localStorageKeys.rememberClose

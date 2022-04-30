@@ -1,4 +1,4 @@
-import { setRememberCloseInStorage } from '../chat/index'
+import { setRememberCloseInStorage } from '../chat'
 import { ProactiveMessageParams } from '../../types'
 import { closeSvgPath } from './button'
 

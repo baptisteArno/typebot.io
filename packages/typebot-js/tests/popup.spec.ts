@@ -23,9 +23,7 @@ describe('initPopup', () => {
     initPopup({ url: 'https://typebot.io/typebot-id2' })
     const elements = document.getElementsByTagName('iframe')
     expect(elements).toHaveLength(1)
-    expect(elements[0].dataset.src).toBe(
-      'https://typebot.io/typebot-id2?hn=localhost'
-    )
+    expect(elements[0].dataset.src).toBe('https://typebot.io/typebot-id2')
   })
 
   it("shouldn't have opened classname if no delay", () => {

@@ -31,13 +31,22 @@
 }
 
 #typebot-bubble > button > .icon {
-  width: 80%;
   transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
-  fill: white;
+}
+
+#typebot-bubble > button > svg.icon {
+  fill: none;
+  width: 55%;
+  stroke-width: 2px;
+  stroke: white;
 }
 
 #typebot-bubble > button > img.icon {
+  width: 80%;
+  height: 80%;
   border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 #typebot-bubble.iframe-opened > button > .icon {
@@ -47,12 +56,12 @@
 
 #typebot-bubble > button > .close-icon {
   position: absolute;
-  width: 80%;
-  height: 80%;
   transform: rotate(-90deg) scale(0);
   opacity: 0;
   transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
-  fill: white;
+  width: 55%;
+  stroke-width: 2px;
+  stroke: white;
 }
 
 #typebot-bubble.iframe-opened > button > .close-icon {

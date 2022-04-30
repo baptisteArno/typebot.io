@@ -11,7 +11,7 @@ describe('createIframe', () => {
       'https://typebot.io/typebot-id'
     )
     expect(iframeElement.getAttribute('src')).toBe(
-      'https://typebot.io/typebot-id?hn=localhost'
+      'https://typebot.io/typebot-id'
     )
   })
 
@@ -24,7 +24,7 @@ describe('createIframe', () => {
       }),
     ]
     expect(iframes[0].getAttribute('src')).toBe(
-      'https://typebot.io/typebot-id?hn=localhost&var1=value1&var2=value2'
+      'https://typebot.io/typebot-id?var1=value1&var2=value2'
     )
   })
 
@@ -44,7 +44,7 @@ describe('createIframe', () => {
       loadWhenVisible: true,
     })
     expect(iframeElement.getAttribute('data-src')).toBe(
-      'https://typebot.io/typebot-id?hn=localhost'
+      'https://typebot.io/typebot-id'
     )
     expect(iframeElement.getAttribute('src')).toBeFalsy()
   })
