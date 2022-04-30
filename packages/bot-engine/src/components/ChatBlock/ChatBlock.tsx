@@ -186,6 +186,7 @@ export const ChatBlock = ({
               isEnabled: typebot.theme.chat.hostAvatar?.isEnabled ?? true,
               src: avatarSrc && parseVariables(typebot.variables)(avatarSrc),
             }}
+            hasGuestAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
             onDisplayNextStep={displayNextStep}
           />
         ))}
@@ -197,11 +198,13 @@ export const ChatBlock = ({
 type Props = {
   displayChunk: ChatDisplayChunk
   hostAvatar: { isEnabled: boolean; src?: string }
+  hasGuestAvatar: boolean
   onDisplayNextStep: (answerContent?: string, isRetry?: boolean) => void
 }
 const ChatChunks = ({
   displayChunk: { bubbles, input },
   hostAvatar,
+  hasGuestAvatar,
   onDisplayNextStep,
 }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -223,7 +226,10 @@ const ChatChunks = ({
             hostAvatarSrc={hostAvatar.src}
           />
         )}
-        <div className="flex-1" style={{ marginRight: '50px' }}>
+        <div
+          className="flex-1"
+          style={{ marginRight: hasGuestAvatar ? '50px' : '0.5rem' }}
+        >
           <TransitionGroup>
             {bubbles.map((step) => (
               <CSSTransition
@@ -255,6 +261,7 @@ const ChatChunks = ({
             step={input}
             onTransitionEnd={onDisplayNextStep}
             hasAvatar={hostAvatar.isEnabled}
+            hasGuestAvatar={hasGuestAvatar}
           />
         )}
       </CSSTransition>

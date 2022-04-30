@@ -150,7 +150,7 @@ const LongTextInput = React.forwardRef(
     <textarea
       ref={ref}
       className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
-      rows={4}
+      rows={6}
       data-testid="textarea"
       required
       style={{ fontSize: '16px' }}

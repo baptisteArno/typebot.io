@@ -19,10 +19,18 @@ type TextFormProps = {
     | PhoneNumberInputStep
   onSubmit: (value: string) => void
   defaultValue?: string
+  hasGuestAvatar: boolean
 }
 
-export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
+export const TextForm = ({
+  step,
+  onSubmit,
+  defaultValue,
+  hasGuestAvatar,
+}: TextFormProps) => {
   const [inputValue, setInputValue] = useState(defaultValue ?? '')
+
+  const isLongText = step.type === InputStepType.TEXT && step.options?.isLong
 
   const handleChange = (inputValue: string) => {
     if (step.type === InputStepType.URL && !inputValue.startsWith('https://'))
@@ -40,21 +48,21 @@ export const TextForm = ({ step, onSubmit, defaultValue }: TextFormProps) => {
   }
 
   return (
-    <div className="flex flex-col w-full lg:w-4/6 mb-2">
-      <div className="flex items-center">
-        <form
-          className="flex items-end justify-between rounded-lg pr-2 typebot-input"
-          onSubmit={handleSubmit}
-          data-testid="input"
-        >
-          <TextInput step={step} onChange={handleChange} value={inputValue} />
-          <SendButton
-            label={step.options?.labels?.button ?? 'Send'}
-            isDisabled={inputValue === ''}
-            className="my-2 ml-2"
-          />
-        </form>
-      </div>
-    </div>
+    <form
+      className="flex items-end justify-between rounded-lg pr-2 typebot-input w-full"
+      onSubmit={handleSubmit}
+      data-testid="input"
+      style={{
+        marginRight: hasGuestAvatar ? '50px' : '0.5rem',
+        maxWidth: isLongText ? undefined : '350px',
+      }}
+    >
+      <TextInput step={step} onChange={handleChange} value={inputValue} />
+      <SendButton
+        label={step.options?.labels?.button ?? 'Send'}
+        isDisabled={inputValue === ''}
+        className="my-2 ml-2"
+      />
+    </form>
   )
 }

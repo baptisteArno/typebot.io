@@ -13,9 +13,11 @@ import { isInputValid } from 'services/inputs'
 export const InputChatStep = ({
   step,
   hasAvatar,
+  hasGuestAvatar,
   onTransitionEnd,
 }: {
   step: InputStep
+  hasGuestAvatar: boolean
   hasAvatar: boolean
   onTransitionEnd: (answerContent?: string, isRetry?: boolean) => void
 }) => {
@@ -70,6 +72,7 @@ export const InputChatStep = ({
         step={step}
         onSubmit={handleSubmit}
         defaultValue={defaultValue?.toString()}
+        hasGuestAvatar={hasGuestAvatar}
       />
     </div>
   )
@@ -79,10 +82,12 @@ const Input = ({
   step,
   onSubmit,
   defaultValue,
+  hasGuestAvatar,
 }: {
   step: InputStep
   onSubmit: (value: string) => void
   defaultValue?: string
+  hasGuestAvatar: boolean
 }) => {
   switch (step.type) {
     case InputStepType.TEXT:
@@ -91,7 +96,12 @@ const Input = ({
     case InputStepType.URL:
     case InputStepType.PHONE:
       return (
-        <TextForm step={step} onSubmit={onSubmit} defaultValue={defaultValue} />
+        <TextForm
+          step={step}
+          onSubmit={onSubmit}
+          defaultValue={defaultValue}
+          hasGuestAvatar={hasGuestAvatar}
+        />
       )
     case InputStepType.DATE:
       return <DateForm options={step.options} onSubmit={onSubmit} />
