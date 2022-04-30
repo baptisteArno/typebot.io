@@ -6,7 +6,7 @@ class Typebot_Public
   {
     wp_enqueue_script(
       'typebot',
-      'https://unpkg.com/typebot-js@2.2.0/dist/index.umd.min.js'
+      'https://unpkg.com/typebot-js@2.2/dist/index.umd.min.js'
     );
     wp_add_inline_script('typebot', $this->parse_wp_user());
     if (get_option('config_type') === 'advanced') {
