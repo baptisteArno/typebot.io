@@ -1,4 +1,4 @@
-import { Flex, HStack, StackProps, Text } from '@chakra-ui/react'
+import { Flex, HStack, StackProps, Text, Tooltip } from '@chakra-ui/react'
 import { StepType, DraggableStepType } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useEffect, useState } from 'react'
@@ -8,8 +8,10 @@ import { StepTypeLabel } from './StepTypeLabel'
 export const StepCard = ({
   type,
   onMouseDown,
+  isDisabled = false,
 }: {
   type: DraggableStepType
+  isDisabled?: boolean
   onMouseDown: (e: React.MouseEvent, type: DraggableStepType) => void
 }) => {
   const { draggedStepType } = useStepDnd()
@@ -22,33 +24,36 @@ export const StepCard = ({
   const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
 
   return (
-    <Flex pos="relative">
-      <HStack
-        borderWidth="1px"
-        borderColor="gray.200"
-        rounded="lg"
-        flex="1"
-        cursor={'grab'}
-        opacity={isMouseDown ? '0.4' : '1'}
-        onMouseDown={handleMouseDown}
-        bgColor="gray.50"
-        px="4"
-        py="2"
-        _hover={{ shadow: 'md' }}
-        transition="box-shadow 200ms"
-      >
-        {!isMouseDown ? (
-          <>
-            <StepIcon type={type} />
-            <StepTypeLabel type={type} />
-          </>
-        ) : (
-          <Text color="white" userSelect="none">
-            Placeholder
-          </Text>
-        )}
-      </HStack>
-    </Flex>
+    <Tooltip label="Coming soon!" isDisabled={!isDisabled}>
+      <Flex pos="relative">
+        <HStack
+          borderWidth="1px"
+          borderColor="gray.200"
+          rounded="lg"
+          flex="1"
+          cursor={'grab'}
+          opacity={isMouseDown || isDisabled ? '0.4' : '1'}
+          onMouseDown={handleMouseDown}
+          bgColor="gray.50"
+          px="4"
+          py="2"
+          _hover={{ shadow: 'md' }}
+          transition="box-shadow 200ms"
+          pointerEvents={isDisabled ? 'none' : 'auto'}
+        >
+          {!isMouseDown ? (
+            <>
+              <StepIcon type={type} />
+              <StepTypeLabel type={type} />
+            </>
+          ) : (
+            <Text color="white" userSelect="none">
+              Placeholder
+            </Text>
+          )}
+        </HStack>
+      </Flex>
+    </Tooltip>
   )
 }
 

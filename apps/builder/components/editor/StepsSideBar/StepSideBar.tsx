@@ -150,7 +150,12 @@ export const StepsSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+                isDisabled={type === IntegrationStepType.MAKE_COM}
+              />
             ))}
           </SimpleGrid>
         </Stack>
