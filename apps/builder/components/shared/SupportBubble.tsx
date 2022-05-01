@@ -26,9 +26,6 @@ export const SupportBubble = () => {
         backgroundColor: '#ffffff',
         button: {
           color: '#0042DA',
-          iconUrl:
-            'https://user-images.githubusercontent.com/16015833/159536717-35bb78f8-f659-49f2-ad7f-00172be69cfb.svg',
-          iconStyle: 'border-radius: 0; width: 50%',
         },
         hiddenVariables: {
           'User ID': user?.id,
