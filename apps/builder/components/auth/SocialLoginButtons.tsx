@@ -4,7 +4,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { stringify } from 'qs'
-import { FacebookLogo, GoogleLogo } from 'assets/logos'
+import { FacebookLogo, GoogleLogo, GitlabLogo } from 'assets/logos'
 
 export const SocialLoginButtons = () => {
   const { query } = useRouter()
@@ -22,6 +22,11 @@ export const SocialLoginButtons = () => {
 
   const handleFacebookClick = async () =>
     signIn('facebook', {
+      callbackUrl: `/typebots?${stringify(query)}`,
+    })
+
+  const handleGitlabClick = async () =>
+    signIn('gitlab', {
       callbackUrl: `/typebots?${stringify(query)}`,
     })
 
@@ -58,6 +63,17 @@ export const SocialLoginButtons = () => {
           variant="outline"
         >
           Continue with Facebook
+        </Button>
+      )}
+      {process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID && (
+        <Button
+          leftIcon={<GitlabLogo />}
+          onClick={handleGitlabClick}
+          data-testid="gitlab"
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with {process.env.NEXT_PUBLIC_GITLAB_NAME || 'GitLab'}
         </Button>
       )}
     </Stack>

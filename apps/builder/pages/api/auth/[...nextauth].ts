@@ -1,6 +1,7 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Account } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
+import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import prisma from 'libs/prisma'
@@ -60,6 +61,22 @@ if (
     })
   )
 
+if (
+  process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID &&
+  process.env.GITLAB_CLIENT_SECRET
+) {
+  const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+  providers.push(
+    GitlabProvider({
+      clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
+      clientSecret: process.env.GITLAB_CLIENT_SECRET,
+      authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
+      token: `${BASE_URL}/oauth/token`,
+      userinfo: `${BASE_URL}/api/v4/user`,
+    })
+  )
+}
+
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'HEAD') {
     res.status(200)
@@ -81,6 +98,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
           user: userFromDb,
         }
       },
+      signIn: async ({ account }) => {
+        const requiredGroups = getRequiredGroups(account.provider)
+        if (requiredGroups.length > 0) {
+          const userGroups = await getUserGroups(account)
+          return checkHasGroups(userGroups, requiredGroups)
+        }
+        return true
+      },
     },
   })
 }
@@ -97,5 +122,32 @@ const updateLastActivityDate = async (user: User) => {
       data: { lastActivityAt: new Date() },
     })
 }
+
+const getUserGroups = async (account: Account): Promise<string[]> => {
+  switch (account.provider) {
+    case 'gitlab': {
+      const res = await fetch(
+        `${process.env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/groups`,
+        { headers: { Authorization: `Bearer ${account.access_token}` } }
+      )
+      const userGroups = await res.json()
+      return userGroups.map((group: { full_path: string }) => group.full_path)
+    }
+    default:
+      return []
+  }
+}
+
+const getRequiredGroups = (provider: string): string[] => {
+  switch (provider) {
+    case 'gitlab':
+      return process.env.GITLAB_REQUIRED_GROUPS?.split(',') || []
+    default:
+      return []
+  }
+}
+
+const checkHasGroups = (userGroups: string[], requiredGroups: string[]) =>
+  userGroups?.some((userGroup) => requiredGroups?.includes(userGroup))
 
 export default withSentry(handler)
