@@ -12,7 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (user.id !== id) return res.status(401).send({ message: 'Forbidden' })
   if (req.method === 'DELETE') {
     const domain = req.query.domain.toString()
-    await deleteDomainOnVercel(domain)
+    try {
+      await deleteDomainOnVercel(domain)
+    } catch {}
     const customDomains = await prisma.customDomain.delete({
       where: { name: domain },
     })
