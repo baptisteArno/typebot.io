@@ -50,7 +50,7 @@ const getTypebotFromPublicId = async (publicId?: string) => {
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
   const typebot = await prisma.publicTypebot.findFirst({
-    where: { customDomain: { contains: customDomain } },
+    where: { customDomain },
   })
   if (isNotDefined(typebot)) return null
   return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')

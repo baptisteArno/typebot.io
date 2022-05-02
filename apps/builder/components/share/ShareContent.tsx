@@ -41,6 +41,14 @@ export const ShareContent = () => {
     : ''
   const isPublished = isDefined(typebot?.publishedTypebotId)
 
+  const handlePathnameChange = (pathname: string) => {
+    if (!typebot?.customDomain) return
+    const existingHost = typebot.customDomain?.split('/')[0]
+    const newDomain =
+      pathname === '' ? existingHost : existingHost + '/' + pathname
+    handleCustomDomainChange(newDomain)
+  }
+
   const handleCustomDomainChange = (customDomain: string | null) =>
     updateOnBothTypebots({ customDomain })
 
@@ -65,11 +73,7 @@ export const ShareContent = () => {
               <EditableUrl
                 hostname={'https://' + typebot.customDomain.split('/')[0]}
                 pathname={typebot.customDomain.split('/')[1]}
-                onPathnameChange={(pathname) =>
-                  handleCustomDomainChange(
-                    typebot.customDomain?.split('/')[0] + '/' + pathname
-                  )
-                }
+                onPathnameChange={handlePathnameChange}
               />
               <IconButton
                 icon={<TrashIcon />}
