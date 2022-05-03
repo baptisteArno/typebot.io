@@ -15,6 +15,7 @@ import {
   InputStepType,
   IntegrationStepType,
   LogicStepType,
+  OctaStepType
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -160,7 +161,22 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        {draggedStepType && (
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            OctaStep
+          </Text>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(OctaStepType).map((type) => (
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+              />
+            ))}
+          </SimpleGrid>
+        </Stack>
+
+        {/* {draggedStepType && (
           <Portal>
             <StepCardOverlay
               type={draggedStepType}
@@ -173,7 +189,7 @@ export const StepsSideBar = () => {
               }}
             />
           </Portal>
-        )}
+        )} */}
       </Stack>
       <Fade in={!isLocked} unmountOnExit>
         <Flex

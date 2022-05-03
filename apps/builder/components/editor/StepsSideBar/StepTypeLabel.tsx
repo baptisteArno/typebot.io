@@ -1,6 +1,7 @@
 import { Text, Tooltip } from '@chakra-ui/react'
 import {
   BubbleStepType,
+  OctaStepType,
   InputStepType,
   IntegrationStepType,
   LogicStepType,
@@ -77,6 +78,10 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Pabbly</Text>
     case IntegrationStepType.EMAIL:
       return <Text>Email</Text>
+    case OctaStepType.SEND_MESSAGE:
+      return <Text>Send Message</Text>
+    case OctaStepType.END_MESSAGE:
+      return <Text>End Conversation</Text>
     default:
       return <></>
   }
