@@ -12,9 +12,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   const resultId = req.query.resultId as string | undefined
   if (req.method === 'GET') {
-    const spreadsheetId = req.query.spreadsheetId.toString()
-    const sheetId = req.query.sheetId.toString()
-    const credentialsId = req.query.credentialsId.toString()
+    const spreadsheetId = req.query.spreadsheetId as string
+    const sheetId = req.query.sheetId as string
+    const credentialsId = req.query.credentialsId as string | undefined
+    if (!credentialsId) return badRequest(res)
     const referenceCell = {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
@@ -54,14 +55,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'POST') {
-    const spreadsheetId = req.query.spreadsheetId.toString()
-    const sheetId = req.query.sheetId.toString()
+    const spreadsheetId = req.query.spreadsheetId as string
+    const sheetId = req.query.sheetId as string
     const { credentialsId, values } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      credentialsId: string
+      credentialsId?: string
       values: { [key: string]: string }
     }
+    if (!credentialsId) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     const auth = await getAuthenticatedGoogleClient(credentialsId)
     if (!auth)
@@ -84,10 +86,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { credentialsId, values, referenceCell } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      credentialsId: string
+      credentialsId?: string
       referenceCell: Cell
       values: { [key: string]: string }
     }
+    if (!credentialsId) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     const auth = await getAuthenticatedGoogleClient(credentialsId)
     if (!auth)
