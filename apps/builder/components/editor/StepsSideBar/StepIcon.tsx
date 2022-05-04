@@ -89,8 +89,11 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <SendEmailIcon {...props} />
     case OctaStepType.SEND_MESSAGE:
       return <ChatIcon color="blue.500" {...props} />
-    case OctaStepType.END_MESSAGE:
+    case OctaStepType.END_CONVERSATION:
       return <ImageIcon color="blue.500" {...props} />
+    case OctaStepType.ASSIGN_TO_TEAM:
+      return <ImageIcon color="blue.500" {...props} />
+
     case 'start':
       return <FlagIcon {...props} />
     default:

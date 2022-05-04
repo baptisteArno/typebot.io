@@ -80,8 +80,10 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Email</Text>
     case OctaStepType.SEND_MESSAGE:
       return <Text>Send Message</Text>
-    case OctaStepType.END_MESSAGE:
+    case OctaStepType.END_CONVERSATION:
       return <Text>End Conversation</Text>
+    case OctaStepType.ASSIGN_TO_TEAM:
+      return <Text>Assign to Team</Text>
     default:
       return <></>
   }

@@ -2,33 +2,38 @@ import { StepBase } from '.'
 
 export type OctaStep =
   | SendMessageStep
-  | EndMessage
+  | EndConversationStep
+  | AssignToTeamStep
 
 export type OctaStepOptions =
   | SendMessageOptions
-  | EndMessage
+  | EndConversationOptions
+  | AssignToTeamOptions
 
 export enum OctaStepType {
   SEND_MESSAGE = 'Enviar mensagem',
-  END_MESSAGE = 'Finalizar conversa'
+  END_CONVERSATION = 'end conversation',
+  ASSIGN_TO_TEAM = 'assign to team'
 }
 
-export type SendMessageStep = StepBase & {
-  type: OctaStepType.SEND_MESSAGE
-  options: SendMessageOptions
+export type SendMessageStep = BaseOctaStep
+
+export type EndConversationStep = BaseOctaStep
+
+export type AssignToTeamStep = BaseOctaStep
+
+export type BaseOctaStep = StepBase & {
+  type: OctaStepType.END_CONVERSATION
+  options: AssignToTeamOptions
 }
 
-export type EndMessage = StepBase & {
-  type: OctaStepType.END_MESSAGE
-  options: EndMessageOptions
-}
+export type SendMessageOptions = BaseOctaOptions
 
-export type SendMessageOptions = {
-  name: string | 'default'
-  subject: string
-}
+export type EndConversationOptions = BaseOctaOptions
 
-export type EndMessageOptions = {
+export type AssignToTeamOptions = BaseOctaOptions
+
+export type BaseOctaOptions = {
   name: string | 'default'
   subject: string
 }
