@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 5.9.1
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 2.1.6
+Stable Tag: 2.1.8
 
 Build beautiful conversational forms
 
@@ -26,6 +26,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 2.1.8 =
+* Fix bubble not displayed with proactive message
+
 = 2.1.6 =
 * Fix auto open bubble even if empty param
 

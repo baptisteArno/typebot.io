@@ -1,6 +1,6 @@
 {
   "name": "wordpress",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "main": "index.js",
   "repository": "https://github.com/typebot-io/wordpress.git",
   "author": "baptisteArno",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "deploy": "yarn copy && yarn commit",
-    "copy": "svn copy ./trunk ./tags/2.1.7",
-    "commit": "svn ci -m 'Update typebot lib'"
+    "copy": "svn copy ./trunk ./tags/2.1.8",
+    "commit": "svn ci -m 'Fix proactive message bug'"
   }
 }
