@@ -179,6 +179,7 @@ export const TypebotContext = ({
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
+      subDomain: 'chatoctaqa'
     }
     if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
       return
