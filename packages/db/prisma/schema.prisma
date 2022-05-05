@@ -139,6 +139,7 @@ model Typebot {
   collaborators      CollaboratorsOnTypebots[]
   invitations        Invitation[]
   webhooks           Webhook[]
+  subDomain          String?
 
   @@unique([id, ownerId])
 }
