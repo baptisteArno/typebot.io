@@ -161,7 +161,7 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        <Stack>
+        {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             OctaStep
           </Text>
@@ -172,6 +172,16 @@ export const StepsSideBar = () => {
                 type={type}
                 onMouseDown={handleMouseDown}
               />
+            ))}
+          </SimpleGrid>
+        </Stack> */}
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            OctaStep
+          </Text>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(OctaStepType).map((type) => (
+              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
         </Stack>

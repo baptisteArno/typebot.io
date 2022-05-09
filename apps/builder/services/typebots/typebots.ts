@@ -37,12 +37,18 @@ import {
   defaultEmbedBubbleContent,
   ChoiceInputStep,
   ConditionStep,
+  OctaStepOptions,
+  OctaStepType,
+  defaultAssignToTeamOptions,
+  defaultEndConversationOptions
+
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
+  isOctaStepType,
   isWebhookStep,
   stepHasItems,
   stepTypeHasItems,
@@ -235,8 +241,12 @@ export const parseNewStep = (
     id,
     blockId,
     type,
-    content: isBubbleStepType(type) ? parseDefaultContent(type) : undefined,
-    options: stepTypeHasOption(type)
+    content: isBubbleStepType(type)
+      ? parseDefaultContent(type)
+      : undefined,
+    options: isOctaStepType(type)
+      ? parseOctaStepOptions(type)
+      : stepTypeHasOption(type)
       ? parseDefaultStepOptions(type)
       : undefined,
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
@@ -273,6 +283,15 @@ const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
       return defaultVideoBubbleContent
     case BubbleStepType.EMBED:
       return defaultEmbedBubbleContent
+  }
+}
+
+const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions => {
+  switch (type) {
+    case OctaStepType.ASSIGN_TO_TEAM:
+      return defaultAssignToTeamOptions
+    case OctaStepType.END_CONVERSATION:
+      return defaultEndConversationOptions
   }
 }
 

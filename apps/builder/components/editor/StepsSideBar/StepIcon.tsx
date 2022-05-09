@@ -87,8 +87,6 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <PabblyConnectLogo {...props} />
     case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
-    case OctaStepType.SEND_MESSAGE:
-      return <ChatIcon color="blue.500" {...props} />
     case OctaStepType.END_CONVERSATION:
       return <ImageIcon color="blue.500" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:

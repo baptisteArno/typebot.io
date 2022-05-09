@@ -9,7 +9,7 @@ import { BubbleStep, BubbleStepType } from './bubble'
 import { InputStep, InputStepType } from './inputs'
 import { IntegrationStep } from './integration'
 import { ConditionStep, LogicStep, LogicStepType } from './logic'
-import { OctaStepType } from './octaStep'
+import { OctaStep, OctaStepType } from './octaStep'
 
 export type Step =
   | StartStep
@@ -17,8 +17,9 @@ export type Step =
   | InputStep
   | LogicStep
   | IntegrationStep
+  | OctaStep
 
-export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep
+export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep | OctaStep
 
 export type StepType =
   | 'start'

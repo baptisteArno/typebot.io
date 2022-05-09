@@ -17,6 +17,8 @@ import {
   StepWithOptionsType,
   ImageBubbleStep,
   VideoBubbleStep,
+  OctaStepType,
+  OctaStepWithOptionsType
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -106,12 +108,21 @@ export const isWebhookStep = (step: Step): step is WebhookStep =>
 export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
   (Object.values(BubbleStepType) as string[]).includes(type)
 
+export const isOctaStepType = (type: OctaStepType): type is OctaStepType =>
+  (Object.values(OctaStepType) as string[]).includes(type)
+
 export const stepTypeHasOption = (
   type: StepType
 ): type is StepWithOptionsType =>
   (Object.values(InputStepType) as string[])
     .concat(Object.values(LogicStepType))
     .concat(Object.values(IntegrationStepType))
+    .includes(type)
+
+export const OctaStepTypeHasOption = (
+  type: OctaStepType
+): type is OctaStepType =>
+  (Object.values(OctaStepType) as string[])
     .includes(type)
 
 export const stepTypeHasWebhook = (

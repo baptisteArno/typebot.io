@@ -4,6 +4,7 @@ import {
   Edge,
   EmailInputStep,
   InputStepType,
+  OctaStepType,
   PhoneNumberInputStep,
   Step,
   UrlInputStep,
@@ -32,6 +33,19 @@ export const isInputValid = (
   }
   return true
 }
+
+// export const isOctaStepValid = (
+//   octaStepValue: string,
+//   type: OctaStepType
+// ): boolean => {
+//   switch (type) {
+//     case OctaStepType.END_CONVERSATION:
+//       return emailRegex.test(inputValue)
+//     case OctaStepType.END_CONVERSATION:
+//       return isPossiblePhoneNumber(inputValue)
+//   }
+//   return true
+// }
 
 export const stepCanBeRetried = (
   step: Step
