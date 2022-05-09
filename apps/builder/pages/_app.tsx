@@ -18,6 +18,8 @@ import { actions } from 'libs/kbar'
 import { enableMocks } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
 
+import { appWithTranslation } from 'next-i18next';
+
 if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
@@ -54,4 +56,4 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   )
 }
 
-export default App
+export default appWithTranslation(App)

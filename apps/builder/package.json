@@ -29,6 +29,7 @@
     "@giphy/js-types": "^4.1.0",
     "@giphy/react-components": "^5.6.1",
     "@googleapis/drive": "^2.3.0",
+    "@octadesk-tech/web-components": "^2.27.2",
     "@sentry/nextjs": "^6.19.3",
     "@stripe/stripe-js": "^1.26.0",
     "@udecode/plate-basic-marks": "^10.5.0",
@@ -61,10 +62,12 @@
     "models": "*",
     "next": "^12.1.4",
     "next-auth": "4.3.1",
+    "next-i18next": "^11.0.0",
     "nodemailer": "^6.7.3",
     "nprogress": "^0.2.0",
     "papaparse": "^5.3.2",
     "prettier": "^2.6.1",
+    "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
@@ -81,7 +84,7 @@
     "typebot-js": "*",
     "use-debounce": "^7.0.1",
     "utils": "*",
-    "qs": "^6.10.3"
+    "vuera": "^0.2.7"
   },
   "devDependencies": {
     "@playwright/test": "^1.20.2",
@@ -96,6 +99,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/papaparse": "^5.3.2",
     "@types/prettier": "^2.4.4",
+    "@types/qs": "^6.9.7",
     "@types/react": "^17.0.43",
     "@types/react-table": "^7.7.10",
     "@types/tinycolor2": "^1.4.3",
@@ -104,7 +108,6 @@
     "eslint": "<8.0.0",
     "eslint-config-next": "12.1.4",
     "msw": "^0.39.2",
-    "typescript": "^4.6.3",
-    "@types/qs": "^6.9.7"
+    "typescript": "^4.6.3"
   }
 }

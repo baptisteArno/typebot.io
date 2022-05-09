@@ -11,6 +11,8 @@ import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
 import { NextPageContext } from 'next/types'
 
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { query, isReady } = useRouter()
@@ -69,6 +71,7 @@ const DashboardPage = () => {
 }
 
 export async function getServerSideProps(context: NextPageContext) {
+{
   const redirectPath = context.query.redirectPath?.toString()
   return redirectPath
     ? {
@@ -77,7 +80,13 @@ export async function getServerSideProps(context: NextPageContext) {
           destination: redirectPath,
         },
       }
-    : { props: {} }
-}
+    : { props: 
+        {
+        ...(await serverSideTranslations(context.locale as string, [
+          'common'
+          ])),
+        } 
+      }
+}}
 
 export default DashboardPage
