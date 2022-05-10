@@ -123,7 +123,7 @@ export const StepNode = ({
   const handleClick = (e: React.MouseEvent) => {
     setFocusedBlockId(step.blockId)
     e.stopPropagation()
-    if (isTextBubbleStep(step)) setIsEditing(true)
+    if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
     setOpenedStepId(step.id)
   }
 
