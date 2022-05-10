@@ -15,7 +15,8 @@ import {
   InputStepType,
   IntegrationStepType,
   LogicStepType,
-  OctaStepType
+  OctaStepType,
+  OctaBubbleStepType
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -181,6 +182,11 @@ export const StepsSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(OctaStepType).map((type) => (
+              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+            ))}
+          </SimpleGrid>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(OctaBubbleStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>

@@ -40,14 +40,16 @@ import {
   OctaStepOptions,
   OctaStepType,
   defaultAssignToTeamOptions,
-  defaultEndConversationOptions
-
+  defaultEndConversationBubbleContent,
+  OctaBubbleStepType,
+  OctaBubbleStepContent
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
+  isOctaBubbleStepType,
   isOctaStepType,
   isWebhookStep,
   stepHasItems,
@@ -241,7 +243,7 @@ export const parseNewStep = (
     id,
     blockId,
     type,
-    content: isBubbleStepType(type)
+    content: isBubbleStepType(type) || isOctaBubbleStepType(type)
       ? parseDefaultContent(type)
       : undefined,
     options: isOctaStepType(type)
@@ -273,7 +275,7 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleStepContent => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -283,6 +285,8 @@ const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
       return defaultVideoBubbleContent
     case BubbleStepType.EMBED:
       return defaultEmbedBubbleContent
+    case OctaBubbleStepType.END_CONVERSATION:
+      return defaultEndConversationBubbleContent
   }
 }
 
@@ -290,8 +294,6 @@ const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
-    case OctaStepType.END_CONVERSATION:
-      return defaultEndConversationOptions
   }
 }
 
@@ -410,6 +412,7 @@ export const parseNewTypebot = ({
   }
   return {
     folderId,
+    subDomain: '',
     name,
     ownerId,
     blocks: [startBlock],

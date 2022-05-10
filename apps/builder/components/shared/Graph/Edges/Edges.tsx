@@ -26,7 +26,7 @@ export const Edges = ({
       left="0"
       top="0"
       pointerEvents="none"
-      shape-rendering="geometricPrecision"
+      shapeRendering="geometricPrecision"
     >
       <DrawingEdge />
       {edges.map((edge) => (

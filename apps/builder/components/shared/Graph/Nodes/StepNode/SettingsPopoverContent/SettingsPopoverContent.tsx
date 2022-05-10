@@ -14,6 +14,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   OctaStepType,
+  OctaBubbleStepType,
   Step,
   StepOptions,
   TextBubbleStep,
@@ -26,8 +27,7 @@ import {
   EmailInputSettingsBody,
   UrlInputSettingsBody,
   DateInputSettingsBody,
-  AssignToTeamSettingsBody,
-  EndConversationSettingsBody
+  AssignToTeamSettingsBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -212,18 +212,9 @@ export const StepSettings = ({
         />
       )
     }
-    case OctaStepType.ASSIGN_TO_TEAM: {
-      return (
+    case OctaStepType.ASSIGN_TO_TEAM: {      return (
         <AssignToTeamSettingsBody
           options={step.options || { labels: { placeholder: 'sou um placeholder' }} }
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    case OctaStepType.END_CONVERSATION: {
-      return (
-        <EndConversationSettingsBody
-          options={step.options || { labels: { placeholder: 'end conversation' }} }
           onOptionsChange={handleOptionsChange}
         />
       )

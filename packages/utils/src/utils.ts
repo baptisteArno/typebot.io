@@ -18,6 +18,8 @@ import {
   ImageBubbleStep,
   VideoBubbleStep,
   OctaStepType,
+  OctaBubbleStepType,
+  OctaBubbleStep,
   OctaStepWithOptionsType
 } from 'models'
 
@@ -69,6 +71,9 @@ export const isInputStep = (step: Step): step is InputStep =>
 export const isBubbleStep = (step: Step): step is BubbleStep =>
   (Object.values(BubbleStepType) as string[]).includes(step.type)
 
+export const isOctaBubbleStep = (step: Step): step is OctaBubbleStep =>
+  (Object.values(OctaBubbleStepType) as string[]).includes(step.type)
+
 export const isLogicStep = (step: Step): step is LogicStep =>
   (Object.values(LogicStepType) as string[]).includes(step.type)
 
@@ -108,7 +113,10 @@ export const isWebhookStep = (step: Step): step is WebhookStep =>
 export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
   (Object.values(BubbleStepType) as string[]).includes(type)
 
-export const isOctaStepType = (type: OctaStepType): type is OctaStepType =>
+export const isOctaBubbleStepType = (type: StepType): type is OctaBubbleStepType =>
+  (Object.values(OctaBubbleStepType) as string[]).includes(type)
+
+export const isOctaStepType = (type: StepType): type is OctaStepType =>
   (Object.values(OctaStepType) as string[]).includes(type)
 
 export const stepTypeHasOption = (

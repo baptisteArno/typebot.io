@@ -29,7 +29,6 @@
     "@giphy/js-types": "^4.1.0",
     "@giphy/react-components": "^5.6.1",
     "@googleapis/drive": "^2.3.0",
-    "@octadesk-tech/web-components": "^2.27.2",
     "@sentry/nextjs": "^6.19.3",
     "@stripe/stripe-js": "^1.26.0",
     "@udecode/plate-basic-marks": "^10.5.0",

@@ -16,7 +16,7 @@ import {
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isBubbleStep, isTextBubbleStep } from 'utils'
+import { isBubbleStep, isTextBubbleStep, isOctaBubbleStep } from 'utils'
 import { StepNodeContent } from './StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
@@ -59,7 +59,7 @@ export const StepNode = ({
     openedStepId === step.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleStep(step) && step.content.plainText === ''
+    (isTextBubbleStep(step) || isOctaBubbleStep(step)) && step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -143,7 +143,7 @@ export const StepNode = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openedStepId])
 
-  return isEditing && isTextBubbleStep(step) ? (
+  return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
     <TextBubbleEditor
       initialValue={step.content.richText}
       onClose={handleCloseEditor}
@@ -232,7 +232,7 @@ export const StepNode = ({
 }
 
 const hasSettingsPopover = (step: Step): step is Exclude<Step, BubbleStep> =>
-  !isBubbleStep(step)
+  !(isBubbleStep(step) || isOctaBubbleStep(step))
 
 const isMediaBubbleStep = (
   step: Step

@@ -31,6 +31,7 @@ import {
   BubbleStepType,
   InputStepType,
   OctaStepType,
+  OctaBubbleStepType,
   IntegrationStepType,
   LogicStepType,
   StepType,
@@ -87,7 +88,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <PabblyConnectLogo {...props} />
     case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
-    case OctaStepType.END_CONVERSATION:
+    case OctaBubbleStepType.END_CONVERSATION:
       return <ImageIcon color="blue.500" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <ImageIcon color="blue.500" {...props} />
