@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { TextBubbleStep } from 'models'
+import { EndConversationStep, TextBubbleStep } from 'models'
 import React from 'react'
 import { parseVariableHighlight } from 'services/utils'
 
 type Props = {
-  step: TextBubbleStep
+  step: TextBubbleStep | EndConversationStep
 }
 
 export const TextBubbleContent = ({ step }: Props) => {

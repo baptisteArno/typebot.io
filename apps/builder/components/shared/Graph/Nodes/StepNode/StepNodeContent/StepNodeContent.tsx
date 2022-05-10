@@ -7,6 +7,7 @@ import {
   LogicStepType,
   IntegrationStepType,
   StepIndices,
+  OctaBubbleStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../ItemNode'
@@ -136,6 +137,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case IntegrationStepType.EMAIL: {
       return <SendEmailContent step={step} />
+    }
+    case OctaBubbleStepType.END_CONVERSATION: {
+      return <TextBubbleContent step={step} />
     }
     case 'start': {
       return <Text>Start</Text>

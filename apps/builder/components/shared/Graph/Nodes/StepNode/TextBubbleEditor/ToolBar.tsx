@@ -15,6 +15,7 @@ export const ToolBar = (props: Props) => {
 
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
+    const { onVariablesButtonClick} = props
     props.onVariablesButtonClick()
   }
   return (

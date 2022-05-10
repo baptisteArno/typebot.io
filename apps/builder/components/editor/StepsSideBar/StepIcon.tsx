@@ -89,7 +89,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
-      return <ImageIcon color="blue.500" {...props} />
+      return <CheckSquareIcon color="orange.500" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <ImageIcon color="blue.500" {...props} />
 
