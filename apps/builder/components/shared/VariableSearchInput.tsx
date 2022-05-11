@@ -9,8 +9,9 @@ import {
   Button,
   InputProps,
   IconButton,
+  HStack,
 } from '@chakra-ui/react'
-import { PlusIcon, TrashIcon } from 'assets/icons'
+import { EditIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
 import { Variable } from 'models'
@@ -35,7 +36,8 @@ export const VariableSearchInput = ({
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const { typebot, createVariable, deleteVariable } = useTypebot()
+  const { typebot, createVariable, deleteVariable, updateVariable } =
+    useTypebot()
   const variables = typebot?.variables ?? []
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
@@ -113,6 +115,19 @@ export const VariableSearchInput = ({
       }
     }
 
+  const handleRenameVariableClick =
+    (variable: Variable) => (e: React.MouseEvent) => {
+      e.stopPropagation()
+      const name = prompt('Rename variable', variable.name)
+      if (!name) return
+      updateVariable(variable.id, { name })
+      setFilteredItems(
+        filteredItems.map((item) =>
+          item.id === variable.id ? { ...item, name } : item
+        )
+      )
+    }
+
   return (
     <Flex ref={dropdownRef} w="full">
       <Popover
@@ -174,12 +189,20 @@ export const VariableSearchInput = ({
                     justifyContent="space-between"
                   >
                     {item.name}
-                    <IconButton
-                      icon={<TrashIcon />}
-                      aria-label="Remove variable"
-                      size="xs"
-                      onClick={handleDeleteVariableClick(item)}
-                    />
+                    <HStack>
+                      <IconButton
+                        icon={<EditIcon />}
+                        aria-label="Rename variable"
+                        size="xs"
+                        onClick={handleRenameVariableClick(item)}
+                      />
+                      <IconButton
+                        icon={<TrashIcon />}
+                        aria-label="Remove variable"
+                        size="xs"
+                        onClick={handleDeleteVariableClick(item)}
+                      />
+                    </HStack>
                   </Button>
                 )
               })}
