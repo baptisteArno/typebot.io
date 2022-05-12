@@ -27,6 +27,7 @@ module.exports = {
       apiKey: 'd2e121d4ad4e5346ac2c3329424981a1',
       indexName: 'typebot',
       appId: 'DXYNLHZTGJ',
+      contextualSearch: false,
     },
     footer: {
       links: [
