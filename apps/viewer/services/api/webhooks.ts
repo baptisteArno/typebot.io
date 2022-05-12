@@ -105,7 +105,7 @@ const getSampleValue = (step: InputStep) => {
     case InputStepType.CHOICE:
       return step.options.isMultipleChoice
         ? step.items.map((i) => i.content).join(', ')
-        : step.items[0].content ?? 'Item'
+        : step.items[0]?.content ?? 'Item'
     case InputStepType.DATE:
       return new Date().toUTCString()
     case InputStepType.EMAIL:

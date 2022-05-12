@@ -37,7 +37,7 @@ const saveLog = (
   message: string,
   details?: any
 ) => {
-  if (!resultId) return
+  if (!resultId || resultId === 'undefined') return
   return prisma.log.create({
     data: {
       resultId,
