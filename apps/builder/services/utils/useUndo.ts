@@ -92,7 +92,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       // )
       return {
         past: [...past, present].filter(isDefined),
-        present: newPresent,
+        present: { ...newPresent, updatedAt: new Date() },
         future: [],
       }
     }
