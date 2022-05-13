@@ -101,96 +101,119 @@ export const createTypebot = async ({
 }
 
 export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
-  return sendRequest<Typebot>({
+  const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
+    typebot,
+    userPlan
+  )
+  const { data, error } = await sendRequest<Typebot>({
     url: `/api/typebots`,
     method: 'POST',
-    body: await duplicateTypebot(typebot, userPlan),
+    body: newTypebot,
   })
+  if (!data) return { data, error }
+  const webhookSteps = typebot.blocks
+    .flatMap((b) => b.steps)
+    .filter(isWebhookStep)
+  await Promise.all(
+    webhookSteps.map((s) =>
+      duplicateWebhook(
+        newTypebot.id,
+        s.webhookId,
+        webhookIdsMapping.get(s.webhookId) as string
+      )
+    )
+  )
+  return { data, error }
 }
 
-const duplicateTypebot = async (
+const duplicateTypebot = (
   typebot: Typebot,
   userPlan: Plan
-): Promise<Typebot> => {
+): { typebot: Typebot; webhookIdsMapping: Map<string, string> } => {
   const blockIdsMapping = generateOldNewIdsMapping(typebot.blocks)
   const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
+  const webhookIdsMapping = generateOldNewIdsMapping(
+    typebot.blocks
+      .flatMap((b) => b.steps)
+      .filter(isWebhookStep)
+      .map((s) => ({ id: s.webhookId }))
+  )
+  const id = cuid()
   return {
-    ...typebot,
-    id: cuid(),
-    name: `${typebot.name} copy`,
-    publishedTypebotId: null,
-    publicId: null,
-    customDomain: null,
-    blocks: await Promise.all(
-      typebot.blocks.map(async (b) => ({
+    typebot: {
+      ...typebot,
+      id,
+      name: `${typebot.name} copy`,
+      publishedTypebotId: null,
+      publicId: null,
+      customDomain: null,
+      blocks: typebot.blocks.map((b) => ({
         ...b,
         id: blockIdsMapping.get(b.id) as string,
-        steps: await Promise.all(
-          b.steps.map(async (s) => {
-            const newIds = {
-              blockId: blockIdsMapping.get(s.blockId) as string,
-              outgoingEdgeId: s.outgoingEdgeId
-                ? edgeIdsMapping.get(s.outgoingEdgeId)
-                : undefined,
-            }
-            if (
-              s.type === LogicStepType.TYPEBOT_LINK &&
-              s.options.typebotId === 'current' &&
-              isDefined(s.options.blockId)
-            )
-              return {
-                ...s,
-                options: {
-                  ...s.options,
-                  blockId: blockIdsMapping.get(s.options.blockId as string),
-                },
-              }
-            if (stepHasItems(s))
-              return {
-                ...s,
-                items: s.items.map((item) => ({
-                  ...item,
-                  outgoingEdgeId: item.outgoingEdgeId
-                    ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
-                    : undefined,
-                })),
-                ...newIds,
-              } as ChoiceInputStep | ConditionStep
-            if (isWebhookStep(s)) {
-              const newWebhook = await duplicateWebhook(s.webhookId)
-              return {
-                ...s,
-                webhookId: newWebhook ? newWebhook.id : cuid(),
-                ...newIds,
-              }
-            }
+        steps: b.steps.map((s) => {
+          const newIds = {
+            blockId: blockIdsMapping.get(s.blockId) as string,
+            outgoingEdgeId: s.outgoingEdgeId
+              ? edgeIdsMapping.get(s.outgoingEdgeId)
+              : undefined,
+          }
+          if (
+            s.type === LogicStepType.TYPEBOT_LINK &&
+            s.options.typebotId === 'current' &&
+            isDefined(s.options.blockId)
+          )
             return {
               ...s,
+              options: {
+                ...s.options,
+                blockId: blockIdsMapping.get(s.options.blockId as string),
+              },
+            }
+          if (stepHasItems(s))
+            return {
+              ...s,
+              items: s.items.map((item) => ({
+                ...item,
+                outgoingEdgeId: item.outgoingEdgeId
+                  ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
+                  : undefined,
+              })),
+              ...newIds,
+            } as ChoiceInputStep | ConditionStep
+          if (isWebhookStep(s)) {
+            return {
+              ...s,
+              webhookId: webhookIdsMapping.get(s.webhookId) as string,
               ...newIds,
             }
-          })
-        ),
-      }))
-    ),
-    edges: typebot.edges.map((e) => ({
-      ...e,
-      id: edgeIdsMapping.get(e.id) as string,
-      from: {
-        ...e.from,
-        blockId: blockIdsMapping.get(e.from.blockId) as string,
-      },
-      to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
-    })),
-    settings:
-      typebot.settings.general.isBrandingEnabled === false &&
-      userPlan === Plan.FREE
-        ? {
-            ...typebot.settings,
-            general: { ...typebot.settings.general, isBrandingEnabled: true },
           }
-        : typebot.settings,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+          return {
+            ...s,
+            ...newIds,
+          }
+        }),
+      })),
+      edges: typebot.edges.map((e) => ({
+        ...e,
+        id: edgeIdsMapping.get(e.id) as string,
+        from: {
+          ...e.from,
+          blockId: blockIdsMapping.get(e.from.blockId) as string,
+        },
+        to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
+      })),
+      settings:
+        typebot.settings.general.isBrandingEnabled === false &&
+        userPlan === Plan.FREE
+          ? {
+              ...typebot.settings,
+              general: { ...typebot.settings.general, isBrandingEnabled: true },
+            }
+          : typebot.settings,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    webhookIdsMapping,
   }
 }
 
