@@ -22,7 +22,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
               byId(comparison.variableId)
             )
             return (
-              <Wrap key={comparison.id} spacing={1} isTruncated>
+              <Wrap key={comparison.id} spacing={1} noOfLines={0}>
                 {idx > 0 && <Text>{item.content.logicalOperator ?? ''}</Text>}
                 {variable?.name && (
                   <Tag bgColor="orange.400" color="white">
@@ -38,7 +38,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
                 )}
                 {comparison?.value && (
                   <Tag bgColor={'gray.200'}>
-                    <Text isTruncated>{comparison.value}</Text>
+                    <Text noOfLines={0}>{comparison.value}</Text>
                   </Tag>
                 )}
               </Wrap>

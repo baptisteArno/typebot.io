@@ -134,7 +134,7 @@ export const SubmissionsContent = ({
     () =>
       publishedTypebot ? convertResultsToTableData(results, resultHeader) : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [results]
+    [publishedTypebot?.id, resultHeader.length, results]
   )
 
   const handleLogsModalClose = () => setInspectingLogsResultId(undefined)

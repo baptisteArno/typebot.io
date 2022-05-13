@@ -36,7 +36,7 @@ export const ProviderWebhookContent = ({ step, configuredLabel }: Props) => {
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>
   return (
-    <Text isTruncated pr="6">
+    <Text noOfLines={0} pr="6">
       {webhook?.url ? configuredLabel : 'Disabled'}
     </Text>
   )

@@ -12,9 +12,6 @@
     "db": "*",
     "models": "*",
     "utils": "*",
-    "ts-node": "^10.5.0"
-  },
-  "dependencies": {
-    "firebase-admin": "^10.0.2"
+    "ts-node": "^10.7.0"
   }
 }

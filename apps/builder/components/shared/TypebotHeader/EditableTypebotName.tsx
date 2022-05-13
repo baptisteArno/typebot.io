@@ -18,7 +18,7 @@ export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
     <Tooltip label="Rename">
       <Editable value={localName} onChange={setLocalName} onSubmit={onNewName}>
         <EditablePreview
-          isTruncated
+          noOfLines={0}
           cursor="pointer"
           maxW="200px"
           overflow="hidden"

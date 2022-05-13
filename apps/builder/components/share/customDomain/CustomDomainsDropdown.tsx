@@ -87,7 +87,7 @@ export const CustomDomainsDropdown = ({
         textAlign="left"
         {...props}
       >
-        <Text isTruncated overflowY="visible" h="20px">
+        <Text noOfLines={0} overflowY="visible" h="20px">
           {currentCustomDomain ?? 'Add my domain'}
         </Text>
       </MenuButton>

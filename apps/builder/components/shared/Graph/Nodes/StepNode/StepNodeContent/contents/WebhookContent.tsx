@@ -13,7 +13,7 @@ export const WebhookContent = ({ step: { webhookId } }: Props) => {
 
   if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
   return (
-    <Text isTruncated pr="6">
+    <Text noOfLines={2} pr="6">
       {webhook.method} {webhook.url}
     </Text>
   )

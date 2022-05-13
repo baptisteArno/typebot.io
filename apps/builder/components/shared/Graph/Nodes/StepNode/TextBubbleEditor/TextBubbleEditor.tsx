@@ -4,11 +4,13 @@ import {
   Plate,
   selectEditor,
   serializeHtml,
-  TDescendant,
+  TEditor,
+  TElement,
+  Value,
   withPlate,
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
-import { BaseSelection, createEditor, Transforms } from 'slate'
+import { BaseEditor, BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
@@ -16,7 +18,7 @@ import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
 
 type Props = {
-  initialValue: TDescendant[]
+  initialValue: TElement[]
   onClose: (newContent: TextBubbleContent) => void
 }
 
@@ -24,7 +26,10 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
   const randomEditorId = useMemo(() => Math.random().toString(), [])
   const editor = useMemo(
     () =>
-      withPlate(createEditor(), { id: randomEditorId, plugins: platePlugins }),
+      withPlate(createEditor() as TEditor<Value>, {
+        id: randomEditorId,
+        plugins: platePlugins,
+      }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
@@ -65,7 +70,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
     }
   }
 
-  const convertValueToStepContent = (value: unknown[]): TextBubbleContent => {
+  const convertValueToStepContent = (value: TElement[]): TextBubbleContent => {
     if (value.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
       nodes: value,
@@ -84,12 +89,12 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
   const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
-    Transforms.select(editor, rememberedSelection.current)
-    Transforms.insertText(editor, '{{' + variable.name + '}}')
+    Transforms.select(editor as BaseEditor, rememberedSelection.current)
+    Transforms.insertText(editor as BaseEditor, '{{' + variable.name + '}}')
     ReactEditor.focus(editor as unknown as ReactEditor)
   }
 
-  const handleChangeEditorContent = (val: unknown[]) => {
+  const handleChangeEditorContent = (val: TElement[]) => {
     setValue(val)
     setIsVariableDropdownOpen(false)
   }
@@ -110,7 +115,10 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
       spacing={0}
       cursor="text"
     >
-      <ToolBar onVariablesButtonClick={() => setIsVariableDropdownOpen(true)} />
+      <ToolBar
+        editor={editor}
+        onVariablesButtonClick={() => setIsVariableDropdownOpen(true)}
+      />
       <Plate
         id={randomEditorId}
         editableProps={{

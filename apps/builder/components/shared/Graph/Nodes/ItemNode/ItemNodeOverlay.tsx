@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from '@chakra-ui/react'
 import { Item } from 'models'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type Props = {
   item: Item
@@ -20,7 +20,7 @@ export const ItemNodeOverlay = ({ item, ...props }: Props) => {
       shadow="lg"
       {...props}
     >
-      {item.content ?? 'Click to edit'}
+      {(item.content ?? 'Click to edit') as ReactNode}
     </Flex>
   )
 }
