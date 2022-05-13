@@ -15,8 +15,8 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { isNotDefined } from 'utils'
 import { PublishButton } from '../buttons/PublishButton'
+import { EditableEmojiOrImageIcon } from '../EditableEmojiOrImageIcon'
 import { CollaborationMenuButton } from './CollaborationMenuButton'
-import { EditableTypebotIcon } from './EditableTypebotIcons'
 import { EditableTypebotName } from './EditableTypebotName'
 
 export const headerHeight = 56
@@ -123,7 +123,7 @@ export const TypebotHeader = () => {
             }
           />
           <HStack spacing={1}>
-            <EditableTypebotIcon
+            <EditableEmojiOrImageIcon
               icon={typebot?.icon}
               onChangeIcon={handleChangeIcon}
             />

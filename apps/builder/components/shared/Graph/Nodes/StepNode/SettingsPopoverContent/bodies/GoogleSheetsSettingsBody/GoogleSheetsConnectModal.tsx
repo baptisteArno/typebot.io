@@ -15,6 +15,7 @@ import {
 import { GoogleLogo } from 'assets/logos'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { Info } from 'components/shared/Info'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
 import { getGoogleSheetsConsentScreenUrl } from 'services/integrations'
 
@@ -25,6 +26,7 @@ type Props = {
 }
 
 export const GoogleSheetConnectModal = ({ stepId, isOpen, onClose }: Props) => {
+  const { workspace } = useWorkspace()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
@@ -54,7 +56,8 @@ export const GoogleSheetConnectModal = ({ stepId, isOpen, onClose }: Props) => {
               variant="outline"
               href={getGoogleSheetsConsentScreenUrl(
                 window.location.href,
-                stepId
+                stepId,
+                workspace?.id
               )}
               mx="auto"
             >

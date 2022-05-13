@@ -23,7 +23,7 @@ const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
 
 type CustomDomainModalProps = {
-  userId: string
+  workspaceId: string
   isOpen: boolean
   onClose: () => void
   domain?: string
@@ -31,7 +31,7 @@ type CustomDomainModalProps = {
 }
 
 export const CustomDomainModal = ({
-  userId,
+  workspaceId,
   isOpen,
   onClose,
   onNewDomain,
@@ -67,7 +67,7 @@ export const CustomDomainModal = ({
   const onAddDomainClick = async () => {
     if (!hostnameRegex.test(inputValue)) return
     setIsLoading(true)
-    const { error } = await createCustomDomain(userId, {
+    const { error } = await createCustomDomain(workspaceId, {
       name: inputValue,
     })
     setIsLoading(false)

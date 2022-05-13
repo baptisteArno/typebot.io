@@ -8,16 +8,21 @@ import {
   Typebot,
   Webhook,
 } from 'models'
-import { PrismaClient } from 'db'
+import { PrismaClient, WorkspaceRole } from 'db'
 import { readFileSync } from 'fs'
 import { encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
+const proWorkspaceId = 'proWorkspaceViewer'
+
 export const teardownDatabase = async () => {
   try {
-    await prisma.user.delete({
-      where: { id: 'proUser' },
+    await prisma.workspace.deleteMany({
+      where: { members: { some: { userId: { in: ['proUser'] } } } },
+    })
+    await prisma.user.deleteMany({
+      where: { id: { in: ['proUser'] } },
     })
   } catch (err) {
     console.error(err)
@@ -34,6 +39,17 @@ export const createUser = () =>
       email: 'user@email.com',
       name: 'User',
       apiToken: 'userToken',
+      workspaces: {
+        create: {
+          role: WorkspaceRole.ADMIN,
+          workspace: {
+            create: {
+              id: proWorkspaceId,
+              name: 'Pro workspace',
+            },
+          },
+        },
+      },
     },
   })
 
@@ -81,6 +97,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   folderId: null,
   name: 'My typebot',
   ownerId: 'proUser',
+  workspaceId: proWorkspaceId,
   icon: null,
   theme: defaultTheme,
   settings: defaultSettings,
@@ -143,6 +160,7 @@ export const importTypebotInDatabase = async (
   const typebot: any = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
+    workspaceId: proWorkspaceId,
     ownerId: 'proUser',
   }
   await prisma.typebot.create({
@@ -203,6 +221,7 @@ export const createSmtpCredentials = (
       name: smtpData.from.email as string,
       type: CredentialsType.SMTP,
       ownerId: 'proUser',
+      workspaceId: proWorkspaceId,
     },
   })
 }

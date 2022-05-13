@@ -80,11 +80,10 @@ test.describe('Dashboard page', () => {
     })
     test("create folder shouldn't be available", async ({ page }) => {
       await page.goto('/typebots')
+      await page.click('text=Shared workspace')
+      await page.click('text=Free workspace')
       await page.click('text=Create a folder')
-      await expect(
-        page.locator('text="You can\'t create folders with the basic plan"')
-      ).toBeVisible()
-      await expect(page.locator('text=Upgrade now')).toBeVisible()
+      await expect(page.locator('text=For solo creator')).toBeVisible()
     })
   })
 })

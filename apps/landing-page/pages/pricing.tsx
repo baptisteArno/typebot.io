@@ -14,15 +14,26 @@ import { Header } from 'components/common/Header/Header'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
+import { PlanComparisonTables } from 'components/PricingPage/PlanComparisonTables'
 import { PricingCard } from 'components/PricingPage/PricingCard'
 import { ActionButton } from 'components/PricingPage/PricingCard/ActionButton'
 import { useEffect, useState } from 'react'
 
 const Pricing = () => {
-  const [price, setPrice] = useState<'$30' | '25€' | ''>('')
+  const [price, setPrice] = useState<{
+    personalPro: '$39' | '39€' | ''
+    team: '$99' | '99€' | ''
+  }>({
+    personalPro: '',
+    team: '',
+  })
 
   useEffect(() => {
-    setPrice(navigator.languages.find((l) => l.includes('fr')) ? '25€' : '$30')
+    setPrice(
+      navigator.languages.find((l) => l.includes('fr'))
+        ? { personalPro: '39€', team: '99€' }
+        : { personalPro: '$39', team: '$99' }
+    )
   }, [])
 
   return (
@@ -49,12 +60,12 @@ const Pricing = () => {
             px={[4, 0]}
             mt={[20, 32]}
             w="full"
-            maxW="900px"
+            maxW="1200px"
           >
             <PricingCard
               data={{
                 price: 'Free',
-                name: 'Basic',
+                name: 'Personal',
                 features: [
                   'Unlimited typebots',
                   'Unlimited responses',
@@ -68,16 +79,16 @@ const Pricing = () => {
                   href="https://app.typebot.io/register"
                   _hover={{ textDecor: 'none' }}
                 >
-                  <ActionButton variant="outline">Try now</ActionButton>
+                  <ActionButton variant="outline">Get started</ActionButton>
                 </NextChakraLink>
               }
             />
             <PricingCard
               data={{
-                price,
-                name: 'Pro',
+                price: price.personalPro,
+                name: 'Personal Pro',
+                featureLabel: 'Everything in Personal, plus:',
                 features: [
-                  'Everything in Basic',
                   'Branding removed',
                   'View incomplete submissions',
                   'In-depth drop off analytics',
@@ -90,7 +101,7 @@ const Pricing = () => {
               borderColor="orange.200"
               button={
                 <NextChakraLink
-                  href="https://app.typebot.io/register?subscribe=true"
+                  href="https://app.typebot.io/register?subscribePlan=pro"
                   _hover={{ textDecor: 'none' }}
                 >
                   <ActionButton colorScheme="orange">
@@ -99,10 +110,38 @@ const Pricing = () => {
                 </NextChakraLink>
               }
             />
+            <PricingCard
+              data={{
+                price: price.team,
+                name: 'Team',
+                featureLabel: 'Everything in Pro, plus:',
+                features: [
+                  'Unlimited team members',
+                  'Collaborative workspace',
+                  'Custom roles',
+                ],
+              }}
+              borderWidth="3px"
+              borderColor="purple.200"
+              button={
+                <NextChakraLink
+                  href="https://app.typebot.io/register?subscribePlan=team"
+                  _hover={{ textDecor: 'none' }}
+                >
+                  <ActionButton>Subscribe now</ActionButton>
+                </NextChakraLink>
+              }
+            />
           </Stack>
-          <VStack w="full" maxW="900px" spacing="10" px="4">
-            <Heading textAlign="center">Frequently asked questions</Heading>
-            <Faq />
+          <VStack maxW="1200px" w="full" spacing={[12, 20]} px="4">
+            <Stack w="full" spacing={10} display={['none', 'flex']}>
+              <Heading>Compare plans & features</Heading>
+              <PlanComparisonTables prices={price} />
+            </Stack>
+            <VStack w="full" spacing="10">
+              <Heading textAlign="center">Frequently asked questions</Heading>
+              <Faq />
+            </VStack>
           </VStack>
         </VStack>
       </Flex>
@@ -114,39 +153,6 @@ const Pricing = () => {
 const Faq = () => {
   return (
     <Accordion w="full" allowToggle defaultIndex={0}>
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              How can I use Typebot with my team?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          Typebot allows you to invite your colleagues to collaborate on any of
-          your typebot. You can give him access as a reader or an editor. Your
-          colleague's account can be a free account. <br />
-          <br />
-          I'm working on a better solution for teams with shared workspaces and
-          other team-oriented features.
-        </AccordionPanel>
-      </AccordionItem>
-
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              How many seats will I have with the Pro plan?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          You'll have only one seat. You can invite your colleagues to
-          collaborate on your typebots even though they have a free account.
-        </AccordionPanel>
-      </AccordionItem>
       <AccordionItem>
         <Heading as="h2">
           <AccordionButton py="6">

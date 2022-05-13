@@ -1,7 +1,7 @@
 import { VStack, Tag, Text, Tooltip } from '@chakra-ui/react'
 import { useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import React, { useMemo } from 'react'
 import { AnswersCount } from 'services/analytics'
 import {
@@ -9,7 +9,7 @@ import {
   computeSourceCoordinates,
   computeDropOffPath,
 } from 'services/graph'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/workspace'
 import { byId, isDefined } from 'utils'
 
 type Props = {
@@ -23,11 +23,11 @@ export const DropOffEdge = ({
   blockId,
   onUnlockProPlanClick,
 }: Props) => {
-  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const { sourceEndpoints, blocksCoordinates, graphPosition } = useGraph()
   const { publishedTypebot } = useTypebot()
 
-  const isUserOnFreePlan = isFreePlan(user)
+  const isUserOnFreePlan = isFreePlan(workspace)
 
   const totalAnswers = useMemo(
     () => answersCounts.find((a) => a.blockId === blockId)?.totalAnswers,

@@ -3,13 +3,19 @@ import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { isFreePlan } from 'services/user/user'
-import { methodNotAllowed, notAuthenticated } from 'utils'
+import { isFreePlan } from 'services/workspace'
+import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
+  const workspaceId = req.query.workspaceId as string | undefined
   if (req.method === 'GET') {
+    const workspace = await prisma.workspace.findFirst({
+      where: { id: workspaceId, members: { some: { userId: user.id } } },
+      select: { plan: true },
+    })
+    if (!workspace) return forbidden(res)
     const typebotId = req.query.typebotId.toString()
     const lastResultId = req.query.lastResultId?.toString()
     const take = parseInt(req.query.limit?.toString())
@@ -24,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         typebot: canReadTypebot(typebotId, user),
         answers: { some: {} },
-        isCompleted: isFreePlan(user) ? true : undefined,
+        isCompleted: isFreePlan(workspace) ? true : undefined,
       },
       orderBy: {
         createdAt: 'desc',

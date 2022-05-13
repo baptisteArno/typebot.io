@@ -5,7 +5,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { EditorSettings } from 'components/account/EditorSection'
+import { EditorSettings } from 'components/dashboard/WorkspaceSettingsModal/UserSettingsForm'
 import React from 'react'
 
 type Props = {

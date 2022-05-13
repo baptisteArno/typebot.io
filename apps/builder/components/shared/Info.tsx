@@ -7,6 +7,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import { Plan } from 'db'
 import React from 'react'
 import { UpgradeModal } from './modals/UpgradeModal'
 import { LimitReached } from './modals/UpgradeModal/UpgradeModal'
@@ -22,14 +23,16 @@ export const PublishFirstInfo = (props: AlertProps) => (
   <Info {...props}>You need to publish your typebot first</Info>
 )
 
-export const UnlockProPlanInfo = ({
+export const UnlockPlanInfo = ({
   contentLabel,
-  buttonLabel,
+  buttonLabel = 'More info',
   type,
+  plan = Plan.PRO,
 }: {
   contentLabel: string
-  buttonLabel: string
+  buttonLabel?: string
   type?: LimitReached
+  plan: Plan
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
@@ -44,10 +47,10 @@ export const UnlockProPlanInfo = ({
         <AlertIcon />
         <Text>{contentLabel}</Text>
       </HStack>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <Button colorScheme="blue" onClick={onOpen} flexShrink={0} ml="2">
         {buttonLabel}
       </Button>
-      <UpgradeModal isOpen={isOpen} onClose={onClose} type={type} />
+      <UpgradeModal isOpen={isOpen} onClose={onClose} type={type} plan={plan} />
     </Alert>
   )
 }

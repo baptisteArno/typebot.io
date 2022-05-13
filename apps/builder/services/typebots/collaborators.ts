@@ -36,7 +36,7 @@ export const updateCollaborator = (
   collaborator: CollaboratorsOnTypebots
 ) =>
   sendRequest({
-    method: 'PUT',
+    method: 'PATCH',
     url: `/api/typebots/${typebotId}/collaborators/${userId}`,
     body: collaborator,
   })

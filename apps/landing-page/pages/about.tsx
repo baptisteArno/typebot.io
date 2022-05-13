@@ -64,7 +64,7 @@ const AboutPage = () => {
           <br /> You can use the tool for free but your forms will contain a
           "Made with Typebot" small badge that potentially gets people to know
           about the product. If you want to remove it and also have access to
-          other advanced features, you have to subscribe for $30 per month.
+          other advanced features, you have to subscribe for $39 per month.
         </Text>
         <Text>
           If you have any questions, feel free to reach out to me at{' '}

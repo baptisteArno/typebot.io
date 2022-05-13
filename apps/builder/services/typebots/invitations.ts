@@ -36,10 +36,10 @@ export const sendInvitation = (
 export const updateInvitation = (
   typebotId: string,
   email: string,
-  invitation: Omit<Invitation, 'createdAt'>
+  invitation: Omit<Invitation, 'createdAt' | 'id'>
 ) =>
   sendRequest({
-    method: 'PUT',
+    method: 'PATCH',
     url: `/api/typebots/${typebotId}/invitations/${email}`,
     body: invitation,
   })

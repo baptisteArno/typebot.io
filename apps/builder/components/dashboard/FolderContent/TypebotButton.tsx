@@ -20,7 +20,7 @@ import { deleteTypebot, importTypebot, getTypebot } from 'services/typebots'
 import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
-import { TypebotIcon } from 'components/shared/TypebotHeader/TypebotIcon'
+import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { useUser } from 'contexts/UserContext'
 import { Plan } from 'db'
 
@@ -157,7 +157,7 @@ export const TypebotButton = ({
           alignItems="center"
           fontSize={'4xl'}
         >
-          {<TypebotIcon icon={typebot.icon} boxSize={'35px'} />}
+          {<EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />}
         </Flex>
         <Text textAlign="center">{typebot.name}</Text>
       </VStack>

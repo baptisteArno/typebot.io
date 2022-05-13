@@ -10,10 +10,11 @@ import {
   useResults,
 } from 'services/typebots'
 import { unparse } from 'papaparse'
-import { UnlockProPlanInfo } from 'components/shared/Info'
+import { UnlockPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
 import { isDefined, parseResultHeader } from 'utils'
+import { Plan } from 'db'
 
 type Props = {
   typebotId: string
@@ -147,9 +148,10 @@ export const SubmissionsContent = ({
   return (
     <Stack maxW="1200px" w="full" pb="28" px={['4', '0']} spacing="4">
       {totalHiddenResults && (
-        <UnlockProPlanInfo
+        <UnlockPlanInfo
           buttonLabel={`Unlock ${totalHiddenResults} results`}
           contentLabel="You are seeing complete submissions only."
+          plan={Plan.PRO}
         />
       )}
       {publishedTypebot && (

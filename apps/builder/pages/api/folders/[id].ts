@@ -11,14 +11,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.query.id.toString()
   if (req.method === 'GET') {
-    const folder = await prisma.dashboardFolder.findUnique({
-      where: { id_ownerId: { id, ownerId: user.id } },
+    const folder = await prisma.dashboardFolder.findFirst({
+      where: {
+        id,
+        workspace: { members: { some: { userId: user.id } } },
+      },
     })
     return res.send({ folder })
   }
   if (req.method === 'DELETE') {
-    const folders = await prisma.dashboardFolder.delete({
-      where: { id_ownerId: { id, ownerId: user.id } },
+    const folders = await prisma.dashboardFolder.deleteMany({
+      where: { id, workspace: { members: { some: { userId: user.id } } } },
     })
     return res.send({ folders })
   }
@@ -26,8 +29,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as Partial<DashboardFolder>
-    const folders = await prisma.dashboardFolder.update({
-      where: { id_ownerId: { id, ownerId: user.id } },
+    const folders = await prisma.dashboardFolder.updateMany({
+      where: {
+        id,
+        workspace: { members: { some: { userId: user.id } } },
+      },
       data,
     })
     return res.send({ typebots: folders })

@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start:local": "ts-node index.ts",
-    "start:prod": "NODE_ENV=production ts-node index.ts"
+    "start:prod": "NODE_ENV=production ts-node index.ts",
+    "start:workspaces:migration": "ts-node workspaceMigration.ts"
   },
   "devDependencies": {
     "db": "*",

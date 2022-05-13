@@ -178,13 +178,15 @@ The related environment variables are listed here but you are probably not inter
 <details><summary><h4>Stripe</h4></summary>
 <p>
 
-| Parameter                     | Default | Description           |
-| ----------------------------- | ------- | --------------------- |
-| NEXT_PUBLIC_STRIPE_PUBLIC_KEY | --      | Stripe public key     |
-| STRIPE_SECRET_KEY             | --      | Stripe secret key     |
-| STRIPE_PRICE_USD_ID           | --      | Pro plan USD price id |
-| STRIPE_PRICE_EUR_ID           | --      | Pro plan EUR price id |
-| STRIPE_WEBHOOK_SECRET         | --      | Stripe Webhook secret |
+| Parameter                     | Default | Description            |
+| ----------------------------- | ------- | ---------------------- |
+| NEXT_PUBLIC_STRIPE_PUBLIC_KEY | --      | Stripe public key      |
+| STRIPE_SECRET_KEY             | --      | Stripe secret key      |
+| STRIPE_PRICE_USD_ID           | --      | Pro plan USD price id  |
+| STRIPE_PRICE_EUR_ID           | --      | Pro plan EUR price id  |
+| STRIPE_PRICE_TEAM_USD_ID      | --      | Team plan USD price id |
+| STRIPE_PRICE_TEAM_EUR_ID      | --      | Team plan EUR price id |
+| STRIPE_WEBHOOK_SECRET         | --      | Stripe Webhook secret  |
 
 </p></details>
 
