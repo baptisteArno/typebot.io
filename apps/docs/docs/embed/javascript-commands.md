@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Javascript library
 
-Typebot Javascript library is open-source ([check out the repository](https://github.com/typebot-io/typebot-js)). Feel free to contribute if you're a developer and wish to improve its features.
+Typebot Javascript library is open-source ([check out the repository](https://github.com/baptisteArno/typebot.io/tree/main/packages/typebot-js)). Feel free to contribute if you're a developer and wish to improve its features.
 
 Whenever a typebot is embedded on your website, you have access to commands to automatically trigger actions on your embedding depending on its type.
 
@@ -15,11 +15,11 @@ Whenever a typebot is embedded on your website, you have access to commands to a
 You can use these commands:
 
 ```js
-Typebot.getPopupActions().open();
+Typebot.getPopupActions().open()
 ```
 
 ```js
-Typebot.getPopupActions().close();
+Typebot.getPopupActions().close()
 ```
 
 You can bind these commands on a button element, for example:
@@ -35,7 +35,7 @@ You can bind these commands on a button element, for example:
 You can use this command:
 
 ```js
-Typebot.getBubbleActions().openProactiveMessage();
+Typebot.getBubbleActions().openProactiveMessage()
 ```
 
 You can bind this command on a button element, for example:
@@ -51,11 +51,11 @@ You can bind this command on a button element, for example:
 You can use these commands:
 
 ```js
-Typebot.getBubbleActions().open();
+Typebot.getBubbleActions().open()
 ```
 
 ```js
-Typebot.getBubbleActions().close();
+Typebot.getBubbleActions().close()
 ```
 
 You can bind these commands on a button element, for example:
