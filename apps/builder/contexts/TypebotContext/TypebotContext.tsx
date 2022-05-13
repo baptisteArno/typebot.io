@@ -162,7 +162,7 @@ export const TypebotContext = ({
   useEffect(() => {
     if (!typebot || !currentTypebotRef.current) return
     if (typebotId !== currentTypebotRef.current.id) {
-      setLocalTypebot({ ...typebot })
+      setLocalTypebot({ ...typebot }, { updateDate: false })
       flush()
     } else if (
       new Date(typebot.updatedAt) >
