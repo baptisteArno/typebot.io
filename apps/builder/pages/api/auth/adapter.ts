@@ -34,7 +34,6 @@ export function CustomAdapter(p: PrismaClient): Adapter {
           ...data,
           id: user.id,
           apiToken: randomUUID(),
-          plan: process.env.ADMIN_EMAIL === data.email ? Plan.PRO : Plan.FREE,
           workspaces:
             workspaceInvitations.length > 0
               ? undefined

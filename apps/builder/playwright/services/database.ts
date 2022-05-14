@@ -249,7 +249,6 @@ const parseTypebotToPublicTypebot = (
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
-  ownerId: 'proUser',
   workspaceId: proWorkspaceId,
   folderId: null,
   name: 'My typebot',
@@ -312,10 +311,9 @@ export const importTypebotInDatabase = async (
   path: string,
   updates?: Partial<Typebot>
 ) => {
-  const typebot: any = {
+  const typebot: Typebot = {
     ...JSON.parse(readFileSync(path).toString()),
     workspaceId: proWorkspaceId,
-    ownerId: 'proUser',
     ...updates,
   }
   await prisma.typebot.create({

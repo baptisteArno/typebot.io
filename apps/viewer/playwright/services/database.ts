@@ -109,7 +109,6 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  ownerId: 'proUser',
   workspaceId: proWorkspaceId,
   icon: null,
   theme: defaultTheme,
@@ -170,11 +169,10 @@ export const importTypebotInDatabase = async (
   path: string,
   updates?: Partial<Typebot>
 ) => {
-  const typebot: any = {
+  const typebot: Typebot = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
     workspaceId: proWorkspaceId,
-    ownerId: 'proUser',
   }
   await prisma.typebot.create({
     data: typebot,
@@ -233,7 +231,6 @@ export const createSmtpCredentials = (
       iv,
       name: smtpData.from.email as string,
       type: CredentialsType.SMTP,
-      ownerId: 'proUser',
       workspaceId: proWorkspaceId,
     },
   })

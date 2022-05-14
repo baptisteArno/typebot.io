@@ -40,7 +40,6 @@ export const CreateNewTypebotButtons = () => {
             ...typebot,
             folderId,
             workspaceId: workspace.id,
-            ownerId: user.id,
             theme: {
               ...typebot.theme,
               chat: {

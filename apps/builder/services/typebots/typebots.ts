@@ -418,7 +418,6 @@ export const parseNewTypebot = ({
     steps: [startStep],
   }
   return {
-    ownerId: null,
     folderId,
     name,
     workspaceId,

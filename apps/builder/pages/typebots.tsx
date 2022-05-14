@@ -24,7 +24,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
-    if (workspace && subscribePlan && user && user.plan === 'FREE') {
+    if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
       pay({
         user,
