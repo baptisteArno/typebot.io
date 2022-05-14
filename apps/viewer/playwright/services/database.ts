@@ -74,6 +74,19 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   })
 }
 
+export const updateTypebot = async (
+  partialTypebot: Partial<Typebot> & { id: string }
+) => {
+  await prisma.typebot.updateMany({
+    where: { id: partialTypebot.id },
+    data: partialTypebot,
+  })
+  return prisma.publicTypebot.updateMany({
+    where: { typebotId: partialTypebot.id },
+    data: partialTypebot,
+  })
+}
+
 const parseTypebotToPublicTypebot = (
   id: string,
   typebot: Typebot

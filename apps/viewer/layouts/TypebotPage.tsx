@@ -53,7 +53,11 @@ export const TypebotPage = ({
 
   const clearQueryParams = () => {
     const hasQueryParams = asPath.includes('?')
-    if (hasQueryParams) push(asPath.split('?')[0], undefined, { shallow: true })
+    if (
+      hasQueryParams &&
+      typebot.settings.general.isHideQueryParamsEnabled !== false
+    )
+      push(asPath.split('?')[0], undefined, { shallow: true })
   }
 
   const initializeResult = async () => {

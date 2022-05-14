@@ -47,6 +47,12 @@ export const GeneralSettingsForm = ({
       isInputPrefillEnabled,
     })
 
+  const handleHideQueryParamsChange = (isHideQueryParamsEnabled: boolean) =>
+    onGeneralSettingsChange({
+      ...generalSettings,
+      isHideQueryParamsEnabled,
+    })
+
   return (
     <Stack spacing={6}>
       <UpgradeModal isOpen={isOpen} onClose={onClose} />
@@ -77,6 +83,13 @@ export const GeneralSettingsForm = ({
         label="Create new session on page refresh"
         initialValue={generalSettings.isNewResultOnRefreshEnabled ?? false}
         onCheckChange={handleNewResultOnRefreshChange}
+      />
+      <SwitchWithLabel
+        id="query-params"
+        label="Hide query params on bot start"
+        initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
+        onCheckChange={handleHideQueryParamsChange}
+        moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
       />
     </Stack>
   )
