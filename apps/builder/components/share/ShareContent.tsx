@@ -12,7 +12,6 @@ import {
 import { TrashIcon } from 'assets/icons'
 import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
 import { parseDefaultPublicId } from 'services/typebots'

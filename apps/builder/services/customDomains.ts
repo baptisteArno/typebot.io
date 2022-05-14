@@ -13,7 +13,7 @@ export const useCustomDomains = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
-    { customDomains: Omit<CustomDomain, 'createdAt' | 'ownerId'>[] },
+    { customDomains: Omit<CustomDomain, 'createdAt'>[] },
     Error
   >(
     workspaceId ? `/api/customDomains?${stringify({ workspaceId })}` : null,
@@ -29,7 +29,7 @@ export const useCustomDomains = ({
 
 export const createCustomDomain = async (
   workspaceId: string,
-  customDomain: Omit<CustomDomain, 'createdAt' | 'workspaceId' | 'ownerId'>
+  customDomain: Omit<CustomDomain, 'createdAt' | 'workspaceId'>
 ) =>
   sendRequest<{
     credentials: Credentials

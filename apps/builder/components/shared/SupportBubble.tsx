@@ -1,7 +1,6 @@
 import { useTypebot } from 'contexts/TypebotContext'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { Plan } from 'db'
 import React, { useEffect, useState } from 'react'
 import { isCloudProdInstance } from 'services/utils'
 import { planToReadable } from 'services/workspace'

@@ -36,7 +36,6 @@ export const parsePublicTypebotToTypebot = (
   updatedAt: existingTypebot.updatedAt,
   publishedTypebotId: typebot.id,
   folderId: existingTypebot.folderId,
-  ownerId: existingTypebot.ownerId,
   icon: existingTypebot.icon,
   workspaceId: existingTypebot.workspaceId,
 })
