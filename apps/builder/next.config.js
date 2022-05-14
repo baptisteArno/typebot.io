@@ -5,6 +5,7 @@ const moduleExports = {
   experimental: {
     outputStandalone: true,
   },
+  optimizeFonts: false,
 }
 
 const sentryWebpackPluginOptions = {

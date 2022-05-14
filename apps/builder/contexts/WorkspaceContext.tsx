@@ -50,7 +50,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     (m) => m.userId === userId
   )?.role
 
-  console.log(workspaces)
   useEffect(() => {
     if (!workspaces || workspaces.length === 0) return
     const lastWorspaceId = localStorage.getItem('workspaceId')

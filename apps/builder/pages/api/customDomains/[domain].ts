@@ -18,13 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const customDomains = await prisma.customDomain.delete({
       where: { name: domain },
     })
-    console.log(
-      {
-        name: domain,
-        workspace: { id: workspaceId },
-      },
-      { some: { userId: user.id } }
-    )
+
     await deleteDomainOnVercel(domain)
     return res.send({ customDomains })
   }

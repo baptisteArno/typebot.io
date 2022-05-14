@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, currency, plan, workspaceId } =
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
 
-    console.log(plan, workspaceId)
     const session = await stripe.checkout.sessions.create({
       success_url: `${req.headers.origin}/typebots?stripe=success`,
       cancel_url: `${req.headers.origin}/typebots?stripe=cancel`,

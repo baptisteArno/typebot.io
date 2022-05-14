@@ -15,6 +15,7 @@ export const migrateWorkspace = async () => {
         include: { typebot: { select: { workspaceId: true } } },
       },
     },
+    orderBy: { lastActivityAt: 'desc' },
   })
   let i = 1
   for (const user of users) {

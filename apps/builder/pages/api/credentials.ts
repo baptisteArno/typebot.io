@@ -23,7 +23,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       select: { name: true, type: true, workspaceId: true, id: true },
     })
-    console.log('Hey there', credentials)
     return res.send({ credentials })
   }
   if (req.method === 'POST') {
