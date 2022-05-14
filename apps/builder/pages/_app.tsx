@@ -18,7 +18,6 @@ import { actions } from 'libs/kbar'
 import { enableMocks } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
-import { MaintenancePage } from 'components/shared/MaintenancePage'
 
 if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
@@ -33,30 +32,29 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   }, [pathname])
 
   const typebotId = query.typebotId?.toString()
-  return <MaintenancePage />
-  // return (
-  //   <ChakraProvider theme={customTheme}>
-  //     <KBarProvider actions={actions}>
-  //       <SessionProvider session={session}>
-  //         <UserContext>
-  //           {typebotId ? (
-  //             <TypebotContext typebotId={typebotId}>
-  //               <WorkspaceContext>
-  //                 <Component />
-  //                 <SupportBubble />
-  //               </WorkspaceContext>
-  //             </TypebotContext>
-  //           ) : (
-  //             <WorkspaceContext>
-  //               <Component {...pageProps} />
-  //               <SupportBubble />
-  //             </WorkspaceContext>
-  //           )}
-  //         </UserContext>
-  //       </SessionProvider>
-  //     </KBarProvider>
-  //   </ChakraProvider>
-  // )
+  return (
+    <ChakraProvider theme={customTheme}>
+      <KBarProvider actions={actions}>
+        <SessionProvider session={session}>
+          <UserContext>
+            {typebotId ? (
+              <TypebotContext typebotId={typebotId}>
+                <WorkspaceContext>
+                  <Component />
+                  <SupportBubble />
+                </WorkspaceContext>
+              </TypebotContext>
+            ) : (
+              <WorkspaceContext>
+                <Component {...pageProps} />
+                <SupportBubble />
+              </WorkspaceContext>
+            )}
+          </UserContext>
+        </SessionProvider>
+      </KBarProvider>
+    </ChakraProvider>
+  )
 }
 
 export default App
