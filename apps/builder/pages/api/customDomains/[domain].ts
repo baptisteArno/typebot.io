@@ -19,7 +19,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { name: domain },
     })
 
-    await deleteDomainOnVercel(domain)
     return res.send({ customDomains })
   }
   return methodNotAllowed(res)

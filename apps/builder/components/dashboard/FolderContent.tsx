@@ -55,6 +55,7 @@ export const FolderContent = ({ folder }: Props) => {
     position: 'top-right',
     status: 'error',
   })
+
   const {
     folders,
     isLoading: isFolderLoading,

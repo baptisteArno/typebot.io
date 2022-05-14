@@ -51,7 +51,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   )?.role
 
   useEffect(() => {
-    if (!workspaces || workspaces.length === 0) return
+    if (!workspaces || workspaces.length === 0 || currentWorkspace) return
     const lastWorspaceId = localStorage.getItem('workspaceId')
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
@@ -105,6 +105,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     mutate({
       workspaces: [...workspaces, newWorkspace],
     })
+    console.log(newWorkspace)
     setCurrentWorkspace(newWorkspace)
   }
 
