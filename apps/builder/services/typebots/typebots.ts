@@ -44,6 +44,7 @@ import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
   isWebhookStep,
+  omit,
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
@@ -343,8 +344,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
 
 export const checkIfTypebotsAreEqual = (typebotA: Typebot, typebotB: Typebot) =>
   dequal(
-    JSON.parse(JSON.stringify(typebotA)),
-    JSON.parse(JSON.stringify(typebotB))
+    JSON.parse(JSON.stringify(omit(typebotA, 'updatedAt'))),
+    JSON.parse(JSON.stringify(omit(typebotB, 'updatedAt')))
   )
 
 export const checkIfPublished = (
