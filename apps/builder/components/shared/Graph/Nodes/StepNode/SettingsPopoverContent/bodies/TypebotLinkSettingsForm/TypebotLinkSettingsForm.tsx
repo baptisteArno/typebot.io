@@ -23,10 +23,13 @@ export const TypebotLinkSettingsForm = ({
 
   return (
     <Stack>
-      <TypebotsDropdown
-        typebotId={options.typebotId}
-        onSelectTypebotId={handleTypebotIdChange}
-      />
+      {typebot && (
+        <TypebotsDropdown
+          typebotId={options.typebotId}
+          onSelectTypebotId={handleTypebotIdChange}
+          currentWorkspaceId={typebot.workspaceId as string}
+        />
+      )}
       <BlocksDropdown
         blocks={
           typebot &&

@@ -1,6 +1,6 @@
 import { withSentry } from '@sentry/nextjs'
 import { invitationToCollaborate } from 'assets/emails/invitationToCollaborate'
-import { CollaborationType } from 'db'
+import { CollaborationType, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebot = await prisma.typebot.findFirst({
       where: canWriteTypebot(typebotId, user),
     })
-    if (!typebot) return forbidden(res)
+    if (!typebot || !typebot.workspaceId) return forbidden(res)
     const { email, type } =
       (req.body as
         | { email: string | undefined; type: CollaborationType | undefined }
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { email: email.toLowerCase() },
       select: { id: true },
     })
-    if (existingUser)
+    if (existingUser) {
       await prisma.collaboratorsOnTypebots.create({
         data: {
           type,
@@ -48,7 +48,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: existingUser.id,
         },
       })
-    else
+      await prisma.memberInWorkspace.upsert({
+        where: {
+          userId_workspaceId: {
+            userId: existingUser.id,
+            workspaceId: typebot.workspaceId,
+          },
+        },
+        create: {
+          role: WorkspaceRole.GUEST,
+          userId: existingUser.id,
+          workspaceId: typebot.workspaceId,
+        },
+        update: {},
+      })
+    } else
       await prisma.invitation.create({
         data: { email: email.toLowerCase(), type, typebotId },
       })

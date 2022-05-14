@@ -124,13 +124,14 @@ test.describe.parallel('Settings page', () => {
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
+          workspaceId: 'free',
         }
       )
       await page.goto(`/typebots/${typebotId}/settings`)
       await page.click('button:has-text("General")')
       await expect(page.locator('text=Pro')).toBeVisible()
       await page.click('text=Typebot.io branding')
-      await expect(page.locator('text=Upgrade now')).toBeVisible()
+      await expect(page.locator('text=For solo creator')).toBeVisible()
     })
   })
 })

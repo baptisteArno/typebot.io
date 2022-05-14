@@ -1,6 +1,7 @@
 import test, { expect, Page } from '@playwright/test'
 import cuid from 'cuid'
 import { readFileSync } from 'fs'
+import prisma from 'libs/prisma'
 import { defaultTextInputOptions, InputStepType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
@@ -113,14 +114,18 @@ test.describe('Results page', () => {
     validateExportAll(dataAll)
   })
 
-  test.describe('Free user', () => {
+  test.describe('Free user', async () => {
     test.use({
       storageState: path.join(__dirname, '../freeUser.json'),
     })
     test("Incomplete results shouldn't be displayed", async ({ page }) => {
+      await prisma.typebot.update({
+        where: { id: typebotId },
+        data: { workspaceId: 'free' },
+      })
       await page.goto(`/typebots/${typebotId}/results`)
       await page.click('text=Unlock')
-      await expect(page.locator('text=Upgrade now')).toBeVisible()
+      await expect(page.locator('text=For solo creator')).toBeVisible()
     })
   })
 })

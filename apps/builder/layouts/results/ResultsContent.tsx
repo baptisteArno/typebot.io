@@ -1,17 +1,17 @@
 import { Button, Flex, HStack, Tag, useToast, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { useStats } from 'services/analytics'
-import { isFreePlan } from 'services/user/user'
+import { isFreePlan } from 'services/workspace'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
 
 export const ResultsContent = () => {
   const router = useRouter()
-  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const { typebot, publishedTypebot } = useTypebot()
   const isAnalytics = useMemo(
     () => router.pathname.endsWith('analytics'),
@@ -81,7 +81,7 @@ export const ResultsContent = () => {
               onDeleteResults={handleDeletedResults}
               totalResults={stats?.totalStarts ?? 0}
               totalHiddenResults={
-                isFreePlan(user)
+                isFreePlan(workspace)
                   ? (stats?.totalStarts ?? 0) - (stats?.totalCompleted ?? 0)
                   : undefined
               }

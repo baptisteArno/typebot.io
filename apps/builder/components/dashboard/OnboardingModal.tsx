@@ -24,6 +24,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
   const confettiCanon = useRef<confetti.CreateTypes>()
   const [chosenCategories, setChosenCategories] = useState<string[]>([])
+  const [openedOnce, setOpenedOnce] = useState(false)
 
   const toast = useToast({
     position: 'top-right',
@@ -37,12 +38,16 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   }, [])
 
   useEffect(() => {
+    if (openedOnce) return
     const isNewUser =
       user &&
       new Date(user?.createdAt as unknown as string).toDateString() ===
         new Date().toDateString() &&
       totalTypebots === 0
-    if (isNewUser) onOpen()
+    if (isNewUser) {
+      onOpen()
+      setOpenedOnce(true)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 

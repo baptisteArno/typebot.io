@@ -21,6 +21,7 @@ const userContext = createContext<{
   isSaving: boolean
   hasUnsavedChanges: boolean
   isOAuthProvider: boolean
+  currentWorkspaceId?: string
   updateUser: (newUser: Partial<User>) => void
   saveUser: (newUser?: Partial<User>) => Promise<void>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -35,6 +36,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     position: 'top-right',
     status: 'error',
   })
+  const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
 
   const [isSaving, setIsSaving] = useState(false)
   const isOAuthProvider = useMemo(
@@ -49,6 +51,9 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return
+    setCurrentWorkspaceId(
+      localStorage.getItem('currentWorkspaceId') ?? undefined
+    )
     const parsedUser = session.user as User
     setUser(parsedUser)
     if (parsedUser?.id) setSentryUser({ id: parsedUser.id })
@@ -96,6 +101,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
         isLoading: status === 'loading',
         hasUnsavedChanges,
         isOAuthProvider,
+        currentWorkspaceId,
         updateUser,
         saveUser,
       }}

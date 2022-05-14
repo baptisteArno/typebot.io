@@ -10,11 +10,15 @@ import {
   MenuList,
   SkeletonCircle,
   SkeletonText,
+  Text,
+  Tag,
+  Flex,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
+import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { useTypebot } from 'contexts/TypebotContext'
-import { useUser } from 'contexts/UserContext'
-import { CollaborationType } from 'db'
+import { useWorkspace } from 'contexts/WorkspaceContext'
+import { CollaborationType, WorkspaceRole } from 'db'
 import React, { FormEvent, useState } from 'react'
 import {
   deleteCollaborator,
@@ -27,21 +31,19 @@ import {
   deleteInvitation,
   sendInvitation,
 } from 'services/typebots/invitations'
-import {
-  CollaboratorIdentityContent,
-  CollaboratorItem,
-} from './CollaboratorButton'
+import { CollaboratorItem } from './CollaboratorButton'
 
 export const CollaborationList = () => {
-  const { user } = useUser()
-  const { typebot, owner } = useTypebot()
+  const { currentRole, workspace } = useWorkspace()
+  const { typebot } = useTypebot()
   const [invitationType, setInvitationType] = useState<CollaborationType>(
     CollaborationType.READ
   )
   const [invitationEmail, setInvitationEmail] = useState('')
   const [isSendingInvitation, setIsSendingInvitation] = useState(false)
 
-  const isOwner = user?.email === owner?.email
+  const hasFullAccess =
+    (currentRole && currentRole !== WorkspaceRole.GUEST) || false
 
   const toast = useToast({
     position: 'top-right',
@@ -66,12 +68,12 @@ export const CollaborationList = () => {
   } = useInvitations({
     typebotId: typebot?.id,
     onError: (e) =>
-      toast({ title: "Couldn't fetch collaborators", description: e.message }),
+      toast({ title: "Couldn't fetch invitations", description: e.message }),
   })
 
   const handleChangeInvitationCollabType =
     (email: string) => async (type: CollaborationType) => {
-      if (!typebot || !isOwner) return
+      if (!typebot || !hasFullAccess) return
       const { error } = await updateInvitation(typebot?.id, email, {
         email,
         typebotId: typebot.id,
@@ -85,7 +87,7 @@ export const CollaborationList = () => {
       })
     }
   const handleDeleteInvitation = (email: string) => async () => {
-    if (!typebot || !isOwner) return
+    if (!typebot || !hasFullAccess) return
     const { error } = await deleteInvitation(typebot?.id, email)
     if (error) return toast({ title: error.name, description: error.message })
     mutateInvitations({
@@ -95,7 +97,7 @@ export const CollaborationList = () => {
 
   const handleChangeCollaborationType =
     (userId: string) => async (type: CollaborationType) => {
-      if (!typebot || !isOwner) return
+      if (!typebot || !hasFullAccess) return
       const { error } = await updateCollaborator(typebot?.id, userId, {
         userId,
         type,
@@ -109,7 +111,7 @@ export const CollaborationList = () => {
       })
     }
   const handleDeleteCollaboration = (userId: string) => async () => {
-    if (!typebot || !isOwner) return
+    if (!typebot || !hasFullAccess) return
     const { error } = await deleteCollaborator(typebot?.id, userId)
     if (error) return toast({ title: error.name, description: error.message })
     mutateCollaborators({
@@ -119,7 +121,7 @@ export const CollaborationList = () => {
 
   const handleInvitationSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!typebot || !isOwner) return
+    if (!typebot || !hasFullAccess) return
     setIsSendingInvitation(true)
     const { error } = await sendInvitation(typebot.id, {
       email: invitationEmail,
@@ -133,60 +135,57 @@ export const CollaborationList = () => {
     setInvitationEmail('')
   }
 
-  const hasNobody =
-    (collaborators ?? []).length > 0 ||
-    ((invitations ?? []).length > 0 &&
-      !isInvitationsLoading &&
-      !isCollaboratorsLoading)
-
   return (
-    <Stack spacing={2}>
-      {isOwner && (
-        <HStack
-          as="form"
-          onSubmit={handleInvitationSubmit}
-          pt="4"
-          px="4"
-          pb={hasNobody ? '0' : '4'}
-        >
-          <Input
-            size="sm"
-            placeholder="colleague@company.com"
-            name="inviteEmail"
-            value={invitationEmail}
-            onChange={(e) => setInvitationEmail(e.target.value)}
-            rounded="md"
-          />
+    <Stack spacing={4} py="4">
+      <HStack as="form" onSubmit={handleInvitationSubmit} px="4">
+        <Input
+          size="sm"
+          placeholder="colleague@company.com"
+          name="inviteEmail"
+          value={invitationEmail}
+          onChange={(e) => setInvitationEmail(e.target.value)}
+          rounded="md"
+          isDisabled={!hasFullAccess}
+        />
 
+        {hasFullAccess && (
           <CollaborationTypeMenuButton
             type={invitationType}
             onChange={setInvitationType}
           />
-          <Button
-            size="sm"
-            colorScheme="blue"
-            isLoading={isSendingInvitation}
-            flexShrink={0}
-            type="submit"
-          >
-            Invite
-          </Button>
-        </HStack>
-      )}
-      {owner && (collaborators ?? []).length > 0 && (
-        <CollaboratorIdentityContent
-          email={owner.email ?? ''}
-          name={owner.name ?? undefined}
-          image={owner.image ?? undefined}
-          tag="Owner"
-        />
+        )}
+        <Button
+          size="sm"
+          colorScheme="blue"
+          isLoading={isSendingInvitation}
+          flexShrink={0}
+          type="submit"
+          isDisabled={!hasFullAccess}
+        >
+          Invite
+        </Button>
+      </HStack>
+      {workspace && (
+        <Flex py="2" px="4" justifyContent="space-between">
+          <HStack minW={0}>
+            <EmojiOrImageIcon icon={workspace.icon} />
+            <Text fontSize="15px" noOfLines={0}>
+              Everyone at {workspace.name}
+            </Text>
+          </HStack>
+          <Tag>
+            {convertCollaborationTypeEnumToReadable(
+              CollaborationType.FULL_ACCESS
+            )}
+          </Tag>
+        </Flex>
       )}
       {invitations?.map(({ email, type }) => (
         <CollaboratorItem
           key={email}
           email={email}
           type={type}
-          isOwner={isOwner}
+          isOwner={hasFullAccess}
           onDeleteClick={handleDeleteInvitation(email)}
           onChangeCollaborationType={handleChangeInvitationCollabType(email)}
           isGuest
@@ -199,7 +198,7 @@ export const CollaborationList = () => {
           image={user.image ?? undefined}
           name={user.name ?? undefined}
           type={type}
-          isOwner={isOwner}
+          isOwner={hasFullAccess}
           onDeleteClick={handleDeleteCollaboration(userId ?? '')}
           onChangeCollaborationType={handleChangeCollaborationType(userId)}
         />
@@ -253,5 +252,7 @@ export const convertCollaborationTypeEnumToReadable = (
       return 'Can view'
     case CollaborationType.WRITE:
       return 'Can edit'
+    case CollaborationType.FULL_ACCESS:
+      return 'Full access'
   }
 }

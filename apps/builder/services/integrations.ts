@@ -11,9 +11,10 @@ import {
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
-  stepId: string
+  stepId: string,
+  workspaceId?: string
 ) => {
-  const queryParams = stringify({ redirectUrl, stepId })
+  const queryParams = stringify({ redirectUrl, stepId, workspaceId })
   return `/api/credentials/google-sheets/consent-url?${queryParams}`
 }
 

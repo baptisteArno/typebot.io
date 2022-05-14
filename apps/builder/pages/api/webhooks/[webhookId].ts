@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: webhookId,
         typebot: {
           OR: [
-            { ownerId: user.id },
+            { workspace: { members: { some: { userId: user.id } } } },
             {
               collaborators: {
                 some: {
@@ -40,7 +40,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebot = await prisma.typebot.findFirst({
       where: {
         OR: [
-          { id: data.typebotId, ownerId: user.id },
+          {
+            id: data.typebotId,
+            workspace: { members: { some: { userId: user.id } } },
+          },
           {
             collaborators: {
               some: {

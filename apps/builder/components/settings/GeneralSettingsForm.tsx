@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react'
 import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import { GeneralSettings } from 'models'
 import React from 'react'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/workspace'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -23,8 +23,8 @@ export const GeneralSettingsForm = ({
   onGeneralSettingsChange,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { user } = useUser()
-  const isUserFreePlan = isFreePlan(user)
+  const { workspace } = useWorkspace()
+  const isUserFreePlan = isFreePlan(workspace)
   const handleSwitchChange = () => {
     if (generalSettings?.isBrandingEnabled && isUserFreePlan) return
     onGeneralSettingsChange({

@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
     const typebots = await prisma.typebot.findMany({
-      where: { ownerId: user.id },
+      where: { workspace: { members: { some: { userId: user.id } } } },
       select: { name: true, publishedTypebotId: true, id: true },
     })
     return res.send({ typebots })

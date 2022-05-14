@@ -64,18 +64,20 @@ export type TypebotInDashboard = Pick<
 >
 export const useTypebots = ({
   folderId,
+  workspaceId,
   allFolders,
   onError,
 }: {
+  workspaceId?: string
   folderId?: string
   allFolders?: boolean
   onError: (error: Error) => void
 }) => {
-  const params = stringify({ folderId, allFolders })
+  const params = stringify({ folderId, allFolders, workspaceId })
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
-  >(`/api/typebots?${params}`, fetcher, {
+  >(workspaceId ? `/api/typebots?${params}` : null, fetcher, {
     dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,
   })
   if (error) onError(error)
@@ -88,10 +90,12 @@ export const useTypebots = ({
 
 export const createTypebot = async ({
   folderId,
-}: Pick<Typebot, 'folderId'>) => {
+  workspaceId,
+}: Pick<Typebot, 'folderId' | 'workspaceId'>) => {
   const typebot = {
     folderId,
     name: 'My typebot',
+    workspaceId,
   }
   return sendRequest<Typebot>({
     url: `/api/typebots`,
@@ -379,13 +383,13 @@ export const parseDefaultPublicId = (name: string, id: string) =>
   toKebabCase(name) + `-${id?.slice(-7)}`
 
 export const parseNewTypebot = ({
-  ownerId,
   folderId,
   name,
   ownerAvatarUrl,
+  workspaceId,
 }: {
-  ownerId: string
   folderId: string | null
+  workspaceId: string
   name: string
   ownerAvatarUrl?: string
 }): Omit<
@@ -413,9 +417,10 @@ export const parseNewTypebot = ({
     steps: [startStep],
   }
   return {
+    ownerId: null,
     folderId,
     name,
-    ownerId,
+    workspaceId,
     blocks: [startBlock],
     edges: [],
     variables: [],

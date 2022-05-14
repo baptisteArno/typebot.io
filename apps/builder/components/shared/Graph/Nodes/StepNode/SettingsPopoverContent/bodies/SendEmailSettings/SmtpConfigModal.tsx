@@ -16,6 +16,7 @@ import { createCredentials } from 'services/user'
 import { testSmtpConfig } from 'services/integrations'
 import { isNotDefined } from 'utils'
 import { SmtpConfigForm } from './SmtpConfigForm'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = {
   isOpen: boolean
@@ -29,6 +30,7 @@ export const SmtpConfigModal = ({
   onClose,
 }: Props) => {
   const { user } = useUser()
+  const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
   const toast = useToast({
     position: 'top-right',
@@ -40,7 +42,7 @@ export const SmtpConfigModal = ({
   })
 
   const handleCreateClick = async () => {
-    if (!user?.email) return
+    if (!user?.email || !workspace?.id) return
     setIsCreating(true)
     const { error: testSmtpError } = await testSmtpConfig(
       smtpConfig,
@@ -53,10 +55,11 @@ export const SmtpConfigModal = ({
         description: "We couldn't send the test email with your configuration",
       })
     }
-    const { data, error } = await createCredentials(user.id, {
+    const { data, error } = await createCredentials({
       data: smtpConfig,
       name: smtpConfig.from.email as string,
       type: CredentialsType.SMTP,
+      workspaceId: workspace.id,
     })
     setIsCreating(false)
     if (error) return toast({ title: error.name, description: error.message })

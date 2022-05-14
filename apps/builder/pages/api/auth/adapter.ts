@@ -1,15 +1,32 @@
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
-import { PrismaClient, Prisma, Invitation, Plan } from 'db'
+import {
+  PrismaClient,
+  Prisma,
+  Invitation,
+  Plan,
+  WorkspaceRole,
+  WorkspaceInvitation,
+} from 'db'
 import { randomUUID } from 'crypto'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
 import { got } from 'got'
+
+type InvitationWithWorkspaceId = Invitation & {
+  typebot: {
+    workspaceId: string | null
+  }
+}
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
     createUser: async (data: Omit<AdapterUser, 'id'>) => {
       const user = { id: cuid(), email: data.email as string }
       const invitations = await p.invitation.findMany({
+        where: { email: user.email },
+        include: { typebot: { select: { workspaceId: true } } },
+      })
+      const workspaceInvitations = await p.workspaceInvitation.findMany({
         where: { email: user.email },
       })
       const createdUser = await p.user.create({
@@ -18,6 +35,25 @@ export function CustomAdapter(p: PrismaClient): Adapter {
           id: user.id,
           apiToken: randomUUID(),
           plan: process.env.ADMIN_EMAIL === data.email ? Plan.PRO : Plan.FREE,
+          workspaces:
+            workspaceInvitations.length > 0
+              ? undefined
+              : {
+                  create: {
+                    role: WorkspaceRole.ADMIN,
+                    workspace: {
+                      create: {
+                        name: data.name
+                          ? `${data.name}'s workspace`
+                          : `My workspace`,
+                        plan:
+                          process.env.ADMIN_EMAIL === data.email
+                            ? Plan.TEAM
+                            : Plan.FREE,
+                      },
+                    },
+                  },
+                },
         },
       })
       if (process.env.USER_CREATED_WEBHOOK_URL)
@@ -29,6 +65,8 @@ export function CustomAdapter(p: PrismaClient): Adapter {
         })
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
+      if (workspaceInvitations.length > 0)
+        await joinWorkspaces(p, user, workspaceInvitations)
       return createdUser
     },
     getUser: (id) => p.user.findUnique({ where: { id } }),
@@ -59,7 +97,7 @@ export function CustomAdapter(p: PrismaClient): Adapter {
           oauth_token_secret: data.oauth_token_secret as string,
           oauth_token: data.oauth_token as string,
           refresh_token_expires_in: data.refresh_token_expires_in as number,
-        }
+        },
       }) as any
     },
     unlinkAccount: (provider_providerAccountId) =>
@@ -94,7 +132,7 @@ export function CustomAdapter(p: PrismaClient): Adapter {
 const convertInvitationsToCollaborations = async (
   p: PrismaClient,
   { id, email }: { id: string; email: string },
-  invitations: Invitation[]
+  invitations: InvitationWithWorkspaceId[]
 ) => {
   await p.collaboratorsOnTypebots.createMany({
     data: invitations.map((invitation) => ({
@@ -103,7 +141,52 @@ const convertInvitationsToCollaborations = async (
       userId: id,
     })),
   })
+  const workspaceInvitations = invitations.reduce<InvitationWithWorkspaceId[]>(
+    (acc, invitation) =>
+      acc.some(
+        (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId
+      )
+        ? acc
+        : [...acc, invitation],
+    []
+  )
+  for (const invitation of workspaceInvitations) {
+    if (!invitation.typebot.workspaceId) continue
+    await p.memberInWorkspace.upsert({
+      where: {
+        userId_workspaceId: {
+          userId: id,
+          workspaceId: invitation.typebot.workspaceId,
+        },
+      },
+      create: {
+        userId: id,
+        workspaceId: invitation.typebot.workspaceId,
+        role: WorkspaceRole.GUEST,
+      },
+      update: {},
+    })
+  }
   return p.invitation.deleteMany({
+    where: {
+      email,
+    },
+  })
+}
+
+const joinWorkspaces = async (
+  p: PrismaClient,
+  { id, email }: { id: string; email: string },
+  invitations: WorkspaceInvitation[]
+) => {
+  await p.memberInWorkspace.createMany({
+    data: invitations.map((invitation) => ({
+      workspaceId: invitation.workspaceId,
+      role: invitation.type,
+      userId: id,
+    })),
+  })
+  return p.workspaceInvitation.deleteMany({
     where: {
       email,
     },

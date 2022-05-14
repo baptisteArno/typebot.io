@@ -10,8 +10,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
     const typebotId = req.query.typebotId.toString()
-    const typebot = await prisma.typebot.findUnique({
-      where: { id_ownerId: { id: typebotId, ownerId: user.id } },
+    const typebot = await prisma.typebot.findFirst({
+      where: {
+        id: typebotId,
+        workspace: { members: { some: { userId: user.id } } },
+      },
       select: { blocks: true, webhooks: true },
     })
     const emptyWebhookSteps = (typebot?.blocks as Block[]).reduce<
