@@ -88,7 +88,7 @@ export const parseInitContainerCode = ({
       backgroundColor,
     })
   return prettier.format(
-    `Typebot.initContainer("typebot-container", {
+    `initContainer("typebot-container", {
     url: "${url}",${bgColorString}${customDomainString}${hiddenVariablesString}
   });`,
     { parser: 'babel', plugins: [parserBabel] }
@@ -110,7 +110,7 @@ export const parseInitPopupCode = ({
     })
   const { delayString } = parsePopupParams({ delay })
   return prettier.format(
-    `var typebotCommands = Typebot.initPopup({url: "${url}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
+    `var typebotCommands = initPopup({url: "${url}",${delayString}${bgColorString}${customDomainString}${hiddenVariablesString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }
@@ -134,7 +134,7 @@ export const parseInitBubbleCode = ({
     proactiveMessage,
   })
   return prettier.format(
-    `var typebotCommands = Typebot.initBubble({url: "${url}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
+    `var typebotCommands = initBubble({url: "${url}",${bgColorString}${customDomainString}${hiddenVariablesString}${proactiveMessageString}${buttonString}});`,
     { parser: 'babel', plugins: [parserBabel] }
   )
 }

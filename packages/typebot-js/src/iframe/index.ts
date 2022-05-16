@@ -26,7 +26,6 @@ export const createIframe = ({
   iframe.classList.add('typebot-iframe')
   const { onNewVariableValue, onVideoPlayed } = iframeParams
   listenForTypebotMessages({ onNewVariableValue, onVideoPlayed })
-  iframe.style.display = 'none'
   return iframe
 }
 
