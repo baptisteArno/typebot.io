@@ -126,20 +126,24 @@ const updateLastActivityDate = async (user: User) => {
 const getUserGroups = async (account: Account): Promise<string[]> => {
   switch (account.provider) {
     case 'gitlab': {
-      const getGitlabGroups = async (accessToken: string, page: number = 1): Promise<any[]> => {
+      const getGitlabGroups = async (
+        accessToken: string,
+        page = 1
+      ): Promise<{ full_path: string }[]> => {
         const res = await fetch(
-          `${process.env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/groups?per_page=100&page=${page}`,
+          `${
+            process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+          }/api/v4/groups?per_page=100&page=${page}`,
           { headers: { Authorization: `Bearer ${accessToken}` } }
         )
-        const groups: any[] = await res.json()
+        const groups: { full_path: string }[] = await res.json()
         const nextPage = parseInt(res.headers.get('X-Next-Page') || '')
-        if (nextPage) {
-          groups.push(...await getGitlabGroups(accessToken, nextPage))
-        }
+        if (nextPage)
+          groups.push(...(await getGitlabGroups(accessToken, nextPage)))
         return groups
       }
-      const groups = await getGitlabGroups(account.access_token!)
-      return groups.map((group: { full_path: string }) => group.full_path)
+      const groups = await getGitlabGroups(account.access_token as string)
+      return groups.map((group) => group.full_path)
     }
     default:
       return []
