@@ -5,7 +5,7 @@ ARG SCOPE
 ENV SCOPE=${SCOPE}
 
 FROM base AS pruner
-RUN yarn global add turbo@1.1.5
+RUN yarn global add turbo@1.2.9
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 

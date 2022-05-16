@@ -18,9 +18,9 @@ import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 const hasNoAuthProvider =
   (!process.env.NEXT_PUBLIC_SMTP_FROM ||
     process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED === 'true') &&
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
-  process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
-  process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID
+  !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
+  !process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
+  !process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID
 
 type Props = {
   defaultEmail?: string

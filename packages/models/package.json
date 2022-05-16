@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "next": "^12.1.6",
-    "db": "*"
+    "db": "*",
+    "@udecode/plate-core": "^11.0.0"
   },
   "scripts": {
     "build": "tsc",
