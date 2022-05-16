@@ -73,8 +73,8 @@ export const ChatBlock = ({
         : setDisplayedChunks([...displayedChunks, { bubbles: [nextStep] }])
     }
     if (isInputStep(nextStep)) {
-      return displayedChunks.length === 0 ||
-        isDefined(displayedChunks[displayedChunks.length - 1].input)
+      displayedChunks.length === 0 ||
+      isDefined(displayedChunks[displayedChunks.length - 1].input)
         ? setDisplayedChunks([
             ...displayedChunks,
             { bubbles: [], input: nextStep },

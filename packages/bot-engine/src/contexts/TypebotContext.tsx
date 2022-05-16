@@ -107,7 +107,7 @@ export const TypebotContext = ({
 
   const popEdgeIdFromLinkedTypebotQueue = () => {
     setLinkedBotQueue((queue) => queue.slice(1))
-    const typebot = setCurrentTypebotId(linkedBotQueue[0].typebotId)
+    setCurrentTypebotId(linkedBotQueue[0].typebotId)
   }
 
   return (
