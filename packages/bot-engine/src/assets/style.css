@@ -190,3 +190,7 @@ textarea {
 .typebot-chat-view {
   max-width: 800px;
 }
+
+.ping span {
+  background-color: var(--typebot-button-bg-color);
+}

@@ -5,6 +5,9 @@ module.exports = {
       screens: {
         xs: '400px',
       },
+      brightness: {
+        225: '2.25',
+      },
     },
   },
   plugins: [],
