@@ -102,6 +102,7 @@ export const Hero = () => {
                 src={builderScreenshotSrc}
                 alt="Builder screenshot"
                 placeholder="blur"
+                style={{ borderRadius: '10px' }}
               />
             </Box>
           </Box>
