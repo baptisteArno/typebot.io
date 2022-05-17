@@ -7,6 +7,8 @@
   </a>
 </p>
 
+[![Demo](./.github/videos/demo.mp4)](./.github/videos/demo.mp4)
+
 Typebot is an open-source alternative to Landbot. It allows you to create conversational apps/forms (Lead qualification, Product launch, User onboarding, Customer support), embed them anywhere on your web/mobile apps, and collect results in real-time.
 
 ## Features
