@@ -112,6 +112,7 @@ export const ConversationContainer = ({
           onScroll={autoScrollToBottom}
           onBlockEnd={displayNextBlock}
           blockTitle={displayedBlock.block.title}
+          keepShowingHostAvatar={idx === displayedBlocks.length - 1}
         />
       ))}
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}

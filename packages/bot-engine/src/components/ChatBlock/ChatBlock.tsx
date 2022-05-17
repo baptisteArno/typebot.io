@@ -25,6 +25,7 @@ type ChatBlockProps = {
   steps: Step[]
   startStepIndex: number
   blockTitle: string
+  keepShowingHostAvatar: boolean
   onScroll: () => void
   onBlockEnd: (
     edgeId?: string,
@@ -40,6 +41,7 @@ export const ChatBlock = ({
   blockTitle,
   onScroll,
   onBlockEnd,
+  keepShowingHostAvatar,
 }: ChatBlockProps) => {
   const {
     currentTypebotId,
@@ -188,6 +190,7 @@ export const ChatBlock = ({
             }}
             hasGuestAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
             onDisplayNextStep={displayNextStep}
+            keepShowingHostAvatar={keepShowingHostAvatar}
           />
         ))}
       </div>
@@ -199,12 +202,14 @@ type Props = {
   displayChunk: ChatDisplayChunk
   hostAvatar: { isEnabled: boolean; src?: string }
   hasGuestAvatar: boolean
+  keepShowingHostAvatar: boolean
   onDisplayNextStep: (answerContent?: string, isRetry?: boolean) => void
 }
 const ChatChunks = ({
   displayChunk: { bubbles, input },
   hostAvatar,
   hasGuestAvatar,
+  keepShowingHostAvatar,
   onDisplayNextStep,
 }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -224,6 +229,7 @@ const ChatChunks = ({
           <AvatarSideContainer
             ref={avatarSideContainerRef}
             hostAvatarSrc={hostAvatar.src}
+            keepShowing={keepShowingHostAvatar || isDefined(input)}
           />
         )}
         <div
