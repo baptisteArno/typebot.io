@@ -143,7 +143,11 @@ const executeCode = async (
     ...variables.map((v) => v.id),
     parseVariables(variables, { fieldToParse: 'id' })(step.options.content)
   )
-  await func(...variables.map((v) => v.value))
+  try {
+    await func(...variables.map((v) => v.value))
+  } catch (err) {
+    console.error(err)
+  }
   return step.outgoingEdgeId
 }
 
