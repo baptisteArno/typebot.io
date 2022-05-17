@@ -38,6 +38,14 @@ export const updateWorkspace = async (updates: Partial<Workspace>) =>
     body: updates,
   })
 
+export const deleteWorkspace = (workspaceId: string) =>
+  sendRequest<{
+    workspace: Workspace
+  }>({
+    url: `/api/workspaces/${workspaceId}`,
+    method: 'DELETE',
+  })
+
 export const planToReadable = (plan?: Plan) => {
   if (!plan) return
   switch (plan) {

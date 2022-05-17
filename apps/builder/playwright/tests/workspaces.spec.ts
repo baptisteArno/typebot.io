@@ -41,7 +41,7 @@ test('can switch between workspaces and access typebot', async ({ page }) => {
   await expect(page.locator('text="Hey there"')).toBeVisible()
 })
 
-test('can create a new workspace', async ({ page }) => {
+test('can create and delete a new workspace', async ({ page }) => {
   await page.goto('/typebots')
   await page.click("text=Pro user's workspace")
   await expect(
@@ -53,6 +53,20 @@ test('can create a new workspace', async ({ page }) => {
   await expect(
     page.locator('text="Pro user\'s workspace" >> nth=1')
   ).toBeVisible()
+  await page.click('text=Settings & Members')
+  await page.click('text="Settings"')
+  await page.click('text="Delete workspace"')
+  await expect(
+    page.locator(
+      "text=Are you sure you want to delete Pro user's workspace workspace?"
+    )
+  ).toBeVisible()
+  await page.click('text="Delete"')
+  await expect(page.locator('text=Pro typebot')).toBeVisible()
+  await page.click("text=Pro user's workspace")
+  await expect(
+    page.locator('text="Pro user\'s workspace" >> nth=1')
+  ).toBeHidden()
 })
 
 test('can update workspace info', async ({ page }) => {

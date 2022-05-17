@@ -22,6 +22,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       workspace: updatedWorkspace,
     })
   }
+  if (req.method === 'DELETE') {
+    const id = req.query.workspaceId as string
+    await prisma.workspace.deleteMany({
+      where: {
+        id,
+        members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+      },
+    })
+    return res.status(200).json({
+      message: 'success',
+    })
+  }
   methodNotAllowed(res)
 }
 

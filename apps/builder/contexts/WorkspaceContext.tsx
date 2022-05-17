@@ -11,6 +11,7 @@ import {
   createNewWorkspace,
   useWorkspaces,
   updateWorkspace as patchWorkspace,
+  deleteWorkspace,
 } from 'services/workspace/workspace'
 import { useUser } from './UserContext'
 import { useTypebot } from './TypebotContext'
@@ -29,6 +30,7 @@ const workspaceContext = createContext<{
     workspaceId: string,
     updates: Partial<Workspace>
   ) => Promise<void>
+  deleteCurrentWorkspace: () => Promise<void>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -122,6 +124,20 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     })
   }
 
+  const deleteCurrentWorkspace = async () => {
+    if (!currentWorkspace || !workspaces || workspaces.length < 2) return
+    const { data } = await deleteWorkspace(currentWorkspace.id)
+    if (!data || !currentWorkspace) return
+    setCurrentWorkspace(workspaces[0])
+    mutate({
+      workspaces: (workspaces ?? []).filter((w) =>
+        w.id === currentWorkspace.id
+          ? { ...data.workspace, members: w.members }
+          : w
+      ),
+    })
+  }
+
   return (
     <workspaceContext.Provider
       value={{
@@ -133,6 +149,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         switchWorkspace,
         createWorkspace,
         updateWorkspace,
+        deleteCurrentWorkspace,
       }}
     >
       {children}

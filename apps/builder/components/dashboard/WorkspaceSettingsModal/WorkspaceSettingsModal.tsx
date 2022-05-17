@@ -132,21 +132,27 @@ export const WorkspaceSettingsModal = ({
           </Stack>
         </Stack>
         <Flex flex="1" p="10">
-          <SettingsContent tab={selectedTab} />
+          <SettingsContent tab={selectedTab} onClose={onClose} />
         </Flex>
       </ModalContent>
     </Modal>
   )
 }
 
-const SettingsContent = ({ tab }: { tab: SettingsTab }) => {
+const SettingsContent = ({
+  tab,
+  onClose,
+}: {
+  tab: SettingsTab
+  onClose: () => void
+}) => {
   switch (tab) {
     case 'my-account':
       return <MyAccountForm />
     case 'user-settings':
       return <EditorSettings />
     case 'workspace-settings':
-      return <WorkspaceSettingsForm />
+      return <WorkspaceSettingsForm onClose={onClose} />
     case 'members':
       return <MembersList />
     case 'billing':
