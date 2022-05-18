@@ -263,6 +263,16 @@ class Typebot_Public
     }
     $container_id = 'typebot-container-' . $this->generateRandomString(4);
 
+    $bot_initializer =
+      'var typebot = Typebot.initContainer("' .
+      $container_id .
+      '",{
+    hiddenVariables: typebotWpUser,
+          url: "' .
+      $url .
+      '",
+        })';
+
     return '<script>' .
       $this->parse_wp_user() .
       '</script>' .
@@ -279,15 +289,17 @@ class Typebot_Public
       '"
 				></div>
 				<script>
+        if(document.readyState == "complete"){
+          ' .
+      $bot_initializer .
+      '
+        } else {
         window.addEventListener("load",(event) => {
-					var typebot = Typebot.initContainer("' .
-      $container_id .
-      '",{
-      hiddenVariables: typebotWpUser,
-						url: "' .
-      $url .
-      '",
-					})}) 
+          ' .
+      $bot_initializer .
+      '
+					}) 
+        }
 		</script>';
   }
 

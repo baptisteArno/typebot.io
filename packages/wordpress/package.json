@@ -1,6 +1,6 @@
 {
   "name": "wordpress",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "deploy": "yarn copy && yarn commit",
-    "copy": "svn copy ./trunk ./tags/2.1.8",
-    "commit": "svn ci -m 'Fix proactive message bug'"
+    "copy": "svn copy ./trunk ./tags/2.1.9",
+    "commit": "svn ci -m 'Fix standard embed when window loaded'"
   }
 }
