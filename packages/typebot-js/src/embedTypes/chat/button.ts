@@ -5,7 +5,7 @@ export const createButton = (params?: ButtonParams): HTMLButtonElement => {
   button.id = 'typebot-bubble-button'
   button.style.backgroundColor = params?.color ?? '#0042DA'
   button.appendChild(createButtonIcon(params?.iconUrl, params?.iconStyle))
-  button.appendChild(createCloseIcon())
+  button.appendChild(createCloseIcon(params?.closeIconColor))
   return button
 }
 
@@ -29,11 +29,12 @@ const createDefaultIcon = (): SVGElement => {
   return icon
 }
 
-const createCloseIcon = (): SVGElement => {
+const createCloseIcon = (closeIconColor?: string): SVGElement => {
   const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   icon.setAttribute('viewBox', '0 0 24 24')
   icon.innerHTML = closeSvgPath
   icon.classList.add('close-icon')
+  icon.style.stroke = closeIconColor ?? '#ffffff'
   return icon
 }
 
