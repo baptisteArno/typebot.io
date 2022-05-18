@@ -17,10 +17,11 @@ import { ReactEditor } from 'slate-react'
 
 type Props = {
   initialValue: TDescendant[]
-  onClose: (newContent: TextBubbleContent) => void
+  onClose?: (newContent: TextBubbleContent) => void
+  onKeyUp?: (newContent: TextBubbleContent) => void
 }
 
-export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
+export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
   const randomEditorId = useMemo(() => Math.random().toString(), [])
   const editor = useMemo(
     () =>
@@ -34,8 +35,14 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
+  let timeoutId: number
 
-  const closeEditor = () => onClose(convertValueToStepContent(value))
+  const closeEditor = () => {
+    if (onClose) onClose(convertValueToStepContent(value))
+  }
+  const keyUpEditor = () => {
+    if (onKeyUp) onKeyUp(convertValueToStepContent(value))
+  }
 
   useOutsideClick({
     ref: textEditorRef,
@@ -98,6 +105,12 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
     if (e.key === 'Enter') closeEditor()
   }
 
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    clearTimeout(timeoutId)
+
+    timeoutId = setTimeout(keyUpEditor, 1500) as unknown as number
+  }
+
   return (
     <Stack
       flex="1"
@@ -127,6 +140,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
+          onKeyUp: handleKeyUp
         }}
         initialValue={
           initialValue.length === 0

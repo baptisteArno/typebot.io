@@ -8,6 +8,7 @@ import {
   IntegrationStepType,
   StepIndices,
   OctaBubbleStepType,
+  OctaStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../ItemNode'
@@ -19,6 +20,7 @@ import {
   WebhookContent,
   WithVariableContent,
 } from './contents'
+import { AssignToTeamContent } from './contents/AssignToTeamContent'
 import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
@@ -140,6 +142,11 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaBubbleStepType.END_CONVERSATION: {
       return <TextBubbleContent step={step} />
+    }
+    case OctaStepType.ASSIGN_TO_TEAM: {
+      return (
+        <AssignToTeamContent options={step.options.labels} />
+      )
     }
     case 'start': {
       return <Text>Start</Text>

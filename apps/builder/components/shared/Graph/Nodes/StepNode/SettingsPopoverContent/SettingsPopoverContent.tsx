@@ -27,7 +27,7 @@ import {
   EmailInputSettingsBody,
   UrlInputSettingsBody,
   DateInputSettingsBody,
-  AssignToTeamSettingsBody
+  AssignToTeamSettingsBody,
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -212,9 +212,12 @@ export const StepSettings = ({
         />
       )
     }
-    case OctaStepType.ASSIGN_TO_TEAM: {      return (
+    case OctaStepType.ASSIGN_TO_TEAM: {
+      return (
         <AssignToTeamSettingsBody
-          options={step.options || { labels: { placeholder: 'sou um placeholder' }} }
+          options={
+            step.options || { labels: { placeholder: 'sou um placeholder' } }
+          }
           onOptionsChange={handleOptionsChange}
         />
       )
