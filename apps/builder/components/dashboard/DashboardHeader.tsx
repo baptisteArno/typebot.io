@@ -16,7 +16,7 @@ import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { LogOutIcon, SettingsIcon } from 'assets/icons'
 import { signOut } from 'next-auth/react'
 import { useUser } from 'contexts/UserContext'
-import { useTranslation } from 'next-i18next'
+//import { useTranslation } from 'next-i18next'
 
 export const DashboardHeader = () => {
   const { user } = useUser()
@@ -25,7 +25,7 @@ export const DashboardHeader = () => {
     signOut()
   }
 
-  const { t } = useTranslation('common')
+  //const { t } = useTranslation('common')
 
   return (
     <Flex w="full" borderBottomWidth="1px" justify="center">
@@ -47,9 +47,6 @@ export const DashboardHeader = () => {
           <MenuButton>
             <HStack>
               <Skeleton isLoaded={user !== undefined}>
-                { t('text') }
-                { t('nti')}
-                nome
                 <Text>{user?.name}</Text>
               </Skeleton>
               <SkeletonCircle isLoaded={user !== undefined}>
