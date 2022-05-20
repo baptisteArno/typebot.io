@@ -50,7 +50,7 @@ const parseContainerSnippet = ({
     backgroundColor,
     hiddenVariables,
   })
-  return `import {initContainer} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {
@@ -98,7 +98,7 @@ const parsePopupSnippet = ({
     hiddenVariables,
     delay,
   })
-  return `import {initPopup} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {
@@ -151,7 +151,7 @@ const parseBubbleSnippet = ({
     proactiveMessage,
     button,
   })
-  return `import {initBubble} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {
