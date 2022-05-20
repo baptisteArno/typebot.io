@@ -15,7 +15,9 @@ export const getServerSideProps: GetServerSideProps = async (
     if (!context.req.headers.host) return { props: {} }
     const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
     const isMatchingViewerUrl = viewerUrls.some((url) =>
-      context.req.headers.host?.includes(url.split('//')[1])
+      (context.req.headers.host ?? '')
+        .split(':')[0]
+        .includes(url.split('//')[1].split(':')[0])
     )
     const customDomain = `${context.req.headers.host}${
       pathname === '/' ? '' : pathname
@@ -27,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (
       console.log(
         isMatchingViewerUrl
           ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
-          : `Couldn't customDomain: ${customDomain}`
+          : `Couldn't find customDomain: ${customDomain}`
       )
     return {
       props: {
