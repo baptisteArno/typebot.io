@@ -14,13 +14,21 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     if (!context.req.headers.host) return { props: {} }
     const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
-    typebot = viewerUrls.some((url) =>
+    const isMatchingViewerUrl = viewerUrls.some((url) =>
       context.req.headers.host?.includes(url.split('//')[1])
     )
+    const customDomain = `${context.req.headers.host}${
+      pathname === '/' ? '' : pathname
+    }`
+    typebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
-      : await getTypebotFromCustomDomain(
-          `${context.req.headers.host}${pathname === '/' ? '' : pathname}`
-        )
+      : await getTypebotFromCustomDomain(customDomain)
+    if (!typebot)
+      console.log(
+        isMatchingViewerUrl
+          ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
+          : `Couldn't customDomain: ${customDomain}`
+      )
     return {
       props: {
         typebot,
