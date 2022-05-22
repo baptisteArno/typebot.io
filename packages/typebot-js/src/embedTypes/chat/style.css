@@ -168,6 +168,10 @@
   object-fit: cover;
 }
 
+#typebot-bubble > .proactive-message > p {
+  margin: 0;
+}
+
 @media screen and (max-width: 450px) {
   #typebot-bubble > .proactive-message {
     max-width: 200px;
