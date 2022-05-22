@@ -30,7 +30,7 @@ export type TypebotViewerProps = {
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
   onNewBlockVisible?: (edge: Edge) => void
-  onNewAnswer?: (answer: Answer) => void
+  onNewAnswer?: (answer: Answer) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
   onVariablesUpdated?: (variables: VariableWithValue[]) => void

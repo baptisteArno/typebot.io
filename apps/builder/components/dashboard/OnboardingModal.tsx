@@ -81,7 +81,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     setTypebot(data as Typebot)
   }
 
-  const handleNewAnswer = (answer: Answer) => {
+  const handleNewAnswer = async (answer: Answer) => {
     const isName = answer.variableId === 'cl126f4hf000i2e6d8zvzc3t1'
     const isCompany = answer.variableId === 'cl126jqww000w2e6dq9yv4ifq'
     const isCategories = answer.variableId === 'cl126mo3t001b2e6dvyi16bkd'

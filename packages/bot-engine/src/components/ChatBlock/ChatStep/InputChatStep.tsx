@@ -32,11 +32,11 @@ export const InputChatStep = ({
       ? variableId && typebot.variables.find(byId(variableId))?.value
       : undefined
 
-  const handleSubmit = (content: string) => {
+  const handleSubmit = async (content: string) => {
     setAnswer(content)
     const isRetry = !isInputValid(content, step.type)
-    if (!isRetry)
-      addAnswer({
+    if (!isRetry && addAnswer)
+      await addAnswer({
         stepId: step.id,
         blockId: step.blockId,
         content,
