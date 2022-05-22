@@ -67,10 +67,13 @@ export const TypebotContext = ({
   }, [typebot.theme, typebot.settings])
 
   const updateVariableValue = (variableId: string, value: string) => {
+    const formattedValue: string | number = isNaN(Number(value))
+      ? value
+      : Number(value)
     setLocalTypebot((typebot) => ({
       ...typebot,
       variables: typebot.variables.map((v) =>
-        v.id === variableId ? { ...v, value } : v
+        v.id === variableId ? { ...v, value: formattedValue } : v
       ),
     }))
   }
