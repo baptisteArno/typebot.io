@@ -20,6 +20,11 @@ class MyDocument extends Document {
             {/* eslint-disable-next-line @next/next/no-css-tags */}
             <link href="./styles/aos-noscript.css" rel="stylesheet" />
           </noscript>
+          <script
+            defer
+            data-domain="typebot.io"
+            src="https://plausible.baptistearno.com/js/plausible.js"
+          ></script>
         </Head>
         <body style={{ backgroundColor: '#171923' }}>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
