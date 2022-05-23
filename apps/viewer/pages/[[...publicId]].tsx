@@ -1,4 +1,3 @@
-import { IncomingMessage } from 'http'
 import { NotFoundPage } from 'layouts/NotFoundPage'
 import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
@@ -12,14 +11,17 @@ export const getServerSideProps: GetServerSideProps = async (
   let typebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
-  const host = getHost(context.req)
   try {
-    if (!host) return { props: {} }
+    if (!context.req.headers.host) return { props: {} }
     const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
     const isMatchingViewerUrl = viewerUrls.some((url) =>
-      host.split(':')[0].includes(url.split('//')[1].split(':')[0])
+      (context.req.headers.host ?? '')
+        .split(':')[0]
+        .includes(url.split('//')[1].split(':')[0])
     )
-    const customDomain = `${host}${pathname === '/' ? '' : pathname}`
+    const customDomain = `${context.req.headers.host}${
+      pathname === '/' ? '' : pathname
+    }`
     typebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain)
@@ -33,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (
       props: {
         typebot,
         isIE,
-        url: `https://${host}${pathname}`,
+        url: `https://${context.req.headers.host}${pathname}`,
       },
     }
   } catch (err) {
@@ -42,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: {
       isIE,
-      url: `https://${host}${pathname}`,
+      url: `https://${context.req.headers.host}${pathname}`,
     },
   }
 }
@@ -62,20 +64,6 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
   })
   if (isNotDefined(typebot)) return null
   return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
-}
-
-const getHost = (req?: IncomingMessage): string | undefined => {
-  let host = req?.headers ? req.headers.host : window.location.host
-  if (!host) return
-  if (
-    req &&
-    req.headers['x-forwarded-host'] &&
-    typeof req.headers['x-forwarded-host'] === 'string'
-  ) {
-    host = req.headers['x-forwarded-host']
-  }
-
-  return host
 }
 
 const App = ({ typebot, ...props }: TypebotPageProps) =>
