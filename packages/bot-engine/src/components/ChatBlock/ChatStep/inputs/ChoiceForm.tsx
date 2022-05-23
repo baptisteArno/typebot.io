@@ -54,6 +54,7 @@ export const ChoiceForm = ({ step, onSubmit }: ChoiceFormProps) => {
                   : 'selectable')
               }
               data-testid="button"
+              data-itemid={item.id}
             >
               {item.content}
             </button>
