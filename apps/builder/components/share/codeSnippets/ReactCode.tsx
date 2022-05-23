@@ -62,7 +62,7 @@ const parseContainerSnippet = ({
 }
 
 type PopupEmbedCodeProps = {
-  delay: number
+  delay?: number
   withStarterVariables?: boolean
 }
 
