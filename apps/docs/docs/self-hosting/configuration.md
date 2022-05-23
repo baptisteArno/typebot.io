@@ -26,8 +26,8 @@ Both apps have their own environment config files. Here is an exhaustive list of
 | DATABASE_URL           | postgresql://postgres:typebot@db:5432/typebot | The database URL                                                                                                                                                                                                                            |
 | ENCRYPTION_SECRET      | SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6              | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
 | ADMIN_EMAIL            | --                                            | The email that will get a "Pro" plan on user creation                                                                                                                                                                                       |
-| NEXTAUTH_URL           | http://localhost:3000                         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                                 |
-| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                      |
+| NEXTAUTH_URL           | http://localhost:3000                         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
+| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
 | NEXTAUTH_URL_INTERNAL  | --                                            | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` isn't publicly accessible                                                                                                                                        |
 
 <details><summary><h3>Email (Auth, notifications)</h3></summary>
@@ -50,7 +50,7 @@ Used for sending email notifications and authentication
 <p>
 
 Used authentication in the builder and for the Google Sheets integration step. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
-The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/google/callback`
+The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google`
 
 | Parameter                    | Default | Description                                   |
 | ---------------------------- | ------- | --------------------------------------------- |
@@ -70,7 +70,7 @@ Used for Google Fonts:
 
 Used for authenticating with GitHub. By default, it uses the credentials of a Typebot-dev app.
 
-You can create your own GitHub OAuth app [here](https://github.com/settings/developers). The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/github/callback`
+You can create your own GitHub OAuth app [here](https://github.com/settings/developers). The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/github`
 
 | Parameter                    | Default | Description                                                                 |
 | ---------------------------- | ------- | --------------------------------------------------------------------------- |
@@ -100,7 +100,7 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab
 <p>
 
 You can create your own Facebook OAuth app [here](https://developers.facebook.com/apps/create/).
-The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/facebook/callback`
+The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebook`
 
 | Parameter                      | Default | Description                                                                 |
 | ------------------------------ | ------- | --------------------------------------------------------------------------- |
