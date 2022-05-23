@@ -81,7 +81,7 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
 }
 
 const PopupInstructions = () => {
-  const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState<number>()
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -95,7 +95,7 @@ const PopupInstructions = () => {
         Paste the code below:
         <PopupEmbedSettings
           my={4}
-          onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+          onUpdateSettings={(settings) => setInputValue(settings.delay)}
         />
         <PopupEmbedCode delay={inputValue} />
       </ListItem>

@@ -7,7 +7,7 @@ import { PopupParams } from 'typebot-js'
 import { parseInitPopupCode, typebotJsHtml } from '../params'
 
 type PopupEmbedCodeProps = {
-  delay: number
+  delay?: number
   withStarterVariables?: boolean
   onCopied?: () => void
 }

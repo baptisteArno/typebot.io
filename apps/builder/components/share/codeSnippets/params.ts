@@ -7,6 +7,7 @@ import {
 } from 'typebot-js'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
+import { isDefined } from 'utils'
 
 const parseStringParam = (fieldName: string, fieldValue?: string) =>
   fieldValue ? `${fieldName}: "${fieldValue}",` : ``
@@ -14,7 +15,7 @@ const parseStringParam = (fieldName: string, fieldValue?: string) =>
 const parseNonStringParam = (
   fieldName: string,
   fieldValue?: number | boolean
-) => (fieldValue ? `${fieldName}: ${fieldValue},` : ``)
+) => (isDefined(fieldValue) ? `${fieldName}: ${fieldValue},` : ``)
 
 const parseCustomDomain = (domain?: string): string =>
   parseStringParam('customDomain', domain)

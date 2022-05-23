@@ -33,7 +33,7 @@ export const NotionModal = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {!isPublished && <PublishFirstInfo />}
+          {!isPublished && <PublishFirstInfo mb="4" />}
           <OrderedList spacing={3}>
             <ListItem>
               Type <Tag>/embed</Tag>
