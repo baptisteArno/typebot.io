@@ -16,7 +16,13 @@ import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from '../../services/variable'
 import { useAnswers } from 'contexts/AnswersContext'
-import { BubbleStep, InputStep, PublicTypebot, Step } from 'models'
+import {
+  BubbleStep,
+  InputStep,
+  LogicStepType,
+  PublicTypebot,
+  Step,
+} from 'models'
 import { HostBubble } from './ChatStep/bubbles/HostBubble'
 import { InputChatStep } from './ChatStep/InputChatStep'
 import { getLastChatStepType } from '../../services/chat'
@@ -119,6 +125,10 @@ export const ChatBlock = ({
         pushEdgeIdInLinkedTypebotQueue,
         currentTypebotId,
       })
+      const isRedirecting =
+        currentStep.type === LogicStepType.REDIRECT &&
+        currentStep.options.isNewTab === false
+      if (isRedirecting) return
       nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
