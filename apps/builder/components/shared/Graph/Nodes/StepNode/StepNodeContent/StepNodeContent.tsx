@@ -20,6 +20,7 @@ import {
 } from './contents'
 import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
+import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
 import { SendEmailContent } from './contents/SendEmailContent'
 import { TypebotLinkContent } from './contents/TypebotLinkContent'
@@ -67,6 +68,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case InputStepType.CHOICE: {
       return <ItemNodesList step={step} indices={indices} />
+    }
+    case InputStepType.PAYMENT: {
+      return <PaymentInputContent step={step} />
     }
     case LogicStepType.SET_VARIABLE: {
       return <SetVariableContent step={step} />

@@ -26,6 +26,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "sanitize-html": "^2.7.0",
+    "stripe": "^9.1.0",
     "utils": "*"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.9",
     "@types/sanitize-html": "^2.6.2",
+    "@types/stripe": "^8.0.417",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "eslint": "<8.0.0",
     "eslint-config-next": "12.1.6",

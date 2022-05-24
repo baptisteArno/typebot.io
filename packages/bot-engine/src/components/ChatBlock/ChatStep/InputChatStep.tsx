@@ -9,6 +9,7 @@ import { ChoiceForm } from './inputs/ChoiceForm'
 import { useTypebot } from 'contexts/TypebotContext'
 import { parseVariables } from '../../../services/variable'
 import { isInputValid } from 'services/inputs'
+import { PaymentForm } from './inputs/PaymentForm'
 
 export const InputChatStep = ({
   step,
@@ -107,5 +108,12 @@ const Input = ({
       return <DateForm options={step.options} onSubmit={onSubmit} />
     case InputStepType.CHOICE:
       return <ChoiceForm step={step} onSubmit={onSubmit} />
+    case InputStepType.PAYMENT:
+      return (
+        <PaymentForm
+          options={step.options}
+          onSuccess={() => onSubmit('Success')}
+        />
+      )
   }
 }

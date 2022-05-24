@@ -44,7 +44,7 @@ export const SmartNumberInput = ({
 
   return (
     <NumberInput onChange={handleValueChange} value={currentValue} {...props}>
-      <NumberInputField />
+      <NumberInputField placeholder={props.placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />

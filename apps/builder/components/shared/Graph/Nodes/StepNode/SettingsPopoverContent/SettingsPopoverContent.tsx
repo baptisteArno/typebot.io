@@ -31,6 +31,7 @@ import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
+import { PaymentSettings } from './bodies/PaymentSettings'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
 import { SendEmailSettings } from './bodies/SendEmailSettings'
@@ -150,6 +151,14 @@ export const StepSettings = ({
     case InputStepType.CHOICE: {
       return (
         <ChoiceInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.PAYMENT: {
+      return (
+        <PaymentSettings
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

@@ -5,6 +5,7 @@ import {
   ChatIcon,
   CheckSquareIcon,
   CodeIcon,
+  CreditCardIcon,
   EditIcon,
   EmailIcon,
   ExternalLinkIcon,
@@ -62,6 +63,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <PhoneIcon color="orange.500" {...props} />
     case InputStepType.CHOICE:
       return <CheckSquareIcon color="orange.500" {...props} />
+    case InputStepType.PAYMENT:
+      return <CreditCardIcon color="orange.500" {...props} />
     case LogicStepType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:

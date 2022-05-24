@@ -7,15 +7,13 @@ import {
   Stack,
   Image,
   PopoverContent,
-  Tooltip,
   HStack,
   Text,
-  Flex,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from 'components/shared/ImageUploadContent'
 import { Input, Textarea } from 'components/shared/Textbox'
 import { CodeEditor } from 'components/shared/CodeEditor'
-import { HelpCircleIcon } from 'assets/icons'
+import { MoreInfoTooltip } from 'components/shared/MoreInfoTooltip'
 
 type Props = {
   typebotName: string
@@ -113,17 +111,10 @@ export const MetadataForm = ({
       <Stack>
         <HStack as={FormLabel} mb="0" htmlFor="head">
           <Text>Custom head code:</Text>
-          <Tooltip
-            label={
-              'Will be pasted at the bottom of the header section, just above the closing head tag. Only `meta` and `script` tags are allowed.'
-            }
-            placement="top"
-            hasArrow
-          >
-            <Flex cursor="pointer">
-              <HelpCircleIcon />
-            </Flex>
-          </Tooltip>
+          <MoreInfoTooltip>
+            Will be pasted at the bottom of the header section, just above the
+            closing head tag. Only `meta` and `script` tags are allowed.
+          </MoreInfoTooltip>
         </HStack>
         <CodeEditor
           id="head"

@@ -9,6 +9,7 @@ export type InputStep =
   | DateInputStep
   | PhoneNumberInputStep
   | ChoiceInputStep
+  | PaymentInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
@@ -18,6 +19,7 @@ export enum InputStepType {
   DATE = 'date input',
   PHONE = 'phone number input',
   CHOICE = 'choice input',
+  PAYMENT = 'payment input',
 }
 
 export type InputStepOptions =
@@ -28,6 +30,7 @@ export type InputStepOptions =
   | UrlInputOptions
   | PhoneNumberInputOptions
   | ChoiceInputOptions
+  | PaymentInputOptions
 
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
@@ -68,6 +71,18 @@ export type ChoiceInputStep = StepBase & {
 export type ButtonItem = ItemBase & {
   type: ItemType.BUTTON
   content?: string
+}
+
+export type PaymentInputStep = StepBase & {
+  type: InputStepType.PAYMENT
+  options: PaymentInputOptions
+}
+
+export type CreditCardDetails = {
+  number: string
+  exp_month: string
+  exp_year: string
+  cvc: string
 }
 
 type OptionBase = { variableId?: string }
@@ -114,6 +129,23 @@ export type NumberInputOptions = OptionBase &
     max?: number
     step?: number
   }
+
+export enum PaymentProvider {
+  STRIPE = 'Stripe',
+}
+
+export type PaymentInputOptions = OptionBase & {
+  provider: PaymentProvider
+  amount?: string
+  currency: string
+  credentialsId?: string
+  additionalInformation?: {
+    name?: string
+    email?: string
+    phoneNumber?: string
+  }
+  labels: { button: string }
+}
 
 const defaultButtonLabel = 'Send'
 
@@ -162,4 +194,10 @@ export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
 export const defaultChoiceInputOptions: ChoiceInputOptions = {
   buttonLabel: defaultButtonLabel,
   isMultipleChoice: false,
+}
+
+export const defaultPaymentInputOptions: PaymentInputOptions = {
+  provider: PaymentProvider.STRIPE,
+  labels: { button: 'Pay' },
+  currency: 'USD',
 }
