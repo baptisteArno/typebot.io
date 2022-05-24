@@ -15,7 +15,9 @@ export const parseSampleResult =
     typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
-  async (currentBlockId: string): Promise<Record<string, string>> => {
+  async (
+    currentBlockId: string
+  ): Promise<Record<string, string | boolean | undefined>> => {
     const header = parseResultHeader({
       blocks: [...typebot.blocks, ...linkedTypebots.flatMap((t) => t.blocks)],
       variables: [
@@ -83,7 +85,7 @@ const parseBlocksResultSample = (
   inputSteps: InputStep[],
   header: ResultHeaderCell[]
 ) =>
-  header.reduce<Record<string, string>>((steps, cell) => {
+  header.reduce<Record<string, string | boolean | undefined>>((steps, cell) => {
     const inputStep = inputSteps.find((step) => step.id === cell.stepId)
     if (isNotDefined(inputStep)) {
       if (cell.variableId)

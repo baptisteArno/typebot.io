@@ -1,5 +1,5 @@
 import { User } from 'db'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js/pure'
 import { sendRequest } from 'utils'
 
 type Props = {

@@ -90,7 +90,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           style={{ appearance: 'auto' }}
           min={step.options?.min}
           max={step.options?.max}
-          step={step.options?.step}
+          step={step.options?.step ?? 'any'}
         />
       )
     }

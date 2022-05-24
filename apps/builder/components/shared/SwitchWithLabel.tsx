@@ -1,13 +1,6 @@
-import {
-  chakra,
-  FormLabel,
-  HStack,
-  Switch,
-  SwitchProps,
-  Tooltip,
-} from '@chakra-ui/react'
-import { HelpCircleIcon } from 'assets/icons'
+import { FormLabel, HStack, Switch, SwitchProps } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { MoreInfoTooltip } from './MoreInfoTooltip'
 
 type SwitchWithLabelProps = {
   id: string
@@ -38,11 +31,7 @@ export const SwitchWithLabel = ({
           {label}
         </FormLabel>
         {moreInfoContent && (
-          <Tooltip label={moreInfoContent}>
-            <chakra.span cursor="pointer">
-              <HelpCircleIcon />
-            </chakra.span>
-          </Tooltip>
+          <MoreInfoTooltip>{moreInfoContent}</MoreInfoTooltip>
         )}
       </HStack>
       <Switch
