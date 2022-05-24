@@ -13920,6 +13920,14 @@ stripe@*, stripe@^9.1.0:
     "@types/node" ">=8.1.0"
     qs "^6.10.3"
 
+stripe@^9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-9.4.0.tgz#8699830053cfc3c87d5380757328f09ec1980825"
+  integrity sha512-eTv1i8N6+f1mdfSlIUYXehwLwDAS6D7ijVz6izg7Pt2m1C9Xm8ZkDNz3KcSmQuTqHvsNHzdeCL2lIC/IcU6RMw==
+  dependencies:
+    "@types/node" ">=8.1.0"
+    qs "^6.10.3"
+
 strnum@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/strnum/-/strnum-1.0.5.tgz#5c4e829fe15ad4ff0d20c3db5ac97b73c9b072db"
