@@ -253,7 +253,7 @@ Used for sending email notifications and authentication
 | SMTP_PASSWORD         | --      | SMTP password                                                                   |
 | SMTP_HOST             | --      | SMTP host. (i.e. `smtp.host.com`)                                               |
 | SMTP_PORT             | 25      | SMTP port                                                                       |
-| NEXT_PUBLIC_SMTP_FROM | -       | From name and email (i.e. `"Typebot Notifications" <notifications@typebot.io>`) |
+| NEXT_PUBLIC_SMTP_FROM | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`) |
 
 </p></details>
 
