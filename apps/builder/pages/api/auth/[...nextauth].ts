@@ -10,10 +10,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
+import { isNotEmpty } from 'utils'
 
 const providers: Provider[] = []
 
-if (process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID)
+if (isNotEmpty(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID))
   providers.push(
     GitHubProvider({
       clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
@@ -22,7 +23,7 @@ if (process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID)
   )
 
 if (
-  process.env.NEXT_PUBLIC_SMTP_FROM &&
+  isNotEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
   process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true'
 )
   providers.push(
@@ -40,8 +41,8 @@ if (
   )
 
 if (
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
-  process.env.GOOGLE_CLIENT_SECRET
+  isNotEmpty(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) &&
+  isNotEmpty(process.env.GOOGLE_CLIENT_SECRET)
 )
   providers.push(
     GoogleProvider({
@@ -51,8 +52,8 @@ if (
   )
 
 if (
-  process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
-  process.env.FACEBOOK_CLIENT_SECRET
+  isNotEmpty(process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID) &&
+  isNotEmpty(process.env.FACEBOOK_CLIENT_SECRET)
 )
   providers.push(
     FacebookProvider({
@@ -62,8 +63,8 @@ if (
   )
 
 if (
-  process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID &&
-  process.env.GITLAB_CLIENT_SECRET
+  isNotEmpty(process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID) &&
+  isNotEmpty(process.env.GITLAB_CLIENT_SECRET)
 ) {
   const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
   providers.push(

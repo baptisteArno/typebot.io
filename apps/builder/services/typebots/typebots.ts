@@ -44,6 +44,7 @@ import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleStepType,
+  isNotEmpty,
   isWebhookStep,
   omit,
   stepHasItems,
@@ -80,7 +81,9 @@ export const useTypebots = ({
     { typebots: TypebotInDashboard[] },
     Error
   >(workspaceId ? `/api/typebots?${params}` : null, fetcher, {
-    dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,
+    dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+      ? 0
+      : undefined,
   })
   if (error) onError(error)
   return {

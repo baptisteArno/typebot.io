@@ -16,6 +16,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { BaseEmoji, emojiIndex } from 'emoji-mart'
 import { emojis } from './emojis'
 import { Input } from '../Textbox/Input'
+import { isEmpty } from 'utils'
 
 type Props = {
   url?: string
@@ -182,7 +183,7 @@ const EmojiContent = ({
 }
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => {
-  if (!process.env.NEXT_PUBLIC_GIPHY_API_KEY)
+  if (isEmpty(process.env.NEXT_PUBLIC_GIPHY_API_KEY))
     return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
   return (
     <SearchContextManager

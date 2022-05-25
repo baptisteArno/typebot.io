@@ -9,7 +9,6 @@ services:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
   typebot-builder:
-    image: baptistearno/typebot-builder:latest
     build:
       context: .
       args:
@@ -28,8 +27,13 @@ services:
       - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
       - ADMIN_EMAIL=me@email.com
+      - NEXTAUTH_URL_INTERNAL=http://host.docker.internal:8080
+      - NEXT_PUBLIC_GOOGLE_CLIENT_ID=fnejwkn
   typebot-viewer:
-    image: baptistearno/typebot-viewer:latest
+    build:
+      context: .
+      args:
+        - SCOPE=viewer
     restart: always
     ports:
       - '8081:3000'

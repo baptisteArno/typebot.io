@@ -21,6 +21,7 @@ import {
 } from 'models'
 import { Log } from 'db'
 import { LiteBadge } from './LiteBadge'
+import { isEmpty } from 'utils'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -66,7 +67,7 @@ export const TypebotViewer = ({
 
   const handleCompleted = () => onCompleted && onCompleted()
 
-  if (!apiHost)
+  if (isEmpty(apiHost))
     return <p>process.env.NEXT_PUBLIC_VIEWER_URL is missing in env</p>
   return (
     <Frame

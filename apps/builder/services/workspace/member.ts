@@ -1,7 +1,7 @@
 import { MemberInWorkspace, WorkspaceInvitation } from 'db'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
-import { sendRequest } from 'utils'
+import { isEmpty, sendRequest } from 'utils'
 
 export type Member = MemberInWorkspace & {
   name: string | null
@@ -14,7 +14,7 @@ export const useMembers = ({ workspaceId }: { workspaceId?: string }) => {
     { members: Member[]; invitations: WorkspaceInvitation[] },
     Error
   >(workspaceId ? `/api/workspaces/${workspaceId}/members` : null, fetcher, {
-    dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,
+    dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   return {
     members: data?.members,

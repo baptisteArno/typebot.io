@@ -2,7 +2,6 @@ node_modules
 .next
 .env
 .env.local
-.env.production
 workspace.code-workspace
 .DS_Store
 .turbo
@@ -17,6 +16,8 @@ test-results
 .cache-loader
 build
 firebaseServiceAccount.json
+
+.env.production
 
 # Wordpress
 .svn

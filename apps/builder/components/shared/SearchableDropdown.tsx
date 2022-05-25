@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import { isEmpty } from 'utils'
 
 type Props = {
   selectedItem?: string
@@ -31,7 +32,7 @@ export const SearchableDropdown = ({
   const debounced = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onValueChange ? onValueChange : () => {},
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
   const [filteredItems, setFilteredItems] = useState([
     ...items

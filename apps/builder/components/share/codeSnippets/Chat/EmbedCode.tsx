@@ -5,6 +5,7 @@ import { BubbleParams } from 'typebot-js'
 import { parseInitBubbleCode, typebotJsHtml } from '../params'
 import { useTypebot } from 'contexts/TypebotContext'
 import { CodeEditor } from 'components/shared/CodeEditor'
+import { isEmpty } from 'utils'
 
 type ChatEmbedCodeProps = {
   withStarterVariables?: boolean
@@ -20,8 +21,9 @@ export const ChatEmbedCode = ({
   const snippet = prettier.format(
     createSnippet({
       url: `${
-        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-        process.env.NEXT_PUBLIC_VIEWER_URL
+        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+          ? process.env.NEXT_PUBLIC_VIEWER_URL
+          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
       }/${typebot?.publicId}`,
       button,
       proactiveMessage,

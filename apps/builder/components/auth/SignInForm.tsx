@@ -14,14 +14,15 @@ import { DividerWithText } from './DividerWithText'
 import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+import { isEmpty } from 'utils'
 
 const hasNoAuthProvider =
-  (!process.env.NEXT_PUBLIC_SMTP_FROM ||
+  (isEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) ||
     process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED === 'true') &&
-  !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
-  !process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
-  !process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
-  !process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID
+  isEmpty(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) &&
+  isEmpty(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID) &&
+  isEmpty(process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID) &&
+  isEmpty(process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID)
 
 type Props = {
   defaultEmail?: string
@@ -77,7 +78,7 @@ export const SignInForm = ({
   return (
     <Stack spacing="4" w="330px">
       <SocialLoginButtons />
-      {process.env.NEXT_PUBLIC_SMTP_FROM &&
+      {!isEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
         process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true' && (
           <>
             <DividerWithText mt="6">Or with your email</DividerWithText>

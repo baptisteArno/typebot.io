@@ -1,6 +1,6 @@
 import { User } from 'db'
 import { loadStripe } from '@stripe/stripe-js/pure'
-import { sendRequest } from 'utils'
+import { isEmpty, sendRequest } from 'utils'
 
 type Props = {
   user: User
@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const pay = async ({ user, currency, plan, workspaceId }: Props) => {
-  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+  if (isEmpty(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY))
     throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is missing in env')
   const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
   const { data, error } = await sendRequest<{ sessionId: string }>({

@@ -2,7 +2,7 @@ import { DashboardFolder } from 'db'
 import useSWR from 'swr'
 import { fetcher } from './utils'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export const useFolders = ({
   parentId,
@@ -17,7 +17,11 @@ export const useFolders = ({
   const { data, error, mutate } = useSWR<{ folders: DashboardFolder[] }, Error>(
     workspaceId ? `/api/folders?${params}` : null,
     fetcher,
-    { dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined }
+    {
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
+    }
   )
   if (error) onError(error)
   return {

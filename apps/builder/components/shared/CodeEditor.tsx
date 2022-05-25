@@ -9,6 +9,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import { linter } from '@codemirror/lint'
 import { VariablesButton } from './buttons/VariablesButton'
 import { Variable } from 'models'
+import { isEmpty } from 'utils'
 
 const linterExtension = linter(jsonParseLinter())
 
@@ -40,7 +41,7 @@ export const CodeEditor = ({
       setPlainTextValue(value)
       onChange && onChange(value)
     },
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
 
   useEffect(

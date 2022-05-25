@@ -9,6 +9,7 @@ import { getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
   forbidden,
+  isEmpty,
   isNotDefined,
   methodNotAllowed,
   notAuthenticated,
@@ -66,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.invitation.create({
         data: { email: email.toLowerCase(), type, typebotId },
       })
-    if (isNotDefined(process.env.NEXT_PUBLIC_E2E_TEST))
+    if (isEmpty(process.env.NEXT_PUBLIC_E2E_TEST))
       await sendEmailNotification({
         to: email,
         subject: "You've been invited to collaborate 🤝",

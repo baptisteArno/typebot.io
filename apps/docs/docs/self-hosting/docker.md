@@ -18,17 +18,13 @@ You need a server with Docker installed. If your server doesn't come with Docker
 
 On your server:
 
-1. Clone the repo:
+1. Download the latest `docker-compose.yml` file:
 
    ```sh
-    git clone https://github.com/baptistearno/typebot.io.git
+    wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/docker-compose.yml
    ```
 
-2. Set up environment variables
-
-   Copy `apps/builder/.env.production.example` to `apps/builder/.env.production`
-
-   Copy `apps/viewer/.env.production.example` to `apps/viewer/.env.production`
+2. Open the file and set the environment variables for both `typebot-builder` and `typebot-viewer`
 
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) to add your environment variables
 
@@ -45,4 +41,4 @@ On your server:
    - Start the builder on port 8080
    - Start the viewer on port 8081
 
-You should see the login screen if you navigate to `http://{hostname}:8080`. Login with the `${ADMIN_EMAIL}` to have access to a Pro account automatically.
+You should see the login screen if you navigate to `http://{hostname}:8080`. Login with the `${ADMIN_EMAIL}` to have access to a Team plan workspace automatically.

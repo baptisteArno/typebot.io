@@ -17,6 +17,7 @@ import {
 import { ExternalLinkIcon } from 'assets/icons'
 import { CopyButton } from 'components/shared/buttons/CopyButton'
 import { PublishFirstInfo } from 'components/shared/Info'
+import { isEmpty } from 'utils'
 import { ModalProps } from '../EmbedButton'
 
 export const WordpressModal = ({
@@ -54,15 +55,17 @@ export const WordpressModal = ({
                   pr="4.5rem"
                   type={'text'}
                   defaultValue={`${
-                    process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-                    process.env.NEXT_PUBLIC_VIEWER_URL
+                    isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+                      ? process.env.NEXT_PUBLIC_VIEWER_URL
+                      : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
                   }/${publicId}`}
                 />
                 <InputRightElement width="4.5rem">
                   <CopyButton
                     textToCopy={`${
-                      process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-                      process.env.NEXT_PUBLIC_VIEWER_URL
+                      isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+                        ? process.env.NEXT_PUBLIC_VIEWER_URL
+                        : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
                     }/${publicId}`}
                   />
                 </InputRightElement>

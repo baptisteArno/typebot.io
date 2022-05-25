@@ -30,7 +30,7 @@ import {
 } from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined, isNotDefined, omit } from 'utils'
+import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -410,7 +410,7 @@ export const useFetchedTypebot = ({
     },
     Error
   >(`/api/typebots/${typebotId}`, fetcher, {
-    dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,
+    dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   if (error) onError(error)
   return {

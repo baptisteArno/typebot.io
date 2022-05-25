@@ -17,7 +17,7 @@ import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { byId, isNotDefined } from 'utils'
+import { byId, isEmpty, isNotDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
@@ -47,7 +47,7 @@ export const VariableSearchInput = ({
       const variable = variables.find((v) => v.name === value)
       if (variable) onSelectVariable(variable)
     },
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { stringify } from 'qs'
 import { FacebookLogo, GoogleLogo, GitlabLogo } from 'assets/logos'
+import { isEmpty } from 'utils'
 
 export const SocialLoginButtons = () => {
   const { query } = useRouter()
@@ -32,7 +33,7 @@ export const SocialLoginButtons = () => {
 
   return (
     <Stack>
-      {process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID && (
+      {!isEmpty(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID) && (
         <Button
           leftIcon={<GithubIcon />}
           onClick={handleGitHubClick}
@@ -43,7 +44,7 @@ export const SocialLoginButtons = () => {
           Continue with GitHub
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+      {!isEmpty(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) && (
         <Button
           leftIcon={<GoogleLogo />}
           onClick={handleGoogleClick}
@@ -54,7 +55,7 @@ export const SocialLoginButtons = () => {
           Continue with Google
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID && (
+      {!isEmpty(process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID) && (
         <Button
           leftIcon={<FacebookLogo />}
           onClick={handleFacebookClick}
@@ -65,7 +66,7 @@ export const SocialLoginButtons = () => {
           Continue with Facebook
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID && (
+      {!isEmpty(process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID) && (
         <Button
           leftIcon={<GitlabLogo />}
           onClick={handleGitlabClick}
@@ -73,7 +74,10 @@ export const SocialLoginButtons = () => {
           isLoading={['loading', 'authenticated'].includes(status)}
           variant="outline"
         >
-          Continue with {process.env.NEXT_PUBLIC_GITLAB_NAME || 'GitLab'}
+          Continue with{' '}
+          {isEmpty(process.env.NEXT_PUBLIC_GITLAB_NAME)
+            ? 'GitLab'
+            : process.env.NEXT_PUBLIC_GITLAB_NAME}
         </Button>
       )}
     </Stack>
