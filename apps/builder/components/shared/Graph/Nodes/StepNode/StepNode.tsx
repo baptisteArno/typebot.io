@@ -1,9 +1,11 @@
 import {
   Flex,
   HStack,
+  Stack,
   Popover,
   PopoverTrigger,
   useDisclosure,
+  Text,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -13,6 +15,8 @@ import {
   Step,
   TextBubbleContent,
   TextBubbleStep,
+  OctaStep,
+  AssignToTeamStep,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -59,7 +63,8 @@ export const StepNode = ({
     openedStepId === step.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
-    (isTextBubbleStep(step) || isOctaBubbleStep(step)) && step.content.plainText === ''
+    (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
+      step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -168,9 +173,12 @@ export const StepNode = ({
               onClick={handleClick}
               data-testid={`step`}
               w="full"
+              direction="column"
             >
+              <Stack spacing={2}>
               <HStack
                 flex="1"
+                spacing={1}
                 userSelect="none"
                 p="3"
                 borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
@@ -195,18 +203,73 @@ export const StepNode = ({
                   top="19px"
                   stepId={step.id}
                 />
-                {isConnectable && hasDefaultConnector(step) && (
-                  <SourceEndpoint
-                    source={{
-                      blockId: step.blockId,
-                      stepId: step.id,
-                    }}
-                    pos="absolute"
-                    right="-34px"
-                    bottom="10px"
-                  />
-                )}
+                {isConnectable &&
+                  hasDefaultConnector(step) &&
+                  !isEndConversationStep(step) &&
+                  !isAssignToTeamStep(step) && (
+                    <SourceEndpoint
+                      source={{
+                        blockId: step.blockId,
+                        stepId: step.id,
+                      }}
+                      pos="absolute"
+                      right="-34px"
+                      bottom="10px"
+                    />
+                  )}
               </HStack>
+
+              {step.type === 'assign to team' &&
+                hasStepRedirectNoneAvailable(step) && (
+                  <HStack
+                    flex="1"
+                    userSelect="none"
+                    p="2"
+                    borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
+                    borderColor={
+                      isOpened || isPreviewing ? 'blue.400' : 'gray.200'
+                    }
+                    margin={isOpened || isPreviewing ? '-1px' : 0}
+                    rounded="lg"
+                    cursor={'pointer'}
+                    bgColor="gray.50"
+                    align="flex-start"
+                    w="full"
+                    transition="border-color 0.2s"
+                  >
+                    <Flex
+                      px="2"
+                      py="2"
+                      borderWidth="1px"
+                      borderColor="gray.300"
+                      bgColor={'gray.50'}
+                      rounded="md"
+                      pos="relative"
+                      align="center"
+                      cursor={'pointer'}
+                    >
+                      <Text color={'gray.500'}>Sem agentes disponíveis</Text>
+                    </Flex>
+                    <TargetEndpoint
+                      pos="absolute"
+                      left="-32px"
+                      top="19px"
+                      stepId={step.id}
+                    />
+                    {(
+                      <SourceEndpoint
+                        source={{
+                          blockId: step.blockId,
+                          stepId: step.id,
+                        }}
+                        pos="absolute"
+                        right="-34px"
+                        bottom="10px"
+                      />
+                    )}
+                  </HStack>
+                )}
+              </Stack>
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(step) && (
@@ -238,3 +301,24 @@ const isMediaBubbleStep = (
   step: Step
 ): step is Exclude<BubbleStep, TextBubbleStep> =>
   isBubbleStep(step) && !isTextBubbleStep(step)
+
+const isEndConversationStep = (
+  step: Step
+): step is Exclude<Step, BubbleStep> => {
+  // hasStepRedirectNoneAvailable(step)
+  return isOctaBubbleStep(step)
+}
+
+const isAssignToTeamStep = (
+  step: Step
+): step is AssignToTeamStep => {
+  return step.type === 'assign to team'
+}
+
+const hasStepRedirectNoneAvailable = (step: Step): step is AssignToTeamStep => {
+  if (step.type === 'assign to team') {
+    return step.options.shouldRedirectNoneAvailable
+  }
+
+  return true
+}

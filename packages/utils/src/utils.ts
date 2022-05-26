@@ -116,6 +116,8 @@ export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
 export const isOctaBubbleStepType = (type: StepType): type is OctaBubbleStepType =>
   (Object.values(OctaBubbleStepType) as string[]).includes(type)
 
+// export const hasRedirectWhenNoneAvailable = (step: Step): step is OctaBubbleStepType =>
+
 export const isOctaStepType = (type: StepType): type is OctaStepType =>
   (Object.values(OctaStepType) as string[]).includes(type)
 

@@ -1,4 +1,13 @@
-import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Fade,
+  Flex,
+  IconButton,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
+import { SourceEndpoint } from '../../components/shared/Graph/Endpoints'
 import { TrashIcon, PlusIcon } from 'assets/icons'
 import cuid from 'cuid'
 import React, { useState } from 'react'
@@ -20,7 +29,7 @@ type Props<T> = {
   ComponentBetweenItems?: (props: unknown) => JSX.Element
 }
 
-export const TableList = <T,>({
+export const TableListOcta = <T,>({
   initialItems,
   onItemsChange,
   addLabel = 'Add',
@@ -92,14 +101,6 @@ export const TableList = <T,>({
           </Flex>
         </Box>
       ))}
-      <Button
-        leftIcon={<PlusIcon />}
-        onClick={createItem}
-        flexShrink={0}
-        colorScheme="blue"
-      >
-        {addLabel}
-      </Button>
     </Stack>
   )
 }

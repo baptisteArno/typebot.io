@@ -59,7 +59,7 @@ import {
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
+import { isChoiceInput, isConditionStep, sendRequest, isOctaBubbleStep } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'

@@ -20,7 +20,7 @@ import {
   WebhookContent,
   WithVariableContent,
 } from './contents'
-import { AssignToTeamContent } from './contents/AssignToTeamContent'
+import { AssignToTeamContent } from './contents/AssignToTeam/AssignToTeamContent'
 import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
@@ -145,7 +145,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.ASSIGN_TO_TEAM: {
       return (
-        <AssignToTeamContent options={step.options.labels} />
+        <AssignToTeamContent step={step} options={step.options.labels} />
       )
     }
     case 'start': {

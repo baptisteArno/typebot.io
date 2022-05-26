@@ -10,11 +10,13 @@ import { TextBubbleEditor } from '../../../TextBubbleEditor'
 
 type AssignToTeamSettingsBodyProps = {
   options: AssignToTeamOptions
+  outgoingEdgeId: string
   onOptionsChange: (options: AssignToTeamOptions) => void
 }
 
 export const AssignToTeamSettingsBody = ({
   options,
+  outgoingEdgeId,
   onOptionsChange,
 }: AssignToTeamSettingsBodyProps) => {
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
@@ -57,6 +59,12 @@ export const AssignToTeamSettingsBody = ({
     onOptionsChange({ ...options, assignTo })
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
+  const handleRedirectWhenNoneAvailable = (shouldRedirectNoneAvailable: boolean) => {
+    console.log(shouldRedirectNoneAvailable)
+    onOptionsChange({ ...options, shouldRedirectNoneAvailable })
+    console.log(options)
+    console.log(outgoingEdgeId)
+  }
 
   // useEffect(() => {
   //   // Update the document title using the browser API
@@ -122,8 +130,8 @@ export const AssignToTeamSettingsBody = ({
       <SwitchWithLabel
         id="switch"
         label="Redirecionar quando não houver usuários?"
-        initialValue={options?.isAvailable ?? false}
-        onCheckChange={handleCheckAvailabilityChange}
+        initialValue={options?.shouldRedirectNoneAvailable ?? false}
+        onCheckChange={handleRedirectWhenNoneAvailable}
       />
     </Stack>
   )

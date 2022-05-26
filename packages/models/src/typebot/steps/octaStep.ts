@@ -59,10 +59,16 @@ export type AssignToTeamOptions = BaseOctaOptions & {
   }
   defaultArray: string
   isAvailable: boolean
+  shouldRedirectNoneAvailable: boolean
   labels: {
     placeholder: { assignToTeam: string; connectionMessage: string }
     button: string
   }
+}
+
+export type Assign = {
+  id: string
+  variableId?: string
 }
 
 export type BaseOctaOptions = {
@@ -78,6 +84,7 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
       connectionMessage: 'Mensagem de conexão',
     },
   },
+  shouldRedirectNoneAvailable: false,
   messages: {
     firstMessage: {
       content: undefined
