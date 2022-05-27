@@ -66,7 +66,7 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot.theme, typebot.settings])
 
-  const updateVariableValue = (variableId: string, value: string) => {
+  const updateVariableValue = (variableId: string, value: string | number) => {
     const formattedValue = formatIncomingVariableValue(value)
     setLocalTypebot((typebot) => ({
       ...typebot,
@@ -134,9 +134,12 @@ export const TypebotContext = ({
   )
 }
 
-const formatIncomingVariableValue = (value: string): string | number => {
+const formatIncomingVariableValue = (
+  value: string | number
+): string | number => {
   // This first check avoid to parse 004 as the number 4.
-  if (value.startsWith('0') && value.length > 1) return value
+  if (typeof value === 'string' && value.startsWith('0') && value.length > 1)
+    return value
   return isNaN(Number(value)) ? value : Number(value)
 }
 

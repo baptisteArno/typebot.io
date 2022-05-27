@@ -22,7 +22,7 @@ export const parseVariables =
       if (!variable) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
-      if (!value) return ''
+      if (isNotDefined(value)) return ''
       if (options.escapeLineBreaks)
         return value.toString().replace(/\n/g, '\\n')
       return value.toString()
