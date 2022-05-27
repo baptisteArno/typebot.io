@@ -67,9 +67,7 @@ export const TypebotContext = ({
   }, [typebot.theme, typebot.settings])
 
   const updateVariableValue = (variableId: string, value: string) => {
-    const formattedValue: string | number = isNaN(Number(value))
-      ? value
-      : Number(value)
+    const formattedValue = formatIncomingVariableValue(value)
     setLocalTypebot((typebot) => ({
       ...typebot,
       variables: typebot.variables.map((v) =>
@@ -134,6 +132,12 @@ export const TypebotContext = ({
       {children}
     </typebotContext.Provider>
   )
+}
+
+const formatIncomingVariableValue = (value: string): string | number => {
+  // This first check avoid to parse 004 as the number 4.
+  if (value.startsWith('0') && value.length > 1) return value
+  return isNaN(Number(value)) ? value : Number(value)
 }
 
 export const useTypebot = () => useContext(typebotContext)
