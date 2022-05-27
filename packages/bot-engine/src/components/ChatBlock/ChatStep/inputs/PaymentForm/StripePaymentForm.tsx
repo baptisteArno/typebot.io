@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { createPaymentIntent } from 'services/stripe'
 import { useTypebot } from 'contexts/TypebotContext'
 import { PaymentInputOptions, Variable } from 'models'
-import { SendButton } from '../SendButton'
+import { SendButton, Spinner } from '../SendButton'
 import { useFrame } from 'react-frame-component'
 import { initStripe } from '../../../../../../lib/stripe'
 import { parseVariables } from 'services/variable'
@@ -43,7 +43,7 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!stripe || !clientSecret) return <></>
+  if (!stripe || !clientSecret) return <Spinner className="text-blue-500" />
   return (
     <Elements stripe={stripe} options={{ clientSecret }}>
       <CheckoutForm

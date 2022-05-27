@@ -74,7 +74,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         isPreview && stripeKeys.test?.publicKey
           ? stripeKeys.test.publicKey
           : stripeKeys.live.publicKey,
-      amountLabel: `${amount / 100}${currencySymbols[inputOptions.currency]}`,
+      amountLabel: `${amount / 100}${
+        currencySymbols[inputOptions.currency] ?? inputOptions.currency
+      }`,
     })
   }
   return methodNotAllowed(res)

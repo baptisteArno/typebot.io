@@ -14,7 +14,7 @@ import { DividerWithText } from './DividerWithText'
 import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
-import { isEmpty } from 'utils'
+import { isEmpty, isNotEmpty } from 'utils'
 
 const hasNoAuthProvider =
   (isEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) ||
@@ -78,7 +78,7 @@ export const SignInForm = ({
   return (
     <Stack spacing="4" w="330px">
       <SocialLoginButtons />
-      {!isEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
+      {isNotEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
         process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true' && (
           <>
             <DividerWithText mt="6">Or with your email</DividerWithText>

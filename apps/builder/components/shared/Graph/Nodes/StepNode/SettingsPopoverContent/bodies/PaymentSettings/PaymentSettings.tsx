@@ -111,11 +111,11 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           <Text>Currency:</Text>
           <Select
             placeholder="Select option"
-            value={options.currency.toLowerCase()}
+            value={options.currency}
             onChange={handleCurrencyChange}
           >
             {currencies.map((currency) => (
-              <option value={currency.code.toLowerCase()} key={currency.code}>
+              <option value={currency.code} key={currency.code}>
                 {currency.code}
               </option>
             ))}
