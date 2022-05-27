@@ -142,11 +142,15 @@ export const executeWebhook =
       ...basicAuth,
       json:
         contentType !== 'x-www-form-urlencoded' && body
-          ? safeJsonParse(parseVariables(variables)(body))
+          ? safeJsonParse(
+              parseVariables(variables, { escapeLineBreaks: true })(body)
+            )
           : undefined,
       form:
         contentType === 'x-www-form-urlencoded' && body
-          ? safeJsonParse(parseVariables(variables)(body))
+          ? safeJsonParse(
+              parseVariables(variables, { escapeLineBreaks: true })(body)
+            )
           : undefined,
     }
     try {
