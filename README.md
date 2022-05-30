@@ -1,3 +1,7 @@
+This repository is a fork from typebot (http://www.typebot.io ! https://github.com/baptisteArno/typebot.io)
+
+__
+
 <p>
   <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
     <img src="./.github/images/readme-illustration-light.png" alt="Typebot illustration">
