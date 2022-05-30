@@ -10,13 +10,9 @@ services:
       - POSTGRES_PASSWORD=typebot
   typebot-builder:
     image: baptistearno/typebot-builder:latest
-    build:
-      context: .
-      args:
-        - SCOPE=builder
     restart: always
     depends_on:
-      - db
+      - typebot-db
     ports:
       - '8080:3000'
     extra_hosts:
