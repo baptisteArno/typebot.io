@@ -29,6 +29,11 @@ export function CustomAdapter(p: PrismaClient): Adapter {
       const workspaceInvitations = await p.workspaceInvitation.findMany({
         where: { email: user.email },
       })
+      if (
+        process.env.DISABLE_SIGNUP === 'true' &&
+        process.env.ADMIN_EMAIL !== data.email
+      )
+        throw Error('New users are forbidden')
       const createdUser = await p.user.create({
         data: {
           ...data,
