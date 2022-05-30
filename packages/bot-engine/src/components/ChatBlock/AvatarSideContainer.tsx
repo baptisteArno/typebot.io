@@ -9,6 +9,7 @@ import React, {
 import { Avatar } from '../avatars/Avatar'
 import { useFrame } from 'react-frame-component'
 import { CSSTransition } from 'react-transition-group'
+import { ResizeObserver } from 'resize-observer'
 
 type Props = { hostAvatarSrc?: string; keepShowing: boolean }
 

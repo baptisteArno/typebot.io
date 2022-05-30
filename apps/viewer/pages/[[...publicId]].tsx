@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http'
 import { NotFoundPage } from 'layouts/NotFoundPage'
 import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import sanitizeHtml from 'sanitize-html'
 import { isDefined, isNotDefined, omit } from 'utils'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
 import prisma from '../libs/prisma'
@@ -36,11 +37,16 @@ export const getServerSideProps: GetServerSideProps = async (
           ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
           : `Couldn't find customDomain: ${customDomain}`
       )
+    const headCode = typebot?.settings.metadata.customHeadCode
     return {
       props: {
         typebot,
         isIE,
         url: `https://${forwardedHost ?? host}${pathname}`,
+        customHeadCode:
+          isDefined(headCode) && headCode !== ''
+            ? sanitizeHtml(headCode, { allowedTags: ['script', 'meta'] })
+            : null,
       },
     }
   } catch (err) {
