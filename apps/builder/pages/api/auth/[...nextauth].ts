@@ -14,17 +14,17 @@ import { isNotEmpty } from 'utils'
 
 const providers: Provider[] = []
 
-if (isNotEmpty(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID))
+if (isNotEmpty(process.env.GITHUB_CLIENT_ID))
   providers.push(
     GitHubProvider({
-      clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+      clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     })
   )
 
 if (
   isNotEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
-  process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true'
+  process.env.SMTP_AUTH_DISABLED !== 'true'
 )
   providers.push(
     EmailProvider({
@@ -41,39 +41,40 @@ if (
   )
 
 if (
-  isNotEmpty(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) &&
+  isNotEmpty(process.env.GOOGLE_CLIENT_ID) &&
   isNotEmpty(process.env.GOOGLE_CLIENT_SECRET)
 )
   providers.push(
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     })
   )
 
 if (
-  isNotEmpty(process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID) &&
+  isNotEmpty(process.env.FACEBOOK_CLIENT_ID) &&
   isNotEmpty(process.env.FACEBOOK_CLIENT_SECRET)
 )
   providers.push(
     FacebookProvider({
-      clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
+      clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     })
   )
 
 if (
-  isNotEmpty(process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID) &&
+  isNotEmpty(process.env.GITLAB_CLIENT_ID) &&
   isNotEmpty(process.env.GITLAB_CLIENT_SECRET)
 ) {
   const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
   providers.push(
     GitlabProvider({
-      clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
+      clientId: process.env.GITLAB_CLIENT_ID,
       clientSecret: process.env.GITLAB_CLIENT_SECRET,
       authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
       token: `${BASE_URL}/oauth/token`,
       userinfo: `${BASE_URL}/api/v4/user`,
+      name: process.env.GITLAB_NAME || 'GitLab',
     })
   )
 }

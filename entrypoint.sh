@@ -7,7 +7,7 @@
 set +x
 
 # config
-envFilename='.env.production'
+envFilename='./.env.production'
 nextFolder='./.next/'
 
 function apply_path {

@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import { SponsorButton } from '../../src/js/SponsorButton.jsx'
+
 # Configuration
 
 :::note
@@ -35,14 +37,14 @@ Both apps have their own environment config files. Here is an exhaustive list of
 
 Used for sending email notifications and authentication
 
-| Parameter                      | Default | Description                                                                                |
-| ------------------------------ | ------- | ------------------------------------------------------------------------------------------ |
-| SMTP_USERNAME                  | --      | SMTP username                                                                              |
-| SMTP_PASSWORD                  | --      | SMTP password                                                                              |
-| SMTP_HOST                      | --      | SMTP host. (i.e. `smtp.host.com`)                                                          |
-| SMTP_PORT                      | 25      | SMTP port                                                                                  |
-| NEXT_PUBLIC_SMTP_FROM          | -       | From name and email (i.e. `"Typebot Notifications" <notifications@typebot.io>`)            |
-| NEXT_PUBLIC_SMTP_AUTH_DISABLED | false   | To disable the authentication by email but still use the provided config for notifications |
+| Parameter             | Default | Description                                                                                |
+| --------------------- | ------- | ------------------------------------------------------------------------------------------ |
+| SMTP_USERNAME         | --      | SMTP username                                                                              |
+| SMTP_PASSWORD         | --      | SMTP password                                                                              |
+| SMTP_HOST             | --      | SMTP host. (i.e. `smtp.host.com`)                                                          |
+| SMTP_PORT             | 25      | SMTP port                                                                                  |
+| NEXT_PUBLIC_SMTP_FROM | -       | From name and email (i.e. `"Typebot Notifications" <notifications@typebot.io>`)            |
+| SMTP_AUTH_DISABLED    | false   | To disable the authentication by email but still use the provided config for notifications |
 
 </p></details>
 
@@ -52,10 +54,10 @@ Used for sending email notifications and authentication
 Used authentication in the builder and for the Google Sheets integration step. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google`
 
-| Parameter                    | Default | Description                                   |
-| ---------------------------- | ------- | --------------------------------------------- |
-| NEXT_PUBLIC_GOOGLE_CLIENT_ID | --      | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET         | --      | The Client secret from the Google API Console |
+| Parameter            | Default | Description                                   |
+| -------------------- | ------- | --------------------------------------------- |
+| GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
+| GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
 
 Used for Google Fonts:
 
@@ -72,10 +74,10 @@ Used for authenticating with GitHub. By default, it uses the credentials of a Ty
 
 You can create your own GitHub OAuth app [here](https://github.com/settings/developers). The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/github`
 
-| Parameter                    | Default | Description                                                                 |
-| ---------------------------- | ------- | --------------------------------------------------------------------------- |
-| NEXT_PUBLIC_GITHUB_CLIENT_ID | --      | Application client ID. Also used to check if it is enabled in the front-end |
-| GITHUB_CLIENT_SECRET         | --      | Application secret                                                          |
+| Parameter            | Default | Description                                                                 |
+| -------------------- | ------- | --------------------------------------------------------------------------- |
+| GITHUB_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
+| GITHUB_CLIENT_SECRET | --      | Application secret                                                          |
 
 </p></details>
 
@@ -86,13 +88,13 @@ Used for authenticating with GitLab.
 Follow the official GitLab guide for creating OAuth2 applications [here](https://docs.gitlab.com/ee/integration/oauth_provider.html).
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab`
 
-| Parameter                    | Default            | Description                                                                          |
-| ---------------------------- | ------------------ | ------------------------------------------------------------------------------------ | --- |
-| NEXT_PUBLIC_GITLAB_CLIENT_ID | --                 | Application client ID. Also used to check if it is enabled in the front-end          |
-| GITLAB_CLIENT_SECRET         | --                 | Application secret                                                                   |
-| GITLAB_BASE_URL              | https://gitlab.com | Base URL of the GitLab instance                                                      |     |
-| GITLAB_REQUIRED_GROUPS       | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
-| NEXT_PUBLIC_GITLAB_NAME      | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
+| Parameter              | Default            | Description                                                                          |
+| ---------------------- | ------------------ | ------------------------------------------------------------------------------------ | --- |
+| GITLAB_CLIENT_ID       | --                 | Application client ID. Also used to check if it is enabled in the front-end          |
+| GITLAB_CLIENT_SECRET   | --                 | Application secret                                                                   |
+| GITLAB_BASE_URL        | https://gitlab.com | Base URL of the GitLab instance                                                      |     |
+| GITLAB_REQUIRED_GROUPS | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
+| GITLAB_NAME            | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
 
 </p></details>
 
@@ -102,10 +104,10 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab
 You can create your own Facebook OAuth app [here](https://developers.facebook.com/apps/create/).
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebook`
 
-| Parameter                      | Default | Description                                                                 |
-| ------------------------------ | ------- | --------------------------------------------------------------------------- |
-| NEXT_PUBLIC_FACEBOOK_CLIENT_ID | --      | Application client ID. Also used to check if it is enabled in the front-end |
-| FACEBOOK_CLIENT_SECRET         | --      | Application secret                                                          |
+| Parameter              | Default | Description                                                                 |
+| ---------------------- | ------- | --------------------------------------------------------------------------- |
+| FACEBOOK_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
+| FACEBOOK_CLIENT_SECRET | --      | Application secret                                                          |
 
 </p></details>
 
@@ -247,13 +249,13 @@ These can also be added to the `viewer` environment
 
 Used for sending email notifications and authentication
 
-| Parameter             | Default | Description                                                                     |
-| --------------------- | ------- | ------------------------------------------------------------------------------- |
-| SMTP_USERNAME         | --      | SMTP username                                                                   |
-| SMTP_PASSWORD         | --      | SMTP password                                                                   |
-| SMTP_HOST             | --      | SMTP host. (i.e. `smtp.host.com`)                                               |
-| SMTP_PORT             | 25      | SMTP port                                                                       |
-| NEXT_PUBLIC_SMTP_FROM | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`) |
+| Parameter     | Default | Description                                                                     |
+| ------------- | ------- | ------------------------------------------------------------------------------- |
+| SMTP_USERNAME | --      | SMTP username                                                                   |
+| SMTP_PASSWORD | --      | SMTP password                                                                   |
+| SMTP_HOST     | --      | SMTP host. (i.e. `smtp.host.com`)                                               |
+| SMTP_PORT     | 25      | SMTP port                                                                       |
+| SMTP_FROM     | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`) |
 
 </p></details>
 
@@ -262,9 +264,17 @@ Used for sending email notifications and authentication
 
 Used when executing a Google Sheets block. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
 
-| Parameter                    | Default | Description                                   |
-| ---------------------------- | ------- | --------------------------------------------- |
-| NEXT_PUBLIC_GOOGLE_CLIENT_ID | --      | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET         | --      | The Client secret from the Google API Console |
+| Parameter            | Default | Description                                   |
+| -------------------- | ------- | --------------------------------------------- |
+| GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
+| GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
 
 </p></details>
+
+:::note
+If you're self-hosting Typebot, [sponsoring me](https://github.com/sponsors/baptisteArno) is a great way to give back to the community and to contribute to the long-term sustainability of the project.
+
+<SponsorButton />
+
+Thank you for supporting independent creators of Free Open Source Software!
+:::

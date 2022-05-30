@@ -24,10 +24,10 @@ services:
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXTAUTH_URL=http://localhost:8080
-      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
-      - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
-      - ADMIN_EMAIL=me@email.com
+      - NEXTAUTH_URL=<your-builder-url>
+      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
+      - ENCRYPTION_SECRET=<your-encryption-secret>
+      - ADMIN_EMAIL=<your-admin-email>
   typebot-viewer:
     image: baptistearno/typebot-viewer:latest
     restart: always
@@ -36,7 +36,7 @@ services:
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
-      - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
+      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
+      - ENCRYPTION_SECRET=<your-encryption-secret>
 volumes:
   db_data:
