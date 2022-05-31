@@ -42,6 +42,8 @@ Now edit `docker-compose.yml` and:
 - Replace `<your-admin-email>` with the email address of the administrator.
 - Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](https://docs.typebot.io/self-hosting/configuration).
 
+By default the compose file will pull the latest stable Typebot images: `baptistearno/typebot-builder:latest` and `baptistearno/typebot-viewer:latest`. You can decide to replace `latest` with a specific version or with `main` to get the latest modifications. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/typebot-builder/tags)
+
 ### 3. Start the server
 
 Once you've added your configuration to the compose file, you're ready to start up the server:
