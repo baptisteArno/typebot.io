@@ -37,7 +37,7 @@ services:
       args:
         - SCOPE=viewer
     ports:
-      - '8081:3000'
+      - '8081:3001'
     env_file:
       - './apps/viewer/.env.production'
     entrypoint: >
