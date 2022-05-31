@@ -10,6 +10,7 @@ export type InputStep =
   | PhoneNumberInputStep
   | ChoiceInputStep
   | PaymentInputStep
+  | AskNameInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
@@ -20,6 +21,7 @@ export enum InputStepType {
   PHONE = 'phone number input',
   CHOICE = 'choice input',
   PAYMENT = 'payment input',
+  ASK_NAME = 'name input'
 }
 
 export type InputStepOptions =
@@ -31,6 +33,12 @@ export type InputStepOptions =
   | PhoneNumberInputOptions
   | ChoiceInputOptions
   | PaymentInputOptions
+  | AskNameOptions
+
+export type AskNameInputStep = StepBase & {
+  type: InputStepType.ASK_NAME
+  options: AskNameOptions
+}
 
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
@@ -123,6 +131,11 @@ export type TextInputOptions = OptionBase &
     isLong: boolean
   }
 
+export type AskNameOptions = OptionBase &
+  InputTextOptionsBase & {
+    isLong: boolean
+  }
+
 export type NumberInputOptions = OptionBase &
   InputTextOptionsBase & {
     min?: number
@@ -151,6 +164,12 @@ const defaultButtonLabel = 'Send'
 
 export const defaultTextInputOptions: TextInputOptions = {
   isLong: false,
+  labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
+}
+
+export const defaultAskNameOptions: AskNameOptions = {
+  isLong: false,
+  variableId: '1',
   labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
 }
 

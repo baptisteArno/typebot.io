@@ -41,6 +41,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Button</Text>
     case InputStepType.PAYMENT:
       return <Text>Payment</Text>
+    case InputStepType.ASK_NAME:
+      return <Text>Pergunte o nome</Text>
     case LogicStepType.SET_VARIABLE:
       return <Text>Set variable</Text>
     case LogicStepType.CONDITION:

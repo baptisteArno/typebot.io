@@ -23,6 +23,7 @@ import {
   defaultPhoneInputOptions,
   defaultUrlInputOptions,
   defaultChoiceInputOptions,
+  defaultAskNameOptions,
   defaultSetVariablesOptions,
   defaultRedirectOptions,
   defaultGoogleSheetsOptions,
@@ -347,6 +348,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultChoiceInputOptions
     case InputStepType.PAYMENT:
       return defaultPaymentInputOptions
+    case InputStepType.ASK_NAME:
+      return defaultAskNameOptions
     case LogicStepType.SET_VARIABLE:
       return defaultSetVariablesOptions
     case LogicStepType.REDIRECT:

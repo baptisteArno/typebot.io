@@ -163,6 +163,13 @@ export const StepSettings = ({
       return (
         <PaymentSettings
           options={step.options}
+        />
+      )
+    }
+    case InputStepType.ASK_NAME: {
+      return (
+        <TextInputSettingsBody
+          options={step.options || { variableId: '2' } }
           onOptionsChange={handleOptionsChange}
         />
       )

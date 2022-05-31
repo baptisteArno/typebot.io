@@ -67,6 +67,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CheckSquareIcon color="orange.500" {...props} />
     case InputStepType.PAYMENT:
       return <CreditCardIcon color="orange.500" {...props} />
+    case InputStepType.ASK_NAME:
+      return <TextIcon color="orange.500" {...props} />
     case LogicStepType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:

@@ -24,7 +24,7 @@ export const StepCard = ({
   const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
 
   return (
-    <Tooltip label="Coming soon!" isDisabled={!isDisabled}>
+    <Tooltip label="Em breve!" isDisabled={!isDisabled}>
       <Flex pos="relative">
         <HStack
           borderWidth="1px"

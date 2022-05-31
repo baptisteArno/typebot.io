@@ -187,7 +187,7 @@ export const StepsSideBar = () => {
           </SimpleGrid>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <StepCard key={type} type={type} onMouseDown={handleMouseDown} isDisabled={type === OctaBubbleStepType.END_CONVERSATION} />
             ))}
           </SimpleGrid>
         </Stack>
