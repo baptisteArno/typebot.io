@@ -53,7 +53,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : stripeKeys.live.secretKey,
       { apiVersion: '2020-08-27' }
     )
-    console.log(variables, inputOptions)
     const amount = Math.round(
       Number(parseVariables(variables)(inputOptions.amount)) * 100
     )
@@ -62,7 +61,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: inputOptions.currency,
-      receipt_email: inputOptions.additionalInformation?.email,
+      receipt_email: parseVariables(variables)(
+        inputOptions.additionalInformation?.email
+      ),
       automatic_payment_methods: {
         enabled: true,
       },
