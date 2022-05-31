@@ -42,12 +42,8 @@ A popular request also is to set a variable to the current URL. Here is the valu
 window.location.href
 ```
 
-It will not give you the parent URL if you embed the bot on your site. A more bullet proof value would then be:
+:::caution
+It will not give you the parent URL if you embed the bot on your site.
 
-```js
-window.location != window.parent.location
-  ? document.referrer
-  : document.location.href
-```
-
-It checks whether or not the bot is embedded and return the appropriate URL.
+A more bullet proof option is to pass the URL as a hidden variable in the embed code options. You can find an example [here](../../embed/html-javascript#additional-configuration).
+:::

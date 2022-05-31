@@ -33,22 +33,19 @@ const parseButton = (button?: ButtonParams): string => {
   if (!button) return ''
   const iconUrlString = parseStringParam('iconUrl', button.iconUrl)
   const buttonColorstring = parseStringParam('color', button.color)
-  return `button: {${iconUrlString}${buttonColorstring}},`
+  const buttonIconColorString = parseStringParam('iconColor', button.iconColor)
+  return `button: {${iconUrlString}${buttonColorstring}${buttonIconColorString}},`
 }
 
 const parseProactiveMessage = (
   proactiveMessage?: ProactiveMessageParams
 ): string => {
   if (!proactiveMessage) return ``
-  const { avatarUrl, textContent, delay, rememberClose } = proactiveMessage
+  const { avatarUrl, textContent, delay } = proactiveMessage
   const avatarUrlString = parseStringParam('avatarUrl', avatarUrl)
   const textContentString = parseStringParam('textContent', textContent)
-  const rememberCloseString = parseNonStringParam(
-    'rememberClose',
-    rememberClose
-  )
   const delayString = parseNonStringParam('delay', delay)
-  return `proactiveMessage: {${avatarUrlString}${textContentString}${rememberCloseString}${delayString}},`
+  return `proactiveMessage: {${avatarUrlString}${textContentString}${delayString}},`
 }
 
 const parseIframeParams = ({
