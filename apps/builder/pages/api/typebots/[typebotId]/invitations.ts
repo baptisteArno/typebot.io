@@ -10,7 +10,6 @@ import {
   badRequest,
   forbidden,
   isEmpty,
-  isNotDefined,
   methodNotAllowed,
   notAuthenticated,
 } from 'utils'
@@ -73,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         subject: "You've been invited to collaborate 🤝",
         content: invitationToCollaborate(
           user.email ?? '',
-          `${process.env.NEXTAUTH_URL}/typebots/shared`
+          `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`
         ),
       })
     return res.send({

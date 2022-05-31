@@ -15,6 +15,7 @@ import {
 } from 'services/workspace/workspace'
 import { useUser } from './UserContext'
 import { useTypebot } from './TypebotContext'
+import { useRouter } from 'next/router'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 
@@ -36,6 +37,7 @@ const workspaceContext = createContext<{
 }>({})
 
 export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
+  const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
   const { typebot } = useTypebot()
@@ -54,7 +56,8 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!workspaces || workspaces.length === 0 || currentWorkspace) return
-    const lastWorspaceId = localStorage.getItem('workspaceId')
+    const lastWorspaceId =
+      query.workspaceId?.toString() ?? localStorage.getItem('workspaceId')
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
