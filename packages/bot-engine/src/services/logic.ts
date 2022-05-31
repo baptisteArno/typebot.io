@@ -66,11 +66,10 @@ const executeSetVariable = (
   step: SetVariableStep,
   { typebot: { variables }, updateVariableValue, updateVariables }: LogicContext
 ): EdgeId | undefined => {
-  if (!step.options?.variableId || !step.options.expressionToEvaluate)
-    return step.outgoingEdgeId
-  const evaluatedExpression = evaluateExpression(variables)(
-    step.options.expressionToEvaluate
-  )
+  if (!step.options?.variableId) return step.outgoingEdgeId
+  const evaluatedExpression = step.options.expressionToEvaluate
+    ? evaluateExpression(variables)(step.options.expressionToEvaluate)
+    : undefined
   const existingVariable = variables.find(byId(step.options.variableId))
   if (!existingVariable) return step.outgoingEdgeId
   updateVariableValue(existingVariable.id, evaluatedExpression)
