@@ -84,7 +84,7 @@ test.describe.parallel('Image bubble step', () => {
         force: true,
         position: { x: 0, y: 0 },
       })
-      await expect(page.locator('img[alt="Step image"]')).toHaveAttribute(
+      await expect(page.locator('img[alt="Block image"]')).toHaveAttribute(
         'src',
         new RegExp('giphy.com/media', 'gm')
       )

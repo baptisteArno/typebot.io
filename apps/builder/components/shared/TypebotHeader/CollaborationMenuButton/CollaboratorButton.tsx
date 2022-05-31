@@ -88,7 +88,11 @@ export const CollaboratorIdentityContent = ({
             {name}
           </Text>
         )}
-        <Text color="gray.500" fontSize={name ? '14px' : 'inherit'} isTruncated>
+        <Text
+          color="gray.500"
+          fontSize={name ? '14px' : 'inherit'}
+          noOfLines={0}
+        >
           {email}
         </Text>
       </Stack>

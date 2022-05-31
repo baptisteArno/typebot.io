@@ -9,13 +9,14 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { CheckIcon } from '../../../assets/icons/CheckIcon'
+import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
 
 export interface PricingCardData {
   features: string[]
   name: string
   price: string
+  featureLabel?: string
 }
 
 interface PricingCardProps extends CardProps {
@@ -35,7 +36,7 @@ export const PricingCard = (props: PricingCardProps) => {
         <Flex flexDir="column">
           <VStack spacing={6}>
             {icon}
-            <Heading size="md" fontWeight="extrabold">
+            <Heading size="md" fontWeight="extrabold" color={rest.borderColor}>
               {name}
             </Heading>
           </VStack>
@@ -55,15 +56,19 @@ export const PricingCard = (props: PricingCardProps) => {
               </Text>
             )}
           </Flex>
+
           <List spacing="4" mb="8" maxW="30ch" mx="auto">
+            {data.featureLabel && (
+              <Text fontWeight="bold">{data.featureLabel}</Text>
+            )}
             {features.map((feature, index) => (
               <ListItem fontWeight="medium" key={index}>
                 <ListIcon
                   fontSize="xl"
-                  as={CheckIcon}
+                  as={CheckCircleIcon}
                   marginEnd={2}
                   color={accentColor}
-                  fill="blue.200"
+                  fill={rest.borderColor}
                 />
                 {feature}
               </ListItem>

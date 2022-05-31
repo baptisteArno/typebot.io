@@ -14,10 +14,11 @@ import {
   NumberDecrementStepper,
   Switch,
   Text,
-  Tag,
+  Image,
 } from '@chakra-ui/react'
 import { ColorPicker } from 'components/theme/GeneralSettings/ColorPicker'
 import { useTypebot } from 'contexts/TypebotContext'
+import { useUser } from 'contexts/UserContext'
 import { useState, useEffect } from 'react'
 import { BubbleParams } from 'typebot-js'
 
@@ -30,18 +31,26 @@ export const ChatEmbedSettings = ({
   onUpdateSettings,
   ...props
 }: ChatEmbedSettingsProps & StackProps) => {
+  const { user } = useUser()
   const { typebot } = useTypebot()
   const [proactiveMessageChecked, setProactiveMessageChecked] = useState(false)
+  const [isCustomIconChecked, setIsCustomIconChecked] = useState(false)
+
   const [rememberProMessageChecked] = useState(true)
   const [customIconInputValue, setCustomIconInputValue] = useState('')
 
   const [inputValues, setInputValues] = useState({
     messageDelay: '0',
     messageContent: 'I have a question for you!',
+    avatarUrl: typebot?.theme.chat.hostAvatar?.url ?? user?.image ?? '',
   })
 
   const [bubbleColor, setBubbleColor] = useState(
     typebot?.theme.chat.buttons.backgroundColor ?? '#0042DA'
+  )
+
+  const [bubbleIconColor, setIconBubbleColor] = useState(
+    typebot?.theme.chat.buttons.color ?? '#FFFFFF'
   )
 
   useEffect(() => {
@@ -49,11 +58,14 @@ export const ChatEmbedSettings = ({
       onUpdateSettings({
         button: {
           color: bubbleColor,
-          iconUrl: customIconInputValue,
+          iconUrl: isCustomIconChecked ? customIconInputValue : undefined,
+          iconColor:
+            bubbleIconColor === '#FFFFFF' ? undefined : bubbleIconColor,
         },
         proactiveMessage: {
           delay: parseInt(inputValues.messageDelay) * 1000,
           textContent: inputValues.messageContent,
+          avatarUrl: inputValues.avatarUrl,
           rememberClose: rememberProMessageChecked,
         },
       })
@@ -61,43 +73,66 @@ export const ChatEmbedSettings = ({
       onUpdateSettings({
         button: {
           color: bubbleColor,
-          iconUrl: customIconInputValue,
+          iconUrl: isCustomIconChecked ? customIconInputValue : undefined,
+          iconColor:
+            bubbleIconColor === '#FFFFFF' ? undefined : bubbleIconColor,
         },
         proactiveMessage: undefined,
       })
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     inputValues,
     bubbleColor,
     rememberProMessageChecked,
     customIconInputValue,
+    bubbleIconColor,
     proactiveMessageChecked,
+    isCustomIconChecked,
   ])
 
   return (
-    <Stack {...props}>
+    <Stack {...props} spacing="4">
       <Heading fontSize="md" fontWeight="semibold">
         Chat bubble settings
       </Heading>
-      <Flex justify="space-between" align="center" mb="4">
+      <Flex justify="space-between" align="center">
         <Text>Button color</Text>
         <ColorPicker
           initialColor={bubbleColor}
           onColorChange={setBubbleColor}
         />
       </Flex>
-      <HStack>
-        <Text flexShrink={0}>
-          Custom button icon <Tag>Optional</Tag>
-        </Text>
-        <Input
-          placeholder={'Paste image link (.png, .svg)'}
-          value={customIconInputValue}
-          onChange={(e) => setCustomIconInputValue(e.target.value)}
+      <HStack justify="space-between">
+        <Text>Icon color</Text>
+        <ColorPicker
+          initialColor={bubbleIconColor}
+          onColorChange={setIconBubbleColor}
         />
       </HStack>
+      <HStack justifyContent="space-between">
+        <FormLabel htmlFor="custom-icon" mb="1" flexShrink={0}>
+          Custom button icon?
+        </FormLabel>
+        <Switch
+          id="custom-icon"
+          onChange={() => setIsCustomIconChecked(!isCustomIconChecked)}
+          isChecked={isCustomIconChecked}
+        />
+      </HStack>
+      {isCustomIconChecked && (
+        <>
+          <HStack pl="4">
+            <Text>Url:</Text>
+            <Input
+              placeholder={'Paste image link (.png, .svg)'}
+              value={customIconInputValue}
+              onChange={(e) => setCustomIconInputValue(e.target.value)}
+              minW="0"
+            />
+          </HStack>
+        </>
+      )}
       <Flex alignItems="center">
         <FormControl
           display="flex"
@@ -120,7 +155,23 @@ export const ChatEmbedSettings = ({
       </Flex>
       {proactiveMessageChecked && (
         <>
-          <Flex justify="space-between" align="center" pl="4" mb="2">
+          <Flex pl="4">
+            <HStack
+              bgColor="white"
+              shadow="md"
+              rounded="md"
+              p="3"
+              maxW="280px"
+              spacing={4}
+            >
+              {inputValues.avatarUrl && (
+                // eslint-disable-next-line jsx-a11y/alt-text
+                <Image src={inputValues.avatarUrl} w="40px" rounded="full" />
+              )}
+              <Text>{inputValues.messageContent}</Text>
+            </HStack>
+          </Flex>
+          <Flex justify="space-between" align="center" pl="4">
             <Text>Appearance delay</Text>
             <NumberInput
               onChange={(messageDelay) =>
@@ -139,7 +190,21 @@ export const ChatEmbedSettings = ({
               </NumberInputStepper>
             </NumberInput>
           </Flex>
-          <Flex justify="space-between" align="center" pl="4" mb="2">
+          <Flex justify="space-between" align="center" pl="4">
+            <Text>Avatar URL</Text>
+            <Input
+              type="text"
+              onChange={(e) =>
+                setInputValues({
+                  ...inputValues,
+                  avatarUrl: e.target.value,
+                })
+              }
+              value={inputValues.avatarUrl}
+              placeholder={'Paste image link (.png, .jpg)'}
+            />
+          </Flex>
+          <Flex justify="space-between" align="center" pl="4">
             <Text>Message content</Text>
             <Input
               type="text"

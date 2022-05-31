@@ -1,4 +1,5 @@
 import { StepBase } from '.'
+import { TElement } from '@udecode/plate-core'
 
 export type BubbleStep =
   | TextBubbleStep
@@ -41,7 +42,7 @@ export type EmbedBubbleStep = StepBase & {
 
 export type TextBubbleContent = {
   html: string
-  richText: unknown[]
+  richText: TElement[]
   plainText: string
 }
 

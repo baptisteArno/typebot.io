@@ -5,3 +5,8 @@ export const deleteButtonInConfirmDialog = (page: Page) =>
 
 export const typebotViewer = (page: Page) =>
   page.frameLocator('#typebot-iframe')
+
+export const stripePaymentForm = (page: Page) =>
+  page
+    .frameLocator('#typebot-iframe')
+    .frameLocator('[title="Secure payment input frame"]')

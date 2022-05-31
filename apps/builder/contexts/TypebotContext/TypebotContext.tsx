@@ -30,7 +30,7 @@ import {
 } from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined, isNotDefined, omit } from 'utils'
+import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -40,7 +40,6 @@ import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
 import { dequal } from 'dequal'
-import { User } from 'db'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
@@ -63,7 +62,6 @@ const typebotContext = createContext<
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
     linkedTypebots?: Typebot[]
-    owner?: User
     webhooks: Webhook[]
     isReadOnly?: boolean
     isPublished: boolean
@@ -108,22 +106,15 @@ export const TypebotContext = ({
     status: 'error',
   })
 
-  const {
-    typebot,
-    publishedTypebot,
-    owner,
-    webhooks,
-    isReadOnly,
-    isLoading,
-    mutate,
-  } = useFetchedTypebot({
-    typebotId,
-    onError: (error) =>
-      toast({
-        title: 'Error while fetching typebot',
-        description: error.message,
-      }),
-  })
+  const { typebot, publishedTypebot, webhooks, isReadOnly, isLoading, mutate } =
+    useFetchedTypebot({
+      typebotId,
+      onError: (error) =>
+        toast({
+          title: 'Error while fetching typebot',
+          description: error.message,
+        }),
+    })
 
   const [
     { present: localTypebot },
@@ -150,6 +141,7 @@ export const TypebotContext = ({
     )
 
   const { typebots: linkedTypebots } = useLinkedTypebots({
+    workspaceId: localTypebot?.workspaceId ?? undefined,
     typebotId,
     typebotIds: linkedTypebotIds,
     onError: (error) =>
@@ -162,12 +154,18 @@ export const TypebotContext = ({
   useEffect(() => {
     if (!typebot || !currentTypebotRef.current) return
     if (typebotId !== currentTypebotRef.current.id) {
-      setLocalTypebot({ ...typebot })
+      setLocalTypebot({ ...typebot }, { updateDate: false })
       flush()
     } else if (
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
+      console.log(
+        'Incoming typebot',
+        typebot,
+        'Current typebot',
+        currentTypebotRef.current
+      )
       setLocalTypebot({ ...typebot })
     }
 
@@ -371,7 +369,6 @@ export const TypebotContext = ({
         typebot: localTypebot,
         publishedTypebot,
         linkedTypebots,
-        owner,
         webhooks: webhooks ?? [],
         isReadOnly,
         isSavingLoading,
@@ -413,17 +410,17 @@ export const useFetchedTypebot = ({
       typebot: Typebot
       webhooks: Webhook[]
       publishedTypebot?: PublicTypebot
-      owner?: User
       isReadOnly?: boolean
     },
     Error
-  >(`/api/typebots/${typebotId}`, fetcher, { dedupingInterval: 0 })
+  >(`/api/typebots/${typebotId}`, fetcher, {
+    dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
+  })
   if (error) onError(error)
   return {
     typebot: data?.typebot,
     webhooks: data?.webhooks,
     publishedTypebot: data?.publishedTypebot,
-    owner: data?.owner,
     isReadOnly: data?.isReadOnly,
     isLoading: !error && !data,
     mutate,
@@ -431,15 +428,17 @@ export const useFetchedTypebot = ({
 }
 
 const useLinkedTypebots = ({
+  workspaceId,
   typebotId,
   typebotIds,
   onError,
 }: {
+  workspaceId?: string
   typebotId?: string
   typebotIds?: string[]
   onError: (error: Error) => void
 }) => {
-  const params = stringify({ typebotIds }, { indices: false })
+  const params = stringify({ typebotIds, workspaceId }, { indices: false })
   const { data, error, mutate } = useSWR<
     {
       typebots: Typebot[]

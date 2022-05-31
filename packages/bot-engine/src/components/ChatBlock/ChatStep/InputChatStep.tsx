@@ -9,6 +9,7 @@ import { ChoiceForm } from './inputs/ChoiceForm'
 import { useTypebot } from 'contexts/TypebotContext'
 import { parseVariables } from '../../../services/variable'
 import { isInputValid } from 'services/inputs'
+import { PaymentForm } from './inputs/PaymentForm'
 
 export const InputChatStep = ({
   step,
@@ -32,11 +33,11 @@ export const InputChatStep = ({
       ? variableId && typebot.variables.find(byId(variableId))?.value
       : undefined
 
-  const handleSubmit = (content: string) => {
+  const handleSubmit = async (content: string) => {
     setAnswer(content)
     const isRetry = !isInputValid(content, step.type)
-    if (!isRetry)
-      addAnswer({
+    if (!isRetry && addAnswer)
+      await addAnswer({
         stepId: step.id,
         blockId: step.blockId,
         content,
@@ -107,5 +108,12 @@ const Input = ({
       return <DateForm options={step.options} onSubmit={onSubmit} />
     case InputStepType.CHOICE:
       return <ChoiceForm step={step} onSubmit={onSubmit} />
+    case InputStepType.PAYMENT:
+      return (
+        <PaymentForm
+          options={step.options}
+          onSuccess={() => onSubmit('Success')}
+        />
+      )
   }
 }

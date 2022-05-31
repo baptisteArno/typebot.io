@@ -9,7 +9,7 @@ export const SendEmailContent = ({ step }: Props) => {
   if (step.options.recipients.length === 0)
     return <Text color="gray.500">Configure...</Text>
   return (
-    <Wrap isTruncated pr="6">
+    <Wrap noOfLines={2} pr="6">
       <WrapItem>
         <Text>Send email to</Text>
       </WrapItem>

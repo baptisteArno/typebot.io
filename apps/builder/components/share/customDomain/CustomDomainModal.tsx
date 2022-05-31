@@ -18,12 +18,13 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { createCustomDomain } from 'services/user'
+import { isEmpty } from 'utils'
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
 
 type CustomDomainModalProps = {
-  userId: string
+  workspaceId: string
   isOpen: boolean
   onClose: () => void
   domain?: string
@@ -31,7 +32,7 @@ type CustomDomainModalProps = {
 }
 
 export const CustomDomainModal = ({
-  userId,
+  workspaceId,
   isOpen,
   onClose,
   onNewDomain,
@@ -67,7 +68,7 @@ export const CustomDomainModal = ({
   const onAddDomainClick = async () => {
     if (!hostnameRegex.test(inputValue)) return
     setIsLoading(true)
-    const { error } = await createCustomDomain(userId, {
+    const { error } = await createCustomDomain(workspaceId, {
       name: inputValue,
     })
     setIsLoading(false)
@@ -119,7 +120,11 @@ export const CustomDomainModal = ({
                     </Stack>
                     <Stack>
                       <Text fontWeight="bold">Value</Text>
-                      <Text>viewer.typebot.io</Text>
+                      <Text>
+                        {isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+                          ? process.env.NEXT_PUBLIC_VIEWER_URL
+                          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL}
+                      </Text>
                     </Stack>
                   </HStack>
                 ) : (

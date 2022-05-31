@@ -40,36 +40,44 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       switch (event.type) {
         case 'checkout.session.completed': {
           const session = event.data.object as Stripe.Checkout.Session
-          const { customer_email } = session
-          if (!customer_email)
-            return res.status(500).send(`customer_email not found`)
-          await prisma.user.update({
-            where: { email: customer_email },
-            data: { plan: Plan.PRO, stripeId: session.customer as string },
+          const { metadata } = session
+          if (!metadata?.workspaceId || !metadata?.plan)
+            return res.status(500).send({ message: `customer_email not found` })
+          await prisma.workspace.update({
+            where: { id: metadata.workspaceId },
+            data: {
+              plan: metadata.plan === 'team' ? Plan.TEAM : Plan.PRO,
+              stripeId: session.customer as string,
+            },
           })
-          return res.status(200).send({ message: 'user upgraded in DB' })
+          return res.status(200).send({ message: 'workspace upgraded in DB' })
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
-          await prisma.user.update({
+          const { metadata } = subscription
+          if (!metadata.workspaceId)
+            return res.status(500).send(`workspaceId not found`)
+          await prisma.workspace.update({
             where: {
-              stripeId: subscription.customer as string,
+              id: metadata.workspaceId,
             },
             data: {
               plan: Plan.FREE,
             },
           })
-          return res.status(200).send({ message: 'user downgraded in DB' })
+          return res.send({ message: 'workspace downgraded in DB' })
         }
         default: {
           return res.status(304).send({ message: 'event not handled' })
         }
       }
     } catch (err) {
+      console.error(err)
       if (err instanceof Error) {
         console.error(err)
         return res.status(400).send(`Webhook Error: ${err.message}`)
       }
+      return res.status(500).send(`Error occured: ${err}`)
     }
   }
   return methodNotAllowed(res)

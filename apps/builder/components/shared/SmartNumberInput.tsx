@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import { isEmpty } from 'utils'
 
 export const SmartNumberInput = ({
   value,
@@ -22,7 +23,7 @@ export const SmartNumberInput = ({
   const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
   const debounced = useDebouncedCallback(
     onValueChange,
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
 
   useEffect(
@@ -44,7 +45,7 @@ export const SmartNumberInput = ({
 
   return (
     <NumberInput onChange={handleValueChange} value={currentValue} {...props}>
-      <NumberInputField />
+      <NumberInputField placeholder={props.placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />

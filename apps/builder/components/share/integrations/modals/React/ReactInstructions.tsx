@@ -48,13 +48,13 @@ const StandardInstructions = () => {
 }
 
 const PopupInstructions = () => {
-  const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState<number>()
 
   return (
     <Stack spacing={4}>
       <InstallPackageInstruction />
       <PopupEmbedSettings
-        onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+        onUpdateSettings={(settings) => setInputValue(settings.delay)}
       />
       <Text>Initialize the typebot</Text>
       <PopupReactCode withStarterVariables={true} delay={inputValue} />

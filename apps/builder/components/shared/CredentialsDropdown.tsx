@@ -12,10 +12,10 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useUser } from 'contexts/UserContext'
 import { useRouter } from 'next/router'
 import { CredentialsType } from 'models'
 import { deleteCredentials, useCredentials } from 'services/user'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   type: CredentialsType
@@ -36,13 +36,13 @@ export const CredentialsDropdown = ({
   ...props
 }: Props) => {
   const router = useRouter()
-  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const toast = useToast({
     position: 'top-right',
     status: 'error',
   })
   const { credentials, mutate } = useCredentials({
-    userId: user?.id,
+    workspaceId: workspace?.id,
   })
   const [isDeleting, setIsDeleting] = useState<string>()
 
@@ -84,9 +84,9 @@ export const CredentialsDropdown = ({
   const handleDeleteDomainClick =
     (credentialsId: string) => async (e: React.MouseEvent) => {
       e.stopPropagation()
-      if (!user?.id) return
+      if (!workspace?.id) return
       setIsDeleting(credentialsId)
-      const { error } = await deleteCredentials(user?.id, credentialsId)
+      const { error } = await deleteCredentials(workspace.id, credentialsId)
       setIsDeleting(undefined)
       if (error) return toast({ title: error.name, description: error.message })
       onCredentialsSelect(undefined)
@@ -103,7 +103,7 @@ export const CredentialsDropdown = ({
         textAlign="left"
         {...props}
       >
-        <Text isTruncated overflowY="visible" h="20px">
+        <Text noOfLines={0} overflowY="visible" h="20px">
           {currentCredential ? currentCredential.name : defaultCredentialsLabel}
         </Text>
       </MenuButton>

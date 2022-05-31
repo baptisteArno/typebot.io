@@ -4,16 +4,21 @@ export const createButton = (params?: ButtonParams): HTMLButtonElement => {
   const button = document.createElement('button')
   button.id = 'typebot-bubble-button'
   button.style.backgroundColor = params?.color ?? '#0042DA'
-  button.appendChild(createButtonIcon(params?.iconUrl, params?.iconStyle))
-  button.appendChild(createCloseIcon())
+  button.appendChild(
+    createButtonIcon(params?.iconUrl, params?.iconColor, params?.iconStyle)
+  )
+  button.appendChild(
+    createCloseIcon(params?.iconColor ?? params?.closeIconColor)
+  )
   return button
 }
 
 const createButtonIcon = (
   src?: string,
+  iconColor?: string,
   style?: string
 ): SVGElement | HTMLElement => {
-  if (!src) return createDefaultIcon()
+  if (!src) return createDefaultIcon(iconColor)
   const icon = document.createElement('img')
   icon.classList.add('icon')
   icon.src = src
@@ -21,19 +26,21 @@ const createButtonIcon = (
   return icon
 }
 
-const createDefaultIcon = (): SVGElement => {
+const createDefaultIcon = (iconColor?: string): SVGElement => {
   const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   icon.setAttribute('viewBox', '0 0 24 24')
   icon.innerHTML = typebotLogoSvgTextContent()
   icon.classList.add('icon')
+  icon.style.stroke = iconColor ?? '#ffffff'
   return icon
 }
 
-const createCloseIcon = (): SVGElement => {
+const createCloseIcon = (iconColor?: string): SVGElement => {
   const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   icon.setAttribute('viewBox', '0 0 24 24')
   icon.innerHTML = closeSvgPath
   icon.classList.add('close-icon')
+  icon.style.stroke = iconColor ?? '#ffffff'
   return icon
 }
 

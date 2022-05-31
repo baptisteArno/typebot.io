@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import React, { useState } from 'react'
-import { useUser } from 'contexts/UserContext'
 import { CustomDomainModal } from './CustomDomainModal'
 import { deleteCustomDomain, useCustomDomains } from 'services/user'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   currentCustomDomain?: string
@@ -29,15 +29,15 @@ export const CustomDomainsDropdown = ({
 }: Props) => {
   const [isDeleting, setIsDeleting] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { user } = useUser()
-  const { customDomains, mutate } = useCustomDomains({
-    userId: user?.id,
-    onError: (error) =>
-      toast({ title: error.name, description: error.message }),
-  })
+  const { workspace } = useWorkspace()
   const toast = useToast({
     position: 'top-right',
     status: 'error',
+  })
+  const { customDomains, mutate } = useCustomDomains({
+    workspaceId: workspace?.id,
+    onError: (error) =>
+      toast({ title: error.name, description: error.message }),
   })
 
   const handleMenuItemClick = (customDomain: string) => () =>
@@ -45,10 +45,10 @@ export const CustomDomainsDropdown = ({
 
   const handleDeleteDomainClick =
     (domainName: string) => async (e: React.MouseEvent) => {
-      if (!user) return
+      if (!workspace) return
       e.stopPropagation()
       setIsDeleting(domainName)
-      const { error } = await deleteCustomDomain(user.id, domainName)
+      const { error } = await deleteCustomDomain(workspace.id, domainName)
       setIsDeleting('')
       if (error) return toast({ title: error.name, description: error.message })
       mutate({
@@ -59,11 +59,11 @@ export const CustomDomainsDropdown = ({
     }
 
   const handleNewDomain = (domain: string) => {
-    if (!user) return
+    if (!workspace) return
     mutate({
       customDomains: [
         ...(customDomains ?? []),
-        { name: domain, ownerId: user?.id },
+        { name: domain, workspaceId: workspace?.id },
       ],
     })
     handleMenuItemClick(domain)()
@@ -71,9 +71,9 @@ export const CustomDomainsDropdown = ({
 
   return (
     <Menu isLazy placement="bottom-start" matchWidth>
-      {user?.id && (
+      {workspace?.id && (
         <CustomDomainModal
-          userId={user.id}
+          workspaceId={workspace.id}
           isOpen={isOpen}
           onClose={onClose}
           onNewDomain={handleNewDomain}
@@ -87,7 +87,7 @@ export const CustomDomainsDropdown = ({
         textAlign="left"
         {...props}
       >
-        <Text isTruncated overflowY="visible" h="20px">
+        <Text noOfLines={0} overflowY="visible" h="20px">
           {currentCustomDomain ?? 'Add my domain'}
         </Text>
       </MenuButton>

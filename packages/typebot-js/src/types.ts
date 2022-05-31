@@ -30,6 +30,8 @@ export type ButtonParams = {
   color?: string
   iconUrl?: string
   iconStyle?: string
+  iconColor?: string
+  closeIconColor?: string
 }
 
 export type ProactiveMessageParams = {

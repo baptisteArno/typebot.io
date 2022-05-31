@@ -7,12 +7,12 @@ import { isDefined } from 'utils'
 import { SEO } from '../components/Seo'
 import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
-import sanitizeHtml from 'sanitize-html'
 
 export type TypebotPageProps = {
   typebot?: PublicTypebot
   url: string
   isIE: boolean
+  customHeadCode: string | null
 }
 
 const sessionStorageKey = 'resultId'
@@ -21,6 +21,7 @@ export const TypebotPage = ({
   typebot,
   isIE,
   url,
+  customHeadCode,
 }: TypebotPageProps & { typebot: PublicTypebot }) => {
   const { asPath, push } = useRouter()
   const [showTypebot, setShowTypebot] = useState(false)
@@ -41,19 +42,18 @@ export const TypebotPage = ({
     })
     setPredefinedVariables(predefinedVariables)
     initializeResult().then()
-    const { customHeadCode } = typebot.settings.metadata
-    if (isDefined(customHeadCode) && customHeadCode !== '')
-      document.head.innerHTML =
-        document.head.innerHTML +
-        sanitizeHtml(customHeadCode ?? '', {
-          allowedTags: ['script', 'meta'],
-        })
+    if (isDefined(customHeadCode))
+      document.head.innerHTML = document.head.innerHTML + customHeadCode
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQueryParams = () => {
     const hasQueryParams = asPath.includes('?')
-    if (hasQueryParams) push(asPath.split('?')[0], undefined, { shallow: true })
+    if (
+      hasQueryParams &&
+      typebot.settings.general.isHideQueryParamsEnabled !== false
+    )
+      push(asPath.split('?')[0], undefined, { shallow: true })
   }
 
   const initializeResult = async () => {

@@ -14,6 +14,7 @@ import { BubbleParams } from 'typebot-js'
 import { ModalProps } from '../../EmbedButton'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
+import { isEmpty } from 'utils'
 
 type ShopifyInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
@@ -45,8 +46,9 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
 
   const jsCode = parseInitContainerCode({
     url: `${
-      process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-      process.env.NEXT_PUBLIC_VIEWER_URL
+      isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+        ? process.env.NEXT_PUBLIC_VIEWER_URL
+        : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
     }/${publicId}`,
   })
   const headCode = prettier.format(
@@ -96,7 +98,7 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
 }
 
 const PopupInstructions = () => {
-  const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState<number>()
 
   return (
     <OrderedList spacing={2} mb={4}>
@@ -109,7 +111,7 @@ const PopupInstructions = () => {
         before the closing <Tag>head</Tag> tag:
         <PopupEmbedSettings
           my="4"
-          onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+          onUpdateSettings={(settings) => setInputValue(settings.delay)}
         />
         <PopupEmbedCode delay={inputValue} />
       </ListItem>

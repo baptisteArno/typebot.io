@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
 import { SearchableDropdown } from '../../../shared/SearchableDropdown'
+import { isEmpty } from 'utils'
 
 type FontSelectorProps = {
   activeFont?: string
@@ -19,6 +20,7 @@ export const FontSelector = ({
   }, [])
 
   const fetchPopularFonts = async () => {
+    if (isEmpty(process.env.NEXT_PUBLIC_GOOGLE_API_KEY)) return []
     const response = await fetch(
       `https://www.googleapis.com/webfonts/v1/webfonts?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
     )

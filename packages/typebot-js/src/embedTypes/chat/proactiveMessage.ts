@@ -39,7 +39,7 @@ const createTextElement = (text: string): HTMLParagraphElement => {
 const createCloseButton = (bubble: HTMLDivElement): HTMLButtonElement => {
   const button = document.createElement('button')
   button.classList.add('close-button')
-  button.innerHTML = `<svg viewBox="0 0 512 512">${closeSvgPath}</svg>`
+  button.innerHTML = `<svg viewBox="0 0 24 24" style="stroke:black; stroke-width:2px; margin:4px">${closeSvgPath}</svg>`
   button.addEventListener('click', (e) => onCloseButtonClick(e, bubble))
   return button
 }

@@ -10,6 +10,7 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
 import { NextPageContext } from 'next/types'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -17,21 +18,26 @@ const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { query, isReady } = useRouter()
   const { user } = useUser()
+  const { workspace } = useWorkspace()
   const toast = useToast({
     position: 'top-right',
     status: 'success',
   })
 
   useEffect(() => {
-    const subscribe = query.subscribe?.toString()
-    if (subscribe && user && user.plan === 'FREE') {
+    const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
+    if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
-      pay(
+      pay({
         user,
-        navigator.languages.find((l) => l.includes('fr')) ? 'eur' : 'usd'
-      )
+        plan: subscribePlan,
+        workspaceId: workspace.id,
+        currency: navigator.languages.find((l) => l.includes('fr'))
+          ? 'eur'
+          : 'usd',
+      })
     }
-  }, [query.subscribe, user])
+  }, [query, user, workspace])
 
   useEffect(() => {
     if (!isReady) return
@@ -40,7 +46,7 @@ const DashboardPage = () => {
 
     if (stripeStatus === 'success')
       toast({
-        title: 'Typebot Pro',
+        title: 'Payment successful',
         description: "You've successfully subscribed 🎉",
       })
     if (couponCode) {

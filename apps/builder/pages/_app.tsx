@@ -17,6 +17,7 @@ import { KBarProvider } from 'kbar'
 import { actions } from 'libs/kbar'
 import { enableMocks } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
+import { WorkspaceContext } from 'contexts/WorkspaceContext'
 
 import { appWithTranslation } from 'next-i18next';
 
@@ -40,14 +41,16 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
           <UserContext>
             {typebotId ? (
               <TypebotContext typebotId={typebotId}>
-                <Component />
-                <SupportBubble />
+                <WorkspaceContext>
+                  <Component />
+                  <SupportBubble />
+                </WorkspaceContext>
               </TypebotContext>
             ) : (
-              <>
+              <WorkspaceContext>
                 <Component {...pageProps} />
                 <SupportBubble />
-              </>
+              </WorkspaceContext>
             )}
           </UserContext>
         </SessionProvider>

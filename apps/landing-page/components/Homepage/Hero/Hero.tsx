@@ -33,7 +33,7 @@ export const Hero = () => {
               bgClip="text"
               data-aos="fade-up"
             >
-              Open-source conversational apps builder
+              Open-source conversational forms builder
             </Heading>
             <Text
               fontSize={['lg', 'xl']}
@@ -59,13 +59,9 @@ export const Hero = () => {
                 height="4rem"
                 px="2rem"
               >
-                Create a typebot
+                Create a typebot for free
               </Button>
             </Stack>
-
-            <Text color="gray.400" data-aos="fade-up" data-aos-delay="300">
-              Generous, unlimited <strong>free</strong> plan.
-            </Text>
           </VStack>
           <Box maxW="1200px" pos="relative">
             <Box
@@ -102,6 +98,7 @@ export const Hero = () => {
                 src={builderScreenshotSrc}
                 alt="Builder screenshot"
                 placeholder="blur"
+                style={{ borderRadius: '10px' }}
               />
             </Box>
           </Box>

@@ -10,6 +10,7 @@ import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { CodeEditor } from 'components/shared/CodeEditor'
 import { useTypebot } from 'contexts/TypebotContext'
+import { isEmpty } from 'utils'
 
 type StandardReactDivProps = { widthLabel: string; heightLabel: string }
 export const StandardReactDiv = ({
@@ -20,8 +21,9 @@ export const StandardReactDiv = ({
   const snippet = prettier.format(
     parseContainerSnippet({
       url: `${
-        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-        process.env.NEXT_PUBLIC_VIEWER_URL
+        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+          ? process.env.NEXT_PUBLIC_VIEWER_URL
+          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
       }/${typebot?.publicId}`,
       heightLabel,
       widthLabel,
@@ -50,7 +52,7 @@ const parseContainerSnippet = ({
     backgroundColor,
     hiddenVariables,
   })
-  return `import {initContainer} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {
@@ -62,7 +64,7 @@ const parseContainerSnippet = ({
 }
 
 type PopupEmbedCodeProps = {
-  delay: number
+  delay?: number
   withStarterVariables?: boolean
 }
 
@@ -71,8 +73,9 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const snippet = prettier.format(
     parsePopupSnippet({
       url: `${
-        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-        process.env.NEXT_PUBLIC_VIEWER_URL
+        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+          ? process.env.NEXT_PUBLIC_VIEWER_URL
+          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
       }/${typebot?.publicId}`,
       delay,
     }),
@@ -98,7 +101,7 @@ const parsePopupSnippet = ({
     hiddenVariables,
     delay,
   })
-  return `import {initPopup} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {
@@ -121,8 +124,9 @@ export const ChatReactCode = ({
   const snippet = prettier.format(
     parseBubbleSnippet({
       url: `${
-        process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-        process.env.NEXT_PUBLIC_VIEWER_URL
+        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+          ? process.env.NEXT_PUBLIC_VIEWER_URL
+          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
       }/${typebot?.publicId}`,
       button,
       proactiveMessage,
@@ -151,7 +155,7 @@ const parseBubbleSnippet = ({
     proactiveMessage,
     button,
   })
-  return `import {initBubble} from "typebot-js";
+  return `import Typebot from "typebot-js";
 
       const Component = () => {
         useEffect(()=> {

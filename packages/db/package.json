@@ -5,13 +5,13 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "prisma": "^3.12.0",
+    "prisma": "^3.14.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3",
+    "typescript": "^4.6.4",
     "dotenv-cli": "5.1.0"
   },
   "dependencies": {
-    "@prisma/client": "^3.12.0"
+    "@prisma/client": "^3.14.0"
   },
   "scripts": {
     "dx": "dotenv -e ../../apps/builder/.env.local prisma db push && yarn generate:schema && yarn start:sutdio  ",

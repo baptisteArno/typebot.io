@@ -46,3 +46,12 @@ details {
   background-color: transparent !important;
   border-color: transparent !important;
 }
+
+.sponsor-btn {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  text-decoration: none !important;
+  margin-bottom: 10px;
+}

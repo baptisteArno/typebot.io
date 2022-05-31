@@ -21,7 +21,7 @@ test.describe.parallel('Settings page', () => {
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
       await page.click('button:has-text("General")')
-      await page.uncheck('input[type="checkbox"]', { force: true })
+      await page.click('text="Typebot.io branding"')
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
       ).toBeHidden()
@@ -59,9 +59,7 @@ test.describe.parallel('Settings page', () => {
       await page.click('button:has-text("Typing emulation")')
       await page.fill('[data-testid="speed"] input', '350')
       await page.fill('[data-testid="max-delay"] input', '1.5')
-      await page.uncheck('input[type="checkbox"] >> nth=-1', {
-        force: true,
-      })
+      await page.click('text="Typing emulation" >> nth=-1')
       await expect(page.locator('[data-testid="speed"]')).toBeHidden()
       await expect(page.locator('[data-testid="max-delay"]')).toBeHidden()
     })
@@ -126,13 +124,14 @@ test.describe.parallel('Settings page', () => {
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
+          workspaceId: 'free',
         }
       )
       await page.goto(`/typebots/${typebotId}/settings`)
       await page.click('button:has-text("General")')
       await expect(page.locator('text=Pro')).toBeVisible()
       await page.click('text=Typebot.io branding')
-      await expect(page.locator('text=Upgrade now')).toBeVisible()
+      await expect(page.locator('text=For solo creator')).toBeVisible()
     })
   })
 })

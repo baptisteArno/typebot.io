@@ -16,7 +16,13 @@ import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from '../../services/variable'
 import { useAnswers } from 'contexts/AnswersContext'
-import { BubbleStep, InputStep, PublicTypebot, Step } from 'models'
+import {
+  BubbleStep,
+  InputStep,
+  LogicStepType,
+  PublicTypebot,
+  Step,
+} from 'models'
 import { HostBubble } from './ChatStep/bubbles/HostBubble'
 import { InputChatStep } from './ChatStep/InputChatStep'
 import { getLastChatStepType } from '../../services/chat'
@@ -25,6 +31,7 @@ type ChatBlockProps = {
   steps: Step[]
   startStepIndex: number
   blockTitle: string
+  keepShowingHostAvatar: boolean
   onScroll: () => void
   onBlockEnd: (
     edgeId?: string,
@@ -40,6 +47,7 @@ export const ChatBlock = ({
   blockTitle,
   onScroll,
   onBlockEnd,
+  keepShowingHostAvatar,
 }: ChatBlockProps) => {
   const {
     currentTypebotId,
@@ -73,8 +81,8 @@ export const ChatBlock = ({
         : setDisplayedChunks([...displayedChunks, { bubbles: [nextStep] }])
     }
     if (isInputStep(nextStep)) {
-      return displayedChunks.length === 0 ||
-        isDefined(displayedChunks[displayedChunks.length - 1].input)
+      displayedChunks.length === 0 ||
+      isDefined(displayedChunks[displayedChunks.length - 1].input)
         ? setDisplayedChunks([
             ...displayedChunks,
             { bubbles: [], input: nextStep },
@@ -117,6 +125,10 @@ export const ChatBlock = ({
         pushEdgeIdInLinkedTypebotQueue,
         currentTypebotId,
       })
+      const isRedirecting =
+        currentStep.type === LogicStepType.REDIRECT &&
+        currentStep.options.isNewTab === false
+      if (isRedirecting) return
       nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
@@ -188,6 +200,7 @@ export const ChatBlock = ({
             }}
             hasGuestAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
             onDisplayNextStep={displayNextStep}
+            keepShowingHostAvatar={keepShowingHostAvatar}
           />
         ))}
       </div>
@@ -199,12 +212,14 @@ type Props = {
   displayChunk: ChatDisplayChunk
   hostAvatar: { isEnabled: boolean; src?: string }
   hasGuestAvatar: boolean
+  keepShowingHostAvatar: boolean
   onDisplayNextStep: (answerContent?: string, isRetry?: boolean) => void
 }
 const ChatChunks = ({
   displayChunk: { bubbles, input },
   hostAvatar,
   hasGuestAvatar,
+  keepShowingHostAvatar,
   onDisplayNextStep,
 }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -224,6 +239,7 @@ const ChatChunks = ({
           <AvatarSideContainer
             ref={avatarSideContainerRef}
             hostAvatarSrc={hostAvatar.src}
+            keepShowing={keepShowingHostAvatar || isDefined(input)}
           />
         )}
         <div

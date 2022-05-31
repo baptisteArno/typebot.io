@@ -12,7 +12,10 @@ enum ActionType {
 }
 
 export interface Actions<T> {
-  set: (newPresent: T | ((current: T) => T)) => void
+  set: (
+    newPresent: T | ((current: T) => T),
+    options?: { updateDate: boolean }
+  ) => void
   undo: () => void
   redo: () => void
   flush: () => void
@@ -24,6 +27,7 @@ export interface Actions<T> {
 interface Action<T> {
   type: ActionType
   newPresent?: T
+  updateDate?: boolean
 }
 
 export interface State<T> {
@@ -72,7 +76,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
     }
 
     case ActionType.Set: {
-      const { newPresent } = action
+      const { newPresent, updateDate } = action
       if (
         isNotDefined(newPresent) ||
         (present &&
@@ -92,7 +96,12 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       // )
       return {
         past: [...past, present].filter(isDefined),
-        present: newPresent,
+        present: {
+          ...newPresent,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          updatedAt: updateDate ? new Date() : newPresent.updatedAt,
+        },
         future: [],
       }
     }
@@ -124,14 +133,21 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
     }
   }, [canRedo])
 
-  const set = useCallback((newPresent: T | ((current: T) => T)) => {
-    const updatedTypebot =
-      'id' in newPresent
-        ? newPresent
-        : (newPresent as (current: T) => T)(presentRef.current)
-    presentRef.current = updatedTypebot
-    dispatch({ type: ActionType.Set, newPresent: updatedTypebot })
-  }, [])
+  const set = useCallback(
+    (newPresent: T | ((current: T) => T), options = { updateDate: true }) => {
+      const updatedTypebot =
+        'id' in newPresent
+          ? newPresent
+          : (newPresent as (current: T) => T)(presentRef.current)
+      presentRef.current = updatedTypebot
+      dispatch({
+        type: ActionType.Set,
+        newPresent: updatedTypebot,
+        updateDate: options.updateDate,
+      })
+    },
+    []
+  )
 
   const flush = useCallback(() => {
     dispatch({ type: ActionType.Flush })

@@ -10,7 +10,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type Props<T> = {
   currentItem?: T
@@ -39,8 +39,8 @@ export const DropdownList = <T,>({
         textAlign="left"
         {...props}
       >
-        <chakra.span isTruncated display="block">
-          {currentItem ?? placeholder}
+        <chakra.span noOfLines={0} display="block">
+          {(currentItem ?? placeholder) as unknown as ReactNode}
         </chakra.span>
       </MenuButton>
       <Portal>
@@ -55,7 +55,7 @@ export const DropdownList = <T,>({
                 textOverflow="ellipsis"
                 onClick={handleMenuItemClick(item)}
               >
-                {item}
+                {item as unknown as ReactNode}
               </MenuItem>
             ))}
           </Stack>

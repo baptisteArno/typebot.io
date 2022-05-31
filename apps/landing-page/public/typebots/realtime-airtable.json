@@ -3,7 +3,6 @@
   "createdAt": "2022-03-15T15:41:00.241Z",
   "updatedAt": "2022-03-15T17:32:29.840Z",
   "name": "My typebot",
-  "ownerId": "ckzmhmiey001009mnzt5nkxu8",
   "publishedTypebotId": "pioizXgk6U9Xtz1BdyjPFy",
   "folderId": null,
   "blocks": [
@@ -117,7 +116,7 @@
               "button": "Send",
               "placeholder": "Type your answer..."
             },
-            "variableId": "6NeJkZ8fSEjMVUA9D51u5k"
+            "variableId": "v6NeJkZ8fSEjMVUA9D51u5k"
           }
         },
         {
@@ -130,7 +129,7 @@
             "variablesForTest": [
               {
                 "id": "6zpYk7SNpknQQ3pMq3VdaJ",
-                "variableId": "6NeJkZ8fSEjMVUA9D51u5k",
+                "variableId": "v6NeJkZ8fSEjMVUA9D51u5k",
                 "value": "Hello les amis"
               },
               {
@@ -254,7 +253,7 @@
   "variables": [
     { "id": "fTRLkn4FVe83Ev9snHosfL", "name": "Name" },
     { "id": "hVKa5kBxCrKHr2zSwa27k1", "name": "Email" },
-    { "id": "6NeJkZ8fSEjMVUA9D51u5k", "name": "Message" },
+    { "id": "v6NeJkZ8fSEjMVUA9D51u5k", "name": "Message" },
     { "id": "p9MgewxfYHHARsp13uvc9d", "name": "Chat ID" },
     { "id": "s65Gqu75c9mq9nbjN84D1S", "name": "Date" },
     { "id": "mkMg6BRLLJM69LcSo4DFLc", "name": "Airtable ID" }

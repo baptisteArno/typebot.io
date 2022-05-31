@@ -24,6 +24,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
   const confettiCanon = useRef<confetti.CreateTypes>()
   const [chosenCategories, setChosenCategories] = useState<string[]>([])
+  const [openedOnce, setOpenedOnce] = useState(false)
 
   const toast = useToast({
     position: 'top-right',
@@ -37,12 +38,16 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   }, [])
 
   useEffect(() => {
+    if (openedOnce) return
     const isNewUser =
       user &&
       new Date(user?.createdAt as unknown as string).toDateString() ===
         new Date().toDateString() &&
       totalTypebots === 0
-    if (isNewUser) onOpen()
+    if (isNewUser) {
+      onOpen()
+      setOpenedOnce(true)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
@@ -76,7 +81,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     setTypebot(data as Typebot)
   }
 
-  const handleNewAnswer = (answer: Answer) => {
+  const handleNewAnswer = async (answer: Answer) => {
     const isName = answer.variableId === 'cl126f4hf000i2e6d8zvzc3t1'
     const isCompany = answer.variableId === 'cl126jqww000w2e6dq9yv4ifq'
     const isCategories = answer.variableId === 'cl126mo3t001b2e6dvyi16bkd'

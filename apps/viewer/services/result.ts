@@ -1,4 +1,4 @@
-import { Log, Result } from 'db'
+import { Result } from 'db'
 import { sendRequest } from 'utils'
 
 export const createResult = async (typebotId: string) => {

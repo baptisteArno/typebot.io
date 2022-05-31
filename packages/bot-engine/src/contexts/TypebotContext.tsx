@@ -66,11 +66,12 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot.theme, typebot.settings])
 
-  const updateVariableValue = (variableId: string, value: string) => {
+  const updateVariableValue = (variableId: string, value: string | number) => {
+    const formattedValue = formatIncomingVariableValue(value)
     setLocalTypebot((typebot) => ({
       ...typebot,
       variables: typebot.variables.map((v) =>
-        v.id === variableId ? { ...v, value } : v
+        v.id === variableId ? { ...v, value: formattedValue } : v
       ),
     }))
   }
@@ -107,7 +108,7 @@ export const TypebotContext = ({
 
   const popEdgeIdFromLinkedTypebotQueue = () => {
     setLinkedBotQueue((queue) => queue.slice(1))
-    const typebot = setCurrentTypebotId(linkedBotQueue[0].typebotId)
+    setCurrentTypebotId(linkedBotQueue[0].typebotId)
   }
 
   return (
@@ -131,6 +132,15 @@ export const TypebotContext = ({
       {children}
     </typebotContext.Provider>
   )
+}
+
+const formatIncomingVariableValue = (
+  value: string | number
+): string | number => {
+  // This first check avoid to parse 004 as the number 4.
+  if (typeof value === 'string' && value.startsWith('0') && value.length > 1)
+    return value
+  return isNaN(Number(value)) ? value : Number(value)
 }
 
 export const useTypebot = () => useContext(typebotContext)

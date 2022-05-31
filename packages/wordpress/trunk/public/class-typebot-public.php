@@ -154,32 +154,32 @@ class Typebot_Public
         $url .
         '",
 						autoOpenDelay: ' .
-        empty(get_option('chat_delay'))
+        (get_option('chat_delay') === '' || get_option('chat_delay') === null
           ? 'undefined'
-          : get_option('chat_delay') * 1000 .
-            ',
+          : get_option('chat_delay') * 1000) .
+        ',
 					proactiveMessage: {
 						avatarUrl: "' .
-            get_option('avatar') .
-            '",
+        get_option('avatar') .
+        '",
 						textContent: "' .
-            get_option('text_content') .
-            '",
+        get_option('text_content') .
+        '",
 						delay: ' .
-            get_option('bubble_delay') * 1000 .
-            ',
+        get_option('bubble_delay') * 1000 .
+        ',
         rememberClose: ' .
-            $remember .
-            '
+        $remember .
+        '
 					},
 					hiddenVariables: typebotWpUser,
 					button: {
             color: "' .
-            $button_color .
-            '",
+        $button_color .
+        '",
             iconUrl: "' .
-            $chat_icon .
-            '",
+        $chat_icon .
+        '",
           },
 				}';
     }
@@ -263,6 +263,16 @@ class Typebot_Public
     }
     $container_id = 'typebot-container-' . $this->generateRandomString(4);
 
+    $bot_initializer =
+      'var typebot = Typebot.initContainer("' .
+      $container_id .
+      '",{
+    hiddenVariables: typebotWpUser,
+          url: "' .
+      $url .
+      '",
+        })';
+
     return '<script>' .
       $this->parse_wp_user() .
       '</script>' .
@@ -279,15 +289,17 @@ class Typebot_Public
       '"
 				></div>
 				<script>
+        if(document.readyState == "complete"){
+          ' .
+      $bot_initializer .
+      '
+        } else {
         window.addEventListener("load",(event) => {
-					var typebot = Typebot.initContainer("' .
-      $container_id .
-      '",{
-      hiddenVariables: typebotWpUser,
-						url: "' .
-      $url .
-      '",
-					})}) 
+          ' .
+      $bot_initializer .
+      '
+					}) 
+        }
 		</script>';
   }
 

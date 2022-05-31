@@ -48,17 +48,52 @@ model User {
   image                   String?
   accounts                Account[]
   sessions                Session[]
-  typebots                Typebot[]
-  folders                 DashboardFolder[]
-  plan                    Plan                      @default(FREE)
-  stripeId                String?                   @unique
-  credentials             Credentials[]
-  customDomains           CustomDomain[]
   apiToken                String?
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   company                 String?
   onboardingCategories    String[]
   graphNavigation         GraphNavigation?
+  workspaces              MemberInWorkspace[]
+}
+
+model Workspace {
+  id            String                @id @default(cuid())
+  name          String
+  icon          String?
+  members       MemberInWorkspace[]
+  folders       DashboardFolder[]
+  typebots      Typebot[]
+  createdAt     DateTime              @default(now())
+  plan          Plan @default(FREE)
+  stripeId      String?               @unique
+  customDomains CustomDomain[]
+  credentials   Credentials[]
+  invitations   WorkspaceInvitation[]
+}
+
+model MemberInWorkspace {
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  role        WorkspaceRole
+
+  @@unique([userId, workspaceId])
+}
+
+enum WorkspaceRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model WorkspaceInvitation {
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now())
+  email       String
+  workspaceId String
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  type        WorkspaceRole
 }
 
 enum GraphNavigation {
@@ -67,28 +102,27 @@ enum GraphNavigation {
 }
 
 model CustomDomain {
-  name      String   @id
-  createdAt DateTime @default(now())
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String    @id
+  createdAt   DateTime  @default(now())
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Credentials {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  data      String // Encrypted data
-  name      String
-  type      String
-  iv        String
-
-  @@unique([name, type, ownerId])
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  data        String // Encrypted data
+  name        String
+  type        String
+  iv          String
 }
 
 enum Plan {
   FREE
   PRO
+  TEAM
   LIFETIME
   OFFERED
 }
@@ -106,14 +140,12 @@ model DashboardFolder {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @default(now()) @updatedAt
   name           String
-  owner          User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  ownerId        String
   parentFolderId String?
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
-
-  @@unique([id, ownerId])
+  workspaceId    String?
+  workspace      Workspace?        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Typebot {
@@ -122,8 +154,6 @@ model Typebot {
   updatedAt          DateTime                  @default(now()) @updatedAt
   icon               String?
   name               String
-  ownerId            String
-  owner              User                      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   publishedTypebotId String?
   publishedTypebot   PublicTypebot?
   results            Result[]
@@ -141,7 +171,9 @@ model Typebot {
   webhooks           Webhook[]
   subDomain          String?
 
-  @@unique([id, ownerId])
+  // @@unique([id, ownerId])
+  workspaceId        String?
+  workspace          Workspace?                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Invitation {
@@ -167,6 +199,7 @@ model CollaboratorsOnTypebots {
 enum CollaborationType {
   READ
   WRITE
+  FULL_ACCESS
 }
 
 model PublicTypebot {

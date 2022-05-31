@@ -5,6 +5,7 @@ export const createIframeContainer = (
   params: IframeParams
 ): HTMLIFrameElement => {
   const iframe = createIframe({ ...params, loadWhenVisible: true })
+  iframe.style.display = 'none'
   return iframe
 }
 

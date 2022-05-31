@@ -11,18 +11,36 @@ import {
   CollaborationType,
   DashboardFolder,
   GraphNavigation,
+  Plan,
   PrismaClient,
   User,
+  WorkspaceRole,
 } from 'db'
 import { readFileSync } from 'fs'
 import { encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
+const proWorkspaceId = 'proWorkspace'
+export const freeWorkspaceId = 'freeWorkspace'
+export const sharedWorkspaceId = 'sharedWorkspace'
+export const guestWorkspaceId = 'guestWorkspace'
+
 export const teardownDatabase = async () => {
   const ownerFilter = {
-    where: { ownerId: { in: ['freeUser', 'proUser'] } },
+    where: {
+      workspace: {
+        members: { some: { userId: { in: ['freeUser', 'proUser'] } } },
+      },
+    },
   }
+  await prisma.workspace.deleteMany({
+    where: {
+      members: {
+        some: { userId: { in: ['freeUser', 'proUser'] } },
+      },
+    },
+  })
   await prisma.user.deleteMany({
     where: { id: { in: ['freeUser', 'proUser'] } },
   })
@@ -37,23 +55,75 @@ export const setupDatabase = async () => {
   return createCredentials()
 }
 
-export const createUsers = () =>
-  prisma.user.createMany({
-    data: [
-      {
-        id: 'freeUser',
-        email: 'free-user@email.com',
-        name: 'Free user',
-        graphNavigation: GraphNavigation.TRACKPAD,
+export const createUsers = async () => {
+  await prisma.user.create({
+    data: {
+      id: 'proUser',
+      email: 'pro-user@email.com',
+      name: 'Pro user',
+      graphNavigation: GraphNavigation.TRACKPAD,
+      workspaces: {
+        create: {
+          role: WorkspaceRole.ADMIN,
+          workspace: {
+            create: {
+              id: proWorkspaceId,
+              name: "Pro user's workspace",
+              plan: Plan.TEAM,
+            },
+          },
+        },
       },
-      {
-        id: 'proUser',
-        email: 'pro-user@email.com',
-        name: 'Pro user',
-        graphNavigation: GraphNavigation.TRACKPAD,
-      },
-    ],
+    },
   })
+  await prisma.user.create({
+    data: {
+      id: 'freeUser',
+      email: 'free-user@email.com',
+      name: 'Free user',
+      graphNavigation: GraphNavigation.TRACKPAD,
+      workspaces: {
+        create: {
+          role: WorkspaceRole.ADMIN,
+          workspace: {
+            create: {
+              id: freeWorkspaceId,
+              name: "Free user's workspace",
+              plan: Plan.FREE,
+            },
+          },
+        },
+      },
+    },
+  })
+  await prisma.workspace.create({
+    data: {
+      id: 'free',
+      name: 'Free workspace',
+      plan: Plan.FREE,
+      members: {
+        createMany: {
+          data: [{ role: WorkspaceRole.ADMIN, userId: 'proUser' }],
+        },
+      },
+    },
+  })
+  return prisma.workspace.create({
+    data: {
+      id: sharedWorkspaceId,
+      name: 'Shared Workspace',
+      plan: Plan.TEAM,
+      members: {
+        createMany: {
+          data: [
+            { role: WorkspaceRole.MEMBER, userId: 'proUser' },
+            { role: WorkspaceRole.ADMIN, userId: 'freeUser' },
+          ],
+        },
+      },
+    },
+  })
+}
 
 export const createWebhook = async (
   typebotId: string,
@@ -91,7 +161,7 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
 export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
   prisma.dashboardFolder.createMany({
     data: partialFolders.map((folder) => ({
-      ownerId: 'proUser',
+      workspaceId: proWorkspaceId,
       name: 'Folder #1',
       ...folder,
     })),
@@ -110,9 +180,9 @@ const createCredentials = () => {
     data: [
       {
         name: 'pro-user@email.com',
-        ownerId: 'proUser',
         type: CredentialsType.GOOGLE_SHEETS,
         data: encryptedData,
+        workspaceId: proWorkspaceId,
         iv,
       },
     ],
@@ -179,9 +249,9 @@ const parseTypebotToPublicTypebot = (
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
+  workspaceId: proWorkspaceId,
   folderId: null,
   name: 'My typebot',
-  ownerId: 'proUser',
   theme: defaultTheme,
   settings: defaultSettings,
   publicId: null,
@@ -241,10 +311,10 @@ export const importTypebotInDatabase = async (
   path: string,
   updates?: Partial<Typebot>
 ) => {
-  const typebot: any = {
+  const typebot: Typebot = {
     ...JSON.parse(readFileSync(path).toString()),
+    workspaceId: proWorkspaceId,
     ...updates,
-    ownerId: 'proUser',
   }
   await prisma.typebot.create({
     data: typebot,

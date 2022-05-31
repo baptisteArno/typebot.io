@@ -13,21 +13,22 @@ test('should execute webhooks properly', async ({ page }) => {
   )
   await createWebhook(typebotId, {
     id: 'success-webhook',
-    url: 'https://webhook.site/912bafb0-b92f-4be8-ae6a-186b5879a17a',
+    url: 'http://localhost:3001/api/mock/success',
     method: HttpMethod.POST,
   })
   await createWebhook(typebotId, {
     id: 'failed-webhook',
-    url: 'https://webhook.site/8be94c01-141e-4792-b3c6-cf45137481d6',
+    url: 'http://localhost:3001/api/mock/fail',
     method: HttpMethod.POST,
   })
 
   await page.goto(`/${typebotId}-public`)
   await typebotViewer(page).locator('text=Send success webhook').click()
   await page.waitForResponse(
-    (resp) =>
+    async (resp) =>
       resp.request().url().includes(`/api/typebots/${typebotId}/blocks`) &&
-      resp.status() === 200
+      resp.status() === 200 &&
+      (await resp.json()).statusCode === 200
   )
   await typebotViewer(page).locator('text=Send failed webhook').click()
   await page.waitForResponse(

@@ -21,6 +21,7 @@ import {
 } from 'models'
 import { Log } from 'db'
 import { LiteBadge } from './LiteBadge'
+import { isEmpty } from 'utils'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -30,7 +31,7 @@ export type TypebotViewerProps = {
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
   onNewBlockVisible?: (edge: Edge) => void
-  onNewAnswer?: (answer: Answer) => void
+  onNewAnswer?: (answer: Answer) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
@@ -66,7 +67,7 @@ export const TypebotViewer = ({
 
   const handleCompleted = () => onCompleted && onCompleted()
 
-  if (!apiHost)
+  if (isEmpty(apiHost))
     return <p>process.env.NEXT_PUBLIC_VIEWER_URL is missing in env</p>
   return (
     <Frame

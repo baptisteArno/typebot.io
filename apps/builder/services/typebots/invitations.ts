@@ -1,7 +1,7 @@
 import { CollaborationType, Invitation } from 'db'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
-import { sendRequest } from 'utils'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export const useInvitations = ({
   typebotId,
@@ -13,7 +13,11 @@ export const useInvitations = ({
   const { data, error, mutate } = useSWR<{ invitations: Invitation[] }, Error>(
     typebotId ? `/api/typebots/${typebotId}/invitations` : null,
     fetcher,
-    { dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined }
+    {
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
+    }
   )
   if (error) onError(error)
   return {
@@ -36,10 +40,10 @@ export const sendInvitation = (
 export const updateInvitation = (
   typebotId: string,
   email: string,
-  invitation: Omit<Invitation, 'createdAt'>
+  invitation: Omit<Invitation, 'createdAt' | 'id'>
 ) =>
   sendRequest({
-    method: 'PUT',
+    method: 'PATCH',
     url: `/api/typebots/${typebotId}/invitations/${email}`,
     body: invitation,
   })

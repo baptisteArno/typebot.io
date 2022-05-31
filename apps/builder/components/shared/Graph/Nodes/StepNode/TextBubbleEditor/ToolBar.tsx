@@ -4,19 +4,24 @@ import {
   MARK_ITALIC,
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
-import { usePlateEditorRef, getPluginType } from '@udecode/plate-core'
+import { getPluginType, PlateEditor, Value } from '@udecode/plate-core'
 import { LinkToolbarButton } from '@udecode/plate-ui-link'
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
 import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon } from 'assets/icons'
 
-type Props = { onVariablesButtonClick: () => void } & StackProps
-export const ToolBar = (props: Props) => {
-  const editor = usePlateEditorRef()
+type Props = {
+  editor: PlateEditor<Value>
+  onVariablesButtonClick: () => void
+} & StackProps
 
+export const ToolBar = ({
+  editor,
+  onVariablesButtonClick,
+  ...props
+}: Props) => {
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
-    const { onVariablesButtonClick} = props
-    props.onVariablesButtonClick()
+    onVariablesButtonClick()
   }
   return (
     <HStack

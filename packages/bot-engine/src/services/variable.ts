@@ -7,7 +7,10 @@ export const stringContainsVariable = (str: string): boolean =>
 export const parseVariables =
   (
     variables: Variable[],
-    options: { fieldToParse: 'value' | 'id' } = { fieldToParse: 'value' }
+    options: { fieldToParse?: 'value' | 'id'; escapeLineBreaks?: boolean } = {
+      fieldToParse: 'value',
+      escapeLineBreaks: false,
+    }
   ) =>
   (text: string | undefined): string => {
     if (!text || text === '') return ''
@@ -17,11 +20,12 @@ export const parseVariables =
         return matchedVarName === v.name && isDefined(v.value)
       })
       if (!variable) return ''
-      return (
-        (options.fieldToParse === 'value'
-          ? variable.value?.toString()
-          : variable.id) || ''
-      )
+      if (options.fieldToParse === 'id') return variable.id
+      const { value } = variable
+      if (isNotDefined(value)) return ''
+      if (options.escapeLineBreaks)
+        return value.toString().replace(/\n/g, '\\n')
+      return value.toString()
     })
   }
 

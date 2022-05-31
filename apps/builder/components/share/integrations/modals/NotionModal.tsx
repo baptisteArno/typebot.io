@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { CopyButton } from 'components/shared/buttons/CopyButton'
 import { PublishFirstInfo } from 'components/shared/Info'
+import { isEmpty } from 'utils'
 import { ModalProps } from '../EmbedButton'
 
 export const NotionModal = ({
@@ -33,7 +34,7 @@ export const NotionModal = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {!isPublished && <PublishFirstInfo />}
+          {!isPublished && <PublishFirstInfo mb="4" />}
           <OrderedList spacing={3}>
             <ListItem>
               Type <Tag>/embed</Tag>
@@ -45,15 +46,17 @@ export const NotionModal = ({
                   pr="4.5rem"
                   type={'text'}
                   defaultValue={`${
-                    process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-                    process.env.NEXT_PUBLIC_VIEWER_URL
+                    isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+                      ? process.env.NEXT_PUBLIC_VIEWER_URL
+                      : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
                   }/${publicId}`}
                 />
                 <InputRightElement width="4.5rem">
                   <CopyButton
                     textToCopy={`${
-                      process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-                      process.env.NEXT_PUBLIC_VIEWER_URL
+                      isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+                        ? process.env.NEXT_PUBLIC_VIEWER_URL
+                        : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
                     }/${publicId}`}
                   />
                 </InputRightElement>

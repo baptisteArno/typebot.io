@@ -7,6 +7,7 @@ const moduleExports = {
     outputStandalone: true,
   },
   i18n,
+  optimizeFonts: false,
 }
 
 const sentryWebpackPluginOptions = {

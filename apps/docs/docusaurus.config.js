@@ -24,9 +24,10 @@ module.exports = {
       ],
     },
     algolia: {
-      apiKey: 'd2e121d4ad4e5346ac2c3329424981a1',
+      apiKey: '978429d40094dc0fd2dd02db741b3dbe',
       indexName: 'typebot',
-      appId: 'DXYNLHZTGJ',
+      appId: '6GBQ91COKA',
+      contextualSearch: false,
     },
     footer: {
       links: [

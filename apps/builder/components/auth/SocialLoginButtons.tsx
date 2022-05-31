@@ -1,12 +1,24 @@
 import { Stack, Button } from '@chakra-ui/react'
 import { GithubIcon } from 'assets/icons'
-import { signIn, useSession } from 'next-auth/react'
+import {
+  ClientSafeProvider,
+  LiteralUnion,
+  signIn,
+  useSession,
+} from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { stringify } from 'qs'
 import { FacebookLogo, GoogleLogo, GitlabLogo } from 'assets/logos'
+import { BuiltInProviderType } from 'next-auth/providers'
 
-export const SocialLoginButtons = () => {
+type Props = {
+  providers:
+    | Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
+    | undefined
+}
+
+export const SocialLoginButtons = ({ providers }: Props) => {
   const { query } = useRouter()
   const { status } = useSession()
 
@@ -32,7 +44,7 @@ export const SocialLoginButtons = () => {
 
   return (
     <Stack>
-      {process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID && (
+      {providers?.github && (
         <Button
           leftIcon={<GithubIcon />}
           onClick={handleGitHubClick}
@@ -43,7 +55,7 @@ export const SocialLoginButtons = () => {
           Continue with GitHub
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+      {providers?.google && (
         <Button
           leftIcon={<GoogleLogo />}
           onClick={handleGoogleClick}
@@ -54,7 +66,7 @@ export const SocialLoginButtons = () => {
           Continue with Google
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID && (
+      {providers?.facebook && (
         <Button
           leftIcon={<FacebookLogo />}
           onClick={handleFacebookClick}
@@ -65,7 +77,7 @@ export const SocialLoginButtons = () => {
           Continue with Facebook
         </Button>
       )}
-      {process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID && (
+      {providers?.gitlab && (
         <Button
           leftIcon={<GitlabLogo />}
           onClick={handleGitlabClick}
@@ -73,7 +85,7 @@ export const SocialLoginButtons = () => {
           isLoading={['loading', 'authenticated'].includes(status)}
           variant="outline"
         >
-          Continue with {process.env.NEXT_PUBLIC_GITLAB_NAME || 'GitLab'}
+          Continue with {providers.gitlab.name}
         </Button>
       )}
     </Stack>

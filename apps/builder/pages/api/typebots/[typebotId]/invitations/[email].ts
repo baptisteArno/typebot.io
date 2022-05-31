@@ -1,33 +1,32 @@
 import { withSentry } from '@sentry/nextjs'
+import { Invitation } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canWriteTypebot } from 'services/api/dbRules'
+import { canEditGuests } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
+import { methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
   const typebotId = req.query.typebotId as string
   const email = req.query.email as string
-  const typebot = await prisma.typebot.findFirst({
-    where: canWriteTypebot(typebotId, user),
-  })
-  if (!typebot) return forbidden(res)
-  if (req.method === 'PUT') {
-    const data = req.body
-    await prisma.invitation.upsert({
-      where: { email_typebotId: { email, typebotId } },
-      create: data,
-      update: data,
+  if (req.method === 'PATCH') {
+    const data = req.body as Invitation
+    await prisma.invitation.updateMany({
+      where: { email, typebot: canEditGuests(user, typebotId) },
+      data: { type: data.type },
     })
     return res.send({
       message: 'success',
     })
   }
   if (req.method === 'DELETE') {
-    await prisma.invitation.delete({
-      where: { email_typebotId: { email, typebotId } },
+    await prisma.invitation.deleteMany({
+      where: {
+        email,
+        typebot: canEditGuests(user, typebotId),
+      },
     })
     return res.send({
       message: 'success',

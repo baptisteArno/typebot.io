@@ -183,10 +183,18 @@ textarea {
   box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+.typebot-input-error-message {
+  color: var(--typebot-input-color);
+}
+
 .typebot-button > .send-icon {
   fill: var(--typebot-button-color);
 }
 
 .typebot-chat-view {
   max-width: 800px;
+}
+
+.ping span {
+  background-color: var(--typebot-button-bg-color);
 }

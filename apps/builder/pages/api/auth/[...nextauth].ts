@@ -10,20 +10,21 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
+import { isNotEmpty } from 'utils'
 
 const providers: Provider[] = []
 
-if (process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID)
+if (isNotEmpty(process.env.GITHUB_CLIENT_ID))
   providers.push(
     GitHubProvider({
-      clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+      clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     })
   )
 
 if (
-  process.env.NEXT_PUBLIC_SMTP_FROM &&
-  process.env.NEXT_PUBLIC_SMTP_AUTH_DISABLED !== 'true'
+  isNotEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
+  process.env.SMTP_AUTH_DISABLED !== 'true'
 )
   providers.push(
     EmailProvider({
@@ -40,39 +41,40 @@ if (
   )
 
 if (
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
-  process.env.GOOGLE_CLIENT_SECRET
+  isNotEmpty(process.env.GOOGLE_CLIENT_ID) &&
+  isNotEmpty(process.env.GOOGLE_CLIENT_SECRET)
 )
   providers.push(
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     })
   )
 
 if (
-  process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID &&
-  process.env.FACEBOOK_CLIENT_SECRET
+  isNotEmpty(process.env.FACEBOOK_CLIENT_ID) &&
+  isNotEmpty(process.env.FACEBOOK_CLIENT_SECRET)
 )
   providers.push(
     FacebookProvider({
-      clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
+      clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     })
   )
 
 if (
-  process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID &&
-  process.env.GITLAB_CLIENT_SECRET
+  isNotEmpty(process.env.GITLAB_CLIENT_ID) &&
+  isNotEmpty(process.env.GITLAB_CLIENT_SECRET)
 ) {
   const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
   providers.push(
     GitlabProvider({
-      clientId: process.env.NEXT_PUBLIC_GITLAB_CLIENT_ID,
+      clientId: process.env.GITLAB_CLIENT_ID,
       clientSecret: process.env.GITLAB_CLIENT_SECRET,
       authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
       token: `${BASE_URL}/oauth/token`,
       userinfo: `${BASE_URL}/api/v4/user`,
+      name: process.env.GITLAB_NAME || 'GitLab',
     })
   )
 }
@@ -126,12 +128,24 @@ const updateLastActivityDate = async (user: User) => {
 const getUserGroups = async (account: Account): Promise<string[]> => {
   switch (account.provider) {
     case 'gitlab': {
-      const res = await fetch(
-        `${process.env.GITLAB_BASE_URL || 'https://gitlab.com'}/api/v4/groups`,
-        { headers: { Authorization: `Bearer ${account.access_token}` } }
-      )
-      const userGroups = await res.json()
-      return userGroups.map((group: { full_path: string }) => group.full_path)
+      const getGitlabGroups = async (
+        accessToken: string,
+        page = 1
+      ): Promise<{ full_path: string }[]> => {
+        const res = await fetch(
+          `${
+            process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+          }/api/v4/groups?per_page=100&page=${page}`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
+        const groups: { full_path: string }[] = await res.json()
+        const nextPage = parseInt(res.headers.get('X-Next-Page') || '')
+        if (nextPage)
+          groups.push(...(await getGitlabGroups(accessToken, nextPage)))
+        return groups
+      }
+      const groups = await getGitlabGroups(account.access_token as string)
+      return groups.map((group) => group.full_path)
     }
     default:
       return []

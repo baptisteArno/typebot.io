@@ -335,9 +335,8 @@ export const invitationToCollaborate = (
                                                 color: #000000;
                                               "
                                             >
-                                              From now on you will see this
-                                              typebot in your dashboard under
-                                              the "Shared with me" button 👍
+                                              From now on you will have access to this
+                                              typebot in their workspace 👍
                                             </div>
                                           </td>
                                         </tr>

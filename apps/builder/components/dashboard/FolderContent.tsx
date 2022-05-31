@@ -19,15 +19,14 @@ import {
   TypebotInDashboard,
   useTypebots,
 } from 'services/typebots'
-import { useSharedTypebotsCount } from 'services/user/sharedTypebots'
 import { BackButton } from './FolderContent/BackButton'
 import { CreateBotButton } from './FolderContent/CreateBotButton'
 import { CreateFolderButton } from './FolderContent/CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderContent/FolderButton'
-import { SharedTypebotsButton } from './FolderContent/SharedTypebotsButton'
 import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
 import { OnboardingModal } from './OnboardingModal'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -35,6 +34,7 @@ const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
   const { user } = useUser()
+  const { workspace } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
     setDraggedTypebot,
@@ -55,11 +55,13 @@ export const FolderContent = ({ folder }: Props) => {
     position: 'top-right',
     status: 'error',
   })
+
   const {
     folders,
     isLoading: isFolderLoading,
     mutate: mutateFolders,
   } = useFolders({
+    workspaceId: workspace?.id,
     parentId: folder?.id,
     onError: (error) => {
       toast({ title: "Couldn't fetch folders", description: error.message })
@@ -71,19 +73,10 @@ export const FolderContent = ({ folder }: Props) => {
     isLoading: isTypebotLoading,
     mutate: mutateTypebots,
   } = useTypebots({
+    workspaceId: workspace?.id,
     folderId: folder?.id,
     onError: (error) => {
       toast({ title: "Couldn't fetch typebots", description: error.message })
-    },
-  })
-
-  const { totalSharedTypebots } = useSharedTypebotsCount({
-    userId: folder === null ? user?.id : undefined,
-    onError: (error) => {
-      toast({
-        title: "Couldn't fetch shared typebots",
-        description: error.message,
-      })
     },
   })
 
@@ -97,9 +90,9 @@ export const FolderContent = ({ folder }: Props) => {
   }
 
   const handleCreateFolder = async () => {
-    if (!folders) return
+    if (!folders || !workspace) return
     setIsCreatingFolder(true)
-    const { error, data: newFolder } = await createFolder({
+    const { error, data: newFolder } = await createFolder(workspace.id, {
       parentFolderId: folder?.id ?? null,
     })
     setIsCreatingFolder(false)
@@ -164,7 +157,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
-      {typebots && user && folder === null && (
+      {typebots && !isTypebotLoading && user && folder === null && (
         <OnboardingModal totalTypebots={typebots.length} />
       )}
       <Stack w="1000px" spacing={6}>
@@ -185,7 +178,6 @@ export const FolderContent = ({ folder }: Props) => {
               isLoading={isTypebotLoading}
               isFirstBot={typebots?.length === 0 && folder === null}
             />
-            {totalSharedTypebots > 0 && <SharedTypebotsButton />}
             {isFolderLoading && <ButtonSkeleton />}
             {folders &&
               folders.map((folder) => (

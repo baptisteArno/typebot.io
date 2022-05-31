@@ -6,15 +6,14 @@
   "private": true,
   "scripts": {
     "start:local": "ts-node index.ts",
-    "start:prod": "NODE_ENV=production ts-node index.ts"
+    "start:prod": "NODE_ENV=production ts-node index.ts",
+    "start:workspaces:migration": "ts-node workspaceMigration.ts",
+    "start:workspaces:migration:recover": "ts-node workspaceMigrationRecover.ts"
   },
   "devDependencies": {
     "db": "*",
     "models": "*",
     "utils": "*",
-    "ts-node": "^10.5.0"
-  },
-  "dependencies": {
-    "firebase-admin": "^10.0.2"
+    "ts-node": "^10.7.0"
   }
 }

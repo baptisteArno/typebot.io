@@ -150,7 +150,11 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
                 px="1"
                 userSelect={'none'}
               />
-              <EditableInput minW="0" px="1" />
+              <EditableInput
+                minW="0"
+                px="1"
+                onMouseDown={(e) => e.stopPropagation()}
+              />
             </Editable>
             {typebot && (
               <StepNodesList

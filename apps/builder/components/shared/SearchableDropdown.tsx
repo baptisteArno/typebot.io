@@ -8,30 +8,37 @@ import {
   PopoverContent,
   Button,
   InputProps,
+  HStack,
 } from '@chakra-ui/react'
+import { Variable } from 'models'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import { isEmpty } from 'utils'
+import { VariablesButton } from './buttons/VariablesButton'
 
 type Props = {
   selectedItem?: string
   items: string[]
   debounceTimeout?: number
+  withVariableButton?: boolean
   onValueChange?: (value: string) => void
 } & InputProps
 
 export const SearchableDropdown = ({
   selectedItem,
   items,
+  withVariableButton = false,
   debounceTimeout = 1000,
   onValueChange,
   ...inputProps
 }: Props) => {
+  const [carretPosition, setCarretPosition] = useState<number>(0)
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
   const debounced = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onValueChange ? onValueChange : () => {},
-    process.env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
   const [filteredItems, setFilteredItems] = useState([
     ...items
@@ -41,7 +48,7 @@ export const SearchableDropdown = ({
       .slice(0, 50),
   ])
   const dropdownRef = useRef(null)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(
     () => () => {
@@ -92,6 +99,37 @@ export const SearchableDropdown = ({
     onClose()
   }
 
+  const handleVariableSelected = (variable?: Variable) => {
+    if (!inputRef.current || !variable) return
+    const cursorPosition = carretPosition
+    const textBeforeCursorPosition = inputRef.current.value.substring(
+      0,
+      cursorPosition
+    )
+    const textAfterCursorPosition = inputRef.current.value.substring(
+      cursorPosition,
+      inputRef.current.value.length
+    )
+    const newValue =
+      textBeforeCursorPosition +
+      `{{${variable.name}}}` +
+      textAfterCursorPosition
+    setInputValue(newValue)
+    debounced(newValue)
+    inputRef.current.focus()
+    setTimeout(() => {
+      if (!inputRef.current) return
+      inputRef.current.selectionStart = inputRef.current.selectionEnd =
+        carretPosition + `{{${variable.name}}}`.length
+      setCarretPosition(inputRef.current.selectionStart)
+    }, 100)
+  }
+
+  const handleKeyUp = () => {
+    if (!inputRef.current?.selectionStart) return
+    setCarretPosition(inputRef.current.selectionStart)
+  }
+
   return (
     <Flex ref={dropdownRef} w="full">
       <Popover
@@ -102,14 +140,23 @@ export const SearchableDropdown = ({
         isLazy
       >
         <PopoverTrigger>
-          <Input
-            ref={inputRef}
-            value={inputValue}
-            onChange={onInputChange}
-            onClick={onOpen}
-            type="text"
-            {...inputProps}
-          />
+          <HStack spacing={0} align={'flex-end'}>
+            <Input
+              ref={inputRef}
+              value={inputValue}
+              onChange={onInputChange}
+              onClick={onOpen}
+              type="text"
+              onKeyUp={handleKeyUp}
+              {...inputProps}
+            />
+            {withVariableButton && (
+              <VariablesButton
+                onSelectVariable={handleVariableSelected}
+                onClick={onClose}
+              />
+            )}
+          </HStack>
         </PopoverTrigger>
         <PopoverContent
           maxH="35vh"

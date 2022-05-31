@@ -5,7 +5,7 @@ import { decrypt, encrypt } from 'utils'
 import prisma from './prisma'
 
 export const oauth2Client = new OAuth2Client(
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
   `${process.env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
 )
@@ -17,9 +17,9 @@ export const getAuthenticatedGoogleClient = async (
   { client: OAuth2Client; credentials: CredentialsFromDb } | undefined
 > => {
   const credentials = (await prisma.credentials.findFirst({
-    where: { id: credentialsId, ownerId: userId },
+    where: { id: credentialsId, workspace: { members: { some: { userId } } } },
   })) as CredentialsFromDb | undefined
-  if (!credentials || credentials.ownerId !== userId) return
+  if (!credentials) return
   const data = decrypt(
     credentials.data,
     credentials.iv

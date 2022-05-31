@@ -20,7 +20,7 @@ type Props = {
 
 export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
   return (
-    <Popover matchWidth isLazy>
+    <Popover isLazy placement="bottom-end" gutter={0}>
       <PopoverTrigger>
         <Flex>
           <Tooltip label="Insert a variable">

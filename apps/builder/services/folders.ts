@@ -2,20 +2,26 @@ import { DashboardFolder } from 'db'
 import useSWR from 'swr'
 import { fetcher } from './utils'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export const useFolders = ({
   parentId,
+  workspaceId,
   onError,
 }: {
+  workspaceId?: string
   parentId?: string
   onError: (error: Error) => void
 }) => {
-  const params = stringify({ parentId })
+  const params = stringify({ parentId, workspaceId })
   const { data, error, mutate } = useSWR<{ folders: DashboardFolder[] }, Error>(
-    `/api/folders?${params}`,
+    workspaceId ? `/api/folders?${params}` : null,
     fetcher,
-    { dedupingInterval: process.env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined }
+    {
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
+    }
   )
   if (error) onError(error)
   return {
@@ -45,12 +51,13 @@ export const useFolderContent = ({
 }
 
 export const createFolder = async (
+  workspaceId: string,
   folder: Pick<DashboardFolder, 'parentFolderId'>
 ) =>
   sendRequest<DashboardFolder>({
     url: `/api/folders`,
     method: 'POST',
-    body: folder,
+    body: { ...folder, workspaceId },
   })
 
 export const deleteFolder = async (id: string) =>

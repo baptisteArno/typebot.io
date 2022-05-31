@@ -1,0 +1,23 @@
+# Settings
+
+## Typing emulation
+
+By default, your typebot will emulate a certain typing speed. It is considered a good default as slow as a human typing speed and it's not too fast so that multiple bubble can be readable sequentially.
+
+You can customize this typing speed in the settings:
+
+<img
+  src="/img/settings/typing-emulation.png"
+  width="400"
+  alt="Typing emulation"
+/>
+
+The goal of a typebot is not to pretend that the bot is a real human. So we suggest not setting the typing speed too low.
+
+Sometimes you want to pause the bot for a few seconds between one message and another, regardless of the typing speed. You can achieve this by adding a Code block with the following content:
+
+```js
+return new Promise((res) => setTimeout(res, 3000))
+```
+
+You can tweak `3000` (3s) to your liking.

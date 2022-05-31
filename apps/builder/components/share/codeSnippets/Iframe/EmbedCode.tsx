@@ -1,6 +1,7 @@
 import { FlexProps } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
 import { useTypebot } from 'contexts/TypebotContext'
+import { isEmpty } from 'utils'
 
 type Props = {
   widthLabel: string
@@ -13,8 +14,9 @@ export const IframeEmbedCode = ({
 }: Props & FlexProps) => {
   const { typebot } = useTypebot()
   const src = `${
-    process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-    process.env.NEXT_PUBLIC_VIEWER_URL
+    isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
+      ? process.env.NEXT_PUBLIC_VIEWER_URL
+      : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
   }/${typebot?.publicId}`
   const code = `<iframe src="${src}" width="${widthLabel}" height="${heightLabel}" />`
 

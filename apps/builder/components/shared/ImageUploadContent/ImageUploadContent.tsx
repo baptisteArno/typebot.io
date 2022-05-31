@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import {
   Button,
   Flex,
@@ -13,10 +13,10 @@ import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
-import { useDebounce } from 'use-debounce'
-import { Input } from '../Textbox'
 import { BaseEmoji, emojiIndex } from 'emoji-mart'
 import { emojis } from './emojis'
+import { Input } from '../Textbox/Input'
+import { isEmpty } from 'utils'
 
 type Props = {
   url?: string
@@ -123,26 +123,15 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
   )
 }
 
-const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => {
-  const [imageUrl, setImageUrl] = useState(initialUrl ?? '')
-  const [debouncedImageUrl] = useDebounce(imageUrl, 100)
-
-  useEffect(() => {
-    if (initialUrl === debouncedImageUrl) return
-    onNewUrl(imageUrl)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedImageUrl])
-
-  return (
-    <Stack py="2">
-      <Input
-        placeholder={'Paste the image link...'}
-        onChange={setImageUrl}
-        defaultValue={imageUrl}
-      />
-    </Stack>
-  )
-}
+const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => (
+  <Stack py="2">
+    <Input
+      placeholder={'Paste the image link...'}
+      onChange={onNewUrl}
+      defaultValue={initialUrl ?? ''}
+    />
+  </Stack>
+)
 
 const EmojiContent = ({
   onEmojiSelected,
@@ -194,7 +183,7 @@ const EmojiContent = ({
 }
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => {
-  if (!process.env.NEXT_PUBLIC_GIPHY_API_KEY)
+  if (isEmpty(process.env.NEXT_PUBLIC_GIPHY_API_KEY))
     return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
   return (
     <SearchContextManager

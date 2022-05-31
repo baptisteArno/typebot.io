@@ -65,6 +65,12 @@ export const isNotDefined = <T>(
   value: T | undefined | null
 ): value is undefined | null => value === undefined || value === null
 
+export const isEmpty = (value: string | undefined | null): value is undefined =>
+  value === undefined || value === null || value === ''
+
+export const isNotEmpty = (value: string | undefined | null): value is string =>
+  value !== undefined && value !== null && value !== ''
+
 export const isInputStep = (step: Step): step is InputStep =>
   (Object.values(InputStepType) as string[]).includes(step.type)
 

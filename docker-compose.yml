@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  db:
+  typebot-db:
     image: postgres:13
     restart: always
     volumes:
@@ -8,42 +8,31 @@ services:
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
-  builder:
+  typebot-builder:
+    image: baptistearno/typebot-builder:latest
+    restart: always
     depends_on:
-      - db
-    build:
-      context: .
-      args:
-        - SCOPE=builder
+      - typebot-db
     ports:
       - '8080:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    env_file:
-      - './apps/builder/.env.production'
-    entrypoint: >
-      /bin/sh -c "
-      ./node_modules/.bin/prisma generate;
-      echo 'Waiting 5s for db to be ready...';
-      sleep 5;
-      ./node_modules/.bin/prisma migrate deploy;
-      node server.js;"
-  viewer:
-    depends_on:
-      - db
+    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    environment:
+      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
+      - NEXTAUTH_URL=<your-builder-url>
+      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
+      - ENCRYPTION_SECRET=<your-encryption-secret>
+      - ADMIN_EMAIL=<your-admin-email>
+  typebot-viewer:
+    image: baptistearno/typebot-viewer:latest
     restart: always
-    build:
-      context: .
-      args:
-        - SCOPE=viewer
     ports:
       - '8081:3001'
-    env_file:
-      - './apps/viewer/.env.production'
-    entrypoint: >
-      /bin/sh -c "
-      ./node_modules/.bin/prisma generate;
-      node server.js;"
+    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    environment:
+      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
+      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
+      - ENCRYPTION_SECRET=<your-encryption-secret>
 volumes:
   db_data:
-  s3_data:

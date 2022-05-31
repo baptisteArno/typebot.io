@@ -25,7 +25,7 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        typebot.variables.map((v) =>
+        typebot.variables = typebot.variables.map((v) =>
           v.id === variableId ? { ...v, ...updates } : v
         )
       })

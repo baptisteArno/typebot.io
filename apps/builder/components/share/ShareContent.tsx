@@ -12,17 +12,17 @@ import {
 import { TrashIcon } from 'assets/icons'
 import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/workspace'
 import { isDefined, isNotDefined } from 'utils'
 import { CustomDomainsDropdown } from './customDomain/CustomDomainsDropdown'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './integrations/EmbedButton'
 
 export const ShareContent = () => {
-  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const { typebot, updateOnBothTypebots } = useTypebot()
   const toast = useToast({
     position: 'top-right',
@@ -83,7 +83,7 @@ export const ShareContent = () => {
               />
             </HStack>
           )}
-          {isFreePlan(user) ? (
+          {isFreePlan(workspace) ? (
             <UpgradeButton colorScheme="gray">
               <Text mr="2">Add my domain</Text>{' '}
               <Tag colorScheme="orange">Pro</Tag>

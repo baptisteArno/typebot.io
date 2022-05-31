@@ -43,7 +43,7 @@ const StandardInstructions = () => {
 }
 
 const PopupInstructions = () => {
-  const [inputValue, setInputValue] = useState(0)
+  const [inputValue, setInputValue] = useState<number>()
 
   return (
     <>
@@ -60,7 +60,7 @@ const PopupInstructions = () => {
         <ListItem>
           Paste this snippet in the code box:
           <PopupEmbedSettings
-            onUpdateSettings={(settings) => setInputValue(settings.delay ?? 0)}
+            onUpdateSettings={(settings) => setInputValue(settings.delay)}
             my={4}
           />
           <PopupEmbedCode delay={inputValue} />

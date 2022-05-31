@@ -1,4 +1,3 @@
-import cuid from 'cuid'
 import { Webhook } from 'models'
 import { sendRequest } from 'utils'
 
@@ -10,13 +9,15 @@ export const saveWebhook = (webhookId: string, webhook: Partial<Webhook>) =>
   })
 
 export const duplicateWebhook = async (
-  webhookId: string
+  typebotId: string,
+  existingWebhookId: string,
+  newWebhookId: string
 ): Promise<Webhook | undefined> => {
   const { data } = await sendRequest<{ webhook: Webhook }>(
-    `/api/webhooks/${webhookId}`
+    `/api/webhooks/${existingWebhookId}`
   )
   if (!data) return
-  const newWebhook = { ...data.webhook, id: cuid() }
+  const newWebhook = { ...data.webhook, id: newWebhookId, typebotId }
   await saveWebhook(newWebhook.id, newWebhook)
   return newWebhook
 }

@@ -9,16 +9,22 @@ import { byId } from 'utils'
 
 type Props = {
   typebotId?: string
+  currentWorkspaceId: string
   onSelectTypebotId: (typebotId: string | 'current') => void
 }
 
-export const TypebotsDropdown = ({ typebotId, onSelectTypebotId }: Props) => {
+export const TypebotsDropdown = ({
+  typebotId,
+  onSelectTypebotId,
+  currentWorkspaceId,
+}: Props) => {
   const { query } = useRouter()
   const toast = useToast({
     position: 'top-right',
     status: 'error',
   })
   const { typebots, isLoading } = useTypebots({
+    workspaceId: currentWorkspaceId,
     allFolders: true,
     onError: (e) => toast({ title: e.name, description: e.message }),
   })

@@ -142,11 +142,15 @@ export const executeWebhook =
       ...basicAuth,
       json:
         contentType !== 'x-www-form-urlencoded' && body
-          ? JSON.parse(parseVariables(variables)(body))
+          ? safeJsonParse(
+              parseVariables(variables, { escapeLineBreaks: true })(body)
+            )
           : undefined,
       form:
         contentType === 'x-www-form-urlencoded' && body
-          ? JSON.parse(parseVariables(variables)(body))
+          ? safeJsonParse(
+              parseVariables(variables, { escapeLineBreaks: true })(body)
+            )
           : undefined,
     }
     try {
@@ -238,6 +242,14 @@ const convertKeyValueTableToObject = (
       [item.key]: parseVariables(variables)(item.value ?? ''),
     }
   }, {})
+}
+
+const safeJsonParse = (json: string): any => {
+  try {
+    return JSON.parse(json)
+  } catch (err) {
+    return json
+  }
 }
 
 export default withSentry(handler)

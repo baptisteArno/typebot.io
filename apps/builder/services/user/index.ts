@@ -1,3 +1,3 @@
 export * from './user'
-export * from './customDomains'
-export * from './credentials'
+export * from '../customDomains'
+export * from '../credentials'

@@ -4,7 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 const answersContext = createContext<{
   resultId?: string
   resultValues: ResultValues
-  addAnswer: (answer: Answer) => void
+  addAnswer: (answer: Answer) => Promise<void> | undefined
   updateVariables: (variables: VariableWithValue[]) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -17,7 +17,7 @@ export const AnswersContext = ({
   onVariablesUpdated,
 }: {
   resultId?: string
-  onNewAnswer: (answer: Answer) => void
+  onNewAnswer: (answer: Answer) => Promise<void> | undefined
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
   children: ReactNode
 }) => {
@@ -32,7 +32,7 @@ export const AnswersContext = ({
       ...resultValues,
       answers: [...resultValues.answers, answer],
     }))
-    onNewAnswer(answer)
+    return onNewAnswer && onNewAnswer(answer)
   }
 
   const updateVariables = (variables: VariableWithValue[]) =>

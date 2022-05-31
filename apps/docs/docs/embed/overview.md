@@ -8,7 +8,7 @@ You can choose to embed your typebot in 3 different ways.
 
 ## Standard
 
-Embeds the typebot in a box with the size of your choice. This type is used at the top of [Typebot's homepage](https://www.typebot.io/)
+Embeds the typebot in a box with the size of your choice anywhere on your app. This is what is used on Typebot homepage:
 
 <img src="/img/embeddings/standard.png" alt="Standard"/>
 
@@ -22,7 +22,6 @@ Embeds the typebot in a Popup that overlays your website. It can be triggered af
 
 ## Bubble
 
-Embeds the typebot as a "chat bubble" at the bottom right corner of your site. Can be triggered automatically or with a click. It can also come with a "proactive message". An example can be found in [Typebot's pricing page](https://www.typebot.io/pricing)
+Embeds the typebot as a "chat bubble" at the bottom right corner of your site. Can be triggered automatically or with a click. It can also come with a "proactive message".
 
 <img src="/img/embeddings/bubble1.png" alt="Bubble 1" width="600px"/>
-<img src="/img/embeddings/bubble2.png" alt="Bubble 2" width="600px"/>

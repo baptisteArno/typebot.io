@@ -25,6 +25,7 @@ export const DataVariableInputs = ({
           onValueChange={handleBodyPathChange}
           placeholder="Select the data"
           debounceTimeout={debounceTimeout}
+          withVariableButton
         />
       </FormControl>
       <FormControl>

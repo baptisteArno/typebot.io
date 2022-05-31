@@ -1,5 +1,5 @@
-import { PrismaClient } from 'db'
 import path from 'path'
+import { migrateWorkspace } from './workspaceMigration'
 
 require('dotenv').config({
   path: path.join(
@@ -8,7 +8,8 @@ require('dotenv').config({
   ),
 })
 
-const prisma = new PrismaClient()
-const main = async () => {}
+const main = async () => {
+  await migrateWorkspace()
+}
 
 main().then()

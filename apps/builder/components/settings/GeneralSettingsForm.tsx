@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react'
 import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import { GeneralSettings } from 'models'
 import React from 'react'
-import { isFreePlan } from 'services/user'
+import { isFreePlan } from 'services/workspace'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -23,8 +23,8 @@ export const GeneralSettingsForm = ({
   onGeneralSettingsChange,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { user } = useUser()
-  const isUserFreePlan = isFreePlan(user)
+  const { workspace } = useWorkspace()
+  const isUserFreePlan = isFreePlan(workspace)
   const handleSwitchChange = () => {
     if (generalSettings?.isBrandingEnabled && isUserFreePlan) return
     onGeneralSettingsChange({
@@ -45,6 +45,12 @@ export const GeneralSettingsForm = ({
     onGeneralSettingsChange({
       ...generalSettings,
       isInputPrefillEnabled,
+    })
+
+  const handleHideQueryParamsChange = (isHideQueryParamsEnabled: boolean) =>
+    onGeneralSettingsChange({
+      ...generalSettings,
+      isHideQueryParamsEnabled,
     })
 
   return (
@@ -77,6 +83,13 @@ export const GeneralSettingsForm = ({
         label="Create new session on page refresh"
         initialValue={generalSettings.isNewResultOnRefreshEnabled ?? false}
         onCheckChange={handleNewResultOnRefreshChange}
+      />
+      <SwitchWithLabel
+        id="query-params"
+        label="Hide query params on bot start"
+        initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
+        onCheckChange={handleHideQueryParamsChange}
+        moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
       />
     </Stack>
   )

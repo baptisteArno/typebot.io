@@ -9,11 +9,12 @@ import React, {
 import { Avatar } from '../avatars/Avatar'
 import { useFrame } from 'react-frame-component'
 import { CSSTransition } from 'react-transition-group'
+import { ResizeObserver } from 'resize-observer'
 
-type Props = { hostAvatarSrc?: string }
+type Props = { hostAvatarSrc?: string; keepShowing: boolean }
 
 export const AvatarSideContainer = forwardRef(
-  ({ hostAvatarSrc }: Props, ref: ForwardedRef<unknown>) => {
+  ({ hostAvatarSrc, keepShowing }: Props, ref: ForwardedRef<unknown>) => {
     const { document } = useFrame()
     const [show, setShow] = useState(false)
     const [avatarTopOffset, setAvatarTopOffset] = useState(0)
@@ -49,7 +50,7 @@ export const AvatarSideContainer = forwardRef(
         <CSSTransition
           classNames="bubble"
           timeout={500}
-          in={show}
+          in={show && keepShowing}
           unmountOnExit
         >
           <div

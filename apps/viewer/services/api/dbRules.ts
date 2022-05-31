@@ -1,4 +1,5 @@
-import { CollaborationType, Prisma, User } from 'db'
+import { CollaborationType, Prisma, User, WorkspaceRole } from 'db'
+import { isNotEmpty } from 'utils'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,
@@ -8,20 +9,24 @@ const parseWhereFilter = (
   OR: [
     {
       id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
-      ownerId:
-        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        process.env.NEXT_PUBLIC_E2E_TEST
-          ? undefined
-          : user.id,
-    },
-    {
-      id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
       collaborators: {
         some: {
           userId: user.id,
           type: type === 'write' ? CollaborationType.WRITE : undefined,
         },
       },
+    },
+    {
+      id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+      workspace:
+        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
+        isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+          ? undefined
+          : {
+              members: {
+                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
+              },
+            },
     },
   ],
 })
@@ -37,3 +42,12 @@ export const canReadTypebots = (typebotIds: string[], user: User) =>
 
 export const canWriteTypebots = (typebotIds: string[], user: User) =>
   parseWhereFilter(typebotIds, user, 'write')
+
+export const canEditGuests = (user: User, typebotId: string) => ({
+  id: typebotId,
+  workspace: {
+    members: {
+      some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
+    },
+  },
+})

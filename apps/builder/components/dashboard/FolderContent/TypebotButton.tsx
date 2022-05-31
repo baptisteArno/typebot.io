@@ -20,9 +20,9 @@ import { deleteTypebot, importTypebot, getTypebot } from 'services/typebots'
 import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
-import { TypebotIcon } from 'components/shared/TypebotHeader/TypebotIcon'
-import { useUser } from 'contexts/UserContext'
+import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { Plan } from 'db'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type ChatbotCardProps = {
   typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
@@ -38,7 +38,7 @@ export const TypebotButton = ({
   onMouseDown,
 }: ChatbotCardProps) => {
   const router = useRouter()
-  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const { draggedTypebot } = useTypebotDnd()
   const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
   const {
@@ -79,7 +79,7 @@ export const TypebotButton = ({
     if (!typebotToDuplicate) return { error: new Error('Typebot not found') }
     const { data: createdTypebot, error } = await importTypebot(
       data.typebot,
-      user?.plan ?? Plan.FREE
+      workspace?.plan ?? Plan.FREE
     )
     if (error)
       return toast({
@@ -157,7 +157,7 @@ export const TypebotButton = ({
           alignItems="center"
           fontSize={'4xl'}
         >
-          {<TypebotIcon icon={typebot.icon} boxSize={'35px'} />}
+          {<EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />}
         </Flex>
         <Text textAlign="center">{typebot.name}</Text>
       </VStack>

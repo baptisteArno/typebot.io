@@ -48,9 +48,9 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
   return (
     <div className="flex flex-col" ref={messageContainer}>
       <div className="flex mb-2 w-full items-center">
-        <div className={'flex relative z-10 items-start typebot-host-bubble'}>
+        <div className={'flex relative items-start typebot-host-bubble'}>
           <div
-            className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
+            className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing "
             style={{
               width: isTyping ? '4rem' : '100%',
               height: isTyping ? '2rem' : '100%',
@@ -65,7 +65,7 @@ export const TextBubble = ({ step, onTransitionEnd }: Props) => {
                 textOverflow: 'ellipsis',
               }}
               className={
-                'overflow-hidden content-opacity z-50 mx-4 my-2 whitespace-pre-wrap slate-html-container ' +
+                'overflow-hidden content-opacity mx-4 my-2 whitespace-pre-wrap slate-html-container relative ' +
                 (isTyping ? 'opacity-0 h-6' : 'opacity-100 h-full')
               }
               dangerouslySetInnerHTML={{

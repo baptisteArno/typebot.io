@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from 'assets/icons'
 import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Typebot } from 'models'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
@@ -16,6 +17,7 @@ import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { TemplatesModal } from './TemplatesModal'
 
 export const CreateNewTypebotButtons = () => {
+  const { workspace } = useWorkspace()
   const { user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -29,15 +31,15 @@ export const CreateNewTypebotButtons = () => {
   })
 
   const handleCreateSubmit = async (typebot?: Typebot) => {
-    if (!user) return
+    if (!user || !workspace) return
     setIsLoading(true)
     const folderId = router.query.folderId?.toString() ?? null
     const { error, data } = typebot
       ? await importTypebot(
           {
             ...typebot,
-            ownerId: user.id,
             folderId,
+            workspaceId: workspace.id,
             theme: {
               ...typebot.theme,
               chat: {
@@ -46,10 +48,11 @@ export const CreateNewTypebotButtons = () => {
               },
             },
           },
-          user.plan
+          workspace.plan
         )
       : await createTypebot({
           folderId,
+          workspaceId: workspace.id,
         })
     if (error) toast({ description: error.message })
     if (data)

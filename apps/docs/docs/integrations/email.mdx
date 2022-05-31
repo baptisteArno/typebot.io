@@ -1,0 +1,25 @@
+import { YoutubeEmbed } from '../../src/js/YoutubeEmbed.jsx'
+
+# Email
+
+If you want to receive an email notification each time a user completes the bot or if you want to send a recap to the user, the Email block is made for you:
+
+<img src="/img/integrations/email.png" width="400" alt="Email block example" />
+
+By default the email will be send from notifications@typebot.io. But you can choose to use your own email (SMTP) account, using the "From:" dropdown and filling in your credentials.
+
+I've recorded a tutorial on how to connect your Gmail account ([even though this isn't recommended](https://nodemailer.com/usage/using-gmail/)):
+
+<YoutubeEmbed videoId="UjlZvlqg6mA" />
+
+## Body configuration
+
+You can customize the email you want to send:
+
+<img
+  src="/img/integrations/email-body.png"
+  width="400"
+  alt="Email block example"
+/>
+
+The email will be sent each time the block is triggered. You can, of course, have multiple Email block in a the same flow.
