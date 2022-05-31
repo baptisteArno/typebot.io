@@ -58,12 +58,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
     if (isNaN(amount)) return badRequest(res)
     // Create a PaymentIntent with the order amount and currency
+    const receiptEmail = parseVariables(variables)(
+      inputOptions.additionalInformation?.email
+    )
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: inputOptions.currency,
-      receipt_email: parseVariables(variables)(
-        inputOptions.additionalInformation?.email
-      ),
+      receipt_email: receiptEmail === '' ? undefined : receiptEmail,
       automatic_payment_methods: {
         enabled: true,
       },
