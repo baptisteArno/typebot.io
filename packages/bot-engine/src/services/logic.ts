@@ -126,10 +126,27 @@ const executeRedirect = (
   { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
   if (!step.options?.url) return step.outgoingEdgeId
-  const tempLink = document.createElement('a')
-  tempLink.href = sanitizeUrl(parseVariables(variables)(step.options?.url))
-  tempLink.setAttribute('target', step.options.isNewTab ? '_blank' : '_self')
-  tempLink.click()
+  const formattedUrl = sanitizeUrl(parseVariables(variables)(step.options.url))
+  const isEmbedded = window.parent && window.location !== window.top?.location
+  if (isEmbedded) {
+    if (step.options.isNewTab)
+      return ((window.top as Window).location.href = formattedUrl)
+
+    try {
+      window.open(formattedUrl)
+    } catch (err) {
+      //Can't access to parent window
+      window.top?.postMessage(
+        {
+          from: 'typebot',
+          redirectUrl: formattedUrl,
+        },
+        '*'
+      )
+    }
+  } else {
+    window.open(formattedUrl, step.options.isNewTab ? '_blank' : '_self')
+  }
   return step.outgoingEdgeId
 }
 
