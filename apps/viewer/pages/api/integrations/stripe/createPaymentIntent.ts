@@ -61,25 +61,39 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const receiptEmail = parseVariables(variables)(
       inputOptions.additionalInformation?.email
     )
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: inputOptions.currency,
-      receipt_email: receiptEmail === '' ? undefined : receiptEmail,
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    })
+    try {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: inputOptions.currency,
+        receipt_email: receiptEmail === '' ? undefined : receiptEmail,
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      })
 
-    return res.send({
-      clientSecret: paymentIntent.client_secret,
-      publicKey:
-        isPreview && stripeKeys.test?.publicKey
-          ? stripeKeys.test.publicKey
-          : stripeKeys.live.publicKey,
-      amountLabel: `${amount / 100}${
-        currencySymbols[inputOptions.currency] ?? inputOptions.currency
-      }`,
-    })
+      return res.send({
+        clientSecret: paymentIntent.client_secret,
+        publicKey:
+          isPreview && stripeKeys.test?.publicKey
+            ? stripeKeys.test.publicKey
+            : stripeKeys.live.publicKey,
+        amountLabel: `${amount / 100}${
+          currencySymbols[inputOptions.currency] ?? ` ${inputOptions.currency}`
+        }`,
+      })
+    } catch (err) {
+      const error = err as any
+      return 'raw' in error
+        ? res.status(error.raw.statusCode).send({
+            error: {
+              name: `${error.raw.type} ${error.raw.param}`,
+              message: error.raw.message,
+            },
+          })
+        : res.status(500).send({
+            error,
+          })
+    }
   }
   return methodNotAllowed(res)
 }

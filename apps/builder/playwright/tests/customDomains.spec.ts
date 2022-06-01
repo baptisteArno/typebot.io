@@ -61,6 +61,7 @@ test.describe('Free workspace', () => {
       },
     ])
     await page.goto(`/typebots/${typebotId}/share`)
+    await expect(page.locator('text=Pro')).toBeVisible()
     await page.click('text=Add my domain')
     await expect(page.locator('text=For solo creator')).toBeVisible()
   })

@@ -19,6 +19,7 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
     apiHost,
     isPreview,
     typebot: { variables },
+    onNewLog,
   } = useTypebot()
   const { window: frameWindow, document: frameDocument } = useFrame()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +35,13 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
         variables,
         inputOptions: options,
       })
-      if (error || !data) return console.error(error)
+      if (error)
+        return onNewLog({
+          status: 'error',
+          description: error.name + ' ' + error.message,
+          details: error.message,
+        })
+      if (!data) return
       await initStripe(frameDocument)
       setStripe(frameWindow.Stripe(data.publicKey))
       setClientSecret(data.clientSecret)
@@ -81,6 +88,8 @@ const CheckoutForm = ({
 
   const [message, setMessage] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
+
+  const [isPayButtonVisible, setIsPayButtonVisible] = useState(false)
 
   useEffect(() => {
     if (!stripe || !clientSecret) return
@@ -145,20 +154,28 @@ const CheckoutForm = ({
     setMessage('An unexpected error occured.')
   }
 
+  const showPayButton = () => setIsPayButtonVisible(true)
+
   return (
     <form
       id="payment-form"
       onSubmit={handleSubmit}
       className="flex flex-col rounded-lg p-4 typebot-input w-full items-center"
     >
-      <PaymentElement id="payment-element" className="w-full" />
-      <SendButton
-        label={`${options.labels.button} ${amountLabel}`}
-        isDisabled={isLoading || !stripe || !elements}
-        isLoading={isLoading}
-        className="mt-4 w-full max-w-lg"
-        disableIcon
+      <PaymentElement
+        id="payment-element"
+        className="w-full"
+        onReady={showPayButton}
       />
+      {isPayButtonVisible && (
+        <SendButton
+          label={`${options.labels.button} ${amountLabel}`}
+          isDisabled={isLoading || !stripe || !elements}
+          isLoading={isLoading}
+          className="mt-4 w-full max-w-lg"
+          disableIcon
+        />
+      )}
 
       {message && (
         <div

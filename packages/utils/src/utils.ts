@@ -44,8 +44,8 @@ export const sendRequest = async <ResponseData>(
           ? JSON.stringify(params.body)
           : undefined,
     })
-    if (!response.ok) throw new Error(response.statusText)
     const data = await response.json()
+    if (!response.ok) throw 'error' in data ? data.error : data
     return { data }
   } catch (e) {
     console.error(e)

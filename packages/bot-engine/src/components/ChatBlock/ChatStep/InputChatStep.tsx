@@ -112,7 +112,7 @@ const Input = ({
       return (
         <PaymentForm
           options={step.options}
-          onSuccess={() => onSubmit('Success')}
+          onSuccess={() => onSubmit(step.options.labels.success ?? 'Success')}
         />
       )
   }

@@ -144,7 +144,7 @@ export type PaymentInputOptions = OptionBase & {
     email?: string
     phoneNumber?: string
   }
-  labels: { button: string }
+  labels: { button: string; success?: string }
 }
 
 const defaultButtonLabel = 'Send'
@@ -198,6 +198,6 @@ export const defaultChoiceInputOptions: ChoiceInputOptions = {
 
 export const defaultPaymentInputOptions: PaymentInputOptions = {
   provider: PaymentProvider.STRIPE,
-  labels: { button: 'Pay' },
+  labels: { button: 'Pay', success: 'Success' },
   currency: 'USD',
 }

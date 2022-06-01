@@ -75,7 +75,13 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({
       ...options,
-      labels: { button },
+      labels: { ...options.labels, button },
+    })
+
+  const handleSuccessLabelChange = (success: string) =>
+    onOptionsChange({
+      ...options,
+      labels: { ...options.labels, success },
     })
 
   return (
@@ -128,6 +134,14 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           onChange={handleButtonLabelChange}
           defaultValue={options.labels.button}
           placeholder="Pay"
+        />
+      </Stack>
+      <Stack>
+        <Text>Success message:</Text>
+        <Input
+          onChange={handleSuccessLabelChange}
+          defaultValue={options.labels.success ?? 'Success'}
+          placeholder="Success"
         />
       </Stack>
       <Accordion allowToggle>
