@@ -8,6 +8,7 @@ import { SendButton, Spinner } from '../SendButton'
 import { useFrame } from 'react-frame-component'
 import { initStripe } from '../../../../../../lib/stripe'
 import { parseVariables } from 'services/variable'
+import { useChat } from 'contexts/ChatContext'
 
 type Props = {
   options: PaymentInputOptions
@@ -80,6 +81,7 @@ const CheckoutForm = ({
   variables: Variable[]
   viewerHost: string
 }) => {
+  const { scroll } = useChat()
   const [ignoreFirstPaymentIntentCall, setIgnoreFirstPaymentIntentCall] =
     useState(true)
 
@@ -154,7 +156,10 @@ const CheckoutForm = ({
     setMessage('An unexpected error occured.')
   }
 
-  const showPayButton = () => setIsPayButtonVisible(true)
+  const showPayButton = () => {
+    setIsPayButtonVisible(true)
+    scroll()
+  }
 
   return (
     <form

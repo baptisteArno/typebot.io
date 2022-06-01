@@ -26,13 +26,13 @@ import {
 import { HostBubble } from './ChatStep/bubbles/HostBubble'
 import { InputChatStep } from './ChatStep/InputChatStep'
 import { getLastChatStepType } from '../../services/chat'
+import { useChat } from 'contexts/ChatContext'
 
 type ChatBlockProps = {
   steps: Step[]
   startStepIndex: number
   blockTitle: string
   keepShowingHostAvatar: boolean
-  onScroll: () => void
   onBlockEnd: (
     edgeId?: string,
     updatedTypebot?: PublicTypebot | LinkedTypebot
@@ -45,7 +45,6 @@ export const ChatBlock = ({
   steps,
   startStepIndex,
   blockTitle,
-  onScroll,
   onBlockEnd,
   keepShowingHostAvatar,
 }: ChatBlockProps) => {
@@ -63,6 +62,7 @@ export const ChatBlock = ({
     pushEdgeIdInLinkedTypebotQueue,
   } = useTypebot()
   const { resultValues, updateVariables, resultId } = useAnswers()
+  const { scroll } = useChat()
   const [processedSteps, setProcessedSteps] = useState<Step[]>([])
   const [displayedChunks, setDisplayedChunks] = useState<ChatDisplayChunk[]>([])
 
@@ -102,7 +102,7 @@ export const ChatBlock = ({
   }, [])
 
   useEffect(() => {
-    onScroll()
+    scroll()
     onNewStepDisplayed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [processedSteps])
@@ -155,7 +155,7 @@ export const ChatBlock = ({
   }
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
-    onScroll()
+    scroll()
     const currentStep = [...processedSteps].pop()
     if (currentStep) {
       if (isRetry && stepCanBeRetried(currentStep))

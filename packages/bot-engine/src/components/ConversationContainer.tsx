@@ -8,6 +8,7 @@ import { Block, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
 import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
+import { ChatContext } from 'contexts/ChatContext'
 
 type Props = {
   theme: Theme
@@ -104,17 +105,19 @@ export const ConversationContainer = ({
       ref={scrollableContainer}
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
     >
-      {displayedBlocks.map((displayedBlock, idx) => (
-        <ChatBlock
-          key={displayedBlock.block.id + idx}
-          steps={displayedBlock.block.steps}
-          startStepIndex={displayedBlock.startStepIndex}
-          onScroll={autoScrollToBottom}
-          onBlockEnd={displayNextBlock}
-          blockTitle={displayedBlock.block.title}
-          keepShowingHostAvatar={idx === displayedBlocks.length - 1}
-        />
-      ))}
+      <ChatContext onScroll={autoScrollToBottom}>
+        {displayedBlocks.map((displayedBlock, idx) => (
+          <ChatBlock
+            key={displayedBlock.block.id + idx}
+            steps={displayedBlock.block.steps}
+            startStepIndex={displayedBlock.startStepIndex}
+            onBlockEnd={displayNextBlock}
+            blockTitle={displayedBlock.block.title}
+            keepShowingHostAvatar={idx === displayedBlocks.length - 1}
+          />
+        ))}
+      </ChatContext>
+
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
       <div className="w-full h-32" ref={bottomAnchor} />
     </div>
