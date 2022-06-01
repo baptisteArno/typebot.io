@@ -5,8 +5,7 @@ import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
 import { TypebotDndContext } from 'contexts/TypebotDndContext'
 import { useRouter } from 'next/router'
-import { redeemCoupon } from 'services/coupons'
-import { Spinner, useToast } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
 import { NextPageContext } from 'next/types'
@@ -14,13 +13,9 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { query, isReady } = useRouter()
+  const { query } = useRouter()
   const { user } = useUser()
   const { workspace } = useWorkspace()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'success',
-  })
 
   useEffect(() => {
     const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
@@ -36,25 +31,6 @@ const DashboardPage = () => {
       })
     }
   }, [query, user, workspace])
-
-  useEffect(() => {
-    if (!isReady) return
-    const couponCode = query.coupon?.toString()
-    const stripeStatus = query.stripe?.toString()
-
-    if (stripeStatus === 'success')
-      toast({
-        title: 'Payment successful',
-        description: "You've successfully subscribed 🎉",
-      })
-    if (couponCode) {
-      setIsLoading(true)
-      redeemCoupon(couponCode).then(() => {
-        location.href = '/typebots'
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady])
 
   return (
     <Stack minH="100vh">

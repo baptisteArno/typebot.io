@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, createStandaloneToast } from '@chakra-ui/react'
 import { customTheme } from 'libs/theme'
 import { useRouterProgressBar } from 'libs/routerProgressBar'
 import 'assets/styles/routerProgressBar.css'
@@ -18,12 +18,15 @@ import { actions } from 'libs/kbar'
 import { enableMocks } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
+import { toTitleCase } from 'utils'
+
+const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
 if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   useRouterProgressBar()
-  const { query, pathname } = useRouter()
+  const { query, pathname, isReady } = useRouter()
 
   useEffect(() => {
     pathname.endsWith('/edit')
@@ -31,30 +34,52 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       : (document.body.style.overflow = 'auto')
   }, [pathname])
 
+  useEffect(() => {
+    displayStripeCallbackMessage(query.stripe?.toString(), toast)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady])
+
   const typebotId = query.typebotId?.toString()
   return (
-    <ChakraProvider theme={customTheme}>
-      <KBarProvider actions={actions}>
-        <SessionProvider session={session}>
-          <UserContext>
-            {typebotId ? (
-              <TypebotContext typebotId={typebotId}>
+    <>
+      <ToastContainer />
+      <ChakraProvider theme={customTheme}>
+        <KBarProvider actions={actions}>
+          <SessionProvider session={session}>
+            <UserContext>
+              {typebotId ? (
+                <TypebotContext typebotId={typebotId}>
+                  <WorkspaceContext>
+                    <Component />
+                    <SupportBubble />
+                  </WorkspaceContext>
+                </TypebotContext>
+              ) : (
                 <WorkspaceContext>
-                  <Component />
+                  <Component {...pageProps} />
                   <SupportBubble />
                 </WorkspaceContext>
-              </TypebotContext>
-            ) : (
-              <WorkspaceContext>
-                <Component {...pageProps} />
-                <SupportBubble />
-              </WorkspaceContext>
-            )}
-          </UserContext>
-        </SessionProvider>
-      </KBarProvider>
-    </ChakraProvider>
+              )}
+            </UserContext>
+          </SessionProvider>
+        </KBarProvider>
+      </ChakraProvider>
+    </>
   )
+}
+
+const displayStripeCallbackMessage = (
+  status: string | undefined,
+  toast: any
+) => {
+  if (status && ['pro', 'team'].includes(status)) {
+    toast({
+      position: 'bottom-right',
+      status: 'success',
+      title: 'Upgrade success!',
+      description: `Workspace upgraded to ${toTitleCase(status)} 🎉`,
+    })
+  }
 }
 
 export default App

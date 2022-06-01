@@ -10,12 +10,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2020-08-27',
     })
-    const { email, currency, plan, workspaceId } =
+    const { email, currency, plan, workspaceId, href } =
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
 
     const session = await stripe.checkout.sessions.create({
-      success_url: `${req.headers.origin}/typebots?stripe=success`,
-      cancel_url: `${req.headers.origin}/typebots?stripe=cancel`,
+      success_url: `${href}?stripe=${plan}`,
+      cancel_url: `${href}?stripe=cancel`,
       automatic_tax: { enabled: true },
       allow_promotion_codes: true,
       customer_email: email,
@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-const getPrice = (plan: 'pro' | 'team', currency: 'eur' | 'usd') => {
+export const getPrice = (plan: 'pro' | 'team', currency: 'eur' | 'usd') => {
   if (plan === 'team')
     return currency === 'eur'
       ? process.env.STRIPE_PRICE_TEAM_EUR_ID

@@ -32,6 +32,7 @@ const workspaceContext = createContext<{
     updates: Partial<Workspace>
   ) => Promise<void>
   deleteCurrentWorkspace: () => Promise<void>
+  refreshWorkspace: (expectedUpdates: Partial<Workspace>) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -141,6 +142,17 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     })
   }
 
+  const refreshWorkspace = (expectedUpdates: Partial<Workspace>) => {
+    if (!currentWorkspace) return
+    const updatedWorkspace = { ...currentWorkspace, ...expectedUpdates }
+    mutate({
+      workspaces: (workspaces ?? []).map((w) =>
+        w.id === currentWorkspace.id ? updatedWorkspace : w
+      ),
+    })
+    setCurrentWorkspace(updatedWorkspace)
+  }
+
   return (
     <workspaceContext.Provider
       value={{
@@ -153,6 +165,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         createWorkspace,
         updateWorkspace,
         deleteCurrentWorkspace,
+        refreshWorkspace,
       }}
     >
       {children}

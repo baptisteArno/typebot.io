@@ -1,6 +1,7 @@
 import { Stack, HStack, Button, Text, Tag } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
 import React from 'react'
@@ -9,11 +10,33 @@ export const BillingForm = () => {
   const { workspace } = useWorkspace()
 
   return (
-    <Stack spacing="6">
+    <Stack spacing="6" w="full">
       <HStack>
-        <Text>Workspace subscription: </Text>
+        <Text>Current workspace subscription: </Text>
         <PlanTag plan={workspace?.plan} />
       </HStack>
+      {workspace &&
+        !([Plan.TEAM, Plan.LIFETIME, Plan.OFFERED] as Plan[]).includes(
+          workspace.plan
+        ) && (
+          <HStack>
+            {workspace?.plan === Plan.FREE && (
+              <UpgradeButton colorScheme="orange" variant="outline" w="full">
+                Upgrade to Pro plan
+              </UpgradeButton>
+            )}
+            {workspace?.plan !== Plan.TEAM && (
+              <UpgradeButton
+                colorScheme="purple"
+                variant="outline"
+                w="full"
+                plan={Plan.TEAM}
+              >
+                Upgrade to Team plan
+              </UpgradeButton>
+            )}
+          </HStack>
+        )}
       {workspace?.stripeId && (
         <>
           <Text>

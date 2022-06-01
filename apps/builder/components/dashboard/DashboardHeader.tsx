@@ -25,6 +25,7 @@ import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { WorkspaceSettingsModal } from './WorkspaceSettingsModal'
+import { isNotDefined } from 'utils'
 
 export const DashboardHeader = () => {
   const { user } = useUser()
@@ -66,7 +67,11 @@ export const DashboardHeader = () => {
               workspace={workspace}
             />
           )}
-          <Button leftIcon={<SettingsIcon />} onClick={onOpen}>
+          <Button
+            leftIcon={<SettingsIcon />}
+            onClick={onOpen}
+            isLoading={isNotDefined(workspace)}
+          >
             Settings & Members
           </Button>
           <Menu placement="bottom-end">
