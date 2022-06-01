@@ -54,12 +54,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
-          const { metadata } = subscription
-          if (!metadata.workspaceId)
-            return res.status(500).send(`workspaceId not found`)
           await prisma.workspace.update({
             where: {
-              id: metadata.workspaceId,
+              stripeId: subscription.customer as string,
             },
             data: {
               plan: Plan.FREE,
