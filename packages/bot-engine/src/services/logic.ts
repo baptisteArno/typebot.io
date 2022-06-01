@@ -129,7 +129,7 @@ const executeRedirect = (
   const formattedUrl = sanitizeUrl(parseVariables(variables)(step.options.url))
   const isEmbedded = window.parent && window.location !== window.top?.location
   if (isEmbedded) {
-    if (step.options.isNewTab)
+    if (!step.options.isNewTab)
       return ((window.top as Window).location.href = formattedUrl)
 
     try {
