@@ -321,7 +321,6 @@
             "labels": { "button": "Pay" },
             "currency": "USD",
             "amount": "9",
-            "credentialsId": "cl3u3li3f35224z1akf9iclk7",
             "additionalInformation": {
               "name": "{{Name}}",
               "email": "{{Email}}"
