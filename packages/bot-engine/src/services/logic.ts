@@ -110,10 +110,10 @@ const executeComparison =
         return inputValue !== value
       }
       case ComparisonOperators.GREATER: {
-        return parseFloat(inputValue) >= parseFloat(value)
+        return parseFloat(inputValue) > parseFloat(value)
       }
       case ComparisonOperators.LESS: {
-        return parseFloat(inputValue) <= parseFloat(value)
+        return parseFloat(inputValue) < parseFloat(value)
       }
       case ComparisonOperators.IS_SET: {
         return isDefined(inputValue) && inputValue.length > 0
