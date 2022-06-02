@@ -53,9 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : stripeKeys.live.secretKey,
       { apiVersion: '2020-08-27' }
     )
-    const amount = Math.round(
-      Number(parseVariables(variables)(inputOptions.amount)) * 100
-    )
+    const amount =
+      Number(parseVariables(variables)(inputOptions.amount)) *
+      (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
     if (isNaN(amount)) return badRequest(res)
     // Create a PaymentIntent with the order amount and currency
     const receiptEmail = parseVariables(variables)(
@@ -77,7 +77,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           isPreview && stripeKeys.test?.publicKey
             ? stripeKeys.test.publicKey
             : stripeKeys.live.publicKey,
-        amountLabel: `${amount / 100}${
+        amountLabel: `${
+          amount / (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
+        }${
           currencySymbols[inputOptions.currency] ?? ` ${inputOptions.currency}`
         }`,
       })
@@ -107,5 +109,26 @@ const getStripeInfo = async (
   if (!credentials) return
   return decrypt(credentials.data, credentials.iv) as StripeCredentialsData
 }
+
+// https://stripe.com/docs/currencies#zero-decimal
+const isZeroDecimalCurrency = (currency: string) =>
+  [
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
+  ].includes(currency)
 
 export default withSentry(handler)
