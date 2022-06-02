@@ -61,6 +61,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
             step.options?.labels?.placeholder ?? 'Type your answer...'
           }
           onChange={handleInputChange}
+          autoComplete="off"
         />
       )
     }
@@ -74,6 +75,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           }
           onChange={handleInputChange}
           type="email"
+          autoComplete="email"
         />
       )
     }
@@ -102,6 +104,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
           onChange={handleInputChange}
           type="url"
+          autoComplete="url"
         />
       )
     }
