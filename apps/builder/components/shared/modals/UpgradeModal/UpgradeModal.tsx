@@ -118,7 +118,7 @@ const PersonalProPlanContent = ({ currency }: { currency: 'eur' | 'usd' }) => {
         Upgrade to <chakra.span color="orange.400">Personal Pro</chakra.span>{' '}
         plan
       </Heading>
-      <Text>For solo creator who want to do even more.</Text>
+      <Text>For solo creators who want to do even more.</Text>
       <Heading>
         {currency === 'eur' ? '39€' : '$39'}
         <chakra.span fontSize="md">/ month</chakra.span>
