@@ -5,7 +5,6 @@ import {
   ModalContent,
   ModalOverlay,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
 import { useUser } from 'contexts/UserContext'
@@ -14,6 +13,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import { sendRequest } from 'utils'
 import confetti from 'canvas-confetti'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = { totalTypebots: number }
 
@@ -26,10 +26,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   const [chosenCategories, setChosenCategories] = useState<string[]>([])
   const [openedOnce, setOpenedOnce] = useState(false)
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   useEffect(() => {
     fetchTemplate()
@@ -77,7 +74,8 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
 
   const fetchTemplate = async () => {
     const { data, error } = await sendRequest(`/bots/onboarding.json`)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     setTypebot(data as Typebot)
   }
 

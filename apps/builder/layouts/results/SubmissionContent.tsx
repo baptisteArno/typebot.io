@@ -1,4 +1,4 @@
-import { Stack, useToast, Flex } from '@chakra-ui/react'
+import { Stack, Flex } from '@chakra-ui/react'
 import { ResultsActionButtons } from 'components/results/ResultsActionButtons'
 import { SubmissionsTable } from 'components/results/SubmissionsTable'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -15,6 +15,7 @@ import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
 import { isDefined, parseResultHeader } from 'utils'
 import { Plan } from 'db'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = {
   typebotId: string
@@ -34,10 +35,7 @@ export const SubmissionsContent = ({
   const [isExportLoading, setIsExportLoading] = useState(false)
   const [inspectingLogsResultId, setInspectingLogsResultId] = useState<string>()
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const blocksAndVariables = {
     blocks: [
@@ -54,7 +52,7 @@ export const SubmissionsContent = ({
 
   const { data, mutate, setSize, hasMore } = useResults({
     typebotId,
-    onError: (err) => toast({ title: err.name, description: err.message }),
+    onError: (err) => showToast({ title: err.name, description: err.message }),
   })
 
   const results = useMemo(() => data?.flatMap((d) => d.results), [data])
@@ -73,7 +71,7 @@ export const SubmissionsContent = ({
       totalSelected === totalResults
         ? await deleteAllResults(typebotId)
         : await deleteResults(typebotId, selectedIds)
-    if (error) toast({ description: error.message, title: error.name })
+    if (error) showToast({ description: error.message, title: error.name })
     else {
       mutate(
         totalSelected === totalResults

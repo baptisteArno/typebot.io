@@ -1,12 +1,6 @@
-import {
-  VStack,
-  Heading,
-  Stack,
-  Button,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react'
+import { VStack, Heading, Stack, Button, useDisclosure } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from 'assets/icons'
+import { useToast } from 'components/shared/hooks/useToast'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Typebot } from 'models'
@@ -24,11 +18,7 @@ export const CreateNewTypebotButtons = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-    title: 'An error occured',
-  })
+  const { showToast } = useToast()
 
   const handleCreateSubmit = async (typebot?: Typebot) => {
     if (!user || !workspace) return
@@ -54,7 +44,7 @@ export const CreateNewTypebotButtons = () => {
           folderId,
           workspaceId: workspace.id,
         })
-    if (error) toast({ description: error.message })
+    if (error) showToast({ description: error.message })
     if (data)
       router.push({
         pathname: `/typebots/${data.id}/edit`,

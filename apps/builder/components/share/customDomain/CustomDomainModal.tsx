@@ -12,10 +12,10 @@ import {
   Alert,
   ModalFooter,
   Button,
-  useToast,
   Text,
   Tooltip,
 } from '@chakra-ui/react'
+import { useToast } from 'components/shared/hooks/useToast'
 import { useEffect, useRef, useState } from 'react'
 import { createCustomDomain } from 'services/user'
 import { isEmpty } from 'utils'
@@ -46,11 +46,7 @@ export const CustomDomainModal = ({
     subdomain: splitHostname(domain)?.subdomain ?? '',
   })
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-    description: 'An error occured',
-  })
+  const { showToast } = useToast()
 
   useEffect(() => {
     if (inputValue === '' || !isOpen) return
@@ -72,7 +68,8 @@ export const CustomDomainModal = ({
       name: inputValue,
     })
     setIsLoading(false)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     onNewDomain(inputValue)
     onClose()
   }

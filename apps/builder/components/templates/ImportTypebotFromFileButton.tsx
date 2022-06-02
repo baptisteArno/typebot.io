@@ -1,4 +1,5 @@
-import { Button, ButtonProps, chakra, useToast } from '@chakra-ui/react'
+import { Button, ButtonProps, chakra } from '@chakra-ui/react'
+import { useToast } from 'components/shared/hooks/useToast'
 import { Typebot } from 'models'
 import React, { ChangeEvent } from 'react'
 import { readFile } from 'services/utils'
@@ -11,10 +12,7 @@ export const ImportTypebotFromFileButton = ({
   onNewTypebot,
   ...props
 }: Props) => {
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return
@@ -24,7 +22,7 @@ export const ImportTypebotFromFileButton = ({
       onNewTypebot(JSON.parse(fileContent))
     } catch (err) {
       console.error(err)
-      toast({ description: 'Failed to parse the file' })
+      showToast({ description: 'Failed to parse the file' })
     }
   }
 

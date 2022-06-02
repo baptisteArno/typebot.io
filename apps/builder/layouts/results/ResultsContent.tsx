@@ -1,5 +1,6 @@
-import { Button, Flex, HStack, Tag, useToast, Text } from '@chakra-ui/react'
+import { Button, Flex, HStack, Tag, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+import { useToast } from 'components/shared/hooks/useToast'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { useRouter } from 'next/router'
@@ -17,14 +18,11 @@ export const ResultsContent = () => {
     () => router.pathname.endsWith('analytics'),
     [router.pathname]
   )
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const { stats, mutate } = useStats({
     typebotId: publishedTypebot?.typebotId,
-    onError: (err) => toast({ title: err.name, description: err.message }),
+    onError: (err) => showToast({ title: err.name, description: err.message }),
   })
 
   const handleDeletedResults = (total: number) => {

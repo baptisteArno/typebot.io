@@ -9,13 +9,13 @@ import {
   Stack,
   Text,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import React, { useState } from 'react'
 import { CustomDomainModal } from './CustomDomainModal'
 import { deleteCustomDomain, useCustomDomains } from 'services/user'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   currentCustomDomain?: string
@@ -30,14 +30,11 @@ export const CustomDomainsDropdown = ({
   const [isDeleting, setIsDeleting] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const { customDomains, mutate } = useCustomDomains({
     workspaceId: workspace?.id,
     onError: (error) =>
-      toast({ title: error.name, description: error.message }),
+      showToast({ title: error.name, description: error.message }),
   })
 
   const handleMenuItemClick = (customDomain: string) => () =>
@@ -50,7 +47,8 @@ export const CustomDomainsDropdown = ({
       setIsDeleting(domainName)
       const { error } = await deleteCustomDomain(workspace.id, domainName)
       setIsDeleting('')
-      if (error) return toast({ title: error.name, description: error.message })
+      if (error)
+        return showToast({ title: error.name, description: error.message })
       mutate({
         customDomains: (customDomains ?? []).filter(
           (cd) => cd.name !== domainName

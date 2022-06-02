@@ -12,7 +12,6 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  useToast,
   SkeletonText,
   SkeletonCircle,
   WrapItem,
@@ -23,6 +22,7 @@ import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { deleteFolder, updateFolder } from 'services/folders'
+import { useToast } from 'components/shared/hooks/useToast'
 
 export const FolderButton = ({
   folder,
@@ -41,15 +41,12 @@ export const FolderButton = ({
     [draggedTypebot, folder.id, mouseOverFolderId]
   )
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const onDeleteClick = async () => {
     const { error } = await deleteFolder(folder.id)
     return error
-      ? toast({
+      ? showToast({
           title: "Couldn't delete the folder",
           description: error.message,
         })
@@ -60,7 +57,7 @@ export const FolderButton = ({
     if (newName === '' || newName === folder.name) return
     const { error } = await updateFolder(folder.id, { name: newName })
     return error
-      ? toast({ title: 'An error occured', description: error.message })
+      ? showToast({ title: 'An error occured', description: error.message })
       : onFolderRenamed(newName)
   }
 

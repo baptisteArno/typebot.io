@@ -10,10 +10,10 @@ import {
   ModalOverlay,
   Stack,
   Tooltip,
-  useToast,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
 import { TypebotViewer } from 'bot-engine'
+import { useToast } from 'components/shared/hooks/useToast'
 import { Typebot } from 'models'
 import React, { useEffect, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
@@ -33,10 +33,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   )
   const [isLoading, setIsLoading] = useState(false)
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   useEffect(() => {
     fetchTemplate(templates[0])
@@ -46,7 +43,8 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   const fetchTemplate = async (template: TemplateProps) => {
     setSelectedTemplate(template)
     const { data, error } = await sendRequest(`/templates/${template.fileName}`)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     setTypebot(data as Typebot)
   }
 

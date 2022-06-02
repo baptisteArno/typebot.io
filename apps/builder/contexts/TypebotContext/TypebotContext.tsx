@@ -1,4 +1,3 @@
-import { useToast } from '@chakra-ui/react'
 import {
   LogicStepType,
   PublicTypebot,
@@ -43,6 +42,7 @@ import { dequal } from 'dequal'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
+import { useToast } from 'components/shared/hooks/useToast'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -101,16 +101,13 @@ export const TypebotContext = ({
   typebotId: string
 }) => {
   const router = useRouter()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const { typebot, publishedTypebot, webhooks, isReadOnly, isLoading, mutate } =
     useFetchedTypebot({
       typebotId,
       onError: (error) =>
-        toast({
+        showToast({
           title: 'Error while fetching typebot',
           description: error.message,
         }),
@@ -145,7 +142,7 @@ export const TypebotContext = ({
     typebotId,
     typebotIds: linkedTypebotIds,
     onError: (error) =>
-      toast({
+      showToast({
         title: 'Error while fetching linkedTypebots',
         description: error.message,
       }),
@@ -181,7 +178,7 @@ export const TypebotContext = ({
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
     setIsSavingLoading(false)
     if (error) {
-      toast({ title: error.name, description: error.message })
+      showToast({ title: error.name, description: error.message })
       return
     }
     if (!options?.disableMutation)
@@ -200,7 +197,8 @@ export const TypebotContext = ({
       newPublishedTypebot
     )
     setIsPublishing(false)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     mutate({
       typebot: currentTypebotRef.current as Typebot,
       publishedTypebot: newPublishedTypebot,
@@ -252,7 +250,7 @@ export const TypebotContext = ({
   useEffect(() => {
     if (isLoading) return
     if (!typebot) {
-      toast({ status: 'info', description: "Couldn't find typebot" })
+      showToast({ status: 'info', description: "Couldn't find typebot" })
       router.replace('/typebots')
       return
     }
@@ -314,7 +312,8 @@ export const TypebotContext = ({
         id: publishedTypebotId,
       })
       setIsPublishing(false)
-      if (error) return toast({ title: error.name, description: error.message })
+      if (error)
+        return showToast({ title: error.name, description: error.message })
       mutate({
         typebot: localTypebot,
         publishedTypebot: data,

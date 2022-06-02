@@ -5,21 +5,19 @@ import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'
 import { useRouter } from 'next/router'
 import { useFolderContent } from 'services/folders'
-import { Spinner, useToast } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react'
 import { TypebotDndContext } from 'contexts/TypebotDndContext'
+import { useToast } from 'components/shared/hooks/useToast'
 
 const FolderPage = () => {
   const router = useRouter()
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const { folder } = useFolderContent({
     folderId: router.query.id?.toString(),
     onError: (error) => {
-      toast({
+      showToast({
         title: "Couldn't fetch folder content",
         description: error.message,
       })

@@ -7,7 +7,6 @@ import {
   Tag,
   Text,
   useDisclosure,
-  useToast,
   VStack,
   WrapItem,
 } from '@chakra-ui/react'
@@ -23,6 +22,7 @@ import { useDebounce } from 'use-debounce'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { Plan } from 'db'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type ChatbotCardProps = {
   typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
@@ -47,10 +47,7 @@ export const TypebotButton = ({
     onClose: onDeleteClose,
   } = useDisclosure()
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const handleTypebotClick = () => {
     if (draggedTypebotDebounced) return
@@ -65,7 +62,7 @@ export const TypebotButton = ({
     if (isReadOnly) return
     const { error } = await deleteTypebot(typebot.id)
     if (error)
-      return toast({
+      return showToast({
         title: "Couldn't delete typebot",
         description: error.message,
       })
@@ -82,7 +79,7 @@ export const TypebotButton = ({
       workspace?.plan ?? Plan.FREE
     )
     if (error)
-      return toast({
+      return showToast({
         title: "Couldn't duplicate typebot",
         description: error.message,
       })

@@ -7,7 +7,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useToast,
 } from '@chakra-ui/react'
 import { useUser } from 'contexts/UserContext'
 import { CredentialsType, SmtpCredentialsData } from 'models'
@@ -17,6 +16,7 @@ import { testSmtpConfig } from 'services/integrations'
 import { isNotDefined } from 'utils'
 import { SmtpConfigForm } from './SmtpConfigForm'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = {
   isOpen: boolean
@@ -32,10 +32,7 @@ export const SmtpConfigModal = ({
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const [smtpConfig, setSmtpConfig] = useState<SmtpCredentialsData>({
     from: {},
     port: 25,
@@ -50,7 +47,7 @@ export const SmtpConfigModal = ({
     )
     if (testSmtpError) {
       setIsCreating(false)
-      return toast({
+      return showToast({
         title: 'Invalid configuration',
         description: "We couldn't send the test email with your configuration",
       })
@@ -62,9 +59,10 @@ export const SmtpConfigModal = ({
       workspaceId: workspace.id,
     })
     setIsCreating(false)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     if (!data?.credentials)
-      return toast({ description: "Credentials wasn't created" })
+      return showToast({ description: "Credentials wasn't created" })
     onNewCredentials(data.credentials.id)
     onClose()
   }

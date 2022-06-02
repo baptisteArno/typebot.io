@@ -10,10 +10,10 @@ import {
 } from 'react'
 import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user/user'
-import { useToast } from '@chakra-ui/react'
 import { dequal } from 'dequal'
 import { User } from 'db'
 import { setUser as setSentryUser } from '@sentry/nextjs'
+import { useToast } from 'components/shared/hooks/useToast'
 
 const userContext = createContext<{
   user?: User
@@ -32,10 +32,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [user, setUser] = useState<User | undefined>()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
 
   const [isSaving, setIsSaving] = useState(false)
@@ -88,7 +85,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     setIsSaving(true)
     if (newUser) updateUser(newUser)
     const { error } = await updateUserInDb(user.id, { ...user, ...newUser })
-    if (error) toast({ title: error.name, description: error.message })
+    if (error) showToast({ title: error.name, description: error.message })
     await refreshUser()
     setIsSaving(false)
   }

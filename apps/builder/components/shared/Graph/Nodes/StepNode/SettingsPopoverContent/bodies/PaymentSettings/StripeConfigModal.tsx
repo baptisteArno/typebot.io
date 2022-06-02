@@ -7,7 +7,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useToast,
   FormControl,
   FormLabel,
   Stack,
@@ -24,6 +23,7 @@ import { MoreInfoTooltip } from 'components/shared/MoreInfoTooltip'
 import { ExternalLinkIcon } from 'assets/icons'
 import { createCredentials } from 'services/credentials'
 import { omit } from 'utils'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = {
   isOpen: boolean
@@ -39,10 +39,7 @@ export const StripeConfigModal = ({
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const [stripeConfig, setStripeConfig] = useState<
     StripeCredentialsData & { name: string }
   >({
@@ -91,9 +88,10 @@ export const StripeConfigModal = ({
       workspaceId: workspace.id,
     })
     setIsCreating(false)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     if (!data?.credentials)
-      return toast({ description: "Credentials wasn't created" })
+      return showToast({ description: "Credentials wasn't created" })
     onNewCredentials(data.credentials.id)
     onClose()
   }

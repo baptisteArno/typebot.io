@@ -9,7 +9,6 @@ import {
   HStack,
   Spinner,
   Stack,
-  useToast,
   Text,
   Alert,
   AlertIcon,
@@ -43,6 +42,7 @@ import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Provider = {
   name: 'Make.com' | 'Pabbly Connect'
@@ -64,10 +64,7 @@ export const WebhookSettings = ({
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const [localWebhook, setLocalWebhook] = useState(
     webhooks.find(byId(webhookId))
   )
@@ -140,7 +137,8 @@ export const WebhookSettings = ({
       ),
       { blockId, stepId }
     )
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     setTestResponse(JSON.stringify(data, undefined, 2))
     setResponseKeys(getDeepKeys(data))
     setIsTestResponseLoading(false)

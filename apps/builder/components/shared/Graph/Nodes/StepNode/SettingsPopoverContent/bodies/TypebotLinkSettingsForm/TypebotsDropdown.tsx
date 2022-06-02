@@ -1,6 +1,7 @@
-import { HStack, IconButton, Input, useToast } from '@chakra-ui/react'
+import { HStack, IconButton, Input } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
+import { useToast } from 'components/shared/hooks/useToast'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -19,14 +20,11 @@ export const TypebotsDropdown = ({
   currentWorkspaceId,
 }: Props) => {
   const { query } = useRouter()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const { typebots, isLoading } = useTypebots({
     workspaceId: currentWorkspaceId,
     allFolders: true,
-    onError: (e) => toast({ title: e.name, description: e.message }),
+    onError: (e) => showToast({ title: e.name, description: e.message }),
   })
   const currentTypebot = useMemo(
     () => typebots?.find(byId(typebotId)),

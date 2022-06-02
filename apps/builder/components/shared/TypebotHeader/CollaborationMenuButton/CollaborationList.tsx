@@ -3,7 +3,6 @@ import {
   HStack,
   Input,
   Button,
-  useToast,
   Menu,
   MenuButton,
   MenuItem,
@@ -16,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
+import { useToast } from 'components/shared/hooks/useToast'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { CollaborationType, WorkspaceRole } from 'db'
@@ -45,10 +45,7 @@ export const CollaborationList = () => {
   const hasFullAccess =
     (currentRole && currentRole !== WorkspaceRole.GUEST) || false
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const {
     collaborators,
     isLoading: isCollaboratorsLoading,
@@ -56,7 +53,7 @@ export const CollaborationList = () => {
   } = useCollaborators({
     typebotId: typebot?.id,
     onError: (e) =>
-      toast({
+      showToast({
         title: "Couldn't fetch collaborators",
         description: e.message,
       }),
@@ -68,7 +65,10 @@ export const CollaborationList = () => {
   } = useInvitations({
     typebotId: typebot?.id,
     onError: (e) =>
-      toast({ title: "Couldn't fetch invitations", description: e.message }),
+      showToast({
+        title: "Couldn't fetch invitations",
+        description: e.message,
+      }),
   })
 
   const handleChangeInvitationCollabType =
@@ -79,7 +79,8 @@ export const CollaborationList = () => {
         typebotId: typebot.id,
         type,
       })
-      if (error) return toast({ title: error.name, description: error.message })
+      if (error)
+        return showToast({ title: error.name, description: error.message })
       mutateInvitations({
         invitations: (invitations ?? []).map((i) =>
           i.email === email ? { ...i, type } : i
@@ -89,7 +90,8 @@ export const CollaborationList = () => {
   const handleDeleteInvitation = (email: string) => async () => {
     if (!typebot || !hasFullAccess) return
     const { error } = await deleteInvitation(typebot?.id, email)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     mutateInvitations({
       invitations: (invitations ?? []).filter((i) => i.email !== email),
     })
@@ -103,7 +105,8 @@ export const CollaborationList = () => {
         type,
         typebotId: typebot.id,
       })
-      if (error) return toast({ title: error.name, description: error.message })
+      if (error)
+        return showToast({ title: error.name, description: error.message })
       mutateCollaborators({
         collaborators: (collaborators ?? []).map((c) =>
           c.userId === userId ? { ...c, type } : c
@@ -113,7 +116,8 @@ export const CollaborationList = () => {
   const handleDeleteCollaboration = (userId: string) => async () => {
     if (!typebot || !hasFullAccess) return
     const { error } = await deleteCollaborator(typebot?.id, userId)
-    if (error) return toast({ title: error.name, description: error.message })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
     mutateCollaborators({
       collaborators: (collaborators ?? []).filter((c) => c.userId !== userId),
     })
@@ -130,8 +134,9 @@ export const CollaborationList = () => {
     setIsSendingInvitation(false)
     mutateInvitations({ invitations: invitations ?? [] })
     mutateCollaborators({ collaborators: collaborators ?? [] })
-    if (error) return toast({ title: error.name, description: error.message })
-    toast({ status: 'success', title: 'Invitation sent! 📧' })
+    if (error)
+      return showToast({ title: error.name, description: error.message })
+    showToast({ status: 'success', title: 'Invitation sent! 📧' })
     setInvitationEmail('')
   }
 

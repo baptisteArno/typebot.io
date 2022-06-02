@@ -6,11 +6,11 @@ import {
   Flex,
   FlexProps,
   useEventListener,
-  useToast,
   UseToastOptions,
   VStack,
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
+import { useToast } from 'components/shared/hooks/useToast'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useEditor } from 'contexts/EditorContext'
 import { useGraph } from 'contexts/GraphContext'
@@ -33,9 +33,7 @@ export const PreviewDrawer = () => {
     [typebot]
   )
 
-  const toast = useToast({
-    position: 'top-right',
-  })
+  const { showToast } = useToast()
 
   const handleMouseDown = () => {
     setIsResizing(true)
@@ -60,7 +58,7 @@ export const PreviewDrawer = () => {
   }
 
   const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
-    toast(log as UseToastOptions)
+    showToast(log as UseToastOptions)
 
   return (
     <Flex

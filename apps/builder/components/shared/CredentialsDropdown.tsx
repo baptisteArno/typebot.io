@@ -8,7 +8,6 @@ import {
   MenuList,
   Stack,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -16,6 +15,7 @@ import { useRouter } from 'next/router'
 import { CredentialsType } from 'models'
 import { deleteCredentials, useCredentials } from 'services/user'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { useToast } from './hooks/useToast'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   type: CredentialsType
@@ -37,10 +37,7 @@ export const CredentialsDropdown = ({
 }: Props) => {
   const router = useRouter()
   const { workspace } = useWorkspace()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
   const { credentials, mutate } = useCredentials({
     workspaceId: workspace?.id,
   })
@@ -88,7 +85,8 @@ export const CredentialsDropdown = ({
       setIsDeleting(credentialsId)
       const { error } = await deleteCredentials(workspace.id, credentialsId)
       setIsDeleting(undefined)
-      if (error) return toast({ title: error.name, description: error.message })
+      if (error)
+        return showToast({ title: error.name, description: error.message })
       onCredentialsSelect(undefined)
       mutate({ credentials: credentials.filter((c) => c.id !== credentialsId) })
     }

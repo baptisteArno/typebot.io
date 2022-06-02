@@ -4,7 +4,6 @@ import {
   Input,
   Stack,
   HStack,
-  useToast,
   Text,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, FormEvent, useEffect } from 'react'
@@ -21,6 +20,7 @@ import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { BuiltInProviderType } from 'next-auth/providers'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = {
   defaultEmail?: string
@@ -34,9 +34,7 @@ export const SignInForm = ({
   const [isLoadingProviders, setIsLoadingProviders] = useState(true)
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? '')
-  const toast = useToast({
-    position: 'top-right',
-  })
+  const { showToast } = useToast()
   const [providers, setProviders] =
     useState<
       Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
@@ -65,7 +63,7 @@ export const SignInForm = ({
       email: emailValue,
       redirect: false,
     })
-    toast({
+    showToast({
       status: 'success',
       title: 'Success!',
       description: 'Check your inbox to sign in',

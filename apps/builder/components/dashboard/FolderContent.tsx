@@ -7,7 +7,6 @@ import {
   Skeleton,
   Stack,
   useEventListener,
-  useToast,
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
@@ -27,6 +26,7 @@ import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
 import { OnboardingModal } from './OnboardingModal'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -51,10 +51,7 @@ export const FolderContent = ({ folder }: Props) => {
   const [typebotDragCandidate, setTypebotDragCandidate] =
     useState<TypebotInDashboard>()
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const {
     folders,
@@ -64,7 +61,7 @@ export const FolderContent = ({ folder }: Props) => {
     workspaceId: workspace?.id,
     parentId: folder?.id,
     onError: (error) => {
-      toast({ title: "Couldn't fetch folders", description: error.message })
+      showToast({ title: "Couldn't fetch folders", description: error.message })
     },
   })
 
@@ -76,7 +73,10 @@ export const FolderContent = ({ folder }: Props) => {
     workspaceId: workspace?.id,
     folderId: folder?.id,
     onError: (error) => {
-      toast({ title: "Couldn't fetch typebots", description: error.message })
+      showToast({
+        title: "Couldn't fetch typebots",
+        description: error.message,
+      })
     },
   })
 
@@ -85,7 +85,7 @@ export const FolderContent = ({ folder }: Props) => {
     const { error } = await patchTypebot(typebotId, {
       folderId: folderId === 'root' ? null : folderId,
     })
-    if (error) toast({ description: error.message })
+    if (error) showToast({ description: error.message })
     mutateTypebots({ typebots: typebots.filter((t) => t.id !== typebotId) })
   }
 
@@ -97,7 +97,10 @@ export const FolderContent = ({ folder }: Props) => {
     })
     setIsCreatingFolder(false)
     if (error)
-      return toast({ title: 'An error occured', description: error.message })
+      return showToast({
+        title: 'An error occured',
+        description: error.message,
+      })
     if (newFolder) mutateFolders({ folders: [...folders, newFolder] })
   }
 

@@ -16,7 +16,6 @@ import {
   ListProps,
   Button,
   HStack,
-  useToast,
 } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
@@ -25,6 +24,7 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import { TypebotLogo } from 'assets/logos'
 import { CheckIcon } from 'assets/icons'
 import { toTitleCase } from 'utils'
+import { useToast } from 'components/shared/hooks/useToast'
 
 export enum LimitReached {
   BRAND = 'Remove branding',
@@ -48,7 +48,7 @@ export const UpgradeModal = ({
   const { workspace, refreshWorkspace } = useWorkspace()
   const [payLoading, setPayLoading] = useState(false)
   const [currency, setCurrency] = useState<'usd' | 'eur'>('usd')
-  const toast = useToast()
+  const { showToast } = useToast()
 
   useEffect(() => {
     setCurrency(
@@ -69,7 +69,7 @@ export const UpgradeModal = ({
     setPayLoading(false)
     if (response?.newPlan) {
       refreshWorkspace({ plan: response.newPlan })
-      toast({
+      showToast({
         status: 'success',
         title: 'Upgrade success!',
         description: `Workspace successfully upgraded to ${toTitleCase(

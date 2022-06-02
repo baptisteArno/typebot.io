@@ -5,12 +5,12 @@ import {
   IconButton,
   Stack,
   Tag,
-  useToast,
   Wrap,
   Text,
 } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
+import { useToast } from 'components/shared/hooks/useToast'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
@@ -24,15 +24,12 @@ import { integrationsList } from './integrations/EmbedButton'
 export const ShareContent = () => {
   const { workspace } = useWorkspace()
   const { typebot, updateOnBothTypebots } = useTypebot()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
+  const { showToast } = useToast()
 
   const handlePublicIdChange = (publicId: string) => {
     if (publicId === typebot?.publicId) return
     if (publicId.length < 4)
-      return toast({ description: 'ID must be longer than 4 characters' })
+      return showToast({ description: 'ID must be longer than 4 characters' })
     updateOnBothTypebots({ publicId })
   }
 
