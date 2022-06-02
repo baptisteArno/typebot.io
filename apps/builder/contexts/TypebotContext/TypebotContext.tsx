@@ -440,9 +440,11 @@ const useLinkedTypebots = ({
     },
     Error
   >(
-    typebotIds?.every((id) => typebotId === id)
-      ? undefined
-      : `/api/typebots?${params}`,
+    workspaceId
+      ? typebotIds?.every((id) => typebotId === id)
+        ? undefined
+        : `/api/typebots?${params}`
+      : null,
     fetcher
   )
   if (error) onError(error)

@@ -13,12 +13,14 @@ import { ChatContext } from 'contexts/ChatContext'
 type Props = {
   theme: Theme
   predefinedVariables?: { [key: string]: string | undefined }
+  startBlockId?: string
   onNewBlockVisible: (edge: Edge) => void
   onCompleted: () => void
 }
 export const ConversationContainer = ({
   theme,
   predefinedVariables,
+  startBlockId,
   onNewBlockVisible,
   onCompleted,
 }: Props) => {
@@ -36,17 +38,35 @@ export const ConversationContainer = ({
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = (
-    edgeId?: string,
+  const displayNextBlock = ({
+    edgeId,
+    updatedTypebot,
+    blockId,
+  }: {
+    edgeId?: string
+    blockId?: string
     updatedTypebot?: PublicTypebot | LinkedTypebot
-  ) => {
+  }) => {
     const currentTypebot = updatedTypebot ?? typebot
+    if (blockId) {
+      const nextBlock = currentTypebot.blocks.find(byId(blockId))
+      if (!nextBlock) return
+      onNewBlockVisible({
+        id: 'edgeId',
+        from: { blockId: 'block', stepId: 'step' },
+        to: { blockId },
+      })
+      return setDisplayedBlocks([
+        ...displayedBlocks,
+        { block: nextBlock, startStepIndex: 0 },
+      ])
+    }
     const nextEdge = currentTypebot.edges.find(byId(edgeId))
     if (!nextEdge) {
       if (linkedBotQueue.length > 0) {
         const nextEdgeId = linkedBotQueue[0].edgeId
         popEdgeIdFromLinkedTypebotQueue()
-        displayNextBlock(nextEdgeId)
+        displayNextBlock({ edgeId: nextEdgeId })
       }
       return onCompleted()
     }
@@ -65,7 +85,12 @@ export const ConversationContainer = ({
   useEffect(() => {
     const prefilledVariables = injectPredefinedVariables(predefinedVariables)
     updateVariables(prefilledVariables)
-    displayNextBlock(typebot.blocks[0].steps[0].outgoingEdgeId)
+    displayNextBlock({
+      edgeId: startBlockId
+        ? undefined
+        : typebot.blocks[0].steps[0].outgoingEdgeId,
+      blockId: startBlockId,
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -2,6 +2,7 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  IconButton,
   Stack,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -16,6 +17,8 @@ import { BlockNodeContextMenu } from './BlockNodeContextMenu'
 import { useDebounce } from 'use-debounce'
 import { setMultipleRefs } from 'services/utils'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
+import { PlayIcon } from 'assets/icons'
+import { RightPanel, useEditor } from 'contexts/EditorContext'
 
 type Props = {
   block: Block
@@ -38,6 +41,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
+  const { setRightPanel, setStartPreviewAtBlock } = useEditor()
   const isPreviewing =
     previewingEdge?.from.blockId === block.id ||
     (previewingEdge?.to.blockId === block.id &&
@@ -99,6 +103,12 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     setFocusedBlockId(block.id)
     setIsMouseDown(true)
   }
+
+  const startPreviewAtThisBlock = () => {
+    setStartPreviewAtBlock(block.id)
+    setRightPanel(RightPanel.PREVIEW)
+  }
+
   const onDragStop = () => setIsMouseDown(false)
   return (
     <ContextMenu<HTMLDivElement>
@@ -165,6 +175,16 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
                 isStartBlock={isStartBlock}
               />
             )}
+            <IconButton
+              icon={<PlayIcon />}
+              aria-label={'Preview bot from this group'}
+              pos="absolute"
+              right={2}
+              top={0}
+              size="sm"
+              variant="outline"
+              onClick={startPreviewAtThisBlock}
+            />
           </Stack>
         </DraggableCore>
       )}

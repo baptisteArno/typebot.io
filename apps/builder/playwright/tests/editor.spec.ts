@@ -7,6 +7,7 @@ import {
 import { defaultTextInputOptions, InputStepType } from 'models'
 import path from 'path'
 import cuid from 'cuid'
+import { typebotViewer } from '../services/selectorUtils'
 
 test.describe.parallel('Editor', () => {
   test('Edges connection should work', async ({ page }) => {
@@ -150,5 +151,30 @@ test.describe.parallel('Editor', () => {
     await page.goto(`/typebots`)
     await expect(page.locator('text="😍"')).toBeVisible()
     await expect(page.locator('text="My superb typebot"')).toBeVisible()
+  })
+
+  test('Preview from group should work', async ({ page }) => {
+    const typebotId = cuid()
+    await importTypebotInDatabase(
+      path.join(__dirname, '../fixtures/typebots/editor/previewFromGroup.json'),
+      {
+        id: typebotId,
+      }
+    )
+
+    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.click('[aria-label="Preview bot from this group"] >> nth=1')
+    await expect(
+      typebotViewer(page).locator('text="Hello this is group 1"')
+    ).toBeVisible()
+    await page.click('[aria-label="Preview bot from this group"] >> nth=2')
+    await expect(
+      typebotViewer(page).locator('text="Hello this is group 2"')
+    ).toBeVisible()
+    await page.click('[aria-label="Close"]')
+    await page.click('text="Preview"')
+    await expect(
+      typebotViewer(page).locator('text="Hello this is group 1"')
+    ).toBeVisible()
   })
 })

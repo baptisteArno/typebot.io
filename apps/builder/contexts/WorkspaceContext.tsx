@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { byId } from 'utils'
+import { byId, isNotEmpty } from 'utils'
 import { MemberInWorkspace, Plan, Workspace, WorkspaceRole } from 'db'
 import {
   createNewWorkspace,

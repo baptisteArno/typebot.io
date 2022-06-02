@@ -33,10 +33,13 @@ type ChatBlockProps = {
   startStepIndex: number
   blockTitle: string
   keepShowingHostAvatar: boolean
-  onBlockEnd: (
-    edgeId?: string,
+  onBlockEnd: ({
+    edgeId,
+    updatedTypebot,
+  }: {
+    edgeId?: string
     updatedTypebot?: PublicTypebot | LinkedTypebot
-  ) => void
+  }) => void
 }
 
 type ChatDisplayChunk = { bubbles: BubbleStep[]; input?: InputStep }
@@ -129,7 +132,9 @@ export const ChatBlock = ({
         currentStep.type === LogicStepType.REDIRECT &&
         currentStep.options.isNewTab === false
       if (isRedirecting) return
-      nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
+      nextEdgeId
+        ? onBlockEnd({ edgeId: nextEdgeId, updatedTypebot: linkedTypebot })
+        : displayNextStep()
     }
     if (isIntegrationStep(currentStep)) {
       const nextEdgeId = await executeIntegration({
@@ -149,9 +154,10 @@ export const ChatBlock = ({
           resultId,
         },
       })
-      nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
+      nextEdgeId ? onBlockEnd({ edgeId: nextEdgeId }) : displayNextStep()
     }
-    if (currentStep.type === 'start') onBlockEnd(currentStep.outgoingEdgeId)
+    if (currentStep.type === 'start')
+      onBlockEnd({ edgeId: currentStep.outgoingEdgeId })
   }
 
   const displayNextStep = (answerContent?: string, isRetry?: boolean) => {
@@ -175,14 +181,14 @@ export const ChatBlock = ({
         const nextEdgeId = currentStep.items.find(
           (i) => i.content === answerContent
         )?.outgoingEdgeId
-        if (nextEdgeId) return onBlockEnd(nextEdgeId)
+        if (nextEdgeId) return onBlockEnd({ edgeId: nextEdgeId })
       }
 
       if (currentStep?.outgoingEdgeId || processedSteps.length === steps.length)
-        return onBlockEnd(currentStep.outgoingEdgeId)
+        return onBlockEnd({ edgeId: currentStep.outgoingEdgeId })
     }
     const nextStep = steps[processedSteps.length + startStepIndex]
-    nextStep ? insertStepInStack(nextStep) : onBlockEnd()
+    nextStep ? insertStepInStack(nextStep) : onBlockEnd({})
   }
 
   const avatarSrc = typebot.theme.chat.hostAvatar?.url

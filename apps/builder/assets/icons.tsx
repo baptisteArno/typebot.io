@@ -451,3 +451,9 @@ export const CreditCardIcon = (props: IconProps) => (
     <line x1="1" y1="10" x2="23" y2="10"></line>
   </Icon>
 )
+
+export const PlayIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+  </Icon>
+)

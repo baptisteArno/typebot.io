@@ -30,6 +30,7 @@ export type TypebotViewerProps = {
   style?: CSSProperties
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
+  startBlockId?: string
   onNewBlockVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -43,6 +44,7 @@ export const TypebotViewer = ({
   isPreview = false,
   style,
   resultId,
+  startBlockId,
   predefinedVariables,
   onNewLog,
   onNewBlockVisible,
@@ -116,6 +118,7 @@ export const TypebotViewer = ({
                 onNewBlockVisible={handleNewBlockVisible}
                 onCompleted={handleCompleted}
                 predefinedVariables={predefinedVariables}
+                startBlockId={startBlockId}
               />
             </div>
             {typebot.settings.general.isBrandingEnabled && <LiteBadge />}

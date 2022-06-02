@@ -35,7 +35,7 @@ test('can switch between workspaces and access typebot', async ({ page }) => {
   await page.goto('/typebots')
   await expect(page.locator('text="Pro typebot"')).toBeVisible()
   await page.click("text=Pro user's workspace")
-  await page.click('text=Shared workspace')
+  await page.click('text="Shared workspace"')
   await expect(page.locator('text="Pro typebot"')).toBeHidden()
   await page.click('text="Shared typebot"')
   await expect(page.locator('text="Hey there"')).toBeVisible()
@@ -135,7 +135,7 @@ test('can manage members', async ({ page }) => {
 test("can't edit workspace as a member", async ({ page }) => {
   await page.goto('/typebots')
   await page.click("text=Pro user's workspace")
-  await page.click('text=Shared workspace')
+  await page.click('text="Shared workspace"')
   await page.click('text=Settings & Members')
   await expect(page.locator('text="Settings"')).toBeHidden()
   await page.click('text="Members"')

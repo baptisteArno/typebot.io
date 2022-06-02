@@ -87,7 +87,7 @@ export const createUsers = async () => {
           role: WorkspaceRole.ADMIN,
           workspace: {
             create: {
-              id: freeWorkspaceId,
+              id: 'free',
               name: "Free user's workspace",
               plan: Plan.FREE,
             },
@@ -98,12 +98,15 @@ export const createUsers = async () => {
   })
   await prisma.workspace.create({
     data: {
-      id: 'free',
-      name: 'Free workspace',
+      id: freeWorkspaceId,
+      name: 'Free Shared Workspace',
       plan: Plan.FREE,
       members: {
         createMany: {
-          data: [{ role: WorkspaceRole.ADMIN, userId: 'proUser' }],
+          data: [
+            { role: WorkspaceRole.MEMBER, userId: 'proUser' },
+            { role: WorkspaceRole.ADMIN, userId: 'freeUser' },
+          ],
         },
       },
     },
