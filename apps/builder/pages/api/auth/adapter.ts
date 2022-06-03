@@ -7,10 +7,10 @@ import {
   WorkspaceRole,
   WorkspaceInvitation,
 } from 'db'
-import { randomUUID } from 'crypto'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
 import { got } from 'got'
+import { generateId } from 'utils'
 
 type InvitationWithWorkspaceId = Invitation & {
   typebot: {
@@ -38,7 +38,9 @@ export function CustomAdapter(p: PrismaClient): Adapter {
         data: {
           ...data,
           id: user.id,
-          apiToken: randomUUID(),
+          apiTokens: {
+            create: { name: 'Default', token: generateId(24) },
+          },
           workspaces:
             workspaceInvitations.length > 0
               ? undefined

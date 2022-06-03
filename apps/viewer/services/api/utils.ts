@@ -13,7 +13,9 @@ const authenticateByToken = async (
   apiToken?: string
 ): Promise<User | undefined> => {
   if (!apiToken) return
-  return (await prisma.user.findFirst({ where: { apiToken } })) as User
+  return (await prisma.user.findFirst({
+    where: { apiTokens: { some: { token: apiToken } } },
+  })) as User
 }
 
 const extractBearerToken = (req: NextApiRequest) =>

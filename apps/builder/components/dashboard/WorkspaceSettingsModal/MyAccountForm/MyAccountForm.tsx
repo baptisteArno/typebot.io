@@ -9,14 +9,13 @@ import {
   Tooltip,
   Flex,
   Text,
-  InputRightElement,
-  InputGroup,
 } from '@chakra-ui/react'
 import { UploadIcon } from 'assets/icons'
 import { UploadButton } from 'components/shared/buttons/UploadButton'
 import { useUser } from 'contexts/UserContext'
 import React, { ChangeEvent, useState } from 'react'
 import { isDefined } from 'utils'
+import { ApiTokensList } from './ApiTokensList'
 
 export const MyAccountForm = () => {
   const {
@@ -28,7 +27,6 @@ export const MyAccountForm = () => {
     isOAuthProvider,
   } = useUser()
   const [reloadParam, setReloadParam] = useState('')
-  const [isApiTokenVisible, setIsApiTokenVisible] = useState(false)
 
   const handleFileUploaded = async (url: string) => {
     setReloadParam(Date.now().toString())
@@ -43,10 +41,8 @@ export const MyAccountForm = () => {
     updateUser({ email: e.target.value })
   }
 
-  const toggleTokenVisibility = () => setIsApiTokenVisible(!isApiTokenVisible)
-
   return (
-    <Stack spacing="6" w="full">
+    <Stack spacing="6" w="full" overflowY="scroll">
       <HStack spacing={6}>
         <Avatar
           size="lg"
@@ -95,21 +91,6 @@ export const MyAccountForm = () => {
           </FormControl>
         </Tooltip>
       )}
-      <FormControl>
-        <FormLabel htmlFor="name">API token</FormLabel>
-        <InputGroup>
-          <Input
-            id="token"
-            value={user?.apiToken ?? ''}
-            type={isApiTokenVisible ? 'text' : 'password'}
-          />
-          <InputRightElement mr="3">
-            <Button size="xs" onClick={toggleTokenVisibility}>
-              {isApiTokenVisible ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
 
       {hasUnsavedChanges && (
         <Flex justifyContent="flex-end">
@@ -122,6 +103,8 @@ export const MyAccountForm = () => {
           </Button>
         </Flex>
       )}
+
+      {user && <ApiTokensList user={user} />}
     </Stack>
   )
 }

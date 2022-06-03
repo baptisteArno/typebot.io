@@ -38,7 +38,7 @@ export const createUser = () =>
       id: 'proUser',
       email: 'user@email.com',
       name: 'User',
-      apiToken: 'userToken',
+      apiTokens: { create: { token: 'userToken', name: 'default' } },
       workspaces: {
         create: {
           role: WorkspaceRole.ADMIN,

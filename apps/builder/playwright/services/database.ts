@@ -62,6 +62,27 @@ export const createUsers = async () => {
       email: 'pro-user@email.com',
       name: 'Pro user',
       graphNavigation: GraphNavigation.TRACKPAD,
+      apiTokens: {
+        createMany: {
+          data: [
+            {
+              name: 'Token 1',
+              token: 'jirowjgrwGREHEtoken1',
+              createdAt: new Date(2022, 1, 1),
+            },
+            {
+              name: 'Github',
+              token: 'jirowjgrwGREHEgdrgithub',
+              createdAt: new Date(2022, 1, 2),
+            },
+            {
+              name: 'N8n',
+              token: 'jirowjgrwGREHrgwhrwn8n',
+              createdAt: new Date(2022, 1, 3),
+            },
+          ],
+        },
+      },
       workspaces: {
         create: {
           role: WorkspaceRole.ADMIN,
@@ -99,7 +120,7 @@ export const createUsers = async () => {
   await prisma.workspace.create({
     data: {
       id: freeWorkspaceId,
-      name: 'Free Shared Workspace',
+      name: 'Free Shared workspace',
       plan: Plan.FREE,
       members: {
         createMany: {
@@ -114,7 +135,7 @@ export const createUsers = async () => {
   return prisma.workspace.create({
     data: {
       id: sharedWorkspaceId,
-      name: 'Shared Workspace',
+      name: 'Shared workspace',
       plan: Plan.TEAM,
       members: {
         createMany: {

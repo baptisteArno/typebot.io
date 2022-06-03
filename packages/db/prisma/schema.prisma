@@ -48,12 +48,22 @@ model User {
   image                   String?
   accounts                Account[]
   sessions                Session[]
-  apiToken                String?
+  apiTokens               ApiToken[]
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   company                 String?
   onboardingCategories    String[]
   graphNavigation         GraphNavigation?
   workspaces              MemberInWorkspace[]
+}
+
+model ApiToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  name       String
+  ownerId    String
+  owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  lastUsedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 }
 
 model Workspace {
@@ -64,7 +74,7 @@ model Workspace {
   folders       DashboardFolder[]
   typebots      Typebot[]
   createdAt     DateTime              @default(now())
-  plan          Plan @default(FREE)
+  plan          Plan                  @default(FREE)
   stripeId      String?               @unique
   customDomains CustomDomain[]
   credentials   Credentials[]
@@ -102,15 +112,15 @@ enum GraphNavigation {
 }
 
 model CustomDomain {
-  name        String    @id
-  createdAt   DateTime  @default(now())
+  name        String     @id
+  createdAt   DateTime   @default(now())
   workspaceId String?
   workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Credentials {
-  id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
   workspaceId String?
   workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   data        String // Encrypted data

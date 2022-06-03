@@ -8,16 +8,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
 
-  const id = req.query.id.toString()
-  if (req.method === 'PUT') {
-    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.user.update({
+  if (req.method === 'DELETE') {
+    const id = req.query.tokenId.toString()
+    const apiToken = await prisma.apiToken.delete({
       where: { id },
-      data,
     })
-    return res.send({ typebots })
+    return res.send({ apiToken })
   }
-  return methodNotAllowed(res)
+  methodNotAllowed(res)
 }
 
 export default withSentry(handler)

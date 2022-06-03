@@ -131,9 +131,11 @@ export const WorkspaceSettingsModal = ({
             )}
           </Stack>
         </Stack>
-        <Flex flex="1" p="10">
-          <SettingsContent tab={selectedTab} onClose={onClose} />
-        </Flex>
+        {isOpen && (
+          <Flex flex="1" p="10">
+            <SettingsContent tab={selectedTab} onClose={onClose} />
+          </Flex>
+        )}
       </ModalContent>
     </Modal>
   )

@@ -177,3 +177,17 @@ export const toTitleCase = (str: string) =>
     /\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
   )
+
+export const generateId = (idDesiredLength: number): string => {
+  const getRandomCharFromAlphabet = (alphabet: string): string => {
+    return alphabet.charAt(Math.floor(Math.random() * alphabet.length))
+  }
+
+  return Array.from({ length: idDesiredLength })
+    .map(() => {
+      return getRandomCharFromAlphabet(
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      )
+    })
+    .join('')
+}
