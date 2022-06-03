@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     Buffer.from(req.query.state.toString(), 'base64').toString()
   )
   if (req.method === 'GET') {
-    const code = req.query.code.toString()
+    const code = req.query.code as string | undefined
     if (!workspaceId) return badRequest(res)
     if (!code)
       return res.status(400).send({ message: "Bad request, couldn't get code" })
