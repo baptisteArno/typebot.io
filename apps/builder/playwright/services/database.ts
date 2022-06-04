@@ -260,15 +260,12 @@ const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): Omit<PublicTypebot, 'createdAt' | 'updatedAt'> => ({
   id,
-  name: typebot.name,
   blocks: typebot.blocks,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
-  publicId: typebot.publicId,
   variables: typebot.variables,
   edges: typebot.edges,
-  customDomain: null,
 })
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({

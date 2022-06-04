@@ -23,14 +23,14 @@ import { integrationsList } from './integrations/EmbedButton'
 
 export const ShareContent = () => {
   const { workspace } = useWorkspace()
-  const { typebot, updateOnBothTypebots } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
   const { showToast } = useToast()
 
   const handlePublicIdChange = (publicId: string) => {
     if (publicId === typebot?.publicId) return
     if (publicId.length < 4)
       return showToast({ description: 'ID must be longer than 4 characters' })
-    updateOnBothTypebots({ publicId })
+    updateTypebot({ publicId })
   }
 
   const publicId = typebot
@@ -46,8 +46,8 @@ export const ShareContent = () => {
     handleCustomDomainChange(newDomain)
   }
 
-  const handleCustomDomainChange = (customDomain: string | null) =>
-    updateOnBothTypebots({ customDomain })
+  const handleCustomDomainChange = (customDomain: string | undefined) =>
+    updateTypebot({ customDomain })
 
   return (
     <Flex h="full" w="full" justifyContent="center" align="flex-start">
@@ -76,7 +76,7 @@ export const ShareContent = () => {
                 icon={<TrashIcon />}
                 aria-label="Remove custom domain"
                 size="xs"
-                onClick={() => handleCustomDomainChange(null)}
+                onClick={() => handleCustomDomainChange(undefined)}
               />
             </HStack>
           )}

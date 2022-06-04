@@ -52,6 +52,7 @@ type UpdateTypebotPayload = Partial<{
   name: string
   publishedTypebotId: string
   icon: string
+  customDomain: string
 }>
 
 export type SetTypebot = (
@@ -77,11 +78,6 @@ const typebotContext = createContext<
       webhook: Partial<Webhook>
     ) => Promise<void>
     updateTypebot: (updates: UpdateTypebotPayload) => void
-    updateOnBothTypebots: (updates: {
-      publicId?: string
-      name?: string
-      customDomain?: string | null
-    }) => void
     publishTypebot: () => void
     restorePublishedTypebot: () => void
   } & BlocksActions &
@@ -322,20 +318,6 @@ export const TypebotContext = ({
     }
   }
 
-  const updateOnBothTypebots = async (updates: {
-    publicId?: string
-    name?: string
-    customDomain?: string | null
-  }) => {
-    updateLocalTypebot(updates)
-    await saveTypebot()
-    if (!publishedTypebot) return
-    await savePublishedTypebot({
-      ...publishedTypebot,
-      ...updates,
-    })
-  }
-
   const restorePublishedTypebot = () => {
     if (!publishedTypebot || !localTypebot) return
     setLocalTypebot(parsePublicTypebotToTypebot(publishedTypebot, localTypebot))
@@ -377,7 +359,6 @@ export const TypebotContext = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        updateOnBothTypebots,
         updateWebhook,
         ...blocksActions(setLocalTypebot as SetTypebot),
         ...stepsAction(setLocalTypebot as SetTypebot),

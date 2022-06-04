@@ -25,7 +25,6 @@ export const TypebotHeader = () => {
   const router = useRouter()
   const {
     typebot,
-    updateOnBothTypebots,
     updateTypebot,
     save,
     undo,
@@ -36,7 +35,7 @@ export const TypebotHeader = () => {
   } = useTypebot()
   const { setRightPanel, rightPanel, setStartPreviewAtBlock } = useEditor()
 
-  const handleNameSubmit = (name: string) => updateOnBothTypebots({ name })
+  const handleNameSubmit = (name: string) => updateTypebot({ name })
 
   const handleChangeIcon = (icon: string) => updateTypebot({ icon })
 

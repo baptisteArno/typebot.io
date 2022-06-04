@@ -5,6 +5,7 @@ import {
   Stack,
   HStack,
   Text,
+  Spinner,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
@@ -70,6 +71,7 @@ export const SignInForm = ({
     })
     setAuthLoading(false)
   }
+  if (isLoadingProviders) return <Spinner />
   if (hasNoAuthProvider)
     return (
       <Text>

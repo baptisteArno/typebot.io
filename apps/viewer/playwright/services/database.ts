@@ -92,15 +92,12 @@ const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
   id,
-  name: typebot.name,
   blocks: typebot.blocks,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
-  publicId: typebot.publicId,
   variables: typebot.variables,
   edges: typebot.edges,
-  customDomain: null,
   createdAt: typebot.createdAt,
   updatedAt: typebot.updatedAt,
 })

@@ -215,14 +215,11 @@ model PublicTypebot {
   updatedAt    DateTime @default(now()) @updatedAt
   typebotId    String   @unique
   typebot      Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  name         String
   blocks       Json[]
   variables    Json[]
   edges        Json[]
   theme        Json
   settings     Json
-  publicId     String?  @unique
-  customDomain String?  @unique
 }
 
 model Result {

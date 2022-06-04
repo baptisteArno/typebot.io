@@ -62,8 +62,9 @@ export const getServerSideProps: GetServerSideProps = async (
 
 const getTypebotFromPublicId = async (publicId?: string) => {
   if (!publicId) return null
-  const typebot = await prisma.publicTypebot.findUnique({
-    where: { publicId },
+  const typebot = await prisma.publicTypebot.findFirst({
+    where: { typebot: { publicId } },
+    include: { typebot: { select: { name: true } } },
   })
   if (isNotDefined(typebot)) return null
   return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
@@ -71,7 +72,8 @@ const getTypebotFromPublicId = async (publicId?: string) => {
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
   const typebot = await prisma.publicTypebot.findFirst({
-    where: { customDomain },
+    where: { typebot: { customDomain } },
+    include: { typebot: { select: { name: true } } },
   })
   if (isNotDefined(typebot)) return null
   return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')

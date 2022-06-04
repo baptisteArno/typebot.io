@@ -9,7 +9,7 @@ import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
 
 export type TypebotPageProps = {
-  typebot?: PublicTypebot
+  typebot?: PublicTypebot & { typebot: { name: string } }
   url: string
   isIE: boolean
   customHeadCode: string | null
@@ -97,7 +97,7 @@ export const TypebotPage = ({
     <div style={{ height: '100vh' }}>
       <SEO
         url={url}
-        typebotName={typebot.name}
+        typebotName={typebot.typebot.name}
         metadata={typebot.settings.metadata}
       />
       {showTypebot && (
