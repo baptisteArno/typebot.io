@@ -4,6 +4,7 @@ import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
+import AzureADProvider from "next-auth/providers/azure-ad";
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -76,6 +77,20 @@ if (
       userinfo: `${BASE_URL}/api/v4/user`,
       name: process.env.GITLAB_NAME || 'GitLab',
     })
+  )
+}
+
+if (
+  isNotEmpty(process.env.AZURE_AD_CLIENT_ID) &&
+  isNotEmpty(process.env.AZURE_AD_CLIENT_SECRET) &&
+  isNotEmpty(process.env.AZURE_AD_TENANT_ID)
+) {
+  providers.push(
+    AzureADProvider({
+      clientId: process.env.AZURE_AD_CLIENT_ID,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
+      tenantId: process.env.AZURE_AD_TENANT_ID,
+    }),
   )
 }
 

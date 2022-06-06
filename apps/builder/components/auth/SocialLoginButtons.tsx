@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/router'
 import React from 'react'
 import { stringify } from 'qs'
-import { FacebookLogo, GoogleLogo, GitlabLogo } from 'assets/logos'
+import { FacebookLogo, GoogleLogo, GitlabLogo, AzureAdLogo } from 'assets/logos'
 import { BuiltInProviderType } from 'next-auth/providers'
 
 type Props = {
@@ -39,6 +39,11 @@ export const SocialLoginButtons = ({ providers }: Props) => {
 
   const handleGitlabClick = async () =>
     signIn('gitlab', {
+      callbackUrl: `/typebots?${stringify(query)}`,
+    })
+
+  const handleAzureAdClick = async () =>
+    signIn('azure-ad', {
       callbackUrl: `/typebots?${stringify(query)}`,
     })
 
@@ -86,6 +91,17 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           variant="outline"
         >
           Continue with {providers.gitlab.name}
+        </Button>
+      )}
+      {providers?.['azure-ad'] && (
+        <Button
+          leftIcon={<AzureAdLogo />}
+          onClick={handleAzureAdClick}
+          data-testid='azure-ad'
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with {providers['azure-ad'].name}
         </Button>
       )}
     </Stack>
