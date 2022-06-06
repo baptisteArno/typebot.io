@@ -82,7 +82,7 @@ export const SignInForm = ({
         >
           configure at least one auth provider
         </NextChakraLink>{' '}
-        (Email, Google, GitHub or Facebook).
+        (Email, Google, GitHub, Facebook or Azure AD).
       </Text>
     )
   return (
