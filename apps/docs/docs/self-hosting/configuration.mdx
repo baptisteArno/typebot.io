@@ -112,6 +112,20 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebo
 
 </p></details>
 
+<details><summary><h3>Azure AD (Auth)</h3></summary>
+<p>
+
+If you are using [Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/) for the authentication you can set the following environment variables.
+The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-ad`
+
+| Parameter              | Default | Description                                                   |
+| ---------------------- | ------- | ------------------------------------------------------------- |
+| AZURE_AD_CLIENT_ID     | --      | Application client ID                                         |
+| AZURE_AD_CLIENT_SECRET | --      | Application client secret. Can be obtained from Azure Portal. |
+| AZURE_AD_TENANT_ID     | --      | Azure Tenant ID                                               |
+
+</p></details>
+
 <details><summary><h3>S3 Storage (Media uploads)</h3></summary>
 <p>
 
