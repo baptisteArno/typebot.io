@@ -8,7 +8,6 @@ export const AzureAdLogo = (props: IconProps) => {
       viewBox="0 0 374.5 377.3"
       {...props}
     >
-      {/* <style>.st0{fill:#}.st1{}</style> */}
       <g id="layer1" transform="translate(-39.022 -78.115)">
         <g id="g1016" transform="translate(-63.947 -88.179)">
           <path
