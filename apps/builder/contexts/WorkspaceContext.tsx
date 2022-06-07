@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { byId, isNotEmpty } from 'utils'
+import { byId } from 'utils'
 import { MemberInWorkspace, Plan, Workspace, WorkspaceRole } from 'db'
 import {
   createNewWorkspace,
@@ -87,8 +87,11 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot?.workspaceId])
 
-  const switchWorkspace = (workspaceId: string) =>
-    setCurrentWorkspace(workspaces?.find(byId(workspaceId)))
+  const switchWorkspace = (workspaceId: string) => {
+    const newWorkspace = workspaces?.find(byId(workspaceId))
+    if (!newWorkspace) return
+    setCurrentWorkspace(newWorkspace)
+  }
 
   const createWorkspace = async (name?: string) => {
     if (!workspaces) return

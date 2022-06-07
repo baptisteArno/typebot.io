@@ -1,36 +1,29 @@
-export type Theme = {
-  general: GeneralTheme
-  chat: ChatTheme
-  customCss?: string
-}
+import { z } from 'zod'
 
-export type GeneralTheme = {
-  font: string
-  background: Background
-}
+const avatarPropsSchema = z.object({
+  isEnabled: z.boolean(),
+  url: z.string().optional(),
+})
 
-export type AvatarProps = {
-  isEnabled: boolean
-  url?: string
-}
+const containerColorsSchema = z.object({
+  backgroundColor: z.string(),
+  color: z.string(),
+})
 
-export type ChatTheme = {
-  hostAvatar?: AvatarProps
-  guestAvatar?: AvatarProps
-  hostBubbles: ContainerColors
-  guestBubbles: ContainerColors
-  buttons: ContainerColors
-  inputs: InputColors
-}
+const inputColorsSchema = containerColorsSchema.and(
+  z.object({
+    placeholderColor: z.string(),
+  })
+)
 
-export type ContainerColors = {
-  backgroundColor: string
-  color: string
-}
-
-export type InputColors = ContainerColors & {
-  placeholderColor: string
-}
+const chatThemeSchema = z.object({
+  hostAvatar: avatarPropsSchema.optional(),
+  guestAvatar: avatarPropsSchema.optional(),
+  hostBubbles: containerColorsSchema,
+  guestBubbles: containerColorsSchema,
+  buttons: containerColorsSchema,
+  inputs: inputColorsSchema,
+})
 
 export enum BackgroundType {
   COLOR = 'Color',
@@ -38,10 +31,21 @@ export enum BackgroundType {
   NONE = 'None',
 }
 
-export type Background = {
-  type: BackgroundType
-  content?: string
-}
+const backgroundSchema = z.object({
+  type: z.nativeEnum(BackgroundType),
+  content: z.string().optional(),
+})
+
+const generalThemeSchema = z.object({
+  font: z.string(),
+  background: backgroundSchema,
+})
+
+export const themeSchema = z.object({
+  general: generalThemeSchema,
+  chat: chatThemeSchema,
+  customCss: z.string().optional(),
+})
 
 export const defaultTheme: Theme = {
   chat: {
@@ -56,3 +60,11 @@ export const defaultTheme: Theme = {
   },
   general: { font: 'Open Sans', background: { type: BackgroundType.NONE } },
 }
+
+export type Theme = z.infer<typeof themeSchema>
+export type ChatTheme = z.infer<typeof chatThemeSchema>
+export type AvatarProps = z.infer<typeof avatarPropsSchema>
+export type GeneralTheme = z.infer<typeof generalThemeSchema>
+export type Background = z.infer<typeof backgroundSchema>
+export type ContainerColors = z.infer<typeof containerColorsSchema>
+export type InputColors = z.infer<typeof inputColorsSchema>

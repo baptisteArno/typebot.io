@@ -18,12 +18,14 @@ import { Plan } from 'db'
 import { useToast } from 'components/shared/hooks/useToast'
 
 type Props = {
+  workspaceId: string
   typebotId: string
   totalResults: number
   totalHiddenResults?: number
   onDeleteResults: (total: number) => void
 }
 export const SubmissionsContent = ({
+  workspaceId,
   typebotId,
   totalResults,
   totalHiddenResults,
@@ -51,6 +53,7 @@ export const SubmissionsContent = ({
   const resultHeader = parseResultHeader(blocksAndVariables)
 
   const { data, mutate, setSize, hasMore } = useResults({
+    workspaceId,
     typebotId,
     onError: (err) => showToast({ title: err.name, description: err.message }),
   })
@@ -125,7 +128,7 @@ export const SubmissionsContent = ({
 
   const getAllTableData = async () => {
     if (!publishedTypebot) return []
-    const results = await getAllResults(typebotId)
+    const results = await getAllResults(workspaceId, typebotId)
     return convertResultsToTableData(results, resultHeader)
   }
 

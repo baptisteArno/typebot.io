@@ -1,19 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export const methodNotAllowed = (res: NextApiResponse) =>
-  res.status(405).json({ message: 'Method Not Allowed' })
+export const methodNotAllowed = (
+  res: NextApiResponse,
+  customMessage?: string
+) => res.status(405).json({ message: customMessage ?? 'Method Not Allowed' })
 
-export const notAuthenticated = (res: NextApiResponse) =>
-  res.status(401).json({ message: 'Not authenticated' })
+export const notAuthenticated = (
+  res: NextApiResponse,
+  customMessage?: string
+) => res.status(401).json({ message: customMessage ?? 'Not authenticated' })
 
-export const notFound = (res: NextApiResponse) =>
-  res.status(404).json({ message: 'Not found' })
+export const notFound = (res: NextApiResponse, customMessage?: string) =>
+  res.status(404).json({ message: customMessage ?? 'Not found' })
 
-export const badRequest = (res: NextApiResponse) =>
-  res.status(400).json({ message: 'Bad Request' })
+export const badRequest = (res: NextApiResponse, customMessage?: any) =>
+  res.status(400).json({ message: customMessage ?? 'Bad Request' })
 
-export const forbidden = (res: NextApiResponse) =>
-  res.status(403).json({ message: 'Bad Request' })
+export const forbidden = (res: NextApiResponse, customMessage?: string) =>
+  res.status(403).json({ message: customMessage ?? 'Bad Request' })
 
 export const initMiddleware =
   (

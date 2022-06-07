@@ -70,11 +70,13 @@ export const ResultsContent = () => {
         </HStack>
       </Flex>
       <Flex pt={['10px', '60px']} w="full" justify="center">
-        {publishedTypebot &&
+        {workspace &&
+          publishedTypebot &&
           (isAnalytics ? (
             <AnalyticsContent stats={stats} />
           ) : (
             <SubmissionsContent
+              workspaceId={workspace.id}
               typebotId={publishedTypebot.typebotId}
               onDeleteResults={handleDeletedResults}
               totalResults={stats?.totalStarts ?? 0}
