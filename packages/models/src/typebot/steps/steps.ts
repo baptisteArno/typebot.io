@@ -1,21 +1,21 @@
 import {
   InputStepOptions,
   IntegrationStepOptions,
-  IntegrationStepType,
   Item,
   LogicStepOptions,
 } from '.'
-import { BubbleStep, BubbleStepType } from './bubble'
-import { InputStep, InputStepType } from './inputs'
-import { IntegrationStep } from './integration'
-import { ConditionStep, LogicStep, LogicStepType } from './logic'
-
-export type Step =
-  | StartStep
-  | BubbleStep
-  | InputStep
-  | LogicStep
-  | IntegrationStep
+import { BubbleStep, bubbleStepSchema } from './bubble'
+import { InputStep, inputStepSchema } from './input'
+import { IntegrationStep, integrationStepSchema } from './integration'
+import { ConditionStep, LogicStep, logicStepSchema } from './logic'
+import { z } from 'zod'
+import {
+  BubbleStepType,
+  InputStepType,
+  IntegrationStepType,
+  LogicStepType,
+  stepBaseSchema,
+} from './shared'
 
 export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep
 
@@ -49,14 +49,26 @@ export type StepOptions =
 
 export type StepWithItems = Omit<Step, 'items'> & { items: Item[] }
 
-export type StepBase = { id: string; blockId: string; outgoingEdgeId?: string }
+export type StepBase = z.infer<typeof stepBaseSchema>
 
-export type StartStep = StepBase & {
-  type: 'start'
-  label: string
-}
+const startStepSchema = stepBaseSchema.and(
+  z.object({
+    type: z.literal('start'),
+    label: z.string(),
+  })
+)
+
+export type StartStep = z.infer<typeof startStepSchema>
 
 export type StepIndices = {
   blockIndex: number
   stepIndex: number
 }
+
+export const stepSchema = startStepSchema
+  .or(bubbleStepSchema)
+  .or(inputStepSchema)
+  .or(logicStepSchema)
+  .or(integrationStepSchema)
+
+export type Step = z.infer<typeof stepSchema>

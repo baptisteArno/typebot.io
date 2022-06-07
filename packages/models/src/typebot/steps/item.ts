@@ -1,20 +1,14 @@
-import { ButtonItem, ConditionItem } from '.'
-
-export type Item = ButtonItem | ConditionItem
-
-export enum ItemType {
-  BUTTON,
-  CONDITION,
-}
-
-export type ItemBase = {
-  id: string
-  stepId: string
-  outgoingEdgeId?: string
-}
+import { z } from 'zod'
+import { itemBaseSchema } from './shared'
+import { buttonItemSchema } from './input'
+import { conditionItemSchema } from './logic'
 
 export type ItemIndices = {
   blockIndex: number
   stepIndex: number
   itemIndex: number
 }
+const itemScema = buttonItemSchema.or(conditionItemSchema)
+
+export type ItemBase = z.infer<typeof itemBaseSchema>
+export type Item = z.infer<typeof itemScema>

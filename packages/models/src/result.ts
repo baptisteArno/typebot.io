@@ -1,5 +1,6 @@
 import { Result as ResultFromPrisma } from 'db'
-import { Answer, InputStepType, VariableWithValue } from '.'
+import { Answer, VariableWithValue } from '.'
+import { InputStepType } from './typebot/steps/shared'
 
 export type Result = Omit<ResultFromPrisma, 'createdAt' | 'variables'> & {
   createdAt: string

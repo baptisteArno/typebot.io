@@ -2,7 +2,7 @@ import { ResultWithAnswers, VariableWithValue, ResultHeaderCell } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
-import { isDefined, sendRequest } from 'utils'
+import { isDefined, isEmpty, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text } from '@chakra-ui/react'
 import { CodeIcon, CalendarIcon } from 'assets/icons'
@@ -11,6 +11,7 @@ import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 const paginationLimit = 50
 
 const getKey = (
+  workspaceId: string,
   typebotId: string,
   pageIndex: number,
   previousPageData: {
@@ -18,16 +19,19 @@ const getKey = (
   }
 ) => {
   if (previousPageData && previousPageData.results.length === 0) return null
-  if (pageIndex === 0) return `/api/typebots/${typebotId}/results?limit=50`
+  if (pageIndex === 0)
+    return `/api/typebots/${typebotId}/results?limit=50&workspaceId=${workspaceId}`
   return `/api/typebots/${typebotId}/results?lastResultId=${
     previousPageData.results[previousPageData.results.length - 1].id
-  }&limit=${paginationLimit}`
+  }&limit=${paginationLimit}&workspaceId=${workspaceId}`
 }
 
 export const useResults = ({
+  workspaceId,
   typebotId,
   onError,
 }: {
+  workspaceId: string
   typebotId: string
   onError: (error: Error) => void
 }) => {
@@ -40,9 +44,14 @@ export const useResults = ({
       previousPageData: {
         results: ResultWithAnswers[]
       }
-    ) => getKey(typebotId, pageIndex, previousPageData),
+    ) => getKey(workspaceId, typebotId, pageIndex, previousPageData),
     fetcher,
-    { revalidateAll: true }
+    {
+      revalidateAll: true,
+      dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? undefined
+        : 0,
+    }
   )
 
   if (error) onError(error)
@@ -80,12 +89,12 @@ export const deleteAllResults = async (typebotId: string) =>
     method: 'DELETE',
   })
 
-export const getAllResults = async (typebotId: string) => {
+export const getAllResults = async (workspaceId: string, typebotId: string) => {
   const results = []
   let hasMore = true
   let lastResultId: string | undefined = undefined
   do {
-    const query = stringify({ limit: 200, lastResultId })
+    const query = stringify({ limit: 200, lastResultId, workspaceId })
     const { data } = await sendRequest<{ results: ResultWithAnswers[] }>({
       url: `/api/typebots/${typebotId}/results?${query}`,
       method: 'GET',

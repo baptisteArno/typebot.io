@@ -114,15 +114,15 @@ enum GraphNavigation {
 model CustomDomain {
   name        String     @id
   createdAt   DateTime   @default(now())
-  workspaceId String?
-  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Credentials {
   id          String     @id @default(cuid())
   createdAt   DateTime   @default(now())
-  workspaceId String?
-  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   data        String // Encrypted data
   name        String
   type        String
@@ -154,8 +154,8 @@ model DashboardFolder {
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
-  workspaceId    String?
-  workspace      Workspace?        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId    String
+  workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Typebot {
@@ -179,8 +179,8 @@ model Typebot {
   collaborators      CollaboratorsOnTypebots[]
   invitations        Invitation[]
   webhooks           Webhook[]
-  workspaceId        String?
-  workspace          Workspace?                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId        String
+  workspace          Workspace               @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Invitation {

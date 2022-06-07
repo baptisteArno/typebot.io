@@ -20,6 +20,10 @@
     "models": "*",
     "next": "^12.1.6"
   },
+  "peerDependencies": {
+    "next": "^12.1.6",
+    "models": "*"
+  },
   "scripts": {
     "build": "yarn rollup -c",
     "dx": "yarn rollup -c --watch"

@@ -78,6 +78,7 @@ test.describe.parallel('Settings page', () => {
       )
       await page.goto(`/typebots/${typebotId}/settings`)
       await page.click('button:has-text("Metadata")')
+      await page.waitForTimeout(1000)
 
       // Fav icon
       const favIconImg = page.locator('img >> nth=0')

@@ -45,7 +45,10 @@
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
-    "react": "^18.1.0"
+    "react": "^18.1.0",
+    "utils": "*",
+    "db": "*",
+    "models": "*"
   },
   "scripts": {
     "build": "yarn rollup -c",
