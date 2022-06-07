@@ -59,25 +59,27 @@ Here is an example for a bubble config:
 
 <script>
   const typebot = Typebot.Chat({
-    publishId: "exemple-lead-gen",
-    buttonColor: "#0042DA",
-    buttonIconUrl: "",
+    publishId: 'exemple-lead-gen',
+    buttonColor: '#0042DA',
+    buttonIconUrl: '',
     loadingColors: {
-      chatBackground: "#00002e",
-      bubbleBackground: "#F7F8FF",
-      typingDots: "#303235",
+      chatBackground: '#00002e',
+      bubbleBackground: '#F7F8FF',
+      typingDots: '#303235',
     },
-  });
+  })
 </script>
 ```
 
-## Personalize user experience (Hidden variables)
+## Personalize user experience
 
-You can leverage the hidden variables and inject your user information directly into your typebot so that the experience is entirely customized to your user. Here are the available variables from WordPress:
+You can leverage the [hidden variables](/editor/variables#hidden-variables) and inject your user information directly into your typebot so that the experience is entirely customized to your user.
 
-<img src="/img/embeddings/wp-variables.png" alt="WP predefined variables"/>
+Here are the available variables from WordPress, make sure to create them in your typebot's variables dropdown:
 
-Then you can use these variables anywhere on your typebot. For more informations, check out the [Hidden variables doc](https://docs.typebot.io/editor/variables/hidden-variables)
+<img src="/img/embeddings/wp-variables.png" alt="WP predefined variables" width="400px"/>
+
+You can use these variables anywhere on your typebot. For more informations, check out the [Hidden variables doc](https://docs.typebot.io/editor/variables/hidden-variables)
 
 ## Your typebot isn't showing?
 
