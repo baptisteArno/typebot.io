@@ -17,6 +17,11 @@ import { BaseEmoji, emojiIndex } from 'emoji-mart'
 import { emojis } from './emojis'
 import { Input } from '../Textbox/Input'
 import { isEmpty } from 'utils'
+import getConfig from 'next/config'
+
+const {
+  publicRuntimeConfig: { NEXT_PUBLIC_GIPHY_API_KEY },
+} = getConfig()
 
 type Props = {
   url?: string
@@ -183,12 +188,10 @@ const EmojiContent = ({
 }
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => {
-  if (isEmpty(process.env.NEXT_PUBLIC_GIPHY_API_KEY))
+  if (isEmpty(NEXT_PUBLIC_GIPHY_API_KEY))
     return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
   return (
-    <SearchContextManager
-      apiKey={process.env.NEXT_PUBLIC_GIPHY_API_KEY as string}
-    >
+    <SearchContextManager apiKey={NEXT_PUBLIC_GIPHY_API_KEY}>
       <GiphySearch onSubmit={onNewUrl} />
     </SearchContextManager>
   )

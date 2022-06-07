@@ -1,6 +1,7 @@
 import { Plan, User } from 'db'
 import { loadStripe } from '@stripe/stripe-js/pure'
 import { isDefined, isEmpty, sendRequest } from 'utils'
+import getConfig from 'next/config'
 
 type Props = {
   user: User
@@ -39,7 +40,10 @@ const redirectToCheckout = async ({
   plan,
   workspaceId,
 }: Omit<Props, 'customerId'>) => {
-  if (isEmpty(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY))
+  const {
+    publicRuntimeConfig: { NEXT_PUBLIC_STRIPE_PUBLIC_KEY },
+  } = getConfig()
+  if (isEmpty(NEXT_PUBLIC_STRIPE_PUBLIC_KEY))
     throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is missing in env')
   const { data, error } = await sendRequest<{ sessionId: string }>({
     method: 'POST',
@@ -53,7 +57,7 @@ const redirectToCheckout = async ({
     },
   })
   if (error || !data) return
-  const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+  const stripe = await loadStripe(NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
   await stripe?.redirectToCheckout({
     sessionId: data?.sessionId,
   })
