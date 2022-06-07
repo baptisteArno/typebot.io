@@ -38,6 +38,7 @@ import {
   ChoiceInputStep,
   ConditionStep,
   defaultPaymentInputOptions,
+  defaultRatingInputOptions,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -326,6 +327,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultChoiceInputOptions
     case InputStepType.PAYMENT:
       return defaultPaymentInputOptions
+    case InputStepType.RATING:
+      return defaultRatingInputOptions
     case LogicStepType.SET_VARIABLE:
       return defaultSetVariablesOptions
     case LogicStepType.REDIRECT:

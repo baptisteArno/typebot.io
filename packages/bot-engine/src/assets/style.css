@@ -198,3 +198,23 @@ textarea {
 .ping span {
   background-color: var(--typebot-button-bg-color);
 }
+
+.rating-icon-container svg {
+  width: 42px;
+  height: 42px;
+  stroke: var(--typebot-button-bg-color);
+  fill: var(--typebot-host-bubble-bg-color);
+  transition: fill 100ms ease-out;
+}
+
+.rating-icon-container.selected svg {
+  fill: var(--typebot-button-bg-color);
+}
+
+.rating-icon-container:hover svg {
+  filter: brightness(0.9);
+}
+
+.rating-icon-container:active svg {
+  filter: brightness(0.75);
+}

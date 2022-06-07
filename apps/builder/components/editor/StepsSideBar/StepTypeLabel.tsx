@@ -10,8 +10,10 @@ import React from 'react'
 
 type Props = { type: StepType }
 
-export const StepTypeLabel = ({ type }: Props) => {
+export const StepTypeLabel = ({ type }: Props): JSX.Element => {
   switch (type) {
+    case 'start':
+      return <Text>Start</Text>
     case BubbleStepType.TEXT:
     case InputStepType.TEXT:
       return <Text>Text</Text>
@@ -39,6 +41,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Button</Text>
     case InputStepType.PAYMENT:
       return <Text>Payment</Text>
+    case InputStepType.RATING:
+      return <Text>Rating</Text>
     case LogicStepType.SET_VARIABLE:
       return <Text>Set variable</Text>
     case LogicStepType.CONDITION:
@@ -79,7 +83,5 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Pabbly</Text>
     case IntegrationStepType.EMAIL:
       return <Text>Email</Text>
-    default:
-      return <></>
   }
 }

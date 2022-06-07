@@ -9,6 +9,7 @@ import {
   phoneNumberInputOptionsSchema,
   phoneNumberInputStepSchema,
 } from './phone'
+import { ratingInputOptionsSchema, ratingInputStepSchema } from './rating'
 import { textInputOptionsSchema, textInputSchema } from './text'
 import { urlInputOptionsSchema, urlInputSchema } from './url'
 
@@ -22,6 +23,7 @@ export const inputStepOptionsSchema = textInputOptionsSchema
   .or(phoneNumberInputOptionsSchema)
   .or(dateInputOptionsSchema)
   .or(paymentInputOptionsSchema)
+  .or(ratingInputOptionsSchema)
 
 export const inputStepSchema = textInputSchema
   .or(numberInputSchema)
@@ -31,6 +33,7 @@ export const inputStepSchema = textInputSchema
   .or(phoneNumberInputStepSchema)
   .or(choiceInputSchema)
   .or(paymentInputSchema)
+  .or(ratingInputStepSchema)
 
 export type InputStep = z.infer<typeof inputStepSchema>
 export type InputStepOptions = z.infer<typeof inputStepOptionsSchema>

@@ -23,7 +23,7 @@ It means you can apply operations on existing variables:
 But also set the variable to the current date for example:
 
 ```js
-new Date()
+new Date().toISOString()
 ```
 
 ## Random ID

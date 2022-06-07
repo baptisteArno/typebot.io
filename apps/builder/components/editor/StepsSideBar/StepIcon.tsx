@@ -18,6 +18,7 @@ import {
   NumberIcon,
   PhoneIcon,
   SendEmailIcon,
+  StarIcon,
   TextIcon,
   WebhookIcon,
 } from 'assets/icons'
@@ -65,6 +66,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CheckSquareIcon color="orange.500" {...props} />
     case InputStepType.PAYMENT:
       return <CreditCardIcon color="orange.500" {...props} />
+    case InputStepType.RATING:
+      return <StarIcon color="orange.500" {...props} />
     case LogicStepType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:
@@ -91,7 +94,5 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <SendEmailIcon {...props} />
     case 'start':
       return <FlagIcon {...props} />
-    default:
-      return <></>
   }
 }

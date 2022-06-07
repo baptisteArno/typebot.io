@@ -15,7 +15,7 @@ import {
   LogicStepType,
   Step,
   StepOptions,
-  TextBubbleStep,
+  StepWithOptions,
   Webhook,
 } from 'models'
 import { useRef } from 'react'
@@ -33,6 +33,7 @@ import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PaymentSettings } from './bodies/PaymentSettings'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
+import { RatingInputSettings } from './bodies/RatingInputSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
 import { SendEmailSettings } from './bodies/SendEmailSettings'
 import { SetVariableSettings } from './bodies/SetVariableSettings'
@@ -41,7 +42,7 @@ import { WebhookSettings } from './bodies/WebhookSettings'
 import { ZapierSettings } from './bodies/ZapierSettings'
 
 type Props = {
-  step: Exclude<Step, TextBubbleStep>
+  step: StepWithOptions | ConditionStep
   webhook?: Webhook
   onExpandClick: () => void
   onStepChange: (updates: Partial<Step>) => void
@@ -87,10 +88,10 @@ export const StepSettings = ({
   step,
   onStepChange,
 }: {
-  step: Step
+  step: StepWithOptions | ConditionStep
   webhook?: Webhook
   onStepChange: (step: Partial<Step>) => void
-}) => {
+}): JSX.Element => {
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
   }
@@ -159,6 +160,14 @@ export const StepSettings = ({
     case InputStepType.PAYMENT: {
       return (
         <PaymentSettings
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.RATING: {
+      return (
+        <RatingInputSettings
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />
@@ -257,9 +266,6 @@ export const StepSettings = ({
           onOptionsChange={handleOptionsChange}
         />
       )
-    }
-    default: {
-      return <></>
     }
   }
 }

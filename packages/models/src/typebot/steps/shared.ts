@@ -39,6 +39,7 @@ export enum InputStepType {
   PHONE = 'phone number input',
   CHOICE = 'choice input',
   PAYMENT = 'payment input',
+  RATING = 'rating input',
 }
 
 export enum LogicStepType {
