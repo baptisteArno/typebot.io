@@ -9,8 +9,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   BubbleStep,
   BubbleStepContent,
+  ConditionStep,
   DraggableStep,
   Step,
+  StepWithOptions,
   TextBubbleContent,
   TextBubbleStep,
 } from 'models'
@@ -210,11 +212,16 @@ export const StepNode = ({
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(step) && (
-            <SettingsPopoverContent
-              step={step}
-              onExpandClick={handleExpandClick}
-              onStepChange={handleStepUpdate}
-            />
+            <>
+              <SettingsPopoverContent
+                step={step}
+                onExpandClick={handleExpandClick}
+                onStepChange={handleStepUpdate}
+              />
+              <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
+                <StepSettings step={step} onStepChange={handleStepUpdate} />
+              </SettingsModal>
+            </>
           )}
           {isMediaBubbleStep(step) && (
             <MediaBubblePopoverContent
@@ -222,17 +229,15 @@ export const StepNode = ({
               onContentChange={handleContentChange}
             />
           )}
-          <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-            <StepSettings step={step} onStepChange={handleStepUpdate} />
-          </SettingsModal>
         </Popover>
       )}
     </ContextMenu>
   )
 }
 
-const hasSettingsPopover = (step: Step): step is Exclude<Step, BubbleStep> =>
-  !isBubbleStep(step)
+const hasSettingsPopover = (
+  step: Step
+): step is StepWithOptions | ConditionStep => !isBubbleStep(step)
 
 const isMediaBubbleStep = (
   step: Step

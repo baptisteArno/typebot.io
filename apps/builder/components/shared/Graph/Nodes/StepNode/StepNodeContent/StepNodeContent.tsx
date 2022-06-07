@@ -22,6 +22,7 @@ import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
+import { RatingInputContent } from './contents/RatingInputContent'
 import { SendEmailContent } from './contents/SendEmailContent'
 import { TypebotLinkContent } from './contents/TypebotLinkContent'
 import { ProviderWebhookContent } from './contents/ZapierContent'
@@ -30,7 +31,7 @@ type Props = {
   step: Step | StartStep
   indices: StepIndices
 }
-export const StepNodeContent = ({ step, indices }: Props) => {
+export const StepNodeContent = ({ step, indices }: Props): JSX.Element => {
   if (isInputStep(step) && !isChoiceInput(step) && step.options.variableId) {
     return <WithVariableContent step={step} />
   }
@@ -71,6 +72,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case InputStepType.PAYMENT: {
       return <PaymentInputContent step={step} />
+    }
+    case InputStepType.RATING: {
+      return <RatingInputContent step={step} />
     }
     case LogicStepType.SET_VARIABLE: {
       return <SetVariableContent step={step} />
@@ -143,9 +147,6 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case 'start': {
       return <Text>Start</Text>
-    }
-    default: {
-      return <Text>No input</Text>
     }
   }
 }

@@ -10,6 +10,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { parseVariables } from '../../../services/variable'
 import { isInputValid } from 'services/inputs'
 import { PaymentForm } from './inputs/PaymentForm'
+import { RatingForm } from './inputs/RatingForm'
 
 export const InputChatStep = ({
   step,
@@ -115,5 +116,7 @@ const Input = ({
           onSuccess={() => onSubmit(step.options.labels.success ?? 'Success')}
         />
       )
+    case InputStepType.RATING:
+      return <RatingForm step={step} onSubmit={onSubmit} />
   }
 }
