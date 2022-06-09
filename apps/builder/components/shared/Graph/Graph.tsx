@@ -1,4 +1,5 @@
-import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
+import { Flex, FlexProps, useEventListener, Stack, Tooltip, IconButton } from '@chakra-ui/react'
+import { RedoIcon, UndoIcon } from 'assets/icons'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import {
   blockWidth,
@@ -43,7 +44,7 @@ export const Graph = ({
   } = useStepDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
-  const { createBlock } = useTypebot()
+  const { createBlock, undo, redo, canUndo, canRedo } = useTypebot()
   const {
     setGraphPosition: setGlobalGraphPosition,
     setOpenedStepId,
@@ -184,6 +185,39 @@ export const Graph = ({
           onZoomIn={() => zoom(zoomButtonsScaleStep)}
           onZoomOut={() => zoom(-zoomButtonsScaleStep)}
         />
+        <Stack
+          pos="fixed"
+          top={`calc(${headerHeight}px + 200px)`}
+          right="40px"
+          bgColor="white"
+          rounded="md"
+          zIndex={1}
+          spacing="0"
+          shadow="lg"
+        >
+          <Tooltip label="Undo">
+            <IconButton
+              display={['none', 'flex']}
+              icon={<UndoIcon />}
+              size="sm"
+              aria-label="Undo"
+              onClick={undo}
+              isDisabled={!canUndo}
+            />
+          </Tooltip>
+
+          <Tooltip label="Redo">
+            <IconButton
+              display={['none', 'flex']}
+              icon={<RedoIcon />}
+              size="sm"
+              aria-label="Redo"
+              onClick={redo}
+              isDisabled={!canRedo}
+            />
+          </Tooltip>
+        </Stack>
+
         <Flex
           flex="1"
           w="full"
