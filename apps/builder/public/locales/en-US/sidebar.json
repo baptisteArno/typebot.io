@@ -1,0 +1,45 @@
+{
+  "message": {
+    "title":  "Messages",
+    "text": "Text",
+    "image": "Image",
+    "video": "Video",
+    "file": "File"
+  },
+  "ask":{
+    "title": "Question",
+    "text": "Texto",
+    "email": "Email",
+    "date": "Data",
+    "button": "Botão",
+    "number": "Número",
+    "identify ": "CPF",
+    "phone": "Telefone"
+
+  },
+  "whatsapp": {
+    "title":"Whatsapp Oficial",
+    "1": "Pergunta com lista de opções",
+    "2": "Pergunta com botões interativos", 
+  },
+  "redirect": {
+    "title": "Direcionamentos",
+    "hours": "Definir hórario de atendimento",
+    "time": "Direcionar conversa para um time",
+    "agents": "Direcionar conversa para um agente",
+    "groups": "Direcionar conversa para um grupo",
+    "bot": "Direcionar conversa para um bot ",
+    "end": "Encerrar conversa "
+  },
+  "validate": {
+    "title": "Validações",
+    "condition": "Condição"
+  },
+  "integration": {
+    "title": "Superintegração",
+    "webhook": "Webhook"
+  },
+  "tag": "EXCLUSIVO",
+  "sea": "Plano SEA"
+}
+                   

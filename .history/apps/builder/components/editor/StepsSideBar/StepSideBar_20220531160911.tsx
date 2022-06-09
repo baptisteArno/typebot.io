@@ -115,7 +115,7 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Bubbles Mensagens
+            Bubbles
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map((type) => (

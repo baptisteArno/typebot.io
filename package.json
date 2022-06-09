@@ -20,5 +20,8 @@
   "devDependencies": {
     "turbo": "^1.2.9"
   },
-  "packageManager": "yarn@1.22.17"
+  "packageManager": "yarn@1.22.17",
+  "dependencies": {
+    "react-icons": "^4.4.0"
+  }
 }

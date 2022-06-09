@@ -75,16 +75,29 @@ export const FolderPlusIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const TextIcon = () => (
-  <MaterialDesign.MdOutlineChatBubble/>
+export const TextIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="4 7 4 4 20 4 20 7"></polyline>
+    <line x1="9" y1="20" x2="15" y2="20"></line>
+    <line x1="12" y1="4" x2="12" y2="20"></line>
+  </Icon>
 )
 
-export const ImageIcon = () => (
-  <MaterialDesign.MdOutlineImage/>
+export const ImageIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+    <polyline points="21 15 16 10 5 21"></polyline>
+  </Icon>
 )
 
-export const CalendarIcon = () => (
-  <MaterialDesign.MdDateRange/>
+export const CalendarIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="16" y1="2" x2="16" y2="6"></line>
+    <line x1="8" y1="2" x2="8" y2="6"></line>
+    <line x1="3" y1="10" x2="21" y2="10"></line>
+  </Icon>
 )
 
 export const FlagIcon = (props: IconProps) => (
@@ -137,8 +150,10 @@ export const CheckIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const ChatIcon = () => (
-  <MaterialDesign.MdOutlineTextFields/>
+export const ChatIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </Icon>
 )
 
 export const TrashIcon = (props: IconProps) => (
@@ -148,8 +163,12 @@ export const TrashIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const LayoutIcon = () => (
-  <MaterialDesign.MdInsertDriveFile/>
+export const LayoutIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="3" y1="9" x2="21" y2="9"></line>
+    <line x1="9" y1="21" x2="9" y2="9"></line>
+  </Icon>
 )
 
 export const CodeIcon = (props: IconProps) => (
@@ -192,23 +211,30 @@ export const DownloadIcon = (props: IconProps) => (
 )
 
 export const NumberIcon = () => (
-  <MaterialDesign.MdOutlineReceipt/>
+  <MaterialDesign.MdOutlineReceipt color="primary"/>
 )
 
 export const EmailIcon = () => (
-  <MaterialDesign.MdEmail/>
+  <MaterialDesign.MdOutlineReceipt/>
 )
 
-export const PhoneIcon = () => (
-  <MaterialDesign.MdPhone/>
+export const PhoneIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </Icon>
 )
 
-export const CheckSquareIcon = () => (
-  <MaterialDesign.MdPhone/>
+export const CheckSquareIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="9 11 12 14 22 4"></polyline>
+    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+  </Icon>
 )
 
-export const FilterIcon = () => (
-  <MaterialDesign.MdFilterAlt/>
+export const FilterIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+  </Icon>
 )
 
 export const UserIcon = (props: IconProps) => (
@@ -235,8 +261,17 @@ export const ExternalLinkIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const FilmIcon = () => (
-  <MaterialDesign.MdVideoLibrary/>
+export const FilmIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+    <line x1="7" y1="2" x2="7" y2="22"></line>
+    <line x1="17" y1="2" x2="17" y2="22"></line>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
+    <line x1="2" y1="7" x2="7" y2="7"></line>
+    <line x1="2" y1="17" x2="7" y2="17"></line>
+    <line x1="17" y1="17" x2="22" y2="17"></line>
+    <line x1="17" y1="7" x2="22" y2="7"></line>
+  </Icon>
 )
 
 export const WebhookIcon = (props: IconProps) => (

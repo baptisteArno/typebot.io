@@ -1,8 +1,5 @@
 import { Select } from '@chakra-ui/react'
 import React, { ChangeEvent } from 'react'
-import {
-  agents
-} from 'services/typebots/Agents'
 
 type Props = {
   teamId?: string
