@@ -7,7 +7,7 @@ import React from 'react'
 const ResultsPage = () => (
   <Flex overflow="hidden" h="100vh" flexDir="column">
     <Seo title="Share" />
-    <TypebotHeader />
+    {/* <TypebotHeader /> */}
     <ResultsContent />
   </Flex>
 )

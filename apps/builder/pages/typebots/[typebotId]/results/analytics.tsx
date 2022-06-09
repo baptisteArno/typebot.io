@@ -7,7 +7,7 @@ import React from 'react'
 const AnalyticsPage = () => (
   <Flex overflow="hidden" h="100vh" flexDir="column">
     <Seo title="Analytics" />
-    <TypebotHeader />
+    {/* <TypebotHeader /> */}
     <ResultsContent />
   </Flex>
 )
