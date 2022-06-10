@@ -204,7 +204,7 @@ export const PhoneIcon = () => (
 )
 
 export const CheckSquareIcon = () => (
-  <MaterialDesign.MdPhone/>
+  <MaterialDesign.MdCheckBox/>
 )
 
 export const FilterIcon = () => (

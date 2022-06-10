@@ -115,7 +115,7 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Bubbles Mensagens
+            Mensagens
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map((type) => (
@@ -126,7 +126,7 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Inputs
+            Perguntas
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputStepType).map((type) => (
@@ -137,7 +137,7 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Logic
+            Validações
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map((type) => (
@@ -146,9 +146,9 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        <Stack>
+        {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Integrations
+            Superintegrações
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationStepType).map((type) => (
@@ -160,7 +160,7 @@ export const StepsSideBar = () => {
               />
             ))}
           </SimpleGrid>
-        </Stack>
+        </Stack> */}
 
         {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
