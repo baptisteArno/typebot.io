@@ -2,11 +2,11 @@ import { ItemType, StepBase } from '.'
 import { ItemBase } from './item'
 
 export type LogicStep =
-  | SetVariableStep
+  // | SetVariableStep
   | ConditionStep
-  | RedirectStep
-  | CodeStep
-  | TypebotLinkStep
+  // | RedirectStep
+  // | CodeStep
+  // | TypebotLinkStep
 
 export type LogicStepOptions =
   | SetVariableOptions
@@ -15,17 +15,17 @@ export type LogicStepOptions =
   | TypebotLinkOptions
 
 export enum LogicStepType {
-  SET_VARIABLE = 'Set variable',
+  // SET_VARIABLE = 'Set variable',
   CONDITION = 'Condition',
-  REDIRECT = 'Redirect',
-  CODE = 'Code',
-  TYPEBOT_LINK = 'Typebot link',
+  // REDIRECT = 'Redirect',
+  // CODE = 'Code',
+  // TYPEBOT_LINK = 'Typebot link',
 }
 
-export type SetVariableStep = StepBase & {
-  type: LogicStepType.SET_VARIABLE
-  options: SetVariableOptions
-}
+// export type SetVariableStep = StepBase & {
+//   type: LogicStepType.SET_VARIABLE
+//   options: SetVariableOptions
+// }
 
 export type ConditionStep = StepBase & {
   type: LogicStepType.CONDITION
@@ -37,20 +37,20 @@ export type ConditionItem = ItemBase & {
   content: ConditionContent
 }
 
-export type RedirectStep = StepBase & {
-  type: LogicStepType.REDIRECT
-  options: RedirectOptions
-}
+// export type RedirectStep = StepBase & {
+//   type: LogicStepType.REDIRECT
+//   options: RedirectOptions
+// }
 
-export type CodeStep = StepBase & {
-  type: LogicStepType.CODE
-  options: CodeOptions
-}
+// export type CodeStep = StepBase & {
+//   type: LogicStepType.CODE
+//   options: CodeOptions
+// }
 
-export type TypebotLinkStep = StepBase & {
-  type: LogicStepType.TYPEBOT_LINK
-  options: TypebotLinkOptions
-}
+// export type TypebotLinkStep = StepBase & {
+//   type: LogicStepType.TYPEBOT_LINK
+//   options: TypebotLinkOptions
+// }
 
 export enum LogicalOperator {
   OR = 'OR',

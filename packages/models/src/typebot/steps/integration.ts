@@ -1,13 +1,13 @@
 import { StepBase } from '.'
 
 export type IntegrationStep =
-  | GoogleSheetsStep
-  | GoogleAnalyticsStep
+  // | GoogleSheetsStep
+  // | GoogleAnalyticsStep
   | WebhookStep
-  | SendEmailStep
-  | ZapierStep
-  | MakeComStep
-  | PabblyConnectStep
+  // | SendEmailStep
+  // | ZapierStep
+  // | MakeComStep
+  // | PabblyConnectStep
 
 export type IntegrationStepOptions =
   | GoogleSheetsOptions
@@ -16,24 +16,24 @@ export type IntegrationStepOptions =
   | SendEmailOptions
 
 export enum IntegrationStepType {
-  GOOGLE_SHEETS = 'Google Sheets',
-  GOOGLE_ANALYTICS = 'Google Analytics',
+  // GOOGLE_SHEETS = 'Google Sheets',
+  // GOOGLE_ANALYTICS = 'Google Analytics',
   WEBHOOK = 'Webhook',
-  EMAIL = 'Email',
-  ZAPIER = 'Zapier',
-  MAKE_COM = 'Make.com',
-  PABBLY_CONNECT = 'Pabbly',
+  // EMAIL = 'Email',
+  // ZAPIER = 'Zapier',
+  // MAKE_COM = 'Make.com',
+  // PABBLY_CONNECT = 'Pabbly',
 }
 
-export type GoogleSheetsStep = StepBase & {
-  type: IntegrationStepType.GOOGLE_SHEETS
-  options: GoogleSheetsOptions
-}
+// export type GoogleSheetsStep = StepBase & {
+//   type: IntegrationStepType.GOOGLE_SHEETS
+//   options: GoogleSheetsOptions
+// }
 
-export type GoogleAnalyticsStep = StepBase & {
-  type: IntegrationStepType.GOOGLE_ANALYTICS
-  options: GoogleAnalyticsOptions
-}
+// export type GoogleAnalyticsStep = StepBase & {
+//   type: IntegrationStepType.GOOGLE_ANALYTICS
+//   options: GoogleAnalyticsOptions
+// }
 
 export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK
@@ -41,22 +41,22 @@ export type WebhookStep = StepBase & {
   webhookId: string
 }
 
-export type ZapierStep = Omit<WebhookStep, 'type'> & {
-  type: IntegrationStepType.ZAPIER
-}
+// export type ZapierStep = Omit<WebhookStep, 'type'> & {
+//   type: IntegrationStepType.ZAPIER
+// }
 
-export type MakeComStep = Omit<WebhookStep, 'type'> & {
-  type: IntegrationStepType.MAKE_COM
-}
+// export type MakeComStep = Omit<WebhookStep, 'type'> & {
+//   type: IntegrationStepType.MAKE_COM
+// }
 
-export type PabblyConnectStep = Omit<WebhookStep, 'type'> & {
-  type: IntegrationStepType.PABBLY_CONNECT
-}
+// export type PabblyConnectStep = Omit<WebhookStep, 'type'> & {
+//   type: IntegrationStepType.PABBLY_CONNECT
+// }
 
-export type SendEmailStep = StepBase & {
-  type: IntegrationStepType.EMAIL
-  options: SendEmailOptions
-}
+// export type SendEmailStep = StepBase & {
+//   type: IntegrationStepType.EMAIL
+//   options: SendEmailOptions
+// }
 
 export type SendEmailOptions = {
   credentialsId: string | 'default'
