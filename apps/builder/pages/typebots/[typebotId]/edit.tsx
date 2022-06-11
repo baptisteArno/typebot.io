@@ -10,7 +10,7 @@ import React from 'react'
 import { KBar } from 'components/shared/KBar'
 import { BoardMenuButton } from 'components/editor/BoardMenuButton'
 import { PreviewDrawer } from 'components/editor/preview/PreviewDrawer'
-import { StepsSideBar } from 'components/editor/StepsSideBar'
+import { BlocksSideBar } from 'components/editor/BlocksSideBar'
 import { Graph } from 'components/shared/Graph'
 import { GraphProvider } from 'contexts/GraphContext'
 import { GraphDndContext } from 'contexts/GraphDndContext'
@@ -37,9 +37,9 @@ const TypebotEditPage = () => {
           backgroundPosition="-19px -19px"
         >
           <GraphDndContext>
-            <StepsSideBar />
+            <BlocksSideBar />
             <GraphProvider
-              blocks={typebot?.blocks ?? []}
+              groups={typebot?.groups ?? []}
               isReadOnly={isReadOnly}
             >
               {typebot && <Graph flex="1" typebot={typebot} />}

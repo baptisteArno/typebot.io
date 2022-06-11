@@ -6,7 +6,7 @@ import cuid from 'cuid'
 
 const typebotId = cuid()
 
-test.describe('Set variable step', () => {
+test.describe('Set variable block', () => {
   test('its configuration should work', async ({ page }) => {
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/logic/setVariable.json'),

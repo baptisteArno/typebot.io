@@ -1,6 +1,6 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
-import { Typebot, WebhookStep } from 'models'
+import { Typebot, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
 import { byId, methodNotAllowed } from 'utils'
@@ -14,8 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(403).send({ message: 'url is missing in body' })
     const { url } = body
     const typebotId = req.query.typebotId.toString()
+    const groupId = req.query.groupId.toString()
     const blockId = req.query.blockId.toString()
-    const stepId = req.query.stepId.toString()
     const typebot = (await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -24,9 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })) as unknown as Typebot | undefined
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
     try {
-      const { webhookId } = typebot.blocks
-        .find(byId(blockId))
-        ?.steps.find(byId(stepId)) as WebhookStep
+      const { webhookId } = typebot.groups
+        .find(byId(groupId))
+        ?.blocks.find(byId(blockId)) as WebhookBlock
       await prisma.webhook.upsert({
         where: { id: webhookId },
         update: { url, body: '{{state}}', method: 'POST' },
@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (err) {
       return res
         .status(400)
-        .send({ message: "stepId doesn't point to a Webhook step" })
+        .send({ message: "blockId doesn't point to a Webhook block" })
     }
   }
   return methodNotAllowed(res)

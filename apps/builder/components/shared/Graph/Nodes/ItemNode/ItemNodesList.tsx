@@ -1,38 +1,38 @@
 import { Flex, Portal, Stack, Text, useEventListener } from '@chakra-ui/react'
 import {
   computeNearestPlaceholderIndex,
-  useStepDnd,
+  useBlockDnd,
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, StepIndices, StepWithItems } from 'models'
+import { ButtonItem, BlockIndices, BlockWithItems } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
 import { ItemNodeOverlay } from './ItemNodeOverlay'
 
 type Props = {
-  step: StepWithItems
-  indices: StepIndices
+  block: BlockWithItems
+  indices: BlockIndices
   isReadOnly?: boolean
 }
 
 export const ItemNodesList = ({
-  step,
-  indices: { blockIndex, stepIndex },
+  block,
+  indices: { groupIndex, blockIndex },
   isReadOnly = false,
 }: Props) => {
-  const { typebot, createItem, detachItemFromStep } = useTypebot()
-  const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
+  const { typebot, createItem, detachItemFromBlock } = useTypebot()
+  const { draggedItem, setDraggedItem, mouseOverGroup } = useBlockDnd()
   const placeholderRefs = useRef<HTMLDivElement[]>([])
   const { graphPosition } = useGraph()
-  const blockId = typebot?.blocks[blockIndex].id
-  const isDraggingOnCurrentBlock =
-    (draggedItem && mouseOverBlock?.id === blockId) ?? false
+  const groupId = typebot?.groups[groupIndex].id
+  const isDraggingOnCurrentGroup =
+    (draggedItem && mouseOverGroup?.id === groupId) ?? false
   const showPlaceholders = draggedItem && !isReadOnly
 
-  const isLastStep =
-    typebot?.blocks[blockIndex].steps[stepIndex + 1] === undefined
+  const isLastBlock =
+    typebot?.groups[groupIndex].blocks[blockIndex + 1] === undefined
 
   const [position, setPosition] = useState({
     x: 0,
@@ -44,7 +44,7 @@ export const ItemNodesList = ({
   >()
 
   const handleGlobalMouseMove = (event: MouseEvent) => {
-    if (!draggedItem || draggedItem.stepId !== step.id) return
+    if (!draggedItem || draggedItem.blockId !== block.id) return
     const { clientX, clientY } = event
     setPosition({
       ...position,
@@ -55,44 +55,44 @@ export const ItemNodesList = ({
   useEventListener('mousemove', handleGlobalMouseMove)
 
   useEffect(() => {
-    if (mouseOverBlock?.id !== step.blockId)
+    if (mouseOverGroup?.id !== block.groupId)
       setExpandedPlaceholderIndex(undefined)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mouseOverBlock?.id])
+  }, [mouseOverGroup?.id])
 
-  const handleMouseMoveOnBlock = (event: MouseEvent) => {
-    if (!isDraggingOnCurrentBlock || isReadOnly) return
+  const handleMouseMoveOnGroup = (event: MouseEvent) => {
+    if (!isDraggingOnCurrentGroup || isReadOnly) return
     const index = computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
     setExpandedPlaceholderIndex(index)
   }
   useEventListener(
     'mousemove',
-    handleMouseMoveOnBlock,
-    mouseOverBlock?.ref.current
+    handleMouseMoveOnGroup,
+    mouseOverGroup?.ref.current
   )
 
-  const handleMouseUpOnBlock = (e: MouseEvent) => {
+  const handleMouseUpOnGroup = (e: MouseEvent) => {
     setExpandedPlaceholderIndex(undefined)
-    if (!isDraggingOnCurrentBlock) return
+    if (!isDraggingOnCurrentGroup) return
     const itemIndex = computeNearestPlaceholderIndex(e.pageY, placeholderRefs)
     e.stopPropagation()
     setDraggedItem(undefined)
     createItem(draggedItem as ButtonItem, {
+      groupIndex,
       blockIndex,
-      stepIndex,
       itemIndex,
     })
   }
   useEventListener(
     'mouseup',
-    handleMouseUpOnBlock,
-    mouseOverBlock?.ref.current,
+    handleMouseUpOnGroup,
+    mouseOverGroup?.ref.current,
     {
       capture: true,
     }
   )
 
-  const handleStepMouseDown =
+  const handleBlockMouseDown =
     (itemIndex: number) =>
     (
       { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
@@ -100,7 +100,7 @@ export const ItemNodesList = ({
     ) => {
       if (!typebot || isReadOnly) return
       placeholderRefs.current.splice(itemIndex + 1, 1)
-      detachItemFromStep({ blockIndex, stepIndex, itemIndex })
+      detachItemFromBlock({ groupIndex, blockIndex, itemIndex })
       setPosition(absolute)
       setRelativeCoordinates(relative)
       setDraggedItem(item)
@@ -129,12 +129,12 @@ export const ItemNodesList = ({
         rounded="lg"
         transition={showPlaceholders ? 'height 200ms' : 'none'}
       />
-      {step.items.map((item, idx) => (
+      {block.items.map((item, idx) => (
         <Stack key={item.id} spacing={1}>
           <ItemNode
             item={item}
-            indices={{ blockIndex, stepIndex, itemIndex: idx }}
-            onMouseDown={handleStepMouseDown(idx)}
+            indices={{ groupIndex, blockIndex, itemIndex: idx }}
+            onMouseDown={handleBlockMouseDown(idx)}
             isReadOnly={isReadOnly}
           />
           <Flex
@@ -151,7 +151,7 @@ export const ItemNodesList = ({
           />
         </Stack>
       ))}
-      {isLastStep && (
+      {isLastBlock && (
         <Flex
           px="4"
           py="2"
@@ -166,8 +166,8 @@ export const ItemNodesList = ({
           <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Default</Text>
           <SourceEndpoint
             source={{
-              blockId: step.blockId,
-              stepId: step.id,
+              groupId: block.groupId,
+              blockId: block.id,
             }}
             pos="absolute"
             right="-49px"
@@ -175,7 +175,7 @@ export const ItemNodesList = ({
         </Flex>
       )}
 
-      {draggedItem && draggedItem.stepId === step.id && (
+      {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
           <ItemNodeOverlay
             item={draggedItem}

@@ -6,9 +6,9 @@ import {
   graphPositionDefaultValue,
   useGraph,
 } from 'contexts/GraphContext'
-import { useStepDnd } from 'contexts/GraphDndContext'
+import { useBlockDnd } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { DraggableStepType, PublicTypebot, Typebot } from 'models'
+import { DraggableBlockType, PublicTypebot, Typebot } from 'models'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
@@ -21,7 +21,7 @@ import { ZoomButtons } from './ZoomButtons'
 
 const maxScale = 1.5
 const minScale = 0.1
-const zoomButtonsScaleStep = 0.2
+const zoomButtonsScaleBlock = 0.2
 
 export const Graph = ({
   typebot,
@@ -34,20 +34,20 @@ export const Graph = ({
   onUnlockProPlanClick?: () => void
 } & FlexProps) => {
   const {
-    draggedStepType,
-    setDraggedStepType,
-    draggedStep,
-    setDraggedStep,
+    draggedBlockType,
+    setDraggedBlockType,
+    draggedBlock,
+    setDraggedBlock,
     draggedItem,
     setDraggedItem,
-  } = useStepDnd()
+  } = useBlockDnd()
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
-  const { createBlock } = useTypebot()
+  const { createGroup } = useTypebot()
   const {
     setGraphPosition: setGlobalGraphPosition,
-    setOpenedStepId,
-    updateBlockCoordinates,
+    setOpenedBlockId,
+    updateGroupCoordinates,
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
@@ -100,22 +100,22 @@ export const Graph = ({
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
     if (draggedItem) setDraggedItem(undefined)
-    if (!draggedStep && !draggedStepType) return
+    if (!draggedBlock && !draggedBlockType) return
 
     const coordinates = projectMouse(
       { x: e.clientX, y: e.clientY },
       graphPosition
     )
     const id = cuid()
-    updateBlockCoordinates(id, coordinates)
-    createBlock({
+    updateGroupCoordinates(id, coordinates)
+    createGroup({
       id,
       ...coordinates,
-      step: draggedStep ?? (draggedStepType as DraggableStepType),
-      indices: { blockIndex: typebot.blocks.length, stepIndex: 0 },
+      block: draggedBlock ?? (draggedBlockType as DraggableBlockType),
+      indices: { groupIndex: typebot.groups.length, blockIndex: 0 },
     })
-    setDraggedStep(undefined)
-    setDraggedStepType(undefined)
+    setDraggedBlock(undefined)
+    setDraggedBlockType(undefined)
   }
 
   const handleCaptureMouseDown = (e: MouseEvent) => {
@@ -124,7 +124,7 @@ export const Graph = ({
   }
 
   const handleClick = () => {
-    setOpenedStepId(undefined)
+    setOpenedBlockId(undefined)
     setPreviewingEdge(undefined)
   }
 
@@ -137,7 +137,7 @@ export const Graph = ({
     })
   }
 
-  const zoom = (delta = zoomButtonsScaleStep, mousePosition?: Coordinates) => {
+  const zoom = (delta = zoomButtonsScaleBlock, mousePosition?: Coordinates) => {
     const { x: mouseX, y } = mousePosition ?? { x: 0, y: 0 }
     const mouseY = y - headerHeight
     let scale = graphPosition.scale + delta
@@ -181,8 +181,8 @@ export const Graph = ({
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
         <ZoomButtons
-          onZoomIn={() => zoom(zoomButtonsScaleStep)}
-          onZoomOut={() => zoom(-zoomButtonsScaleStep)}
+          onZoomIn={() => zoom(zoomButtonsScaleBlock)}
+          onZoomOut={() => zoom(-zoomButtonsScaleBlock)}
         />
         <Flex
           flex="1"

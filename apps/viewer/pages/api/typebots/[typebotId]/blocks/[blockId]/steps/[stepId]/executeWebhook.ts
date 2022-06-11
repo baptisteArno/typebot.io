@@ -6,7 +6,7 @@ import {
   Variable,
   Webhook,
   WebhookOptions,
-  WebhookStep,
+  WebhookBlock,
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { byId, initMiddleware, methodNotAllowed, notFound } from 'utils'
@@ -19,8 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId.toString()
+    const groupId = req.query.groupId.toString()
     const blockId = req.query.blockId.toString()
-    const stepId = req.query.stepId.toString()
     const resultId = req.query.resultId as string | undefined
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
@@ -33,19 +33,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: { webhooks: true },
     })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
     if (!typebot) return notFound(res)
-    const step = typebot.blocks
-      .find(byId(blockId))
-      ?.steps.find(byId(stepId)) as WebhookStep
-    const webhook = typebot.webhooks.find(byId(step.webhookId))
+    const block = typebot.groups
+      .find(byId(groupId))
+      ?.blocks.find(byId(blockId)) as WebhookBlock
+    const webhook = typebot.webhooks.find(byId(block.webhookId))
     if (!webhook)
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
-    const preparedWebhook = prepareWebhookAttributes(webhook, step.options)
+    const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
     const result = await executeWebhook(typebot)(
       preparedWebhook,
       variables,
-      blockId,
+      groupId,
       resultValues,
       resultId
     )

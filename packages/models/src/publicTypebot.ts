@@ -1,9 +1,9 @@
-import { Block, Edge, Settings, Theme, Variable } from './typebot'
+import { Group, Edge, Settings, Theme, Variable } from './typebot'
 import { PublicTypebot as PublicTypebotFromPrisma } from 'db'
 
 export type PublicTypebot = Omit<
   PublicTypebotFromPrisma,
-  | 'blocks'
+  | 'groups'
   | 'theme'
   | 'settings'
   | 'variables'
@@ -11,7 +11,7 @@ export type PublicTypebot = Omit<
   | 'createdAt'
   | 'updatedAt'
 > & {
-  blocks: Block[]
+  groups: Group[]
   variables: Variable[]
   edges: Edge[]
   theme: Theme

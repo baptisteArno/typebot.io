@@ -2,14 +2,14 @@ import test, { expect, Page } from '@playwright/test'
 import cuid from 'cuid'
 import { readFileSync } from 'fs'
 import prisma from 'libs/prisma'
-import { defaultTextInputOptions, InputStepType } from 'models'
+import { defaultTextInputOptions, InputBlockType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
 import {
   createResults,
   createTypebots,
   importTypebotInDatabase,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
@@ -44,8 +44,8 @@ test.describe('Results page', () => {
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
         }),
       },

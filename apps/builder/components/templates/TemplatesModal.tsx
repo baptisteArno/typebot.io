@@ -43,9 +43,16 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   const fetchTemplate = async (template: TemplateProps) => {
     setSelectedTemplate(template)
     const { data, error } = await sendRequest(`/templates/${template.fileName}`)
+    console.log(data, error)
     if (error)
       return showToast({ title: error.name, description: error.message })
     setTypebot(data as Typebot)
+  }
+
+  const onUseThisTemplateClick = () => {
+    if (!typebot) return
+    onTypebotChoose(typebot)
+    setIsLoading(true)
   }
 
   return (
@@ -82,9 +89,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             <Stack spacing={4}>
               <Button
                 colorScheme="blue"
-                onClick={() =>
-                  typebot && onTypebotChoose(typebot) && setIsLoading(true)
-                }
+                onClick={onUseThisTemplateClick}
                 isLoading={isLoading}
               >
                 Use this template

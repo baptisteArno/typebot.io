@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": "pioizXgk6U9Xtz1BdyjPFy",
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "dpg9fjkvZs2zhNDrXavZw2",
-      "steps": [
+      "blocks": [
         {
           "id": "4Ez8hEpERMo48FQcH4ny8F",
           "type": "start",
           "label": "Start",
-          "blockId": "dpg9fjkvZs2zhNDrXavZw2",
+          "groupId": "dpg9fjkvZs2zhNDrXavZw2",
           "outgoingEdgeId": "hRuNVikDAguMkxd6sRgQ7b"
         }
       ],
@@ -22,11 +22,11 @@
     },
     {
       "id": "nrFcoNFtGcGJNifcjiEFya",
-      "steps": [
+      "blocks": [
         {
           "id": "sjigBF5rKat4BForNiMfPwb",
           "type": "text",
-          "blockId": "nrFcoNFtGcGJNifcjiEFya",
+          "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
             "html": "<div>As you answer this chat, you&#x27;ll see your result in the real Airtable spreadsheet</div>",
             "richText": [
@@ -45,7 +45,7 @@
         {
           "id": "sb8bz4NhtWF7zRLrfvDnXNY",
           "type": "text",
-          "blockId": "nrFcoNFtGcGJNifcjiEFya",
+          "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
             "html": "<div>You can think of it as a guestbook 😂</div>",
             "richText": [
@@ -62,7 +62,7 @@
         {
           "id": "scF3dKaGTm68y9rHSKVJVtr",
           "type": "text",
-          "blockId": "nrFcoNFtGcGJNifcjiEFya",
+          "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
             "html": "<div>Ready?</div>",
             "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }],
@@ -76,11 +76,11 @@
             {
               "id": "ewb7uVGHNHEKmgbKoLiZA6",
               "type": 0,
-              "stepId": "su4yR8LMVu311nKJsSj3u6q",
+              "blockId": "su4yR8LMVu311nKJsSj3u6q",
               "content": "Yeah!"
             }
           ],
-          "blockId": "nrFcoNFtGcGJNifcjiEFya",
+          "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "5CjxPmqfthouJL71zCWW5X"
         }
@@ -90,11 +90,11 @@
     },
     {
       "id": "9mz6QbFyQB1uMggt9YbweU",
-      "steps": [
+      "blocks": [
         {
           "id": "spuZqdVh1q7kHWb9gghki7q",
           "type": "text",
-          "blockId": "9mz6QbFyQB1uMggt9YbweU",
+          "groupId": "9mz6QbFyQB1uMggt9YbweU",
           "content": {
             "html": "<div>If you have anything to say...</div>",
             "richText": [
@@ -109,7 +109,7 @@
         {
           "id": "sqvXpT1YXE3Htp6BCPvVGv3",
           "type": "text input",
-          "blockId": "9mz6QbFyQB1uMggt9YbweU",
+          "groupId": "9mz6QbFyQB1uMggt9YbweU",
           "options": {
             "isLong": true,
             "labels": {
@@ -122,7 +122,7 @@
         {
           "id": "sti9ca1hQgmQLUgghCLqDrx",
           "type": "Webhook",
-          "blockId": "9mz6QbFyQB1uMggt9YbweU",
+          "groupId": "9mz6QbFyQB1uMggt9YbweU",
           "options": {
             "isCustomBody": true,
             "isAdvancedConfig": true,
@@ -144,7 +144,7 @@
         },
         {
           "id": "s5sGoeApf3QASX1bbPMve5q",
-          "blockId": "9mz6QbFyQB1uMggt9YbweU",
+          "groupId": "9mz6QbFyQB1uMggt9YbweU",
           "type": "Code",
           "options": {
             "name": "Code snippet",
@@ -158,11 +158,11 @@
     },
     {
       "id": "dypuPQjb1q55tQavVzZv4e",
-      "steps": [
+      "blocks": [
         {
           "id": "shRqQncqJb6xsKxXV9SEQsF",
           "type": "image",
-          "blockId": "dypuPQjb1q55tQavVzZv4e",
+          "groupId": "dypuPQjb1q55tQavVzZv4e",
           "content": {
             "url": "https://media1.giphy.com/media/l0K42u9hCg0x6XbLa/giphy.gif?cid=fe3852a3rvjsmcutyv6whx7s390gvj80b3e2rftqav11gnve&rid=giphy.gif&ct=g"
           }
@@ -170,7 +170,7 @@
         {
           "id": "s4mTU7p3Q32L2Zv6C713NAU",
           "type": "text",
-          "blockId": "dypuPQjb1q55tQavVzZv4e",
+          "groupId": "dypuPQjb1q55tQavVzZv4e",
           "content": {
             "html": "<div>Cheers!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }],
@@ -183,11 +183,11 @@
     },
     {
       "id": "m299Kw31LhXpxZLNNb7WT5",
-      "steps": [
+      "blocks": [
         {
           "id": "smR7LG3mAEdkxh79aBiwbkp",
           "type": "text",
-          "blockId": "m299Kw31LhXpxZLNNb7WT5",
+          "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "content": {
             "html": "<div>What&#x27;s your name?</div>",
             "richText": [
@@ -199,7 +199,7 @@
         {
           "id": "shuUtMDMw9P4iAHbz7B5SqJ",
           "type": "text input",
-          "blockId": "m299Kw31LhXpxZLNNb7WT5",
+          "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "options": {
             "isLong": false,
             "labels": { "button": "Send", "placeholder": "Type your name..." },
@@ -209,7 +209,7 @@
         {
           "id": "siZ9BsYqTZ1BCF42kLNY33G",
           "type": "Webhook",
-          "blockId": "m299Kw31LhXpxZLNNb7WT5",
+          "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "options": {
             "isCustomBody": true,
             "isAdvancedConfig": true,
@@ -237,7 +237,7 @@
         },
         {
           "id": "ssHNtWrqhDcJNUDqd3oLj6r",
-          "blockId": "m299Kw31LhXpxZLNNb7WT5",
+          "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "type": "Code",
           "options": {
             "name": "Code snippet",
@@ -261,34 +261,34 @@
   "edges": [
     {
       "id": "hRuNVikDAguMkxd6sRgQ7b",
-      "to": { "blockId": "nrFcoNFtGcGJNifcjiEFya" },
+      "to": { "groupId": "nrFcoNFtGcGJNifcjiEFya" },
       "from": {
-        "stepId": "4Ez8hEpERMo48FQcH4ny8F",
-        "blockId": "dpg9fjkvZs2zhNDrXavZw2"
+        "blockId": "4Ez8hEpERMo48FQcH4ny8F",
+        "groupId": "dpg9fjkvZs2zhNDrXavZw2"
       }
     },
     {
       "id": "5CjxPmqfthouJL71zCWW5X",
-      "to": { "blockId": "m299Kw31LhXpxZLNNb7WT5" },
+      "to": { "groupId": "m299Kw31LhXpxZLNNb7WT5" },
       "from": {
-        "stepId": "su4yR8LMVu311nKJsSj3u6q",
-        "blockId": "nrFcoNFtGcGJNifcjiEFya"
+        "blockId": "su4yR8LMVu311nKJsSj3u6q",
+        "groupId": "nrFcoNFtGcGJNifcjiEFya"
       }
     },
     {
       "from": {
-        "blockId": "m299Kw31LhXpxZLNNb7WT5",
-        "stepId": "ssHNtWrqhDcJNUDqd3oLj6r"
+        "groupId": "m299Kw31LhXpxZLNNb7WT5",
+        "blockId": "ssHNtWrqhDcJNUDqd3oLj6r"
       },
-      "to": { "blockId": "9mz6QbFyQB1uMggt9YbweU" },
+      "to": { "groupId": "9mz6QbFyQB1uMggt9YbweU" },
       "id": "oHDLXGgNtGU4n4Br6QDnyB"
     },
     {
       "from": {
-        "blockId": "9mz6QbFyQB1uMggt9YbweU",
-        "stepId": "s5sGoeApf3QASX1bbPMve5q"
+        "groupId": "9mz6QbFyQB1uMggt9YbweU",
+        "blockId": "s5sGoeApf3QASX1bbPMve5q"
       },
-      "to": { "blockId": "dypuPQjb1q55tQavVzZv4e" },
+      "to": { "groupId": "dypuPQjb1q55tQavVzZv4e" },
       "id": "tiFY1tFr1u5CjGrbziEtc9"
     }
   ],

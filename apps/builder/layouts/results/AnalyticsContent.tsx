@@ -26,7 +26,7 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
       justifyContent="center"
     >
       {publishedTypebot && answersCounts && stats && (
-        <GraphProvider blocks={publishedTypebot?.blocks ?? []} isReadOnly>
+        <GraphProvider groups={publishedTypebot?.groups ?? []} isReadOnly>
           <Graph
             flex="1"
             typebot={publishedTypebot}

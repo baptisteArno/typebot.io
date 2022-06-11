@@ -1,9 +1,12 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots, parseDefaultBlockWithStep } from '../services/database'
+import {
+  createTypebots,
+  parseDefaultGroupWithBlock,
+} from '../services/database'
 import {
   defaultSettings,
   defaultTextInputOptions,
-  InputStepType,
+  InputBlockType,
   Metadata,
 } from 'models'
 import { typebotViewer } from '../services/selectorUtils'
@@ -24,8 +27,8 @@ test('Should correctly parse metadata', async ({ page }) => {
         ...defaultSettings,
         metadata: customMetadata,
       },
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.TEXT,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
         options: defaultTextInputOptions,
       }),
     },

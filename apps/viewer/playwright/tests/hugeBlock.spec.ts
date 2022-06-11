@@ -7,7 +7,7 @@ import cuid from 'cuid'
 test('should work as expected', async ({ page }) => {
   const typebotId = cuid()
   await importTypebotInDatabase(
-    path.join(__dirname, '../fixtures/typebots/hugeBlock.json'),
+    path.join(__dirname, '../fixtures/typebots/hugeGroup.json'),
     { id: typebotId, publicId: `${typebotId}-public` }
   )
   await page.goto(`/${typebotId}-public`)

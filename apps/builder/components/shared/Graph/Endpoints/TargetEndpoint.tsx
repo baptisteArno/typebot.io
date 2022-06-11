@@ -3,11 +3,11 @@ import { useGraph } from 'contexts/GraphContext'
 import React, { useEffect, useRef } from 'react'
 
 export const TargetEndpoint = ({
-  stepId,
+  blockId,
   isVisible,
   ...props
 }: BoxProps & {
-  stepId: string
+  blockId: string
   isVisible?: boolean
 }) => {
   const { addTargetEndpoint } = useGraph()
@@ -16,7 +16,7 @@ export const TargetEndpoint = ({
   useEffect(() => {
     if (!ref.current) return
     addTargetEndpoint({
-      id: stepId,
+      id: blockId,
       ref,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

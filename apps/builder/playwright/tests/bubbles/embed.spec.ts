@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { BubbleStepType, defaultEmbedBubbleContent } from 'models'
+import { BubbleBlockType, defaultEmbedBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
@@ -11,15 +11,15 @@ const pdfSrc = 'https://www.orimi.com/pdf-test.pdf'
 const iframeCode = '<iframe src="https://typebot.io"></iframe>'
 const siteSrc = 'https://app.cal.com/baptistearno/15min'
 
-test.describe.parallel('Embed bubble step', () => {
+test.describe.parallel('Embed bubble block', () => {
   test.describe('Content settings', () => {
     test('should import and parse embed correctly', async ({ page }) => {
       const typebotId = cuid()
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.EMBED,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.EMBED,
             content: defaultEmbedBubbleContent,
           }),
         },
@@ -54,8 +54,8 @@ test.describe.parallel('Embed bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.EMBED,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.EMBED,
             content: {
               url: siteSrc,
               height: 700,

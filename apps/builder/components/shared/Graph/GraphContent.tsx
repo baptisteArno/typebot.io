@@ -1,9 +1,9 @@
 import { useTypebot } from 'contexts/TypebotContext'
-import { Block } from 'models'
+import { Group } from 'models'
 import React from 'react'
 import { AnswersCount } from 'services/analytics'
 import { Edges } from './Edges'
-import { BlockNode } from './Nodes/BlockNode'
+import { GroupNode } from './Nodes/GroupNode'
 
 type Props = {
   answersCounts?: AnswersCount[]
@@ -18,8 +18,8 @@ const MyComponent = ({ answersCounts, onUnlockProPlanClick }: Props) => {
         answersCounts={answersCounts}
         onUnlockProPlanClick={onUnlockProPlanClick}
       />
-      {typebot?.blocks.map((block, idx) => (
-        <BlockNode block={block as Block} blockIndex={idx} key={block.id} />
+      {typebot?.groups.map((group, idx) => (
+        <GroupNode group={group as Group} groupIndex={idx} key={group.id} />
       ))}
     </>
   )

@@ -2,11 +2,11 @@ import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { CollaborationType, Plan, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
-import { InputStepType, defaultTextInputOptions } from 'models'
+import { InputBlockType, defaultTextInputOptions } from 'models'
 import {
   createResults,
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../services/database'
 
 test.describe('Typebot owner', () => {
@@ -30,8 +30,8 @@ test.describe('Typebot owner', () => {
         id: typebotId,
         name: 'Guest typebot',
         workspaceId: guestWorkspaceId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
         }),
       },
@@ -83,8 +83,8 @@ test.describe('Collaborator', () => {
         id: typebotId,
         name: 'Guest typebot',
         workspaceId: guestWorkspaceId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
         }),
       },
@@ -105,8 +105,8 @@ test.describe('Collaborator', () => {
     await page.click('text=Everyone at Guest workspace')
     await expect(page.locator('text="Remove"')).toBeHidden()
     await expect(page.locator('text=Pro user')).toBeVisible()
-    await page.click('text=Block #1', { force: true })
-    await expect(page.locator('input[value="Block #1"]')).toBeHidden()
+    await page.click('text=Group #1', { force: true })
+    await expect(page.locator('input[value="Group #1"]')).toBeHidden()
     await page.goto(`/typebots/${typebotId}/results`)
     await expect(page.locator('text="content199"')).toBeVisible()
   })

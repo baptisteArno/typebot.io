@@ -9,12 +9,12 @@ import {
   FormLabel,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Switch,
   Text,
   Image,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { ColorPicker } from 'components/theme/GeneralSettings/ColorPicker'
 import { useTypebot } from 'contexts/TypebotContext'

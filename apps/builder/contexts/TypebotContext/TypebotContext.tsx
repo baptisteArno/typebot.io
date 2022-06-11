@@ -1,5 +1,5 @@
 import {
-  LogicStepType,
+  LogicBlockType,
   PublicTypebot,
   Settings,
   Theme,
@@ -30,8 +30,8 @@ import {
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
 import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
-import { BlocksActions, blocksActions } from './actions/blocks'
-import { stepsAction, StepsActions } from './actions/steps'
+import { GroupsActions, groupsActions } from './actions/groups'
+import { blocksAction, BlocksActions } from './actions/blocks'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { edgesAction, EdgesActions } from './actions/edges'
 import { useRegisterActions } from 'kbar'
@@ -80,8 +80,8 @@ const typebotContext = createContext<
     updateTypebot: (updates: UpdateTypebotPayload) => void
     publishTypebot: () => void
     restorePublishedTypebot: () => void
-  } & BlocksActions &
-    StepsActions &
+  } & GroupsActions &
+    BlocksActions &
     ItemsActions &
     VariablesActions &
     EdgesActions
@@ -122,13 +122,13 @@ export const TypebotContext = ({
     },
   ] = useUndo<Typebot | undefined>(undefined)
 
-  const linkedTypebotIds = localTypebot?.blocks
-    .flatMap((b) => b.steps)
+  const linkedTypebotIds = localTypebot?.groups
+    .flatMap((b) => b.blocks)
     .reduce<string[]>(
-      (typebotIds, step) =>
-        step.type === LogicStepType.TYPEBOT_LINK &&
-        isDefined(step.options.typebotId)
-          ? [...typebotIds, step.options.typebotId]
+      (typebotIds, block) =>
+        block.type === LogicBlockType.TYPEBOT_LINK &&
+        isDefined(block.options.typebotId)
+          ? [...typebotIds, block.options.typebotId]
           : typebotIds,
       []
     )
@@ -360,8 +360,8 @@ export const TypebotContext = ({
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
         updateWebhook,
-        ...blocksActions(setLocalTypebot as SetTypebot),
-        ...stepsAction(setLocalTypebot as SetTypebot),
+        ...groupsActions(setLocalTypebot as SetTypebot),
+        ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),

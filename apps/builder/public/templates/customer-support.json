@@ -6,15 +6,15 @@
   "icon": "😍",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "uG1tt8JdDyu2nju3oJ4wc1",
-      "steps": [
+      "blocks": [
         {
           "id": "bFHwV7tnY5dke8pQeFY8v6",
           "type": "start",
           "label": "Start",
-          "blockId": "uG1tt8JdDyu2nju3oJ4wc1",
+          "groupId": "uG1tt8JdDyu2nju3oJ4wc1",
           "outgoingEdgeId": "2dzxChB1qm9WGfzNF91tfg"
         }
       ],
@@ -23,11 +23,11 @@
     },
     {
       "id": "vLUAPaxKwPF49iZhg4XZYa",
-      "steps": [
+      "blocks": [
         {
           "id": "spud6U3K1omh2dZG8yN2CW4",
           "type": "text",
-          "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+          "groupId": "vLUAPaxKwPF49iZhg4XZYa",
           "content": {
             "html": "<div>Hey friend 👋</div><div>How can I help you?</div>",
             "richText": [
@@ -44,26 +44,26 @@
             {
               "id": "fQ8oLDnKmDBuPDK7riJ2kt",
               "type": 0,
-              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
               "content": "I have a feature request ✨",
               "outgoingEdgeId": "dhniFxrsH5r54aEE5JXwK2"
             },
             {
               "id": "h2rFDX2UnKS4Kdu3Eyuqq3",
               "type": 0,
-              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
               "content": "There is a bug 🐛",
               "outgoingEdgeId": "2C4mhU5o2Hdm7dztR9xNE9"
             },
             {
               "id": "hcUFBPeQA3gSyXRprRk2v9",
               "type": 0,
-              "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
+              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
               "content": "I have a question 💭",
               "outgoingEdgeId": "bTo6CZD1YapDDyVdvJgFDV"
             }
           ],
-          "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+          "groupId": "vLUAPaxKwPF49iZhg4XZYa",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
       ],
@@ -72,11 +72,11 @@
     },
     {
       "id": "7MuqF6nen1ZTwGB53Mz8VY",
-      "steps": [
+      "blocks": [
         {
           "id": "sjsECyfSBMkUnoWaEnBTmJX",
           "type": "text",
-          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
             "html": "<div>Shoot! 🤪</div>",
             "richText": [
@@ -88,7 +88,7 @@
         {
           "id": "seomQsnPWgiMzQVeZ3us7x2",
           "type": "text",
-          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
             "html": "<div>Can you describe the bug with as many details as possible?</div>",
             "richText": [
@@ -107,7 +107,7 @@
         {
           "id": "s3LYyyYtjdQ88jkMMV5DSW7",
           "type": "text input",
-          "blockId": "7MuqF6nen1ZTwGB53Mz8VY",
+          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "options": {
             "isLong": true,
             "labels": {
@@ -124,11 +124,11 @@
     },
     {
       "id": "kyK8JQ77NodUYaz3JLS88A",
-      "steps": [
+      "blocks": [
         {
           "id": "s9bgHcWdobb8Z5cTbrnTz6R",
           "type": "text",
-          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
             "html": "<div>Awesome!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }],
@@ -138,7 +138,7 @@
         {
           "id": "s2NbNaBGKhMvdEUdVPXKZjy",
           "type": "text",
-          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
             "html": "<div>Head up to the feedback board.</div><div></div><div>👉 <a href=\"https://app.typebot.io/feedback\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">https://app.typebot.io/feedback</a></div><div></div><div>There, you&#x27;ll be able to check existing feature requests and submit yours if it&#x27;s missing 💪</div>",
             "richText": [
@@ -174,13 +174,13 @@
         },
         {
           "id": "cl16lb3b300092e6dh4h01vxw",
-          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl16lb3b3000a2e6dy8zdhzpz",
-              "stepId": "cl16lb3b300092e6dh4h01vxw",
+              "blockId": "cl16lb3b300092e6dh4h01vxw",
               "type": 0,
               "content": "Restart"
             }
@@ -188,11 +188,11 @@
         },
         {
           "id": "cl16lablb00082e6dadk55sxv",
-          "blockId": "kyK8JQ77NodUYaz3JLS88A",
+          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "type": "Typebot link",
           "options": {
             "typebotId": "current",
-            "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+            "groupId": "vLUAPaxKwPF49iZhg4XZYa"
           }
         }
       ],
@@ -201,11 +201,11 @@
     },
     {
       "id": "puWCBhGWSQRbqTkVH89RCf",
-      "steps": [
+      "blocks": [
         {
           "id": "sm4iHhLQs9yNdRG3b7xqV8Y",
           "type": "text",
-          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "html": "<div>First, don&#x27;t forget to check out the <a href=\"https://docs.typebot.io/\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">Documentation 🙏</a></div>",
             "richText": [
@@ -228,7 +228,7 @@
         {
           "id": "sreX6rwMevEmbTpnkGCtp3k",
           "type": "text",
-          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "html": "<div>Otherwise, I&#x27;m all ears!</div>",
             "richText": [
@@ -243,7 +243,7 @@
         {
           "id": "so4GiKFWWjKCjXgmMJYCGbe",
           "type": "image",
-          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "url": "https://media0.giphy.com/media/rhgwg4qBu97ISgbfni/giphy-downsized.gif?cid=fe3852a3wimy48e55djt23j44uto7gdlu8ksytylafisvr0q&rid=giphy-downsized.gif&ct=g"
           }
@@ -251,7 +251,7 @@
         {
           "id": "sjd4qACugMarB7gJC8nMhb3",
           "type": "text input",
-          "blockId": "puWCBhGWSQRbqTkVH89RCf",
+          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "options": {
             "isLong": true,
             "labels": {
@@ -268,11 +268,11 @@
     },
     {
       "id": "1GvxCAAEysxJMxrVngud3X",
-      "steps": [
+      "blocks": [
         {
           "id": "s6uLw72EAKbACrpYHr7DSyY",
           "type": "text",
-          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
             "html": "<div>Thank you so much for your submission 💙</div>",
             "richText": [
@@ -289,7 +289,7 @@
         {
           "id": "stM7cTBFCLhpQagRHT64K6u",
           "type": "text",
-          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
             "html": "<div>I&#x27;ll get back to you ASAP (usually within 24 hours)</div>",
             "richText": [
@@ -312,19 +312,19 @@
             {
               "id": "jqm8wZa5yYb73493n5s3Uc",
               "type": 0,
-              "stepId": "s4JATFkBxzmcqqEKQB2xFfa",
+              "blockId": "s4JATFkBxzmcqqEKQB2xFfa",
               "content": "Restart"
             }
           ],
-          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         },
         {
           "id": "cl14qlt8600072e69rez236gx",
           "type": "Typebot link",
-          "blockId": "1GvxCAAEysxJMxrVngud3X",
+          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "options": {
-            "blockId": "vLUAPaxKwPF49iZhg4XZYa",
+            "groupId": "vLUAPaxKwPF49iZhg4XZYa",
             "typebotId": "current"
           }
         }
@@ -334,11 +334,11 @@
     },
     {
       "id": "wncvzVDFJDvhh1M3CXJ6aL",
-      "steps": [
+      "blocks": [
         {
           "id": "soiDpBL5r1dbvHxuT2Sd3mH",
           "type": "text",
-          "blockId": "wncvzVDFJDvhh1M3CXJ6aL",
+          "groupId": "wncvzVDFJDvhh1M3CXJ6aL",
           "content": {
             "html": "<div>On which email can I contact you?</div>",
             "richText": [
@@ -353,7 +353,7 @@
         {
           "id": "s5Fh7zHUw3j4zDM5xjzwsXB",
           "type": "email input",
-          "blockId": "wncvzVDFJDvhh1M3CXJ6aL",
+          "groupId": "wncvzVDFJDvhh1M3CXJ6aL",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
             "variableId": "t2k6cj3uYfNdJX13APA4b9",
@@ -373,61 +373,61 @@
   "edges": [
     {
       "id": "2dzxChB1qm9WGfzNF91tfg",
-      "to": { "blockId": "vLUAPaxKwPF49iZhg4XZYa" },
+      "to": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" },
       "from": {
-        "stepId": "bFHwV7tnY5dke8pQeFY8v6",
-        "blockId": "uG1tt8JdDyu2nju3oJ4wc1"
+        "blockId": "bFHwV7tnY5dke8pQeFY8v6",
+        "groupId": "uG1tt8JdDyu2nju3oJ4wc1"
       }
     },
     {
       "id": "dhniFxrsH5r54aEE5JXwK2",
-      "to": { "blockId": "kyK8JQ77NodUYaz3JLS88A" },
+      "to": { "groupId": "kyK8JQ77NodUYaz3JLS88A" },
       "from": {
         "itemId": "fQ8oLDnKmDBuPDK7riJ2kt",
-        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
       }
     },
     {
       "id": "2C4mhU5o2Hdm7dztR9xNE9",
-      "to": { "blockId": "7MuqF6nen1ZTwGB53Mz8VY" },
+      "to": { "groupId": "7MuqF6nen1ZTwGB53Mz8VY" },
       "from": {
         "itemId": "h2rFDX2UnKS4Kdu3Eyuqq3",
-        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
       }
     },
     {
       "id": "bTo6CZD1YapDDyVdvJgFDV",
-      "to": { "blockId": "puWCBhGWSQRbqTkVH89RCf" },
+      "to": { "groupId": "puWCBhGWSQRbqTkVH89RCf" },
       "from": {
         "itemId": "hcUFBPeQA3gSyXRprRk2v9",
-        "stepId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "blockId": "vLUAPaxKwPF49iZhg4XZYa"
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
       }
     },
     {
       "id": "cl1571jhh00022e6dk77f52wg",
-      "to": { "blockId": "wncvzVDFJDvhh1M3CXJ6aL" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" },
       "from": {
-        "stepId": "s3LYyyYtjdQ88jkMMV5DSW7",
-        "blockId": "7MuqF6nen1ZTwGB53Mz8VY"
+        "blockId": "s3LYyyYtjdQ88jkMMV5DSW7",
+        "groupId": "7MuqF6nen1ZTwGB53Mz8VY"
       }
     },
     {
       "id": "cl1571ktd00032e6dyti22850",
-      "to": { "blockId": "wncvzVDFJDvhh1M3CXJ6aL" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" },
       "from": {
-        "stepId": "sjd4qACugMarB7gJC8nMhb3",
-        "blockId": "puWCBhGWSQRbqTkVH89RCf"
+        "blockId": "sjd4qACugMarB7gJC8nMhb3",
+        "groupId": "puWCBhGWSQRbqTkVH89RCf"
       }
     },
     {
       "id": "cl1571xtc00042e6dcptam5jw",
-      "to": { "blockId": "1GvxCAAEysxJMxrVngud3X" },
+      "to": { "groupId": "1GvxCAAEysxJMxrVngud3X" },
       "from": {
-        "stepId": "s5Fh7zHUw3j4zDM5xjzwsXB",
-        "blockId": "wncvzVDFJDvhh1M3CXJ6aL"
+        "blockId": "s5Fh7zHUw3j4zDM5xjzwsXB",
+        "groupId": "wncvzVDFJDvhh1M3CXJ6aL"
       }
     }
   ],

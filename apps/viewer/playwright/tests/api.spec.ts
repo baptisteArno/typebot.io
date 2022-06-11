@@ -34,7 +34,7 @@ test('can list typebots', async ({ request }) => {
   })
 })
 
-test('can get webhook steps', async ({ request }) => {
+test('can get webhook blocks', async ({ request }) => {
   expect(
     (await request.get(`/api/typebots/${typebotId}/webhookBlocks`)).status()
   ).toBe(401)
@@ -47,8 +47,8 @@ test('can get webhook steps', async ({ request }) => {
   const { blocks } = await response.json()
   expect(blocks).toHaveLength(1)
   expect(blocks[0]).toEqual({
-    blockId: 'webhookStep',
-    name: 'Webhook > webhookStep',
+    blockId: 'webhookBlock',
+    name: 'Webhook > webhookBlock',
   })
 })
 
@@ -56,13 +56,13 @@ test('can subscribe webhook', async ({ request }) => {
   expect(
     (
       await request.post(
-        `/api/typebots/${typebotId}/blocks/webhookStep/subscribeWebhook`,
+        `/api/typebots/${typebotId}/blocks/webhookBlock/subscribeWebhook`,
         { data: { url: 'https://test.com' } }
       )
     ).status()
   ).toBe(401)
   const response = await request.post(
-    `/api/typebots/${typebotId}/blocks/webhookStep/subscribeWebhook`,
+    `/api/typebots/${typebotId}/blocks/webhookBlock/subscribeWebhook`,
     {
       headers: {
         Authorization: 'Bearer userToken',
@@ -80,12 +80,12 @@ test('can unsubscribe webhook', async ({ request }) => {
   expect(
     (
       await request.post(
-        `/api/typebots/${typebotId}/blocks/webhookStep/unsubscribeWebhook`
+        `/api/typebots/${typebotId}/blocks/webhookBlock/unsubscribeWebhook`
       )
     ).status()
   ).toBe(401)
   const response = await request.post(
-    `/api/typebots/${typebotId}/blocks/webhookStep/unsubscribeWebhook`,
+    `/api/typebots/${typebotId}/blocks/webhookBlock/unsubscribeWebhook`,
     {
       headers: { Authorization: 'Bearer userToken' },
     }
@@ -100,12 +100,12 @@ test('can get a sample result', async ({ request }) => {
   expect(
     (
       await request.get(
-        `/api/typebots/${typebotId}/blocks/webhookStep/sampleResult`
+        `/api/typebots/${typebotId}/blocks/webhookBlock/sampleResult`
       )
     ).status()
   ).toBe(401)
   const response = await request.get(
-    `/api/typebots/${typebotId}/blocks/webhookStep/sampleResult`,
+    `/api/typebots/${typebotId}/blocks/webhookBlock/sampleResult`,
     {
       headers: { Authorization: 'Bearer userToken' },
     }

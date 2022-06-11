@@ -1,17 +1,17 @@
 import { LinkedTypebot } from 'contexts/TypebotContext'
 import { Log } from 'db'
 import {
-  LogicStep,
-  LogicStepType,
+  LogicBlock,
+  LogicBlockType,
   LogicalOperator,
-  ConditionStep,
+  ConditionBlock,
   Variable,
   ComparisonOperators,
-  SetVariableStep,
-  RedirectStep,
+  SetVariableBlock,
+  RedirectBlock,
   Comparison,
-  CodeStep,
-  TypebotLinkStep,
+  CodeBlock,
+  TypebotLinkBlock,
   PublicTypebot,
   Typebot,
   Edge,
@@ -42,51 +42,53 @@ type LogicContext = {
 }
 
 export const executeLogic = async (
-  step: LogicStep,
+  block: LogicBlock,
   context: LogicContext
 ): Promise<{
   nextEdgeId?: EdgeId
   linkedTypebot?: PublicTypebot | LinkedTypebot
 }> => {
-  switch (step.type) {
-    case LogicStepType.SET_VARIABLE:
-      return { nextEdgeId: executeSetVariable(step, context) }
-    case LogicStepType.CONDITION:
-      return { nextEdgeId: executeCondition(step, context) }
-    case LogicStepType.REDIRECT:
-      return { nextEdgeId: executeRedirect(step, context) }
-    case LogicStepType.CODE:
-      return { nextEdgeId: await executeCode(step, context) }
-    case LogicStepType.TYPEBOT_LINK:
-      return await executeTypebotLink(step, context)
+  switch (block.type) {
+    case LogicBlockType.SET_VARIABLE:
+      return { nextEdgeId: executeSetVariable(block, context) }
+    case LogicBlockType.CONDITION:
+      return { nextEdgeId: executeCondition(block, context) }
+    case LogicBlockType.REDIRECT:
+      return { nextEdgeId: executeRedirect(block, context) }
+    case LogicBlockType.CODE:
+      return { nextEdgeId: await executeCode(block, context) }
+    case LogicBlockType.TYPEBOT_LINK:
+      return await executeTypebotLink(block, context)
   }
 }
 
 const executeSetVariable = (
-  step: SetVariableStep,
+  block: SetVariableBlock,
   { typebot: { variables }, updateVariableValue, updateVariables }: LogicContext
 ): EdgeId | undefined => {
-  if (!step.options?.variableId) return step.outgoingEdgeId
-  const evaluatedExpression = step.options.expressionToEvaluate
-    ? evaluateExpression(variables)(step.options.expressionToEvaluate)
+  if (!block.options?.variableId) return block.outgoingEdgeId
+  const evaluatedExpression = block.options.expressionToEvaluate
+    ? evaluateExpression(variables)(block.options.expressionToEvaluate)
     : undefined
-  const existingVariable = variables.find(byId(step.options.variableId))
-  if (!existingVariable) return step.outgoingEdgeId
+  const existingVariable = variables.find(byId(block.options.variableId))
+  if (!existingVariable) return block.outgoingEdgeId
   updateVariableValue(existingVariable.id, evaluatedExpression)
   updateVariables([{ ...existingVariable, value: evaluatedExpression }])
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const executeCondition = (
-  step: ConditionStep,
+  block: ConditionBlock,
   { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
-  const { content } = step.items[0]
+  const { content } = block.items[0]
   const isConditionPassed =
     content.logicalOperator === LogicalOperator.AND
       ? content.comparisons.every(executeComparison(variables))
       : content.comparisons.some(executeComparison(variables))
-  return isConditionPassed ? step.items[0].outgoingEdgeId : step.outgoingEdgeId
+  return isConditionPassed
+    ? block.items[0].outgoingEdgeId
+    : block.outgoingEdgeId
 }
 
 const executeComparison =
@@ -122,14 +124,14 @@ const executeComparison =
   }
 
 const executeRedirect = (
-  step: RedirectStep,
+  block: RedirectBlock,
   { typebot: { variables } }: LogicContext
 ): EdgeId | undefined => {
-  if (!step.options?.url) return step.outgoingEdgeId
-  const formattedUrl = sanitizeUrl(parseVariables(variables)(step.options.url))
+  if (!block.options?.url) return block.outgoingEdgeId
+  const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   const isEmbedded = window.parent && window.location !== window.top?.location
   if (isEmbedded) {
-    if (!step.options.isNewTab)
+    if (!block.options.isNewTab)
       return ((window.top as Window).location.href = formattedUrl)
 
     try {
@@ -145,30 +147,30 @@ const executeRedirect = (
       )
     }
   } else {
-    window.open(formattedUrl, step.options.isNewTab ? '_blank' : '_self')
+    window.open(formattedUrl, block.options.isNewTab ? '_blank' : '_self')
   }
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const executeCode = async (
-  step: CodeStep,
+  block: CodeBlock,
   { typebot: { variables } }: LogicContext
 ) => {
-  if (!step.options.content) return
+  if (!block.options.content) return
   const func = Function(
     ...variables.map((v) => v.id),
-    parseVariables(variables, { fieldToParse: 'id' })(step.options.content)
+    parseVariables(variables, { fieldToParse: 'id' })(block.options.content)
   )
   try {
     await func(...variables.map((v) => v.value))
   } catch (err) {
     console.error(err)
   }
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const executeTypebotLink = async (
-  step: TypebotLinkStep,
+  block: TypebotLinkBlock,
   context: LogicContext
 ): Promise<{
   nextEdgeId?: EdgeId
@@ -184,10 +186,10 @@ const executeTypebotLink = async (
     currentTypebotId,
   } = context
   const linkedTypebot = (
-    step.options.typebotId === 'current'
+    block.options.typebotId === 'current'
       ? typebot
-      : [typebot, ...linkedTypebots].find(byId(step.options.typebotId)) ??
-        (await fetchAndInjectTypebot(step, context))
+      : [typebot, ...linkedTypebots].find(byId(block.options.typebotId)) ??
+        (await fetchAndInjectTypebot(block, context))
   ) as PublicTypebot | LinkedTypebot | undefined
   if (!linkedTypebot) {
     onNewLog({
@@ -195,26 +197,26 @@ const executeTypebotLink = async (
       description: 'Failed to link typebot',
       details: '',
     })
-    return { nextEdgeId: step.outgoingEdgeId }
+    return { nextEdgeId: block.outgoingEdgeId }
   }
-  if (step.outgoingEdgeId)
+  if (block.outgoingEdgeId)
     pushEdgeIdInLinkedTypebotQueue({
-      edgeId: step.outgoingEdgeId,
+      edgeId: block.outgoingEdgeId,
       typebotId: currentTypebotId,
     })
   setCurrentTypebotId(
     'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
   )
-  const nextBlockId =
-    step.options.blockId ??
-    linkedTypebot.blocks.find((b) => b.steps.some((s) => s.type === 'start'))
+  const nextGroupId =
+    block.options.groupId ??
+    linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
       ?.id
-  if (!nextBlockId) return { nextEdgeId: step.outgoingEdgeId }
+  if (!nextGroupId) return { nextEdgeId: block.outgoingEdgeId }
   const newEdge: Edge = {
     id: (Math.random() * 1000).toString(),
-    from: { stepId: '', blockId: '' },
+    from: { blockId: '', groupId: '' },
     to: {
-      blockId: nextBlockId,
+      groupId: nextGroupId,
     },
   }
   createEdge(newEdge)
@@ -228,15 +230,15 @@ const executeTypebotLink = async (
 }
 
 const fetchAndInjectTypebot = async (
-  step: TypebotLinkStep,
+  block: TypebotLinkBlock,
   { apiHost, injectLinkedTypebot, isPreview }: LogicContext
 ): Promise<LinkedTypebot | undefined> => {
   const { data, error } = isPreview
     ? await sendRequest<{ typebot: Typebot }>(
-        `/api/typebots/${step.options.typebotId}`
+        `/api/typebots/${block.options.typebotId}`
       )
     : await sendRequest<{ typebot: PublicTypebot }>(
-        `${apiHost}/api/publicTypebots/${step.options.typebotId}`
+        `${apiHost}/api/publicTypebots/${block.options.typebotId}`
       )
   if (!data || error) return
   return injectLinkedTypebot(data.typebot)

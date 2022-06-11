@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "bSHn2HQZ1sKji5pd9Nmejf",
-      "steps": [
+      "blocks": [
         {
           "id": "qYmbSFBxCvGCgTvQTg9HeH",
           "type": "start",
           "label": "Start",
-          "blockId": "bSHn2HQZ1sKji5pd9Nmejf",
+          "groupId": "bSHn2HQZ1sKji5pd9Nmejf",
           "outgoingEdgeId": "jdQnqJK4b559rTJzHHhjcz"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "mSvUFogQH16bQDN1iGWF66",
       "graphCoordinates": { "x": 324, "y": 209 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "spDLmDCZfNJu4DrZ1MUg84c",
-          "blockId": "mSvUFogQH16bQDN1iGWF66",
+          "groupId": "mSvUFogQH16bQDN1iGWF66",
           "type": "email input",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
@@ -40,11 +40,11 @@
     {
       "id": "jd4S6BQsUQ2RuKieHXYKs9",
       "graphCoordinates": { "x": 655, "y": 363 },
-      "title": "Block #2",
-      "steps": [
+      "title": "Group #2",
+      "blocks": [
         {
           "id": "s1ZvUqWxV6b8UgFGYWh39pV",
-          "blockId": "jd4S6BQsUQ2RuKieHXYKs9",
+          "groupId": "jd4S6BQsUQ2RuKieHXYKs9",
           "type": "Google Sheets",
           "options": {},
           "outgoingEdgeId": "tBsPNYzMW1mMSvFMHZpmx8"
@@ -54,11 +54,11 @@
     {
       "id": "pd3PECJqHB9xHMfc52SbrZ",
       "graphCoordinates": { "x": 292, "y": 509 },
-      "title": "Block #3",
-      "steps": [
+      "title": "Group #3",
+      "blocks": [
         {
           "id": "sdECvSYszxBaZHH5TuWm11h",
-          "blockId": "pd3PECJqHB9xHMfc52SbrZ",
+          "groupId": "pd3PECJqHB9xHMfc52SbrZ",
           "type": "text",
           "content": {
             "html": "<div>Your name is: {{First name}} {{Last name}}</div>",
@@ -80,26 +80,26 @@
   "edges": [
     {
       "from": {
-        "blockId": "bSHn2HQZ1sKji5pd9Nmejf",
-        "stepId": "qYmbSFBxCvGCgTvQTg9HeH"
+        "groupId": "bSHn2HQZ1sKji5pd9Nmejf",
+        "blockId": "qYmbSFBxCvGCgTvQTg9HeH"
       },
-      "to": { "blockId": "mSvUFogQH16bQDN1iGWF66" },
+      "to": { "groupId": "mSvUFogQH16bQDN1iGWF66" },
       "id": "jdQnqJK4b559rTJzHHhjcz"
     },
     {
       "from": {
-        "blockId": "mSvUFogQH16bQDN1iGWF66",
-        "stepId": "spDLmDCZfNJu4DrZ1MUg84c"
+        "groupId": "mSvUFogQH16bQDN1iGWF66",
+        "blockId": "spDLmDCZfNJu4DrZ1MUg84c"
       },
-      "to": { "blockId": "jd4S6BQsUQ2RuKieHXYKs9" },
+      "to": { "groupId": "jd4S6BQsUQ2RuKieHXYKs9" },
       "id": "4yg9V76fdDntpDEw6H3tvU"
     },
     {
       "from": {
-        "blockId": "jd4S6BQsUQ2RuKieHXYKs9",
-        "stepId": "s1ZvUqWxV6b8UgFGYWh39pV"
+        "groupId": "jd4S6BQsUQ2RuKieHXYKs9",
+        "blockId": "s1ZvUqWxV6b8UgFGYWh39pV"
       },
-      "to": { "blockId": "pd3PECJqHB9xHMfc52SbrZ" },
+      "to": { "groupId": "pd3PECJqHB9xHMfc52SbrZ" },
       "id": "tBsPNYzMW1mMSvFMHZpmx8"
     }
   ],

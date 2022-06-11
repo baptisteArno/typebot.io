@@ -16,14 +16,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: { publishedTypebot: true },
     })
     if (!typebot) return res.status(404).send({ answersCounts: [] })
-    const answersCounts: { blockId: string; totalAnswers: number }[] =
+    const answersCounts: { groupId: string; totalAnswers: number }[] =
       await Promise.all(
-        (typebot.publishedTypebot as unknown as PublicTypebot).blocks.map(
+        (typebot.publishedTypebot as unknown as PublicTypebot).groups.map(
           async (block) => {
             const totalAnswers = await prisma.answer.count({
-              where: { blockId: block.id },
+              where: { groupId: block.id },
             })
-            return { blockId: block.id, totalAnswers }
+            return { groupId: block.id, totalAnswers }
           }
         )
       )

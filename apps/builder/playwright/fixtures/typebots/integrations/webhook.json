@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "p6GeeRXHgwiJeoJRBkKaMJ",
-      "steps": [
+      "blocks": [
         {
           "id": "iDS7jFemUsQ7Sp3eu3xg3w",
           "type": "start",
           "label": "Start",
-          "blockId": "p6GeeRXHgwiJeoJRBkKaMJ",
+          "groupId": "p6GeeRXHgwiJeoJRBkKaMJ",
           "outgoingEdgeId": "cyEJPaLU7AchnBSaeWoyiS"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "kBneEpKdMYrF65XxUQ5GS7",
       "graphCoordinates": { "x": 260, "y": 186 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "skSkZ4PNP7m1gYvu9Ew6ngM",
-          "blockId": "kBneEpKdMYrF65XxUQ5GS7",
+          "groupId": "kBneEpKdMYrF65XxUQ5GS7",
           "type": "text",
           "content": {
             "html": "<div>Ready?</div>",
@@ -37,13 +37,13 @@
         },
         {
           "id": "sh6ZVRA3o72y6BEiNKVcoma",
-          "blockId": "kBneEpKdMYrF65XxUQ5GS7",
+          "groupId": "kBneEpKdMYrF65XxUQ5GS7",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "rr5mKKBPq73ZrfXZ3uuupz",
-              "stepId": "sh6ZVRA3o72y6BEiNKVcoma",
+              "blockId": "sh6ZVRA3o72y6BEiNKVcoma",
               "type": 0,
               "content": "Go",
               "outgoingEdgeId": "1sLicz8gq2QxytFTwBd8ac"
@@ -55,11 +55,11 @@
     {
       "id": "8XnDM1QsqPms4LQHh8q3Jo",
       "graphCoordinates": { "x": 646, "y": 511 },
-      "title": "Block #2",
-      "steps": [
+      "title": "Group #2",
+      "blocks": [
         {
           "id": "soSmiE7zyb3WF77GxFxAjYX",
-          "blockId": "8XnDM1QsqPms4LQHh8q3Jo",
+          "groupId": "8XnDM1QsqPms4LQHh8q3Jo",
           "type": "Webhook",
           "options": {
             "responseVariableMapping": [],
@@ -81,19 +81,19 @@
   "edges": [
     {
       "from": {
-        "blockId": "p6GeeRXHgwiJeoJRBkKaMJ",
-        "stepId": "iDS7jFemUsQ7Sp3eu3xg3w"
+        "groupId": "p6GeeRXHgwiJeoJRBkKaMJ",
+        "blockId": "iDS7jFemUsQ7Sp3eu3xg3w"
       },
-      "to": { "blockId": "kBneEpKdMYrF65XxUQ5GS7" },
+      "to": { "groupId": "kBneEpKdMYrF65XxUQ5GS7" },
       "id": "cyEJPaLU7AchnBSaeWoyiS"
     },
     {
       "from": {
-        "blockId": "kBneEpKdMYrF65XxUQ5GS7",
-        "stepId": "sh6ZVRA3o72y6BEiNKVcoma",
+        "groupId": "kBneEpKdMYrF65XxUQ5GS7",
+        "blockId": "sh6ZVRA3o72y6BEiNKVcoma",
         "itemId": "rr5mKKBPq73ZrfXZ3uuupz"
       },
-      "to": { "blockId": "8XnDM1QsqPms4LQHh8q3Jo" },
+      "to": { "groupId": "8XnDM1QsqPms4LQHh8q3Jo" },
       "id": "1sLicz8gq2QxytFTwBd8ac"
     }
   ],

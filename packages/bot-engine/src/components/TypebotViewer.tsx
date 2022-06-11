@@ -30,8 +30,8 @@ export type TypebotViewerProps = {
   style?: CSSProperties
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
-  startBlockId?: string
-  onNewBlockVisible?: (edge: Edge) => void
+  startGroupId?: string
+  onNewGroupVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
@@ -44,10 +44,10 @@ export const TypebotViewer = ({
   isPreview = false,
   style,
   resultId,
-  startBlockId,
+  startGroupId,
   predefinedVariables,
   onNewLog,
-  onNewBlockVisible,
+  onNewGroupVisible,
   onNewAnswer,
   onCompleted,
   onVariablesUpdated,
@@ -59,8 +59,8 @@ export const TypebotViewer = ({
         : 'transparent',
     [typebot?.theme?.general?.background]
   )
-  const handleNewBlockVisible = (edge: Edge) =>
-    onNewBlockVisible && onNewBlockVisible(edge)
+  const handleNewGroupVisible = (edge: Edge) =>
+    onNewGroupVisible && onNewGroupVisible(edge)
 
   const handleNewAnswer = (answer: Answer) => onNewAnswer && onNewAnswer(answer)
 
@@ -115,10 +115,10 @@ export const TypebotViewer = ({
             <div className="flex w-full h-full justify-center">
               <ConversationContainer
                 theme={typebot.theme}
-                onNewBlockVisible={handleNewBlockVisible}
+                onNewGroupVisible={handleNewGroupVisible}
                 onCompleted={handleCompleted}
                 predefinedVariables={predefinedVariables}
-                startBlockId={startBlockId}
+                startGroupId={startGroupId}
               />
             </div>
             {typebot.settings.general.isBrandingEnabled && <LiteBadge />}

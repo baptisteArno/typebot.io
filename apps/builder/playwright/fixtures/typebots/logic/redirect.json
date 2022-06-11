@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "tdN9VXcdBWpuh6Gpaz3w4u",
-      "steps": [
+      "blocks": [
         {
           "id": "cVRL5EuVruTK31SAaVCvNE",
           "type": "start",
           "label": "Start",
-          "blockId": "tdN9VXcdBWpuh6Gpaz3w4u",
+          "groupId": "tdN9VXcdBWpuh6Gpaz3w4u",
           "outgoingEdgeId": "jqZYCYGxaL8svJbM2h1QAn"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "vymPUjL9AcWpkg9PkUXovk",
       "graphCoordinates": { "x": 685, "y": 194 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "sa8WhnrMyMjYCBMeozfYRoi",
-          "blockId": "vymPUjL9AcWpkg9PkUXovk",
+          "groupId": "vymPUjL9AcWpkg9PkUXovk",
           "type": "Redirect",
           "options": { "isNewTab": false }
         }
@@ -36,17 +36,17 @@
     {
       "id": "rEJ3PhFQc7diJ23jdoF6w7",
       "graphCoordinates": { "x": 294, "y": 201 },
-      "title": "Block #2",
-      "steps": [
+      "title": "Group #2",
+      "blocks": [
         {
           "id": "s7QRApVZmVFZgS53CNruBRz",
-          "blockId": "rEJ3PhFQc7diJ23jdoF6w7",
+          "groupId": "rEJ3PhFQc7diJ23jdoF6w7",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "5rWR3enRg6jZyFhtmgbPYo",
-              "stepId": "s7QRApVZmVFZgS53CNruBRz",
+              "blockId": "s7QRApVZmVFZgS53CNruBRz",
               "type": 0,
               "content": "Go to URL",
               "outgoingEdgeId": "6aVDkPMEsadze2vf4mLiYt"
@@ -60,19 +60,19 @@
   "edges": [
     {
       "from": {
-        "blockId": "tdN9VXcdBWpuh6Gpaz3w4u",
-        "stepId": "cVRL5EuVruTK31SAaVCvNE"
+        "groupId": "tdN9VXcdBWpuh6Gpaz3w4u",
+        "blockId": "cVRL5EuVruTK31SAaVCvNE"
       },
-      "to": { "blockId": "rEJ3PhFQc7diJ23jdoF6w7" },
+      "to": { "groupId": "rEJ3PhFQc7diJ23jdoF6w7" },
       "id": "jqZYCYGxaL8svJbM2h1QAn"
     },
     {
       "from": {
-        "blockId": "rEJ3PhFQc7diJ23jdoF6w7",
-        "stepId": "s7QRApVZmVFZgS53CNruBRz",
+        "groupId": "rEJ3PhFQc7diJ23jdoF6w7",
+        "blockId": "s7QRApVZmVFZgS53CNruBRz",
         "itemId": "5rWR3enRg6jZyFhtmgbPYo"
       },
-      "to": { "blockId": "vymPUjL9AcWpkg9PkUXovk" },
+      "to": { "groupId": "vymPUjL9AcWpkg9PkUXovk" },
       "id": "6aVDkPMEsadze2vf4mLiYt"
     }
   ],

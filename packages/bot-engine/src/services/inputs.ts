@@ -1,16 +1,16 @@
 import {
-  BubbleStep,
-  BubbleStepType,
+  BubbleBlock,
+  BubbleBlockType,
   Edge,
-  EmailInputStep,
-  InputStepType,
-  PhoneNumberInputStep,
-  Step,
-  UrlInputStep,
+  EmailInputBlock,
+  InputBlockType,
+  PhoneNumberInputBlock,
+  Block,
+  UrlInputBlock,
   Variable,
 } from 'models'
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
-import { isInputStep } from 'utils'
+import { isInputBlock } from 'utils'
 import { parseVariables } from './variable'
 
 const emailRegex =
@@ -20,41 +20,41 @@ const urlRegex =
 
 export const isInputValid = (
   inputValue: string,
-  type: InputStepType
+  type: InputBlockType
 ): boolean => {
   switch (type) {
-    case InputStepType.EMAIL:
+    case InputBlockType.EMAIL:
       return emailRegex.test(inputValue)
-    case InputStepType.PHONE:
+    case InputBlockType.PHONE:
       return isPossiblePhoneNumber(inputValue)
-    case InputStepType.URL:
+    case InputBlockType.URL:
       return urlRegex.test(inputValue)
   }
   return true
 }
 
-export const stepCanBeRetried = (
-  step: Step
-): step is EmailInputStep | UrlInputStep | PhoneNumberInputStep =>
-  isInputStep(step) && 'retryMessageContent' in step.options
+export const blockCanBeRetried = (
+  block: Block
+): block is EmailInputBlock | UrlInputBlock | PhoneNumberInputBlock =>
+  isInputBlock(block) && 'retryMessageContent' in block.options
 
-export const parseRetryStep = (
-  step: EmailInputStep | UrlInputStep | PhoneNumberInputStep,
+export const parseRetryBlock = (
+  block: EmailInputBlock | UrlInputBlock | PhoneNumberInputBlock,
   variables: Variable[],
   createEdge: (edge: Edge) => void
-): BubbleStep => {
-  const content = parseVariables(variables)(step.options.retryMessageContent)
-  const newStepId = step.id + Math.random() * 1000
+): BubbleBlock => {
+  const content = parseVariables(variables)(block.options.retryMessageContent)
+  const newBlockId = block.id + Math.random() * 1000
   const newEdge: Edge = {
     id: (Math.random() * 1000).toString(),
-    from: { stepId: newStepId, blockId: step.blockId },
-    to: { blockId: step.blockId, stepId: step.id },
+    from: { blockId: newBlockId, groupId: block.groupId },
+    to: { groupId: block.groupId, blockId: block.id },
   }
   createEdge(newEdge)
   return {
-    blockId: step.blockId,
-    id: newStepId,
-    type: BubbleStepType.TEXT,
+    groupId: block.groupId,
+    id: newBlockId,
+    type: BubbleBlockType.TEXT,
     content: {
       html: `<div>${content}</div>`,
       richText: [],

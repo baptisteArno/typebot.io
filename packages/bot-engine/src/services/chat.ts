@@ -1,12 +1,12 @@
 import {
-  BubbleStep,
-  BubbleStepType,
-  InputStep,
-  InputStepType,
-  Step,
+  BubbleBlock,
+  BubbleBlockType,
+  InputBlock,
+  InputBlockType,
+  Block,
   TypingEmulation,
 } from 'models'
-import { isBubbleStep, isInputStep } from 'utils'
+import { isBubbleBlock, isInputBlock } from 'utils'
 
 export const computeTypingTimeout = (
   bubbleContent: string,
@@ -23,11 +23,11 @@ export const computeTypingTimeout = (
   return typingTimeout
 }
 
-export const getLastChatStepType = (
-  steps: Step[]
-): BubbleStepType | InputStepType | undefined => {
-  const displayedSteps = steps.filter(
-    (s) => isBubbleStep(s) || isInputStep(s)
-  ) as (BubbleStep | InputStep)[]
-  return displayedSteps.pop()?.type
+export const getLastChatBlockType = (
+  blocks: Block[]
+): BubbleBlockType | InputBlockType | undefined => {
+  const displayedBlocks = blocks.filter(
+    (s) => isBubbleBlock(s) || isInputBlock(s)
+  ) as (BubbleBlock | InputBlock)[]
+  return displayedBlocks.pop()?.type
 }

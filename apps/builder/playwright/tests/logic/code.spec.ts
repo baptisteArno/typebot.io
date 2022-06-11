@@ -6,7 +6,7 @@ import cuid from 'cuid'
 
 const typebotId = cuid()
 
-test.describe('Code step', () => {
+test.describe('Code block', () => {
   test('code should trigger', async ({ page }) => {
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/logic/code.json'),

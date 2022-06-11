@@ -1,17 +1,15 @@
 import { MenuList, MenuItem } from '@chakra-ui/react'
 import { CopyIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { BlockIndices } from 'models'
 
-export const BlockNodeContextMenu = ({
-  blockIndex,
-}: {
-  blockIndex: number
-}) => {
+type Props = { indices: BlockIndices }
+export const BlockNodeContextMenu = ({ indices }: Props) => {
   const { deleteBlock, duplicateBlock } = useTypebot()
 
-  const handleDeleteClick = () => deleteBlock(blockIndex)
+  const handleDuplicateClick = () => duplicateBlock(indices)
 
-  const handleDuplicateClick = () => duplicateBlock(blockIndex)
+  const handleDeleteClick = () => deleteBlock(indices)
 
   return (
     <MenuList>

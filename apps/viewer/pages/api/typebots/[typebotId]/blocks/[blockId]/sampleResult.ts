@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(401).json({ message: 'Not authenticated' })
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId.toString()
-    const stepId = req.query.blockId.toString()
+    const blockId = req.query.blockId.toString()
     const typebot = (await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -18,13 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })) as unknown as Typebot | undefined
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
-    const step = typebot.blocks
-      .flatMap((b) => b.steps)
-      .find((s) => s.id === stepId)
-    if (!step) return res.status(404).send({ message: 'Block not found' })
+    const block = typebot.groups
+      .flatMap((g) => g.blocks)
+      .find((s) => s.id === blockId)
+    if (!block) return res.status(404).send({ message: 'Group not found' })
     const linkedTypebots = await getLinkedTypebots(typebot, user)
     return res.send(
-      await parseSampleResult(typebot, linkedTypebots)(step.blockId)
+      await parseSampleResult(typebot, linkedTypebots)(block.groupId)
     )
   }
   methodNotAllowed(res)

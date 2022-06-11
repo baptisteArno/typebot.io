@@ -21,7 +21,7 @@ export const useStats = ({
   }
 }
 
-export type AnswersCount = { blockId: string; totalAnswers: number }
+export type AnswersCount = { groupId: string; totalAnswers: number }
 export const useAnswersCount = ({
   typebotId,
   onError,

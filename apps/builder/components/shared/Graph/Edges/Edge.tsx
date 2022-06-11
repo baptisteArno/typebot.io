@@ -25,7 +25,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     previewingEdge,
     sourceEndpoints,
     targetEndpoints,
-    blocksCoordinates,
+    groupsCoordinates,
     graphPosition,
     isReadOnly,
     setPreviewingEdge,
@@ -37,10 +37,10 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
 
   const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
-  const sourceBlockCoordinates =
-    blocksCoordinates && blocksCoordinates[edge.from.blockId]
-  const targetBlockCoordinates =
-    blocksCoordinates && blocksCoordinates[edge.to.blockId]
+  const sourceGroupCoordinates =
+    groupsCoordinates && groupsCoordinates[edge.from.groupId]
+  const targetGroupCoordinates =
+    groupsCoordinates && groupsCoordinates[edge.to.groupId]
 
   const sourceTop = useMemo(
     () =>
@@ -51,7 +51,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
         graphScale: graphPosition.scale,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceBlockCoordinates?.y, edge, sourceEndpoints, refreshEdge]
+    [sourceGroupCoordinates?.y, edge, sourceEndpoints, refreshEdge]
   )
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     getEndpointTopOffset({
       endpoints: targetEndpoints,
       graphOffsetY: graphPosition.y,
-      endpointId: edge?.to.stepId,
+      endpointId: edge?.to.blockId,
       graphScale: graphPosition.scale,
     })
   )
@@ -71,24 +71,24 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
       getEndpointTopOffset({
         endpoints: targetEndpoints,
         graphOffsetY: graphPosition.y,
-        endpointId: edge?.to.stepId,
+        endpointId: edge?.to.blockId,
         graphScale: graphPosition.scale,
       })
     )
   }, [
-    targetBlockCoordinates?.y,
+    targetGroupCoordinates?.y,
     targetEndpoints,
     graphPosition.y,
-    edge?.to.stepId,
+    edge?.to.blockId,
     graphPosition.scale,
   ])
 
   const path = useMemo(() => {
-    if (!sourceBlockCoordinates || !targetBlockCoordinates || !sourceTop)
+    if (!sourceGroupCoordinates || !targetGroupCoordinates || !sourceTop)
       return ``
     const anchorsPosition = getAnchorsPosition({
-      sourceBlockCoordinates,
-      targetBlockCoordinates,
+      sourceGroupCoordinates,
+      targetGroupCoordinates,
       sourceTop,
       targetTop,
       graphScale: graphPosition.scale,
@@ -96,10 +96,10 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     return computeEdgePath(anchorsPosition)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    sourceBlockCoordinates?.x,
-    sourceBlockCoordinates?.y,
-    targetBlockCoordinates?.x,
-    targetBlockCoordinates?.y,
+    sourceGroupCoordinates?.x,
+    sourceGroupCoordinates?.y,
+    targetGroupCoordinates?.x,
+    targetGroupCoordinates?.y,
     sourceTop,
   ])
 

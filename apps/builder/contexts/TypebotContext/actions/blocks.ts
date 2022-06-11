@@ -1,102 +1,155 @@
-import { Coordinates } from 'contexts/GraphContext'
-import cuid from 'cuid'
-import { produce } from 'immer'
-import { WritableDraft } from 'immer/dist/internal'
 import {
   Block,
-  DraggableStep,
-  DraggableStepType,
-  StepIndices,
   Typebot,
+  DraggableBlock,
+  DraggableBlockType,
+  BlockIndices,
 } from 'models'
+import { parseNewBlock } from 'services/typebots/typebots'
+import { removeEmptyGroups } from './groups'
+import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotContext'
-import { cleanUpEdgeDraft } from './edges'
-import { createStepDraft, duplicateStepDraft } from './steps'
+import produce from 'immer'
+import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
+import cuid from 'cuid'
+import { byId, isWebhookBlock, blockHasItems } from 'utils'
+import { duplicateItemDraft } from './items'
 
 export type BlocksActions = {
   createBlock: (
-    props: Coordinates & {
-      id: string
-      step: DraggableStep | DraggableStepType
-      indices: StepIndices
-    }
+    groupId: string,
+    block: DraggableBlock | DraggableBlockType,
+    indices: BlockIndices
   ) => void
-  updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) => void
-  duplicateBlock: (blockIndex: number) => void
-  deleteBlock: (blockIndex: number) => void
+  updateBlock: (
+    indices: BlockIndices,
+    updates: Partial<Omit<Block, 'id' | 'type'>>
+  ) => void
+  duplicateBlock: (indices: BlockIndices) => void
+  detachBlockFromGroup: (indices: BlockIndices) => void
+  deleteBlock: (indices: BlockIndices) => void
 }
 
-const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
-  createBlock: ({
-    id,
-    step,
-    indices,
-    ...graphCoordinates
-  }: Coordinates & {
-    id: string
-    step: DraggableStep | DraggableStepType
-    indices: StepIndices
-  }) =>
+const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
+  createBlock: (
+    groupId: string,
+    block: DraggableBlock | DraggableBlockType,
+    indices: BlockIndices
+  ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const newBlock: Block = {
-          id,
-          graphCoordinates,
-          title: `Group #${typebot.blocks.length}`,
-          steps: [],
-        }
-        typebot.blocks.push(newBlock)
-        createStepDraft(typebot, step, newBlock.id, indices)
+        createBlockDraft(typebot, block, groupId, indices)
       })
     ),
-  updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) =>
+  updateBlock: (
+    { groupIndex, blockIndex }: BlockIndices,
+    updates: Partial<Omit<Block, 'id' | 'type'>>
+  ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const block = typebot.blocks[blockIndex]
-        typebot.blocks[blockIndex] = { ...block, ...updates }
+        const block = typebot.groups[groupIndex].blocks[blockIndex]
+        typebot.groups[groupIndex].blocks[blockIndex] = { ...block, ...updates }
       })
     ),
-  duplicateBlock: (blockIndex: number) =>
+  duplicateBlock: ({ groupIndex, blockIndex }: BlockIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const block = typebot.blocks[blockIndex]
-        const id = cuid()
-        const newBlock: Block = {
-          ...block,
-          title: `${block.title} copy`,
-          id,
-          steps: block.steps.map(duplicateStepDraft(id)),
-          graphCoordinates: {
-            x: block.graphCoordinates.x + 200,
-            y: block.graphCoordinates.y + 100,
-          },
-        }
-        typebot.blocks.splice(blockIndex + 1, 0, newBlock)
+        const block = { ...typebot.groups[groupIndex].blocks[blockIndex] }
+        const newBlock = duplicateBlockDraft(block.groupId)(block)
+        typebot.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock)
       })
     ),
-  deleteBlock: (blockIndex: number) =>
+  detachBlockFromGroup: (indices: BlockIndices) =>
+    setTypebot((typebot) => produce(typebot, removeBlockFromGroup(indices))),
+  deleteBlock: ({ groupIndex, blockIndex }: BlockIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        deleteBlockDraft(typebot)(blockIndex)
+        const removingBlock = typebot.groups[groupIndex].blocks[blockIndex]
+        removeBlockFromGroup({ groupIndex, blockIndex })(typebot)
+        cleanUpEdgeDraft(typebot, removingBlock.id)
+        removeEmptyGroups(typebot)
       })
     ),
 })
 
-const deleteBlockDraft =
-  (typebot: WritableDraft<Typebot>) => (blockIndex: number) => {
-    cleanUpEdgeDraft(typebot, typebot.blocks[blockIndex].id)
-    typebot.blocks.splice(blockIndex, 1)
+const removeBlockFromGroup =
+  ({ groupIndex, blockIndex }: BlockIndices) =>
+  (typebot: WritableDraft<Typebot>) => {
+    typebot.groups[groupIndex].blocks.splice(blockIndex, 1)
   }
 
-const removeEmptyBlocks = (typebot: WritableDraft<Typebot>) => {
-  const emptyBlocksIndices = typebot.blocks.reduce<number[]>(
-    (arr, block, idx) => {
-      block.steps.length === 0 && arr.push(idx)
-      return arr
-    },
-    []
+const createBlockDraft = (
+  typebot: WritableDraft<Typebot>,
+  block: DraggableBlock | DraggableBlockType,
+  groupId: string,
+  { groupIndex, blockIndex }: BlockIndices
+) => {
+  const blocks = typebot.groups[groupIndex].blocks
+  if (
+    blockIndex === blocks.length &&
+    blockIndex > 0 &&
+    blocks[blockIndex - 1].outgoingEdgeId
   )
-  emptyBlocksIndices.forEach(deleteBlockDraft(typebot))
+    deleteEdgeDraft(typebot, blocks[blockIndex - 1].outgoingEdgeId as string)
+  typeof block === 'string'
+    ? createNewBlock(typebot, block, groupId, { groupIndex, blockIndex })
+    : moveBlockToGroup(typebot, block, groupId, { groupIndex, blockIndex })
+  removeEmptyGroups(typebot)
 }
 
-export { blocksActions, removeEmptyBlocks }
+const createNewBlock = async (
+  typebot: WritableDraft<Typebot>,
+  type: DraggableBlockType,
+  groupId: string,
+  { groupIndex, blockIndex }: BlockIndices
+) => {
+  const newBlock = parseNewBlock(type, groupId)
+  typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+}
+
+const moveBlockToGroup = (
+  typebot: WritableDraft<Typebot>,
+  block: DraggableBlock,
+  groupId: string,
+  { groupIndex, blockIndex }: BlockIndices
+) => {
+  const newBlock = { ...block, groupId }
+  const items = blockHasItems(block) ? block.items : []
+  items.forEach((item) => {
+    const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
+    if (edgeIndex === -1) return
+    typebot.edges[edgeIndex].from.groupId = groupId
+  })
+  if (block.outgoingEdgeId) {
+    if (typebot.groups[groupIndex].blocks.length > blockIndex ?? 0) {
+      deleteEdgeDraft(typebot, block.outgoingEdgeId)
+      newBlock.outgoingEdgeId = undefined
+    } else {
+      const edgeIndex = typebot.edges.findIndex(byId(block.outgoingEdgeId))
+      edgeIndex !== -1
+        ? (typebot.edges[edgeIndex].from.groupId = groupId)
+        : (newBlock.outgoingEdgeId = undefined)
+    }
+  }
+  typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+}
+
+const duplicateBlockDraft =
+  (groupId: string) =>
+  (block: Block): Block => {
+    const blockId = cuid()
+    return {
+      ...block,
+      groupId,
+      id: blockId,
+      items: blockHasItems(block)
+        ? block.items.map(duplicateItemDraft(blockId))
+        : undefined,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      webhookId: isWebhookBlock(block) ? cuid() : undefined,
+      outgoingEdgeId: undefined,
+    }
+  }
+
+export { blocksAction, createBlockDraft, duplicateBlockDraft }

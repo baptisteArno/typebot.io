@@ -1,20 +1,20 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { defaultNumberInputOptions, InputStepType } from 'models'
+import { defaultNumberInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
-test.describe('Number input step', () => {
+test.describe('Number input block', () => {
   test('options should work', async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.NUMBER,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.NUMBER,
           options: defaultNumberInputOptions,
         }),
       },

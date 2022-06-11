@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { ChatBlock } from './ChatBlock/ChatBlock'
+import { ChatGroup } from './ChatGroup'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
-import { Block, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
+import { Group, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
 import { byId, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
@@ -13,15 +13,15 @@ import { ChatContext } from 'contexts/ChatContext'
 type Props = {
   theme: Theme
   predefinedVariables?: { [key: string]: string | undefined }
-  startBlockId?: string
-  onNewBlockVisible: (edge: Edge) => void
+  startGroupId?: string
+  onNewGroupVisible: (edge: Edge) => void
   onCompleted: () => void
 }
 export const ConversationContainer = ({
   theme,
   predefinedVariables,
-  startBlockId,
-  onNewBlockVisible,
+  startGroupId,
+  onNewGroupVisible,
   onCompleted,
 }: Props) => {
   const {
@@ -31,34 +31,34 @@ export const ConversationContainer = ({
     popEdgeIdFromLinkedTypebotQueue,
   } = useTypebot()
   const { document: frameDocument } = useFrame()
-  const [displayedBlocks, setDisplayedBlocks] = useState<
-    { block: Block; startStepIndex: number }[]
+  const [displayedGroups, setDisplayedGroups] = useState<
+    { group: Group; startBlockIndex: number }[]
   >([])
   const { updateVariables } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
 
-  const displayNextBlock = ({
+  const displayNextGroup = ({
     edgeId,
     updatedTypebot,
-    blockId,
+    groupId,
   }: {
     edgeId?: string
-    blockId?: string
+    groupId?: string
     updatedTypebot?: PublicTypebot | LinkedTypebot
   }) => {
     const currentTypebot = updatedTypebot ?? typebot
-    if (blockId) {
-      const nextBlock = currentTypebot.blocks.find(byId(blockId))
-      if (!nextBlock) return
-      onNewBlockVisible({
+    if (groupId) {
+      const nextGroup = currentTypebot.groups.find(byId(groupId))
+      if (!nextGroup) return
+      onNewGroupVisible({
         id: 'edgeId',
-        from: { blockId: 'block', stepId: 'step' },
-        to: { blockId },
+        from: { groupId: 'block', blockId: 'block' },
+        to: { groupId },
       })
-      return setDisplayedBlocks([
-        ...displayedBlocks,
-        { block: nextBlock, startStepIndex: 0 },
+      return setDisplayedGroups([
+        ...displayedGroups,
+        { group: nextGroup, startBlockIndex: 0 },
       ])
     }
     const nextEdge = currentTypebot.edges.find(byId(edgeId))
@@ -66,30 +66,30 @@ export const ConversationContainer = ({
       if (linkedBotQueue.length > 0) {
         const nextEdgeId = linkedBotQueue[0].edgeId
         popEdgeIdFromLinkedTypebotQueue()
-        displayNextBlock({ edgeId: nextEdgeId })
+        displayNextGroup({ edgeId: nextEdgeId })
       }
       return onCompleted()
     }
-    const nextBlock = currentTypebot.blocks.find(byId(nextEdge.to.blockId))
-    if (!nextBlock) return onCompleted()
-    const startStepIndex = nextEdge.to.stepId
-      ? nextBlock.steps.findIndex(byId(nextEdge.to.stepId))
+    const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId))
+    if (!nextGroup) return onCompleted()
+    const startBlockIndex = nextEdge.to.blockId
+      ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
       : 0
-    onNewBlockVisible(nextEdge)
-    setDisplayedBlocks([
-      ...displayedBlocks,
-      { block: nextBlock, startStepIndex },
+    onNewGroupVisible(nextEdge)
+    setDisplayedGroups([
+      ...displayedGroups,
+      { group: nextGroup, startBlockIndex },
     ])
   }
 
   useEffect(() => {
     const prefilledVariables = injectPredefinedVariables(predefinedVariables)
     updateVariables(prefilledVariables)
-    displayNextBlock({
-      edgeId: startBlockId
+    displayNextGroup({
+      edgeId: startGroupId
         ? undefined
-        : typebot.blocks[0].steps[0].outgoingEdgeId,
-      blockId: startBlockId,
+        : typebot.groups[0].blocks[0].outgoingEdgeId,
+      groupId: startGroupId,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -131,14 +131,14 @@ export const ConversationContainer = ({
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
     >
       <ChatContext onScroll={autoScrollToBottom}>
-        {displayedBlocks.map((displayedBlock, idx) => (
-          <ChatBlock
-            key={displayedBlock.block.id + idx}
-            steps={displayedBlock.block.steps}
-            startStepIndex={displayedBlock.startStepIndex}
-            onBlockEnd={displayNextBlock}
-            blockTitle={displayedBlock.block.title}
-            keepShowingHostAvatar={idx === displayedBlocks.length - 1}
+        {displayedGroups.map((displayedGroup, idx) => (
+          <ChatGroup
+            key={displayedGroup.group.id + idx}
+            blocks={displayedGroup.group.blocks}
+            startBlockIndex={displayedGroup.startBlockIndex}
+            onGroupEnd={displayNextGroup}
+            groupTitle={displayedGroup.group.title}
+            keepShowingHostAvatar={idx === displayedGroups.length - 1}
           />
         ))}
       </ChatContext>

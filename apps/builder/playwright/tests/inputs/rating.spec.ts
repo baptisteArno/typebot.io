@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { defaultRatingInputOptions, InputStepType } from 'models'
+import { defaultRatingInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
@@ -25,8 +25,8 @@ test('options should work', async ({ page }) => {
   await createTypebots([
     {
       id: typebotId,
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.RATING,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.RATING,
         options: defaultRatingInputOptions,
       }),
     },

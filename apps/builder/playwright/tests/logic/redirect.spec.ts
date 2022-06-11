@@ -6,7 +6,7 @@ import cuid from 'cuid'
 
 const typebotId = cuid()
 
-test.describe('Redirect step', () => {
+test.describe('Redirect block', () => {
   test('its configuration should work', async ({ page, context }) => {
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/logic/redirect.json'),

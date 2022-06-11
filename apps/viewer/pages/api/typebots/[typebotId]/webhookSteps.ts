@@ -1,9 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
-import { Block } from 'models'
+import { Group, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { byId, isNotDefined, isWebhookStep, methodNotAllowed } from 'utils'
+import { byId, isNotDefined, isWebhookBlock, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -15,26 +15,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: typebotId,
         workspace: { members: { some: { userId: user.id } } },
       },
-      select: { blocks: true, webhooks: true },
+      select: { groups: true, webhooks: true },
     })
-    const emptyWebhookSteps = (typebot?.blocks as Block[]).reduce<
-      { blockId: string; id: string; name: string }[]
-    >((emptyWebhookSteps, block) => {
-      const steps = block.steps.filter(
-        (step) =>
-          isWebhookStep(step) &&
-          isNotDefined(typebot?.webhooks.find(byId(step.webhookId))?.url)
+    const emptyWebhookBlocks = (typebot?.groups as Group[]).reduce<
+      { groupId: string; id: string; name: string }[]
+    >((emptyWebhookBlocks, group) => {
+      const blocks = group.blocks.filter(
+        (block) =>
+          isWebhookBlock(block) &&
+          isNotDefined(
+            typebot?.webhooks.find(byId((block as WebhookBlock).webhookId))?.url
+          )
       )
       return [
-        ...emptyWebhookSteps,
-        ...steps.map((s) => ({
+        ...emptyWebhookBlocks,
+        ...blocks.map((s) => ({
           id: s.id,
-          blockId: s.blockId,
-          name: `${block.title} > ${s.id}`,
+          groupId: s.groupId,
+          name: `${group.title} > ${s.id}`,
         })),
       ]
     }, [])
-    return res.send({ steps: emptyWebhookSteps })
+    return res.send({ blocks: emptyWebhookBlocks })
   }
   return methodNotAllowed(res)
 }

@@ -17,22 +17,22 @@ export const DrawingEdge = () => {
     connectingIds,
     sourceEndpoints,
     targetEndpoints,
-    blocksCoordinates,
+    groupsCoordinates,
   } = useGraph()
   const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
-  const sourceBlockCoordinates =
-    blocksCoordinates && blocksCoordinates[connectingIds?.source.blockId ?? '']
-  const targetBlockCoordinates =
-    blocksCoordinates && blocksCoordinates[connectingIds?.target?.blockId ?? '']
+  const sourceGroupCoordinates =
+    groupsCoordinates && groupsCoordinates[connectingIds?.source.groupId ?? '']
+  const targetGroupCoordinates =
+    groupsCoordinates && groupsCoordinates[connectingIds?.target?.groupId ?? '']
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0
     return getEndpointTopOffset({
       endpoints: sourceEndpoints,
       graphOffsetY: graphPosition.y,
-      endpointId: connectingIds.source.itemId ?? connectingIds.source.stepId,
+      endpointId: connectingIds.source.itemId ?? connectingIds.source.blockId,
       graphScale: graphPosition.scale,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,32 +43,32 @@ export const DrawingEdge = () => {
     return getEndpointTopOffset({
       endpoints: targetEndpoints,
       graphOffsetY: graphPosition.y,
-      endpointId: connectingIds.target?.stepId,
+      endpointId: connectingIds.target?.blockId,
       graphScale: graphPosition.scale,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectingIds, targetEndpoints])
 
   const path = useMemo(() => {
-    if (!sourceTop || !sourceBlockCoordinates) return ``
+    if (!sourceTop || !sourceGroupCoordinates) return ``
 
-    return targetBlockCoordinates
+    return targetGroupCoordinates
       ? computeConnectingEdgePath({
-          sourceBlockCoordinates,
-          targetBlockCoordinates,
+          sourceGroupCoordinates,
+          targetGroupCoordinates,
           sourceTop,
           targetTop,
           graphScale: graphPosition.scale,
         })
       : computeEdgePathToMouse({
-          sourceBlockCoordinates,
+          sourceGroupCoordinates,
           mousePosition,
           sourceTop,
         })
   }, [
     sourceTop,
-    sourceBlockCoordinates,
-    targetBlockCoordinates,
+    sourceGroupCoordinates,
+    targetGroupCoordinates,
     targetTop,
     mousePosition,
     graphPosition.scale,

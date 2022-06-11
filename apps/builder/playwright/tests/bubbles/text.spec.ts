@@ -1,20 +1,20 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { BubbleStepType, defaultTextBubbleContent } from 'models'
+import { BubbleBlockType, defaultTextBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
-test.describe('Text bubble step', () => {
+test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: BubbleStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: BubbleBlockType.TEXT,
           content: defaultTextBubbleContent,
         }),
       },

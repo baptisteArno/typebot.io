@@ -10,7 +10,7 @@ import React, {
 
 export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
-  'id' | 'blocks' | 'variables' | 'edges'
+  'id' | 'groups' | 'variables' | 'edges'
 >
 
 export type LinkedTypebotQueue = {
@@ -86,14 +86,14 @@ export const TypebotContext = ({
   const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
     const typebotToInject = {
       id: 'typebotId' in typebot ? typebot.typebotId : typebot.id,
-      blocks: typebot.blocks,
+      groups: typebot.groups,
       edges: typebot.edges,
       variables: typebot.variables,
     }
     setLinkedTypebots((typebots) => [...typebots, typebotToInject])
     const updatedTypebot = {
       ...localTypebot,
-      blocks: [...localTypebot.blocks, ...typebotToInject.blocks],
+      groups: [...localTypebot.groups, ...typebotToInject.groups],
       variables: [...localTypebot.variables, ...typebotToInject.variables],
       edges: [...localTypebot.edges, ...typebotToInject.edges],
     }

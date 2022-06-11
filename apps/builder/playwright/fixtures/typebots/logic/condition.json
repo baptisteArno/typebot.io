@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cN46uqNAR3ohjrS8jHJ6xT",
-      "steps": [
+      "blocks": [
         {
           "id": "nzijwLtLTAZfNNCN7kEpn5",
           "type": "start",
           "label": "Start",
-          "blockId": "cN46uqNAR3ohjrS8jHJ6xT",
+          "groupId": "cN46uqNAR3ohjrS8jHJ6xT",
           "outgoingEdgeId": "7wxB76VK81JsXMX9jU9dbQ"
         }
       ],
@@ -22,11 +22,11 @@
     },
     {
       "id": "eh2ohNATnGg6RTdjG9h5kb",
-      "steps": [
+      "blocks": [
         {
           "id": "sb6xdkJRr6P6BxtTM3ku5JD",
           "type": "text",
-          "blockId": "eh2ohNATnGg6RTdjG9h5kb",
+          "groupId": "eh2ohNATnGg6RTdjG9h5kb",
           "content": {
             "html": "<div>How old are you?</div>",
             "richText": [
@@ -38,7 +38,7 @@
         {
           "id": "ssyBKZve7bihSxUASYTruZA",
           "type": "number input",
-          "blockId": "eh2ohNATnGg6RTdjG9h5kb",
+          "groupId": "eh2ohNATnGg6RTdjG9h5kb",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type a number..." },
             "variableId": "iDJzzyzAY2jrapm3NwhGMz"
@@ -46,20 +46,20 @@
           "outgoingEdgeId": "r8LX7iuEXxjF5SW5dbS6qT"
         }
       ],
-      "title": "Block #1",
+      "title": "Group #1",
       "graphCoordinates": { "x": 159, "y": 224 }
     },
     {
       "id": "eMk84KvFM53sBxchTeackR",
-      "steps": [
+      "blocks": [
         {
           "id": "s5hz7HQki66cwELvk2738MJ",
-          "blockId": "eMk84KvFM53sBxchTeackR",
+          "groupId": "eMk84KvFM53sBxchTeackR",
           "type": "Condition",
           "items": [
             {
               "id": "56s4R9THRKeoJtBdKzEGLn",
-              "stepId": "s5hz7HQki66cwELvk2738MJ",
+              "blockId": "s5hz7HQki66cwELvk2738MJ",
               "type": 1,
               "content": {
                 "comparisons": [
@@ -80,7 +80,7 @@
             {
               "id": "ijYfW38tGhCMRrCtmR3bcr",
               "type": 1,
-              "stepId": "sv8uvEXgYWQNMfZWcdbfyCs",
+              "blockId": "sv8uvEXgYWQNMfZWcdbfyCs",
               "content": {
                 "comparisons": [
                   {
@@ -92,20 +92,20 @@
               "outgoingEdgeId": "s1uVbzP1zMMJjsCguAfhGV"
             }
           ],
-          "blockId": "eMk84KvFM53sBxchTeackR",
+          "groupId": "eMk84KvFM53sBxchTeackR",
           "outgoingEdgeId": "hVScFHNzToiEsMfYVv5AWZ"
         }
       ],
-      "title": "Block #2",
+      "title": "Group #2",
       "graphCoordinates": { "x": 561, "y": 295 }
     },
     {
       "id": "fGrzjahWecA8hoNMRrLSwn",
-      "steps": [
+      "blocks": [
         {
           "id": "soZqPdPUjYAht9nHmVpba1Q",
           "type": "text",
-          "blockId": "fGrzjahWecA8hoNMRrLSwn",
+          "groupId": "fGrzjahWecA8hoNMRrLSwn",
           "content": {
             "html": "<div>You are older than 80</div>",
             "richText": [
@@ -118,16 +118,16 @@
           }
         }
       ],
-      "title": "Block #3",
+      "title": "Group #3",
       "graphCoordinates": { "x": 936, "y": 63 }
     },
     {
       "id": "49Jv45UJi9R3U4FuWS8R2c",
-      "steps": [
+      "blocks": [
         {
           "id": "svipUacs1sDk9KDxzaGhnsG",
           "type": "text",
-          "blockId": "49Jv45UJi9R3U4FuWS8R2c",
+          "groupId": "49Jv45UJi9R3U4FuWS8R2c",
           "content": {
             "html": "<div>You are older than 20</div>",
             "richText": [
@@ -140,16 +140,16 @@
           }
         }
       ],
-      "title": "Block #4",
+      "title": "Group #4",
       "graphCoordinates": { "x": 950, "y": 298 }
     },
     {
       "id": "fD28kefdySKK7XA7SyTozC",
-      "steps": [
+      "blocks": [
         {
           "id": "spHJ7v9bDdVrFfuF2zg3YNR",
           "type": "text",
-          "blockId": "fD28kefdySKK7XA7SyTozC",
+          "groupId": "fD28kefdySKK7XA7SyTozC",
           "content": {
             "html": "<div>You are younger than 20</div>",
             "richText": [
@@ -162,7 +162,7 @@
           }
         }
       ],
-      "title": "Block #5",
+      "title": "Group #5",
       "graphCoordinates": { "x": 985, "y": 537 }
     }
   ],
@@ -170,44 +170,44 @@
   "edges": [
     {
       "from": {
-        "blockId": "eMk84KvFM53sBxchTeackR",
-        "stepId": "s5hz7HQki66cwELvk2738MJ",
+        "groupId": "eMk84KvFM53sBxchTeackR",
+        "blockId": "s5hz7HQki66cwELvk2738MJ",
         "itemId": "56s4R9THRKeoJtBdKzEGLn"
       },
-      "to": { "blockId": "fGrzjahWecA8hoNMRrLSwn" },
+      "to": { "groupId": "fGrzjahWecA8hoNMRrLSwn" },
       "id": "nDjMjM11xPQF7c9Be6ukdY"
     },
     {
       "from": {
-        "blockId": "eMk84KvFM53sBxchTeackR",
-        "stepId": "sv8uvEXgYWQNMfZWcdbfyCs",
+        "groupId": "eMk84KvFM53sBxchTeackR",
+        "blockId": "sv8uvEXgYWQNMfZWcdbfyCs",
         "itemId": "ijYfW38tGhCMRrCtmR3bcr"
       },
-      "to": { "blockId": "49Jv45UJi9R3U4FuWS8R2c" },
+      "to": { "groupId": "49Jv45UJi9R3U4FuWS8R2c" },
       "id": "s1uVbzP1zMMJjsCguAfhGV"
     },
     {
       "from": {
-        "blockId": "eMk84KvFM53sBxchTeackR",
-        "stepId": "sv8uvEXgYWQNMfZWcdbfyCs"
+        "groupId": "eMk84KvFM53sBxchTeackR",
+        "blockId": "sv8uvEXgYWQNMfZWcdbfyCs"
       },
-      "to": { "blockId": "fD28kefdySKK7XA7SyTozC" },
+      "to": { "groupId": "fD28kefdySKK7XA7SyTozC" },
       "id": "hVScFHNzToiEsMfYVv5AWZ"
     },
     {
       "from": {
-        "blockId": "eh2ohNATnGg6RTdjG9h5kb",
-        "stepId": "ssyBKZve7bihSxUASYTruZA"
+        "groupId": "eh2ohNATnGg6RTdjG9h5kb",
+        "blockId": "ssyBKZve7bihSxUASYTruZA"
       },
-      "to": { "blockId": "eMk84KvFM53sBxchTeackR" },
+      "to": { "groupId": "eMk84KvFM53sBxchTeackR" },
       "id": "r8LX7iuEXxjF5SW5dbS6qT"
     },
     {
       "from": {
-        "blockId": "cN46uqNAR3ohjrS8jHJ6xT",
-        "stepId": "nzijwLtLTAZfNNCN7kEpn5"
+        "groupId": "cN46uqNAR3ohjrS8jHJ6xT",
+        "blockId": "nzijwLtLTAZfNNCN7kEpn5"
       },
-      "to": { "blockId": "eh2ohNATnGg6RTdjG9h5kb" },
+      "to": { "groupId": "eh2ohNATnGg6RTdjG9h5kb" },
       "id": "7wxB76VK81JsXMX9jU9dbQ"
     }
   ],

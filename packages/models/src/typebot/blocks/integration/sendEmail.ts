@@ -1,0 +1,27 @@
+import { z } from 'zod'
+import { IntegrationBlockType, blockBaseSchema } from '../shared'
+
+export const sendEmailOptionsSchema = z.object({
+  credentialsId: z.string(),
+  recipients: z.array(z.string()),
+  subject: z.string().optional(),
+  body: z.string().optional(),
+  replyTo: z.string().optional(),
+  cc: z.array(z.string()).optional(),
+  bcc: z.array(z.string()).optional(),
+})
+
+export const sendEmailBlockSchema = blockBaseSchema.and(
+  z.object({
+    type: z.enum([IntegrationBlockType.EMAIL]),
+    options: sendEmailOptionsSchema,
+  })
+)
+
+export const defaultSendEmailOptions: SendEmailOptions = {
+  credentialsId: 'default',
+  recipients: [],
+}
+
+export type SendEmailBlock = z.infer<typeof sendEmailBlockSchema>
+export type SendEmailOptions = z.infer<typeof sendEmailOptionsSchema>

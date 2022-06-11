@@ -1,23 +1,23 @@
 import { Log } from 'db'
 import {
-  IntegrationStep,
-  IntegrationStepType,
-  GoogleSheetsStep,
+  IntegrationBlock,
+  IntegrationBlockType,
+  GoogleSheetsBlock,
   GoogleSheetsAction,
   GoogleSheetsInsertRowOptions,
   Variable,
   GoogleSheetsUpdateRowOptions,
   Cell,
   GoogleSheetsGetOptions,
-  GoogleAnalyticsStep,
-  WebhookStep,
-  SendEmailStep,
-  ZapierStep,
+  GoogleAnalyticsBlock,
+  WebhookBlock,
+  SendEmailBlock,
+  ZapierBlock,
   ResultValues,
-  Block,
+  Group,
   VariableWithValue,
-  MakeComStep,
-  PabblyConnectStep,
+  MakeComBlock,
+  PabblyConnectBlock,
 } from 'models'
 import { stringify } from 'qs'
 import { byId, sendRequest } from 'utils'
@@ -27,12 +27,12 @@ import { parseVariables, parseVariablesInObject } from './variable'
 type IntegrationContext = {
   apiHost: string
   typebotId: string
+  groupId: string
   blockId: string
-  stepId: string
   isPreview: boolean
   variables: Variable[]
   resultValues: ResultValues
-  blocks: Block[]
+  groups: Group[]
   resultId?: string
   updateVariables: (variables: VariableWithValue[]) => void
   updateVariableValue: (variableId: string, value: string) => void
@@ -40,55 +40,55 @@ type IntegrationContext = {
 }
 
 export const executeIntegration = ({
-  step,
+  block,
   context,
 }: {
-  step: IntegrationStep
+  block: IntegrationBlock
   context: IntegrationContext
 }): Promise<string | undefined> => {
-  switch (step.type) {
-    case IntegrationStepType.GOOGLE_SHEETS:
-      return executeGoogleSheetIntegration(step, context)
-    case IntegrationStepType.GOOGLE_ANALYTICS:
-      return executeGoogleAnalyticsIntegration(step, context)
-    case IntegrationStepType.ZAPIER:
-    case IntegrationStepType.MAKE_COM:
-    case IntegrationStepType.PABBLY_CONNECT:
-    case IntegrationStepType.WEBHOOK:
-      return executeWebhook(step, context)
-    case IntegrationStepType.EMAIL:
-      return sendEmail(step, context)
+  switch (block.type) {
+    case IntegrationBlockType.GOOGLE_SHEETS:
+      return executeGoogleSheetIntegration(block, context)
+    case IntegrationBlockType.GOOGLE_ANALYTICS:
+      return executeGoogleAnalyticsIntegration(block, context)
+    case IntegrationBlockType.ZAPIER:
+    case IntegrationBlockType.MAKE_COM:
+    case IntegrationBlockType.PABBLY_CONNECT:
+    case IntegrationBlockType.WEBHOOK:
+      return executeWebhook(block, context)
+    case IntegrationBlockType.EMAIL:
+      return sendEmail(block, context)
   }
 }
 
 export const executeGoogleAnalyticsIntegration = async (
-  step: GoogleAnalyticsStep,
+  block: GoogleAnalyticsBlock,
   { variables }: IntegrationContext
 ) => {
-  if (!step.options?.trackingId) return step.outgoingEdgeId
+  if (!block.options?.trackingId) return block.outgoingEdgeId
   const { default: initGoogleAnalytics } = await import('../../lib/gtag')
-  await initGoogleAnalytics(step.options.trackingId)
-  sendGaEvent(parseVariablesInObject(step.options, variables))
-  return step.outgoingEdgeId
+  await initGoogleAnalytics(block.options.trackingId)
+  sendGaEvent(parseVariablesInObject(block.options, variables))
+  return block.outgoingEdgeId
 }
 
 const executeGoogleSheetIntegration = async (
-  step: GoogleSheetsStep,
+  block: GoogleSheetsBlock,
   context: IntegrationContext
 ) => {
-  if (!('action' in step.options)) return step.outgoingEdgeId
-  switch (step.options.action) {
+  if (!('action' in block.options)) return block.outgoingEdgeId
+  switch (block.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
-      await insertRowInGoogleSheets(step.options, context)
+      await insertRowInGoogleSheets(block.options, context)
       break
     case GoogleSheetsAction.UPDATE_ROW:
-      await updateRowInGoogleSheets(step.options, context)
+      await updateRowInGoogleSheets(block.options, context)
       break
     case GoogleSheetsAction.GET:
-      await getRowFromGoogleSheets(step.options, context)
+      await getRowFromGoogleSheets(block.options, context)
       break
   }
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const insertRowInGoogleSheets = async (
@@ -216,10 +216,9 @@ const parseCellValues = (
   }, {})
 
 const executeWebhook = async (
-  step: WebhookStep | ZapierStep | MakeComStep | PabblyConnectStep,
+  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
   {
     blockId,
-    stepId,
     variables,
     updateVariableValue,
     updateVariables,
@@ -232,7 +231,7 @@ const executeWebhook = async (
 ) => {
   const params = stringify({ resultId })
   const { data, error } = await sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook?${params}`,
+    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook?${params}`,
     method: 'POST',
     body: {
       variables,
@@ -252,7 +251,7 @@ const executeWebhook = async (
       : 'Webhook successfuly executed',
     details: JSON.stringify(error ?? data, null, 2).substring(0, 1000),
   })
-  const newVariables = step.options.responseVariableMapping.reduce<
+  const newVariables = block.options.responseVariableMapping.reduce<
     VariableWithValue[]
   >((newVariables, varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
@@ -271,11 +270,11 @@ const executeWebhook = async (
     }
   }, [])
   updateVariables(newVariables)
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const sendEmail = async (
-  step: SendEmailStep,
+  block: SendEmailBlock,
   { variables, apiHost, isPreview, onNewLog, resultId }: IntegrationContext
 ) => {
   if (isPreview) {
@@ -284,9 +283,9 @@ const sendEmail = async (
       description: 'Emails are not sent in preview mode',
       details: null,
     })
-    return step.outgoingEdgeId
+    return block.outgoingEdgeId
   }
-  const { options } = step
+  const { options } = block
   const replyTo = parseVariables(variables)(options.replyTo)
   const { error } = await sendRequest({
     url: `${apiHost}/api/integrations/email?resultId=${resultId}`,
@@ -304,7 +303,7 @@ const sendEmail = async (
   onNewLog(
     parseLog(error, 'Succesfully sent an email', 'Failed to send an email')
   )
-  return step.outgoingEdgeId
+  return block.outgoingEdgeId
 }
 
 const parseLog = (

@@ -6,15 +6,15 @@
   "name": "Digital Marketing Quiz",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cl1qz4lui00017w1a505z15p0",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1qz4lui00027w1a19prdgzd",
           "type": "start",
           "label": "Start",
-          "blockId": "cl1qz4lui00017w1a505z15p0",
+          "groupId": "cl1qz4lui00017w1a505z15p0",
           "outgoingEdgeId": "cl1r17gv3006h2e6dc9e7xob7"
         }
       ],
@@ -23,11 +23,11 @@
     },
     {
       "id": "cl1r09bc6000h2e6dqml18p4p",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0bva2000y2e6d2g88vmjk",
           "type": "Set variable",
-          "blockId": "cl1r09bc6000h2e6dqml18p4p",
+          "groupId": "cl1r09bc6000h2e6dqml18p4p",
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "0"
@@ -36,7 +36,7 @@
         {
           "id": "cl1r09bcc000i2e6dyyvskx75",
           "type": "text",
-          "blockId": "cl1r09bc6000h2e6dqml18p4p",
+          "groupId": "cl1r09bc6000h2e6dqml18p4p",
           "content": {
             "html": "<div>What does SEO stand for?</div>",
             "richText": [
@@ -55,30 +55,30 @@
             {
               "id": "cl1r09dl9000k2e6dvf7llzkd",
               "type": 0,
-              "stepId": "cl1r09dl9000j2e6dhkc2h97y",
+              "blockId": "cl1r09dl9000j2e6dhkc2h97y",
               "content": "Send Email Out"
             },
             {
               "id": "cl1r0a80k000l2e6dngppwyhm",
               "type": 0,
-              "stepId": "cl1r09dl9000j2e6dhkc2h97y",
+              "blockId": "cl1r09dl9000j2e6dhkc2h97y",
               "content": "Serial Editorial Output"
             },
             {
               "id": "cl1r0adei000m2e6dfc8w5y4k",
               "type": 0,
-              "stepId": "cl1r09dl9000j2e6dhkc2h97y",
+              "blockId": "cl1r09dl9000j2e6dhkc2h97y",
               "content": "Search Engine Optimization",
               "outgoingEdgeId": "cl1r0dfip00152e6doo9duexn"
             },
             {
               "id": "cl1r0aiks000n2e6dc31e2db6",
               "type": 0,
-              "stepId": "cl1r09dl9000j2e6dhkc2h97y",
+              "blockId": "cl1r09dl9000j2e6dhkc2h97y",
               "content": "Search Expectation Order"
             }
           ],
-          "blockId": "cl1r09bc6000h2e6dqml18p4p",
+          "groupId": "cl1r09bc6000h2e6dqml18p4p",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "cl1r0cfjt00122e6dzwtamycl"
         }
@@ -88,11 +88,11 @@
     },
     {
       "id": "cl1r0b3ww000q2e6d4aihat41",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0e8gq00172e6dq0bpxqsc",
           "type": "Set variable",
-          "blockId": "cl1r0b3ww000q2e6d4aihat41",
+          "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
@@ -101,7 +101,7 @@
         {
           "id": "cl1r0d8zi00142e6d4tl2yenk",
           "type": "text",
-          "blockId": "cl1r0b3ww000q2e6d4aihat41",
+          "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "content": {
             "html": "<div>Well done!</div>",
             "richText": [
@@ -113,7 +113,7 @@
         {
           "id": "cl1r0bgit000x2e6dvdre9wsj",
           "type": "text",
-          "blockId": "cl1r0b3ww000q2e6d4aihat41",
+          "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "content": {
             "html": "<div>What is anchor text?</div>",
             "richText": [
@@ -129,30 +129,30 @@
             {
               "id": "cl1r0b3x5000s2e6dyq6bklbf",
               "type": 0,
-              "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
+              "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
               "content": "The visible text that is hyperlinked to another page",
               "outgoingEdgeId": "cl1r0i4dj001r2e6dgb96tx9q"
             },
             {
               "id": "cl1r0b6jd000t2e6dkp3dxpp9",
               "type": 0,
-              "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
+              "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
               "content": "The text in the top left of a webpage"
             },
             {
               "id": "cl1r0b835000u2e6d22rw2gb5",
               "type": 0,
-              "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
+              "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
               "content": "The most prominent text on a page, used by search engines to assign a title to the page"
             },
             {
               "id": "cl1r0b9tl000v2e6dkligryj3",
               "type": 0,
-              "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
+              "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
               "content": "A slogan that sticks in a consumer’s mind"
             }
           ],
-          "blockId": "cl1r0b3ww000q2e6d4aihat41",
+          "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "cl1r0f53y001q2e6dvuq434ru"
         }
@@ -162,11 +162,11 @@
     },
     {
       "id": "cl1r0erik00182e6dfzezujj0",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0eril00192e6d9yrtownz",
           "type": "Set variable",
-          "blockId": "cl1r0erik00182e6dfzezujj0",
+          "groupId": "cl1r0erik00182e6dfzezujj0",
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
@@ -175,7 +175,7 @@
         {
           "id": "cl1r0eril001b2e6dh43cqhv5",
           "type": "text",
-          "blockId": "cl1r0erik00182e6dfzezujj0",
+          "groupId": "cl1r0erik00182e6dfzezujj0",
           "content": {
             "html": "<div>Well done!</div>",
             "richText": [
@@ -187,7 +187,7 @@
         {
           "id": "cl1r0eril001d2e6d3gay9cls",
           "type": "text",
-          "blockId": "cl1r0erik00182e6dfzezujj0",
+          "groupId": "cl1r0erik00182e6dfzezujj0",
           "content": {
             "html": "<div>What is a persona ?</div>",
             "richText": [
@@ -203,30 +203,30 @@
             {
               "id": "cl1r0erim001g2e6d5zzn8q22",
               "type": 0,
-              "stepId": "cl1r0eril001f2e6dk0fd0qpw",
+              "blockId": "cl1r0eril001f2e6dk0fd0qpw",
               "content": "Your target audience"
             },
             {
               "id": "cl1r0erim001h2e6dnwtiturl",
               "type": 0,
-              "stepId": "cl1r0eril001f2e6dk0fd0qpw",
+              "blockId": "cl1r0eril001f2e6dk0fd0qpw",
               "content": "Someone who joins your mailing list"
             },
             {
               "id": "cl1r0erim001i2e6dbfhck09o",
               "type": 0,
-              "stepId": "cl1r0eril001f2e6dk0fd0qpw",
+              "blockId": "cl1r0eril001f2e6dk0fd0qpw",
               "content": "A repeat customer"
             },
             {
               "id": "cl1r0erim001j2e6d2waa3374",
               "type": 0,
-              "stepId": "cl1r0eril001f2e6dk0fd0qpw",
+              "blockId": "cl1r0eril001f2e6dk0fd0qpw",
               "content": "A fictional representation of a group of customers",
               "outgoingEdgeId": "cl1r0k27y00262e6dflgcp3wa"
             }
           ],
-          "blockId": "cl1r0erik00182e6dfzezujj0",
+          "groupId": "cl1r0erik00182e6dfzezujj0",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "cl1r0khb6002c2e6ddssbpj9z"
         }
@@ -236,11 +236,11 @@
     },
     {
       "id": "cl1r0j8u1001t2e6d42mjfcqo",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0j8u2001u2e6dgdpvrnz5",
           "type": "Set variable",
-          "blockId": "cl1r0j8u1001t2e6d42mjfcqo",
+          "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
@@ -249,7 +249,7 @@
         {
           "id": "cl1r0j8u2001w2e6d3wnpzcj5",
           "type": "text",
-          "blockId": "cl1r0j8u1001t2e6d42mjfcqo",
+          "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "content": {
             "html": "<div>Well done!</div>",
             "richText": [
@@ -261,7 +261,7 @@
         {
           "id": "cl1r0j8u2001y2e6dr24ieifw",
           "type": "text",
-          "blockId": "cl1r0j8u1001t2e6d42mjfcqo",
+          "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "content": {
             "html": "<div>What does CTA stand for?</div>",
             "richText": [
@@ -280,30 +280,30 @@
             {
               "id": "cl1r0j8u200212e6dov1xy5m4",
               "type": 0,
-              "stepId": "cl1r0j8u200202e6dun2d04gu",
+              "blockId": "cl1r0j8u200202e6dun2d04gu",
               "content": "Consequence To Advert"
             },
             {
               "id": "cl1r0j8u300222e6dnj0i5fm8",
               "type": 0,
-              "stepId": "cl1r0j8u200202e6dun2d04gu",
+              "blockId": "cl1r0j8u200202e6dun2d04gu",
               "content": "Call To Action",
               "outgoingEdgeId": "cl1r0lm4e002m2e6d0g3h9pm7"
             },
             {
               "id": "cl1r0j8u300232e6dxd8abojt",
               "type": 0,
-              "stepId": "cl1r0j8u200202e6dun2d04gu",
+              "blockId": "cl1r0j8u200202e6dun2d04gu",
               "content": "Computer Tracked Actions"
             },
             {
               "id": "cl1r0j8u300242e6d0pki60w6",
               "type": 0,
-              "stepId": "cl1r0j8u200202e6dun2d04gu",
+              "blockId": "cl1r0j8u200202e6dun2d04gu",
               "content": "Characteristic Tracking Advert"
             }
           ],
-          "blockId": "cl1r0j8u1001t2e6d42mjfcqo",
+          "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "cl1r0ktet002i2e6d5sh8gd2b"
         }
@@ -313,11 +313,11 @@
     },
     {
       "id": "cl1r0c85100102e6d7uohf0cu",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0c85i00112e6d8iwtrpvb",
           "type": "text",
-          "blockId": "cl1r0c85100102e6d7uohf0cu",
+          "groupId": "cl1r0c85100102e6d7uohf0cu",
           "content": {
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
@@ -327,7 +327,7 @@
         {
           "id": "cl1r0crx600132e6d0u54j506",
           "type": "text",
-          "blockId": "cl1r0c85100102e6d7uohf0cu",
+          "groupId": "cl1r0c85100102e6d7uohf0cu",
           "content": {
             "html": "<div>SEO stands for Search Engine Optimization</div>",
             "richText": [
@@ -348,11 +348,11 @@
     },
     {
       "id": "cl1r0exdi001l2e6drdwj3u96",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0exdi001m2e6d7kge562x",
           "type": "text",
-          "blockId": "cl1r0exdi001l2e6drdwj3u96",
+          "groupId": "cl1r0exdi001l2e6drdwj3u96",
           "content": {
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
@@ -362,7 +362,7 @@
         {
           "id": "cl1r0exdi001o2e6d70s7si5y",
           "type": "text",
-          "blockId": "cl1r0exdi001l2e6drdwj3u96",
+          "groupId": "cl1r0exdi001l2e6drdwj3u96",
           "content": {
             "html": "<div>Anchor text is the visible text that is hyperlinked to another page</div>",
             "richText": [
@@ -385,11 +385,11 @@
     },
     {
       "id": "cl1r0k3tq00272e6d1fwyajjx",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0k3tq00282e6dl0av81kz",
           "type": "text",
-          "blockId": "cl1r0k3tq00272e6d1fwyajjx",
+          "groupId": "cl1r0k3tq00272e6d1fwyajjx",
           "content": {
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
@@ -399,7 +399,7 @@
         {
           "id": "cl1r0k3tq002a2e6dv3s1eb6d",
           "type": "text",
-          "blockId": "cl1r0k3tq00272e6d1fwyajjx",
+          "groupId": "cl1r0k3tq00272e6d1fwyajjx",
           "content": {
             "html": "<div>A persona is a fictional representation of a group of customers</div>",
             "richText": [
@@ -422,11 +422,11 @@
     },
     {
       "id": "cl1r0kqof002d2e6doqhpnuqy",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0kqof002e2e6dzjcw0kvs",
           "type": "text",
-          "blockId": "cl1r0kqof002d2e6doqhpnuqy",
+          "groupId": "cl1r0kqof002d2e6doqhpnuqy",
           "content": {
             "html": "<div>WRONG!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
@@ -436,7 +436,7 @@
         {
           "id": "cl1r0kqog002g2e6dizmxvz64",
           "type": "text",
-          "blockId": "cl1r0kqof002d2e6doqhpnuqy",
+          "groupId": "cl1r0kqof002d2e6doqhpnuqy",
           "content": {
             "html": "<div>Anchor text is the visible text that is hyperlinked to another page</div>",
             "richText": [
@@ -459,11 +459,11 @@
     },
     {
       "id": "cl1r0lfb5002k2e6dd6as5kj5",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0lo97002n2e6dfx7fohju",
           "type": "Set variable",
-          "blockId": "cl1r0lfb5002k2e6dd6as5kj5",
+          "groupId": "cl1r0lfb5002k2e6dd6as5kj5",
           "options": {
             "variableId": "vcl1r0bxdj000z2e6d65u7n41b",
             "expressionToEvaluate": "{{Score}} + 5"
@@ -476,7 +476,7 @@
             {
               "id": "cl1r0oqrr002z2e6dl821aaow",
               "type": 1,
-              "stepId": "cl1r0oqrr002y2e6dsg0sa64g",
+              "blockId": "cl1r0oqrr002y2e6dsg0sa64g",
               "content": {
                 "comparisons": [
                   {
@@ -491,7 +491,7 @@
               "outgoingEdgeId": "cl1r0rt88003a2e6dgq6beaq1"
             }
           ],
-          "blockId": "cl1r0lfb5002k2e6dd6as5kj5"
+          "groupId": "cl1r0lfb5002k2e6dd6as5kj5"
         },
         {
           "id": "cl1r0qvwy00342e6d7ww0oqar",
@@ -500,7 +500,7 @@
             {
               "id": "cl1r0qvwy00352e6dui5itgd1",
               "type": 1,
-              "stepId": "cl1r0qvwy00342e6d7ww0oqar",
+              "blockId": "cl1r0qvwy00342e6d7ww0oqar",
               "content": {
                 "comparisons": [
                   {
@@ -515,7 +515,7 @@
               "outgoingEdgeId": "cl1r0s6qt003d2e6d5tk2um7y"
             }
           ],
-          "blockId": "cl1r0lfb5002k2e6dd6as5kj5",
+          "groupId": "cl1r0lfb5002k2e6dd6as5kj5",
           "outgoingEdgeId": "cl1r0sg9m003i2e6dbsc4cqjn"
         }
       ],
@@ -524,11 +524,11 @@
     },
     {
       "id": "cl1r0mn2p002p2e6dijqbjzlh",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0mn3t002q2e6dcmv4bzth",
           "type": "text",
-          "blockId": "cl1r0mn2p002p2e6dijqbjzlh",
+          "groupId": "cl1r0mn2p002p2e6dijqbjzlh",
           "content": {
             "html": "<div>Your score is {{Score}}/20.</div>",
             "richText": [
@@ -543,7 +543,7 @@
         {
           "id": "cl1r0nkdx002r2e6dwv0wclo0",
           "type": "text",
-          "blockId": "cl1r0mn2p002p2e6dijqbjzlh",
+          "groupId": "cl1r0mn2p002p2e6dijqbjzlh",
           "content": {
             "html": "<div>Try again?</div>",
             "richText": [
@@ -559,18 +559,18 @@
             {
               "id": "cl1r0nt85002t2e6dvb7si7ny",
               "type": 0,
-              "stepId": "cl1r0nt85002s2e6dloupnhdq",
+              "blockId": "cl1r0nt85002s2e6dloupnhdq",
               "content": "Yes!",
               "outgoingEdgeId": "cl1r15gko005i2e6dn6rhifwe"
             },
             {
               "id": "cl1r0nveb002u2e6dotjk6nuf",
               "type": 0,
-              "stepId": "cl1r0nt85002s2e6dloupnhdq",
+              "blockId": "cl1r0nt85002s2e6dloupnhdq",
               "content": "No, bye!"
             }
           ],
-          "blockId": "cl1r0mn2p002p2e6dijqbjzlh",
+          "groupId": "cl1r0mn2p002p2e6dijqbjzlh",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
       ],
@@ -579,11 +579,11 @@
     },
     {
       "id": "cl1r0rgex00382e6dkayjbys6",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0rggf00392e6dcc941700",
           "type": "text",
-          "blockId": "cl1r0rgex00382e6dkayjbys6",
+          "groupId": "cl1r0rgex00382e6dkayjbys6",
           "content": {
             "html": "<div>Well done 👏</div>",
             "richText": [
@@ -599,11 +599,11 @@
     },
     {
       "id": "cl1r0rvak003b2e6dejcdrooq",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0rvce003c2e6diusd3pxq",
           "type": "text",
-          "blockId": "cl1r0rvak003b2e6dejcdrooq",
+          "groupId": "cl1r0rvak003b2e6dejcdrooq",
           "content": {
             "html": "<div>You could do better but that&#x27;s alright!</div>",
             "richText": [
@@ -624,11 +624,11 @@
     },
     {
       "id": "cl1r0seuj003h2e6dandwc43r",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r0pe0x00332e6dxg6xdt2f",
           "type": "text",
-          "blockId": "cl1r0seuj003h2e6dandwc43r",
+          "groupId": "cl1r0seuj003h2e6dandwc43r",
           "content": {
             "html": "<div>Aouch, you need to improve your Digital Marketing game.</div>",
             "richText": [
@@ -651,13 +651,13 @@
     },
     {
       "id": "cl1r15f68005f2e6dvdtal7cp",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r15f87005g2e6dp3srll8r",
           "type": "Typebot link",
-          "blockId": "cl1r15f68005f2e6dvdtal7cp",
+          "groupId": "cl1r15f68005f2e6dvdtal7cp",
           "options": {
-            "blockId": "cl1r09bc6000h2e6dqml18p4p",
+            "groupId": "cl1r09bc6000h2e6dqml18p4p",
             "typebotId": "current"
           }
         }
@@ -667,11 +667,11 @@
     },
     {
       "id": "cl1r15w3o005s2e6dr5l7csao",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1r16nes005z2e6d3aj23kfz",
           "type": "text",
-          "blockId": "cl1r15w3o005s2e6dr5l7csao",
+          "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
             "html": "<div>Hi there!</div>",
             "richText": [
@@ -683,7 +683,7 @@
         {
           "id": "cl1r15w5p005t2e6d670v9nbi",
           "type": "text",
-          "blockId": "cl1r15w3o005s2e6dr5l7csao",
+          "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
             "html": "<div>You&#x27;re about to answer a Quiz about Digital Marketing</div>",
             "richText": [
@@ -702,7 +702,7 @@
         {
           "id": "cl1r16rt400622e6d32uta7mi",
           "type": "text",
-          "blockId": "cl1r15w3o005s2e6dr5l7csao",
+          "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
             "html": "<div>It is composed of only 4 questions.</div>",
             "richText": [
@@ -717,7 +717,7 @@
         {
           "id": "cl1r1708n00662e6dv8900ixk",
           "type": "text",
-          "blockId": "cl1r15w3o005s2e6dr5l7csao",
+          "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
             "html": "<div><span class=\"slate-bold\">Ready?</span></div>",
             "richText": [
@@ -733,12 +733,12 @@
             {
               "id": "cl1r176e9006a2e6dpvp0974z",
               "type": 0,
-              "stepId": "cl1r176e900692e6d8u3k6sdq",
+              "blockId": "cl1r176e900692e6d8u3k6sdq",
               "content": "Go!",
               "outgoingEdgeId": "cl1r17pzv006n2e6dpibxp9th"
             }
           ],
-          "blockId": "cl1r15w3o005s2e6dr5l7csao",
+          "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
       ],
@@ -750,190 +750,190 @@
   "edges": [
     {
       "id": "cl1r0cfjt00122e6dzwtamycl",
-      "to": { "blockId": "cl1r0c85100102e6d7uohf0cu" },
+      "to": { "groupId": "cl1r0c85100102e6d7uohf0cu" },
       "from": {
-        "stepId": "cl1r09dl9000j2e6dhkc2h97y",
-        "blockId": "cl1r09bc6000h2e6dqml18p4p"
+        "blockId": "cl1r09dl9000j2e6dhkc2h97y",
+        "groupId": "cl1r09bc6000h2e6dqml18p4p"
       }
     },
     {
       "id": "cl1r0dfip00152e6doo9duexn",
-      "to": { "blockId": "cl1r0b3ww000q2e6d4aihat41" },
+      "to": { "groupId": "cl1r0b3ww000q2e6d4aihat41" },
       "from": {
         "itemId": "cl1r0adei000m2e6dfc8w5y4k",
-        "stepId": "cl1r09dl9000j2e6dhkc2h97y",
-        "blockId": "cl1r09bc6000h2e6dqml18p4p"
+        "blockId": "cl1r09dl9000j2e6dhkc2h97y",
+        "groupId": "cl1r09bc6000h2e6dqml18p4p"
       }
     },
     {
       "id": "cl1r0dibf00162e6dwuvli71j",
       "to": {
-        "stepId": "cl1r0bgit000x2e6dvdre9wsj",
-        "blockId": "cl1r0b3ww000q2e6d4aihat41"
+        "blockId": "cl1r0bgit000x2e6dvdre9wsj",
+        "groupId": "cl1r0b3ww000q2e6d4aihat41"
       },
       "from": {
-        "stepId": "cl1r0crx600132e6d0u54j506",
-        "blockId": "cl1r0c85100102e6d7uohf0cu"
+        "blockId": "cl1r0crx600132e6d0u54j506",
+        "groupId": "cl1r0c85100102e6d7uohf0cu"
       }
     },
     {
       "id": "cl1r0f53y001q2e6dvuq434ru",
-      "to": { "blockId": "cl1r0exdi001l2e6drdwj3u96" },
+      "to": { "groupId": "cl1r0exdi001l2e6drdwj3u96" },
       "from": {
-        "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
-        "blockId": "cl1r0b3ww000q2e6d4aihat41"
+        "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
+        "groupId": "cl1r0b3ww000q2e6d4aihat41"
       }
     },
     {
       "id": "cl1r0i4dj001r2e6dgb96tx9q",
-      "to": { "blockId": "cl1r0erik00182e6dfzezujj0" },
+      "to": { "groupId": "cl1r0erik00182e6dfzezujj0" },
       "from": {
         "itemId": "cl1r0b3x5000s2e6dyq6bklbf",
-        "stepId": "cl1r0b3x5000r2e6dqk8gzoim",
-        "blockId": "cl1r0b3ww000q2e6d4aihat41"
+        "blockId": "cl1r0b3x5000r2e6dqk8gzoim",
+        "groupId": "cl1r0b3ww000q2e6d4aihat41"
       }
     },
     {
       "id": "cl1r0ic5f001s2e6dw777scrq",
       "to": {
-        "stepId": "cl1r0eril001d2e6d3gay9cls",
-        "blockId": "cl1r0erik00182e6dfzezujj0"
+        "blockId": "cl1r0eril001d2e6d3gay9cls",
+        "groupId": "cl1r0erik00182e6dfzezujj0"
       },
       "from": {
-        "stepId": "cl1r0exdi001o2e6d70s7si5y",
-        "blockId": "cl1r0exdi001l2e6drdwj3u96"
+        "blockId": "cl1r0exdi001o2e6d70s7si5y",
+        "groupId": "cl1r0exdi001l2e6drdwj3u96"
       }
     },
     {
       "id": "cl1r0k27y00262e6dflgcp3wa",
-      "to": { "blockId": "cl1r0j8u1001t2e6d42mjfcqo" },
+      "to": { "groupId": "cl1r0j8u1001t2e6d42mjfcqo" },
       "from": {
         "itemId": "cl1r0erim001j2e6d2waa3374",
-        "stepId": "cl1r0eril001f2e6dk0fd0qpw",
-        "blockId": "cl1r0erik00182e6dfzezujj0"
+        "blockId": "cl1r0eril001f2e6dk0fd0qpw",
+        "groupId": "cl1r0erik00182e6dfzezujj0"
       }
     },
     {
       "id": "cl1r0khb6002c2e6ddssbpj9z",
-      "to": { "blockId": "cl1r0k3tq00272e6d1fwyajjx" },
+      "to": { "groupId": "cl1r0k3tq00272e6d1fwyajjx" },
       "from": {
-        "stepId": "cl1r0eril001f2e6dk0fd0qpw",
-        "blockId": "cl1r0erik00182e6dfzezujj0"
+        "blockId": "cl1r0eril001f2e6dk0fd0qpw",
+        "groupId": "cl1r0erik00182e6dfzezujj0"
       }
     },
     {
       "id": "cl1r0ktet002i2e6d5sh8gd2b",
-      "to": { "blockId": "cl1r0kqof002d2e6doqhpnuqy" },
+      "to": { "groupId": "cl1r0kqof002d2e6doqhpnuqy" },
       "from": {
-        "stepId": "cl1r0j8u200202e6dun2d04gu",
-        "blockId": "cl1r0j8u1001t2e6d42mjfcqo"
+        "blockId": "cl1r0j8u200202e6dun2d04gu",
+        "groupId": "cl1r0j8u1001t2e6d42mjfcqo"
       }
     },
     {
       "id": "cl1r0l7oa002j2e6dgtx0y1gh",
       "to": {
-        "stepId": "cl1r0j8u2001y2e6dr24ieifw",
-        "blockId": "cl1r0j8u1001t2e6d42mjfcqo"
+        "blockId": "cl1r0j8u2001y2e6dr24ieifw",
+        "groupId": "cl1r0j8u1001t2e6d42mjfcqo"
       },
       "from": {
-        "stepId": "cl1r0k3tq002a2e6dv3s1eb6d",
-        "blockId": "cl1r0k3tq00272e6d1fwyajjx"
+        "blockId": "cl1r0k3tq002a2e6dv3s1eb6d",
+        "groupId": "cl1r0k3tq00272e6d1fwyajjx"
       }
     },
     {
       "id": "cl1r0lm4e002m2e6d0g3h9pm7",
-      "to": { "blockId": "cl1r0lfb5002k2e6dd6as5kj5" },
+      "to": { "groupId": "cl1r0lfb5002k2e6dd6as5kj5" },
       "from": {
         "itemId": "cl1r0j8u300222e6dnj0i5fm8",
-        "stepId": "cl1r0j8u200202e6dun2d04gu",
-        "blockId": "cl1r0j8u1001t2e6d42mjfcqo"
+        "blockId": "cl1r0j8u200202e6dun2d04gu",
+        "groupId": "cl1r0j8u1001t2e6d42mjfcqo"
       }
     },
     {
       "id": "cl1r0p4my00312e6d1wsgwohi",
       "to": {
-        "stepId": "cl1r0oqrr002y2e6dsg0sa64g",
-        "blockId": "cl1r0lfb5002k2e6dd6as5kj5"
+        "blockId": "cl1r0oqrr002y2e6dsg0sa64g",
+        "groupId": "cl1r0lfb5002k2e6dd6as5kj5"
       },
       "from": {
-        "stepId": "cl1r0kqog002g2e6dizmxvz64",
-        "blockId": "cl1r0kqof002d2e6doqhpnuqy"
+        "blockId": "cl1r0kqog002g2e6dizmxvz64",
+        "groupId": "cl1r0kqof002d2e6doqhpnuqy"
       }
     },
     {
       "id": "cl1r0rt88003a2e6dgq6beaq1",
-      "to": { "blockId": "cl1r0rgex00382e6dkayjbys6" },
+      "to": { "groupId": "cl1r0rgex00382e6dkayjbys6" },
       "from": {
         "itemId": "cl1r0oqrr002z2e6dl821aaow",
-        "stepId": "cl1r0oqrr002y2e6dsg0sa64g",
-        "blockId": "cl1r0lfb5002k2e6dd6as5kj5"
+        "blockId": "cl1r0oqrr002y2e6dsg0sa64g",
+        "groupId": "cl1r0lfb5002k2e6dd6as5kj5"
       }
     },
     {
       "id": "cl1r0s6qt003d2e6d5tk2um7y",
-      "to": { "blockId": "cl1r0rvak003b2e6dejcdrooq" },
+      "to": { "groupId": "cl1r0rvak003b2e6dejcdrooq" },
       "from": {
         "itemId": "cl1r0qvwy00352e6dui5itgd1",
-        "stepId": "cl1r0qvwy00342e6d7ww0oqar",
-        "blockId": "cl1r0lfb5002k2e6dd6as5kj5"
+        "blockId": "cl1r0qvwy00342e6d7ww0oqar",
+        "groupId": "cl1r0lfb5002k2e6dd6as5kj5"
       }
     },
     {
       "id": "cl1r0s9g8003e2e6d5if2ywz9",
-      "to": { "blockId": "cl1r0mn2p002p2e6dijqbjzlh" },
+      "to": { "groupId": "cl1r0mn2p002p2e6dijqbjzlh" },
       "from": {
-        "stepId": "cl1r0rggf00392e6dcc941700",
-        "blockId": "cl1r0rgex00382e6dkayjbys6"
+        "blockId": "cl1r0rggf00392e6dcc941700",
+        "groupId": "cl1r0rgex00382e6dkayjbys6"
       }
     },
     {
       "id": "cl1r0sarx003f2e6dbzmed9te",
-      "to": { "blockId": "cl1r0mn2p002p2e6dijqbjzlh" },
+      "to": { "groupId": "cl1r0mn2p002p2e6dijqbjzlh" },
       "from": {
-        "stepId": "cl1r0rvce003c2e6diusd3pxq",
-        "blockId": "cl1r0rvak003b2e6dejcdrooq"
+        "blockId": "cl1r0rvce003c2e6diusd3pxq",
+        "groupId": "cl1r0rvak003b2e6dejcdrooq"
       }
     },
     {
       "id": "cl1r0sbzh003g2e6dsqs48aoz",
-      "to": { "blockId": "cl1r0mn2p002p2e6dijqbjzlh" },
+      "to": { "groupId": "cl1r0mn2p002p2e6dijqbjzlh" },
       "from": {
-        "stepId": "cl1r0pe0x00332e6dxg6xdt2f",
-        "blockId": "cl1r0seuj003h2e6dandwc43r"
+        "blockId": "cl1r0pe0x00332e6dxg6xdt2f",
+        "groupId": "cl1r0seuj003h2e6dandwc43r"
       }
     },
     {
       "id": "cl1r0sg9m003i2e6dbsc4cqjn",
-      "to": { "blockId": "cl1r0seuj003h2e6dandwc43r" },
+      "to": { "groupId": "cl1r0seuj003h2e6dandwc43r" },
       "from": {
-        "stepId": "cl1r0qvwy00342e6d7ww0oqar",
-        "blockId": "cl1r0lfb5002k2e6dd6as5kj5"
+        "blockId": "cl1r0qvwy00342e6d7ww0oqar",
+        "groupId": "cl1r0lfb5002k2e6dd6as5kj5"
       }
     },
     {
       "id": "cl1r15gko005i2e6dn6rhifwe",
-      "to": { "blockId": "cl1r15f68005f2e6dvdtal7cp" },
+      "to": { "groupId": "cl1r15f68005f2e6dvdtal7cp" },
       "from": {
         "itemId": "cl1r0nt85002t2e6dvb7si7ny",
-        "stepId": "cl1r0nt85002s2e6dloupnhdq",
-        "blockId": "cl1r0mn2p002p2e6dijqbjzlh"
+        "blockId": "cl1r0nt85002s2e6dloupnhdq",
+        "groupId": "cl1r0mn2p002p2e6dijqbjzlh"
       }
     },
     {
       "id": "cl1r17gv3006h2e6dc9e7xob7",
-      "to": { "blockId": "cl1r15w3o005s2e6dr5l7csao" },
+      "to": { "groupId": "cl1r15w3o005s2e6dr5l7csao" },
       "from": {
-        "stepId": "cl1qz4lui00027w1a19prdgzd",
-        "blockId": "cl1qz4lui00017w1a505z15p0"
+        "blockId": "cl1qz4lui00027w1a19prdgzd",
+        "groupId": "cl1qz4lui00017w1a505z15p0"
       }
     },
     {
       "id": "cl1r17pzv006n2e6dpibxp9th",
-      "to": { "blockId": "cl1r09bc6000h2e6dqml18p4p" },
+      "to": { "groupId": "cl1r09bc6000h2e6dqml18p4p" },
       "from": {
         "itemId": "cl1r176e9006a2e6dpvp0974z",
-        "stepId": "cl1r176e900692e6d8u3k6sdq",
-        "blockId": "cl1r15w3o005s2e6dr5l7csao"
+        "blockId": "cl1r176e900692e6d8u3k6sdq",
+        "groupId": "cl1r15w3o005s2e6dr5l7csao"
       }
     }
   ],

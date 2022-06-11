@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
-import { defaultTextInputOptions, InputStepType } from 'models'
+import { defaultTextInputOptions, InputBlockType } from 'models'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
   sharedWorkspaceId,
 } from '../services/database'
 
@@ -17,8 +17,8 @@ test.beforeAll(async () => {
       id: freeTypebotId,
       name: 'Shared typebot',
       workspaceId: sharedWorkspaceId,
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.TEXT,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
         options: {
           ...defaultTextInputOptions,
           labels: {

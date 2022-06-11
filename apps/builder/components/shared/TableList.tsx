@@ -26,7 +26,7 @@ export const TableList = <T,>({
   addLabel = 'Add',
   debounceTimeout,
   Item,
-  ComponentBetweenItems = () => <></>,
+  ComponentBetweenItems,
 }: Props<T>) => {
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
@@ -65,7 +65,9 @@ export const TableList = <T,>({
     <Stack spacing="4">
       {items.map((item, itemIndex) => (
         <Box key={item.id}>
-          {itemIndex !== 0 && <ComponentBetweenItems />}
+          {itemIndex !== 0 && ComponentBetweenItems && (
+            <ComponentBetweenItems />
+          )}
           <Flex
             pos="relative"
             onMouseEnter={handleMouseEnter(itemIndex)}

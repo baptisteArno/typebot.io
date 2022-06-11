@@ -1,19 +1,23 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
   updateTypebot,
 } from '../services/database'
 import cuid from 'cuid'
-import { defaultSettings, defaultTextInputOptions, InputStepType } from 'models'
+import {
+  defaultSettings,
+  defaultTextInputOptions,
+  InputBlockType,
+} from 'models'
 
 test('Result should be in storage by default', async ({ page }) => {
   const typebotId = cuid()
   await createTypebots([
     {
       id: typebotId,
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.TEXT,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
         options: defaultTextInputOptions,
       }),
     },
@@ -45,8 +49,8 @@ test.describe('Create result on page refresh enabled', () => {
             isNewResultOnRefreshEnabled: true,
           },
         },
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
         }),
       },
@@ -81,8 +85,8 @@ test('Hide query params', async ({ page }) => {
   await createTypebots([
     {
       id: typebotId,
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.TEXT,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
         options: defaultTextInputOptions,
       }),
     },

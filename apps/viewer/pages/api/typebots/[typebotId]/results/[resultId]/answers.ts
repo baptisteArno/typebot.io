@@ -11,10 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ) as Answer
     const result = await prisma.answer.upsert({
       where: {
-        resultId_blockId_stepId: {
+        resultId_blockId_groupId: {
           resultId: answer.resultId,
+          groupId: answer.groupId,
           blockId: answer.blockId,
-          stepId: answer.stepId,
         },
       },
       create: answer,

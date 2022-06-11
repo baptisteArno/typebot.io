@@ -1,1 +1,1 @@
-export { BlockNode } from './BlockNode'
+export { BlockNodesList } from './BlockNodesList'

@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             ],
           },
           orderBy: { createdAt: 'desc' },
-          select: { name: true, id: true, blocks: true },
+          select: { name: true, id: true, groups: true },
         })
         return res.send({ typebots })
       }
@@ -78,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
       const typebot = await prisma.typebot.create({
         data:
-          'blocks' in data
+          'groups' in data
             ? data
             : (parseNewTypebot({
                 ownerAvatarUrl: user.image,

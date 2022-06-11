@@ -5,15 +5,15 @@
   "name": "Another typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "p4ByLVoKiDRyRoPHKmcTfw",
-      "steps": [
+      "blocks": [
         {
           "id": "rw6smEWEJzHKbiVKLUKFvZ",
           "type": "start",
           "label": "Start",
-          "blockId": "p4ByLVoKiDRyRoPHKmcTfw",
+          "groupId": "p4ByLVoKiDRyRoPHKmcTfw",
           "outgoingEdgeId": "1z3pfiatTUHbraD2uSoA3E"
         }
       ],
@@ -22,11 +22,11 @@
     },
     {
       "id": "bg4QEJseUsTP496H27j5k2",
-      "steps": [
+      "blocks": [
         {
           "id": "s8ZeBL9p5za77eBmdKECLYq",
           "type": "text input",
-          "blockId": "bg4QEJseUsTP496H27j5k2",
+          "groupId": "bg4QEJseUsTP496H27j5k2",
           "options": {
             "isLong": false,
             "labels": { "button": "Send", "placeholder": "Type your answer..." }
@@ -34,16 +34,16 @@
           "outgoingEdgeId": "aEBnubX4EMx4Cse6xPAR1m"
         }
       ],
-      "title": "Block #1",
+      "title": "Group #1",
       "graphCoordinates": { "x": 366, "y": 191 }
     },
     {
       "id": "uhqCZSNbsYVFxop7Gc8xvn",
-      "steps": [
+      "blocks": [
         {
           "id": "smyHyeS6yaFaHHU44BNmN4n",
           "type": "text",
-          "blockId": "uhqCZSNbsYVFxop7Gc8xvn",
+          "groupId": "uhqCZSNbsYVFxop7Gc8xvn",
           "content": {
             "html": "<div>Second block</div>",
             "richText": [
@@ -53,7 +53,7 @@
           }
         }
       ],
-      "title": "Block #2",
+      "title": "Group #2",
       "graphCoordinates": { "x": 793, "y": 99 }
     }
   ],
@@ -61,18 +61,18 @@
   "edges": [
     {
       "id": "1z3pfiatTUHbraD2uSoA3E",
-      "to": { "blockId": "bg4QEJseUsTP496H27j5k2" },
+      "to": { "groupId": "bg4QEJseUsTP496H27j5k2" },
       "from": {
-        "stepId": "rw6smEWEJzHKbiVKLUKFvZ",
-        "blockId": "p4ByLVoKiDRyRoPHKmcTfw"
+        "blockId": "rw6smEWEJzHKbiVKLUKFvZ",
+        "groupId": "p4ByLVoKiDRyRoPHKmcTfw"
       }
     },
     {
       "id": "aEBnubX4EMx4Cse6xPAR1m",
-      "to": { "blockId": "uhqCZSNbsYVFxop7Gc8xvn" },
+      "to": { "groupId": "uhqCZSNbsYVFxop7Gc8xvn" },
       "from": {
-        "stepId": "s8ZeBL9p5za77eBmdKECLYq",
-        "blockId": "bg4QEJseUsTP496H27j5k2"
+        "blockId": "s8ZeBL9p5za77eBmdKECLYq",
+        "groupId": "bg4QEJseUsTP496H27j5k2"
       }
     }
   ],

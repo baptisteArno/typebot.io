@@ -4,7 +4,7 @@ import {
   defaultTheme,
   PublicTypebot,
   SmtpCredentialsData,
-  Step,
+  Block,
   Typebot,
   Webhook,
 } from 'models'
@@ -92,7 +92,7 @@ const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
   id,
-  blocks: typebot.blocks,
+  groups: typebot.groups,
   typebotId: typebot.id,
   theme: typebot.theme,
   settings: typebot.settings,
@@ -120,44 +120,44 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   edges: [
     {
       id: 'edge1',
-      from: { blockId: 'block0', stepId: 'step0' },
-      to: { blockId: 'block1' },
+      from: { groupId: 'group0', blockId: 'block0' },
+      to: { groupId: 'group1' },
     },
   ],
-  blocks: [
+  groups: [
     {
-      id: 'block0',
-      title: 'Block #0',
-      steps: [
+      id: 'group0',
+      title: 'Group #0',
+      blocks: [
         {
-          id: 'step0',
+          id: 'block0',
           type: 'start',
-          blockId: 'block0',
+          groupId: 'group0',
           label: 'Start',
           outgoingEdgeId: 'edge1',
         },
       ],
       graphCoordinates: { x: 0, y: 0 },
     },
-    ...(partialTypebot.blocks ?? []),
+    ...(partialTypebot.groups ?? []),
   ],
 })
 
-export const parseDefaultBlockWithStep = (
-  step: Partial<Step>
-): Pick<Typebot, 'blocks'> => ({
-  blocks: [
+export const parseDefaultGroupWithBlock = (
+  block: Partial<Block>
+): Pick<Typebot, 'groups'> => ({
+  groups: [
     {
       graphCoordinates: { x: 200, y: 200 },
-      id: 'block1',
-      steps: [
+      id: 'group1',
+      blocks: [
         {
-          id: 'step1',
-          blockId: 'block1',
-          ...step,
-        } as Step,
+          id: 'block1',
+          groupId: 'group1',
+          ...block,
+        } as Block,
       ],
-      title: 'Block #1',
+      title: 'Group #1',
     },
   ],
 })
@@ -209,8 +209,8 @@ const createAnswers = () => {
       ...Array.from(Array(200)).map((_, idx) => ({
         resultId: `result${idx}`,
         content: `content${idx}`,
-        stepId: 'step1',
         blockId: 'block1',
+        groupId: 'group1',
       })),
     ],
   })

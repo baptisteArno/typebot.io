@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "jPVDjQ5go4ZxmGCmApbcQf",
-      "steps": [
+      "blocks": [
         {
           "id": "nrCKsAYzbCogJanfxUavUV",
           "type": "start",
           "label": "Start",
-          "blockId": "jPVDjQ5go4ZxmGCmApbcQf",
+          "groupId": "jPVDjQ5go4ZxmGCmApbcQf",
           "outgoingEdgeId": "8MazLBx8HbfKeYLADQkA3z"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "nyD3H7h6tEZqDmGwGciGV4",
       "graphCoordinates": { "x": 428, "y": 168 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "s8Pz7fPg4niG1JcvBS3CwAs",
-          "blockId": "nyD3H7h6tEZqDmGwGciGV4",
+          "groupId": "nyD3H7h6tEZqDmGwGciGV4",
           "type": "Typebot link",
           "options": {}
         }
@@ -37,10 +37,10 @@
       "id": "jMbvgRQfXUaXg37LRNqRaJ",
       "graphCoordinates": { "x": 423, "y": 386 },
       "title": "Hello",
-      "steps": [
+      "blocks": [
         {
           "id": "scE368YFYn9cWU1RkQDFLUW",
-          "blockId": "jMbvgRQfXUaXg37LRNqRaJ",
+          "groupId": "jMbvgRQfXUaXg37LRNqRaJ",
           "type": "text",
           "content": {
             "html": "<div>Hello world</div>",
@@ -52,7 +52,7 @@
         },
         {
           "id": "sem1do43KTkuvf49eqWcMgc",
-          "blockId": "jMbvgRQfXUaXg37LRNqRaJ",
+          "groupId": "jMbvgRQfXUaXg37LRNqRaJ",
           "type": "text input",
           "options": {
             "isLong": false,
@@ -66,10 +66,10 @@
   "edges": [
     {
       "from": {
-        "blockId": "jPVDjQ5go4ZxmGCmApbcQf",
-        "stepId": "nrCKsAYzbCogJanfxUavUV"
+        "groupId": "jPVDjQ5go4ZxmGCmApbcQf",
+        "blockId": "nrCKsAYzbCogJanfxUavUV"
       },
-      "to": { "blockId": "nyD3H7h6tEZqDmGwGciGV4" },
+      "to": { "groupId": "nyD3H7h6tEZqDmGwGciGV4" },
       "id": "8MazLBx8HbfKeYLADQkA3z"
     }
   ],

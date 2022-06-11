@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "1qQrnsLzRim1LqCrhbj1MW",
-      "steps": [
+      "blocks": [
         {
           "id": "8srsGhdBJK8v88Xo1RRS4C",
           "type": "start",
           "label": "Start",
-          "blockId": "1qQrnsLzRim1LqCrhbj1MW",
+          "groupId": "1qQrnsLzRim1LqCrhbj1MW",
           "outgoingEdgeId": "ovUHhwr6THMhqtn8QbkjtA"
         }
       ],
@@ -22,15 +22,15 @@
     },
     {
       "id": "wSR4VCcDNDTTsD9Szi2xH8",
-      "steps": [
+      "blocks": [
         {
           "id": "sw6nHJfkMsM4pxZxMBB6QqW",
           "type": "Typebot link",
-          "blockId": "wSR4VCcDNDTTsD9Szi2xH8",
+          "groupId": "wSR4VCcDNDTTsD9Szi2xH8",
           "options": { "typebotId": "cl0ibhv8d0130n21aw8doxhj5" }
         }
       ],
-      "title": "Block #1",
+      "title": "Group #1",
       "graphCoordinates": { "x": 363, "y": 199 }
     }
   ],
@@ -38,10 +38,10 @@
   "edges": [
     {
       "id": "ovUHhwr6THMhqtn8QbkjtA",
-      "to": { "blockId": "wSR4VCcDNDTTsD9Szi2xH8" },
+      "to": { "groupId": "wSR4VCcDNDTTsD9Szi2xH8" },
       "from": {
-        "stepId": "8srsGhdBJK8v88Xo1RRS4C",
-        "blockId": "1qQrnsLzRim1LqCrhbj1MW"
+        "blockId": "8srsGhdBJK8v88Xo1RRS4C",
+        "groupId": "1qQrnsLzRim1LqCrhbj1MW"
       }
     }
   ],

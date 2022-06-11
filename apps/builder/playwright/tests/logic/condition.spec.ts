@@ -6,7 +6,7 @@ import cuid from 'cuid'
 
 const typebotId = cuid()
 
-test.describe('Condition step', () => {
+test.describe('Condition block', () => {
   test('its configuration should work', async ({ page }) => {
     await importTypebotInDatabase(
       path.join(__dirname, '../../fixtures/typebots/logic/condition.json'),

@@ -33,14 +33,14 @@ export const TypebotHeader = () => {
     canRedo,
     isSavingLoading,
   } = useTypebot()
-  const { setRightPanel, rightPanel, setStartPreviewAtBlock } = useEditor()
+  const { setRightPanel, rightPanel, setStartPreviewAtGroup } = useEditor()
 
   const handleNameSubmit = (name: string) => updateTypebot({ name })
 
   const handleChangeIcon = (icon: string) => updateTypebot({ icon })
 
   const handlePreviewClick = async () => {
-    setStartPreviewAtBlock(undefined)
+    setStartPreviewAtGroup(undefined)
     save().then()
     setRightPanel(RightPanel.PREVIEW)
   }

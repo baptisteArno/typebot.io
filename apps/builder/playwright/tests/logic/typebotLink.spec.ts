@@ -30,15 +30,15 @@ test('should be configurable', async ({ page }) => {
   await page.click('text=Jump in My link typebot 2')
   await expect(page.locator('input[value="My link typebot 2"]')).toBeVisible()
   await page.click('input[placeholder="Select a block"]')
-  await page.click('text=Block #2')
+  await page.click('text=Group #2')
 
   await page.click('text=Preview')
   await expect(typebotViewer(page).locator('text=Second block')).toBeVisible()
 
   await page.click('[aria-label="Close"]')
-  await page.click('text=Jump to Block #2 in My link typebot 2')
-  await page.click('input[value="Block #2"]', { clickCount: 3 })
-  await page.press('input[value="Block #2"]', 'Backspace')
+  await page.click('text=Jump to Group #2 in My link typebot 2')
+  await page.click('input[value="Group #2"]', { clickCount: 3 })
+  await page.press('input[value="Group #2"]', 'Backspace')
   await page.click('button >> text=Start')
 
   await page.click('text=Preview')

@@ -7,7 +7,7 @@ export const parseTypebotToPublicTypebot = (
 ): PublicTypebot => ({
   id: cuid(),
   typebotId: typebot.id,
-  blocks: typebot.blocks,
+  groups: typebot.groups,
   edges: typebot.edges,
   settings: typebot.settings,
   theme: typebot.theme,
@@ -21,7 +21,7 @@ export const parsePublicTypebotToTypebot = (
   existingTypebot: Typebot
 ): Typebot => ({
   id: typebot.typebotId,
-  blocks: typebot.blocks,
+  groups: typebot.groups,
   edges: typebot.edges,
   name: existingTypebot.name,
   publicId: existingTypebot.publicId,

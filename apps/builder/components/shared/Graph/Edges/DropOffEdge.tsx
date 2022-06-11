@@ -13,37 +13,37 @@ import { isFreePlan } from 'services/workspace'
 import { byId, isDefined } from 'utils'
 
 type Props = {
-  blockId: string
+  groupId: string
   answersCounts: AnswersCount[]
   onUnlockProPlanClick?: () => void
 }
 
 export const DropOffEdge = ({
   answersCounts,
-  blockId,
+  groupId,
   onUnlockProPlanClick,
 }: Props) => {
   const { workspace } = useWorkspace()
-  const { sourceEndpoints, blocksCoordinates, graphPosition } = useGraph()
+  const { sourceEndpoints, groupsCoordinates, graphPosition } = useGraph()
   const { publishedTypebot } = useTypebot()
 
   const isUserOnFreePlan = isFreePlan(workspace)
 
   const totalAnswers = useMemo(
-    () => answersCounts.find((a) => a.blockId === blockId)?.totalAnswers,
-    [answersCounts, blockId]
+    () => answersCounts.find((a) => a.groupId === groupId)?.totalAnswers,
+    [answersCounts, groupId]
   )
 
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!publishedTypebot || totalAnswers === undefined)
       return { previousTotal: undefined, dropOffRate: undefined }
-    const previousBlockIds = publishedTypebot.edges
+    const previousGroupIds = publishedTypebot.edges
       .map((edge) =>
-        edge.to.blockId === blockId ? edge.from.blockId : undefined
+        edge.to.groupId === groupId ? edge.from.groupId : undefined
       )
       .filter(isDefined)
     const previousTotal = answersCounts
-      .filter((a) => previousBlockIds.includes(a.blockId))
+      .filter((a) => previousGroupIds.includes(a.groupId))
       .reduce((prev, acc) => acc.totalAnswers + prev, 0)
     if (previousTotal === 0)
       return { previousTotal: undefined, dropOffRate: undefined }
@@ -53,25 +53,25 @@ export const DropOffEdge = ({
       totalDroppedUser,
       dropOffRate: Math.round((totalDroppedUser / previousTotal) * 100),
     }
-  }, [answersCounts, blockId, totalAnswers, publishedTypebot])
+  }, [answersCounts, groupId, totalAnswers, publishedTypebot])
 
-  const block = publishedTypebot?.blocks.find(byId(blockId))
+  const group = publishedTypebot?.groups.find(byId(groupId))
   const sourceTop = useMemo(
     () =>
       getEndpointTopOffset({
         endpoints: sourceEndpoints,
         graphOffsetY: graphPosition.y,
-        endpointId: block?.steps[block.steps.length - 1].id,
+        endpointId: group?.blocks[group.blocks.length - 1].id,
         graphScale: graphPosition.scale,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [block?.steps, sourceEndpoints, blocksCoordinates]
+    [group?.blocks, sourceEndpoints, groupsCoordinates]
   )
 
   const labelCoordinates = useMemo(() => {
-    if (!blocksCoordinates[blockId]) return
-    return computeSourceCoordinates(blocksCoordinates[blockId], sourceTop ?? 0)
-  }, [blocksCoordinates, blockId, sourceTop])
+    if (!groupsCoordinates[groupId]) return
+    return computeSourceCoordinates(groupsCoordinates[groupId], sourceTop ?? 0)
+  }, [groupsCoordinates, groupId, sourceTop])
 
   if (!labelCoordinates) return <></>
   return (

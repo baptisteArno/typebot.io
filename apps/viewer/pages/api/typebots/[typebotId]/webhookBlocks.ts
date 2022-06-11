@@ -1,9 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
-import { Block, WebhookStep } from 'models'
+import { Group, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { byId, isWebhookStep, methodNotAllowed } from 'utils'
+import { byId, isWebhookBlock, methodNotAllowed } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -15,24 +15,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: typebotId,
         workspace: { members: { some: { userId: user.id } } },
       },
-      select: { blocks: true, webhooks: true },
+      select: { groups: true, webhooks: true },
     })
-    const emptyWebhookSteps = (typebot?.blocks as Block[]).reduce<
+    const emptyWebhookBlocks = (typebot?.groups as Group[]).reduce<
       { blockId: string; name: string; url: string | undefined }[]
-    >((emptyWebhookSteps, block) => {
-      const steps = block.steps.filter((step) =>
-        isWebhookStep(step)
-      ) as WebhookStep[]
+    >((emptyWebhookBlocks, group) => {
+      const blocks = group.blocks.filter((block) =>
+        isWebhookBlock(block)
+      ) as WebhookBlock[]
       return [
-        ...emptyWebhookSteps,
-        ...steps.map((s) => ({
-          blockId: s.id,
-          name: `${block.title} > ${s.id}`,
-          url: typebot?.webhooks.find(byId(s.webhookId))?.url ?? undefined,
+        ...emptyWebhookBlocks,
+        ...blocks.map((b) => ({
+          blockId: b.id,
+          name: `${group.title} > ${b.id}`,
+          url: typebot?.webhooks.find(byId(b.webhookId))?.url ?? undefined,
         })),
       ]
     }, [])
-    return res.send({ blocks: emptyWebhookSteps })
+    console.log({ blocks: emptyWebhookBlocks })
+    return res.send({ blocks: emptyWebhookBlocks })
   }
   return methodNotAllowed(res)
 }

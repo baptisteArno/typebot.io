@@ -6,7 +6,7 @@ import { isDefined, isEmpty, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text } from '@chakra-ui/react'
 import { CodeIcon, CalendarIcon } from 'assets/icons'
-import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
+import { BlockIcon } from 'components/editor/BlocksSideBar/BlockIcon'
 
 const paginationLimit = 50
 
@@ -137,8 +137,8 @@ export const parseSubmissionsColumns = (
   }))
 
 const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
-  header.stepType ? (
-    <StepIcon type={header.stepType} />
+  header.blockType ? (
+    <BlockIcon type={header.blockType} />
   ) : header.variableId ? (
     <CodeIcon />
   ) : (
@@ -154,11 +154,11 @@ export const convertResultsToTableData = (
     ...[...result.answers, ...result.variables].reduce<{
       [key: string]: string
     }>((o, answerOrVariable) => {
-      if ('blockId' in answerOrVariable) {
+      if ('groupId' in answerOrVariable) {
         const answer = answerOrVariable as Answer
         const key = answer.variableId
           ? header.find((h) => h.variableId === answer.variableId)?.label
-          : header.find((h) => h.stepId === answer.stepId)?.label
+          : header.find((h) => h.blockId === answer.blockId)?.label
         if (!key) return o
         return {
           ...o,
