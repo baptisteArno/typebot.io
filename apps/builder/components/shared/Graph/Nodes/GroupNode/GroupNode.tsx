@@ -45,7 +45,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const isPreviewing =
     previewingEdge?.from.groupId === group.id ||
     (previewingEdge?.to.groupId === group.id &&
-      isNotDefined(previewingEdge.to.groupId))
+      isNotDefined(previewingEdge.to.blockId))
   const isStartGroup =
     isDefined(group.blocks[0]) && group.blocks[0].type === 'start'
 
