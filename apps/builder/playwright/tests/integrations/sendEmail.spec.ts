@@ -6,7 +6,7 @@ import cuid from 'cuid'
 
 const typebotId = cuid()
 
-test.describe('Send email step', () => {
+test.describe('Send email block', () => {
   test('its configuration should work', async ({ page }) => {
     if (
       !process.env.SMTP_USERNAME ||

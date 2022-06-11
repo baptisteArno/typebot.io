@@ -10,7 +10,7 @@ import {
   Webhook,
   WebhookOptions,
   WebhookResponse,
-  WebhookStep,
+  WebhookBlock,
 } from 'models'
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId.toString()
-    const stepId = req.query.blockId.toString()
+    const blockId = req.query.blockId.toString()
     const resultId = req.query.resultId as string | undefined
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
@@ -51,19 +51,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: { webhooks: true },
     })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
     if (!typebot) return notFound(res)
-    const step = typebot.blocks
-      .flatMap((b) => b.steps)
-      .find(byId(stepId)) as WebhookStep
-    const webhook = typebot.webhooks.find(byId(step.webhookId))
+    const block = typebot.groups
+      .flatMap((g) => g.blocks)
+      .find(byId(blockId)) as WebhookBlock
+    const webhook = typebot.webhooks.find(byId(block.webhookId))
     if (!webhook)
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
-    const preparedWebhook = prepareWebhookAttributes(webhook, step.options)
+    const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
     const result = await executeWebhook(typebot)(
       preparedWebhook,
       variables,
-      step.blockId,
+      block.groupId,
       resultValues,
       resultId
     )
@@ -89,7 +89,7 @@ export const executeWebhook =
   async (
     webhook: Webhook,
     variables: Variable[],
-    blockId: string,
+    groupId: string,
     resultValues?: ResultValues,
     resultId?: string
   ): Promise<WebhookResponse> => {
@@ -130,7 +130,7 @@ export const executeWebhook =
           )({
             body: webhook.body,
             resultValues,
-            blockId,
+            groupId,
           })
         : undefined
     const request = {
@@ -191,33 +191,33 @@ export const executeWebhook =
 
 const getBodyContent =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async ({
     body,
     resultValues,
-    blockId,
+    groupId,
   }: {
     body?: string | null
     resultValues?: ResultValues
-    blockId: string
+    groupId: string
   }): Promise<string | undefined> => {
     if (!body) return
     return body === '{{state}}'
       ? JSON.stringify(
           resultValues
             ? parseAnswers({
-                blocks: [
-                  ...typebot.blocks,
-                  ...linkedTypebots.flatMap((t) => t.blocks),
+                groups: [
+                  ...typebot.groups,
+                  ...linkedTypebots.flatMap((t) => t.groups),
                 ],
                 variables: [
                   ...typebot.variables,
                   ...linkedTypebots.flatMap((t) => t.variables),
                 ],
               })(resultValues)
-            : await parseSampleResult(typebot, linkedTypebots)(blockId)
+            : await parseSampleResult(typebot, linkedTypebots)(groupId)
         )
       : body
   }

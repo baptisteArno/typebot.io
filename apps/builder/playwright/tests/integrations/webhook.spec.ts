@@ -4,7 +4,7 @@ import path from 'path'
 import { HttpMethod } from 'models'
 import cuid from 'cuid'
 
-test.describe('Webhook step', () => {
+test.describe('Webhook block', () => {
   test('easy configuration should work', async ({ page }) => {
     const typebotId = cuid()
     await importTypebotInDatabase(
@@ -25,7 +25,7 @@ test.describe('Webhook step', () => {
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
-      `"Block #1": "answer value", "Block #2": "20", "Block #2 (1)": "Yes"`
+      `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`
     )
   })
   test('Generated body should work', async ({ page }) => {

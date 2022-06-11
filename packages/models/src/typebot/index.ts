@@ -1,5 +1,5 @@
 export * from './typebot'
-export * from './steps'
+export * from './blocks'
 export * from './theme'
 export * from './settings'
 export * from './variable'

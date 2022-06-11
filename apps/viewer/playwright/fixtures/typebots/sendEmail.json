@@ -6,15 +6,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cl1rxxg6k000009lhd0mgfy5i",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1rxxg6k000109lh2is0gfua",
           "type": "start",
           "label": "Start",
-          "blockId": "cl1rxxg6k000009lhd0mgfy5i",
+          "groupId": "cl1rxxg6k000009lhd0mgfy5i",
           "outgoingEdgeId": "cl1w8rhzs000f2e694836a1k3"
         }
       ],
@@ -25,16 +25,16 @@
       "id": "cl1w8repd000b2e69fwiqsd00",
       "graphCoordinates": { "x": 364, "y": -2 },
       "title": "Group #1",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1w8repg000c2e699jqwrepg",
-          "blockId": "cl1w8repd000b2e69fwiqsd00",
+          "groupId": "cl1w8repd000b2e69fwiqsd00",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl1w8repg000d2e69d8xnkqeq",
-              "stepId": "cl1w8repg000c2e699jqwrepg",
+              "blockId": "cl1w8repg000c2e699jqwrepg",
               "type": 0,
               "content": "Send email",
               "outgoingEdgeId": "cl1w8rkoo000i2e69hs60pk0q"
@@ -47,10 +47,10 @@
       "id": "cl1w8rjaf000g2e69cqd2bwvk",
       "graphCoordinates": { "x": 715, "y": -10 },
       "title": "Group #2",
-      "steps": [
+      "blocks": [
         {
           "id": "cl1w8rjai000h2e695uvoimq7",
-          "blockId": "cl1w8rjaf000g2e69cqd2bwvk",
+          "groupId": "cl1w8rjaf000g2e69cqd2bwvk",
           "type": "Email",
           "options": {
             "credentialsId": "send-email-credentials",
@@ -72,19 +72,19 @@
   "edges": [
     {
       "from": {
-        "blockId": "cl1rxxg6k000009lhd0mgfy5i",
-        "stepId": "cl1rxxg6k000109lh2is0gfua"
+        "groupId": "cl1rxxg6k000009lhd0mgfy5i",
+        "blockId": "cl1rxxg6k000109lh2is0gfua"
       },
-      "to": { "blockId": "cl1w8repd000b2e69fwiqsd00" },
+      "to": { "groupId": "cl1w8repd000b2e69fwiqsd00" },
       "id": "cl1w8rhzs000f2e694836a1k3"
     },
     {
       "from": {
-        "blockId": "cl1w8repd000b2e69fwiqsd00",
-        "stepId": "cl1w8repg000c2e699jqwrepg",
+        "groupId": "cl1w8repd000b2e69fwiqsd00",
+        "blockId": "cl1w8repg000c2e699jqwrepg",
         "itemId": "cl1w8repg000d2e69d8xnkqeq"
       },
-      "to": { "blockId": "cl1w8rjaf000g2e69cqd2bwvk" },
+      "to": { "groupId": "cl1w8rjaf000g2e69cqd2bwvk" },
       "id": "cl1w8rkoo000i2e69hs60pk0q"
     }
   ],

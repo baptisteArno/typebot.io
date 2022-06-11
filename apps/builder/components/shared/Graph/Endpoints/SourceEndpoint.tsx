@@ -13,7 +13,7 @@ export const SourceEndpoint = ({
   const {
     setConnectingIds,
     addSourceEndpoint,
-    blocksCoordinates,
+    groupsCoordinates,
     previewingEdge,
   } = useGraph()
   const ref = useRef<HTMLDivElement | null>(null)
@@ -24,18 +24,18 @@ export const SourceEndpoint = ({
   }
 
   useEffect(() => {
-    if (ranOnce || !ref.current || Object.keys(blocksCoordinates).length === 0)
+    if (ranOnce || !ref.current || Object.keys(groupsCoordinates).length === 0)
       return
-    const id = source.itemId ?? source.stepId
+    const id = source.itemId ?? source.blockId
     addSourceEndpoint({
       id,
       ref,
     })
     setRanOnce(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref.current, blocksCoordinates])
+  }, [ref.current, groupsCoordinates])
 
-  if (!blocksCoordinates) return <></>
+  if (!groupsCoordinates) return <></>
   return (
     <Flex
       ref={ref}
@@ -62,7 +62,7 @@ export const SourceEndpoint = ({
           borderWidth="3.5px"
           shadow={`sm`}
           borderColor={
-            previewingEdge?.from.stepId === source.stepId &&
+            previewingEdge?.from.blockId === source.blockId &&
             previewingEdge.from.itemId === source.itemId
               ? 'blue.300'
               : 'blue.200'

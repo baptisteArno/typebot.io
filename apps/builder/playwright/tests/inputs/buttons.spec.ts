@@ -1,24 +1,24 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { defaultChoiceInputOptions, InputStepType, ItemType } from 'models'
+import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
-test.describe.parallel('Buttons input step', () => {
+test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.CHOICE,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.CHOICE,
           items: [
             {
               id: 'choice1',
-              stepId: 'step1',
+              blockId: 'block1',
               type: ItemType.BUTTON,
             },
           ],
@@ -46,10 +46,10 @@ test.describe.parallel('Buttons input step', () => {
     await expect(typebotViewer(page).locator('text=Item 3')).toBeVisible()
     await page.click('button[aria-label="Close"]')
 
-    await page.click('[data-testid="step1-icon"]')
+    await page.click('[data-testid="block1-icon"]')
     await page.click('text=Multiple choice?')
     await page.fill('#button', 'Go')
-    await page.click('[data-testid="step1-icon"]')
+    await page.click('[data-testid="block1-icon"]')
 
     await page.locator('text=Item 1').hover()
     await page.click('[aria-label="Add item"]')

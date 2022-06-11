@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cl13bgvlk0000t71a4wabccvw",
-      "steps": [
+      "blocks": [
         {
           "id": "cl13bgvlk0001t71a3pilbj53",
           "type": "start",
           "label": "Start",
-          "blockId": "cl13bgvlk0000t71a4wabccvw",
+          "groupId": "cl13bgvlk0000t71a4wabccvw",
           "outgoingEdgeId": "cl13bgz4800062e6dv7ejcchb"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "cl13bgy1s00042e6dao1wyobm",
       "graphCoordinates": { "x": 329, "y": 65 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "cl13bgy1w00052e6d5x57wt7o",
-          "blockId": "cl13bgy1s00042e6dao1wyobm",
+          "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
             "html": "<div>Hey I know you!</div>",
@@ -39,7 +39,7 @@
         },
         {
           "id": "cl13bh6jd00072e6dftdirwy4",
-          "blockId": "cl13bgy1s00042e6dao1wyobm",
+          "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
             "html": "<div>Your name is {{Name}}</div>",
@@ -51,7 +51,7 @@
         },
         {
           "id": "cl13bhfxd00092e6dydvcqlhm",
-          "blockId": "cl13bgy1s00042e6dao1wyobm",
+          "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
             "html": "<div>What&#x27;s your email?</div>",
@@ -63,7 +63,7 @@
         },
         {
           "id": "cl13bhnay000a2e6dxa630dh3",
-          "blockId": "cl13bgy1s00042e6dao1wyobm",
+          "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "email input",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
@@ -81,10 +81,10 @@
   "edges": [
     {
       "from": {
-        "blockId": "cl13bgvlk0000t71a4wabccvw",
-        "stepId": "cl13bgvlk0001t71a3pilbj53"
+        "groupId": "cl13bgvlk0000t71a4wabccvw",
+        "blockId": "cl13bgvlk0001t71a3pilbj53"
       },
-      "to": { "blockId": "cl13bgy1s00042e6dao1wyobm" },
+      "to": { "groupId": "cl13bgy1s00042e6dao1wyobm" },
       "id": "cl13bgz4800062e6dv7ejcchb"
     }
   ],

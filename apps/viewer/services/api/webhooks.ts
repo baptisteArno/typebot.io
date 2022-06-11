@@ -1,71 +1,71 @@
 import {
-  InputStep,
-  InputStepType,
-  LogicStepType,
+  InputBlock,
+  InputBlockType,
+  LogicBlockType,
   PublicTypebot,
   ResultHeaderCell,
-  Step,
+  Block,
   Typebot,
-  TypebotLinkStep,
+  TypebotLinkBlock,
 } from 'models'
-import { isInputStep, byId, parseResultHeader, isNotDefined } from 'utils'
+import { isInputBlock, byId, parseResultHeader, isNotDefined } from 'utils'
 
 export const parseSampleResult =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async (
-    currentBlockId: string
+    currentGroupId: string
   ): Promise<Record<string, string | boolean | undefined>> => {
     const header = parseResultHeader({
-      blocks: [...typebot.blocks, ...linkedTypebots.flatMap((t) => t.blocks)],
+      groups: [...typebot.groups, ...linkedTypebots.flatMap((t) => t.groups)],
       variables: [
         ...typebot.variables,
         ...linkedTypebots.flatMap((t) => t.variables),
       ],
     })
-    const linkedInputSteps = await extractLinkedInputSteps(
+    const linkedInputBlocks = await extractLinkedInputBlocks(
       typebot,
       linkedTypebots
-    )(currentBlockId)
+    )(currentGroupId)
 
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       'Submitted at': new Date().toISOString(),
-      ...parseBlocksResultSample(linkedInputSteps, header),
+      ...parseGroupsResultSample(linkedInputBlocks, header),
     }
   }
 
-const extractLinkedInputSteps =
+const extractLinkedInputBlocks =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async (
-    currentBlockId?: string,
+    currentGroupId?: string,
     direction: 'backward' | 'forward' = 'backward'
-  ): Promise<InputStep[]> => {
-    const previousLinkedTypebotSteps = walkEdgesAndExtract(
+  ): Promise<InputBlock[]> => {
+    const previousLinkedTypebotBlocks = walkEdgesAndExtract(
       'linkedBot',
       direction,
       typebot
     )({
-      blockId: currentBlockId,
-    }) as TypebotLinkStep[]
+      groupId: currentGroupId,
+    }) as TypebotLinkBlock[]
 
     const linkedBotInputs =
-      previousLinkedTypebotSteps.length > 0
+      previousLinkedTypebotBlocks.length > 0
         ? await Promise.all(
-            previousLinkedTypebotSteps.map((linkedBot) =>
-              extractLinkedInputSteps(
+            previousLinkedTypebotBlocks.map((linkedBot) =>
+              extractLinkedInputBlocks(
                 linkedTypebots.find((t) =>
                   'typebotId' in t
                     ? t.typebotId === linkedBot.options.typebotId
                     : t.id === linkedBot.options.typebotId
                 ) as Typebot | PublicTypebot,
                 linkedTypebots
-              )(linkedBot.options.blockId, 'forward')
+              )(linkedBot.options.groupId, 'forward')
             )
           )
         : []
@@ -76,49 +76,52 @@ const extractLinkedInputSteps =
         direction,
         typebot
       )({
-        blockId: currentBlockId,
-      }) as InputStep[]
+        groupId: currentGroupId,
+      }) as InputBlock[]
     ).concat(linkedBotInputs.flatMap((l) => l))
   }
 
-const parseBlocksResultSample = (
-  inputSteps: InputStep[],
+const parseGroupsResultSample = (
+  inputBlocks: InputBlock[],
   header: ResultHeaderCell[]
 ) =>
-  header.reduce<Record<string, string | boolean | undefined>>((steps, cell) => {
-    const inputStep = inputSteps.find((step) => step.id === cell.stepId)
-    if (isNotDefined(inputStep)) {
-      if (cell.variableId)
-        return {
-          ...steps,
-          [cell.label]: 'content',
-        }
-      return steps
-    }
-    const value = getSampleValue(inputStep)
-    return {
-      ...steps,
-      [cell.label]: value,
-    }
-  }, {})
+  header.reduce<Record<string, string | boolean | undefined>>(
+    (blocks, cell) => {
+      const inputBlock = inputBlocks.find((block) => block.id === cell.blockId)
+      if (isNotDefined(inputBlock)) {
+        if (cell.variableId)
+          return {
+            ...blocks,
+            [cell.label]: 'content',
+          }
+        return blocks
+      }
+      const value = getSampleValue(inputBlock)
+      return {
+        ...blocks,
+        [cell.label]: value,
+      }
+    },
+    {}
+  )
 
-const getSampleValue = (step: InputStep) => {
-  switch (step.type) {
-    case InputStepType.CHOICE:
-      return step.options.isMultipleChoice
-        ? step.items.map((i) => i.content).join(', ')
-        : step.items[0]?.content ?? 'Item'
-    case InputStepType.DATE:
+const getSampleValue = (block: InputBlock) => {
+  switch (block.type) {
+    case InputBlockType.CHOICE:
+      return block.options.isMultipleChoice
+        ? block.items.map((i) => i.content).join(', ')
+        : block.items[0]?.content ?? 'Item'
+    case InputBlockType.DATE:
       return new Date().toUTCString()
-    case InputStepType.EMAIL:
+    case InputBlockType.EMAIL:
       return 'test@email.com'
-    case InputStepType.NUMBER:
+    case InputBlockType.NUMBER:
       return '20'
-    case InputStepType.PHONE:
+    case InputBlockType.PHONE:
       return '+33665566773'
-    case InputStepType.TEXT:
+    case InputBlockType.TEXT:
       return 'answer value'
-    case InputStepType.URL:
+    case InputBlockType.URL:
       return 'https://test.com'
   }
 }
@@ -127,67 +130,67 @@ const walkEdgesAndExtract =
   (
     type: 'input' | 'linkedBot',
     direction: 'backward' | 'forward',
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
   ) =>
-  ({ blockId }: { blockId?: string }): Step[] => {
-    const currentBlockId =
-      blockId ??
-      (typebot.blocks.find((b) => b.steps[0].type === 'start')?.id as string)
-    const stepsInBlock = extractStepsInBlock(
+  ({ groupId }: { groupId?: string }): Block[] => {
+    const currentGroupId =
+      groupId ??
+      (typebot.groups.find((b) => b.blocks[0].type === 'start')?.id as string)
+    const blocksInGroup = extractBlocksInGroup(
       type,
       typebot
     )({
-      blockId: currentBlockId,
+      groupId: currentGroupId,
     })
-    const otherBlockIds = getBlockIds(typebot, direction)(currentBlockId)
+    const otherGroupIds = getGroupIds(typebot, direction)(currentGroupId)
     return [
-      ...stepsInBlock,
-      ...otherBlockIds.flatMap((blockId) =>
-        extractStepsInBlock(type, typebot)({ blockId })
+      ...blocksInGroup,
+      ...otherGroupIds.flatMap((groupId) =>
+        extractBlocksInGroup(type, typebot)({ groupId })
       ),
     ]
   }
 
-const getBlockIds =
+const getGroupIds =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>,
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     direction: 'backward' | 'forward',
-    existingBlockIds?: string[]
+    existingGroupIds?: string[]
   ) =>
-  (blockId: string): string[] => {
-    const blocks = typebot.edges.reduce<string[]>((blockIds, edge) => {
+  (groupId: string): string[] => {
+    const groups = typebot.edges.reduce<string[]>((groupIds, edge) => {
       if (direction === 'forward')
-        return (!existingBlockIds ||
-          !existingBlockIds?.includes(edge.to.blockId)) &&
-          edge.from.blockId === blockId
-          ? [...blockIds, edge.to.blockId]
-          : blockIds
-      return (!existingBlockIds ||
-        !existingBlockIds.includes(edge.from.blockId)) &&
-        edge.to.blockId === blockId
-        ? [...blockIds, edge.from.blockId]
-        : blockIds
+        return (!existingGroupIds ||
+          !existingGroupIds?.includes(edge.to.groupId)) &&
+          edge.from.groupId === groupId
+          ? [...groupIds, edge.to.groupId]
+          : groupIds
+      return (!existingGroupIds ||
+        !existingGroupIds.includes(edge.from.groupId)) &&
+        edge.to.groupId === groupId
+        ? [...groupIds, edge.from.groupId]
+        : groupIds
     }, [])
-    const newBlocks = [...(existingBlockIds ?? []), ...blocks]
-    return blocks.concat(
-      blocks.flatMap(getBlockIds(typebot, direction, newBlocks))
+    const newGroups = [...(existingGroupIds ?? []), ...groups]
+    return groups.concat(
+      groups.flatMap(getGroupIds(typebot, direction, newGroups))
     )
   }
 
-const extractStepsInBlock =
+const extractBlocksInGroup =
   (
     type: 'input' | 'linkedBot',
-    typebot: Pick<Typebot | PublicTypebot, 'blocks' | 'variables' | 'edges'>
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
   ) =>
-  ({ blockId, stepId }: { blockId: string; stepId?: string }) => {
-    const currentBlock = typebot.blocks.find(byId(blockId))
-    if (!currentBlock) return []
-    const steps: Step[] = []
-    for (const step of currentBlock.steps) {
-      if (step.id === stepId) break
-      if (type === 'input' && isInputStep(step)) steps.push(step)
-      if (type === 'linkedBot' && step.type === LogicStepType.TYPEBOT_LINK)
-        steps.push(step)
+  ({ groupId, blockId }: { groupId: string; blockId?: string }) => {
+    const currentGroup = typebot.groups.find(byId(groupId))
+    if (!currentGroup) return []
+    const blocks: Block[] = []
+    for (const block of currentGroup.blocks) {
+      if (block.id === blockId) break
+      if (type === 'input' && isInputBlock(block)) blocks.push(block)
+      if (type === 'linkedBot' && block.type === LogicBlockType.TYPEBOT_LINK)
+        blocks.push(block)
     }
-    return steps
+    return blocks
   }

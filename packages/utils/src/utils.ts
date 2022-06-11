@@ -1,22 +1,22 @@
 import {
-  BubbleStep,
-  BubbleStepType,
-  ChoiceInputStep,
-  ConditionStep,
-  InputStep,
-  InputStepType,
-  IntegrationStep,
-  IntegrationStepType,
-  LogicStep,
-  LogicStepType,
-  Step,
-  TextInputStep,
-  TextBubbleStep,
-  WebhookStep,
-  StepType,
-  StepWithOptionsType,
-  ImageBubbleStep,
-  VideoBubbleStep,
+  BubbleBlock,
+  BubbleBlockType,
+  ChoiceInputBlock,
+  ConditionBlock,
+  InputBlock,
+  InputBlockType,
+  IntegrationBlock,
+  IntegrationBlockType,
+  LogicBlock,
+  LogicBlockType,
+  Block,
+  TextInputBlock,
+  TextBubbleBlock,
+  WebhookBlock,
+  BlockType,
+  BlockWithOptionsType,
+  ImageBubbleBlock,
+  VideoBubbleBlock,
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -67,78 +67,78 @@ export const isEmpty = (value: string | undefined | null): value is undefined =>
 export const isNotEmpty = (value: string | undefined | null): value is string =>
   value !== undefined && value !== null && value !== ''
 
-export const isInputStep = (step: Step): step is InputStep =>
-  (Object.values(InputStepType) as string[]).includes(step.type)
+export const isInputBlock = (block: Block): block is InputBlock =>
+  (Object.values(InputBlockType) as string[]).includes(block.type)
 
-export const isBubbleStep = (step: Step): step is BubbleStep =>
-  (Object.values(BubbleStepType) as string[]).includes(step.type)
+export const isBubbleBlock = (block: Block): block is BubbleBlock =>
+  (Object.values(BubbleBlockType) as string[]).includes(block.type)
 
-export const isLogicStep = (step: Step): step is LogicStep =>
-  (Object.values(LogicStepType) as string[]).includes(step.type)
+export const isLogicBlock = (block: Block): block is LogicBlock =>
+  (Object.values(LogicBlockType) as string[]).includes(block.type)
 
-export const isTextBubbleStep = (step: Step): step is TextBubbleStep =>
-  step.type === BubbleStepType.TEXT
+export const isTextBubbleBlock = (block: Block): block is TextBubbleBlock =>
+  block.type === BubbleBlockType.TEXT
 
-export const isMediaBubbleStep = (
-  step: Step
-): step is ImageBubbleStep | VideoBubbleStep =>
-  step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.VIDEO
+export const isMediaBubbleBlock = (
+  block: Block
+): block is ImageBubbleBlock | VideoBubbleBlock =>
+  block.type === BubbleBlockType.IMAGE || block.type === BubbleBlockType.VIDEO
 
-export const isTextInputStep = (step: Step): step is TextInputStep =>
-  step.type === InputStepType.TEXT
+export const isTextInputBlock = (block: Block): block is TextInputBlock =>
+  block.type === InputBlockType.TEXT
 
-export const isChoiceInput = (step: Step): step is ChoiceInputStep =>
-  step.type === InputStepType.CHOICE
+export const isChoiceInput = (block: Block): block is ChoiceInputBlock =>
+  block.type === InputBlockType.CHOICE
 
-export const isSingleChoiceInput = (step: Step): step is ChoiceInputStep =>
-  step.type === InputStepType.CHOICE &&
-  'options' in step &&
-  !step.options.isMultipleChoice
+export const isSingleChoiceInput = (block: Block): block is ChoiceInputBlock =>
+  block.type === InputBlockType.CHOICE &&
+  'options' in block &&
+  !block.options.isMultipleChoice
 
-export const isConditionStep = (step: Step): step is ConditionStep =>
-  step.type === LogicStepType.CONDITION
+export const isConditionBlock = (block: Block): block is ConditionBlock =>
+  block.type === LogicBlockType.CONDITION
 
-export const isIntegrationStep = (step: Step): step is IntegrationStep =>
-  (Object.values(IntegrationStepType) as string[]).includes(step.type)
+export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
+  (Object.values(IntegrationBlockType) as string[]).includes(block.type)
 
-export const isWebhookStep = (step: Step): step is WebhookStep =>
+export const isWebhookBlock = (block: Block): block is WebhookBlock =>
   [
-    IntegrationStepType.WEBHOOK,
-    IntegrationStepType.PABBLY_CONNECT,
-    IntegrationStepType.ZAPIER,
-    IntegrationStepType.MAKE_COM,
-  ].includes(step.type as IntegrationStepType)
+    IntegrationBlockType.WEBHOOK,
+    IntegrationBlockType.PABBLY_CONNECT,
+    IntegrationBlockType.ZAPIER,
+    IntegrationBlockType.MAKE_COM,
+  ].includes(block.type as IntegrationBlockType)
 
-export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
-  (Object.values(BubbleStepType) as string[]).includes(type)
+export const isBubbleBlockType = (type: BlockType): type is BubbleBlockType =>
+  (Object.values(BubbleBlockType) as string[]).includes(type)
 
-export const stepTypeHasOption = (
-  type: StepType
-): type is StepWithOptionsType =>
-  (Object.values(InputStepType) as string[])
-    .concat(Object.values(LogicStepType))
-    .concat(Object.values(IntegrationStepType))
+export const blockTypeHasOption = (
+  type: BlockType
+): type is BlockWithOptionsType =>
+  (Object.values(InputBlockType) as string[])
+    .concat(Object.values(LogicBlockType))
+    .concat(Object.values(IntegrationBlockType))
     .includes(type)
 
-export const stepTypeHasWebhook = (
-  type: StepType
-): type is IntegrationStepType.WEBHOOK =>
+export const blockTypeHasWebhook = (
+  type: BlockType
+): type is IntegrationBlockType.WEBHOOK =>
   Object.values([
-    IntegrationStepType.WEBHOOK,
-    IntegrationStepType.ZAPIER,
-    IntegrationStepType.MAKE_COM,
-    IntegrationStepType.PABBLY_CONNECT,
+    IntegrationBlockType.WEBHOOK,
+    IntegrationBlockType.ZAPIER,
+    IntegrationBlockType.MAKE_COM,
+    IntegrationBlockType.PABBLY_CONNECT,
   ] as string[]).includes(type)
 
-export const stepTypeHasItems = (
-  type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE =>
-  type === LogicStepType.CONDITION || type === InputStepType.CHOICE
+export const blockTypeHasItems = (
+  type: BlockType
+): type is LogicBlockType.CONDITION | InputBlockType.CHOICE =>
+  type === LogicBlockType.CONDITION || type === InputBlockType.CHOICE
 
-export const stepHasItems = (
-  step: Step
-): step is ConditionStep | ChoiceInputStep =>
-  'items' in step && isDefined(step.items)
+export const blockHasItems = (
+  block: Block
+): block is ConditionBlock | ChoiceInputBlock =>
+  'items' in block && isDefined(block.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id
 

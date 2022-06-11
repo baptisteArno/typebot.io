@@ -1,6 +1,11 @@
 import { User } from 'db'
 import prisma from 'libs/prisma'
-import { LogicStepType, Typebot, TypebotLinkStep, PublicTypebot } from 'models'
+import {
+  LogicBlockType,
+  Typebot,
+  TypebotLinkBlock,
+  PublicTypebot,
+} from 'models'
 import { NextApiRequest } from 'next'
 import { isDefined } from 'utils'
 import { canReadTypebots } from './dbRules'
@@ -63,13 +68,13 @@ export const getLinkedTypebots = async (
   user?: User
 ): Promise<(Typebot | PublicTypebot)[]> => {
   const linkedTypebotIds = (
-    typebot.blocks
-      .flatMap((b) => b.steps)
+    typebot.groups
+      .flatMap((g) => g.blocks)
       .filter(
         (s) =>
-          s.type === LogicStepType.TYPEBOT_LINK &&
+          s.type === LogicBlockType.TYPEBOT_LINK &&
           isDefined(s.options.typebotId)
-      ) as TypebotLinkStep[]
+      ) as TypebotLinkBlock[]
   ).map((s) => s.options.typebotId as string)
   if (linkedTypebotIds.length === 0) return []
   const typebots = (await ('typebotId' in typebot

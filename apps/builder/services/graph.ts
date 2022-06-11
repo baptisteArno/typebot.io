@@ -125,72 +125,72 @@ const computeFiveSegments = (
 }
 
 type GetAnchorsPositionParams = {
-  sourceBlockCoordinates: Coordinates
-  targetBlockCoordinates: Coordinates
+  sourceGroupCoordinates: Coordinates
+  targetGroupCoordinates: Coordinates
   sourceTop: number
   targetTop?: number
   graphScale: number
 }
 export const getAnchorsPosition = ({
-  sourceBlockCoordinates,
-  targetBlockCoordinates,
+  sourceGroupCoordinates,
+  targetGroupCoordinates,
   sourceTop,
   targetTop,
 }: GetAnchorsPositionParams): AnchorsPositionProps => {
   const sourcePosition = computeSourceCoordinates(
-    sourceBlockCoordinates,
+    sourceGroupCoordinates,
     sourceTop
   )
   let sourceType: 'right' | 'left' = 'right'
-  if (sourceBlockCoordinates.x > targetBlockCoordinates.x) {
-    sourcePosition.x = sourceBlockCoordinates.x
+  if (sourceGroupCoordinates.x > targetGroupCoordinates.x) {
+    sourcePosition.x = sourceGroupCoordinates.x
     sourceType = 'left'
   }
 
-  const { targetPosition, totalSegments } = computeBlockTargetPosition(
-    sourceBlockCoordinates,
-    targetBlockCoordinates,
+  const { targetPosition, totalSegments } = computeGroupTargetPosition(
+    sourceGroupCoordinates,
+    targetGroupCoordinates,
     sourcePosition.y,
     targetTop
   )
   return { sourcePosition, targetPosition, sourceType, totalSegments }
 }
 
-const computeBlockTargetPosition = (
-  sourceBlockPosition: Coordinates,
-  targetBlockPosition: Coordinates,
+const computeGroupTargetPosition = (
+  sourceGroupPosition: Coordinates,
+  targetGroupPosition: Coordinates,
   sourceOffsetY: number,
   targetOffsetY?: number
 ): { targetPosition: Coordinates; totalSegments: number } => {
-  const isTargetBlockBelow =
-    targetBlockPosition.y > sourceOffsetY &&
-    targetBlockPosition.x < sourceBlockPosition.x + blockWidth + stubLength &&
-    targetBlockPosition.x > sourceBlockPosition.x - blockWidth - stubLength
-  const isTargetBlockToTheRight = targetBlockPosition.x < sourceBlockPosition.x
-  const isTargettingBlock = !targetOffsetY
+  const isTargetGroupBelow =
+    targetGroupPosition.y > sourceOffsetY &&
+    targetGroupPosition.x < sourceGroupPosition.x + blockWidth + stubLength &&
+    targetGroupPosition.x > sourceGroupPosition.x - blockWidth - stubLength
+  const isTargetGroupToTheRight = targetGroupPosition.x < sourceGroupPosition.x
+  const isTargettingGroup = !targetOffsetY
 
-  if (isTargetBlockBelow && isTargettingBlock) {
+  if (isTargetGroupBelow && isTargettingGroup) {
     const isExterior =
-      targetBlockPosition.x <
-        sourceBlockPosition.x - blockWidth / 2 - stubLength ||
-      targetBlockPosition.x >
-        sourceBlockPosition.x + blockWidth / 2 + stubLength
-    const targetPosition = parseBlockAnchorPosition(targetBlockPosition, 'top')
+      targetGroupPosition.x <
+        sourceGroupPosition.x - blockWidth / 2 - stubLength ||
+      targetGroupPosition.x >
+        sourceGroupPosition.x + blockWidth / 2 + stubLength
+    const targetPosition = parseGroupAnchorPosition(targetGroupPosition, 'top')
     return { totalSegments: isExterior ? 2 : 4, targetPosition }
   } else {
     const isExterior =
-      targetBlockPosition.x < sourceBlockPosition.x - blockWidth ||
-      targetBlockPosition.x > sourceBlockPosition.x + blockWidth
-    const targetPosition = parseBlockAnchorPosition(
-      targetBlockPosition,
-      isTargetBlockToTheRight ? 'right' : 'left',
+      targetGroupPosition.x < sourceGroupPosition.x - blockWidth ||
+      targetGroupPosition.x > sourceGroupPosition.x + blockWidth
+    const targetPosition = parseGroupAnchorPosition(
+      targetGroupPosition,
+      isTargetGroupToTheRight ? 'right' : 'left',
       targetOffsetY
     )
     return { totalSegments: isExterior ? 3 : 5, targetPosition }
   }
 }
 
-const parseBlockAnchorPosition = (
+const parseGroupAnchorPosition = (
   blockPosition: Coordinates,
   anchor: 'left' | 'top' | 'right',
   targetOffsetY?: number
@@ -233,15 +233,15 @@ export const computeEdgePath = ({
 }
 
 export const computeConnectingEdgePath = ({
-  sourceBlockCoordinates,
-  targetBlockCoordinates,
+  sourceGroupCoordinates,
+  targetGroupCoordinates,
   sourceTop,
   targetTop,
   graphScale,
 }: GetAnchorsPositionParams) => {
   const anchorsPosition = getAnchorsPosition({
-    sourceBlockCoordinates,
-    targetBlockCoordinates,
+    sourceGroupCoordinates,
+    targetGroupCoordinates,
     sourceTop,
     targetTop,
     graphScale,
@@ -250,23 +250,23 @@ export const computeConnectingEdgePath = ({
 }
 
 export const computeEdgePathToMouse = ({
-  sourceBlockCoordinates,
+  sourceGroupCoordinates,
   mousePosition,
   sourceTop,
 }: {
-  sourceBlockCoordinates: Coordinates
+  sourceGroupCoordinates: Coordinates
   mousePosition: Coordinates
   sourceTop: number
 }): string => {
   const sourcePosition = {
     x:
-      mousePosition.x - sourceBlockCoordinates.x > blockWidth / 2
-        ? sourceBlockCoordinates.x + blockWidth
-        : sourceBlockCoordinates.x,
+      mousePosition.x - sourceGroupCoordinates.x > blockWidth / 2
+        ? sourceGroupCoordinates.x + blockWidth
+        : sourceGroupCoordinates.x,
     y: sourceTop,
   }
   const sourceType =
-    mousePosition.x - sourceBlockCoordinates.x > blockWidth / 2
+    mousePosition.x - sourceGroupCoordinates.x > blockWidth / 2
       ? 'right'
       : 'left'
   const segments = computeThreeSegments(
@@ -304,4 +304,4 @@ export const getEndpointTopOffset = ({
 }
 
 export const getSourceEndpointId = (edge?: Edge) =>
-  edge?.from.itemId ?? edge?.from.stepId
+  edge?.from.itemId ?? edge?.from.blockId

@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "jvbBpKifJ3ssvKQxPqhBiD",
-      "steps": [
+      "blocks": [
         {
           "id": "rqecLJCZT7gP2JgBhRpb3a",
           "type": "start",
           "label": "Start",
-          "blockId": "jvbBpKifJ3ssvKQxPqhBiD",
+          "groupId": "jvbBpKifJ3ssvKQxPqhBiD",
           "outgoingEdgeId": "qnD38SqA7sYEh7efPZgDoR"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "roD9feCwx6jTDuVCThgzM2",
       "graphCoordinates": { "x": 200, "y": 171 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "souEkLukHsYU9jrN2rAP7YT",
-          "blockId": "roD9feCwx6jTDuVCThgzM2",
+          "groupId": "roD9feCwx6jTDuVCThgzM2",
           "type": "text",
           "content": {
             "html": "<div>How old are you?</div>",
@@ -39,7 +39,7 @@
         },
         {
           "id": "skfn5McXVrTNpi2e62RtEEY",
-          "blockId": "roD9feCwx6jTDuVCThgzM2",
+          "groupId": "roD9feCwx6jTDuVCThgzM2",
           "type": "number input",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type a number..." }
@@ -51,17 +51,17 @@
     {
       "id": "tFFeBrrWxY4tvr11C8rjTw",
       "graphCoordinates": { "x": 526, "y": 283 },
-      "title": "Block #2",
-      "steps": [
+      "title": "Group #2",
+      "blocks": [
         {
           "id": "spgqbyvunY91Ct5kVgeLLkz",
-          "blockId": "tFFeBrrWxY4tvr11C8rjTw",
+          "groupId": "tFFeBrrWxY4tvr11C8rjTw",
           "type": "Set variable",
           "options": {}
         },
         {
           "id": "skeKC71L8C8wpfeuV4TTLCD",
-          "blockId": "tFFeBrrWxY4tvr11C8rjTw",
+          "groupId": "tFFeBrrWxY4tvr11C8rjTw",
           "type": "Set variable",
           "options": {},
           "outgoingEdgeId": "7A4BD2vJT87grt3xFw86bn"
@@ -71,11 +71,11 @@
     {
       "id": "k6jFuKuSwy29LVwKxMWasv",
       "graphCoordinates": { "x": 691, "y": 35 },
-      "title": "Block #3",
-      "steps": [
+      "title": "Group #3",
+      "blocks": [
         {
           "id": "svpmd4uNoAXpoKyfYuuXTQe",
-          "blockId": "k6jFuKuSwy29LVwKxMWasv",
+          "groupId": "k6jFuKuSwy29LVwKxMWasv",
           "type": "text",
           "content": {
             "html": "<div>Total: {{Total}}</div><div>Custom var: {{Custom var}}</div>",
@@ -96,26 +96,26 @@
   "edges": [
     {
       "from": {
-        "blockId": "jvbBpKifJ3ssvKQxPqhBiD",
-        "stepId": "rqecLJCZT7gP2JgBhRpb3a"
+        "groupId": "jvbBpKifJ3ssvKQxPqhBiD",
+        "blockId": "rqecLJCZT7gP2JgBhRpb3a"
       },
-      "to": { "blockId": "roD9feCwx6jTDuVCThgzM2" },
+      "to": { "groupId": "roD9feCwx6jTDuVCThgzM2" },
       "id": "qnD38SqA7sYEh7efPZgDoR"
     },
     {
       "from": {
-        "blockId": "roD9feCwx6jTDuVCThgzM2",
-        "stepId": "skfn5McXVrTNpi2e62RtEEY"
+        "groupId": "roD9feCwx6jTDuVCThgzM2",
+        "blockId": "skfn5McXVrTNpi2e62RtEEY"
       },
-      "to": { "blockId": "tFFeBrrWxY4tvr11C8rjTw" },
+      "to": { "groupId": "tFFeBrrWxY4tvr11C8rjTw" },
       "id": "5ZYDLyR1CUF6B8ESHrFXwK"
     },
     {
       "from": {
-        "blockId": "tFFeBrrWxY4tvr11C8rjTw",
-        "stepId": "skeKC71L8C8wpfeuV4TTLCD"
+        "groupId": "tFFeBrrWxY4tvr11C8rjTw",
+        "blockId": "skeKC71L8C8wpfeuV4TTLCD"
       },
-      "to": { "blockId": "k6jFuKuSwy29LVwKxMWasv" },
+      "to": { "groupId": "k6jFuKuSwy29LVwKxMWasv" },
       "id": "7A4BD2vJT87grt3xFw86bn"
     }
   ],

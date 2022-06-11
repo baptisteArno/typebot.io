@@ -21,7 +21,7 @@ import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
-  const { setRightPanel, startPreviewAtBlock } = useEditor()
+  const { setRightPanel, startPreviewAtGroup } = useEditor()
   const { setPreviewingEdge } = useGraph()
   const [isResizing, setIsResizing] = useState(false)
   const [width, setWidth] = useState(500)
@@ -96,14 +96,14 @@ export const PreviewDrawer = () => {
             borderRadius={'lg'}
             h="full"
             w="full"
-            key={restartKey + (startPreviewAtBlock ?? '')}
+            key={restartKey + (startPreviewAtGroup ?? '')}
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
             <TypebotViewer
               typebot={publicTypebot}
-              onNewBlockVisible={setPreviewingEdge}
+              onNewGroupVisible={setPreviewingEdge}
               onNewLog={handleNewLog}
-              startBlockId={startPreviewAtBlock}
+              startGroupId={startPreviewAtGroup}
               isPreview
             />
           </Flex>

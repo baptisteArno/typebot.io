@@ -1,4 +1,4 @@
-import { Block, Edge, IdMap, Source, Step, Target } from 'models'
+import { Group, Edge, IdMap, Source, Block, Target } from 'models'
 import {
   createContext,
   Dispatch,
@@ -35,8 +35,8 @@ export type Anchor = {
   coordinates: Coordinates
 }
 
-export type Node = Omit<Block, 'steps'> & {
-  steps: (Step & {
+export type Node = Omit<Group, 'blocks'> & {
+  blocks: (Block & {
     sourceAnchorsPosition: { left: Coordinates; right: Coordinates }
   })[]
 }
@@ -48,18 +48,18 @@ export type ConnectingIds = {
   target?: Target
 }
 
-type StepId = string
+type BlockId = string
 type ButtonId = string
 export type Endpoint = {
-  id: StepId | ButtonId
+  id: BlockId | ButtonId
   ref: MutableRefObject<HTMLDivElement | null>
 }
 
-export type BlocksCoordinates = IdMap<Coordinates>
+export type GroupsCoordinates = IdMap<Coordinates>
 
 const graphContext = createContext<{
-  blocksCoordinates: BlocksCoordinates
-  updateBlockCoordinates: (blockId: string, newCoord: Coordinates) => void
+  groupsCoordinates: GroupsCoordinates
+  updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
@@ -70,11 +70,11 @@ const graphContext = createContext<{
   addSourceEndpoint: (endpoint: Endpoint) => void
   targetEndpoints: IdMap<Endpoint>
   addTargetEndpoint: (endpoint: Endpoint) => void
-  openedStepId?: string
-  setOpenedStepId: Dispatch<SetStateAction<string | undefined>>
+  openedBlockId?: string
+  setOpenedBlockId: Dispatch<SetStateAction<string | undefined>>
   isReadOnly: boolean
-  focusedBlockId?: string
-  setFocusedBlockId: Dispatch<SetStateAction<string | undefined>>
+  focusedGroupId?: string
+  setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -84,11 +84,11 @@ const graphContext = createContext<{
 
 export const GraphProvider = ({
   children,
-  blocks,
+  groups,
   isReadOnly = false,
 }: {
   children: ReactNode
-  blocks: Block[]
+  groups: Group[]
   isReadOnly?: boolean
 }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
@@ -96,15 +96,15 @@ export const GraphProvider = ({
   const [previewingEdge, setPreviewingEdge] = useState<Edge>()
   const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
   const [targetEndpoints, setTargetEndpoints] = useState<IdMap<Endpoint>>({})
-  const [openedStepId, setOpenedStepId] = useState<string>()
-  const [blocksCoordinates, setBlocksCoordinates] = useState<BlocksCoordinates>(
+  const [openedBlockId, setOpenedBlockId] = useState<string>()
+  const [groupsCoordinates, setGroupsCoordinates] = useState<GroupsCoordinates>(
     {}
   )
-  const [focusedBlockId, setFocusedBlockId] = useState<string>()
+  const [focusedGroupId, setFocusedGroupId] = useState<string>()
 
   useEffect(() => {
-    setBlocksCoordinates(
-      blocks.reduce(
+    setGroupsCoordinates(
+      groups.reduce(
         (coords, block) => ({
           ...coords,
           [block.id]: block.graphCoordinates,
@@ -113,7 +113,7 @@ export const GraphProvider = ({
       )
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blocks])
+  }, [groups])
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
     setSourceEndpoints((endpoints) => ({
@@ -129,10 +129,10 @@ export const GraphProvider = ({
     }))
   }
 
-  const updateBlockCoordinates = (blockId: string, newCoord: Coordinates) =>
-    setBlocksCoordinates((blocksCoordinates) => ({
-      ...blocksCoordinates,
-      [blockId]: newCoord,
+  const updateGroupCoordinates = (groupId: string, newCoord: Coordinates) =>
+    setGroupsCoordinates((groupsCoordinates) => ({
+      ...groupsCoordinates,
+      [groupId]: newCoord,
     }))
 
   return (
@@ -148,13 +148,13 @@ export const GraphProvider = ({
         targetEndpoints,
         addSourceEndpoint,
         addTargetEndpoint,
-        openedStepId,
-        setOpenedStepId,
-        blocksCoordinates,
-        updateBlockCoordinates,
+        openedBlockId,
+        setOpenedBlockId,
+        groupsCoordinates,
+        updateGroupCoordinates,
         isReadOnly,
-        focusedBlockId,
-        setFocusedBlockId,
+        focusedGroupId,
+        setFocusedGroupId,
       }}
     >
       {children}

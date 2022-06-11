@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { BubbleStepType, defaultImageBubbleContent } from 'models'
+import { BubbleBlockType, defaultImageBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import path from 'path'
 import cuid from 'cuid'
@@ -11,15 +11,15 @@ import cuid from 'cuid'
 const unsplashImageSrc =
   'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
 
-test.describe.parallel('Image bubble step', () => {
+test.describe.parallel('Image bubble block', () => {
   test.describe('Content settings', () => {
     test('should upload image file correctly', async ({ page }) => {
       const typebotId = cuid()
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.IMAGE,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.IMAGE,
             content: defaultImageBubbleContent,
           }),
         },
@@ -46,8 +46,8 @@ test.describe.parallel('Image bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.IMAGE,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.IMAGE,
             content: defaultImageBubbleContent,
           }),
         },
@@ -69,8 +69,8 @@ test.describe.parallel('Image bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.IMAGE,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.IMAGE,
             content: defaultImageBubbleContent,
           }),
         },
@@ -84,7 +84,7 @@ test.describe.parallel('Image bubble step', () => {
         force: true,
         position: { x: 0, y: 0 },
       })
-      await expect(page.locator('img[alt="Block image"]')).toHaveAttribute(
+      await expect(page.locator('img[alt="Group image"]')).toHaveAttribute(
         'src',
         new RegExp('giphy.com/media', 'gm')
       )
@@ -97,8 +97,8 @@ test.describe.parallel('Image bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.IMAGE,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.IMAGE,
             content: {
               url: unsplashImageSrc,
             },

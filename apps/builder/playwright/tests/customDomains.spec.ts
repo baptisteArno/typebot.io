@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { InputStepType, defaultTextInputOptions } from 'models'
+import { InputBlockType, defaultTextInputOptions } from 'models'
 import {
   createTypebots,
   freeWorkspaceId,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../services/database'
 import path from 'path'
 import cuid from 'cuid'
@@ -13,8 +13,8 @@ test('should be able to connect custom domain', async ({ page }) => {
   await createTypebots([
     {
       id: typebotId,
-      ...parseDefaultBlockWithStep({
-        type: InputStepType.TEXT,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
         options: defaultTextInputOptions,
       }),
     },
@@ -54,8 +54,8 @@ test.describe('Free workspace', () => {
       {
         id: typebotId,
         workspaceId: freeWorkspaceId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.TEXT,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
         }),
       },

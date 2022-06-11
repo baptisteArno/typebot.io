@@ -1,193 +1,248 @@
 import {
-  Editable,
-  EditableInput,
-  EditablePreview,
-  IconButton,
-  Stack,
+  Flex,
+  HStack,
+  Popover,
+  PopoverTrigger,
+  useDisclosure,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { Block } from 'models'
+import {
+  BubbleBlock,
+  BubbleBlockContent,
+  ConditionBlock,
+  DraggableBlock,
+  Block,
+  BlockWithOptions,
+  TextBubbleContent,
+  TextBubbleBlock,
+} from 'models'
 import { useGraph } from 'contexts/GraphContext'
-import { useStepDnd } from 'contexts/GraphDndContext'
-import { StepNodesList } from '../StepNode/StepNodesList'
-import { isDefined, isNotDefined } from 'utils'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { BlockIcon } from 'components/editor/BlocksSideBar/BlockIcon'
+import { isBubbleBlock, isTextBubbleBlock } from 'utils'
+import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
+import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
+import { SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
-import { useDebounce } from 'use-debounce'
+import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
+import { hasDefaultConnector } from 'services/typebots'
+import { useRouter } from 'next/router'
+import { SettingsModal } from './SettingsPopoverContent/SettingsModal'
+import { BlockSettings } from './SettingsPopoverContent/SettingsPopoverContent'
+import { TextBubbleEditor } from './TextBubbleEditor'
+import { TargetEndpoint } from '../../Endpoints'
+import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
+import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
-import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
-import { PlayIcon } from 'assets/icons'
-import { RightPanel, useEditor } from 'contexts/EditorContext'
 
-type Props = {
+export const BlockNode = ({
+  block,
+  isConnectable,
+  indices,
+  onMouseDown,
+}: {
   block: Block
-  blockIndex: number
-}
-
-export const BlockNode = ({ block, blockIndex }: Props) => {
+  isConnectable: boolean
+  indices: { blockIndex: number; groupIndex: number }
+  onMouseDown?: (blockNodePosition: NodePosition, block: DraggableBlock) => void
+}) => {
+  const { query } = useRouter()
   const {
-    connectingIds,
     setConnectingIds,
+    connectingIds,
+    openedBlockId,
+    setOpenedBlockId,
+    setFocusedGroupId,
     previewingEdge,
-    blocksCoordinates,
-    updateBlockCoordinates,
-    isReadOnly,
-    focusedBlockId,
-    setFocusedBlockId,
-    graphPosition,
   } = useGraph()
-  const { typebot, updateBlock } = useTypebot()
-  const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
-  const [isMouseDown, setIsMouseDown] = useState(false)
+  const { updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
-  const { setRightPanel, setStartPreviewAtBlock } = useEditor()
-  const isPreviewing =
-    previewingEdge?.from.blockId === block.id ||
-    (previewingEdge?.to.blockId === block.id &&
-      isNotDefined(previewingEdge.to.stepId))
-  const isStartBlock =
-    isDefined(block.steps[0]) && block.steps[0].type === 'start'
-
-  const blockCoordinates = blocksCoordinates[block.id]
+  const [isPopoverOpened, setIsPopoverOpened] = useState(
+    openedBlockId === block.id
+  )
+  const [isEditing, setIsEditing] = useState<boolean>(
+    isTextBubbleBlock(block) && block.content.plainText === ''
+  )
   const blockRef = useRef<HTMLDivElement | null>(null)
-  const [debouncedBlockPosition] = useDebounce(blockCoordinates, 100)
+
+  const isPreviewing = isConnecting || previewingEdge?.to.blockId === block.id
+
+  const onDrag = (position: NodePosition) => {
+    if (block.type === 'start' || !onMouseDown) return
+    onMouseDown(position, block)
+  }
+  useDragDistance({
+    ref: blockRef,
+    onDrag,
+    isDisabled: !onMouseDown || block.type === 'start',
+  })
+
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure()
+
   useEffect(() => {
-    if (!debouncedBlockPosition || isReadOnly) return
-    if (
-      debouncedBlockPosition?.x === block.graphCoordinates.x &&
-      debouncedBlockPosition.y === block.graphCoordinates.y
-    )
-      return
-    updateBlock(blockIndex, { graphCoordinates: debouncedBlockPosition })
+    if (query.blockId?.toString() === block.id) setOpenedBlockId(block.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedBlockPosition])
+  }, [query])
 
   useEffect(() => {
     setIsConnecting(
-      connectingIds?.target?.blockId === block.id &&
-        isNotDefined(connectingIds.target?.stepId)
+      connectingIds?.target?.groupId === block.groupId &&
+        connectingIds?.target?.blockId === block.id
     )
-  }, [block.id, connectingIds])
+  }, [connectingIds, block.groupId, block.id])
 
-  const handleTitleSubmit = (title: string) =>
-    updateBlock(blockIndex, { title })
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const handleModalClose = () => {
+    updateBlock(indices, { ...block })
+    onModalClose()
   }
 
   const handleMouseEnter = () => {
-    if (isReadOnly) return
-    if (mouseOverBlock?.id !== block.id && !isStartBlock)
-      setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)
-      setConnectingIds({ ...connectingIds, target: { blockId: block.id } })
+      setConnectingIds({
+        ...connectingIds,
+        target: { groupId: block.groupId, blockId: block.id },
+      })
   }
 
   const handleMouseLeave = () => {
-    if (isReadOnly) return
-    setMouseOverBlock(undefined)
-    if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
+    if (connectingIds?.target)
+      setConnectingIds({
+        ...connectingIds,
+        target: { ...connectingIds.target, blockId: undefined },
+      })
   }
 
-  const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
-    const { deltaX, deltaY } = draggableData
-    updateBlockCoordinates(block.id, {
-      x: blockCoordinates.x + deltaX / graphPosition.scale,
-      y: blockCoordinates.y + deltaY / graphPosition.scale,
-    })
+  const handleCloseEditor = (content: TextBubbleContent) => {
+    const updatedBlock = { ...block, content } as Block
+    updateBlock(indices, updatedBlock)
+    setIsEditing(false)
   }
 
-  const onDragStart = () => {
-    setFocusedBlockId(block.id)
-    setIsMouseDown(true)
+  const handleClick = (e: React.MouseEvent) => {
+    setFocusedGroupId(block.groupId)
+    e.stopPropagation()
+    if (isTextBubbleBlock(block)) setIsEditing(true)
+    setOpenedBlockId(block.id)
   }
 
-  const startPreviewAtThisBlock = () => {
-    setStartPreviewAtBlock(block.id)
-    setRightPanel(RightPanel.PREVIEW)
+  const handleExpandClick = () => {
+    setOpenedBlockId(undefined)
+    onModalOpen()
   }
 
-  const onDragStop = () => setIsMouseDown(false)
-  return (
+  const handleBlockUpdate = (updates: Partial<Block>) =>
+    updateBlock(indices, { ...block, ...updates })
+
+  const handleContentChange = (content: BubbleBlockContent) =>
+    updateBlock(indices, { ...block, content } as Block)
+
+  useEffect(() => {
+    setIsPopoverOpened(openedBlockId === block.id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openedBlockId])
+
+  return isEditing && isTextBubbleBlock(block) ? (
+    <TextBubbleEditor
+      initialValue={block.content.richText}
+      onClose={handleCloseEditor}
+    />
+  ) : (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
-      isDisabled={isReadOnly || isStartBlock}
+      renderMenu={() => <BlockNodeContextMenu indices={indices} />}
     >
       {(ref, isOpened) => (
-        <DraggableCore
-          enableUserSelectHack={false}
-          onDrag={onDrag}
-          onStart={onDragStart}
-          onStop={onDragStop}
-          onMouseDown={(e) => e.stopPropagation()}
+        <Popover
+          placement="left"
+          isLazy
+          isOpen={isPopoverOpened}
+          closeOnBlur={false}
         >
-          <Stack
-            ref={setMultipleRefs([ref, blockRef])}
-            data-testid="block"
-            p="4"
-            rounded="xl"
-            bgColor="#ffffff"
-            borderWidth="2px"
-            borderColor={
-              isConnecting || isOpened || isPreviewing ? 'blue.400' : '#ffffff'
-            }
-            w="300px"
-            transition="border 300ms, box-shadow 200ms"
-            pos="absolute"
-            style={{
-              transform: `translate(${blockCoordinates?.x ?? 0}px, ${
-                blockCoordinates?.y ?? 0
-              }px)`,
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            cursor={isMouseDown ? 'grabbing' : 'pointer'}
-            shadow="md"
-            _hover={{ shadow: 'lg' }}
-            zIndex={focusedBlockId === block.id ? 10 : 1}
-          >
-            <Editable
-              defaultValue={block.title}
-              onSubmit={handleTitleSubmit}
-              fontWeight="semibold"
-              pointerEvents={isReadOnly || isStartBlock ? 'none' : 'auto'}
+          <PopoverTrigger>
+            <Flex
+              pos="relative"
+              ref={setMultipleRefs([ref, blockRef])}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleClick}
+              data-testid={`block`}
+              w="full"
             >
-              <EditablePreview
-                _hover={{ bgColor: 'gray.200' }}
-                px="1"
-                userSelect={'none'}
+              <HStack
+                flex="1"
+                userSelect="none"
+                p="3"
+                borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
+                borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.200'}
+                margin={isOpened || isPreviewing ? '-1px' : 0}
+                rounded="lg"
+                cursor={'pointer'}
+                bgColor="gray.50"
+                align="flex-start"
+                w="full"
+                transition="border-color 0.2s"
+              >
+                <BlockIcon
+                  type={block.type}
+                  mt="1"
+                  data-testid={`${block.id}-icon`}
+                />
+                <BlockNodeContent block={block} indices={indices} />
+                <TargetEndpoint
+                  pos="absolute"
+                  left="-32px"
+                  top="19px"
+                  blockId={block.id}
+                />
+                {isConnectable && hasDefaultConnector(block) && (
+                  <SourceEndpoint
+                    source={{
+                      groupId: block.groupId,
+                      blockId: block.id,
+                    }}
+                    pos="absolute"
+                    right="-34px"
+                    bottom="10px"
+                  />
+                )}
+              </HStack>
+            </Flex>
+          </PopoverTrigger>
+          {hasSettingsPopover(block) && (
+            <>
+              <SettingsPopoverContent
+                block={block}
+                onExpandClick={handleExpandClick}
+                onBlockChange={handleBlockUpdate}
               />
-              <EditableInput
-                minW="0"
-                px="1"
-                onMouseDown={(e) => e.stopPropagation()}
-              />
-            </Editable>
-            {typebot && (
-              <StepNodesList
-                blockId={block.id}
-                steps={block.steps}
-                blockIndex={blockIndex}
-                blockRef={ref}
-                isStartBlock={isStartBlock}
-              />
-            )}
-            <IconButton
-              icon={<PlayIcon />}
-              aria-label={'Preview bot from this group'}
-              pos="absolute"
-              right={2}
-              top={0}
-              size="sm"
-              variant="outline"
-              onClick={startPreviewAtThisBlock}
+              <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
+                <BlockSettings
+                  block={block}
+                  onBlockChange={handleBlockUpdate}
+                />
+              </SettingsModal>
+            </>
+          )}
+          {isMediaBubbleBlock(block) && (
+            <MediaBubblePopoverContent
+              block={block}
+              onContentChange={handleContentChange}
             />
-          </Stack>
-        </DraggableCore>
+          )}
+        </Popover>
       )}
     </ContextMenu>
   )
 }
+
+const hasSettingsPopover = (
+  block: Block
+): block is BlockWithOptions | ConditionBlock => !isBubbleBlock(block)
+
+const isMediaBubbleBlock = (
+  block: Block
+): block is Exclude<BubbleBlock, TextBubbleBlock> =>
+  isBubbleBlock(block) && !isTextBubbleBlock(block)

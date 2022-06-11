@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
 import {
-  BubbleStepType,
+  BubbleBlockType,
   defaultVideoBubbleContent,
   VideoBubbleContentType,
 } from 'models'
@@ -16,15 +16,15 @@ const videoSrc =
 const youtubeVideoSrc = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 const vimeoVideoSrc = 'https://vimeo.com/649301125'
 
-test.describe.parallel('Video bubble step', () => {
+test.describe.parallel('Video bubble block', () => {
   test.describe('Content settings', () => {
     test('should import video url correctly', async ({ page }) => {
       const typebotId = cuid()
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.VIDEO,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.VIDEO,
             content: defaultVideoBubbleContent,
           }),
         },
@@ -47,8 +47,8 @@ test.describe.parallel('Video bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.VIDEO,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.VIDEO,
             content: {
               type: VideoBubbleContentType.URL,
               url: videoSrc,
@@ -69,8 +69,8 @@ test.describe.parallel('Video bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.VIDEO,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.VIDEO,
             content: {
               type: VideoBubbleContentType.YOUTUBE,
               url: youtubeVideoSrc,
@@ -93,8 +93,8 @@ test.describe.parallel('Video bubble step', () => {
       await createTypebots([
         {
           id: typebotId,
-          ...parseDefaultBlockWithStep({
-            type: BubbleStepType.VIDEO,
+          ...parseDefaultGroupWithBlock({
+            type: BubbleBlockType.VIDEO,
             content: {
               type: VideoBubbleContentType.VIMEO,
               url: vimeoVideoSrc,

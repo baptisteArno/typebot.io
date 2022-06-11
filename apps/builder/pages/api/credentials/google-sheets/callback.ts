@@ -12,7 +12,7 @@ import { getAuthenticatedUser } from 'services/api/utils'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
-  const { redirectUrl, stepId, workspaceId } = JSON.parse(
+  const { redirectUrl, blockId, workspaceId } = JSON.parse(
     Buffer.from(req.query.state.toString(), 'base64').toString()
   )
   if (req.method === 'GET') {
@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: credentialsId } = await prisma.credentials.create({
       data: credentials,
     })
-    const queryParams = stringify({ stepId, credentialsId })
+    const queryParams = stringify({ blockId, credentialsId })
     res.redirect(
       `${redirectUrl}?${queryParams}` ?? `${process.env.NEXTAUTH_URL}`
     )

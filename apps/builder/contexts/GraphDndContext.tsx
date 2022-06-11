@@ -1,5 +1,5 @@
 import { useEventListener } from '@chakra-ui/react'
-import { ButtonItem, DraggableStep, DraggableStepType } from 'models'
+import { ButtonItem, DraggableBlock, DraggableBlockType } from 'models'
 import {
   createContext,
   Dispatch,
@@ -11,20 +11,20 @@ import {
 } from 'react'
 import { Coordinates } from './GraphContext'
 
-type BlockInfo = {
+type GroupInfo = {
   id: string
   ref: React.MutableRefObject<HTMLDivElement | null>
 }
 
 const graphDndContext = createContext<{
-  draggedStepType?: DraggableStepType
-  setDraggedStepType: Dispatch<SetStateAction<DraggableStepType | undefined>>
-  draggedStep?: DraggableStep
-  setDraggedStep: Dispatch<SetStateAction<DraggableStep | undefined>>
+  draggedBlockType?: DraggableBlockType
+  setDraggedBlockType: Dispatch<SetStateAction<DraggableBlockType | undefined>>
+  draggedBlock?: DraggableBlock
+  setDraggedBlock: Dispatch<SetStateAction<DraggableBlock | undefined>>
   draggedItem?: ButtonItem
   setDraggedItem: Dispatch<SetStateAction<ButtonItem | undefined>>
-  mouseOverBlock?: BlockInfo
-  setMouseOverBlock: Dispatch<SetStateAction<BlockInfo | undefined>>
+  mouseOverGroup?: GroupInfo
+  setMouseOverGroup: Dispatch<SetStateAction<GroupInfo | undefined>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -32,24 +32,24 @@ const graphDndContext = createContext<{
 export type NodePosition = { absolute: Coordinates; relative: Coordinates }
 
 export const GraphDndContext = ({ children }: { children: ReactNode }) => {
-  const [draggedStep, setDraggedStep] = useState<DraggableStep>()
-  const [draggedStepType, setDraggedStepType] = useState<
-    DraggableStepType | undefined
+  const [draggedBlock, setDraggedBlock] = useState<DraggableBlock>()
+  const [draggedBlockType, setDraggedBlockType] = useState<
+    DraggableBlockType | undefined
   >()
   const [draggedItem, setDraggedItem] = useState<ButtonItem | undefined>()
-  const [mouseOverBlock, setMouseOverBlock] = useState<BlockInfo>()
+  const [mouseOverGroup, setMouseOverGroup] = useState<GroupInfo>()
 
   return (
     <graphDndContext.Provider
       value={{
-        draggedStep,
-        setDraggedStep,
-        draggedStepType,
-        setDraggedStepType,
+        draggedBlock,
+        setDraggedBlock,
+        draggedBlockType,
+        setDraggedBlockType,
         draggedItem,
         setDraggedItem,
-        mouseOverBlock,
-        setMouseOverBlock,
+        mouseOverGroup,
+        setMouseOverGroup,
       }}
     >
       {children}
@@ -124,4 +124,4 @@ export const computeNearestPlaceholderIndex = (
   return closestIndex
 }
 
-export const useStepDnd = () => useContext(graphDndContext)
+export const useBlockDnd = () => useContext(graphDndContext)

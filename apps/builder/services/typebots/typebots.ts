@@ -1,18 +1,18 @@
 import {
-  Block,
+  Group,
   PublicTypebot,
-  StartStep,
-  BubbleStepType,
-  InputStepType,
-  LogicStepType,
-  Step,
-  DraggableStepType,
-  DraggableStep,
+  StartBlock,
+  BubbleBlockType,
+  InputBlockType,
+  LogicBlockType,
+  Block,
+  DraggableBlockType,
+  DraggableBlock,
   defaultTheme,
   defaultSettings,
-  StepOptions,
-  BubbleStepContent,
-  IntegrationStepType,
+  BlockOptions,
+  BubbleBlockContent,
+  IntegrationBlockType,
   defaultTextBubbleContent,
   defaultImageBubbleContent,
   defaultVideoBubbleContent,
@@ -29,14 +29,14 @@ import {
   defaultGoogleAnalyticsOptions,
   defaultCodeOptions,
   defaultWebhookOptions,
-  StepWithOptionsType,
+  BlockWithOptionsType,
   Item,
   ItemType,
   defaultConditionContent,
   defaultSendEmailOptions,
   defaultEmbedBubbleContent,
-  ChoiceInputStep,
-  ConditionStep,
+  ChoiceInputBlock,
+  ConditionBlock,
   defaultPaymentInputOptions,
   defaultRatingInputOptions,
 } from 'models'
@@ -44,18 +44,18 @@ import { Typebot } from 'models'
 import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
-  isBubbleStepType,
+  isBubbleBlockType,
   isNotEmpty,
-  isWebhookStep,
+  isWebhookBlock,
   omit,
-  stepHasItems,
-  stepTypeHasItems,
-  stepTypeHasOption,
-  stepTypeHasWebhook,
+  blockHasItems,
+  blockTypeHasItems,
+  blockTypeHasOption,
+  blockTypeHasWebhook,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
+import { isChoiceInput, isConditionBlock, sendRequest } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
@@ -121,11 +121,11 @@ export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
     body: newTypebot,
   })
   if (!data) return { data, error }
-  const webhookSteps = typebot.blocks
-    .flatMap((b) => b.steps)
-    .filter(isWebhookStep)
+  const webhookBlocks = typebot.groups
+    .flatMap((b) => b.blocks)
+    .filter(isWebhookBlock)
   await Promise.all(
-    webhookSteps.map((s) =>
+    webhookBlocks.map((s) =>
       duplicateWebhook(
         newTypebot.id,
         s.webhookId,
@@ -140,12 +140,12 @@ const duplicateTypebot = (
   typebot: Typebot,
   userPlan: Plan
 ): { typebot: Typebot; webhookIdsMapping: Map<string, string> } => {
-  const blockIdsMapping = generateOldNewIdsMapping(typebot.blocks)
+  const groupIdsMapping = generateOldNewIdsMapping(typebot.groups)
   const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
   const webhookIdsMapping = generateOldNewIdsMapping(
-    typebot.blocks
-      .flatMap((b) => b.steps)
-      .filter(isWebhookStep)
+    typebot.groups
+      .flatMap((b) => b.blocks)
+      .filter(isWebhookBlock)
       .map((s) => ({ id: s.webhookId }))
   )
   const id = cuid()
@@ -157,29 +157,29 @@ const duplicateTypebot = (
       publishedTypebotId: null,
       publicId: null,
       customDomain: null,
-      blocks: typebot.blocks.map((b) => ({
+      groups: typebot.groups.map((b) => ({
         ...b,
-        id: blockIdsMapping.get(b.id) as string,
-        steps: b.steps.map((s) => {
+        id: groupIdsMapping.get(b.id) as string,
+        blocks: b.blocks.map((s) => {
           const newIds = {
-            blockId: blockIdsMapping.get(s.blockId) as string,
+            groupId: groupIdsMapping.get(s.groupId) as string,
             outgoingEdgeId: s.outgoingEdgeId
               ? edgeIdsMapping.get(s.outgoingEdgeId)
               : undefined,
           }
           if (
-            s.type === LogicStepType.TYPEBOT_LINK &&
+            s.type === LogicBlockType.TYPEBOT_LINK &&
             s.options.typebotId === 'current' &&
-            isDefined(s.options.blockId)
+            isDefined(s.options.groupId)
           )
             return {
               ...s,
               options: {
                 ...s.options,
-                blockId: blockIdsMapping.get(s.options.blockId as string),
+                groupId: groupIdsMapping.get(s.options.groupId as string),
               },
             }
-          if (stepHasItems(s))
+          if (blockHasItems(s))
             return {
               ...s,
               items: s.items.map((item) => ({
@@ -189,8 +189,8 @@ const duplicateTypebot = (
                   : undefined,
               })),
               ...newIds,
-            } as ChoiceInputStep | ConditionStep
-          if (isWebhookStep(s)) {
+            } as ChoiceInputBlock | ConditionBlock
+          if (isWebhookBlock(s)) {
             return {
               ...s,
               webhookId: webhookIdsMapping.get(s.webhookId) as string,
@@ -208,9 +208,9 @@ const duplicateTypebot = (
         id: edgeIdsMapping.get(e.id) as string,
         from: {
           ...e.from,
-          blockId: blockIdsMapping.get(e.from.blockId) as string,
+          groupId: groupIdsMapping.get(e.from.groupId) as string,
         },
-        to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
+        to: { ...e.to, groupId: groupIdsMapping.get(e.to.groupId) as string },
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
@@ -259,36 +259,36 @@ export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
     body: typebot,
   })
 
-export const parseNewStep = (
-  type: DraggableStepType,
-  blockId: string
-): DraggableStep => {
+export const parseNewBlock = (
+  type: DraggableBlockType,
+  groupId: string
+): DraggableBlock => {
   const id = cuid()
   return {
     id,
-    blockId,
+    groupId,
     type,
-    content: isBubbleStepType(type) ? parseDefaultContent(type) : undefined,
-    options: stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
+    content: isBubbleBlockType(type) ? parseDefaultContent(type) : undefined,
+    options: blockTypeHasOption(type)
+      ? parseDefaultBlockOptions(type)
       : undefined,
-    webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
-    items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
-  } as DraggableStep
+    webhookId: blockTypeHasWebhook(type) ? cuid() : undefined,
+    items: blockTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
+  } as DraggableBlock
 }
 
 const parseDefaultItems = (
-  type: LogicStepType.CONDITION | InputStepType.CHOICE,
-  stepId: string
+  type: LogicBlockType.CONDITION | InputBlockType.CHOICE,
+  blockId: string
 ): Item[] => {
   switch (type) {
-    case InputStepType.CHOICE:
-      return [{ id: cuid(), stepId, type: ItemType.BUTTON }]
-    case LogicStepType.CONDITION:
+    case InputBlockType.CHOICE:
+      return [{ id: cuid(), blockId, type: ItemType.BUTTON }]
+    case LogicBlockType.CONDITION:
       return [
         {
           id: cuid(),
-          stepId,
+          blockId,
           type: ItemType.CONDITION,
           content: defaultConditionContent,
         },
@@ -296,57 +296,57 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleBlockType): BubbleBlockContent => {
   switch (type) {
-    case BubbleStepType.TEXT:
+    case BubbleBlockType.TEXT:
       return defaultTextBubbleContent
-    case BubbleStepType.IMAGE:
+    case BubbleBlockType.IMAGE:
       return defaultImageBubbleContent
-    case BubbleStepType.VIDEO:
+    case BubbleBlockType.VIDEO:
       return defaultVideoBubbleContent
-    case BubbleStepType.EMBED:
+    case BubbleBlockType.EMBED:
       return defaultEmbedBubbleContent
   }
 }
 
-const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
+const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
   switch (type) {
-    case InputStepType.TEXT:
+    case InputBlockType.TEXT:
       return defaultTextInputOptions
-    case InputStepType.NUMBER:
+    case InputBlockType.NUMBER:
       return defaultNumberInputOptions
-    case InputStepType.EMAIL:
+    case InputBlockType.EMAIL:
       return defaultEmailInputOptions
-    case InputStepType.DATE:
+    case InputBlockType.DATE:
       return defaultDateInputOptions
-    case InputStepType.PHONE:
+    case InputBlockType.PHONE:
       return defaultPhoneInputOptions
-    case InputStepType.URL:
+    case InputBlockType.URL:
       return defaultUrlInputOptions
-    case InputStepType.CHOICE:
+    case InputBlockType.CHOICE:
       return defaultChoiceInputOptions
-    case InputStepType.PAYMENT:
+    case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions
-    case InputStepType.RATING:
+    case InputBlockType.RATING:
       return defaultRatingInputOptions
-    case LogicStepType.SET_VARIABLE:
+    case LogicBlockType.SET_VARIABLE:
       return defaultSetVariablesOptions
-    case LogicStepType.REDIRECT:
+    case LogicBlockType.REDIRECT:
       return defaultRedirectOptions
-    case LogicStepType.CODE:
+    case LogicBlockType.CODE:
       return defaultCodeOptions
-    case LogicStepType.TYPEBOT_LINK:
+    case LogicBlockType.TYPEBOT_LINK:
       return {}
-    case IntegrationStepType.GOOGLE_SHEETS:
+    case IntegrationBlockType.GOOGLE_SHEETS:
       return defaultGoogleSheetsOptions
-    case IntegrationStepType.GOOGLE_ANALYTICS:
+    case IntegrationBlockType.GOOGLE_ANALYTICS:
       return defaultGoogleAnalyticsOptions
-    case IntegrationStepType.ZAPIER:
-    case IntegrationStepType.PABBLY_CONNECT:
-    case IntegrationStepType.MAKE_COM:
-    case IntegrationStepType.WEBHOOK:
+    case IntegrationBlockType.ZAPIER:
+    case IntegrationBlockType.PABBLY_CONNECT:
+    case IntegrationBlockType.MAKE_COM:
+    case IntegrationBlockType.WEBHOOK:
       return defaultWebhookOptions
-    case IntegrationStepType.EMAIL:
+    case IntegrationBlockType.EMAIL:
       return defaultSendEmailOptions
   }
 }
@@ -365,14 +365,14 @@ export const checkIfPublished = (
   if (debug)
     console.log(
       diff(
-        JSON.parse(JSON.stringify(typebot.blocks)),
-        JSON.parse(JSON.stringify(publicTypebot.blocks))
+        JSON.parse(JSON.stringify(typebot.groups)),
+        JSON.parse(JSON.stringify(publicTypebot.groups))
       )
     )
   return (
     dequal(
-      JSON.parse(JSON.stringify(typebot.blocks)),
-      JSON.parse(JSON.stringify(publicTypebot.blocks))
+      JSON.parse(JSON.stringify(typebot.groups)),
+      JSON.parse(JSON.stringify(publicTypebot.groups))
     ) &&
     dequal(
       JSON.parse(JSON.stringify(typebot.settings)),
@@ -412,25 +412,25 @@ export const parseNewTypebot = ({
   | 'customDomain'
   | 'icon'
 > => {
+  const startGroupId = cuid()
   const startBlockId = cuid()
-  const startStepId = cuid()
-  const startStep: StartStep = {
-    blockId: startBlockId,
-    id: startStepId,
+  const startBlock: StartBlock = {
+    groupId: startGroupId,
+    id: startBlockId,
     label: 'Start',
     type: 'start',
   }
-  const startBlock: Block = {
-    id: startBlockId,
+  const startGroup: Group = {
+    id: startGroupId,
     title: 'Start',
     graphCoordinates: { x: 0, y: 0 },
-    steps: [startStep],
+    blocks: [startBlock],
   }
   return {
     folderId,
     name,
     workspaceId,
-    blocks: [startBlock],
+    groups: [startGroup],
     edges: [],
     variables: [],
     theme: {
@@ -444,5 +444,5 @@ export const parseNewTypebot = ({
   }
 }
 
-export const hasDefaultConnector = (step: Step) =>
-  !isChoiceInput(step) && !isConditionStep(step)
+export const hasDefaultConnector = (block: Block) =>
+  !isChoiceInput(block) && !isConditionBlock(block)

@@ -1,20 +1,20 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { defaultDateInputOptions, InputStepType } from 'models'
+import { defaultDateInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
-test.describe('Date input step', () => {
+test.describe('Date input block', () => {
   test('options should work', async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: InputStepType.DATE,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.DATE,
           options: defaultDateInputOptions,
         }),
       },

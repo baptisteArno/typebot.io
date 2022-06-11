@@ -5,15 +5,15 @@
   "name": "Another typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "p4ByLVoKiDRyRoPHKmcTfw",
-      "steps": [
+      "blocks": [
         {
           "id": "rw6smEWEJzHKbiVKLUKFvZ",
           "type": "start",
           "label": "Start",
-          "blockId": "p4ByLVoKiDRyRoPHKmcTfw",
+          "groupId": "p4ByLVoKiDRyRoPHKmcTfw",
           "outgoingEdgeId": "1z3pfiatTUHbraD2uSoA3E"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "bg4QEJseUsTP496H27j5k2",
       "graphCoordinates": { "x": 366, "y": 191 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "s8ZeBL9p5za77eBmdKECLYq",
-          "blockId": "bg4QEJseUsTP496H27j5k2",
+          "groupId": "bg4QEJseUsTP496H27j5k2",
           "type": "text input",
           "options": {
             "isLong": false,
@@ -41,10 +41,10 @@
   "edges": [
     {
       "from": {
-        "blockId": "p4ByLVoKiDRyRoPHKmcTfw",
-        "stepId": "rw6smEWEJzHKbiVKLUKFvZ"
+        "groupId": "p4ByLVoKiDRyRoPHKmcTfw",
+        "blockId": "rw6smEWEJzHKbiVKLUKFvZ"
       },
-      "to": { "blockId": "bg4QEJseUsTP496H27j5k2" },
+      "to": { "groupId": "bg4QEJseUsTP496H27j5k2" },
       "id": "1z3pfiatTUHbraD2uSoA3E"
     }
   ],

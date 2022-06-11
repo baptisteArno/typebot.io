@@ -5,11 +5,10 @@ import {
   Heading,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Switch,
   HStack,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { PopupParams } from 'typebot-js'
@@ -55,10 +54,10 @@ export const PopupEmbedSettings = ({
             min={0}
           >
             <NumberInputField />
-            <NumberInputStepper>
+            <NumberIncrementStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
-            </NumberInputStepper>
+            </NumberIncrementStepper>
           </NumberInput>
         )}
       </Flex>

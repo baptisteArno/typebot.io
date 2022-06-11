@@ -5,7 +5,7 @@ import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   ButtonItem,
-  ChoiceInputStep,
+  ChoiceInputBlock,
   Item,
   ItemIndices,
   ItemType,
@@ -21,7 +21,7 @@ type Props = {
   indices: ItemIndices
   isReadOnly: boolean
   onMouseDown?: (
-    stepNodePosition: { absolute: Coordinates; relative: Coordinates },
+    blockNodePosition: { absolute: Coordinates; relative: Coordinates },
     item: ButtonItem
   ) => void
 }
@@ -33,9 +33,9 @@ export const ItemNode = ({ item, indices, isReadOnly, onMouseDown }: Props) => {
   const itemRef = useRef<HTMLDivElement | null>(null)
   const isPreviewing = previewingEdge?.from.itemId === item.id
   const isConnectable = !(
-    typebot?.blocks[indices.blockIndex].steps[
-      indices.stepIndex
-    ] as ChoiceInputStep
+    typebot?.groups[indices.groupIndex].blocks[
+      indices.blockIndex
+    ] as ChoiceInputBlock
   )?.options?.isMultipleChoice
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown || item.type !== ItemType.BUTTON) return
@@ -83,8 +83,8 @@ export const ItemNode = ({ item, indices, isReadOnly, onMouseDown }: Props) => {
             {typebot && isConnectable && (
               <SourceEndpoint
                 source={{
-                  blockId: typebot.blocks[indices.blockIndex].id,
-                  stepId: item.stepId,
+                  groupId: typebot.groups[indices.groupIndex].id,
+                  blockId: item.blockId,
                   itemId: item.id,
                 }}
                 pos="absolute"

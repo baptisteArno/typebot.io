@@ -1,82 +1,82 @@
 import {
-  Block,
+  Group,
   Variable,
-  InputStep,
+  InputBlock,
   ResultHeaderCell,
   ResultWithAnswers,
   Answer,
   VariableWithValue,
 } from 'models'
-import { isInputStep, isDefined, byId } from './utils'
+import { isInputBlock, isDefined, byId } from './utils'
 
 export const parseResultHeader = ({
-  blocks,
+  groups,
   variables,
 }: {
-  blocks: Block[]
+  groups: Group[]
   variables: Variable[]
 }): ResultHeaderCell[] => {
-  const parsedBlocks = parseInputsResultHeader({ blocks, variables })
+  const parsedGroups = parseInputsResultHeader({ groups, variables })
   return [
     { label: 'Submitted at' },
-    ...parsedBlocks,
-    ...parseVariablesHeaders(variables, parsedBlocks),
+    ...parsedGroups,
+    ...parseVariablesHeaders(variables, parsedGroups),
   ]
 }
 
 const parseInputsResultHeader = ({
-  blocks,
+  groups,
   variables,
 }: {
-  blocks: Block[]
+  groups: Group[]
   variables: Variable[]
 }): ResultHeaderCell[] =>
   (
-    blocks
-      .flatMap((b) =>
-        b.steps.map((s) => ({
+    groups
+      .flatMap((g) =>
+        g.blocks.map((s) => ({
           ...s,
-          blockTitle: b.title,
+          blockTitle: g.title,
         }))
       )
-      .filter((step) => isInputStep(step)) as (InputStep & {
+      .filter((block) => isInputBlock(block)) as (InputBlock & {
       blockTitle: string
     })[]
-  ).reduce<ResultHeaderCell[]>((headers, inputStep) => {
+  ).reduce<ResultHeaderCell[]>((headers, inputBlock) => {
     if (
       headers.find(
         (h) =>
           isDefined(h.variableId) &&
           h.variableId ===
-            variables.find(byId(inputStep.options.variableId))?.id
+            variables.find(byId(inputBlock.options.variableId))?.id
       )
     )
       return headers
     const matchedVariableName =
-      inputStep.options.variableId &&
-      variables.find(byId(inputStep.options.variableId))?.name
+      inputBlock.options.variableId &&
+      variables.find(byId(inputBlock.options.variableId))?.name
 
-    let label = matchedVariableName ?? inputStep.blockTitle
+    let label = matchedVariableName ?? inputBlock.blockTitle
     const totalPrevious = headers.filter((h) => h.label.includes(label)).length
     if (totalPrevious > 0) label = label + ` (${totalPrevious})`
     return [
       ...headers,
       {
-        stepType: inputStep.type,
-        stepId: inputStep.id,
-        variableId: inputStep.options.variableId,
+        blockType: inputBlock.type,
+        blockId: inputBlock.id,
+        variableId: inputBlock.options.variableId,
         label,
-        isLong: 'isLong' in inputStep.options && inputStep.options.isLong,
+        isLong: 'isLong' in inputBlock.options && inputBlock.options.isLong,
       },
     ]
   }, [])
 
 const parseVariablesHeaders = (
   variables: Variable[],
-  stepResultHeader: ResultHeaderCell[]
+  blockResultHeader: ResultHeaderCell[]
 ) =>
   variables.reduce<ResultHeaderCell[]>((headers, v) => {
-    if (stepResultHeader.find((h) => h.variableId === v.id)) return headers
+    if (blockResultHeader.find((h) => h.variableId === v.id)) return headers
     return [
       ...headers,
       {
@@ -87,7 +87,7 @@ const parseVariablesHeaders = (
   }, [])
 
 export const parseAnswers =
-  ({ blocks, variables }: { blocks: Block[]; variables: Variable[] }) =>
+  ({ groups, variables }: { groups: Group[]; variables: Variable[] }) =>
   ({
     createdAt,
     answers,
@@ -95,7 +95,7 @@ export const parseAnswers =
   }: Pick<ResultWithAnswers, 'createdAt' | 'answers' | 'variables'>): {
     [key: string]: string
   } => {
-    const header = parseResultHeader({ blocks, variables })
+    const header = parseResultHeader({ groups, variables })
     return {
       submittedAt: createdAt,
       ...[...answers, ...resultVariables].reduce<{
@@ -106,7 +106,7 @@ export const parseAnswers =
           const key = answer.variableId
             ? header.find((cell) => cell.variableId === answer.variableId)
                 ?.label
-            : header.find((cell) => cell.stepId === answer.stepId)?.label
+            : header.find((cell) => cell.blockId === answer.blockId)?.label
           if (!key) return o
           return {
             ...o,

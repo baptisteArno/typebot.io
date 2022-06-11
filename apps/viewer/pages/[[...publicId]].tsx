@@ -17,14 +17,17 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     if (!host) return { props: {} }
     const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
-    const isMatchingViewerUrl = viewerUrls.some(
-      (url) =>
-        host.split(':')[0].includes(url.split('//')[1].split(':')[0]) ||
-        (forwardedHost &&
-          forwardedHost
-            .split(':')[0]
-            .includes(url.split('//')[1].split(':')[0]))
-    )
+    const isMatchingViewerUrl =
+      process.env.NEXT_PUBLIC_E2E_TEST === 'enabled'
+        ? true
+        : viewerUrls.some(
+            (url) =>
+              host.split(':')[0].includes(url.split('//')[1].split(':')[0]) ||
+              (forwardedHost &&
+                forwardedHost
+                  .split(':')[0]
+                  .includes(url.split('//')[1].split(':')[0]))
+          )
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname
     }`

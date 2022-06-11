@@ -1,19 +1,19 @@
 import test from '@playwright/test'
 import {
   createTypebots,
-  parseDefaultBlockWithStep,
+  parseDefaultGroupWithBlock,
 } from '../../services/database'
-import { defaultGoogleAnalyticsOptions, IntegrationStepType } from 'models'
+import { defaultGoogleAnalyticsOptions, IntegrationBlockType } from 'models'
 import cuid from 'cuid'
 
-test.describe('Google Analytics step', () => {
+test.describe('Google Analytics block', () => {
   test('its configuration should work', async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        ...parseDefaultBlockWithStep({
-          type: IntegrationStepType.GOOGLE_ANALYTICS,
+        ...parseDefaultGroupWithBlock({
+          type: IntegrationBlockType.GOOGLE_ANALYTICS,
           options: defaultGoogleAnalyticsOptions,
         }),
       },

@@ -34,9 +34,9 @@ export const Edges = ({
       ))}
       {answersCounts?.slice(1)?.map((answerCount) => (
         <DropOffEdge
-          key={answerCount.blockId}
+          key={answerCount.groupId}
           answersCounts={answersCounts}
-          blockId={answerCount.blockId}
+          groupId={answerCount.groupId}
           onUnlockProPlanClick={onUnlockProPlanClick}
         />
       ))}

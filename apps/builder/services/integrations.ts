@@ -11,10 +11,10 @@ import {
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
-  stepId: string,
+  blockId: string,
   workspaceId?: string
 ) => {
-  const queryParams = stringify({ redirectUrl, stepId, workspaceId })
+  const queryParams = stringify({ redirectUrl, blockId, workspaceId })
   return `/api/credentials/google-sheets/consent-url?${queryParams}`
 }
 
@@ -75,10 +75,10 @@ export const useSheets = ({
 export const executeWebhook = (
   typebotId: string,
   variables: Variable[],
-  { blockId, stepId }: { blockId: string; stepId: string }
+  { blockId }: { blockId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
+    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,

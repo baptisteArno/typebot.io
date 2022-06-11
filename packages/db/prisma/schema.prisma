@@ -169,9 +169,9 @@ model Typebot {
   results            Result[]
   folderId           String?
   folder             DashboardFolder?          @relation(fields: [folderId], references: [id])
-  blocks             Json[]
+  groups             Json
   variables          Json[]
-  edges              Json[]
+  edges              Json
   theme              Json
   settings           Json
   publicId           String?                   @unique
@@ -215,9 +215,9 @@ model PublicTypebot {
   updatedAt    DateTime @default(now()) @updatedAt
   typebotId    String   @unique
   typebot      Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  blocks       Json[]
+  groups       Json
   variables    Json[]
-  edges        Json[]
+  edges        Json
   theme        Json
   settings     Json
 }
@@ -248,12 +248,12 @@ model Answer {
   createdAt  DateTime @default(now())
   resultId   String
   result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
-  stepId     String
-  blockId    String
+  blockId     String
+  groupId    String
   variableId String?
   content    String
 
-  @@unique([resultId, blockId, stepId])
+  @@unique([resultId, blockId, groupId])
 }
 
 model Coupon {

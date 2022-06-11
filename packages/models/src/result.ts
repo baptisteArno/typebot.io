@@ -1,6 +1,6 @@
 import { Result as ResultFromPrisma } from 'db'
 import { Answer, VariableWithValue } from '.'
-import { InputStepType } from './typebot/steps/shared'
+import { InputBlockType } from './typebot/blocks/shared'
 
 export type Result = Omit<ResultFromPrisma, 'createdAt' | 'variables'> & {
   createdAt: string
@@ -16,8 +16,8 @@ export type ResultValues = Pick<
 
 export type ResultHeaderCell = {
   label: string
-  stepId?: string
-  stepType?: InputStepType
+  blockId?: string
+  blockType?: InputBlockType
   isLong?: boolean
   variableId?: string
 }

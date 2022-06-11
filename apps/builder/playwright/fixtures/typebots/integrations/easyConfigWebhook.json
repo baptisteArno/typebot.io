@@ -5,15 +5,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cl10u677d0000a01aa4g4aazg",
-      "steps": [
+      "blocks": [
         {
           "id": "cl10u677d0001a01a0xfo3d11",
           "type": "start",
           "label": "Start",
-          "blockId": "cl10u677d0000a01aa4g4aazg",
+          "groupId": "cl10u677d0000a01aa4g4aazg",
           "outgoingEdgeId": "cl10u6cw500052e6dq284zju3"
         }
       ],
@@ -23,11 +23,11 @@
     {
       "id": "cl10u68pw00032e6depze2oiy",
       "graphCoordinates": { "x": 353, "y": 121 },
-      "title": "Block #1",
-      "steps": [
+      "title": "Group #1",
+      "blocks": [
         {
           "id": "cl10u68q000042e6dhdipu2wg",
-          "blockId": "cl10u68pw00032e6depze2oiy",
+          "groupId": "cl10u68pw00032e6depze2oiy",
           "type": "text",
           "content": {
             "html": "<div>Hi how are you?</div>",
@@ -39,7 +39,7 @@
         },
         {
           "id": "cl10u6ey300062e6dea9ikpko",
-          "blockId": "cl10u68pw00032e6depze2oiy",
+          "groupId": "cl10u68pw00032e6depze2oiy",
           "type": "text input",
           "options": {
             "isLong": false,
@@ -52,11 +52,11 @@
     {
       "id": "cl10u6jzd00072e6dvo0zwy0s",
       "graphCoordinates": { "x": 691, "y": 127 },
-      "title": "Block #2",
-      "steps": [
+      "title": "Group #2",
+      "blocks": [
         {
           "id": "cl10u6jzt00082e6dgw1piz0q",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
             "html": "<div>How old are you?</div>",
@@ -68,7 +68,7 @@
         },
         {
           "id": "cl10u6qa300092e6dh5izz7ig",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "number input",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type a number..." }
@@ -76,7 +76,7 @@
         },
         {
           "id": "cl10u6vbo000a2e6davz2hfw7",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
             "html": "<div>Do you like cookies?</div>",
@@ -88,18 +88,18 @@
         },
         {
           "id": "cl10u6zk0000b2e6dvabq067r",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl10u6zk1000c2e6d0d4ivgcl",
-              "stepId": "cl10u6zk0000b2e6dvabq067r",
+              "blockId": "cl10u6zk0000b2e6dvabq067r",
               "type": 0,
               "content": "Yes"
             },
             {
-              "stepId": "cl10u6zk0000b2e6dvabq067r",
+              "blockId": "cl10u6zk0000b2e6dvabq067r",
               "type": 0,
               "id": "cl10u70gi000d2e6d924ywjsb",
               "content": "No"
@@ -108,7 +108,7 @@
         },
         {
           "id": "cl10u759h000f2e6d0rhfwep4",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
             "html": "<div>Alright, cheers!</div>",
@@ -120,7 +120,7 @@
         },
         {
           "id": "cl10u7i6n000h2e6d537h38pg",
-          "blockId": "cl10u6jzd00072e6dvo0zwy0s",
+          "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "Webhook",
           "options": {
             "responseVariableMapping": [],
@@ -137,18 +137,18 @@
   "edges": [
     {
       "from": {
-        "blockId": "cl10u677d0000a01aa4g4aazg",
-        "stepId": "cl10u677d0001a01a0xfo3d11"
+        "groupId": "cl10u677d0000a01aa4g4aazg",
+        "blockId": "cl10u677d0001a01a0xfo3d11"
       },
-      "to": { "blockId": "cl10u68pw00032e6depze2oiy" },
+      "to": { "groupId": "cl10u68pw00032e6depze2oiy" },
       "id": "cl10u6cw500052e6dq284zju3"
     },
     {
       "from": {
-        "blockId": "cl10u68pw00032e6depze2oiy",
-        "stepId": "cl10u6ey300062e6dea9ikpko"
+        "groupId": "cl10u68pw00032e6depze2oiy",
+        "blockId": "cl10u6ey300062e6dea9ikpko"
       },
-      "to": { "blockId": "cl10u6jzd00072e6dvo0zwy0s" },
+      "to": { "groupId": "cl10u6jzd00072e6dvo0zwy0s" },
       "id": "cl10u7ax4000g2e6dkqoq18kp"
     }
   ],

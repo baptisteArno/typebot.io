@@ -39,10 +39,10 @@ export const SubmissionsContent = ({
 
   const { showToast } = useToast()
 
-  const blocksAndVariables = {
-    blocks: [
-      ...(publishedTypebot?.blocks ?? []),
-      ...(linkedTypebots?.flatMap((t) => t.blocks) ?? []),
+  const groupsAndVariables = {
+    groups: [
+      ...(publishedTypebot?.groups ?? []),
+      ...(linkedTypebots?.flatMap((t) => t.groups) ?? []),
     ].filter(isDefined),
     variables: [
       ...(publishedTypebot?.variables ?? []),
@@ -50,7 +50,7 @@ export const SubmissionsContent = ({
     ].filter(isDefined),
   }
 
-  const resultHeader = parseResultHeader(blocksAndVariables)
+  const resultHeader = parseResultHeader(groupsAndVariables)
 
   const { data, mutate, setSize, hasMore } = useResults({
     workspaceId,

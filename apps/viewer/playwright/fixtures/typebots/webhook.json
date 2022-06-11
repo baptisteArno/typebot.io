@@ -6,15 +6,15 @@
   "name": "My typebot",
   "publishedTypebotId": null,
   "folderId": null,
-  "blocks": [
+  "groups": [
     {
       "id": "cl26li8fj0000iez05x7razkg",
-      "steps": [
+      "blocks": [
         {
           "id": "cl26li8fj0001iez0bqfraw9h",
           "type": "start",
           "label": "Start",
-          "blockId": "cl26li8fj0000iez05x7razkg",
+          "groupId": "cl26li8fj0000iez05x7razkg",
           "outgoingEdgeId": "cl26liqj6000g2e6ed2cwkvse"
         }
       ],
@@ -23,7 +23,7 @@
     },
     {
       "id": "cl26lidjz000a2e6etf4v03hv",
-      "steps": [
+      "blocks": [
         {
           "id": "cl26lidk4000b2e6es2fos0nl",
           "type": "choice input",
@@ -31,17 +31,17 @@
             {
               "id": "cl26lidk5000c2e6e39wyc7wq",
               "type": 0,
-              "stepId": "cl26lidk4000b2e6es2fos0nl",
+              "blockId": "cl26lidk4000b2e6es2fos0nl",
               "content": "Send success webhook"
             }
           ],
-          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "groupId": "cl26lidjz000a2e6etf4v03hv",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         },
         {
           "id": "cl26lip76000e2e6ebmph843a",
           "type": "Webhook",
-          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "groupId": "cl26lidjz000a2e6etf4v03hv",
           "options": {
             "isCustomBody": false,
             "isAdvancedConfig": false,
@@ -52,13 +52,13 @@
         },
         {
           "id": "cl26m0pdz00042e6ebjdoclaa",
-          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "groupId": "cl26lidjz000a2e6etf4v03hv",
           "type": "choice input",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl26m0pdz00052e6ecmxwfz44",
-              "stepId": "cl26m0pdz00042e6ebjdoclaa",
+              "blockId": "cl26m0pdz00042e6ebjdoclaa",
               "type": 0,
               "content": "Send failed webhook"
             }
@@ -66,7 +66,7 @@
         },
         {
           "id": "cl26m0w9b00072e6eld1ei291",
-          "blockId": "cl26lidjz000a2e6etf4v03hv",
+          "groupId": "cl26lidjz000a2e6etf4v03hv",
           "type": "Webhook",
           "options": {
             "responseVariableMapping": [],
@@ -89,10 +89,10 @@
   "edges": [
     {
       "id": "cl26liqj6000g2e6ed2cwkvse",
-      "to": { "blockId": "cl26lidjz000a2e6etf4v03hv" },
+      "to": { "groupId": "cl26lidjz000a2e6etf4v03hv" },
       "from": {
-        "stepId": "cl26li8fj0001iez0bqfraw9h",
-        "blockId": "cl26li8fj0000iez05x7razkg"
+        "blockId": "cl26li8fj0001iez0bqfraw9h",
+        "groupId": "cl26li8fj0000iez05x7razkg"
       }
     }
   ],
