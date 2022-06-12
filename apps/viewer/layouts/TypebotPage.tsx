@@ -32,6 +32,9 @@ export const TypebotPage = ({
     isIE ? new Error('Internet explorer is not supported') : undefined
   )
   const [resultId, setResultId] = useState<string | undefined>()
+  const [variableUpdateQueue, setVariableUpdateQueue] = useState<
+    VariableWithValue[][]
+  >([])
 
   useEffect(() => {
     setShowTypebot(true)
@@ -71,12 +74,25 @@ export const TypebotPage = ({
     }
   }
 
+  useEffect(() => {
+    if (!resultId || variableUpdateQueue.length === 0) return
+    Promise.all(variableUpdateQueue.map(sendNewVariables(resultId))).then()
+    setVariableUpdateQueue([])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultId])
+
   const handleNewVariables = async (variables: VariableWithValue[]) => {
-    if (!resultId) return setError(new Error('Result was not created'))
     if (variables.length === 0) return
-    const { error } = await updateResult(resultId, { variables })
-    if (error) setError(error)
+    if (!resultId)
+      return setVariableUpdateQueue([...variableUpdateQueue, variables])
+    await sendNewVariables(resultId)(variables)
   }
+
+  const sendNewVariables =
+    (resultId: string) => async (variables: VariableWithValue[]) => {
+      const { error } = await updateResult(resultId, { variables })
+      if (error) setError(error)
+    }
 
   const handleNewAnswer = async (answer: Answer) => {
     if (!resultId) return setError(new Error('Result was not created'))
