@@ -257,7 +257,8 @@ These can also be added to the `viewer` environment
 | ---------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | DATABASE_URL           | postgresql://postgres:typebot@db:5432/typebot | The database URL                                                                                                                                                                  |
 | ENCRYPTION_SECRET      | SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6              | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. |
-| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://typebot.io`)                                                                                            |
+| NEXTAUTH_URL           | http://localhost:3000                         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                   |
+| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                        |
 
 <details><summary><h3>Emails (Notifications)</h3></summary>
 <p>
