@@ -1,4 +1,5 @@
-import { Text, Tooltip } from '@chakra-ui/react'
+import { HStack, Tag, Text, Tooltip } from '@chakra-ui/react'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import {
   BubbleBlockType,
   InputBlockType,
@@ -7,10 +8,13 @@ import {
   BlockType,
 } from 'models'
 import React from 'react'
+import { isFreePlan } from 'services/workspace'
 
 type Props = { type: BlockType }
 
 export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
+  const { workspace } = useWorkspace()
+
   switch (type) {
     case 'start':
       return <Text>Start</Text>
@@ -46,7 +50,14 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
     case InputBlockType.FILE:
       return (
         <Tooltip label="Upload Files">
-          <Text>File</Text>
+          <HStack>
+            <Text>File</Text>
+            {isFreePlan(workspace) && (
+              <Tag colorScheme="orange" size="sm">
+                Pro
+              </Tag>
+            )}
+          </HStack>
         </Tooltip>
       )
     case LogicBlockType.SET_VARIABLE:

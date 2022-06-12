@@ -225,6 +225,16 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               </Td>
             </Tr>
             <Tr>
+              <Td>File upload inputs</Td>
+              <Td />
+              <Td>
+                <CheckIcon />
+              </Td>
+              <Td>
+                <CheckIcon />
+              </Td>
+            </Tr>
+            <Tr>
               <Td>Custom domains</Td>
               <Td />
               <Td>Unlimited</Td>

@@ -94,7 +94,7 @@ const Pricing = () => {
                   'In-depth drop off analytics',
                   'Custom domains',
                   'Organize typebots in folders',
-                  'Unlimited uploads',
+                  'File upload input',
                 ],
               }}
               borderWidth="3px"

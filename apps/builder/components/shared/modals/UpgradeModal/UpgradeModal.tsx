@@ -25,11 +25,13 @@ import { TypebotLogo } from 'assets/logos'
 import { CheckIcon } from 'assets/icons'
 import { toTitleCase } from 'utils'
 import { useToast } from 'components/shared/hooks/useToast'
+import { Info } from 'components/shared/Info'
 
 export enum LimitReached {
-  BRAND = 'Remove branding',
-  CUSTOM_DOMAIN = 'Custom domain',
-  FOLDER = 'Create folders',
+  BRAND = 'remove branding',
+  CUSTOM_DOMAIN = 'add custom domain',
+  FOLDER = 'create folders',
+  FILE_INPUT = 'use file input blocks',
 }
 
 type UpgradeModalProps = {
@@ -42,6 +44,7 @@ type UpgradeModalProps = {
 export const UpgradeModal = ({
   onClose,
   isOpen,
+  type,
   plan = Plan.PRO,
 }: UpgradeModalProps) => {
   const { user } = useUser()
@@ -85,9 +88,9 @@ export const UpgradeModal = ({
       <ModalContent>
         <ModalBody as={Stack} pt="10">
           {plan === Plan.PRO ? (
-            <PersonalProPlanContent currency={currency} />
+            <PersonalProPlanContent currency={currency} type={type} />
           ) : (
-            <TeamPlanContent currency={currency} />
+            <TeamPlanContent currency={currency} type={type} />
           )}
         </ModalBody>
 
@@ -110,9 +113,16 @@ export const UpgradeModal = ({
   )
 }
 
-const PersonalProPlanContent = ({ currency }: { currency: 'eur' | 'usd' }) => {
+const PersonalProPlanContent = ({
+  currency,
+  type,
+}: {
+  currency: 'eur' | 'usd'
+  type?: LimitReached
+}) => {
   return (
     <Stack spacing="4">
+      <Info>You need to upgrade your plan in order to {type}</Info>
       <TypebotLogo boxSize="30px" />
       <Heading fontSize="2xl">
         Upgrade to <chakra.span color="orange.400">Personal Pro</chakra.span>{' '}
@@ -138,9 +148,16 @@ const PersonalProPlanContent = ({ currency }: { currency: 'eur' | 'usd' }) => {
   )
 }
 
-const TeamPlanContent = ({ currency }: { currency: 'eur' | 'usd' }) => {
+const TeamPlanContent = ({
+  currency,
+  type,
+}: {
+  currency: 'eur' | 'usd'
+  type?: LimitReached
+}) => {
   return (
     <Stack spacing="4">
+      <Info>You need to upgrade your plan in order to {type}</Info>
       <TypebotLogo boxSize="30px" />
       <Heading fontSize="2xl">
         Upgrade to <chakra.span color="purple.400">Team</chakra.span> plan

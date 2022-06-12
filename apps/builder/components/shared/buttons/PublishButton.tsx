@@ -9,30 +9,51 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
+import { InputBlockType } from 'models'
 import { useRouter } from 'next/router'
 import { timeSince } from 'services/utils'
+import { isFreePlan } from 'services/workspace'
 import { isNotDefined } from 'utils'
+import { UpgradeModal } from '../modals/UpgradeModal'
+import { LimitReached } from '../modals/UpgradeModal/UpgradeModal'
 
 export const PublishButton = () => {
+  const { workspace } = useWorkspace()
   const { push, query } = useRouter()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isPublishing,
     isPublished,
     publishTypebot,
     publishedTypebot,
     restorePublishedTypebot,
+    typebot,
   } = useTypebot()
 
+  const hasInputFile = typebot?.groups
+    .flatMap((g) => g.blocks)
+    .some((b) => b.type === InputBlockType.FILE)
+
   const handlePublishClick = () => {
+    if (isFreePlan(workspace) && hasInputFile) return onOpen()
     publishTypebot()
     if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
   }
 
   return (
     <HStack spacing="1px">
+      <UpgradeModal
+        plan={Plan.PRO}
+        isOpen={isOpen}
+        onClose={onClose}
+        type={LimitReached.FILE_INPUT}
+      />
       <Tooltip
         borderRadius="md"
         hasArrow
