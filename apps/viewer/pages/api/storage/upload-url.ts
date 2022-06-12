@@ -1,6 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
 import { badRequest, generatePresignedUrl, methodNotAllowed } from 'utils'
 
 const handler = async (
@@ -9,12 +8,6 @@ const handler = async (
 ): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   if (req.method === 'GET') {
-    const session = await getSession({ req })
-    if (!session) {
-      res.status(401)
-      return
-    }
-
     if (
       !process.env.S3_ENDPOINT ||
       !process.env.S3_ACCESS_KEY ||

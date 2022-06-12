@@ -32,7 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })),
       ]
     }, [])
-    console.log({ blocks: emptyWebhookBlocks })
     return res.send({ blocks: emptyWebhookBlocks })
   }
   return methodNotAllowed(res)

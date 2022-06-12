@@ -40,6 +40,7 @@ export enum InputBlockType {
   CHOICE = 'choice input',
   PAYMENT = 'payment input',
   RATING = 'rating input',
+  FILE = 'file input',
 }
 
 export enum LogicBlockType {

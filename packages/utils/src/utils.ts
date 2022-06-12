@@ -24,7 +24,7 @@ export const sendRequest = async <ResponseData>(
     | {
         url: string
         method: string
-        body?: Record<string, unknown>
+        body?: Record<string, unknown> | FormData
       }
     | string
 ): Promise<{ data?: ResponseData; error?: Error }> => {
@@ -190,4 +190,54 @@ export const generateId = (idDesiredLength: number): string => {
       )
     })
     .join('')
+}
+
+type UploadFileProps = {
+  files: {
+    file: File
+    path: string
+  }[]
+  onUploadProgress?: (percent: number) => void
+}
+type UrlList = string[]
+
+export const uploadFiles = async ({
+  files,
+  onUploadProgress,
+}: UploadFileProps): Promise<UrlList> => {
+  const requests = files.map(async ({ file, path }) => {
+    const { data } = await sendRequest<{
+      presignedUrl: { url: string; fields: any }
+    }>(
+      `/api/storage/upload-url?filePath=${encodeURIComponent(path)}&fileType=${
+        file.type
+      }`
+    )
+
+    if (!data?.presignedUrl) return null
+
+    const { url, fields } = data.presignedUrl
+    const formData = new FormData()
+    Object.entries({ ...fields, file }).forEach(([key, value]) => {
+      formData.append(key, value as string | Blob)
+    })
+    const upload = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!upload.ok) return
+
+    return `${url.split('?')[0]}/${path}`
+  })
+  const urls = []
+  let i = 0
+  for (const request of requests) {
+    i += 1
+    const url = await request
+    onUploadProgress && onUploadProgress((i / requests.length) * 100)
+    if (!url) continue
+    urls.push(url)
+  }
+  return urls
 }

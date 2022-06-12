@@ -29,6 +29,7 @@ import {
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
+import { FileInputSettings } from './bodies/FileInputSettings'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { PaymentSettings } from './bodies/PaymentSettings'
@@ -168,6 +169,14 @@ export const BlockSettings = ({
     case InputBlockType.RATING: {
       return (
         <RatingInputSettings
+          options={block.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputBlockType.FILE: {
+      return (
+        <FileInputSettings
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />

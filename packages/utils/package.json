@@ -10,6 +10,7 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.2",
+    "@types/aws-sdk": "^2.7.0",
     "rollup": "^2.72.1",
     "rollup-plugin-dts": "^4.2.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -17,12 +18,15 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
+    "aws-sdk": "^2.1152.0",
     "models": "*",
     "next": "^12.1.6"
   },
   "peerDependencies": {
-    "next": "^12.1.6",
-    "models": "*"
+    "aws-sdk": "^2.1152.0",
+    "@types/aws-sdk": "^2.7.0",
+    "models": "*",
+    "next": "^12.1.6"
   },
   "scripts": {
     "build": "yarn rollup -c",

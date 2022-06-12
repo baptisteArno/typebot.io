@@ -1,9 +1,10 @@
 import { DateInputOptions } from 'models'
 import React, { useState } from 'react'
+import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
 
 type DateInputProps = {
-  onSubmit: (inputValue: `${string} to ${string}` | string) => void
+  onSubmit: (inputValue: InputSubmitContent) => void
   options?: DateInputOptions
 }
 
@@ -23,9 +24,11 @@ export const DateForm = ({
           onSubmit={(e) => {
             if (inputValues.from === '' && inputValues.to === '') return
             e.preventDefault()
-            onSubmit(
-              `${inputValues.from}${isRange ? ` to ${inputValues.to}` : ''}`
-            )
+            onSubmit({
+              value: `${inputValues.from}${
+                isRange ? ` to ${inputValues.to}` : ''
+              }`,
+            })
           }}
         >
           <div className="flex flex-col">

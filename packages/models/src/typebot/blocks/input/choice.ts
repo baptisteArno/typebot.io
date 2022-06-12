@@ -20,18 +20,18 @@ export const defaultChoiceInputOptions: ChoiceInputOptions = {
   isMultipleChoice: false,
 }
 
-export const choiceInputSchema = blockBaseSchema.and(
-  z.object({
-    type: z.enum([InputBlockType.CHOICE]),
-    items: z.array(z.any()),
-    options: choiceInputOptionsSchema,
-  })
-)
-
 export const buttonItemSchema = itemBaseSchema.and(
   z.object({
     type: z.literal(ItemType.BUTTON),
     content: z.string().optional(),
+  })
+)
+
+export const choiceInputSchema = blockBaseSchema.and(
+  z.object({
+    type: z.enum([InputBlockType.CHOICE]),
+    items: z.array(buttonItemSchema),
+    options: choiceInputOptionsSchema,
   })
 )
 

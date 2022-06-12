@@ -218,3 +218,26 @@ textarea {
 .rating-icon-container:active svg {
   filter: brightness(0.75);
 }
+
+.upload-progress-bar {
+  background-color: var(--typebot-button-bg-color);
+}
+
+.total-files-indicator {
+  background-color: var(--typebot-button-bg-color);
+  color: var(--typebot-button-color);
+  font-size: 10px;
+}
+
+.typebot-upload-input {
+  transition: border-color 100ms ease-out;
+}
+
+.typebot-upload-input.dragging-over {
+  border-color: var(--typebot-button-bg-color);
+}
+
+.secondary-button {
+  background-color: var(--typebot-host-bubble-bg-color);
+  color: var(--typebot-host-bubble-color);
+}

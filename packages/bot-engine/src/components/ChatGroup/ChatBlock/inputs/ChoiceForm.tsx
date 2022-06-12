@@ -1,11 +1,12 @@
 import { useAnswers } from 'contexts/AnswersContext'
 import { ChoiceInputBlock } from 'models'
 import React, { useState } from 'react'
+import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
 
 type ChoiceFormProps = {
   block: ChoiceInputBlock
-  onSubmit: (value: string) => void
+  onSubmit: (value: InputSubmitContent) => void
 }
 
 export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
@@ -15,7 +16,7 @@ export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
   const handleClick = (itemIndex: number) => (e: React.MouseEvent) => {
     e.preventDefault()
     if (block.options?.isMultipleChoice) toggleSelectedItemIndex(itemIndex)
-    else onSubmit(block.items[itemIndex].content ?? '')
+    else onSubmit({ value: block.items[itemIndex].content ?? '' })
   }
 
   const toggleSelectedItemIndex = (itemIndex: number) => {
@@ -29,11 +30,11 @@ export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
   }
 
   const handleSubmit = () =>
-    onSubmit(
-      selectedIndices
+    onSubmit({
+      value: selectedIndices
         .map((itemIndex) => block.items[itemIndex].content)
-        .join(', ')
-    )
+        .join(', '),
+    })
 
   const isUniqueFirstButton =
     resultValues &&

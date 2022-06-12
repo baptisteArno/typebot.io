@@ -19,6 +19,7 @@ import {
   WithVariableContent,
 } from './contents'
 import { ConfigureContent } from './contents/ConfigureContent'
+import { FileInputContent } from './contents/FileInputContent'
 import { ImageBubbleContent } from './contents/ImageBubbleContent'
 import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from './contents/PlaceholderContent'
@@ -79,6 +80,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case InputBlockType.RATING: {
       return <RatingInputContent block={block} />
+    }
+    case InputBlockType.FILE: {
+      return <FileInputContent options={block.options} />
     }
     case LogicBlockType.SET_VARIABLE: {
       return <SetVariableContent block={block} />

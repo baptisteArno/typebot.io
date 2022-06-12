@@ -7,6 +7,7 @@ import {
   UrlInputBlock,
 } from 'models'
 import React, { FormEvent, useState } from 'react'
+import { InputSubmitContent } from '../../InputChatBlock'
 import { SendButton } from '../SendButton'
 import { TextInput } from './TextInputContent'
 
@@ -17,7 +18,7 @@ type TextFormProps = {
     | NumberInputBlock
     | UrlInputBlock
     | PhoneNumberInputBlock
-  onSubmit: (value: string) => void
+  onSubmit: (value: InputSubmitContent) => void
   defaultValue?: string
   hasGuestAvatar: boolean
 }
@@ -44,7 +45,7 @@ export const TextForm = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (inputValue === '') return
-    onSubmit(inputValue)
+    onSubmit({ value: inputValue })
   }
 
   return (

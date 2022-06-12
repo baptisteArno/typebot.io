@@ -20,6 +20,7 @@ import {
   SendEmailIcon,
   StarIcon,
   TextIcon,
+  UploadIcon,
   WebhookIcon,
 } from 'assets/icons'
 import {
@@ -68,6 +69,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <CreditCardIcon color="orange.500" {...props} />
     case InputBlockType.RATING:
       return <StarIcon color="orange.500" {...props} />
+    case InputBlockType.FILE:
+      return <UploadIcon color="orange.500" {...props} />
     case LogicBlockType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicBlockType.CONDITION:

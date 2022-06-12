@@ -11,6 +11,9 @@ import { parseVariables } from '../../../services/variable'
 import { isInputValid } from 'services/inputs'
 import { PaymentForm } from './inputs/PaymentForm'
 import { RatingForm } from './inputs/RatingForm'
+import { FileUploadForm } from './inputs/FileUploadForm'
+
+export type InputSubmitContent = { label?: string; value: string }
 
 export const InputChatBlock = ({
   block,
@@ -21,7 +24,10 @@ export const InputChatBlock = ({
   block: InputBlock
   hasGuestAvatar: boolean
   hasAvatar: boolean
-  onTransitionEnd: (answerContent?: string, isRetry?: boolean) => void
+  onTransitionEnd: (
+    answerContent?: InputSubmitContent,
+    isRetry?: boolean
+  ) => void
 }) => {
   const { typebot } = useTypebot()
   const { addAnswer } = useAnswers()
@@ -34,17 +40,17 @@ export const InputChatBlock = ({
       ? variableId && typebot.variables.find(byId(variableId))?.value
       : undefined
 
-  const handleSubmit = async (content: string) => {
-    setAnswer(content)
-    const isRetry = !isInputValid(content, block.type)
+  const handleSubmit = async ({ label, value }: InputSubmitContent) => {
+    setAnswer(label ?? value)
+    const isRetry = !isInputValid(value, block.type)
     if (!isRetry && addAnswer)
       await addAnswer({
         blockId: block.id,
         groupId: block.groupId,
-        content,
+        content: value,
         variableId: variableId ?? null,
       })
-    if (!isEditting) onTransitionEnd(content, isRetry)
+    if (!isEditting) onTransitionEnd({ label, value }, isRetry)
     setIsEditting(false)
   }
 
@@ -87,7 +93,7 @@ const Input = ({
   hasGuestAvatar,
 }: {
   block: InputBlock
-  onSubmit: (value: string) => void
+  onSubmit: (value: InputSubmitContent) => void
   defaultValue?: string
   hasGuestAvatar: boolean
 }) => {
@@ -113,10 +119,14 @@ const Input = ({
       return (
         <PaymentForm
           options={block.options}
-          onSuccess={() => onSubmit(block.options.labels.success ?? 'Success')}
+          onSuccess={() =>
+            onSubmit({ value: block.options.labels.success ?? 'Success' })
+          }
         />
       )
     case InputBlockType.RATING:
       return <RatingForm block={block} onSubmit={onSubmit} />
+    case InputBlockType.FILE:
+      return <FileUploadForm block={block} onSubmit={onSubmit} />
   }
 }

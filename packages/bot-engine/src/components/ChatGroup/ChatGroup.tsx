@@ -23,10 +23,10 @@ import {
   PublicTypebot,
   Block,
 } from 'models'
-import { HostBubble } from './ChatBlock/bubbles/HostBubble'
-import { getLastChatBlockType } from '../../services/chat'
 import { useChat } from 'contexts/ChatContext'
-import { InputChatBlock } from './ChatBlock'
+import { getLastChatBlockType } from 'services/chat'
+import { HostBubble } from './ChatBlock/bubbles/HostBubble'
+import { InputChatBlock, InputSubmitContent } from './ChatBlock/InputChatBlock'
 
 type ChatGroupProps = {
   blocks: Block[]
@@ -162,7 +162,10 @@ export const ChatGroup = ({
       onGroupEnd({ edgeId: currentBlock.outgoingEdgeId })
   }
 
-  const displayNextBlock = (answerContent?: string, isRetry?: boolean) => {
+  const displayNextBlock = (
+    answerContent?: InputSubmitContent,
+    isRetry?: boolean
+  ) => {
     scroll()
     const currentBlock = [...processedBlocks].pop()
     if (currentBlock) {
@@ -175,13 +178,16 @@ export const ChatGroup = ({
         currentBlock.options?.variableId &&
         answerContent
       ) {
-        updateVariableValue(currentBlock.options.variableId, answerContent)
+        updateVariableValue(
+          currentBlock.options.variableId,
+          answerContent.value
+        )
       }
       const isSingleChoiceBlock =
         isChoiceInput(currentBlock) && !currentBlock.options.isMultipleChoice
       if (isSingleChoiceBlock) {
         const nextEdgeId = currentBlock.items.find(
-          (i) => i.content === answerContent
+          (i) => i.content === answerContent?.value
         )?.outgoingEdgeId
         if (nextEdgeId) return onGroupEnd({ edgeId: nextEdgeId })
       }
@@ -224,7 +230,10 @@ type Props = {
   hostAvatar: { isEnabled: boolean; src?: string }
   hasGuestAvatar: boolean
   keepShowingHostAvatar: boolean
-  onDisplayNextBlock: (answerContent?: string, isRetry?: boolean) => void
+  onDisplayNextBlock: (
+    answerContent?: InputSubmitContent,
+    isRetry?: boolean
+  ) => void
 }
 const ChatChunks = ({
   displayChunk: { bubbles, input },

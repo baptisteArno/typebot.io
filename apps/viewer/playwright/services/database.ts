@@ -8,7 +8,7 @@ import {
   Typebot,
   Webhook,
 } from 'models'
-import { PrismaClient, WorkspaceRole } from 'db'
+import { Plan, PrismaClient, WorkspaceRole } from 'db'
 import { readFileSync } from 'fs'
 import { encrypt } from 'utils'
 
@@ -46,6 +46,7 @@ export const createUser = () =>
             create: {
               id: proWorkspaceId,
               name: 'Pro workspace',
+              plan: Plan.PRO,
             },
           },
         },

@@ -39,6 +39,7 @@ import {
   ConditionBlock,
   defaultPaymentInputOptions,
   defaultRatingInputOptions,
+  defaultFileInputOptions,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -329,6 +330,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultPaymentInputOptions
     case InputBlockType.RATING:
       return defaultRatingInputOptions
+    case InputBlockType.FILE:
+      return defaultFileInputOptions
     case LogicBlockType.SET_VARIABLE:
       return defaultSetVariablesOptions
     case LogicBlockType.REDIRECT:

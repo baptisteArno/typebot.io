@@ -1,11 +1,17 @@
-import { ResultWithAnswers, VariableWithValue, ResultHeaderCell } from 'models'
+import {
+  ResultWithAnswers,
+  VariableWithValue,
+  ResultHeaderCell,
+  InputBlockType,
+} from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
 import { isDefined, isEmpty, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
-import { HStack, Text } from '@chakra-ui/react'
-import { CodeIcon, CalendarIcon } from 'assets/icons'
+import { HStack, Text, Wrap, WrapItem } from '@chakra-ui/react'
+import { CodeIcon, CalendarIcon, FileIcon } from 'assets/icons'
+import { Link } from '@chakra-ui/react'
 import { BlockIcon } from 'components/editor/BlocksSideBar/BlockIcon'
 
 const paginationLimit = 50
@@ -147,28 +153,47 @@ const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
 
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
-  header: ResultHeaderCell[]
-): { [key: string]: string }[] =>
+  headerCells: ResultHeaderCell[]
+): { [key: string]: JSX.Element | string }[] =>
   (results ?? []).map((result) => ({
     'Submitted at': parseDateToReadable(result.createdAt),
     ...[...result.answers, ...result.variables].reduce<{
-      [key: string]: string
+      [key: string]: JSX.Element | string
     }>((o, answerOrVariable) => {
       if ('groupId' in answerOrVariable) {
         const answer = answerOrVariable as Answer
-        const key = answer.variableId
-          ? header.find((h) => h.variableId === answer.variableId)?.label
-          : header.find((h) => h.blockId === answer.blockId)?.label
-        if (!key) return o
+        const header = answer.variableId
+          ? headerCells.find((h) => h.variableId === answer.variableId)
+          : headerCells.find((h) => h.blockId === answer.blockId)
+        if (!header || !header.blockId || !header.blockType) return o
         return {
           ...o,
-          [key]: answer.content,
+          [header.label]: parseContent(answer.content, header.blockType),
         }
       }
       const variable = answerOrVariable as VariableWithValue
       if (isDefined(o[variable.id])) return o
-      const key = header.find((h) => h.variableId === variable.id)?.label
+      const key = headerCells.find((h) => h.variableId === variable.id)?.label
       if (!key) return o
       return { ...o, [key]: variable.value }
     }, {}),
   }))
+
+const parseContent = (str: string, blockType: InputBlockType) =>
+  blockType === InputBlockType.FILE ? parseFileContent(str) : str
+
+const parseFileContent = (str: string) => {
+  const fileNames = str.split(', ')
+  return (
+    <Wrap maxW="300px">
+      {fileNames.map((name) => (
+        <HStack as={WrapItem} key={name}>
+          <FileIcon />
+          <Link href={name} isExternal color="blue.500">
+            {name.split('/').pop()}
+          </Link>
+        </HStack>
+      ))}
+    </Wrap>
+  )
+}

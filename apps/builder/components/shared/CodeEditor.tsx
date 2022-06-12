@@ -19,12 +19,14 @@ type Props = {
   isReadOnly?: boolean
   debounceTimeout?: number
   withVariableButton?: boolean
+  height?: string
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
   value,
   lang,
   onChange,
+  height = '250px',
   withVariableButton = true,
   isReadOnly = false,
   debounceTimeout = 1000,
@@ -92,7 +94,7 @@ export const CodeEditor = ({
     extensions.push(
       EditorView.theme({
         '&': { maxHeight: '500px' },
-        '.cm-gutter,.cm-content': { minHeight: isReadOnly ? '0' : '250px' },
+        '.cm-gutter,.cm-content': { minHeight: isReadOnly ? '0' : height },
         '.cm-scroller': { overflow: 'auto' },
       })
     )

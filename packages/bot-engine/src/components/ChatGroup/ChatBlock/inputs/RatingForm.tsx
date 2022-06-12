@@ -1,11 +1,12 @@
 import { RatingInputOptions, RatingInputBlock } from 'models'
 import React, { FormEvent, useRef, useState } from 'react'
 import { isDefined, isEmpty, isNotDefined } from 'utils'
+import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
 
 type Props = {
   block: RatingInputBlock
-  onSubmit: (value: string) => void
+  onSubmit: (value: InputSubmitContent) => void
 }
 
 export const RatingForm = ({ block, onSubmit }: Props) => {
@@ -15,7 +16,7 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (isNotDefined(rating)) return
-    onSubmit(rating.toString())
+    onSubmit({ value: rating.toString() })
   }
 
   const handleClick = (rating: number) => setRating(rating)

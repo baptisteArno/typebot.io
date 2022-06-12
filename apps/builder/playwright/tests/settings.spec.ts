@@ -36,8 +36,6 @@ test.describe.parallel('Settings page', () => {
       ).toBeVisible()
       await page.click('text=Prefill input')
       await page.click('text=Theme')
-      await page.waitForTimeout(1000)
-      await page.click('text=Settings')
       await expect(
         typebotViewer(page).locator(
           `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
@@ -77,8 +75,12 @@ test.describe.parallel('Settings page', () => {
         }
       )
       await page.goto(`/typebots/${typebotId}/settings`)
+      await expect(
+        typebotViewer(page).locator(
+          `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+        )
+      ).toHaveValue('Baptiste')
       await page.click('button:has-text("Metadata")')
-      await page.waitForTimeout(1000)
 
       // Fav icon
       const favIconImg = page.locator('img >> nth=0')

@@ -43,7 +43,6 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
   const fetchTemplate = async (template: TemplateProps) => {
     setSelectedTemplate(template)
     const { data, error } = await sendRequest(`/templates/${template.fileName}`)
-    console.log(data, error)
     if (error)
       return showToast({ title: error.name, description: error.message })
     setTypebot(data as Typebot)

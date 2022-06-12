@@ -11,6 +11,7 @@ import {
 } from './phone'
 import { ratingInputOptionsSchema, ratingInputBlockSchema } from './rating'
 import { textInputOptionsSchema, textInputSchema } from './text'
+import { fileInputOptionsSchema, fileInputStepSchema } from './file'
 import { urlInputOptionsSchema, urlInputSchema } from './url'
 
 export type OptionBase = z.infer<typeof optionBaseSchema>
@@ -24,6 +25,7 @@ export const inputBlockOptionsSchema = textInputOptionsSchema
   .or(dateInputOptionsSchema)
   .or(paymentInputOptionsSchema)
   .or(ratingInputOptionsSchema)
+  .or(fileInputOptionsSchema)
 
 export const inputBlockSchema = textInputSchema
   .or(numberInputSchema)
@@ -34,6 +36,7 @@ export const inputBlockSchema = textInputSchema
   .or(choiceInputSchema)
   .or(paymentInputSchema)
   .or(ratingInputBlockSchema)
+  .or(fileInputStepSchema)
 
 export type InputBlock = z.infer<typeof inputBlockSchema>
 export type InputBlockOptions = z.infer<typeof inputBlockOptionsSchema>

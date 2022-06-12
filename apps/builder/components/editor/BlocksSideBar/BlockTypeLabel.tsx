@@ -43,6 +43,12 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
       return <Text>Payment</Text>
     case InputBlockType.RATING:
       return <Text>Rating</Text>
+    case InputBlockType.FILE:
+      return (
+        <Tooltip label="Upload Files">
+          <Text>File</Text>
+        </Tooltip>
+      )
     case LogicBlockType.SET_VARIABLE:
       return <Text>Set variable</Text>
     case LogicBlockType.CONDITION:

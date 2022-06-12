@@ -1,6 +1,7 @@
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import React, { ChangeEvent, useState } from 'react'
-import { compressFile, uploadFile } from 'services/utils'
+import { compressFile } from 'services/utils'
+import { uploadFiles } from 'utils'
 
 type UploadButtonProps = {
   filePath: string
@@ -20,11 +21,15 @@ export const UploadButton = ({
     if (!e.target?.files) return
     setIsUploading(true)
     const file = e.target.files[0]
-    const { url } = await uploadFile(
-      await compressFile(file),
-      filePath + (includeFileName ? `/${file.name}` : '')
-    )
-    if (url) onFileUploaded(url)
+    const urls = await uploadFiles({
+      files: [
+        {
+          file: await compressFile(file),
+          path: filePath + (includeFileName ? `/${file.name}` : ''),
+        },
+      ],
+    })
+    if (urls.length) onFileUploaded(urls[0])
     setIsUploading(false)
   }
 

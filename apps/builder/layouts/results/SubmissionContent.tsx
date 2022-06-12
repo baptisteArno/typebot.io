@@ -132,7 +132,7 @@ export const SubmissionsContent = ({
     return convertResultsToTableData(results, resultHeader)
   }
 
-  const tableData: { [key: string]: string }[] = useMemo(
+  const tableData: { [key: string]: string | JSX.Element }[] = useMemo(
     () =>
       publishedTypebot ? convertResultsToTableData(results, resultHeader) : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps

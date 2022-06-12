@@ -108,6 +108,6 @@ test.describe('Collaborator', () => {
     await page.click('text=Group #1', { force: true })
     await expect(page.locator('input[value="Group #1"]')).toBeHidden()
     await page.goto(`/typebots/${typebotId}/results`)
-    await expect(page.locator('text="content199"')).toBeVisible()
+    await expect(page.locator('text="See logs" >> nth=10')).toBeVisible()
   })
 })
