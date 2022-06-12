@@ -4,8 +4,15 @@ import { ChatGroup } from './ChatGroup'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
-import { Group, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
-import { byId, isDefined, isNotDefined } from 'utils'
+import {
+  Group,
+  Edge,
+  PublicTypebot,
+  Theme,
+  VariableWithValue,
+  Block,
+} from 'models'
+import { byId, isDefined, isInputBlock, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
 import { ChatContext } from 'contexts/ChatContext'
@@ -137,16 +144,26 @@ export const ConversationContainer = ({
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
     >
       <ChatContext onScroll={autoScrollToBottom}>
-        {displayedGroups.map((displayedGroup, idx) => (
-          <ChatGroup
-            key={displayedGroup.group.id + idx}
-            blocks={displayedGroup.group.blocks}
-            startBlockIndex={displayedGroup.startBlockIndex}
-            onGroupEnd={displayNextGroup}
-            groupTitle={displayedGroup.group.title}
-            keepShowingHostAvatar={idx === displayedGroups.length - 1}
-          />
-        ))}
+        {displayedGroups.map((displayedGroup, idx) => {
+          const groupAfter = displayedGroups[idx + 1]
+          const groupAfterStartsWithInput =
+            groupAfter &&
+            isInputBlock(
+              groupAfter.group.blocks[groupAfter.startBlockIndex] as Block
+            )
+          return (
+            <ChatGroup
+              key={displayedGroup.group.id + idx}
+              blocks={displayedGroup.group.blocks}
+              startBlockIndex={displayedGroup.startBlockIndex}
+              onGroupEnd={displayNextGroup}
+              groupTitle={displayedGroup.group.title}
+              keepShowingHostAvatar={
+                idx === displayedGroups.length - 1 || groupAfterStartsWithInput
+              }
+            />
+          )
+        })}
       </ChatContext>
 
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
