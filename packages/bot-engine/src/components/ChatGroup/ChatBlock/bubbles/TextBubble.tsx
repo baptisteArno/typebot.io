@@ -19,7 +19,7 @@ const defaultTypingEmulation = {
 }
 
 export const TextBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot, isLoading } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
@@ -28,6 +28,7 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
   )
 
   useEffect(() => {
+    if (!isTyping || isLoading) return
     const typingTimeout = computeTypingTimeout(
       block.content.plainText,
       typebot.settings?.typingEmulation ?? defaultTypingEmulation
@@ -36,7 +37,7 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
       onTypingEnd()
     }, typingTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isLoading])
 
   const onTypingEnd = () => {
     setIsTyping(false)

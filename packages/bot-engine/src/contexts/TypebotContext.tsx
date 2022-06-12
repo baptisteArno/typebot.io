@@ -25,6 +25,7 @@ const typebotContext = createContext<{
   apiHost: string
   isPreview: boolean
   linkedBotQueue: LinkedTypebotQueue
+  isLoading: boolean
   setCurrentTypebotId: (id: string) => void
   updateVariableValue: (variableId: string, value: string) => void
   createEdge: (edge: Edge) => void
@@ -44,11 +45,13 @@ export const TypebotContext = ({
   typebot,
   apiHost,
   isPreview,
+  isLoading,
   onNewLog,
 }: {
   children: ReactNode
   typebot: PublicTypebot
   apiHost: string
+  isLoading: boolean
   isPreview: boolean
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }) => {
@@ -123,6 +126,7 @@ export const TypebotContext = ({
         injectLinkedTypebot,
         onNewLog,
         linkedBotQueue,
+        isLoading,
         pushEdgeIdInLinkedTypebotQueue,
         popEdgeIdFromLinkedTypebotQueue,
         currentTypebotId,

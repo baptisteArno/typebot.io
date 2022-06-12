@@ -6,6 +6,7 @@ export const LiteBadge = () => {
   const liteBadge = useRef<HTMLAnchorElement | null>(null)
 
   useEffect(() => {
+    if (!document) return
     const container = document.querySelector(
       '[data-testid="container"]'
     ) as HTMLDivElement

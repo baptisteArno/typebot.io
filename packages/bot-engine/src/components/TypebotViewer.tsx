@@ -31,6 +31,7 @@ export type TypebotViewerProps = {
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
   startGroupId?: string
+  isLoading?: boolean
   onNewGroupVisible?: (edge: Edge) => void
   onNewAnswer?: (answer: Answer) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -42,6 +43,7 @@ export const TypebotViewer = ({
   typebot,
   apiHost = process.env.NEXT_PUBLIC_VIEWER_URL?.split(',')[0],
   isPreview = false,
+  isLoading = false,
   style,
   resultId,
   startGroupId,
@@ -98,6 +100,7 @@ export const TypebotViewer = ({
         apiHost={apiHost}
         isPreview={isPreview}
         onNewLog={handleNewLog}
+        isLoading={isLoading}
       >
         <AnswersContext
           resultId={resultId}

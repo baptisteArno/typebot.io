@@ -19,14 +19,15 @@ export const showAnimationDuration = 400
 export const mediaLoadingFallbackTimeout = 5000
 
 export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot, isLoading } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
   useEffect(() => {
+    if (!isTyping || isLoading) return
     showContentAfterMediaLoad()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isLoading])
 
   const showContentAfterMediaLoad = () => {
     setTimeout(() => {

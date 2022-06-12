@@ -33,6 +33,7 @@ export const AvatarSideContainer = forwardRef(
     }))
 
     useEffect(() => {
+      if (!document) return
       setShow(true)
       const resizeObserver = new ResizeObserver(refreshTopOffset)
       resizeObserver.observe(document.body)

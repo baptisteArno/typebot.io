@@ -5,7 +5,7 @@ import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
 import { Group, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
-import { byId, isNotDefined } from 'utils'
+import { byId, isDefined, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
 import { ChatContext } from 'contexts/ChatContext'
@@ -83,8 +83,13 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
-    const prefilledVariables = injectPredefinedVariables(predefinedVariables)
-    updateVariables(prefilledVariables)
+    if (
+      isDefined(predefinedVariables) &&
+      Object.keys(predefinedVariables).length > 0
+    ) {
+      const prefilledVariables = injectPredefinedVariables(predefinedVariables)
+      updateVariables(prefilledVariables)
+    }
     displayNextGroup({
       edgeId: startGroupId
         ? undefined
@@ -92,13 +97,13 @@ export const ConversationContainer = ({
       groupId: startGroupId,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [predefinedVariables])
 
-  const injectPredefinedVariables = (predefinedVariables?: {
+  const injectPredefinedVariables = (predefinedVariables: {
     [key: string]: string | undefined
   }) => {
     const prefilledVariables: VariableWithValue[] = []
-    Object.keys(predefinedVariables ?? {}).forEach((key) => {
+    Object.keys(predefinedVariables).forEach((key) => {
       const matchingVariable = typebot.variables.find(
         (v) => v.name.toLowerCase() === key.toLowerCase()
       )
@@ -112,6 +117,7 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
+    if (!frameDocument) return
     setCssVariablesValue(theme, frameDocument.body.style)
   }, [theme, frameDocument])
 

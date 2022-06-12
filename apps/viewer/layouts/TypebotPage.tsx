@@ -3,7 +3,7 @@ import { Answer, PublicTypebot, VariableWithValue } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
-import { isDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { SEO } from '../components/Seo'
 import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
@@ -34,6 +34,7 @@ export const TypebotPage = ({
   const [resultId, setResultId] = useState<string | undefined>()
 
   useEffect(() => {
+    setShowTypebot(true)
     const urlParams = new URLSearchParams(location.search)
     clearQueryParams()
     const predefinedVariables: { [key: string]: string } = {}
@@ -68,7 +69,6 @@ export const TypebotPage = ({
           setResultInSession(result.id)
       }
     }
-    setShowTypebot(true)
   }
 
   const handleNewVariables = async (variables: VariableWithValue[]) => {
@@ -108,6 +108,7 @@ export const TypebotPage = ({
           onNewAnswer={handleNewAnswer}
           onCompleted={handleCompleted}
           onVariablesUpdated={handleNewVariables}
+          isLoading={isNotDefined(resultId)}
         />
       )}
     </div>

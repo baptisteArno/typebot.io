@@ -12,7 +12,7 @@ type Props = {
 export const showAnimationDuration = 400
 
 export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot, isLoading } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
@@ -22,9 +22,10 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
   )
 
   useEffect(() => {
+    if (!isTyping || isLoading) return
     showContentAfterMediaLoad()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isLoading])
 
   const showContentAfterMediaLoad = () => {
     setTimeout(() => {
