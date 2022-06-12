@@ -3,6 +3,8 @@ import { IntegrationBlockType, blockBaseSchema } from '../shared'
 
 export const sendEmailOptionsSchema = z.object({
   credentialsId: z.string(),
+  isCustomBody: z.boolean().optional(),
+  isBodyCode: z.boolean().optional(),
   recipients: z.array(z.string()),
   subject: z.string().optional(),
   body: z.string().optional(),

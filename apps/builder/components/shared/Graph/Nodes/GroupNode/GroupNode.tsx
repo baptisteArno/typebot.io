@@ -66,7 +66,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.groupId === group.id &&
-        isNotDefined(connectingIds.target?.groupId)
+        isNotDefined(connectingIds.target?.blockId)
     )
   }, [connectingIds, group.id])
 

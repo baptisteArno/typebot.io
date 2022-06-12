@@ -275,7 +275,15 @@ const executeWebhook = async (
 
 const sendEmail = async (
   block: SendEmailBlock,
-  { variables, apiHost, isPreview, onNewLog, resultId }: IntegrationContext
+  {
+    variables,
+    apiHost,
+    isPreview,
+    onNewLog,
+    resultId,
+    typebotId,
+    resultValues,
+  }: IntegrationContext
 ) => {
   if (isPreview) {
     onNewLog({
@@ -288,7 +296,7 @@ const sendEmail = async (
   const { options } = block
   const replyTo = parseVariables(variables)(options.replyTo)
   const { error } = await sendRequest({
-    url: `${apiHost}/api/integrations/email?resultId=${resultId}`,
+    url: `${apiHost}/api/typebots/${typebotId}/integrations/email?resultId=${resultId}`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,
@@ -298,6 +306,9 @@ const sendEmail = async (
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
       replyTo: replyTo !== '' ? replyTo : undefined,
+      isCustomBody: options.isCustomBody,
+      isBodyCode: options.isBodyCode,
+      resultValues,
     },
   })
   onNewLog(

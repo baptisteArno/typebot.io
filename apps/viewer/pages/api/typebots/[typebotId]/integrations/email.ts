@@ -1,12 +1,30 @@
 import prisma from 'libs/prisma'
-import { SendEmailOptions, SmtpCredentialsData } from 'models'
+import {
+  ResultValues,
+  SendEmailOptions,
+  SmtpCredentialsData,
+  Typebot,
+} from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { decrypt, initMiddleware, methodNotAllowed } from 'utils'
+import {
+  decrypt,
+  initMiddleware,
+  isNotDefined,
+  methodNotAllowed,
+  omit,
+  parseAnswers,
+} from 'utils'
 
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'
-import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
+import {
+  getLinkedTypebots,
+  saveErrorLog,
+  saveSuccessLog,
+} from 'services/api/utils'
+import Mail from 'nodemailer/lib/mailer'
+import { newLeadEmailContent } from 'assets/newLeadEmailContent'
 
 const cors = initMiddleware(Cors())
 
@@ -21,17 +39,29 @@ const defaultTransportOptions = {
 }
 
 const defaultFrom = {
-  name: process.env.NEXT_PUBLIC_SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
-  email: process.env.NEXT_PUBLIC_SMTP_FROM?.match(/\<(.*)\>/)?.pop(),
+  name: process.env.SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
+  email: process.env.SMTP_FROM?.match(/\<(.*)\>/)?.pop(),
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
+    const typebotId = req.query.typebotId as string
     const resultId = req.query.resultId as string | undefined
-    const { credentialsId, recipients, body, subject, cc, bcc, replyTo } = (
+    const {
+      credentialsId,
+      recipients,
+      body,
+      subject,
+      cc,
+      bcc,
+      replyTo,
+      isBodyCode,
+      isCustomBody,
+      resultValues,
+    } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as SendEmailOptions
+    ) as SendEmailOptions & { resultValues: ResultValues }
 
     const { host, port, isTlsEnabled, username, password, from } =
       (await getEmailInfo(credentialsId)) ?? {}
@@ -47,15 +77,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         pass: password,
       },
     }
+
+    const emailBody = await getEmailBody({
+      body,
+      isCustomBody,
+      isBodyCode,
+      typebotId,
+      resultValues,
+    })
+    if (!emailBody) {
+      await saveErrorLog(resultId, 'Email not sent', {
+        transportConfig,
+        recipients,
+        subject,
+        cc,
+        bcc,
+        replyTo,
+        emailBody,
+      })
+      return res.status(404).send({ message: "Couldn't find email body" })
+    }
     const transporter = createTransport(transportConfig)
-    const email = {
+    const email: Mail.Options = {
       from: `"${from.name}" <${from.email}>`,
       cc,
       bcc,
       to: recipients,
       replyTo,
       subject,
-      text: body,
+      ...emailBody,
     }
     try {
       const info = await transporter.sendMail(email)
@@ -95,6 +145,41 @@ const getEmailInfo = async (
   })
   if (!credentials) return
   return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+}
+
+const getEmailBody = async ({
+  body,
+  isCustomBody,
+  isBodyCode,
+  typebotId,
+  resultValues,
+}: { typebotId: string; resultValues: ResultValues } & Pick<
+  SendEmailOptions,
+  'isCustomBody' | 'isBodyCode' | 'body'
+>): Promise<{ html?: string; text?: string } | undefined> => {
+  if (isCustomBody || isNotDefined(isCustomBody))
+    return {
+      html: isBodyCode ? body : undefined,
+      text: !isBodyCode ? body : undefined,
+    }
+  const typebot = (await prisma.typebot.findUnique({
+    where: { id: typebotId },
+  })) as unknown as Typebot
+  if (!typebot) return
+  const linkedTypebots = await getLinkedTypebots(typebot)
+  const answers = parseAnswers({
+    groups: [...typebot.groups, ...linkedTypebots.flatMap((t) => t.groups)],
+    variables: [
+      ...typebot.variables,
+      ...linkedTypebots.flatMap((t) => t.variables),
+    ],
+  })(resultValues)
+  return {
+    html: newLeadEmailContent(
+      `${process.env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
+      omit(answers, 'submittedAt')
+    ),
+  }
 }
 
 export default withSentry(handler)

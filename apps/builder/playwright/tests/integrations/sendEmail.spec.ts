@@ -66,6 +66,7 @@ test.describe('Send email block', () => {
       'email1@gmail.com, email2@gmail.com'
     )
     await page.fill('[data-testid="subject-input"]', 'Email subject')
+    await page.click('text="Custom body?"')
     await page.fill('[data-testid="body-input"]', 'Here is my email')
 
     await page.click('text=Preview')

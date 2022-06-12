@@ -1,5 +1,14 @@
-import { Stack, useDisclosure, Text } from '@chakra-ui/react'
+import {
+  Stack,
+  useDisclosure,
+  Text,
+  Flex,
+  HStack,
+  Switch,
+} from '@chakra-ui/react'
+import { CodeEditor } from 'components/shared/CodeEditor'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
+import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { Input, Textarea } from 'components/shared/Textbox'
 import { CredentialsType, SendEmailOptions } from 'models'
 import React, { useState } from 'react'
@@ -66,6 +75,18 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       replyTo,
     })
 
+  const handleIsCustomBodyChange = (isCustomBody: boolean) =>
+    onOptionsChange({
+      ...options,
+      isCustomBody,
+    })
+
+  const handleIsBodyCodeChange = () =>
+    onOptionsChange({
+      ...options,
+      isBodyCode: options.isBodyCode ? !options.isBodyCode : true,
+    })
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -121,15 +142,42 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           defaultValue={options.subject ?? ''}
         />
       </Stack>
-      <Stack>
-        <Text>Body: </Text>
-        <Textarea
-          data-testid="body-input"
-          minH="300px"
-          onChange={handleBodyChange}
-          defaultValue={options.body ?? ''}
-        />
-      </Stack>
+      <SwitchWithLabel
+        id={'custom-body'}
+        label={'Custom content?'}
+        initialValue={options.isCustomBody ?? false}
+        onCheckChange={handleIsCustomBodyChange}
+      />
+      {options.isCustomBody && (
+        <Stack>
+          <Flex justifyContent="space-between">
+            <Text>Content: </Text>
+            <HStack>
+              <Text fontSize="sm">Text</Text>
+              <Switch
+                size="sm"
+                isChecked={options.isBodyCode ?? false}
+                onChange={handleIsBodyCodeChange}
+              />
+              <Text fontSize="sm">Code</Text>
+            </HStack>
+          </Flex>
+          {options.isBodyCode ? (
+            <CodeEditor
+              value={options.body ?? ''}
+              onChange={handleBodyChange}
+              lang="html"
+            />
+          ) : (
+            <Textarea
+              data-testid="body-input"
+              minH="300px"
+              onChange={handleBodyChange}
+              defaultValue={options.body ?? ''}
+            />
+          )}
+        </Stack>
+      )}
       <SmtpConfigModal
         isOpen={isOpen}
         onClose={onClose}

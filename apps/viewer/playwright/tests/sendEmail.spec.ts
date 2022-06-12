@@ -31,7 +31,7 @@ test('should send an email', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
   await typebotViewer(page).locator('text=Send email').click()
   const response = await page.waitForResponse((resp) =>
-    resp.request().url().includes(`/api/integrations/email`)
+    resp.request().url().includes(`integrations/email`)
   )
   const { previewUrl } = await response.json()
   await page.goto(previewUrl)
