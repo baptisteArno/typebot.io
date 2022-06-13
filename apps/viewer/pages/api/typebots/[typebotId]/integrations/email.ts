@@ -31,11 +31,11 @@ const cors = initMiddleware(Cors())
 const defaultTransportOptions = {
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
-  secure: false,
   auth: {
     user: process.env.SMTP_USERNAME,
     pass: process.env.SMTP_PASSWORD,
   },
+  ignoreTLS: process.env.SMTP_IGNORE_TLS === 'true',
 }
 
 const defaultFrom = {

@@ -104,7 +104,8 @@ services:
       - '80:80'
       - '443:443'
     depends_on:
-      - typebot
+      - typebot-builder
+      - typebot-viewer
 
   typebot-builder:
     labels:
@@ -112,7 +113,7 @@ services:
       virtual.port: '8080'
       virtual.tls-email: 'admin@example.com' # change to your email
 
-  typebot-builder:
+  typebot-viewer:
     labels:
       virtual.host: 'bot.domain.com' # change to your domain name
       virtual.port: '8081'

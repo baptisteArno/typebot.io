@@ -4,7 +4,7 @@ import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import AzureADProvider from "next-auth/providers/azure-ad";
+import AzureADProvider from 'next-auth/providers/azure-ad'
 import prisma from 'libs/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -36,6 +36,7 @@ if (
           user: process.env.SMTP_USERNAME,
           pass: process.env.SMTP_PASSWORD,
         },
+        ignoreTLS: process.env.SMTP_IGNORE_TLS === 'true',
       },
       from: process.env.NEXT_PUBLIC_SMTP_FROM,
     })
@@ -90,7 +91,7 @@ if (
       clientId: process.env.AZURE_AD_CLIENT_ID,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
       tenantId: process.env.AZURE_AD_TENANT_ID,
-    }),
+    })
   )
 }
 
