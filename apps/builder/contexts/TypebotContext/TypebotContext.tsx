@@ -187,10 +187,12 @@ export const TypebotContext = ({
   }
 
   const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {
+    if (!localTypebot) return
     setIsPublishing(true)
     const { error } = await updatePublishedTypebot(
       newPublishedTypebot.id,
-      newPublishedTypebot
+      newPublishedTypebot,
+      localTypebot.workspaceId
     )
     setIsPublishing(false)
     if (error)
@@ -303,10 +305,13 @@ export const TypebotContext = ({
       })
     } else {
       setIsPublishing(true)
-      const { data, error } = await createPublishedTypebot({
-        ...parseTypebotToPublicTypebot(newLocalTypebot),
-        id: publishedTypebotId,
-      })
+      const { data, error } = await createPublishedTypebot(
+        {
+          ...parseTypebotToPublicTypebot(newLocalTypebot),
+          id: publishedTypebotId,
+        },
+        localTypebot.workspaceId
+      )
       setIsPublishing(false)
       if (error)
         return showToast({ title: error.name, description: error.message })

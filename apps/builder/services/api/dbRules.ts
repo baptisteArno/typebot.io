@@ -1,5 +1,7 @@
-import { CollaborationType, Prisma, User, WorkspaceRole } from 'db'
-import { isNotEmpty } from 'utils'
+import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
+import prisma from 'libs/prisma'
+import { NextApiResponse } from 'next'
+import { forbidden, isNotEmpty } from 'utils'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,
@@ -51,3 +53,27 @@ export const canEditGuests = (user: User, typebotId: string) => ({
     },
   },
 })
+
+export const canPublishFileInput = async ({
+  userId,
+  workspaceId,
+  res,
+}: {
+  userId: string
+  workspaceId: string
+  res: NextApiResponse
+}) => {
+  const workspace = await prisma.workspace.findFirst({
+    where: { id: workspaceId, members: { some: { userId } } },
+    select: { plan: true },
+  })
+  if (!workspace) {
+    forbidden(res, 'workspace not found')
+    return false
+  }
+  if (workspace?.plan === Plan.FREE) {
+    forbidden(res, 'You need to upgrade your plan to use this feature')
+    return false
+  }
+  return true
+}

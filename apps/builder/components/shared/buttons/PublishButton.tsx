@@ -34,6 +34,7 @@ export const PublishButton = () => {
     publishedTypebot,
     restorePublishedTypebot,
     typebot,
+    isSavingLoading,
   } = useTypebot()
 
   const hasInputFile = typebot?.groups
@@ -73,7 +74,7 @@ export const PublishButton = () => {
       >
         <Button
           colorScheme="blue"
-          isLoading={isPublishing}
+          isLoading={isPublishing || isSavingLoading}
           isDisabled={isPublished}
           onClick={handlePublishClick}
           borderRightRadius={publishedTypebot && !isPublished ? 0 : undefined}

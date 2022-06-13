@@ -37,19 +37,23 @@ export const parsePublicTypebotToTypebot = (
   workspaceId: existingTypebot.workspaceId,
 })
 
-export const createPublishedTypebot = async (typebot: PublicTypebot) =>
+export const createPublishedTypebot = async (
+  typebot: PublicTypebot,
+  workspaceId: string
+) =>
   sendRequest<PublicTypebot>({
-    url: `/api/publicTypebots`,
+    url: `/api/publicTypebots?workspaceId=${workspaceId}`,
     method: 'POST',
     body: typebot,
   })
 
 export const updatePublishedTypebot = async (
   id: string,
-  typebot: Omit<PublicTypebot, 'id'>
+  typebot: Omit<PublicTypebot, 'id'>,
+  workspaceId: string
 ) =>
   sendRequest({
-    url: `/api/publicTypebots/${id}`,
+    url: `/api/publicTypebots/${id}?workspaceId=${workspaceId}`,
     method: 'PUT',
     body: typebot,
   })
