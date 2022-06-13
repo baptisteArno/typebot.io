@@ -66,7 +66,7 @@ export const ImageUploadContent = ({
           onClick={() => setCurrentTab('link')}
           size="sm"
         >
-          Embed link
+          Link do arquivo
         </Button>
         {isGiphyEnabled && (
           <Button
@@ -117,7 +117,7 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
         includeFileName
         colorScheme="blue"
       >
-        Choose an image
+        Selecione uma imagem
       </UploadButton>
     </Flex>
   )
@@ -126,7 +126,7 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
 const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => (
   <Stack py="2">
     <Input
-      placeholder={'Paste the image link...'}
+      placeholder={'Cole o link da imagem...'}
       onChange={onNewUrl}
       defaultValue={initialUrl ?? ''}
     />
@@ -154,7 +154,7 @@ const EmojiContent = ({
   return (
     <Stack>
       <ClassicInput
-        placeholder="Search..."
+        placeholder="Pesquisar..."
         value={searchValue}
         onChange={handleSearchChange}
       />

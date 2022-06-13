@@ -20,7 +20,7 @@ export const TextBubbleContent = ({ step }: Props) => {
       dangerouslySetInnerHTML={{
         __html:
           step.content.html === ''
-            ? `<p>Click to edit...</p>`
+            ? `<p>Clique para editar...</p>`
             : parseVariableHighlight(step.content.html, typebot),
       }}
     />

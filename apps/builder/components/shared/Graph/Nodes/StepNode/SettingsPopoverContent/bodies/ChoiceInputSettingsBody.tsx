@@ -32,18 +32,18 @@ export const ChoiceInputSettingsBody = ({
       {options?.isMultipleChoice && (
         <Stack>
           <FormLabel mb="0" htmlFor="button">
-            Button label:
+            Mensagem do botão:
           </FormLabel>
           <Input
             id="button"
-            defaultValue={options?.buttonLabel ?? 'Send'}
+            defaultValue={options?.buttonLabel ?? 'Enviar'}
             onChange={handleButtonLabelChange}
           />
         </Stack>
       )}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          Salvar resposta em uma variável:
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

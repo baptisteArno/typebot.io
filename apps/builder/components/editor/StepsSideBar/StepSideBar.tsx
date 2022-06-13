@@ -102,7 +102,7 @@ export const StepsSideBar = () => {
         className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
-          <Tooltip label={isLocked ? 'Unlock sidebar' : 'Lock sidebar'}>
+          <Tooltip label={isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'}>
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
               aria-label={isLocked ? 'Unlock' : 'Lock'}

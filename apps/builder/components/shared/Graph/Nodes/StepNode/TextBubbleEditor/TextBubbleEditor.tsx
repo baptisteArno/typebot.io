@@ -170,7 +170,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
         >
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
-            placeholder="Search for a variable"
+            placeholder="Pesquise sua variável"
             isDefaultOpen
           />
         </Flex>

@@ -25,12 +25,12 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   return (
     <Stack p="2">
       <Input
-        placeholder="Paste the video link..."
+        placeholder="Cole o link do vídeo..."
         defaultValue={content?.url ?? ''}
         onChange={handleUrlChange}
       />
       <Text fontSize="sm" color="gray.400" textAlign="center">
-        Works with Youtube, Vimeo and others
+        Funciona com Youtube, Vimeo e outros
       </Text>
     </Stack>
   )

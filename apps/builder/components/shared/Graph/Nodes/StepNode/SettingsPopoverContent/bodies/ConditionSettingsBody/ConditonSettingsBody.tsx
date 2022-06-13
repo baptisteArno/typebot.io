@@ -40,7 +40,7 @@ export const ConditionSettingsBody = ({
           />
         </Flex>
       )}
-      addLabel="Add a comparison"
+      addLabel="Adicione uma comparação"
     />
   )
 }

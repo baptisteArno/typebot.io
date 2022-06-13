@@ -5,7 +5,7 @@ export const ImageBubbleContent = ({ step }: { step: ImageBubbleStep }) => {
   const containsVariables =
     step.content?.url?.includes('{{') && step.content.url.includes('}}')
   return !step.content?.url ? (
-    <Text color={'gray.500'}>Click to edit...</Text>
+    <Text color={'gray.500'}>Clique para editar...</Text>
   ) : (
     <Box w="full">
       <Image

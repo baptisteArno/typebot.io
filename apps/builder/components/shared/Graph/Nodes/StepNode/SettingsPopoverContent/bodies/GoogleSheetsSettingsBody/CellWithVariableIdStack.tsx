@@ -25,12 +25,12 @@ export const CellWithVariableIdStack = ({
         currentItem={item.column}
         onItemSelect={handleColumnSelect}
         items={columns}
-        placeholder="Select a column"
+        placeholder="Selecione a coluna"
       />
       <VariableSearchInput
         initialVariableId={item.variableId}
         onSelectVariable={handleVariableIdChange}
-        placeholder="Select a variable"
+        placeholder="Selecione a variável"
       />
     </Stack>
   )

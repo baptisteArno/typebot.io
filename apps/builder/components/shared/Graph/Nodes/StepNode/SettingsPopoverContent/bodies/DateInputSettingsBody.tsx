@@ -31,20 +31,20 @@ export const DateInputSettingsBody = ({
     <Stack spacing={4}>
       <SwitchWithLabel
         id="is-range"
-        label={'Is range?'}
+        label={'É uma seleção?'}
         initialValue={options.isRange}
         onCheckChange={handleIsRangeChange}
       />
       <SwitchWithLabel
         id="with-time"
-        label={'With time?'}
+        label={'Com horário?'}
         initialValue={options.isRange}
         onCheckChange={handleHasTimeChange}
       />
       {options.isRange && (
         <Stack>
           <FormLabel mb="0" htmlFor="from">
-            From label:
+            De:
           </FormLabel>
           <Input
             id="from"
@@ -56,7 +56,7 @@ export const DateInputSettingsBody = ({
       {options?.isRange && (
         <Stack>
           <FormLabel mb="0" htmlFor="to">
-            To label:
+            Para:
           </FormLabel>
           <Input
             id="to"
@@ -67,7 +67,7 @@ export const DateInputSettingsBody = ({
       )}
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Button label:
+          Mensagem do botão:
         </FormLabel>
         <Input
           id="button"
@@ -77,7 +77,7 @@ export const DateInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          Salvar resposta em uma variável:
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}

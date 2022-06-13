@@ -11,8 +11,8 @@ import {
   isIntegrationStep,
   isLogicStep,
 } from 'utils'
-import { executeLogic } from 'services/logic'
-import { executeIntegration } from 'services/integration'
+// import { executeLogic } from 'services/logic'
+// import { executeIntegration } from 'services/integration'
 import { parseRetryStep, stepCanBeRetried } from 'services/inputs'
 import { parseVariables } from '../../services/variable'
 import { useAnswers } from 'contexts/AnswersContext'
@@ -110,47 +110,47 @@ export const ChatBlock = ({
   const onNewStepDisplayed = async () => {
     const currentStep = [...processedSteps].pop()
     if (!currentStep) return
-    if (isLogicStep(currentStep)) {
-      const { nextEdgeId, linkedTypebot } = await executeLogic(currentStep, {
-        isPreview,
-        apiHost,
-        typebot,
-        linkedTypebots,
-        updateVariableValue,
-        updateVariables,
-        injectLinkedTypebot,
-        onNewLog,
-        createEdge,
-        setCurrentTypebotId,
-        pushEdgeIdInLinkedTypebotQueue,
-        currentTypebotId,
-      })
-      const isRedirecting =
-        currentStep.type === LogicStepType.REDIRECT &&
-        currentStep.options.isNewTab === false
-      if (isRedirecting) return
-      nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
-    }
-    if (isIntegrationStep(currentStep)) {
-      const nextEdgeId = await executeIntegration({
-        step: currentStep,
-        context: {
-          apiHost,
-          typebotId: currentTypebotId,
-          blockId: currentStep.blockId,
-          stepId: currentStep.id,
-          variables: typebot.variables,
-          isPreview,
-          updateVariableValue,
-          updateVariables,
-          resultValues,
-          blocks: typebot.blocks,
-          onNewLog,
-          resultId,
-        },
-      })
-      nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
-    }
+    // if (isLogicStep(currentStep)) {
+    //   const { nextEdgeId, linkedTypebot } = await executeLogic(currentStep, {
+    //     isPreview,
+    //     apiHost,
+    //     typebot,
+    //     linkedTypebots,
+    //     updateVariableValue,
+    //     updateVariables,
+    //     injectLinkedTypebot,
+    //     onNewLog,
+    //     createEdge,
+    //     setCurrentTypebotId,
+    //     pushEdgeIdInLinkedTypebotQueue,
+    //     currentTypebotId,
+    //   })
+    //   const isRedirecting =
+    //     currentStep.type === LogicStepType.REDIRECT &&
+    //     currentStep.options.isNewTab === false
+    //   if (isRedirecting) return
+    //   nextEdgeId ? onBlockEnd(nextEdgeId, linkedTypebot) : displayNextStep()
+    // }
+    // if (isIntegrationStep(currentStep)) {
+    //   const nextEdgeId = await executeIntegration({
+    //     step: currentStep,
+    //     context: {
+    //       apiHost,
+    //       typebotId: currentTypebotId,
+    //       blockId: currentStep.blockId,
+    //       stepId: currentStep.id,
+    //       variables: typebot.variables,
+    //       isPreview,
+    //       updateVariableValue,
+    //       updateVariables,
+    //       resultValues,
+    //       blocks: typebot.blocks,
+    //       onNewLog,
+    //       resultId,
+    //     },
+    //   })
+    //   nextEdgeId ? onBlockEnd(nextEdgeId) : displayNextStep()
+    // }
     if (currentStep.type === 'start') onBlockEnd(currentStep.outgoingEdgeId)
   }
 

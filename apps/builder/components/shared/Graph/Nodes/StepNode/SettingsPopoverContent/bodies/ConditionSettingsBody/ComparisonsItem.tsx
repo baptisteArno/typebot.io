@@ -30,19 +30,19 @@ export const ComparisonItem = ({
       <VariableSearchInput
         initialVariableId={item.variableId}
         onSelectVariable={handleSelectVariable}
-        placeholder="Search for a variable"
+        placeholder="Pesquise sua variável"
       />
       <DropdownList<ComparisonOperators>
         currentItem={item.comparisonOperator}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
-        placeholder="Select an operator"
+        placeholder="Selecione um operador"
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET && (
         <Input
           defaultValue={item.value ?? ''}
           onChange={handleChangeValue}
-          placeholder="Type a value..."
+          placeholder="Digite um valor..."
         />
       )}
     </Stack>

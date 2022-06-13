@@ -7,7 +7,7 @@ import {
   OctaStepType,
   PhoneNumberInputStep,
   Step,
-  UrlInputStep,
+  // UrlInputStep,
   Variable,
 } from 'models'
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
@@ -28,8 +28,8 @@ export const isInputValid = (
       return emailRegex.test(inputValue)
     case InputStepType.PHONE:
       return isPossiblePhoneNumber(inputValue)
-    case InputStepType.URL:
-      return urlRegex.test(inputValue)
+    // case InputStepType.URL:
+    //   return urlRegex.test(inputValue)
   }
   return true
 }
@@ -49,11 +49,17 @@ export const isInputValid = (
 
 export const stepCanBeRetried = (
   step: Step
-): step is EmailInputStep | UrlInputStep | PhoneNumberInputStep =>
+): step is
+  | EmailInputStep
+  // UrlInputStep |
+  | PhoneNumberInputStep =>
   isInputStep(step) && 'retryMessageContent' in step.options
 
 export const parseRetryStep = (
-  step: EmailInputStep | UrlInputStep | PhoneNumberInputStep,
+  step:
+    | EmailInputStep
+    // | UrlInputStep
+    | PhoneNumberInputStep,
   variables: Variable[],
   createEdge: (edge: Edge) => void
 ): BubbleStep => {

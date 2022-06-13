@@ -43,7 +43,7 @@ export const TextInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Button label:
+          Mensagem do botão:
         </FormLabel>
         <Input
           id="button"
@@ -53,7 +53,7 @@ export const TextInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          Salvar resposta em uma variável:
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}

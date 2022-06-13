@@ -41,26 +41,26 @@ type LogicContext = {
   createEdge: (edge: Edge) => void
 }
 
-export const executeLogic = async (
-  step: LogicStep,
-  context: LogicContext
-): Promise<{
-  nextEdgeId?: EdgeId
-  linkedTypebot?: PublicTypebot | LinkedTypebot
-}> => {
-  switch (step.type) {
-    // case LogicStepType.SET_VARIABLE:
-    //   return { nextEdgeId: executeSetVariable(step, context) }
-    case LogicStepType.CONDITION:
-      return { nextEdgeId: executeCondition(step, context) }
-    // case LogicStepType.REDIRECT:
-    //   return { nextEdgeId: executeRedirect(step, context) }
-    // case LogicStepType.CODE:
-    //   return { nextEdgeId: await executeCode(step, context) }
-    // case LogicStepType.TYPEBOT_LINK:
-    //   return await executeTypebotLink(step, context)
-  }
-}
+// export const executeLogic = async (
+//   step: LogicStep,
+//   context: LogicContext
+// ): Promise<{
+//   nextEdgeId?: EdgeId
+//   linkedTypebot?: PublicTypebot | LinkedTypebot
+// }> => {
+//   switch (step.type) {
+//     // case LogicStepType.SET_VARIABLE:
+//     //   return { nextEdgeId: executeSetVariable(step, context) }
+//     case LogicStepType.CONDITION:
+//       return { nextEdgeId: executeCondition(step, context) }
+//     // case LogicStepType.REDIRECT:
+//     //   return { nextEdgeId: executeRedirect(step, context) }
+//     // case LogicStepType.CODE:
+//     //   return { nextEdgeId: await executeCode(step, context) }
+//     // case LogicStepType.TYPEBOT_LINK:
+//     //   return await executeTypebotLink(step, context)
+//   }
+// }
 
 // const executeSetVariable = (
 //   step: SetVariableStep,

@@ -11,7 +11,7 @@ export const PaymentInputContent = ({ step }: Props) => {
     !step.options.credentialsId ||
     !step.options.currency
   )
-    return <Text color="gray.500">Configure...</Text>
+    return <Text color="gray.500">Configuração...</Text>
   return (
     <Text noOfLines={0} pr="6">
       Collect {step.options.amount} {step.options.currency}

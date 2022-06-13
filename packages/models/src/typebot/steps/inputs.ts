@@ -160,54 +160,54 @@ export type PaymentInputOptions = OptionBase & {
   labels: { button: string }
 }
 
-const defaultButtonLabel = 'Send'
+const defaultButtonLabel = 'Enviar'
 
 export const defaultTextInputOptions: TextInputOptions = {
   isLong: false,
-  labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
+  labels: { button: defaultButtonLabel, placeholder: 'Digite a sua resposta...' },
 }
 
 export const defaultAskNameOptions: AskNameOptions = {
   isLong: false,
   variableId: '1',
-  labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
+  labels: { button: defaultButtonLabel, placeholder: 'Digite a sua resposta...' },
 }
 
 export const defaultNumberInputOptions: NumberInputOptions = {
-  labels: { button: defaultButtonLabel, placeholder: 'Type a number...' },
+  labels: { button: defaultButtonLabel, placeholder: 'Digite o número...' },
 }
 
 export const defaultEmailInputOptions: EmailInputOptions = {
   labels: {
     button: defaultButtonLabel,
-    placeholder: 'Type your email...',
+    placeholder: 'Digite o seu email...',
   },
   retryMessageContent:
-    "This email doesn't seem to be valid. Can you type it again?",
+    "Esse email não parece ser válido. Você pode digitar novamente?",
 }
 
 export const defaultUrlInputOptions: UrlInputOptions = {
   labels: {
     button: defaultButtonLabel,
-    placeholder: 'Type a URL...',
+    placeholder: 'Digite a URL...',
   },
   retryMessageContent:
-    "This URL doesn't seem to be valid. Can you type it again?",
+    "Essa URL não parece válida. Você pode digitar novamente?",
 }
 
 export const defaultDateInputOptions: DateInputOptions = {
   hasTime: false,
   isRange: false,
-  labels: { button: defaultButtonLabel, from: 'From:', to: 'To:' },
+  labels: { button: defaultButtonLabel, from: 'De:', to: 'Para:' },
 }
 
 export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
   labels: {
     button: defaultButtonLabel,
-    placeholder: 'Type your phone number...',
+    placeholder: 'Digite o seu número...',
   },
   retryMessageContent:
-    "This phone number doesn't seem to be valid. Can you type it again?",
+    "Esse número não parece válido. Você pode digitar novamente?",
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {

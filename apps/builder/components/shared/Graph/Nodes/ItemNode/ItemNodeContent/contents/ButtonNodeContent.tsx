@@ -21,12 +21,12 @@ type Props = {
 export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
-  const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
+  const [itemValue, setItemValue] = useState(item.content ?? 'Clique para editar')
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Click to edit')
+      setItemValue(item.content ?? 'Clique para editar')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -37,7 +37,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Click to edit') deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Clique para editar') deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -64,7 +64,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
       >
         <EditablePreview
           w="full"
-          color={item.content !== 'Click to edit' ? 'inherit' : 'gray.500'}
+          color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
           cursor="pointer"
         />
         <EditableInput />
