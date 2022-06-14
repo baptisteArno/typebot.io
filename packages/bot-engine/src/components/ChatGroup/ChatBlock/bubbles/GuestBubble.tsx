@@ -16,16 +16,27 @@ export const GuestBubble = ({
   onClick,
 }: Props): JSX.Element => {
   const [content] = useState(message)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const handleMouseDown = () => setIsDragging(false)
+  const handleMouseMove = () => setIsDragging(true)
+  const handleMouseUp = () => {
+    setIsDragging(false)
+    if (isDragging) return
+    onClick()
+  }
 
   return (
     <CSSTransition classNames="bubble" timeout={1000}>
       <div
         className="flex justify-end mb-2 items-end"
-        onClick={onClick}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
         style={{ marginLeft: '50px' }}
       >
         <span
-          className="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble cursor-pointer hover:brightness-90 active:brightness-75"
+          className="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble cursor-pointer"
           data-testid="guest-bubble"
         >
           {content}
