@@ -18,6 +18,9 @@ import {
   NumberIcon,
   PhoneIcon,
   SendEmailIcon,
+  WavingHandIcon,
+  AlarmIcon,
+  AssignToIcon,
   TextIcon,
   WebhookIcon,
 } from 'assets/icons'
@@ -83,8 +86,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     //   return <GoogleSheetsLogo {...props} />
     // case IntegrationStepType.GOOGLE_ANALYTICS:
     //   return <GoogleAnalyticsLogo {...props} />
-    // case IntegrationStepType.WEBHOOK:
-    //   return <WebhookIcon {...props} />
+    case IntegrationStepType.WEBHOOK:
+      return <WebhookIcon {...props} />
     // case IntegrationStepType.ZAPIER:
     //   return <ZapierLogo {...props} />
     // case IntegrationStepType.MAKE_COM:
@@ -94,9 +97,11 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     // case IntegrationStepType.EMAIL:
     //   return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
-      return <CheckSquareIcon color="orange.500" {...props} />
+      return <WavingHandIcon color="orange.500" {...props} />
+    case OctaStepType.OFFICE_HOURS:
+      return <AlarmIcon color="blue.500" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
-      return <ImageIcon color="blue.500" {...props} />
+      return <AssignToIcon color="blue.500" {...props} />
 
     case 'start':
       return <FlagIcon {...props} />

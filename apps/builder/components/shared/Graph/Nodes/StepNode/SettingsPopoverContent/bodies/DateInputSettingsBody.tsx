@@ -31,7 +31,7 @@ export const DateInputSettingsBody = ({
     <Stack spacing={4}>
       <SwitchWithLabel
         id="is-range"
-        label={'É uma seleção?'}
+        label={'É uma janela?'}
         initialValue={options.isRange}
         onCheckChange={handleIsRangeChange}
       />
@@ -44,7 +44,7 @@ export const DateInputSettingsBody = ({
       {options.isRange && (
         <Stack>
           <FormLabel mb="0" htmlFor="from">
-            De:
+            Começo janela:
           </FormLabel>
           <Input
             id="from"
@@ -56,7 +56,7 @@ export const DateInputSettingsBody = ({
       {options?.isRange && (
         <Stack>
           <FormLabel mb="0" htmlFor="to">
-            Para:
+            Final janela:
           </FormLabel>
           <Input
             id="to"

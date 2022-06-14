@@ -26,7 +26,8 @@ export enum OctaBubbleStepType {
 
 // Regular step types
 export enum OctaStepType {
-  ASSIGN_TO_TEAM = 'assign to team',
+  OFFICE_HOURS = 'office hours',
+  ASSIGN_TO_TEAM = 'assign to team'
 }
 
 // Regular steps types that have options

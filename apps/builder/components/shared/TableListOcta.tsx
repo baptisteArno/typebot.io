@@ -86,7 +86,7 @@ export const TableListOcta = <T,>({
               onItemChange={handleCellChange(itemIndex)}
               debounceTimeout={debounceTimeout}
             />
-            <Fade in={showDeleteIndex === itemIndex}>
+            {/* <Fade in={showDeleteIndex === itemIndex}>
               <IconButton
                 icon={<TrashIcon />}
                 aria-label="Remove cell"
@@ -97,7 +97,7 @@ export const TableListOcta = <T,>({
                 size="sm"
                 shadow="md"
               />
-            </Fade>
+            </Fade> */}
           </Flex>
         </Box>
       ))}

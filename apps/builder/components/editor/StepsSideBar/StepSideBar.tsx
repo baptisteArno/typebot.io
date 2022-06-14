@@ -16,7 +16,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   OctaStepType,
-  OctaBubbleStepType
+  OctaBubbleStepType,
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -102,7 +102,11 @@ export const StepsSideBar = () => {
         className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
-          <Tooltip label={isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'}>
+          <Tooltip
+            label={
+              isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'
+            }
+          >
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
               aria-label={isLocked ? 'Unlock' : 'Lock'}
@@ -119,7 +123,16 @@ export const StepsSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+                isDisabled={
+                  type === BubbleStepType.EMBED ||
+                  type === BubbleStepType.IMAGE ||
+                  type === BubbleStepType.VIDEO
+                }
+              />
             ))}
           </SimpleGrid>
         </Stack>
@@ -130,6 +143,37 @@ export const StepsSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputStepType).map((type) => (
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+                isDisabled={
+                  type === InputStepType.DATE ||
+                  type === InputStepType.EMAIL ||
+                  type === InputStepType.PHONE ||
+                  type === InputStepType.NUMBER
+                }
+              />
+            ))}
+          </SimpleGrid>
+        </Stack>
+
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            Direcionamentos
+          </Text>
+          <SimpleGrid columns={1} spacing="3">
+            {Object.values(OctaStepType).map((type) => (
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+                isDisabled={type === OctaStepType.OFFICE_HOURS}
+              />
+            ))}
+          </SimpleGrid>
+          <SimpleGrid columns={1} spacing="3">
+            {Object.values(OctaBubbleStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
@@ -146,7 +190,7 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        {/* <Stack>
+        <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Superintegrações
           </Text>
@@ -156,11 +200,11 @@ export const StepsSideBar = () => {
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
-                // isDisabled={type === IntegrationStepType.MAKE_COM}
+                isDisabled={type === IntegrationStepType.WEBHOOK}
               />
             ))}
           </SimpleGrid>
-        </Stack> */}
+        </Stack>
 
         {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">

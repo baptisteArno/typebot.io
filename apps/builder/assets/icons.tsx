@@ -207,6 +207,18 @@ export const CheckSquareIcon = () => (
   <MaterialDesign.MdCheckBox/>
 )
 
+export const WavingHandIcon = () => (
+  <MaterialDesign.MdWavingHand/>
+)
+
+export const AssignToIcon = () => (
+  <MaterialDesign.MdSwapHoriz/>
+)
+
+export const AlarmIcon = () => (
+  <MaterialDesign.MdAlarm/>
+)
+
 export const FilterIcon = () => (
   <MaterialDesign.MdFilterAlt/>
 )

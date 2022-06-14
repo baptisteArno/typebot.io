@@ -73,8 +73,8 @@ export const StepTypeLabel = ({ type }: Props) => {
     //       <Text>Analytics</Text>
     //     </Tooltip>
     //   )
-    // case IntegrationStepType.WEBHOOK:
-    //   return <Text>Webhook</Text>
+    case IntegrationStepType.WEBHOOK:
+      return <Text>Webhook</Text>
     // case IntegrationStepType.ZAPIER:
     //   return <Text>Zapier</Text>
     // case IntegrationStepType.MAKE_COM:
@@ -83,10 +83,12 @@ export const StepTypeLabel = ({ type }: Props) => {
     //   return <Text>Pabbly</Text>
     // case IntegrationStepType.EMAIL:
     //   return <Text>Email</Text>
-    // case OctaBubbleStepType.END_CONVERSATION:
-    //   return <Text>End Conversation</Text>
-    // case OctaStepType.ASSIGN_TO_TEAM:
-    //   return <Text>Assign to Team</Text>
+    case OctaStepType.OFFICE_HOURS:
+      return <Text>Definir horário de atendimento</Text>
+    case OctaStepType.ASSIGN_TO_TEAM:
+      return <Text>Direcionar conversa</Text>
+    case OctaBubbleStepType.END_CONVERSATION:
+      return <Text>Encerrar conversa</Text>
     default:
       return <></>
   }

@@ -198,7 +198,7 @@ export const defaultUrlInputOptions: UrlInputOptions = {
 export const defaultDateInputOptions: DateInputOptions = {
   hasTime: false,
   isRange: false,
-  labels: { button: defaultButtonLabel, from: 'De:', to: 'Para:' },
+  labels: { button: defaultButtonLabel, from: 'De:', to: 'Até:' },
 }
 
 export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
