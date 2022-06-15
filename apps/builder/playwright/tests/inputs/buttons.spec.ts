@@ -1,11 +1,13 @@
 import test, { expect } from '@playwright/test'
 import {
   createTypebots,
+  importTypebotInDatabase,
   parseDefaultGroupWithBlock,
 } from '../../services/database'
 import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import path from 'path'
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {
@@ -66,4 +68,31 @@ test.describe.parallel('Buttons input block', () => {
       typebotViewer(page).locator('text="Item 3, Item 1"')
     ).toBeVisible()
   })
+})
+
+test('Variable buttons should work', async ({ page }) => {
+  const typebotId = cuid()
+  await importTypebotInDatabase(
+    path.join(__dirname, '../../fixtures/typebots/inputs/variableButton.json'),
+    {
+      id: typebotId,
+    }
+  )
+
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.click('text=Preview')
+  await typebotViewer(page).locator('text=Variable item').click()
+  await expect(typebotViewer(page).locator('text=Variable item')).toBeVisible()
+  await expect(typebotViewer(page).locator('text=Ok great!')).toBeVisible()
+  await page.click('text="Item 1"')
+  await page.fill('input[value="Item 1"]', '{{Item 2}}')
+  await page.click('[data-testid="block1-icon"]')
+  await page.click('text=Multiple choice?')
+  await page.click('text="Restart"')
+  await typebotViewer(page).locator('text="Variable item" >> nth=0').click()
+  await typebotViewer(page).locator('text="Variable item" >> nth=1').click()
+  await typebotViewer(page).locator('text="Send"').click()
+  await expect(
+    typebotViewer(page).locator('text="Variable item, Variable item"')
+  ).toBeVisible()
 })

@@ -10,6 +10,7 @@ import {
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
+  byId,
 } from 'utils'
 import { executeLogic } from 'services/logic'
 import { executeIntegration } from 'services/integration'
@@ -187,7 +188,7 @@ export const ChatGroup = ({
         isChoiceInput(currentBlock) && !currentBlock.options.isMultipleChoice
       if (isSingleChoiceBlock) {
         const nextEdgeId = currentBlock.items.find(
-          (i) => i.content === answerContent?.value
+          byId(answerContent?.itemId)
         )?.outgoingEdgeId
         if (nextEdgeId) return onGroupEnd({ edgeId: nextEdgeId })
       }

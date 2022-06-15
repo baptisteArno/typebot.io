@@ -13,7 +13,11 @@ import { PaymentForm } from './inputs/PaymentForm'
 import { RatingForm } from './inputs/RatingForm'
 import { FileUploadForm } from './inputs/FileUploadForm'
 
-export type InputSubmitContent = { label?: string; value: string }
+export type InputSubmitContent = {
+  label?: string
+  value: string
+  itemId?: string
+}
 
 export const InputChatBlock = ({
   block,
@@ -40,7 +44,7 @@ export const InputChatBlock = ({
       ? variableId && typebot.variables.find(byId(variableId))?.value
       : undefined
 
-  const handleSubmit = async ({ label, value }: InputSubmitContent) => {
+  const handleSubmit = async ({ label, value, itemId }: InputSubmitContent) => {
     setAnswer(label ?? value)
     const isRetry = !isInputValid(value, block.type)
     if (!isRetry && addAnswer)
@@ -50,7 +54,7 @@ export const InputChatBlock = ({
         content: value,
         variableId: variableId ?? null,
       })
-    if (!isEditting) onTransitionEnd({ label, value }, isRetry)
+    if (!isEditting) onTransitionEnd({ label, value, itemId }, isRetry)
     setIsEditting(false)
   }
 
