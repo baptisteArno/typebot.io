@@ -1,6 +1,8 @@
 import { useAnswers } from 'contexts/AnswersContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import { ChoiceInputBlock } from 'models'
 import React, { useState } from 'react'
+import { parseVariables } from 'services/variable'
 import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
 
@@ -10,13 +12,20 @@ type ChoiceFormProps = {
 }
 
 export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
+  const {
+    typebot: { variables },
+  } = useTypebot()
   const { resultValues } = useAnswers()
   const [selectedIndices, setSelectedIndices] = useState<number[]>([])
 
   const handleClick = (itemIndex: number) => (e: React.MouseEvent) => {
     e.preventDefault()
     if (block.options?.isMultipleChoice) toggleSelectedItemIndex(itemIndex)
-    else onSubmit({ value: block.items[itemIndex].content ?? '' })
+    else
+      onSubmit({
+        value: parseVariables(variables)(block.items[itemIndex].content),
+        itemId: block.items[itemIndex].id,
+      })
   }
 
   const toggleSelectedItemIndex = (itemIndex: number) => {
@@ -32,7 +41,9 @@ export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
   const handleSubmit = () =>
     onSubmit({
       value: selectedIndices
-        .map((itemIndex) => block.items[itemIndex].content)
+        .map((itemIndex) =>
+          parseVariables(variables)(block.items[itemIndex].content)
+        )
         .join(', '),
     })
 
@@ -59,7 +70,7 @@ export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
               data-testid="button"
               data-itemid={item.id}
             >
-              {item.content}
+              {parseVariables(variables)(item.content)}
             </button>
             {isUniqueFirstButton && (
               <span className="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1 ping">
