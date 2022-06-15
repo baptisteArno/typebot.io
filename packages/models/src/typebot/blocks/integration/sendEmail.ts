@@ -22,6 +22,7 @@ export const sendEmailBlockSchema = blockBaseSchema.and(
 
 export const defaultSendEmailOptions: SendEmailOptions = {
   credentialsId: 'default',
+  isCustomBody: false,
   recipients: [],
 }
 

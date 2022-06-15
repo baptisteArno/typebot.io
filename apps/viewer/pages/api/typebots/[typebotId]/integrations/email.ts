@@ -10,6 +10,7 @@ import { createTransport, getTestMessageUrl } from 'nodemailer'
 import {
   decrypt,
   initMiddleware,
+  isEmpty,
   isNotDefined,
   methodNotAllowed,
   omit,
@@ -157,7 +158,7 @@ const getEmailBody = async ({
   SendEmailOptions,
   'isCustomBody' | 'isBodyCode' | 'body'
 >): Promise<{ html?: string; text?: string } | undefined> => {
-  if (isCustomBody || isNotDefined(isCustomBody))
+  if (isCustomBody || (isNotDefined(isCustomBody) && !isEmpty(body)))
     return {
       html: isBodyCode ? body : undefined,
       text: !isBodyCode ? body : undefined,
