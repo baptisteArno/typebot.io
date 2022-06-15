@@ -46,7 +46,7 @@ const AboutPage = () => {
           interested in raising funds or taking investments.
         </Text>
         <Text>
-          Because I love open-source SaaS, I decided in early 2021, alongside
+          Because I love open-source SaaS, I decided in early 2022, alongside
           the launch of a major 2.0 release, to open-source the project
           entirely. Anyone can now read the source code and contribute to the
           project. You can also self-host your own version of Typebot on your
