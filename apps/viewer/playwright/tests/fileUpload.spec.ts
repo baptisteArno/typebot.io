@@ -1,8 +1,10 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
+import { parse } from 'papaparse'
 import { typebotViewer } from '../services/selectorUtils'
 import { importTypebotInDatabase } from '../services/database'
+import { readFileSync } from 'fs'
 
 test('should work as expected', async ({ page, context }) => {
   const typebotId = cuid()
@@ -36,4 +38,16 @@ test('should work as expected', async ({ page, context }) => {
     'href',
     /.+\/api\.json/
   )
+
+  await page.click('[data-testid="checkbox"] >> nth=0')
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator('button:has-text("Export1")').click(),
+  ])
+  const downloadPath = await download.path()
+  expect(path).toBeDefined()
+  const file = readFileSync(downloadPath as string).toString()
+  const { data } = parse(file)
+  expect(data).toHaveLength(2)
+  expect((data[1] as unknown[])[1]).toContain('http://localhost:9000')
 })

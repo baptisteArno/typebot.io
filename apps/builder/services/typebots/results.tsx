@@ -154,11 +154,13 @@ const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
   headerCells: ResultHeaderCell[]
-): { [key: string]: JSX.Element | string }[] =>
+): { [key: string]: { element?: JSX.Element; plainText: string } }[] =>
   (results ?? []).map((result) => ({
-    'Submitted at': parseDateToReadable(result.createdAt),
+    'Submitted at': {
+      plainText: parseDateToReadable(result.createdAt),
+    },
     ...[...result.answers, ...result.variables].reduce<{
-      [key: string]: JSX.Element | string
+      [key: string]: { element?: JSX.Element; plainText: string }
     }>((o, answerOrVariable) => {
       if ('groupId' in answerOrVariable) {
         const answer = answerOrVariable as Answer
@@ -168,19 +170,28 @@ export const convertResultsToTableData = (
         if (!header || !header.blockId || !header.blockType) return o
         return {
           ...o,
-          [header.label]: parseContent(answer.content, header.blockType),
+          [header.label]: {
+            element: parseContent(answer.content, header.blockType),
+            plainText: answer.content,
+          },
         }
       }
       const variable = answerOrVariable as VariableWithValue
       if (isDefined(o[variable.id])) return o
       const key = headerCells.find((h) => h.variableId === variable.id)?.label
       if (!key) return o
-      return { ...o, [key]: variable.value }
+      return {
+        ...o,
+        [key]: { plainText: variable.value },
+      }
     }, {}),
   }))
 
-const parseContent = (str: string, blockType: InputBlockType) =>
-  blockType === InputBlockType.FILE ? parseFileContent(str) : str
+const parseContent = (
+  str: string,
+  blockType: InputBlockType
+): JSX.Element | undefined =>
+  blockType === InputBlockType.FILE ? parseFileContent(str) : undefined
 
 const parseFileContent = (str: string) => {
   const fileNames = str.split(', ')
