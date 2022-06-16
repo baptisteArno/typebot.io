@@ -42,8 +42,9 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
           description: error.name + ' ' + error.message,
           details: error.message,
         })
-      if (!data || !frameDocument || !frameWindow?.Stripe) return
+      if (!data || !frameDocument) return
       await initStripe(frameDocument)
+      if (!frameWindow?.Stripe) return
       setStripe(frameWindow.Stripe(data.publicKey))
       setClientSecret(data.clientSecret)
       setAmountLabel(data.amountLabel)
