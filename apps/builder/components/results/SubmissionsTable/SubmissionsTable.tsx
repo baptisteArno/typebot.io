@@ -6,6 +6,7 @@ import { ResultHeaderCell } from 'models'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Hooks, useRowSelect, useTable } from 'react-table'
 import { parseSubmissionsColumns } from 'services/typebots'
+import { isNotDefined } from 'utils'
 import { LoadingRows } from './LoadingRows'
 
 type SubmissionsTableProps = {
@@ -130,7 +131,9 @@ export const SubmissionsTable = ({
                       }
                       {...cell.getCellProps()}
                     >
-                      {cell.render('Cell')}
+                      {isNotDefined(cell.value)
+                        ? cell.render('Cell')
+                        : cell.value.element ?? cell.value.plainText}
                     </chakra.td>
                   )
                 })}

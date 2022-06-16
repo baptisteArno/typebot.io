@@ -108,7 +108,13 @@ export const SubmissionsContent = ({
     const csvData = new Blob(
       [
         unparse({
-          data: dataToUnparse,
+          data: dataToUnparse.map<{ [key: string]: string }>((data) => {
+            const newObject: { [key: string]: string } = {}
+            Object.keys(data).forEach((key) => {
+              newObject[key] = data[key].plainText
+            })
+            return newObject
+          }),
           fields: resultHeader.map((h) => h.label),
         }),
       ],
@@ -132,7 +138,9 @@ export const SubmissionsContent = ({
     return convertResultsToTableData(results, resultHeader)
   }
 
-  const tableData: { [key: string]: string | JSX.Element }[] = useMemo(
+  const tableData: {
+    [key: string]: { plainText: string; element?: JSX.Element }
+  }[] = useMemo(
     () =>
       publishedTypebot ? convertResultsToTableData(results, resultHeader) : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
