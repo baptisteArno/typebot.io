@@ -90,7 +90,7 @@ export async function getServerSideProps(context: NextPageContext) {
         {
         ...(await serverSideTranslations(context.locale as string, [
           'common'
-          ])),
+          ]))
         } 
       }
 }}

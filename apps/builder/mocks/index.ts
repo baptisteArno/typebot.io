@@ -1,5 +1,6 @@
 import { rest, setupWorker } from 'msw'
 import { setupServer } from 'msw/node'
+import { setupMockUser, setupEnvironment } from './octadesk'
 
 const handlers = () => [
   rest.get('http://localhost:3000/api/auth/session', (req, res, ctx) => {
@@ -27,4 +28,9 @@ export const enableMocks = () => {
       onUnhandledRequest: 'bypass',
     })
   }
+}
+
+export {
+  setupMockUser,
+  setupEnvironment
 }

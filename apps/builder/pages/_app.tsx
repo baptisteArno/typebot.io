@@ -15,7 +15,7 @@ import { TypebotContext } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import { KBarProvider } from 'kbar'
 import { actions } from 'libs/kbar'
-import { enableMocks } from 'mocks'
+import { enableMocks, setupMockUser, setupEnvironment } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
 
@@ -32,6 +32,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       ? (document.body.style.overflow = 'hidden')
       : (document.body.style.overflow = 'auto')
   }, [pathname])
+
+  setupMockUser()
+  setupEnvironment()
 
   const typebotId = query.typebotId?.toString()
   return (

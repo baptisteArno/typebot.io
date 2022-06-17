@@ -17,8 +17,12 @@ import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
-const TypebotEditPage = () => {
+import Storage from '@octadesk-tech/storage'
+
+function TypebotEditPage({ data }) {
   const { typebot, isReadOnly } = useTypebot()
+
+  console.log('token: ' + data)
 
   return (
     <EditorContext>
@@ -56,6 +60,15 @@ const TypebotEditPage = () => {
 const RightPanel = () => {
   const { rightPanel } = useEditor()
   return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const userToken = Storage.getItem('userToken')
+  console.log('token1: ' + userToken)
+
+  // Pass data to the page via props
+  return { props: { data : userToken } }
 }
 
 export default TypebotEditPage
