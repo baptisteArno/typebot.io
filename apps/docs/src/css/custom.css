@@ -20,6 +20,7 @@ h4 {
 
 img {
   border-radius: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .docusaurus-highlight-code-line {
@@ -54,4 +55,24 @@ details {
   padding: 0.5rem 1rem;
   text-decoration: none !important;
   margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.arrow-icon {
+  margin: 0 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .arrow-icon {
+    margin: 10px 0;
+    transform: rotate(90deg);
+  }
 }

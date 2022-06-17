@@ -1,0 +1,55 @@
+---
+sidebar_position: 1
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Text
+
+The Text input block allows you to ask your user for a text answer.
+
+## Short text input
+
+By default the text input is expecting a short answer:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/short-text-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Short text input in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/short-text-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Short text input in bot"
+    />
+  }
+/>
+
+## Long text input
+
+You can also ask your user for a longer text answer by enabling it in the input options:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/long-text-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Long text input in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/long-text-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Long text input in bot"
+    />
+  }
+/>

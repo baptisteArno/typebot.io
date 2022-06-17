@@ -1,0 +1,25 @@
+---
+sidebar_position: 2
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Image
+
+The Image bubble block allows you to display an image to your user. You can upload an image, paste a URL or choose a GIF from the Giphy native integration.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/bubbles/image.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Image bubble"
+    />
+  }
+  bot={
+    <video controls width="100%" style={{ maxWidth: '400px' }}>
+      <source src="/img/blocks/bubbles/image-chat.mp4" type="video/mp4" />
+    </video>
+  }
+/>

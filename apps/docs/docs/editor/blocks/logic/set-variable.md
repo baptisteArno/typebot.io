@@ -1,8 +1,12 @@
+---
+sidebar_position: 1
+---
+
 # Set variable
 
 The "Set variable" block allows you to set a particular value to a variable.
 
-<img src="/img/blocks/set-variable.png" width="600" alt="Set variable"/>
+<img src="/img/blocks/logic/set-variable.png" width="600" alt="Set variable"/>
 
 This value can be any kind of plain text but also **Javascript code**.
 
@@ -44,6 +48,5 @@ window.location.href
 
 :::caution
 It will not give you the parent URL if you embed the bot on your site.
-
-A more bullet proof option is to pass the URL as a hidden variable in the embed code options. You can find an example [here](../../embed/html-javascript#additional-configuration).
+A more bulletproof option is to pass the URL as a hidden variable in the embed code options. You can find an example [here](/embed/html-javascript#additional-configuration).
 :::

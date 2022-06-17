@@ -1,0 +1,32 @@
+---
+sidebar_position: 3
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Email
+
+The Email input block allows you to ask your user for an email. It will check if it is properly formatted.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/email-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Email input in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/email-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Email input in bot"
+    />
+  }
+/>
+
+The retry message will be displayed whenever Typebot detected that the email is not properly formatted.
+
+It won't check if the email address is **valid**. To do that, you will have to trigger a [Webhook block](/editor/blocks/integrations/webhook) and call an email validation service API.

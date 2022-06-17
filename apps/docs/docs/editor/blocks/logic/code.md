@@ -2,9 +2,9 @@
 
 The "Code" block allows you to execute Javascript code. If you want to set a variable value with Javascript, use the [Set variable block](./set-variable) instead.
 
-**It doesn't allow you to create custom visual block**
+**It doesn't allow you to create a custom visual block**
 
-<img src="/img/blocks/code.png" width="600" alt="Code block"/>
+<img src="/img/blocks/logic/code.png" width="600" alt="Code block"/>
 
 ## Examples
 
@@ -28,7 +28,7 @@ return new Promise((res) => setTimeout(res, 3000))
 postMessage('hello there!', '*')
 ```
 
-Then on your parent website you could listen for those messages:
+Then on your parent website, you could listen for those messages:
 
 ```js
 addEventListener('message', ({ data }) => console.log(data))

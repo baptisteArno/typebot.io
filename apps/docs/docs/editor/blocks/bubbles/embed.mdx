@@ -1,0 +1,25 @@
+---
+sidebar_position: 4
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Embed
+
+The Embed bubble block allows you to display a website or an iframe to your user. You can paste a video URL from many sources including YouTube, Vimeo, and mp4.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/bubbles/embed.png"
+      width="100%"
+      style={{ maxWidth: '600px' }}
+      alt="Embed bubble"
+    />
+  }
+  bot={
+    <video controls width="100%" style={{ maxWidth: '400px' }}>
+      <source src="/img/blocks/bubbles/embed-chat.mp4" type="video/mp4" />
+    </video>
+  }
+/>

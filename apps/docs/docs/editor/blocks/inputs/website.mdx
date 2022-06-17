@@ -1,0 +1,32 @@
+---
+sidebar_position: 4
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Website
+
+The Website input block allows you to ask your user for a URL. It will check if it is properly formatted.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/website-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Website input in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/website-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Website input in bot"
+    />
+  }
+/>
+
+The retry message will be displayed whenever Typebot detected that the email is not properly formatted.
+
+It won't check if the email address is **valid**. To do that, you will have to trigger a [Webhook block](/editor/blocks/integrations/webhook) and call an email validation service API.

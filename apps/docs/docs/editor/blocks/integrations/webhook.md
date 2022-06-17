@@ -1,4 +1,8 @@
-# Webhook
+---
+sidebar_position: 3
+---
+
+# Webhook / API Request
 
 The Webhook block allows you to either:
 
@@ -11,7 +15,7 @@ Your 3rd party service (Make.com, Zapier, etc) is giving you a Webhook URL.
 
 You only have to paste this URL in the Webhook block and click on "Test the request". By default the 3rd party service will receive a snapshot of what the bot could send.
 
-<img src="/img/integrations/webhook/simple-post.png" width="600" alt="Simple Webhook POST" />
+<img src="/img/blocks/integrations/webhook/simple-post.png" width="600" alt="Simple Webhook POST" />
 
 You can also decide to customize the request sent to the 3rd party service.
 
@@ -29,19 +33,19 @@ From the documentation, I know that by calling this specific URL: http://www.omd
 
 What I need in my case is instead of inserting "Star Wars", I'd like to insert a Typebot variable:
 
-<img src="/img/integrations/webhook/variable-url.png" width="600" alt="Variable in URL" />
+<img src="/img/blocks/integrations/webhook/variable-url.png" width="600" alt="Variable in URL" />
 
 Then, we can set a test value for our variable (it will replace the variable with this value only for the "Test the request" button):
 
-<img src="/img/integrations/webhook/variable-test-value.png" width="300" alt="Variable in URL" />
+<img src="/img/blocks/integrations/webhook/variable-test-value.png" width="300" alt="Variable in URL" />
 
 Hit the "Test the request" button and then we can save the result in multiple variables:
 
-<img src="/img/integrations/webhook/save-in-variable.png" width="400" alt="Variable in URL" />
+<img src="/img/blocks/integrations/webhook/save-in-variable.png" width="400" alt="Variable in URL" />
 
 Then we can use these variables to display dynamic content in the next bubbles:
 
-<img src="/img/integrations/webhook/preview.png" width="600" alt="Variable in URL" />
+<img src="/img/blocks/integrations/webhook/preview.png" width="600" alt="Variable in URL" />
 
 Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
 

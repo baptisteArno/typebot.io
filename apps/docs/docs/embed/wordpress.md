@@ -35,7 +35,7 @@ you need to set a fixed `height` in pixel (`500px` or `600px` is usually a great
 
 ### Popup & Bubble
 
-Fields are self explanatory.
+Fields are self explanatory. To open the popup or the bubble when a button in your site is clicked you can use the [Javascript commands](/embed/html-javascript#open-or-close-a-popup).
 
 #### Pages to include separated by a comma
 

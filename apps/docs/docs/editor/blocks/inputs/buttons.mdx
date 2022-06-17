@@ -1,0 +1,55 @@
+---
+sidebar_position: 7
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Buttons
+
+The Buttons input block allows you to offer your user predefined choices, either single choice options or multiple choices
+
+## Single choice
+
+Single choice input allows you to directly split your flow depending on what the user selects by linking any choice to a specific path in your flow.
+
+Link the "Default" item to determine the default path independent of what the user chooses.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/single-choice-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Single choice in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/single-choice-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Single choice in bot"
+    />
+  }
+/>
+
+## Multiple choices
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/multiple-choices-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Multiple choices in flow"
+    />
+  }
+  bot={
+    <video controls width="100%" style={{ maxWidth: '400px' }}>
+      <source
+        src="/img/blocks/inputs/multiple-choices-bot.mp4"
+        type="video/mp4"
+      />
+    </video>
+  }
+/>

@@ -1,0 +1,37 @@
+---
+sidebar_position: 5
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Date
+
+The Date input block allows you to ask your user for a date. You can ask for a specific date or range and include time:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/date-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Date input in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/date-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Date input in bot"
+    />
+  }
+/>
+
+The input will use the native date picker depending on the device and browser used to answer the bot. For example on Firefox it looks like this:
+
+<img
+  src="/img/blocks/inputs/date-native-picker.png"
+  width="100%"
+  style={{ maxWidth: '500px' }}
+  alt="Date native picker"
+/>

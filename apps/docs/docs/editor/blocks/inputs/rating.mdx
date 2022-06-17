@@ -1,0 +1,57 @@
+---
+sidebar_position: 9
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Rating
+
+The Rating input block allows you to ask your user for a rating.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/rating-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Rating in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/rating-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Rating in bot"
+    />
+  }
+/>
+
+The rating input is very customizable, you can set a custom range, numbers or a custom icon, and bottom labels.
+
+## NPS
+
+You could for example configure it so that it collects the Net promoter score:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/nps-flow.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="NPS configuration"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/nps-bot.png"
+      width="100%"
+      style={{ maxWidth: '600px' }}
+      alt="NPS in bot"
+    />
+  }
+/>
+
+## Custom icon
+
+To insert a custom icon, you'll need to insert SVG content. It should start with `<svg>` and end with `</svg>`. You can find great open-source icons on [Feather](https://feathericons.com/)

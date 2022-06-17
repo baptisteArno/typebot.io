@@ -1,0 +1,28 @@
+---
+sidebar_position: 1
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Text
+
+The Text bubble block allows you to display a simple text bubble to your user. They can be chained and it will create a smooth animation:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/bubbles/3-text-bubbles.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Text bubbles"
+    />
+  }
+  bot={
+    <video controls width="100%" style={{ maxWidth: '600px' }}>
+      <source
+        src="/img/blocks/bubbles/3-text-bubbles-chat.mp4"
+        type="video/mp4"
+      />
+    </video>
+  }
+/>

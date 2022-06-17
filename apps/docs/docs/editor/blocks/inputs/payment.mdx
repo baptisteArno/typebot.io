@@ -1,0 +1,55 @@
+---
+sidebar_position: 8
+---
+
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Payment
+
+The Payment input block allows you to collect payment. You first need to add your Stripe:
+
+## Connect Stripe account
+
+After clicking on `Select an account > Connect new`, a configuration popup appears:
+
+<img
+  src="/img/blocks/inputs/configure-stripe.png"
+  width="100%"
+  style={{ maxWidth: '800px' }}
+  alt="Single choice in flow"
+/>
+
+- Account name could be anything you'd like it's not something that has to come from Stripe.
+- Test keys can be found here: https://dashboard.stripe.com/test/apikeys
+- Live keys can be found here: https://dashboard.stripe.com/apikeys
+
+Test keys will be used in the preview for testing purposes. Live keys will be used in the published bot.
+
+If you'd still like to still use the test keys in the published bot you just need to also fill in the test keys into the live keys inputs.
+
+## Input configuration
+
+Once you have a Stripe account, you can select it and configure your input:
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/inputs/payment-flow.png"
+      width="100%"
+      style={{ maxWidth: '500px' }}
+      alt="Payment in flow"
+    />
+  }
+  bot={
+    <img
+      src="/img/blocks/inputs/payment-bot.png"
+      width="100%"
+      style={{ maxWidth: '300px' }}
+      alt="Payment in bot"
+    />
+  }
+/>
+
+Make sure to enable any payment method you'd like to appear in your Stripe dashboard at this URL: https://dashboard.stripe.com/settings/payment_methods.
+
+This is where you can enable Cards, Apple Pay, Google Pay, Alipay, WeChat Pay etc.
