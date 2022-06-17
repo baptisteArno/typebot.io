@@ -111,7 +111,7 @@ export const FileUploadForm = ({
       <label
         htmlFor="dropzone-file"
         className={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 px-8 mb-2 ' +
+          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
           (isDraggingOver ? 'dragging-over' : '')
         }
         onDragOver={handleDragOver}
@@ -123,7 +123,7 @@ export const FileUploadForm = ({
             {selectedFiles.length === 1 ? (
               <Spinner />
             ) : (
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
                   className="upload-progress-bar h-2.5 rounded-full"
                   style={{
@@ -151,7 +151,7 @@ export const FileUploadForm = ({
                 <UploadIcon />
               )}
               <p
-                className="text-sm text-gray-500 dark:text-gray-400 text-center"
+                className="text-sm text-gray-500 text-center"
                 dangerouslySetInnerHTML={{ __html: labels.placeholder }}
               />
             </div>
