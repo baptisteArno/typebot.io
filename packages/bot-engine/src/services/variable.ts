@@ -7,9 +7,9 @@ export const stringContainsVariable = (str: string): boolean =>
 export const parseVariables =
   (
     variables: Variable[],
-    options: { fieldToParse?: 'value' | 'id'; escapeLineBreaks?: boolean } = {
+    options: { fieldToParse?: 'value' | 'id'; escapeForJson?: boolean } = {
       fieldToParse: 'value',
-      escapeLineBreaks: false,
+      escapeForJson: false,
     }
   ) =>
   (text: string | undefined): string => {
@@ -23,11 +23,16 @@ export const parseVariables =
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
       if (isNotDefined(value)) return ''
-      if (options.escapeLineBreaks)
-        return value.toString().replace(/\n/g, '\\n')
+      if (options.escapeForJson) return jsonParse(value.toString())
       return value.toString()
     })
   }
+
+const jsonParse = (str: string) =>
+  str
+    .replace(/\n/g, `\\n`)
+    .replace(/"/g, `\\"`)
+    .replace(/\\[^n"]/g, `\\\\ `)
 
 export const evaluateExpression = (variables: Variable[]) => (str: string) => {
   const evaluating = parseVariables(variables, { fieldToParse: 'id' })(

@@ -143,13 +143,13 @@ export const executeWebhook =
       json:
         contentType !== 'x-www-form-urlencoded' && body
           ? safeJsonParse(
-              parseVariables(variables, { escapeLineBreaks: true })(body)
+              parseVariables(variables, { escapeForJson: true })(body)
             )
           : undefined,
       form:
         contentType === 'x-www-form-urlencoded' && body
           ? safeJsonParse(
-              parseVariables(variables, { escapeLineBreaks: true })(body)
+              parseVariables(variables, { escapeForJson: true })(body)
             )
           : undefined,
     }

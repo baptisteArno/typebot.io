@@ -5,6 +5,9 @@ import { typebotViewer } from '../services/selectorUtils'
 test.describe.parallel('Templates page', () => {
   test('From scratch should create a blank typebot', async ({ page }) => {
     await page.goto('/typebots/create')
+    await expect(
+      page.locator('button >> text="Settings & Members"')
+    ).toBeEnabled()
     await page.click('text=Start from scratch')
     await expect(page).toHaveURL(new RegExp(`/edit`))
   })
