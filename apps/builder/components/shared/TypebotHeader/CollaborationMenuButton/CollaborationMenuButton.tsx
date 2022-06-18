@@ -18,6 +18,7 @@ export const CollaborationMenuButton = () => {
             <IconButton
               icon={<UsersIcon />}
               aria-label="Show collaboration menu"
+              size="sm"
             />
           </Tooltip>
         </span>

@@ -10,6 +10,7 @@ import {
   MenuList,
   MenuItem,
   useDisclosure,
+  ButtonProps,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
@@ -23,7 +24,7 @@ import { isNotDefined } from 'utils'
 import { UpgradeModal } from '../modals/UpgradeModal'
 import { LimitReached } from '../modals/UpgradeModal/UpgradeModal'
 
-export const PublishButton = () => {
+export const PublishButton = (props: ButtonProps) => {
   const { workspace } = useWorkspace()
   const { push, query } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -78,6 +79,7 @@ export const PublishButton = () => {
           isDisabled={isPublished}
           onClick={handlePublishClick}
           borderRightRadius={publishedTypebot && !isPublished ? 0 : undefined}
+          {...props}
         >
           {isPublished ? 'Published' : 'Publish'}
         </Button>

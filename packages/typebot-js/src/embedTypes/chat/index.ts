@@ -89,7 +89,8 @@ export const getBubbleActions = (
 ): BubbleActions => {
   const existingBubbleElement =
     bubbleElement ??
-    (document.querySelector('#typebot-bubble') as HTMLDivElement)
+    (document.querySelector('#typebot-bubble') as HTMLDivElement | undefined)
+  if (!existingBubbleElement) return { close: () => {}, open: () => {} }
   const existingIframeElement =
     iframeElement ??
     (existingBubbleElement.querySelector(

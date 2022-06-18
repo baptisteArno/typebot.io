@@ -116,4 +116,4 @@ export const timeSince = (date: string) => {
 }
 
 export const isCloudProdInstance = () =>
-  window.location.hostname === 'app.typebot.io'
+  typeof window !== 'undefined' && window.location.hostname === 'app.typebot.io'

@@ -18,14 +18,15 @@ export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
     <Tooltip label="Rename">
       <Editable value={localName} onChange={setLocalName} onSubmit={onNewName}>
         <EditablePreview
-          noOfLines={1}
+          noOfLines={2}
           cursor="pointer"
-          maxW="200px"
+          maxW="150px"
           overflow="hidden"
           display="flex"
           alignItems="center"
+          fontSize="14px"
         />
-        <EditableInput />
+        <EditableInput fontSize="14px" />
       </Editable>
     </Tooltip>
   )

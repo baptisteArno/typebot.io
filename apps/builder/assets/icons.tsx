@@ -463,3 +463,14 @@ export const StarIcon = (props: IconProps) => (
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
   </Icon>
 )
+export const BuoyIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <circle cx="12" cy="12" r="4"></circle>
+    <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+    <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+    <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+    <line x1="14.83" y1="9.17" x2="18.36" y2="5.64"></line>
+    <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+  </Icon>
+)

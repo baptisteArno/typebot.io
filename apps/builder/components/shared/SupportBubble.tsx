@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { isCloudProdInstance } from 'services/utils'
 import { planToReadable } from 'services/workspace'
 import { initBubble } from 'typebot-js'
-import { isEmpty } from 'utils'
 
 export const SupportBubble = () => {
   const { typebot } = useTypebot()
@@ -22,11 +21,7 @@ export const SupportBubble = () => {
       setLocalTypebotId(typebot?.id)
       setLocalUserId(user?.id)
       initBubble({
-        url: `${
-          isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
-            ? process.env.NEXT_PUBLIC_VIEWER_URL
-            : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
-        }/typebot-support`,
+        url: `https://viewer.typebot.io/typebot-support`,
         backgroundColor: '#ffffff',
         button: {
           color: '#0042DA',
