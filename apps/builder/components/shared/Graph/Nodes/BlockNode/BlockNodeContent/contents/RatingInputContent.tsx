@@ -6,7 +6,7 @@ type Props = {
 }
 
 export const RatingInputContent = ({ block }: Props) => (
-  <Text noOfLines={0} pr="6">
+  <Text noOfLines={1} pr="6">
     Rate from 1 to {block.options.length}
   </Text>
 )

@@ -6,7 +6,7 @@ type Props = {
 }
 
 export const FileInputContent = ({ options: { isMultipleAllowed } }: Props) => (
-  <Text noOfLines={0} pr="6">
+  <Text noOfLines={1} pr="6">
     Collect {isMultipleAllowed ? 'files' : 'file'}
   </Text>
 )

@@ -90,7 +90,7 @@ export const DashboardHeader = () => {
                   />
                 </SkeletonCircle>
                 {workspace && (
-                  <Text noOfLines={0} maxW="200px">
+                  <Text noOfLines={1} maxW="200px">
                     {workspace.name}
                   </Text>
                 )}

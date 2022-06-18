@@ -174,7 +174,7 @@ export const CollaborationList = () => {
         <Flex py="2" px="4" justifyContent="space-between">
           <HStack minW={0}>
             <EmojiOrImageIcon icon={workspace.icon} />
-            <Text fontSize="15px" noOfLines={0}>
+            <Text fontSize="15px" noOfLines={1}>
               Everyone at {workspace.name}
             </Text>
           </HStack>

@@ -101,7 +101,7 @@ export const CredentialsDropdown = ({
         textAlign="left"
         {...props}
       >
-        <Text noOfLines={0} overflowY="visible" h="20px">
+        <Text noOfLines={1} overflowY="visible" h="20px">
           {currentCredential ? currentCredential.name : defaultCredentialsLabel}
         </Text>
       </MenuButton>

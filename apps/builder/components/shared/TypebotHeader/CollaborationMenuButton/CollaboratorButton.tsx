@@ -91,7 +91,7 @@ export const CollaboratorIdentityContent = ({
         <Text
           color="gray.500"
           fontSize={name ? '14px' : 'inherit'}
-          noOfLines={0}
+          noOfLines={1}
         >
           {email}
         </Text>

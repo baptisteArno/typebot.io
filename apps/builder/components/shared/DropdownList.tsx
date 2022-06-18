@@ -39,7 +39,7 @@ export const DropdownList = <T,>({
         textAlign="left"
         {...props}
       >
-        <chakra.span noOfLines={0} display="block">
+        <chakra.span noOfLines={1} display="block">
           {(currentItem ?? placeholder) as unknown as ReactNode}
         </chakra.span>
       </MenuButton>
