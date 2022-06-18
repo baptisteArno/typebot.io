@@ -44,6 +44,7 @@ export const ConversationContainer = ({
   const { updateVariables } = useAnswers()
   const bottomAnchor = useRef<HTMLDivElement | null>(null)
   const scrollableContainer = useRef<HTMLDivElement | null>(null)
+  const [hasStarted, setHasStarted] = useState(false)
 
   const displayNextGroup = ({
     edgeId,
@@ -90,6 +91,7 @@ export const ConversationContainer = ({
   }
 
   useEffect(() => {
+    if (hasStarted) return
     if (
       isDefined(predefinedVariables) &&
       Object.keys(predefinedVariables).length > 0
@@ -97,6 +99,7 @@ export const ConversationContainer = ({
       const prefilledVariables = injectPredefinedVariables(predefinedVariables)
       updateVariables(prefilledVariables)
     }
+    setHasStarted(true)
     displayNextGroup({
       edgeId: startGroupId
         ? undefined
