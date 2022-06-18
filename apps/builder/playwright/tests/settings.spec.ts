@@ -131,6 +131,9 @@ test.describe.parallel('Settings page', () => {
         }
       )
       await page.goto(`/typebots/${typebotId}/settings`)
+      await expect(
+        typebotViewer(page).locator('text="What\'s your name?"')
+      ).toBeVisible()
       await page.click('button:has-text("General")')
       await expect(page.locator('text=Pro')).toBeVisible()
       await page.click('text=Typebot.io branding')
