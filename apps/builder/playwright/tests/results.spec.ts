@@ -57,10 +57,12 @@ test.describe('Results page', () => {
     await deleteButtonInConfirmDialog(page).click()
     await expect(page.locator('text=content199')).toBeHidden()
     await expect(page.locator('text=content198')).toBeHidden()
+    await page.waitForTimeout(1000)
     await page.click('[data-testid="checkbox"] >> nth=0')
     await page.click('button:has-text("Delete198")')
     await deleteButtonInConfirmDialog(page).click()
-    await expect(page.locator(':nth-match(tr, 2)')).toBeHidden()
+    await page.waitForTimeout(1000)
+    expect(await page.locator('tr').count()).toBe(1)
   })
 
   test('submissions table should have infinite scroll', async ({ page }) => {

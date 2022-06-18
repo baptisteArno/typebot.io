@@ -76,10 +76,15 @@ export const useResults = ({
   }
 }
 
-export const deleteResults = async (typebotId: string, ids: string[]) => {
+export const deleteResults = async (
+  workspaceId: string,
+  typebotId: string,
+  ids: string[]
+) => {
   const params = stringify(
     {
       ids,
+      workspaceId,
     },
     { indices: false }
   )
@@ -88,12 +93,6 @@ export const deleteResults = async (typebotId: string, ids: string[]) => {
     method: 'DELETE',
   })
 }
-
-export const deleteAllResults = async (typebotId: string) =>
-  sendRequest({
-    url: `/api/typebots/${typebotId}/results`,
-    method: 'DELETE',
-  })
 
 export const getAllResults = async (workspaceId: string, typebotId: string) => {
   const results = []

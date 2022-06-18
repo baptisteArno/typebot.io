@@ -2,7 +2,7 @@ import { rest, setupWorker } from 'msw'
 import { setupServer } from 'msw/node'
 
 const handlers = () => [
-  rest.get('/api/auth/session', (req, res, ctx) => {
+  rest.get('http://localhost:3000/api/auth/session', (req, res, ctx) => {
     const authenticatedUser = JSON.parse(
       typeof localStorage !== 'undefined'
         ? (localStorage.getItem('authenticatedUser') as string)

@@ -15,13 +15,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
   const workspaceId = req.query.workspaceId as string | undefined
+  if (!workspaceId) return badRequest(res, 'workspaceId is required')
+  const workspace = await prisma.workspace.findFirst({
+    where: { id: workspaceId, members: { some: { userId: user.id } } },
+    select: { plan: true },
+  })
+  if (!workspace) return forbidden(res)
   if (req.method === 'GET') {
-    if (!workspaceId) return badRequest(res, 'workspaceId is required')
-    const workspace = await prisma.workspace.findFirst({
-      where: { id: workspaceId, members: { some: { userId: user.id } } },
-      select: { plan: true },
-    })
-    if (!workspace) return forbidden(res)
     const typebotId = req.query.typebotId.toString()
     const lastResultId = req.query.lastResultId?.toString()
     const take = parseInt(req.query.limit?.toString())
@@ -46,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send({ results })
   }
   if (req.method === 'DELETE') {
-    const typebotId = req.query.typebotId.toString()
+    const typebotId = req.query.typebotId as string
     const ids = req.query.ids as string[]
     const results = await prisma.result.deleteMany({
       where: {

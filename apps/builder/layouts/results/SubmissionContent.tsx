@@ -4,7 +4,6 @@ import { SubmissionsTable } from 'components/results/SubmissionsTable'
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   convertResultsToTableData,
-  deleteAllResults,
   deleteResults,
   getAllResults,
   useResults,
@@ -70,10 +69,11 @@ export const SubmissionsContent = ({
     const selectedIds = (results ?? [])
       .filter((_, idx) => selectedIndices.includes(idx))
       .map((result) => result.id)
-    const { error } =
-      totalSelected === totalResults
-        ? await deleteAllResults(typebotId)
-        : await deleteResults(typebotId, selectedIds)
+    const { error } = await deleteResults(
+      workspaceId,
+      typebotId,
+      totalSelected === totalResults ? [] : selectedIds
+    )
     if (error) showToast({ description: error.message, title: error.name })
     else {
       mutate(
