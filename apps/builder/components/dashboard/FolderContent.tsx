@@ -1,4 +1,4 @@
-import { DashboardFolder } from 'db'
+import { DashboardFolder, WorkspaceRole } from 'db'
 import {
   Flex,
   Heading,
@@ -34,7 +34,7 @@ const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
   const { user } = useUser()
-  const { workspace } = useWorkspace()
+  const { workspace, currentRole } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
     setDraggedTypebot,
@@ -170,17 +170,21 @@ export const FolderContent = ({ folder }: Props) => {
         <Stack>
           <HStack>
             {folder && <BackButton id={folder.parentFolderId} />}
-            <CreateFolderButton
-              onClick={handleCreateFolder}
-              isLoading={isCreatingFolder || isFolderLoading}
-            />
+            {currentRole !== WorkspaceRole.GUEST && (
+              <CreateFolderButton
+                onClick={handleCreateFolder}
+                isLoading={isCreatingFolder || isFolderLoading}
+              />
+            )}
           </HStack>
           <Wrap spacing={4}>
-            <CreateBotButton
-              folderId={folder?.id}
-              isLoading={isTypebotLoading}
-              isFirstBot={typebots?.length === 0 && folder === null}
-            />
+            {currentRole !== WorkspaceRole.GUEST && (
+              <CreateBotButton
+                folderId={folder?.id}
+                isLoading={isTypebotLoading}
+                isFirstBot={typebots?.length === 0 && folder === null}
+              />
+            )}
             {isFolderLoading && <ButtonSkeleton />}
             {folders &&
               folders.map((folder) => (
