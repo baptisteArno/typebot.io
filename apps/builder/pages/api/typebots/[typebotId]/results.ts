@@ -47,10 +47,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'DELETE') {
     const typebotId = req.query.typebotId as string
-    const ids = req.query.ids as string[]
+    const data = req.body as { ids: string[] }
+    const ids = data.ids
     const results = await prisma.result.deleteMany({
       where: {
-        id: { in: ids },
+        id: ids.length > 0 ? { in: ids } : undefined,
         typebot: canWriteTypebot(typebotId, user),
       },
     })

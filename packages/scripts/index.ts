@@ -1,5 +1,25 @@
+import { CollaborationType, PrismaClient } from 'db'
 import path from 'path'
-import { migrateWorkspace } from './workspaceMigration'
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+    {
+      emit: 'stdout',
+      level: 'error',
+    },
+    {
+      emit: 'stdout',
+      level: 'info',
+    },
+    {
+      emit: 'stdout',
+      level: 'warn',
+    },
+  ],
+})
 
 require('dotenv').config({
   path: path.join(
@@ -9,7 +29,14 @@ require('dotenv').config({
 })
 
 const main = async () => {
-  await migrateWorkspace()
+  prisma.$on('query', (e) => {
+    console.log('Query: ' + e.query)
+    console.log('Params: ' + e.params)
+    console.log('Duration: ' + e.duration + 'ms')
+  })
+  const results =
+    await prisma.$queryRaw`DELETE FROM "public"."Result" WHERE "public"."Result"."typebotId"='ckzqqer3j002509l3np5x3v2y'`
+  console.log(results)
 }
 
 main().then()
