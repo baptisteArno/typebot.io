@@ -93,6 +93,7 @@ export const PublishButton = (props: ButtonProps) => {
             borderLeftRadius={0}
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
             aria-label="Show published version"
+            size="sm"
           />
           <MenuList>
             <MenuItem onClick={restorePublishedTypebot}>
