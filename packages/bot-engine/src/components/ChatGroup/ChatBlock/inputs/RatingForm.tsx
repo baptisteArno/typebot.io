@@ -1,5 +1,5 @@
 import { RatingInputOptions, RatingInputBlock } from 'models'
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { isDefined, isEmpty, isNotDefined } from 'utils'
 import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
@@ -11,7 +11,6 @@ type Props = {
 
 export const RatingForm = ({ block, onSubmit }: Props) => {
   const [rating, setRating] = useState<number>()
-  const scaleElement = useRef<HTMLDivElement | null>(null)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -23,33 +22,32 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      <div className="flex flex-col" ref={scaleElement}>
-        <div className="flex">
-          {Array.from(Array(block.options.length)).map((_, idx) => (
-            <RatingButton
-              {...block.options}
-              key={idx}
-              rating={rating}
-              idx={idx + 1}
-              onClick={handleClick}
-            />
-          ))}
-        </div>
-
-        <div className="flex justify-between mr-2 mb-2">
-          {<span className="text-sm w-full ">{block.options.labels.left}</span>}
-          {!isEmpty(block.options.labels.middle) && (
-            <span className="text-sm w-full text-center">
-              {block.options.labels.middle}
-            </span>
-          )}
-          {
-            <span className="text-sm w-full text-right">
-              {block.options.labels.right}
-            </span>
-          }
-        </div>
+      {block.options.labels.left && (
+        <span className="text-sm w-full mb-2 rating-label">
+          {block.options.labels.left}
+        </span>
+      )}
+      <div className="flex flex-wrap justify-center">
+        {Array.from(
+          Array(
+            block.options.length +
+              (block.options.buttonType === 'Numbers' ? 1 : 0)
+          )
+        ).map((_, idx) => (
+          <RatingButton
+            {...block.options}
+            key={idx}
+            rating={rating}
+            idx={idx + (block.options.buttonType === 'Numbers' ? 0 : 1)}
+            onClick={handleClick}
+          />
+        ))}
       </div>
+      {block.options.labels.right && (
+        <span className="text-sm w-full text-right mb-2 pr-2 rating-label">
+          {block.options.labels.right}
+        </span>
+      )}
 
       <div className="flex justify-end mr-2">
         {isDefined(rating) && (

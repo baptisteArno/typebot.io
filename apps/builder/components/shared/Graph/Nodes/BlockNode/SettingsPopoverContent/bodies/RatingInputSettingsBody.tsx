@@ -33,9 +33,6 @@ export const RatingInputSettings = ({
   const handleLeftLabelChange = (left: string) =>
     onOptionsChange({ ...options, labels: { ...options.labels, left } })
 
-  const handleMiddleLabelChange = (middle: string) =>
-    onOptionsChange({ ...options, labels: { ...options.labels, middle } })
-
   const handleRightLabelChange = (right: string) =>
     onOptionsChange({ ...options, labels: { ...options.labels, right } })
 
@@ -92,7 +89,7 @@ export const RatingInputSettings = ({
       )}
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          1 label:
+          {options.buttonType === 'Icons' ? '1' : '0'} label:
         </FormLabel>
         <Input
           id="button"
@@ -101,19 +98,6 @@ export const RatingInputSettings = ({
           placeholder="Not likely at all"
         />
       </Stack>
-      {options.length >= 4 && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="button">
-            {Math.floor(options.length / 2)} label:
-          </FormLabel>
-          <Input
-            id="button"
-            defaultValue={options.labels.middle}
-            onChange={handleMiddleLabelChange}
-            placeholder="Neutral"
-          />
-        </Stack>
-      )}
       <Stack>
         <FormLabel mb="0" htmlFor="button">
           {options.length} label:
