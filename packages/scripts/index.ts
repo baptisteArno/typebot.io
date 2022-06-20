@@ -1,4 +1,4 @@
-import { CollaborationType, PrismaClient } from 'db'
+import { PrismaClient } from 'db'
 import path from 'path'
 const prisma = new PrismaClient({
   log: [
@@ -34,9 +34,6 @@ const main = async () => {
     console.log('Params: ' + e.params)
     console.log('Duration: ' + e.duration + 'ms')
   })
-  const results =
-    await prisma.$queryRaw`DELETE FROM "public"."Result" WHERE "public"."Result"."typebotId"='ckzqqer3j002509l3np5x3v2y'`
-  console.log(results)
 }
 
 main().then()

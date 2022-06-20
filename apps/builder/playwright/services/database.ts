@@ -255,6 +255,14 @@ const createAnswers = () => {
   })
 }
 
+export const createFolder = (workspaceId: string, name: string) =>
+  prisma.dashboardFolder.create({
+    data: {
+      workspaceId,
+      name,
+    },
+  })
+
 const parseTypebotToPublicTypebot = (
   id: string,
   typebot: Typebot

@@ -4,6 +4,7 @@ import { CollaborationType, Plan, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { InputBlockType, defaultTextInputOptions } from 'models'
 import {
+  createFolder,
   createResults,
   createTypebots,
   parseDefaultGroupWithBlock,
@@ -96,10 +97,13 @@ test.describe('Collaborator', () => {
         type: CollaborationType.READ,
       },
     })
+    await createFolder(guestWorkspaceId, 'Guest folder')
     await createResults({ typebotId })
     await page.goto(`/typebots`)
     await page.click("text=Pro user's workspace")
     await page.click('text=Guest workspace #2')
+    await expect(page.locator('text=Guest typebot')).toBeVisible()
+    await expect(page.locator('text=Guest folder')).toBeHidden()
     await page.click('text=Guest typebot')
     await page.click('button[aria-label="Show collaboration menu"]')
     await page.click('text=Everyone at Guest workspace')

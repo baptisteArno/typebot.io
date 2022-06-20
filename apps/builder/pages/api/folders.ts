@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { DashboardFolder } from 'db'
+import { DashboardFolder, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
@@ -18,8 +18,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!workspaceId) return badRequest(res)
     const folders = await prisma.dashboardFolder.findMany({
       where: {
-        parentFolderId,
-        workspace: { members: { some: { userId: user.id, workspaceId } } },
+        AND: [
+          {
+            parentFolderId,
+            workspaceId: workspaceId,
+          },
+          {
+            OR: [
+              {
+                workspace: {
+                  members: {
+                    some: {
+                      userId: user.id,
+                      role: { not: WorkspaceRole.GUEST },
+                    },
+                  },
+                },
+              },
+              {
+                typebots: {
+                  some: {
+                    collaborators: {
+                      some: {
+                        userId: user.id,
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
       orderBy: { createdAt: 'desc' },
     })
