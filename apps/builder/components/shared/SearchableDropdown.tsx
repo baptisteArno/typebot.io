@@ -140,7 +140,7 @@ export const SearchableDropdown = ({
         isLazy
       >
         <PopoverTrigger>
-          <HStack spacing={0} align={'flex-end'}>
+          <HStack spacing={0} align={'flex-end'} w="full">
             <Input
               ref={inputRef}
               value={inputValue}
