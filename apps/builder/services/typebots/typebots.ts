@@ -400,11 +400,13 @@ export const parseNewTypebot = ({
   name,
   ownerAvatarUrl,
   workspaceId,
+  isBrandingEnabled = true,
 }: {
   folderId: string | null
   workspaceId: string
   name: string
   ownerAvatarUrl?: string
+  isBrandingEnabled?: boolean
 }): Omit<
   Typebot,
   | 'createdAt'
@@ -443,7 +445,13 @@ export const parseNewTypebot = ({
         hostAvatar: { isEnabled: true, url: ownerAvatarUrl },
       },
     },
-    settings: defaultSettings,
+    settings: {
+      ...defaultSettings,
+      general: {
+        ...defaultSettings.general,
+        isBrandingEnabled,
+      },
+    },
   }
 }
 

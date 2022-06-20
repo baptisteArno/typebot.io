@@ -1,10 +1,10 @@
 import { withSentry } from '@sentry/nextjs'
-import { Prisma, WorkspaceRole } from 'db'
+import { Plan, Prisma, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { parseNewTypebot } from 'services/typebots/typebots'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
+import { badRequest, methodNotAllowed, notAuthenticated, notFound } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -74,6 +74,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send({ typebots })
     }
     if (req.method === 'POST') {
+      const workspace = await prisma.workspace.findFirst({
+        where: { id: req.body.workspaceId },
+        select: { plan: true },
+      })
+      if (!workspace) return notFound(res, "Couldn't find workspace")
       const data =
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
       const typebot = await prisma.typebot.create({
@@ -82,6 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             ? data
             : (parseNewTypebot({
                 ownerAvatarUrl: user.image,
+                isBrandingEnabled: workspace.plan === Plan.FREE,
                 ...data,
               }) as Prisma.TypebotUncheckedCreateInput),
       })
