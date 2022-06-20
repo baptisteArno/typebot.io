@@ -7,6 +7,7 @@ type Props = {
 
 export const RatingInputContent = ({ block }: Props) => (
   <Text noOfLines={1} pr="6">
-    Rate from 1 to {block.options.length}
+    Rate from {block.options.buttonType === 'Icons' ? 1 : 0} to{' '}
+    {block.options.length}
   </Text>
 )
