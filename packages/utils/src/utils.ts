@@ -193,6 +193,7 @@ export const generateId = (idDesiredLength: number): string => {
 }
 
 type UploadFileProps = {
+  basePath?: string
   files: {
     file: File
     path: string
@@ -202,6 +203,7 @@ type UploadFileProps = {
 type UrlList = string[]
 
 export const uploadFiles = async ({
+  basePath = '/api',
   files,
   onUploadProgress,
 }: UploadFileProps): Promise<UrlList> => {
@@ -209,9 +211,9 @@ export const uploadFiles = async ({
     const { data } = await sendRequest<{
       presignedUrl: { url: string; fields: any }
     }>(
-      `/api/storage/upload-url?filePath=${encodeURIComponent(path)}&fileType=${
-        file.type
-      }`
+      `${basePath}/storage/upload-url?filePath=${encodeURIComponent(
+        path
+      )}&fileType=${file.type}`
     )
 
     if (!data?.presignedUrl) return null

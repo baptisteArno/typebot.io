@@ -33,7 +33,7 @@ export type TypebotViewerProps = {
   startGroupId?: string
   isLoading?: boolean
   onNewGroupVisible?: (edge: Edge) => void
-  onNewAnswer?: (answer: Answer) => Promise<void>
+  onNewAnswer?: (answer: Answer & { uploadedFiles: boolean }) => Promise<void>
   onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   onCompleted?: () => void
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
@@ -64,7 +64,8 @@ export const TypebotViewer = ({
   const handleNewGroupVisible = (edge: Edge) =>
     onNewGroupVisible && onNewGroupVisible(edge)
 
-  const handleNewAnswer = (answer: Answer) => onNewAnswer && onNewAnswer(answer)
+  const handleNewAnswer = (answer: Answer & { uploadedFiles: boolean }) =>
+    onNewAnswer && onNewAnswer(answer)
 
   const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
     onNewLog && onNewLog(log)

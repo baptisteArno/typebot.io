@@ -1,5 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
+import { SmartNumberInput } from 'components/shared/SmartNumberInput'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { Input } from 'components/shared/Textbox'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
@@ -20,7 +21,8 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, isMultipleAllowed })
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
-
+  const handleSizeLimitChange = (sizeLimit?: number) =>
+    onOptionsChange({ ...options, sizeLimit })
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
@@ -29,6 +31,16 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options.isMultipleAllowed}
         onCheckChange={handleLongChange}
       />
+      <Stack>
+        <FormLabel mb="0" htmlFor="limit">
+          Size limit (MB):
+        </FormLabel>
+        <SmartNumberInput
+          id="limit"
+          value={options.sizeLimit ?? 10}
+          onValueChange={handleSizeLimitChange}
+        />
+      </Stack>
       <Stack>
         <FormLabel mb="0">Placeholder:</FormLabel>
         <CodeEditor

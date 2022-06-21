@@ -11,15 +11,17 @@ type Props = {
   onSubmit: (url: InputSubmitContent) => void
 }
 
-const tenMB = 10 * 1024 * 1024
 export const FileUploadForm = ({
   block: {
     id,
-    options: { isMultipleAllowed, labels },
+    options: { isMultipleAllowed, labels, sizeLimit },
   },
   onSubmit,
 }: Props) => {
-  const { isPreview } = useTypebot()
+  const {
+    isPreview,
+    typebot: { typebotId },
+  } = useTypebot()
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
@@ -35,8 +37,8 @@ export const FileUploadForm = ({
   const onNewFiles = (files: FileList) => {
     setErrorMessage(undefined)
     const newFiles = Array.from(files)
-    if (newFiles.some((file) => file.size > tenMB))
-      return setErrorMessage('A file is larger than 10MB')
+    if (newFiles.some((file) => file.size > (sizeLimit ?? 10) * 1024 * 1024))
+      return setErrorMessage(`A file is larger than ${sizeLimit ?? 10}MB`)
     if (!isMultipleAllowed && files) return startSingleFileUpload(newFiles[0])
     setSelectedFiles([...selectedFiles, ...newFiles])
   }
@@ -55,6 +57,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
+      basePath: `/api/typebots/${typebotId}/blocks/${id}`,
       files: [
         {
           file,
@@ -76,6 +79,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
+      basePath: `/api/typebots/${typebotId}/blocks/${id}`,
       files: files.map((file) => ({
         file: file,
         path: `public/results/${resultId}/${id}/${file.name}`,

@@ -35,6 +35,7 @@ export const TypebotPage = ({
   const [variableUpdateQueue, setVariableUpdateQueue] = useState<
     VariableWithValue[][]
   >([])
+  const [chatStarted, setChatStarted] = useState(false)
 
   useEffect(() => {
     setShowTypebot(true)
@@ -94,10 +95,16 @@ export const TypebotPage = ({
       if (error) setError(error)
     }
 
-  const handleNewAnswer = async (answer: Answer) => {
+  const handleNewAnswer = async (
+    answer: Answer & { uploadedFiles: boolean }
+  ) => {
     if (!resultId) return setError(new Error('Result was not created'))
     const { error } = await upsertAnswer({ ...answer, resultId })
     if (error) setError(error)
+    if (chatStarted) return
+    updateResult(resultId, {
+      hasStarted: true,
+    }).then(({ error }) => (error ? setError(error) : setChatStarted(true)))
   }
 
   const handleCompleted = async () => {
