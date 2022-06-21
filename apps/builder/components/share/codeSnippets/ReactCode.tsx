@@ -10,7 +10,7 @@ import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { CodeEditor } from 'components/shared/CodeEditor'
 import { useTypebot } from 'contexts/TypebotContext'
-import { isEmpty } from 'utils'
+import { env, isEmpty } from 'utils'
 
 type StandardReactDivProps = { widthLabel: string; heightLabel: string }
 export const StandardReactDiv = ({
@@ -21,9 +21,9 @@ export const StandardReactDiv = ({
   const snippet = prettier.format(
     parseContainerSnippet({
       url: `${
-        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
-          ? process.env.NEXT_PUBLIC_VIEWER_URL
-          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
+        isEmpty(env('VIEWER_INTERNAL_URL'))
+          ? env('VIEWER_URL')
+          : env('VIEWER_INTERNAL_URL')
       }/${typebot?.publicId}`,
       heightLabel,
       widthLabel,
@@ -73,9 +73,9 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const snippet = prettier.format(
     parsePopupSnippet({
       url: `${
-        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
-          ? process.env.NEXT_PUBLIC_VIEWER_URL
-          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
+        isEmpty(env('VIEWER_INTERNAL_URL'))
+          ? env('VIEWER_URL')
+          : env('VIEWER_INTERNAL_URL')
       }/${typebot?.publicId}`,
       delay,
     }),
@@ -124,9 +124,9 @@ export const ChatReactCode = ({
   const snippet = prettier.format(
     parseBubbleSnippet({
       url: `${
-        isEmpty(process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL)
-          ? process.env.NEXT_PUBLIC_VIEWER_URL
-          : process.env.NEXT_PUBLIC_VIEWER_INTERNAL_URL
+        isEmpty(env('VIEWER_INTERNAL_URL'))
+          ? env('VIEWER_URL')
+          : env('VIEWER_INTERNAL_URL')
       }/${typebot?.publicId}`,
       button,
       proactiveMessage,

@@ -11,7 +11,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
-import { isNotEmpty } from 'utils'
+import { env, isNotEmpty } from 'utils'
 
 const providers: Provider[] = []
 
@@ -23,10 +23,7 @@ if (isNotEmpty(process.env.GITHUB_CLIENT_ID))
     })
   )
 
-if (
-  isNotEmpty(process.env.NEXT_PUBLIC_SMTP_FROM) &&
-  process.env.SMTP_AUTH_DISABLED !== 'true'
-)
+if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
   providers.push(
     EmailProvider({
       server: {
@@ -38,7 +35,7 @@ if (
         },
         ignoreTLS: process.env.SMTP_IGNORE_TLS === 'true',
       },
-      from: process.env.NEXT_PUBLIC_SMTP_FROM,
+      from: env('SMTP_FROM'),
     })
   )
 

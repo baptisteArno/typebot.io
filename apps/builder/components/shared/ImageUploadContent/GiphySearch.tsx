@@ -4,14 +4,13 @@ import { Grid, SearchContext } from '@giphy/react-components'
 import { GiphyLogo } from 'assets/logos'
 import React, { useContext, useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
+import { env } from 'utils'
 
 type GiphySearchProps = {
   onSubmit: (url: string) => void
 }
 
-const giphyFetch = new GiphyFetch(
-  process.env.NEXT_PUBLIC_GIPHY_API_KEY as string
-)
+const giphyFetch = new GiphyFetch(env('GIPHY_API_KEY') as string)
 
 export const GiphySearch = ({ onSubmit }: GiphySearchProps) => {
   const { fetchGifs, searchKey, setSearch } = useContext(SearchContext)

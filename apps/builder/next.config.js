@@ -6,11 +6,6 @@ const moduleExports = {
     outputStandalone: true,
   },
   optimizeFonts: false,
-  publicRuntimeConfig: {
-    NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-    NEXT_PUBLIC_GIPHY_API_KEY: process.env.NEXT_PUBLIC_GIPHY_API_KEY,
-    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
-  },
 }
 
 const sentryWebpackPluginOptions = {
