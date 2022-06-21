@@ -37,6 +37,7 @@ test('options should work', async ({ page }) => {
   await page.click('text="Allow multiple files?"')
   await page.fill('div[contenteditable=true]', '<strong>Upload now!!</strong>')
   await page.fill('[value="Upload"]', 'Go')
+  await page.fill('input[value="10"]', '20')
   await page.click('text="Restart"')
   await expect(typebotViewer(page).locator(`text="Upload now!!"`)).toBeVisible()
   await typebotViewer(page)

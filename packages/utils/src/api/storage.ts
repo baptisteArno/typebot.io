@@ -3,14 +3,16 @@ import { config, Endpoint, S3 } from 'aws-sdk'
 type GeneratePresignedUrlProps = {
   filePath: string
   fileType: string
+  sizeLimit?: number
 }
 
-const tenMB = 10485760
+const tenMB = 10 * 1024 * 1024
 const oneHundredAndTwentySeconds = 120
 
 export const generatePresignedUrl = ({
   filePath,
   fileType,
+  sizeLimit = tenMB,
 }: GeneratePresignedUrlProps): S3.PresignedPost => {
   if (
     !process.env.S3_ENDPOINT ||
@@ -45,7 +47,7 @@ export const generatePresignedUrl = ({
       'Content-Type': fileType,
     },
     Expires: oneHundredAndTwentySeconds,
-    Conditions: [['content-length-range', 0, tenMB]],
+    Conditions: [['content-length-range', 0, sizeLimit]],
   })
   return presignedUrl
 }

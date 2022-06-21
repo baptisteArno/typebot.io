@@ -4,7 +4,9 @@ import React, { createContext, ReactNode, useContext, useState } from 'react'
 const answersContext = createContext<{
   resultId?: string
   resultValues: ResultValues
-  addAnswer: (answer: Answer) => Promise<void> | undefined
+  addAnswer: (
+    answer: Answer & { uploadedFiles: boolean }
+  ) => Promise<void> | undefined
   updateVariables: (variables: VariableWithValue[]) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -17,7 +19,9 @@ export const AnswersContext = ({
   onVariablesUpdated,
 }: {
   resultId?: string
-  onNewAnswer: (answer: Answer) => Promise<void> | undefined
+  onNewAnswer: (
+    answer: Answer & { uploadedFiles: boolean }
+  ) => Promise<void> | undefined
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
   children: ReactNode
 }) => {
@@ -27,7 +31,7 @@ export const AnswersContext = ({
     createdAt: new Date().toISOString(),
   })
 
-  const addAnswer = (answer: Answer) => {
+  const addAnswer = (answer: Answer & { uploadedFiles: boolean }) => {
     setResultValues((resultValues) => ({
       ...resultValues,
       answers: [...resultValues.answers, answer],

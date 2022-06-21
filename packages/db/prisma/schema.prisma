@@ -112,15 +112,15 @@ enum GraphNavigation {
 }
 
 model CustomDomain {
-  name        String     @id
-  createdAt   DateTime   @default(now())
+  name        String    @id
+  createdAt   DateTime  @default(now())
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Credentials {
-  id          String     @id @default(cuid())
-  createdAt   DateTime   @default(now())
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   data        String // Encrypted data
@@ -155,7 +155,7 @@ model DashboardFolder {
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
   workspaceId    String
-  workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Typebot {
@@ -180,7 +180,7 @@ model Typebot {
   invitations        Invitation[]
   webhooks           Webhook[]
   workspaceId        String
-  workspace          Workspace               @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace          Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Invitation {
@@ -210,16 +210,16 @@ enum CollaborationType {
 }
 
 model PublicTypebot {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
-  typebotId    String   @unique
-  typebot      Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  groups       Json
-  variables    Json[]
-  edges        Json
-  theme        Json
-  settings     Json
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  typebotId String   @unique
+  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  groups    Json
+  variables Json[]
+  edges     Json
+  theme     Json
+  settings  Json
 }
 
 model Result {
@@ -231,6 +231,7 @@ model Result {
   answers     Answer[]
   variables   Json[]
   isCompleted Boolean
+  hasStarted  Boolean?
   logs        Log[]
 }
 
@@ -248,10 +249,11 @@ model Answer {
   createdAt  DateTime @default(now())
   resultId   String
   result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
-  blockId     String
+  blockId    String
   groupId    String
   variableId String?
   content    String
+  storageUsed Int?
 
   @@unique([resultId, blockId, groupId])
 }

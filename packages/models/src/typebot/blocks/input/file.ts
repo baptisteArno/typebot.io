@@ -8,6 +8,7 @@ export const fileInputOptionsSchema = optionBaseSchema.and(
       placeholder: z.string(),
       button: z.string(),
     }),
+    sizeLimit: z.number().optional(),
   })
 )
 
