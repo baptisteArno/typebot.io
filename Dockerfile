@@ -36,10 +36,10 @@ COPY --from=builder /app/apps/${SCOPE}/.next/static ./.next/static
 COPY --from=builder /app/apps/${SCOPE}/.env.docker ./.env.production
 RUN apt-get -qy update && apt-get -qy install openssl
 
-COPY entrypoint.sh ./
+COPY env.sh ./
 COPY ${SCOPE}-entrypoint.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./env.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000

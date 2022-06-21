@@ -8,6 +8,7 @@ import path from 'path'
 import {
   createResults,
   createTypebots,
+  freeWorkspaceId,
   importTypebotInDatabase,
   parseDefaultGroupWithBlock,
 } from '../services/database'
@@ -123,7 +124,7 @@ test.describe('Results page', () => {
     test("Incomplete results shouldn't be displayed", async ({ page }) => {
       await prisma.typebot.update({
         where: { id: typebotId },
-        data: { workspaceId: 'free' },
+        data: { workspaceId: freeWorkspaceId },
       })
       await page.goto(`/typebots/${typebotId}/results`)
       await page.click('text=Unlock')
