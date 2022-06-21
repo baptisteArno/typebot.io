@@ -20,7 +20,6 @@ export const ratingInputOptionsSchema = optionBaseSchema.and(
     labels: z.object({
       left: z.string().optional(),
       right: z.string().optional(),
-      middle: z.string().optional(),
       button: z.string(),
     }),
     customIcon: z.object({
