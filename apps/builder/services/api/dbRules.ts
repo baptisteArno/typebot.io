@@ -1,7 +1,7 @@
 import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiResponse } from 'next'
-import { forbidden, isNotEmpty } from 'utils'
+import { env, forbidden, isNotEmpty } from 'utils'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,
@@ -22,7 +22,7 @@ const parseWhereFilter = (
       id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
       workspace:
         (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        isNotEmpty(env('E2E_TEST'))
           ? undefined
           : {
               members: {

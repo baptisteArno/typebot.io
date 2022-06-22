@@ -13,7 +13,7 @@ import {
 import { Variable } from 'models'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { isEmpty } from 'utils'
+import { env } from 'utils'
 import { VariablesButton } from './buttons/VariablesButton'
 
 type Props = {
@@ -38,7 +38,7 @@ export const SearchableDropdown = ({
   const debounced = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onValueChange ? onValueChange : () => {},
-    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
+    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState([
     ...items

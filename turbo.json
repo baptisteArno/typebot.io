@@ -1,6 +1,10 @@
 {
   "baseBranch": "origin/main",
   "pipeline": {
+    "build:docker": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**", "build/**", "node_modules/@prisma/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "dist/**", "build/**", "node_modules/@prisma/**"]

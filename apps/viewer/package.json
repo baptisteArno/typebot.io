@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "scripts": {
     "dx": "yarn dev",
-    "dev": "next dev -p 3001",
-    "build": "next build",
+    "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3001",
+    "build": "cp .env.docker .env.production && ENVSH_ENV=.env.production bash ../../env.sh next build",
+    "build:docker": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "yarn playwright test",
