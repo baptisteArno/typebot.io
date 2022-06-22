@@ -14,6 +14,8 @@
     "dev": "yarn docker:up && yarn dev:prepare && NEXT_PUBLIC_E2E_TEST=false turbo run dx --parallel",
     "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dx --parallel",
     "build": "yarn docker:up && turbo run build",
+    "build:builder": "cp apps/builder/.env.docker apps/builder/.env.production && ENVSH_ENV=./apps/builder/.env.production ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh yarn turbo run build --scope=builder --include-dependencies",
+    "build:viewer": "cp apps/viewer/.env.docker apps/viewer/.env.production && ENVSH_ENV=./apps/viewer/.env.production ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh yarn turbo run build --scope=viewer --include-dependencies",
     "test:builder": "cd apps/builder && yarn test",
     "lint": "turbo run lint",
     "db:migrate": "yarn workspace db migration:deploy"

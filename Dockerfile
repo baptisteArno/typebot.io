@@ -20,7 +20,7 @@ COPY --from=pruner /app/out/full/ .
 COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.production
 COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.local
 RUN apt-get -qy update && apt-get -qy install openssl
-RUN yarn turbo run build:docker --scope=${SCOPE} --include-dependencies --no-deps
+RUN yarn turbo run build --scope=${SCOPE} --include-dependencies --no-deps
 RUN find . -name node_modules | xargs rm -rf
 
 FROM base AS runner
