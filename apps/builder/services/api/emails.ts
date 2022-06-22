@@ -1,4 +1,5 @@
 import { createTransport } from 'nodemailer'
+import { env } from 'utils'
 
 export const sendEmailNotification = ({
   to,
@@ -19,7 +20,7 @@ export const sendEmailNotification = ({
   })
 
   return transporter.sendMail({
-    from: process.env.NEXT_PUBLIC_SMTP_FROM,
+    from: env('SMTP_FORM'),
     to,
     subject,
     html: content,

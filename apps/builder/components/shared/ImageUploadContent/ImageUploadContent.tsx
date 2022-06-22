@@ -16,12 +16,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { BaseEmoji, emojiIndex } from 'emoji-mart'
 import { emojis } from './emojis'
 import { Input } from '../Textbox/Input'
-import { isEmpty } from 'utils'
-import getConfig from 'next/config'
-
-const {
-  publicRuntimeConfig: { NEXT_PUBLIC_GIPHY_API_KEY },
-} = getConfig()
+import { env, isEmpty } from 'utils'
 
 type Props = {
   url?: string
@@ -188,10 +183,10 @@ const EmojiContent = ({
 }
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => {
-  if (isEmpty(NEXT_PUBLIC_GIPHY_API_KEY))
+  if (isEmpty(env('GIPHY_API_KEY')))
     return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
   return (
-    <SearchContextManager apiKey={NEXT_PUBLIC_GIPHY_API_KEY}>
+    <SearchContextManager apiKey={env('GIPHY_API_KEY') as string}>
       <GiphySearch onSubmit={onNewUrl} />
     </SearchContextManager>
   )

@@ -8,8 +8,8 @@ import { sendEmailNotification } from 'services/api/emails'
 import { getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
+  env,
   forbidden,
-  isEmpty,
   methodNotAllowed,
   notAuthenticated,
 } from 'utils'
@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.invitation.create({
         data: { email: email.toLowerCase(), type, typebotId },
       })
-    if (isEmpty(process.env.NEXT_PUBLIC_E2E_TEST))
+    if (env('E2E_TEST') !== 'enabled')
       await sendEmailNotification({
         to: email,
         subject: "You've been invited to collaborate 🤝",
