@@ -47,27 +47,27 @@ type StepIconProps = { type: StepType } & IconProps
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT:
-      return <ChatIcon color="blue.500" {...props} />
+      return <ChatIcon color="#AA561C" {...props} />
     case BubbleStepType.IMAGE:
-      return <ImageIcon color="blue.500" {...props} />
+      return <ImageIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:
-      return <FilmIcon color="blue.500" {...props} />
+      return <FilmIcon color="#AA561C" {...props} />
     case BubbleStepType.EMBED:
-      return <LayoutIcon color="blue.500" {...props} />
+      return <LayoutIcon color="#AA561C" {...props} />
     case InputStepType.TEXT:
-      return <TextIcon color="orange.500" {...props} />
+      return <TextIcon color="#256F42" {...props} />
     case InputStepType.NUMBER:
-      return <NumberIcon color="orange.500" {...props} />
+      return <NumberIcon color="#256F42" {...props} />
     case InputStepType.EMAIL:
-      return <EmailIcon color="orange.500" {...props} />
+      return <EmailIcon color="#256F42" {...props} />
     // case InputStepType.URL:
-    //   return <GlobeIcon color="orange.500" {...props} />
+    //   return <GlobeIcon color="#256F42" {...props} />
     case InputStepType.DATE:
-      return <CalendarIcon color="orange.500" {...props} />
+      return <CalendarIcon color="#256F42" {...props} />
     case InputStepType.PHONE:
-      return <PhoneIcon color="orange.500" {...props} />
+      return <PhoneIcon color="#256F42" {...props} />
     case InputStepType.CHOICE:
-      return <CheckSquareIcon color="orange.500" {...props} />
+      return <CheckSquareIcon color="#256F42" {...props} />
     // case InputStepType.PAYMENT:
     //   return <CreditCardIcon color="orange.500" {...props} />
     // case InputStepType.ASK_NAME:
@@ -75,7 +75,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     // case LogicStepType.SET_VARIABLE:
     //   return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:
-      return <FilterIcon color="purple.500" {...props} />
+      return <FilterIcon color="#AE285E" {...props} />
     // case LogicStepType.REDIRECT:
     //   return <ExternalLinkIcon color="purple.500" {...props} />
     // case LogicStepType.CODE:
@@ -97,11 +97,11 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     // case IntegrationStepType.EMAIL:
     //   return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
-      return <WavingHandIcon color="orange.500" {...props} />
+      return <WavingHandIcon color="#373A86" {...props} />
     case OctaStepType.OFFICE_HOURS:
-      return <AlarmIcon color="blue.500" {...props} />
+      return <AlarmIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
-      return <AssignToIcon color="blue.500" {...props} />
+      return <AssignToIcon color="#373A86" {...props} />
 
     case 'start':
       return <FlagIcon {...props} />
