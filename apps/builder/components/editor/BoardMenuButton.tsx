@@ -8,9 +8,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import assert from 'assert'
-import { DownloadIcon, MoreVerticalIcon, SettingsIcon } from 'assets/icons'
+import { DownloadIcon, MoreVerticalIcon, SettingsIcon, EyeIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useUser } from 'contexts/UserContext'
+import { RightPanel, useEditor } from 'contexts/EditorContext'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
@@ -19,10 +20,16 @@ import { EditorSettingsModal } from './EditorSettingsModal'
 
 export const BoardMenuButton = (props: MenuButtonProps) => {
   const { query } = useRouter()
-  const { typebot } = useTypebot()
+  const { typebot, save } = useTypebot()
   const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { setRightPanel } = useEditor()
+
+  const handlePreviewClick = async () => {
+    save().then()
+    setRightPanel(RightPanel.PREVIEW)
+  }
 
   useEffect(() => {
     if (
@@ -62,6 +69,9 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         {...props}
       />
       <MenuList>
+        <MenuItem icon={<EyeIcon />} onClick={handlePreviewClick}>
+          Visualizar
+        </MenuItem>
         <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
           Editor settings
         </MenuItem>

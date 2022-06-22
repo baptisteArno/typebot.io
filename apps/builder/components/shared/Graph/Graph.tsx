@@ -187,7 +187,7 @@ export const Graph = ({
         />
         <Stack
           pos="fixed"
-          top={`calc(${headerHeight}px + 200px)`}
+          top={`calc(${headerHeight}px + 150px)`}
           right="40px"
           bgColor="white"
           rounded="md"

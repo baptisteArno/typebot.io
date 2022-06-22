@@ -190,7 +190,7 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        <Stack>
+        {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Superintegrações
           </Text>
@@ -204,7 +204,7 @@ export const StepsSideBar = () => {
               />
             ))}
           </SimpleGrid>
-        </Stack>
+        </Stack> */}
 
         {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
