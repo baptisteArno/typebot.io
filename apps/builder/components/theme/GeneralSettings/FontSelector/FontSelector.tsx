@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
 import { SearchableDropdown } from '../../../shared/SearchableDropdown'
-import { env, isEmpty } from 'utils'
+import { isEmpty } from 'utils'
+import getConfig from 'next/config'
 
 type FontSelectorProps = {
   activeFont?: string
@@ -20,11 +21,12 @@ export const FontSelector = ({
   }, [])
 
   const fetchPopularFonts = async () => {
-    if (isEmpty(env('GOOGLE_API_KEY'))) return []
+    const {
+      publicRuntimeConfig: { NEXT_PUBLIC_GOOGLE_API_KEY },
+    } = getConfig()
+    if (isEmpty(NEXT_PUBLIC_GOOGLE_API_KEY)) return []
     const response = await fetch(
-      `https://www.googleapis.com/webfonts/v1/webfonts?key=${env(
-        'GOOGLE_API_KEY'
-      )}&sort=popularity`
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=${NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
     )
     return (await response.json()).items.map(
       (item: { family: string }) => item.family

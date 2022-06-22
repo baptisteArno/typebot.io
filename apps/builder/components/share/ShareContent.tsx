@@ -20,7 +20,6 @@ import { isDefined, isNotDefined } from 'utils'
 import { CustomDomainsDropdown } from './customDomain/CustomDomainsDropdown'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './integrations/EmbedButton'
-import { env } from 'utils'
 
 export const ShareContent = () => {
   const { workspace } = useWorkspace()
@@ -59,7 +58,9 @@ export const ShareContent = () => {
           </Heading>
           {typebot && (
             <EditableUrl
-              hostname={env('VIEWER_URL') ?? 'https://typebot.io'}
+              hostname={
+                process.env.NEXT_PUBLIC_VIEWER_URL ?? 'https://typebot.io'
+              }
               pathname={publicId}
               onPathnameChange={handlePublicIdChange}
             />

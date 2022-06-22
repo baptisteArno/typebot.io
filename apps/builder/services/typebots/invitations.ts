@@ -1,7 +1,7 @@
 import { CollaborationType, Invitation } from 'db'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
-import { env, sendRequest } from 'utils'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export const useInvitations = ({
   typebotId,
@@ -14,7 +14,9 @@ export const useInvitations = ({
     typebotId ? `/api/typebots/${typebotId}/invitations` : null,
     fetcher,
     {
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
     }
   )
   if (error) onError(error)

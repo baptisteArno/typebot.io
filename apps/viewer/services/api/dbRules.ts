@@ -1,5 +1,5 @@
 import { CollaborationType, Prisma, User, WorkspaceRole } from 'db'
-import { env } from 'utils'
+import { isNotEmpty } from 'utils'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,
@@ -20,7 +20,7 @@ const parseWhereFilter = (
       id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
       workspace:
         (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        env('E2E_TEST') === 'enabled'
+        isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
           ? undefined
           : {
               members: {

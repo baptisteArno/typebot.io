@@ -7,7 +7,7 @@ import {
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
 import { Answer } from 'db'
-import { env, isDefined, sendRequest } from 'utils'
+import { isDefined, isEmpty, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text, Wrap, WrapItem } from '@chakra-ui/react'
 import { CodeIcon, CalendarIcon, FileIcon } from 'assets/icons'
@@ -54,7 +54,9 @@ export const useResults = ({
     fetcher,
     {
       revalidateAll: true,
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? undefined
+        : 0,
     }
   )
 

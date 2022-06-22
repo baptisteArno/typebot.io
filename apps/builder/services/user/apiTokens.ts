@@ -1,7 +1,7 @@
 import { ApiToken } from 'db'
 import { fetcher } from 'services/utils'
 import useSWR, { KeyedMutator } from 'swr'
-import { env, sendRequest } from 'utils'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export type ApiTokenFromServer = { id: string; name: string; createdAt: string }
 
@@ -25,7 +25,9 @@ export const useApiTokens = ({
     userId ? `/api/users/${userId}/api-tokens` : null,
     fetcher,
     {
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
     }
   )
   if (error) onError(error)

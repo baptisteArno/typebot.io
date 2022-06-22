@@ -243,19 +243,3 @@ export const uploadFiles = async ({
   }
   return urls
 }
-
-declare const window: any
-
-const isBrowser = () => {
-  return Boolean(typeof window !== 'undefined' && window.__env)
-}
-
-export const env = (key = ''): string | undefined => {
-  if (isBrowser() && window.__env) {
-    return window.__env[key] === "''" ? undefined : window.__env[key]
-  }
-
-  return process.env['NEXT_PUBLIC_' + key] === "''"
-    ? undefined
-    : (process.env['NEXT_PUBLIC_' + key] as string)
-}

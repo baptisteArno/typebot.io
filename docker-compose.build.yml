@@ -4,7 +4,7 @@ services:
     image: postgres:13
     restart: always
     volumes:
-      - build_db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
@@ -28,6 +28,7 @@ services:
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
       - ADMIN_EMAIL=me@email.com
       - NEXTAUTH_URL_INTERNAL=http://host.docker.internal:8080
+      - NEXT_PUBLIC_GOOGLE_CLIENT_ID=fnejwkn
   typebot-viewer:
     build:
       context: .
@@ -42,4 +43,4 @@ services:
       - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
 volumes:
-  build_db_data:
+  db_data:

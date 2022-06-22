@@ -7,7 +7,7 @@ import {
 import { Variable } from 'models'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from 'utils'
+import { isEmpty } from 'utils'
 import { VariablesButton } from '../buttons/VariablesButton'
 
 export type TextBoxProps = {
@@ -36,7 +36,7 @@ export const TextBox = ({
     (value) => {
       onChange(value)
     },
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
 
   useEffect(() => {

@@ -12,7 +12,6 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { Input, Textarea } from 'components/shared/Textbox'
 import { CredentialsType, SendEmailOptions } from 'models'
 import React, { useState } from 'react'
-import { env } from 'utils'
 import { SmtpConfigModal } from './SmtpConfigModal'
 
 type Props = {
@@ -97,9 +96,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           currentCredentialsId={options.credentialsId}
           onCredentialsSelect={handleCredentialsSelect}
           onCreateNewClick={onOpen}
-          defaultCredentialLabel={env('SMTP_FROM')
-            ?.match(/\<(.*)\>/)
-            ?.pop()}
+          defaultCredentialLabel={process.env.NEXT_PUBLIC_SMTP_FROM?.match(
+            /\<(.*)\>/
+          )?.pop()}
           refreshDropdownKey={refreshCredentialsKey}
         />
       </Stack>

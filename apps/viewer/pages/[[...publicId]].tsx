@@ -3,7 +3,7 @@ import { NotFoundPage } from 'layouts/NotFoundPage'
 import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import sanitizeHtml from 'sanitize-html'
-import { env, isDefined, isNotDefined, omit } from 'utils'
+import { isDefined, isNotDefined, omit } from 'utils'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
 import prisma from '../libs/prisma'
 
@@ -16,9 +16,9 @@ export const getServerSideProps: GetServerSideProps = async (
   const { host, forwardedHost } = getHost(context.req)
   try {
     if (!host) return { props: {} }
-    const viewerUrls = (env('VIEWER_URL') ?? '').split(',')
+    const viewerUrls = (process.env.NEXT_PUBLIC_VIEWER_URL ?? '').split(',')
     const isMatchingViewerUrl =
-      env('E2E_TEST') === 'enabled'
+      process.env.NEXT_PUBLIC_E2E_TEST === 'enabled'
         ? true
         : viewerUrls.some(
             (url) =>

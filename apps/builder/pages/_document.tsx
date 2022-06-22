@@ -22,8 +22,6 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
           <meta name="google" content="notranslate" />
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script src="/__env.js" />
         </Head>
         <body>
           <Main />

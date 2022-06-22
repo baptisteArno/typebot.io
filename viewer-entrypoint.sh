@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./env.sh
+./entrypoint.sh
 
 ./node_modules/.bin/prisma generate;
 

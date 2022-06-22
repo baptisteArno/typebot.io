@@ -2,7 +2,7 @@ import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions } from 'models'
 import path from 'path'
-import { freeWorkspaceId, importTypebotInDatabase } from '../services/database'
+import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 
 test.describe.parallel('Settings page', () => {
@@ -127,7 +127,7 @@ test.describe.parallel('Settings page', () => {
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
           id: typebotId,
-          workspaceId: freeWorkspaceId,
+          workspaceId: 'free',
         }
       )
       await page.goto(`/typebots/${typebotId}/settings`)

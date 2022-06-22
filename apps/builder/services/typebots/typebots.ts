@@ -46,13 +46,13 @@ import useSWR from 'swr'
 import { fetcher, toKebabCase } from '../utils'
 import {
   isBubbleBlockType,
+  isNotEmpty,
   isWebhookBlock,
   omit,
   blockHasItems,
   blockTypeHasItems,
   blockTypeHasOption,
   blockTypeHasWebhook,
-  env,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
@@ -83,7 +83,9 @@ export const useTypebots = ({
     { typebots: TypebotInDashboard[] },
     Error
   >(workspaceId ? `/api/typebots?${params}` : null, fetcher, {
-    dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+    dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+      ? 0
+      : undefined,
   })
   if (error) onError(error)
   return {
