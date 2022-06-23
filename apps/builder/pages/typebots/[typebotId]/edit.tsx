@@ -19,12 +19,10 @@ import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
 import Storage from '@octadesk-tech/storage'
 
-function TypebotEditPage(props) {
+function TypebotEditPage({ userToken }: { userToken: string }) {
   const { typebot, isReadOnly } = useTypebot()
 
-  console.log('props: ' + props)
-  console.log('token: ' + props.userToken)
-  console.log('test: ' + props.test)
+  console.log('token: ' + userToken)
 
   return (
     <EditorContext>
@@ -67,6 +65,7 @@ const RightPanel = () => {
 export async function getServerSideProps() {
   const userToken = Storage.getItem('userToken')
   console.log('token1: ' + userToken)
+  console.log('getServerSideProps edit.tsx')
 
   return { props: { userToken, test: 'cordeiro' } }
 }
