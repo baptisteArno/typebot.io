@@ -200,7 +200,7 @@ export const StepsSideBar = () => {
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
-                isDisabled={type === IntegrationStepType.WEBHOOK}
+                isDisabled={type === IntegrationStepType.MAKE_COM}
               />
             ))}
           </SimpleGrid>
@@ -220,7 +220,7 @@ export const StepsSideBar = () => {
             ))}
           </SimpleGrid>
         </Stack> */}
-        {/* <Stack>
+        <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             OctaStep
           </Text>
@@ -234,7 +234,7 @@ export const StepsSideBar = () => {
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} isDisabled={type === OctaBubbleStepType.END_CONVERSATION} />
             ))}
           </SimpleGrid>
-        </Stack> */}
+        </Stack>
 
         {/* {draggedStepType && (
           <Portal>

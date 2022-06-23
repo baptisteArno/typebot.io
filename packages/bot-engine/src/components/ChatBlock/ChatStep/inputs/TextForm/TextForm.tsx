@@ -4,7 +4,7 @@ import {
   NumberInputStep,
   PhoneNumberInputStep,
   TextInputStep,
-  // UrlInputStep,
+  UrlInputStep,
 } from 'models'
 import React, { FormEvent, useState } from 'react'
 import { SendButton } from '../SendButton'
@@ -15,7 +15,7 @@ type TextFormProps = {
     | TextInputStep
     | EmailInputStep
     | NumberInputStep
-    // | UrlInputStep
+    | UrlInputStep
     | PhoneNumberInputStep
   onSubmit: (value: string) => void
   defaultValue?: string
@@ -33,10 +33,7 @@ export const TextForm = ({
   const isLongText = step.type === InputStepType.TEXT && step.options?.isLong
 
   const handleChange = (inputValue: string) => {
-    if (
-      // step.type === InputStepType.URL &&
-      !inputValue.startsWith('https://')
-    )
+    if (step.type === InputStepType.URL && !inputValue.startsWith('https://'))
       return inputValue === 'https:/'
         ? undefined
         : setInputValue(`https://${inputValue}`)

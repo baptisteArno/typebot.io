@@ -5,23 +5,23 @@ export type InputStep =
   | TextInputStep
   | NumberInputStep
   | EmailInputStep
-  // | UrlInputStep
+  | UrlInputStep
   | DateInputStep
   | PhoneNumberInputStep
   | ChoiceInputStep
-  // | PaymentInputStep
-  // | AskNameInputStep
+  | PaymentInputStep
+  | AskNameInputStep
 
 export enum InputStepType {
   TEXT = 'text input',
   NUMBER = 'number input',
   EMAIL = 'email input',
-  // URL = 'url input',
+  URL = 'url input',
   DATE = 'date input',
   PHONE = 'phone number input',
   CHOICE = 'choice input',
-  // PAYMENT = 'payment input',
-  // ASK_NAME = 'name input'
+  PAYMENT = 'payment input',
+  ASK_NAME = 'name input'
 }
 
 export type InputStepOptions =
@@ -35,10 +35,10 @@ export type InputStepOptions =
   | PaymentInputOptions
   | AskNameOptions
 
-// export type AskNameInputStep = StepBase & {
-//   type: InputStepType.ASK_NAME
-//   options: AskNameOptions
-// }
+export type AskNameInputStep = StepBase & {
+  type: InputStepType.ASK_NAME
+  options: AskNameOptions
+}
 
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
@@ -55,10 +55,10 @@ export type EmailInputStep = StepBase & {
   options: EmailInputOptions
 }
 
-// export type UrlInputStep = StepBase & {
-//   type: InputStepType.URL
-//   options: UrlInputOptions
-// }
+export type UrlInputStep = StepBase & {
+  type: InputStepType.URL
+  options: UrlInputOptions
+}
 
 export type DateInputStep = StepBase & {
   type: InputStepType.DATE
@@ -81,10 +81,10 @@ export type ButtonItem = ItemBase & {
   content?: string
 }
 
-// export type PaymentInputStep = StepBase & {
-//   type: InputStepType.PAYMENT
-//   options: PaymentInputOptions
-// }
+export type PaymentInputStep = StepBase & {
+  type: InputStepType.PAYMENT
+  options: PaymentInputOptions
+}
 
 export type CreditCardDetails = {
   number: string
