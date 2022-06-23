@@ -25,6 +25,8 @@ class MyDocument extends Document {
             data-domain="typebot.io"
             src="https://plausible.baptistearno.com/js/plausible.js"
           ></script>
+          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+          <script src="/__env.js" />
         </Head>
         <body style={{ backgroundColor: '#171923' }}>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

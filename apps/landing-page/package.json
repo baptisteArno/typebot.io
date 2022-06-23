@@ -2,7 +2,7 @@
   "name": "landing-page",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev -p 3002",
+    "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3002",
     "start": "next start",
     "build": "next build",
     "analyze": "cross-env ANALYZE=true next build"
