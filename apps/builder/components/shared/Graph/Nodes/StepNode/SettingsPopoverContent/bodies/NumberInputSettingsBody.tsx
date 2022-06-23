@@ -32,56 +32,6 @@ export const NumberInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Placeholder:
-        </FormLabel>
-        <Input
-          id="placeholder"
-          defaultValue={options.labels.placeholder}
-          onChange={handlePlaceholderChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          Mensagem do botão:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options?.labels?.button ?? 'Send'}
-          onChange={handleButtonLabelChange}
-        />
-      </Stack>
-      <HStack justifyContent="space-between">
-        <FormLabel mb="0" htmlFor="min">
-          Min:
-        </FormLabel>
-        <SmartNumberInput
-          id="min"
-          value={options.min}
-          onValueChange={handleMinChange}
-        />
-      </HStack>
-      <HStack justifyContent="space-between">
-        <FormLabel mb="0" htmlFor="max">
-          Max:
-        </FormLabel>
-        <SmartNumberInput
-          id="max"
-          value={options.max}
-          onValueChange={handleMaxChange}
-        />
-      </HStack>
-      <HStack justifyContent="space-between">
-        <FormLabel mb="0" htmlFor="step">
-          Passo:
-        </FormLabel>
-        <SmartNumberInput
-          id="step"
-          value={options.step}
-          onValueChange={handleStepChange}
-        />
-      </HStack>
-      <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Salvar resposta em uma variável:
         </FormLabel>

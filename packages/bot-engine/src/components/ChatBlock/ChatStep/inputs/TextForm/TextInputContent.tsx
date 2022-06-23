@@ -3,7 +3,7 @@ import {
   EmailInputStep,
   NumberInputStep,
   InputStepType,
-  // UrlInputStep,
+  UrlInputStep,
   PhoneNumberInputStep,
 } from 'models'
 import React, {
@@ -20,7 +20,7 @@ type TextInputProps = {
     | TextInputStep
     | EmailInputStep
     | NumberInputStep
-    // | UrlInputStep
+    | UrlInputStep
     | PhoneNumberInputStep
   value: string
   onChange: (value: string) => void
@@ -94,19 +94,19 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
         />
       )
     }
-    // case InputStepType.URL: {
-    //   return (
-    //     <ShortTextInput
-    //       ref={inputRef}
-    //       value={value}
-    //       placeholder={
-    //         step.options?.labels?.placeholder ?? 'Digite a sua URL...'
-    //       }
-    //       onChange={handleInputChange}
-    //       type="url"
-    //     />
-    //   )
-    // }
+    case InputStepType.URL: {
+      return (
+        <ShortTextInput
+          ref={inputRef}
+          value={value}
+          placeholder={
+            step.options?.labels?.placeholder ?? 'Digite a sua URL...'
+          }
+          onChange={handleInputChange}
+          type="url"
+        />
+      )
+    }
     case InputStepType.PHONE: {
       return (
         <PhoneInput

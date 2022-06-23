@@ -68,34 +68,34 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <PhoneIcon color="#256F42" {...props} />
     case InputStepType.CHOICE:
       return <CheckSquareIcon color="#256F42" {...props} />
-    // case InputStepType.PAYMENT:
-    //   return <CreditCardIcon color="orange.500" {...props} />
-    // case InputStepType.ASK_NAME:
-    //   return <TextIcon color="orange.500" {...props} />
-    // case LogicStepType.SET_VARIABLE:
-    //   return <EditIcon color="purple.500" {...props} />
+    case InputStepType.PAYMENT:
+      return <CreditCardIcon color="orange.500" {...props} />
+    case InputStepType.ASK_NAME:
+      return <TextIcon color="orange.500" {...props} />
+    case LogicStepType.SET_VARIABLE:
+      return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:
       return <FilterIcon color="#AE285E" {...props} />
-    // case LogicStepType.REDIRECT:
-    //   return <ExternalLinkIcon color="purple.500" {...props} />
-    // case LogicStepType.CODE:
-    //   return <CodeIcon color="purple.500" {...props} />
-    // case LogicStepType.TYPEBOT_LINK:
-    //   return <BoxIcon color="purple.500" {...props} />
-    // case IntegrationStepType.GOOGLE_SHEETS:
-    //   return <GoogleSheetsLogo {...props} />
-    // case IntegrationStepType.GOOGLE_ANALYTICS:
-    //   return <GoogleAnalyticsLogo {...props} />
+    case LogicStepType.REDIRECT:
+      return <ExternalLinkIcon color="purple.500" {...props} />
+    case LogicStepType.CODE:
+      return <CodeIcon color="purple.500" {...props} />
+    case LogicStepType.TYPEBOT_LINK:
+      return <BoxIcon color="purple.500" {...props} />
+    case IntegrationStepType.GOOGLE_SHEETS:
+      return <GoogleSheetsLogo {...props} />
+    case IntegrationStepType.GOOGLE_ANALYTICS:
+      return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
-    // case IntegrationStepType.ZAPIER:
-    //   return <ZapierLogo {...props} />
-    // case IntegrationStepType.MAKE_COM:
-    //   return <MakeComLogo {...props} />
-    // case IntegrationStepType.PABBLY_CONNECT:
-    //   return <PabblyConnectLogo {...props} />
-    // case IntegrationStepType.EMAIL:
-    //   return <SendEmailIcon {...props} />
+    case IntegrationStepType.ZAPIER:
+      return <ZapierLogo {...props} />
+    case IntegrationStepType.MAKE_COM:
+      return <MakeComLogo {...props} />
+    case IntegrationStepType.PABBLY_CONNECT:
+      return <PabblyConnectLogo {...props} />
+    case IntegrationStepType.EMAIL:
+      return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
       return <WavingHandIcon color="#373A86" {...props} />
     case OctaStepType.OFFICE_HOURS:

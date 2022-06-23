@@ -74,6 +74,23 @@ export const StepsSideBar = () => {
     setIsExtended(false)
   }
 
+  const shouldHideInputs = (type: InputStepType) => {
+    return (
+      type !== InputStepType.URL &&
+      type !== InputStepType.PAYMENT &&
+      type !== InputStepType.ASK_NAME
+    )
+  }
+
+  const shouldHideValidations = (type: LogicStepType) => {
+    return (
+      type !== LogicStepType.SET_VARIABLE &&
+      type !== LogicStepType.REDIRECT &&
+      type !== LogicStepType.CODE &&
+      type !== LogicStepType.TYPEBOT_LINK
+    )
+  }
+
   return (
     <Flex
       w="360px"
@@ -142,19 +159,23 @@ export const StepsSideBar = () => {
             Perguntas
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputStepType).map((type) => (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={
-                  type === InputStepType.DATE ||
-                  type === InputStepType.EMAIL ||
-                  type === InputStepType.PHONE ||
-                  type === InputStepType.NUMBER
-                }
-              />
-            ))}
+            {Object.values(InputStepType).map(
+              (type) =>
+                shouldHideInputs(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    isDisabled={
+                      type === InputStepType.DATE ||
+                      type === InputStepType.EMAIL ||
+                      type === InputStepType.PHONE
+                      // ||
+                      // type === InputStepType.NUMBER
+                    }
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
 
@@ -184,9 +205,16 @@ export const StepsSideBar = () => {
             Validações
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(LogicStepType).map(
+              (type) =>
+                shouldHideValidations(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
 
@@ -220,7 +248,7 @@ export const StepsSideBar = () => {
             ))}
           </SimpleGrid>
         </Stack> */}
-        <Stack>
+        {/* <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             OctaStep
           </Text>
@@ -231,10 +259,15 @@ export const StepsSideBar = () => {
           </SimpleGrid>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} isDisabled={type === OctaBubbleStepType.END_CONVERSATION} />
+              <StepCard
+                key={type}
+                type={type}
+                onMouseDown={handleMouseDown}
+                isDisabled={type === OctaBubbleStepType.END_CONVERSATION}
+              />
             ))}
           </SimpleGrid>
-        </Stack>
+        </Stack> */}
 
         {/* {draggedStepType && (
           <Portal>
