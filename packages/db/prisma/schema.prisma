@@ -243,6 +243,8 @@ model Log {
   status      String
   description String
   details     String?
+
+  @@index([resultId])
 }
 
 model Answer {
@@ -256,6 +258,7 @@ model Answer {
   storageUsed Int?
 
   @@unique([resultId, blockId, groupId])
+  @@index([resultId])
 }
 
 model Coupon {
