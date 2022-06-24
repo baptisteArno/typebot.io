@@ -1,7 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
+import { InputBlockType, Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
+import { deleteFiles } from 'services/api/storage'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { isFreePlan } from 'services/workspace'
 import {
@@ -49,13 +51,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId as string
     const data = req.body as { ids: string[] }
     const ids = data.ids
-    const results = await prisma.result.deleteMany({
+    const resultsFilter = {
+      id: ids.length > 0 ? { in: ids } : undefined,
+      typebot: canWriteTypebot(typebotId, user),
+    }
+    // Weird bug waiting for https://github.com/aws/aws-sdk-js/issues/4137
+    // const typebot = await prisma.typebot.findFirst({
+    //   where: canWriteTypebot(typebotId, user),
+    //   select: { groups: true },
+    // })
+    // if (!typebot) return forbidden(res)
+    // const fileUploadBlockIds = (typebot as Typebot).groups
+    //   .flatMap((g) => g.blocks)
+    //   .filter((b) => b.type === InputBlockType.FILE)
+    //   .map((b) => b.id)
+    // if (fileUploadBlockIds.length > 0) {
+    //   const filesToDelete = await prisma.answer.findMany({
+    //     where: { result: resultsFilter, blockId: { in: fileUploadBlockIds } },
+    //   })
+    //   if (filesToDelete.length > 0)
+    //     await deleteFiles({
+    //       urls: filesToDelete.flatMap((a) => a.content.split(', ')),
+    //     })
+    // }
+    await prisma.log.deleteMany({
       where: {
-        id: ids.length > 0 ? { in: ids } : undefined,
-        typebot: canWriteTypebot(typebotId, user),
+        result: resultsFilter,
       },
     })
-    return res.status(200).send({ results })
+    await prisma.answer.deleteMany({
+      where: {
+        result: resultsFilter,
+      },
+    })
+    await prisma.result.updateMany({
+      where: resultsFilter,
+      data: {
+        isArchived: true,
+        variables: [],
+      },
+    })
+    return res.status(200).send({ message: 'done' })
   }
   return methodNotAllowed(res)
 }

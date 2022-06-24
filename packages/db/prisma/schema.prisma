@@ -232,6 +232,7 @@ model Result {
   variables   Json[]
   isCompleted Boolean
   hasStarted  Boolean?
+  isArchived  Boolean?
   logs        Log[]
 }
 
