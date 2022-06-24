@@ -61,6 +61,7 @@ export const TypebotHeader = () => {
       align="center"
       h={`${headerHeight}px`}
       zIndex={100}
+      pos="relative"
       bgColor="white"
       flexShrink={0}
     >
