@@ -74,22 +74,29 @@ export const StepsSideBar = () => {
     setIsExtended(false)
   }
 
-  const shouldHideInputs = (type: InputStepType) => {
-    return (
-      type !== InputStepType.URL &&
-      type !== InputStepType.PAYMENT &&
-      type !== InputStepType.ASK_NAME
-    )
-  }
+const shouldHideMessages = (type: BubbleStepType) => {
+  return (
+    type !== BubbleStepType.IMAGE &&
+    type !== BubbleStepType.VIDEO
+  )
+}
 
-  const shouldHideValidations = (type: LogicStepType) => {
-    return (
-      type !== LogicStepType.SET_VARIABLE &&
-      type !== LogicStepType.REDIRECT &&
-      type !== LogicStepType.CODE &&
-      type !== LogicStepType.TYPEBOT_LINK
-    )
-  }
+const shouldHideInputs = (type: InputStepType) => {
+  return (
+    type !== InputStepType.URL &&
+    type !== InputStepType.PAYMENT &&
+    type !== InputStepType.ASK_NAME
+  )
+}
+
+const shouldHideValidations = (type: LogicStepType) => {
+  return (
+    type !== LogicStepType.SET_VARIABLE &&
+    type !== LogicStepType.REDIRECT &&
+    type !== LogicStepType.CODE &&
+    type !== LogicStepType.TYPEBOT_LINK
+  )
+}
 
   return (
     <Flex
@@ -139,13 +146,12 @@ export const StepsSideBar = () => {
             Mensagens
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleStepType).map((type) => (
+            {Object.values(BubbleStepType).map((type) => shouldHideMessages(type) && (
               <StepCard
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
                 isDisabled={
-                  type === BubbleStepType.EMBED ||
                   type === BubbleStepType.IMAGE ||
                   type === BubbleStepType.VIDEO
                 }
@@ -170,8 +176,6 @@ export const StepsSideBar = () => {
                       type === InputStepType.DATE ||
                       type === InputStepType.EMAIL ||
                       type === InputStepType.PHONE
-                      // ||
-                      // type === InputStepType.NUMBER
                     }
                   />
                 )
