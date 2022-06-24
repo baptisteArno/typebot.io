@@ -139,12 +139,13 @@ export const TypebotContext = ({
 }
 
 const formatIncomingVariableValue = (
-  value: string | number
-): string | number => {
+  value?: string | number
+): string | number | undefined => {
   // This first check avoid to parse 004 as the number 4.
   if (typeof value === 'string' && value.startsWith('0') && value.length > 1)
     return value
-  return isNaN(Number(value)) ? value : Number(value)
+  if (typeof value === 'number') return value
+  return isNaN(value?.toString() as unknown as number) ? value : Number(value)
 }
 
 export const useTypebot = () => useContext(typebotContext)

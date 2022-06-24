@@ -190,7 +190,7 @@ export const TypebotHeader = () => {
       </HStack>
 
       <HStack right="40px" pos="absolute" display={['none', 'flex']}>
-        <CollaborationMenuButton />
+        <CollaborationMenuButton isLoading={isNotDefined(typebot)} />
         {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
           <Button
             onClick={handlePreviewClick}

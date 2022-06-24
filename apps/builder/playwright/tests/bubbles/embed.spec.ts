@@ -28,23 +28,7 @@ test.describe.parallel('Embed bubble block', () => {
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Click to edit...')
       await page.fill('input[placeholder="Paste the link or code..."]', pdfSrc)
-      await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
-        'src',
-        pdfSrc
-      )
-      await page.fill(
-        'input[placeholder="Paste the link or code..."]',
-        iframeCode
-      )
-      await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
-        'src',
-        'https://typebot.io'
-      )
-      await page.fill('input[placeholder="Paste the link or code..."]', siteSrc)
-      await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
-        'src',
-        siteSrc
-      )
+      await expect(page.locator('text="Show embed"')).toBeVisible()
     })
   })
 

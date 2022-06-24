@@ -9,13 +9,18 @@ import { UsersIcon } from 'assets/icons'
 import React from 'react'
 import { CollaborationList } from './CollaborationList'
 
-export const CollaborationMenuButton = () => {
+export const CollaborationMenuButton = ({
+  isLoading,
+}: {
+  isLoading: boolean
+}) => {
   return (
     <Popover isLazy placement="bottom-end">
       <PopoverTrigger>
         <span>
           <Tooltip label="Invite users to collaborate">
             <IconButton
+              isLoading={isLoading}
               icon={<UsersIcon />}
               aria-label="Show collaboration menu"
               size="sm"
