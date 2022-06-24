@@ -22,7 +22,7 @@
     "db:migrate": "yarn workspace db migration:deploy"
   },
   "devDependencies": {
-    "turbo": "^1.2.9"
+    "turbo": "^1.3.1"
   },
   "packageManager": "yarn@1.22.17"
 }

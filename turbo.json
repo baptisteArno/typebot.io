@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**", "build/**", "node_modules/@prisma/**"]
+      "outputs": [".next/**", "dist/**", "build/**"]
     },
     "test": {
       "dependsOn": [],
@@ -13,6 +13,9 @@
       "outputs": []
     },
     "dev": {
+      "cache": false
+    },
+    "db#build": {
       "cache": false
     },
     "dx": {
