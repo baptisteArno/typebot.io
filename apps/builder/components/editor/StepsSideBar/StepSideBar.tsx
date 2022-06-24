@@ -14,6 +14,7 @@ import {
   DraggableStepType,
   InputStepType,
   IntegrationStepType,
+  StepType,
   LogicStepType,
   OctaStepType,
   OctaBubbleStepType,
@@ -74,29 +75,28 @@ export const StepsSideBar = () => {
     setIsExtended(false)
   }
 
-const shouldHideMessages = (type: BubbleStepType) => {
-  return (
-    type !== BubbleStepType.IMAGE &&
-    type !== BubbleStepType.VIDEO
-  )
-}
+  const shouldHideComponents = (type: StepType) => {
+    return (
+      type !== BubbleStepType.IMAGE &&
+      type !== BubbleStepType.VIDEO &&
+      type !== InputStepType.URL &&
+      type !== InputStepType.PAYMENT &&
+      type !== InputStepType.ASK_NAME &&
+      type !== LogicStepType.SET_VARIABLE &&
+      type !== LogicStepType.REDIRECT &&
+      type !== LogicStepType.CODE &&
+      type !== LogicStepType.TYPEBOT_LINK
+    )
+  }
 
-const shouldHideInputs = (type: InputStepType) => {
-  return (
-    type !== InputStepType.URL &&
-    type !== InputStepType.PAYMENT &&
-    type !== InputStepType.ASK_NAME
-  )
-}
-
-const shouldHideValidations = (type: LogicStepType) => {
-  return (
-    type !== LogicStepType.SET_VARIABLE &&
-    type !== LogicStepType.REDIRECT &&
-    type !== LogicStepType.CODE &&
-    type !== LogicStepType.TYPEBOT_LINK
-  )
-}
+  const shouldDisableComponent = (type: StepType) => {
+    return (
+      type === InputStepType.DATE ||
+      type === InputStepType.EMAIL ||
+      type === InputStepType.PHONE ||
+      type === OctaStepType.OFFICE_HOURS
+    )
+  }
 
   return (
     <Flex
@@ -146,17 +146,16 @@ const shouldHideValidations = (type: LogicStepType) => {
             Mensagens
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleStepType).map((type) => shouldHideMessages(type) && (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={
-                  type === BubbleStepType.IMAGE ||
-                  type === BubbleStepType.VIDEO
-                }
-              />
-            ))}
+            {Object.values(BubbleStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
 
@@ -167,16 +166,12 @@ const shouldHideValidations = (type: LogicStepType) => {
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputStepType).map(
               (type) =>
-                shouldHideInputs(type) && (
+                shouldHideComponents(type) && (
                   <StepCard
                     key={type}
                     type={type}
                     onMouseDown={handleMouseDown}
-                    isDisabled={
-                      type === InputStepType.DATE ||
-                      type === InputStepType.EMAIL ||
-                      type === InputStepType.PHONE
-                    }
+                    isDisabled={shouldDisableComponent(type)}
                   />
                 )
             )}
@@ -193,7 +188,7 @@ const shouldHideValidations = (type: LogicStepType) => {
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
-                isDisabled={type === OctaStepType.OFFICE_HOURS}
+                isDisabled={shouldDisableComponent(type)}
               />
             ))}
           </SimpleGrid>
@@ -211,7 +206,7 @@ const shouldHideValidations = (type: LogicStepType) => {
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map(
               (type) =>
-                shouldHideValidations(type) && (
+                shouldHideComponents(type) && (
                   <StepCard
                     key={type}
                     type={type}
@@ -221,72 +216,6 @@ const shouldHideValidations = (type: LogicStepType) => {
             )}
           </SimpleGrid>
         </Stack>
-
-        {/* <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Superintegrações
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationStepType).map((type) => (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={type === IntegrationStepType.MAKE_COM}
-              />
-            ))}
-          </SimpleGrid>
-        </Stack> */}
-
-        {/* <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            OctaStep
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(OctaStepType).map((type) => (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-              />
-            ))}
-          </SimpleGrid>
-        </Stack> */}
-        {/* <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            OctaStep
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(OctaStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
-          </SimpleGrid>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(OctaBubbleStepType).map((type) => (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={type === OctaBubbleStepType.END_CONVERSATION}
-              />
-            ))}
-          </SimpleGrid>
-        </Stack> */}
-
-        {/* {draggedStepType && (
-          <Portal>
-            <StepCardOverlay
-              type={draggedStepType}
-              onMouseUp={handleMouseUp}
-              pos="fixed"
-              top="0"
-              left="0"
-              style={{
-                transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
-              }}
-            />
-          </Portal>
-        )} */}
       </Stack>
       <Fade in={!isLocked} unmountOnExit>
         <Flex
