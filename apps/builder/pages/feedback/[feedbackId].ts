@@ -10,6 +10,7 @@ const FeedbackPage = () => {
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context)
+  console.log('getServerSideProps [feedbackId].ts')
   const feedbackId = context.query.feedbackId?.toString() as string
   if (isNotDefined(session?.user))
     return {

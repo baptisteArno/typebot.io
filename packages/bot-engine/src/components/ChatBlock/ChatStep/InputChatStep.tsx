@@ -115,5 +115,7 @@ const Input = ({
           onSuccess={() => onSubmit('Success')}
         />
       )
+    default: 
+      return null
   }
 }
