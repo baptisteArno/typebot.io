@@ -14,33 +14,11 @@ export const ChoiceInputSettingsBody = ({
   options,
   onOptionsChange,
 }: ChoiceInputSettingsBodyProps) => {
-  const handleIsMultipleChange = (isMultipleChoice: boolean) =>
-    options && onOptionsChange({ ...options, isMultipleChoice })
-  const handleButtonLabelChange = (buttonLabel: string) =>
-    options && onOptionsChange({ ...options, buttonLabel })
   const handleVariableChange = (variable?: Variable) =>
     options && onOptionsChange({ ...options, variableId: variable?.id })
 
   return (
     <Stack spacing={4}>
-      <SwitchWithLabel
-        id={'is-multiple'}
-        label={'Multiplos botões?'}
-        initialValue={options?.isMultipleChoice ?? false}
-        onCheckChange={handleIsMultipleChange}
-      />
-      {options?.isMultipleChoice && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="button">
-            Mensagem do botão:
-          </FormLabel>
-          <Input
-            id="button"
-            defaultValue={options?.buttonLabel ?? 'Enviar'}
-            onChange={handleButtonLabelChange}
-          />
-        </Stack>
-      )}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Salvar resposta em uma variável:
