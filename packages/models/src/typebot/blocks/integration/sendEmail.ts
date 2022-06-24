@@ -11,6 +11,7 @@ export const sendEmailOptionsSchema = z.object({
   replyTo: z.string().optional(),
   cc: z.array(z.string()).optional(),
   bcc: z.array(z.string()).optional(),
+  attachmentsVariableId: z.string().optional(),
 })
 
 export const sendEmailBlockSchema = blockBaseSchema.and(

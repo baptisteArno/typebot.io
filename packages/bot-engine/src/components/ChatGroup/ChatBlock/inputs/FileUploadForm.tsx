@@ -61,7 +61,7 @@ export const FileUploadForm = ({
       files: [
         {
           file,
-          path: `public/results/${resultId}/${id}`,
+          path: `public/results/${resultId}/${id}/${file.name}`,
         },
       ],
     })

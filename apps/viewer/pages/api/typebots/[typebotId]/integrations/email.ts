@@ -1,9 +1,9 @@
 import prisma from 'libs/prisma'
 import {
+  PublicTypebot,
   ResultValues,
   SendEmailOptions,
   SmtpCredentialsData,
-  Typebot,
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
@@ -60,9 +60,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isBodyCode,
       isCustomBody,
       resultValues,
+      fileUrls,
     } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as SendEmailOptions & { resultValues: ResultValues }
+    ) as SendEmailOptions & {
+      resultValues: ResultValues
+      fileUrls?: string
+    }
 
     const { host, port, isTlsEnabled, username, password, from } =
       (await getEmailInfo(credentialsId)) ?? {}
@@ -106,6 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       to: recipients,
       replyTo,
       subject,
+      attachments: fileUrls?.split(', ').map((url) => ({ path: url })),
       ...emailBody,
     }
     try {
@@ -163,9 +168,9 @@ const getEmailBody = async ({
       html: isBodyCode ? body : undefined,
       text: !isBodyCode ? body : undefined,
     }
-  const typebot = (await prisma.typebot.findUnique({
-    where: { id: typebotId },
-  })) as unknown as Typebot
+  const typebot = (await prisma.publicTypebot.findUnique({
+    where: { typebotId },
+  })) as unknown as PublicTypebot
   if (!typebot) return
   const linkedTypebots = await getLinkedTypebots(typebot)
   const answers = parseAnswers({

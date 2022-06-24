@@ -306,6 +306,7 @@ const sendEmail = async (
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
       replyTo: replyTo !== '' ? replyTo : undefined,
+      fileUrls: variables.find(byId(options.attachmentsVariableId))?.value,
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
       resultValues,

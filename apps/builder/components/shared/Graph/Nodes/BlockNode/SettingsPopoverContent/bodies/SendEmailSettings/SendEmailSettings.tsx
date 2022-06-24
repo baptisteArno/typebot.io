@@ -5,12 +5,14 @@ import {
   Flex,
   HStack,
   Switch,
+  FormLabel,
 } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { Input, Textarea } from 'components/shared/Textbox'
-import { CredentialsType, SendEmailOptions } from 'models'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { CredentialsType, SendEmailOptions, Variable } from 'models'
 import React, { useState } from 'react'
 import { env } from 'utils'
 import { SmtpConfigModal } from './SmtpConfigModal'
@@ -86,6 +88,14 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({
       ...options,
       isBodyCode: options.isBodyCode ? !options.isBodyCode : true,
+    })
+
+  const handleChangeAttachmentVariable = (
+    variable: Pick<Variable, 'id' | 'name'> | undefined
+  ) =>
+    onOptionsChange({
+      ...options,
+      attachmentsVariableId: variable?.id,
     })
 
   return (
@@ -179,6 +189,15 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           )}
         </Stack>
       )}
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          Attachments:
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options.attachmentsVariableId}
+          onSelectVariable={handleChangeAttachmentVariable}
+        />
+      </Stack>
       <SmtpConfigModal
         isOpen={isOpen}
         onClose={onClose}
