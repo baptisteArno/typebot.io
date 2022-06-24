@@ -66,7 +66,7 @@ export const TypebotHeader = () => {
     >
       <HStack
         display={['none', 'flex']}
-        pos={{ base: 'absolute', xl: 'relative' }}
+        pos={{ base: 'absolute', xl: 'static' }}
         right={{ base: 280, xl: 0 }}
       >
         <Button
