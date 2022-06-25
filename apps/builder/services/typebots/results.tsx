@@ -173,9 +173,9 @@ export const convertResultsToTableData = (
         }
       }
       const variable = answerOrVariable as VariableWithValue
-      if (isDefined(o[variable.id])) return o
       const key = headerCells.find((h) => h.variableId === variable.id)?.label
       if (!key) return o
+      if (isDefined(o[key])) return o
       return {
         ...o,
         [key]: { plainText: variable.value },
