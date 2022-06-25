@@ -9,14 +9,16 @@ import { SendButton, Spinner } from './SendButton'
 type Props = {
   block: FileInputBlock
   onSubmit: (url: InputSubmitContent) => void
+  onSkip: () => void
 }
 
 export const FileUploadForm = ({
   block: {
     id,
-    options: { isMultipleAllowed, labels, sizeLimit },
+    options: { isMultipleAllowed, labels, sizeLimit, isRequired },
   },
   onSubmit,
+  onSkip,
 }: Props) => {
   const {
     isPreview,
@@ -169,6 +171,18 @@ export const FileUploadForm = ({
           </>
         )}
       </label>
+      {selectedFiles.length === 0 && isRequired === false && (
+        <div className="flex justify-end">
+          <button
+            className={
+              'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
+            }
+            onClick={onSkip}
+          >
+            Skip
+          </button>
+        </div>
+      )}
       {isMultipleAllowed && selectedFiles.length > 0 && !isUploading && (
         <div className="flex justify-end">
           <div className="flex">

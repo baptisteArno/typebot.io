@@ -243,12 +243,19 @@ const ChatChunks = ({
   keepShowingHostAvatar,
   onDisplayNextBlock,
 }: Props) => {
+  const [isSkipped, setIsSkipped] = useState(false)
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const avatarSideContainerRef = useRef<any>()
 
   useEffect(() => {
     refreshTopOffset()
   })
+
+  const skipInput = () => {
+    onDisplayNextBlock()
+    setIsSkipped(true)
+  }
 
   const refreshTopOffset = () =>
     avatarSideContainerRef.current?.refreshTopOffset()
@@ -260,7 +267,9 @@ const ChatChunks = ({
           <AvatarSideContainer
             ref={avatarSideContainerRef}
             hostAvatarSrc={hostAvatar.src}
-            keepShowing={keepShowingHostAvatar || isDefined(input)}
+            keepShowing={
+              (keepShowingHostAvatar || isDefined(input)) && !isSkipped
+            }
           />
         )}
         <div
@@ -287,21 +296,24 @@ const ChatChunks = ({
           </TransitionGroup>
         </div>
       </div>
-      <CSSTransition
-        classNames="bubble"
-        timeout={500}
-        unmountOnExit
-        in={isDefined(input)}
-      >
-        {input && (
-          <InputChatBlock
-            block={input}
-            onTransitionEnd={onDisplayNextBlock}
-            hasAvatar={hostAvatar.isEnabled}
-            hasGuestAvatar={hasGuestAvatar}
-          />
-        )}
-      </CSSTransition>
+      {!isSkipped && (
+        <CSSTransition
+          classNames="bubble"
+          timeout={500}
+          unmountOnExit
+          in={isDefined(input)}
+        >
+          {input && (
+            <InputChatBlock
+              block={input}
+              onTransitionEnd={onDisplayNextBlock}
+              onSkip={skipInput}
+              hasAvatar={hostAvatar.isEnabled}
+              hasGuestAvatar={hasGuestAvatar}
+            />
+          )}
+        </CSSTransition>
+      )}
     </>
   )
 }

@@ -5,9 +5,8 @@ import { parse } from 'papaparse'
 import { typebotViewer } from '../services/selectorUtils'
 import { importTypebotInDatabase } from '../services/database'
 import { readFileSync } from 'fs'
-import { isDefined } from 'utils'
 
-test('should work as expected', async ({ page, browser }) => {
+test('should work as expected', async ({ page }) => {
   const typebotId = cuid()
   await importTypebotInDatabase(
     path.join(__dirname, '../fixtures/typebots/fileUpload.json'),

@@ -17,19 +17,27 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, labels: { ...options.labels, button } })
   const handlePlaceholderLabelChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
-  const handleLongChange = (isMultipleAllowed: boolean) =>
+  const handleMultipleFilesChange = (isMultipleAllowed: boolean) =>
     onOptionsChange({ ...options, isMultipleAllowed })
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
   const handleSizeLimitChange = (sizeLimit?: number) =>
     onOptionsChange({ ...options, sizeLimit })
+  const handleRequiredChange = (isRequired: boolean) =>
+    onOptionsChange({ ...options, isRequired })
   return (
     <Stack spacing={4}>
+      <SwitchWithLabel
+        id="required"
+        label="Required?"
+        initialValue={options.isRequired ?? true}
+        onCheckChange={handleRequiredChange}
+      />
       <SwitchWithLabel
         id="switch"
         label="Allow multiple files?"
         initialValue={options.isMultipleAllowed}
-        onCheckChange={handleLongChange}
+        onCheckChange={handleMultipleFilesChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="limit">

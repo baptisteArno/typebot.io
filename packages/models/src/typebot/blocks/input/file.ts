@@ -3,6 +3,7 @@ import { InputBlockType, optionBaseSchema, blockBaseSchema } from '../shared'
 
 export const fileInputOptionsSchema = optionBaseSchema.and(
   z.object({
+    isRequired: z.boolean().optional(),
     isMultipleAllowed: z.boolean(),
     labels: z.object({
       placeholder: z.string(),
@@ -20,6 +21,7 @@ export const fileInputStepSchema = blockBaseSchema.and(
 )
 
 export const defaultFileInputOptions: FileInputOptions = {
+  isRequired: true,
   isMultipleAllowed: false,
   labels: {
     placeholder: `<strong>

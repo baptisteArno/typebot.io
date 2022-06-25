@@ -24,6 +24,7 @@ export const InputChatBlock = ({
   hasAvatar,
   hasGuestAvatar,
   onTransitionEnd,
+  onSkip,
 }: {
   block: InputBlock
   hasGuestAvatar: boolean
@@ -32,6 +33,7 @@ export const InputChatBlock = ({
     answerContent?: InputSubmitContent,
     isRetry?: boolean
   ) => void
+  onSkip: () => void
 }) => {
   const { typebot } = useTypebot()
   const { addAnswer } = useAnswers()
@@ -84,6 +86,7 @@ export const InputChatBlock = ({
       <Input
         block={block}
         onSubmit={handleSubmit}
+        onSkip={onSkip}
         defaultValue={defaultValue?.toString()}
         hasGuestAvatar={hasGuestAvatar}
       />
@@ -94,11 +97,13 @@ export const InputChatBlock = ({
 const Input = ({
   block,
   onSubmit,
+  onSkip,
   defaultValue,
   hasGuestAvatar,
 }: {
   block: InputBlock
   onSubmit: (value: InputSubmitContent) => void
+  onSkip: () => void
   defaultValue?: string
   hasGuestAvatar: boolean
 }) => {
@@ -132,6 +137,8 @@ const Input = ({
     case InputBlockType.RATING:
       return <RatingForm block={block} onSubmit={onSubmit} />
     case InputBlockType.FILE:
-      return <FileUploadForm block={block} onSubmit={onSubmit} />
+      return (
+        <FileUploadForm block={block} onSubmit={onSubmit} onSkip={onSkip} />
+      )
   }
 }
