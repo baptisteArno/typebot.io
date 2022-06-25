@@ -67,7 +67,7 @@ export const ImageBubble = ({ block, onTransitionEnd }: Props) => {
             ref={image}
             src={url}
             className={
-              'p-4 content-opacity z-10 w-auto ' +
+              'p-4 content-opacity z-10 w-auto rounded-lg ' +
               (isTyping ? 'opacity-0' : 'opacity-100')
             }
             style={{
