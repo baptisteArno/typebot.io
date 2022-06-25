@@ -20,10 +20,7 @@ export const FileUploadForm = ({
   onSubmit,
   onSkip,
 }: Props) => {
-  const {
-    isPreview,
-    typebot: { typebotId },
-  } = useTypebot()
+  const { isPreview, currentTypebotId } = useTypebot()
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
@@ -59,7 +56,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${typebotId}/blocks/${id}`,
+      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
       files: [
         {
           file,
@@ -81,7 +78,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${typebotId}/blocks/${id}`,
+      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
       files: files.map((file) => ({
         file: file,
         path: `public/results/${resultId}/${id}/${file.name}`,
