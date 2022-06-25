@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { isDefined } from 'utils'
 import { DefaultAvatar } from './DefaultAvatar'
 
 export const Avatar = ({ avatarSrc }: { avatarSrc?: string }): JSX.Element => {
-  if (avatarSrc === '') return <></>
-  if (isDefined(avatarSrc))
+  const [currentAvatarSrc] = useState(avatarSrc)
+
+  if (currentAvatarSrc === '') return <></>
+  if (isDefined(currentAvatarSrc))
     return (
       <figure
         className={
@@ -12,7 +14,7 @@ export const Avatar = ({ avatarSrc }: { avatarSrc?: string }): JSX.Element => {
         }
       >
         <img
-          src={avatarSrc}
+          src={currentAvatarSrc}
           alt="Bot avatar"
           className="rounded-full object-cover w-full h-full"
         />
