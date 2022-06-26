@@ -55,25 +55,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       id: ids.length > 0 ? { in: ids } : undefined,
       typebot: canWriteTypebot(typebotId, user),
     }
-    // Weird bug waiting for https://github.com/aws/aws-sdk-js/issues/4137
-    // const typebot = await prisma.typebot.findFirst({
-    //   where: canWriteTypebot(typebotId, user),
-    //   select: { groups: true },
-    // })
-    // if (!typebot) return forbidden(res)
-    // const fileUploadBlockIds = (typebot as Typebot).groups
-    //   .flatMap((g) => g.blocks)
-    //   .filter((b) => b.type === InputBlockType.FILE)
-    //   .map((b) => b.id)
-    // if (fileUploadBlockIds.length > 0) {
-    //   const filesToDelete = await prisma.answer.findMany({
-    //     where: { result: resultsFilter, blockId: { in: fileUploadBlockIds } },
-    //   })
-    //   if (filesToDelete.length > 0)
-    //     await deleteFiles({
-    //       urls: filesToDelete.flatMap((a) => a.content.split(', ')),
-    //     })
-    // }
+    const typebot = await prisma.typebot.findFirst({
+      where: canWriteTypebot(typebotId, user),
+      select: { groups: true },
+    })
+    if (!typebot) return forbidden(res)
+    const fileUploadBlockIds = (typebot as Typebot).groups
+      .flatMap((g) => g.blocks)
+      .filter((b) => b.type === InputBlockType.FILE)
+      .map((b) => b.id)
+    if (fileUploadBlockIds.length > 0) {
+      const filesToDelete = await prisma.answer.findMany({
+        where: { result: resultsFilter, blockId: { in: fileUploadBlockIds } },
+      })
+      if (filesToDelete.length > 0)
+        await deleteFiles({
+          urls: filesToDelete.flatMap((a) => a.content.split(', ')),
+        })
+    }
     await prisma.log.deleteMany({
       where: {
         result: resultsFilter,

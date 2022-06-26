@@ -5,8 +5,9 @@ import { parse } from 'papaparse'
 import { typebotViewer } from '../services/selectorUtils'
 import { importTypebotInDatabase } from '../services/database'
 import { readFileSync } from 'fs'
+import { isDefined } from 'utils'
 
-test('should work as expected', async ({ page }) => {
+test('should work as expected', async ({ page, browser }) => {
   const typebotId = cuid()
   await importTypebotInDatabase(
     path.join(__dirname, '../fixtures/typebots/fileUpload.json'),
@@ -51,24 +52,33 @@ test('should work as expected', async ({ page }) => {
   expect(data).toHaveLength(2)
   expect((data[1] as unknown[])[1]).toContain('http://localhost:9000')
 
-  // Waiting for https://github.com/aws/aws-sdk-js/issues/4137
-  // const urls = (
-  //   await Promise.all(
-  //     [
-  //       page.locator('text="api.json"'),
-  //       page.locator('text="fileUpload.json"'),
-  //       page.locator('text="hugeGroup.json"'),
-  //     ].map((elem) => elem.getAttribute('href'))
-  //   )
-  // ).filter(isDefined)
+  const urls = (
+    await Promise.all(
+      [
+        page.locator('text="api.json"'),
+        page.locator('text="fileUpload.json"'),
+        page.locator('text="hugeGroup.json"'),
+      ].map((elem) => elem.getAttribute('href'))
+    )
+  ).filter(isDefined)
 
-  // const page2 = await browser.newPage()
-  // await page2.goto(urls[0])
-  // await expect(page2.locator('pre')).toBeVisible()
+  const page2 = await browser.newPage()
+  await page2.goto(urls[0])
+  await expect(page2.locator('pre')).toBeVisible()
 
-  // await page.locator('button >> text="Delete"').click()
-  // await page.locator('button >> text="Delete" >> nth=1').click()
-  // await expect(page.locator('text="api.json"')).toBeHidden()
-  // await page2.goto(urls[0])
-  // await expect(page2.locator('text="grkwobnowrk')).toBeVisible()
+  await page.locator('button >> text="Delete"').click()
+  await page.locator('button >> text="Delete" >> nth=1').click()
+  await expect(page.locator('text="api.json"')).toBeHidden()
+  await page2.goto(urls[0])
+  await expect(
+    page2.locator('span:has-text("The specified key does not exist.")')
+  ).toBeVisible()
+  await page2.goto(urls[1])
+  await expect(
+    page2.locator('span:has-text("The specified key does not exist.")')
+  ).toBeVisible()
+  await page2.goto(urls[2])
+  await expect(
+    page2.locator('span:has-text("The specified key does not exist.")')
+  ).toBeVisible()
 })
