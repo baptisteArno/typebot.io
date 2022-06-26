@@ -1,5 +1,5 @@
 import { BoxProps, Flex } from '@chakra-ui/react'
-import { useGraph } from 'contexts/GraphContext'
+import { useGraph, useGroupsCoordinates } from 'contexts/GraphContext'
 import { Source } from 'models'
 import React, { MouseEvent, useEffect, useRef, useState } from 'react'
 
@@ -10,12 +10,9 @@ export const SourceEndpoint = ({
   source: Source
 }) => {
   const [ranOnce, setRanOnce] = useState(false)
-  const {
-    setConnectingIds,
-    addSourceEndpoint,
-    groupsCoordinates,
-    previewingEdge,
-  } = useGraph()
+  const { setConnectingIds, addSourceEndpoint, previewingEdge } = useGraph()
+
+  const { groupsCoordinates } = useGroupsCoordinates()
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {

@@ -57,9 +57,14 @@ export type Endpoint = {
 
 export type GroupsCoordinates = IdMap<Coordinates>
 
-const graphContext = createContext<{
+const groupsCoordinatesContext = createContext<{
   groupsCoordinates: GroupsCoordinates
   updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+}>({})
+
+const graphContext = createContext<{
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
@@ -84,11 +89,9 @@ const graphContext = createContext<{
 
 export const GraphProvider = ({
   children,
-  groups,
   isReadOnly = false,
 }: {
   children: ReactNode
-  groups: Group[]
   isReadOnly?: boolean
 }) => {
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
@@ -97,23 +100,7 @@ export const GraphProvider = ({
   const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
   const [targetEndpoints, setTargetEndpoints] = useState<IdMap<Endpoint>>({})
   const [openedBlockId, setOpenedBlockId] = useState<string>()
-  const [groupsCoordinates, setGroupsCoordinates] = useState<GroupsCoordinates>(
-    {}
-  )
   const [focusedGroupId, setFocusedGroupId] = useState<string>()
-
-  useEffect(() => {
-    setGroupsCoordinates(
-      groups.reduce(
-        (coords, block) => ({
-          ...coords,
-          [block.id]: block.graphCoordinates,
-        }),
-        {}
-      )
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groups])
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
     setSourceEndpoints((endpoints) => ({
@@ -128,12 +115,6 @@ export const GraphProvider = ({
       [endpoint.id]: endpoint,
     }))
   }
-
-  const updateGroupCoordinates = (groupId: string, newCoord: Coordinates) =>
-    setGroupsCoordinates((groupsCoordinates) => ({
-      ...groupsCoordinates,
-      [groupId]: newCoord,
-    }))
 
   return (
     <graphContext.Provider
@@ -150,8 +131,6 @@ export const GraphProvider = ({
         addTargetEndpoint,
         openedBlockId,
         setOpenedBlockId,
-        groupsCoordinates,
-        updateGroupCoordinates,
         isReadOnly,
         focusedGroupId,
         setFocusedGroupId,
@@ -163,3 +142,45 @@ export const GraphProvider = ({
 }
 
 export const useGraph = () => useContext(graphContext)
+
+export const GroupsCoordinatesProvider = ({
+  children,
+  groups,
+}: {
+  children: ReactNode
+  groups: Group[]
+  isReadOnly?: boolean
+}) => {
+  const [groupsCoordinates, setGroupsCoordinates] = useState<GroupsCoordinates>(
+    {}
+  )
+
+  useEffect(() => {
+    setGroupsCoordinates(
+      groups.reduce(
+        (coords, block) => ({
+          ...coords,
+          [block.id]: block.graphCoordinates,
+        }),
+        {}
+      )
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups])
+
+  const updateGroupCoordinates = (groupId: string, newCoord: Coordinates) =>
+    setGroupsCoordinates((groupsCoordinates) => ({
+      ...groupsCoordinates,
+      [groupId]: newCoord,
+    }))
+
+  return (
+    <groupsCoordinatesContext.Provider
+      value={{ groupsCoordinates, updateGroupCoordinates }}
+    >
+      {children}
+    </groupsCoordinatesContext.Provider>
+  )
+}
+
+export const useGroupsCoordinates = () => useContext(groupsCoordinatesContext)

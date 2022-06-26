@@ -69,11 +69,14 @@ test.describe.parallel('Theme page', () => {
         'input[placeholder="Paste the image link..."]',
         hostAvatarUrl
       )
+      await typebotViewer(page).locator('button >> text="Go"').click()
+
       await expect(typebotViewer(page).locator('img')).toHaveAttribute(
         'src',
         hostAvatarUrl
       )
       await page.click('text=Bot avatar')
+
       await expect(typebotViewer(page).locator('img')).toBeHidden()
 
       // Host bubbles
@@ -86,7 +89,7 @@ test.describe.parallel('Theme page', () => {
       )
       await page.fill('input[value="#303235"]', '#ffffff')
       const hostBubble = typebotViewer(page).locator(
-        '[data-testid="host-bubble"]'
+        '[data-testid="host-bubble"] >> nth=-1'
       )
       await expect(hostBubble).toHaveCSS(
         'background-color',
@@ -116,9 +119,9 @@ test.describe.parallel('Theme page', () => {
         '[data-testid="guest-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=1'
       )
       await page.fill('input[value="#FFFFFF"]', '#264653')
-      await typebotViewer(page).locator('text=Go').click()
+      await typebotViewer(page).locator('button >> text="Go"').click()
       const guestBubble = typebotViewer(page).locator(
-        '[data-testid="guest-bubble"]'
+        '[data-testid="guest-bubble"] >> nth=-1'
       )
       await expect(guestBubble).toHaveCSS(
         'background-color',
@@ -129,7 +132,7 @@ test.describe.parallel('Theme page', () => {
       // Guest avatar
       await page.click('text=User avatar')
       await expect(
-        typebotViewer(page).locator('[data-testid="default-avatar"]')
+        typebotViewer(page).locator('[data-testid="default-avatar"] >> nth=-1')
       ).toBeVisible()
       await page.click('[data-testid="default-avatar"]')
       await page.click('button:has-text("Embed link")')
@@ -137,6 +140,8 @@ test.describe.parallel('Theme page', () => {
         'input[placeholder="Paste the image link..."]',
         guestAvatarUrl
       )
+
+      typebotViewer(page).locator('button >> text="Go"').click()
       await expect(typebotViewer(page).locator('img')).toHaveAttribute(
         'src',
         guestAvatarUrl
@@ -151,7 +156,6 @@ test.describe.parallel('Theme page', () => {
         '[data-testid="inputs-theme"] >> [aria-label="Pick a color"] >> nth=1'
       )
       await page.fill('input[value="#303235"]', '#023e8a')
-      await typebotViewer(page).locator('text=Go').click()
       const input = typebotViewer(page).locator('.typebot-input')
       await expect(input).toHaveCSS('background-color', 'rgb(255, 232, 214)')
       await expect(input).toHaveCSS('color', 'rgb(2, 62, 138)')

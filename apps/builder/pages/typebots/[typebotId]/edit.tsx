@@ -12,10 +12,11 @@ import { BoardMenuButton } from 'components/editor/BoardMenuButton'
 import { PreviewDrawer } from 'components/editor/preview/PreviewDrawer'
 import { BlocksSideBar } from 'components/editor/BlocksSideBar'
 import { Graph } from 'components/shared/Graph'
-import { GraphProvider } from 'contexts/GraphContext'
+import { GraphProvider, GroupsCoordinatesProvider } from 'contexts/GraphContext'
 import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
+import { Spinner } from '@chakra-ui/react'
 
 const TypebotEditPage = () => {
   const { typebot, isReadOnly } = useTypebot()
@@ -36,17 +37,27 @@ const TypebotEditPage = () => {
           backgroundSize="40px 40px"
           backgroundPosition="-19px -19px"
         >
-          <GraphDndContext>
-            <BlocksSideBar />
-            <GraphProvider
-              groups={typebot?.groups ?? []}
-              isReadOnly={isReadOnly}
+          {typebot ? (
+            <GraphDndContext>
+              <BlocksSideBar />
+              <GraphProvider isReadOnly={isReadOnly}>
+                <GroupsCoordinatesProvider groups={typebot.groups}>
+                  <Graph flex="1" typebot={typebot} />
+                  <BoardMenuButton pos="absolute" right="40px" top="20px" />
+                  <RightPanel />
+                </GroupsCoordinatesProvider>
+              </GraphProvider>
+            </GraphDndContext>
+          ) : (
+            <Flex
+              justify="center"
+              align="center"
+              boxSize="full"
+              bgColor="rgba(255, 255, 255, 0.5)"
             >
-              {typebot && <Graph flex="1" typebot={typebot} />}
-              <BoardMenuButton pos="absolute" right="40px" top="20px" />
-              <RightPanel />
-            </GraphProvider>
-          </GraphDndContext>
+              <Spinner color="gray" />
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </EditorContext>

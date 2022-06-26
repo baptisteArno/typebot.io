@@ -1,12 +1,13 @@
 import { Stack, IconButton } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from 'assets/icons'
+import { memo } from 'react'
 import { headerHeight } from '../TypebotHeader'
 
 type Props = {
   onZoomIn: () => void
   onZoomOut: () => void
 }
-export const ZoomButtons = ({ onZoomIn, onZoomOut }: Props) => (
+export const ZoomButtons = memo(({ onZoomIn, onZoomOut }: Props) => (
   <Stack
     pos="fixed"
     top={`calc(${headerHeight}px + 70px)`}
@@ -34,4 +35,4 @@ export const ZoomButtons = ({ onZoomIn, onZoomOut }: Props) => (
       borderTopRadius={0}
     />
   </Stack>
-)
+))

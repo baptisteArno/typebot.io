@@ -1,10 +1,11 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
-import React, { useRef, useMemo, useEffect, useState } from 'react'
+import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react'
 import {
   blockWidth,
   Coordinates,
   graphPositionDefaultValue,
   useGraph,
+  useGroupsCoordinates,
 } from 'contexts/GraphContext'
 import { useBlockDnd } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
@@ -12,7 +13,7 @@ import { DraggableBlockType, PublicTypebot, Typebot } from 'models'
 import { AnswersCount } from 'services/analytics'
 import { useDebounce } from 'use-debounce'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
-import GraphContent from './GraphContent'
+import GraphElements from './GraphElements'
 import cuid from 'cuid'
 import { headerHeight } from '../TypebotHeader'
 import { useUser } from 'contexts/UserContext'
@@ -29,7 +30,7 @@ export const Graph = ({
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot?: Typebot | PublicTypebot
+  typebot: Typebot | PublicTypebot
   answersCounts?: AnswersCount[]
   onUnlockProPlanClick?: () => void
 } & FlexProps) => {
@@ -47,10 +48,10 @@ export const Graph = ({
   const {
     setGraphPosition: setGlobalGraphPosition,
     setOpenedBlockId,
-    updateGroupCoordinates,
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
+  const { updateGroupCoordinates } = useGroupsCoordinates()
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(
@@ -177,13 +178,16 @@ export const Graph = ({
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
   useEventListener('click', handleClick, editorContainerRef.current)
   useEventListener('mousemove', handleMouseMove)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const zoomIn = useCallback(() => zoom(zoomButtonsScaleBlock), [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const zoomOut = useCallback(() => zoom(-zoomButtonsScaleBlock), [])
+
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
-        <ZoomButtons
-          onZoomIn={() => zoom(zoomButtonsScaleBlock)}
-          onZoomOut={() => zoom(-zoomButtonsScaleBlock)}
-        />
+        <ZoomButtons onZoomIn={zoomIn} onZoomOut={zoomOut} />
         <Flex
           flex="1"
           w="full"
@@ -195,7 +199,9 @@ export const Graph = ({
           willChange="transform"
           transformOrigin="0px 0px 0px"
         >
-          <GraphContent
+          <GraphElements
+            edges={typebot.edges}
+            groups={typebot.groups}
             answersCounts={answersCounts}
             onUnlockProPlanClick={onUnlockProPlanClick}
           />

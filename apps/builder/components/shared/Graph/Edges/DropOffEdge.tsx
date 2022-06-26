@@ -1,5 +1,5 @@
 import { VStack, Tag, Text, Tooltip } from '@chakra-ui/react'
-import { useGraph } from 'contexts/GraphContext'
+import { useGraph, useGroupsCoordinates } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import React, { useMemo } from 'react'
@@ -24,7 +24,8 @@ export const DropOffEdge = ({
   onUnlockProPlanClick,
 }: Props) => {
   const { workspace } = useWorkspace()
-  const { sourceEndpoints, groupsCoordinates, graphPosition } = useGraph()
+  const { groupsCoordinates } = useGroupsCoordinates()
+  const { sourceEndpoints, graphPosition } = useGraph()
   const { publishedTypebot } = useTypebot()
 
   const isUserOnFreePlan = isFreePlan(workspace)

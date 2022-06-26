@@ -1,6 +1,11 @@
 import { useEventListener } from '@chakra-ui/hooks'
 import assert from 'assert'
-import { useGraph, ConnectingIds } from 'contexts/GraphContext'
+import {
+  useGraph,
+  ConnectingIds,
+  Coordinates,
+  useGroupsCoordinates,
+} from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { colors } from 'libs/theme'
 import React, { useMemo, useState } from 'react'
@@ -17,10 +22,10 @@ export const DrawingEdge = () => {
     connectingIds,
     sourceEndpoints,
     targetEndpoints,
-    groupsCoordinates,
   } = useGraph()
+  const { groupsCoordinates } = useGroupsCoordinates()
   const { createEdge } = useTypebot()
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState<Coordinates | null>(null)
 
   const sourceGroupCoordinates =
     groupsCoordinates && groupsCoordinates[connectingIds?.source.groupId ?? '']
@@ -50,7 +55,7 @@ export const DrawingEdge = () => {
   }, [connectingIds, targetEndpoints])
 
   const path = useMemo(() => {
-    if (!sourceTop || !sourceGroupCoordinates) return ``
+    if (!sourceTop || !sourceGroupCoordinates || !mousePosition) return ``
 
     return targetGroupCoordinates
       ? computeConnectingEdgePath({
@@ -75,6 +80,10 @@ export const DrawingEdge = () => {
   ])
 
   const handleMouseMove = (e: MouseEvent) => {
+    if (!connectingIds) {
+      if (mousePosition) setMousePosition(null)
+      return
+    }
     const coordinates = {
       x: (e.clientX - graphPosition.x) / graphPosition.scale,
       y: (e.clientY - graphPosition.y) / graphPosition.scale,
@@ -92,7 +101,10 @@ export const DrawingEdge = () => {
     createEdge({ from: connectingIds.source, to: connectingIds.target })
   }
 
-  if ((mousePosition.x === 0 && mousePosition.y === 0) || !connectingIds)
+  if (
+    (mousePosition && mousePosition.x === 0 && mousePosition.y === 0) ||
+    !connectingIds
+  )
     return <></>
   return (
     <path

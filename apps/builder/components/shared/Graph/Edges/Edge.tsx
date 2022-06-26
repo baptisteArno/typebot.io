@@ -1,4 +1,8 @@
-import { Coordinates, useGraph } from 'contexts/GraphContext'
+import {
+  Coordinates,
+  useGraph,
+  useGroupsCoordinates,
+} from 'contexts/GraphContext'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import {
   getAnchorsPosition,
@@ -19,17 +23,20 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export const Edge = ({ edge }: { edge: EdgeProps }) => {
+type Props = {
+  edge: EdgeProps
+}
+export const Edge = ({ edge }: Props) => {
   const { deleteEdge } = useTypebot()
   const {
     previewingEdge,
     sourceEndpoints,
     targetEndpoints,
-    groupsCoordinates,
     graphPosition,
     isReadOnly,
     setPreviewingEdge,
   } = useGraph()
+  const { groupsCoordinates } = useGroupsCoordinates()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })

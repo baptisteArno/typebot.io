@@ -54,6 +54,7 @@ test.describe.parallel('Buttons input block', () => {
     await page.click('[data-testid="block1-icon"]')
 
     await page.locator('text=Item 1').hover()
+    await page.waitForTimeout(1000)
     await page.click('[aria-label="Add item"]')
     await page.fill('input[value="Click to edit"]', 'Item 2')
     await page.press('input[value="Item 2"]', 'Enter')

@@ -102,11 +102,6 @@ export const TypebotContext = ({
   const { typebot, publishedTypebot, webhooks, isReadOnly, isLoading, mutate } =
     useFetchedTypebot({
       typebotId,
-      onError: (error) =>
-        showToast({
-          title: 'Error while fetching typebot',
-          description: error.message,
-        }),
     })
 
   const [
@@ -384,7 +379,7 @@ export const useFetchedTypebot = ({
   onError,
 }: {
   typebotId: string
-  onError: (error: Error) => void
+  onError?: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
     {
@@ -397,7 +392,7 @@ export const useFetchedTypebot = ({
   >(`/api/typebots/${typebotId}`, fetcher, {
     dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
   })
-  if (error) onError(error)
+  if (error && onError) onError(error)
   return {
     typebot: data?.typebot,
     webhooks: data?.webhooks,
