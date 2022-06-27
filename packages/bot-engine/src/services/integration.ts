@@ -294,7 +294,6 @@ const sendEmail = async (
     return block.outgoingEdgeId
   }
   const { options } = block
-  const replyTo = parseVariables(variables)(options.replyTo)
   const { error } = await sendRequest({
     url: `${apiHost}/api/typebots/${typebotId}/integrations/email?resultId=${resultId}`,
     method: 'POST',
@@ -305,7 +304,9 @@ const sendEmail = async (
       body: parseVariables(variables)(options.body ?? ''),
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
-      replyTo: replyTo !== '' ? parseVariables(variables)(replyTo) : undefined,
+      replyTo: options.replyTo
+        ? parseVariables(variables)(options.replyTo)
+        : undefined,
       fileUrls: variables.find(byId(options.attachmentsVariableId))?.value,
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,

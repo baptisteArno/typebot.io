@@ -67,6 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       resultValues: ResultValues
       fileUrls?: string
     }
+    const replyToName = replyTo?.split(' <')[0].replace(/"/g, '')
 
     const { host, port, isTlsEnabled, username, password, from } =
       (await getEmailInfo(credentialsId)) ?? {}
@@ -104,7 +105,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const transporter = createTransport(transportConfig)
     const email: Mail.Options = {
-      from: `"${from.name}" <${from.email}>`,
+      from: `"${replyToName ?? from.name}" <${from.email}>`,
       cc,
       bcc,
       to: recipients,
