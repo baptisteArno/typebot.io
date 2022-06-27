@@ -30,7 +30,7 @@ function TypebotEditPage({ userToken }: { userToken: string }) {
       <KBar />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
         <GettingStartedModal />
-        <TypebotHeader />
+        {/* <TypebotHeader /> */}
         <Flex
           flex="1"
           pos="relative"

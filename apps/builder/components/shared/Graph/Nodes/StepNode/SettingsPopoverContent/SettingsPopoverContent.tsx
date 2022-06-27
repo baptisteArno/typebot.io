@@ -163,6 +163,7 @@ export const StepSettings = ({
       return (
         <PaymentSettings
           options={step.options}
+          onOptionsChange={handleOptionsChange}
         />
       )
     }

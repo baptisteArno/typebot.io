@@ -2,7 +2,7 @@ import { Box, Text } from '@chakra-ui/react'
 import { EmbedBubbleStep } from 'models'
 
 export const EmbedBubbleContent = ({ step }: { step: EmbedBubbleStep }) => {
-  if (!step.content?.url) return <Text color="gray.500">Click to edit...</Text>
+  if (!step.content?.url) return <Text color="gray.500">Clique para editar...</Text>
   return (
     <Box w="full" h="120px" pos="relative">
       <iframe

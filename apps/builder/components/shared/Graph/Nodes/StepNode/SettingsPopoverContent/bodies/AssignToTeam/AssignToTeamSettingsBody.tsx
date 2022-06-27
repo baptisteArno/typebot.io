@@ -10,13 +10,11 @@ import { TextBubbleEditor } from '../../../TextBubbleEditor'
 
 type AssignToTeamSettingsBodyProps = {
   options: AssignToTeamOptions
-  outgoingEdgeId: string
   onOptionsChange: (options: AssignToTeamOptions) => void
 }
 
 export const AssignToTeamSettingsBody = ({
   options,
-  outgoingEdgeId,
   onOptionsChange,
 }: AssignToTeamSettingsBodyProps) => {
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
@@ -62,8 +60,6 @@ export const AssignToTeamSettingsBody = ({
   const handleRedirectWhenNoneAvailable = (shouldRedirectNoneAvailable: boolean) => {
     console.log(shouldRedirectNoneAvailable)
     onOptionsChange({ ...options, shouldRedirectNoneAvailable })
-    console.log(options)
-    console.log(outgoingEdgeId)
   }
 
   // useEffect(() => {
@@ -85,6 +81,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
+          onClose={handleCloseEditorBotMessage}
           initialValue={options.messages.firstMessage?.content ? options.messages.firstMessage.content.richText : []}
           onKeyUp={handleCloseEditorBotMessage}
         />
@@ -105,6 +102,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
+          onClose={handleCloseEditorBotMessage}
           initialValue={options.messages.connectionSuccess?.content ? options.messages.connectionSuccess.content.richText : []}
           onKeyUp={handleCloseEditorConnectionMessage}
         />
@@ -122,6 +120,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
+          onClose={handleCloseEditorBotMessage}
           initialValue={options.messages.noAgentAvailable?.content ? options.messages.noAgentAvailable.content.richText : []}
           onKeyUp={handleCloseEditorUnavailability}
         />

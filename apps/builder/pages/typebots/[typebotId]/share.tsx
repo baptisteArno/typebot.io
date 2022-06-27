@@ -7,7 +7,7 @@ import React from 'react'
 const SharePage = () => (
   <Flex flexDir="column" pb="40">
     <Seo title="Share" />
-    <TypebotHeader />
+    {/* <TypebotHeader /> */}
     <ShareContent />
   </Flex>
 )

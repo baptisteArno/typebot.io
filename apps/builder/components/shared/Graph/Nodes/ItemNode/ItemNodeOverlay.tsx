@@ -20,7 +20,7 @@ export const ItemNodeOverlay = ({ item, ...props }: Props) => {
       shadow="lg"
       {...props}
     >
-      {(item.content ?? 'Click to edit') as ReactNode}
+      {(item.content ?? 'Clique para editar') as ReactNode}
     </Flex>
   )
 }

@@ -49,7 +49,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           ref={inputRef as unknown as RefObject<HTMLTextAreaElement>}
           value={value}
           placeholder={
-            step.options?.labels?.placeholder ?? 'Type your answer...'
+            step.options?.labels?.placeholder ?? 'Digite a sua resposta...'
           }
           onChange={handleInputChange}
         />
@@ -58,7 +58,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           ref={inputRef}
           value={value}
           placeholder={
-            step.options?.labels?.placeholder ?? 'Type your answer...'
+            step.options?.labels?.placeholder ?? 'Digite a sua resposta...'
           }
           onChange={handleInputChange}
         />
@@ -70,7 +70,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           ref={inputRef}
           value={value}
           placeholder={
-            step.options?.labels?.placeholder ?? 'Type your email...'
+            step.options?.labels?.placeholder ?? 'Digite o seu email...'
           }
           onChange={handleInputChange}
           type="email"
@@ -83,7 +83,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           ref={inputRef}
           value={value}
           placeholder={
-            step.options?.labels?.placeholder ?? 'Type your answer...'
+            step.options?.labels?.placeholder ?? 'Digite a sua resposta...'
           }
           onChange={handleInputChange}
           type="number"
@@ -99,7 +99,9 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
         <ShortTextInput
           ref={inputRef}
           value={value}
-          placeholder={step.options?.labels?.placeholder ?? 'Type your URL...'}
+          placeholder={
+            step.options?.labels?.placeholder ?? 'Digite a sua URL...'
+          }
           onChange={handleInputChange}
           type="url"
         />
@@ -113,7 +115,7 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           value={value}
           onChange={handlePhoneNumberChange}
           placeholder={
-            step.options.labels.placeholder ?? 'Your phone number...'
+            step.options.labels.placeholder ?? 'Seu número de telefone...'
           }
           defaultCountry={step.options.defaultCountryCode as Country}
         />

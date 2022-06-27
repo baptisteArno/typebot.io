@@ -94,7 +94,7 @@ const Input = ({
     case InputStepType.TEXT:
     case InputStepType.NUMBER:
     case InputStepType.EMAIL:
-    case InputStepType.URL:
+    // case InputStepType.URL:
     case InputStepType.PHONE:
       return (
         <TextForm
@@ -108,14 +108,14 @@ const Input = ({
       return <DateForm options={step.options} onSubmit={onSubmit} />
     case InputStepType.CHOICE:
       return <ChoiceForm step={step} onSubmit={onSubmit} />
-    case InputStepType.PAYMENT:
-      return (
-        <PaymentForm
-          options={step.options}
-          onSuccess={() => onSubmit('Success')}
-        />
-      )
-    default: 
+    // case InputStepType.PAYMENT:
+    //   return (
+    //     <PaymentForm
+    //       options={step.options}
+    //       onSuccess={() => onSubmit('Success')}
+    //     />
+    //   )
+    default:
       return null
   }
 }

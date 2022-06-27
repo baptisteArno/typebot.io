@@ -12,7 +12,7 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
   }
   return (
     <Select
-      placeholder="International"
+      placeholder="Internacional"
       value={countryCode}
       onChange={handleOnChange}
     >

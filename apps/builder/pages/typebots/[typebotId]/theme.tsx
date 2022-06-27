@@ -7,7 +7,7 @@ import React from 'react'
 const ThemePage = () => (
   <Flex overflow="hidden" h="100vh" flexDir="column">
     <Seo title="Theme" />
-    <TypebotHeader />
+    {/* <TypebotHeader /> */}
     <ThemeContent />
   </Flex>
 )

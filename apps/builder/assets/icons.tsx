@@ -1,5 +1,6 @@
 import { IconProps, Icon } from '@chakra-ui/react'
-import * as MaterialDesign from "react-icons/md"
+import * as MaterialDesign from 'react-icons/md'
+import { IconContext } from 'react-icons'
 
 const featherIconsBaseProps: IconProps = {
   fill: 'none',
@@ -75,16 +76,34 @@ export const FolderPlusIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const TextIcon = () => (
-  <MaterialDesign.MdOutlineChatBubble/>
+export const TextIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlineChatBubble />
+    </div>
+  </IconContext.Provider>
 )
 
-export const ImageIcon = () => (
-  <MaterialDesign.MdOutlineImage/>
+export const ImageIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlineImage />
+    </div>
+  </IconContext.Provider>
 )
 
-export const CalendarIcon = () => (
-  <MaterialDesign.MdDateRange/>
+export const CalendarIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdDateRange />
+    </div>
+  </IconContext.Provider>
 )
 
 export const FlagIcon = (props: IconProps) => (
@@ -137,8 +156,14 @@ export const CheckIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const ChatIcon = () => (
-  <MaterialDesign.MdOutlineTextFields/>
+export const ChatIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlineTextFields />
+    </div>
+  </IconContext.Provider>
 )
 
 export const TrashIcon = (props: IconProps) => (
@@ -148,8 +173,14 @@ export const TrashIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const LayoutIcon = () => (
-  <MaterialDesign.MdInsertDriveFile/>
+export const LayoutIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdInsertDriveFile />
+    </div>
+  </IconContext.Provider>
 )
 
 export const CodeIcon = (props: IconProps) => (
@@ -191,24 +222,84 @@ export const DownloadIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const NumberIcon = () => (
-  <MaterialDesign.MdOutlineReceipt/>
+export const NumberIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlineReceipt />
+    </div>
+  </IconContext.Provider>
 )
 
-export const EmailIcon = () => (
-  <MaterialDesign.MdEmail/>
+export const EmailIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdEmail />
+    </div>
+  </IconContext.Provider>
 )
 
-export const PhoneIcon = () => (
-  <MaterialDesign.MdPhone/>
+export const PhoneIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdPhone />
+    </div>
+  </IconContext.Provider>
 )
 
-export const CheckSquareIcon = () => (
-  <MaterialDesign.MdPhone/>
+export const CheckSquareIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdCheckBox />
+    </div>
+  </IconContext.Provider>
 )
 
-export const FilterIcon = () => (
-  <MaterialDesign.MdFilterAlt/>
+export const WavingHandIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdWavingHand />
+    </div>
+  </IconContext.Provider>
+)
+
+export const AssignToIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdSwapHoriz />
+    </div>
+  </IconContext.Provider>
+)
+
+export const AlarmIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdAlarm />
+    </div>
+  </IconContext.Provider>
+)
+
+export const FilterIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdFilterAlt />
+    </div>
+  </IconContext.Provider>
 )
 
 export const UserIcon = (props: IconProps) => (
@@ -235,8 +326,14 @@ export const ExternalLinkIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const FilmIcon = () => (
-  <MaterialDesign.MdVideoLibrary/>
+export const FilmIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdVideoLibrary />
+    </div>
+  </IconContext.Provider>
 )
 
 export const WebhookIcon = (props: IconProps) => (
@@ -291,11 +388,14 @@ export const FileIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const EyeIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-    <circle cx="12" cy="12" r="3"></circle>
-  </Icon>
+export const EyeIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdVisibility />
+    </div>
+  </IconContext.Provider>
 )
 
 export const SendEmailIcon = (props: IconProps) => (

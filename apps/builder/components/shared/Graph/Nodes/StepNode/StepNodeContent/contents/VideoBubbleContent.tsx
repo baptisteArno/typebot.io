@@ -3,7 +3,7 @@ import { VideoBubbleStep, VideoBubbleContentType } from 'models'
 
 export const VideoBubbleContent = ({ step }: { step: VideoBubbleStep }) => {
   if (!step.content?.url || !step.content.type)
-    return <Text color="gray.500">Click to edit...</Text>
+    return <Text color="gray.500">Clique para editar...</Text>
   switch (step.content.type) {
     case VideoBubbleContentType.URL:
       return (

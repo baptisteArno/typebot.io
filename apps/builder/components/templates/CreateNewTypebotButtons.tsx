@@ -81,7 +81,7 @@ export const CreateNewTypebotButtons = () => {
           onClick={() => handleCreateSubmit()}
           isLoading={isLoading}
         >
-          Start from scratch
+          Começar do zero
         </Button>
         <Button
           variant="outline"
@@ -92,7 +92,7 @@ export const CreateNewTypebotButtons = () => {
           onClick={onOpen}
           isLoading={isLoading}
         >
-          Start from a template
+          Começar com um template
         </Button>
         <ImportTypebotFromFileButton
           variant="outline"
@@ -103,7 +103,7 @@ export const CreateNewTypebotButtons = () => {
           isLoading={isLoading}
           onNewTypebot={handleCreateSubmit}
         >
-          Import a file
+          Importar um arquivo
         </ImportTypebotFromFileButton>
       </Stack>
       <TemplatesModal

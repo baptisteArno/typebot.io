@@ -24,17 +24,17 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
     <Stack p="2" spacing={6}>
       <Stack>
         <Input
-          placeholder="Paste the link or code..."
+          placeholder="Cole o link..."
           defaultValue={content?.url ?? ''}
           onChange={handleUrlChange}
         />
         <Text fontSize="sm" color="gray.400" textAlign="center">
-          Works with PDFs, iframes, websites...
+          Funciona com PDFs, iframes, sites...
         </Text>
       </Stack>
 
       <HStack justify="space-between">
-        <Text>Height: </Text>
+        <Text>Altura: </Text>
         <SmartNumberInput
           value={content?.height}
           onValueChange={handleHeightChange}

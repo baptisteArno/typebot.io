@@ -144,7 +144,7 @@ export const VariableSearchInput = ({
             value={inputValue}
             onChange={onInputChange}
             onClick={onOpen}
-            placeholder={inputProps.placeholder ?? 'Select a variable'}
+            placeholder={inputProps.placeholder ?? 'Selecione a variável'}
             {...inputProps}
           />
         </PopoverTrigger>
@@ -192,13 +192,13 @@ export const VariableSearchInput = ({
                     <HStack>
                       <IconButton
                         icon={<EditIcon />}
-                        aria-label="Rename variable"
+                        aria-label="Renomear variável"
                         size="xs"
                         onClick={handleRenameVariableClick(item)}
                       />
                       <IconButton
                         icon={<TrashIcon />}
-                        aria-label="Remove variable"
+                        aria-label="Remover variável"
                         size="xs"
                         onClick={handleDeleteVariableClick(item)}
                       />

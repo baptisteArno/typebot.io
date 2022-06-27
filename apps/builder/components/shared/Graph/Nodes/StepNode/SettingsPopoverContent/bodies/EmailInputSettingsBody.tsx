@@ -36,7 +36,7 @@ export const EmailInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Button label:
+          Mensagem do botão:
         </FormLabel>
         <Input
           id="button"
@@ -46,7 +46,7 @@ export const EmailInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="retry">
-          Retry message:
+          Mensagem de retentativa:
         </FormLabel>
         <Input
           id="retry"
@@ -56,7 +56,7 @@ export const EmailInputSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          Salvar resposta em uma variável:
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}

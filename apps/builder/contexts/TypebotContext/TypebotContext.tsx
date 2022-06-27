@@ -212,14 +212,14 @@ export const TypebotContext = ({
     })
   }
 
-  useAutoSave(
-    {
-      handler: saveTypebot,
-      item: localTypebot,
-      debounceTimeout: autoSaveTimeout,
-    },
-    [typebot, publishedTypebot, webhooks]
-  )
+  // useAutoSave(
+  //   {
+  //     handler: saveTypebot,
+  //     item: localTypebot,
+  //     debounceTimeout: autoSaveTimeout,
+  //   },
+  //   [typebot, publishedTypebot, webhooks]
+  // )
 
   useEffect(() => {
     const save = () => saveTypebot({ disableMutation: true })

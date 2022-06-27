@@ -7,7 +7,7 @@ import React from 'react'
 const SettingsPage = () => (
   <Flex overflow="hidden" h="100vh" flexDir="column">
     <Seo title="Settings" />
-    <TypebotHeader />
+    {/* <TypebotHeader /> */}
     <SettingsContent />
   </Flex>
 )

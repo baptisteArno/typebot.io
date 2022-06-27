@@ -34,7 +34,7 @@ export const ToolBar = ({
       {...props}
     >
       <Button size="sm" onMouseDown={handleVariablesButtonMouseDown}>
-        Variables
+        Variáveis
       </Button>
       <span data-testid="bold-button">
         <MarkToolbarButton

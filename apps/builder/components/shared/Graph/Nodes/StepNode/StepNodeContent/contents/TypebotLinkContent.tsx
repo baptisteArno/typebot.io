@@ -20,20 +20,20 @@ export const TypebotLinkContent = ({ step }: Props) => {
   const blockTitle = linkedTypebot?.blocks.find(
     byId(step.options.blockId)
   )?.title
-  if (!step.options.typebotId) return <Text color="gray.500">Configure...</Text>
+  if (!step.options.typebotId) return <Text color="gray.500">Configuração...</Text>
   return (
     <Text>
-      Jump{' '}
+      Pular{' '}
       {blockTitle ? (
         <>
-          to <Tag>{blockTitle}</Tag>
+          para <Tag>{blockTitle}</Tag>
         </>
       ) : (
         <></>
       )}{' '}
       {!isCurrentTypebot ? (
         <>
-          in <Tag colorScheme="blue">{linkedTypebot?.name}</Tag>
+          em <Tag colorScheme="blue">{linkedTypebot?.name}</Tag>
         </>
       ) : (
         <></>

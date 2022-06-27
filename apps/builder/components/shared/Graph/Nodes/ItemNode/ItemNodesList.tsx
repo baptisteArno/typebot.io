@@ -163,7 +163,7 @@ export const ItemNodesList = ({
           align="center"
           cursor={isReadOnly ? 'pointer' : 'not-allowed'}
         >
-          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Default</Text>
+          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão</Text>
           <SourceEndpoint
             source={{
               blockId: step.blockId,

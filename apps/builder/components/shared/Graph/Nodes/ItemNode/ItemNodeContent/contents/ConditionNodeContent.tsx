@@ -14,7 +14,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
     <Flex px={2} py={2}>
       {item.content.comparisons.length === 0 ||
       comparisonIsEmpty(item.content.comparisons[0]) ? (
-        <Text color={'gray.500'}>Configure...</Text>
+        <Text color={'gray.500'}>Configuração...</Text>
       ) : (
         <Stack maxW="170px">
           {item.content.comparisons.map((comparison, idx) => {

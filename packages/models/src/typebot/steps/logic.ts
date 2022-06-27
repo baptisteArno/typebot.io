@@ -9,7 +9,7 @@ export type LogicStep =
   | TypebotLinkStep
 
 export type LogicStepOptions =
-  | SetVariableOptions
+  // | SetVariableOptions
   | RedirectOptions
   | CodeOptions
   | TypebotLinkOptions
@@ -58,12 +58,12 @@ export enum LogicalOperator {
 }
 
 export enum ComparisonOperators {
-  EQUAL = 'Equal to',
-  NOT_EQUAL = 'Not equal',
-  CONTAINS = 'Contains',
-  GREATER = 'Greater than',
-  LESS = 'Less than',
-  IS_SET = 'Is set',
+  EQUAL = 'Igual a',
+  NOT_EQUAL = 'Diferente',
+  CONTAINS = 'Contém',
+  GREATER = 'Maior que',
+  LESS = 'Menor que',
+  IS_SET = 'Está configurado',
 }
 
 export type ConditionContent = {

@@ -14,9 +14,10 @@ import {
   DraggableStepType,
   InputStepType,
   IntegrationStepType,
+  StepType,
   LogicStepType,
   OctaStepType,
-  OctaBubbleStepType
+  OctaBubbleStepType,
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -74,6 +75,29 @@ export const StepsSideBar = () => {
     setIsExtended(false)
   }
 
+  const shouldHideComponents = (type: StepType) => {
+    return (
+      type !== BubbleStepType.IMAGE &&
+      type !== BubbleStepType.VIDEO &&
+      type !== InputStepType.URL &&
+      type !== InputStepType.PAYMENT &&
+      type !== InputStepType.ASK_NAME &&
+      type !== LogicStepType.SET_VARIABLE &&
+      type !== LogicStepType.REDIRECT &&
+      type !== LogicStepType.CODE &&
+      type !== LogicStepType.TYPEBOT_LINK
+    )
+  }
+
+  const shouldDisableComponent = (type: StepType) => {
+    return (
+      type === InputStepType.DATE ||
+      type === InputStepType.EMAIL ||
+      type === InputStepType.PHONE ||
+      type === OctaStepType.OFFICE_HOURS
+    )
+  }
+
   return (
     <Flex
       w="360px"
@@ -102,7 +126,11 @@ export const StepsSideBar = () => {
         className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
-          <Tooltip label={isLocked ? 'Unlock sidebar' : 'Lock sidebar'}>
+          <Tooltip
+            label={
+              isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'
+            }
+          >
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
               aria-label={isLocked ? 'Unlock' : 'Lock'}
@@ -115,97 +143,79 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Bubbles Mensagens
+            Mensagens
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(BubbleStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Inputs
+            Perguntas
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(InputStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    isDisabled={shouldDisableComponent(type)}
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Logic
+            Direcionamentos
           </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
-          </SimpleGrid>
-        </Stack>
-
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Integrations
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationStepType).map((type) => (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={type === IntegrationStepType.MAKE_COM}
-              />
-            ))}
-          </SimpleGrid>
-        </Stack>
-
-        {/* <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            OctaStep
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaStepType).map((type) => (
               <StepCard
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
+                isDisabled={shouldDisableComponent(type)}
               />
             ))}
           </SimpleGrid>
-        </Stack> */}
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            OctaStep
-          </Text>
-          <SimpleGrid columns={2} spacing="3">
-            {Object.values(OctaStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
-          </SimpleGrid>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (
-              <StepCard key={type} type={type} onMouseDown={handleMouseDown} isDisabled={type === OctaBubbleStepType.END_CONVERSATION} />
+              <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
         </Stack>
 
-        {/* {draggedStepType && (
-          <Portal>
-            <StepCardOverlay
-              type={draggedStepType}
-              onMouseUp={handleMouseUp}
-              pos="fixed"
-              top="0"
-              left="0"
-              style={{
-                transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
-              }}
-            />
-          </Portal>
-        )} */}
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            Validações
+          </Text>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(LogicStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
+                )
+            )}
+          </SimpleGrid>
+        </Stack>
       </Stack>
       <Fade in={!isLocked} unmountOnExit>
         <Flex

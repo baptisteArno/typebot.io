@@ -12,12 +12,12 @@
         {
           "id": "bAkhPioPM1uAda6K2aJzHD",
           "type": "start",
-          "label": "Start",
+          "label": "Início",
           "blockId": "cAvp3oQUNYcANvcEQEVSpD",
           "outgoingEdgeId": "2V3HtAH5fSAm6fyYzCyotq"
         }
       ],
-      "title": "Start",
+      "title": "Início",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
