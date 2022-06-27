@@ -60,7 +60,6 @@ export const TextInput = ({ block, value, onChange }: TextInputProps) => {
           placeholder={
             block.options?.labels?.placeholder ?? 'Type your answer...'
           }
-          name="typebot-short-text"
           onChange={handleInputChange}
           autoComplete="new-typebot-answer-value"
         />
