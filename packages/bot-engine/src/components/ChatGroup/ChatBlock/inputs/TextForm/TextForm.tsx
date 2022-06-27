@@ -53,6 +53,7 @@ export const TextForm = ({
       className="flex items-end justify-between rounded-lg pr-2 typebot-input w-full"
       onSubmit={handleSubmit}
       data-testid="input"
+      autoComplete={block.type === InputBlockType.TEXT ? 'off' : 'on'}
       style={{
         marginRight: hasGuestAvatar ? '50px' : '0.5rem',
         maxWidth: isLongText ? undefined : '350px',
