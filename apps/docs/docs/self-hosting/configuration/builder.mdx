@@ -1,27 +1,12 @@
 ---
-sidebar_position: 2
+title: Builder
 ---
 
-import { SponsorButton } from '../../src/js/SponsorButton.jsx'
+import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
 
-# Configuration
+# Builder configuration
 
-:::note
-The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). It takes 1 minute to try out the tool for free. You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
-
-That's also the best way to support my work, open-source software, and you'll get great service!
-:::
-
-When running Typebot on your machine, the following configuration parameters can be supplied as environment variables.
-
-Typebot is composed of 2 main applications:
-
-- The builder, where you build your typebots
-- The viewer, where your user answer the typebot
-
-Both apps have their own environment config files. Here is an exhaustive list of all the parameters you can set:
-
-## Builder
+## General
 
 | Parameter              | Default                                       | Description                                                                                                                                                                                                                                 |
 | ---------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -33,8 +18,7 @@ Both apps have their own environment config files. Here is an exhaustive list of
 | NEXTAUTH_URL_INTERNAL  | --                                            | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` isn't publicly accessible                                                                                                                                        |
 | DISABLE_SIGNUP         | false                                         | To disable new sign ups but still be able to sign in with existing users or admin email                                                                                                                                                     |
 
-<details><summary><h3>Email (Auth, notifications)</h3></summary>
-<p>
+## Email (Auth, notifications)
 
 Used for sending email notifications and authentication
 
@@ -48,10 +32,7 @@ Used for sending email notifications and authentication
 | SMTP_AUTH_DISABLED    | false   | To disable the authentication by email but still use the provided config for notifications |
 | SMTP_IGNORE_TLS       | false   | Don't use TLS even if the server supports STARTTLS extension                               |
 
-</p></details>
-
-<details><summary><h3>Google (Auth, Sheets, Fonts)</h3></summary>
-<p>
+## Google (Auth, Sheets, Fonts)
 
 Used authentication in the builder and for the Google Sheets integration step. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google`
@@ -67,10 +48,7 @@ Used for Google Fonts:
 | -------------------------- | ------- | --------------------------------------- |
 | NEXT_PUBLIC_GOOGLE_API_KEY | --      | The API Key from the Google API Console |
 
-</p></details>
-
-<details><summary><h3>GitHub (Auth)</h3></summary>
-<p>
+## GitHub (Auth)
 
 Used for authenticating with GitHub. By default, it uses the credentials of a Typebot-dev app.
 
@@ -81,10 +59,7 @@ You can create your own GitHub OAuth app [here](https://github.com/settings/deve
 | GITHUB_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
 | GITHUB_CLIENT_SECRET | --      | Application secret                                                          |
 
-</p></details>
-
-<details><summary><h3>GitLab (Auth)</h3></summary>
-<p>
+## GitLab (Auth)
 
 Used for authenticating with GitLab.
 Follow the official GitLab guide for creating OAuth2 applications [here](https://docs.gitlab.com/ee/integration/oauth_provider.html).
@@ -98,10 +73,7 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab
 | GITLAB_REQUIRED_GROUPS | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
 | GITLAB_NAME            | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
 
-</p></details>
-
-<details><summary><h3>Facebook (Auth)</h3></summary>
-<p>
+## Facebook (Auth)
 
 You can create your own Facebook OAuth app [here](https://developers.facebook.com/apps/create/).
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebook`
@@ -111,10 +83,7 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebo
 | FACEBOOK_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
 | FACEBOOK_CLIENT_SECRET | --      | Application secret                                                          |
 
-</p></details>
-
-<details><summary><h3>Azure AD (Auth)</h3></summary>
-<p>
+## Azure AD (Auth)
 
 If you are using [Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/) for the authentication you can set the following environment variables.
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-ad`
@@ -125,10 +94,7 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 | AZURE_AD_CLIENT_SECRET | --      | Application client secret. Can be obtained from Azure Portal. |
 | AZURE_AD_TENANT_ID     | --      | Azure Tenant ID                                               |
 
-</p></details>
-
-<details><summary><h3>S3 Storage (Media uploads)</h3></summary>
-<p>
+## S3 Storage (Media uploads)
 
 Used for uploading images, videos, etc... It can be any S3 compatible object storage service (Minio, Digital Oceans Space, AWS S3...)
 
@@ -172,10 +138,7 @@ You also need to configure CORS so that an object can be uploaded from the brows
 ]
 ```
 
-</p></details>
-
-<details><summary><h3>Giphy (GIF picker)</h3></summary>
-<p>
+## Giphy (GIF picker)
 
 Used to search for GIF. You can create a Giphy app [here](https://developers.giphy.com/dashboard/)
 
@@ -183,9 +146,9 @@ Used to search for GIF. You can create a Giphy app [here](https://developers.gip
 | ------------------------- | ------- | ------------- |
 | NEXT_PUBLIC_GIPHY_API_KEY | --      | Giphy API key |
 
-</p></details>
+## Others
 
-<details><summary><h3>Others</h3></summary>
+<details><summary><h3>Show</h3></summary>
 <p>
 
 The [official Typebot managed service](https://app.typebot.io/) uses other services such as [Stripe](https://stripe.com/) for processing payments, [Sentry](https://sentry.io/) for tracking bugs and [Sleekplan](https://sleekplan.com/) for user feedbacks.
@@ -249,62 +212,6 @@ These can also be added to the `viewer` environment
 | USER_CREATED_WEBHOOK_URL | --      | Webhook URL called whenever a new user is created (used for importing a new SendGrid contact) |
 
 </p></details>
-
-</p></details>
-
-## Viewer
-
-| Parameter              | Default                                       | Description                                                                                                                                                                       |
-| ---------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DATABASE_URL           | postgresql://postgres:typebot@db:5432/typebot | The database URL                                                                                                                                                                  |
-| ENCRYPTION_SECRET      | SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6              | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. |
-| NEXTAUTH_URL           | http://localhost:3000                         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                   |
-| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                        |
-
-<details><summary><h3>Emails (Notifications)</h3></summary>
-<p>
-
-Used for sending email notifications and authentication
-
-| Parameter       | Default | Description                                                                     |
-| --------------- | ------- | ------------------------------------------------------------------------------- |
-| SMTP_USERNAME   | --      | SMTP username                                                                   |
-| SMTP_PASSWORD   | --      | SMTP password                                                                   |
-| SMTP_HOST       | --      | SMTP host. (i.e. `smtp.host.com`)                                               |
-| SMTP_PORT       | 25      | SMTP port                                                                       |
-| SMTP_FROM       | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`) |
-| SMTP_IGNORE_TLS | false   | Don't use TLS even if the server supports STARTTLS extension                    |
-
-</p></details>
-
-<details><summary><h3>Google (Sheets)</h3></summary>
-<p>
-
-Used when executing a Google Sheets block. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
-
-| Parameter            | Default | Description                                   |
-| -------------------- | ------- | --------------------------------------------- |
-| GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
-
-</p></details>
-
-<details><summary><h3>S3 Storage (File upload input)</h3></summary>
-<p>
-
-Used for the file upload input. It can be any S3 compatible object storage service (Minio, Digital Oceans Space, AWS S3...)
-
-| Parameter     | Default | Description                                                    |
-| ------------- | ------- | -------------------------------------------------------------- |
-| S3_ACCESS_KEY | --      | S3 access key. Also used to check if upload feature is enabled |
-| S3_SECRET_KEY | --      | S3 secret key.                                                 |
-| S3_BUCKET     | typebot | Name of the bucket where assets will be uploaded in.           |
-| S3_PORT       | --      | S3 Host port number                                            |
-| S3_ENDPOINT   | --      | S3 secret key.                                                 |
-| S3_SSL        | true    | Use SSL when establishing the connection.                      |
-| S3_REGION     | --      | S3 region.                                                     |
-
-Your bucket must have the following policy that tells S3 to allow public read when an object is located under the public folder:
 
 </p></details>
 
