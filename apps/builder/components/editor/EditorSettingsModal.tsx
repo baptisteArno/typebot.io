@@ -5,7 +5,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { EditorSettings } from 'components/dashboard/WorkspaceSettingsModal/UserSettingsForm'
+import { EditorSettingsForm } from 'components/dashboard/WorkspaceSettingsModal/EditorSettingsForm'
 import React from 'react'
 
 type Props = {
@@ -20,7 +20,7 @@ export const EditorSettingsModal = ({ isOpen, onClose }: Props) => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody pt="12" pb="8" px="8">
-          <EditorSettings />
+          <EditorSettingsForm />
         </ModalBody>
       </ModalContent>
     </Modal>

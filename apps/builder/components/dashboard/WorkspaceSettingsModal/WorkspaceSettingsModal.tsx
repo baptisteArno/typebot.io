@@ -21,7 +21,7 @@ import { useState } from 'react'
 import { BillingForm } from './BillingForm'
 import { MembersList } from './MembersList'
 import { MyAccountForm } from './MyAccountForm'
-import { EditorSettings } from './UserSettingsForm'
+import { EditorSettingsForm } from './EditorSettingsForm'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
 
 type Props = {
@@ -51,86 +51,102 @@ export const WorkspaceSettingsModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent h="600px" flexDir="row">
-        <Stack spacing={8} w="250px" py="6" borderRightWidth={1} h="full">
-          <Stack>
-            <Text pl="4" color="gray.500">
-              {user.email}
-            </Text>
-            <Button
-              variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
-              onClick={() => setSelectedTab('my-account')}
-              leftIcon={
-                <Avatar
-                  name={user.name ?? undefined}
-                  src={user.image ?? undefined}
-                  boxSize="15px"
-                />
-              }
-              size="sm"
-              justifyContent="flex-start"
-              pl="4"
-            >
-              My account
-            </Button>
-            <Button
-              variant={selectedTab === 'user-settings' ? 'solid' : 'ghost'}
-              onClick={() => setSelectedTab('user-settings')}
-              leftIcon={<SettingsIcon />}
-              size="sm"
-              justifyContent="flex-start"
-              pl="4"
-            >
-              Preferences
-            </Button>
-          </Stack>
-          <Stack>
-            <Text pl="4" color="gray.500">
-              Workspace
-            </Text>
-            {canEdit && (
+        <Stack
+          spacing={8}
+          w="250px"
+          py="6"
+          borderRightWidth={1}
+          h="full"
+          justifyContent="space-between"
+        >
+          <Stack spacing={8}>
+            <Stack>
+              <Text pl="4" color="gray.500">
+                {user.email}
+              </Text>
               <Button
-                variant={
-                  selectedTab === 'workspace-settings' ? 'solid' : 'ghost'
-                }
-                onClick={() => setSelectedTab('workspace-settings')}
+                variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
+                onClick={() => setSelectedTab('my-account')}
                 leftIcon={
-                  <EmojiOrImageIcon
-                    icon={workspace.icon}
+                  <Avatar
+                    name={user.name ?? undefined}
+                    src={user.image ?? undefined}
                     boxSize="15px"
-                    defaultIcon={HardDriveIcon}
                   />
                 }
                 size="sm"
                 justifyContent="flex-start"
                 pl="4"
               >
-                Settings
+                My account
               </Button>
-            )}
-            <Button
-              variant={selectedTab === 'members' ? 'solid' : 'ghost'}
-              onClick={() => setSelectedTab('members')}
-              leftIcon={<UsersIcon />}
-              size="sm"
-              justifyContent="flex-start"
-              pl="4"
-            >
-              Members
-            </Button>
-            {canEdit && (
               <Button
-                variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
-                onClick={() => setSelectedTab('billing')}
-                leftIcon={<CreditCardIcon />}
+                variant={selectedTab === 'user-settings' ? 'solid' : 'ghost'}
+                onClick={() => setSelectedTab('user-settings')}
+                leftIcon={<SettingsIcon />}
                 size="sm"
                 justifyContent="flex-start"
                 pl="4"
               >
-                Billing
+                Preferences
               </Button>
-            )}
+            </Stack>
+            <Stack>
+              <Text pl="4" color="gray.500">
+                Workspace
+              </Text>
+              {canEdit && (
+                <Button
+                  variant={
+                    selectedTab === 'workspace-settings' ? 'solid' : 'ghost'
+                  }
+                  onClick={() => setSelectedTab('workspace-settings')}
+                  leftIcon={
+                    <EmojiOrImageIcon
+                      icon={workspace.icon}
+                      boxSize="15px"
+                      defaultIcon={HardDriveIcon}
+                    />
+                  }
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  Settings
+                </Button>
+              )}
+              <Button
+                variant={selectedTab === 'members' ? 'solid' : 'ghost'}
+                onClick={() => setSelectedTab('members')}
+                leftIcon={<UsersIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                Members
+              </Button>
+              {canEdit && (
+                <Button
+                  variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
+                  onClick={() => setSelectedTab('billing')}
+                  leftIcon={<CreditCardIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  Billing
+                </Button>
+              )}
+            </Stack>
           </Stack>
+
+          <Flex justify="center" pt="10">
+            <Text color="gray.500" fontSize="xs">
+              Version: 2.5.0
+            </Text>
+          </Flex>
         </Stack>
+
         {isOpen && (
           <Flex flex="1" p="10">
             <SettingsContent tab={selectedTab} onClose={onClose} />
@@ -152,7 +168,7 @@ const SettingsContent = ({
     case 'my-account':
       return <MyAccountForm />
     case 'user-settings':
-      return <EditorSettings />
+      return <EditorSettingsForm />
     case 'workspace-settings':
       return <WorkspaceSettingsForm onClose={onClose} />
     case 'members':

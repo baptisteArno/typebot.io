@@ -12,7 +12,7 @@ import { useUser } from 'contexts/UserContext'
 import { GraphNavigation } from 'db'
 import React, { useEffect, useState } from 'react'
 
-export const EditorSettings = () => {
+export const EditorSettingsForm = () => {
   const { user, saveUser } = useUser()
   const [value, setValue] = useState<string>(
     user?.graphNavigation ?? GraphNavigation.TRACKPAD
