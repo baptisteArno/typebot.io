@@ -105,7 +105,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const transporter = createTransport(transportConfig)
     const email: Mail.Options = {
-      from: `"${replyToName ?? from.name}" <${from.email}>`,
+      from: `"${isEmpty(replyToName) ? from.name : replyToName}" <${
+        from.email
+      }>`,
       cc,
       bcc,
       to: recipients,
