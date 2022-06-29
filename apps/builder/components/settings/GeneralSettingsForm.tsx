@@ -12,6 +12,7 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import { GeneralSettings } from 'models'
 import React from 'react'
 import { isFreePlan } from 'services/workspace'
+import { isDefined } from 'utils'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -76,13 +77,14 @@ export const GeneralSettingsForm = ({
         label="Prefill input"
         initialValue={generalSettings.isInputPrefillEnabled ?? true}
         onCheckChange={handleInputPrefillChange}
-        moreInfoContent="Inputs are automatically pre-filled whenever its saving variable has a value"
+        moreInfoContent="Inputs are automatically pre-filled whenever their associated variable has a value"
       />
       <SwitchWithLabel
         id="new-result"
-        label="Create new session on page refresh"
-        initialValue={generalSettings.isNewResultOnRefreshEnabled ?? false}
+        label="Remember session"
+        initialValue={isDefined(generalSettings.isNewResultOnRefreshEnabled) ? !generalSettings.isNewResultOnRefreshEnabled : true}
         onCheckChange={handleNewResultOnRefreshChange}
+        moreInfoContent="If the user refreshes the page, its existing results will be overwritten. Disable this if you want to create a new results every time the user refreshes the page."
       />
       <SwitchWithLabel
         id="query-params"
