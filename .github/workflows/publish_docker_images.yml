@@ -1,9 +1,10 @@
 name: Publish Docker images
 
 on:
+  create:
+    tags: ['v*']
   push:
     branches: [main]
-    tags: ['v*']
   pull_request:
     branches: [main]
 
