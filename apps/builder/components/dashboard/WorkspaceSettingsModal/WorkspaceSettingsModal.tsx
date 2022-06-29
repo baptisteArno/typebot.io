@@ -142,7 +142,7 @@ export const WorkspaceSettingsModal = ({
 
           <Flex justify="center" pt="10">
             <Text color="gray.500" fontSize="xs">
-              Version: 2.5.0
+              Version: 2.5.1
             </Text>
           </Flex>
         </Stack>
