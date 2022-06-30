@@ -64,7 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     } else
       await prisma.invitation.create({
-        data: { email: email.toLowerCase(), type, typebotId },
+        data: { email: email.toLowerCase().trim(), type, typebotId },
       })
     if (env('E2E_TEST') !== 'enabled')
       await sendEmailNotification({
