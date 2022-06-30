@@ -13,7 +13,7 @@ import {
 import { Variable } from 'models'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from 'utils'
+import { env, isDefined } from 'utils'
 import { VariablesButton } from './buttons/VariablesButton'
 
 type Props = {
@@ -47,7 +47,11 @@ export const SearchableDropdown = ({
       )
       .slice(0, 50),
   ])
+  const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
+    number | undefined
+  >()
   const dropdownRef = useRef(null)
+  const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(
@@ -96,6 +100,7 @@ export const SearchableDropdown = ({
   const handleItemClick = (item: string) => () => {
     setInputValue(item)
     debounced(item)
+    setKeyboardFocusIndex(undefined)
     onClose()
   }
 
@@ -125,9 +130,31 @@ export const SearchableDropdown = ({
     }, 100)
   }
 
-  const handleKeyUp = () => {
-    if (!inputRef.current?.selectionStart) return
-    setCarretPosition(inputRef.current.selectionStart)
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (inputRef.current?.selectionStart)
+      setCarretPosition(inputRef.current.selectionStart)
+    if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
+      handleItemClick(filteredItems[keyboardFocusIndex])()
+      return setKeyboardFocusIndex(undefined)
+    }
+    if (e.key === 'ArrowDown') {
+      if (keyboardFocusIndex === undefined) return setKeyboardFocusIndex(0)
+      if (keyboardFocusIndex === filteredItems.length - 1) return
+      itemsRef.current[keyboardFocusIndex + 1]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+      return setKeyboardFocusIndex(keyboardFocusIndex + 1)
+    }
+    if (e.key === 'ArrowUp') {
+      if (keyboardFocusIndex === undefined) return
+      if (keyboardFocusIndex === 0) return setKeyboardFocusIndex(undefined)
+      itemsRef.current[keyboardFocusIndex - 1]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+      setKeyboardFocusIndex(keyboardFocusIndex - 1)
+    }
   }
 
   return (
@@ -170,6 +197,7 @@ export const SearchableDropdown = ({
               {filteredItems.map((item, idx) => {
                 return (
                   <Button
+                    ref={(el) => (itemsRef.current[idx] = el)}
                     minH="40px"
                     key={idx}
                     onClick={handleItemClick(item)}
@@ -179,6 +207,9 @@ export const SearchableDropdown = ({
                     colorScheme="gray"
                     role="menuitem"
                     variant="ghost"
+                    bgColor={
+                      keyboardFocusIndex === idx ? 'gray.200' : 'transparent'
+                    }
                     justifyContent="flex-start"
                   >
                     {item}

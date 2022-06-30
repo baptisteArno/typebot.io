@@ -17,7 +17,7 @@ import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { byId, env, isNotDefined } from 'utils'
+import { byId, env, isDefined, isNotDefined } from 'utils'
 
 type Props = {
   initialVariableId?: string
@@ -52,8 +52,13 @@ export const VariableSearchInput = ({
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []
   )
+  const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
+    number | undefined
+  >()
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
+  const createVariableItemRef = useRef<HTMLButtonElement | null>(null)
+  const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
 
   useOutsideClick({
     ref: dropdownRef,
@@ -93,6 +98,7 @@ export const VariableSearchInput = ({
   const handleVariableNameClick = (variable: Variable) => () => {
     setInputValue(variable.name)
     onSelectVariable(variable)
+    setKeyboardFocusIndex(undefined)
     onClose()
   }
 
@@ -128,6 +134,38 @@ export const VariableSearchInput = ({
       )
     }
 
+  const isCreateVariableButtonDisplayed =
+    (inputValue?.length ?? 0) > 0 &&
+    isNotDefined(variables.find((v) => v.name === inputValue))
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
+      if (keyboardFocusIndex === 0 && isCreateVariableButtonDisplayed)
+        handleCreateNewVariableClick()
+      else handleVariableNameClick(filteredItems[keyboardFocusIndex])()
+      return setKeyboardFocusIndex(undefined)
+    }
+    if (e.key === 'ArrowDown') {
+      if (keyboardFocusIndex === undefined) return setKeyboardFocusIndex(0)
+      if (keyboardFocusIndex >= filteredItems.length) return
+      itemsRef.current[keyboardFocusIndex + 1]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+      return setKeyboardFocusIndex(keyboardFocusIndex + 1)
+    }
+    if (e.key === 'ArrowUp') {
+      if (keyboardFocusIndex === undefined) return
+      if (keyboardFocusIndex <= 0) return setKeyboardFocusIndex(undefined)
+      itemsRef.current[keyboardFocusIndex - 1]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+      return setKeyboardFocusIndex(keyboardFocusIndex - 1)
+    }
+    return setKeyboardFocusIndex(undefined)
+  }
+
   return (
     <Flex ref={dropdownRef} w="full">
       <Popover
@@ -144,6 +182,7 @@ export const VariableSearchInput = ({
             value={inputValue}
             onChange={onInputChange}
             onClick={onOpen}
+            onKeyUp={handleKeyUp}
             placeholder={inputProps.placeholder ?? 'Select a variable'}
             {...inputProps}
           />
@@ -155,28 +194,33 @@ export const VariableSearchInput = ({
           w="inherit"
           shadow="lg"
         >
-          {(inputValue?.length ?? 0) > 0 &&
-            isNotDefined(variables.find((v) => v.name === inputValue)) && (
-              <Button
-                role="menuitem"
-                minH="40px"
-                onClick={handleCreateNewVariableClick}
-                fontSize="16px"
-                fontWeight="normal"
-                rounded="none"
-                colorScheme="gray"
-                variant="ghost"
-                justifyContent="flex-start"
-                leftIcon={<PlusIcon />}
-              >
-                Create "{inputValue}"
-              </Button>
-            )}
+          {isCreateVariableButtonDisplayed && (
+            <Button
+              ref={createVariableItemRef}
+              role="menuitem"
+              minH="40px"
+              onClick={handleCreateNewVariableClick}
+              fontSize="16px"
+              fontWeight="normal"
+              rounded="none"
+              colorScheme="gray"
+              variant="ghost"
+              justifyContent="flex-start"
+              leftIcon={<PlusIcon />}
+              bgColor={keyboardFocusIndex === 0 ? 'gray.200' : 'transparent'}
+            >
+              Create "{inputValue}"
+            </Button>
+          )}
           {filteredItems.length > 0 && (
             <>
               {filteredItems.map((item, idx) => {
+                const indexInList = isCreateVariableButtonDisplayed
+                  ? idx + 1
+                  : idx
                 return (
                   <Button
+                    ref={(el) => (itemsRef.current[idx] = el)}
                     role="menuitem"
                     minH="40px"
                     key={idx}
@@ -187,6 +231,11 @@ export const VariableSearchInput = ({
                     colorScheme="gray"
                     variant="ghost"
                     justifyContent="space-between"
+                    bgColor={
+                      keyboardFocusIndex === indexInList
+                        ? 'gray.200'
+                        : 'transparent'
+                    }
                   >
                     {item.name}
                     <HStack>
