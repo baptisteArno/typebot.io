@@ -159,28 +159,29 @@ model DashboardFolder {
 }
 
 model Typebot {
-  id                 String                    @id @default(cuid())
-  createdAt          DateTime                  @default(now())
-  updatedAt          DateTime                  @default(now()) @updatedAt
-  icon               String?
-  name               String
-  publishedTypebotId String?
-  publishedTypebot   PublicTypebot?
-  results            Result[]
-  folderId           String?
-  folder             DashboardFolder?          @relation(fields: [folderId], references: [id])
-  groups             Json
-  variables          Json[]
-  edges              Json
-  theme              Json
-  settings           Json
-  publicId           String?                   @unique
-  customDomain       String?                   @unique
-  collaborators      CollaboratorsOnTypebots[]
-  invitations        Invitation[]
-  webhooks           Webhook[]
-  workspaceId        String
-  workspace          Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  id                      String                    @id @default(cuid())
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  icon                    String?
+  name                    String
+  publishedTypebotId      String?
+  publishedTypebot        PublicTypebot?
+  results                 Result[]
+  folderId                String?
+  folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
+  groups                  Json
+  variables               Json[]
+  edges                   Json
+  theme                   Json
+  settings                Json
+  publicId                String?                   @unique
+  customDomain            String?                   @unique
+  collaborators           CollaboratorsOnTypebots[]
+  invitations             Invitation[]
+  webhooks                Webhook[]
+  workspaceId             String
+  workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  resultsTablePreferences Json?
 }
 
 model Invitation {
@@ -249,13 +250,13 @@ model Log {
 }
 
 model Answer {
-  createdAt  DateTime @default(now())
-  resultId   String
-  result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
-  blockId    String
-  groupId    String
-  variableId String?
-  content    String
+  createdAt   DateTime @default(now())
+  resultId    String
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  blockId     String
+  groupId     String
+  variableId  String?
+  content     String
   storageUsed Int?
 
   @@unique([resultId, blockId, groupId])

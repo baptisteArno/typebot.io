@@ -72,7 +72,7 @@ test.describe('Send email block', () => {
     await page.click('text=Preview')
     await typebotViewer(page).locator('text=Go').click()
     await expect(
-      page.locator('text=Emails are not sent in preview mode')
+      page.locator('text=Emails are not sent in preview mode >> nth=0')
     ).toBeVisible()
   })
 })

@@ -31,6 +31,12 @@ const edgeSchema = z.object({
   to: targetSchema,
 })
 
+const resultsTablePreferencesSchema = z.object({
+  columnsOrder: z.array(z.string()),
+  columnsVisibility: z.record(z.string(), z.boolean()),
+  columnsWidth: z.record(z.string(), z.number()),
+})
+
 const typebotSchema = z.object({
   version: z.enum(['2']).optional(),
   id: z.string(),
@@ -48,6 +54,7 @@ const typebotSchema = z.object({
   publicId: z.string().nullable(),
   customDomain: z.string().nullable(),
   workspaceId: z.string(),
+  resultsTablePreferences: resultsTablePreferencesSchema.optional(),
 })
 
 export type Typebot = z.infer<typeof typebotSchema>
@@ -55,3 +62,6 @@ export type Target = z.infer<typeof targetSchema>
 export type Source = z.infer<typeof sourceSchema>
 export type Edge = z.infer<typeof edgeSchema>
 export type Group = z.infer<typeof groupSchema>
+export type ResultsTablePreferences = z.infer<
+  typeof resultsTablePreferencesSchema
+>

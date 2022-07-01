@@ -39,7 +39,7 @@ export const useResults = ({
 }: {
   workspaceId: string
   typebotId: string
-  onError: (error: Error) => void
+  onError?: (error: Error) => void
 }) => {
   const { data, error, mutate, setSize, size, isValidating } = useSWRInfinite<
     { results: ResultWithAnswers[] },
@@ -58,7 +58,7 @@ export const useResults = ({
     }
   )
 
-  if (error) onError(error)
+  if (error && onError) onError(error)
   return {
     data,
     isLoading: !error && !data,
@@ -150,8 +150,12 @@ const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
   headerCells: ResultHeaderCell[]
-): { [key: string]: { element?: JSX.Element; plainText: string } }[] =>
+): {
+  id: string
+  [key: string]: { element?: JSX.Element; plainText: string } | string
+}[] =>
   (results ?? []).map((result) => ({
+    id: result.id,
     'Submitted at': {
       plainText: parseDateToReadable(result.createdAt),
     },

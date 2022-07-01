@@ -15,6 +15,7 @@ export type ResultValues = Pick<
 >
 
 export type ResultHeaderCell = {
+  id: string
   label: string
   blockId?: string
   blockType?: InputBlockType
