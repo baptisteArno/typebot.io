@@ -67,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       resultValues: ResultValues
       fileUrls?: string
     }
-    const replyToName = replyTo?.split(' <')[0].replace(/"/g, '')
+    const { name: replyToName } = parseEmailRecipient(replyTo)
 
     const { host, port, isTlsEnabled, username, password, from } =
       (await getEmailInfo(credentialsId)) ?? {}
@@ -188,6 +188,22 @@ const getEmailBody = async ({
       `${process.env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
       omit(answers, 'submittedAt')
     ),
+  }
+}
+
+const parseEmailRecipient = (
+  recipient?: string
+): { email?: string; name?: string } => {
+  if (!recipient) return {}
+  if (recipient.includes('<')) {
+    const [name, email] = recipient.split('<')
+    return {
+      name: name.replace(/>/g, '').trim().replace(/"/g, ''),
+      email: email.replace('>', '').trim(),
+    }
+  }
+  return {
+    email: recipient,
   }
 }
 
