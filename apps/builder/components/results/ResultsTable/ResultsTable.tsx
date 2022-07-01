@@ -23,7 +23,7 @@ import { ColumnSettingsButton } from './ColumnsSettingsButton'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useDebounce } from 'use-debounce'
 import { ResultsActionButtons } from './ResultsActionButtons'
-import Row from './Row'
+import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
 
 type RowType = {
