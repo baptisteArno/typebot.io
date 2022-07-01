@@ -23,14 +23,15 @@ const handler = async (
     const fileType = req.query.fileType as string | undefined
     const typebotId = req.query.typebotId as string
     const blockId = req.query.blockId as string
-    if (!filePath || !fileType) return badRequest(res)
+    if (!filePath) return badRequest(res, 'Missing filePath or fileType')
     const typebot = (await prisma.publicTypebot.findFirst({
       where: { typebotId },
     })) as unknown as PublicTypebot
     const fileUploadBlock = typebot.groups
       .flatMap((g) => g.blocks)
       .find(byId(blockId))
-    if (fileUploadBlock?.type !== InputBlockType.FILE) return badRequest(res)
+    if (fileUploadBlock?.type !== InputBlockType.FILE)
+      return badRequest(res, 'Not a file upload block')
     const sizeLimit = fileUploadBlock.options.sizeLimit
       ? Math.min(fileUploadBlock.options.sizeLimit, 500)
       : 10

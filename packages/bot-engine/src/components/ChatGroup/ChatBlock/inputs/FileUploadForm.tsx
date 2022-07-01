@@ -24,7 +24,7 @@ export const FileUploadForm = ({
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
-  const [uploadProgressPercent, setUploadProgressPercent] = useState(20)
+  const [uploadProgressPercent, setUploadProgressPercent] = useState(10)
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>()
 

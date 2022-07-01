@@ -2,7 +2,7 @@ import { config, Endpoint, S3 } from 'aws-sdk'
 
 type GeneratePresignedUrlProps = {
   filePath: string
-  fileType: string
+  fileType?: string
   sizeLimit?: number
 }
 
