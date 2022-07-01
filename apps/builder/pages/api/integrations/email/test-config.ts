@@ -1,9 +1,13 @@
-import { withSentry } from '@sentry/nextjs'
+import { captureException, withSentry } from '@sentry/nextjs'
 import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
+import { getAuthenticatedUser } from 'services/api/utils'
+import { notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const user = await getAuthenticatedUser(req)
+  if (!user) return notAuthenticated(res)
   if (req.method === 'POST') {
     const { from, port, isTlsEnabled, username, password, host, to } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
@@ -26,6 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       res.status(200).send({ message: 'Email sent!', info })
     } catch (err) {
+      captureException(err)
       console.log(err)
       res.status(500).send(err)
     }
