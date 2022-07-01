@@ -18,7 +18,7 @@ export const parseResultHeader = ({
 }): ResultHeaderCell[] => {
   const parsedGroups = parseInputsResultHeader({ groups, variables })
   return [
-    { label: 'Submitted at' },
+    { label: 'Submitted at', id: 'date' },
     ...parsedGroups,
     ...parseVariablesHeaders(variables, parsedGroups),
   ]
@@ -62,6 +62,7 @@ const parseInputsResultHeader = ({
     return [
       ...headers,
       {
+        id: inputBlock.id,
         blockType: inputBlock.type,
         blockId: inputBlock.id,
         variableId: inputBlock.options.variableId,
@@ -80,6 +81,7 @@ const parseVariablesHeaders = (
     return [
       ...headers,
       {
+        id: v.id,
         label: v.name,
         variableId: v.id,
       },

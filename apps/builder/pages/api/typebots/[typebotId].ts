@@ -48,6 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...data,
         theme: data.theme ?? undefined,
         settings: data.settings ?? undefined,
+        resultsTablePreferences: data.resultsTablePreferences ?? undefined,
       },
     })
     return res.send({ typebots })

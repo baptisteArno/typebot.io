@@ -43,7 +43,7 @@ test('should work as expected', async ({ page, browser }) => {
   await page.click('[data-testid="checkbox"] >> nth=0')
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.locator('button:has-text("Export1")').click(),
+    page.locator('text="Export"').click(),
   ])
   const downloadPath = await download.path()
   expect(path).toBeDefined()

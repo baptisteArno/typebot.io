@@ -23,11 +23,11 @@ import { isDefined } from 'utils'
 
 type Props = {
   typebotId: string
-  resultId?: string
+  resultId: string | null
   onClose: () => void
 }
 export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
-  const { isLoading, logs } = useLogs(typebotId, resultId)
+  const { isLoading, logs } = useLogs(typebotId, resultId ?? undefined)
   return (
     <Modal isOpen={isDefined(resultId)} onClose={onClose} size="xl">
       <ModalOverlay />

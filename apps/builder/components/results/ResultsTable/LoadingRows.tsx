@@ -8,20 +8,20 @@ type LoadingRowsProps = {
 export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
   return (
     <>
-      {Array.from(Array(3)).map((row, idx) => (
+      {Array.from(Array(3)).map((_, idx) => (
         <tr key={idx}>
           <chakra.td
-            px="4"
+            px="2"
             py="2"
             border="1px"
             borderColor="gray.200"
-            width="50px"
+            width="40px"
           >
-            <Flex>
+            <Flex ml="1">
               <Checkbox isDisabled />
             </Flex>
           </chakra.td>
-          {Array.from(Array(totalColumns)).map((cell, idx) => {
+          {Array.from(Array(totalColumns)).map((_, idx) => {
             return (
               <chakra.td
                 key={idx}

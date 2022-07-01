@@ -1,6 +1,7 @@
 import {
   LogicBlockType,
   PublicTypebot,
+  ResultsTablePreferences,
   Settings,
   Theme,
   Typebot,
@@ -53,6 +54,7 @@ type UpdateTypebotPayload = Partial<{
   publishedTypebotId: string
   icon: string
   customDomain: string
+  resultsTablePreferences: ResultsTablePreferences
 }>
 
 export type SetTypebot = (
