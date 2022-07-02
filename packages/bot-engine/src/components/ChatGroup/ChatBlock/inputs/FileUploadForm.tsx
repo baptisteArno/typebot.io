@@ -24,7 +24,7 @@ export const FileUploadForm = ({
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
-  const [uploadProgressPercent, setUploadProgressPercent] = useState(10)
+  const [uploadProgressPercent, setUploadProgressPercent] = useState(0)
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>()
 
@@ -85,6 +85,8 @@ export const FileUploadForm = ({
       })),
       onUploadProgress: setUploadProgressPercent,
     })
+    setIsUploading(false)
+    setUploadProgressPercent(0)
     if (urls.length !== files.length)
       return setErrorMessage('An error occured while uploading the files')
     onSubmit({
@@ -121,7 +123,7 @@ export const FileUploadForm = ({
         onDragLeave={handleDragLeave}
         onDrop={handleDropFile}
       >
-        {isUploading && uploadProgressPercent ? (
+        {isUploading ? (
           <>
             {selectedFiles.length === 1 ? (
               <Spinner />
@@ -130,7 +132,9 @@ export const FileUploadForm = ({
                 <div
                   className="upload-progress-bar h-2.5 rounded-full"
                   style={{
-                    width: `${uploadProgressPercent}%`,
+                    width: `${
+                      uploadProgressPercent > 0 ? uploadProgressPercent : 10
+                    }%`,
                     transition: 'width 150ms cubic-bezier(0.4, 0, 0.2, 1)',
                   }}
                 />

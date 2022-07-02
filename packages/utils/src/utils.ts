@@ -207,7 +207,11 @@ export const uploadFiles = async ({
   files,
   onUploadProgress,
 }: UploadFileProps): Promise<UrlList> => {
-  const requests = files.map(async ({ file, path }) => {
+  const urls = []
+  let i = 0
+  for (const { file, path } of files) {
+    onUploadProgress && onUploadProgress((i / files.length) * 100)
+    i += 1
     const { data } = await sendRequest<{
       presignedUrl: { url: string; fields: any }
     }>(
@@ -216,7 +220,7 @@ export const uploadFiles = async ({
       )}&fileType=${file.type}`
     )
 
-    if (!data?.presignedUrl) return null
+    if (!data?.presignedUrl) continue
 
     const { url, fields } = data.presignedUrl
     const formData = new FormData()
@@ -228,18 +232,9 @@ export const uploadFiles = async ({
       body: formData,
     })
 
-    if (!upload.ok) return
+    if (!upload.ok) continue
 
-    return `${url.split('?')[0]}/${path}`
-  })
-  const urls = []
-  let i = 0
-  for (const request of requests) {
-    i += 1
-    const url = await request
-    onUploadProgress && onUploadProgress((i / requests.length) * 100)
-    if (!url) continue
-    urls.push(url)
+    urls.push(`${url.split('?')[0]}/${path}`)
   }
   return urls
 }
