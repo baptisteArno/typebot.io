@@ -7,7 +7,7 @@ type GeneratePresignedUrlProps = {
 }
 
 const tenMB = 10 * 1024 * 1024
-const oneHundredAndTwentySeconds = 120
+const tenMinutes = 10 * 60
 
 export const generatePresignedUrl = ({
   filePath,
@@ -46,7 +46,7 @@ export const generatePresignedUrl = ({
       key: filePath,
       'Content-Type': fileType,
     },
-    Expires: oneHundredAndTwentySeconds,
+    Expires: tenMinutes,
     Conditions: [['content-length-range', 0, sizeLimit]],
   })
   return presignedUrl
