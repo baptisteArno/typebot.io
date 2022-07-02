@@ -37,7 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res
         .status(400)
         .send({ message: "User didn't accepted required scopes" })
-    // console.log(tokens)
     const { encryptedData, iv } = encrypt(tokens)
     const credentials = {
       name: email,

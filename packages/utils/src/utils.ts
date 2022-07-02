@@ -259,3 +259,12 @@ export const env = (key = ''): string | undefined => {
     ? undefined
     : (process.env['NEXT_PUBLIC_' + key] as string)
 }
+
+export const hasValue = (
+  value: string | undefined | null
+): value is NonNullable<string> =>
+  value !== undefined &&
+  value !== null &&
+  value !== '' &&
+  value !== 'undefined' &&
+  value !== 'null'

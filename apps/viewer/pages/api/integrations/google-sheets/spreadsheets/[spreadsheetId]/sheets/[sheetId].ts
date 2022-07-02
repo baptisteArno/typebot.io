@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, initMiddleware, methodNotAllowed } from 'utils'
+import { badRequest, initMiddleware, methodNotAllowed, hasValue } from 'utils'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const spreadsheetId = req.query.spreadsheetId as string
     const sheetId = req.query.sheetId as string
     const credentialsId = req.query.credentialsId as string | undefined
-    if (!credentialsId) return badRequest(res)
+    if (!hasValue(credentialsId)) return badRequest(res)
     const referenceCell = {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       credentialsId?: string
       values: { [key: string]: string }
     }
-    if (!credentialsId) return badRequest(res)
+    if (!hasValue(credentialsId)) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     const auth = await getAuthenticatedGoogleClient(credentialsId)
     if (!auth)
@@ -81,8 +81,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'PATCH') {
-    const spreadsheetId = req.query.spreadsheetId.toString()
-    const sheetId = req.query.sheetId.toString()
+    const spreadsheetId = req.query.spreadsheetId as string
+    const sheetId = req.query.sheetId as string
     const { credentialsId, values, referenceCell } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
@@ -90,7 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       referenceCell: Cell
       values: { [key: string]: string }
     }
-    if (!credentialsId) return badRequest(res)
+    if (!hasValue(credentialsId)) return badRequest(res)
     const doc = new GoogleSpreadsheet(spreadsheetId)
     const auth = await getAuthenticatedGoogleClient(credentialsId)
     if (!auth)
