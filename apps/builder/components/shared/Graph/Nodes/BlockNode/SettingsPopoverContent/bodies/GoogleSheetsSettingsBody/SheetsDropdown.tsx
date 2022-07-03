@@ -1,4 +1,5 @@
-import { Input } from '@chakra-ui/react'
+import { HStack, Input } from '@chakra-ui/react'
+import { MoreInfoTooltip } from 'components/shared/MoreInfoTooltip'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { useMemo } from 'react'
 import { Sheet } from 'services/integrations'
@@ -28,7 +29,16 @@ export const SheetsDropdown = ({
   }
 
   if (isLoading) return <Input value="Loading..." isDisabled />
-  if (!sheets) return <Input value="No sheets found" isDisabled />
+  if (!sheets || sheets.length === 0)
+    return (
+      <HStack>
+        <Input value="No sheets found" isDisabled />
+        <MoreInfoTooltip>
+          Make sure your spreadsheet contains at least a sheet with a header
+          row.
+        </MoreInfoTooltip>
+      </HStack>
+    )
   return (
     <SearchableDropdown
       selectedItem={currentSheet?.name}
