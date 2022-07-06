@@ -48,6 +48,12 @@ model User {
   image                   String?
   accounts                Account[]
   sessions                Session[]
+								   
+										   
+																  
+														   
+									   
+										
   apiToken                String?
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   company                 String?
@@ -117,6 +123,8 @@ model Credentials {
   name        String
   type        String
   iv          String
+
+								 
 }
 
 enum Plan {
@@ -140,6 +148,8 @@ model DashboardFolder {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @default(now()) @updatedAt
   name           String
+																									
+					   
   parentFolderId String?
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   childrenFolder DashboardFolder[] @relation("ParentChild")
@@ -151,9 +161,18 @@ model DashboardFolder {
 model Typebot {
   id                 String                    @id @default(cuid())
   createdAt          DateTime                  @default(now())
-  updatedAt          DateTime                  @default(now()) @updatedAt
+  createdBy          String       
+
+  updatedAt          DateTime?                 @default(now())
+  updatedBy          String?
+
+  deletedAt          DateTime? 
+  deletedBy          String?
+            
   icon               String?
   name               String
+						   
+																												
   publishedTypebotId String?
   publishedTypebot   PublicTypebot?
   results            Result[]
@@ -169,7 +188,8 @@ model Typebot {
   collaborators      CollaboratorsOnTypebots[]
   invitations        Invitation[]
   webhooks           Webhook[]
-  subDomain          String?
+  
+  subDomain          String
 
   // @@unique([id, ownerId])
   workspaceId        String?
@@ -204,10 +224,18 @@ enum CollaborationType {
 
 model PublicTypebot {
   id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  createdAt          DateTime                  @default(now())
+  createdBy          String       
+
+  updatedAt          DateTime?                 @default(now()) @updatedAt
+  updatedBy          String?
+
+  deletedAt          DateTime?                 
+  deletedBy          String?
+
   typebotId    String   @unique
   typebot      Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+
   name         String
   blocks       Json[]
   variables    Json[]

@@ -38,8 +38,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const typebotId = query.typebotId?.toString()
   return (
     <ChakraProvider theme={customTheme}>
-    <KBarProvider actions={actions}>
-      <SessionProvider session={session}>
+      <KBarProvider actions={actions}>
         <UserContext>
           {typebotId ? (
             <TypebotContext typebotId={typebotId}>
@@ -55,9 +54,8 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
             </WorkspaceContext>
           )}
         </UserContext>
-      </SessionProvider>
-    </KBarProvider>
-  </ChakraProvider>
+      </KBarProvider>
+    </ChakraProvider>
   )
 }
 
