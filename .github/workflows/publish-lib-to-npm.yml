@@ -1,9 +1,8 @@
 name: Publish package to NPM
 
 on:
-  push:
-    tags:
-      - 'js-lib-v*.*.*'
+  create:
+    tags: ['js-lib-v*']
 
 jobs:
   publish:

@@ -75,3 +75,22 @@ it('show after the corresponding delay', async () => {
   await new Promise((r) => setTimeout(r, 1000))
   expect(bubble.classList.contains('message-opened')).toBe(true)
 })
+
+it('show the chat on click', async () => {
+  expect.assertions(3)
+  Typebot.initBubble({
+    proactiveMessage: {
+      textContent: 'Hi click here!',
+      delay: 1000,
+    },
+    url: 'https://typebot.io/typebot-id',
+  })
+  const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
+  const iframe = document.querySelector('.typebot-iframe') as HTMLIFrameElement
+  expect(bubble.classList.contains('message-opened')).toBe(false)
+  await new Promise((r) => setTimeout(r, 1000))
+  expect(bubble.classList.contains('message-opened')).toBe(true)
+  const message = document.querySelector('.proactive-message') as HTMLDivElement
+  message.click()
+  expect(iframe.style.display).not.toBe('none')
+})

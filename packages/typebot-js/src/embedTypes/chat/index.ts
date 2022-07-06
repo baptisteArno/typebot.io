@@ -77,8 +77,9 @@ const onProactiveMessageClick = (
   bubble: HTMLDivElement,
   iframe: HTMLIFrameElement
 ): void => {
-  loadTypebotIfFirstOpen(iframe)
-  bubble.classList.add('iframe-opened')
+  iframe.style.display === 'none'
+    ? openIframe(bubble, iframe)
+    : closeIframe(bubble, iframe)
   bubble.classList.remove('message-opened')
 }
 
