@@ -17,18 +17,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send({ typebots: response.data })
     }
     if (req.method === 'POST') {
-      const data =
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-      const typebot = await prisma.typebot.create({
-        data:
-          'blocks' in data
-            ? data
-            : (parseNewTypebot({
-                ownerAvatarUrl: user.image,
-                ...data,
-              }) as Prisma.TypebotUncheckedCreateInput),
-      })
-      return res.send(typebot)
+      const client = await services.chatBots.getClient()
+      const response = await client.post(``, { ...req.body, version: 2 }, headers.getAuthorizedHeaders())
+      return res.send(response.data)
     }
     return methodNotAllowed(res)
   } catch (err) {

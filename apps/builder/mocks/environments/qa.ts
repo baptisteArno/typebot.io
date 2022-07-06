@@ -7,7 +7,7 @@ export const apis = {
   chatUrl: 'https://chat.qaoctadesk.services/api',
   chatAgentsUrl: 'https://chat.qaoctadesk.services/api/agents',
   chatIntegratorUrl: 'https://chat.qaoctadesk.services/api/integrator',
-  chatBotsUrl: 'https://chat.qaoctadesk.services/api/bots',
+  chatBotsUrl: 'http://localhost:5018/bots',
   whatsapp: 'https://whatsapp.qaoctadesk.services/api',
   macro: 'https://macro.qaoctadesk.services',
   core: 'https://core.qaoctadesk.com',
