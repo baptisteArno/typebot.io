@@ -14,20 +14,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: { members: true },
       orderBy: { createdAt: 'asc' },
     })
+    console.log('workspaces', workspaces)
     return res.send({ workspaces })
   }
-  if (req.method === 'POST') {
-    const data = req.body as Workspace
-    const workspace = await prisma.workspace.create({
-      data: {
-        ...data,
-        members: { create: [{ role: 'ADMIN', userId: user.id }] },
-      },
-    })
-    return res.status(200).json({
-      workspace,
-    })
-  }
+  // if (req.method === 'POST') {
+  //   const data = req.body as Workspace
+  //   const workspace = await prisma.workspace.create({
+  //     data: {
+  //       ...data,
+  //       members: { create: [{ role: 'ADMIN', userId: user.id }] },
+  //     },
+  //   })
+  //   return res.status(200).json({
+  //     workspace,
+  //   })
+  // }
   methodNotAllowed(res)
 }
 

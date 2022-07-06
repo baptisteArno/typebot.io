@@ -1,3 +1,4 @@
+import { headers, services } from '@octadesk-tech/services'
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -9,12 +10,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return notAuthenticated(res)
   try {
     if (req.method === 'POST') {
-      const data =
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-      const typebot = await prisma.publicTypebot.create({
-        data: { ...data },
-      })
-      return res.send(typebot)
+      const client = await services.chatBots.getClient()
+      const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+      const botId = data.id
+
+      await client.put(`${botId}`, { bot: data }, headers.getAuthorizedHeaders())
+      const publishBotResponse = await client.put(`${botId}/publish`, headers.getAuthorizedHeaders())
+
+      return res.send(publishBotResponse.data)
     }
     return methodNotAllowed(res)
   } catch (err) {
