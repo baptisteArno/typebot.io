@@ -48,7 +48,7 @@ export const DashboardHeader = () => {
         justify="space-between"
         alignItems="center"
         h="16"
-        maxW="900px"
+        maxW="1000px"
         flex="1"
       >
         <NextChakraLink
