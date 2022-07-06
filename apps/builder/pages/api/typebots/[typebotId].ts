@@ -1,10 +1,12 @@
 import { withSentry } from '@sentry/nextjs'
 import { CollaborationType } from 'db'
-import prisma from 'libs/prisma'
+//import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils'
+import { services } from '@octadesk-tech/services'
+import { headers } from '@octadesk-tech/services'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -12,54 +14,42 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const typebotId = req.query.typebotId.toString()
   if (req.method === 'GET') {
-    const typebot = await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
-      include: {
-        publishedTypebot: true,
-        collaborators: { select: { userId: true, type: true } },
-        webhooks: true,
-      },
-    })
+    const client = await services.chatBots.getClient()
+    
+    const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
+    const typebot = response.data
     if (!typebot) return res.send({ typebot: null })
-    const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
-      typebot
-    const isReadOnly =
-      collaborators.find((c) => c.userId === user.id)?.type ===
-      CollaborationType.READ
+    
+    const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
     return res.send({
       typebot: restOfTypebot,
       publishedTypebot,
-      isReadOnly,
+      isReadOnly: false,
       webhooks,
     })
   }
 
   if (req.method === 'DELETE') {
-    const typebots = await prisma.typebot.deleteMany({
-      where: canWriteTypebot(typebotId, user),
-    })
-    return res.send({ typebots })
+    const client = await services.chatBots.getClient()
+    //TODO - METODO DE INATIVAR BOT
+    const response = await client.get(`builder/cl4ofndsh0175tmvtf3mrgjvd`, headers.getAuthorizedHeaders())
+    //const typebot = response.data
+    // const typebots = await prisma.typebot.deleteMany({
+    //   where: canWriteTypebot(typebotId, user),
+    // })
+    //return res.send({ typebots })
+
+    return res.send({})
   }
-  if (req.method === 'PUT') {
+
+  if (['PUT', 'PATCH'].includes(req.method || '')) {
+    const client = await services.chatBots.getClient()
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.typebot.updateMany({
-      where: canWriteTypebot(typebotId, user),
-      data: {
-        ...data,
-        theme: data.theme ?? undefined,
-        settings: data.settings ?? undefined,
-      },
-    })
-    return res.send({ typebots })
+
+    const response = await client.put(`${typebotId}`, { bot: data }, headers.getAuthorizedHeaders())
+    return res.send({ typebots: [response.data] })
   }
-  if (req.method === 'PATCH') {
-    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.typebot.updateMany({
-      where: canWriteTypebot(typebotId, user),
-      data,
-    })
-    return res.send({ typebots })
-  }
+
   return methodNotAllowed(res)
 }
 

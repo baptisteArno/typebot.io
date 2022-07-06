@@ -1,6 +1,5 @@
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
-import { TypebotHeader } from 'components/shared/TypebotHeader'
 import {
   EditorContext,
   RightPanel as RightPanelEnum,
@@ -17,13 +16,10 @@ import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
-import Storage from '@octadesk-tech/storage'
+function TypebotEditPage() {
+  const { typebot, isReadOnly } =  useTypebot()
 
-function TypebotEditPage({ userToken }: { userToken: string }) {
-  const { typebot, isReadOnly } = useTypebot()
-
-  console.log('token: ' + userToken)
-
+  
   return (
     <EditorContext>
       <Seo title="Editor" />
@@ -62,12 +58,5 @@ const RightPanel = () => {
   return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
 }
 
-export async function getServerSideProps() {
-  const userToken = Storage.getItem('userToken')
-  console.log('token1: ' + userToken)
-  console.log('getServerSideProps edit.tsx')
-
-  return { props: { userToken, test: 'cordeiro' } }
-}
 
 export default TypebotEditPage
