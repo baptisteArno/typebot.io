@@ -1,3 +1,4 @@
+import { headers, services } from '@octadesk-tech/services'
 import { withSentry } from '@sentry/nextjs'
 import { Prisma, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
@@ -11,67 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return notAuthenticated(res)
   try {
     if (req.method === 'GET') {
-      const workspaceId = req.query.workspaceId as string | undefined
-      const folderId = req.query.allFolders
-        ? undefined
-        : req.query.folderId
-        ? req.query.folderId.toString()
-        : null
-      if (!workspaceId) return badRequest(res)
-      const typebotIds = req.query.typebotIds as string[] | undefined
-      if (typebotIds) {
-        const typebots = await prisma.typebot.findMany({
-          where: {
-            OR: [
-              {
-                workspace: { members: { some: { userId: user.id } } },
-                id: { in: typebotIds },
-              },
-              {
-                id: { in: typebotIds },
-                collaborators: {
-                  some: {
-                    userId: user.id,
-                  },
-                },
-              },
-            ],
-          },
-          orderBy: { createdAt: 'desc' },
-          select: { name: true, id: true, blocks: true },
-        })
-        return res.send({ typebots })
-      }
-      const typebots = await prisma.typebot.findMany({
-        where: {
-          OR: [
-            {
-              folderId,
-              workspace: {
-                id: workspaceId,
-                members: {
-                  some: {
-                    userId: user.id,
-                    role: { not: WorkspaceRole.GUEST },
-                  },
-                },
-              },
-            },
-            {
-              workspace: {
-                id: workspaceId,
-                members: {
-                  some: { userId: user.id, role: WorkspaceRole.GUEST },
-                },
-              },
-              collaborators: { some: { userId: user.id } },
-            },
-          ],
-        },
-        orderBy: { createdAt: 'desc' },
-        select: { name: true, publishedTypebotId: true, id: true, icon: true },
-      })
-      return res.send({ typebots })
+      const client = await services.chatBots.getClient()
+      const response = await client.get(`builder/all`, headers.getAuthorizedHeaders())
+      return res.send({ typebots: response.data })
     }
     if (req.method === 'POST') {
       const data =

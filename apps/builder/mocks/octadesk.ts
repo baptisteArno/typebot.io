@@ -8,7 +8,7 @@ export const setupEnvironment = () =>
     environment.resolveEnvironment()
   } else {
     const { apis } = require(`./environments/${env}`)
-  
+    
     environment.setEnvironment(env)
     url.setAPIURLs(apis)
   }
