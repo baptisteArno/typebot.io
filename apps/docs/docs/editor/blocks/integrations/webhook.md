@@ -50,3 +50,7 @@ Then we can use these variables to display dynamic content in the next bubbles:
 Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
 
 Feel free to ask the [community](https://www.facebook.com/groups/typebot) for help if you struggle setting up a Webhook block.
+
+## Troubleshooting
+
+The Webhook block request fail or didn't seem to trigger? Make sure to check the [logs](/editor/results). If you still can't figure out what went wrong, shoot me a message using the chat button directly in the tool 👍
