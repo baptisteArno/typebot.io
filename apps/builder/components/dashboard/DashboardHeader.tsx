@@ -20,7 +20,7 @@ import {
   PlusIcon,
   SettingsIcon,
 } from 'assets/icons'
-import { signOut } from 'next-auth/react'
+//import { signOut } from 'next-auth/react'
 import { useUser } from 'contexts/UserContext'
 //import { useTranslation } from 'next-i18next'
 import { useWorkspace } from 'contexts/WorkspaceContext'
@@ -36,7 +36,7 @@ export const DashboardHeader = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem('workspaceId')
-    signOut()
+    //signOut()
   }
 
   //const { t } = useTranslation('common')

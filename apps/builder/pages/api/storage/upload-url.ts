@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import { Client } from 'minio'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
+//import { getSession } from 'next-auth/react'
 import { badRequest, methodNotAllowed } from 'utils'
 
 const handler = async (
@@ -10,7 +10,7 @@ const handler = async (
 ): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   if (req.method === 'GET') {
-    const session = await getSession({ req })
+    const session = null //await getSession({ req })
     if (!session) {
       res.status(401)
       return

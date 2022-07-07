@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { customTheme } from 'libs/theme'
 import { useRouterProgressBar } from 'libs/routerProgressBar'
@@ -40,23 +39,21 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <ChakraProvider theme={customTheme}>
       <KBarProvider actions={actions}>
-        <SessionProvider session={session}>
-          <UserContext>
-            {typebotId ? (
-              <TypebotContext typebotId={typebotId}>
-                <WorkspaceContext>
-                  <Component {...pageProps} />
-                  <SupportBubble />
-                </WorkspaceContext>
-              </TypebotContext>
-            ) : (
+        <UserContext>
+          {typebotId ? (
+            <TypebotContext typebotId={typebotId}>
               <WorkspaceContext>
                 <Component {...pageProps} />
                 <SupportBubble />
               </WorkspaceContext>
-            )}
-          </UserContext>
-        </SessionProvider>
+            </TypebotContext>
+          ) : (
+            <WorkspaceContext>
+              <Component {...pageProps} />
+              <SupportBubble />
+            </WorkspaceContext>
+          )}
+        </UserContext>
       </KBarProvider>
     </ChakraProvider>
   )

@@ -15,48 +15,49 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const DashboardPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const { query, isReady } = useRouter()
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
-  const toast = useToast({
-    position: 'top-right',
-    status: 'success',
-  })
+  const isLoading = false
+  //const [isLoading] = [false] } //useState(false)
+  // const { query, isReady } = useRouter()
+  // const { user } = useUser()
+  // const { workspace } = useWorkspace()
+  // const toast = useToast({
+  //   position: 'top-right',
+  //   status: 'success',
+  // })
 
-  useEffect(() => {
-    const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
-    if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
-      setIsLoading(true)
-      pay({
-        user,
-        plan: subscribePlan,
-        workspaceId: workspace.id,
-        currency: navigator.languages.find((l) => l.includes('fr'))
-          ? 'eur'
-          : 'usd',
-      })
-    }
-  }, [query, user, workspace])
+  // useEffect(() => {
+  //   const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
+  //   if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
+  //     setIsLoading(true)
+  //     pay({
+  //       user,
+  //       plan: subscribePlan,
+  //       workspaceId: workspace.id,
+  //       currency: navigator.languages.find((l) => l.includes('fr'))
+  //         ? 'eur'
+  //         : 'usd',
+  //     })
+  //   }
+  // }, [query, user, workspace])
 
-  useEffect(() => {
-    if (!isReady) return
-    const couponCode = query.coupon?.toString()
-    const stripeStatus = query.stripe?.toString()
+  // useEffect(() => {
+  //   if (!isReady) return
+  //   const couponCode = query.coupon?.toString()
+  //   const stripeStatus = query.stripe?.toString()
 
-    if (stripeStatus === 'success')
-      toast({
-        title: 'Payment successful',
-        description: "You've successfully subscribed 🎉",
-      })
-    if (couponCode) {
-      setIsLoading(true)
-      redeemCoupon(couponCode).then(() => {
-        location.href = '/typebots'
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady])
+  //   if (stripeStatus === 'success')
+  //     toast({
+  //       title: 'Payment successful',
+  //       description: "You've successfully subscribed 🎉",
+  //     })
+  //   if (couponCode) {
+  //     setIsLoading(true)
+  //     redeemCoupon(couponCode).then(() => {
+  //       location.href = '/typebots'
+  //     })
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isReady])
 
   return (
     <Stack minH="100vh">
