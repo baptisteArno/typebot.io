@@ -84,6 +84,8 @@ const prepareWebhookAttributes = (
   return webhook
 }
 
+const bodyIsSingleVariable = (body: string) => /{{.+}}/.test(body)
+
 export const executeWebhook =
   (typebot: Typebot) =>
   async (
@@ -143,13 +145,17 @@ export const executeWebhook =
       json:
         contentType !== 'x-www-form-urlencoded' && body
           ? safeJsonParse(
-              parseVariables(variables, { escapeForJson: true })(body)
+              parseVariables(variables, {
+                escapeForJson: !bodyIsSingleVariable(body),
+              })(body)
             )
           : undefined,
       form:
         contentType === 'x-www-form-urlencoded' && body
           ? safeJsonParse(
-              parseVariables(variables, { escapeForJson: true })(body)
+              parseVariables(variables, {
+                escapeForJson: !bodyIsSingleVariable(body),
+              })(body)
             )
           : undefined,
     }
