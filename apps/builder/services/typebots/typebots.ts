@@ -221,6 +221,7 @@ const duplicateTypebot = (
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
     },
     webhookIdsMapping,
   }
