@@ -24,7 +24,11 @@ const prisma = new PrismaClient({
 require('dotenv').config({
   path: path.join(
     __dirname,
-    process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local'
+    process.env.NODE_ENV === 'production'
+      ? '.env.production'
+      : process.env.NODE_ENV === 'staging'
+      ? '.env.staging'
+      : '.env.local'
   ),
 })
 
@@ -33,6 +37,12 @@ const main = async () => {
     console.log('Query: ' + e.query)
     console.log('Params: ' + e.params)
     console.log('Duration: ' + e.duration + 'ms')
+  })
+  const date = new Date()
+  const lastMonth = new Date(date.getFullYear(), date.getMonth() - 1, 10)
+  const answers = await prisma.answer.findMany({
+    where: { createdAt: { lt: lastMonth } },
+    take: 100,
   })
 }
 

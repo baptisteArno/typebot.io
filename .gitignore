@@ -18,6 +18,7 @@ build
 firebaseServiceAccount.json
 
 .env.production
+.env.staging
 
 # Wordpress
 .svn
