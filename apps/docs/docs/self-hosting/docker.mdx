@@ -31,7 +31,7 @@ On your server, download the latest `docker-compose.yml` file:
 The compose file has placeholders for the required parameters. To set the parameters you'll first need a random 32-character secret key which will be used to encrypt sensitive data. Here is a simple way to generate one:
 
 ```sh
-openssl rand -base64 32 | tr -d '\n' ; echo
+openssl rand -base64 24 | tr -d '\n' ; echo
 ```
 
 Now edit `docker-compose.yml` and:
