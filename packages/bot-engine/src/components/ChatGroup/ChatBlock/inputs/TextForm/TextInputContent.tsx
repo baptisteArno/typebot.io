@@ -14,6 +14,7 @@ import React, {
   useRef,
 } from 'react'
 import PhoneInput, { Value, Country } from 'react-phone-number-input'
+import { isMobile } from 'services/utils'
 
 type TextInputProps = {
   block:
@@ -30,8 +31,7 @@ export const TextInput = ({ block, value, onChange }: TextInputProps) => {
   const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    if (!inputRef.current) return
-    inputRef.current.focus()
+    setTimeout(() => inputRef.current?.focus(), isMobile ? 500 : 0)
   }, [])
 
   const handleInputChange = (
