@@ -10,7 +10,6 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import { AnalyticsContent } from 'components/analytics/AnalyticsContent'
 import { useRouter } from 'next/router'
 import { useStats } from 'services/analytics'
-import { isFreePlan } from 'services/workspace'
 import { useToast } from 'components/shared/hooks/useToast'
 import { ResultsProvider } from 'contexts/ResultsProvider'
 
@@ -35,6 +34,7 @@ const ResultsPage = () => {
       stats: { ...stats, totalStarts: stats.totalStarts - total },
     })
   }
+  
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo
@@ -87,11 +87,6 @@ const ResultsPage = () => {
                 workspaceId={workspace.id}
                 typebotId={publishedTypebot.typebotId}
                 totalResults={stats?.totalStarts ?? 0}
-                totalHiddenResults={
-                  isFreePlan(workspace)
-                    ? (stats?.totalStarts ?? 0) - (stats?.totalCompleted ?? 0)
-                    : undefined
-                }
                 onDeleteResults={handleDeletedResults}
               >
                 <ResultsContent />

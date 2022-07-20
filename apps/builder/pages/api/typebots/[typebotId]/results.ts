@@ -5,7 +5,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import { deleteFiles } from 'services/api/storage'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { isFreePlan } from 'services/workspace'
 import {
   badRequest,
   forbidden,
@@ -38,7 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         typebot: canReadTypebot(typebotId, user),
         answers: { some: {} },
-        isCompleted: isFreePlan(workspace) ? true : undefined,
       },
       orderBy: {
         createdAt: 'desc',
