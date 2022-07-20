@@ -43,6 +43,7 @@ import { dequal } from 'dequal'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
+
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -67,7 +68,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: () => Promise<void>
+    save: () => Promise<boolean>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -173,21 +174,20 @@ export const TypebotContext = ({
   }, [typebot])
 
   const saveTypebot = async (options?: { disableMutation: boolean }) => {
-    if (!currentTypebotRef.current || !typebot) return
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
-      subDomain: 'chatoctaqa'
+      subDomain: 'chatoctaqa',
     }
-    if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
-      return
+
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
     setIsSavingLoading(false)
     if (error) {
       toast({ title: error.name, description: error.message })
-      return
+      return false
     }
+
     if (!options?.disableMutation)
       mutate({
         typebot: typebotToSave,
@@ -195,6 +195,8 @@ export const TypebotContext = ({
         webhooks: webhooks ?? [],
       })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
+
+    return { saved: true, updateAt: typebotToSave.updatedAt }
   }
 
   const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {

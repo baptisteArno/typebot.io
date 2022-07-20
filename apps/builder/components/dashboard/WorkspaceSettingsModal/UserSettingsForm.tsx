@@ -13,14 +13,13 @@ import { GraphNavigation } from 'db'
 import React, { useEffect, useState } from 'react'
 
 export const EditorSettings = () => {
-  const { user, saveUser } = useUser()
+  const { user } = useUser()
   const [value, setValue] = useState<string>(
     user?.graphNavigation ?? GraphNavigation.TRACKPAD
   )
 
   useEffect(() => {
     if (user?.graphNavigation === value) return
-    saveUser({ graphNavigation: value as GraphNavigation }).then()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 

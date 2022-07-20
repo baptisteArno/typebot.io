@@ -53,7 +53,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     // )
 
     useEffect(() => {
-        console.log('oi')
         if (isDefined(user) || isNotDefined(session)) return
         // setCurrentWorkspaceId(
         //     localStorage.getItem('currentWorkspaceId') ?? undefined
