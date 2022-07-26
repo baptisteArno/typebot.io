@@ -50,7 +50,14 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
    git clone https://github.com/baptisteArno/typebot.io.git
    ```
 
-2. Set up environment variables
+2. Install dependencies
+
+   ```sh
+   cd typebot.io
+   yarn
+   ```
+
+3. Set up environment variables
 
    Copy `apps/builder/.env.local.example` to `apps/builder/.env.local`
 
@@ -58,11 +65,11 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
 
-3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
-4. Start the applications.
+4. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
+5. Start the builder and viewer
 
    ```sh
-   yarn && yarn dev
+   yarn dev
    ```
 
    Builder is available at `http://localhost:3000`
@@ -72,6 +79,22 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
    Database inspector is available at `http://localhost:5555`
 
    By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
+
+6. (Optionnal) Start the landing page
+
+   Copy `apps/landing-page/.env.local.example` to `apps/landing-page/.env.local`
+
+   ```sh
+   cd apps/landing-page
+   yarn dev
+   ```
+
+7. (Optionnal) Start the docs
+
+   ```sh
+   cd apps/docs
+   yarn start
+   ```
 
 ## Contribute
 
