@@ -49,6 +49,12 @@ function TypebotEditPage() {
         })
 
         window.parent.postMessage(botEditedMessage, '*')
+      } else {
+        const canGoBack = Object.assign({
+          name: 'canGoBack',
+        })
+
+        window.parent.postMessage(canGoBack, '*')
       }
     }
     if (e.data === 'saveClick') {

@@ -161,12 +161,6 @@ export const TypebotContext = ({
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
-      console.log(
-        'Incoming typebot',
-        typebot,
-        'Current typebot',
-        currentTypebotRef.current
-      )
       setLocalTypebot({ ...typebot })
     }
 
