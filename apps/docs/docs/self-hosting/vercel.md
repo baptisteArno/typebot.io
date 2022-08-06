@@ -27,7 +27,7 @@ Fork the repository
 5. Change the build command to:
 
    ```sh
-   cd ../.. && yarn db:migrate && yarn turbo run build --scope=builder --include-dependencies
+   cd ../.. &&  yarn prisma generate && yarn build:builder && DATABASE_URL=$MIGRATION_DATABASE_URL yarn db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -42,7 +42,7 @@ Fork the repository
 5. Change the build command to:
 
    ```sh
-   cd ../.. && yarn db:migrate && yarn turbo run build --scope=viewer --include-dependencies
+   cd ../.. && yarn prisma generate && yarn build:viewer && DATABASE_URL=$MIGRATION_DATABASE_URL yarn db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
