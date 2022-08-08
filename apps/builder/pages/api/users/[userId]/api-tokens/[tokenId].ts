@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return notAuthenticated(res)
 
   if (req.method === 'DELETE') {
-    const id = req.query.tokenId.toString()
+    const id = req.query.tokenId as string
     const apiToken = await prisma.apiToken.delete({
       where: { id },
     })

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-./env.sh
+ENVSH_ENV=./apps/viewer/.env.production ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh
 
 ./node_modules/.bin/prisma generate;
 
-node server.js;
+node apps/viewer/server.js;

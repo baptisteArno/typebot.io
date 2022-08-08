@@ -1,8 +1,11 @@
 import test, { expect, Page } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 import { createFolders, createTypebots } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Dashboard page', () => {
   test('folders navigation should work', async ({ page }) => {

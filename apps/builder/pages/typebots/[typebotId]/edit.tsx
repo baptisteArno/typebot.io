@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
 import {
@@ -16,7 +15,7 @@ import { GraphProvider, GroupsCoordinatesProvider } from 'contexts/GraphContext'
 import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
-import { Spinner } from '@chakra-ui/react'
+import { Spinner, Flex } from '@chakra-ui/react'
 
 const TypebotEditPage = () => {
   const { typebot, isReadOnly } = useTypebot()

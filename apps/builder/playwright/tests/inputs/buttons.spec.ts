@@ -8,6 +8,9 @@ import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 import path from 'path'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {

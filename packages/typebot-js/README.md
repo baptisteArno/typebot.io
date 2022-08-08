@@ -8,8 +8,6 @@ To install, simply run:
 
 ```bash
 npm install typebot-js
-
-yarn add typebot-js
 ```
 
 ## Usage

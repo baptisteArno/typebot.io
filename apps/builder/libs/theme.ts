@@ -100,4 +100,5 @@ const components = {
   },
 }
 
-export const customTheme = extendTheme({ colors, fonts, components })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const customTheme: any = extendTheme({ colors, fonts, components })

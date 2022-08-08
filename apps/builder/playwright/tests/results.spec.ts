@@ -1,20 +1,21 @@
 import test, { expect, Page } from '@playwright/test'
 import cuid from 'cuid'
 import { readFileSync } from 'fs'
-import prisma from 'libs/prisma'
 import { defaultTextInputOptions, InputBlockType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 import {
   createResults,
   createTypebots,
-  freeWorkspaceId,
   importTypebotInDatabase,
   parseDefaultGroupWithBlock,
 } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
 const typebotId = cuid()
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('Submission table header should be parsed correctly', async ({ page }) => {
   const typebotId = cuid()
@@ -110,21 +111,6 @@ test('should correctly export selection in CSV', async ({ page }) => {
   const fileAll = readFileSync(pathAll as string).toString()
   const { data: dataAll } = parse(fileAll)
   validateExportAll(dataAll)
-})
-
-test.describe('Free user', async () => {
-  test.use({
-    storageState: path.join(__dirname, '../freeUser.json'),
-  })
-  test("Incomplete results shouldn't be displayed", async ({ page }) => {
-    await prisma.typebot.update({
-      where: { id: typebotId },
-      data: { workspaceId: freeWorkspaceId },
-    })
-    await page.goto(`/typebots/${typebotId}/results`)
-    await page.click('text=Unlock')
-    await expect(page.locator('text=For solo creator')).toBeVisible()
-  })
 })
 
 test('Can resize, hide and reorder columns', async ({ page }) => {

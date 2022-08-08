@@ -12,15 +12,16 @@ jobs:
       - name: Log Info
         run: echo ${{ github.event.deployment_status.target_url }} && echo ${{ github.event.deployment }} && echo ${{ github.event.deployment_status.environment }}
       - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
       - name: Install dependencies
-        run: yarn
+        run: pnpm i --frozen-lockfile
       - name: Build dependencies
-        run: yarn turbo run build --scope=builder --include-dependencies
+        run: pnpm turbo run build --filter="builder^..."
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run tests
         working-directory: ./apps/builder
-        run: yarn test
+        run: pnpm test
         env:
           PLAYWRIGHT_BUILDER_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}

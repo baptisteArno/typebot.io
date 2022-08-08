@@ -5,7 +5,7 @@ import { parseInitContainerCode, typebotJsHtml } from '../params'
 import { IframeParams } from 'typebot-js'
 import { useTypebot } from 'contexts/TypebotContext'
 import { CodeEditor } from 'components/shared/CodeEditor'
-import { env, isEmpty } from 'utils'
+import { env, getViewerUrl } from 'utils'
 
 type ContainerEmbedCodeProps = {
   widthLabel: string
@@ -23,9 +23,7 @@ export const ContainerEmbedCode = ({
   const snippet = prettier.format(
     parseSnippet({
       url: `${
-        isEmpty(env('VIEWER_INTERNAL_URL'))
-          ? env('VIEWER_URL')
-          : env('VIEWER_INTERNAL_URL')
+        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
       }/${typebot?.publicId}`,
       heightLabel,
       widthLabel,

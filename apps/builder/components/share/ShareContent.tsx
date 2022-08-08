@@ -16,11 +16,10 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
 import { isFreePlan } from 'services/workspace'
-import { isDefined, isNotDefined } from 'utils'
+import { getViewerUrl, isDefined, isNotDefined } from 'utils'
 import { CustomDomainsDropdown } from './customDomain/CustomDomainsDropdown'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './integrations/EmbedButton'
-import { env } from 'utils'
 
 export const ShareContent = () => {
   const { workspace } = useWorkspace()
@@ -59,7 +58,9 @@ export const ShareContent = () => {
           </Heading>
           {typebot && (
             <EditableUrl
-              hostname={env('VIEWER_URL') ?? 'https://typebot.io'}
+              hostname={
+                getViewerUrl({ isBuilder: true }) ?? 'https://typebot.io'
+              }
               pathname={publicId}
               onPathnameChange={handlePublicIdChange}
             />

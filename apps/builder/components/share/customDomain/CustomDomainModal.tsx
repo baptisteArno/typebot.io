@@ -18,7 +18,7 @@ import {
 import { useToast } from 'components/shared/hooks/useToast'
 import { useEffect, useRef, useState } from 'react'
 import { createCustomDomain } from 'services/user'
-import { env, isEmpty } from 'utils'
+import { env, getViewerUrl } from 'utils'
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
@@ -118,9 +118,8 @@ export const CustomDomainModal = ({
                     <Stack>
                       <Text fontWeight="bold">Value</Text>
                       <Text>
-                        {isEmpty(env('VIEWER_INTERNAL_URL'))
-                          ? env('VIEWER_URL')
-                          : env('VIEWER_INTERNAL_URL')}
+                        {env('VIEWER_INTERNAL_URL') ??
+                          getViewerUrl({ isBuilder: true })}
                       </Text>
                     </Stack>
                   </HStack>

@@ -13,7 +13,6 @@ services:
       context: .
       args:
         - SCOPE=builder
-    restart: always
     depends_on:
       - db
     ports:
@@ -33,7 +32,6 @@ services:
       context: .
       args:
         - SCOPE=viewer
-    restart: always
     ports:
       - '8081:3000'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options

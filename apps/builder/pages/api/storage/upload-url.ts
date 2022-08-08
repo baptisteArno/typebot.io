@@ -1,7 +1,12 @@
 import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
-import { badRequest, generatePresignedUrl, methodNotAllowed } from 'utils'
+import { getAuthenticatedUser } from 'services/api/utils'
+import {
+  badRequest,
+  generatePresignedUrl,
+  methodNotAllowed,
+  notAuthenticated,
+} from 'utils'
 
 const handler = async (
   req: NextApiRequest,
@@ -9,11 +14,8 @@ const handler = async (
 ): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   if (req.method === 'GET') {
-    const session = await getSession({ req })
-    if (!session) {
-      res.status(401)
-      return
-    }
+    const user = await getAuthenticatedUser(req)
+    if (!user) return notAuthenticated(res)
 
     if (
       !process.env.S3_ENDPOINT ||

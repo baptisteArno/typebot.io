@@ -21,7 +21,7 @@ import {
 } from 'models'
 import { Log } from 'db'
 import { LiteBadge } from './LiteBadge'
-import { env, isEmpty } from 'utils'
+import { getViewerUrl, isEmpty } from 'utils'
 
 export type TypebotViewerProps = {
   typebot: PublicTypebot
@@ -41,7 +41,7 @@ export type TypebotViewerProps = {
 
 export const TypebotViewer = ({
   typebot,
-  apiHost = env('VIEWER_URL')?.split(',')[0],
+  apiHost = getViewerUrl(),
   isPreview = false,
   isLoading = false,
   style,

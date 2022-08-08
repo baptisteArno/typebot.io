@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
-  serializeHtml,
   TEditor,
   TElement,
   Value,
@@ -16,6 +15,7 @@ import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
+import { serializeHtml } from '@udecode/plate-serializer-html'
 
 type Props = {
   initialValue: TElement[]
@@ -98,7 +98,7 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
     setValue(val)
     setIsVariableDropdownOpen(false)
   }
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.shiftKey) return
     if (e.key === 'Enter') closeEditor()
   }

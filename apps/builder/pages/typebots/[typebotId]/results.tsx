@@ -1,8 +1,7 @@
-import { Flex, Text } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
 import React, { useMemo } from 'react'
-import { HStack, Button, Tag } from '@chakra-ui/react'
+import { HStack, Button, Tag, Flex, Text } from '@chakra-ui/react'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { ResultsContent } from 'components/results/ResultsContent'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -34,7 +33,7 @@ const ResultsPage = () => {
       stats: { ...stats, totalStarts: stats.totalStarts - total },
     })
   }
-  
+
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo

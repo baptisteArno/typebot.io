@@ -5,6 +5,7 @@ import {
 } from '@udecode/plate-basic-marks'
 import { createPlugins } from '@udecode/plate-core'
 import { createLinkPlugin, ELEMENT_LINK } from '@udecode/plate-link'
+import { PlateFloatingLink } from '@udecode/plate-ui-link'
 
 export const editorStyle: React.CSSProperties = {
   flex: 1,
@@ -18,7 +19,9 @@ export const platePlugins = createPlugins(
     createBoldPlugin(),
     createItalicPlugin(),
     createUnderlinePlugin(),
-    createLinkPlugin(),
+    createLinkPlugin({
+      renderAfterEditable: PlateFloatingLink,
+    }),
   ],
   {
     components: {

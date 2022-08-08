@@ -5,7 +5,6 @@ node_modules
 workspace.code-workspace
 .DS_Store
 .turbo
-yarn-error.log
 authenticatedState.json
 playwright-report
 dist

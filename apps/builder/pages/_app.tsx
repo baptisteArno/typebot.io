@@ -6,7 +6,6 @@ import { customTheme } from 'libs/theme'
 import { useRouterProgressBar } from 'libs/routerProgressBar'
 import 'assets/styles/routerProgressBar.css'
 import 'assets/styles/plate.css'
-import 'focus-visible/dist/focus-visible'
 import 'assets/styles/submissionsTable.css'
 import 'assets/styles/codeMirror.css'
 import 'assets/styles/custom.css'
@@ -15,14 +14,11 @@ import { TypebotContext } from 'contexts/TypebotContext'
 import { useRouter } from 'next/router'
 import { KBarProvider } from 'kbar'
 import { actions } from 'libs/kbar'
-import { enableMocks } from 'mocks'
 import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
 import { toTitleCase } from 'utils'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
-
-if (process.env.NEXT_PUBLIC_E2E_TEST === 'enabled') enableMocks()
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   useRouterProgressBar()
@@ -70,6 +66,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
 
 const displayStripeCallbackMessage = (
   status: string | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toast: any
 ) => {
   if (status && ['pro', 'team'].includes(status)) {

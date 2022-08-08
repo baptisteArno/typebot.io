@@ -1,5 +1,4 @@
-import { Heading } from '@chakra-ui/layout'
-import { Stack } from '@chakra-ui/react'
+import { Stack, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import React from 'react'

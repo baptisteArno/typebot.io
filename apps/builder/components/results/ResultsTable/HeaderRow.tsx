@@ -1,10 +1,10 @@
 import { Box, BoxProps, chakra } from '@chakra-ui/react'
-import { HeaderGroup } from '@tanstack/react-table'
+import { flexRender, HeaderGroup } from '@tanstack/react-table'
 import React from 'react'
+import { TableData } from 'services/typebots/results'
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  headerGroup: HeaderGroup<any>
+  headerGroup: HeaderGroup<TableData>
 }
 
 export const HeaderRow = ({ headerGroup }: Props) => {
@@ -28,7 +28,9 @@ export const HeaderRow = ({ headerGroup }: Props) => {
               maxWidth: header.getSize(),
             }}
           >
-            {header.isPlaceholder ? null : header.renderHeader()}
+            {header.isPlaceholder
+              ? null
+              : flexRender(header.column.columnDef.header, header.getContext())}
             {header.column.getCanResize() && (
               <ResizeHandle
                 onMouseDown={header.getResizeHandler()}

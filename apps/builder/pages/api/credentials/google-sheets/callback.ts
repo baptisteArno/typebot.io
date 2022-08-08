@@ -12,8 +12,10 @@ import { getAuthenticatedUser } from 'services/api/utils'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
+  const state = req.query.state as string | undefined
+  if (!state) return badRequest(res)
   const { redirectUrl, blockId, workspaceId } = JSON.parse(
-    Buffer.from(req.query.state.toString(), 'base64').toString()
+    Buffer.from(state, 'base64').toString()
   )
   if (req.method === 'GET') {
     const code = req.query.code as string | undefined

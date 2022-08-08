@@ -18,6 +18,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Log } from 'db'
 import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
+import { getViewerUrl } from 'utils'
 
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
@@ -100,6 +101,7 @@ export const PreviewDrawer = () => {
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
             <TypebotViewer
+              apiHost={getViewerUrl({ isBuilder: true })}
               typebot={publicTypebot}
               onNewGroupVisible={setPreviewingEdge}
               onNewLog={handleNewLog}

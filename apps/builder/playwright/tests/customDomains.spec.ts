@@ -7,6 +7,9 @@ import {
 } from '../services/database'
 import path from 'path'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should be able to connect custom domain', async ({ page }) => {
   const typebotId = cuid()

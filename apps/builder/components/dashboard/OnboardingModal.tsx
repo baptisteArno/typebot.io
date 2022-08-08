@@ -11,7 +11,7 @@ import { useUser } from 'contexts/UserContext'
 import { Answer, Typebot } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
-import { sendRequest } from 'utils'
+import { getViewerUrl, sendRequest } from 'utils'
 import confetti from 'canvas-confetti'
 import { useToast } from 'components/shared/hooks/useToast'
 
@@ -119,6 +119,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
         <ModalBody>
           {typebot && (
             <TypebotViewer
+              apiHost={getViewerUrl({ isBuilder: true })}
               typebot={parseTypebotToPublicTypebot(typebot)}
               predefinedVariables={{
                 Name: user?.name?.split(' ')[0] ?? undefined,

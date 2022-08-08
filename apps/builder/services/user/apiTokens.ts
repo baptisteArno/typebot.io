@@ -25,7 +25,7 @@ export const useApiTokens = ({
     userId ? `/api/users/${userId}/api-tokens` : null,
     fetcher,
     {
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
     }
   )
   if (error) onError(error)

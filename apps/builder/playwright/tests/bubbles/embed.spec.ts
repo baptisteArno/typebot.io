@@ -6,10 +6,12 @@ import {
 import { BubbleBlockType, defaultEmbedBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 
 const pdfSrc = 'https://www.orimi.com/pdf-test.pdf'
-const iframeCode = '<iframe src="https://typebot.io"></iframe>'
 const siteSrc = 'https://app.cal.com/baptistearno/15min'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Embed bubble block', () => {
   test.describe('Content settings', () => {

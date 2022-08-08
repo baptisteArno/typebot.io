@@ -3,6 +3,9 @@ import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {

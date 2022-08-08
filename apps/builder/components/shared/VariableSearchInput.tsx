@@ -47,7 +47,7 @@ export const VariableSearchInput = ({
       const variable = variables.find((v) => v.name === value)
       if (variable) onSelectVariable(variable)
     },
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []

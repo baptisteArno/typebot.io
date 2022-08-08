@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Stack } from '@chakra-ui/layout'
+import { Flex, Stack } from '@chakra-ui/react'
 import { DashboardHeader } from 'components/dashboard/DashboardHeader'
 import { Seo } from 'components/Seo'
 import { FolderContent } from 'components/dashboard/FolderContent'

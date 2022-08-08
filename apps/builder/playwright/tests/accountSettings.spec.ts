@@ -1,5 +1,8 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 // Can't test the update features because of the auth mocking.
 test('should display user info properly', async ({ page }) => {
@@ -7,7 +10,7 @@ test('should display user info properly', async ({ page }) => {
   await page.click('text=Settings & Members')
   const saveButton = page.locator('button:has-text("Save")')
   await expect(saveButton).toBeHidden()
-  await expect(
+  expect(
     page.locator('input[type="email"]').getAttribute('disabled')
   ).toBeDefined()
   await page.fill('#name', 'John Doe')

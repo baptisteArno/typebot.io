@@ -23,9 +23,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   })
   if (!workspace) return forbidden(res)
   if (req.method === 'GET') {
-    const typebotId = req.query.typebotId.toString()
+    const typebotId = req.query.typebotId as string
     const lastResultId = req.query.lastResultId?.toString()
-    const take = parseInt(req.query.limit?.toString())
+    const take = Number(req.query.limit?.toString())
     const results = await prisma.result.findMany({
       take: isNaN(take) ? undefined : take,
       skip: lastResultId ? 1 : 0,

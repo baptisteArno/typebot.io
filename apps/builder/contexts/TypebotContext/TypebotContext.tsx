@@ -150,12 +150,6 @@ export const TypebotContext = ({
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
-      console.log(
-        'Incoming typebot',
-        typebot,
-        'Current typebot',
-        currentTypebotRef.current
-      )
       setLocalTypebot({ ...typebot })
     }
 
@@ -392,7 +386,7 @@ export const useFetchedTypebot = ({
     },
     Error
   >(`/api/typebots/${typebotId}`, fetcher, {
-    dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+    dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
   })
   if (error && onError) onError(error)
   return {

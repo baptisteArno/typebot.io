@@ -1,5 +1,4 @@
-import { Flex, HStack, StackProps } from '@chakra-ui/layout'
-import { CloseButton } from '@chakra-ui/react'
+import { CloseButton, Flex, HStack, StackProps } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 
 type VerifyEmailBannerProps = { id: string } & StackProps

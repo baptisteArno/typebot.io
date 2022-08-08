@@ -6,6 +6,9 @@ import {
 import { defaultPaymentInputOptions, InputBlockType } from 'models'
 import cuid from 'cuid'
 import { stripePaymentForm, typebotViewer } from '../../services/selectorUtils'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Payment input block', () => {
   test('Can configure Stripe account', async ({ page }) => {

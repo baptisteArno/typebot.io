@@ -14,7 +14,7 @@ export const useMembers = ({ workspaceId }: { workspaceId?: string }) => {
     { members: Member[]; invitations: WorkspaceInvitation[] },
     Error
   >(workspaceId ? `/api/workspaces/${workspaceId}/members` : null, fetcher, {
-    dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+    dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
   })
   return {
     members: data?.members,

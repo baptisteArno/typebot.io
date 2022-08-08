@@ -2,8 +2,9 @@ import { ResultHeaderCell, ResultWithAnswers } from 'models'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
 import {
   convertResultsToTableData,
+  TableData,
   useResults as useFetchResults,
-} from 'services/typebots'
+} from 'services/typebots/results'
 import { KeyedMutator } from 'swr'
 import { isDefined, parseResultHeader } from 'utils'
 import { useTypebot } from './TypebotContext'
@@ -15,10 +16,7 @@ const resultsContext = createContext<{
   resultHeader: ResultHeaderCell[]
   totalResults: number
   totalHiddenResults?: number
-  tableData: {
-    id: string
-    [key: string]: { plainText: string; element?: JSX.Element } | string
-  }[]
+  tableData: TableData[]
   onDeleteResults: (totalResultsDeleted: number) => void
   fetchMore: () => void
   mutate: KeyedMutator<

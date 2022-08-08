@@ -1,4 +1,4 @@
-import { StackProps, HStack, Button } from '@chakra-ui/react'
+import { StackProps, HStack, Button, IconButton } from '@chakra-ui/react'
 import {
   MARK_BOLD,
   MARK_ITALIC,
@@ -7,7 +7,13 @@ import {
 import { getPluginType, PlateEditor, Value } from '@udecode/plate-core'
 import { LinkToolbarButton } from '@udecode/plate-ui-link'
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
-import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon } from 'assets/icons'
+import {
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  LinkIcon,
+  UserIcon,
+} from 'assets/icons'
 
 type Props = {
   editor: PlateEditor<Value>
@@ -33,9 +39,12 @@ export const ToolBar = ({
       borderBottomWidth={1}
       {...props}
     >
-      <Button size="sm" onMouseDown={handleVariablesButtonMouseDown}>
-        Variables
-      </Button>
+      <IconButton
+        aria-label="Insert variable"
+        size="sm"
+        onMouseDown={handleVariablesButtonMouseDown}
+        icon={<UserIcon />}
+      />
       <span data-testid="bold-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_BOLD)}

@@ -36,7 +36,7 @@ export const TextBox = ({
     (value) => {
       onChange(value)
     },
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 
   useEffect(() => {

@@ -6,6 +6,9 @@ import {
 import { defaultEmailInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Email input block', () => {
   test('options should work', async ({ page }) => {
@@ -31,7 +34,10 @@ test.describe('Email input block', () => {
     await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
 
     await page.click(`text=${defaultEmailInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', 'Your email...')
+    await page.fill(
+      `input[value="${defaultEmailInputOptions.labels.placeholder}"]`,
+      'Your email...'
+    )
     await expect(page.locator('text=Your email...')).toBeVisible()
     await page.fill('#button', 'Go')
     await page.fill(

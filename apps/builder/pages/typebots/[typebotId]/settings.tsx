@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/layout'
+import { Flex } from '@chakra-ui/react'
 import { Seo } from 'components/Seo'
 import { SettingsContent } from 'layouts/settings/SettingsContent'
 import { TypebotHeader } from 'components/shared/TypebotHeader'

@@ -53,6 +53,7 @@ import {
   blockTypeHasOption,
   blockTypeHasWebhook,
   env,
+  isDefined,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
@@ -61,7 +62,6 @@ import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'db'
-import { isDefined } from '@chakra-ui/utils'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -83,7 +83,7 @@ export const useTypebots = ({
     { typebots: TypebotInDashboard[] },
     Error
   >(workspaceId ? `/api/typebots?${params}` : null, fetcher, {
-    dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+    dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
   })
   if (error) onError(error)
   return {

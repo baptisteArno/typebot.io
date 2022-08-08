@@ -8,6 +8,9 @@ import { defaultTextInputOptions, InputBlockType } from 'models'
 import path from 'path'
 import cuid from 'cuid'
 import { typebotViewer } from '../services/selectorUtils'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Editor', () => {
   test('Edges connection should work', async ({ page }) => {

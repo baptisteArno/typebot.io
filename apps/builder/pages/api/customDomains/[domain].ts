@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const workspaceId = req.query.workspaceId as string | undefined
   if (!workspaceId) return badRequest(res)
   if (req.method === 'DELETE') {
-    const domain = req.query.domain.toString()
+    const domain = req.query.domain as string
     try {
       await deleteDomainOnVercel(domain)
     } catch {}

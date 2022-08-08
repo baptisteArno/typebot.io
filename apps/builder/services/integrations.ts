@@ -1,4 +1,4 @@
-import { env, sendRequest } from 'utils'
+import { getViewerUrl, sendRequest } from 'utils'
 import { stringify } from 'qs'
 import useSWR from 'swr'
 import { fetcher } from './utils'
@@ -78,9 +78,9 @@ export const executeWebhook = (
   { blockId }: { blockId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `${env(
-      'VIEWER_URL'
-    )}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook`,
+    url: `${getViewerUrl({
+      isBuilder: true,
+    })}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,

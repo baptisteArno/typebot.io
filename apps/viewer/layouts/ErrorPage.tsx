@@ -1,5 +1,5 @@
 import React from 'react'
-import { env, isEmpty } from 'utils'
+import { getViewerUrl, isEmpty } from 'utils'
 
 export const ErrorPage = ({ error }: { error: Error }) => {
   return (
@@ -12,7 +12,7 @@ export const ErrorPage = ({ error }: { error: Error }) => {
         flexDirection: 'column',
       }}
     >
-      {isEmpty(env('VIEWER_URL')) ? (
+      {isEmpty(getViewerUrl()) ? (
         <>
           <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
             NEXT_PUBLIC_VIEWER_URL is missing

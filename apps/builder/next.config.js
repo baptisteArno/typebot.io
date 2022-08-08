@@ -1,19 +1,20 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
+const path = require('path')
 
-const moduleExports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  output: 'standalone',
   experimental: {
-    outputStandalone: true,
+    outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  optimizeFonts: false,
 }
 
 const sentryWebpackPluginOptions = {
   silent: true,
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
 
 module.exports = process.env.SENTRY_AUTH_TOKEN
-  ? withSentryConfig(moduleExports, sentryWebpackPluginOptions)
-  : moduleExports
+  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+  : nextConfig

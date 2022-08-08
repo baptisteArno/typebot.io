@@ -5,6 +5,9 @@ import {
 } from '../../services/database'
 import { defaultGoogleAnalyticsOptions, IntegrationBlockType } from 'models'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Google Analytics block', () => {
   test('its configuration should work', async ({ page }) => {

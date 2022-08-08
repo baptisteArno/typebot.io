@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { drive } from '@googleapis/drive'
-import { OAuth2Client } from 'googleapis-common'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
 import { setUser, withSentry } from '@sentry/nextjs'
@@ -19,7 +18,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).send("Couldn't find credentials in database")
     const response = await drive({
       version: 'v3',
-      auth: auth.client as unknown as OAuth2Client,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      auth: auth.client,
     }).files.list({
       q: "mimeType='application/vnd.google-apps.spreadsheet'",
       fields: 'nextPageToken, files(id, name)',

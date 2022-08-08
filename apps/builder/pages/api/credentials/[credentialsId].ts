@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const workspaceId = req.query.workspaceId as string | undefined
   if (!workspaceId) return badRequest(res)
   if (req.method === 'DELETE') {
-    const credentialsId = req.query.credentialsId.toString()
+    const credentialsId = req.query.credentialsId as string | undefined
     const credentials = await prisma.credentials.deleteMany({
       where: {
         id: credentialsId,

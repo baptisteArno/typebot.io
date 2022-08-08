@@ -3,8 +3,11 @@ import { importTypebotInDatabase } from '../../services/database'
 import path from 'path'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 
 const typebotId = cuid()
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Send email block', () => {
   test('its configuration should work', async ({ page }) => {

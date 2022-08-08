@@ -54,7 +54,7 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
    ```sh
    cd typebot.io
-   yarn
+   pnpm i
    ```
 
 3. Set up environment variables
@@ -69,7 +69,7 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 5. Start the builder and viewer
 
    ```sh
-   yarn dev
+   pnpm dev
    ```
 
    Builder is available at `http://localhost:3000`
@@ -86,14 +86,14 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
    ```sh
    cd apps/landing-page
-   yarn dev
+   pnpm dev
    ```
 
 7. (Optionnal) Start the docs
 
    ```sh
    cd apps/docs
-   yarn start
+   pnpm start
    ```
 
 ## Contribute

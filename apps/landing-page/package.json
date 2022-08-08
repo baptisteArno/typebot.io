@@ -8,28 +8,32 @@
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.0.0",
-    "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
+    "@chakra-ui/icon": "^3.0.6",
+    "@chakra-ui/react": "2.2.6",
+    "@emotion/react": "11.10.0",
+    "@emotion/styled": "11.10.0",
     "aos": "^2.3.4",
     "bot-engine": "*",
     "focus-visible": "^5.2.0",
-    "framer-motion": "^6.3.3",
+    "framer-motion": "7.0.0",
     "models": "*",
-    "next": "^12.1.6",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "next": "12.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "utils": "*"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^12.1.6",
+    "@babel/core": "7.18.10",
+    "@chakra-ui/styled-system": "^2.2.5",
+    "@next/bundle-analyzer": "12.2.4",
     "@types/aos": "^3.0.4",
-    "@types/node": "^17.0.33",
-    "@types/react": "^18.0.9",
-    "autoprefixer": "^10.4.7",
+    "@types/node": "18.6.5",
+    "@types/react": "^18.0.17",
+    "autoprefixer": "10.4.8",
     "cross-env": "^7.0.3",
-    "eslint": "<8.0.0",
-    "prettier": "^2.6.2",
-    "typescript": "^4.6.4"
+    "eslint": "8.21.0",
+    "postcss": "8.4.16",
+    "prettier": "2.7.1",
+    "typescript": "^4.7.4"
   }
 }

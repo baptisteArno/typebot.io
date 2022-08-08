@@ -1,4 +1,4 @@
-import { useEventListener } from '@chakra-ui/hooks'
+import { useEventListener } from '@chakra-ui/react'
 import assert from 'assert'
 import {
   useGraph,

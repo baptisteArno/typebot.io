@@ -17,7 +17,7 @@ import { useToast } from 'components/shared/hooks/useToast'
 import { Typebot } from 'models'
 import React, { useEffect, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
-import { sendRequest } from 'utils'
+import { getViewerUrl, sendRequest } from 'utils'
 import { TemplateProps, templates } from './data'
 
 type Props = {
@@ -71,6 +71,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             </Heading>
             {typebot && (
               <TypebotViewer
+                apiHost={getViewerUrl({ isBuilder: true })}
                 typebot={parseTypebotToPublicTypebot(typebot)}
                 key={typebot.id}
               />

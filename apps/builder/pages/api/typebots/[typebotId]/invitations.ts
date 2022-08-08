@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.invitation.create({
         data: { email: email.toLowerCase().trim(), type, typebotId },
       })
-    if (env('E2E_TEST') !== 'enabled')
+    if (env('E2E_TEST') !== 'true')
       await sendEmailNotification({
         to: email,
         subject: "You've been invited to collaborate 🤝",
