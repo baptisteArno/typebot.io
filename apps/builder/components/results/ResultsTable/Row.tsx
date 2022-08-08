@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Row as RowProps } from '@tanstack/react-table'
 import Cell from './Cell'
+import { TableData } from 'services/typebots/results'
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  row: RowProps<any>
+  row: RowProps<TableData>
   isSelected: boolean
   bottomElement?: React.MutableRefObject<HTMLDivElement | null>
   onExpandButtonClick: () => void

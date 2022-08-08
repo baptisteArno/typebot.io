@@ -20,7 +20,7 @@ const parseWhereFilter = (
       id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
       workspace:
         (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        env('E2E_TEST') === 'enabled'
+        env('E2E_TEST') === 'true'
           ? undefined
           : {
               members: {

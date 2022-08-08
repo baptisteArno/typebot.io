@@ -6,6 +6,7 @@ import {
 import { defaultRatingInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 
 const boxSvg = `<svg
     xmlns="http://www.w3.org/2000/svg"
@@ -19,6 +20,8 @@ const boxSvg = `<svg
     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
     <line x1="12" y1="22.08" x2="12" y2="12"></line>
   </svg>`
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('options should work', async ({ page }) => {
   const typebotId = cuid()

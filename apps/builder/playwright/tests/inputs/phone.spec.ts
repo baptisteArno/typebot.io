@@ -6,6 +6,9 @@ import {
 import { defaultPhoneInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Phone input block', () => {
   test('options should work', async ({ page }) => {

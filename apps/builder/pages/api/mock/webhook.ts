@@ -4,8 +4,8 @@ import { methodNotAllowed } from 'utils'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const firstParam = req.query.firstParam.toString()
-    const secondParam = req.query.secondParam.toString()
+    const firstParam = req.query.firstParam?.toString()
+    const secondParam = req.query.secondParam?.toString()
     const customHeader = req.headers['custom-typebot']
     const { body } = req
     if (

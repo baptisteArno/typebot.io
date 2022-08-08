@@ -1,6 +1,7 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions, InputBlockType } from 'models'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 import {
   createTypebots,
   parseDefaultGroupWithBlock,
@@ -9,6 +10,8 @@ import {
 
 const proTypebotId = cuid()
 const freeTypebotId = cuid()
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.beforeAll(async () => {
   await createTypebots([{ id: proTypebotId, name: 'Pro typebot' }])

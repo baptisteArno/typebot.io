@@ -3,12 +3,15 @@ import cuid from 'cuid'
 import { CollaborationType, Plan, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { InputBlockType, defaultTextInputOptions } from 'models'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 import {
   createFolder,
   createResults,
   createTypebots,
   parseDefaultGroupWithBlock,
 } from '../services/database'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Typebot owner', () => {
   test('Can invite collaborators', async ({ page }) => {

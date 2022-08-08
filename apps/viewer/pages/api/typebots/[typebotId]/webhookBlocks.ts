@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
-    const typebotId = req.query.typebotId.toString()
+    const typebotId = req.query.typebotId as string
     const typebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,

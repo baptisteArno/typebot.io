@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
 
-  const id = req.query.id.toString()
+  const id = req.query.id as string
   if (req.method === 'GET') {
     const folder = await prisma.dashboardFolder.findFirst({
       where: {

@@ -1,11 +1,11 @@
-import { FlexProps } from '@chakra-ui/layout'
 import prettier from 'prettier/standalone'
 import parserHtml from 'prettier/parser-html'
 import { BubbleParams } from 'typebot-js'
 import { parseInitBubbleCode, typebotJsHtml } from '../params'
 import { useTypebot } from 'contexts/TypebotContext'
 import { CodeEditor } from 'components/shared/CodeEditor'
-import { env, isEmpty } from 'utils'
+import { env, getViewerUrl } from 'utils'
+import { FlexProps } from '@chakra-ui/react'
 
 type ChatEmbedCodeProps = {
   withStarterVariables?: boolean
@@ -21,9 +21,7 @@ export const ChatEmbedCode = ({
   const snippet = prettier.format(
     createSnippet({
       url: `${
-        isEmpty(env('VIEWER_INTERNAL_URL'))
-          ? env('VIEWER_URL')
-          : env('VIEWER_INTERNAL_URL')
+        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
       }/${typebot?.publicId}`,
       button,
       proactiveMessage,

@@ -10,11 +10,14 @@ import {
 } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
 const youtubeVideoSrc = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 const vimeoVideoSrc = 'https://vimeo.com/649301125'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Video bubble block', () => {
   test.describe('Content settings', () => {

@@ -1,10 +1,11 @@
 import { chakra, Fade, Button } from '@chakra-ui/react'
-import { Cell as CellProps } from '@tanstack/react-table'
+import { Cell as CellProps, flexRender } from '@tanstack/react-table'
 import { ExpandIcon } from 'assets/icons'
 import { memo } from 'react'
+import { TableData } from 'services/typebots/results'
 
 type Props = {
-  cell: CellProps<any>
+  cell: CellProps<TableData, unknown>
   size: number
   isExpandButtonVisible: boolean
   cellIndex: number
@@ -34,7 +35,7 @@ const Cell = ({
         maxWidth: size,
       }}
     >
-      {cell.renderCell()}
+      {flexRender(cell.column.columnDef.cell, cell.getContext())}
       <chakra.span
         pos="absolute"
         top="0"

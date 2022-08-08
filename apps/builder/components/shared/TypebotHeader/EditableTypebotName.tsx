@@ -1,5 +1,9 @@
-import { Editable, EditablePreview, EditableInput } from '@chakra-ui/editable'
-import { Tooltip } from '@chakra-ui/tooltip'
+import {
+  Editable,
+  EditablePreview,
+  EditableInput,
+  Tooltip,
+} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 
 type EditableProps = {

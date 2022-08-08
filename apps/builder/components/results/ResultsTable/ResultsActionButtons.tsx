@@ -18,7 +18,7 @@ import {
   convertResultsToTableData,
   getAllResults,
   deleteResults as deleteFetchResults,
-} from 'services/typebots'
+} from 'services/typebots/results'
 
 type ResultsActionButtonsProps = {
   selectedResultsId: string[]
@@ -93,7 +93,9 @@ export const ResultsActionButtons = ({
 
     const dataToUnparse = isSelectAll
       ? await getAllTableData()
-      : tableData.filter((data) => selectedResultsId.includes(data.id))
+      : tableData.filter((data) =>
+          selectedResultsId.includes(data.id.plainText)
+        )
     const csvData = new Blob(
       [
         unparse({

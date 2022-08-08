@@ -54,7 +54,7 @@ export const useResults = ({
     fetcher,
     {
       revalidateAll: true,
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
     }
   )
 
@@ -147,15 +147,18 @@ const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
     <CalendarIcon />
   )
 
+export type CellValueType = { element?: JSX.Element; plainText: string }
+
+export type TableData = {
+  id: Pick<CellValueType, 'plainText'>
+} & Record<string, CellValueType>
+
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
   headerCells: ResultHeaderCell[]
-): {
-  id: string
-  [key: string]: { element?: JSX.Element; plainText: string } | string
-}[] =>
+): TableData[] =>
   (results ?? []).map((result) => ({
-    id: result.id,
+    id: { plainText: result.id },
     'Submitted at': {
       plainText: parseDateToReadable(result.createdAt),
     },

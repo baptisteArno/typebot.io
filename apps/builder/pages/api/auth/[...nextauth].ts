@@ -15,7 +15,10 @@ import { env, isNotEmpty } from 'utils'
 
 const providers: Provider[] = []
 
-if (isNotEmpty(process.env.GITHUB_CLIENT_ID))
+if (
+  isNotEmpty(process.env.GITHUB_CLIENT_ID) &&
+  isNotEmpty(process.env.GITHUB_CLIENT_SECRET)
+)
   providers.push(
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,

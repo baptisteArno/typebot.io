@@ -4,6 +4,7 @@ import React, { useMemo } from 'react'
 import { TypebotViewer } from 'bot-engine'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import { SettingsSideMenu } from 'components/settings/SettingsSideMenu'
+import { getViewerUrl } from 'utils'
 
 export const SettingsContent = () => {
   const { typebot } = useTypebot()
@@ -17,7 +18,12 @@ export const SettingsContent = () => {
     <Flex h="full" w="full">
       <SettingsSideMenu />
       <Flex flex="1">
-        {publicTypebot && <TypebotViewer typebot={publicTypebot} />}
+        {publicTypebot && (
+          <TypebotViewer
+            apiHost={getViewerUrl({ isBuilder: true })}
+            typebot={publicTypebot}
+          />
+        )}
       </Flex>
     </Flex>
   )

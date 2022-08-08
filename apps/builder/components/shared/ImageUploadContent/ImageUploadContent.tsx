@@ -1,22 +1,12 @@
-import { ChangeEvent, useState } from 'react'
-import {
-  Button,
-  Flex,
-  HStack,
-  Stack,
-  Text,
-  Input as ClassicInput,
-  SimpleGrid,
-  GridItem,
-} from '@chakra-ui/react'
+import { useState } from 'react'
+import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { SearchContextManager } from '@giphy/react-components'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearch } from './GiphySearch'
 import { useTypebot } from 'contexts/TypebotContext'
-import { BaseEmoji, emojiIndex } from 'emoji-mart'
-import { emojis } from './emojis'
 import { Input } from '../Textbox/Input'
 import { env, isEmpty } from 'utils'
+import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 
 type Props = {
   url?: string
@@ -101,7 +91,7 @@ const BodyContent = ({
     case 'giphy':
       return <GiphyContent onNewUrl={onSubmit} />
     case 'emoji':
-      return <EmojiContent onEmojiSelected={onSubmit} />
+      return <EmojiSearchableList onEmojiSelected={onSubmit} />
   }
 }
 
@@ -132,55 +122,6 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => (
     />
   </Stack>
 )
-
-const EmojiContent = ({
-  onEmojiSelected,
-}: {
-  onEmojiSelected: (emoji: string) => void
-}) => {
-  const [searchValue, setSearchValue] = useState('')
-  const [filteredEmojis, setFilteredEmojis] = useState<string[]>(emojis)
-
-  const handleEmojiClick = (emoji: string) => () => onEmojiSelected(emoji)
-
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value)
-    setFilteredEmojis(
-      emojiIndex.search(e.target.value)?.map((o) => (o as BaseEmoji).native) ??
-        emojis
-    )
-  }
-
-  return (
-    <Stack>
-      <ClassicInput
-        placeholder="Search..."
-        value={searchValue}
-        onChange={handleSearchChange}
-      />
-      <SimpleGrid
-        maxH="350px"
-        overflowY="scroll"
-        overflowX="hidden"
-        spacing={0}
-        columns={7}
-      >
-        {filteredEmojis.map((emoji) => (
-          <GridItem key={emoji}>
-            <Button
-              onClick={handleEmojiClick(emoji)}
-              variant="ghost"
-              size="sm"
-              fontSize="xl"
-            >
-              {emoji}
-            </Button>
-          </GridItem>
-        ))}
-      </SimpleGrid>
-    </Stack>
-  )
-}
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => {
   if (isEmpty(env('GIPHY_API_KEY')))

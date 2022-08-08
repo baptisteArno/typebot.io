@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/system'
+import { chakra } from '@chakra-ui/react'
 import { colors } from 'libs/theme'
 import { Edge as EdgeProps } from 'models'
 import React from 'react'

@@ -13,10 +13,10 @@ import { ResultHeaderCell, ResultsTablePreferences } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {
-  createTable,
-  useTableInstance,
+  useReactTable,
   getCoreRowModel,
   ColumnOrderState,
+  ColumnDef,
 } from '@tanstack/react-table'
 import { BlockIcon } from 'components/editor/BlocksSideBar/BlockIcon'
 import { ColumnSettingsButton } from './ColumnsSettingsButton'
@@ -25,21 +25,11 @@ import { useDebounce } from 'use-debounce'
 import { ResultsActionButtons } from './ResultsActionButtons'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
-
-type RowType = {
-  id: string
-  [key: string]:
-    | {
-        plainText: string
-        element?: JSX.Element | undefined
-      }
-    | string
-}
-const table = createTable().setRowType<RowType>()
+import { CellValueType, TableData } from 'services/typebots/results'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
-  data: RowType[]
+  data: TableData[]
   hasMore?: boolean
   preferences?: ResultsTablePreferences
   onScrollToBottom: () => void
@@ -92,18 +82,18 @@ export const ResultsTable = ({
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)
 
-  const columns = React.useMemo(
+  const columns = React.useMemo<ColumnDef<TableData>[]>(
     () => [
-      table.createDisplayColumn({
+      {
         id: 'select',
         enableResizing: false,
         maxSize: 40,
-        header: ({ instance }) => (
+        header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
-              checked: instance.getIsAllRowsSelected(),
-              indeterminate: instance.getIsSomeRowsSelected(),
-              onChange: instance.getToggleAllRowsSelectedHandler(),
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
             }}
           />
         ),
@@ -118,26 +108,24 @@ export const ResultsTable = ({
             />
           </div>
         ),
-      }),
-      ...resultHeader.map((header) =>
-        table.createDataColumn(header.label, {
-          id: header.id,
-          size: header.isLong ? 400 : 200,
-          cell: (info) => {
-            const value = info.getValue()
-            if (!value) return
-            if (typeof value === 'string') return ''
-            return value.element || value.plainText || ''
-          },
-          header: () => (
-            <HStack overflow="hidden" data-testid={`${header.label} header`}>
-              <HeaderIcon header={header} />
-              <Text>{header.label}</Text>
-            </HStack>
-          ),
-        })
-      ),
-      table.createDisplayColumn({
+      },
+      ...resultHeader.map<ColumnDef<TableData>>((header) => ({
+        id: header.id,
+        accessorKey: header.label,
+        size: header.isLong ? 400 : 200,
+        header: () => (
+          <HStack overflow="hidden" data-testid={`${header.label} header`}>
+            <HeaderIcon header={header} />
+            <Text>{header.label}</Text>
+          </HStack>
+        ),
+        cell: (info) => {
+          const value = info.getValue() as CellValueType | undefined
+          if (!value) return
+          return value.element || value.plainText || ''
+        },
+      })),
+      {
         id: 'logs',
         enableResizing: false,
         maxSize: 110,
@@ -152,13 +140,13 @@ export const ResultsTable = ({
             See logs
           </Button>
         ),
-      }),
+      },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [resultHeader]
   )
 
-  const instance = useTableInstance(table, {
+  const instance = useReactTable({
     data,
     columns,
     state: {
@@ -167,7 +155,7 @@ export const ResultsTable = ({
       columnOrder: columnsOrder,
       columnSizing: columnsWidth,
     },
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.id.plainText,
     columnResizeMode: 'onChange',
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnsVisibility,

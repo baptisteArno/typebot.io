@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const user = await authenticateUser(req)
     if (!user) return res.status(401).json({ message: 'Not authenticated' })
-    const typebotId = req.query.typebotId.toString()
+    const typebotId = req.query.typebotId as string
     const limit = Number(req.query.limit)
     const results = (await prisma.result.findMany({
       where: {

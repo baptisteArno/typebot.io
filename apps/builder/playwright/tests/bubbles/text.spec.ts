@@ -6,6 +6,9 @@ import {
 import { BubbleBlockType, defaultTextBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
@@ -42,15 +45,13 @@ test.describe('Text bubble block', () => {
     await page.press('div[role="textbox"]', 'Shift+Enter')
 
     await page.type('div[role="textbox"]', 'My super link')
+    await page.waitForTimeout(300)
     await page.press('div[role="textbox"]', 'Shift+Meta+ArrowLeft')
-    await page.waitForTimeout(200)
-    page.on('dialog', async (dialog) => {
-      await dialog.accept('https://github.com')
-    })
     await page.click('[data-testid="link-button"]')
-
+    await page.fill('input[placeholder="Paste link"]', 'https://github.com')
+    await page.press('input[placeholder="Paste link"]', 'Enter')
     await page.press('div[role="textbox"]', 'Shift+Enter')
-    await page.click('button >> text=Variables')
+    await page.click('button[aria-label="Insert variable"]')
     await page.fill('[data-testid="variables-input"]', 'test')
     await page.click('text=Create "test"')
 

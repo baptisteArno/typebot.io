@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
   if (req.method === 'GET') {
-    const typebotId = req.query.typebotId.toString()
+    const typebotId = req.query.typebotId as string
     const typebot = await prisma.typebot.findFirst({
       where: canReadTypebot(typebotId, user),
       include: { publishedTypebot: true },

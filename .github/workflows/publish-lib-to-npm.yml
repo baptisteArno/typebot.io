@@ -12,12 +12,10 @@ jobs:
         working-directory: ./packages/typebot-js
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: yarn
-      - run: yarn test
-      - run: yarn build
+      - uses: pnpm/action-setup@v2.2.2
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
       - uses: JS-DevTools/npm-publish@v1
         with:
           package: './packages/typebot-js/package.json'

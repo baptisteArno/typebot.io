@@ -1,4 +1,3 @@
-import { Box, Heading, VStack } from '@chakra-ui/layout'
 import {
   Accordion,
   AccordionButton,
@@ -8,6 +7,9 @@ import {
   DarkMode,
   Flex,
   Stack,
+  Box,
+  Heading,
+  VStack,
 } from '@chakra-ui/react'
 import { Footer } from 'components/common/Footer'
 import { Header } from 'components/common/Header/Header'

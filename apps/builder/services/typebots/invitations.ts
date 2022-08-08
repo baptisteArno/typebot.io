@@ -14,7 +14,7 @@ export const useInvitations = ({
     typebotId ? `/api/typebots/${typebotId}/invitations` : null,
     fetcher,
     {
-      dedupingInterval: env('E2E_TEST') === 'enabled' ? 0 : undefined,
+      dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
     }
   )
   if (error) onError(error)

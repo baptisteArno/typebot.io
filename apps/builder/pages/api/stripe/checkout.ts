@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!process.env.STRIPE_SECRET_KEY)
       throw Error('STRIPE_SECRET_KEY var is missing')
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2020-08-27',
+      apiVersion: '2022-08-01',
     })
     const { email, currency, plan, workspaceId, href } =
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body

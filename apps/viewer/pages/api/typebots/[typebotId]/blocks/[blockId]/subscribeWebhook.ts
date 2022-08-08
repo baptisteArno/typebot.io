@@ -13,8 +13,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!('url' in body))
       return res.status(403).send({ message: 'url is missing in body' })
     const { url } = body
-    const typebotId = req.query.typebotId.toString()
-    const blockId = req.query.blockId.toString()
+    const typebotId = req.query.typebotId as string
+    const blockId = req.query.blockId as string
     const typebot = (await prisma.typebot.findFirst({
       where: {
         id: typebotId,

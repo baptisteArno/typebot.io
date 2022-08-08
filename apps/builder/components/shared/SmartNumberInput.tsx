@@ -23,7 +23,7 @@ export const SmartNumberInput = ({
   const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
   const debounced = useDebouncedCallback(
     onValueChange,
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 
   useEffect(

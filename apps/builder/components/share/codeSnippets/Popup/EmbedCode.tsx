@@ -1,10 +1,10 @@
-import { FlexProps } from '@chakra-ui/layout'
+import { FlexProps } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
 import { useTypebot } from 'contexts/TypebotContext'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
 import { PopupParams } from 'typebot-js'
-import { env, isEmpty } from 'utils'
+import { env, getViewerUrl } from 'utils'
 import { parseInitPopupCode, typebotJsHtml } from '../params'
 
 type PopupEmbedCodeProps = {
@@ -18,9 +18,7 @@ export const PopupEmbedCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const snippet = prettier.format(
     createSnippet({
       url: `${
-        isEmpty(env('VIEWER_INTERNAL_URL'))
-          ? env('VIEWER_URL')
-          : env('VIEWER_INTERNAL_URL')
+        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
       }/${typebot?.publicId}`,
       delay,
     }),

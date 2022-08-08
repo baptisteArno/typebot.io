@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./env.sh
+ENVSH_ENV=./apps/builder/.env.production ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh
 
 ./node_modules/.bin/prisma generate;
 
@@ -9,4 +9,4 @@ sleep 5;
 
 ./node_modules/.bin/prisma migrate deploy;
 
-node server.js;
+node apps/builder/server.js;

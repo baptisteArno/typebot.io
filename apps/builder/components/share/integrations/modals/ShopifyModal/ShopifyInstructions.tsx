@@ -14,7 +14,7 @@ import { BubbleParams } from 'typebot-js'
 import { ModalProps } from '../../EmbedButton'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
-import { env, isEmpty } from 'utils'
+import { env, getViewerUrl } from 'utils'
 
 type ShopifyInstructionsProps = {
   type: 'standard' | 'popup' | 'bubble'
@@ -46,9 +46,7 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
 
   const jsCode = parseInitContainerCode({
     url: `${
-      isEmpty(env('VIEWER_INTERNAL_URL'))
-        ? env('VIEWER_URL')
-        : env('VIEWER_INTERNAL_URL')
+      env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
     }/${publicId}`,
   })
   const headCode = prettier.format(

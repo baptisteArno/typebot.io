@@ -1,5 +1,6 @@
 import { Box, BoxProps, HStack } from '@chakra-ui/react'
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
+import { EditorView, basicSetup } from 'codemirror'
+import { EditorState } from '@codemirror/state'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
@@ -43,7 +44,7 @@ export const CodeEditor = ({
       setPlainTextValue(value)
       onChange && onChange(value)
     },
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 
   useEffect(

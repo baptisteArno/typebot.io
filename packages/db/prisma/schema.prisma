@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Account {
@@ -23,8 +23,7 @@ model Account {
   oauth_token_secret       String?
   oauth_token              String?
   refresh_token_expires_in Int?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -46,14 +45,14 @@ model User {
   email                   String?                   @unique
   emailVerified           DateTime?
   image                   String?
-  accounts                Account[]
-  sessions                Session[]
-  apiTokens               ApiToken[]
-  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   company                 String?
   onboardingCategories    String[]
   graphNavigation         GraphNavigation?
+  accounts                Account[]
+  apiTokens               ApiToken[]
+  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
   workspaces              MemberInWorkspace[]
+  sessions                Session[]
 }
 
 model ApiToken {
@@ -61,40 +60,34 @@ model ApiToken {
   token      String   @unique
   name       String
   ownerId    String
-  owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   lastUsedAt DateTime @default(now())
   createdAt  DateTime @default(now())
+  owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Workspace {
   id            String                @id @default(cuid())
   name          String
   icon          String?
-  members       MemberInWorkspace[]
-  folders       DashboardFolder[]
-  typebots      Typebot[]
   createdAt     DateTime              @default(now())
   plan          Plan                  @default(FREE)
   stripeId      String?               @unique
-  customDomains CustomDomain[]
   credentials   Credentials[]
+  customDomains CustomDomain[]
+  folders       DashboardFolder[]
+  members       MemberInWorkspace[]
+  typebots      Typebot[]
   invitations   WorkspaceInvitation[]
 }
 
 model MemberInWorkspace {
   userId      String
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   workspaceId String
-  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   role        WorkspaceRole
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
   @@unique([userId, workspaceId])
-}
-
-enum WorkspaceRole {
-  ADMIN
-  MEMBER
-  GUEST
 }
 
 model WorkspaceInvitation {
@@ -102,13 +95,8 @@ model WorkspaceInvitation {
   createdAt   DateTime      @default(now())
   email       String
   workspaceId String
-  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   type        WorkspaceRole
-}
-
-enum GraphNavigation {
-  MOUSE
-  TRACKPAD
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model CustomDomain {
@@ -122,19 +110,11 @@ model Credentials {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
   workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  data        String // Encrypted data
+  data        String
   name        String
   type        String
   iv          String
-}
-
-enum Plan {
-  FREE
-  PRO
-  TEAM
-  LIFETIME
-  OFFERED
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -151,11 +131,11 @@ model DashboardFolder {
   updatedAt      DateTime          @default(now()) @updatedAt
   name           String
   parentFolderId String?
+  workspaceId    String
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
+  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   childrenFolder DashboardFolder[] @relation("ParentChild")
   typebots       Typebot[]
-  workspaceId    String
-  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model Typebot {
@@ -165,10 +145,7 @@ model Typebot {
   icon                    String?
   name                    String
   publishedTypebotId      String?
-  publishedTypebot        PublicTypebot?
-  results                 Result[]
   folderId                String?
-  folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
   groups                  Json
   variables               Json[]
   edges                   Json
@@ -176,38 +153,35 @@ model Typebot {
   settings                Json
   publicId                String?                   @unique
   customDomain            String?                   @unique
+  workspaceId             String
+  resultsTablePreferences Json?
+  folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
+  workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   collaborators           CollaboratorsOnTypebots[]
   invitations             Invitation[]
+  publishedTypebot        PublicTypebot?
+  results                 Result[]
   webhooks                Webhook[]
-  workspaceId             String
-  workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  resultsTablePreferences Json?
 }
 
 model Invitation {
   createdAt DateTime          @default(now())
   email     String
   typebotId String
-  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   type      CollaborationType
+  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 
   @@unique([email, typebotId])
 }
 
 model CollaboratorsOnTypebots {
   userId    String
-  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   typebotId String
-  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   type      CollaborationType
+  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, typebotId])
-}
-
-enum CollaborationType {
-  READ
-  WRITE
-  FULL_ACCESS
 }
 
 model PublicTypebot {
@@ -215,12 +189,12 @@ model PublicTypebot {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   typebotId String   @unique
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   groups    Json
   variables Json[]
   edges     Json
   theme     Json
   settings  Json
+  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }
 
 model Result {
@@ -228,12 +202,12 @@ model Result {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   typebotId   String
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers     Answer[]
   variables   Json[]
   isCompleted Boolean
   hasStarted  Boolean?
   isArchived  Boolean?
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers     Answer[]
   logs        Log[]
 }
 
@@ -241,10 +215,10 @@ model Log {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
   resultId    String
-  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
   status      String
   description String
   details     String?
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@index([resultId])
 }
@@ -252,12 +226,12 @@ model Log {
 model Answer {
   createdAt   DateTime @default(now())
   resultId    String
-  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
   blockId     String
   groupId     String
   variableId  String?
   content     String
   storageUsed Int?
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@unique([resultId, blockId, groupId])
   @@index([resultId])
@@ -278,4 +252,29 @@ model Webhook {
   body        String?
   typebotId   String
   typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+}
+
+enum WorkspaceRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+enum GraphNavigation {
+  MOUSE
+  TRACKPAD
+}
+
+enum Plan {
+  FREE
+  PRO
+  TEAM
+  LIFETIME
+  OFFERED
+}
+
+enum CollaborationType {
+  READ
+  WRITE
+  FULL_ACCESS
 }

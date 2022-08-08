@@ -37,8 +37,8 @@ const cors = initMiddleware(Cors())
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
-    const typebotId = req.query.typebotId.toString()
-    const blockId = req.query.blockId.toString()
+    const typebotId = req.query.typebotId as string
+    const blockId = req.query.blockId as string
     const resultId = req.query.resultId as string | undefined
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
@@ -250,6 +250,7 @@ const convertKeyValueTableToObject = (
   }, {})
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: string): any => {
   try {
     return JSON.parse(json)

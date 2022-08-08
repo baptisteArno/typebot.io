@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isPreview && stripeKeys?.test?.secretKey
         ? stripeKeys.test.secretKey
         : stripeKeys.live.secretKey,
-      { apiVersion: '2020-08-27' }
+      { apiVersion: '2022-08-01' }
     )
     const amount =
       Number(parseVariables(variables)(inputOptions.amount)) *
@@ -84,6 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }`,
       })
     } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const error = err as any
       return 'raw' in error
         ? res.status(error.raw.statusCode).send({

@@ -38,7 +38,7 @@ export const SearchableDropdown = ({
   const debounced = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onValueChange ? onValueChange : () => {},
-    env('E2E_TEST') === 'enabled' ? 0 : debounceTimeout
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState([
     ...items

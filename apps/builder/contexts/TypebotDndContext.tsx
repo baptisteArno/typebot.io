@@ -14,14 +14,9 @@ const typebotDndContext = createContext<{
   setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>
   mouseOverFolderId?: string | null
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
-}>({
-  setDraggedTypebot: () => {
-    console.log('Not implemented')
-  },
-  setMouseOverFolderId: () => {
-    console.log('Not implemented')
-  },
-})
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+}>({})
 
 export const TypebotDndContext = ({ children }: { children: ReactNode }) => {
   const [draggedTypebot, setDraggedTypebot] = useState<TypebotInDashboard>()
