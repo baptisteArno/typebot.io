@@ -7,11 +7,19 @@ ENV SCOPE=${SCOPE}
 FROM base AS pruner
 RUN yarn global add turbo@1.2.9
 COPY . .
+
 RUN turbo prune --scope=${SCOPE} --docker
 
+
+
 FROM base AS installer
+
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
+
+ARG GIT_TOKEN=
+RUN echo //npm.pkg.github.com/:_authToken=$GIT_TOKEN >> /app/.npmrc
+
 RUN yarn install --frozen-lockfile
 
 FROM base AS builder

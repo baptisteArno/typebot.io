@@ -1,0 +1,137 @@
+steps:
+  - name: 'bash:latest'
+    args:
+      - '-c'
+      - |
+        set -xe
+        echo "${TAG_NAME}" | grep -qE "^(\d+)\.(\d+)\.(\d+)$" \
+          && echo "build_type=${_ENV_RELEASE_FLAG}" > "${_ENV_BUILD_VARS_PATH}" \
+          && exit 0
+
+        echo "${TAG_NAME}" | grep -qE "^(\d+)\.(\d+)\.(\d+)-rc\.(\d+)$" \
+          && echo "build_type=${_ENV_CANDIDATE_FLAG}" > "${_ENV_BUILD_VARS_PATH}" \
+          && exit 0
+
+        echo "${TAG_NAME}" | grep -qE "^(\d+)\.(\d+)\.(\d+)-dev\.(\d+)$" \
+          && echo "build_type=${_ENV_DEVELOPMENT_FLAG}" > "${_ENV_BUILD_VARS_PATH}" \
+          && exit 0
+
+        echo "Invalid TAG_NAME ${TAG_NAME}" \
+          && exit 1
+    entrypoint: bash
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+  - name: gcr.io/cloud-builders/git
+    args:
+      - '-c'
+      - |
+        set -e
+        echo "$${SSH_KEY}" > /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        ssh-keyscan -t rsa github.com > known_hosts.github
+        cp known_hosts.github /root/.ssh/known_hosts
+    entrypoint: bash
+    secretEnv:
+      - SSH_KEY
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - '-c'
+      - |
+        /usr/bin/docker build \
+          --build-arg SSH_KEY=$(cat /root/ssh/id_rsa) \
+          --build-arg GIT_TOKEN=$${GIT_TOKEN} \
+          -t gcr.io/${_ENV_REGISTRY_PATH}/${REPO_NAME}:${TAG_NAME} \
+          -f build/Dockerfile \
+          .
+    entrypoint: bash
+    secretEnv:
+      - GIT_TOKEN
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'gcr.io/${_ENV_REGISTRY_PATH}/${REPO_NAME}:${TAG_NAME}'
+  - name: gcr.io/cloud-builders/git
+    args:
+      - clone
+      - '--recurse-submodules'
+      - 'git@github.com:${_ENV_GIT_USERNAME}/${_ENV_GIT_IAC_REPOSITORY}'
+      - '/workspace/${_ENV_GIT_IAC_REPOSITORY}'
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+  - name: 'mikefarah/yq:3'
+    args:
+      - '-c'
+      - >
+        set -xe
+
+        cd /workspace/${_ENV_GIT_IAC_REPOSITORY}/${_ENV_BASE_APP_PATH}
+
+        source "${_ENV_BUILD_VARS_PATH}" && echo "loaded build vars from
+        ${_ENV_BUILD_VARS_PATH}"
+
+        if [[ "${build_type}" == "${_ENV_RELEASE_FLAG}" ]]; then
+          find . -name "${REPO_NAME}*.yaml" | while read line; do
+            yq w -i $line "${_ENV_YQ_IMAGE_TAG_FORMAT}" "${TAG_NAME}"
+          done
+        fi
+
+        yq w -i "${_ENV_VERSIONS_PATH}" "${REPO_NAME}.${build_type}"
+        "${TAG_NAME}"
+    entrypoint: sh
+  - name: gcr.io/cloud-builders/git
+    args:
+      - '-c'
+      - >
+        set -xe
+
+        cd /workspace/${_ENV_GIT_IAC_REPOSITORY}/${_ENV_BASE_APP_PATH}
+
+        git checkout ${_ENV_MAIN_BRANCH}
+
+        git branch --set-upstream-to=origin/${_ENV_MAIN_BRANCH} ${_ENV_MAIN_BRANCH}
+
+        git config user.email "${_ENV_GIT_USER_EMAIL}"
+
+        git config user.name "${_ENV_GIT_USER_NAME}"
+
+        git add .
+
+        {
+          git commit -m ":rocket: Release ${REPO_NAME} new tag ${TAG_NAME}" \
+            && git pull --rebase \
+            && git push
+        } || echo "nothing to commit"
+    entrypoint: bash
+    volumes:
+      - name: ssh
+        path: /root/.ssh
+images:
+  - 'gcr.io/${_ENV_REGISTRY_PATH}/${REPO_NAME}:${TAG_NAME}'
+substitutions:
+  _ENV_GIT_USER_NAME: cloud-build
+  _ENV_GIT_USER_EMAIL: tech@octadesk.com
+  _ENV_GIT_USERNAME: Octadesk-Tech
+  _ENV_RELEASE_FLAG: stable
+  _ENV_YQ_IMAGE_TAG_FORMAT: image.tag
+  _ENV_CANDIDATE_FLAG: candidate
+  _ENV_DEVELOPMENT_FLAG: dev
+  _ENV_MAIN_BRANCH: master
+  _ENV_BUILD_VARS_PATH: /workspace/build_vars
+  _ENV_BASE_APP_PATH: apps/base-app/
+  _ENV_GIT_IAC_REPOSITORY: octa-iac
+  _ENV_VERSIONS_PATH: VERSIONS.yaml
+  _ENV_REGISTRY_PATH: octadesk-ci
+availableSecrets:
+  secretManager:
+    - versionName: projects/929160688181/secrets/GITHUB_TOKEN/versions/latest
+      env: SSH_KEY
+    - versionName: projects/929160688181/secrets/DOCKER_GITHUB_TOKEN/versions/latest
+      env: GIT_TOKEN
