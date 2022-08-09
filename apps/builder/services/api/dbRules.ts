@@ -1,4 +1,4 @@
-import { CollaborationType, Prisma, User, WorkspaceRole } from 'db'
+import { CollaborationType, Prisma, User, WorkspaceRole } from 'model'
 import { isNotEmpty } from 'utils'
 
 const parseWhereFilter = (

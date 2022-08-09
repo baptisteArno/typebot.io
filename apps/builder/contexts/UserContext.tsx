@@ -12,7 +12,7 @@ import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user/user'
 import { useToast } from '@chakra-ui/react'
 import { dequal } from 'dequal'
-import { User } from 'db'
+import { User } from 'model'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 

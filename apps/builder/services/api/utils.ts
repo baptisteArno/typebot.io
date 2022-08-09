@@ -1,5 +1,5 @@
-import cuid from 'cuid'
-import { User } from 'db'
+//import cuid from 'cuid'
+import { User } from 'model'
 import { NextApiRequest } from 'next'
 
 export const getAuthenticatedUser = (

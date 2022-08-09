@@ -43,7 +43,6 @@
     "browser-image-compression": "^2.0.0",
     "canvas-confetti": "^1.5.1",
     "cuid": "^2.1.8",
-    "db": "*",
     "deep-object-diff": "^1.1.7",
     "dequal": "^2.0.2",
     "emoji-mart": "^3.0.1",

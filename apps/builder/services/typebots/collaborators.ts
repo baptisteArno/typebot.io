@@ -1,4 +1,4 @@
-import { CollaboratorsOnTypebots } from 'db'
+import { CollaboratorsOnTypebots } from 'model'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
 import { sendRequest } from 'utils'

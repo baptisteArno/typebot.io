@@ -1,4 +1,3 @@
-import { DashboardFolder } from 'db'
 import {
   Button,
   Editable,
@@ -20,6 +19,7 @@ import {
 import { FolderIcon, MoreVerticalIcon } from 'assets/icons'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import { DashboardFolder } from 'model'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { deleteFolder, updateFolder } from 'services/folders'

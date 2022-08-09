@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from 'model'
 import { FormEvent, useState } from 'react'
 import { Member, sendInvitation } from 'services/workspace'
 

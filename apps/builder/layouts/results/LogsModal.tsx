@@ -17,7 +17,7 @@ import {
   Text,
   Tag,
 } from '@chakra-ui/react'
-import { Log } from 'db'
+import { Log } from 'model'
 import { useLogs } from 'services/typebots/logs'
 import { isDefined } from 'utils'
 

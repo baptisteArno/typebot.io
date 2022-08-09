@@ -1,5 +1,5 @@
 import { WorkspaceWithMembers } from 'contexts/WorkspaceContext'
-import { Plan, Workspace } from 'db'
+import { Plan, Workspace } from 'model'
 import useSWR from 'swr'
 import { isNotDefined, sendRequest } from 'utils'
 import { fetcher } from '../utils'

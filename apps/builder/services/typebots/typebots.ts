@@ -67,7 +67,7 @@ import { isChoiceInput, isConditionStep, sendRequest, isOctaBubbleStep } from 'u
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
 
 export type TypebotInDashboard = Pick<
@@ -222,11 +222,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-        userPlan === Plan.FREE
+          userPlan === Plan.FREE
           ? {
-              ...typebot.settings,
-              general: { ...typebot.settings.general, isBrandingEnabled: true },
-            }
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -282,8 +282,8 @@ export const parseNewStep = (
     options: isOctaStepType(type)
       ? parseOctaStepOptions(type)
       : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined,
+        ? parseDefaultStepOptions(type)
+        : undefined,
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
@@ -323,14 +323,16 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleS
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions => {
+const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
+    default:
+      return null
   }
 }
 
-const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
+const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null => {
   switch (type) {
     case InputStepType.TEXT:
       return defaultTextInputOptions
@@ -369,6 +371,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultWebhookOptions
     // case IntegrationStepType.EMAIL:
     //   return defaultSendEmailOptions
+    default:
+      return null
   }
 }
 
@@ -432,6 +436,11 @@ export const parseNewTypebot = ({
   | 'publicId'
   | 'customDomain'
   | 'icon'
+  | 'createdBy'
+  | 'deletedAt'
+  | 'deletedBy'
+  | 'createdAt'
+  | 'updatedBy'
 > => {
   const startBlockId = cuid()
   const startStepId = cuid()

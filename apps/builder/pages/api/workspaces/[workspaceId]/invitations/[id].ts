@@ -1,6 +1,6 @@
 import { withSentry } from '@sentry/nextjs'
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
-import prisma from 'libs/prisma'
+import { WorkspaceInvitation, WorkspaceRole } from 'model'
+//import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils'
@@ -9,28 +9,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
   if (req.method === 'PATCH') {
-    const data = req.body as Omit<WorkspaceInvitation, 'createdAt'>
-    const invitation = await prisma.workspaceInvitation.updateMany({
-      where: {
-        id: data.id,
-        workspace: {
-          members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
-        },
-      },
-      data,
-    })
-    return res.send({ invitation })
+    //const data = req.body as Omit<WorkspaceInvitation, 'createdAt'>
+    // const invitation = await prisma.workspaceInvitation.updateMany({
+    //   where: {
+    //     id: data.id,
+    //     workspace: {
+    //       members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+    //     },
+    //   },
+    //   data,
+    // })
+    // return res.send({ invitation })
+    res.send({})
   }
   if (req.method === 'DELETE') {
-    const id = req.query.id as string
-    await prisma.workspaceInvitation.deleteMany({
-      where: {
-        id,
-        workspace: {
-          members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
-        },
-      },
-    })
+    //const id = req.query.id as string
+    // await prisma.workspaceInvitation.deleteMany({
+    //   where: {
+    //     id,
+    //     workspace: {
+    //       members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+    //     },
+    //   },
+    // })
     return res.send({ message: 'success' })
   }
   methodNotAllowed(res)

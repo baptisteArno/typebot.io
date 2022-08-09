@@ -1,4 +1,4 @@
-import { MemberInWorkspace, WorkspaceInvitation } from 'db'
+import { MemberInWorkspace, WorkspaceInvitation } from 'model'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
 import { isEmpty, sendRequest } from 'utils'

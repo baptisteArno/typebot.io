@@ -1,4 +1,4 @@
-import { DashboardFolder } from 'db'
+import { DashboardFolder } from 'model'
 import useSWR from 'swr'
 import { fetcher } from './utils'
 import { stringify } from 'qs'

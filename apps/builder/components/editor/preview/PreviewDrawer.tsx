@@ -15,7 +15,7 @@ import { headerHeight } from 'components/shared/TypebotHeader'
 import { useEditor } from 'contexts/EditorContext'
 import { useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
-import { Log } from 'db'
+import { Log } from 'model'
 import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 

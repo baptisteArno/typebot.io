@@ -1,4 +1,4 @@
-import { CollaborationType, Invitation } from 'db'
+import { CollaborationType, Invitation } from 'model'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
 import { isNotEmpty, sendRequest } from 'utils'

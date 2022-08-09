@@ -21,7 +21,7 @@ import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type ChatbotCardProps = {

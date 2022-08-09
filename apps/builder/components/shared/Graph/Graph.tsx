@@ -17,7 +17,7 @@ import GraphContent from './GraphContent'
 import cuid from 'cuid'
 import { headerHeight } from '../TypebotHeader'
 import { useUser } from 'contexts/UserContext'
-import { GraphNavigation } from 'db'
+import { GraphNavigation } from 'model'
 import { ZoomButtons } from './ZoomButtons'
 
 const maxScale = 1.5

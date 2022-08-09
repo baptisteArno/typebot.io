@@ -1,4 +1,4 @@
-import { WorkspaceInvitation } from 'db'
+import { WorkspaceInvitation } from 'model'
 import { sendRequest } from 'utils'
 import { Member } from './member'
 

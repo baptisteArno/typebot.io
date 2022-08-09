@@ -14,7 +14,7 @@ import { UnlockPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
 import { isDefined, parseResultHeader } from 'utils'
-import { Plan } from 'db'
+import { Plan } from 'model'
 
 type Props = {
   typebotId: string

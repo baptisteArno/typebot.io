@@ -18,7 +18,7 @@ import { ChevronLeftIcon } from 'assets/icons'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { CollaborationType, WorkspaceRole } from 'db'
+import { CollaborationType, WorkspaceRole } from 'model'
 import React, { FormEvent, useState } from 'react'
 import {
   deleteCollaborator,

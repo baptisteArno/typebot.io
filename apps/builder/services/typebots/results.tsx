@@ -1,7 +1,7 @@
 import { ResultWithAnswers, VariableWithValue, ResultHeaderCell } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
-import { Answer } from 'db'
+import { Answer } from 'model'
 import { isDefined, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text } from '@chakra-ui/react'

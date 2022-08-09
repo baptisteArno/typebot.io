@@ -1,4 +1,3 @@
-import { DashboardFolder } from 'db'
 import {
   Flex,
   Heading,
@@ -27,6 +26,7 @@ import { TypebotButton } from './FolderContent/TypebotButton'
 import { TypebotCardOverlay } from './FolderContent/TypebotButtonOverlay'
 import { OnboardingModal } from './OnboardingModal'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { DashboardFolder } from 'model'
 
 type Props = { folder: DashboardFolder | null }
 

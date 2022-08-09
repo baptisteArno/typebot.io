@@ -1,4 +1,4 @@
-import { Credentials as CredentialsFromDb } from 'db'
+import { Credentials as CredentialsFromDb } from 'model'
 import { OAuth2Client, Credentials } from 'google-auth-library'
 import { GoogleSheetsCredentialsData } from 'models'
 import { decrypt, encrypt } from 'utils'

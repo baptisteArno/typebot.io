@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { CollaborationType } from 'db'
+import { CollaborationType } from 'model'
 //import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
 
-  const typebotId = req.query.typebotId.toString()
+  const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
     const client = await services.chatBots.getClient()
     

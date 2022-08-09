@@ -1,4 +1,4 @@
-import { Log } from 'db'
+import { Log } from 'model'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
 

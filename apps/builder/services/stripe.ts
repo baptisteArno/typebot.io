@@ -1,4 +1,4 @@
-import { User } from 'db'
+import { User } from 'model'
 import { loadStripe } from '@stripe/stripe-js/pure'
 import { isEmpty, sendRequest } from 'utils'
 

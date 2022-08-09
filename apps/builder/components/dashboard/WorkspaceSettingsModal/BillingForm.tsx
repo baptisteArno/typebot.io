@@ -2,7 +2,7 @@ import { Stack, HStack, Button, Text, Tag } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import React from 'react'
 
 export const BillingForm = () => {
