@@ -120,9 +120,14 @@ export const ResultsTable = ({
           </HStack>
         ),
         cell: (info) => {
-          const value = info.getValue() as CellValueType | undefined
-          if (!value) return
-          return value.element || value.plainText || ''
+          try {
+            const value = info?.getValue() as CellValueType | undefined
+            if (!value) return
+            return value.element || value.plainText || ''
+          } catch (err) {
+            console.error(err)
+            return
+          }
         },
       })),
       {
