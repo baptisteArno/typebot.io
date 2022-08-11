@@ -24,11 +24,13 @@ It means you can apply operations on existing variables:
 
 ## Current Date
 
-But also set the variable to the current date for example:
+You can create a `Submitted at` (or any other name) variable using this code:
 
 ```js
 new Date().toISOString()
 ```
+
+It will set the variable to the current date and time.
 
 ## Random ID
 
