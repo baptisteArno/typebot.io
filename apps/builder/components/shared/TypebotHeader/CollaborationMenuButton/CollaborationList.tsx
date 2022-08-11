@@ -178,7 +178,7 @@ export const CollaborationList = () => {
               Everyone at {workspace.name}
             </Text>
           </HStack>
-          <Tag>
+          <Tag flexShrink={0}>
             {convertCollaborationTypeEnumToReadable(
               CollaborationType.FULL_ACCESS
             )}

@@ -20,7 +20,7 @@ export const sendEmailNotification = ({
   })
 
   return transporter.sendMail({
-    from: env('SMTP_FORM'),
+    from: env('SMTP_FROM'),
     to,
     subject,
     html: content,
