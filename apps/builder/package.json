@@ -85,7 +85,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.18.10",
-    "@playwright/test": "1.24.2",
+    "@playwright/test": "1.25.0",
     "@types/canvas-confetti": "^1.4.3",
     "@types/google-spreadsheet": "^3.3.0",
     "@types/jsonwebtoken": "8.5.8",

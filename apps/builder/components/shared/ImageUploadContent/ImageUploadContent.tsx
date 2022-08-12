@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
-import { SearchContextManager } from '@giphy/react-components'
+import { Button, Flex, HStack, Stack } from '@chakra-ui/react'
 import { UploadButton } from '../buttons/UploadButton'
-import { GiphySearch } from './GiphySearch'
+import { GiphySearchForm } from './GiphySearchForm'
 import { useTypebot } from 'contexts/TypebotContext'
 import { Input } from '../Textbox/Input'
-import { env, isEmpty } from 'utils'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 
 type Props = {
@@ -123,12 +121,6 @@ const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => (
   </Stack>
 )
 
-const GiphyContent = ({ onNewUrl }: ContentProps) => {
-  if (isEmpty(env('GIPHY_API_KEY')))
-    return <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
-  return (
-    <SearchContextManager apiKey={env('GIPHY_API_KEY') as string}>
-      <GiphySearch onSubmit={onNewUrl} />
-    </SearchContextManager>
-  )
-}
+const GiphyContent = ({ onNewUrl }: ContentProps) => (
+  <GiphySearchForm onSubmit={onNewUrl} />
+)

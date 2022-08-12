@@ -83,7 +83,23 @@ test.describe.parallel('Image bubble block', () => {
 
       await page.click('text=Click to edit...')
       await page.click('text=Giphy')
-      await page.click('img >> nth=3', {
+      const firstGiphyImage = page.locator('.giphy-gif-img >> nth=0')
+      await expect(firstGiphyImage).toHaveAttribute(
+        'src',
+        new RegExp('giphy.com/media', 'gm')
+      )
+      const trendingfirstImageSrc = await firstGiphyImage.getAttribute('src')
+      expect(trendingfirstImageSrc).toMatch(new RegExp('giphy.com/media', 'gm'))
+      await page.fill('[placeholder="Search..."]', 'fun')
+      await page.waitForTimeout(500)
+      await expect(firstGiphyImage).toHaveAttribute(
+        'src',
+        new RegExp('giphy.com/media', 'gm')
+      )
+      const funFirstImageSrc = await firstGiphyImage.getAttribute('src')
+      expect(funFirstImageSrc).toMatch(new RegExp('giphy.com/media', 'gm'))
+      expect(trendingfirstImageSrc).not.toBe(funFirstImageSrc)
+      await firstGiphyImage.click({
         force: true,
         position: { x: 0, y: 0 },
       })
