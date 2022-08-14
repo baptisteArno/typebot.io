@@ -6,17 +6,11 @@ import {
   UrlInputBlock,
   PhoneNumberInputBlock,
 } from 'models'
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  RefObject,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { ChangeEvent, ChangeEventHandler } from 'react'
 import PhoneInput, { Value, Country } from 'react-phone-number-input'
-import { isMobile } from 'services/utils'
 
 type TextInputProps = {
+  inputRef: React.RefObject<any>
   block:
     | TextInputBlock
     | EmailInputBlock
@@ -27,13 +21,12 @@ type TextInputProps = {
   onChange: (value: string) => void
 }
 
-export const TextInput = ({ block, value, onChange }: TextInputProps) => {
-  const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
-
-  useEffect(() => {
-    setTimeout(() => inputRef.current?.focus(), isMobile ? 500 : 0)
-  }, [])
-
+export const TextInput = ({
+  inputRef,
+  block,
+  value,
+  onChange,
+}: TextInputProps) => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => onChange(e.target.value)
@@ -46,7 +39,7 @@ export const TextInput = ({ block, value, onChange }: TextInputProps) => {
     case InputBlockType.TEXT: {
       return block.options?.isLong ? (
         <LongTextInput
-          ref={inputRef as unknown as RefObject<HTMLTextAreaElement>}
+          ref={inputRef}
           value={value}
           placeholder={
             block.options?.labels?.placeholder ?? 'Type your answer...'
@@ -61,7 +54,6 @@ export const TextInput = ({ block, value, onChange }: TextInputProps) => {
             block.options?.labels?.placeholder ?? 'Type your answer...'
           }
           onChange={handleInputChange}
-          autoComplete="new-typebot-answer-value"
         />
       )
     }
@@ -111,14 +103,14 @@ export const TextInput = ({ block, value, onChange }: TextInputProps) => {
     case InputBlockType.PHONE: {
       return (
         <PhoneInput
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ref={inputRef as any}
+          ref={inputRef}
           value={value}
           onChange={handlePhoneNumberChange}
           placeholder={
             block.options.labels.placeholder ?? 'Your phone number...'
           }
           defaultCountry={block.options.defaultCountryCode as Country}
+          autoFocus
         />
       )
     }
@@ -136,6 +128,8 @@ const ShortTextInput = React.forwardRef(
       type="text"
       required
       style={{ fontSize: '16px' }}
+      autoComplete="do-not-autofill"
+      autoFocus
       {...props}
     />
   )
@@ -157,6 +151,7 @@ const LongTextInput = React.forwardRef(
       data-testid="textarea"
       required
       style={{ fontSize: '16px' }}
+      autoFocus
       {...props}
     />
   )
