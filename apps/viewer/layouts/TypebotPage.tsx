@@ -74,8 +74,8 @@ export const TypebotPage = ({
   const handleNewVariables = async (variables: VariableWithValue[]) => {
     if (!resultId) return setError(new Error('Result was not created'))
     if (variables.length === 0) return
-    const { error } = await updateResult(resultId, { variables })
-    if (error) setError(error)
+    // const { error } = await updateResult(resultId, { variables })
+    // if (error) setError(error)
   }
 
   const handleNewAnswer = async (answer: Answer) => {

@@ -5,7 +5,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import sanitizeHtml from 'sanitize-html'
 import { isDefined, isNotDefined, omit } from 'utils'
 import { TypebotPage, TypebotPageProps } from '../layouts/TypebotPage'
-import prisma from '../libs/prisma'
+//import prisma from '../libs/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -28,27 +28,27 @@ export const getServerSideProps: GetServerSideProps = async (
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname
     }`
-    typebot = isMatchingViewerUrl
-      ? await getTypebotFromPublicId(context.query.publicId?.toString())
-      : await getTypebotFromCustomDomain(customDomain)
-    if (!typebot)
+    // typebot = isMatchingViewerUrl
+    //   ? await getTypebotFromPublicId(context.query.publicId?.toString())
+    //   : await getTypebotFromCustomDomain(customDomain)
+    // if (!typebot)
       console.log(
         isMatchingViewerUrl
           ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
           : `Couldn't find customDomain: ${customDomain}`
       )
-    const headCode = typebot?.settings.metadata.customHeadCode
-    return {
-      props: {
-        typebot,
-        isIE,
-        url: `https://${forwardedHost ?? host}${pathname}`,
-        customHeadCode:
-          isDefined(headCode) && headCode !== ''
-            ? sanitizeHtml(headCode, { allowedTags: ['script', 'meta'] })
-            : null,
-      },
-    }
+    // const headCode = typebot?.settings.metadata.customHeadCode
+    // return {
+    //   props: {
+    //     typebot,
+    //     isIE,
+    //     url: `https://${forwardedHost ?? host}${pathname}`,
+    //     customHeadCode:
+    //       isDefined(headCode) && headCode !== ''
+    //         ? sanitizeHtml(headCode, { allowedTags: ['script', 'meta'] })
+    //         : null,
+    //   },
+    // }
   } catch (err) {
     console.error(err)
   }
@@ -62,19 +62,21 @@ export const getServerSideProps: GetServerSideProps = async (
 
 const getTypebotFromPublicId = async (publicId?: string) => {
   if (!publicId) return null
-  const typebot = await prisma.publicTypebot.findUnique({
-    where: { publicId },
-  })
-  if (isNotDefined(typebot)) return null
-  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  // const typebot = await prisma.publicTypebot.findUnique({
+  //   where: { publicId },
+  // })
+  // if (isNotDefined(typebot)) return null
+  // return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  return null
 }
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
-  const typebot = await prisma.publicTypebot.findFirst({
-    where: { customDomain },
-  })
-  if (isNotDefined(typebot)) return null
-  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  // const typebot = await prisma.publicTypebot.findFirst({
+  //   where: { customDomain },
+  // })
+  // if (isNotDefined(typebot)) return null
+  // return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  return null
 }
 
 const getHost = (
