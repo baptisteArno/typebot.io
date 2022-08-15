@@ -156,15 +156,15 @@ steps:
 
         # for production release, update image.tag in root values.yaml
         if [[ "${VERSION}" == "${{RELEASE_FLAG}}" ]]; then
-          yq w -i "${CHART_ROOT_PATH}/values/${APPLICATION_NAME}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
+          yq w -i "${CHART_ROOT_PATH}/values/${APPLICATION_NAME}-${{SCOPE}}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
         else
           cd "${CF_VOLUME_PATH}/${{GIT_IAC_REPOSITORY}}/environments/${ENVIRONMENT}/values"
 
           # otherwise, update image.tag in environment's specific values file
-          yq w -i "${APPLICATION_NAME}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
+          yq w -i "${APPLICATION_NAME}-${{SCOPE}}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
         fi
 
-        yq w -i "${CHART_ROOT_PATH}/${{VERSIONS_PATH}}" "${APPLICATION_NAME}.${VERSION}" "${TAG}"
+        yq w -i "${CHART_ROOT_PATH}/${{VERSIONS_PATH}}" "${APPLICATION_NAME}-${{SCOPE}}.${VERSION}" "${TAG}"
     when:
       condition:
         all:
