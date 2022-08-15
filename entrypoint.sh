@@ -33,4 +33,3 @@ function apply_path {
   
 apply_path
 exec "$@"
-
