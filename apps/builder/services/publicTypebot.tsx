@@ -17,6 +17,10 @@ export const parseTypebotToPublicTypebot = (
   customDomain: typebot.customDomain,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  createdBy: 'a',
+  updatedBy: 'a',
+  deletedAt: null,
+  deletedBy: null
 })
 
 export const parsePublicTypebotToTypebot = (
@@ -38,6 +42,11 @@ export const parsePublicTypebotToTypebot = (
   folderId: existingTypebot.folderId,
   icon: existingTypebot.icon,
   workspaceId: existingTypebot.workspaceId,
+  createdBy: 'a',
+  updatedBy: 'a',
+  deletedAt: null,
+  deletedBy: null,
+  subDomain: ''
 })
 
 export const createPublishedTypebot = async (typebot: PublicTypebot) =>

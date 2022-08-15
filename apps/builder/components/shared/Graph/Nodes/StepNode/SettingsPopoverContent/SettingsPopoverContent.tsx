@@ -175,14 +175,14 @@ export const StepSettings = ({
         />
       )
     }
-    case LogicStepType.SET_VARIABLE: {
-      return (
-        <SetVariableSettings
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
+    // case LogicStepType.SET_VARIABLE: {
+    //   return (
+    //     <SetVariableSettings
+    //       options={step.options}
+    //       onOptionsChange={handleOptionsChange}
+    //     />
+    //   )
+    // }
     case LogicStepType.CONDITION: {
       return (
         <ConditionSettingsBody step={step} onItemChange={handleItemChange} />

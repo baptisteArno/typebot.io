@@ -9,7 +9,7 @@ import { services } from '@octadesk-tech/services'
 import { headers } from '@octadesk-tech/services'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
 
   const typebotId = req.query.typebotId as string

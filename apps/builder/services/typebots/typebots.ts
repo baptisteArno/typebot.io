@@ -69,6 +69,7 @@ import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
+import { subDomain } from '@octadesk-tech/services'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -456,9 +457,12 @@ export const parseNewTypebot = ({
     graphCoordinates: { x: 0, y: 0 },
     steps: [startStep],
   }
+
+  const currentSubDomain = subDomain.getSubDomain()
+
   return {
     folderId,
-    subDomain: '',
+    subDomain: currentSubDomain || '',
     name,
     workspaceId,
     blocks: [startBlock],

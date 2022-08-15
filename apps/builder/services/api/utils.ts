@@ -2,9 +2,7 @@
 import { User } from 'model'
 import { NextApiRequest } from 'next'
 
-export const getAuthenticatedUser = (
-  req: NextApiRequest
-): Omit<User, "email" | "emailVerified" | "image" | "apiToken" | "company" | "onboardingCategories" | "graphNavigation"> 
+export const getAuthenticatedUser = (): Omit<User, "emailVerified" | "image" | "apiToken" | "company" | "onboardingCategories" | "graphNavigation"> 
   | undefined => {
   // const session = await getSession({ req })
   // if (!session?.user || !('id' in session.user)) return
@@ -15,6 +13,7 @@ export const getAuthenticatedUser = (
     createdAt: new Date(),
     updatedAt: new Date(),
     lastActivityAt: new Date(),
-    name: 'Typebotter'
+    name: 'Typebotter',
+    email: 'bot-builder@octadesk.com'
   }
 }

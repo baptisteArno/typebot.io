@@ -15,7 +15,7 @@ import {
 } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {

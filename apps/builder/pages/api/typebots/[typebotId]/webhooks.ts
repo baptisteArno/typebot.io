@@ -1,5 +1,4 @@
 import { withSentry } from '@sentry/nextjs'
-import prisma from 'libs/prisma'
 import { defaultWebhookAttributes } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canWriteTypebot } from 'services/api/dbRules'
@@ -7,19 +6,19 @@ import { getAuthenticatedUser } from 'services/api/utils'
 import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
-  if (req.method === 'POST') {
-    const typebotId = req.query.typebotId as string
-    const typebot = await prisma.typebot.findFirst({
-      where: canWriteTypebot(typebotId, user),
-    })
-    if (!typebot) return forbidden(res)
-    const webhook = await prisma.webhook.create({
-      data: { typebotId, ...defaultWebhookAttributes },
-    })
-    return res.send({ webhook })
-  }
+  // if (req.method === 'POST') {
+  //   const typebotId = req.query.typebotId as string
+  //   const typebot = await prisma.typebot.findFirst({
+  //     where: canWriteTypebot(typebotId, user),
+  //   })
+  //   if (!typebot) return forbidden(res)
+  //   const webhook = await prisma.webhook.create({
+  //     data: { typebotId, ...defaultWebhookAttributes },
+  //   })
+  //   return res.send({ webhook })
+  // }
   methodNotAllowed(res)
 }
 

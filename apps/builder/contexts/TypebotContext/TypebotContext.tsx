@@ -43,6 +43,7 @@ import { dequal } from 'dequal'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
+import { subDomain } from '@octadesk-tech/services'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -174,10 +175,12 @@ export const TypebotContext = ({
 
   const saveTypebot = async (options?: { disableMutation: boolean }) => {
     if (!currentTypebotRef.current || !typebot) return
+
+    const currentSubDomain = subDomain.getSubDomain()
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
-      subDomain: 'chatoctaqa'
+      subDomain: currentSubDomain || ''
     }
     if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
       return

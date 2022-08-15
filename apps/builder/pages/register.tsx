@@ -1,5 +1,5 @@
 import { AuthSwitcher } from 'components/auth/AuthSwitcher'
-import { SignInForm } from 'components/auth/SignInForm'
+// import { SignInForm } from 'components/auth/SignInForm'
 import { Heading, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -13,7 +13,7 @@ const RegisterPage = () => {
       <Seo title="Register" />
       <Heading>Create an account</Heading>
       <AuthSwitcher type="register" />
-      <SignInForm defaultEmail={query.g?.toString()} />
+      {/* <SignInForm defaultEmail={query.g?.toString()} /> */}
     </VStack>
   )
 }

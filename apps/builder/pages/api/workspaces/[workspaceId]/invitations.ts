@@ -6,7 +6,7 @@ import { getAuthenticatedUser } from 'services/api/utils'
 import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
   if (req.method === 'POST') {
     // const data = req.body as Omit<WorkspaceInvitation, 'id' | 'createdAt'>
