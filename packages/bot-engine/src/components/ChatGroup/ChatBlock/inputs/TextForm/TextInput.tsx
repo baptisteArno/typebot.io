@@ -54,6 +54,8 @@ export const TextInput = ({
             block.options?.labels?.placeholder ?? 'Type your answer...'
           }
           onChange={handleInputChange}
+          // Hack to disable Chrome autocomplete
+          name="no-name"
         />
       )
     }
@@ -126,9 +128,7 @@ const ShortTextInput = React.forwardRef(
       ref={ref}
       className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       type="text"
-      required
       style={{ fontSize: '16px' }}
-      autoComplete="do-not-autofill"
       autoFocus
       {...props}
     />

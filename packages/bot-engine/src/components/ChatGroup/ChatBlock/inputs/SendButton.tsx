@@ -17,6 +17,7 @@ export const SendButton = ({
 }: SendButtonProps) => {
   return (
     <button
+      type="button"
       disabled={isDisabled || isLoading}
       {...props}
       className={
