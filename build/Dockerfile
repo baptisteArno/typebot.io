@@ -52,5 +52,5 @@ RUN chmod +x ./${SCOPE}-entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
-EXPOSE 3000
-ENV PORT 3000
+EXPOSE 80
+ENV PORT 80
