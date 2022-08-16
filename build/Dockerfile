@@ -54,3 +54,4 @@ ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 80
 ENV PORT 80
+
