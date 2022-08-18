@@ -73,6 +73,7 @@ export const TextForm = ({
         value={inputValue}
       />
       <SendButton
+        type="button"
         label={block.options?.labels?.button ?? 'Send'}
         isDisabled={inputValue === ''}
         className="my-2 ml-2"

@@ -175,7 +175,6 @@ const CheckoutForm = ({
       />
       {isPayButtonVisible && (
         <SendButton
-          type="submit"
           label={`${options.labels.button} ${amountLabel}`}
           isDisabled={isLoading || !stripe || !elements}
           isLoading={isLoading}
