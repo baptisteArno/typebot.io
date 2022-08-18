@@ -151,6 +151,9 @@ export const ResultsTable = ({
     [resultHeader]
   )
 
+  // TO-DO: remove. Meant to help me investigate why table crash in some specific circumstances.
+  console.log(data)
+
   const instance = useReactTable({
     data,
     columns,

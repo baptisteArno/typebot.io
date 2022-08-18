@@ -34,6 +34,7 @@
     "eslint-config-next": "12.2.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "7.30.1",
     "models": "workspace:*",
     "postcss": "8.4.16",
     "prettier": "2.7.1",

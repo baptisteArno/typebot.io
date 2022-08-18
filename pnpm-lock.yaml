@@ -393,6 +393,7 @@ importers:
       eslint-config-next: 12.2.4
       eslint-config-prettier: ^8.5.0
       eslint-plugin-prettier: ^4.2.1
+      eslint-plugin-react: 7.30.1
       models: workspace:*
       postcss: 8.4.16
       prettier: 2.7.1
@@ -442,6 +443,7 @@ importers:
       eslint-config-next: 12.2.4_qugx7qdu5zevzvxaiqyxfiwquq
       eslint-config-prettier: 8.5.0_eslint@8.21.0
       eslint-plugin-prettier: 4.2.1_h62lvancfh4b7r6zn2dgodrh5e
+      eslint-plugin-react: 7.30.1_eslint@8.21.0
       models: link:../models
       postcss: 8.4.16
       prettier: 2.7.1
