@@ -46,7 +46,7 @@ export const parsePublicTypebotToTypebot = (
   updatedBy: 'a',
   deletedAt: null,
   deletedBy: null,
-  subDomain: ''
+  subDomain: existingTypebot.subDomain
 })
 
 export const createPublishedTypebot = async (typebot: PublicTypebot) =>
