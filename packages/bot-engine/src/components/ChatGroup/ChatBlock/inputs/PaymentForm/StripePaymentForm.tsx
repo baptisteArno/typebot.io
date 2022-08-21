@@ -126,10 +126,10 @@ const CheckoutForm = ({
 
     setIsLoading(true)
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
+        // TO-DO: Handle redirection correctly.
         return_url: viewerHost,
         payment_method_data: {
           billing_details: {
@@ -151,10 +151,9 @@ const CheckoutForm = ({
     })
 
     setIsLoading(false)
-    if (!error) return onSuccess()
-    if (error.type === 'validation_error') return
+    if (error?.type === 'validation_error') return
     if (error?.type === 'card_error') return setMessage(error.message)
-    setMessage('An unexpected error occured.')
+    if (!error && paymentIntent.status === 'succeeded') return onSuccess()
   }
 
   const showPayButton = () => {
