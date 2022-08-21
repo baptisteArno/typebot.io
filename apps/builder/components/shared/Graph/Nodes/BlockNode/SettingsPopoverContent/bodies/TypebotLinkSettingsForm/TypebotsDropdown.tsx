@@ -9,7 +9,7 @@ import { useTypebots } from 'services/typebots'
 import { byId } from 'utils'
 
 type Props = {
-  typebotId?: string
+  typebotId?: string | 'current'
   currentWorkspaceId: string
   onSelectTypebotId: (typebotId: string | 'current') => void
 }
@@ -43,7 +43,9 @@ export const TypebotsDropdown = ({
   return (
     <HStack>
       <SearchableDropdown
-        selectedItem={currentTypebot?.name}
+        selectedItem={
+          typebotId === 'current' ? 'Current typebot' : currentTypebot?.name
+        }
         items={['Current typebot', ...(typebots ?? []).map((t) => t.name)]}
         onValueChange={handleTypebotSelect}
         placeholder={'Select a typebot'}
