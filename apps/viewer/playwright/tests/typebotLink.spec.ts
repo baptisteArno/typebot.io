@@ -2,6 +2,9 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should work as expected', async ({ page }) => {
   const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'
@@ -24,6 +27,6 @@ test('should work as expected', async ({ page }) => {
       resp.status() === 200 &&
       resp.request().method() === 'PUT'
   )
-  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text=Hello there!')).toBeVisible()
 })

@@ -7,17 +7,20 @@ import cuid from 'cuid'
 import path from 'path'
 import { typebotViewer } from '../services/selectorUtils'
 import { SmtpCredentialsData } from 'models'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 const mockSmtpCredentials: SmtpCredentialsData = {
   from: {
-    email: 'tobin.tillman65@ethereal.email',
-    name: 'John Smith',
+    email: 'kimberly.boyer36@ethereal.email',
+    name: 'Kimberly Boyer',
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  isTlsEnabled: false,
-  username: 'tobin.tillman65@ethereal.email',
-  password: 'Ty9BcwCBrK6w8AG2hx',
+  isTlsEnabled: true,
+  username: 'kimberly.boyer36@ethereal.email',
+  password: '4jvjGUgxYKRjbk15tW',
 }
 
 test('should send an email', async ({ page }) => {
@@ -36,13 +39,13 @@ test('should send an email', async ({ page }) => {
   const { previewUrl } = await response.json()
   await page.goto(previewUrl)
   await expect(page.locator('text="Hey!"')).toBeVisible()
-  await expect(page.locator('text="John Smith"')).toBeVisible()
+  await expect(page.locator('text="Kimberly Boyer"')).toBeVisible()
   await expect(page.locator('text="<test1@gmail.com>" >> nth=0')).toBeVisible()
   await expect(page.locator('text="<test2@gmail.com>" >> nth=0')).toBeVisible()
   await expect(
     page.locator('text="<baptiste.arnaud95@gmail.com>" >> nth=0')
   ).toBeVisible()
-  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

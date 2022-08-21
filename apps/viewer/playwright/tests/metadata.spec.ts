@@ -11,6 +11,9 @@ import {
 } from 'models'
 import { typebotViewer } from '../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = cuid()

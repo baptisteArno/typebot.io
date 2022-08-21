@@ -16,7 +16,8 @@ test.describe('Send email block', () => {
       !process.env.SMTP_PORT ||
       !process.env.SMTP_SECURE ||
       !process.env.SMTP_HOST ||
-      !process.env.SMTP_PASSWORD
+      !process.env.SMTP_PASSWORD ||
+      !process.env.SMTP_FROM
     )
       throw new Error('SMTP_ env vars are missing')
     await importTypebotInDatabase(
@@ -31,9 +32,7 @@ test.describe('Send email block', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
-    await page.click(
-      `text=${process.env.NEXT_PUBLIC_SMTP_FROM?.match(/\<(.*)\>/)?.pop()}`
-    )
+    await page.click(`text=${process.env.SMTP_FROM}`)
     await page.click('text=Connect new')
     const createButton = page.locator('button >> text=Create')
     await expect(createButton).toBeDisabled()

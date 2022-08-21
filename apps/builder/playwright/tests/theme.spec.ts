@@ -26,6 +26,9 @@ test.describe.parallel('Theme page', () => {
         }
       )
       await page.goto(`/typebots/${typebotId}/theme`)
+      await expect(
+        typebotViewer(page).locator('button >> text="Go"')
+      ).toBeVisible()
       await page.click('button:has-text("General")')
 
       // Font
@@ -60,6 +63,9 @@ test.describe.parallel('Theme page', () => {
       } catch {}
 
       await page.goto(`/typebots/${typebotId}/theme`)
+      await expect(
+        typebotViewer(page).locator('button >> text="Go"')
+      ).toBeVisible()
       await page.click('button:has-text("Chat")')
 
       // Host avatar
@@ -175,6 +181,9 @@ test.describe.parallel('Theme page', () => {
         }
       )
       await page.goto(`/typebots/${typebotId}/theme`)
+      await expect(
+        typebotViewer(page).locator('button >> text="Go"')
+      ).toBeVisible()
       await page.click('button:has-text("Custom CSS")')
       await page.fill(
         'div[role="textbox"]',

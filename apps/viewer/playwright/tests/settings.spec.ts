@@ -10,6 +10,9 @@ import {
   defaultTextInputOptions,
   InputBlockType,
 } from 'models'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('Result should be in storage by default', async ({ page }) => {
   const typebotId = cuid()

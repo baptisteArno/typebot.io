@@ -6,6 +6,9 @@ import { typebotViewer } from '../services/selectorUtils'
 import { importTypebotInDatabase } from '../services/database'
 import { readFileSync } from 'fs'
 import { isDefined } from 'utils'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should work as expected', async ({ page, browser }) => {
   const typebotId = cuid()
@@ -26,7 +29,7 @@ test('should work as expected', async ({ page, browser }) => {
   await expect(
     typebotViewer(page).locator(`text="3 files uploaded"`)
   ).toBeVisible()
-  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text="api.json"')).toHaveAttribute(
     'href',
     /.+\/api\.json/

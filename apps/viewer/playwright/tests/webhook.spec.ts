@@ -4,6 +4,9 @@ import cuid from 'cuid'
 import path from 'path'
 import { typebotViewer } from '../services/selectorUtils'
 import { HttpMethod } from 'models'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should execute webhooks properly', async ({ page }) => {
   const typebotId = cuid()

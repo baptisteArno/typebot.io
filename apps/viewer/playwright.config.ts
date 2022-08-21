@@ -2,7 +2,9 @@ import { devices, PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config({ path: path.join(__dirname, '.env.local') })
+require('dotenv').config({
+  path: path.join(__dirname, 'playwright/.env'),
+})
 
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve(path.join(__dirname, 'playwright/global-setup')),
@@ -11,14 +13,13 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 5000,
   },
-  retries: process.env.NO_RETRIES ? 0 : 2,
+  retries: process.env.NO_RETRIES ? 0 : 1,
   workers: process.env.CI ? 1 : 3,
   reporter: 'html',
   maxFailures: process.env.CI ? 10 : undefined,
   use: {
     actionTimeout: 0,
-    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL,
-    storageState: path.join(__dirname, 'playwright/proUser.json'),
+    baseURL: process.env.VIEWER_URL,
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     locale: 'en-US',

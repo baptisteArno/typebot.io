@@ -3,6 +3,9 @@ import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 import cuid from 'cuid'
+import { mockSessionApiCalls } from 'playwright/services/browser'
+
+test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should work as expected', async ({ page }) => {
   const typebotId = cuid()
@@ -16,7 +19,7 @@ test('should work as expected', async ({ page }) => {
   await typebotViewer(page).locator('input').fill('26')
   await typebotViewer(page).locator('input').press('Enter')
   await typebotViewer(page).locator('button >> text=Yes').click()
-  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text="Baptiste"')).toBeVisible()
   await expect(page.locator('text="26"')).toBeVisible()
   await expect(page.locator('text="Yes"')).toBeVisible()
