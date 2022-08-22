@@ -27,7 +27,7 @@ const typebotContext = createContext<{
   linkedBotQueue: LinkedTypebotQueue
   isLoading: boolean
   setCurrentTypebotId: (id: string) => void
-  updateVariableValue: (variableId: string, value: string) => void
+  updateVariableValue: (variableId: string, value: string | number) => void
   createEdge: (edge: Edge) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   popEdgeIdFromLinkedTypebotQueue: () => void

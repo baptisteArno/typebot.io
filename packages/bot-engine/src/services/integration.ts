@@ -35,7 +35,7 @@ type IntegrationContext = {
   groups: Group[]
   resultId?: string
   updateVariables: (variables: VariableWithValue[]) => void
-  updateVariableValue: (variableId: string, value: string) => void
+  updateVariableValue: (variableId: string, value: string | number) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }
 
@@ -263,7 +263,12 @@ const executeWebhook = async (
     )
     try {
       const value = func(data)
-      updateVariableValue(existingVariable?.id, value)
+      updateVariableValue(
+        existingVariable?.id,
+        typeof value !== 'number' && typeof value !== 'string'
+          ? JSON.stringify(value)
+          : value
+      )
       return [...newVariables, { ...existingVariable, value }]
     } catch (err) {
       return newVariables

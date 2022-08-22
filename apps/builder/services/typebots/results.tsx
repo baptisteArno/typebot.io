@@ -185,7 +185,7 @@ export const convertResultsToTableData = (
       if (isDefined(o[key])) return o
       return {
         ...o,
-        [key]: { plainText: variable.value },
+        [key]: { plainText: variable.value?.toString() },
       }
     }, {}),
   }))
