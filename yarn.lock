@@ -3406,21 +3406,29 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@octadesk-tech/services@^1.0.0":
-  version "1.0.0"
-  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/services/1.0.0/3d9347048ded95dc87d3b1463fd020cd91addd07#3d9347048ded95dc87d3b1463fd020cd91addd07"
-  integrity sha512-QE9WLy17nbV27g6YRj0LLw/RjiUp/KfPOJzkDDtmb/CvED2qdzTVWa0wsTWUKzQ64plrrybHxZrmNNvgYTdo5g==
+"@octadesk-tech/services@^0.3.3":
+  version "0.3.3"
+  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/services/0.3.3/800f0b8eb42f46ff43a79bc1e50461714907758c#800f0b8eb42f46ff43a79bc1e50461714907758c"
+  integrity sha512-iNxLokvj5YDKuquJuzEHp3ojDV4GlLkEFWNKD16WrEzwxSe/PkjV64wGWB5iNDfJN3/6jW+UniHZCm2me8y8CA==
   dependencies:
-    "@octadesk-tech/storage" "^1.0.6"
+    "@octadesk-tech/storage" "^1.1.2"
     axios "^0.21.1"
     joi "^17.4.0"
 
-"@octadesk-tech/storage@^1.0.6", "@octadesk-tech/storage@^1.0.7":
+"@octadesk-tech/storage@^1.0.7":
   version "1.0.7"
   resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.0.7/980d3af7d06d6684e91c2f7c03702d349f04c9b8#980d3af7d06d6684e91c2f7c03702d349f04c9b8"
   integrity sha512-OnqHpxha5Oy3H/Cs/3aC8vQ5T6Tin/Sz9PvHh3SLGymaSFZOgaB3/99PYh6B/RgWk5139T1Pk6Y5fAoBEA+Xug==
   dependencies:
     crypto-js "^3.1.9-1"
+    local-storage-fallback "^4.1.2"
+
+"@octadesk-tech/storage@^1.1.2":
+  version "1.1.2"
+  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.1.2/26fc0d0f150077f265d55ad4855ef8e87586248d#26fc0d0f150077f265d55ad4855ef8e87586248d"
+  integrity sha512-m9eOJKym3CNUrYjGxrV7TYMPb44/r6URCEPP3KjgYOrKd+pVRTdfl9b5wgv2Nq+ujlY1vSopxRmhu6lVKtzuNg==
+  dependencies:
+    crypto-js "^4.1.1"
     local-storage-fallback "^4.1.2"
 
 "@open-draft/until@^1.0.3":
@@ -6579,6 +6587,11 @@ crypto-js@^3.1.9-1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
   integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+
+crypto-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
