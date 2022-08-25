@@ -8,7 +8,7 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  assetPrefix: "/embed/builder"
+  basePath: "/embed/builder",
 }
 
 const sentryWebpackPluginOptions = {
