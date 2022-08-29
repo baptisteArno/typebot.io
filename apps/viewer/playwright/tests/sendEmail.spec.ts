@@ -18,7 +18,6 @@ const mockSmtpCredentials: SmtpCredentialsData = {
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  isTlsEnabled: true,
   username: 'kimberly.boyer36@ethereal.email',
   password: '4jvjGUgxYKRjbk15tW',
 }

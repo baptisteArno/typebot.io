@@ -6,26 +6,26 @@
   "types": "dist/index.d.ts",
   "license": "AGPL-3.0-or-later",
   "private": true,
+  "scripts": {
+    "build": "pnpm rollup -c",
+    "dx": "pnpm rollup -c --watch"
+  },
+  "dependencies": {
+    "zod": "^3.18.0"
+  },
   "devDependencies": {
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-typescript": "8.3.4",
+    "@rollup/plugin-typescript": "8.4.0",
     "rollup": "2.78.1",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "next": "12.2.5",
     "db": "workspace:*"
   },
-  "dependencies": {
-    "zod": "^3.18.0"
-  },
   "peerDependencies": {
     "next": "^12.0.0",
     "db": "workspace:*"
-  },
-  "scripts": {
-    "build": "pnpm rollup -c",
-    "dx": "pnpm rollup -c --watch"
   }
 }
