@@ -22,7 +22,13 @@
     "db:migrate": "cd packages/db && pnpm migration:deploy"
   },
   "devDependencies": {
+    "cz-emoji": "1.3.2-canary.2",
     "turbo": "1.2.16"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-emoji"
+    }
   },
   "packageManager": "pnpm@7.8.0"
 }
