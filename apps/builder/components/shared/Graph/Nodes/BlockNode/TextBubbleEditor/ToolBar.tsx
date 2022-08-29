@@ -1,4 +1,4 @@
-import { StackProps, HStack, Button, IconButton } from '@chakra-ui/react'
+import { StackProps, HStack, IconButton } from '@chakra-ui/react'
 import {
   MARK_BOLD,
   MARK_ITALIC,

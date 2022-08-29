@@ -46,7 +46,9 @@ export const compressFile = async (file: File) => {
     : file
 }
 
-export const removeUndefinedFields = <T>(obj: T): T =>
+export const removeUndefinedFields = <T extends Record<string, unknown>>(
+  obj: T
+): T =>
   Object.keys(obj).reduce(
     (acc, key) =>
       obj[key as keyof T] === undefined
