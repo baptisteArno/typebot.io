@@ -1,7 +1,6 @@
 import prisma from 'libs/prisma'
 import {
   defaultWebhookAttributes,
-  HttpMethod,
   KeyValue,
   PublicTypebot,
   ResultValues,
@@ -84,7 +83,7 @@ const prepareWebhookAttributes = (
   return webhook
 }
 
-const bodyIsSingleVariable = (body: string) => /{{.+}}/.test(body)
+const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 export const executeWebhook =
   (typebot: Typebot) =>
@@ -124,17 +123,21 @@ export const executeWebhook =
     )
     const contentType = headers ? headers['Content-Type'] : undefined
     const linkedTypebots = await getLinkedTypebots(typebot)
-    const body =
-      webhook.method !== HttpMethod.GET
-        ? await getBodyContent(
-            typebot,
-            linkedTypebots
-          )({
-            body: webhook.body,
-            resultValues,
-            groupId,
-          })
-        : undefined
+    const bodyContent = await getBodyContent(
+      typebot,
+      linkedTypebots
+    )({
+      body: webhook.body,
+      resultValues,
+      groupId,
+    })
+    const { data: body, isJson } = bodyContent
+      ? safeJsonParse(
+          parseVariables(variables, {
+            escapeForJson: !checkIfBodyIsAVariable(bodyContent),
+          })(bodyContent)
+        )
+      : { data: undefined, isJson: false }
     const request = {
       url: parseVariables(variables)(
         webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
@@ -143,38 +146,28 @@ export const executeWebhook =
       headers,
       ...basicAuth,
       json:
-        contentType !== 'x-www-form-urlencoded' && body
-          ? safeJsonParse(
-              parseVariables(variables, {
-                escapeForJson: !bodyIsSingleVariable(body),
-              })(body)
-            )
+        contentType !== 'x-www-form-urlencoded' && body && isJson
+          ? body
           : undefined,
-      form:
-        contentType === 'x-www-form-urlencoded' && body
-          ? safeJsonParse(
-              parseVariables(variables, {
-                escapeForJson: !bodyIsSingleVariable(body),
-              })(body)
-            )
-          : undefined,
+      form: contentType === 'x-www-form-urlencoded' && body ? body : undefined,
+      body: body && !isJson ? body : undefined,
     }
     try {
       const response = await got(request.url, omit(request, 'url'))
       await saveSuccessLog(resultId, 'Webhook successfuly executed.', {
         statusCode: response.statusCode,
         request,
-        response: parseBody(response.body),
+        response: safeJsonParse(response.body).data,
       })
       return {
         statusCode: response.statusCode,
-        data: parseBody(response.body),
+        data: safeJsonParse(response.body).data,
       }
     } catch (error) {
       if (error instanceof HTTPError) {
         const response = {
           statusCode: error.response.statusCode,
-          data: parseBody(error.response.body as string),
+          data: safeJsonParse(error.response.body as string).data,
         }
         await saveErrorLog(resultId, 'Webhook returned an error', {
           request,
@@ -228,14 +221,6 @@ const getBodyContent =
       : body
   }
 
-const parseBody = (body: string) => {
-  try {
-    return JSON.parse(body)
-  } catch (err) {
-    return body
-  }
-}
-
 const convertKeyValueTableToObject = (
   keyValues: KeyValue[] | undefined,
   variables: Variable[]
@@ -251,11 +236,11 @@ const convertKeyValueTableToObject = (
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const safeJsonParse = (json: string): any => {
+const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
   try {
-    return JSON.parse(json)
+    return { data: JSON.parse(json), isJson: true }
   } catch (err) {
-    return json
+    return { data: json, isJson: false }
   }
 }
 
