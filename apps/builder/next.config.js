@@ -8,7 +8,7 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  assetPrefix: '/embed/builder',
+  basePath: '/embed/builder',
   rewrites() {
     return [
       { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' }
