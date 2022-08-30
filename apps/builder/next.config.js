@@ -13,7 +13,7 @@ const moduleExports = {
   rewrites() {
     return [
       { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-      { source: '/embed/builder/', destination: '/' }
+      { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' }
     ]
   }
 }
