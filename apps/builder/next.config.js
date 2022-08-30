@@ -8,12 +8,13 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  basePath: '/embed/builder',
-  //assetPrefix: '/embed/builder',
+  //basePath: '/embed/builder',
+  assetPrefix: '/embed/builder',
   rewrites() {
     return [
-      //{ source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-      { source: '/embed/builder/:path*', destination: '/:path*' }
+      { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
+      { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
+      { source: '/api/:path*', destination: '/embed/builder/api/:path*' },
     ]
   }
 }
