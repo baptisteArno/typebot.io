@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
-import hash from 'object-hash'
+//import hash from 'object-hash'
 import {
   EditorContext,
   RightPanel as RightPanelEnum,

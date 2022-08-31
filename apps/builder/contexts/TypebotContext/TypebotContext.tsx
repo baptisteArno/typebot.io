@@ -55,6 +55,11 @@ type UpdateTypebotPayload = Partial<{
   icon: string
 }>
 
+type SaveResponse = {
+  saved: Boolean,
+  updatedAt: Date
+}
+
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)
 ) => void
@@ -68,7 +73,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: () => Promise<boolean>
+    save: () => Promise<SaveResponse>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -86,12 +91,10 @@ const typebotContext = createContext<
     publishTypebot: () => void
     restorePublishedTypebot: () => void
   } & BlocksActions &
-    StepsActions &
-    ItemsActions &
-    VariablesActions &
-    EdgesActions
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
+  StepsActions &
+  ItemsActions &
+  VariablesActions &
+  EdgesActions
 >({})
 
 export const TypebotContext = ({
@@ -135,7 +138,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-        isDefined(step.options.typebotId)
+          isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []
