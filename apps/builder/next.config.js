@@ -8,7 +8,7 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  basePath: "/embed/builder",
+  basePath: process.env.BASE_PATH || '',
 }
 
 const sentryWebpackPluginOptions = {
