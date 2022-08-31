@@ -256,11 +256,15 @@ importers:
       '@types/aos': ^3.0.4
       '@types/node': 18.7.13
       '@types/react': ^18.0.17
+      '@typescript-eslint/eslint-plugin': 5.35.1
+      '@typescript-eslint/parser': 5.35.1
       aos: ^2.3.4
       autoprefixer: 10.4.8
       bot-engine: '*'
       cross-env: ^7.0.3
       eslint: 8.23.0
+      eslint-config-next: 12.2.5
+      eslint-plugin-react: ^7.31.1
       focus-visible: ^5.2.0
       framer-motion: 7.2.1
       models: '*'
@@ -292,9 +296,13 @@ importers:
       '@types/aos': 3.0.4
       '@types/node': 18.7.13
       '@types/react': 18.0.17
+      '@typescript-eslint/eslint-plugin': 5.35.1_pfwtupu3r4wxmgbx6hj7gwmyuu
+      '@typescript-eslint/parser': 5.35.1_yqf6kl63nyoq5megxukfnom5rm
       autoprefixer: 10.4.8_postcss@8.4.16
       cross-env: 7.0.3
       eslint: 8.23.0
+      eslint-config-next: 12.2.5_yqf6kl63nyoq5megxukfnom5rm
+      eslint-plugin-react: 7.31.1_eslint@8.23.0
       postcss: 8.4.16
       prettier: 2.7.1
       typescript: 4.8.2

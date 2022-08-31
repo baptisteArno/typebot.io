@@ -23,7 +23,7 @@ class MyDocument extends Document {
           <script
             defer
             data-domain="typebot.io"
-            src="https://plausible.baptistearno.com/js/plausible.js"
+            src="https://plausible.server.baptistearno.com/js/plausible.js"
           ></script>
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="/__env.js" />
