@@ -27,7 +27,7 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
   const { setRightPanel } = useEditor()
 
   const handlePreviewClick = async () => {
-    save().then()
+    save()
     setRightPanel(RightPanel.PREVIEW)
   }
 

@@ -182,6 +182,7 @@ export const TypebotContext = ({
       toast({ title: error.name, description: error.message })
       return false
     }
+
     if (!options?.disableMutation)
       mutate({
         typebot: typebotToSave,
