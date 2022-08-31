@@ -68,7 +68,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: () => Promise<void>
+    save: () => Promise<boolean>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -161,12 +161,6 @@ export const TypebotContext = ({
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
-      console.log(
-        'Incoming typebot',
-        typebot,
-        'Current typebot',
-        currentTypebotRef.current
-      )
       setLocalTypebot({ ...typebot })
     }
 
@@ -174,22 +168,19 @@ export const TypebotContext = ({
   }, [typebot])
 
   const saveTypebot = async (options?: { disableMutation: boolean }) => {
-    if (!currentTypebotRef.current || !typebot) return
-
     const currentSubDomain = subDomain.getSubDomain()
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
       subDomain: currentSubDomain || ''
     }
-    if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
-      return
+
     setIsSavingLoading(true)
     const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
     setIsSavingLoading(false)
     if (error) {
       toast({ title: error.name, description: error.message })
-      return
+      return false
     }
     if (!options?.disableMutation)
       mutate({
@@ -198,6 +189,8 @@ export const TypebotContext = ({
         webhooks: webhooks ?? [],
       })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
+
+    return { saved: true, updateAt: typebotToSave.updatedAt }
   }
 
   const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {
