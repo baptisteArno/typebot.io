@@ -12,10 +12,10 @@ const moduleExports = {
   assetPrefix: '/embed/builder',
   rewrites() {
     return {
-      beforeFiles: [
-        { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-        { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
-      ],
+      // beforeFiles: [
+      //   { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
+      //   { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
+      // ],
       fallback: [
         {
           source: '/api/:path*',
