@@ -8,17 +8,17 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  basePath: '/embed/builder',
-  assetPrefix: '/embed/builder/embed/builder',
-  rewrites() {
-    return [
-      { source: '/embed/builder/embed/builder/_next/:path*', destination: '/_next/:path*' },
-      { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-      { source: '/embed/builder/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
-      { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
-      // { source: '/api', destination: '/embed/builder/api' },
-    ]
-  }
+  // basePath: '/embed/builder',
+  // assetPrefix: '/embed/builder/embed/builder',
+  // rewrites() {
+  //   return [
+  //     { source: '/embed/builder/embed/builder/_next/:path*', destination: '/_next/:path*' },
+  //     { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
+  //     { source: '/embed/builder/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
+  //     { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
+  //     // { source: '/api', destination: '/embed/builder/api' },
+  //   ]
+  // }
 }
 
 const sentryWebpackPluginOptions = {
