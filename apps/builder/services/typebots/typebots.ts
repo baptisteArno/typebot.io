@@ -244,26 +244,26 @@ const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
 
 export const getTypebot = (typebotId: string) =>
   sendRequest<{ typebot: Typebot }>({
-    url: `${process.env.BASE_PATH}/api/typebots/${typebotId}`,
+    url: `/embed/builder/api/typebots/${typebotId}`,
     method: 'GET',
   })
 
 export const deleteTypebot = async (id: string) =>
   sendRequest({
-    url: `${process.env.BASE_PATH}/api/typebots/${id}`,
+    url: `/embed/builder/api/typebots/${id}`,
     method: 'DELETE',
   })
 
 export const updateTypebot = async (id: string, typebot: Typebot) =>
   sendRequest({
-    url: `${process.env.BASE_PATH}/api/typebots/${id}`,
+    url: `/embed/builder/api/typebots/${id}`,
     method: 'PUT',
     body: typebot,
   })
 
 export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
   sendRequest({
-    url: `${process.env.BASE_PATH}/api/typebots/${id}`,
+    url: `/embed/builder/api/typebots/${id}`,
     method: 'PATCH',
     body: typebot,
   })

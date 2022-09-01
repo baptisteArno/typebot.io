@@ -10,7 +10,7 @@ export const useWorkspaces = ({ userId }: { userId?: string }) => {
       workspaces: WorkspaceWithMembers[]
     },
     Error
-  >(userId ? `${process.env.BASE_PATH}/api/workspaces` : null, fetcher)
+  >(userId ? `/embed/builder/api/workspaces` : null, fetcher)
   return {
     workspaces: data?.workspaces,
     isLoading: !error && !data,
@@ -24,7 +24,7 @@ export const createNewWorkspace = async (
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH}/api/workspaces`,
+    url: `/embed/builder/api/workspaces`,
     method: 'POST',
     body,
   })
@@ -33,7 +33,7 @@ export const updateWorkspace = async (updates: Partial<Workspace>) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH}/api/workspaces/${updates.id}`,
+    url: `/embed/builder/api/workspaces/${updates.id}`,
     method: 'PATCH',
     body: updates,
   })
@@ -42,7 +42,7 @@ export const deleteWorkspace = (workspaceId: string) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH}/api/workspaces/${workspaceId}`,
+    url: `/embed/builder/api/workspaces/${workspaceId}`,
     method: 'DELETE',
   })
 
