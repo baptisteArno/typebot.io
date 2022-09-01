@@ -21,7 +21,7 @@ export const useCollaborators = ({
   const { data, error, mutate } = useSWR<
     { collaborators: Collaborator[] },
     Error
-  >(typebotId ? `/api/typebots/${typebotId}/collaborators` : null, fetcher)
+  >(typebotId ? `${process.env.BASE_PATH}/api/typebots/${typebotId}/collaborators` : null, fetcher)
   if (error) onError(error)
   return {
     collaborators: data?.collaborators,
@@ -37,12 +37,12 @@ export const updateCollaborator = (
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/api/typebots/${typebotId}/collaborators/${userId}`,
+    url: `${process.env.BASE_PATH}/api/typebots/${typebotId}/collaborators/${userId}`,
     body: collaborator,
   })
 
 export const deleteCollaborator = (typebotId: string, userId: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/api/typebots/${typebotId}/collaborators/${userId}`,
+    url: `${process.env.BASE_PATH}/api/typebots/${typebotId}/collaborators/${userId}`,
   })

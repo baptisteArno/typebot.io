@@ -8,7 +8,7 @@ export const useLogs = (
   onError?: (e: Error) => void
 ) => {
   const { data, error } = useSWR<{ logs: Log[] }>(
-    resultId ? `/api/typebots/${typebotId}/results/${resultId}/logs` : null,
+    resultId ? `${process.env.BASE_PATH}/api/typebots/${typebotId}/results/${resultId}/logs` : null,
     fetcher
   )
   if (error && onError) onError(error)

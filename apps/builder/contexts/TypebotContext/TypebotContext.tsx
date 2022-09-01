@@ -413,7 +413,7 @@ export const useFetchedTypebot = ({
       isReadOnly?: boolean
     },
     Error
-  >(`/api/typebots/${typebotId}`, fetcher, {
+  >(`${process.env.BASE_PATH}/api/typebots/${typebotId}`, fetcher, {
     dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   if (error) onError(error)

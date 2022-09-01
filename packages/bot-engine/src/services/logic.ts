@@ -216,7 +216,7 @@ const fetchAndInjectTypebot = async (
 ): Promise<LinkedTypebot | undefined> => {
   const { data, error } = isPreview
     ? await sendRequest<{ typebot: Typebot }>(
-        `/api/typebots/${step.options.typebotId}`
+        `${process.env.BASE_PATH}/api/typebots/${step.options.typebotId}`
       )
     : await sendRequest<{ typebot: PublicTypebot }>(
         `${apiHost}/api/publicTypebots/${step.options.typebotId}`
