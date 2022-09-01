@@ -13,7 +13,7 @@ export const CreateBotButton = ({
 
   const handleClick = () =>
     router.push(
-      `/typebots/create?${stringify({
+      `/embed/builder/typebots/create?${stringify({
         isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`

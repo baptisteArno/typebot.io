@@ -257,7 +257,7 @@ export const TypebotContext = ({
     if (isLoading) return
     if (!typebot) {
       toast({ status: 'info', description: "Couldn't find typebot" })
-      router.replace('/typebots')
+      router.replace('/embed/builder/typebots')
       return
     }
     setLocalTypebot({ ...typebot })
@@ -447,7 +447,7 @@ const useLinkedTypebots = ({
   >(
     typebotIds?.every((id) => typebotId === id)
       ? undefined
-      : `/api/typebots?${params}`,
+      : `/embed/builder/api/typebots?${params}`,
     fetcher
   )
   if (error) onError(error)

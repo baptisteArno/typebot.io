@@ -61,7 +61,7 @@ export const TypebotHeader = () => {
       <HStack display={['none', 'flex']}>
         <Button
           as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/edit`}
+          href={`/embed/builder/typebots/${typebot?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
         >
@@ -69,7 +69,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/theme`}
+          href={`/embed/builder/typebots/${typebot?.id}/theme`}
           colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
         >
@@ -77,7 +77,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/settings`}
+          href={`/embed/builder/typebots/${typebot?.id}/settings`}
           colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
         >
@@ -85,7 +85,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`/typebots/${typebot?.id}/share`}
+          href={`/embed/builder/typebots/${typebot?.id}/share`}
           colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         >
@@ -94,7 +94,7 @@ export const TypebotHeader = () => {
         {typebot?.publishedTypebotId && (
           <Button
             as={NextChakraLink}
-            href={`/typebots/${typebot?.id}/results`}
+            href={`/embed/builder/typebots/${typebot?.id}/results`}
             colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
             variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
           >
@@ -116,10 +116,10 @@ export const TypebotHeader = () => {
             icon={<ChevronLeftIcon fontSize={30} />}
             href={
               router.query.parentId
-                ? `/typebots/${router.query.parentId}/edit`
+                ? `/embed/builder/typebots/${router.query.parentId}/edit`
                 : typebot?.folderId
-                ? `/typebots/folders/${typebot.folderId}`
-                : '/typebots'
+                ? `/embed/builder/typebots/folders/${typebot.folderId}`
+                : '/embed/builder/typebots'
             }
           />
           <HStack spacing={1}>

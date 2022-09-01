@@ -65,7 +65,7 @@ export const FolderButton = ({
   }
 
   const handleClick = () => {
-    router.push(`/typebots/folders/${folder.id}`)
+    router.push(`/embed/builder/typebots/folders/${folder.id}`)
   }
 
   const handleMouseEnter = () => setMouseOverFolderId(folder.id)

@@ -28,7 +28,7 @@ export const PublishButton = () => {
 
   const handlePublishClick = () => {
     publishTypebot()
-    if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+    if (!publishedTypebot) push(`/embed/builder/typebots/${query.typebotId}/share`)
   }
 
   return (

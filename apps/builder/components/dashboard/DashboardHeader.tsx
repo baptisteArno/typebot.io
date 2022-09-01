@@ -54,7 +54,7 @@ export const DashboardHeader = () => {
       >
         <NextChakraLink
           className="w-24"
-          href="/typebots"
+          href="/embed/builder/typebots"
           data-testid="authenticated"
         >
           <TypebotLogo w="30px" />
