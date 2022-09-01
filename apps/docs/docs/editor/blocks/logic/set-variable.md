@@ -12,14 +12,30 @@ This value can be any kind of plain text but also **Javascript code**.
 
 ## Expressions with existing variables
 
-It means you can apply operations on existing variables:
+It means you can apply operations on existing variables.
+
+Add a value to your variable:
 
 ```
 {{Score}} + 5
 ```
 
+Compute a sum of variables:
+
+```
+{{Score}} + {{Answer}}
+```
+
+Multiply variables together:
+
 ```
 {{Score}} * {{Multiplier}}
+```
+
+Compute a percentage:
+
+```
+{{Score}} * 100 / {{Max Score}}
 ```
 
 ## Current Date
