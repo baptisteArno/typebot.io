@@ -19,14 +19,14 @@ import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
 
 Used for sending email notifications and authentication
 
-| Parameter       | Default | Description                                                                     |
-| --------------- | ------- | ------------------------------------------------------------------------------- |
-| SMTP_USERNAME   | --      | SMTP username                                                                   |
-| SMTP_PASSWORD   | --      | SMTP password                                                                   |
-| SMTP_HOST       | --      | SMTP host. (i.e. `smtp.host.com`)                                               |
-| SMTP_PORT       | 25      | SMTP port                                                                       |
-| SMTP_FROM       | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`) |
-| SMTP_IGNORE_TLS | false   | Don't use TLS even if the server supports STARTTLS extension                    |
+| Parameter     | Default | Description                                                                                                                                                                                                                                                |
+| ------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SMTP_USERNAME | --      | SMTP username                                                                                                                                                                                                                                              |
+| SMTP_PASSWORD | --      | SMTP password                                                                                                                                                                                                                                              |
+| SMTP_HOST     | --      | SMTP host. (i.e. `smtp.host.com`)                                                                                                                                                                                                                          |
+| SMTP_PORT     | 25      | SMTP port                                                                                                                                                                                                                                                  |
+| SMTP_FROM     | -       | From name and email (i.e. `'Typebot Notifications' <notifications@typebot.io>`)                                                                                                                                                                            |
+| SMTP_SECURE   | false   | If true the connection will use TLS when connecting to server. If false (the default) then TLS is used if server supports the STARTTLS extension. In most cases set this value to true if you are connecting to port 465. For port 587 or 25 keep it false |
 
 ## Google (Sheets)
 
