@@ -17,6 +17,11 @@ export const setupEnvironment = () =>
 export const setupMockUser = async () =>
 {
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
+  
+  addEventListener('storage', (ev : any) => {
+    console.log('storageChange', { window: this, ev })
+  })
+
   if (env !== 'production') {
     const { mock } = require(`./environments/mocks/${env}`)
     
