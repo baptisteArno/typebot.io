@@ -3415,14 +3415,6 @@
     axios "^0.21.1"
     joi "^17.4.0"
 
-"@octadesk-tech/storage@^1.0.7":
-  version "1.0.7"
-  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.0.7/980d3af7d06d6684e91c2f7c03702d349f04c9b8#980d3af7d06d6684e91c2f7c03702d349f04c9b8"
-  integrity sha512-OnqHpxha5Oy3H/Cs/3aC8vQ5T6Tin/Sz9PvHh3SLGymaSFZOgaB3/99PYh6B/RgWk5139T1Pk6Y5fAoBEA+Xug==
-  dependencies:
-    crypto-js "^3.1.9-1"
-    local-storage-fallback "^4.1.2"
-
 "@octadesk-tech/storage@^1.1.2":
   version "1.1.2"
   resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.1.2/26fc0d0f150077f265d55ad4855ef8e87586248d#26fc0d0f150077f265d55ad4855ef8e87586248d"
@@ -6587,11 +6579,6 @@ crypto-browserify@^3.12.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
-
-crypto-js@^3.1.9-1:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
-  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
 
 crypto-js@^4.1.1:
   version "4.1.1"
