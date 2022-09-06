@@ -15,7 +15,7 @@ const moduleExports = {
       beforeFiles: [
         { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
         { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
-      ],,
+      ],
     }
   },
   typescript: {
