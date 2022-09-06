@@ -8,19 +8,13 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  //basePath: '/embed/builder',
+  basePath: '/embed/builder',
   assetPrefix: '/embed/builder',
   rewrites() {
     return {
       beforeFiles: [
-        { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-        { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
-      ],
-      fallback: [
-        {
-          source: '/api/:path*',
-          destination: '/embed/builder/api/:path*',
-        },
+        { source: '/embed/builder/embed/builder/_next/:path*', destination: '/embed/builder/_next/:path*' },
+        { source: '/embed/builder/embed/builder/typebots/:path*', destination: '/embed/builder/typebots/:path*' },
       ],
     }
   },
