@@ -257,7 +257,7 @@ export const TypebotContext = ({
     if (isLoading) return
     if (!typebot) {
       toast({ status: 'info', description: "Couldn't find typebot" })
-      router.replace('/embed/builder/typebots')
+      router.replace(`${process.env.BASE_PATH_OCTADESK || ''}/typebots`)
       return
     }
     setLocalTypebot({ ...typebot })
@@ -413,7 +413,7 @@ export const useFetchedTypebot = ({
       isReadOnly?: boolean
     },
     Error
-  >(`/embed/builder/api/typebots/${typebotId}`, fetcher, {
+  >(`/getTypebot-${typebotId}`, fetcher, {
     dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   if (error) onError(error)
@@ -447,7 +447,7 @@ const useLinkedTypebots = ({
   >(
     typebotIds?.every((id) => typebotId === id)
       ? undefined
-      : `/embed/builder/api/typebots?${params}`,
+      : `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots?${params}`,
     fetcher
   )
   if (error) onError(error)

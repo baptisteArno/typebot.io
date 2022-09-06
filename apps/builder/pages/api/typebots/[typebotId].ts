@@ -14,19 +14,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
-    const client = await services.chatBots.getClient()
+    debugger
+    // const client = await services.chatBots.getClient()
     
-    const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
-    const typebot = response.data
-    if (!typebot) return res.send({ typebot: null })
+    // const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
+    // const typebot = response.data
+    // if (!typebot) return res.send({ typebot: null })
     
-    const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
-    return res.send({
-      typebot: restOfTypebot,
-      publishedTypebot,
-      isReadOnly: false,
-      webhooks,
-    })
+    // const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
+    // return res.send({
+    //   typebot: restOfTypebot,
+    //   publishedTypebot,
+    //   isReadOnly: false,
+    //   webhooks,
+    // })
   }
 
   if (req.method === 'DELETE') {

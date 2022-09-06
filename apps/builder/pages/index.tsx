@@ -5,7 +5,7 @@ function RedirectPage() {
 export const getServerSideProps = async (
 ) => {
   return { 
-    redirect: { permanent: false, destination: '/embed/builder/typebots/' }
+    redirect: { permanent: false, destination: `${process.env.BASE_PATH_OCTADESK || ''}/typebots/` }
   }
 }
 

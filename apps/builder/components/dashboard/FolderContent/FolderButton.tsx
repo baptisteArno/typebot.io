@@ -65,7 +65,7 @@ export const FolderButton = ({
   }
 
   const handleClick = () => {
-    router.push(`/embed/builder/typebots/folders/${folder.id}`)
+    router.push(`${process.env.BASE_PATH_OCTADESK || ''}/typebots/folders/${folder.id}`)
   }
 
   const handleMouseEnter = () => setMouseOverFolderId(folder.id)

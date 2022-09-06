@@ -8,18 +8,17 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
-  //basePath: '/embed/builder',
-  assetPrefix: '/embed/builder',
+  assetPrefix: process.env.BASE_PATH,
   rewrites() {
     return {
       beforeFiles: [
-        { source: '/embed/builder/_next/:path*', destination: '/_next/:path*' },
-        { source: '/embed/builder/typebots/:path*', destination: '/typebots/:path*' },
+        { source: `${process.env.BASE_PATH_OCTADESK || ''}/_next/:path*`, destination: '/_next/:path*' },
+        { source: `${process.env.BASE_PATH_OCTADESK || ''}/typebots/:path*`, destination: '/typebots/:path*' },
       ],
       fallback: [
         {
           source: '/api/:path*',
-          destination: '/embed/builder/api/:path*',
+          destination: `${process.env.BASE_PATH_OCTADESK || ''}/api/:path*`,
         },
       ],
     }

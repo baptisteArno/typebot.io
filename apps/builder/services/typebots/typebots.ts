@@ -69,7 +69,7 @@ import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
-import { subDomain } from '@octadesk-tech/services'
+import { headers, services, subDomain } from '@octadesk-tech/services'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -87,6 +87,7 @@ export const useTypebots = ({
   onError: (error: Error) => void
 }) => {
   const params = stringify({ folderId, allFolders, workspaceId })
+  
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
@@ -242,28 +243,35 @@ const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
   return idsMapping
 }
 
-export const getTypebot = (typebotId: string) =>
-  sendRequest<{ typebot: Typebot }>({
-    url: `/embed/builder/api/typebots/${typebotId}`,
-    method: 'GET',
+export const getTypebot = async (typebotId: string) => {
+  const { data } = useSWR<
+    { typebot: Typebot },
+    Error
+  >(`/api/typebots/${typebotId}`, fetcher, {
+    dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+      ? 0
+      : undefined,
   })
+
+  return data
+}
 
 export const deleteTypebot = async (id: string) =>
   sendRequest({
-    url: `/embed/builder/api/typebots/${id}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${id}`,
     method: 'DELETE',
   })
 
 export const updateTypebot = async (id: string, typebot: Typebot) =>
   sendRequest({
-    url: `/embed/builder/api/typebots/${id}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${id}`,
     method: 'PUT',
     body: typebot,
   })
 
 export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
   sendRequest({
-    url: `/embed/builder/api/typebots/${id}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${id}`,
     method: 'PATCH',
     body: typebot,
   })

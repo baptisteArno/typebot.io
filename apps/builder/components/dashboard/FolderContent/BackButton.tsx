@@ -18,7 +18,7 @@ export const BackButton = ({ id }: { id: string | null }) => {
   return (
     <Button
       as={NextChakraLink}
-      href={id ? `/embed/builder/typebots/folders/${id}` : '/embed/builder/typebots'}
+      href={id ? `${process.env.BASE_PATH_OCTADESK || ''}/typebots/folders/${id}` : `${process.env.BASE_PATH_OCTADESK || ''}/typebots`}
       leftIcon={<ChevronLeftIcon />}
       variant={'outline'}
       colorScheme={isTypebotOver ? 'blue' : 'gray'}

@@ -10,7 +10,7 @@ export const useWorkspaces = ({ userId }: { userId?: string }) => {
       workspaces: WorkspaceWithMembers[]
     },
     Error
-  >(userId ? `/embed/builder/api/workspaces` : null, fetcher)
+  >(userId ? `${process.env.BASE_PATH_OCTADESK || ''}/api/workspaces` : null, fetcher)
   return {
     workspaces: data?.workspaces,
     isLoading: !error && !data,
@@ -24,7 +24,7 @@ export const createNewWorkspace = async (
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `/embed/builder/api/workspaces`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/workspaces`,
     method: 'POST',
     body,
   })
@@ -33,7 +33,7 @@ export const updateWorkspace = async (updates: Partial<Workspace>) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `/embed/builder/api/workspaces/${updates.id}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/workspaces/${updates.id}`,
     method: 'PATCH',
     body: updates,
   })
@@ -42,7 +42,7 @@ export const deleteWorkspace = (workspaceId: string) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `/embed/builder/api/workspaces/${workspaceId}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/workspaces/${workspaceId}`,
     method: 'DELETE',
   })
 

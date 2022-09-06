@@ -16,19 +16,19 @@ export const setupEnvironment = () =>
 
 export const setupMockUser = async () =>
 {
-  // const env = process.env.NODE_ENV_OCTADESK || 'qa'
+  const env = process.env.NODE_ENV_OCTADESK || 'qa'
   
-  // if (env !== 'production') {
-  //   const { mock } = require(`./environments/mocks/${env}`)
+  if (env !== 'production') {
+    const { mock } = require(`./environments/mocks/${env}`)
     
-  //   Storage.setItem('userLogged', mock.user)
+    Storage.setItem('userLogged', mock.user)
 
-  //   Storage.setItem('company', mock.user.subDomain)
+    Storage.setItem('company', mock.user.subDomain)
   
-  //   subDomain.setSubDomain(mock.user.subDomain)
+    subDomain.setSubDomain(mock.user.subDomain)
   
-  //   Storage.setItem('status', mock.status)
+    Storage.setItem('status', mock.status)
 
-  //   Storage.setItem('userToken', mock.userToken)
-  // }
+    Storage.setItem('userToken', mock.userToken)
+  }
 }

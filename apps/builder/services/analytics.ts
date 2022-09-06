@@ -10,7 +10,7 @@ export const useStats = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ stats: Stats }, Error>(
-    typebotId ? `/embed/builder/api/typebots/${typebotId}/results/stats` : null,
+    typebotId ? `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results/stats` : null,
     fetcher
   )
   if (error) onError(error)
@@ -33,7 +33,7 @@ export const useAnswersCount = ({
     { answersCounts: AnswersCount[] },
     Error
   >(
-    typebotId ? `/embed/builder/api/typebots/${typebotId}/results/answers/count` : null,
+    typebotId ? `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results/answers/count` : null,
     fetcher
   )
   if (error) onError(error)

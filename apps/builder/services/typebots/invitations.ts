@@ -11,7 +11,7 @@ export const useInvitations = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ invitations: Invitation[] }, Error>(
-    typebotId ? `/embed/builder/api/typebots/${typebotId}/invitations` : null,
+    typebotId ? `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/invitations` : null,
     fetcher,
     {
       dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
@@ -33,7 +33,7 @@ export const sendInvitation = (
 ) =>
   sendRequest({
     method: 'POST',
-    url: `/embed/builder/api/typebots/${typebotId}/invitations`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/invitations`,
     body: { email, type },
   })
 
@@ -44,12 +44,12 @@ export const updateInvitation = (
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/embed/builder/api/typebots/${typebotId}/invitations/${email}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/invitations/${email}`,
     body: invitation,
   })
 
 export const deleteInvitation = (typebotId: string, email: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/embed/builder/api/typebots/${typebotId}/invitations/${email}`,
+    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/invitations/${email}`,
   })

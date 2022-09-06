@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {
       const client = await services.chatBots.getClient()
       console.log("HEADERS => ", headers.getAuthorizedHeaders());
-
+  
       console.log(Storage.getItem('userToken'))
       console.log(Storage.getItem('company'))
 

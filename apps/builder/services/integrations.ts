@@ -78,7 +78,7 @@ export const executeWebhook = (
   { blockId, stepId }: { blockId: string; stepId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}/embed/builder/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
+    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,
