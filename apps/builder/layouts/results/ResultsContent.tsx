@@ -51,7 +51,7 @@ export const ResultsContent = () => {
             colorScheme={!isAnalytics ? 'blue' : 'gray'}
             variant={!isAnalytics ? 'outline' : 'ghost'}
             size="sm"
-            href={`${process.env.BASE_PATH_OCTADESK || ''}/typebots/${typebot?.id}/results`}
+            href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/results`}
           >
             <Text>Submissions</Text>
             {(stats?.totalStarts ?? 0) > 0 && (
@@ -64,7 +64,7 @@ export const ResultsContent = () => {
             as={NextChakraLink}
             colorScheme={isAnalytics ? 'blue' : 'gray'}
             variant={isAnalytics ? 'outline' : 'ghost'}
-            href={`${process.env.BASE_PATH_OCTADESK || ''}/typebots/${typebot?.id}/results/analytics`}
+            href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/results/analytics`}
             size="sm"
           >
             Analytics

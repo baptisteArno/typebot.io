@@ -18,8 +18,8 @@ const getKey = (
   }
 ) => {
   if (previousPageData && previousPageData.results.length === 0) return null
-  if (pageIndex === 0) return `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results?limit=50`
-  return `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results?lastResultId=${
+  if (pageIndex === 0) return `${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/results?limit=50`
+  return `${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/results?lastResultId=${
     previousPageData.results[previousPageData.results.length - 1].id
   }&limit=${paginationLimit}`
 }
@@ -69,14 +69,14 @@ export const deleteResults = async (typebotId: string, ids: string[]) => {
     { indices: false }
   )
   return sendRequest({
-    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results?${params}`,
+    url: `${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/results?${params}`,
     method: 'DELETE',
   })
 }
 
 export const deleteAllResults = async (typebotId: string) =>
   sendRequest({
-    url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results`,
+    url: `${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/results`,
     method: 'DELETE',
   })
 
@@ -87,7 +87,7 @@ export const getAllResults = async (typebotId: string) => {
   do {
     const query = stringify({ limit: 200, lastResultId })
     const { data } = await sendRequest<{ results: ResultWithAnswers[] }>({
-      url: `${process.env.BASE_PATH_OCTADESK || ''}/api/typebots/${typebotId}/results?${query}`,
+      url: `${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/results?${query}`,
       method: 'GET',
     })
     results.push(...(data?.results ?? []))

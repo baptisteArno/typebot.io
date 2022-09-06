@@ -55,7 +55,7 @@ export const TypebotsDropdown = ({
           aria-label="Navigate to typebot"
           icon={<ExternalLinkIcon />}
           as={NextChakraLink}
-          href={`${process.env.BASE_PATH_OCTADESK || ''}/typebots/${currentTypebot?.id}/edit?parentId=${query.typebotId}`}
+          href={`${process.env.BASE_PATH || ''}/typebots/${currentTypebot?.id}/edit?parentId=${query.typebotId}`}
         />
       )}
     </HStack>

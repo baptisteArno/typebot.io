@@ -6,7 +6,7 @@ import { sendRequest } from 'utils'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   debugger
-  const url = input.toString().replace(process.env.BASE_PATH_OCTADESK || '', '')
+  const url = input.toString().replace(process.env.BASE_PATH || '', '')
   if (url.startsWith('/api/typebots?')) {
     const client = await services.chatBots.getClient()
     const response = await client.get(`builder/all`, headers.getAuthorizedHeaders())

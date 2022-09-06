@@ -13,7 +13,7 @@ export const CreateBotButton = ({
 
   const handleClick = () =>
     router.push(
-      `${process.env.BASE_PATH_OCTADESK || ''}/typebots/create?${stringify({
+      `${process.env.BASE_PATH || ''}/typebots/create?${stringify({
         isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`

@@ -28,7 +28,7 @@ export const PublishButton = () => {
 
   const handlePublishClick = () => {
     publishTypebot()
-    if (!publishedTypebot) push(`${process.env.BASE_PATH_OCTADESK || ''}/typebots/${query.typebotId}/share`)
+    if (!publishedTypebot) push(`${process.env.BASE_PATH || ''}/typebots/${query.typebotId}/share`)
   }
 
   return (

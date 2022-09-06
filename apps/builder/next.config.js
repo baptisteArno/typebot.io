@@ -12,13 +12,13 @@ const moduleExports = {
   rewrites() {
     return {
       beforeFiles: [
-        { source: `${process.env.BASE_PATH_OCTADESK || ''}/_next/:path*`, destination: '/_next/:path*' },
-        { source: `${process.env.BASE_PATH_OCTADESK || ''}/typebots/:path*`, destination: '/typebots/:path*' },
+        { source: `${process.env.BASE_PATH || ''}/_next/:path*`, destination: '/_next/:path*' },
+        { source: `${process.env.BASE_PATH || ''}/typebots/:path*`, destination: '/typebots/:path*' },
       ],
       fallback: [
         {
           source: '/api/:path*',
-          destination: `${process.env.BASE_PATH_OCTADESK || ''}/api/:path*`,
+          destination: `${process.env.BASE_PATH || ''}/api/:path*`,
         },
       ],
     }
