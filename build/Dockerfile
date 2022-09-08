@@ -46,6 +46,9 @@ COPY --from=builder /app/apps/${SCOPE}/.next/static ./.next/static
 COPY --from=builder /app/apps/${SCOPE}/.env.docker ./.env.production
 COPY --from=builder /app/apps/${SCOPE}/.env.local ./.env.local
 
+ENV BASE_PATH='/embed/${SCOPE}'
+ENV ENVIRONMENT='production'
+
 RUN apt-get -qy update && apt-get -qy install openssl
 
 COPY entrypoint.sh ./
