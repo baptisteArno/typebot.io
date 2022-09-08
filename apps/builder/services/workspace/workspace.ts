@@ -1,3 +1,4 @@
+import { config } from 'config/octadesk.config'
 import { WorkspaceWithMembers } from 'contexts/WorkspaceContext'
 import { Plan, Workspace } from 'model'
 import useSWR from 'swr'
@@ -10,7 +11,7 @@ export const useWorkspaces = ({ userId }: { userId?: string }) => {
       workspaces: WorkspaceWithMembers[]
     },
     Error
-  >(userId ? `${process.env.BASE_PATH || ''}/api/workspaces` : null, fetcher)
+  >(userId ? `${config.basePath || ''}/api/workspaces` : null, fetcher)
   return {
     workspaces: data?.workspaces,
     isLoading: !error && !data,
@@ -24,7 +25,7 @@ export const createNewWorkspace = async (
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH || ''}/api/workspaces`,
+    url: `${config.basePath || ''}/api/workspaces`,
     method: 'POST',
     body,
   })
@@ -33,7 +34,7 @@ export const updateWorkspace = async (updates: Partial<Workspace>) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH || ''}/api/workspaces/${updates.id}`,
+    url: `${config.basePath || ''}/api/workspaces/${updates.id}`,
     method: 'PATCH',
     body: updates,
   })
@@ -42,7 +43,7 @@ export const deleteWorkspace = (workspaceId: string) =>
   sendRequest<{
     workspace: Workspace
   }>({
-    url: `${process.env.BASE_PATH || ''}/api/workspaces/${workspaceId}`,
+    url: `${config.basePath || ''}/api/workspaces/${workspaceId}`,
     method: 'DELETE',
   })
 

@@ -44,6 +44,8 @@ import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
 import { subDomain } from '@octadesk-tech/services'
+import { config } from 'config/octadesk.config'
+
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -257,7 +259,7 @@ export const TypebotContext = ({
     if (isLoading) return
     if (!typebot) {
       toast({ status: 'info', description: "Couldn't find typebot" })
-      router.replace(`${process.env.BASE_PATH || ''}/typebots`)
+      router.replace(`${config.basePath || ''}/typebots`)
       return
     }
     setLocalTypebot({ ...typebot })
@@ -447,7 +449,7 @@ const useLinkedTypebots = ({
   >(
     typebotIds?.every((id) => typebotId === id)
       ? undefined
-      : `${process.env.BASE_PATH || ''}/api/typebots?${params}`,
+      : `${config.basePath || ''}/api/typebots?${params}`,
     fetcher
   )
   if (error) onError(error)

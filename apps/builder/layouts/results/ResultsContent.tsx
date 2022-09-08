@@ -8,6 +8,7 @@ import { useStats } from 'services/analytics'
 import { isFreePlan } from 'services/workspace'
 import { AnalyticsContent } from './AnalyticsContent'
 import { SubmissionsContent } from './SubmissionContent'
+import { config } from 'config/octadesk.config'
 
 export const ResultsContent = () => {
   const router = useRouter()
@@ -51,7 +52,7 @@ export const ResultsContent = () => {
             colorScheme={!isAnalytics ? 'blue' : 'gray'}
             variant={!isAnalytics ? 'outline' : 'ghost'}
             size="sm"
-            href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/results`}
+            href={`${config.basePath || ''}/typebots/${typebot?.id}/results`}
           >
             <Text>Submissions</Text>
             {(stats?.totalStarts ?? 0) > 0 && (
@@ -64,7 +65,7 @@ export const ResultsContent = () => {
             as={NextChakraLink}
             colorScheme={isAnalytics ? 'blue' : 'gray'}
             variant={isAnalytics ? 'outline' : 'ghost'}
-            href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/results/analytics`}
+            href={`${config.basePath || ''}/typebots/${typebot?.id}/results/analytics`}
             size="sm"
           >
             Analytics

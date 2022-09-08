@@ -3,6 +3,7 @@ import { ChevronLeftIcon } from 'assets/icons'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import React, { useMemo } from 'react'
+import { config } from 'config/octadesk.config'
 
 export const BackButton = ({ id }: { id: string | null }) => {
   const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
@@ -18,7 +19,7 @@ export const BackButton = ({ id }: { id: string | null }) => {
   return (
     <Button
       as={NextChakraLink}
-      href={id ? `${process.env.BASE_PATH || ''}/typebots/folders/${id}` : `${process.env.BASE_PATH || ''}/typebots`}
+      href={id ? `${config.basePath || ''}/typebots/folders/${id}` : `${config.basePath || ''}/typebots`}
       leftIcon={<ChevronLeftIcon />}
       variant={'outline'}
       colorScheme={isTypebotOver ? 'blue' : 'gray'}

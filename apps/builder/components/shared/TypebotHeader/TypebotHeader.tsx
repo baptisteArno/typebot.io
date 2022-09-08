@@ -18,6 +18,7 @@ import { PublishButton } from '../buttons/PublishButton'
 import { EditableEmojiOrImageIcon } from '../EditableEmojiOrImageIcon'
 import { CollaborationMenuButton } from './CollaborationMenuButton'
 import { EditableTypebotName } from './EditableTypebotName'
+import { config } from 'config/octadesk.config'
 
 export const headerHeight = 56
 
@@ -61,7 +62,7 @@ export const TypebotHeader = () => {
       <HStack display={['none', 'flex']}>
         <Button
           as={NextChakraLink}
-          href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/edit`}
+          href={`${config.basePath || ''}/typebots/${typebot?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
         >
@@ -69,7 +70,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/theme`}
+          href={`${config.basePath || ''}/typebots/${typebot?.id}/theme`}
           colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
         >
@@ -77,7 +78,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/settings`}
+          href={`${config.basePath || ''}/typebots/${typebot?.id}/settings`}
           colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
         >
@@ -85,7 +86,7 @@ export const TypebotHeader = () => {
         </Button>
         <Button
           as={NextChakraLink}
-          href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/share`}
+          href={`${config.basePath || ''}/typebots/${typebot?.id}/share`}
           colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         >
@@ -94,7 +95,7 @@ export const TypebotHeader = () => {
         {typebot?.publishedTypebotId && (
           <Button
             as={NextChakraLink}
-            href={`${process.env.BASE_PATH || ''}/typebots/${typebot?.id}/results`}
+            href={`${config.basePath || ''}/typebots/${typebot?.id}/results`}
             colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
             variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
           >
@@ -116,10 +117,10 @@ export const TypebotHeader = () => {
             icon={<ChevronLeftIcon fontSize={30} />}
             href={
               router.query.parentId
-                ? `${process.env.BASE_PATH || ''}/typebots/${router.query.parentId}/edit`
+                ? `${config.basePath || ''}/typebots/${router.query.parentId}/edit`
                 : typebot?.folderId
-                ? `${process.env.BASE_PATH || ''}/typebots/folders/${typebot.folderId}`
-                : `${process.env.BASE_PATH || ''}/typebots`
+                ? `${config.basePath || ''}/typebots/folders/${typebot.folderId}`
+                : `${config.basePath || ''}/typebots`
             }
           />
           <HStack spacing={1}>

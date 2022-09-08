@@ -8,6 +8,7 @@ import {
   VariableForTest,
   WebhookResponse,
 } from 'models'
+import { config } from 'config/octadesk.config'
 
 export const getGoogleSheetsConsentScreenUrl = (
   redirectUrl: string,
@@ -78,7 +79,7 @@ export const executeWebhook = (
   { blockId, stepId }: { blockId: string; stepId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}${process.env.BASE_PATH || ''}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
+    url: `${process.env.NEXT_PUBLIC_VIEWER_URL}${config.basePath || ''}/api/typebots/${typebotId}/blocks/${blockId}/steps/${stepId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,

@@ -3,6 +3,7 @@ import { PlusIcon } from 'assets/icons'
 import { useRouter } from 'next/router'
 import { stringify } from 'qs'
 import React from 'react'
+import { config } from 'config/octadesk.config'
 
 export const CreateBotButton = ({
   folderId,
@@ -13,7 +14,7 @@ export const CreateBotButton = ({
 
   const handleClick = () =>
     router.push(
-      `${process.env.BASE_PATH || ''}/typebots/create?${stringify({
+      `${config.basePath || ''}/typebots/create?${stringify({
         isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`
