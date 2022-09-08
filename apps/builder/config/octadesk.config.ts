@@ -4,7 +4,7 @@ type OctadeskConfig = {
 }
 
 const config: OctadeskConfig = {
-    basePath: process.env.BASE_PATH === undefined ? '' : process.env.BASE_PATH,
+    basePath: process.env.IS_LOCAL === 'true' ? '' : '/embed/builder',
     environment: process.env.NODE_ENV_OCTADESK === undefined ? 'production' : process.env.NODE_ENV_OCTADESK,
 }
 
