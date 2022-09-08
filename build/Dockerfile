@@ -28,7 +28,7 @@ FROM base AS builder
 COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full/ .
 COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.production
-COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.local
+COPY ./apps/${SCOPE}/.env.local ./apps/${SCOPE}/.env.local
 RUN apt-get -qy update && apt-get -qy install openssl
 RUN yarn turbo run build --scope=${SCOPE} --include-dependencies --no-deps
 RUN find . -name node_modules | xargs rm -rf
@@ -46,8 +46,8 @@ COPY --from=builder /app/apps/${SCOPE}/.next/static ./.next/static
 COPY --from=builder /app/apps/${SCOPE}/.env.docker ./.env.production
 COPY --from=builder /app/apps/${SCOPE}/.env.local ./.env.local
 
-ENV BASE_PATH='/embed/${SCOPE}'
-ENV ENVIRONMENT='production'
+#ENV BASE_PATH='/embed/${SCOPE}'
+#ENV ENVIRONMENT='production'
 
 RUN apt-get -qy update && apt-get -qy install openssl
 
