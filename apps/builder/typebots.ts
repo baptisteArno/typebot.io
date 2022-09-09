@@ -71,6 +71,7 @@ import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
 import { headers, services, subDomain } from '@octadesk-tech/services'
 import { config } from 'config/octadesk.config'
+import { sendOctaRequest } from 'util/octaRequest'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -113,12 +114,16 @@ export const createTypebot = async ({
     folderId,
     name: 'My typebot',
     workspaceId,
+    version: 2
   }
-  return sendRequest<Typebot>({
-    url: `/api/typebots`,
+
+  const response = await sendOctaRequest({
+    url: ``,
     method: 'POST',
     body: typebot,
   })
+
+  return response.data as Typebot
 }
 
 export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
@@ -126,11 +131,12 @@ export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
     typebot,
     userPlan
   )
-  const { data, error } = await sendRequest<Typebot>({
-    url: `/api/typebots`,
+  const { data, error } = await sendOctaRequest({
+    url: ``,
     method: 'POST',
-    body: newTypebot,
+    body: { ...newTypebot, version: 2 }
   })
+
   if (!data) return { data, error }
   const webhookSteps = typebot.blocks
     .flatMap((b) => b.steps)
@@ -258,23 +264,23 @@ export const getTypebot = async (typebotId: string) => {
 }
 
 export const deleteTypebot = async (id: string) =>
-  sendRequest({
+  sendOctaRequest({
     url: `${config.basePath || ''}/api/typebots/${id}`,
-    method: 'DELETE',
+    method: 'DELETE'
   })
 
 export const updateTypebot = async (id: string, typebot: Typebot) =>
-  sendRequest({
-    url: `${config.basePath || ''}/api/typebots/${id}`,
+sendOctaRequest({
+    url: `${id}`,
     method: 'PUT',
-    body: typebot,
+    body:{ bot: typebot },
   })
 
 export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
-  sendRequest({
-    url: `${config.basePath || ''}/api/typebots/${id}`,
+sendOctaRequest({
+    url: `${id}`,
     method: 'PATCH',
-    body: typebot,
+    body: { bot: typebot },
   })
 
 export const parseNewStep = (
