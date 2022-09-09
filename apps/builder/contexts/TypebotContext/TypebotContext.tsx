@@ -181,7 +181,7 @@ export const TypebotContext = ({
     }
 
     setIsSavingLoading(true)
-    const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
+    const { error } = await updateTypebot(typebotToSave?.id || '', typebotToSave as Typebot)
     setIsSavingLoading(false)
     if (error) {
       toast({ title: error.name, description: error.message })
