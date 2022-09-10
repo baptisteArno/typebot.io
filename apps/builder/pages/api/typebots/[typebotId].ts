@@ -42,6 +42,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    const existingTypebot = await prisma.typebot.findFirst({
+      where: canReadTypebot(typebotId, user),
+    })
+    if (
+      existingTypebot &&
+      existingTypebot?.updatedAt > new Date(data.updatedAt)
+    )
+      return res.send({ message: 'Found newer version of typebot in database' })
     const typebots = await prisma.typebot.updateMany({
       where: canWriteTypebot(typebotId, user),
       data: {
