@@ -51,6 +51,7 @@ export const TextForm = ({
   }
 
   const submitWhenEnter = (e: React.KeyboardEvent) => {
+    if (block.type === InputBlockType.TEXT && block.options.isLong) return
     if (e.key === 'Enter') submit()
   }
 
