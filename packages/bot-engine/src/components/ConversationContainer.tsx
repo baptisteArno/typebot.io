@@ -100,10 +100,10 @@ export const ConversationContainer = ({
       updateVariables(prefilledVariables)
     }
     setHasStarted(true)
+    const startEdge = typebot.groups[0].blocks[0].outgoingEdgeId
+    if (!startEdge && !startGroupId) return
     displayNextGroup({
-      edgeId: startGroupId
-        ? undefined
-        : typebot.groups[0].blocks[0].outgoingEdgeId,
+      edgeId: startGroupId ? undefined : startEdge,
       groupId: startGroupId,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
