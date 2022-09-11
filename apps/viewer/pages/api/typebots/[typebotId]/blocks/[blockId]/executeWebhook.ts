@@ -132,13 +132,15 @@ export const executeWebhook =
       resultValues,
       groupId,
     })
-    const { data: body, isJson } = bodyContent
-      ? safeJsonParse(
-          parseVariables(variables, {
-            escapeForJson: !checkIfBodyIsAVariable(bodyContent),
-          })(bodyContent)
-        )
-      : { data: undefined, isJson: false }
+    const { data: body, isJson } =
+      bodyContent && webhook.method !== HttpMethod.GET
+        ? safeJsonParse(
+            parseVariables(variables, {
+              escapeForJson: !checkIfBodyIsAVariable(bodyContent),
+            })(bodyContent)
+          )
+        : { data: undefined, isJson: false }
+
     const request = {
       url: parseVariables(variables)(
         webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
@@ -151,8 +153,7 @@ export const executeWebhook =
           ? body
           : undefined,
       form: contentType === 'x-www-form-urlencoded' && body ? body : undefined,
-      body:
-        body && !isJson && webhook.method !== HttpMethod.GET ? body : undefined,
+      body: body && !isJson ? body : undefined,
     }
     try {
       const response = await got(request.url, omit(request, 'url'))
