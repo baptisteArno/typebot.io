@@ -10,6 +10,7 @@ import {
   WebhookOptions,
   WebhookResponse,
   WebhookBlock,
+  HttpMethod,
 } from 'models'
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -150,7 +151,8 @@ export const executeWebhook =
           ? body
           : undefined,
       form: contentType === 'x-www-form-urlencoded' && body ? body : undefined,
-      body: body && !isJson ? body : undefined,
+      body:
+        body && !isJson && webhook.method !== HttpMethod.GET ? body : undefined,
     }
     try {
       const response = await got(request.url, omit(request, 'url'))
