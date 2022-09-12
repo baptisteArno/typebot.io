@@ -1,5 +1,20 @@
 # Changelog
 
+<a name="2.7.1"></a>
+## 2.7.1 (2022-09-12)
+
+### Fixed
+
+- 🐛 (webhook) Don&#x27;t send body when GET method is used [[4a04d1c](https://github.com/baptisteArno/typebot.io/commit/4a04d1ccbac67526a376ed798704e153cd63a37e)]
+- 🐛 (textinput) Don&#x27;t submit on enter when long input [[4bf47ec](https://github.com/baptisteArno/typebot.io/commit/4bf47ecf90ee103dccfd6f024943cbe7b39a25f9)]
+- 🐛 (viewer) load a bot without a start edge [[b64f787](https://github.com/baptisteArno/typebot.io/commit/b64f787cf5d39bd475a7b7b62dcaff5e3405326c)]
+
+### Miscellaneous
+
+- 📦 Update packages [[a262fc1](https://github.com/baptisteArno/typebot.io/commit/a262fc190e1829cb0f2b5adc90a59386c157caac)]
+- 🛂 (builder) Make sure old typebots can&#x27;t overwrite newer [[1a7c25e](https://github.com/baptisteArno/typebot.io/commit/1a7c25ef0b4dd6961101661eb5c47bb3b5bdc9cf)]
+
+
 <a name="2.7.0"></a>
 ## 2.7.0 (2022-09-01)
 
