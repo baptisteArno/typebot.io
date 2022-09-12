@@ -7,12 +7,12 @@ import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { linter } from '@codemirror/lint'
+import { linter, LintSource } from '@codemirror/lint'
 import { VariablesButton } from './buttons/VariablesButton'
 import { Variable } from 'models'
 import { env } from 'utils'
 
-const linterExtension = linter(jsonParseLinter())
+const linterExtension = linter(jsonParseLinter() as unknown as LintSource)
 
 type Props = {
   value: string

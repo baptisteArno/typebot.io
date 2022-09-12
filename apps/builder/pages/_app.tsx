@@ -17,10 +17,14 @@ import { actions } from 'libs/kbar'
 import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
 import { toTitleCase } from 'utils'
+import { Session } from 'next-auth'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
-const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) => {
   useRouterProgressBar()
   const { query, pathname, isReady } = useRouter()
 

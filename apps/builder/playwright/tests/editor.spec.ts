@@ -23,7 +23,7 @@ test.describe.parallel('Editor', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await expect(page.locator("text='Start'")).toBeVisible()
     await page.dragAndDrop('text=Button', '#editor-container', {
-      targetPosition: { x: 800, y: 400 },
+      targetPosition: { x: 1000, y: 400 },
     })
     await page.dragAndDrop(
       'text=Text >> nth=0',
