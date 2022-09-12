@@ -102,6 +102,7 @@
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.9",
     "@types/react-table": "^7.7.12",
+    "@types/styled-components": "^5.1.26",
     "@types/tinycolor2": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "dotenv": "^16.0.1",

@@ -46,6 +46,9 @@ import cuid from 'cuid'
 import { subDomain } from '@octadesk-tech/services'
 import { config } from 'config/octadesk.config'
 
+import Agents from 'services/octadesk/agents/agents'
+import Groups from 'services/octadesk/groups/groups'
+import { ASSIGN_TO } from 'enums/assign-to'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -92,6 +95,7 @@ const typebotContext = createContext<
     }) => void
     publishTypebot: () => void
     restorePublishedTypebot: () => void
+    octaAgents: Array<any>
   } & BlocksActions &
   StepsActions &
   ItemsActions &
@@ -177,7 +181,7 @@ export const TypebotContext = ({
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
-      subDomain: currentSubDomain || ''
+      subDomain: currentSubDomain || '',
     }
 
     setIsSavingLoading(true)
@@ -365,6 +369,73 @@ export const TypebotContext = ({
       })
   }
 
+  const [octaAgents, setOctaAgents] = useState<Array<any>>([])
+  useEffect(() => {
+    const fetchOctaAgents = async (): Promise<void> => {
+      const agentsGroupsList: Array<any> = []
+      await Promise.all([
+        Agents()
+          .getAgents()
+          .then((res) => {
+            let agentsList = res.map((agent: any) => ({
+              ...agent,
+              operationType: ASSIGN_TO.agent,
+            }))
+
+            agentsList = [
+              {
+                name: 'Atribuir a conversa para um usuário',
+                disabled: true,
+                id: 'agent',
+                isTitle: true,
+              },
+              ...agentsList,
+            ]
+            console.log(agentsList)
+
+            agentsGroupsList.push(...agentsList)
+          }),
+
+        Groups()
+          .getGroups()
+          .then((res) => {
+            let groupsList: Array<any> = []
+            const groups = res.map((group: any) => ({
+              ...group,
+              operationType: ASSIGN_TO.group,
+            }))
+
+            groupsList = [
+              {
+                name: 'Atribuir a conversa para um grupo',
+                id: 'group',
+                disabled: true,
+                isTitle: true,
+              },
+              ...groups,
+            ]
+            console.log(groupsList)
+
+            agentsGroupsList.push(...groupsList)
+          }),
+      ])
+      const noOne = {
+        group: 'Não atribuir (Visível a todos)',
+        name: 'Não atribuir (Visível a todos)',
+        optionType: ASSIGN_TO.noOne,
+      }
+      agentsGroupsList.push(noOne)
+
+      setOctaAgents(agentsGroupsList)
+    }
+
+    fetchOctaAgents()
+
+    return () => {
+      setOctaAgents(() => [])
+    }
+  }, [])
+
   return (
     <typebotContext.Provider
       value={{
@@ -391,6 +462,7 @@ export const TypebotContext = ({
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
+        octaAgents,
       }}
     >
       {children}
