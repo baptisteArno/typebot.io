@@ -9,7 +9,7 @@ type SelectItems<T> = T
 
 export type OptionItem = {
   label: string
-  value: string | number | undefined
+  value: any
   isTitle?: boolean
   disabled?: boolean
 }

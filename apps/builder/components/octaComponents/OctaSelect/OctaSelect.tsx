@@ -36,14 +36,14 @@ const OctaSelect = (props: OctaSelectProps) => {
         className={toggle && isComponentVisible ? 'opened' : ''}
         {...(props as any)}
       >
-        {props.items.map((item) => (
+        {props.items.map((item, idx) => (
           <>
             {item && item?.isTitle && (<Separator />) }
             <OptionItem
-              key={item.value}
-              data-value={item.value}
+              key={idx}
+              data-value={JSON.stringify(item.value)}
               data-label={item.label}
-              data-isTitle={item.isTitle}
+              data-istitle={item.isTitle}
               data-disabled={!!item.isTitle || item.disabled }
               onClick={!item.isTitle ? (e) => handleSelect(e): ()=> false }
             >

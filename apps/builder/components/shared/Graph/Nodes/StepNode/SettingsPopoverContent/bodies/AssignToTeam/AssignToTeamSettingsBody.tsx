@@ -15,10 +15,9 @@ type AssignToTeamSettingsBodyProps = {
 
 export const AssignToTeamSettingsBody = ({
   options,
-  onOptionsChange,
+  onOptionsChange
 }: AssignToTeamSettingsBodyProps) => {
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorBotMessage')
     onOptionsChange({
       ...options,
       messages: {
@@ -30,7 +29,6 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleCloseEditorConnectionMessage = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorConnectionMessage')
     onOptionsChange({
       ...options,
       messages: {
@@ -42,7 +40,6 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleCloseEditorUnavailability = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorUnavailability')
     onOptionsChange({
       ...options,
       messages: {
@@ -53,26 +50,20 @@ export const AssignToTeamSettingsBody = ({
       },
     })
   }
-  const handleDefaultAssignToChange = (assignTo: string) =>
-    onOptionsChange({ ...options, assignTo })
+  const handleDefaultAssignToChange = (option: AssignToTeamOptions) =>
+    {
+      onOptionsChange({
+        ...options,
+        assignTo: option.assignTo,
+        assignType: option.assignType
+      })
+    }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
   const handleRedirectWhenNoneAvailable = (shouldRedirectNoneAvailable: boolean) => {
-    console.log(shouldRedirectNoneAvailable)
     onOptionsChange({ ...options, shouldRedirectNoneAvailable })
   }
 
-  // useEffect(() => {
-  //   // Update the document title using the browser API
-  //   document.title = `You clicked times`;
-  // });
-  const [data, setData] = useState('');
-
-  const textBubbleToAssign = (assignData: string): string => {
-    console.log(assignData)
-
-    return assignData
-  }
   return (
     <Stack spacing={4}>
       <Stack>

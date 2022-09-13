@@ -378,7 +378,7 @@ export const TypebotContext = ({
           .getAgents()
           .then((res) => {
             let agentsList = res.map((agent: any) => ({
-              ...agent,
+              ...agent, 
               operationType: ASSIGN_TO.agent,
             }))
 
