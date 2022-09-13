@@ -6,7 +6,6 @@ import { Step, Typebot } from 'models'
 import { sendRequest } from 'utils'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
-  debugger
   const url = input.toString().replace(config.basePath || '', '')
   if (url.startsWith('/api/typebots?')) {
     const client = await services.chatBots.getClient()

@@ -14,7 +14,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
-    debugger
     // const client = await services.chatBots.getClient()
     
     // const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
