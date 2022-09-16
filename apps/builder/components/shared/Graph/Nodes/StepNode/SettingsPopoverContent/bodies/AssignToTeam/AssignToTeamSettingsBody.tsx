@@ -50,14 +50,14 @@ export const AssignToTeamSettingsBody = ({
       },
     })
   }
-  const handleDefaultAssignToChange = (option: AssignToTeamOptions) =>
-    {
-      onOptionsChange({
-        ...options,
-        assignTo: option.assignTo,
-        assignType: option.assignType
-      })
-    }
+  const handleDefaultAssignToChange = (option: AssignToTeamOptions) => {
+    console.log('option', option)
+    onOptionsChange({
+      ...options,
+      assignTo: option.assignTo,
+      assignType: option.assignType
+    })
+  }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
   const handleRedirectWhenNoneAvailable = (shouldRedirectNoneAvailable: boolean) => {
@@ -93,7 +93,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          onClose={handleCloseEditorBotMessage}
+          onClose={handleCloseEditorConnectionMessage}
           initialValue={options.messages.connectionSuccess?.content ? options.messages.connectionSuccess.content.richText : []}
           onKeyUp={handleCloseEditorConnectionMessage}
         />
@@ -111,7 +111,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          onClose={handleCloseEditorBotMessage}
+          onClose={handleCloseEditorUnavailability}
           initialValue={options.messages.noAgentAvailable?.content ? options.messages.noAgentAvailable.content.richText : []}
           onKeyUp={handleCloseEditorUnavailability}
         />
