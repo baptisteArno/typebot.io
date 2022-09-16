@@ -56,8 +56,8 @@ function TypebotEditPage() {
         window.parent.postMessage(canGoBack, '*')
       }
     }
-    if (e.data === 'saveClick') {
-      save().then((res) => {
+    if (e.data.name === 'saveClick') {
+      save(e.data.personaName).then((res) => {
         if (res.saved) {
           updatedTypebot.current = false
           setTypebotInitialUpdatedAt(res.updatedAt)

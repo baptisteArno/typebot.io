@@ -1,6 +1,12 @@
 import useOuterClick from 'hooks/useOuterClick'
 import React, { SyntheticEvent, useEffect, useState } from 'react'
-import { Container, OptionGroup, OptionItem, DropDownIcon, Separator } from './OctaSelect.style'
+import {
+  Container,
+  OptionGroup,
+  OptionItem,
+  DropDownIcon,
+  Separator,
+} from './OctaSelect.style'
 import { OctaSelectProps } from './OctaSelect.type'
 
 const OctaSelect = (props: OctaSelectProps) => {
@@ -13,10 +19,19 @@ const OctaSelect = (props: OctaSelectProps) => {
     setIsComponentVisible(toggle)
   }, [toggle, setIsComponentVisible])
 
+  useEffect(() => {
+    const selectedUserGroup = props.items.filter(
+      (item) =>
+        props.defaultValue[0]?.label &&
+        item.value.assignTo === props.defaultValue
+    )[0]?.label
+    setSelected(selectedUserGroup)
+  }, [props.defaultValue])
+
   const handleSelect = (e: SyntheticEvent<HTMLLIElement>): void => {
     const dataValue = e.currentTarget.getAttribute('data-value')
     const dataLabel = e.currentTarget.getAttribute('data-label')
-    if(dataValue && dataLabel) {
+    if (dataValue && dataLabel) {
       props.onChange({
         value: dataValue,
         label: dataLabel,
@@ -38,14 +53,14 @@ const OctaSelect = (props: OctaSelectProps) => {
       >
         {props.items.map((item, idx) => (
           <>
-            {item && item?.isTitle && (<Separator />) }
+            {item && item?.isTitle && <Separator />}
             <OptionItem
               key={idx}
               data-value={JSON.stringify(item.value)}
               data-label={item.label}
               data-istitle={item.isTitle}
-              data-disabled={!!item.isTitle || item.disabled }
-              onClick={!item.isTitle ? (e) => handleSelect(e): ()=> false }
+              data-disabled={!!item.isTitle || item.disabled}
+              onClick={!item.isTitle ? (e) => handleSelect(e) : () => false}
             >
               {item.label}
             </OptionItem>

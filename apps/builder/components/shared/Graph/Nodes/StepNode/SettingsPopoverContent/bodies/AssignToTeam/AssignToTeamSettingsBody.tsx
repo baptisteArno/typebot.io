@@ -4,7 +4,7 @@ import {
   AssignToTeamOptions,
   TextBubbleContent
 } from 'models'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { AutoAssignToSelect } from './AutoAssignToSelect'
 import { TextBubbleEditor } from '../../../TextBubbleEditor'
 
@@ -83,8 +83,8 @@ export const AssignToTeamSettingsBody = ({
           Atribuir automaticamente para:
         </FormLabel>
         <AutoAssignToSelect
+          selectedUserGroup={options.assignTo ? options.assignTo : ''}
           onSelect={handleDefaultAssignToChange}
-          teamId={options.assignTo}
         />
       </Stack>
       <Stack>

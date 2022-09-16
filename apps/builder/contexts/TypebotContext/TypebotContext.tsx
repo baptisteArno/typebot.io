@@ -61,7 +61,7 @@ type UpdateTypebotPayload = Partial<{
 }>
 
 type SaveResponse = {
-  saved: Boolean,
+  saved: boolean,
   updatedAt: Date
 }
 
@@ -78,7 +78,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: () => Promise<SaveResponse>
+    save: (personaName?: string) => Promise<SaveResponse>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -138,7 +138,7 @@ export const TypebotContext = ({
       presentRef: currentTypebotRef,
     },
   ] = useUndo<Typebot | undefined>(undefined)
-
+  
   const linkedTypebotIds = localTypebot?.blocks
     .flatMap((b) => b.steps)
     .reduce<string[]>(
@@ -176,12 +176,16 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
-  const saveTypebot = async (options?: { disableMutation: boolean }) => {
+  const saveTypebot = async (personaName?: string, options?: { disableMutation: boolean }) => {
     const currentSubDomain = subDomain.getSubDomain()
+
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
       subDomain: currentSubDomain || '',
+      persona: {
+        name: personaName,
+      },
     }
 
     setIsSavingLoading(true)
@@ -391,7 +395,6 @@ export const TypebotContext = ({
               },
               ...agentsList,
             ]
-            console.log(agentsList)
 
             agentsGroupsList.push(...agentsList)
           }),
@@ -414,7 +417,6 @@ export const TypebotContext = ({
               },
               ...groups,
             ]
-            console.log(groupsList)
 
             agentsGroupsList.push(...groupsList)
           }),
@@ -435,6 +437,8 @@ export const TypebotContext = ({
       setOctaAgents(() => [])
     }
   }, [])
+
+  const [botName, setBotName] = useState<string>('')
 
   return (
     <typebotContext.Provider
@@ -462,7 +466,7 @@ export const TypebotContext = ({
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
-        octaAgents,
+        octaAgents
       }}
     >
       {children}
