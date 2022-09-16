@@ -138,7 +138,7 @@ export const TypebotContext = ({
       presentRef: currentTypebotRef,
     },
   ] = useUndo<Typebot | undefined>(undefined)
-  
+
   const linkedTypebotIds = localTypebot?.blocks
     .flatMap((b) => b.steps)
     .reduce<string[]>(
@@ -232,7 +232,7 @@ export const TypebotContext = ({
   // )
 
   useEffect(() => {
-    const save = () => saveTypebot({ disableMutation: true })
+    const save = () => saveTypebot(typebot?.persona?.name, { disableMutation: true })
     Router.events.on('routeChangeStart', save)
     return () => {
       Router.events.off('routeChangeStart', save)
@@ -376,15 +376,23 @@ export const TypebotContext = ({
   const [octaAgents, setOctaAgents] = useState<Array<any>>([])
   useEffect(() => {
     const fetchOctaAgents = async (): Promise<void> => {
-      const agentsGroupsList: Array<any> = []
+      const noOne = {
+        group: 'Não atribuir (Visível a todos)',
+        name: 'Não atribuir (Visível a todos)',
+        optionType: ASSIGN_TO.noOne,
+      }
+      const agentsGroupsList: Array<any> = [noOne]
+
       await Promise.all([
         Agents()
           .getAgents()
           .then((res) => {
-            let agentsList = res.map((agent: any) => ({
-              ...agent, 
-              operationType: ASSIGN_TO.agent,
-            }))
+            let agentsList = res
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((agent: any) => ({
+                ...agent,
+                operationType: ASSIGN_TO.agent,
+              }))
 
             agentsList = [
               {
@@ -403,10 +411,12 @@ export const TypebotContext = ({
           .getGroups()
           .then((res) => {
             let groupsList: Array<any> = []
-            const groups = res.map((group: any) => ({
-              ...group,
-              operationType: ASSIGN_TO.group,
-            }))
+            const groups = res
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((group: any) => ({
+                ...group,
+                operationType: ASSIGN_TO.group,
+              }))
 
             groupsList = [
               {
@@ -421,12 +431,7 @@ export const TypebotContext = ({
             agentsGroupsList.push(...groupsList)
           }),
       ])
-      const noOne = {
-        group: 'Não atribuir (Visível a todos)',
-        name: 'Não atribuir (Visível a todos)',
-        optionType: ASSIGN_TO.noOne,
-      }
-      agentsGroupsList.push(noOne)
+
 
       setOctaAgents(agentsGroupsList)
     }
