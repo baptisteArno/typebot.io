@@ -8,7 +8,7 @@ type Props = {
 
 export const MoreInfoTooltip = ({ children }: Props) => {
   return (
-    <Tooltip label={children}>
+    <Tooltip label={children} hasArrow rounded="md" p="3">
       <chakra.span cursor="pointer">
         <HelpCircleIcon />
       </chakra.span>

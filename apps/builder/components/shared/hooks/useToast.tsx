@@ -7,12 +7,14 @@ export const useToast = () => {
     title,
     description,
     status = 'error',
+    ...props
   }: UseToastOptions) => {
     toast({
       position: 'bottom-right',
       description,
       title,
       status,
+      ...props,
     })
   }
 

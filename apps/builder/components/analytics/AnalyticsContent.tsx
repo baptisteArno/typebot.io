@@ -2,7 +2,7 @@ import { Flex, Spinner, useDisclosure } from '@chakra-ui/react'
 import { StatsCards } from 'components/analytics/StatsCards'
 import { Graph } from 'components/shared/Graph'
 import { useToast } from 'components/shared/hooks/useToast'
-import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
+import { ChangePlanModal } from 'components/shared/modals/ChangePlanModal'
 import { GraphProvider, GroupsCoordinatesProvider } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Stats } from 'models'
@@ -49,7 +49,7 @@ export const AnalyticsContent = ({ stats }: { stats?: Stats }) => {
           <Spinner color="gray" />
         </Flex>
       )}
-      <UpgradeModal onClose={onClose} isOpen={isOpen} />
+      <ChangePlanModal onClose={onClose} isOpen={isOpen} />
       <StatsCards stats={stats} pos="absolute" top={10} />
     </Flex>
   )

@@ -1,11 +1,8 @@
 import test, { expect, Page } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
 import { createFolders, createTypebots } from '../services/database'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Dashboard page', () => {
   test('folders navigation should work', async ({ page }) => {
@@ -79,7 +76,7 @@ test.describe('Dashboard page', () => {
 
   test.describe('Free user', () => {
     test.use({
-      storageState: path.join(__dirname, '../freeUser.json'),
+      storageState: path.join(__dirname, '../secondUser.json'),
     })
     test("create folder shouldn't be available", async ({ page }) => {
       await page.goto('/typebots')

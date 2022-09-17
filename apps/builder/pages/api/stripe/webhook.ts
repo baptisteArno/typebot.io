@@ -4,7 +4,6 @@ import Stripe from 'stripe'
 import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from 'libs/prisma'
-import { Plan } from 'db'
 import { withSentry } from '@sentry/nextjs'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
@@ -40,29 +39,28 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       switch (event.type) {
         case 'checkout.session.completed': {
           const session = event.data.object as Stripe.Checkout.Session
-          const { metadata } = session
-          if (!metadata?.workspaceId || !metadata?.plan)
-            return res.status(500).send({ message: `customer_email not found` })
+          const { workspaceId, plan, additionalChats, additionalStorage } =
+            session.metadata as unknown as {
+              plan: 'STARTER' | 'PRO'
+              additionalChats: string
+              additionalStorage: string
+              workspaceId: string
+            }
+
+          if (!workspaceId || !plan || !additionalChats || !additionalStorage)
+            return res
+              .status(500)
+              .send({ message: `Couldn't retrieve valid metadata` })
           await prisma.workspace.update({
-            where: { id: metadata.workspaceId },
+            where: { id: workspaceId },
             data: {
-              plan: metadata.plan === 'team' ? Plan.TEAM : Plan.PRO,
+              plan: plan,
               stripeId: session.customer as string,
+              additionalChatsIndex: parseInt(additionalChats),
+              additionalStorageIndex: parseInt(additionalStorage),
             },
           })
           return res.status(200).send({ message: 'workspace upgraded in DB' })
-        }
-        case 'customer.subscription.deleted': {
-          const subscription = event.data.object as Stripe.Subscription
-          await prisma.workspace.update({
-            where: {
-              stripeId: subscription.customer as string,
-            },
-            data: {
-              plan: Plan.FREE,
-            },
-          })
-          return res.send({ message: 'workspace downgraded in DB' })
         }
         default: {
           return res.status(304).send({ message: 'event not handled' })

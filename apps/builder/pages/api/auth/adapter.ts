@@ -52,10 +52,11 @@ export function CustomAdapter(p: PrismaClient): Adapter {
                         name: data.name
                           ? `${data.name}'s workspace`
                           : `My workspace`,
-                        plan:
-                          process.env.ADMIN_EMAIL === data.email
-                            ? Plan.TEAM
-                            : Plan.FREE,
+                        ...(process.env.ADMIN_EMAIL === data.email
+                          ? { plan: Plan.LIFETIME }
+                          : {
+                              plan: Plan.FREE,
+                            }),
                       },
                     },
                   },

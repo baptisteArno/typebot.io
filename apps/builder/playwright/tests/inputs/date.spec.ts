@@ -6,9 +6,6 @@ import {
 import { defaultDateInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Date input block', () => {
   test('options should work', async ({ page }) => {

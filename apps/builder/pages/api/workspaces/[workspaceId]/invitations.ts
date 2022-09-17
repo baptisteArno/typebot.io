@@ -1,9 +1,17 @@
 import { withSentry } from '@sentry/nextjs'
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
+import { workspaceMemberInvitationEmail } from 'assets/emails/workspaceMemberInvitation'
+import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { sendEmailNotification } from 'utils'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
+import {
+  env,
+  forbidden,
+  methodNotAllowed,
+  notAuthenticated,
+  seatsLimit,
+} from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -20,6 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
     if (!workspace) return forbidden(res)
+
+    if (await checkIfSeatsLimitReached(workspace))
+      return res.status(400).send('Seats limit reached')
     if (existingUser) {
       await prisma.memberInWorkspace.create({
         data: {
@@ -37,11 +48,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           workspaceId: data.workspaceId,
         },
       })
-    }
-    const invitation = await prisma.workspaceInvitation.create({ data })
-    return res.send({ invitation })
+    } else await prisma.workspaceInvitation.create({ data })
+    if (env('E2E_TEST') !== 'true')
+      await sendEmailNotification({
+        to: data.email,
+        subject: "You've been invited to collaborate 🤝",
+        html: workspaceMemberInvitationEmail({
+          workspaceName: workspace.name,
+          guestEmail: data.email,
+          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          hostEmail: user.email ?? '',
+        }),
+      })
+    return res.send({ message: 'success' })
   }
   methodNotAllowed(res)
+}
+
+const checkIfSeatsLimitReached = async (workspace: Workspace) => {
+  const existingMembersCount = await prisma.memberInWorkspace.count({
+    where: { workspaceId: workspace.id },
+  })
+  return existingMembersCount >= seatsLimit[workspace.plan].totalIncluded
 }
 
 export default withSentry(handler)

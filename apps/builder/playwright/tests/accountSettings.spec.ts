@@ -1,10 +1,6 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
 
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
-
-// Can't test the update features because of the auth mocking.
 test('should display user info properly', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')

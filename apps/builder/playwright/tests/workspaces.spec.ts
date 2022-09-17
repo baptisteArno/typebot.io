@@ -1,25 +1,30 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions, InputBlockType } from 'models'
-import { mockSessionApiCalls } from 'playwright/services/browser'
+import { connectedAsOtherUser } from 'playwright/services/browser'
 import {
   createTypebots,
   parseDefaultGroupWithBlock,
-  sharedWorkspaceId,
+  proWorkspaceId,
+  starterWorkspaceId,
 } from '../services/database'
 
 const proTypebotId = cuid()
-const freeTypebotId = cuid()
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
+const starterTypebotId = cuid()
 
 test.beforeAll(async () => {
-  await createTypebots([{ id: proTypebotId, name: 'Pro typebot' }])
   await createTypebots([
     {
-      id: freeTypebotId,
-      name: 'Shared typebot',
-      workspaceId: sharedWorkspaceId,
+      id: proTypebotId,
+      name: 'Pro typebot',
+      workspaceId: proWorkspaceId,
+    },
+  ])
+  await createTypebots([
+    {
+      id: starterTypebotId,
+      name: 'Starter typebot',
+      workspaceId: starterWorkspaceId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
         options: {
@@ -37,38 +42,34 @@ test.beforeAll(async () => {
 test('can switch between workspaces and access typebot', async ({ page }) => {
   await page.goto('/typebots')
   await expect(page.locator('text="Pro typebot"')).toBeVisible()
-  await page.click("text=Pro user's workspace")
-  await page.click('text="Shared workspace"')
+  await page.click('text=Pro workspace')
+  await page.click('text="Starter workspace"')
   await expect(page.locator('text="Pro typebot"')).toBeHidden()
-  await page.click('text="Shared typebot"')
+  await page.click('text="Starter typebot"')
   await expect(page.locator('text="Hey there"')).toBeVisible()
 })
 
 test('can create and delete a new workspace', async ({ page }) => {
   await page.goto('/typebots')
-  await page.click("text=Pro user's workspace")
-  await expect(
-    page.locator('text="Pro user\'s workspace" >> nth=1')
-  ).toBeHidden()
+  await page.click('text=Pro workspace')
+  await expect(page.locator('text="Pro workspace" >> nth=1')).toBeHidden()
   await page.click('text=New workspace')
   await expect(page.locator('text="Pro typebot"')).toBeHidden()
-  await page.click("text=Pro user's workspace")
-  await expect(
-    page.locator('text="Pro user\'s workspace" >> nth=1')
-  ).toBeVisible()
+  await page.click("text=John Doe's workspace")
+  await expect(page.locator('text="Pro workspace"')).toBeVisible()
   await page.click('text=Settings & Members')
   await page.click('text="Settings"')
   await page.click('text="Delete workspace"')
   await expect(
     page.locator(
-      "text=Are you sure you want to delete Pro user's workspace workspace?"
+      "text=Are you sure you want to delete John Doe's workspace workspace?"
     )
   ).toBeVisible()
   await page.click('text="Delete"')
-  await expect(page.locator('text=Pro typebot')).toBeVisible()
-  await page.click("text=Pro user's workspace")
+  await expect(page.locator('text=Free workspace')).toBeVisible()
+  await page.click('text=Free workspace')
   await expect(
-    page.locator('text="Pro user\'s workspace" >> nth=1')
+    page.locator('text="John Doe\'s workspace" >> nth=1')
   ).toBeHidden()
 })
 
@@ -79,17 +80,14 @@ test('can update workspace info', async ({ page }) => {
   await page.click('[data-testid="editable-icon"]')
   await page.fill('input[placeholder="Search..."]', 'building')
   await page.click('text="🏦"')
-  await page.fill(
-    'input[value="Pro user\'s workspace"]',
-    'My awesome workspace'
-  )
+  await page.fill('input[value="Pro workspace"]', 'My awesome workspace')
 })
 
 test('can manage members', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text="Members"')
-  await expect(page.locator('text="pro-user@email.com"')).toBeVisible()
+  await expect(page.locator('text="user@email.com"')).toBeVisible()
   await expect(page.locator('button >> text="Invite"')).toBeEnabled()
   await page.fill(
     'input[placeholder="colleague@company.com"]',
@@ -104,7 +102,7 @@ test('can manage members', async ({ page }) => {
   await expect(page.locator('text="Pending"')).toBeVisible()
   await page.fill(
     'input[placeholder="colleague@company.com"]',
-    'free-user@email.com'
+    'other-user@email.com'
   )
   await page.click('text="Member" >> nth=0')
   await page.click('text="Admin"')
@@ -112,18 +110,15 @@ test('can manage members', async ({ page }) => {
   await expect(
     page.locator('input[placeholder="colleague@company.com"]')
   ).toHaveAttribute('value', '')
-  await expect(page.locator('text="free-user@email.com"')).toBeVisible()
-  await expect(page.locator('text="Free user"')).toBeVisible()
+  await expect(page.locator('text="other-user@email.com"')).toBeVisible()
+  await expect(page.locator('text="James Doe"')).toBeVisible()
 
-  // Downgrade admin to member
-  await page.click('text="free-user@email.com"')
+  await page.click('text="other-user@email.com"')
   await page.click('button >> text="Member"')
   await expect(page.locator('[data-testid="tag"] >> text="Admin"')).toHaveCount(
     1
   )
-  await page.click('text="free-user@email.com"')
-  await page.click('button >> text="Remove"')
-  await expect(page.locator('text="free-user@email.com"')).toBeHidden()
+  await page.click('text="other-user@email.com"')
 
   await page.click('text="guest@email.com"')
   await page.click('text="Admin" >> nth=-1')
@@ -133,19 +128,46 @@ test('can manage members', async ({ page }) => {
   await page.click('text="guest@email.com"')
   await page.click('button >> text="Remove"')
   await expect(page.locator('text="guest@email.com"')).toBeHidden()
-})
 
-test("can't edit workspace as a member", async ({ page }) => {
+  await connectedAsOtherUser(page)
   await page.goto('/typebots')
-  await page.click("text=Pro user's workspace")
-  await page.click('text="Shared workspace"')
   await page.click('text=Settings & Members')
   await expect(page.locator('text="Settings"')).toBeHidden()
   await page.click('text="Members"')
-  await expect(page.locator('text="free-user@email.com"')).toBeVisible()
+  await expect(page.locator('text="other-user@email.com"')).toBeVisible()
   await expect(
     page.locator('input[placeholder="colleague@company.com"]')
   ).toBeHidden()
-  await page.click('text="free-user@email.com"')
+  await page.click('text="other-user@email.com"')
   await expect(page.locator('button >> text="Remove"')).toBeHidden()
+})
+
+test("can't add new members when limit is reached", async ({ page }) => {
+  await page.goto('/typebots')
+  await page.click('text="Pro workspace"')
+  await page.click('text="Free workspace"')
+  await page.click('text=Settings & Members')
+  await page.click('text="Members"')
+  await expect(page.locator('button >> text="Invite"')).toBeDisabled()
+  await expect(
+    page.locator(
+      'text="Upgrade your plan to work with more team members, and unlock awesome power features 🚀"'
+    )
+  ).toBeVisible()
+  await page.click('text="Free workspace"', { force: true })
+  await page.click('text="Free workspace"')
+  await page.click('text="Starter workspace"')
+  await page.click('text=Settings & Members')
+  await page.click('text="Members"')
+  await page.fill(
+    'input[placeholder="colleague@company.com"]',
+    'guest@email.com'
+  )
+  await page.click('button >> text="Invite"')
+  await expect(
+    page.locator(
+      'text="Upgrade your plan to work with more team members, and unlock awesome power features 🚀"'
+    )
+  ).toBeVisible()
+  await expect(page.locator('button >> text="Invite"')).toBeDisabled()
 })

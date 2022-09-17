@@ -200,7 +200,7 @@ type UploadFileProps = {
   }[]
   onUploadProgress?: (percent: number) => void
 }
-type UrlList = string[]
+type UrlList = (string | null)[]
 
 export const uploadFiles = async ({
   basePath = '/api',
@@ -214,6 +214,7 @@ export const uploadFiles = async ({
     i += 1
     const { data } = await sendRequest<{
       presignedUrl: { url: string; fields: any }
+      hasReachedStorageLimit: boolean
     }>(
       `${basePath}/storage/upload-url?filePath=${encodeURIComponent(
         path
@@ -223,18 +224,21 @@ export const uploadFiles = async ({
     if (!data?.presignedUrl) continue
 
     const { url, fields } = data.presignedUrl
-    const formData = new FormData()
-    Object.entries({ ...fields, file }).forEach(([key, value]) => {
-      formData.append(key, value as string | Blob)
-    })
-    const upload = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    })
+    if (data.hasReachedStorageLimit) urls.push(null)
+    else {
+      const formData = new FormData()
+      Object.entries({ ...fields, file }).forEach(([key, value]) => {
+        formData.append(key, value as string | Blob)
+      })
+      const upload = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
 
-    if (!upload.ok) continue
+      if (!upload.ok) continue
 
-    urls.push(`${url.split('?')[0]}/${path}`)
+      urls.push(`${url.split('?')[0]}/${path}`)
+    }
   }
   return urls
 }
@@ -276,3 +280,6 @@ export const getViewerUrl = (props?: {
       : process.env.NEXT_PUBLIC_VERCEL_URL)
   )
 }
+
+export const parseNumberWithCommas = (num: number) =>
+  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

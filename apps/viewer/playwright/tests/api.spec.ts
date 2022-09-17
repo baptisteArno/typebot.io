@@ -14,7 +14,7 @@ test.beforeAll(async () => {
       { id: typebotId }
     )
     await createWebhook(typebotId)
-    await createResults({ typebotId })
+    await createResults({ typebotId, count: 20 })
   } catch (err) {
     console.log(err)
   }

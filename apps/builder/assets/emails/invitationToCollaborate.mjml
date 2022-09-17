@@ -20,13 +20,14 @@
       </mj-section>
       <mj-section padding-top="20px">
         <mj-column>
-          <mj-text>You have been invited to collaborate on a typebot created by ${email}</mj-text>
-          <mj-text>From now on you will see this typebot in your dashboard under the "Shared with me "button 👍</mj-text>
+          <mj-text>You have been invited by ${hostEmail} to collaborate on his typebot <strong>${typebotName}</strong></mj-text>
+          <mj-text>From now on you will see this typebot in your dashboard under the his workspace "${workspaceName}" 👍</mj-text>
+          <mj-text>Make sure to log in as ${guestEmail}</mj-text>
         </mj-column>
       </mj-section>
       <mj-section>
         <mj-column>
-          <mj-button background-color="#0042da" color="white" href="${url}" font-weight="500" border-radius="5px">See the typebot</mj-button>
+          <mj-button background-color="#0042da" color="white" href="${url}" font-weight="500" border-radius="5px">Go to typebot</mj-button>
         </mj-column>
       </mj-section>
 

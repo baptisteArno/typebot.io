@@ -2,14 +2,10 @@ import test, { expect } from '@playwright/test'
 import { InputBlockType, defaultTextInputOptions } from 'models'
 import {
   createTypebots,
-  freeWorkspaceId,
   parseDefaultGroupWithBlock,
+  starterWorkspaceId,
 } from '../services/database'
-import path from 'path'
 import cuid from 'cuid'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should be able to connect custom domain', async ({ page }) => {
   const typebotId = cuid()
@@ -47,16 +43,13 @@ test('should be able to connect custom domain', async ({ page }) => {
   await expect(page.locator('[aria-label="Remove domain"]')).toBeHidden()
 })
 
-test.describe('Free workspace', () => {
-  test.use({
-    storageState: path.join(__dirname, '../freeUser.json'),
-  })
+test.describe('Starter workspace', () => {
   test("Add my domain shouldn't be available", async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([
       {
         id: typebotId,
-        workspaceId: freeWorkspaceId,
+        workspaceId: starterWorkspaceId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
           options: defaultTextInputOptions,
