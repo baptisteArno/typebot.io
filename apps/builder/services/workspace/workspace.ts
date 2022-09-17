@@ -19,7 +19,19 @@ export const useWorkspaces = ({ userId }: { userId?: string }) => {
 }
 
 export const createNewWorkspace = async (
-  body: Omit<Workspace, 'id' | 'icon' | 'createdAt' | 'stripeId'>
+  body: Omit<
+    Workspace,
+    | 'id'
+    | 'icon'
+    | 'createdAt'
+    | 'stripeId'
+    | 'additionalChatsIndex'
+    | 'additionalStorageIndex'
+    | 'chatsLimitFirstEmailSentAt'
+    | 'chatsLimitSecondEmailSentAt'
+    | 'storageLimitFirstEmailSentAt'
+    | 'storageLimitSecondEmailSentAt'
+  >
 ) =>
   sendRequest<{
     workspace: Workspace
@@ -57,8 +69,6 @@ export const planToReadable = (plan?: Plan) => {
       return 'Offered'
     case Plan.PRO:
       return 'Pro'
-    case Plan.TEAM:
-      return 'Team'
   }
 }
 

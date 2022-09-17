@@ -18,7 +18,7 @@ import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { User, Workspace } from 'db'
 import { useState } from 'react'
-import { BillingForm } from './BillingForm'
+import { BillingContent } from './BillingContent'
 import { MembersList } from './MembersList'
 import { MyAccountForm } from './MyAccountForm'
 import { EditorSettingsForm } from './EditorSettingsForm'
@@ -50,13 +50,12 @@ export const WorkspaceSettingsModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
-      <ModalContent h="600px" flexDir="row">
+      <ModalContent minH="600px" flexDir="row">
         <Stack
           spacing={8}
-          w="250px"
+          w="200px"
           py="6"
           borderRightWidth={1}
-          h="full"
           justifyContent="space-between"
         >
           <Stack spacing={8}>
@@ -134,7 +133,7 @@ export const WorkspaceSettingsModal = ({
                   justifyContent="flex-start"
                   pl="4"
                 >
-                  Billing
+                  Billing & Usage
                 </Button>
               )}
             </Stack>
@@ -174,7 +173,7 @@ const SettingsContent = ({
     case 'members':
       return <MembersList />
     case 'billing':
-      return <BillingForm />
+      return <BillingContent />
     default:
       return null
   }

@@ -65,7 +65,8 @@ export const FileUploadForm = ({
       ],
     })
     setIsUploading(false)
-    if (urls.length) return onSubmit({ label: `File uploaded`, value: urls[0] })
+    if (urls.length)
+      return onSubmit({ label: `File uploaded`, value: urls[0] ?? '' })
     setErrorMessage('An error occured while uploading the file')
   }
   const startFilesUpload = async (files: File[]) => {

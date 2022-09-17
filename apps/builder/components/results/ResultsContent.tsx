@@ -1,10 +1,8 @@
 import { Stack } from '@chakra-ui/react'
 import { SubmissionsTable } from 'components/results/ResultsTable'
 import React, { useState } from 'react'
-import { UnlockPlanInfo } from 'components/shared/Info'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from 'contexts/TypebotContext'
-import { Plan } from 'db'
 import { useResults } from 'contexts/ResultsProvider'
 import { ResultModal } from './ResultModal'
 
@@ -14,7 +12,6 @@ export const ResultsContent = () => {
     fetchMore,
     hasMore,
     resultHeader,
-    totalHiddenResults,
     tableData,
   } = useResults()
   const { typebot, publishedTypebot } = useTypebot()
@@ -46,13 +43,6 @@ export const ResultsContent = () => {
       overflow="scroll"
       w="full"
     >
-      {totalHiddenResults && (
-        <UnlockPlanInfo
-          buttonLabel={`Unlock ${totalHiddenResults} results`}
-          contentLabel="You are seeing complete submissions only."
-          plan={Plan.PRO}
-        />
-      )}
       {publishedTypebot && (
         <LogsModal
           typebotId={publishedTypebot?.typebotId}

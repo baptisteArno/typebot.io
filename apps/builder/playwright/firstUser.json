@@ -1,0 +1,15 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "typebot-20-modal",
+          "value": "hide"
+        },
+        { "name": "workspaceId", "value": "proWorkspace" }
+      ]
+    }
+  ]
+}

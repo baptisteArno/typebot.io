@@ -6,9 +6,6 @@ import {
 import { BubbleBlockType, defaultTextBubbleContent } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {

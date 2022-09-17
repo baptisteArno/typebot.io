@@ -6,7 +6,7 @@ import {
   Tag,
   useDisclosure,
 } from '@chakra-ui/react'
-import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
+import { ChangePlanModal } from 'components/shared/modals/ChangePlanModal'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { GeneralSettings } from 'models'
@@ -56,7 +56,7 @@ export const GeneralSettingsForm = ({
 
   return (
     <Stack spacing={6}>
-      <UpgradeModal isOpen={isOpen} onClose={onClose} />
+      <ChangePlanModal isOpen={isOpen} onClose={onClose} />
       <Flex
         justifyContent="space-between"
         align="center"
@@ -82,7 +82,11 @@ export const GeneralSettingsForm = ({
       <SwitchWithLabel
         id="new-result"
         label="Remember session"
-        initialValue={isDefined(generalSettings.isNewResultOnRefreshEnabled) ? !generalSettings.isNewResultOnRefreshEnabled : true}
+        initialValue={
+          isDefined(generalSettings.isNewResultOnRefreshEnabled)
+            ? !generalSettings.isNewResultOnRefreshEnabled
+            : true
+        }
         onCheckChange={handleNewResultOnRefreshChange}
         moreInfoContent="If the user refreshes the page, its existing results will be overwritten. Disable this if you want to create a new results every time the user refreshes the page."
       />

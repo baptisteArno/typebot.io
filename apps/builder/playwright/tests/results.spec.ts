@@ -4,7 +4,6 @@ import { readFileSync } from 'fs'
 import { defaultTextInputOptions, InputBlockType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
 import {
   createResults,
   createTypebots,
@@ -14,8 +13,6 @@ import {
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
 const typebotId = cuid()
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('Submission table header should be parsed correctly', async ({ page }) => {
   const typebotId = cuid()
@@ -46,7 +43,7 @@ test('results should be deletable', async ({ page }) => {
       }),
     },
   ])
-  await createResults({ typebotId })
+  await createResults({ typebotId, count: 200 })
   await page.goto(`/typebots/${typebotId}/results`)
   await selectFirstResults(page)
   await page.click('text="Delete"')
@@ -70,7 +67,7 @@ test('submissions table should have infinite scroll', async ({ page }) => {
       tableWrapper.scrollTo(0, tableWrapper.scrollHeight)
     })
 
-  await createResults({ typebotId })
+  await createResults({ typebotId, count: 200 })
   await page.goto(`/typebots/${typebotId}/results`)
   await expect(page.locator('text=content199')).toBeVisible()
 

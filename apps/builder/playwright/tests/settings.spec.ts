@@ -2,11 +2,8 @@ import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions } from 'models'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
 import { freeWorkspaceId, importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
@@ -123,10 +120,7 @@ test.describe.parallel('Settings page', () => {
     })
   })
 
-  test.describe('Free user', () => {
-    test.use({
-      storageState: path.join(__dirname, '../freeUser.json'),
-    })
+  test.describe('Free workspace', () => {
     test("can't remove branding", async ({ page }) => {
       const typebotId = 'free-branding-typebot'
       await importTypebotInDatabase(

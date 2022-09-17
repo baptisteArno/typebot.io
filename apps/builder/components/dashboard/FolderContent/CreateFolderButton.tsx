@@ -1,7 +1,9 @@
 import { Button, HStack, Tag, useDisclosure, Text } from '@chakra-ui/react'
 import { FolderPlusIcon } from 'assets/icons'
-import { UpgradeModal } from 'components/shared/modals/UpgradeModal'
-import { LimitReached } from 'components/shared/modals/UpgradeModal/UpgradeModal'
+import {
+  LimitReached,
+  ChangePlanModal,
+} from 'components/shared/modals/ChangePlanModal'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import React from 'react'
 import { isFreePlan } from 'services/workspace'
@@ -26,7 +28,7 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
         <Text>Create a folder</Text>
         {isFreePlan(workspace) && <Tag colorScheme="orange">Pro</Tag>}
       </HStack>
-      <UpgradeModal
+      <ChangePlanModal
         isOpen={isOpen}
         onClose={onClose}
         type={LimitReached.FOLDER}

@@ -15,14 +15,12 @@ import {
 import { ChevronLeftIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { Plan } from 'db'
 import { InputBlockType } from 'models'
 import { useRouter } from 'next/router'
 import { timeSince } from 'services/utils'
 import { isFreePlan } from 'services/workspace'
 import { isNotDefined } from 'utils'
-import { UpgradeModal } from '../modals/UpgradeModal'
-import { LimitReached } from '../modals/UpgradeModal/UpgradeModal'
+import { LimitReached, ChangePlanModal } from '../modals/ChangePlanModal'
 
 export const PublishButton = (props: ButtonProps) => {
   const { workspace } = useWorkspace()
@@ -50,8 +48,7 @@ export const PublishButton = (props: ButtonProps) => {
 
   return (
     <HStack spacing="1px">
-      <UpgradeModal
-        plan={Plan.PRO}
+      <ChangePlanModal
         isOpen={isOpen}
         onClose={onClose}
         type={LimitReached.FILE_INPUT}

@@ -15,52 +15,129 @@ import {
   PrismaClient,
   User,
   WorkspaceRole,
+  Workspace,
 } from 'db'
 import { readFileSync } from 'fs'
-import { encrypt } from 'utils'
+import { encrypt, createFakeResults } from 'utils'
+import Stripe from 'stripe'
 
 const prisma = new PrismaClient()
 
-const proWorkspaceId = 'proWorkspace'
+const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY ?? '', {
+  apiVersion: '2022-08-01',
+})
+
+const userId = 'userId'
+const otherUserId = 'otherUserId'
 export const freeWorkspaceId = 'freeWorkspace'
-export const sharedWorkspaceId = 'sharedWorkspace'
-export const guestWorkspaceId = 'guestWorkspace'
+export const starterWorkspaceId = 'starterWorkspace'
+export const proWorkspaceId = 'proWorkspace'
+const lifetimeWorkspaceId = 'lifetimeWorkspaceId'
 
 export const teardownDatabase = async () => {
-  const ownerFilter = {
-    where: {
-      workspace: {
-        members: { some: { userId: { in: ['freeUser', 'proUser'] } } },
-      },
-    },
-  }
   await prisma.workspace.deleteMany({
     where: {
       members: {
-        some: { userId: { in: ['freeUser', 'proUser'] } },
+        some: { userId: { in: [userId, otherUserId] } },
       },
     },
   })
   await prisma.user.deleteMany({
-    where: { id: { in: ['freeUser', 'proUser'] } },
+    where: { id: { in: [userId, otherUserId] } },
   })
-  await prisma.webhook.deleteMany()
-  await prisma.credentials.deleteMany(ownerFilter)
-  await prisma.dashboardFolder.deleteMany(ownerFilter)
-  return prisma.typebot.deleteMany(ownerFilter)
+  return prisma.webhook.deleteMany()
+}
+
+export const addSubscriptionToWorkspace = async (
+  workspaceId: string,
+  items: Stripe.SubscriptionCreateParams.Item[],
+  metadata: Pick<
+    Workspace,
+    'additionalChatsIndex' | 'additionalStorageIndex' | 'plan'
+  >
+) => {
+  const { id: stripeId } = await stripe.customers.create({
+    email: 'test-user@gmail.com',
+    name: 'Test User',
+  })
+  const { id: paymentId } = await stripe.paymentMethods.create({
+    card: {
+      number: '4242424242424242',
+      exp_month: 12,
+      exp_year: 2022,
+      cvc: '123',
+    },
+    type: 'card',
+  })
+  await stripe.paymentMethods.attach(paymentId, { customer: stripeId })
+  await stripe.subscriptions.create({
+    customer: stripeId,
+    items,
+    default_payment_method: paymentId,
+    currency: 'usd',
+  })
+  await prisma.workspace.update({
+    where: { id: workspaceId },
+    data: {
+      stripeId,
+      ...metadata,
+    },
+  })
 }
 
 export const setupDatabase = async () => {
+  await createWorkspaces()
   await createUsers()
   return createCredentials()
+}
+
+export const createWorkspaces = async () =>
+  prisma.workspace.createMany({
+    data: [
+      {
+        id: freeWorkspaceId,
+        name: 'Free workspace',
+        plan: Plan.FREE,
+      },
+      {
+        id: starterWorkspaceId,
+        name: 'Starter workspace',
+        stripeId: 'cus_LnPDugJfa18N41',
+        plan: Plan.STARTER,
+      },
+      {
+        id: proWorkspaceId,
+        name: 'Pro workspace',
+        plan: Plan.PRO,
+      },
+      {
+        id: lifetimeWorkspaceId,
+        name: 'Lifetime workspace',
+        plan: Plan.LIFETIME,
+      },
+    ],
+  })
+
+export const createWorkspace = async (workspace: Partial<Workspace>) => {
+  const { id: workspaceId } = await prisma.workspace.create({
+    data: {
+      name: 'Free workspace',
+      plan: Plan.FREE,
+      ...workspace,
+    },
+  })
+  await prisma.memberInWorkspace.create({
+    data: { userId, workspaceId, role: WorkspaceRole.ADMIN },
+  })
+  return workspaceId
 }
 
 export const createUsers = async () => {
   await prisma.user.create({
     data: {
-      id: 'proUser',
-      email: 'pro-user@email.com',
-      name: 'Pro user',
+      id: userId,
+      email: 'user@email.com',
+      name: 'John Doe',
       graphNavigation: GraphNavigation.TRACKPAD,
       apiTokens: {
         createMany: {
@@ -83,69 +160,34 @@ export const createUsers = async () => {
           ],
         },
       },
-      workspaces: {
-        create: {
-          role: WorkspaceRole.ADMIN,
-          workspace: {
-            create: {
-              id: proWorkspaceId,
-              name: "Pro user's workspace",
-              plan: Plan.TEAM,
-            },
-          },
-        },
-      },
     },
   })
   await prisma.user.create({
-    data: {
-      id: 'freeUser',
-      email: 'free-user@email.com',
-      name: 'Free user',
-      graphNavigation: GraphNavigation.TRACKPAD,
-      workspaces: {
-        create: {
-          role: WorkspaceRole.ADMIN,
-          workspace: {
-            create: {
-              id: 'free',
-              name: "Free user's workspace",
-              plan: Plan.FREE,
-            },
-          },
-        },
-      },
-    },
+    data: { id: otherUserId, email: 'other-user@email.com', name: 'James Doe' },
   })
-  await prisma.workspace.create({
-    data: {
-      id: freeWorkspaceId,
-      name: 'Free Shared workspace',
-      plan: Plan.FREE,
-      members: {
-        createMany: {
-          data: [
-            { role: WorkspaceRole.MEMBER, userId: 'proUser' },
-            { role: WorkspaceRole.ADMIN, userId: 'freeUser' },
-          ],
-        },
+  return prisma.memberInWorkspace.createMany({
+    data: [
+      {
+        role: WorkspaceRole.ADMIN,
+        userId,
+        workspaceId: freeWorkspaceId,
       },
-    },
-  })
-  return prisma.workspace.create({
-    data: {
-      id: sharedWorkspaceId,
-      name: 'Shared workspace',
-      plan: Plan.TEAM,
-      members: {
-        createMany: {
-          data: [
-            { role: WorkspaceRole.MEMBER, userId: 'proUser' },
-            { role: WorkspaceRole.ADMIN, userId: 'freeUser' },
-          ],
-        },
+      {
+        role: WorkspaceRole.ADMIN,
+        userId,
+        workspaceId: starterWorkspaceId,
       },
-    },
+      {
+        role: WorkspaceRole.ADMIN,
+        userId,
+        workspaceId: proWorkspaceId,
+      },
+      {
+        role: WorkspaceRole.ADMIN,
+        userId,
+        workspaceId: lifetimeWorkspaceId,
+      },
+    ],
   })
 }
 
@@ -173,12 +215,12 @@ export const getSignedInUser = (email: string) =>
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   await prisma.typebot.createMany({
-    data: partialTypebots.map(parseTestTypebot) as any[],
+    data: partialTypebots.map(parseTestTypebot),
   })
   return prisma.publicTypebot.createMany({
     data: partialTypebots.map((t) =>
       parseTypebotToPublicTypebot(t.id + '-public', parseTestTypebot(t))
-    ) as any[],
+    ),
   })
 }
 
@@ -217,43 +259,11 @@ export const updateUser = (data: Partial<User>) =>
   prisma.user.update({
     data,
     where: {
-      id: 'proUser',
+      id: userId,
     },
   })
 
-export const createResults = async ({ typebotId }: { typebotId: string }) => {
-  await prisma.result.deleteMany()
-  await prisma.result.createMany({
-    data: [
-      ...Array.from(Array(200)).map((_, idx) => {
-        const today = new Date()
-        const rand = Math.random()
-        return {
-          id: `result${idx}`,
-          typebotId,
-          createdAt: new Date(
-            today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx)
-          ),
-          isCompleted: rand > 0.5,
-        }
-      }),
-    ],
-  })
-  return createAnswers()
-}
-
-const createAnswers = () => {
-  return prisma.answer.createMany({
-    data: [
-      ...Array.from(Array(200)).map((_, idx) => ({
-        resultId: `result${idx}`,
-        content: `content${idx}`,
-        blockId: 'block1',
-        groupId: 'block1',
-      })),
-    ],
-  })
-}
+export const createResults = createFakeResults(prisma)
 
 export const createFolder = (workspaceId: string, name: string) =>
   prisma.dashboardFolder.create({
@@ -352,6 +362,6 @@ export const importTypebotInDatabase = async (
     data: parseTypebotToPublicTypebot(
       updates?.id ? `${updates?.id}-public` : 'publicBot',
       typebot
-    ) as any,
+    ),
   })
 }

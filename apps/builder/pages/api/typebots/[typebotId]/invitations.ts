@@ -4,7 +4,7 @@ import { CollaborationType, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
-import { sendEmailNotification } from 'services/api/emails'
+import { sendEmailNotification } from 'utils'
 import { getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
@@ -29,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const typebot = await prisma.typebot.findFirst({
       where: canWriteTypebot(typebotId, user),
+      include: { workspace: { select: { name: true } } },
     })
     if (!typebot || !typebot.workspaceId) return forbidden(res)
     const { email, type } =
@@ -70,10 +71,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await sendEmailNotification({
         to: email,
         subject: "You've been invited to collaborate 🤝",
-        content: invitationToCollaborate(
-          user.email ?? '',
-          `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`
-        ),
+        html: invitationToCollaborate({
+          hostEmail: user.email ?? '',
+          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
+          guestEmail: email.toLowerCase(),
+          typebotName: typebot.name,
+          workspaceName: typebot.workspace?.name ?? '',
+        }),
       })
     return res.send({
       message: 'success',

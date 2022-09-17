@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { Workspace } from 'db'
+import { Plan, Workspace } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
@@ -22,7 +22,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         ...data,
         members: { create: [{ role: 'ADMIN', userId: user.id }] },
-        plan: process.env.ADMIN_EMAIL === user.email ? 'TEAM' : 'FREE',
+        plan:
+          process.env.ADMIN_EMAIL === user.email ? Plan.LIFETIME : Plan.FREE,
       },
     })
     return res.status(200).json({

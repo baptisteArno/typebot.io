@@ -1,1 +1,0 @@
-export { UpgradeModal } from './UpgradeModal'

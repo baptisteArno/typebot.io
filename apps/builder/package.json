@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "pnpm playwright test",
-    "test:open": "PWDEBUG=1 pnpm playwright test"
+    "test:open": "NO_RETRIES=1 pnpm playwright test --debug"
   },
   "dependencies": {
     "@chakra-ui/css-reset": "2.0.7",

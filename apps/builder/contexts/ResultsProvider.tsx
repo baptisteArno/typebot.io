@@ -15,7 +15,6 @@ const resultsContext = createContext<{
   hasMore: boolean
   resultHeader: ResultHeaderCell[]
   totalResults: number
-  totalHiddenResults?: number
   tableData: TableData[]
   onDeleteResults: (totalResultsDeleted: number) => void
   fetchMore: () => void
@@ -33,14 +32,12 @@ export const ResultsProvider = ({
   workspaceId,
   typebotId,
   totalResults,
-  totalHiddenResults,
   onDeleteResults,
 }: {
   children: ReactNode
   workspaceId: string
   typebotId: string
   totalResults: number
-  totalHiddenResults?: number
   onDeleteResults: (totalResultsDeleted: number) => void
 }) => {
   const { publishedTypebot, linkedTypebots } = useTypebot()
@@ -84,7 +81,6 @@ export const ResultsProvider = ({
         tableData,
         resultHeader,
         totalResults,
-        totalHiddenResults,
         onDeleteResults,
         fetchMore,
         mutate,

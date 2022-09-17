@@ -13,11 +13,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let storageUsed = 0
     if (uploadedFiles && answer.content.includes('http')) {
       const fileUrls = answer.content.split(', ')
-      for (const url of fileUrls) {
-        const { headers } = await got(url)
-        const size = headers['content-length']
-        if (isNotDefined(size)) return
-        storageUsed += parseInt(size, 10)
+      const hasReachedStorageLimit = fileUrls[0] === null
+      if (!hasReachedStorageLimit) {
+        for (const url of fileUrls) {
+          const { headers } = await got(url)
+          const size = headers['content-length']
+          if (isNotDefined(size)) return
+          storageUsed += parseInt(size, 10)
+        }
       }
     }
     const result = await prisma.answer.upsert({
