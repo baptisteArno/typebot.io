@@ -29,7 +29,7 @@ export const UploadButton = ({
         },
       ],
     })
-    if (urls.length) onFileUploaded(urls[0])
+    if (urls.length && urls[0]) onFileUploaded(urls[0])
     setIsUploading(false)
   }
 

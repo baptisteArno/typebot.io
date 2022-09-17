@@ -2,7 +2,7 @@ import { HStack, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react'
 import { UnlockPlanInfo } from 'components/shared/Info'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { Plan, WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from 'db'
 import React from 'react'
 import {
   deleteInvitation,
@@ -13,6 +13,7 @@ import {
   useMembers,
 } from 'services/workspace'
 import { AddMemberForm } from './AddMemberForm'
+import { checkCanInviteMember } from './helpers'
 import { MemberItem } from './MemberItem'
 
 export const MembersList = () => {
@@ -78,14 +79,19 @@ export const MembersList = () => {
     })
   }
 
+  const canInviteNewMember = checkCanInviteMember({
+    plan: workspace?.plan,
+    currentMembersCount: [...(members ?? []), ...(invitations ?? [])].length,
+  })
+
   return (
-    <Stack w="full">
-      {workspace?.plan !== Plan.TEAM && (
+    <Stack w="full" gap="3">
+      {!canInviteNewMember && (
         <UnlockPlanInfo
-          contentLabel={
-            'Upgrade to team plan for a collaborative workspace, unlimited team members, and advanced permissions.'
-          }
-          plan={Plan.TEAM}
+          contentLabel={`
+          Upgrade your plan to work with more team members, and unlock awesome
+          power features 🚀
+        `}
         />
       )}
       {workspace?.id && canEdit && (
@@ -94,7 +100,7 @@ export const MembersList = () => {
           onNewInvitation={handleNewInvitation}
           onNewMember={handleNewMember}
           isLoading={isLoading}
-          isLocked={workspace.plan !== Plan.TEAM}
+          isLocked={!canInviteNewMember}
         />
       )}
       {members?.map((member) => (

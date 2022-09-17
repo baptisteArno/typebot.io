@@ -119,3 +119,6 @@ export const timeSince = (date: string) => {
 
 export const isCloudProdInstance = () =>
   typeof window !== 'undefined' && window.location.hostname === 'app.typebot.io'
+
+export const numberWithCommas = (x: number) =>
+  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

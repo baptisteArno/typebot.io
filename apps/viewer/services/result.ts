@@ -2,7 +2,7 @@ import { Result } from 'db'
 import { sendRequest } from 'utils'
 
 export const createResult = async (typebotId: string) => {
-  return sendRequest<Result>({
+  return sendRequest<{ result: Result; hasReachedLimit: boolean }>({
     url: `/api/typebots/${typebotId}/results`,
     method: 'POST',
   })

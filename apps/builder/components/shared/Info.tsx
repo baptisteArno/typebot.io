@@ -7,10 +7,9 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Plan } from 'db'
 import React from 'react'
-import { UpgradeModal } from './modals/UpgradeModal'
-import { LimitReached } from './modals/UpgradeModal/UpgradeModal'
+import { ChangePlanModal } from './modals/ChangePlanModal'
+import { LimitReached } from './modals/ChangePlanModal'
 
 export const Info = (props: AlertProps) => (
   <Alert status="info" bgColor={'blue.50'} rounded="md" {...props}>
@@ -27,30 +26,34 @@ export const UnlockPlanInfo = ({
   contentLabel,
   buttonLabel = 'More info',
   type,
-  plan = Plan.PRO,
+  ...props
 }: {
-  contentLabel: string
+  contentLabel: React.ReactNode
   buttonLabel?: string
   type?: LimitReached
-  plan: Plan
-}) => {
+} & AlertProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Alert
       status="info"
-      bgColor={'blue.50'}
       rounded="md"
       justifyContent="space-between"
       flexShrink={0}
+      {...props}
     >
       <HStack>
         <AlertIcon />
         <Text>{contentLabel}</Text>
       </HStack>
-      <Button colorScheme="blue" onClick={onOpen} flexShrink={0} ml="2">
+      <Button
+        colorScheme={props.status === 'warning' ? 'orange' : 'blue'}
+        onClick={onOpen}
+        flexShrink={0}
+        ml="2"
+      >
         {buttonLabel}
       </Button>
-      <UpgradeModal isOpen={isOpen} onClose={onClose} type={type} plan={plan} />
+      <ChangePlanModal isOpen={isOpen} onClose={onClose} type={type} />
     </Alert>
   )
 }

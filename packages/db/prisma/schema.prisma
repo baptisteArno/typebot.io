@@ -78,6 +78,12 @@ model Workspace {
   members       MemberInWorkspace[]
   typebots      Typebot[]
   invitations   WorkspaceInvitation[]
+  additionalChatsIndex Int @default(0)
+  additionalStorageIndex Int @default(0)
+  chatsLimitFirstEmailSentAt DateTime?
+  storageLimitFirstEmailSentAt DateTime?
+  chatsLimitSecondEmailSentAt DateTime?
+  storageLimitSecondEmailSentAt DateTime?
 }
 
 model MemberInWorkspace {
@@ -267,8 +273,8 @@ enum GraphNavigation {
 
 enum Plan {
   FREE
+  STARTER
   PRO
-  TEAM
   LIFETIME
   OFFERED
 }

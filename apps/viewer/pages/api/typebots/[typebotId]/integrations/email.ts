@@ -25,7 +25,7 @@ import {
   saveSuccessLog,
 } from 'services/api/utils'
 import Mail from 'nodemailer/lib/mailer'
-import { newLeadEmailContent } from 'assets/newLeadEmailContent'
+import { newLeadEmailContent } from 'assets/emails/newLeadEmailContent'
 
 const cors = initMiddleware(Cors())
 

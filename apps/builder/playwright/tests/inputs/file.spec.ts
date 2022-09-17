@@ -8,9 +8,6 @@ import { defaultFileInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.configure({ mode: 'parallel' })
 
@@ -61,9 +58,6 @@ test('options should work', async ({ page }) => {
 })
 
 test.describe('Free workspace', () => {
-  test.use({
-    storageState: path.join(__dirname, '../../freeUser.json'),
-  })
   test("shouldn't be able to publish typebot", async ({ page }) => {
     const typebotId = cuid()
     await createTypebots([

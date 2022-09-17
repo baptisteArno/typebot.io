@@ -80,6 +80,11 @@ const components = {
       },
     },
   },
+  Tooltip: {
+    baseStyle: {
+      borderRadius: 'md',
+    },
+  },
   Link: {
     baseStyle: {
       _hover: { textDecoration: 'none' },

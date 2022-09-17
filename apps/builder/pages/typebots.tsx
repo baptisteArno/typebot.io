@@ -5,10 +5,11 @@ import { FolderContent } from 'components/dashboard/FolderContent'
 import { TypebotDndContext } from 'contexts/TypebotDndContext'
 import { useRouter } from 'next/router'
 import { Spinner, Stack, Text, VStack } from '@chakra-ui/react'
-import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
 import { NextPageContext } from 'next/types'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
+import { pay } from 'components/shared/ChangePlanForm/queries/updatePlan'
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,16 +18,15 @@ const DashboardPage = () => {
   const { workspace } = useWorkspace()
 
   useEffect(() => {
-    const subscribePlan = query.subscribePlan as 'pro' | 'team' | undefined
+    const subscribePlan = query.subscribePlan as 'pro' | 'starter' | undefined
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
       pay({
         user,
-        plan: subscribePlan,
+        plan: subscribePlan === 'pro' ? Plan.PRO : Plan.STARTER,
         workspaceId: workspace.id,
-        currency: navigator.languages.find((l) => l.includes('fr'))
-          ? 'eur'
-          : 'usd',
+        additionalChats: 0,
+        additionalStorage: 0,
       })
     }
   }, [query, user, workspace])

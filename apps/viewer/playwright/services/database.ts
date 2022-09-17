@@ -8,51 +8,88 @@ import {
   Typebot,
   Webhook,
 } from 'models'
-import { Plan, PrismaClient, WorkspaceRole } from 'db'
+import { GraphNavigation, Plan, PrismaClient, WorkspaceRole } from 'db'
 import { readFileSync } from 'fs'
-import { encrypt } from 'utils'
+import { createFakeResults, encrypt } from 'utils'
 
 const prisma = new PrismaClient()
 
-const proWorkspaceId = 'proWorkspaceViewer'
+const userId = 'userId'
+export const freeWorkspaceId = 'freeWorkspace'
+export const starterWorkspaceId = 'starterWorkspace'
 
 export const teardownDatabase = async () => {
-  try {
-    await prisma.workspace.deleteMany({
-      where: { members: { some: { userId: { in: ['proUser'] } } } },
-    })
-    await prisma.user.deleteMany({
-      where: { id: { in: ['proUser'] } },
-    })
-  } catch (err) {
-    console.error(err)
-  }
-  return
+  await prisma.workspace.deleteMany({
+    where: {
+      members: {
+        some: { userId },
+      },
+    },
+  })
+  await prisma.user.deleteMany({
+    where: { id: userId },
+  })
+  return prisma.webhook.deleteMany()
 }
 
-export const setupDatabase = () => createUser()
+export const setupDatabase = async () => {
+  await createWorkspaces()
+  await createUser()
+}
 
-export const createUser = () =>
-  prisma.user.create({
+export const createWorkspaces = async () =>
+  prisma.workspace.createMany({
+    data: [
+      {
+        id: freeWorkspaceId,
+        name: 'Free workspace',
+        plan: Plan.FREE,
+      },
+      {
+        id: starterWorkspaceId,
+        name: 'Starter workspace',
+        plan: Plan.STARTER,
+      },
+    ],
+  })
+
+export const createUser = async () => {
+  await prisma.user.create({
     data: {
-      id: 'proUser',
+      id: userId,
       email: 'user@email.com',
-      name: 'User',
-      apiTokens: { create: { token: 'userToken', name: 'default' } },
-      workspaces: {
-        create: {
-          role: WorkspaceRole.ADMIN,
-          workspace: {
-            create: {
-              id: proWorkspaceId,
-              name: 'Pro workspace',
-              plan: Plan.PRO,
+      name: 'John Doe',
+      graphNavigation: GraphNavigation.TRACKPAD,
+      apiTokens: {
+        createMany: {
+          data: [
+            {
+              name: 'Token 1',
+              token: 'jirowjgrwGREHEtoken1',
+              createdAt: new Date(2022, 1, 1),
             },
-          },
+            {
+              name: 'Github',
+              token: 'jirowjgrwGREHEgdrgithub',
+              createdAt: new Date(2022, 1, 2),
+            },
+            {
+              name: 'N8n',
+              token: 'jirowjgrwGREHrgwhrwn8n',
+              createdAt: new Date(2022, 1, 3),
+            },
+          ],
         },
       },
     },
   })
+  await prisma.memberInWorkspace.createMany({
+    data: [
+      { role: WorkspaceRole.ADMIN, userId, workspaceId: freeWorkspaceId },
+      { role: WorkspaceRole.ADMIN, userId, workspaceId: starterWorkspaceId },
+    ],
+  })
+}
 
 export const createWebhook = (typebotId: string, webhook?: Partial<Webhook>) =>
   prisma.webhook.create({
@@ -66,12 +103,12 @@ export const createWebhook = (typebotId: string, webhook?: Partial<Webhook>) =>
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   await prisma.typebot.createMany({
-    data: partialTypebots.map(parseTestTypebot) as any[],
+    data: partialTypebots.map(parseTestTypebot),
   })
   return prisma.publicTypebot.createMany({
     data: partialTypebots.map((t) =>
       parseTypebotToPublicTypebot(t.id + '-published', parseTestTypebot(t))
-    ) as any[],
+    ),
   })
 }
 
@@ -107,7 +144,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   id: partialTypebot.id ?? 'typebot',
   folderId: null,
   name: 'My typebot',
-  workspaceId: proWorkspaceId,
+  workspaceId: freeWorkspaceId,
   icon: null,
   theme: defaultTheme,
   settings: defaultSettings,
@@ -170,7 +207,7 @@ export const importTypebotInDatabase = async (
   const typebot: Typebot = {
     ...JSON.parse(readFileSync(path).toString()),
     ...updates,
-    workspaceId: proWorkspaceId,
+    workspaceId: starterWorkspaceId,
   }
   await prisma.typebot.create({
     data: typebot,
@@ -183,39 +220,7 @@ export const importTypebotInDatabase = async (
   })
 }
 
-export const createResults = async ({ typebotId }: { typebotId: string }) => {
-  await prisma.result.deleteMany()
-  await prisma.result.createMany({
-    data: [
-      ...Array.from(Array(200)).map((_, idx) => {
-        const today = new Date()
-        const rand = Math.random()
-        return {
-          id: `result${idx}`,
-          typebotId,
-          createdAt: new Date(
-            today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx)
-          ),
-          isCompleted: rand > 0.5,
-        }
-      }),
-    ],
-  })
-  return createAnswers()
-}
-
-const createAnswers = () => {
-  return prisma.answer.createMany({
-    data: [
-      ...Array.from(Array(200)).map((_, idx) => ({
-        resultId: `result${idx}`,
-        content: `content${idx}`,
-        blockId: 'block1',
-        groupId: 'group1',
-      })),
-    ],
-  })
-}
+export const createResults = createFakeResults(prisma)
 
 export const createSmtpCredentials = (
   id: string,
@@ -229,7 +234,7 @@ export const createSmtpCredentials = (
       iv,
       name: smtpData.from.email as string,
       type: CredentialsType.SMTP,
-      workspaceId: proWorkspaceId,
+      workspaceId: freeWorkspaceId,
     },
   })
 }

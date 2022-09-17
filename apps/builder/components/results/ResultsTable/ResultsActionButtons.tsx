@@ -38,7 +38,6 @@ export const ResultsActionButtons = ({
     resultHeader,
     mutate,
     totalResults,
-    totalHiddenResults,
     tableData,
     onDeleteResults,
   } = useResults()
@@ -57,7 +56,7 @@ export const ResultsActionButtons = ({
 
   const totalSelected =
     selectedResultsId.length > 0 && selectedResultsId.length === results?.length
-      ? totalResults - (totalHiddenResults ?? 0)
+      ? totalResults
       : selectedResultsId.length
 
   const deleteResults = async () => {
@@ -87,9 +86,7 @@ export const ResultsActionButtons = ({
 
   const exportResultsToCSV = async () => {
     setIsExportLoading(true)
-    const isSelectAll =
-      totalSelected === 0 ||
-      totalSelected === totalResults - (totalHiddenResults ?? 0)
+    const isSelectAll = totalSelected === 0 || totalSelected === totalResults
 
     const dataToUnparse = isSelectAll
       ? await getAllTableData()

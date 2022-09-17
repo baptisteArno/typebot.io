@@ -12,6 +12,7 @@ import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
 import { env, isNotEmpty } from 'utils'
+import { mockedUser } from 'services/api/utils'
 
 const providers: Provider[] = []
 
@@ -98,6 +99,14 @@ if (
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  if (
+    req.method === 'GET' &&
+    req.url === '/api/auth/session' &&
+    env('E2E_TEST') === 'true'
+  ) {
+    res.send({ user: mockedUser })
+    return
+  }
   if (req.method === 'HEAD') {
     res.status(200)
     return

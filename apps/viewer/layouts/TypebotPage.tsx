@@ -65,12 +65,14 @@ export const TypebotPage = ({
     const resultIdFromSession = getExistingResultFromSession()
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
-      const { error, data: result } = await createResult(typebot.typebotId)
+      const { error, data } = await createResult(typebot.typebotId)
       if (error) return setError(error)
-      if (result) {
-        setResultId(result.id)
+      if (data?.hasReachedLimit)
+        return setError(new Error('This bot is now closed.'))
+      if (data?.result) {
+        setResultId(data.result.id)
         if (typebot.settings.general.isNewResultOnRefreshEnabled !== true)
-          setResultInSession(result.id)
+          setResultInSession(data.result.id)
       }
     }
   }

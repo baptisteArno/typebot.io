@@ -98,6 +98,12 @@ const components = {
       },
     },
   },
+  Tooltip: {
+    defaultProps: {
+      rounded: 'md',
+      hasArrow: true,
+    },
+  },
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

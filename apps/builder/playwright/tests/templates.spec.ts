@@ -1,9 +1,6 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { mockSessionApiCalls } from 'playwright/services/browser'
 import { typebotViewer } from '../services/selectorUtils'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test.describe.parallel('Templates page', () => {
   test('From scratch should create a blank typebot', async ({ page }) => {
