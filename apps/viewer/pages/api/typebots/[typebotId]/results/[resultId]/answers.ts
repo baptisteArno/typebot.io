@@ -3,7 +3,8 @@ import { Answer } from 'db'
 import { got } from 'got'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isNotDefined, methodNotAllowed } from 'utils'
+import { isNotDefined } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {

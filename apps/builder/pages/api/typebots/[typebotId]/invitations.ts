@@ -4,15 +4,15 @@ import { CollaborationType, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
-import { sendEmailNotification } from 'utils'
-import { getAuthenticatedUser } from 'services/api/utils'
 import {
+  sendEmailNotification,
   badRequest,
-  env,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils'
+} from 'utils/api'
+import { getAuthenticatedUser } from 'services/api/utils'
+import { env } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -4,7 +4,7 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils'
+} from 'utils/api'
 import Stripe from 'stripe'
 import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'

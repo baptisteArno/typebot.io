@@ -3,15 +3,14 @@ import { workspaceMemberInvitationEmail } from 'assets/emails/workspaceMemberInv
 import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { sendEmailNotification } from 'utils'
-import { getAuthenticatedUser } from 'services/api/utils'
 import {
-  env,
+  sendEmailNotification,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-  seatsLimit,
-} from 'utils'
+} from 'utils/api'
+import { getAuthenticatedUser } from 'services/api/utils'
+import { env, seatsLimit } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

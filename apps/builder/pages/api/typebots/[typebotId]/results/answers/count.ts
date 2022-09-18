@@ -1,7 +1,7 @@
 import { PublicTypebot } from 'models'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notAuthenticated } from 'utils'
+import { methodNotAllowed, notAuthenticated } from 'utils/api'
 import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { canReadTypebot } from 'services/api/dbRules'

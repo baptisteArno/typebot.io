@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "dx": "pnpm dev",
     "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3000",
     "build": "next build",
     "start": "next start",
@@ -108,6 +107,7 @@
     "eslint-config-next": "12.3.0",
     "eslint-plugin-react": "^7.31.8",
     "models": "workspace:*",
+    "next-transpile-modules": "^9.0.0",
     "typescript": "^4.8.3",
     "utils": "workspace:*"
   }

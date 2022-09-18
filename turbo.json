@@ -13,12 +13,9 @@
       "outputs": []
     },
     "dev": {
-      "cache": false
+      "dependsOn": ["^dev"]
     },
     "db#build": {
-      "cache": false
-    },
-    "dx": {
       "cache": false
     }
   }

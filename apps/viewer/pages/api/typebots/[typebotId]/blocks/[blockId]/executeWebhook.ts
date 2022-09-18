@@ -15,14 +15,8 @@ import {
 import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import {
-  byId,
-  initMiddleware,
-  methodNotAllowed,
-  notFound,
-  omit,
-  parseAnswers,
-} from 'utils'
+import { byId, omit, parseAnswers } from 'utils'
+import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
 import { stringify } from 'qs'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'

@@ -13,14 +13,14 @@
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
     "aos": "^2.3.4",
-    "bot-engine": "*",
+    "bot-engine": "workspace:*",
     "focus-visible": "^5.2.0",
     "framer-motion": "7.3.2",
-    "models": "*",
+    "models": "workspace:*",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "utils": "*"
+    "utils": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "7.19.0",
@@ -36,6 +36,7 @@
     "eslint": "8.23.0",
     "eslint-config-next": "12.3.0",
     "eslint-plugin-react": "^7.31.8",
+    "next-transpile-modules": "^9.0.0",
     "postcss": "8.4.16",
     "prettier": "2.7.1",
     "typescript": "^4.8.3"

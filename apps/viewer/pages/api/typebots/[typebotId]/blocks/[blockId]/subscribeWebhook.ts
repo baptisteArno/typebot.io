@@ -3,7 +3,8 @@ import prisma from 'libs/prisma'
 import { Typebot, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { byId, methodNotAllowed } from 'utils'
+import { byId } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await authenticateUser(req)

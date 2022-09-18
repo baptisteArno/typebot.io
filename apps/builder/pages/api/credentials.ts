@@ -5,11 +5,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
-  encrypt,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils'
+  encrypt,
+} from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

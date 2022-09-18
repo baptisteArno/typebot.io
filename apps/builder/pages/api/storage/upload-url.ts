@@ -6,7 +6,7 @@ import {
   generatePresignedUrl,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils'
+} from 'utils/api'
 
 const handler = async (
   req: NextApiRequest,

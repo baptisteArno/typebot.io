@@ -4,7 +4,7 @@ import { defaultWebhookAttributes } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { forbidden, methodNotAllowed, notAuthenticated } from 'utils'
+import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

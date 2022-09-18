@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
+const withTM = require('next-transpile-modules')(['utils', 'models'])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,6 +16,8 @@ const sentryWebpackPluginOptions = {
   silent: true,
 }
 
-module.exports = process.env.SENTRY_AUTH_TOKEN
-  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
-  : nextConfig
+module.exports = withTM(
+  process.env.SENTRY_AUTH_TOKEN
+    ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+    : nextConfig
+)

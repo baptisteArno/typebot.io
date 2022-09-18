@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { isDefined } from 'utils'
 import {
   badRequest,
   forbidden,
-  isDefined,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils'
+} from 'utils/api'
 import Stripe from 'stripe'
 import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'

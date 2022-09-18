@@ -1,7 +1,8 @@
 import { Credentials as CredentialsFromDb } from 'db'
 import { OAuth2Client, Credentials } from 'google-auth-library'
 import { GoogleSheetsCredentialsData } from 'models'
-import { decrypt, encrypt, isDefined } from 'utils'
+import { isDefined } from 'utils'
+import { decrypt, encrypt } from 'utils/api'
 import prisma from './prisma'
 
 export const getAuthenticatedGoogleClient = async (

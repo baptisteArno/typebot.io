@@ -1,7 +1,8 @@
 import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiResponse } from 'next'
-import { env, forbidden, isNotEmpty } from 'utils'
+import { env, isNotEmpty } from 'utils'
+import { forbidden } from 'utils/api'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,

@@ -4,7 +4,7 @@ import { Stats } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { methodNotAllowed, notAuthenticated } from 'utils'
+import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
