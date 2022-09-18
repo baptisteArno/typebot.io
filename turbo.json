@@ -3,7 +3,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**", "build/**"]
+      "outputs": [".next/**", "dist/**", "build/**"],
+      "outputMode": "new-only"
     },
     "test": {
       "dependsOn": [],
@@ -14,9 +15,6 @@
     },
     "dev": {
       "dependsOn": ["^dev"]
-    },
-    "db#build": {
-      "cache": false
     }
   }
 }
