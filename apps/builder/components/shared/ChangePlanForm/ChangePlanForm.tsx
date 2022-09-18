@@ -60,16 +60,7 @@ export const ChangePlanForm = () => {
 
   return (
     <Stack spacing={4}>
-      <HStack
-        alignItems="stretch"
-        spacing="4"
-        w="full"
-        pt={
-          workspace?.plan === Plan.STARTER || workspace?.plan === Plan.PRO
-            ? '10'
-            : '0'
-        }
-      >
+      <HStack alignItems="stretch" spacing="4" w="full">
         <StarterPlanContent
           initialChatsLimitIndex={
             workspace?.plan === Plan.STARTER ? data?.additionalChatsIndex : 0

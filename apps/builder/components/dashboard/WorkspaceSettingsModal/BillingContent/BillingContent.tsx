@@ -13,21 +13,23 @@ export const BillingContent = () => {
   if (!workspace) return null
   return (
     <Stack spacing="10" w="full">
-      <CurrentSubscriptionContent
-        plan={workspace.plan}
-        stripeId={workspace.stripeId}
-        onCancelSuccess={() =>
-          refreshWorkspace({
-            plan: Plan.FREE,
-            additionalChatsIndex: 0,
-            additionalStorageIndex: 0,
-          })
-        }
-      />
       <UsageContent workspace={workspace} />
-      {workspace.plan !== Plan.LIFETIME && workspace.plan !== Plan.OFFERED && (
-        <ChangePlanForm />
-      )}
+      <Stack gap="2">
+        <CurrentSubscriptionContent
+          plan={workspace.plan}
+          stripeId={workspace.stripeId}
+          onCancelSuccess={() =>
+            refreshWorkspace({
+              plan: Plan.FREE,
+              additionalChatsIndex: 0,
+              additionalStorageIndex: 0,
+            })
+          }
+        />
+        {workspace.plan !== Plan.LIFETIME &&
+          workspace.plan !== Plan.OFFERED && <ChangePlanForm />}
+      </Stack>
+
       {workspace.stripeId && <InvoicesList workspace={workspace} />}
     </Stack>
   )

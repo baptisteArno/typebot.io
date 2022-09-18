@@ -13,7 +13,7 @@ import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
 
 export interface PricingCardData {
-  features: string[]
+  features: React.ReactNode[]
   name: string
   price: string
   featureLabel?: string
@@ -23,10 +23,16 @@ interface PricingCardProps extends CardProps {
   data: PricingCardData
   icon?: JSX.Element
   button: React.ReactElement
+  isMostPopular?: boolean
 }
 
-export const PricingCard = (props: PricingCardProps) => {
-  const { data, icon, button, ...rest } = props
+export const PricingCard = ({
+  data,
+  icon,
+  button,
+  isMostPopular,
+  ...rest
+}: PricingCardProps) => {
   const { features, price, name } = data
   const accentColor = useColorModeValue('blue.500', 'white')
 
@@ -62,7 +68,12 @@ export const PricingCard = (props: PricingCardProps) => {
               <Text fontWeight="bold">{data.featureLabel}</Text>
             )}
             {features.map((feature, index) => (
-              <ListItem fontWeight="medium" key={index}>
+              <ListItem
+                fontWeight="medium"
+                key={index}
+                display="flex"
+                alignItems="center"
+              >
                 <ListIcon
                   fontSize="xl"
                   as={CheckCircleIcon}

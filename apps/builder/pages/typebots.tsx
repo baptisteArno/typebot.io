@@ -18,12 +18,12 @@ const DashboardPage = () => {
   const { workspace } = useWorkspace()
 
   useEffect(() => {
-    const subscribePlan = query.subscribePlan as 'pro' | 'starter' | undefined
+    const subscribePlan = query.subscribePlan as Plan | undefined
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
       pay({
         user,
-        plan: subscribePlan === 'pro' ? Plan.PRO : Plan.STARTER,
+        plan: subscribePlan,
         workspaceId: workspace.id,
         additionalChats: 0,
         additionalStorage: 0,

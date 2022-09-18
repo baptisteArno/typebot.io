@@ -5,6 +5,7 @@
   "unpkg": "dist/index.umd.min.js",
   "license": "AGPL-3.0-or-later",
   "scripts": {
+    "dev": "pnpm rollup -c --watch",
     "build": "pnpm lint && rollup -c",
     "lint": "eslint src --ext .ts && eslint tests --ext .ts",
     "test": "pnpm jest"
