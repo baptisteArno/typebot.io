@@ -23,10 +23,11 @@ import {
   getStorageLimit,
   storageLimit,
   parseNumberWithCommas,
+  formatPrice,
+  computePrice,
 } from 'utils'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 import { FeaturesList } from './components/FeaturesList'
-import { computePrice, formatPrice } from './helpers'
 
 type ProPlanContentProps = {
   initialChatsLimitIndex?: number
@@ -72,8 +73,6 @@ export const ProPlanContent = ({
     ? getStorageLimit(workspace)
     : undefined
 
-  console.log('workspaceChatsLimit', workspaceChatsLimit)
-  console.log('workspaceStorageLimit', workspace)
   const isCurrentPlan =
     chatsLimit[Plan.PRO].totalIncluded +
       chatsLimit[Plan.PRO].increaseStep.amount *

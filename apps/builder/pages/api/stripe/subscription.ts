@@ -155,7 +155,6 @@ const updateSubscription = async (req: NextApiRequest) => {
         }
       : undefined,
   ].filter(isDefined)
-  console.log(items)
   await stripe.subscriptions.update(subscription.id, {
     items,
   })
@@ -171,7 +170,6 @@ const updateSubscription = async (req: NextApiRequest) => {
 
 const cancelSubscription =
   (req: NextApiRequest, res: NextApiResponse) => async (userId: string) => {
-    console.log(req.query.stripeId, userId)
     const stripeId = req.query.stripeId as string | undefined
     if (!stripeId) return badRequest(res)
     if (!process.env.STRIPE_SECRET_KEY)
@@ -189,9 +187,7 @@ const cancelSubscription =
     const existingSubscription = await stripe.subscriptions.list({
       customer: workspace.stripeId,
     })
-    console.log('yes')
     await stripe.subscriptions.del(existingSubscription.data[0].id)
-    console.log('deleted')
     await prisma.workspace.update({
       where: { id: workspace.id },
       data: {

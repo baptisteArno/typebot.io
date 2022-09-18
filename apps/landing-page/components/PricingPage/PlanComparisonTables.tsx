@@ -18,16 +18,19 @@ import {
 import { CheckIcon } from 'assets/icons/CheckIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
+import { Plan } from 'db'
 import React from 'react'
 
 type Props = {
-  prices: {
-    personalPro: '$39' | '39€' | ''
-    team: '$99' | '99€' | ''
-  }
+  starterPrice: string
+  proPrice: string
 } & StackProps
 
-export const PlanComparisonTables = ({ prices, ...props }: Props) => {
+export const PlanComparisonTables = ({
+  starterPrice,
+  proPrice,
+  ...props
+}: Props) => {
   return (
     <Stack spacing="12" {...props}>
       <TableContainer>
@@ -37,39 +40,51 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               <Th fontWeight="bold" color="white" w="400px">
                 Usage
               </Th>
-              <Th>Personal</Th>
-              <Th color="orange.200">Personal Pro</Th>
-              <Th color="purple.200">Team</Th>
+              <Th>Free</Th>
+              <Th color="orange.200">Starter</Th>
+              <Th color="purple.200">Pro</Th>
             </Tr>
           </Thead>
           <Tbody>
             <Tr>
-              <Td>Forms</Td>
+              <Td>Total bots</Td>
               <Td>Unlimited</Td>
               <Td>Unlimited</Td>
               <Td>Unlimited</Td>
             </Tr>
             <Tr>
-              <Td>Form submissions</Td>
-              <Td>Unlimited</Td>
-              <Td>Unlimited</Td>
-              <Td>Unlimited</Td>
+              <Td>Chats</Td>
+              <Td>300 / month</Td>
+              <Td>2,000 / month</Td>
+              <Td>10,000 / month</Td>
+            </Tr>
+            <Tr>
+              <Td>Additional Chats</Td>
+              <Td />
+              <Td>$10 per 500</Td>
+              <Td>$10 per 1,000</Td>
+            </Tr>
+            <Tr>
+              <Td>Storage</Td>
+              <Td />
+              <Td>2 GB</Td>
+              <Td>10 GB</Td>
+            </Tr>
+            <Tr>
+              <Td>Additional Storage</Td>
+              <Td />
+              <Td>$5 per 1 GB</Td>
+              <Td>$5 per 1 GB</Td>
             </Tr>
             <Tr>
               <Td>Members</Td>
               <Td>Just you</Td>
-              <Td>Just you</Td>
-              <Td>Unlimited</Td>
+              <Td>2 seats</Td>
+              <Td>5 seats</Td>
             </Tr>
             <Tr>
               <Td>Guests</Td>
               <Td>Unlimited</Td>
-              <Td>Unlimited</Td>
-              <Td>Unlimited</Td>
-            </Tr>
-            <Tr>
-              <Td>File uploads</Td>
-              <Td>5 MB</Td>
               <Td>Unlimited</Td>
               <Td>Unlimited</Td>
             </Tr>
@@ -83,9 +98,9 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               <Th fontWeight="bold" color="white" w="400px">
                 Features
               </Th>
-              <Th>Personal</Th>
-              <Th color="orange.200">Personal Pro</Th>
-              <Th color="purple.200">Team</Th>
+              <Th>Free</Th>
+              <Th color="orange.200">Starter</Th>
+              <Th color="purple.200">Pro</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -235,12 +250,6 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               </Td>
             </Tr>
             <Tr>
-              <Td>Custom domains</Td>
-              <Td />
-              <Td>Unlimited</Td>
-              <Td>Unlimited</Td>
-            </Tr>
-            <Tr>
               <TdWithTooltip
                 text="Folders"
                 tooltip="Organize your typebots into folders"
@@ -260,17 +269,10 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               </Td>
             </Tr>
             <Tr>
-              <TdWithTooltip
-                text="Incomplete submissions"
-                tooltip="You get to see the form submission even if it was not fully completed by your user."
-              />
+              <Td>Custom domains</Td>
               <Td />
-              <Td>
-                <CheckIcon />
-              </Td>
-              <Td>
-                <CheckIcon />
-              </Td>
+              <Td />
+              <Td>Unlimited</Td>
             </Tr>
             <Tr>
               <TdWithTooltip
@@ -278,9 +280,7 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
                 tooltip="Analytics graph that shows your form drop-off rate, submission rate, and more."
               />
               <Td />
-              <Td>
-                <CheckIcon />
-              </Td>
+              <Td />
               <Td>
                 <CheckIcon />
               </Td>
@@ -295,18 +295,16 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
               <Th fontWeight="bold" color="white" w="400px">
                 Support
               </Th>
-              <Th>Personal</Th>
-              <Th color="orange.200">Personal Pro</Th>
-              <Th color="purple.200">Team</Th>
+              <Th>Free</Th>
+              <Th color="orange.200">Starter</Th>
+              <Th color="blue.200">Pro</Th>
             </Tr>
           </Thead>
           <Tbody>
             <Tr>
               <Td>Priority support</Td>
               <Td />
-              <Td>
-                <CheckIcon />
-              </Td>
+              <Td />
               <Td>
                 <CheckIcon />
               </Td>
@@ -314,9 +312,7 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
             <Tr>
               <Td>Feature request priority</Td>
               <Td />
-              <Td>
-                <CheckIcon />
-              </Td>
+              <Td />
               <Td>
                 <CheckIcon />
               </Td>
@@ -344,28 +340,27 @@ export const PlanComparisonTables = ({ prices, ...props }: Props) => {
         </Stack>
         <Stack spacing={4}>
           <Heading as="h3" size="md" color="orange.200">
-            Personal Pro
+            Starter
           </Heading>
           <Heading as="h3">
-            {prices.personalPro}{' '}
-            <chakra.span fontSize="lg">/ month</chakra.span>
+            {starterPrice} <chakra.span fontSize="lg">/ month</chakra.span>
           </Heading>
           <NextChakraLink
-            href="https://app.typebot.io/register?subscribePlan=pro"
+            href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
             _hover={{ textDecor: 'none' }}
           >
             <Button>Subscribe</Button>
           </NextChakraLink>
         </Stack>
         <Stack spacing={4}>
-          <Heading as="h3" size="md" color="purple.200">
-            Team
+          <Heading as="h3" size="md" color="blue.200">
+            Pro
           </Heading>
           <Heading as="h3">
-            {prices.team} <chakra.span fontSize="lg">/ month</chakra.span>
+            {proPrice} <chakra.span fontSize="lg">/ month</chakra.span>
           </Heading>
           <NextChakraLink
-            href="https://app.typebot.io/register?subscribePlan=team"
+            href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
             _hover={{ textDecor: 'none' }}
           >
             <Button>Subscribe</Button>

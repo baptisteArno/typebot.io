@@ -34,8 +34,6 @@ const ResultsPage = () => {
   })
   const { data: usageData } = useUsage(workspace?.id)
 
-  console.log(workspace?.id, usageData)
-
   const chatsLimitPercentage = useMemo(() => {
     if (!usageData?.totalChatsUsed || !workspace?.plan) return 0
     return Math.round(
@@ -53,7 +51,6 @@ const ResultsPage = () => {
   ])
 
   const storageLimitPercentage = useMemo(() => {
-    console.log(usageData?.totalStorageUsed)
     if (!usageData?.totalStorageUsed || !workspace?.plan) return 0
     return Math.round(
       (usageData.totalStorageUsed /

@@ -20,10 +20,11 @@ import {
   getStorageLimit,
   storageLimit,
   parseNumberWithCommas,
+  computePrice,
+  formatPrice,
 } from 'utils'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 import { FeaturesList } from './components/FeaturesList'
-import { computePrice, formatPrice } from './helpers'
 
 type StarterPlanContentProps = {
   initialChatsLimitIndex?: number

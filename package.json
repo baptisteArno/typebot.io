@@ -10,9 +10,8 @@
   "scripts": {
     "docker:up": "docker compose -f docker-compose.dev.yml up -d",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
-    "dev:prepare": "turbo run build --scope=bot-engine --no-deps --include-dependencies && turbo run build --scope=typebot-js --no-deps",
-    "dev": "pnpm docker:up && pnpm dev:prepare && NEXT_PUBLIC_E2E_TEST=false turbo run dev --filter=builder --filter=viewer --parallel --no-cache",
-    "dev:mocking": "pnpm docker:up && pnpm dev:prepare && NEXT_PUBLIC_E2E_TEST=true turbo run dev --filter=builder --filter=viewer --parallel --no-cache",
+    "dev": "pnpm docker:up && NEXT_PUBLIC_E2E_TEST=false turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
+    "dev:mocking": "pnpm docker:up && NEXT_PUBLIC_E2E_TEST=true turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
     "build": "pnpm docker:up && turbo run build",
     "build:builder": "turbo run build --filter=builder... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh",
     "build:viewer": "turbo run build --filter=viewer... && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",

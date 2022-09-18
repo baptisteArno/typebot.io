@@ -264,6 +264,7 @@ importers:
       autoprefixer: 10.4.8
       bot-engine: workspace:*
       cross-env: ^7.0.3
+      db: workspace:*
       eslint: 8.23.0
       eslint-config-next: 12.3.0
       eslint-plugin-react: ^7.31.8
@@ -285,6 +286,7 @@ importers:
       '@emotion/styled': 11.10.4_fegg7422thxjtv2g43ohoqlm7a
       aos: 2.3.4
       bot-engine: link:../../packages/bot-engine
+      db: link:../../packages/db
       focus-visible: 5.2.0
       framer-motion: 7.3.2_biqbaboplfbrettd7655fr4n2y
       models: link:../../packages/models

@@ -10,7 +10,11 @@ import {
   Box,
   Heading,
   VStack,
+  Text,
+  chakra,
+  Tooltip,
 } from '@chakra-ui/react'
+import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Footer } from 'components/common/Footer'
 import { Header } from 'components/common/Header/Header'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
@@ -20,22 +24,17 @@ import { PlanComparisonTables } from 'components/PricingPage/PlanComparisonTable
 import { PricingCard } from 'components/PricingPage/PricingCard'
 import { ActionButton } from 'components/PricingPage/PricingCard/ActionButton'
 import { useEffect, useState } from 'react'
+import { formatPrice, prices } from 'utils'
+import { Plan } from 'db'
 
 const Pricing = () => {
-  const [price, setPrice] = useState<{
-    personalPro: '$39' | '39€' | ''
-    team: '$99' | '99€' | ''
-  }>({
-    personalPro: '',
-    team: '',
-  })
+  const [starterPrice, setStarterPrice] = useState('$39')
+  const [proPrice, setProPrice] = useState('$89')
 
   useEffect(() => {
-    setPrice(
-      navigator.languages.find((l) => l.includes('fr'))
-        ? { personalPro: '39€', team: '99€' }
-        : { personalPro: '$39', team: '$99' }
-    )
+    if (typeof window === 'undefined') return
+    setStarterPrice(formatPrice(prices.STARTER))
+    setProPrice(formatPrice(prices.PRO))
   }, [])
 
   return (
@@ -54,13 +53,28 @@ const Pricing = () => {
           <Header />
         </DarkMode>
 
-        <VStack spacing={40} w="full">
+        <VStack spacing={'24'} mt={[20, 32]} w="full">
+          <Stack align="center" spacing="6">
+            <Heading fontSize="6xl">Plans fit for you</Heading>
+            <Text maxW="900px" fontSize="xl" textAlign="center">
+              Whether you're a{' '}
+              <Text as="span" color="orange.200" fontWeight="bold">
+                solo business owner
+              </Text>{' '}
+              or a{' '}
+              <Text as="span" color="blue.200" fontWeight="bold">
+                growing startup
+              </Text>
+              , Typebot is here to help you build high-performing bots for the
+              right price. Pay for as little or as much usage as you need.
+            </Text>
+          </Stack>
+
           <Stack
             direction={['column', 'row']}
             alignItems={['stretch']}
             spacing={10}
             px={[4, 0]}
-            mt={[20, 32]}
             w="full"
             maxW="1200px"
           >
@@ -70,7 +84,7 @@ const Pricing = () => {
                 name: 'Personal',
                 features: [
                   'Unlimited typebots',
-                  'Unlimited responses',
+                  '300 chats included',
                   'Native integrations',
                   'Webhooks',
                   'Custom Javascript & CSS',
@@ -87,58 +101,134 @@ const Pricing = () => {
             />
             <PricingCard
               data={{
-                price: price.personalPro,
-                name: 'Personal Pro',
+                price: starterPrice,
+                name: 'Starter',
                 featureLabel: 'Everything in Personal, plus:',
                 features: [
+                  <Text key="seats">
+                    <chakra.span fontWeight="bold">2 seats</chakra.span>{' '}
+                    included
+                  </Text>,
+                  <>
+                    <Text>
+                      <chakra.span fontWeight="bold">2,000 chats</chakra.span>{' '}
+                      included
+                    </Text>
+                    &nbsp;
+                    <Tooltip
+                      hasArrow
+                      placement="top"
+                      label="A chat is counted whenever a user starts a discussion. It is
+                  independant of the number of messages he sends and receives."
+                    >
+                      <chakra.span cursor="pointer" h="7">
+                        <HelpCircleIcon />
+                      </chakra.span>
+                    </Tooltip>
+                  </>,
+                  <>
+                    <Text>
+                      <chakra.span fontWeight="bold">2 GB chats</chakra.span>{' '}
+                      included
+                    </Text>
+                    &nbsp;
+                    <Tooltip
+                      hasArrow
+                      placement="top"
+                      label="You accumulate storage for every file that your user upload
+                      into your bot. If you delete the result, it will free up the
+                      space."
+                    >
+                      <chakra.span cursor="pointer" h="7">
+                        <HelpCircleIcon />
+                      </chakra.span>
+                    </Tooltip>
+                  </>,
                   'Branding removed',
-                  'View incomplete submissions',
-                  'In-depth drop off analytics',
-                  'Custom domains',
-                  'Organize typebots in folders',
-                  'File upload input',
+                  'Collect files from users',
+                  'Create folders',
                 ],
               }}
-              borderWidth="3px"
+              borderWidth="1px"
               borderColor="orange.200"
               button={
                 <NextChakraLink
-                  href="https://app.typebot.io/register?subscribePlan=pro"
-                  _hover={{ textDecor: 'none' }}
-                >
-                  <ActionButton colorScheme="orange">
-                    Subscribe now
-                  </ActionButton>
-                </NextChakraLink>
-              }
-            />
-            <PricingCard
-              data={{
-                price: price.team,
-                name: 'Team',
-                featureLabel: 'Everything in Pro, plus:',
-                features: [
-                  'Unlimited team members',
-                  'Collaborative workspace',
-                  'Custom roles',
-                ],
-              }}
-              borderWidth="3px"
-              borderColor="purple.200"
-              button={
-                <NextChakraLink
-                  href="https://app.typebot.io/register?subscribePlan=team"
+                  href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
                   _hover={{ textDecor: 'none' }}
                 >
                   <ActionButton>Subscribe now</ActionButton>
                 </NextChakraLink>
               }
             />
+            <PricingCard
+              data={{
+                price: proPrice,
+                name: 'Pro',
+                featureLabel: 'Everything in Starter, plus:',
+                features: [
+                  <Text key="seats">
+                    <chakra.span fontWeight="bold">5 seats</chakra.span>{' '}
+                    included
+                  </Text>,
+                  <>
+                    <Text>
+                      <chakra.span fontWeight="bold">10,000 chats</chakra.span>{' '}
+                      included
+                    </Text>
+                    &nbsp;
+                    <Tooltip
+                      hasArrow
+                      placement="top"
+                      label="A chat is counted whenever a user starts a discussion. It is
+                  independant of the number of messages he sends and receives."
+                    >
+                      <chakra.span cursor="pointer" h="7">
+                        <HelpCircleIcon />
+                      </chakra.span>
+                    </Tooltip>
+                  </>,
+                  <>
+                    <Text>
+                      <chakra.span fontWeight="bold">10 GB chats</chakra.span>{' '}
+                      included
+                    </Text>
+                    &nbsp;
+                    <Tooltip
+                      hasArrow
+                      placement="top"
+                      label="You accumulate storage for every file that your user upload
+                      into your bot. If you delete the result, it will free up the
+                      space."
+                    >
+                      <chakra.span cursor="pointer" h="7">
+                        <HelpCircleIcon />
+                      </chakra.span>
+                    </Tooltip>
+                  </>,
+                  'Custom domains',
+                  'In-depth analytics',
+                ],
+              }}
+              borderWidth="3px"
+              borderColor="blue.200"
+              button={
+                <NextChakraLink
+                  href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
+                  _hover={{ textDecor: 'none' }}
+                >
+                  <ActionButton>Subscribe now</ActionButton>
+                </NextChakraLink>
+              }
+              isMostPopular
+            />
           </Stack>
           <VStack maxW="1200px" w="full" spacing={[12, 20]} px="4">
             <Stack w="full" spacing={10} display={['none', 'flex']}>
               <Heading>Compare plans & features</Heading>
-              <PlanComparisonTables prices={price} />
+              <PlanComparisonTables
+                starterPrice={starterPrice}
+                proPrice={proPrice}
+              />
             </Stack>
             <VStack w="full" spacing="10">
               <Heading textAlign="center">Frequently asked questions</Heading>
