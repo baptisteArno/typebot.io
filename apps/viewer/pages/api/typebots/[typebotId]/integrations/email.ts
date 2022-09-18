@@ -7,15 +7,8 @@ import {
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import {
-  decrypt,
-  initMiddleware,
-  isEmpty,
-  isNotDefined,
-  methodNotAllowed,
-  omit,
-  parseAnswers,
-} from 'utils'
+import { isEmpty, isNotDefined, omit, parseAnswers } from 'utils'
+import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
 
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'

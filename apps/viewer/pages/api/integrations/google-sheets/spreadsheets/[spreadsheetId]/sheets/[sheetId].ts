@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, initMiddleware, methodNotAllowed, hasValue } from 'utils'
+import { badRequest, initMiddleware, methodNotAllowed } from 'utils/api'
+import { hasValue } from 'utils'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
 import { Cell } from 'models'

@@ -5,7 +5,7 @@ import {
   forbidden,
   initMiddleware,
   methodNotAllowed,
-} from 'utils'
+} from 'utils/api'
 import Stripe from 'stripe'
 
 import Cors from 'cors'

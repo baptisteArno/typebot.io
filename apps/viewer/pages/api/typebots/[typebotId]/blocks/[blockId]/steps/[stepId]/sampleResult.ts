@@ -3,7 +3,7 @@ import { Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser, getLinkedTypebots } from 'services/api/utils'
 import { parseSampleResult } from 'services/api/webhooks'
-import { methodNotAllowed } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await authenticateUser(req)

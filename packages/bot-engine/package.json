@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "pnpm rollup -c",
-    "dx": "pnpm rollup -c --watch",
+    "dev": "pnpm rollup -c --watch",
     "lint": "eslint --fix -c ./.eslintrc.js \"./src/**/*.ts*\""
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^14.0.1",
     "@rollup/plugin-typescript": "8.5.0",
+    "@types/node": "18.7.16",
     "@types/qs": "^6.9.7",
     "@types/react": "18.0.19",
     "@types/react-phone-number-input": "^3.0.14",

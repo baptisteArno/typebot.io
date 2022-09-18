@@ -9,7 +9,8 @@ import {
   WebhookBlock,
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId, initMiddleware, methodNotAllowed, notFound } from 'utils'
+import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
+import { byId } from 'utils'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import { executeWebhook } from '../../executeWebhook'

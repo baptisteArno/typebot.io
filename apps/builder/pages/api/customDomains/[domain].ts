@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
+import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
 import { got } from 'got'
 import { getAuthenticatedUser } from 'services/api/utils'
 

@@ -5,14 +5,8 @@ import prisma from 'libs/prisma'
 import { ResultWithAnswers } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import {
-  env,
-  getChatsLimit,
-  isDefined,
-  methodNotAllowed,
-  parseNumberWithCommas,
-  sendEmailNotification,
-} from 'utils'
+import { env, getChatsLimit, isDefined, parseNumberWithCommas } from 'utils'
+import { sendEmailNotification, methodNotAllowed } from 'utils/api'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 

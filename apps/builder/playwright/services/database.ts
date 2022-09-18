@@ -18,7 +18,8 @@ import {
   Workspace,
 } from 'db'
 import { readFileSync } from 'fs'
-import { encrypt, createFakeResults } from 'utils'
+import { createFakeResults } from 'utils'
+import { encrypt } from 'utils/api'
 import Stripe from 'stripe'
 
 const prisma = new PrismaClient()

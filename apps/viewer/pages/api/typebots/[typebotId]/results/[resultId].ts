@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { Result } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {

@@ -1,12 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import {
-  badRequest,
-  isDefined,
-  methodNotAllowed,
-  notAuthenticated,
-} from 'utils'
+import { isDefined } from 'utils'
+import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
 import { withSentry, setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 

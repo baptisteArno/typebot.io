@@ -1,26 +1,15 @@
 {
   "name": "models",
   "version": "1.0.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "license": "AGPL-3.0-or-later",
   "private": true,
-  "scripts": {
-    "build": "pnpm rollup -c",
-    "dx": "pnpm rollup -c --watch"
-  },
   "dependencies": {
     "zod": "^3.19.0"
   },
   "devDependencies": {
     "typescript": "^4.8.3",
-    "@rollup/plugin-commonjs": "22.0.2",
-    "@rollup/plugin-node-resolve": "^14.0.1",
-    "@rollup/plugin-typescript": "8.5.0",
-    "rollup": "2.79.0",
-    "rollup-plugin-dts": "^4.2.2",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
     "next": "12.3.0",
     "db": "workspace:*"
   },

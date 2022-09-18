@@ -3,7 +3,7 @@ import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { notAuthenticated } from 'utils'
+import { notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { initMiddleware, methodNotAllowed, notFound } from 'utils'
+import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
 
 const cors = initMiddleware(Cors())
 

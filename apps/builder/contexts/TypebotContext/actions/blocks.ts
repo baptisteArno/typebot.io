@@ -138,16 +138,26 @@ const duplicateBlockDraft =
   (groupId: string) =>
   (block: Block): Block => {
     const blockId = cuid()
+    if (blockHasItems(block))
+      return {
+        ...block,
+        groupId,
+        id: blockId,
+        items: block.items.map(duplicateItemDraft(blockId)),
+        outgoingEdgeId: undefined,
+      } as Block
+    if (isWebhookBlock(block))
+      return {
+        ...block,
+        groupId,
+        id: blockId,
+        webhookId: cuid(),
+        outgoingEdgeId: undefined,
+      }
     return {
       ...block,
       groupId,
       id: blockId,
-      items: blockHasItems(block)
-        ? block.items.map(duplicateItemDraft(blockId))
-        : undefined,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      webhookId: isWebhookBlock(block) ? cuid() : undefined,
       outgoingEdgeId: undefined,
     }
   }

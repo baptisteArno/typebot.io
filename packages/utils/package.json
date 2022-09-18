@@ -3,27 +3,15 @@
   "version": "1.0.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "pnpm rollup -c",
-    "dx": "pnpm rollup -c --watch"
-  },
+  "main": "./index.ts",
+  "types": "./index.ts",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "22.0.2",
-    "@rollup/plugin-node-resolve": "^14.0.1",
-    "@rollup/plugin-typescript": "8.5.0",
     "@types/nodemailer": "6.4.5",
     "aws-sdk": "2.1213.0",
     "db": "workspace:*",
     "models": "workspace:*",
     "next": "12.3.0",
     "nodemailer": "^6.7.8",
-    "rollup": "2.79.0",
-    "rollup-plugin-dts": "^4.2.2",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "tslib": "^2.4.0",
     "typescript": "^4.8.3"
   },
   "peerDependencies": {

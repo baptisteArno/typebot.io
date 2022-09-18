@@ -3,7 +3,8 @@ import prisma from 'libs/prisma'
 import { Group, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { byId, isWebhookBlock, methodNotAllowed } from 'utils'
+import { byId, isWebhookBlock } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {

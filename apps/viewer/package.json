@@ -3,7 +3,6 @@
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
   "scripts": {
-    "dx": "pnpm dev",
     "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3001",
     "build": "next build",
     "start": "next start",

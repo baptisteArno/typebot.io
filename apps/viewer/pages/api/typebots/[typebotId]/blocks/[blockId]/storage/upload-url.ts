@@ -9,12 +9,9 @@ import {
   badRequest,
   generatePresignedUrl,
   methodNotAllowed,
-  byId,
-  getStorageLimit,
   sendEmailNotification,
-  isDefined,
-  env,
-} from 'utils'
+} from 'utils/api'
+import { byId, getStorageLimit, isDefined, env } from 'utils'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 

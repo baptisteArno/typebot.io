@@ -10,7 +10,8 @@ import {
 } from 'models'
 import { GraphNavigation, Plan, PrismaClient, WorkspaceRole } from 'db'
 import { readFileSync } from 'fs'
-import { createFakeResults, encrypt } from 'utils'
+import { createFakeResults } from 'utils'
+import { encrypt } from 'utils/api'
 
 const prisma = new PrismaClient()
 
