@@ -99,7 +99,7 @@ const DraggableGroupNode = memo(
     }, [connectingIds, group.id])
 
     const handleTitleSubmit = (title: string) =>
-      updateGroup(groupIndex, { title })
+      title.length > 0 ? updateGroup(groupIndex, { title }) : undefined
 
     const handleMouseDown = (e: React.MouseEvent) => {
       e.stopPropagation()
@@ -187,6 +187,7 @@ const DraggableGroupNode = memo(
                 onSubmit={handleTitleSubmit}
                 fontWeight="semibold"
                 pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
+                pr="8"
               >
                 <EditablePreview
                   _hover={{ bgColor: 'gray.200' }}
