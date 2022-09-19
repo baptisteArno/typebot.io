@@ -190,11 +190,13 @@ export const ProPlanContent = ({
                       size="sm"
                       isLoading={selectedChatsLimitIndex === undefined}
                     >
-                      {parseNumberWithCommas(
-                        chatsLimit.PRO.totalIncluded +
-                          chatsLimit.PRO.increaseStep.amount *
-                            (selectedChatsLimitIndex ?? 0)
-                      )}
+                      {selectedChatsLimitIndex !== undefined
+                        ? parseNumberWithCommas(
+                            chatsLimit.PRO.totalIncluded +
+                              chatsLimit.PRO.increaseStep.amount *
+                                selectedChatsLimitIndex
+                          )
+                        : undefined}
                     </MenuButton>
                     <MenuList>
                       {selectedChatsLimitIndex !== 0 && (
@@ -252,11 +254,13 @@ export const ProPlanContent = ({
                       size="sm"
                       isLoading={selectedStorageLimitIndex === undefined}
                     >
-                      {parseNumberWithCommas(
-                        storageLimit.PRO.totalIncluded +
-                          storageLimit.PRO.increaseStep.amount *
-                            (selectedStorageLimitIndex ?? 0)
-                      )}
+                      {selectedStorageLimitIndex !== undefined
+                        ? parseNumberWithCommas(
+                            storageLimit.PRO.totalIncluded +
+                              storageLimit.PRO.increaseStep.amount *
+                                selectedStorageLimitIndex
+                          )
+                        : undefined}
                     </MenuButton>
                     <MenuList>
                       {selectedStorageLimitIndex !== 0 && (
