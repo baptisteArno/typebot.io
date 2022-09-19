@@ -138,22 +138,22 @@ const updateSubscription = async (req: NextApiRequest) => {
           : process.env.STRIPE_PRO_PRICE_ID,
       quantity: 1,
     },
-    currentAdditionalChatsItemId
-      ? {
+    additionalChats === 0 && !currentAdditionalChatsItemId
+      ? undefined
+      : {
           id: currentAdditionalChatsItemId,
           price: process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID,
           quantity: additionalChats,
           deleted: additionalChats === 0,
-        }
-      : undefined,
-    currentAdditionalStorageItemId
-      ? {
+        },
+    additionalStorage === 0 && !currentAdditionalStorageItemId
+      ? undefined
+      : {
           id: currentAdditionalStorageItemId,
           price: process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID,
           quantity: additionalStorage,
           deleted: additionalStorage === 0,
-        }
-      : undefined,
+        },
   ].filter(isDefined)
   await stripe.subscriptions.update(subscription.id, {
     items,

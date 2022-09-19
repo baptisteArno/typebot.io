@@ -142,11 +142,13 @@ export const StarterPlanContent = ({
                     size="sm"
                     isLoading={selectedChatsLimitIndex === undefined}
                   >
-                    {parseNumberWithCommas(
-                      chatsLimit.STARTER.totalIncluded +
-                        chatsLimit.STARTER.increaseStep.amount *
-                          (selectedChatsLimitIndex ?? 0)
-                    )}
+                    {selectedChatsLimitIndex !== undefined
+                      ? parseNumberWithCommas(
+                          chatsLimit.STARTER.totalIncluded +
+                            chatsLimit.STARTER.increaseStep.amount *
+                              selectedChatsLimitIndex
+                        )
+                      : undefined}
                   </MenuButton>
                   <MenuList>
                     {selectedChatsLimitIndex !== 0 && (
@@ -206,11 +208,13 @@ export const StarterPlanContent = ({
                     size="sm"
                     isLoading={selectedStorageLimitIndex === undefined}
                   >
-                    {parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount *
-                          (selectedStorageLimitIndex ?? 0)
-                    )}
+                    {selectedStorageLimitIndex !== undefined
+                      ? parseNumberWithCommas(
+                          storageLimit.STARTER.totalIncluded +
+                            storageLimit.STARTER.increaseStep.amount *
+                              selectedStorageLimitIndex
+                        )
+                      : undefined}
                   </MenuButton>
                   <MenuList>
                     {selectedStorageLimitIndex !== 0 && (

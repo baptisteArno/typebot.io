@@ -95,38 +95,36 @@ test('plan changes should work', async ({ page }) => {
         price: process.env.STRIPE_STARTER_PRICE_ID,
         quantity: 1,
       },
-      {
-        price: process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID,
-        quantity: 3,
-      },
-      {
-        price: process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID,
-        quantity: 2,
-      },
     ],
-    { plan: Plan.STARTER, additionalChatsIndex: 3, additionalStorageIndex: 2 }
+    { plan: Plan.STARTER, additionalChatsIndex: 0, additionalStorageIndex: 0 }
   )
 
   // Update plan with additional quotas
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(page.locator('text="/ 3,500"')).toBeVisible()
-  await expect(page.locator('text="/ 4 GB"')).toBeVisible()
-  await expect(page.locator('button >> text="3,500"')).toBeVisible()
-  await expect(page.locator('button >> text="4"')).toBeVisible()
-  await expect(page.locator('text="$73"')).toBeVisible()
-  await page.click('button >> text="3,500"')
+  await expect(page.locator('text="/ 2,000"')).toBeVisible()
+  await expect(page.locator('text="/ 2 GB"')).toBeVisible()
+  await expect(page.locator('button >> text="2,000"')).toBeVisible()
+  await expect(page.locator('button >> text="2"')).toBeVisible()
   await page.click('button >> text="2,000"')
+  await page.click('button >> text="3,500"')
+  await page.click('button >> text="2"')
   await page.click('button >> text="4"')
-  await page.click('button >> text="6"')
-  await expect(page.locator('text="$47"')).toBeVisible()
+  await expect(page.locator('text="$73"')).toBeVisible()
   await page.click('button >> text=Update')
   await expect(
     page.locator(
       'text="Workspace STARTER plan successfully updated 🎉" >> nth=0'
     )
   ).toBeVisible()
+  await page.click('text="Members"')
+  await page.click('text="Billing & Usage"')
+  await expect(page.locator('text="$73"')).toBeVisible()
+  await expect(page.locator('text="/ 3,500"')).toBeVisible()
+  await expect(page.locator('text="/ 4 GB"')).toBeVisible()
+  await expect(page.locator('button >> text="3,500"')).toBeVisible()
+  await expect(page.locator('button >> text="4"')).toBeVisible()
 
   // Upgrade to PRO
   await page.click('button >> text="10,000"')
