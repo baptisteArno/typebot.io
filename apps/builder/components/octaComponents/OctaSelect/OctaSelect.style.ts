@@ -58,6 +58,9 @@ export const OptionItem = styled.li`
       background-color: transparent;
     }
   }
+  &.actived{
+    background-color: #f5f5f5;
+  }
 `
 
 export const Separator = styled.hr`
