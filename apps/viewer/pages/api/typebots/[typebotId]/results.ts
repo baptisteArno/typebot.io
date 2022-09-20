@@ -135,7 +135,7 @@ const sendAlmostReachChatsLimitEmail = async ({
 
   await sendEmailNotification({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You've been invited to collaborate 🤝",
+    subject: "You're close to your chats limit",
     html: almostReachedChatsLimitEmail({
       readableChatsLimit,
       readableResetDate,
@@ -169,7 +169,7 @@ const sendReachedAlertEmail = async ({
     .join(' ')
   await sendEmailNotification({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You've been invited to collaborate 🤝",
+    subject: "You've hit your monthly chats limit",
     html: reachedSChatsLimitEmail({
       readableChatsLimit,
       readableResetDate,
