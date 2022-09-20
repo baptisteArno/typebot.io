@@ -10,7 +10,7 @@ import {
 } from 'models'
 import { GraphNavigation, Plan, PrismaClient, WorkspaceRole } from 'db'
 import { readFileSync } from 'fs'
-import { createFakeResults } from 'utils'
+import { injectFakeResults } from 'utils'
 import { encrypt } from 'utils/api'
 
 const prisma = new PrismaClient()
@@ -221,7 +221,7 @@ export const importTypebotInDatabase = async (
   })
 }
 
-export const createResults = createFakeResults(prisma)
+export const createResults = injectFakeResults(prisma)
 
 export const createSmtpCredentials = (
   id: string,

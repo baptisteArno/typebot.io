@@ -8,7 +8,7 @@ type CreateFakeResultsProps = {
   fakeStorage?: number
 }
 
-export const createFakeResults =
+export const injectFakeResults =
   (prisma: PrismaClient) =>
   async ({
     count,

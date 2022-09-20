@@ -7,6 +7,7 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react'
+import { useToast } from 'components/shared/hooks/useToast'
 import { PlanTag } from 'components/shared/PlanTag'
 import { Plan } from 'db'
 import React, { useState } from 'react'
@@ -26,38 +27,48 @@ export const CurrentSubscriptionContent = ({
   const [isCancelling, setIsCancelling] = useState(false)
   const [isRedirectingToBillingPortal, setIsRedirectingToBillingPortal] =
     useState(false)
+  const { showToast } = useToast()
 
   const cancelSubscription = async () => {
     if (!stripeId) return
     setIsCancelling(true)
-    await cancelSubscriptionQuery(stripeId)
+    const { error } = await cancelSubscriptionQuery(stripeId)
+    if (error) {
+      showToast({ description: error.message })
+      return
+    }
     onCancelSuccess()
     setIsCancelling(false)
   }
 
   const isSubscribed = (plan === Plan.STARTER || plan === Plan.PRO) && stripeId
 
-  if (isCancelling) return <Spinner colorScheme="gray" />
   return (
     <Stack gap="2">
       <Heading fontSize="3xl">Subscription</Heading>
       <HStack>
         <Text>Current workspace subscription: </Text>
-        <PlanTag plan={plan} />
-        {isSubscribed && (
-          <Link
-            as="button"
-            color="gray.500"
-            textDecor="underline"
-            fontSize="sm"
-            onClick={cancelSubscription}
-          >
-            Cancel my subscription
-          </Link>
+        {isCancelling ? (
+          <Spinner color="gray.500" size="xs" />
+        ) : (
+          <>
+            <PlanTag plan={plan} />
+            {isSubscribed && (
+              <Link
+                as="button"
+                color="gray.500"
+                textDecor="underline"
+                fontSize="sm"
+                onClick={cancelSubscription}
+              >
+                Cancel my subscription
+              </Link>
+            )}
+          </>
         )}
       </HStack>
 
-      {isSubscribed && (
+      {isSubscribed && !isCancelling && (
         <>
           <Stack gap="1">
             <Text fontSize="sm">
