@@ -35,7 +35,7 @@ export const ChangePlanForm = () => {
       selectedStorageLimitIndex === undefined
     )
       return
-    await pay({
+    const response = await pay({
       stripeId: workspace.stripeId ?? undefined,
       user,
       plan,
@@ -43,6 +43,10 @@ export const ChangePlanForm = () => {
       additionalChats: selectedChatsLimitIndex,
       additionalStorage: selectedStorageLimitIndex,
     })
+    if (typeof response === 'object' && response?.error) {
+      showToast({ description: response.error.message })
+      return
+    }
     refreshCurrentSubscriptionInfo({
       additionalChatsIndex: selectedChatsLimitIndex,
       additionalStorageIndex: selectedStorageLimitIndex,

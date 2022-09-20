@@ -20,7 +20,7 @@ type UpgradeProps = {
 export const pay = async ({
   stripeId,
   ...props
-}: UpgradeProps): Promise<{ newPlan: Plan } | undefined | void> =>
+}: UpgradeProps): Promise<{ newPlan?: Plan; error?: Error } | void> =>
   isDefined(stripeId)
     ? updatePlan({ ...props, stripeId })
     : redirectToCheckout(props)
@@ -31,13 +31,13 @@ export const updatePlan = async ({
   workspaceId,
   additionalChats,
   additionalStorage,
-}: Omit<UpgradeProps, 'user'>): Promise<{ newPlan: Plan } | undefined> => {
+}: Omit<UpgradeProps, 'user'>): Promise<{ newPlan?: Plan; error?: Error }> => {
   const { data, error } = await sendRequest<{ message: string }>({
     method: 'PUT',
     url: '/api/stripe/subscription',
     body: { workspaceId, plan, stripeId, additionalChats, additionalStorage },
   })
-  if (error || !data) return
+  if (error || !data) return { error }
   return { newPlan: plan }
 }
 

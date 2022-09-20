@@ -18,7 +18,7 @@ import {
   Workspace,
 } from 'db'
 import { readFileSync } from 'fs'
-import { createFakeResults } from 'utils'
+import { injectFakeResults } from 'utils'
 import { encrypt } from 'utils/api'
 import Stripe from 'stripe'
 
@@ -75,7 +75,10 @@ export const addSubscriptionToWorkspace = async (
     customer: stripeId,
     items,
     default_payment_method: paymentId,
-    currency: 'usd',
+    currency: 'eur',
+  })
+  await stripe.customers.update(stripeId, {
+    invoice_settings: { default_payment_method: paymentId },
   })
   await prisma.workspace.update({
     where: { id: workspaceId },
@@ -264,7 +267,7 @@ export const updateUser = (data: Partial<User>) =>
     },
   })
 
-export const createResults = createFakeResults(prisma)
+export const createResults = injectFakeResults(prisma)
 
 export const createFolder = (workspaceId: string, name: string) =>
   prisma.dashboardFolder.create({

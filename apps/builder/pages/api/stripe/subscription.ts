@@ -54,12 +54,12 @@ const getSubscriptionDetails =
     })
     return {
       additionalChatsIndex:
-        subscriptions.data[0].items.data.find(
+        subscriptions.data[0]?.items.data.find(
           (item) =>
             item.price.id === process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID
         )?.quantity ?? 0,
       additionalStorageIndex:
-        subscriptions.data[0].items.data.find(
+        subscriptions.data[0]?.items.data.find(
           (item) =>
             item.price.id === process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID
         )?.quantity ?? 0,
@@ -100,33 +100,34 @@ const createCheckoutSession = (req: NextApiRequest) => {
 }
 
 const updateSubscription = async (req: NextApiRequest) => {
-  const { customerId, plan, workspaceId, additionalChats, additionalStorage } =
-    (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as {
-      customerId: string
-      workspaceId: string
-      additionalChats: number
-      additionalStorage: number
-      plan: 'STARTER' | 'PRO'
-    }
+  const { stripeId, plan, workspaceId, additionalChats, additionalStorage } = (
+    typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+  ) as {
+    stripeId: string
+    workspaceId: string
+    additionalChats: number
+    additionalStorage: number
+    plan: 'STARTER' | 'PRO'
+  }
   if (!process.env.STRIPE_SECRET_KEY)
     throw Error('STRIPE_SECRET_KEY var is missing')
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2022-08-01',
   })
   const { data } = await stripe.subscriptions.list({
-    customer: customerId,
+    customer: stripeId,
   })
-  const subscription = data[0]
-  const currentStarterPlanItemId = subscription.items.data.find(
+  const subscription = data[0] as Stripe.Subscription | undefined
+  const currentStarterPlanItemId = subscription?.items.data.find(
     (item) => item.price.id === process.env.STRIPE_STARTER_PRICE_ID
   )?.id
-  const currentProPlanItemId = subscription.items.data.find(
+  const currentProPlanItemId = subscription?.items.data.find(
     (item) => item.price.id === process.env.STRIPE_PRO_PRICE_ID
   )?.id
-  const currentAdditionalChatsItemId = subscription.items.data.find(
+  const currentAdditionalChatsItemId = subscription?.items.data.find(
     (item) => item.price.id === process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID
   )?.id
-  const currentAdditionalStorageItemId = subscription.items.data.find(
+  const currentAdditionalStorageItemId = subscription?.items.data.find(
     (item) => item.price.id === process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID
   )?.id
   const items = [
@@ -155,9 +156,18 @@ const updateSubscription = async (req: NextApiRequest) => {
           deleted: additionalStorage === 0,
         },
   ].filter(isDefined)
-  await stripe.subscriptions.update(subscription.id, {
-    items,
-  })
+
+  if (subscription) {
+    await stripe.subscriptions.update(subscription.id, {
+      items,
+    })
+  } else {
+    await stripe.subscriptions.create({
+      customer: stripeId,
+      items,
+    })
+  }
+
   await prisma.workspace.update({
     where: { id: workspaceId },
     data: {
@@ -187,7 +197,10 @@ const cancelSubscription =
     const existingSubscription = await stripe.subscriptions.list({
       customer: workspace.stripeId,
     })
-    await stripe.subscriptions.del(existingSubscription.data[0].id)
+    const currentSubscriptionId = existingSubscription.data[0]?.id
+    if (currentSubscriptionId)
+      await stripe.subscriptions.del(currentSubscriptionId)
+
     await prisma.workspace.update({
       where: { id: workspace.id },
       data: {

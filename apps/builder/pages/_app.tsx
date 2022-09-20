@@ -18,6 +18,7 @@ import { SupportBubble } from 'components/shared/SupportBubble'
 import { WorkspaceContext } from 'contexts/WorkspaceContext'
 import { toTitleCase } from 'utils'
 import { Session } from 'next-auth'
+import { Plan } from 'db'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
@@ -35,7 +36,14 @@ const App = ({
   }, [pathname])
 
   useEffect(() => {
-    displayStripeCallbackMessage(query.stripe?.toString(), toast)
+    const newPlan = query.stripe?.toString()
+    if (newPlan === Plan.STARTER || newPlan === Plan.PRO)
+      toast({
+        position: 'bottom-right',
+        status: 'success',
+        title: 'Upgrade success!',
+        description: `Workspace upgraded to ${toTitleCase(status)} 🎉`,
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady])
 
@@ -66,21 +74,6 @@ const App = ({
       </ChakraProvider>
     </>
   )
-}
-
-const displayStripeCallbackMessage = (
-  status: string | undefined,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  toast: any
-) => {
-  if (status && ['pro', 'team'].includes(status)) {
-    toast({
-      position: 'bottom-right',
-      status: 'success',
-      title: 'Upgrade success!',
-      description: `Workspace upgraded to ${toTitleCase(status)} 🎉`,
-    })
-  }
 }
 
 export default App
