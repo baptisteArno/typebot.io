@@ -12,7 +12,7 @@ export const sendEmailNotification = (props: Omit<SendMailOptions, 'from'>) => {
   })
 
   return transporter.sendMail({
-    from: env('SMTP_FROM'),
+    from: process.env.SMTP_FROM ?? env('SMTP_FROM'),
     ...props,
   })
 }
