@@ -84,7 +84,7 @@ export const AssignToTeamSettingsBody = ({
           Atribuir automaticamente para:
         </FormLabel>
         <AutoAssignToSelect
-          selectedUserGroup={options.assignTo ? options.assignTo : ''}
+          selectedUserGroup={options.assignTo}
           onSelect={handleDefaultAssignToChange}
         />
       </Stack>

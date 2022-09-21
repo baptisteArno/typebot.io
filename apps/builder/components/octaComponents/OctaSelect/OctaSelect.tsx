@@ -19,8 +19,12 @@ const OctaSelect = (props: OctaSelectProps) => {
     setIsComponentVisible(toggle)    
   }, [toggle, setIsComponentVisible])
 
+
+  console.log(props.defaultSelected);
+  
+
   useEffect(() => {
-  if(props.defaultSelected){
+  if(props.defaultSelected) {    
     setSelected(props.defaultSelected);
   }
   }, [props.defaultSelected])  

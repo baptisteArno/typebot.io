@@ -8,7 +8,7 @@ import { OptionItemType } from 'components/octaComponents/OctaSelect/OctaSelect.
 
 type Props = {
   onSelect: (option: AssignToTeamOptions) => void,
-  selectedUserGroup: string
+  selectedUserGroup?: string
 }
 
 export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
@@ -39,15 +39,17 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
   }
 
   useLayoutEffect(() => {
-    if (octaAgents) {
+    if (octaAgents && selectedUserGroup) {
       const defaults = octaAgents.filter((item) => item.id === selectedUserGroup)[0];
-      setDefaultSelected({
-        label: defaults.name,
-        value: JSON.stringify({
-          assignTo: defaults.id,
-          assignType: defaults.operationType
+      if(defaults){
+        setDefaultSelected({
+          label: defaults.name,
+          value: JSON.stringify({
+            assignTo: defaults.id,
+            assignType: defaults.operationType
+          })
         })
-      })
+      }
     }
     return () => {
       setDefaultSelected(undefined)
