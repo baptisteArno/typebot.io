@@ -174,6 +174,10 @@ const updateSubscription = async (req: NextApiRequest) => {
       plan,
       additionalChatsIndex: additionalChats,
       additionalStorageIndex: additionalStorage,
+      chatsLimitFirstEmailSentAt: null,
+      chatsLimitSecondEmailSentAt: null,
+      storageLimitFirstEmailSentAt: null,
+      storageLimitSecondEmailSentAt: null,
     },
   })
 }

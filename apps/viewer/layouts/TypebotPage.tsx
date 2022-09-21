@@ -100,7 +100,7 @@ export const TypebotPage = ({
   const handleNewAnswer = async (
     answer: Answer & { uploadedFiles: boolean }
   ) => {
-    if (!resultId) return setError(new Error('Result was not created'))
+    if (!resultId) return setError(new Error('Error: result was not created'))
     const { error } = await upsertAnswer({ ...answer, resultId })
     if (error) setError(error)
     if (chatStarted) return
@@ -110,7 +110,7 @@ export const TypebotPage = ({
   }
 
   const handleCompleted = async () => {
-    if (!resultId) return setError(new Error('Result was not created'))
+    if (!resultId) return setError(new Error('Error: result was not created'))
     const { error } = await updateResult(resultId, { isCompleted: true })
     if (error) setError(error)
   }

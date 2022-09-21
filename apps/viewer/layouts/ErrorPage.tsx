@@ -26,10 +26,7 @@ export const ErrorPage = ({ error }: { error: Error }) => {
           </h2>
         </>
       ) : (
-        <>
-          <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>{error.name}</h1>
-          <h2>{error.message}</h2>
-        </>
+        <p style={{ fontSize: '24px' }}>{error.message}</p>
       )}
     </div>
   )

@@ -94,7 +94,7 @@ const checkStorageLimit = async (typebotId: string) => {
   if (!totalStorageUsed) return false
   const hasSentFirstEmail = workspace.storageLimitFirstEmailSentAt !== null
   const hasSentSecondEmail = workspace.storageLimitSecondEmailSentAt !== null
-  const storageLimit = getStorageLimit(typebot.workspace)
+  const storageLimit = getStorageLimit(typebot.workspace) * 1024 * 1024 * 1024
   if (
     totalStorageUsed >= storageLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
     !hasSentFirstEmail &&
