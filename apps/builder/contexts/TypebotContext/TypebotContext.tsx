@@ -379,7 +379,7 @@ export const TypebotContext = ({
       const noOne = {
         group: 'Não atribuir (Visível a todos)',
         name: 'Não atribuir (Visível a todos)',
-        optionType: ASSIGN_TO.noOne,
+        operationType: ASSIGN_TO.noOne,
       }
       const agentsGroupsList: Array<any> = [noOne]
 
