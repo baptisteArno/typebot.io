@@ -58,6 +58,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               stripeId: session.customer as string,
               additionalChatsIndex: parseInt(additionalChats),
               additionalStorageIndex: parseInt(additionalStorage),
+              chatsLimitFirstEmailSentAt: null,
+              chatsLimitSecondEmailSentAt: null,
+              storageLimitFirstEmailSentAt: null,
+              storageLimitSecondEmailSentAt: null,
             },
           })
           return res.status(200).send({ message: 'workspace upgraded in DB' })
