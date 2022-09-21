@@ -50,8 +50,9 @@ export const AssignToTeamSettingsBody = ({
       },
     })
   }
-  const handleDefaultAssignToChange = (option: AssignToTeamOptions) => {
-    console.log('option', option)
+  const handleDefaultAssignToChange = (e: any) => {
+    const option = e && JSON.parse(e.value)
+        
     onOptionsChange({
       ...options,
       assignTo: option.assignTo,
@@ -83,7 +84,7 @@ export const AssignToTeamSettingsBody = ({
           Atribuir automaticamente para:
         </FormLabel>
         <AutoAssignToSelect
-          selectedUserGroup={options.assignTo ? options.assignTo : ''}
+          selectedUserGroup={options.assignTo}
           onSelect={handleDefaultAssignToChange}
         />
       </Stack>

@@ -5,30 +5,29 @@ import { templateMailBot } from "./dictionary/input-email.step";
 import { BuilderStepType } from "./types.builder";
 
 export const BuildSteps = (
-  indexes: StepIndices
-): BuilderStepType => {
+  stepIndices: StepIndices
+  ): BuilderStepType => {
 
-  const builder = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string) => {
-    let step: Array<DraggableStep>;
-    switch (type) {
-      case InputStepType.EMAIL:
-        step = templateMailBot(bot, blockId)
-        break;
-      default:
-        step = [parseNewStep(type, blockId)]
-        break;
+    const builder = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string) => {
+      let step: Array<DraggableStep>;
+      switch (type) {
+        case InputStepType.EMAIL:
+          step = templateMailBot(bot, blockId)
+          break;
+        default:
+          step = [parseNewStep(type, blockId)]
+          break;
+      }
+      return step;
     }
-    return step;
-  }
 
-  const apply = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string): void => {
-    const block: Array<WritableDraft<Block>> = bot.blocks
-    const steps = builder(type, bot, blockId);
-    console.log("STEPS ARR => ", steps);
-    steps.forEach(element => {
-      block[indexes.blockIndex].steps.splice(indexes.stepIndex ?? 0, 0, element)
-    });
-  }
+    const apply = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string): void => {
+      const block: Array<WritableDraft<Block>> = bot.blocks
+      const steps = builder(type, bot, blockId);
+      steps.map(step => (
+        block[stepIndices.blockIndex].steps.splice( stepIndices.stepIndex ?? 0, 0, step)
+      ));
+    }
 
-  return { apply }
-}
+    return { apply }
+  }

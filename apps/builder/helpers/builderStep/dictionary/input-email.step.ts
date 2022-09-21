@@ -5,23 +5,20 @@ import { parseNewStep } from "services/typebots";
 const templateMailBot = (typebot: WritableDraft<Typebot>, blockId: string): Array<DraggableStep> => {
   const EmailStep = [
     {
-      id: typebot.id,
-      blockId: blockId,
-      type: BubbleStepType.TEXT,
-      content: {
-        html: "<div>Por favor, {{Nome}} nos informe o seu e-mail</div>",
+      ...parseNewStep(BubbleStepType.TEXT, blockId),
+        content: {
+        html: "<div>Antes, quero saber qual seu email :)</div>",
         richText: [{
-          children: new Array(0),
+          children: [{
+            text: "Antes, quero saber qual seu email :)",
+          }],
           type: "p"
         }],
-        plainText: "Por favor, {{Nome}} nos informe o seu e-mail"
+        plainText: "Antes, quero saber qual seu email :)",
       }
-      } as DraggableStep,
-      parseNewStep(InputStepType.EMAIL, blockId)
+    } as DraggableStep,
+    parseNewStep(InputStepType.EMAIL, blockId)
   ];
-
-  console.log("Email => Steps: ", EmailStep);
-  
 
   return EmailStep.reverse();
 }

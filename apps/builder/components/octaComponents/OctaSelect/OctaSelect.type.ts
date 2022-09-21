@@ -1,14 +1,14 @@
 import { DetailedHTMLProps, InputHTMLAttributes, ChangeEvent } from 'react'
 
 export type OctaSelectProps = {
-  items: Array<SelectItems<OptionItem>>
-  onChange: (e: OptionItem) => void
-  defaultValue?: any
+  items: Array<SelectItems<OptionItemType>>
+  onChange: (e: OptionItemType) => void
+  defaultSelected?: OptionItemType
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
 type SelectItems<T> = T
 
-export type OptionItem = {
+export type OptionItemType = {
   label: string
   value: any
   isTitle?: boolean

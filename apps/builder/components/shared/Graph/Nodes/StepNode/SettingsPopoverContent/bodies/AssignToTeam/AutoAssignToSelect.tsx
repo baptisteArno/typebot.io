@@ -1,42 +1,66 @@
-import { Select } from '@chakra-ui/react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
-import { OptionItem } from 'components/octaComponents/OctaSelect/OctaSelect.type'
 import { useTypebot } from 'contexts/TypebotContext'
-import React, { ChangeEvent, MouseEvent, useEffect } from 'react'
-import { OptionAgentGroup } from './AssignToSelect.style'
 import {
   AssignToTeamOptions
 } from 'models'
+import { OptionItemType } from 'components/octaComponents/OctaSelect/OctaSelect.type'
 
 type Props = {
   onSelect: (option: AssignToTeamOptions) => void,
-  selectedUserGroup: string
+  selectedUserGroup?: string
 }
 
 export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
-  const { octaAgents, typebot } = useTypebot()
+  const { octaAgents } = useTypebot();
+
+  const [itemsToAutoAssign, setItemsToAutoAssign] = useState<Array<OptionItemType>>([])
+  const [defaultSelected, setDefaultSelected] = useState<OptionItemType>();
 
   useEffect(() => {
-    console.log(selectedUserGroup)
-  
-  }, [])
-  
+    if (octaAgents) {
+      const items = octaAgents.map((agentGroup) => ({
+        label: agentGroup.name,
+        value: JSON.stringify({
+          assignTo: agentGroup.id,
+          assignType: agentGroup.operationType
+        }),
+        isTitle: agentGroup.isTitle,
+      }))
+      setItemsToAutoAssign(items);
+    }
+    return () => {
+      setItemsToAutoAssign([])
+    };
+  }, [octaAgents]);
 
-  const handleOnChange = (e: any): void => {
-    onSelect(JSON.parse(e.value))
+  const handleOnChange = (selected: any): void => {
+    onSelect(selected)
   }
+
+  useLayoutEffect(() => {
+    if (octaAgents && selectedUserGroup) {
+      const defaults = octaAgents.filter((item) => item.id === selectedUserGroup)[0];
+      if(defaults){
+        setDefaultSelected({
+          label: defaults.name,
+          value: JSON.stringify({
+            assignTo: defaults.id,
+            assignType: defaults.operationType
+          })
+        })
+      }
+    }
+    return () => {
+      setDefaultSelected(undefined)
+    };
+  }, [octaAgents, selectedUserGroup])
+
   return (
     <OctaSelect
       placeholder="Não atribuir (Visível a todos)"
-      defaultValue={selectedUserGroup}
-      items={octaAgents.map((agentGroup) => ({
-        label: agentGroup.name,
-        value: {
-          assignTo: agentGroup.id,
-          assignType: agentGroup.operationType
-        },
-        isTitle: agentGroup.isTitle,
-      }))}
+      defaultSelected={defaultSelected}
+      items={itemsToAutoAssign}
       onChange={handleOnChange}
     />
   )
