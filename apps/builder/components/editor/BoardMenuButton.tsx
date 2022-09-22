@@ -32,6 +32,12 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
   }
 
   useEffect(() => {
+    window.addEventListener('message', handleEventListeners)
+
+    return () => window.removeEventListener('message', handleEventListeners)
+  }, [])
+
+  useEffect(() => {
     if (
       user &&
       isNotDefined(user.graphNavigation) &&
@@ -40,6 +46,13 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
       onOpen()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handleEventListeners = (e: any): void => {
+    if (e.data === 'previewClick') {
+      save().then()
+      setRightPanel(RightPanel.PREVIEW)
+    }
+  }
 
   const downloadFlow = () => {
     assert(typebot)
