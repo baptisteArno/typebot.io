@@ -80,6 +80,7 @@ export const ConversationContainer = ({
     }
     const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId))
     if (!nextGroup) return onCompleted()
+    console.log(nextGroup, nextEdge)
     const startBlockIndex = nextEdge.to.blockId
       ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
       : 0
@@ -151,9 +152,7 @@ export const ConversationContainer = ({
           const groupAfter = displayedGroups[idx + 1]
           const groupAfterStartsWithInput =
             groupAfter &&
-            isInputBlock(
-              groupAfter.group.blocks[groupAfter.startBlockIndex] as Block
-            )
+            isInputBlock(groupAfter.group.blocks[groupAfter.startBlockIndex])
           return (
             <ChatGroup
               key={displayedGroup.group.id + idx}

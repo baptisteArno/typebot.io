@@ -1,5 +1,8 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
+import { userId } from 'playwright/services/database'
+
+test.describe.configure({ mode: 'parallel' })
 
 test('should display user info properly', async ({ page }) => {
   await page.goto('/typebots')
@@ -18,7 +21,7 @@ test('should display user info properly', async ({ page }) => {
   await expect(page.locator('img >> nth=1')).toHaveAttribute(
     'src',
     new RegExp(
-      `http://localhost:9000/typebot/public/users/proUser/avatar`,
+      `http://localhost:9000/typebot/public/users/${userId}/avatar`,
       'gm'
     )
   )

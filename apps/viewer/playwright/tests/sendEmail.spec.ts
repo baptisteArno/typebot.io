@@ -7,9 +7,6 @@ import cuid from 'cuid'
 import path from 'path'
 import { typebotViewer } from '../services/selectorUtils'
 import { SmtpCredentialsData } from 'models'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 const mockSmtpCredentials: SmtpCredentialsData = {
   from: {

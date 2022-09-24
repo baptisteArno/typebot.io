@@ -1,14 +1,12 @@
+import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
 import {
-  Flex,
-  FormLabel,
-  Stack,
-  Switch,
-  Tag,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { ChangePlanModal } from 'components/shared/modals/ChangePlanModal'
+  ChangePlanModal,
+  LimitReached,
+} from 'components/shared/modals/ChangePlanModal'
+import { PlanTag } from 'components/shared/PlanTag'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
 import { GeneralSettings } from 'models'
 import React from 'react'
 import { isFreePlan } from 'services/workspace'
@@ -25,9 +23,9 @@ export const GeneralSettingsForm = ({
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
-  const isUserFreePlan = isFreePlan(workspace)
+  const isWorkspaceFreePlan = isFreePlan(workspace)
   const handleSwitchChange = () => {
-    if (generalSettings?.isBrandingEnabled && isUserFreePlan) return
+    if (generalSettings?.isBrandingEnabled && isWorkspaceFreePlan) return
     onGeneralSettingsChange({
       ...generalSettings,
       isBrandingEnabled: !generalSettings?.isBrandingEnabled,
@@ -56,15 +54,19 @@ export const GeneralSettingsForm = ({
 
   return (
     <Stack spacing={6}>
-      <ChangePlanModal isOpen={isOpen} onClose={onClose} />
+      <ChangePlanModal
+        isOpen={isOpen}
+        onClose={onClose}
+        type={LimitReached.BRAND}
+      />
       <Flex
         justifyContent="space-between"
         align="center"
-        onClick={isUserFreePlan ? onOpen : undefined}
+        onClick={isWorkspaceFreePlan ? onOpen : undefined}
       >
         <FormLabel htmlFor="branding" mb="0">
           Typebot.io branding{' '}
-          {isUserFreePlan && <Tag colorScheme="orange">Pro</Tag>}
+          {isWorkspaceFreePlan && <PlanTag plan={Plan.STARTER} />}
         </FormLabel>
         <Switch
           id="branding"

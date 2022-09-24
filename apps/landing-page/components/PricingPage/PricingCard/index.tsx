@@ -23,14 +23,12 @@ interface PricingCardProps extends CardProps {
   data: PricingCardData
   icon?: JSX.Element
   button: React.ReactElement
-  isMostPopular?: boolean
 }
 
 export const PricingCard = ({
   data,
   icon,
   button,
-  isMostPopular,
   ...rest
 }: PricingCardProps) => {
   const { features, price, name } = data

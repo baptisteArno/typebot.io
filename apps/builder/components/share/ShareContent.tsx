@@ -4,18 +4,20 @@ import {
   HStack,
   IconButton,
   Stack,
-  Tag,
   Wrap,
   Text,
 } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useToast } from 'components/shared/hooks/useToast'
+import { LimitReached } from 'components/shared/modals/ChangePlanModal'
+import { PlanTag } from 'components/shared/PlanTag'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
 import React from 'react'
 import { parseDefaultPublicId } from 'services/typebots'
-import { isFreePlan } from 'services/workspace'
+import { isWorkspaceProPlan } from 'services/workspace'
 import { getViewerUrl, isDefined, isNotDefined } from 'utils'
 import { CustomDomainsDropdown } from './customDomain/CustomDomainsDropdown'
 import { EditableUrl } from './EditableUrl'
@@ -80,19 +82,18 @@ export const ShareContent = () => {
               />
             </HStack>
           )}
-          {isFreePlan(workspace) ? (
-            <UpgradeButton colorScheme="gray">
-              <Text mr="2">Add my domain</Text>{' '}
-              <Tag colorScheme="orange">Pro</Tag>
-            </UpgradeButton>
+          {isWorkspaceProPlan(workspace) &&
+          isNotDefined(typebot?.customDomain) ? (
+            <CustomDomainsDropdown
+              onCustomDomainSelect={handleCustomDomainChange}
+            />
           ) : (
-            <>
-              {isNotDefined(typebot?.customDomain) && (
-                <CustomDomainsDropdown
-                  onCustomDomainSelect={handleCustomDomainChange}
-                />
-              )}
-            </>
+            <UpgradeButton
+              colorScheme="gray"
+              limitReachedType={LimitReached.CUSTOM_DOMAIN}
+            >
+              <Text mr="2">Add my domain</Text> <PlanTag plan={Plan.PRO} />
+            </UpgradeButton>
           )}
         </Stack>
 

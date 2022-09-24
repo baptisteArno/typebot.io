@@ -1,9 +1,10 @@
 import { PrismaClient } from 'db'
+import cuid from 'cuid'
 
 type CreateFakeResultsProps = {
   typebotId: string
   count: number
-  idPrefix?: string
+  customResultIdPrefix?: string
   isChronological?: boolean
   fakeStorage?: number
 }
@@ -12,18 +13,19 @@ export const injectFakeResults =
   (prisma: PrismaClient) =>
   async ({
     count,
-    idPrefix = '',
+    customResultIdPrefix,
     typebotId,
-    isChronological = true,
+    isChronological,
     fakeStorage,
   }: CreateFakeResultsProps) => {
+    const resultIdPrefix = customResultIdPrefix ?? cuid()
     await prisma.result.createMany({
       data: [
         ...Array.from(Array(count)).map((_, idx) => {
           const today = new Date()
           const rand = Math.random()
           return {
-            id: `${idPrefix}-result${idx}`,
+            id: `${resultIdPrefix}-result${idx}`,
             typebotId,
             createdAt: isChronological
               ? new Date(
@@ -36,20 +38,23 @@ export const injectFakeResults =
         }),
       ],
     })
-    return createAnswers(prisma)({ idPrefix, fakeStorage, count })
+    return createAnswers(prisma)({ fakeStorage, resultIdPrefix, count })
   }
 
 const createAnswers =
   (prisma: PrismaClient) =>
   ({
     count,
-    idPrefix,
+    resultIdPrefix,
     fakeStorage,
-  }: Pick<CreateFakeResultsProps, 'fakeStorage' | 'idPrefix' | 'count'>) => {
+  }: { resultIdPrefix: string } & Pick<
+    CreateFakeResultsProps,
+    'fakeStorage' | 'count'
+  >) => {
     return prisma.answer.createMany({
       data: [
         ...Array.from(Array(count)).map((_, idx) => ({
-          resultId: `${idPrefix}-result${idx}`,
+          resultId: `${resultIdPrefix}-result${idx}`,
           content: `content${idx}`,
           blockId: 'block1',
           groupId: 'block1',

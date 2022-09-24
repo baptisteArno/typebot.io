@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import {
   createResults,
-  freeWorkspaceId,
   importTypebotInDatabase,
+  limitTestWorkspaceId,
 } from '../services/database'
 import cuid from 'cuid'
 import path from 'path'
@@ -14,7 +14,7 @@ test('should not start if chat limit is reached', async ({ page }) => {
     {
       id: typebotId,
       publicId: `${typebotId}-public`,
-      workspaceId: freeWorkspaceId,
+      workspaceId: limitTestWorkspaceId,
     }
   )
   await createResults({ typebotId, count: 320 })

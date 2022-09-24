@@ -1,10 +1,12 @@
-import { Button, HStack, Tag, useDisclosure, Text } from '@chakra-ui/react'
+import { Button, HStack, useDisclosure, Text } from '@chakra-ui/react'
 import { FolderPlusIcon } from 'assets/icons'
 import {
   LimitReached,
   ChangePlanModal,
 } from 'components/shared/modals/ChangePlanModal'
+import { PlanTag } from 'components/shared/PlanTag'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
 import React from 'react'
 import { isFreePlan } from 'services/workspace'
 
@@ -26,7 +28,7 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
     >
       <HStack>
         <Text>Create a folder</Text>
-        {isFreePlan(workspace) && <Tag colorScheme="orange">Pro</Tag>}
+        {isFreePlan(workspace) && <PlanTag plan={Plan.STARTER} />}
       </HStack>
       <ChangePlanModal
         isOpen={isOpen}

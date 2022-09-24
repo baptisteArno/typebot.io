@@ -62,7 +62,7 @@ test.describe('Payment input block', () => {
     await stripePaymentForm(page).locator(`[placeholder="CVC"]`).fill('240')
     await typebotViewer(page).locator(`text="Pay 30€"`).click()
     await expect(
-      typebotViewer(page).locator(`text="Your card was declined."`)
+      typebotViewer(page).locator(`text="Your card has been declined."`)
     ).toBeVisible()
     await stripePaymentForm(page)
       .locator(`[placeholder="1234 1234 1234 1234"]`)

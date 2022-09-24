@@ -9,174 +9,174 @@ import path from 'path'
 import cuid from 'cuid'
 import { typebotViewer } from '../services/selectorUtils'
 
-test.describe.parallel('Editor', () => {
-  test('Edges connection should work', async ({ page }) => {
-    const typebotId = cuid()
-    await createTypebots([
-      {
-        id: typebotId,
-      },
-    ])
-    await page.goto(`/typebots/${typebotId}/edit`)
-    await expect(page.locator("text='Start'")).toBeVisible()
-    await page.dragAndDrop('text=Button', '#editor-container', {
-      targetPosition: { x: 1000, y: 400 },
-    })
-    await page.dragAndDrop(
-      'text=Text >> nth=0',
-      '[data-testid="group"] >> nth=1',
-      {
-        targetPosition: { x: 100, y: 50 },
-      }
-    )
-    await page.dragAndDrop(
-      '[data-testid="endpoint"]',
-      '[data-testid="group"] >> nth=1',
-      { targetPosition: { x: 100, y: 10 } }
-    )
-    await expect(page.locator('[data-testid="edge"]')).toBeVisible()
-    await page.dragAndDrop(
-      '[data-testid="endpoint"]',
-      '[data-testid="group"] >> nth=1'
-    )
-    await expect(page.locator('[data-testid="edge"]')).toBeVisible()
-    await page.dragAndDrop('text=Date', '#editor-container', {
-      targetPosition: { x: 1000, y: 800 },
-    })
-    await page.dragAndDrop(
-      '[data-testid="endpoint"] >> nth=2',
-      '[data-testid="group"] >> nth=2',
-      {
-        targetPosition: { x: 100, y: 10 },
-      }
-    )
-    await expect(page.locator('[data-testid="edge"] >> nth=0')).toBeVisible()
-    await expect(page.locator('[data-testid="edge"] >> nth=1')).toBeVisible()
+test.describe.configure({ mode: 'parallel' })
 
-    await page.click('[data-testid="clickable-edge"] >> nth=0', {
-      force: true,
-      button: 'right',
-    })
-    await page.click('text=Delete')
-    const total = await page.locator('[data-testid="edge"]').count()
-    expect(total).toBe(1)
+test('Edges connection should work', async ({ page }) => {
+  const typebotId = cuid()
+  await createTypebots([
+    {
+      id: typebotId,
+    },
+  ])
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await expect(page.locator("text='Start'")).toBeVisible()
+  await page.dragAndDrop('text=Button', '#editor-container', {
+    targetPosition: { x: 1000, y: 400 },
   })
-  test('Drag and drop blocks and items should work', async ({ page }) => {
-    const typebotId = cuid()
-    await importTypebotInDatabase(
-      path.join(__dirname, '../fixtures/typebots/editor/buttonsDnd.json'),
-      {
-        id: typebotId,
-      }
-    )
-
-    // Blocks dnd
-    await page.goto(`/typebots/${typebotId}/edit`)
-    await expect(page.locator('[data-testid="block"] >> nth=1')).toHaveText(
-      'Hello!'
-    )
-    await page.dragAndDrop('text=Hello', '[data-testid="block"] >> nth=3', {
-      targetPosition: { x: 100, y: 0 },
-    })
-    await expect(page.locator('[data-testid="block"] >> nth=2')).toHaveText(
-      'Hello!'
-    )
-    await page.dragAndDrop('text=Hello', 'text=Group #2')
-    await expect(page.locator('[data-testid="block"] >> nth=3')).toHaveText(
-      'Hello!'
-    )
-
-    // Items dnd
-    await expect(page.locator('[data-testid="item"] >> nth=0')).toHaveText(
-      'Item 1'
-    )
-    await page.dragAndDrop('text=Item 1', 'text=Item 3')
-    await expect(page.locator('[data-testid="item"] >> nth=2')).toHaveText(
-      'Item 1'
-    )
-    await expect(page.locator('[data-testid="item"] >> nth=1')).toHaveText(
-      'Item 3'
-    )
-    await page.dragAndDrop('text=Item 3', 'text=Item 2-3')
-    await expect(page.locator('[data-testid="item"] >> nth=6')).toHaveText(
-      'Item 3'
-    )
+  await page.dragAndDrop(
+    'text=Text >> nth=0',
+    '[data-testid="group"] >> nth=1',
+    {
+      targetPosition: { x: 100, y: 50 },
+    }
+  )
+  await page.dragAndDrop(
+    '[data-testid="endpoint"]',
+    '[data-testid="group"] >> nth=1',
+    { targetPosition: { x: 100, y: 10 } }
+  )
+  await expect(page.locator('[data-testid="edge"]')).toBeVisible()
+  await page.dragAndDrop(
+    '[data-testid="endpoint"]',
+    '[data-testid="group"] >> nth=1'
+  )
+  await expect(page.locator('[data-testid="edge"]')).toBeVisible()
+  await page.dragAndDrop('text=Date', '#editor-container', {
+    targetPosition: { x: 1000, y: 800 },
   })
-  test('Undo / Redo buttons should work', async ({ page }) => {
-    const typebotId = cuid()
-    await createTypebots([
-      {
-        id: typebotId,
-        ...parseDefaultGroupWithBlock({
-          type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
-        }),
-      },
-    ])
+  await page.dragAndDrop(
+    '[data-testid="endpoint"] >> nth=2',
+    '[data-testid="group"] >> nth=2',
+    {
+      targetPosition: { x: 100, y: 10 },
+    }
+  )
+  await expect(page.locator('[data-testid="edge"] >> nth=0')).toBeVisible()
+  await expect(page.locator('[data-testid="edge"] >> nth=1')).toBeVisible()
 
-    await page.goto(`/typebots/${typebotId}/edit`)
-    await page.click('text=Group #1', { button: 'right' })
-    await page.click('text=Duplicate')
-    await expect(page.locator('text="Group #1"')).toBeVisible()
-    await expect(page.locator('text="Group #1 copy"')).toBeVisible()
-    await page.click('text="Group #1"', { button: 'right' })
-    await page.click('text=Delete')
-    await expect(page.locator('text="Group #1"')).toBeHidden()
-    await page.click('button[aria-label="Undo"]')
-    await expect(page.locator('text="Group #1"')).toBeVisible()
-    await page.click('button[aria-label="Redo"]')
-    await expect(page.locator('text="Group #1"')).toBeHidden()
+  await page.click('[data-testid="clickable-edge"] >> nth=0', {
+    force: true,
+    button: 'right',
   })
+  await page.click('text=Delete')
+  const total = await page.locator('[data-testid="edge"]').count()
+  expect(total).toBe(1)
+})
+test('Drag and drop blocks and items should work', async ({ page }) => {
+  const typebotId = cuid()
+  await importTypebotInDatabase(
+    path.join(__dirname, '../fixtures/typebots/editor/buttonsDnd.json'),
+    {
+      id: typebotId,
+    }
+  )
 
-  test('Rename and icon change should work', async ({ page }) => {
-    const typebotId = cuid()
-    await createTypebots([
-      {
-        id: typebotId,
-        name: 'My awesome typebot',
-        ...parseDefaultGroupWithBlock({
-          type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
-        }),
-      },
-    ])
-
-    await page.goto(`/typebots/${typebotId}/edit`)
-
-    await page.click('[data-testid="editable-icon"]')
-    await expect(page.locator('text="My awesome typebot"')).toBeVisible()
-    await page.fill('input[placeholder="Search..."]', 'love')
-    await page.click('text="😍"')
-    await page.click('text="My awesome typebot"')
-    await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
-    await page.press('input[value="My superb typebot"]', 'Enter')
-    await page.click('[aria-label="Navigate back"]')
-    await expect(page.locator('text="😍"')).toBeVisible()
-    await expect(page.locator('text="My superb typebot"')).toBeVisible()
+  // Blocks dnd
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await expect(page.locator('[data-testid="block"] >> nth=1')).toHaveText(
+    'Hello!'
+  )
+  await page.dragAndDrop('text=Hello', '[data-testid="block"] >> nth=3', {
+    targetPosition: { x: 100, y: 0 },
   })
+  await expect(page.locator('[data-testid="block"] >> nth=2')).toHaveText(
+    'Hello!'
+  )
+  await page.dragAndDrop('text=Hello', 'text=Group #2')
+  await expect(page.locator('[data-testid="block"] >> nth=3')).toHaveText(
+    'Hello!'
+  )
 
-  test('Preview from group should work', async ({ page }) => {
-    const typebotId = cuid()
-    await importTypebotInDatabase(
-      path.join(__dirname, '../fixtures/typebots/editor/previewFromGroup.json'),
-      {
-        id: typebotId,
-      }
-    )
+  // Items dnd
+  await expect(page.locator('[data-testid="item"] >> nth=0')).toHaveText(
+    'Item 1'
+  )
+  await page.dragAndDrop('text=Item 1', 'text=Item 3')
+  await expect(page.locator('[data-testid="item"] >> nth=2')).toHaveText(
+    'Item 1'
+  )
+  await expect(page.locator('[data-testid="item"] >> nth=1')).toHaveText(
+    'Item 3'
+  )
+  await page.dragAndDrop('text=Item 3', 'text=Item 2-3')
+  await expect(page.locator('[data-testid="item"] >> nth=6')).toHaveText(
+    'Item 3'
+  )
+})
+test('Undo / Redo buttons should work', async ({ page }) => {
+  const typebotId = cuid()
+  await createTypebots([
+    {
+      id: typebotId,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
+        options: defaultTextInputOptions,
+      }),
+    },
+  ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
-    await page.click('[aria-label="Preview bot from this group"] >> nth=1')
-    await expect(
-      typebotViewer(page).locator('text="Hello this is group 1"')
-    ).toBeVisible()
-    await page.click('[aria-label="Preview bot from this group"] >> nth=2')
-    await expect(
-      typebotViewer(page).locator('text="Hello this is group 2"')
-    ).toBeVisible()
-    await page.click('[aria-label="Close"]')
-    await page.click('text="Preview"')
-    await expect(
-      typebotViewer(page).locator('text="Hello this is group 1"')
-    ).toBeVisible()
-  })
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.click('text=Group #1', { button: 'right' })
+  await page.click('text=Duplicate')
+  await expect(page.locator('text="Group #1"')).toBeVisible()
+  await expect(page.locator('text="Group #1 copy"')).toBeVisible()
+  await page.click('text="Group #1"', { button: 'right' })
+  await page.click('text=Delete')
+  await expect(page.locator('text="Group #1"')).toBeHidden()
+  await page.click('button[aria-label="Undo"]')
+  await expect(page.locator('text="Group #1"')).toBeVisible()
+  await page.click('button[aria-label="Redo"]')
+  await expect(page.locator('text="Group #1"')).toBeHidden()
+})
+
+test('Rename and icon change should work', async ({ page }) => {
+  const typebotId = cuid()
+  await createTypebots([
+    {
+      id: typebotId,
+      name: 'My awesome typebot',
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
+        options: defaultTextInputOptions,
+      }),
+    },
+  ])
+
+  await page.goto(`/typebots/${typebotId}/edit`)
+
+  await page.click('[data-testid="editable-icon"]')
+  await expect(page.locator('text="My awesome typebot"')).toBeVisible()
+  await page.fill('input[placeholder="Search..."]', 'love')
+  await page.click('text="😍"')
+  await page.click('text="My awesome typebot"')
+  await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
+  await page.press('input[value="My superb typebot"]', 'Enter')
+  await page.click('[aria-label="Navigate back"]')
+  await expect(page.locator('text="😍"')).toBeVisible()
+  await expect(page.locator('text="My superb typebot"')).toBeVisible()
+})
+
+test('Preview from group should work', async ({ page }) => {
+  const typebotId = cuid()
+  await importTypebotInDatabase(
+    path.join(__dirname, '../fixtures/typebots/editor/previewFromGroup.json'),
+    {
+      id: typebotId,
+    }
+  )
+
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.click('[aria-label="Preview bot from this group"] >> nth=1')
+  await expect(
+    typebotViewer(page).locator('text="Hello this is group 1"')
+  ).toBeVisible()
+  await page.click('[aria-label="Preview bot from this group"] >> nth=2')
+  await expect(
+    typebotViewer(page).locator('text="Hello this is group 2"')
+  ).toBeVisible()
+  await page.click('[aria-label="Close"]')
+  await page.click('text="Preview"')
+  await expect(
+    typebotViewer(page).locator('text="Hello this is group 1"')
+  ).toBeVisible()
 })

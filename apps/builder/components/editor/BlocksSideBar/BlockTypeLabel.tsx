@@ -1,5 +1,7 @@
-import { HStack, Tag, Text, Tooltip } from '@chakra-ui/react'
+import { HStack, Text, Tooltip } from '@chakra-ui/react'
+import { PlanTag } from 'components/shared/PlanTag'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { Plan } from 'db'
 import {
   BubbleBlockType,
   InputBlockType,
@@ -52,11 +54,7 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
         <Tooltip label="Upload Files">
           <HStack>
             <Text>File</Text>
-            {isFreePlan(workspace) && (
-              <Tag colorScheme="orange" size="sm">
-                Pro
-              </Tag>
-            )}
+            {isFreePlan(workspace) && <PlanTag plan={Plan.STARTER} />}
           </HStack>
         </Tooltip>
       )

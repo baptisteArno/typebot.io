@@ -11,9 +11,6 @@ import {
 } from 'models'
 import { typebotViewer } from '../services/selectorUtils'
 import cuid from 'cuid'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = cuid()
@@ -37,20 +34,20 @@ test('Should correctly parse metadata', async ({ page }) => {
     },
   ])
   await page.goto(`/${typebotId}-public`)
-  await expect(
+  expect(
     await page.evaluate(`document.querySelector('title').textContent`)
   ).toBe(customMetadata.title)
-  await expect(
+  expect(
     await page.evaluate(
       () => (document.querySelector('meta[name="description"]') as any).content
     )
   ).toBe(customMetadata.description)
-  await expect(
+  expect(
     await page.evaluate(
       () => (document.querySelector('meta[property="og:image"]') as any).content
     )
   ).toBe(customMetadata.imageUrl)
-  await expect(
+  expect(
     await page.evaluate(() =>
       (document.querySelector('link[rel="icon"]') as any).getAttribute('href')
     )

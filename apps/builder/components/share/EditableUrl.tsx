@@ -36,11 +36,10 @@ export const EditableUrl = ({
         <Tooltip label="Edit">
           <EditablePreview
             mx={1}
-            bgColor="blue.500"
-            color="white"
+            borderWidth="1px"
             px={3}
             rounded="md"
-            cursor="pointer"
+            cursor="text"
             display="flex"
             fontWeight="semibold"
           />

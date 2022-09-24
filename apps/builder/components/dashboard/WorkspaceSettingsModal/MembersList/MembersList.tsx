@@ -24,7 +24,7 @@ export const MembersList = () => {
   })
 
   const handleDeleteMemberClick = (memberId: string) => async () => {
-    if (!workspace || !members || !invitations) return
+    if (!workspace) return
     await deleteMember(workspace.id, memberId)
     mutate({
       members: members.filter((m) => m.userId !== memberId),
@@ -34,7 +34,7 @@ export const MembersList = () => {
 
   const handleSelectNewRole =
     (memberId: string) => async (role: WorkspaceRole) => {
-      if (!workspace || !members || !invitations) return
+      if (!workspace) return
       await updateMember(workspace.id, { userId: memberId, role })
       mutate({
         members: members.map((m) =>
@@ -45,7 +45,7 @@ export const MembersList = () => {
     }
 
   const handleDeleteInvitationClick = (id: string) => async () => {
-    if (!workspace || !members || !invitations) return
+    if (!workspace) return
     await deleteInvitation({ workspaceId: workspace.id, id })
     mutate({
       invitations: invitations.filter((i) => i.id !== id),
@@ -55,7 +55,7 @@ export const MembersList = () => {
 
   const handleSelectNewInvitationRole =
     (id: string) => async (type: WorkspaceRole) => {
-      if (!workspace || !members || !invitations) return
+      if (!workspace) return
       await updateInvitation({ workspaceId: workspace.id, id, type })
       mutate({
         invitations: invitations.map((i) => (i.id === id ? { ...i, type } : i)),
@@ -63,17 +63,15 @@ export const MembersList = () => {
       })
     }
 
-  const handleNewInvitation = (invitation: WorkspaceInvitation) => {
-    if (!members || !invitations) return
-    mutate({
+  const handleNewInvitation = async (invitation: WorkspaceInvitation) => {
+    await mutate({
       members,
       invitations: [...invitations, invitation],
     })
   }
 
-  const handleNewMember = (member: Member) => {
-    if (!members || !invitations) return
-    mutate({
+  const handleNewMember = async (member: Member) => {
+    await mutate({
       members: [...members, member],
       invitations,
     })
@@ -81,7 +79,7 @@ export const MembersList = () => {
 
   const canInviteNewMember = checkCanInviteMember({
     plan: workspace?.plan,
-    currentMembersCount: [...(members ?? []), ...(invitations ?? [])].length,
+    currentMembersCount: [...members, ...invitations].length,
   })
 
   return (
@@ -103,7 +101,7 @@ export const MembersList = () => {
           isLocked={!canInviteNewMember}
         />
       )}
-      {members?.map((member) => (
+      {members.map((member) => (
         <MemberItem
           key={member.userId}
           email={member.email ?? ''}
@@ -116,7 +114,7 @@ export const MembersList = () => {
           canEdit={canEdit}
         />
       ))}
-      {invitations?.map((invitation) => (
+      {invitations.map((invitation) => (
         <MemberItem
           key={invitation.email}
           email={invitation.email ?? ''}

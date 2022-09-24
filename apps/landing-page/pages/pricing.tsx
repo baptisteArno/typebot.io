@@ -219,7 +219,6 @@ const Pricing = () => {
                   <ActionButton>Subscribe now</ActionButton>
                 </NextChakraLink>
               }
-              isMostPopular
             />
           </Stack>
           <VStack maxW="1200px" w="full" spacing={[12, 20]} px="4">

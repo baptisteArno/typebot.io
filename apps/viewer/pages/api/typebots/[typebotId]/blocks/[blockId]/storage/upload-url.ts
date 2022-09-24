@@ -76,6 +76,7 @@ const checkStorageLimit = async (typebotId: string) => {
   })
   if (!typebot?.workspace) throw new Error('Workspace not found')
   const { workspace } = typebot
+  console.log(typebot.workspaceId)
   const {
     _sum: { storageUsed: totalStorageUsed },
   } = await prisma.answer.aggregate({
@@ -94,26 +95,27 @@ const checkStorageLimit = async (typebotId: string) => {
   if (!totalStorageUsed) return false
   const hasSentFirstEmail = workspace.storageLimitFirstEmailSentAt !== null
   const hasSentSecondEmail = workspace.storageLimitSecondEmailSentAt !== null
-  const storageLimit = getStorageLimit(typebot.workspace) * 1024 * 1024 * 1024
+  const storageLimit = getStorageLimit(typebot.workspace)
+  const storageLimitBytes = storageLimit * 1024 * 1024 * 1024
   if (
-    totalStorageUsed >= storageLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
+    totalStorageUsed >= storageLimitBytes * LIMIT_EMAIL_TRIGGER_PERCENT &&
     !hasSentFirstEmail &&
     env('E2E_TEST') !== 'true'
   )
-    sendAlmostReachStorageLimitEmail({
+    await sendAlmostReachStorageLimitEmail({
       workspaceId: workspace.id,
       storageLimit,
     })
   if (
-    totalStorageUsed >= storageLimit &&
+    totalStorageUsed >= storageLimitBytes &&
     !hasSentSecondEmail &&
     env('E2E_TEST') !== 'true'
   )
-    sendReachStorageLimitEmail({
+    await sendReachStorageLimitEmail({
       workspaceId: workspace.id,
       storageLimit,
     })
-  return (totalStorageUsed ?? 0) >= getStorageLimit(typebot?.workspace)
+  return totalStorageUsed >= storageLimitBytes
 }
 
 const sendAlmostReachStorageLimitEmail = async ({

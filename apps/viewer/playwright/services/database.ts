@@ -18,6 +18,8 @@ const prisma = new PrismaClient()
 const userId = 'userId'
 export const freeWorkspaceId = 'freeWorkspace'
 export const starterWorkspaceId = 'starterWorkspace'
+export const limitTestWorkspaceId = 'limitTestWorkspace'
+export const apiToken = 'jirowjgrwGREHE'
 
 export const teardownDatabase = async () => {
   await prisma.workspace.deleteMany({
@@ -51,6 +53,11 @@ export const createWorkspaces = async () =>
         name: 'Starter workspace',
         plan: Plan.STARTER,
       },
+      {
+        id: limitTestWorkspaceId,
+        name: 'Limit test workspace',
+        plan: Plan.FREE,
+      },
     ],
   })
 
@@ -65,19 +72,9 @@ export const createUser = async () => {
         createMany: {
           data: [
             {
-              name: 'Token 1',
-              token: 'jirowjgrwGREHEtoken1',
+              name: 'Token',
+              token: apiToken,
               createdAt: new Date(2022, 1, 1),
-            },
-            {
-              name: 'Github',
-              token: 'jirowjgrwGREHEgdrgithub',
-              createdAt: new Date(2022, 1, 2),
-            },
-            {
-              name: 'N8n',
-              token: 'jirowjgrwGREHrgwhrwn8n',
-              createdAt: new Date(2022, 1, 3),
             },
           ],
         },
@@ -88,6 +85,7 @@ export const createUser = async () => {
     data: [
       { role: WorkspaceRole.ADMIN, userId, workspaceId: freeWorkspaceId },
       { role: WorkspaceRole.ADMIN, userId, workspaceId: starterWorkspaceId },
+      { role: WorkspaceRole.ADMIN, userId, workspaceId: limitTestWorkspaceId },
     ],
   })
 }
@@ -207,8 +205,8 @@ export const importTypebotInDatabase = async (
 ) => {
   const typebot: Typebot = {
     ...JSON.parse(readFileSync(path).toString()),
-    ...updates,
     workspaceId: starterWorkspaceId,
+    ...updates,
   }
   await prisma.typebot.create({
     data: typebot,

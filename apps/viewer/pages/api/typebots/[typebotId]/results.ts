@@ -69,8 +69,8 @@ const checkChatsUsage = async (
     | 'chatsLimitSecondEmailSentAt'
   >
 ) => {
-  const chatLimit = getChatsLimit(workspace)
-  if (chatLimit === -1) return
+  const chatsLimit = getChatsLimit(workspace)
+  if (chatsLimit === -1) return
   const now = new Date()
   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
   const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
@@ -91,26 +91,26 @@ const checkChatsUsage = async (
     workspace.chatsLimitSecondEmailSentAt < firstDayOfNextMonth &&
     workspace.chatsLimitSecondEmailSentAt > firstDayOfMonth
   if (
-    chatsCount >= chatLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
+    chatsCount >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
     !hasSentFirstEmail &&
     env('E2E_TEST') !== 'true'
   )
     await sendAlmostReachChatsLimitEmail({
       workspaceId: workspace.id,
-      chatLimit,
+      chatLimit: chatsLimit,
       firstDayOfNextMonth,
     })
   if (
-    chatsCount >= chatLimit &&
+    chatsCount >= chatsLimit &&
     !hasSentSecondEmail &&
     env('E2E_TEST') !== 'true'
   )
     await sendReachedAlertEmail({
       workspaceId: workspace.id,
-      chatLimit,
+      chatLimit: chatsLimit,
       firstDayOfNextMonth,
     })
-  return chatsCount >= chatLimit
+  return chatsCount >= chatsLimit
 }
 
 const sendAlmostReachChatsLimitEmail = async ({
