@@ -6,7 +6,6 @@ import { typebotViewer } from '../services/selectorUtils'
 import { createResults, importTypebotInDatabase } from '../services/database'
 import { readFileSync } from 'fs'
 import { isDefined } from 'utils'
-import { describe } from 'node:test'
 
 const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 
@@ -49,7 +48,7 @@ test('should work as expected', async ({ page, browser }) => {
     page.locator('text="Export"').click(),
   ])
   const downloadPath = await download.path()
-  expect(path).toBeDefined()
+  expect(downloadPath).toBeDefined()
   const file = readFileSync(downloadPath as string).toString()
   const { data } = parse(file)
   expect(data).toHaveLength(2)
@@ -86,7 +85,7 @@ test('should work as expected', async ({ page, browser }) => {
   ).toBeVisible()
 })
 
-describe('Storage limit is reached', () => {
+test.describe('Storage limit is reached', () => {
   const typebotId = cuid()
 
   test.beforeAll(async () => {

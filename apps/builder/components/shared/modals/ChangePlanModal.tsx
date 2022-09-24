@@ -13,9 +13,10 @@ import { ChangePlanForm } from 'components/shared/ChangePlanForm'
 
 export enum LimitReached {
   BRAND = 'remove branding',
-  CUSTOM_DOMAIN = 'add custom domain',
+  CUSTOM_DOMAIN = 'add custom domains',
   FOLDER = 'create folders',
   FILE_INPUT = 'use file input blocks',
+  ANALYTICS = 'unlock in-depth analytics',
 }
 
 type ChangePlanModalProps = {

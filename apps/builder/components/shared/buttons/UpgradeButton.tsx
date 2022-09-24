@@ -5,9 +5,9 @@ import { isNotDefined } from 'utils'
 import { ChangePlanModal } from '../modals/ChangePlanModal'
 import { LimitReached } from '../modals/ChangePlanModal'
 
-type Props = { type?: LimitReached } & ButtonProps
+type Props = { limitReachedType?: LimitReached } & ButtonProps
 
-export const UpgradeButton = ({ type, ...props }: Props) => {
+export const UpgradeButton = ({ limitReachedType, ...props }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
   return (
@@ -18,7 +18,11 @@ export const UpgradeButton = ({ type, ...props }: Props) => {
       onClick={onOpen}
     >
       {props.children ?? 'Upgrade'}
-      <ChangePlanModal isOpen={isOpen} onClose={onClose} type={type} />
+      <ChangePlanModal
+        isOpen={isOpen}
+        onClose={onClose}
+        type={limitReachedType}
+      />
     </Button>
   )
 }

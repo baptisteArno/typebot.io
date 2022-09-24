@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions, InputBlockType } from 'models'
-import { connectedAsOtherUser } from 'playwright/services/browser'
+import { mockSessionResponsesToOtherUser } from 'playwright/services/browser'
 import {
   createTypebots,
   parseDefaultGroupWithBlock,
@@ -129,7 +129,7 @@ test('can manage members', async ({ page }) => {
   await page.click('button >> text="Remove"')
   await expect(page.locator('text="guest@email.com"')).toBeHidden()
 
-  await connectedAsOtherUser(page)
+  await mockSessionResponsesToOtherUser(page)
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await expect(page.locator('text="Settings"')).toBeHidden()

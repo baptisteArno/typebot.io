@@ -17,8 +17,8 @@ export const useMembers = ({ workspaceId }: { workspaceId?: string }) => {
     dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
   })
   return {
-    members: data?.members,
-    invitations: data?.invitations,
+    members: data?.members ?? [],
+    invitations: data?.invitations ?? [],
     isLoading: !error && !data,
     mutate,
   }

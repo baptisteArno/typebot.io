@@ -2,9 +2,6 @@ import test, { expect } from '@playwright/test'
 import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should work as expected', async ({ page }) => {
   const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'

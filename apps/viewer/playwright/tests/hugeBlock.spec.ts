@@ -3,9 +3,6 @@ import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
 import cuid from 'cuid'
-import { mockSessionApiCalls } from 'playwright/services/browser'
-
-test.beforeEach(({ page }) => mockSessionApiCalls(page))
 
 test('should work as expected', async ({ page }) => {
   const typebotId = cuid()

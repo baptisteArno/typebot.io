@@ -21,6 +21,7 @@ import { readFileSync } from 'fs'
 import { injectFakeResults } from 'utils'
 import { encrypt } from 'utils/api'
 import Stripe from 'stripe'
+import cuid from 'cuid'
 
 const prisma = new PrismaClient()
 
@@ -28,7 +29,7 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY ?? '', {
   apiVersion: '2022-08-01',
 })
 
-const userId = 'userId'
+export const userId = 'userId'
 const otherUserId = 'otherUserId'
 export const freeWorkspaceId = 'freeWorkspace'
 export const starterWorkspaceId = 'starterWorkspace'
@@ -47,6 +48,12 @@ export const teardownDatabase = async () => {
     where: { id: { in: [userId, otherUserId] } },
   })
   return prisma.webhook.deleteMany()
+}
+
+export const deleteWorkspaces = async (workspaceIds: string[]) => {
+  await prisma.workspace.deleteMany({
+    where: { id: { in: workspaceIds } },
+  })
 }
 
 export const addSubscriptionToWorkspace = async (
@@ -90,12 +97,12 @@ export const addSubscriptionToWorkspace = async (
 }
 
 export const setupDatabase = async () => {
-  await createWorkspaces()
-  await createUsers()
-  return createCredentials()
+  await setupWorkspaces()
+  await setupUsers()
+  return setupCredentials()
 }
 
-export const createWorkspaces = async () =>
+export const setupWorkspaces = async () =>
   prisma.workspace.createMany({
     data: [
       {
@@ -122,21 +129,27 @@ export const createWorkspaces = async () =>
     ],
   })
 
-export const createWorkspace = async (workspace: Partial<Workspace>) => {
-  const { id: workspaceId } = await prisma.workspace.create({
-    data: {
+export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
+  const workspaceIds = workspaces.map((workspace) => workspace.id ?? cuid())
+  await prisma.workspace.createMany({
+    data: workspaces.map((workspace, index) => ({
+      id: workspaceIds[index],
       name: 'Free workspace',
       plan: Plan.FREE,
       ...workspace,
-    },
+    })),
   })
-  await prisma.memberInWorkspace.create({
-    data: { userId, workspaceId, role: WorkspaceRole.ADMIN },
+  await prisma.memberInWorkspace.createMany({
+    data: workspaces.map((_, index) => ({
+      userId,
+      workspaceId: workspaceIds[index],
+      role: WorkspaceRole.ADMIN,
+    })),
   })
-  return workspaceId
+  return workspaceIds
 }
 
-export const createUsers = async () => {
+export const setupUsers = async () => {
   await prisma.user.create({
     data: {
       id: userId,
@@ -237,7 +250,7 @@ export const createFolders = (partialFolders: Partial<DashboardFolder>[]) =>
     })),
   })
 
-const createCredentials = () => {
+const setupCredentials = () => {
   const { encryptedData, iv } = encrypt({
     expiry_date: 1642441058842,
     access_token:

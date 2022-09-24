@@ -37,7 +37,11 @@ const workspaceContext = createContext<{
   //@ts-ignore
 }>({})
 
-export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
+type WorkspaceContextProps = {
+  children: ReactNode
+}
+
+export const WorkspaceContext = ({ children }: WorkspaceContextProps) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
@@ -45,6 +49,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
+  const [pendingWorkspaceId, setPendingWorkspaceId] = useState<string>()
 
   const canEdit =
     workspaces
@@ -58,7 +63,9 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!workspaces || workspaces.length === 0 || currentWorkspace) return
     const lastWorspaceId =
-      query.workspaceId?.toString() ?? localStorage.getItem('workspaceId')
+      pendingWorkspaceId ??
+      query.workspaceId?.toString() ??
+      localStorage.getItem('workspaceId')
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
@@ -77,11 +84,8 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   }, [currentWorkspace?.id])
 
   useEffect(() => {
-    if (
-      !typebot?.workspaceId ||
-      !currentWorkspace ||
-      typebot.workspaceId === currentWorkspace.id
-    )
+    if (!currentWorkspace) return setPendingWorkspaceId(typebot?.workspaceId)
+    if (!typebot?.workspaceId || typebot.workspaceId === currentWorkspace.id)
       return
     switchWorkspace(typebot.workspaceId)
     // eslint-disable-next-line react-hooks/exhaustive-deps

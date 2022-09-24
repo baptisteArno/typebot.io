@@ -9,7 +9,7 @@ import {
   computeSourceCoordinates,
   computeDropOffPath,
 } from 'services/graph'
-import { isFreePlan } from 'services/workspace'
+import { isWorkspaceProPlan } from 'services/workspace'
 import { byId, isDefined } from 'utils'
 
 type Props = {
@@ -28,7 +28,7 @@ export const DropOffEdge = ({
   const { sourceEndpoints, graphPosition } = useGraph()
   const { publishedTypebot } = useTypebot()
 
-  const isUserOnFreePlan = isFreePlan(workspace)
+  const isProPlan = isWorkspaceProPlan(workspace)
 
   const totalAnswers = useMemo(
     () => answersCounts.find((a) => a.groupId === groupId)?.totalAnswers,
@@ -95,7 +95,7 @@ export const DropOffEdge = ({
       >
         <Tooltip
           label="Unlock Drop-off rate by upgrading to Pro plan"
-          isDisabled={!isUserOnFreePlan}
+          isDisabled={isProPlan}
         >
           <VStack
             bgColor={'red.500'}
@@ -105,13 +105,28 @@ export const DropOffEdge = ({
             justifyContent="center"
             w="full"
             h="full"
-            filter={isUserOnFreePlan ? 'blur(4px)' : ''}
-            onClick={isUserOnFreePlan ? onUnlockProPlanClick : undefined}
-            cursor={isUserOnFreePlan ? 'pointer' : 'auto'}
+            onClick={isProPlan ? undefined : onUnlockProPlanClick}
+            cursor={isProPlan ? 'auto' : 'pointer'}
           >
-            <Text>{isUserOnFreePlan ? 'X' : dropOffRate}%</Text>
+            <Text filter={isProPlan ? '' : 'blur(2px)'}>
+              {isProPlan ? (
+                dropOffRate
+              ) : (
+                <Text as="span" filter="blur(2px)">
+                  X
+                </Text>
+              )}
+              %
+            </Text>
             <Tag colorScheme="red">
-              {isUserOnFreePlan ? 'n' : totalDroppedUser} users
+              {isProPlan ? (
+                totalDroppedUser
+              ) : (
+                <Text as="span" filter="blur(3px)" mr="1">
+                  NN
+                </Text>
+              )}{' '}
+              users
             </Tag>
           </VStack>
         </Tooltip>

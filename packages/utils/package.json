@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/nodemailer": "6.4.5",
     "aws-sdk": "2.1213.0",
+    "cuid": "^2.1.8",
     "db": "workspace:*",
     "models": "workspace:*",
     "next": "12.3.0",

@@ -6,7 +6,7 @@ export const refreshUser = async () => {
   document.dispatchEvent(event)
 }
 
-export const connectedAsOtherUser = async (page: Page) =>
+export const mockSessionResponsesToOtherUser = async (page: Page) =>
   page.route('/api/auth/session', (route) => {
     if (route.request().method() === 'GET') {
       return route.fulfill({

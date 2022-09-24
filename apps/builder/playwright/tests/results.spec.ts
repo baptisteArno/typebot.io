@@ -43,7 +43,7 @@ test('results should be deletable', async ({ page }) => {
       }),
     },
   ])
-  await createResults({ typebotId, count: 200 })
+  await createResults({ typebotId, count: 200, isChronological: true })
   await page.goto(`/typebots/${typebotId}/results`)
   await selectFirstResults(page)
   await page.click('text="Delete"')
@@ -67,7 +67,7 @@ test('submissions table should have infinite scroll', async ({ page }) => {
       tableWrapper.scrollTo(0, tableWrapper.scrollHeight)
     })
 
-  await createResults({ typebotId, count: 200 })
+  await createResults({ typebotId, count: 200, isChronological: true })
   await page.goto(`/typebots/${typebotId}/results`)
   await expect(page.locator('text=content199')).toBeVisible()
 

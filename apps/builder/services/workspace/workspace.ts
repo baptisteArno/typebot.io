@@ -1,7 +1,7 @@
 import { WorkspaceWithMembers } from 'contexts/WorkspaceContext'
 import { Plan, Workspace } from 'db'
 import useSWR from 'swr'
-import { isNotDefined, sendRequest } from 'utils'
+import { isDefined, isNotDefined, sendRequest } from 'utils'
 import { fetcher } from '../utils'
 
 export const useWorkspaces = ({ userId }: { userId?: string }) => {
@@ -74,3 +74,6 @@ export const planToReadable = (plan?: Plan) => {
 
 export const isFreePlan = (workspace?: Pick<Workspace, 'plan'>) =>
   isNotDefined(workspace) || workspace?.plan === Plan.FREE
+
+export const isWorkspaceProPlan = (workspace?: Pick<Workspace, 'plan'>) =>
+  isDefined(workspace) && workspace.plan === Plan.PRO

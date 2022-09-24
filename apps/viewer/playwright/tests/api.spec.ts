@@ -1,5 +1,6 @@
 import test, { expect } from '@playwright/test'
 import {
+  apiToken,
   createResults,
   createWebhook,
   importTypebotInDatabase,
@@ -23,7 +24,7 @@ test.beforeAll(async () => {
 test('can list typebots', async ({ request }) => {
   expect((await request.get(`/api/typebots`)).status()).toBe(401)
   const response = await request.get(`/api/typebots`, {
-    headers: { Authorization: 'Bearer userToken' },
+    headers: { Authorization: `Bearer ${apiToken}` },
   })
   const { typebots } = await response.json()
   expect(typebots).toHaveLength(1)
@@ -41,7 +42,7 @@ test('can get webhook blocks', async ({ request }) => {
   const response = await request.get(
     `/api/typebots/${typebotId}/webhookBlocks`,
     {
-      headers: { Authorization: 'Bearer userToken' },
+      headers: { Authorization: `Bearer ${apiToken}` },
     }
   )
   const { blocks } = await response.json()
@@ -65,7 +66,7 @@ test('can subscribe webhook', async ({ request }) => {
     `/api/typebots/${typebotId}/blocks/webhookBlock/subscribeWebhook`,
     {
       headers: {
-        Authorization: 'Bearer userToken',
+        Authorization: `Bearer ${apiToken}`,
       },
       data: { url: 'https://test.com' },
     }
@@ -87,7 +88,7 @@ test('can unsubscribe webhook', async ({ request }) => {
   const response = await request.post(
     `/api/typebots/${typebotId}/blocks/webhookBlock/unsubscribeWebhook`,
     {
-      headers: { Authorization: 'Bearer userToken' },
+      headers: { Authorization: `Bearer ${apiToken}` },
     }
   )
   const body = await response.json()
@@ -107,7 +108,7 @@ test('can get a sample result', async ({ request }) => {
   const response = await request.get(
     `/api/typebots/${typebotId}/blocks/webhookBlock/sampleResult`,
     {
-      headers: { Authorization: 'Bearer userToken' },
+      headers: { Authorization: `Bearer ${apiToken}` },
     }
   )
   const data = await response.json()
@@ -128,7 +129,7 @@ test('can list results', async ({ request }) => {
   const response = await request.get(
     `/api/typebots/${typebotId}/results?limit=10`,
     {
-      headers: { Authorization: 'Bearer userToken' },
+      headers: { Authorization: `Bearer ${apiToken}` },
     }
   )
   const { results } = await response.json()

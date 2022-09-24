@@ -25,7 +25,6 @@ export const Edges = ({
       pos="absolute"
       left="0"
       top="0"
-      pointerEvents="none"
       shapeRendering="geometricPrecision"
     >
       <DrawingEdge />

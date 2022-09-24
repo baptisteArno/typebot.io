@@ -38,6 +38,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: existingUser.id,
         },
       })
+      if (env('E2E_TEST') !== 'true')
+        await sendEmailNotification({
+          to: data.email,
+          subject: "You've been invited to collaborate 🤝",
+          html: workspaceMemberInvitationEmail({
+            workspaceName: workspace.name,
+            guestEmail: data.email,
+            url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+            hostEmail: user.email ?? '',
+          }),
+        })
       return res.send({
         member: {
           userId: existingUser.id,
@@ -47,19 +58,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           workspaceId: data.workspaceId,
         },
       })
-    } else await prisma.workspaceInvitation.create({ data })
-    if (env('E2E_TEST') !== 'true')
-      await sendEmailNotification({
-        to: data.email,
-        subject: "You've been invited to collaborate 🤝",
-        html: workspaceMemberInvitationEmail({
-          workspaceName: workspace.name,
-          guestEmail: data.email,
-          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
-          hostEmail: user.email ?? '',
-        }),
-      })
-    return res.send({ message: 'success' })
+    } else {
+      const invitation = await prisma.workspaceInvitation.create({ data })
+      if (env('E2E_TEST') !== 'true')
+        await sendEmailNotification({
+          to: data.email,
+          subject: "You've been invited to collaborate 🤝",
+          html: workspaceMemberInvitationEmail({
+            workspaceName: workspace.name,
+            guestEmail: data.email,
+            url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+            hostEmail: user.email ?? '',
+          }),
+        })
+      return res.send({ invitation })
+    }
   }
   methodNotAllowed(res)
 }

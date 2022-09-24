@@ -59,6 +59,10 @@ test.describe('Starter workspace', () => {
     await page.goto(`/typebots/${typebotId}/share`)
     await expect(page.locator('text=Pro')).toBeVisible()
     await page.click('text=Add my domain')
-    await expect(page.locator('text=For solo creator')).toBeVisible()
+    await expect(
+      page.locator(
+        'text="You need to upgrade your plan in order to add custom domains"'
+      )
+    ).toBeVisible()
   })
 })

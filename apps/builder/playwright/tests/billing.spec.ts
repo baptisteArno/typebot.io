@@ -5,13 +5,34 @@ import {
   addSubscriptionToWorkspace,
   createResults,
   createTypebots,
-  createWorkspace,
-  starterWorkspaceId,
+  createWorkspaces,
+  deleteWorkspaces,
 } from '../services/database'
 
+const usageWorkspaceId = cuid()
+const usageTypebotId = cuid()
+const planChangeWorkspaceId = cuid()
+
+test.beforeAll(async () => {
+  await createWorkspaces([
+    {
+      id: usageWorkspaceId,
+      name: 'Usage Workspace',
+      plan: Plan.STARTER,
+    },
+    {
+      id: planChangeWorkspaceId,
+      name: 'Plan Change Workspace',
+    },
+  ])
+  await createTypebots([{ id: usageTypebotId, workspaceId: usageWorkspaceId }])
+})
+
+test.afterAll(async () => {
+  await deleteWorkspaces([usageWorkspaceId, planChangeWorkspaceId])
+})
+
 test('should display valid usage', async ({ page }) => {
-  const starterTypebotId = cuid()
-  createTypebots([{ id: starterTypebotId, workspaceId: starterWorkspaceId }])
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
@@ -24,37 +45,34 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 300"')).toBeVisible()
+  await expect(page.locator('text="Storage"')).toBeHidden()
   await page.click('text=Free workspace', { force: true })
 
   await createResults({
-    idPrefix: 'usage',
     count: 10,
-    typebotId: starterTypebotId,
-    isChronological: false,
+    typebotId: usageTypebotId,
     fakeStorage: 1100 * 1024 * 1024,
   })
   await page.click('text=Free workspace')
-  await page.click('text="Starter workspace"')
+  await page.click('text="Usage Workspace"')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
   await expect(page.locator('text="/ 2 GB"')).toBeVisible()
-  await expect(page.locator('text="1.07 GB"')).toBeVisible()
-  await expect(page.locator('text="200"')).toBeVisible()
+  await expect(page.locator('text="10" >> nth=0')).toBeVisible()
   await expect(page.locator('[role="progressbar"] >> nth=0')).toHaveAttribute(
     'aria-valuenow',
-    '10'
+    '1'
   )
+  await expect(page.locator('text="1.07 GB"')).toBeVisible()
   await expect(page.locator('[role="progressbar"] >> nth=1')).toHaveAttribute(
     'aria-valuenow',
     '54'
   )
 
   await createResults({
-    idPrefix: 'usage2',
-    typebotId: starterTypebotId,
-    isChronological: false,
-    count: 900,
+    typebotId: usageTypebotId,
+    count: 1090,
     fakeStorage: 1200 * 1024 * 1024,
   })
   await page.click('text="Settings"')
@@ -68,12 +86,11 @@ test('should display valid usage', async ({ page }) => {
 })
 
 test('plan changes should work', async ({ page }) => {
-  const workspaceId = await createWorkspace({ name: 'Awesome workspace' })
-
+  test.setTimeout(80000)
   // Upgrade to STARTER
   await page.goto('/typebots')
   await page.click('text=Pro workspace')
-  await page.click('text=Awesome workspace')
+  await page.click('text=Plan Change Workspace')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await page.click('button >> text="2,000"')
@@ -89,7 +106,7 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('text=$4.00 >> nth=0')).toBeVisible()
   await expect(page.locator('text=user@email.com')).toBeVisible()
   await addSubscriptionToWorkspace(
-    workspaceId,
+    planChangeWorkspaceId,
     [
       {
         price: process.env.STRIPE_STARTER_PRICE_ID,
@@ -148,26 +165,23 @@ test('plan changes should work', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(page.locator('[data-testid="plan-tag"]')).toHaveText('Pro')
+  await expect(page.locator('[data-testid="pro-plan-tag"]')).toBeVisible()
   await page.click('button >> text="Cancel my subscription"')
-  await expect(page.locator('[data-testid="plan-tag"]')).toHaveText('Free')
+  await expect(page.locator('[data-testid="free-plan-tag"]')).toBeVisible()
 })
 
 test('should display invoices', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(
-    page.locator('text="No invoices found for this workspace."')
-  ).toBeVisible()
+  await expect(page.locator('text="Invoices"')).toBeHidden()
   await page.click('text=Pro workspace', { force: true })
 
   await page.click('text=Pro workspace')
-  await page.click('text=Starter workspace')
+  await page.click('text=Plan Change Workspace')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="Invoices"')).toBeVisible()
-  await expect(page.locator('text="Wed Jun 01 2022"')).toBeVisible()
-  await expect(page.locator('text="74567541-0001"')).toBeVisible()
-  await expect(page.locator('text="€30.00" >> nth=0')).toBeVisible()
+  await expect(page.locator('tr')).toHaveCount(2)
+  await expect(page.locator('text="€39.00"')).toBeVisible()
 })

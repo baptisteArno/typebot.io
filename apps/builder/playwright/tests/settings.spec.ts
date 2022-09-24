@@ -135,9 +135,13 @@ test.describe.parallel('Settings page', () => {
         typebotViewer(page).locator('text="What\'s your name?"')
       ).toBeVisible()
       await page.click('button:has-text("General")')
-      await expect(page.locator('text=Pro')).toBeVisible()
+      await expect(page.locator('text=Starter')).toBeVisible()
       await page.click('text=Typebot.io branding')
-      await expect(page.locator('text=For solo creator')).toBeVisible()
+      await expect(
+        page.locator(
+          'text="You need to upgrade your plan in order to remove branding"'
+        )
+      ).toBeVisible()
     })
   })
 })

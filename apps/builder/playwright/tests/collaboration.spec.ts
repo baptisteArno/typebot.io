@@ -8,6 +8,7 @@ import {
   createResults,
   createTypebots,
   parseDefaultGroupWithBlock,
+  userId,
 } from '../services/database'
 
 test.describe('Typebot owner', () => {
@@ -21,7 +22,7 @@ test.describe('Typebot owner', () => {
         plan: Plan.FREE,
         members: {
           createMany: {
-            data: [{ role: WorkspaceRole.ADMIN, userId: 'proUser' }],
+            data: [{ role: WorkspaceRole.ADMIN, userId }],
           },
         },
       },
@@ -51,20 +52,20 @@ test.describe('Typebot owner', () => {
     await expect(page.locator('text=Free user')).toBeHidden()
     await page.fill(
       'input[placeholder="colleague@company.com"]',
-      'free-user@email.com'
+      'other-user@email.com'
     )
     await page.click('text=Can edit')
     await page.click('text=Can view')
     await page.click('text=Invite')
-    await expect(page.locator('text=Free user')).toBeVisible()
+    await expect(page.locator('text=James Doe')).toBeVisible()
     await page.click('text="guest@email.com"')
     await page.click('text="Remove"')
     await expect(page.locator('text="guest@email.com"')).toBeHidden()
   })
 })
 
-test.describe('Collaborator', () => {
-  test('should display shared typebots', async ({ page }) => {
+test.describe('Guest', () => {
+  test('should have shared typebots displayed', async ({ page }) => {
     const typebotId = cuid()
     const guestWorkspaceId = cuid()
     await prisma.workspace.create({
@@ -74,7 +75,7 @@ test.describe('Collaborator', () => {
         plan: Plan.FREE,
         members: {
           createMany: {
-            data: [{ role: WorkspaceRole.GUEST, userId: 'proUser' }],
+            data: [{ role: WorkspaceRole.GUEST, userId }],
           },
         },
       },
@@ -89,29 +90,34 @@ test.describe('Collaborator', () => {
           options: defaultTextInputOptions,
         }),
       },
+      {
+        name: 'Another typebot',
+        workspaceId: guestWorkspaceId,
+      },
     ])
     await prisma.collaboratorsOnTypebots.create({
       data: {
         typebotId,
-        userId: 'proUser',
+        userId,
         type: CollaborationType.READ,
       },
     })
     await createFolder(guestWorkspaceId, 'Guest folder')
     await createResults({ typebotId, count: 10 })
     await page.goto(`/typebots`)
-    await page.click("text=Pro user's workspace")
+    await page.click('text=Pro workspace')
     await page.click('text=Guest workspace #2')
     await expect(page.locator('text=Guest typebot')).toBeVisible()
+    await expect(page.locator('text=Another typebot')).toBeHidden()
     await expect(page.locator('text=Guest folder')).toBeHidden()
     await page.click('text=Guest typebot')
     await page.click('button[aria-label="Show collaboration menu"]')
     await page.click('text=Everyone at Guest workspace')
     await expect(page.locator('text="Remove"')).toBeHidden()
-    await expect(page.locator('text=Pro user')).toBeVisible()
+    await expect(page.locator('text=John Doe')).toBeVisible()
     await page.click('text=Group #1', { force: true })
     await expect(page.locator('input[value="Group #1"]')).toBeHidden()
     await page.goto(`/typebots/${typebotId}/results`)
-    await expect(page.locator('text="See logs" >> nth=10')).toBeVisible()
+    await expect(page.locator('text="See logs" >> nth=9')).toBeVisible()
   })
 })
