@@ -212,7 +212,7 @@ model Result {
   isCompleted Boolean
   hasStarted  Boolean?
   isArchived  Boolean?
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: NoAction)
   answers     Answer[]
   logs        Log[]
 }

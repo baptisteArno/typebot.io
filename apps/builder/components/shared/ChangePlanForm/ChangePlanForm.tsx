@@ -1,4 +1,5 @@
 import { Stack, HStack, Text } from '@chakra-ui/react'
+import { StripeClimateLogo } from 'assets/logos/StripeClimateLogo'
 import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
@@ -63,7 +64,21 @@ export const ChangePlanForm = () => {
   }
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={6}>
+      <HStack maxW="500px">
+        <StripeClimateLogo />
+        <Text fontSize="xs" color="gray.500">
+          Typebot is contributing 1% of your subscription to remove CO₂ from the
+          atmosphere.{' '}
+          <NextChakraLink
+            href="https://climate.stripe.com/5VCRAq"
+            isExternal
+            textDecor="underline"
+          >
+            More info.
+          </NextChakraLink>
+        </Text>
+      </HStack>
       <HStack alignItems="stretch" spacing="4" w="full">
         <StarterPlanContent
           initialChatsLimitIndex={
@@ -94,9 +109,8 @@ export const ChangePlanForm = () => {
           isExternal
           textDecor="underline"
         >
-          Let me know
+          Let's chat!
         </NextChakraLink>
-        .
       </Text>
     </Stack>
   )

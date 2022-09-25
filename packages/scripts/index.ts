@@ -13,10 +13,10 @@ const prisma = new PrismaClient()
 
 const main = async () => {
   await injectFakeResults(prisma)({
-    count: 150,
-    typebotId: 'cl89sq4vb030109laivd9ck97',
+    count: 200,
+    typebotId: 'cl8hl08xt009909l6pwqenf63',
     isChronological: false,
-    idPrefix: 'batch2',
+    fakeStorage: 3 * 1024 * 1024 * 1024,
   })
 }
 
