@@ -76,7 +76,6 @@ const checkStorageLimit = async (typebotId: string) => {
   })
   if (!typebot?.workspace) throw new Error('Workspace not found')
   const { workspace } = typebot
-  console.log(typebot.workspaceId)
   const {
     _sum: { storageUsed: totalStorageUsed },
   } = await prisma.answer.aggregate({

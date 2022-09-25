@@ -4,14 +4,7 @@ import { ChatGroup } from './ChatGroup'
 import { useFrame } from 'react-frame-component'
 import { setCssVariablesValue } from '../services/theme'
 import { useAnswers } from '../contexts/AnswersContext'
-import {
-  Group,
-  Edge,
-  PublicTypebot,
-  Theme,
-  VariableWithValue,
-  Block,
-} from 'models'
+import { Group, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
 import { byId, isDefined, isInputBlock, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
 import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
@@ -80,7 +73,6 @@ export const ConversationContainer = ({
     }
     const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId))
     if (!nextGroup) return onCompleted()
-    console.log(nextGroup, nextEdge)
     const startBlockIndex = nextEdge.to.blockId
       ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
       : 0

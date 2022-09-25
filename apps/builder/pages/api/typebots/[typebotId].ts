@@ -38,6 +38,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebots = await prisma.typebot.deleteMany({
       where: canWriteTypebot(typebotId, user),
     })
+    await prisma.result.updateMany({
+      where: { typebot: canWriteTypebot(typebotId, user) },
+      data: { isArchived: true },
+    })
     return res.send({ typebots })
   }
   if (req.method === 'PUT') {

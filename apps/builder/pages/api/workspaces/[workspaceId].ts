@@ -30,6 +30,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
       },
     })
+    await prisma.result.updateMany({
+      where: {
+        typebot: {
+          workspace: {
+            id,
+            members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+          },
+        },
+      },
+      data: { isArchived: true },
+    })
     return res.status(200).json({
       message: 'success',
     })
