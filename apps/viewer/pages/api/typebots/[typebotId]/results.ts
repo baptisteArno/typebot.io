@@ -52,8 +52,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
     })
-    const hasReachedLimit = await checkChatsUsage(result.typebot.workspace)
-    res.send({ result, hasReachedLimit })
+    // TODO: enable storage limit on 1st of November 2022
+    // const hasReachedLimit = await checkChatsUsage(result.typebot.workspace)
+    res.send({ result, hasReachedLimit: false })
     return
   }
   methodNotAllowed(res)
