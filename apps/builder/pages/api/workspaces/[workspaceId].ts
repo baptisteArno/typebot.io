@@ -1,8 +1,8 @@
 import { withSentry } from '@sentry/nextjs'
-import { Workspace, WorkspaceRole } from 'db'
+import { Prisma, Workspace, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from 'services/api/utils'
+import { archiveResults, getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -24,23 +24,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'DELETE') {
     const id = req.query.workspaceId as string
+    const workspaceFilter: Prisma.WorkspaceWhereInput = {
+      id,
+      members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+    }
+    const deletedTypebots = await prisma.typebot.findMany({
+      where: {
+        workspace: workspaceFilter,
+      },
+    })
     await prisma.workspace.deleteMany({
-      where: {
-        id,
-        members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
-      },
+      where: workspaceFilter,
     })
-    await prisma.result.updateMany({
-      where: {
-        typebot: {
-          workspace: {
-            id,
-            members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
-          },
-        },
-      },
-      data: { isArchived: true },
-    })
+    await Promise.all(
+      deletedTypebots.map((typebot) =>
+        archiveResults(res)({
+          typebotId: typebot.id,
+          user,
+          resultsFilter: { typebotId: typebot.id },
+        })
+      )
+    )
     return res.status(200).json({
       message: 'success',
     })

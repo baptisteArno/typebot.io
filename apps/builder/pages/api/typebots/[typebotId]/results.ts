@@ -1,10 +1,8 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
-import { InputBlockType, Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
-import { deleteFiles } from 'services/api/storage'
-import { getAuthenticatedUser } from 'services/api/utils'
+import { archiveResults, getAuthenticatedUser } from 'services/api/utils'
 import {
   badRequest,
   forbidden,
@@ -49,43 +47,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId as string
     const data = req.body as { ids: string[] }
     const ids = data.ids
-    const resultsFilter = {
-      id: ids.length > 0 ? { in: ids } : undefined,
-      typebot: canWriteTypebot(typebotId, user),
-    }
-    const typebot = await prisma.typebot.findFirst({
-      where: canWriteTypebot(typebotId, user),
-      select: { groups: true },
-    })
-    if (!typebot) return forbidden(res)
-    const fileUploadBlockIds = (typebot as Typebot).groups
-      .flatMap((g) => g.blocks)
-      .filter((b) => b.type === InputBlockType.FILE)
-      .map((b) => b.id)
-    if (fileUploadBlockIds.length > 0) {
-      const filesToDelete = await prisma.answer.findMany({
-        where: { result: resultsFilter, blockId: { in: fileUploadBlockIds } },
-      })
-      if (filesToDelete.length > 0)
-        await deleteFiles({
-          urls: filesToDelete.flatMap((a) => a.content.split(', ')),
-        })
-    }
-    await prisma.log.deleteMany({
-      where: {
-        result: resultsFilter,
-      },
-    })
-    await prisma.answer.deleteMany({
-      where: {
-        result: resultsFilter,
-      },
-    })
-    await prisma.result.updateMany({
-      where: resultsFilter,
-      data: {
-        isArchived: true,
-        variables: [],
+    await archiveResults(res)({
+      typebotId,
+      user,
+      resultsFilter: {
+        id: ids.length > 0 ? { in: ids } : undefined,
+        typebot: canWriteTypebot(typebotId, user),
       },
     })
     return res.status(200).send({ message: 'done' })
