@@ -3,7 +3,13 @@ import { Plan } from 'db'
 
 export const PlanTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => {
   switch (plan) {
-    case Plan.LIFETIME:
+    case Plan.LIFETIME: {
+      return (
+        <Tag colorScheme="purple" data-testid="lifetime-plan-tag" {...props}>
+          Lifetime
+        </Tag>
+      )
+    }
     case Plan.PRO: {
       return (
         <Tag colorScheme="blue" data-testid="pro-plan-tag" {...props}>
