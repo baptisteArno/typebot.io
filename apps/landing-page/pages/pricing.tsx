@@ -107,7 +107,23 @@ const Pricing = () => {
                   name: 'Personal',
                   features: [
                     'Unlimited typebots',
-                    '300 chats included',
+                    <>
+                      <Text>
+                        <chakra.span fontWeight="bold">300 chats</chakra.span>{' '}
+                        included
+                      </Text>
+                      &nbsp;
+                      <Tooltip
+                        hasArrow
+                        placement="top"
+                        label="A chat is counted whenever a user starts a discussion. It is
+                  independant of the number of messages he sends and receives."
+                      >
+                        <chakra.span cursor="pointer" h="7">
+                          <HelpCircleIcon />
+                        </chakra.span>
+                      </Tooltip>
+                    </>,
                     'Native integrations',
                     'Webhooks',
                     'Custom Javascript & CSS',
@@ -151,7 +167,7 @@ const Pricing = () => {
                     </>,
                     <>
                       <Text>
-                        <chakra.span fontWeight="bold">2 GB chats</chakra.span>{' '}
+                        <chakra.span fontWeight="bold">2 GB</chakra.span>{' '}
                         included
                       </Text>
                       &nbsp;
@@ -214,7 +230,7 @@ const Pricing = () => {
                     </>,
                     <>
                       <Text>
-                        <chakra.span fontWeight="bold">10 GB chats</chakra.span>{' '}
+                        <chakra.span fontWeight="bold">10 GB</chakra.span>{' '}
                         included
                       </Text>
                       &nbsp;

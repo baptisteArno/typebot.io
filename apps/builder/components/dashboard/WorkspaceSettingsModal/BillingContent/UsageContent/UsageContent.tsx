@@ -70,6 +70,7 @@ export const UsageContent = ({ workspace }: Props) => {
               (resets on 1st of every month)
             </Text>
           </HStack>
+
           <HStack>
             <Skeleton
               fontWeight="bold"
@@ -78,7 +79,12 @@ export const UsageContent = ({ workspace }: Props) => {
             >
               {parseNumberWithCommas(totalChatsUsed)}
             </Skeleton>
-            <Text>/ {parseNumberWithCommas(workspaceChatsLimit)}</Text>
+            <Text>
+              /{' '}
+              {workspaceChatsLimit === -1
+                ? 'Unlimited'
+                : parseNumberWithCommas(workspaceChatsLimit)}
+            </Text>
           </HStack>
         </Flex>
 
