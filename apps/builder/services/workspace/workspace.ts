@@ -76,4 +76,5 @@ export const isFreePlan = (workspace?: Pick<Workspace, 'plan'>) =>
   isNotDefined(workspace) || workspace?.plan === Plan.FREE
 
 export const isWorkspaceProPlan = (workspace?: Pick<Workspace, 'plan'>) =>
-  isDefined(workspace) && workspace.plan === Plan.PRO
+  isDefined(workspace) &&
+  (workspace.plan === Plan.PRO || workspace.plan === Plan.LIFETIME)
