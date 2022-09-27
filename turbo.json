@@ -6,6 +6,9 @@
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
+    "db#build": {
+      "cache": false
+    },
     "test": {
       "dependsOn": [],
       "outputs": []
