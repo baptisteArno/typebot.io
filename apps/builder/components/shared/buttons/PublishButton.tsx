@@ -15,6 +15,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useRouter } from 'next/router'
 import { timeSince } from 'services/utils'
 import { isNotDefined } from 'utils'
+import { config } from 'config/octadesk.config'
 
 export const PublishButton = () => {
   const { push, query } = useRouter()
@@ -28,7 +29,7 @@ export const PublishButton = () => {
 
   const handlePublishClick = () => {
     publishTypebot()
-    if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+    if (!publishedTypebot) push(`${config.basePath || ''}/typebots/${query.typebotId}/share`)
   }
 
   return (

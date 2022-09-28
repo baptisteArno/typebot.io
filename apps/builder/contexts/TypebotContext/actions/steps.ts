@@ -14,6 +14,7 @@ import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import cuid from 'cuid'
 import { byId, isWebhookStep, stepHasItems } from 'utils'
 import { duplicateItemDraft } from './items'
+import { BuildSteps } from 'helpers/builderStep/builder.step'
 
 export type StepsActions = {
   createStep: (
@@ -103,8 +104,9 @@ const createNewStep = async (
   blockId: string,
   { blockIndex, stepIndex }: StepIndices
 ) => {
-  const newStep = parseNewStep(type, blockId)
-  typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
+  BuildSteps({ blockIndex, stepIndex }).apply(type, typebot, blockId);
+  // const newStep = parseNewStep(type, blockId)
+  // typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
 }
 
 const moveStepToBlock = (

@@ -92,7 +92,6 @@ export const StepsSideBar = () => {
   const shouldDisableComponent = (type: StepType) => {
     return (
       type === InputStepType.DATE ||
-      type === InputStepType.EMAIL ||
       type === InputStepType.PHONE ||
       type === OctaStepType.OFFICE_HOURS
     )

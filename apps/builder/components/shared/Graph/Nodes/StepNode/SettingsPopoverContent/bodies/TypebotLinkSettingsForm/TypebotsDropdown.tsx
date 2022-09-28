@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useTypebots } from 'services/typebots'
 import { byId } from 'utils'
+import { config } from 'config/octadesk.config'
 
 type Props = {
   typebotId?: string
@@ -55,7 +56,7 @@ export const TypebotsDropdown = ({
           aria-label="Navigate to typebot"
           icon={<ExternalLinkIcon />}
           as={NextChakraLink}
-          href={`/typebots/${currentTypebot?.id}/edit?parentId=${query.typebotId}`}
+          href={`${config.basePath || ''}/typebots/${currentTypebot?.id}/edit?parentId=${query.typebotId}`}
         />
       )}
     </HStack>

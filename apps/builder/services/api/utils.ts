@@ -1,8 +1,8 @@
 //import cuid from 'cuid'
-import { User } from 'model'
+import { GraphNavigation, User } from 'model'
 import { NextApiRequest } from 'next'
 
-export const getAuthenticatedUser = (): Omit<User, "emailVerified" | "image" | "apiToken" | "company" | "onboardingCategories" | "graphNavigation"> 
+export const getAuthenticatedUser = (): Omit<User, "emailVerified" | "image" | "apiToken" | "company" | "onboardingCategories"> 
   | undefined => {
   // const session = await getSession({ req })
   // if (!session?.user || !('id' in session.user)) return
@@ -14,6 +14,7 @@ export const getAuthenticatedUser = (): Omit<User, "emailVerified" | "image" | "
     updatedAt: new Date(),
     lastActivityAt: new Date(),
     name: 'Typebotter',
-    email: 'bot-builder@octadesk.com'
+    email: 'bot-builder@octadesk.com',
+    graphNavigation: GraphNavigation.MOUSE
   }
 }

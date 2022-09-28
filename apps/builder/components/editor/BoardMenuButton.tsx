@@ -27,9 +27,15 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
   const { setRightPanel } = useEditor()
 
   const handlePreviewClick = async () => {
-    save().then()
+    save()
     setRightPanel(RightPanel.PREVIEW)
   }
+
+  useEffect(() => {
+    window.addEventListener('message', handleEventListeners)
+
+    return () => window.removeEventListener('message', handleEventListeners)
+  }, [])
 
   useEffect(() => {
     if (
@@ -40,6 +46,13 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
       onOpen()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handleEventListeners = (e: any): void => {
+    if (e.data === 'previewClick') {
+      save().then()
+      setRightPanel(RightPanel.PREVIEW)
+    }
+  }
 
   const downloadFlow = () => {
     assert(typebot)

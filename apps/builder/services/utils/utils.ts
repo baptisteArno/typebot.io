@@ -1,9 +1,35 @@
+import { headers, services } from '@octadesk-tech/services'
 import imageCompression from 'browser-image-compression'
+import { config } from 'config/octadesk.config'
 import { Parser } from 'htmlparser2'
 import { Step, Typebot } from 'models'
 import { sendRequest } from 'utils'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
+  const url = input.toString().replace(config.basePath.toString() || '', '')
+  if (url.startsWith('/api/typebots?')) {
+    const client = await services.chatBots.getClient()
+    const response = await client.get(`builder/all`, headers.getAuthorizedHeaders())
+    return { typebots: response.data }
+  }
+
+  if (url.startsWith('/getTypebot-')) {
+    const typebotId = url.replace('/getTypebot-', '')
+    console.log('typebotId', typebotId)
+    const client = await services.chatBots.getClient()
+    const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
+    const typebot = response.data
+    if (!typebot) return { typebot: null }
+
+    const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
+    return {
+      typebot: restOfTypebot,
+      publishedTypebot,
+      isReadOnly: false,
+      webhooks,
+    }
+  }
+
   const res = await fetch(input, init)
   return res.json()
 }
@@ -93,8 +119,8 @@ export const parseVariableHighlight = (content: string, typebot: Typebot) => {
 
 export const setMultipleRefs =
   (refs: React.MutableRefObject<HTMLDivElement | null>[]) =>
-  (elem: HTMLDivElement) =>
-    refs.forEach((ref) => (ref.current = elem))
+    (elem: HTMLDivElement) =>
+      refs.forEach((ref) => (ref.current = elem))
 
 export const readFile = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {

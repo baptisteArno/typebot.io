@@ -1,3 +1,4 @@
+import { config } from 'config/octadesk.config'
 import { MemberInWorkspace, WorkspaceInvitation } from 'model'
 import { fetcher } from 'services/utils'
 import useSWR from 'swr'
@@ -13,7 +14,7 @@ export const useMembers = ({ workspaceId }: { workspaceId?: string }) => {
   const { data, error, mutate } = useSWR<
     { members: Member[]; invitations: WorkspaceInvitation[] },
     Error
-  >(workspaceId ? `/api/workspaces/${workspaceId}/members` : null, fetcher, {
+  >(workspaceId ? `${config.basePath || ''}/api/workspaces/${workspaceId}/members` : null, fetcher, {
     dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   return {
@@ -30,12 +31,12 @@ export const updateMember = (
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/api/workspaces/${workspaceId}/members/${member.userId}`,
+    url: `${config.basePath || ''}/api/workspaces/${workspaceId}/members/${member.userId}`,
     body: member,
   })
 
 export const deleteMember = (workspaceId: string, userId: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/api/workspaces/${workspaceId}/members/${userId}`,
+    url: `${config.basePath || ''}/api/workspaces/${workspaceId}/members/${userId}`,
   })
