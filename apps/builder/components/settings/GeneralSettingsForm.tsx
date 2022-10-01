@@ -1,9 +1,9 @@
 import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
+import { LockTag } from 'components/shared/LockTag'
 import {
   ChangePlanModal,
   LimitReached,
 } from 'components/shared/modals/ChangePlanModal'
-import { PlanTag } from 'components/shared/PlanTag'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
@@ -66,7 +66,7 @@ export const GeneralSettingsForm = ({
       >
         <FormLabel htmlFor="branding" mb="0">
           Typebot.io branding{' '}
-          {isWorkspaceFreePlan && <PlanTag plan={Plan.STARTER} />}
+          {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
         </FormLabel>
         <Switch
           id="branding"

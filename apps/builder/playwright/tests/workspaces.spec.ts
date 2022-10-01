@@ -144,7 +144,7 @@ test('can manage members', async ({ page }) => {
 
 test("can't add new members when limit is reached", async ({ page }) => {
   await page.goto('/typebots')
-  await page.click('text="Pro workspace"')
+  await page.click('text="My awesome workspace"')
   await page.click('text="Free workspace"')
   await page.click('text=Settings & Members')
   await page.click('text="Members"')

@@ -13,13 +13,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
+      where: {
+        ...canReadTypebot(typebotId, user),
+        isArchived: { not: true },
+      },
       include: {
         publishedTypebot: true,
         collaborators: { select: { userId: true, type: true } },
         webhooks: true,
       },
     })
+    console.log(typebot)
     if (!typebot) return res.send({ typebot: null })
     const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
       typebot
@@ -35,8 +39,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'DELETE') {
-    const typebots = await prisma.typebot.deleteMany({
+    const typebots = await prisma.typebot.updateMany({
       where: canWriteTypebot(typebotId, user),
+      data: { isArchived: true },
     })
     await archiveResults(res)({
       typebotId,

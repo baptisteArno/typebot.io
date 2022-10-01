@@ -135,7 +135,9 @@ test.describe.parallel('Settings page', () => {
         typebotViewer(page).locator('text="What\'s your name?"')
       ).toBeVisible()
       await page.click('button:has-text("General")')
-      await expect(page.locator('text=Starter')).toBeVisible()
+      await expect(
+        page.locator('[data-testid="starter-lock-tag"]')
+      ).toBeVisible()
       await page.click('text=Typebot.io branding')
       await expect(
         page.locator(

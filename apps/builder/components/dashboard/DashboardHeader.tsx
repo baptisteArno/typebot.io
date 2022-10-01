@@ -26,6 +26,7 @@ import { useWorkspace } from 'contexts/WorkspaceContext'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { WorkspaceSettingsModal } from './WorkspaceSettingsModal'
 import { isNotDefined } from 'utils'
+import { PlanTag } from 'components/shared/PlanTag'
 
 export const DashboardHeader = () => {
   const { user } = useUser()
@@ -90,9 +91,13 @@ export const DashboardHeader = () => {
                   />
                 </SkeletonCircle>
                 {workspace && (
+                  <>
                   <Text noOfLines={1} maxW="200px">
                     {workspace.name}
                   </Text>
+                  <PlanTag plan={workspace.plan}/>
+                  </>
+                  
                 )}
                 <ChevronLeftIcon transform="rotate(-90deg)" />
               </HStack>
@@ -112,6 +117,7 @@ export const DashboardHeader = () => {
                         defaultIcon={HardDriveIcon}
                       />
                       <Text>{workspace.name}</Text>
+                      <PlanTag plan={workspace.plan}/>
                     </HStack>
                   </MenuItem>
                 ))}

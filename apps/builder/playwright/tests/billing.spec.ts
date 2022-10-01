@@ -165,9 +165,13 @@ test('plan changes should work', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(page.locator('[data-testid="pro-plan-tag"]')).toBeVisible()
+  await expect(page.locator('[data-testid="current-subscription"]')).toHaveText(
+    'Current workspace subscription: ProCancel my subscription'
+  )
   await page.click('button >> text="Cancel my subscription"')
-  await expect(page.locator('[data-testid="free-plan-tag"]')).toBeVisible()
+  await expect(page.locator('[data-testid="current-subscription"]')).toHaveText(
+    'Current workspace subscription: Free'
+  )
 })
 
 test('should display invoices', async ({ page }) => {

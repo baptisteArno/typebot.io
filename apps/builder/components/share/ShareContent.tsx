@@ -10,8 +10,8 @@ import {
 import { TrashIcon } from 'assets/icons'
 import { UpgradeButton } from 'components/shared/buttons/UpgradeButton'
 import { useToast } from 'components/shared/hooks/useToast'
+import { LockTag } from 'components/shared/LockTag'
 import { LimitReached } from 'components/shared/modals/ChangePlanModal'
-import { PlanTag } from 'components/shared/PlanTag'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
@@ -82,19 +82,22 @@ export const ShareContent = () => {
               />
             </HStack>
           )}
-          {isWorkspaceProPlan(workspace) &&
-          isNotDefined(typebot?.customDomain) ? (
-            <CustomDomainsDropdown
-              onCustomDomainSelect={handleCustomDomainChange}
-            />
-          ) : (
-            <UpgradeButton
-              colorScheme="gray"
-              limitReachedType={LimitReached.CUSTOM_DOMAIN}
-            >
-              <Text mr="2">Add my domain</Text> <PlanTag plan={Plan.PRO} />
-            </UpgradeButton>
-          )}
+          {isNotDefined(typebot?.customDomain) ? (
+            <>
+              {isWorkspaceProPlan(workspace) ? (
+                <CustomDomainsDropdown
+                  onCustomDomainSelect={handleCustomDomainChange}
+                />
+              ) : (
+                <UpgradeButton
+                  colorScheme="gray"
+                  limitReachedType={LimitReached.CUSTOM_DOMAIN}
+                >
+                  <Text mr="2">Add my domain</Text> <LockTag plan={Plan.PRO} />
+                </UpgradeButton>
+              )}
+            </>
+          ) : null}
         </Stack>
 
         <Stack spacing={4}>

@@ -102,14 +102,16 @@ export const setupDatabase = async () => {
   return setupCredentials()
 }
 
-export const setupWorkspaces = async () =>
-  prisma.workspace.createMany({
+export const setupWorkspaces = async () => {
+  await prisma.workspace.create({
+    data: {
+      id: freeWorkspaceId,
+      name: 'Free workspace',
+      plan: Plan.FREE,
+    },
+  })
+  await prisma.workspace.createMany({
     data: [
-      {
-        id: freeWorkspaceId,
-        name: 'Free workspace',
-        plan: Plan.FREE,
-      },
       {
         id: starterWorkspaceId,
         name: 'Starter workspace',
@@ -128,6 +130,7 @@ export const setupWorkspaces = async () =>
       },
     ],
   })
+}
 
 export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
   const workspaceIds = workspaces.map((workspace) => workspace.id ?? cuid())
@@ -231,11 +234,15 @@ export const getSignedInUser = (email: string) =>
   prisma.user.findFirst({ where: { email } })
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
+  const typebotsWithId = partialTypebots.map((typebot) => ({
+    ...typebot,
+    id: typebot.id ?? cuid(),
+  }))
   await prisma.typebot.createMany({
-    data: partialTypebots.map(parseTestTypebot),
+    data: typebotsWithId.map(parseTestTypebot),
   })
   return prisma.publicTypebot.createMany({
-    data: partialTypebots.map((t) =>
+    data: typebotsWithId.map((t) =>
       parseTypebotToPublicTypebot(t.id + '-public', parseTestTypebot(t))
     ),
   })
@@ -304,7 +311,7 @@ const parseTypebotToPublicTypebot = (
 })
 
 const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
-  id: partialTypebot.id ?? 'typebot',
+  id: cuid(),
   workspaceId: proWorkspaceId,
   folderId: null,
   name: 'My typebot',
