@@ -46,6 +46,7 @@ export const SmtpConfigModal = ({
       user.email
     )
     if (testSmtpError) {
+      console.error(testSmtpError)
       setIsCreating(false)
       return showToast({
         title: 'Invalid configuration',
