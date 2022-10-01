@@ -1,5 +1,6 @@
 import { DateInputOptions } from 'models'
 import React, { useState } from 'react'
+import { parseReadableDate } from 'services/inputs'
 import { InputSubmitContent } from '../InputChatBlock'
 import { SendButton } from './SendButton'
 
@@ -28,6 +29,7 @@ export const DateForm = ({
               value: `${inputValues.from}${
                 isRange ? ` to ${inputValues.to}` : ''
               }`,
+              label: parseReadableDate({ ...inputValues, hasTime, isRange }),
             })
           }}
         >
