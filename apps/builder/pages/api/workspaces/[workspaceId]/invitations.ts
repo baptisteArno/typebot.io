@@ -1,16 +1,11 @@
 import { withSentry } from '@sentry/nextjs'
-import { workspaceMemberInvitationEmail } from 'assets/emails/workspaceMemberInvitation'
 import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import {
-  sendEmailNotification,
-  forbidden,
-  methodNotAllowed,
-  notAuthenticated,
-} from 'utils/api'
+import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { env, seatsLimit } from 'utils'
+import { sendWorkspaceMemberInvitationEmail } from 'emails'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -39,15 +34,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       })
       if (env('E2E_TEST') !== 'true')
-        await sendEmailNotification({
+        await sendWorkspaceMemberInvitationEmail({
           to: data.email,
-          subject: "You've been invited to collaborate 🤝",
-          html: workspaceMemberInvitationEmail({
-            workspaceName: workspace.name,
-            guestEmail: data.email,
-            url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
-            hostEmail: user.email ?? '',
-          }),
+          workspaceName: workspace.name,
+          guestEmail: data.email,
+          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          hostEmail: user.email ?? '',
         })
       return res.send({
         member: {
@@ -61,15 +53,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       const invitation = await prisma.workspaceInvitation.create({ data })
       if (env('E2E_TEST') !== 'true')
-        await sendEmailNotification({
+        await sendWorkspaceMemberInvitationEmail({
           to: data.email,
-          subject: "You've been invited to collaborate 🤝",
-          html: workspaceMemberInvitationEmail({
-            workspaceName: workspace.name,
-            guestEmail: data.email,
-            url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
-            hostEmail: user.email ?? '',
-          }),
+          workspaceName: workspace.name,
+          guestEmail: data.email,
+          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          hostEmail: user.email ?? '',
         })
       return res.send({ invitation })
     }

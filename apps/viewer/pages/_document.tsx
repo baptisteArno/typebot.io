@@ -1,31 +1,16 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-} from 'next/document'
+/* eslint-disable @next/next/no-sync-scripts */
+import { Html, Head, Main, NextScript } from 'next/document'
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
-  }
+const Document = () => (
+  <Html>
+    <Head>
+      <script src="/__env.js" />
+    </Head>
+    <body>
+      <Main />
+      <NextScript />
+    </body>
+  </Html>
+)
 
-  render() {
-    return (
-      <Html>
-        <Head>
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script src="/__env.js" />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
-}
-
-export default MyDocument
+export default Document

@@ -87,8 +87,8 @@ export function CustomAdapter(p: PrismaClient): Adapter {
     },
     updateUser: (data) => p.user.update({ where: { id: data.id }, data }),
     deleteUser: (id) => p.user.delete({ where: { id } }),
-    linkAccount: (data) => {
-      return p.account.create({
+    linkAccount: async (data) => {
+      await p.account.create({
         data: {
           userId: data.userId,
           type: data.type,
@@ -105,10 +105,11 @@ export function CustomAdapter(p: PrismaClient): Adapter {
           oauth_token: data.oauth_token as string,
           refresh_token_expires_in: data.refresh_token_expires_in as number,
         },
-      }) as any
+      })
     },
-    unlinkAccount: (provider_providerAccountId) =>
-      p.account.delete({ where: { provider_providerAccountId } }) as any,
+    unlinkAccount: async (provider_providerAccountId) => {
+      await p.account.delete({ where: { provider_providerAccountId } })
+    },
     async getSessionAndUser(sessionToken) {
       const userAndSession = await p.session.findUnique({
         where: { sessionToken },

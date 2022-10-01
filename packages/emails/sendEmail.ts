@@ -1,7 +1,9 @@
 import { createTransport, SendMailOptions } from 'nodemailer'
-import { env } from '../utils'
+import { env } from 'utils'
 
-export const sendEmailNotification = (props: Omit<SendMailOptions, 'from'>) => {
+export const sendEmail = (
+  props: Pick<SendMailOptions, 'to' | 'html' | 'subject'>
+) => {
   const transporter = createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),

@@ -1,12 +1,14 @@
-import { almostReachedChatsLimitEmail } from 'assets/emails/almostReachedChatsLimitEmail'
-import { reachedSChatsLimitEmail } from 'assets/emails/reachedChatsLimitEmail'
 import { Workspace, WorkspaceRole } from 'db'
+import {
+  sendAlmostReachedChatsLimitEmail,
+  sendReachedChatsLimitEmail,
+} from 'emails'
 import prisma from 'libs/prisma'
 import { ResultWithAnswers } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authenticateUser } from 'services/api/utils'
-import { env, getChatsLimit, isDefined, parseNumberWithCommas } from 'utils'
-import { sendEmailNotification, methodNotAllowed } from 'utils/api'
+import { env, getChatsLimit, isDefined } from 'utils'
+import { methodNotAllowed } from 'utils/api'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
@@ -60,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   methodNotAllowed(res)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkChatsUsage = async (
   workspace: Pick<
     Workspace,
@@ -96,87 +99,64 @@ const checkChatsUsage = async (
     !hasSentFirstEmail &&
     env('E2E_TEST') !== 'true'
   )
-    await sendAlmostReachChatsLimitEmail({
+    await sendAlmostReachChatsLimitNotification({
       workspaceId: workspace.id,
-      chatLimit: chatsLimit,
-      firstDayOfNextMonth,
+      chatsLimit,
     })
   if (
     chatsCount >= chatsLimit &&
     !hasSentSecondEmail &&
     env('E2E_TEST') !== 'true'
   )
-    await sendReachedAlertEmail({
+    await sendReachedAlertNotification({
       workspaceId: workspace.id,
-      chatLimit: chatsLimit,
-      firstDayOfNextMonth,
+      chatsLimit,
     })
   return chatsCount >= chatsLimit
 }
 
-const sendAlmostReachChatsLimitEmail = async ({
+const sendAlmostReachChatsLimitNotification = async ({
   workspaceId,
-  chatLimit,
-  firstDayOfNextMonth,
+  chatsLimit,
 }: {
   workspaceId: string
-  chatLimit: number
-  firstDayOfNextMonth: Date
+  chatsLimit: number
 }) => {
   const members = await prisma.memberInWorkspace.findMany({
     where: { role: WorkspaceRole.ADMIN, workspaceId },
     include: { user: { select: { email: true } } },
   })
-  const readableChatsLimit = parseNumberWithCommas(chatLimit)
-  const readableResetDate = firstDayOfNextMonth
-    .toDateString()
-    .split(' ')
-    .slice(1, 4)
-    .join(' ')
 
-  await sendEmailNotification({
+  await sendAlmostReachedChatsLimitEmail({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You're close to your chats limit",
-    html: almostReachedChatsLimitEmail({
-      readableChatsLimit,
-      readableResetDate,
-      url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-    }),
+    chatsLimit,
+    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
   })
+
   await prisma.workspace.update({
     where: { id: workspaceId },
     data: { chatsLimitFirstEmailSentAt: new Date() },
   })
 }
 
-const sendReachedAlertEmail = async ({
+const sendReachedAlertNotification = async ({
   workspaceId,
-  chatLimit,
-  firstDayOfNextMonth,
+  chatsLimit,
 }: {
   workspaceId: string
-  chatLimit: number
-  firstDayOfNextMonth: Date
+  chatsLimit: number
 }) => {
   const members = await prisma.memberInWorkspace.findMany({
     where: { role: WorkspaceRole.ADMIN, workspaceId },
     include: { user: { select: { email: true } } },
   })
-  const readableChatsLimit = parseNumberWithCommas(chatLimit)
-  const readableResetDate = firstDayOfNextMonth
-    .toDateString()
-    .split(' ')
-    .slice(1, 4)
-    .join(' ')
-  await sendEmailNotification({
+
+  await sendReachedChatsLimitEmail({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You've hit your monthly chats limit",
-    html: reachedSChatsLimitEmail({
-      readableChatsLimit,
-      readableResetDate,
-      url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-    }),
+    chatsLimit,
+    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
   })
+
   await prisma.workspace.update({
     where: { id: workspaceId },
     data: { chatsLimitSecondEmailSentAt: new Date() },

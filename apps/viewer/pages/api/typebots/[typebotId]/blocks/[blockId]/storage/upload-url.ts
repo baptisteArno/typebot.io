@@ -1,17 +1,14 @@
 import { withSentry } from '@sentry/nextjs'
-import { almostReachedStorageLimitEmail } from 'assets/emails/almostReachedStorageLimitEmail'
-import { reachedStorageLimitEmail } from 'assets/emails/reachedStorageLimitEmail'
 import { WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import {
-  badRequest,
-  generatePresignedUrl,
-  methodNotAllowed,
-  sendEmailNotification,
-} from 'utils/api'
+import { badRequest, generatePresignedUrl, methodNotAllowed } from 'utils/api'
 import { byId, getStorageLimit, isDefined, env } from 'utils'
+import {
+  sendAlmostReachedStorageLimitEmail,
+  sendReachedStorageLimitEmail,
+} from 'emails'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
@@ -60,6 +57,7 @@ const handler = async (
   return methodNotAllowed(res)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkStorageLimit = async (typebotId: string) => {
   const typebot = await prisma.typebot.findFirst({
     where: { id: typebotId },
@@ -102,7 +100,7 @@ const checkStorageLimit = async (typebotId: string) => {
     !hasSentFirstEmail &&
     env('E2E_TEST') !== 'true'
   )
-    await sendAlmostReachStorageLimitEmail({
+    await sendAlmostReachStorageLimitNotification({
       workspaceId: workspace.id,
       storageLimit,
     })
@@ -111,14 +109,14 @@ const checkStorageLimit = async (typebotId: string) => {
     !hasSentSecondEmail &&
     env('E2E_TEST') !== 'true'
   )
-    await sendReachStorageLimitEmail({
+    await sendReachStorageLimitNotification({
       workspaceId: workspace.id,
       storageLimit,
     })
   return totalStorageUsed >= storageLimitBytes
 }
 
-const sendAlmostReachStorageLimitEmail = async ({
+const sendAlmostReachStorageLimitNotification = async ({
   workspaceId,
   storageLimit,
 }: {
@@ -129,22 +127,20 @@ const sendAlmostReachStorageLimitEmail = async ({
     where: { role: WorkspaceRole.ADMIN, workspaceId },
     include: { user: { select: { email: true } } },
   })
-  const readableStorageLimit = `${storageLimit}GB`
-  await sendEmailNotification({
+
+  await sendAlmostReachedStorageLimitEmail({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You're close to your storage limit",
-    html: almostReachedStorageLimitEmail({
-      readableStorageLimit,
-      url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-    }),
+    storageLimit,
+    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
   })
+
   await prisma.workspace.update({
     where: { id: workspaceId },
     data: { storageLimitFirstEmailSentAt: new Date() },
   })
 }
 
-const sendReachStorageLimitEmail = async ({
+const sendReachStorageLimitNotification = async ({
   workspaceId,
   storageLimit,
 }: {
@@ -155,15 +151,13 @@ const sendReachStorageLimitEmail = async ({
     where: { role: WorkspaceRole.ADMIN, workspaceId },
     include: { user: { select: { email: true } } },
   })
-  const readableStorageLimit = `${storageLimit}GB`
-  await sendEmailNotification({
+
+  await sendReachedStorageLimitEmail({
     to: members.map((member) => member.user.email).filter(isDefined),
-    subject: "You've hit your storage limit",
-    html: reachedStorageLimitEmail({
-      readableStorageLimit,
-      url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-    }),
+    storageLimit,
+    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
   })
+
   await prisma.workspace.update({
     where: { id: workspaceId },
     data: { storageLimitSecondEmailSentAt: new Date() },

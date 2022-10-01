@@ -18,7 +18,7 @@ import {
   saveSuccessLog,
 } from 'services/api/utils'
 import Mail from 'nodemailer/lib/mailer'
-import { newLeadEmailContent } from 'assets/emails/newLeadEmailContent'
+import { DefaultBotNotificationEmail, render } from 'emails'
 
 const cors = initMiddleware(Cors())
 
@@ -84,6 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typebotId,
       resultValues,
     })
+
     if (!emailBody) {
       await saveErrorLog(resultId, 'Email not sent', {
         transportConfig,
@@ -121,6 +122,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await saveErrorLog(resultId, 'Email not sent', {
         transportConfig,
         email,
+        error: err,
       })
       return res.status(500).send({
         message: `Email not sent. Error: ${err}`,
@@ -177,10 +179,12 @@ const getEmailBody = async ({
     ],
   })(resultValues)
   return {
-    html: newLeadEmailContent(
-      `${process.env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
-      omit(answers, 'submittedAt')
-    ),
+    html: render(
+      <DefaultBotNotificationEmail
+        resultsUrl={`${process.env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
+        answers={omit(answers, 'submittedAt')}
+      />
+    ).html,
   }
 }
 

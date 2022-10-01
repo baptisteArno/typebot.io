@@ -1,11 +1,9 @@
 import { withSentry } from '@sentry/nextjs'
-import { invitationToCollaborate } from 'assets/emails/invitationToCollaborate'
 import { CollaborationType, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
 import {
-  sendEmailNotification,
   badRequest,
   forbidden,
   methodNotAllowed,
@@ -13,6 +11,7 @@ import {
 } from 'utils/api'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { env } from 'utils'
+import { sendGuestInvitationEmail } from 'emails'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -68,16 +67,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data: { email: email.toLowerCase().trim(), type, typebotId },
       })
     if (env('E2E_TEST') !== 'true')
-      await sendEmailNotification({
+      await sendGuestInvitationEmail({
         to: email,
-        subject: "You've been invited to collaborate 🤝",
-        html: invitationToCollaborate({
-          hostEmail: user.email ?? '',
-          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
-          guestEmail: email.toLowerCase(),
-          typebotName: typebot.name,
-          workspaceName: typebot.workspace?.name ?? '',
-        }),
+        hostEmail: user.email ?? '',
+        url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
+        guestEmail: email.toLowerCase(),
+        typebotName: typebot.name,
+        workspaceName: typebot.workspace?.name ?? '',
       })
     return res.send({
       message: 'success',
