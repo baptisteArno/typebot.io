@@ -1,5 +1,5 @@
 import { HStack, Text, Tooltip } from '@chakra-ui/react'
-import { PlanTag } from 'components/shared/PlanTag'
+import { LockTag } from 'components/shared/LockTag'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
 import {
@@ -54,7 +54,7 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
         <Tooltip label="Upload Files">
           <HStack>
             <Text>File</Text>
-            {isFreePlan(workspace) && <PlanTag plan={Plan.STARTER} />}
+            {isFreePlan(workspace) && <LockTag plan={Plan.STARTER} />}
           </HStack>
         </Tooltip>
       )

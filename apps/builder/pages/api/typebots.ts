@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               {
                 workspace: { members: { some: { userId: user.id } } },
                 id: { in: typebotIds },
+                isArchived: { not: true },
               },
               {
                 id: { in: typebotIds },
@@ -39,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     userId: user.id,
                   },
                 },
+                isArchived: { not: true },
               },
             ],
           },
@@ -51,6 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           OR: [
             {
+              isArchived: { not: true },
               folderId,
               workspace: {
                 id: workspaceId,
@@ -63,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             },
             {
+              isArchived: { not: true },
               workspace: {
                 id: workspaceId,
                 members: {

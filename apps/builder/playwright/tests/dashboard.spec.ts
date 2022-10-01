@@ -75,7 +75,7 @@ test.describe('Free user', () => {
     await page.goto('/typebots')
     await page.click('text="Pro workspace"')
     await page.click('text="Free workspace"')
-    await expect(page.locator('[data-testid="starter-plan-tag"]')).toBeVisible()
+    await expect(page.locator('[data-testid="starter-lock-tag"]')).toBeVisible()
     await page.click('text=Create a folder')
     await expect(
       page.locator(

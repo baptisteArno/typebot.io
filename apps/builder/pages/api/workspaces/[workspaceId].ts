@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import { Prisma, Workspace, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { archiveResults, getAuthenticatedUser } from 'services/api/utils'
+import { getAuthenticatedUser } from 'services/api/utils'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -28,23 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       id,
       members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
     }
-    const deletedTypebots = await prisma.typebot.findMany({
-      where: {
-        workspace: workspaceFilter,
-      },
-    })
     await prisma.workspace.deleteMany({
       where: workspaceFilter,
     })
-    await Promise.all(
-      deletedTypebots.map((typebot) =>
-        archiveResults(res)({
-          typebotId: typebot.id,
-          user,
-          resultsFilter: { typebotId: typebot.id },
-        })
-      )
-    )
     return res.status(200).json({
       message: 'success',
     })

@@ -66,23 +66,23 @@ model ApiToken {
 }
 
 model Workspace {
-  id            String                @id @default(cuid())
-  name          String
-  icon          String?
-  createdAt     DateTime              @default(now())
-  plan          Plan                  @default(FREE)
-  stripeId      String?               @unique
-  credentials   Credentials[]
-  customDomains CustomDomain[]
-  folders       DashboardFolder[]
-  members       MemberInWorkspace[]
-  typebots      Typebot[]
-  invitations   WorkspaceInvitation[]
-  additionalChatsIndex Int @default(0)
-  additionalStorageIndex Int @default(0)
-  chatsLimitFirstEmailSentAt DateTime?
-  storageLimitFirstEmailSentAt DateTime?
-  chatsLimitSecondEmailSentAt DateTime?
+  id                            String                @id @default(cuid())
+  name                          String
+  icon                          String?
+  createdAt                     DateTime              @default(now())
+  plan                          Plan                  @default(FREE)
+  stripeId                      String?               @unique
+  credentials                   Credentials[]
+  customDomains                 CustomDomain[]
+  folders                       DashboardFolder[]
+  members                       MemberInWorkspace[]
+  typebots                      Typebot[]
+  invitations                   WorkspaceInvitation[]
+  additionalChatsIndex          Int                   @default(0)
+  additionalStorageIndex        Int                   @default(0)
+  chatsLimitFirstEmailSentAt    DateTime?
+  storageLimitFirstEmailSentAt  DateTime?
+  chatsLimitSecondEmailSentAt   DateTime?
   storageLimitSecondEmailSentAt DateTime?
 }
 
@@ -168,6 +168,7 @@ model Typebot {
   publishedTypebot        PublicTypebot?
   results                 Result[]
   webhooks                Webhook[]
+  isArchived              Boolean                 @default(false)
 }
 
 model Invitation {
@@ -211,8 +212,8 @@ model Result {
   variables   Json[]
   isCompleted Boolean
   hasStarted  Boolean?
-  isArchived  Boolean?
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: NoAction)
+  isArchived  Boolean? @default(false)
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers     Answer[]
   logs        Log[]
 }

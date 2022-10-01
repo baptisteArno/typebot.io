@@ -139,13 +139,14 @@ export const WorkspaceContext = ({ children }: WorkspaceContextProps) => {
     if (!currentWorkspace || !workspaces || workspaces.length < 2) return
     const { data } = await deleteWorkspace(currentWorkspace.id)
     if (!data || !currentWorkspace) return
-    setCurrentWorkspace(workspaces[0])
+    const newWorkspaces = (workspaces ?? []).filter((w) =>
+      w.id === currentWorkspace.id
+        ? { ...data.workspace, members: w.members }
+        : w
+    )
+    setCurrentWorkspace(newWorkspaces[0])
     mutate({
-      workspaces: (workspaces ?? []).filter((w) =>
-        w.id === currentWorkspace.id
-          ? { ...data.workspace, members: w.members }
-          : w
-      ),
+      workspaces: newWorkspaces,
     })
   }
 

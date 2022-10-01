@@ -46,7 +46,7 @@ export const CurrentSubscriptionContent = ({
   return (
     <Stack gap="2">
       <Heading fontSize="3xl">Subscription</Heading>
-      <HStack>
+      <HStack data-testid="current-subscription">
         <Text>Current workspace subscription: </Text>
         {isCancelling ? (
           <Spinner color="gray.500" size="xs" />
