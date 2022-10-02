@@ -19,7 +19,7 @@
     "test:builder": "cd apps/builder && pnpm test",
     "lint": "turbo run lint",
     "db:migrate": "cd packages/db && pnpm migration:deploy",
-    "generate-change-log": "npx gitmoji-changelog"
+    "generate-change-log": "pnpx gitmoji-changelog"
   },
   "devDependencies": {
     "cz-emoji": "1.3.2-canary.2",

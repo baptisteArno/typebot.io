@@ -1,5 +1,42 @@
 # Changelog
 
+<a name="2.8.0"></a>
+## 2.8.0 (2022-10-02)
+
+### Added
+
+- 🔊 (sendEmail) Add log when smtp config is failing [[75ca255](https://github.com/baptisteArno/typebot.io/commit/75ca255af22bed3646ca3de11f03ce49e7866ab3)]
+- ✨ (lp) Add new pricing page [[c94a658](https://github.com/baptisteArno/typebot.io/commit/c94a6581be077d5c8403004f688d3213a80d80a5)]
+- 👷‍♂️ Transpile components for better DX [[c1dd4d4](https://github.com/baptisteArno/typebot.io/commit/c1dd4d403e17d0ccdcc44d6c0ff0dc8bad7c15be)]
+- ✨ Add usage-based new pricing plans [[898367a](https://github.com/baptisteArno/typebot.io/commit/898367a33be70d86b765421462d1c288d0c8cc05)]
+
+### Changed
+
+- 🚸 (inputs) Improve date input response bubble formatting [[fac70b9](https://github.com/baptisteArno/typebot.io/commit/fac70b96395f0554168d650c3971ed388f1b8f0e)]
+- ♻️ (usage) Remove limit until temporarily [[3bec24a](https://github.com/baptisteArno/typebot.io/commit/3bec24a8cc3c0aa8d68f5ba44d96aea725bd4e77)]
+
+### Fixed
+
+- 🐛 (usage) Archive typebot to be able to compute usage [[15dbc95](https://github.com/baptisteArno/typebot.io/commit/15dbc9577d0de7f117aaa151a2b544b8fe66e4b0)]
+- 🐛 (workspace) Allow lifetime users to invite members to workspace [[e1f2d49](https://github.com/baptisteArno/typebot.io/commit/e1f2d49342c0141fb258e42b75b257d110277e87)]
+- 🐛 Lifetime users should have access to Pro features [[9ed4916](https://github.com/baptisteArno/typebot.io/commit/9ed4916c59370b17c622cd5818831f2e451d1a8f)]
+- 💚 (ci) Fix turbo repo prisma cache [[8c56c6c](https://github.com/baptisteArno/typebot.io/commit/8c56c6c32de0c3faa0b01427f5dce996b78e589c)]
+- ✏️ (pricing) Fix typos [[9061c03](https://github.com/baptisteArno/typebot.io/commit/9061c03d6d1515b7c5ac12fe70717b1ce809dd05)]
+- 🐛 Remove delete result cascade [[3c803b1](https://github.com/baptisteArno/typebot.io/commit/3c803b134504f8a4f379e97792b60fb8a13f2b62)]
+- 🐛 (limits) Fix storage limit trigger and e2e tests [[30dff2d](https://github.com/baptisteArno/typebot.io/commit/30dff2d5d7ceee03e1af7cb65b48b8a151bfb217)]
+- 🐛 (usage) Fix storage limit check [[1e26703](https://github.com/baptisteArno/typebot.io/commit/1e26703ad416460a49814c163fc2e7a288d9088c)]
+- 🐛 (limits) Fix usage limits email emojis [[1063429](https://github.com/baptisteArno/typebot.io/commit/106342927578f4e844d5fc468d0093448d31c893)]
+- 🐛 (stripe) Fix plan update and management [[6384a3a](https://github.com/baptisteArno/typebot.io/commit/6384a3adae6b9078fa782dcba7a787c955bdddd0)]
+- 🐛 (stripe) Update additional items when they didn&#x27;t exist [[f83e0ef](https://github.com/baptisteArno/typebot.io/commit/f83e0efea2dc5920715b0436add2766aeafc7be7)]
+- 💚 Better build scripts [[d8b1d8a](https://github.com/baptisteArno/typebot.io/commit/d8b1d8ad596079ca4f35a052304cf9effa6e11be)]
+- 🐛 (editor) Shouldn&#x27;t be able to set a group name to empty string [[6a1eaea](https://github.com/baptisteArno/typebot.io/commit/6a1eaea700cf9c21c2568843c04b0f02b428ec11)]
+
+### Miscellaneous
+
+- 📦 Upgrade deps to latest version [[a947c1c](https://github.com/baptisteArno/typebot.io/commit/a947c1ce34cd8d7adbe8d63b317f10122a20c295)]
+- 🧑‍💻 (emails) Add decent emails management [[1654de3](https://github.com/baptisteArno/typebot.io/commit/1654de3c1f4449161511a3890a5f540bb6034653)]
+
+
 <a name="2.7.1"></a>
 ## 2.7.1 (2022-09-12)
 
