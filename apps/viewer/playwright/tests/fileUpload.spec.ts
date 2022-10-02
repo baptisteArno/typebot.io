@@ -85,45 +85,47 @@ test('should work as expected', async ({ page, browser }) => {
   ).toBeVisible()
 })
 
-test.describe('Storage limit is reached', () => {
-  const typebotId = cuid()
+// TODO: uncomment on 1st of November
 
-  test.beforeAll(async () => {
-    await importTypebotInDatabase(
-      path.join(__dirname, '../fixtures/typebots/fileUpload.json'),
-      {
-        id: typebotId,
-        publicId: `${typebotId}-public`,
-      }
-    )
-    await createResults({
-      typebotId,
-      count: 20,
-      fakeStorage: THREE_GIGABYTES,
-    })
-  })
+// test.describe('Storage limit is reached', () => {
+//   const typebotId = cuid()
 
-  test("shouldn't upload anything if limit has been reached", async ({
-    page,
-  }) => {
-    await page.goto(`/${typebotId}-public`)
-    await typebotViewer(page)
-      .locator(`input[type="file"]`)
-      .setInputFiles([
-        path.join(__dirname, '../fixtures/typebots/api.json'),
-        path.join(__dirname, '../fixtures/typebots/fileUpload.json'),
-        path.join(__dirname, '../fixtures/typebots/hugeGroup.json'),
-      ])
-    await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
-    await typebotViewer(page).locator('text="Upload 3 files"').click()
-    await expect(
-      typebotViewer(page).locator(`text="3 files uploaded"`)
-    ).toBeVisible()
-    await page.evaluate(() =>
-      window.localStorage.setItem('workspaceId', 'starterWorkspace')
-    )
-    await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
-    await expect(page.locator('text="150%"')).toBeVisible()
-    await expect(page.locator('text="api.json"')).toBeHidden()
-  })
-})
+//   test.beforeAll(async () => {
+//     await importTypebotInDatabase(
+//       path.join(__dirname, '../fixtures/typebots/fileUpload.json'),
+//       {
+//         id: typebotId,
+//         publicId: `${typebotId}-public`,
+//       }
+//     )
+//     await createResults({
+//       typebotId,
+//       count: 20,
+//       fakeStorage: THREE_GIGABYTES,
+//     })
+//   })
+
+//   test("shouldn't upload anything if limit has been reached", async ({
+//     page,
+//   }) => {
+//     await page.goto(`/${typebotId}-public`)
+//     await typebotViewer(page)
+//       .locator(`input[type="file"]`)
+//       .setInputFiles([
+//         path.join(__dirname, '../fixtures/typebots/api.json'),
+//         path.join(__dirname, '../fixtures/typebots/fileUpload.json'),
+//         path.join(__dirname, '../fixtures/typebots/hugeGroup.json'),
+//       ])
+//     await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
+//     await typebotViewer(page).locator('text="Upload 3 files"').click()
+//     await expect(
+//       typebotViewer(page).locator(`text="3 files uploaded"`)
+//     ).toBeVisible()
+//     await page.evaluate(() =>
+//       window.localStorage.setItem('workspaceId', 'starterWorkspace')
+//     )
+//     await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
+//     await expect(page.locator('text="150%"')).toBeVisible()
+//     await expect(page.locator('text="api.json"')).toBeHidden()
+//   })
+// })

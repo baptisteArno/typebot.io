@@ -45,7 +45,9 @@ test('results should be deletable', async ({ page }) => {
   ])
   await createResults({ typebotId, count: 200, isChronological: true })
   await page.goto(`/typebots/${typebotId}/results`)
-  await selectFirstResults(page)
+  await expect(page.locator('text=content199')).toBeVisible()
+  await page.click('[data-testid="checkbox"] >> nth=1')
+  await page.click('[data-testid="checkbox"] >> nth=2')
   await page.click('text="Delete"')
   await deleteButtonInConfirmDialog(page).click()
   await expect(page.locator('text=content199')).toBeHidden()
@@ -87,7 +89,9 @@ test('submissions table should have infinite scroll', async ({ page }) => {
 
 test('should correctly export selection in CSV', async ({ page }) => {
   await page.goto(`/typebots/${typebotId}/results`)
-  await selectFirstResults(page)
+  await expect(page.locator('text=content199')).toBeVisible()
+  await page.click('[data-testid="checkbox"] >> nth=1')
+  await page.click('[data-testid="checkbox"] >> nth=2')
   const [download] = await Promise.all([
     page.waitForEvent('download'),
     page.locator('text="Export"').click(),
@@ -181,5 +185,5 @@ const validateExportAll = (data: unknown[]) => {
 
 const selectFirstResults = async (page: Page) => {
   await page.click('[data-testid="checkbox"] >> nth=1')
-  return page.click('[data-testid="checkbox"] >> nth=2')
+  await page.click('[data-testid="checkbox"] >> nth=2')
 }

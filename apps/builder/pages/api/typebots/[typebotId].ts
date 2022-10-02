@@ -23,7 +23,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         webhooks: true,
       },
     })
-    console.log(typebot)
     if (!typebot) return res.send({ typebot: null })
     const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
       typebot

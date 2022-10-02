@@ -23,20 +23,24 @@ test('should execute webhooks properly', async ({ page }) => {
   })
 
   await page.goto(`/${typebotId}-public`)
-  await typebotViewer(page).locator('text=Send success webhook').click()
-  await page.waitForResponse(
-    async (resp) =>
-      resp.request().url().includes(`/api/typebots/${typebotId}/blocks`) &&
-      resp.status() === 200 &&
-      (await resp.json()).statusCode === 200
-  )
-  await typebotViewer(page).locator('text=Send failed webhook').click()
-  await page.waitForResponse(
-    async (resp) =>
-      resp.request().url().includes(`/api/typebots/${typebotId}/blocks`) &&
-      resp.status() === 200 &&
-      (await resp.json()).statusCode === 500
-  )
+  await Promise.all([
+    page.waitForResponse(
+      async (resp) =>
+        resp.request().url().includes(`/api/typebots/${typebotId}/blocks`) &&
+        resp.status() === 200 &&
+        (await resp.json()).statusCode === 200
+    ),
+    typebotViewer(page).locator('text=Send success webhook').click(),
+  ])
+  await Promise.all([
+    page.waitForResponse(
+      async (resp) =>
+        resp.request().url().includes(`/api/typebots/${typebotId}/blocks`) &&
+        resp.status() === 200 &&
+        (await resp.json()).statusCode === 500
+    ),
+    typebotViewer(page).locator('text=Send failed webhook').click(),
+  ])
   await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(

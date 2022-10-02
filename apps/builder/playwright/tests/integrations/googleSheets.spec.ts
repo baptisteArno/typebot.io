@@ -39,20 +39,22 @@ test.describe.parallel('Google sheets integration', () => {
     await typebotViewer(page)
       .locator('input[placeholder="Type your email..."]')
       .fill('georges@gmail.com')
-    await typebotViewer(page)
-      .locator('input[placeholder="Type your email..."]')
-      .press('Enter')
-    await page.waitForResponse(
-      (resp) =>
-        resp
-          .request()
-          .url()
-          .includes(
-            '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
-          ) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'POST'
-    )
+    await Promise.all([
+      page.waitForResponse(
+        (resp) =>
+          resp
+            .request()
+            .url()
+            .includes(
+              '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
+            ) &&
+          resp.status() === 200 &&
+          resp.request().method() === 'POST'
+      ),
+      typebotViewer(page)
+        .locator('input[placeholder="Type your email..."]')
+        .press('Enter'),
+    ])
   })
 
   test('Update row should work', async ({ page }) => {
@@ -89,20 +91,22 @@ test.describe.parallel('Google sheets integration', () => {
     await typebotViewer(page)
       .locator('input[placeholder="Type your email..."]')
       .fill('test@test.com')
-    await typebotViewer(page)
-      .locator('input[placeholder="Type your email..."]')
-      .press('Enter')
-    await page.waitForResponse(
-      (resp) =>
-        resp
-          .request()
-          .url()
-          .includes(
-            '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
-          ) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'PATCH'
-    )
+    await Promise.all([
+      page.waitForResponse(
+        (resp) =>
+          resp
+            .request()
+            .url()
+            .includes(
+              '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
+            ) &&
+          resp.status() === 200 &&
+          resp.request().method() === 'PATCH'
+      ),
+      typebotViewer(page)
+        .locator('input[placeholder="Type your email..."]')
+        .press('Enter'),
+    ])
   })
 
   test('Get row should work', async ({ page }) => {

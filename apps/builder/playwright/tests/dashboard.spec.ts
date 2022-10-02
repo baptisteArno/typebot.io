@@ -10,15 +10,13 @@ test('folders navigation should work', async ({ page }) => {
   await createFolderButton.click()
   await page.click('text="New folder"')
   await page.fill('input[value="New folder"]', 'My folder #1')
-  await page.press('input[value="My folder #1"]', 'Enter')
-  await waitForNextApiCall(page)
-  await page.click('li:has-text("My folder #1")')
+  await page.press('input[value="My folder #1"]', 'Enter'),
+    await page.click('li:has-text("My folder #1")')
   await expect(page.locator('h1:has-text("My folder #1")')).toBeVisible()
   await createFolderButton.click()
   await page.click('text="New folder"')
   await page.fill('input', 'My folder #2')
   await page.press('input', 'Enter')
-  await waitForNextApiCall(page)
 
   await page.click('li:has-text("My folder #2")')
   await expect(page.locator('h1 >> text="My folder #2"')).toBeVisible()
@@ -55,7 +53,6 @@ test('folders and typebots should be movable', async ({ page }) => {
     'li:has-text("Draggable typebot")',
     'li:has-text("Droppable folder")'
   )
-  await waitForNextApiCall(page)
   await expect(typebotButton).toBeHidden()
   await folderButton.click()
   await expect(page).toHaveURL(new RegExp(`/folders/${droppableFolderId}`))
@@ -64,7 +61,6 @@ test('folders and typebots should be movable', async ({ page }) => {
     'li:has-text("Draggable typebot")',
     'a:has-text("Back")'
   )
-  await waitForNextApiCall(page)
   await expect(typebotButton).toBeHidden()
   await page.click('a:has-text("Back")')
   await expect(typebotButton).toBeVisible()
@@ -84,6 +80,3 @@ test.describe('Free user', () => {
     ).toBeVisible()
   })
 })
-
-const waitForNextApiCall = (page: Page, path?: string) =>
-  page.waitForResponse((resp) => resp.url().includes(path ?? '/api'))

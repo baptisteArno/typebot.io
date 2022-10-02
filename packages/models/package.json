@@ -6,15 +6,15 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "zod": "^3.19.0"
+    "zod": "3.19.1"
   },
   "devDependencies": {
-    "typescript": "^4.8.3",
-    "next": "12.3.0",
+    "typescript": "4.8.4",
+    "next": "12.3.1",
     "db": "workspace:*"
   },
   "peerDependencies": {
-    "next": "^12.0.0",
+    "next": "12.0.0",
     "db": "workspace:*"
   }
 }

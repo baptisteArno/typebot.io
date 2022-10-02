@@ -10,13 +10,13 @@ import { SmtpCredentialsData } from 'models'
 
 const mockSmtpCredentials: SmtpCredentialsData = {
   from: {
-    email: 'kimberly.boyer36@ethereal.email',
+    email: 'sedrick.konopelski@ethereal.email',
     name: 'Kimberly Boyer',
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  username: 'kimberly.boyer36@ethereal.email',
-  password: '4jvjGUgxYKRjbk15tW',
+  username: 'sedrick.konopelski@ethereal.email',
+  password: 'yXZChpPy25Qa5yBbeH',
 }
 
 test('should send an email', async ({ page }) => {
@@ -28,10 +28,12 @@ test('should send an email', async ({ page }) => {
     { id: typebotId, publicId: `${typebotId}-public` }
   )
   await page.goto(`/${typebotId}-public`)
-  await typebotViewer(page).locator('text=Send email').click()
-  const response = await page.waitForResponse((resp) =>
-    resp.request().url().includes(`integrations/email`)
-  )
+  const [response] = await Promise.all([
+    page.waitForResponse((resp) =>
+      resp.request().url().includes(`integrations/email`)
+    ),
+    typebotViewer(page).locator('text=Send email').click(),
+  ])
   const { previewUrl } = await response.json()
   await page.goto(previewUrl)
   await expect(page.locator('text="Hey!"')).toBeVisible()

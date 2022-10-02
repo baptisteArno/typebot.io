@@ -17,13 +17,15 @@ test('should work as expected', async ({ page }) => {
 
   await page.goto(`/${typebotId}-public`)
   await typebotViewer(page).locator('input').fill('Hello there!')
-  await typebotViewer(page).locator('input').press('Enter')
-  await page.waitForResponse(
-    (resp) =>
-      resp.request().url().includes(`/api/typebots/t/results`) &&
-      resp.status() === 200 &&
-      resp.request().method() === 'PUT'
-  )
+  await Promise.all([
+    page.waitForResponse(
+      (resp) =>
+        resp.request().url().includes(`/api/typebots/t/results`) &&
+        resp.status() === 200 &&
+        resp.request().method() === 'PUT'
+    ),
+    typebotViewer(page).locator('input').press('Enter'),
+  ])
   await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text=Hello there!')).toBeVisible()
 })

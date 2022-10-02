@@ -23,12 +23,12 @@
   },
   "devDependencies": {
     "cz-emoji": "1.3.2-canary.2",
-    "turbo": "1.4.6"
+    "turbo": "1.5.5"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@7.8.0"
+  "packageManager": "pnpm@7.12.2"
 }

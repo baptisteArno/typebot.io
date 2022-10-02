@@ -132,7 +132,7 @@ export const Edge = ({ edge }: Props) => {
       <path
         data-testid="clickable-edge"
         d={path}
-        strokeWidth="12px"
+        strokeWidth="18px"
         stroke="white"
         fill="none"
         pointerEvents="stroke"
@@ -149,6 +149,7 @@ export const Edge = ({ edge }: Props) => {
         strokeWidth="2px"
         markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
         fill="none"
+        pointerEvents="none"
       />
       <Portal>
         <EdgeMenu
