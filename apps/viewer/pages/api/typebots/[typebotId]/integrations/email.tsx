@@ -112,7 +112,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     try {
       const info = await transporter.sendMail(email)
-      await saveSuccessLog(resultId, 'Email successfully sent')
+      await saveSuccessLog(resultId, 'Email successfully sent', {
+        transportConfig: {
+          ...transportConfig,
+          auth: { user: transportConfig.auth.user, pass: '******' },
+        },
+        email,
+      })
       return res.status(200).send({
         message: 'Email sent!',
         info,
@@ -120,7 +126,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     } catch (err) {
       await saveErrorLog(resultId, 'Email not sent', {
-        transportConfig,
+        transportConfig: {
+          ...transportConfig,
+          auth: { user: transportConfig.auth.user, pass: '******' },
+        },
         email,
         error: err,
       })
