@@ -85,7 +85,8 @@ test.describe.parallel('Image bubble block', () => {
       )
       const trendingfirstImageSrc = await firstGiphyImage.getAttribute('src')
       expect(trendingfirstImageSrc).toMatch(new RegExp('giphy.com/media', 'gm'))
-      await page.fill('[placeholder="Search..."]', 'fun')
+      await page.type('[placeholder="Search..."]', 'fun')
+      await expect(page.locator('[placeholder="Search..."]')).toHaveValue('fun')
       await page.waitForTimeout(500)
       await expect(firstGiphyImage).toHaveAttribute(
         'src',
