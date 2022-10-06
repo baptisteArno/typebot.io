@@ -1,5 +1,5 @@
 import { FullConfig } from '@playwright/test'
-import { setupDatabase, teardownDatabase } from './services/database'
+import { setupDatabase, teardownDatabase } from 'utils/playwright/databaseSetup'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config({ path: '.env' })

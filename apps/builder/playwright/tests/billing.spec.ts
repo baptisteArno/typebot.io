@@ -1,13 +1,13 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { Plan } from 'db'
+import { addSubscriptionToWorkspace } from 'playwright/services/databaseActions'
 import {
-  addSubscriptionToWorkspace,
-  createResults,
   createTypebots,
   createWorkspaces,
   deleteWorkspaces,
-} from '../services/database'
+  injectFakeResults,
+} from 'utils/playwright/databaseActions'
 
 const usageWorkspaceId = cuid()
 const usageTypebotId = cuid()
@@ -48,7 +48,7 @@ test('should display valid usage', async ({ page }) => {
   await expect(page.locator('text="Storage"')).toBeHidden()
   await page.click('text=Free workspace', { force: true })
 
-  await createResults({
+  await injectFakeResults({
     count: 10,
     typebotId: usageTypebotId,
     fakeStorage: 1100 * 1024 * 1024,
@@ -70,7 +70,7 @@ test('should display valid usage', async ({ page }) => {
     '54'
   )
 
-  await createResults({
+  await injectFakeResults({
     typebotId: usageTypebotId,
     count: 1090,
     fakeStorage: 1200 * 1024 * 1024,

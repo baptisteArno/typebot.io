@@ -1,7 +1,7 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from '../../services/database'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import path from 'path'
-import { typebotViewer } from '../../services/selectorUtils'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 import cuid from 'cuid'
 
 test.describe.parallel('Google sheets integration', () => {

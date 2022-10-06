@@ -1,11 +1,9 @@
 import test, { expect } from '@playwright/test'
 import { InputBlockType, defaultTextInputOptions } from 'models'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-  starterWorkspaceId,
-} from '../services/database'
 import cuid from 'cuid'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test('should be able to connect custom domain', async ({ page }) => {
   const typebotId = cuid()

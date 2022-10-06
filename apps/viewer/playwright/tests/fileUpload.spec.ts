@@ -2,10 +2,10 @@ import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
 import { parse } from 'papaparse'
-import { typebotViewer } from '../services/selectorUtils'
-import { createResults, importTypebotInDatabase } from '../services/database'
 import { readFileSync } from 'fs'
 import { isDefined } from 'utils'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 

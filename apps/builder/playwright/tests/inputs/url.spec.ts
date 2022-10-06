@@ -1,10 +1,8 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultUrlInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 import cuid from 'cuid'
 
 test.describe('Url input block', () => {

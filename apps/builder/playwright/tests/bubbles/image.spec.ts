@@ -1,12 +1,10 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultImageBubbleContent } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
 import path from 'path'
 import cuid from 'cuid'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const unsplashImageSrc =
   'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'

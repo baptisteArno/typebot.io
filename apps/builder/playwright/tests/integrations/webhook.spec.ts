@@ -1,5 +1,8 @@
 import test, { expect, Page } from '@playwright/test'
-import { createWebhook, importTypebotInDatabase } from '../../services/database'
+import {
+  createWebhook,
+  importTypebotInDatabase,
+} from 'utils/playwright/databaseActions'
 import path from 'path'
 import { HttpMethod } from 'models'
 import cuid from 'cuid'

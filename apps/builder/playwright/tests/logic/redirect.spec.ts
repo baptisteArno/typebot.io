@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { typebotViewer } from '../../services/selectorUtils'
-import { importTypebotInDatabase } from '../../services/database'
+import { typebotViewer } from 'utils/playwright/testHelpers'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import cuid from 'cuid'
 
 const typebotId = cuid()

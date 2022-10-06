@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import prisma from 'libs/prisma'
 import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canPublishFileInput } from 'services/api/dbRules'
+import { canPublishFileInput, canWriteTypebot } from 'services/api/dbRules'
 import { getAuthenticatedUser } from 'services/api/utils'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
 
@@ -31,6 +31,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data,
     })
     return res.send({ typebots })
+  }
+  if (req.method === 'DELETE') {
+    const publishedTypebotId = req.query.id as string
+    const typebotId = req.query.typebotId as string | undefined
+    if (!typebotId) return badRequest(res, 'typebotId is required')
+    await prisma.publicTypebot.deleteMany({
+      where: {
+        id: publishedTypebotId,
+        typebot: canWriteTypebot(typebotId, user),
+      },
+    })
+    return res.send({ success: true })
   }
   return methodNotAllowed(res)
 }

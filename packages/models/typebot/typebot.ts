@@ -55,6 +55,8 @@ const typebotSchema = z.object({
   customDomain: z.string().nullable(),
   workspaceId: z.string(),
   resultsTablePreferences: resultsTablePreferencesSchema.optional(),
+  isArchived: z.boolean(),
+  isClosed: z.boolean(),
 })
 
 export type Typebot = z.infer<typeof typebotSchema>

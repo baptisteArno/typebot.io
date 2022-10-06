@@ -3,13 +3,13 @@ import cuid from 'cuid'
 import { CollaborationType, Plan, WorkspaceRole } from 'db'
 import prisma from 'libs/prisma'
 import { InputBlockType, defaultTextInputOptions } from 'models'
+import { createFolder } from 'playwright/services/databaseActions'
 import {
-  createFolder,
-  createResults,
   createTypebots,
-  parseDefaultGroupWithBlock,
-  userId,
-} from '../services/database'
+  injectFakeResults,
+} from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { userId } from 'utils/playwright/databaseSetup'
 
 test.describe('Typebot owner', () => {
   test('Can invite collaborators', async ({ page }) => {
@@ -103,7 +103,7 @@ test.describe('Guest', () => {
       },
     })
     await createFolder(guestWorkspaceId, 'Guest folder')
-    await createResults({ typebotId, count: 10 })
+    await injectFakeResults({ typebotId, count: 10 })
     await page.goto(`/typebots`)
     await page.click('text=Pro workspace')
     await page.click('text=Guest workspace #2')

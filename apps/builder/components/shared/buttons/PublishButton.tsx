@@ -12,7 +12,12 @@ import {
   useDisclosure,
   ButtonProps,
 } from '@chakra-ui/react'
-import { ChevronLeftIcon } from 'assets/icons'
+import {
+  ChevronLeftIcon,
+  CloudOffIcon,
+  LockedIcon,
+  UnlockedIcon,
+} from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { InputBlockType } from 'models'
@@ -34,6 +39,9 @@ export const PublishButton = (props: ButtonProps) => {
     restorePublishedTypebot,
     typebot,
     isSavingLoading,
+    updateTypebot,
+    unpublishTypebot,
+    save,
   } = useTypebot()
 
   const hasInputFile = typebot?.groups
@@ -44,6 +52,16 @@ export const PublishButton = (props: ButtonProps) => {
     if (isFreePlan(workspace) && hasInputFile) return onOpen()
     publishTypebot()
     if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+  }
+
+  const closeTypebot = async () => {
+    updateTypebot({ isClosed: true })
+    await save()
+  }
+
+  const openTypebot = async () => {
+    updateTypebot({ isClosed: false })
+    await save()
   }
 
   return (
@@ -68,33 +86,52 @@ export const PublishButton = (props: ButtonProps) => {
             </Text>
           </Stack>
         }
-        isDisabled={isNotDefined(publishedTypebot)}
+        isDisabled={isNotDefined(publishedTypebot) || isPublished}
       >
         <Button
           colorScheme="blue"
           isLoading={isPublishing || isSavingLoading}
           isDisabled={isPublished}
           onClick={handlePublishClick}
-          borderRightRadius={publishedTypebot && !isPublished ? 0 : undefined}
+          borderRightRadius={publishedTypebot ? 0 : undefined}
           {...props}
         >
-          {isPublished ? 'Published' : 'Publish'}
+          {isPublished
+            ? typebot?.isClosed
+              ? 'Closed'
+              : 'Published'
+            : 'Publish'}
         </Button>
       </Tooltip>
 
-      {publishedTypebot && !isPublished && (
+      {publishedTypebot && (
         <Menu>
           <MenuButton
             as={IconButton}
-            colorScheme="blue"
+            colorScheme={'blue'}
             borderLeftRadius={0}
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
-            aria-label="Show published version"
+            aria-label="Show published typebot menu"
             size="sm"
+            isDisabled={isPublishing || isSavingLoading}
           />
           <MenuList>
-            <MenuItem onClick={restorePublishedTypebot}>
-              Restore published version
+            {!isPublished && (
+              <MenuItem onClick={restorePublishedTypebot}>
+                Restore published version
+              </MenuItem>
+            )}
+            {!typebot?.isClosed ? (
+              <MenuItem onClick={closeTypebot} icon={<LockedIcon />}>
+                Close typebot to new responses
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={openTypebot} icon={<UnlockedIcon />}>
+                Reopen typebot to new responses
+              </MenuItem>
+            )}
+            <MenuItem onClick={unpublishTypebot} icon={<CloudOffIcon />}>
+              Unpublish typebot
             </MenuItem>
           </MenuList>
         </Menu>

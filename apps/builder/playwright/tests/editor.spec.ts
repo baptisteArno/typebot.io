@@ -1,13 +1,18 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  importTypebotInDatabase,
-  parseDefaultGroupWithBlock,
-} from '../services/database'
 import { defaultTextInputOptions, InputBlockType } from 'models'
 import path from 'path'
 import cuid from 'cuid'
-import { typebotViewer } from '../services/selectorUtils'
+import {
+  createTypebots,
+  importTypebotInDatabase,
+} from 'utils/playwright/databaseActions'
+import {
+  typebotViewer,
+  waitForSuccessfulDeleteRequest,
+  waitForSuccessfulPostRequest,
+  waitForSuccessfulPutRequest,
+} from 'utils/playwright/testHelpers'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 
 test.describe.configure({ mode: 'parallel' })
 
@@ -179,4 +184,43 @@ test('Preview from group should work', async ({ page }) => {
   await expect(
     typebotViewer(page).locator('text="Hello this is group 1"')
   ).toBeVisible()
+})
+
+test('Published typebot menu should work', async ({ page }) => {
+  const typebotId = cuid()
+  await createTypebots([
+    {
+      id: typebotId,
+      name: 'My awesome typebot',
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
+        options: defaultTextInputOptions,
+      }),
+    },
+  ])
+  await page.goto(`/typebots/${typebotId}/edit`)
+  await expect(page.locator("text='Start'")).toBeVisible()
+  await expect(page.locator('button >> text="Published"')).toBeVisible()
+  await page.click('[aria-label="Show published typebot menu"]')
+  await Promise.all([
+    waitForSuccessfulPutRequest(page),
+    page.click('text="Close typebot to new responses"'),
+  ])
+  await expect(page.locator('button >> text="Closed"')).toBeDisabled()
+  await page.click('[aria-label="Show published typebot menu"]')
+  await Promise.all([
+    waitForSuccessfulPutRequest(page),
+    page.click('text="Reopen typebot to new responses"'),
+  ])
+  await expect(page.locator('button >> text="Published"')).toBeDisabled()
+  await page.click('[aria-label="Show published typebot menu"]')
+  await Promise.all([
+    waitForSuccessfulDeleteRequest(page),
+    page.click('button >> text="Unpublish typebot"'),
+  ])
+  await Promise.all([
+    waitForSuccessfulPostRequest(page),
+    page.click('button >> text="Publish"'),
+  ])
+  await expect(page.locator('button >> text="Published"')).toBeVisible()
 })

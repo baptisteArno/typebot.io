@@ -1,16 +1,14 @@
 import test, { expect } from '@playwright/test'
 import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../services/database'
-import {
   defaultSettings,
   defaultTextInputOptions,
   InputBlockType,
   Metadata,
 } from 'models'
-import { typebotViewer } from '../services/selectorUtils'
 import cuid from 'cuid'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = cuid()

@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '../services/database'
 import cuid from 'cuid'
 import path from 'path'
-import { typebotViewer } from '../services/selectorUtils'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('should correctly be injected', async ({ page }) => {
   const typebotId = cuid()

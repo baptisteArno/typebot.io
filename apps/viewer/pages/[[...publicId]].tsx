@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http'
+import { ErrorPage } from 'layouts/ErrorPage'
 import { NotFoundPage } from 'layouts/NotFoundPage'
-import { PublicTypebot } from 'models'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import sanitizeHtml from 'sanitize-html'
 import { env, getViewerUrl, isDefined, isNotDefined, omit } from 'utils'
@@ -10,7 +10,6 @@ import prisma from '../libs/prisma'
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  let typebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> | null
   const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
   const pathname = context.resolvedUrl.split('?')[0]
   const { host, forwardedHost } = getHost(context.req)
@@ -31,19 +30,19 @@ export const getServerSideProps: GetServerSideProps = async (
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname
     }`
-    typebot = isMatchingViewerUrl
+    const publishedTypebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain)
-    if (!typebot)
+    if (!publishedTypebot)
       console.log(
         isMatchingViewerUrl
           ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
           : `Couldn't find customDomain: ${customDomain}`
       )
-    const headCode = typebot?.settings.metadata.customHeadCode
+    const headCode = publishedTypebot?.settings.metadata.customHeadCode
     return {
       props: {
-        typebot,
+        publishedTypebot,
         isIE,
         url: `https://${forwardedHost ?? host}${pathname}`,
         customHeadCode:
@@ -63,23 +62,39 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const getTypebotFromPublicId = async (publicId?: string) => {
+const getTypebotFromPublicId = async (
+  publicId?: string
+): Promise<TypebotPageProps['publishedTypebot'] | null> => {
   if (!publicId) return null
-  const typebot = await prisma.publicTypebot.findFirst({
+  const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { publicId } },
-    include: { typebot: { select: { name: true } } },
+    include: {
+      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+    },
   })
-  if (isNotDefined(typebot)) return null
-  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  if (isNotDefined(publishedTypebot)) return null
+  return omit(
+    publishedTypebot,
+    'createdAt',
+    'updatedAt'
+  ) as TypebotPageProps['publishedTypebot']
 }
 
-const getTypebotFromCustomDomain = async (customDomain: string) => {
-  const typebot = await prisma.publicTypebot.findFirst({
+const getTypebotFromCustomDomain = async (
+  customDomain: string
+): Promise<TypebotPageProps['publishedTypebot'] | null> => {
+  const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { customDomain } },
-    include: { typebot: { select: { name: true } } },
+    include: {
+      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+    },
   })
-  if (isNotDefined(typebot)) return null
-  return omit(typebot as unknown as PublicTypebot, 'createdAt', 'updatedAt')
+  if (isNotDefined(publishedTypebot)) return null
+  return omit(
+    publishedTypebot,
+    'createdAt',
+    'updatedAt'
+  ) as TypebotPageProps['publishedTypebot']
 }
 
 const getHost = (
@@ -89,11 +104,12 @@ const getHost = (
   forwardedHost: req?.headers['x-forwarded-host'] as string | undefined,
 })
 
-const App = ({ typebot, ...props }: TypebotPageProps) =>
-  isDefined(typebot) ? (
-    <TypebotPage typebot={typebot} {...props} />
-  ) : (
-    <NotFoundPage />
-  )
+const App = ({ publishedTypebot, ...props }: TypebotPageProps) => {
+  if (!publishedTypebot || publishedTypebot.typebot.isArchived)
+    return <NotFoundPage />
+  if (publishedTypebot.typebot.isClosed)
+    return <ErrorPage error={new Error('This bot is now closed')} />
+  return <TypebotPage publishedTypebot={publishedTypebot} {...props} />
+}
 
 export default App

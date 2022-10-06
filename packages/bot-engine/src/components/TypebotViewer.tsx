@@ -24,7 +24,7 @@ import { LiteBadge } from './LiteBadge'
 import { getViewerUrl, isEmpty } from 'utils'
 
 export type TypebotViewerProps = {
-  typebot: PublicTypebot
+  typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
   isPreview?: boolean
   apiHost?: string
   style?: CSSProperties

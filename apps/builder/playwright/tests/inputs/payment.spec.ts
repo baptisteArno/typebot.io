@@ -1,11 +1,10 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultPaymentInputOptions, InputBlockType } from 'models'
 import cuid from 'cuid'
-import { stripePaymentForm, typebotViewer } from '../../services/selectorUtils'
+import { stripePaymentForm } from '../../services/selectorUtils'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe('Payment input block', () => {
   test('Can configure Stripe account', async ({ page }) => {

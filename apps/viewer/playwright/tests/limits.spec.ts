@@ -1,9 +1,4 @@
 import test, { expect } from '@playwright/test'
-import {
-  createResults,
-  importTypebotInDatabase,
-  limitTestWorkspaceId,
-} from '../services/database'
 import cuid from 'cuid'
 import path from 'path'
 

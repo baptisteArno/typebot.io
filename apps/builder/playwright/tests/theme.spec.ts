@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
-import { importTypebotInDatabase } from '../services/database'
-import { typebotViewer } from '../services/selectorUtils'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'

@@ -44,6 +44,7 @@ import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
 import { useToast } from 'components/shared/hooks/useToast'
+import { deletePublishedTypebotQuery } from 'services/typebots/deletePublishedTypebotQuery'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -55,6 +56,7 @@ type UpdateTypebotPayload = Partial<{
   icon: string
   customDomain: string
   resultsTablePreferences: ResultsTablePreferences
+  isClosed: boolean
 }>
 
 export type SetTypebot = (
@@ -81,6 +83,7 @@ const typebotContext = createContext<
     ) => Promise<void>
     updateTypebot: (updates: UpdateTypebotPayload) => void
     publishTypebot: () => void
+    unpublishTypebot: () => void
     restorePublishedTypebot: () => void
   } & GroupsActions &
     BlocksActions &
@@ -314,6 +317,21 @@ export const TypebotContext = ({
     }
   }
 
+  const unpublishTypebot = async () => {
+    if (!publishedTypebot || !localTypebot) return
+    setIsPublishing(true)
+    const { error } = await deletePublishedTypebotQuery({
+      publishedTypebotId: publishedTypebot.id,
+      typebotId: localTypebot.id,
+    })
+    setIsPublishing(false)
+    if (error) showToast({ description: error.message })
+    mutate({
+      typebot: localTypebot,
+      webhooks: webhooks ?? [],
+    })
+  }
+
   const restorePublishedTypebot = () => {
     if (!publishedTypebot || !localTypebot) return
     setLocalTypebot(parsePublicTypebotToTypebot(publishedTypebot, localTypebot))
@@ -351,6 +369,7 @@ export const TypebotContext = ({
         canUndo,
         canRedo,
         publishTypebot,
+        unpublishTypebot,
         isPublishing,
         isPublished,
         updateTypebot: updateLocalTypebot,

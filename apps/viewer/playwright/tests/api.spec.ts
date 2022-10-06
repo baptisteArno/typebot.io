@@ -1,11 +1,11 @@
 import test, { expect } from '@playwright/test'
-import {
-  apiToken,
-  createResults,
-  createWebhook,
-  importTypebotInDatabase,
-} from '../services/database'
 import path from 'path'
+import {
+  importTypebotInDatabase,
+  createWebhook,
+  injectFakeResults,
+} from 'utils/playwright/databaseActions'
+import { apiToken } from 'utils/playwright/databaseSetup'
 
 const typebotId = 'webhook-flow'
 test.beforeAll(async () => {
@@ -15,7 +15,7 @@ test.beforeAll(async () => {
       { id: typebotId }
     )
     await createWebhook(typebotId)
-    await createResults({ typebotId, count: 20 })
+    await injectFakeResults({ typebotId, count: 20 })
   } catch (err) {
     console.log(err)
   }

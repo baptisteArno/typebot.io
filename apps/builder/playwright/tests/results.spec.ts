@@ -5,11 +5,11 @@ import { defaultTextInputOptions, InputBlockType } from 'models'
 import { parse } from 'papaparse'
 import path from 'path'
 import {
-  createResults,
-  createTypebots,
   importTypebotInDatabase,
-  parseDefaultGroupWithBlock,
-} from '../services/database'
+  injectFakeResults,
+  createTypebots,
+} from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
 const typebotId = cuid()
@@ -43,7 +43,7 @@ test('results should be deletable', async ({ page }) => {
       }),
     },
   ])
-  await createResults({ typebotId, count: 200, isChronological: true })
+  await injectFakeResults({ typebotId, count: 200, isChronological: true })
   await page.goto(`/typebots/${typebotId}/results`)
   await expect(page.locator('text=content199')).toBeVisible()
   await page.click('[data-testid="checkbox"] >> nth=1')
@@ -69,7 +69,7 @@ test('submissions table should have infinite scroll', async ({ page }) => {
       tableWrapper.scrollTo(0, tableWrapper.scrollHeight)
     })
 
-  await createResults({ typebotId, count: 200, isChronological: true })
+  await injectFakeResults({ typebotId, count: 200, isChronological: true })
   await page.goto(`/typebots/${typebotId}/results`)
   await expect(page.locator('text=content199')).toBeVisible()
 
@@ -181,9 +181,4 @@ const validateExportAll = (data: unknown[]) => {
   expect(data).toHaveLength(201)
   expect((data[1] as unknown[])[1]).toBe('content199')
   expect((data[200] as unknown[])[1]).toBe('content0')
-}
-
-const selectFirstResults = async (page: Page) => {
-  await page.click('[data-testid="checkbox"] >> nth=1')
-  await page.click('[data-testid="checkbox"] >> nth=2')
 }

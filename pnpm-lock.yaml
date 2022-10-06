@@ -339,6 +339,7 @@ importers:
       db: workspace:*
       dotenv: 16.0.3
       emails: workspace:*
+      encoding: ^0.1.13
       eslint: 8.24.0
       eslint-config-next: 12.3.1
       eslint-plugin-react: 7.31.8
@@ -361,13 +362,13 @@ importers:
       uglify-js: 3.17.2
       utils: workspace:*
     dependencies:
-      '@sentry/nextjs': 7.14.0_next@12.3.1+react@18.2.0
+      '@sentry/nextjs': 7.14.0_jxu4po4uwlfmcmtoojj2rjxcii
       aws-sdk: 2.1227.0
       bot-engine: link:../../packages/bot-engine
       cors: 2.8.5
       cuid: 2.1.8
       db: link:../../packages/db
-      google-spreadsheet: 3.3.0
+      google-spreadsheet: 3.3.0_encoding@0.1.13
       got: 12.5.1
       next: 12.3.1_6tziyx3dehkoeijunclpkpolha
       nodemailer: 6.8.0
@@ -391,11 +392,12 @@ importers:
       '@typescript-eslint/parser': 5.38.1_ypn2ylkkyfa5i233caldtndbqa
       dotenv: 16.0.3
       emails: link:../../packages/emails
+      encoding: 0.1.13
       eslint: 8.24.0
       eslint-config-next: 12.3.1_ypn2ylkkyfa5i233caldtndbqa
       eslint-plugin-react: 7.31.8_eslint@8.24.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.24.0
-      google-auth-library: 8.5.2
+      google-auth-library: 8.5.2_encoding@0.1.13
       models: link:../../packages/models
       next-transpile-modules: 9.0.0
       node-fetch: 3.2.10
@@ -603,6 +605,7 @@ importers:
 
   packages/utils:
     specifiers:
+      '@playwright/test': 1.26.1
       '@types/nodemailer': 6.4.6
       aws-sdk: 2.1227.0
       cuid: 2.1.8
@@ -612,6 +615,7 @@ importers:
       nodemailer: 6.8.0
       typescript: 4.8.4
     devDependencies:
+      '@playwright/test': 1.26.1
       '@types/nodemailer': 6.4.6
       aws-sdk: 2.1227.0
       cuid: 2.1.8
@@ -5151,6 +5155,24 @@ packages:
       - supports-color
     dev: false
 
+  /@sentry/cli/1.74.5_encoding@0.1.13:
+    resolution: {integrity: sha512-Ze1ec306ZWHtrxKypOJ8nhtFqkrx2f/6bRH+DcJzEQ3bBePQ0ZnqJTTe4BBHADYBtxFIaUWzCZ6DquLz2Zv/sw==}
+    engines: {node: '>= 8'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      https-proxy-agent: 5.0.1
+      mkdirp: 0.5.6
+      node-fetch: 2.6.7_encoding@0.1.13
+      npmlog: 4.1.2
+      progress: 2.0.3
+      proxy-from-env: 1.1.0
+      which: 2.0.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
   /@sentry/core/7.14.0:
     resolution: {integrity: sha512-Hgn7De6CiCFnz868/Lrtei+9rj7/TIwhbDe3J+NeH+2ffXYn4VI8FxrlR/p2XfIq9iCfmG80EQXDtSh+Kh7mOw==}
     engines: {node: '>=8'}
@@ -5178,6 +5200,37 @@ packages:
       '@sentry/utils': 7.14.0
       localforage: 1.10.0
       tslib: 1.14.1
+    dev: false
+
+  /@sentry/nextjs/7.14.0_jxu4po4uwlfmcmtoojj2rjxcii:
+    resolution: {integrity: sha512-TmBWGuvNmdHbDCsNYiSwcO0WiXpOl9eLdLvCN1pitXO5YWWPUGjKKWVQ54WZCkVF4iiqsnMBNLCtBApU1Hu9qA==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      next: ^10.0.8 || ^11.0 || ^12.0
+      react: 15.x || 16.x || 17.x || 18.x
+      webpack: '>= 4.0.0'
+    peerDependenciesMeta:
+      webpack:
+        optional: true
+    dependencies:
+      '@rollup/plugin-sucrase': 4.0.4_rollup@2.78.0
+      '@sentry/core': 7.14.0
+      '@sentry/hub': 7.14.0
+      '@sentry/integrations': 7.14.0
+      '@sentry/node': 7.14.0
+      '@sentry/react': 7.14.0_react@18.2.0
+      '@sentry/tracing': 7.14.0
+      '@sentry/types': 7.14.0
+      '@sentry/utils': 7.14.0
+      '@sentry/webpack-plugin': 1.19.0_encoding@0.1.13
+      chalk: 3.0.0
+      next: 12.3.1_6tziyx3dehkoeijunclpkpolha
+      react: 18.2.0
+      rollup: 2.78.0
+      tslib: 1.14.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
     dev: false
 
   /@sentry/nextjs/7.14.0_next@12.3.1+react@18.2.0:
@@ -5269,6 +5322,16 @@ packages:
     engines: {node: '>= 8'}
     dependencies:
       '@sentry/cli': 1.74.5
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /@sentry/webpack-plugin/1.19.0_encoding@0.1.13:
+    resolution: {integrity: sha512-qSpdgdGMtdzagGveSWgo2b+t8PdPUscuOjbOyWCsJme9jlTFnNk0rX7JEA55OUozikKHM/+vVh08USLBnPboZw==}
+    engines: {node: '>= 8'}
+    dependencies:
+      '@sentry/cli': 1.74.5_encoding@0.1.13
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -9075,6 +9138,11 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
+  /encoding/0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
+
   /end-of-stream/1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
@@ -10346,6 +10414,20 @@ packages:
       - supports-color
     dev: false
 
+  /gaxios/4.3.3_encoding@0.1.13:
+    resolution: {integrity: sha512-gSaYYIO1Y3wUtdfHmjDUZ8LWaxJQpiavzbF5Kq53akSzvmVg0RfyOcFDbO1KJ/KCGRFz2qG+lS81F0nkr7cRJA==}
+    engines: {node: '>=10'}
+    dependencies:
+      abort-controller: 3.0.0
+      extend: 3.0.2
+      https-proxy-agent: 5.0.1
+      is-stream: 2.0.1
+      node-fetch: 2.6.7_encoding@0.1.13
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
   /gaxios/5.0.2:
     resolution: {integrity: sha512-TjtV2AJOZoMQqRYoy5eM8cCQogYwazWNYLQ72QB0kwa6vHHruYkGmhhyrlzbmgNHK1dNnuP2WSH81urfzyN2Og==}
     engines: {node: '>=12'}
@@ -10357,12 +10439,37 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /gaxios/5.0.2_encoding@0.1.13:
+    resolution: {integrity: sha512-TjtV2AJOZoMQqRYoy5eM8cCQogYwazWNYLQ72QB0kwa6vHHruYkGmhhyrlzbmgNHK1dNnuP2WSH81urfzyN2Og==}
+    engines: {node: '>=12'}
+    dependencies:
+      extend: 3.0.2
+      https-proxy-agent: 5.0.1
+      is-stream: 2.0.1
+      node-fetch: 2.6.7_encoding@0.1.13
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
 
   /gcp-metadata/4.3.1:
     resolution: {integrity: sha512-x850LS5N7V1F3UcV7PoupzGsyD6iVwTVvsh3tbXfkctZnBnjW5yu5z1/3k3SehF7TyoTIe78rJs02GMMy+LF+A==}
     engines: {node: '>=10'}
     dependencies:
       gaxios: 4.3.3
+      json-bigint: 1.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /gcp-metadata/4.3.1_encoding@0.1.13:
+    resolution: {integrity: sha512-x850LS5N7V1F3UcV7PoupzGsyD6iVwTVvsh3tbXfkctZnBnjW5yu5z1/3k3SehF7TyoTIe78rJs02GMMy+LF+A==}
+    engines: {node: '>=10'}
+    dependencies:
+      gaxios: 4.3.3_encoding@0.1.13
       json-bigint: 1.0.0
     transitivePeerDependencies:
       - encoding
@@ -10378,6 +10485,18 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /gcp-metadata/5.0.1_encoding@0.1.13:
+    resolution: {integrity: sha512-jiRJ+Fk7e8FH68Z6TLaqwea307OktJpDjmYnU7/li6ziwvVvU2RlrCyQo5vkdeP94chm0kcSCOOszvmuaioq3g==}
+    engines: {node: '>=12'}
+    dependencies:
+      gaxios: 5.0.2_encoding@0.1.13
+      json-bigint: 1.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
 
   /generic-names/4.0.0:
     resolution: {integrity: sha512-ySFolZQfw9FoDb3ed9d80Cm9f0+r7qj+HJkWjeD9RBfpxEVTlVhol+gvaQB/78WbwYfbnNh8nWHHBSlg072y6A==}
@@ -10578,6 +10697,24 @@ packages:
       - supports-color
     dev: false
 
+  /google-auth-library/6.1.6_encoding@0.1.13:
+    resolution: {integrity: sha512-Q+ZjUEvLQj/lrVHF/IQwRo6p3s8Nc44Zk/DALsN+ac3T4HY/g/3rrufkgtl+nZ1TW7DNAw5cTChdVp4apUXVgQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      arrify: 2.0.1
+      base64-js: 1.5.1
+      ecdsa-sig-formatter: 1.0.11
+      fast-text-encoding: 1.0.6
+      gaxios: 4.3.3_encoding@0.1.13
+      gcp-metadata: 4.3.1_encoding@0.1.13
+      gtoken: 5.3.2_encoding@0.1.13
+      jws: 4.0.0
+      lru-cache: 6.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
   /google-auth-library/7.14.1:
     resolution: {integrity: sha512-5Rk7iLNDFhFeBYc3s8l1CqzbEBcdhwR193RlD4vSNFajIcINKI8W8P0JLmBpwymHqqWbX34pJDQu39cSy/6RsA==}
     engines: {node: '>=10'}
@@ -10612,6 +10749,25 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /google-auth-library/8.5.2_encoding@0.1.13:
+    resolution: {integrity: sha512-FPfOSaI8n2TVXFHTP8/vAVFCXhyALj7w9/Rgefux3oeKZ/nQDNmfNTJ+lIKcoYT1cKkvMllp1Eood7Y5L+TP+A==}
+    engines: {node: '>=12'}
+    dependencies:
+      arrify: 2.0.1
+      base64-js: 1.5.1
+      ecdsa-sig-formatter: 1.0.11
+      fast-text-encoding: 1.0.6
+      gaxios: 5.0.2_encoding@0.1.13
+      gcp-metadata: 5.0.1_encoding@0.1.13
+      gtoken: 6.1.2_encoding@0.1.13
+      jws: 4.0.0
+      lru-cache: 6.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
 
   /google-p12-pem/3.1.4:
     resolution: {integrity: sha512-HHuHmkLgwjdmVRngf5+gSmpkyaRI6QmOg77J8tkNBHhNEI62sGHyw4/+UkgyZEI7h84NbWprXDJ+sa3xOYFvTg==}
@@ -10634,6 +10790,19 @@ packages:
     dependencies:
       axios: 0.21.4
       google-auth-library: 6.1.6
+      lodash: 4.17.21
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+    dev: false
+
+  /google-spreadsheet/3.3.0_encoding@0.1.13:
+    resolution: {integrity: sha512-ahmRNh14s1i3phfvbF2mxen1lohWJpUaFWgsU6P6bXu7QrmxMaim1Ys/7BU4W5yucWCzphoIrHMbrbeIR5K9mw==}
+    engines: {node: '>=0.8.0'}
+    dependencies:
+      axios: 0.21.4
+      google-auth-library: 6.1.6_encoding@0.1.13
       lodash: 4.17.21
     transitivePeerDependencies:
       - debug
@@ -10721,6 +10890,18 @@ packages:
       - supports-color
     dev: false
 
+  /gtoken/5.3.2_encoding@0.1.13:
+    resolution: {integrity: sha512-gkvEKREW7dXWF8NV8pVrKfW7WqReAmjjkMBh6lNCCGOM4ucS0r0YyXXl0r/9Yj8wcW/32ISkfc8h5mPTDbtifQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      gaxios: 4.3.3_encoding@0.1.13
+      google-p12-pem: 3.1.4
+      jws: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
   /gtoken/6.1.2:
     resolution: {integrity: sha512-4ccGpzz7YAr7lxrT2neugmXQ3hP9ho2gcaityLVkiUecAiwiy60Ii8gRbZeOsXV19fYaRjgBSshs8kXw+NKCPQ==}
     engines: {node: '>=12.0.0'}
@@ -10731,6 +10912,19 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /gtoken/6.1.2_encoding@0.1.13:
+    resolution: {integrity: sha512-4ccGpzz7YAr7lxrT2neugmXQ3hP9ho2gcaityLVkiUecAiwiy60Ii8gRbZeOsXV19fYaRjgBSshs8kXw+NKCPQ==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      gaxios: 5.0.2_encoding@0.1.13
+      google-p12-pem: 4.0.1
+      jws: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
 
   /gzip-size/6.0.0:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
@@ -11148,7 +11342,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-    dev: true
 
   /icss-replace-symbols/1.1.0:
     resolution: {integrity: sha512-chIaY3Vh2mh2Q3RGXttaDIzeiPvaVXJ+C4DAh/w3c37SKZ/U6PGMmuicR2EQQp9bKG8zLMCl7I+PtIoOOPp8Gg==}
@@ -13574,6 +13767,18 @@ packages:
       encoding:
         optional: true
     dependencies:
+      whatwg-url: 5.0.0
+
+  /node-fetch/2.6.7_encoding@0.1.13:
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      encoding: 0.1.13
       whatwg-url: 5.0.0
 
   /node-fetch/3.2.10:

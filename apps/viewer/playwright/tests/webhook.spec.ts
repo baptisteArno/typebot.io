@@ -1,9 +1,12 @@
 import test, { expect } from '@playwright/test'
-import { createWebhook, importTypebotInDatabase } from '../services/database'
 import cuid from 'cuid'
 import path from 'path'
-import { typebotViewer } from '../services/selectorUtils'
 import { HttpMethod } from 'models'
+import {
+  createWebhook,
+  importTypebotInDatabase,
+} from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('should execute webhooks properly', async ({ page }) => {
   const typebotId = cuid()

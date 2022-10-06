@@ -168,7 +168,8 @@ model Typebot {
   publishedTypebot        PublicTypebot?
   results                 Result[]
   webhooks                Webhook[]
-  isArchived              Boolean                 @default(false)
+  isArchived              Boolean                   @default(false)
+  isClosed                Boolean                   @default(false)
 }
 
 model Invitation {

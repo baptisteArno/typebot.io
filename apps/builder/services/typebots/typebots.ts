@@ -415,6 +415,8 @@ export const parseNewTypebot = ({
   | 'publicId'
   | 'customDomain'
   | 'icon'
+  | 'isArchived'
+  | 'isClosed'
 > => {
   const startGroupId = cuid()
   const startBlockId = cuid()

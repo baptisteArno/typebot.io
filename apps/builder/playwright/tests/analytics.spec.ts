@@ -1,10 +1,8 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
-import {
-  importTypebotInDatabase,
-  starterWorkspaceId,
-} from '../services/database'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
   const typebotId = cuid()

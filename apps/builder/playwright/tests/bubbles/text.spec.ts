@@ -1,11 +1,9 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultTextBubbleContent } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {

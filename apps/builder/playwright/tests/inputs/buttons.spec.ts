@@ -2,12 +2,12 @@ import test, { expect } from '@playwright/test'
 import {
   createTypebots,
   importTypebotInDatabase,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+} from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 import path from 'path'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {

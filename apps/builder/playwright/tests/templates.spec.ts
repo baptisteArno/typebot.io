@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { typebotViewer } from '../services/selectorUtils'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe.parallel('Templates page', () => {
   test('From scratch should create a blank typebot', async ({ page }) => {

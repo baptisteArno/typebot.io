@@ -1,6 +1,7 @@
-import test, { expect, Page } from '@playwright/test'
+import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
-import { createFolders, createTypebots } from '../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { createFolders } from '../services/databaseActions'
 import { deleteButtonInConfirmDialog } from '../services/selectorUtils'
 
 test('folders navigation should work', async ({ page }) => {

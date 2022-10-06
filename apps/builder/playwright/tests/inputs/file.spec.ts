@@ -1,13 +1,11 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  freeWorkspaceId,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultFileInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 import cuid from 'cuid'
 import path from 'path'
+import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test.describe.configure({ mode: 'parallel' })
 

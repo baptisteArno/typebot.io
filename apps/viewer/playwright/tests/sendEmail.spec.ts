@@ -1,12 +1,10 @@
 import test, { expect } from '@playwright/test'
-import {
-  createSmtpCredentials,
-  importTypebotInDatabase,
-} from '../services/database'
+import { createSmtpCredentials } from '../services/databaseActions'
 import cuid from 'cuid'
 import path from 'path'
-import { typebotViewer } from '../services/selectorUtils'
 import { SmtpCredentialsData } from 'models'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const mockSmtpCredentials: SmtpCredentialsData = {
   from: {

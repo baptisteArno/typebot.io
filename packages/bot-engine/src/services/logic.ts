@@ -1,3 +1,4 @@
+import { TypebotViewerProps } from 'components/TypebotViewer'
 import { LinkedTypebot } from 'contexts/TypebotContext'
 import { Log } from 'db'
 import {
@@ -26,7 +27,7 @@ type EdgeId = string
 type LogicContext = {
   isPreview: boolean
   apiHost: string
-  typebot: PublicTypebot
+  typebot: TypebotViewerProps['typebot']
   linkedTypebots: LinkedTypebot[]
   currentTypebotId: string
   pushEdgeIdInLinkedTypebotQueue: (bot: {
@@ -46,7 +47,7 @@ export const executeLogic = async (
   context: LogicContext
 ): Promise<{
   nextEdgeId?: EdgeId
-  linkedTypebot?: PublicTypebot | LinkedTypebot
+  linkedTypebot?: TypebotViewerProps['typebot'] | LinkedTypebot
 }> => {
   switch (block.type) {
     case LogicBlockType.SET_VARIABLE:

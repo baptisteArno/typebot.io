@@ -35,6 +35,8 @@ export const parsePublicTypebotToTypebot = (
   folderId: existingTypebot.folderId,
   icon: existingTypebot.icon,
   workspaceId: existingTypebot.workspaceId,
+  isArchived: existingTypebot.isArchived,
+  isClosed: existingTypebot.isClosed,
 })
 
 export const createPublishedTypebot = async (

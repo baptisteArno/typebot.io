@@ -1,13 +1,13 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import { defaultTextInputOptions, InputBlockType } from 'models'
-import { mockSessionResponsesToOtherUser } from 'playwright/services/browser'
+import { createTypebots } from 'utils/playwright/databaseActions'
 import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
   proWorkspaceId,
   starterWorkspaceId,
-} from '../services/database'
+} from 'utils/playwright/databaseSetup'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { mockSessionResponsesToOtherUser } from 'utils/playwright/testHelpers'
 
 const proTypebotId = cuid()
 const starterTypebotId = cuid()

@@ -1,15 +1,12 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-  updateTypebot,
-} from '../services/database'
 import cuid from 'cuid'
 import {
   defaultSettings,
   defaultTextInputOptions,
   InputBlockType,
 } from 'models'
+import { createTypebots, updateTypebot } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 
 test('Result should be in storage by default', async ({ page }) => {
   const typebotId = cuid()
@@ -106,4 +103,20 @@ test('Hide query params', async ({ page }) => {
   expect(page.url()).toEqual(
     `http://localhost:3001/${typebotId}-public?Name=John`
   )
+})
+
+test('Show close message', async ({ page }) => {
+  const typebotId = cuid()
+  await createTypebots([
+    {
+      id: typebotId,
+      ...parseDefaultGroupWithBlock({
+        type: InputBlockType.TEXT,
+        options: defaultTextInputOptions,
+      }),
+      isClosed: true,
+    },
+  ])
+  await page.goto(`/${typebotId}-public`)
+  await expect(page.locator('text=This bot is now closed')).toBeVisible()
 })

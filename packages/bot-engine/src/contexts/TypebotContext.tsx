@@ -1,3 +1,4 @@
+import { TypebotViewerProps } from 'components/TypebotViewer'
 import { Log } from 'db'
 import { Edge, PublicTypebot, Typebot } from 'models'
 import React, {
@@ -20,7 +21,7 @@ export type LinkedTypebotQueue = {
 
 const typebotContext = createContext<{
   currentTypebotId: string
-  typebot: PublicTypebot
+  typebot: TypebotViewerProps['typebot']
   linkedTypebots: LinkedTypebot[]
   apiHost: string
   isPreview: boolean
@@ -49,13 +50,14 @@ export const TypebotContext = ({
   onNewLog,
 }: {
   children: ReactNode
-  typebot: PublicTypebot
+  typebot: TypebotViewerProps['typebot']
   apiHost: string
   isLoading: boolean
   isPreview: boolean
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }) => {
-  const [localTypebot, setLocalTypebot] = useState<PublicTypebot>(typebot)
+  const [localTypebot, setLocalTypebot] =
+    useState<TypebotViewerProps['typebot']>(typebot)
   const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
   const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
   const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([])

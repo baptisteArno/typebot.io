@@ -42,6 +42,7 @@
     "@typescript-eslint/parser": "5.38.1",
     "dotenv": "16.0.3",
     "emails": "workspace:*",
+    "encoding": "^0.1.13",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
     "eslint-plugin-react": "7.31.8",

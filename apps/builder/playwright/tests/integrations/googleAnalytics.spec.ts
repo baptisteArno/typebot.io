@@ -1,8 +1,6 @@
 import test from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultGoogleAnalyticsOptions, IntegrationBlockType } from 'models'
 import cuid from 'cuid'
 

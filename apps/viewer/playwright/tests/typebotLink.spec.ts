@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { importTypebotInDatabase } from '../services/database'
-import { typebotViewer } from '../services/selectorUtils'
+import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('should work as expected', async ({ page }) => {
   const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'

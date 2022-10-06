@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import path from 'path'
-import { userId } from 'playwright/services/database'
+import { userId } from 'utils/playwright/databaseSetup'
 
 test.describe.configure({ mode: 'parallel' })
 

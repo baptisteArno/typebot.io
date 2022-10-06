@@ -1,15 +1,13 @@
 import test, { expect } from '@playwright/test'
-import {
-  createTypebots,
-  parseDefaultGroupWithBlock,
-} from '../../services/database'
+import { createTypebots } from 'utils/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import {
   BubbleBlockType,
   defaultVideoBubbleContent,
   VideoBubbleContentType,
 } from 'models'
-import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
+import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'

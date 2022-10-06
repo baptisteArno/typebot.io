@@ -1,5 +1,5 @@
 import { TypebotViewer } from 'bot-engine'
-import { Answer, PublicTypebot, VariableWithValue } from 'models'
+import { Answer, PublicTypebot, Typebot, VariableWithValue } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { upsertAnswer } from 'services/answer'
@@ -9,7 +9,9 @@ import { createResult, updateResult } from '../services/result'
 import { ErrorPage } from './ErrorPage'
 
 export type TypebotPageProps = {
-  typebot?: PublicTypebot & { typebot: { name: string } }
+  publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
+    typebot: Pick<Typebot, 'name' | 'isClosed' | 'isArchived'>
+  }
   url: string
   isIE: boolean
   customHeadCode: string | null
@@ -18,11 +20,11 @@ export type TypebotPageProps = {
 const sessionStorageKey = 'resultId'
 
 export const TypebotPage = ({
-  typebot,
+  publishedTypebot,
   isIE,
   url,
   customHeadCode,
-}: TypebotPageProps & { typebot: PublicTypebot }) => {
+}: TypebotPageProps) => {
   const { asPath, push } = useRouter()
   const [showTypebot, setShowTypebot] = useState(false)
   const [predefinedVariables, setPredefinedVariables] = useState<{
@@ -56,7 +58,7 @@ export const TypebotPage = ({
     const hasQueryParams = asPath.includes('?')
     if (
       hasQueryParams &&
-      typebot.settings.general.isHideQueryParamsEnabled !== false
+      publishedTypebot.settings.general.isHideQueryParamsEnabled !== false
     )
       push(asPath.split('?')[0], undefined, { shallow: true })
   }
@@ -65,13 +67,15 @@ export const TypebotPage = ({
     const resultIdFromSession = getExistingResultFromSession()
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
-      const { error, data } = await createResult(typebot.typebotId)
+      const { error, data } = await createResult(publishedTypebot.typebotId)
       if (error) return setError(error)
       if (data?.hasReachedLimit)
         return setError(new Error('This bot is now closed.'))
       if (data?.result) {
         setResultId(data.result.id)
-        if (typebot.settings.general.isNewResultOnRefreshEnabled !== true)
+        if (
+          publishedTypebot.settings.general.isNewResultOnRefreshEnabled !== true
+        )
           setResultInSession(data.result.id)
       }
     }
@@ -122,12 +126,12 @@ export const TypebotPage = ({
     <div style={{ height: '100vh' }}>
       <SEO
         url={url}
-        typebotName={typebot.typebot.name}
-        metadata={typebot.settings.metadata}
+        typebotName={publishedTypebot.typebot.name}
+        metadata={publishedTypebot.settings.metadata}
       />
       {showTypebot && (
         <TypebotViewer
-          typebot={typebot}
+          typebot={publishedTypebot}
           resultId={resultId}
           predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}
