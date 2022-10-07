@@ -53,10 +53,10 @@ export const ChoiceForm = ({ block, onSubmit }: ChoiceFormProps) => {
     block.items.length === 1
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit}>
-      <div className="flex flex-wrap">
+    <form className="flex flex-col items-end" onSubmit={handleSubmit}>
+      <div className="flex flex-wrap justify-end">
         {block.items.map((item, idx) => (
-          <span key={item.id} className="relative inline-flex mr-2 mb-2">
+          <span key={item.id} className="relative inline-flex ml-2 mb-2">
             <button
               role={block.options?.isMultipleChoice ? 'checkbox' : 'button'}
               onClick={handleClick(idx)}
