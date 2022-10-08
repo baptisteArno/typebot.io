@@ -3,7 +3,6 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { Grid } from '@giphy/react-components'
 import { GiphyLogo } from 'assets/logos'
 import React, { useState } from 'react'
-import { useDebounce } from 'use-debounce'
 import { env, isEmpty } from 'utils'
 import { Input } from '../Textbox'
 
@@ -15,7 +14,6 @@ const giphyFetch = new GiphyFetch(env('GIPHY_API_KEY') as string)
 
 export const GiphySearchForm = ({ onSubmit }: GiphySearchFormProps) => {
   const [inputValue, setInputValue] = useState('')
-  const [debouncedInputValue] = useDebounce(inputValue, 500)
 
   const fetchGifs = (offset: number) =>
     giphyFetch.search(inputValue, { offset, limit: 10 })
@@ -33,19 +31,18 @@ export const GiphySearchForm = ({ onSubmit }: GiphySearchFormProps) => {
           autoFocus
           placeholder="Search..."
           onChange={setInputValue}
-          value={inputValue}
           withVariableButton={false}
         />
         <GiphyLogo w="100px" />
       </Flex>
       <Flex overflowY="scroll" maxH="400px">
         <Grid
-          key={debouncedInputValue}
+          key={inputValue}
           onGifClick={(gif, e) => {
             e.preventDefault()
             onSubmit(gif.images.downsized.url)
           }}
-          fetchGifs={debouncedInputValue === '' ? fetchGifsTrending : fetchGifs}
+          fetchGifs={inputValue === '' ? fetchGifsTrending : fetchGifs}
           width={475}
           columns={3}
           className="my-4"
