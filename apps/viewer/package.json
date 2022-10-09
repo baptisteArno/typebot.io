@@ -11,8 +11,8 @@
     "test:open": "PWDEBUG=1 pnpm playwright test"
   },
   "dependencies": {
-    "@sentry/nextjs": "7.14.0",
-    "aws-sdk": "2.1227.0",
+    "@sentry/nextjs": "7.14.2",
+    "aws-sdk": "2.1231.0",
     "bot-engine": "*",
     "cors": "2.8.5",
     "cuid": "2.1.8",
@@ -25,25 +25,25 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sanitize-html": "2.7.2",
-    "stripe": "10.12.0"
+    "stripe": "10.13.0"
   },
   "devDependencies": {
     "@babel/preset-env": "7.19.3",
-    "@playwright/test": "1.26.1",
+    "@playwright/test": "1.27.0",
     "@types/cors": "2.8.12",
     "@types/google-spreadsheet": "3.3.0",
-    "@types/node": "18.7.23",
+    "@types/node": "18.8.3",
     "@types/nodemailer": "6.4.6",
     "@types/papaparse": "5.3.5",
     "@types/qs": "6.9.7",
     "@types/react": "18.0.21",
     "@types/sanitize-html": "2.6.2",
-    "@typescript-eslint/eslint-plugin": "5.38.1",
-    "@typescript-eslint/parser": "5.38.1",
+    "@typescript-eslint/eslint-plugin": "5.39.0",
+    "@typescript-eslint/parser": "5.39.0",
     "dotenv": "16.0.3",
     "emails": "workspace:*",
     "encoding": "^0.1.13",
-    "eslint": "8.24.0",
+    "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "eslint-plugin-react": "7.31.8",
     "eslint-plugin-react-hooks": "4.6.0",
@@ -53,7 +53,7 @@
     "node-fetch": "^3.2.10",
     "papaparse": "5.3.2",
     "typescript": "4.8.4",
-    "uglify-js": "3.17.2",
+    "uglify-js": "3.17.3",
     "utils": "workspace:*"
   }
 }

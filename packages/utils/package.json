@@ -6,9 +6,9 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "@playwright/test": "1.26.1",
+    "@playwright/test": "1.27.0",
     "@types/nodemailer": "6.4.6",
-    "aws-sdk": "2.1227.0",
+    "aws-sdk": "2.1231.0",
     "cuid": "2.1.8",
     "db": "workspace:*",
     "models": "workspace:*",
