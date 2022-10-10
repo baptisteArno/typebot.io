@@ -2,7 +2,11 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withTM = require('next-transpile-modules')(['utils', 'models'])
+const withTM = require('next-transpile-modules')([
+  'utils',
+  'models',
+  'bot-engine',
+])
 
 const pages = ['pricing', 'privacy-policies', 'terms-of-service', 'about']
 
