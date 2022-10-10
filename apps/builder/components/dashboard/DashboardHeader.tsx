@@ -55,7 +55,7 @@ export const DashboardHeader = () => {
         <NextChakraLink
           className="w-24"
           href="/typebots"
-          data-testid="authenticated"
+          data-testid="typebot-logo"
         >
           <TypebotLogo w="30px" />
         </NextChakraLink>
@@ -92,12 +92,11 @@ export const DashboardHeader = () => {
                 </SkeletonCircle>
                 {workspace && (
                   <>
-                  <Text noOfLines={1} maxW="200px">
-                    {workspace.name}
-                  </Text>
-                  <PlanTag plan={workspace.plan}/>
+                    <Text noOfLines={1} maxW="200px">
+                      {workspace.name}
+                    </Text>
+                    <PlanTag plan={workspace.plan} />
                   </>
-                  
                 )}
                 <ChevronLeftIcon transform="rotate(-90deg)" />
               </HStack>
@@ -117,7 +116,7 @@ export const DashboardHeader = () => {
                         defaultIcon={HardDriveIcon}
                       />
                       <Text>{workspace.name}</Text>
-                      <PlanTag plan={workspace.plan}/>
+                      <PlanTag plan={workspace.plan} />
                     </HStack>
                   </MenuItem>
                 ))}

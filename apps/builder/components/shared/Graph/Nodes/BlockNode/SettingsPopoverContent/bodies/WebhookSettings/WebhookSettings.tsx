@@ -187,7 +187,7 @@ export const WebhookSettings = ({
               items={Object.values(HttpMethod)}
             />
           </HStack>
-          <Accordion allowToggle allowMultiple>
+          <Accordion allowMultiple>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Query params
@@ -274,7 +274,7 @@ export const WebhookSettings = ({
           <CodeEditor isReadOnly lang="json" value={testResponse} />
         )}
         {(testResponse || options?.responseVariableMapping.length > 0) && (
-          <Accordion allowToggle allowMultiple>
+          <Accordion allowMultiple>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Save in variables

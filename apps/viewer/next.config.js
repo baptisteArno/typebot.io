@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
-const withTM = require('next-transpile-modules')(['utils', 'models', 'emails'])
+const withTM = require('next-transpile-modules')([
+  'utils',
+  'models',
+  'emails',
+  'bot-engine',
+])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

@@ -33,7 +33,7 @@ export const DefaultBotNotificationEmail = ({
               <Text key={key}>
                 <b>{key}</b>:{' '}
                 {isEmail ? (
-                  <a href={answers[key]}>{answers[key]}</a>
+                  <a href={`mailto:${answers[key]}`}>{answers[key]}</a>
                 ) : (
                   answers[key]
                 )}

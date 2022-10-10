@@ -4,7 +4,6 @@ tests
 .eslintignore
 .eslintrc.js
 jest.config.js
-rollup.config.js
 tsconfig.json
 examples
 __mocks__

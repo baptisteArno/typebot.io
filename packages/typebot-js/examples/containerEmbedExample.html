@@ -23,17 +23,19 @@
       <div id="typebot-container-2" style="width: 1000px; height: 600px"></div>
     </div>
     <div id="typebot-container-3" style="width: 1000px; height: 600px"></div>
-    <script src="../dist/index.umd.min.js"></script>
+    <script src="../dist/index.global.js"></script>
 
     <script>
-      Typebot.initContainer("typebot-container", { publishId: "jamhouse" });
-      Typebot.initContainer("typebot-container-2", {
-        publishId: "lead-generation",
-      });
-      Typebot.initContainer("typebot-container-3", {
-        publishId: "feedback-form",
+      Typebot.initContainer('typebot-container', {
+        url: 'https://viewer.typebot.io/lead-generation-copy-c3yiqz1',
+      })
+      Typebot.initContainer('typebot-container-2', {
+        url: 'https://viewer.typebot.io/kebab',
+      })
+      Typebot.initContainer('typebot-container-3', {
+        url: 'https://viewer.typebot.io/typebot-support',
         loadWhenVisible: false,
-      });
+      })
     </script>
   </body>
 </html>

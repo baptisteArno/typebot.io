@@ -81,6 +81,10 @@ test('can update workspace info', async ({ page }) => {
   await page.fill('input[placeholder="Search..."]', 'building')
   await page.click('text="🏦"')
   await page.fill('input[value="Pro workspace"]', 'My awesome workspace')
+  await page.getByTestId('typebot-logo').click({ force: true })
+  await expect(
+    page.getByRole('button', { name: '🏦 My awesome workspace Pro' })
+  ).toBeVisible()
 })
 
 test('can manage members', async ({ page }) => {
