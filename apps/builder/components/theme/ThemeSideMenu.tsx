@@ -43,7 +43,7 @@ export const ThemeSideMenu = () => {
       <Heading fontSize="xl" textAlign="center">
         Customize the theme
       </Heading>
-      <Accordion allowMultiple allowToggle>
+      <Accordion allowMultiple defaultIndex={[0]}>
         <AccordionItem>
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>

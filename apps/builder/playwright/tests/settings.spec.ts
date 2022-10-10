@@ -21,7 +21,6 @@ test.describe.parallel('Settings page', () => {
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
-      await page.click('button:has-text("General")')
       await page.click('text="Typebot.io branding"')
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')

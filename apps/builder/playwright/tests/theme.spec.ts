@@ -26,7 +26,6 @@ test.describe.parallel('Theme page', () => {
       await expect(
         typebotViewer(page).locator('button >> text="Go"')
       ).toBeVisible()
-      await page.click('button:has-text("General")')
 
       // Font
       await page.fill('input[type="text"]', 'Roboto Slab')

@@ -8,8 +8,16 @@ require('dotenv').config({
   ),
 })
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({ log: ['query', 'info', 'warn', 'error'] })
 
-const main = async () => {}
+const main = async () => {
+  const workspaces = await prisma.workspace.findMany({
+    where: {
+      members: { some: { userId: 'coucou' } },
+    },
+  })
+
+  console.log(workspaces)
+}
 
 main().then()

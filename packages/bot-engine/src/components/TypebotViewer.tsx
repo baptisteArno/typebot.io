@@ -1,14 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { CSSProperties, useMemo } from 'react'
 import { TypebotContext } from '../contexts/TypebotContext'
 import Frame from 'react-frame-component'
-//@ts-ignore
 import styles from '../assets/style.css'
-//@ts-ignore
-import phoneNumberInputStyle from 'react-phone-number-input/style.css'
-//@ts-ignore
 import importantStyles from '../assets/importantStyles.css'
-//@ts-ignore
 import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersContext } from '../contexts/AnswersContext'
@@ -79,7 +73,6 @@ export const TypebotViewer = ({
       id="typebot-iframe"
       head={
         <style>
-          {phoneNumberInputStyle}
           {phoneSyle}
           {styles}
           {typebot.theme?.customCss}
