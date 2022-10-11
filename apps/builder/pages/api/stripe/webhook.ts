@@ -5,6 +5,7 @@ import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from 'libs/prisma'
 import { withSentry } from '@sentry/nextjs'
+import { Plan } from 'db'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -65,6 +66,24 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           })
           return res.status(200).send({ message: 'workspace upgraded in DB' })
+        }
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription
+          await prisma.workspace.update({
+            where: {
+              stripeId: subscription.customer as string,
+            },
+            data: {
+              plan: Plan.FREE,
+              additionalChatsIndex: 0,
+              additionalStorageIndex: 0,
+              chatsLimitFirstEmailSentAt: null,
+              chatsLimitSecondEmailSentAt: null,
+              storageLimitFirstEmailSentAt: null,
+              storageLimitSecondEmailSentAt: null,
+            },
+          })
+          return res.send({ message: 'workspace downgraded in DB' })
         }
         default: {
           return res.status(304).send({ message: 'event not handled' })
