@@ -16,7 +16,7 @@ import {
 } from 'assets/icons'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { User, Workspace } from 'db'
+import { User, Workspace } from 'model'
 import { useState } from 'react'
 import { BillingForm } from './BillingForm'
 import { MembersList } from './MembersList'

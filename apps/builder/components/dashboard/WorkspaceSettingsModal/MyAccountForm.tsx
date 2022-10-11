@@ -22,10 +22,6 @@ export const MyAccountForm = () => {
   const {
     user,
     updateUser,
-    saveUser,
-    hasUnsavedChanges,
-    isSaving,
-    isOAuthProvider,
   } = useUser()
   const [reloadParam, setReloadParam] = useState('')
   const [isApiTokenVisible, setIsApiTokenVisible] = useState(false)
@@ -81,7 +77,7 @@ export const MyAccountForm = () => {
           <FormControl>
             <FormLabel
               htmlFor="email"
-              color={isOAuthProvider ? 'gray.500' : 'current'}
+              color="current"
             >
               Email address
             </FormLabel>
@@ -111,7 +107,7 @@ export const MyAccountForm = () => {
         </InputGroup>
       </FormControl>
 
-      {hasUnsavedChanges && (
+      {/* {hasUnsavedChanges && (
         <Flex justifyContent="flex-end">
           <Button
             colorScheme="blue"
@@ -121,7 +117,7 @@ export const MyAccountForm = () => {
             Save
           </Button>
         </Flex>
-      )}
+      )} */}
     </Stack>
   )
 }

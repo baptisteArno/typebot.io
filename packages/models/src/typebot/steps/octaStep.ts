@@ -47,6 +47,7 @@ export type AssignToTeamStep = StepBase & {
 
 export type AssignToTeamOptions = BaseOctaOptions & {
   assignTo: string
+  assignType: string
   messages: {
     firstMessage?: {
       content?: TextBubbleContent
@@ -101,6 +102,7 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   name: '',
   subject: '',
   assignTo: '',
+  assignType: '',
   isAvailable: false,
 }
 

@@ -3,8 +3,8 @@ import { methodNotAllowed } from 'utils'
 import Stripe from 'stripe'
 import Cors from 'micro-cors'
 import { buffer } from 'micro'
-import prisma from 'libs/prisma'
-import { Plan } from 'db'
+//import prisma from 'libs/prisma'
+import { Plan } from 'model'
 import { withSentry } from '@sentry/nextjs'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
@@ -43,13 +43,13 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           const { metadata } = session
           if (!metadata?.workspaceId || !metadata?.plan)
             return res.status(500).send({ message: `customer_email not found` })
-          await prisma.workspace.update({
-            where: { id: metadata.workspaceId },
-            data: {
-              plan: metadata.plan === 'team' ? Plan.TEAM : Plan.PRO,
-              stripeId: session.customer as string,
-            },
-          })
+          // await prisma.workspace.update({
+          //   where: { id: metadata.workspaceId },
+          //   data: {
+          //     plan: metadata.plan === 'team' ? Plan.TEAM : Plan.PRO,
+          //     stripeId: session.customer as string,
+          //   },
+          // })
           return res.status(200).send({ message: 'workspace upgraded in DB' })
         }
         case 'customer.subscription.deleted': {
@@ -57,14 +57,14 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           const { metadata } = subscription
           if (!metadata.workspaceId)
             return res.status(500).send(`workspaceId not found`)
-          await prisma.workspace.update({
-            where: {
-              id: metadata.workspaceId,
-            },
-            data: {
-              plan: Plan.FREE,
-            },
-          })
+          // await prisma.workspace.update({
+          //   where: {
+          //     id: metadata.workspaceId,
+          //   },
+          //   data: {
+          //     plan: Plan.FREE,
+          //   },
+          // })
           return res.send({ message: 'workspace downgraded in DB' })
         }
         default: {

@@ -81,8 +81,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'PATCH') {
-    const spreadsheetId = req.query.spreadsheetId.toString()
-    const sheetId = req.query.sheetId.toString()
+    const spreadsheetId = req.query.spreadsheetId as string
+    const sheetId = req.query.sheetId as string
     const { credentialsId, values, referenceCell } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {

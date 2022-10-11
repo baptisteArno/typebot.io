@@ -9,7 +9,7 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react'
-import { WorkspaceRole } from 'db'
+import { WorkspaceRole } from 'model'
 import React from 'react'
 import { convertWorkspaceRoleToReadable } from './AddMemberForm'
 

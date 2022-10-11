@@ -14,7 +14,7 @@ test-results
 .sentryclirc
 .docusaurus
 .cache-loader
-build
+#build
 firebaseServiceAccount.json
 
 .env.production

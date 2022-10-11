@@ -1,4 +1,4 @@
-import prisma from 'libs/prisma'
+//import prisma from 'libs/prisma'
 import { SendEmailOptions, SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
@@ -90,11 +90,12 @@ const getEmailInfo = async (
       isTlsEnabled: undefined,
       from: defaultFrom,
     }
-  const credentials = await prisma.credentials.findUnique({
-    where: { id: credentialsId },
-  })
-  if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+  // const credentials = await prisma.credentials.findUnique({
+  //   where: { id: credentialsId },
+  // })
+  // if (!credentials) return
+  // return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+  return
 }
 
 export default withSentry(handler)

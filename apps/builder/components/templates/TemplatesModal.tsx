@@ -84,8 +84,13 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             <Stack spacing={4}>
               <Button
                 colorScheme="blue"
-                onClick={() =>
-                  typebot && onTypebotChoose(typebot) && setIsLoading(true)
+                onClick={() => {
+                  if (typebot) {
+                    onTypebotChoose(typebot)
+                    setIsLoading(true)
+                  }
+                  return typebot
+                }
                 }
                 isLoading={isLoading}
               >

@@ -32,8 +32,10 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       : (document.body.style.overflow = 'auto')
   }, [pathname])
 
-  setupMockUser()
-  setupEnvironment()
+  useEffect(() => {
+    setupMockUser()
+    setupEnvironment()
+  }, [])
 
   const typebotId = query.typebotId?.toString()
   return (

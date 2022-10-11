@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
-import hash from 'object-hash'
+//import hash from 'object-hash'
 import {
   EditorContext,
   RightPanel as RightPanelEnum,
@@ -57,8 +56,8 @@ function TypebotEditPage() {
         window.parent.postMessage(canGoBack, '*')
       }
     }
-    if (e.data === 'saveClick') {
-      save().then((res) => {
+    if (e.data.name === 'saveClick') {
+      save(e.data.personaName).then((res) => {
         if (res.saved) {
           updatedTypebot.current = false
           setTypebotInitialUpdatedAt(res.updatedAt)

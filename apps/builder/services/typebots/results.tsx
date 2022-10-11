@@ -1,12 +1,13 @@
 import { ResultWithAnswers, VariableWithValue, ResultHeaderCell } from 'models'
 import useSWRInfinite from 'swr/infinite'
 import { stringify } from 'qs'
-import { Answer } from 'db'
+import { Answer } from 'model'
 import { isDefined, sendRequest } from 'utils'
 import { fetcher } from 'services/utils'
 import { HStack, Text } from '@chakra-ui/react'
 import { CodeIcon, CalendarIcon } from 'assets/icons'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
+import { config } from 'config/octadesk.config'
 
 const paginationLimit = 50
 
@@ -18,8 +19,8 @@ const getKey = (
   }
 ) => {
   if (previousPageData && previousPageData.results.length === 0) return null
-  if (pageIndex === 0) return `/api/typebots/${typebotId}/results?limit=50`
-  return `/api/typebots/${typebotId}/results?lastResultId=${
+  if (pageIndex === 0) return `${config.basePath || ''}/api/typebots/${typebotId}/results?limit=50`
+  return `${config.basePath || ''}/api/typebots/${typebotId}/results?lastResultId=${
     previousPageData.results[previousPageData.results.length - 1].id
   }&limit=${paginationLimit}`
 }
@@ -69,14 +70,14 @@ export const deleteResults = async (typebotId: string, ids: string[]) => {
     { indices: false }
   )
   return sendRequest({
-    url: `/api/typebots/${typebotId}/results?${params}`,
+    url: `${config.basePath || ''}/api/typebots/${typebotId}/results?${params}`,
     method: 'DELETE',
   })
 }
 
 export const deleteAllResults = async (typebotId: string) =>
   sendRequest({
-    url: `/api/typebots/${typebotId}/results`,
+    url: `${config.basePath || ''}/api/typebots/${typebotId}/results`,
     method: 'DELETE',
   })
 
@@ -87,7 +88,7 @@ export const getAllResults = async (typebotId: string) => {
   do {
     const query = stringify({ limit: 200, lastResultId })
     const { data } = await sendRequest<{ results: ResultWithAnswers[] }>({
-      url: `/api/typebots/${typebotId}/results?${query}`,
+      url: `${config.basePath || ''}/api/typebots/${typebotId}/results?${query}`,
       method: 'GET',
     })
     results.push(...(data?.results ?? []))

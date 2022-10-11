@@ -21,8 +21,9 @@ import { Typebot } from 'models'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
 import { useDebounce } from 'use-debounce'
 import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { config } from 'config/octadesk.config'
 
 type ChatbotCardProps = {
   typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
@@ -56,8 +57,8 @@ export const TypebotButton = ({
     if (draggedTypebotDebounced) return
     router.push(
       isMobile
-        ? `/typebots/${typebot.id}/results`
-        : `/typebots/${typebot.id}/edit`
+        ? `${config.basePath || ''}/typebots/${typebot.id}/results`
+        : `${config.basePath || ''}/typebots/${typebot.id}/edit`
     )
   }
 
@@ -86,7 +87,7 @@ export const TypebotButton = ({
         title: "Couldn't duplicate typebot",
         description: error.message,
       })
-    if (createdTypebot) router.push(`/typebots/${createdTypebot?.id}/edit`)
+    if (createdTypebot) router.push(`${config.basePath || ''}/typebots/${createdTypebot?.id}/edit`)
   }
 
   const handleDeleteClick = (e: React.MouseEvent) => {

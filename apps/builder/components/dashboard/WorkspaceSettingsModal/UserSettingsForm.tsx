@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { MouseIcon, LaptopIcon } from 'assets/icons'
 import { useUser } from 'contexts/UserContext'
-import { GraphNavigation } from 'db'
+import { GraphNavigation } from 'model'
 import React, { useEffect, useState } from 'react'
 
 export const EditorSettings = () => {

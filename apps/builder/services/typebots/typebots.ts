@@ -67,8 +67,11 @@ import { isChoiceInput, isConditionStep, sendRequest, isOctaBubbleStep } from 'u
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
+import { headers, services, subDomain } from '@octadesk-tech/services'
+import { config } from 'config/octadesk.config'
+import { sendOctaRequest } from 'util/octaRequest'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -86,6 +89,7 @@ export const useTypebots = ({
   onError: (error: Error) => void
 }) => {
   const params = stringify({ folderId, allFolders, workspaceId })
+  
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
@@ -222,11 +226,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-        userPlan === Plan.FREE
+          userPlan === Plan.FREE
           ? {
-              ...typebot.settings,
-              general: { ...typebot.settings.general, isBrandingEnabled: true },
-            }
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -241,30 +245,37 @@ const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
   return idsMapping
 }
 
-export const getTypebot = (typebotId: string) =>
-  sendRequest<{ typebot: Typebot }>({
-    url: `/api/typebots/${typebotId}`,
-    method: 'GET',
+export const getTypebot = async (typebotId: string) => {
+  const { data } = useSWR<
+    { typebot: Typebot },
+    Error
+  >(`/api/typebots/${typebotId}`, fetcher, {
+    dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+      ? 0
+      : undefined,
   })
 
+  return data
+}
+
 export const deleteTypebot = async (id: string) =>
-  sendRequest({
-    url: `/api/typebots/${id}`,
+  sendOctaRequest({
+    url: ``,
     method: 'DELETE',
   })
 
 export const updateTypebot = async (id: string, typebot: Typebot) =>
-  sendRequest({
-    url: `/api/typebots/${id}`,
+  sendOctaRequest({
+    url: `${id}`,
     method: 'PUT',
-    body: typebot,
+    body: { bot: typebot },
   })
 
 export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
-  sendRequest({
-    url: `/api/typebots/${id}`,
+  sendOctaRequest({
+    url: `${id}`,
     method: 'PATCH',
-    body: typebot,
+    body: { bot: typebot },
   })
 
 export const parseNewStep = (
@@ -282,8 +293,8 @@ export const parseNewStep = (
     options: isOctaStepType(type)
       ? parseOctaStepOptions(type)
       : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined,
+        ? parseDefaultStepOptions(type)
+        : undefined,
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
@@ -323,14 +334,16 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleS
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions => {
+const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
+    default:
+      return null
   }
 }
 
-const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
+const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null => {
   switch (type) {
     case InputStepType.TEXT:
       return defaultTextInputOptions
@@ -369,6 +382,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions => {
       return defaultWebhookOptions
     // case IntegrationStepType.EMAIL:
     //   return defaultSendEmailOptions
+    default:
+      return null
   }
 }
 
@@ -432,6 +447,11 @@ export const parseNewTypebot = ({
   | 'publicId'
   | 'customDomain'
   | 'icon'
+  | 'createdBy'
+  | 'deletedAt'
+  | 'deletedBy'
+  | 'createdAt'
+  | 'updatedBy'
 > => {
   const startBlockId = cuid()
   const startStepId = cuid()
@@ -447,9 +467,12 @@ export const parseNewTypebot = ({
     graphCoordinates: { x: 0, y: 0 },
     steps: [startStep],
   }
+
+  const currentSubDomain = subDomain.getSubDomain()
+
   return {
     folderId,
-    subDomain: '',
+    subDomain: currentSubDomain || '',
     name,
     workspaceId,
     blocks: [startBlock],

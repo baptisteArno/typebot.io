@@ -7,7 +7,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import React from 'react'
 import { UpgradeModal } from './modals/UpgradeModal'
 import { LimitReached } from './modals/UpgradeModal/UpgradeModal'

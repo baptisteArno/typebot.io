@@ -15,6 +15,7 @@ import React, { useState } from 'react'
 import { createTypebot, importTypebot } from 'services/typebots'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { TemplatesModal } from './TemplatesModal'
+import { config } from 'config/octadesk.config'
 
 export const CreateNewTypebotButtons = () => {
   const { workspace } = useWorkspace()
@@ -57,7 +58,7 @@ export const CreateNewTypebotButtons = () => {
     if (error) toast({ description: error.message })
     if (data)
       router.push({
-        pathname: `/typebots/${data.id}/edit`,
+        pathname: `${config.basePath || ''}/typebots/${data.id}/edit`,
         query:
           router.query.isFirstBot === 'true'
             ? {

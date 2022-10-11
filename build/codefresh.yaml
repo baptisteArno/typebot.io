@@ -1,0 +1,202 @@
+version: '1.0'
+
+stages:
+  - prepare
+  - build
+  - integrate
+
+steps:
+  prepare:
+    stage: prepare
+    title: 'Prepare'
+    type: freestyle
+    working_directory: '/'
+    arguments:
+      image: 'bash:latest'
+      environment:
+        - GIT_TOKEN=${{GIT_NPM_TOKEN}}
+      commands:
+        - |
+          set -x
+          
+          cf_export SKIP_DEPLOY='"false"'
+
+          cf_export GIT_TOKEN=$GIT_TOKEN
+          echo "${{CF_BRANCH}}"
+          
+          if [[ $CF_BRANCH =~ "${{RELEASE_REGEX}}" ]];
+          then
+            echo 'Release revision'
+            cf_export ENVIRONMENT=${{RELEASE_ENVIRONMENT}}
+            cf_export VERSION=${{RELEASE_FLAG}}
+            cf_export TAG="${{CF_BRANCH}}"
+            cf_export REVISION="${{CF_BRANCH}}"
+            return 0
+          fi
+        
+          if [[ $CF_BRANCH =~ "${{CANDIDATE_REGEX}}" ]];
+          then
+            echo 'Candidate revision'
+            cf_export ENVIRONMENT=${{CANDIDATE_ENVIRONMENT}}
+            cf_export VERSION=${{CANDIDATE_FLAG}}
+            cf_export TAG="${{CF_BRANCH}}"
+            cf_export REVISION="${{CF_BRANCH}}"
+            return 0
+          fi
+
+          if [[ $CF_BRANCH =~ "${{STAGING_REGEX}}" ]];
+          then
+            echo 'Staging revision'
+            cf_export ENVIRONMENT=${STAGING_ENVIRONMENT}
+            cf_export VERSION=${{STAGING_FLAG}}
+            cf_export TAG="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
+            cf_export REVISION="${{CF_REVISION}}"
+            return 0
+          fi
+
+          if [[ $CF_BRANCH =~ "${{DEVELOPMENT_REGEX}}" ]];
+          then
+            echo 'Development revision'
+            cf_export ENVIRONMENT=${DEVELOPMENT_ENVIRONMENT}
+            cf_export VERSION=${{DEVELOPMENT_FLAG}}
+            cf_export TAG="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
+            cf_export REVISION="${{CF_REVISION}}"
+            return 0
+          fi
+
+          echo "Invalid RELEASE_TAG ${{CF_BRANCH}}"
+
+          cf_export SKIP_DEPLOY='"true"'
+  main_clone:
+    stage: prepare
+    title: 'Clone main repository'
+    type: git-clone
+    arguments:
+      repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
+      revision: '${{REVISION}}'
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+
+  build_docker:
+    stage: build
+    title: 'Build Docker image'
+    type: build
+    working_directory: '${{main_clone}}'
+    image_name: '${{CF_REPO_NAME}}'
+    tag: '${{TAG}}'
+    dockerfile: build/Dockerfile
+    registry: gcr-octadesk
+    build_arguments:
+      - GIT_TOKEN=${{GIT_NPM_TOKEN}}
+      - GIT_NPM_TOKEN=${{GIT_NPM_TOKEN}}
+      - GITHUB_PACKAGES_TOKEN=${{GITHUB_PACKAGES_TOKEN}}
+      - SCOPE=${{SCOPE}}
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+
+  push_docker:
+    stage: build
+    title: 'Push Docker Image'
+    type: push
+    candidate: '${{build_docker}}'
+    tag: '${{TAG}}'
+    registry: gcr-octadesk
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+
+  #pending_approval:
+  #  stage: integrate
+  #  type: pending-approval
+  #  title: 'Wait for approval'
+  #  timeout:
+  #    duration: 1
+  #    finalState: denied
+  #  when:
+  #    condition:
+  #      all:
+  #        production: "'${{PRODUCTION_RELEASE}}' == 'true'"
+
+  clone_iac_repository:
+    stage: integrate
+    type: git-clone
+    title: 'Clone IAC repository'
+    arguments:
+      repo: 'https://${{GIT_TOKEN}}@github.com/Octadesk-Tech/${{GIT_IAC_REPOSITORY}}.git'
+      revision: ${{MAIN_BRANCH}}
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+    #when:
+    #  steps:
+    #   - name: pending_approval
+    #      on:
+    #        - approved
+
+  update_tag:
+    stage: integrate
+    title: 'Update image tag'
+    image: mikefarah/yq:3
+    commands:
+      - |
+        set -x
+
+        CHART_ROOT_PATH="$CF_VOLUME_PATH/${{GIT_IAC_REPOSITORY}}/${{BASE_APP_PATH}}"
+
+        if [ -z ${APPLICATION_NAME+x} ]; then
+          echo "APPLICATION_NAME not set, setting with CF_REPO_NAME $CF_REPO_NAME"
+          export APPLICATION_NAME=$CF_REPO_NAME
+        fi
+
+        # for production release, update image.tag in root values.yaml
+        if [[ "${VERSION}" == "${{RELEASE_FLAG}}" ]]; then
+          yq w -i "${CHART_ROOT_PATH}/values/${APPLICATION_NAME}-${{SCOPE}}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
+        else
+          cd "${CF_VOLUME_PATH}/${{GIT_IAC_REPOSITORY}}/environments/${ENVIRONMENT}/values"
+
+          # otherwise, update image.tag in environment's specific values file
+          yq w -i "${APPLICATION_NAME}-${{SCOPE}}.yaml" ${{YQ_IMAGE_TAG_FORMAT}} ${TAG}
+        fi
+
+        yq w -i "${CHART_ROOT_PATH}/${{VERSIONS_PATH}}" "${APPLICATION_NAME}-${{SCOPE}}.${VERSION}" "${TAG}"
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+    #when:
+    #  steps:
+    #    - name: pending_approval
+    #      on:
+    #        - approved
+
+  push_updated_tag:
+    stage: integrate
+    title: 'Push updated tag'
+    type: freestyle
+    image: alpine/git
+    working_directory: '${{CF_VOLUME_PATH}}/${{GIT_IAC_REPOSITORY}}/'
+    commands:
+      - git checkout ${{MAIN_BRANCH}}
+      - git branch --set-upstream-to=origin/${{MAIN_BRANCH}} ${{MAIN_BRANCH}}
+      - git config user.email "${{GIT_CONFIG_EMAIL}}"
+      - git config user.name "${{GIT_CONFIG_USERNAME}}"
+      - git pull
+      - 'git add .'
+      - git commit -m "Set ${VERSION} image tag ${TAG} for ${{CF_REPO_NAME}} chart"
+      - git push
+    fail_fast: false
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+    #when:
+    #  steps:
+    #    - name: pending_approval
+    #      on:
+    #        - approved

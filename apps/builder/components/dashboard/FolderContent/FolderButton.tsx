@@ -1,4 +1,3 @@
-import { DashboardFolder } from 'db'
 import {
   Button,
   Editable,
@@ -20,9 +19,11 @@ import {
 import { FolderIcon, MoreVerticalIcon } from 'assets/icons'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import { DashboardFolder } from 'model'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { deleteFolder, updateFolder } from 'services/folders'
+import { config } from 'config/octadesk.config'
 
 export const FolderButton = ({
   folder,
@@ -65,7 +66,7 @@ export const FolderButton = ({
   }
 
   const handleClick = () => {
-    router.push(`/typebots/folders/${folder.id}`)
+    router.push(`${config.basePath || ''}/typebots/folders/${folder.id}`)
   }
 
   const handleMouseEnter = () => setMouseOverFolderId(folder.id)

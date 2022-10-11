@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { CollaborationType } from 'db'
+import { CollaborationType } from 'model'
 //import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from 'services/api/dbRules'
@@ -9,24 +9,24 @@ import { services } from '@octadesk-tech/services'
 import { headers } from '@octadesk-tech/services'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
 
-  const typebotId = req.query.typebotId.toString()
+  const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
-    const client = await services.chatBots.getClient()
+    // const client = await services.chatBots.getClient()
     
-    const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
-    const typebot = response.data
-    if (!typebot) return res.send({ typebot: null })
+    // const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
+    // const typebot = response.data
+    // if (!typebot) return res.send({ typebot: null })
     
-    const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
-    return res.send({
-      typebot: restOfTypebot,
-      publishedTypebot,
-      isReadOnly: false,
-      webhooks,
-    })
+    // const { publishedTypebot, webhooks, ...restOfTypebot } = typebot
+    // return res.send({
+    //   typebot: restOfTypebot,
+    //   publishedTypebot,
+    //   isReadOnly: false,
+    //   webhooks,
+    // })
   }
 
   if (req.method === 'DELETE') {

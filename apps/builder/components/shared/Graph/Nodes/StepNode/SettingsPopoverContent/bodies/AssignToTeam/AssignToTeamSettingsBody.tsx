@@ -4,7 +4,7 @@ import {
   AssignToTeamOptions,
   TextBubbleContent
 } from 'models'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { AutoAssignToSelect } from './AutoAssignToSelect'
 import { TextBubbleEditor } from '../../../TextBubbleEditor'
 
@@ -15,10 +15,9 @@ type AssignToTeamSettingsBodyProps = {
 
 export const AssignToTeamSettingsBody = ({
   options,
-  onOptionsChange,
+  onOptionsChange
 }: AssignToTeamSettingsBodyProps) => {
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorBotMessage')
     onOptionsChange({
       ...options,
       messages: {
@@ -30,7 +29,6 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleCloseEditorConnectionMessage = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorConnectionMessage')
     onOptionsChange({
       ...options,
       messages: {
@@ -42,7 +40,6 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleCloseEditorUnavailability = (content: TextBubbleContent) => {
-    console.log('handleCloseEditorUnavailability')
     onOptionsChange({
       ...options,
       messages: {
@@ -53,26 +50,21 @@ export const AssignToTeamSettingsBody = ({
       },
     })
   }
-  const handleDefaultAssignToChange = (assignTo: string) =>
-    onOptionsChange({ ...options, assignTo })
+  const handleDefaultAssignToChange = (e: any) => {
+    const option = e && JSON.parse(e.value)
+        
+    onOptionsChange({
+      ...options,
+      assignTo: option.assignTo,
+      assignType: option.assignType
+    })
+  }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
   const handleRedirectWhenNoneAvailable = (shouldRedirectNoneAvailable: boolean) => {
-    console.log(shouldRedirectNoneAvailable)
     onOptionsChange({ ...options, shouldRedirectNoneAvailable })
   }
 
-  // useEffect(() => {
-  //   // Update the document title using the browser API
-  //   document.title = `You clicked times`;
-  // });
-  const [data, setData] = useState('');
-
-  const textBubbleToAssign = (assignData: string): string => {
-    console.log(assignData)
-
-    return assignData
-  }
   return (
     <Stack spacing={4}>
       <Stack>
@@ -92,8 +84,8 @@ export const AssignToTeamSettingsBody = ({
           Atribuir automaticamente para:
         </FormLabel>
         <AutoAssignToSelect
+          selectedUserGroup={options.assignTo}
           onSelect={handleDefaultAssignToChange}
-          teamId={options.assignTo}
         />
       </Stack>
       <Stack>
@@ -102,7 +94,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          onClose={handleCloseEditorBotMessage}
+          onClose={handleCloseEditorConnectionMessage}
           initialValue={options.messages.connectionSuccess?.content ? options.messages.connectionSuccess.content.richText : []}
           onKeyUp={handleCloseEditorConnectionMessage}
         />
@@ -120,7 +112,7 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          onClose={handleCloseEditorBotMessage}
+          onClose={handleCloseEditorUnavailability}
           initialValue={options.messages.noAgentAvailable?.content ? options.messages.noAgentAvailable.content.richText : []}
           onKeyUp={handleCloseEditorUnavailability}
         />

@@ -12,7 +12,7 @@ import { isDefined, isNotDefined } from 'utils'
 import { updateUser as updateUserInDb } from 'services/user/user'
 import { useToast } from '@chakra-ui/react'
 import { dequal } from 'dequal'
-import { User } from 'db'
+import { User } from 'model'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 
@@ -23,8 +23,8 @@ const userContext = createContext<{
     //   hasUnsavedChanges: boolean
     //   isOAuthProvider: boolean
     //   currentWorkspaceId?: string
-    //   updateUser: (newUser: Partial<User>) => void
-    //   saveUser: (newUser?: Partial<User>) => Promise<void>
+    updateUser: (newUser: Partial<User>) => void
+    saveUser: (newUser?: Partial<User>) => Promise<void>
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
 }>({})
@@ -81,20 +81,20 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
 
     //const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
 
-    // const updateUser = (newUser: Partial<User>) => {
-    //     if (isNotDefined(user)) return
-    //     setUser({ ...user, ...newUser })
-    // }
+    const updateUser = (newUser: Partial<User>) => {
+        if (isNotDefined(user)) return
+        setUser({ ...user, ...newUser })
+    }
 
-    // const saveUser = async (newUser?: Partial<User>) => {
-    //     if (isNotDefined(user)) return
-    //     //setIsSaving(true)
-    //     if (newUser) updateUser(newUser)
-    //     //const { error } = await updateUserInDb(user.id, { ...user, ...newUser })
-    //     //if (error) toast({ title: error.name, description: error.message })
-    //     //await refreshUser()
-    //     //setIsSaving(false)
-    // }
+    const saveUser = async (newUser?: Partial<User>) => {
+        if (isNotDefined(user)) return
+        //setIsSaving(true)
+        if (newUser) updateUser(newUser)
+        //const { error } = await updateUserInDb(user.id, { ...user, ...newUser })
+        //if (error) toast({ title: error.name, description: error.message })
+        //await refreshUser()
+        //setIsSaving(false)
+    }
 
     return (
         <userContext.Provider
@@ -105,8 +105,8 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
                 // hasUnsavedChanges,
                 // isOAuthProvider,
                 // currentWorkspaceId,
-                // updateUser,
-                // saveUser,
+                updateUser,
+                saveUser,
             }}
         >
             {children}

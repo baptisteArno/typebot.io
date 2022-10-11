@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react'
 import { byId } from 'utils'
-import { MemberInWorkspace, Plan, Workspace, WorkspaceRole } from 'db'
+import { MemberInWorkspace, Plan, Workspace, WorkspaceRole } from 'model'
 import {
   createNewWorkspace,
   useWorkspaces,

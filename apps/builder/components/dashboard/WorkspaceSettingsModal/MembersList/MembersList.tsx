@@ -2,7 +2,7 @@ import { HStack, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react'
 import { UnlockPlanInfo } from 'components/shared/Info'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
-import { Plan, WorkspaceInvitation, WorkspaceRole } from 'db'
+import { Plan, WorkspaceInvitation, WorkspaceRole } from 'model'
 import React from 'react'
 import {
   deleteInvitation,

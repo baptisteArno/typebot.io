@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { pay } from 'services/stripe'
 import { useUser } from 'contexts/UserContext'
-import { Plan } from 'db'
+import { Plan } from 'model'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { TypebotLogo } from 'assets/logos'
 import { CheckIcon } from 'assets/icons'

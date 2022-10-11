@@ -8,6 +8,27 @@ const moduleExports = {
   },
   i18n,
   optimizeFonts: false,
+  assetPrefix: process.env.BASE_PATH,
+  rewrites() {
+    return {
+      beforeFiles: [
+        { source: `${process.env.BASE_PATH || ''}/_next/:path*`, destination: '/_next/:path*' },
+        { source: `${process.env.BASE_PATH || ''}/typebots/:path*`, destination: '/typebots/:path*' },
+      ],
+      fallback: [
+        {
+          source: '/api/:path*',
+          destination: `${process.env.BASE_PATH || ''}/api/:path*`,
+        },
+      ],
+    }
+  },
+  typescript: {
+    ignoreBuildErrors: true
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 }
 
 const sentryWebpackPluginOptions = {

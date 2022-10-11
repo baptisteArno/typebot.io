@@ -1,4 +1,4 @@
-import { CustomDomain } from 'db'
+import { CustomDomain } from 'model'
 import { Credentials } from 'models'
 import { stringify } from 'qs'
 import useSWR from 'swr'

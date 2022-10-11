@@ -43,7 +43,12 @@ import { dequal } from 'dequal'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
+import { subDomain } from '@octadesk-tech/services'
+import { config } from 'config/octadesk.config'
 
+import Agents from 'services/octadesk/agents/agents'
+import Groups from 'services/octadesk/groups/groups'
+import { ASSIGN_TO } from 'enums/assign-to'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -54,6 +59,11 @@ type UpdateTypebotPayload = Partial<{
   publishedTypebotId: string
   icon: string
 }>
+
+type SaveResponse = {
+  saved: boolean,
+  updatedAt: Date
+}
 
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)
@@ -68,7 +78,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: () => Promise<boolean>
+    save: (personaName?: string) => Promise<SaveResponse>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -85,13 +95,12 @@ const typebotContext = createContext<
     }) => void
     publishTypebot: () => void
     restorePublishedTypebot: () => void
+    octaAgents: Array<any>
   } & BlocksActions &
-    StepsActions &
-    ItemsActions &
-    VariablesActions &
-    EdgesActions
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
+  StepsActions &
+  ItemsActions &
+  VariablesActions &
+  EdgesActions
 >({})
 
 export const TypebotContext = ({
@@ -135,7 +144,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-        isDefined(step.options.typebotId)
+          isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []
@@ -167,15 +176,20 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
-  const saveTypebot = async (options?: { disableMutation: boolean }) => {
+  const saveTypebot = async (personaName?: string, options?: { disableMutation: boolean }) => {
+    const currentSubDomain = subDomain.getSubDomain()
+
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),
-      subDomain: 'chatoctaqa',
+      subDomain: currentSubDomain || '',
+      persona: {
+        name: personaName,
+      },
     }
 
     setIsSavingLoading(true)
-    const { error } = await updateTypebot(typebotToSave.id, typebotToSave)
+    const { error } = await updateTypebot(typebotToSave?.id || '', typebotToSave as Typebot)
     setIsSavingLoading(false)
     if (error) {
       toast({ title: error.name, description: error.message })
@@ -218,7 +232,7 @@ export const TypebotContext = ({
   // )
 
   useEffect(() => {
-    const save = () => saveTypebot({ disableMutation: true })
+    const save = () => saveTypebot(typebot?.persona?.name, { disableMutation: true })
     Router.events.on('routeChangeStart', save)
     return () => {
       Router.events.off('routeChangeStart', save)
@@ -253,7 +267,7 @@ export const TypebotContext = ({
     if (isLoading) return
     if (!typebot) {
       toast({ status: 'info', description: "Couldn't find typebot" })
-      router.replace('/typebots')
+      router.replace(`${config.basePath || ''}/typebots`)
       return
     }
     setLocalTypebot({ ...typebot })
@@ -359,6 +373,78 @@ export const TypebotContext = ({
       })
   }
 
+  const [octaAgents, setOctaAgents] = useState<Array<any>>([])
+  useEffect(() => {
+    const fetchOctaAgents = async (): Promise<void> => {
+      const noOne = {
+        group: 'Não atribuir (Visível a todos)',
+        name: 'Não atribuir (Visível a todos)',
+        optionType: ASSIGN_TO.noOne,
+      }
+      const agentsGroupsList: Array<any> = [noOne]
+
+      await Promise.all([
+        Agents()
+          .getAgents()
+          .then((res) => {
+            let agentsList = res
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((agent: any) => ({
+                ...agent,
+                operationType: ASSIGN_TO.agent,
+              }))
+
+            agentsList = [
+              {
+                name: 'Atribuir a conversa para um usuário',
+                disabled: true,
+                id: 'agent',
+                isTitle: true,
+              },
+              ...agentsList,
+            ]
+
+            agentsGroupsList.push(...agentsList)
+          }),
+
+        Groups()
+          .getGroups()
+          .then((res) => {
+            let groupsList: Array<any> = []
+            const groups = res
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((group: any) => ({
+                ...group,
+                operationType: ASSIGN_TO.group,
+              }))
+
+            groupsList = [
+              {
+                name: 'Atribuir a conversa para um grupo',
+                id: 'group',
+                disabled: true,
+                isTitle: true,
+              },
+              ...groups,
+            ]
+
+            agentsGroupsList.push(...groupsList)
+          }),
+      ])
+
+
+      setOctaAgents(agentsGroupsList)
+    }
+
+    fetchOctaAgents()
+
+    return () => {
+      setOctaAgents(() => [])
+    }
+  }, [])
+
+  const [botName, setBotName] = useState<string>('')
+
   return (
     <typebotContext.Provider
       value={{
@@ -385,6 +471,7 @@ export const TypebotContext = ({
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
+        octaAgents
       }}
     >
       {children}
@@ -409,7 +496,7 @@ export const useFetchedTypebot = ({
       isReadOnly?: boolean
     },
     Error
-  >(`/api/typebots/${typebotId}`, fetcher, {
+  >(`/getTypebot-${typebotId}`, fetcher, {
     dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
   })
   if (error) onError(error)
@@ -443,7 +530,7 @@ const useLinkedTypebots = ({
   >(
     typebotIds?.every((id) => typebotId === id)
       ? undefined
-      : `/api/typebots?${params}`,
+      : `${config.basePath || ''}/api/typebots?${params}`,
     fetcher
   )
   if (error) onError(error)

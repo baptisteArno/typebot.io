@@ -11,7 +11,7 @@ import Stripe from 'stripe'
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'
 import { PaymentInputOptions, StripeCredentialsData, Variable } from 'models'
-import prisma from 'libs/prisma'
+//import prisma from 'libs/prisma'
 import { parseVariables } from 'bot-engine'
 
 const cors = initMiddleware(Cors())
@@ -87,11 +87,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const getStripeInfo = async (
   credentialsId: string
 ): Promise<StripeCredentialsData | undefined> => {
-  const credentials = await prisma.credentials.findUnique({
-    where: { id: credentialsId },
-  })
-  if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as StripeCredentialsData
+  // const credentials = await prisma.credentials.findUnique({
+  //   where: { id: credentialsId },
+  // })
+  // if (!credentials) return
+  // return decrypt(credentials.data, credentials.iv) as StripeCredentialsData
+  return
 }
 
 export default withSentry(handler)

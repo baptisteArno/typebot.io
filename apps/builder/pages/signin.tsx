@@ -1,5 +1,5 @@
 import { AuthSwitcher } from 'components/auth/AuthSwitcher'
-import { SignInForm } from 'components/auth/SignInForm'
+// import { SignInForm } from 'components/auth/SignInForm'
 import { Heading, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Seo } from 'components/Seo'
@@ -24,7 +24,7 @@ const SignInPage = () => {
         Sign in
       </Heading>
       <AuthSwitcher type="signin" />
-      <SignInForm />
+      {/* <SignInForm /> */}
     </VStack>
   )
 }

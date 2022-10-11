@@ -7,7 +7,7 @@ import { setUser, withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
 
   setUser({ email: user.email ?? undefined, id: user.id })

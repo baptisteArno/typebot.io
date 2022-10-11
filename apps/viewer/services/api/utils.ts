@@ -1,5 +1,4 @@
 import { User } from 'db'
-import prisma from 'libs/prisma'
 import { LogicStepType, Typebot, TypebotLinkStep, PublicTypebot } from 'models'
 import { NextApiRequest } from 'next'
 import { isDefined } from 'utils'
@@ -13,7 +12,8 @@ const authenticateByToken = async (
   apiToken?: string
 ): Promise<User | undefined> => {
   if (!apiToken) return
-  return (await prisma.user.findFirst({ where: { apiToken } })) as User
+  return 
+  //(await prisma.user.findFirst({ where: { apiToken } })) as User
 }
 
 const extractBearerToken = (req: NextApiRequest) =>
@@ -38,14 +38,15 @@ const saveLog = (
   details?: any
 ) => {
   if (!resultId || resultId === 'undefined') return
-  return prisma.log.create({
-    data: {
-      resultId,
-      status,
-      description: message,
-      details: formatDetails(details),
-    },
-  })
+  return 
+  // prisma.log.create({
+  //   data: {
+  //     resultId,
+  //     status,
+  //     description: message,
+  //     details: formatDetails(details),
+  //   },
+  // })
 }
 
 const formatDetails = (details: any) => {
@@ -70,19 +71,20 @@ export const getLinkedTypebots = async (
       ) as TypebotLinkStep[]
   ).map((s) => s.options.typebotId as string)
   if (linkedTypebotIds.length === 0) return []
-  const typebots = (await ('typebotId' in typebot
-    ? prisma.publicTypebot.findMany({
-        where: { id: { in: linkedTypebotIds } },
-      })
-    : prisma.typebot.findMany({
-        where: user
-          ? {
-              AND: [
-                { id: { in: linkedTypebotIds } },
-                canReadTypebots(linkedTypebotIds, user as User),
-              ],
-            }
-          : { id: { in: linkedTypebotIds } },
-      }))) as unknown as (Typebot | PublicTypebot)[]
-  return typebots
+  //const typebots = 
+  // (await ('typebotId' in typebot
+  //   ? prisma.publicTypebot.findMany({
+  //       where: { id: { in: linkedTypebotIds } },
+  //     })
+  //   : prisma.typebot.findMany({
+  //       where: user
+  //         ? {
+  //             AND: [
+  //               { id: { in: linkedTypebotIds } },
+  //               canReadTypebots(linkedTypebotIds, user as User),
+  //             ],
+  //           }
+  //         : { id: { in: linkedTypebotIds } },
+  //     }))) as unknown as (Typebot | PublicTypebot)[]
+  return []
 }

@@ -1,3 +1,5 @@
+import { config } from 'config/octadesk.config'
+
 function RedirectPage() {
   return
 }
@@ -5,7 +7,7 @@ function RedirectPage() {
 export const getServerSideProps = async (
 ) => {
   return { 
-    redirect: { permanent: false, destination: '/typebots/' }
+    redirect: { permanent: false, destination: `${config.basePath || ''}/typebots/` }
   }
 }
 

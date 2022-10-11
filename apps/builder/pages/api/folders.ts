@@ -1,12 +1,10 @@
 import { withSentry } from '@sentry/nextjs'
-import { DashboardFolder } from 'db'
-import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils'
+import { methodNotAllowed, notAuthenticated } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser()
   if (!user) return notAuthenticated(res)
 
   // const parentFolderId = req.query.parentId

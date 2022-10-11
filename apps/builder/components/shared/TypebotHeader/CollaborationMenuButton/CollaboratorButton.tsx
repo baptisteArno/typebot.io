@@ -9,7 +9,7 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react'
-import { CollaborationType } from 'db'
+import { CollaborationType } from 'model'
 import React from 'react'
 import { convertCollaborationTypeEnumToReadable } from './CollaborationList'
 

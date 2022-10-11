@@ -70,7 +70,7 @@ export const TableList = <T,>({
             pos="relative"
             onMouseEnter={handleMouseEnter(itemIndex)}
             onMouseLeave={handleMouseLeave}
-            mt={itemIndex !== 0 && ComponentBetweenItems ? 4 : 0}
+            // mt={itemIndex !== 0 && ComponentBetweenItems() ? 4 : 0}
           >
             <Item
               item={item}

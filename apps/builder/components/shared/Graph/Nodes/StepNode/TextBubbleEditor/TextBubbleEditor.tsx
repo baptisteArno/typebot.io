@@ -1,5 +1,5 @@
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
@@ -54,7 +54,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
     handler: closeEditor,
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isVariableDropdownOpen) return
     const el = varDropdownRef.current
     if (!el) return
@@ -68,6 +68,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
     const selection = window.getSelection()
     const relativeParent = textEditorRef.current
     if (!selection || !relativeParent) return { top: 0, left: 0 }
+    console.log(selection);
     const range = selection.getRangeAt(0)
     const selectionBoundingRect = range.getBoundingClientRect()
     const relativeRect = relativeParent.getBoundingClientRect()
