@@ -97,10 +97,16 @@ export const getAllResults = async (workspaceId: string, typebotId: string) => {
   let lastResultId: string | undefined = undefined
   do {
     const query = stringify({ limit: 200, lastResultId, workspaceId })
-    const { data } = await sendRequest<{ results: ResultWithAnswers[] }>({
-      url: `/api/typebots/${typebotId}/results?${query}`,
-      method: 'GET',
-    })
+    const { data, error } = await sendRequest<{ results: ResultWithAnswers[] }>(
+      {
+        url: `/api/typebots/${typebotId}/results?${query}`,
+        method: 'GET',
+      }
+    )
+    if (error) {
+      console.error(error)
+      break
+    }
     results.push(...(data?.results ?? []))
     lastResultId = results[results.length - 1]?.id as string | undefined
     if (data?.results.length === 0) hasMore = false

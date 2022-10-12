@@ -17,7 +17,7 @@ export const badRequest = (res: NextApiResponse, customMessage?: any) =>
   res.status(400).json({ message: customMessage ?? 'Bad Request' })
 
 export const forbidden = (res: NextApiResponse, customMessage?: string) =>
-  res.status(403).json({ message: customMessage ?? 'Bad Request' })
+  res.status(403).json({ message: customMessage ?? 'Forbidden' })
 
 export const initMiddleware =
   (

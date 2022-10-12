@@ -16,7 +16,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const workspaceId = req.query.workspaceId as string | undefined
   if (!workspaceId) return badRequest(res, 'workspaceId is required')
   const workspace = await prisma.workspace.findFirst({
-    where: { id: workspaceId, members: { some: { userId: user.id } } },
+    where:
+      user.email === process.env.ADMIN_EMAIL
+        ? undefined
+        : { id: workspaceId, members: { some: { userId: user.id } } },
     select: { plan: true },
   })
   if (!workspace) return forbidden(res)

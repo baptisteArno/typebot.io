@@ -159,7 +159,7 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
-  const saveTypebot = async (options?: { disableMutation: boolean }) => {
+  const saveTypebot = async () => {
     if (!currentTypebotRef.current || !typebot) return
     const typebotToSave = { ...currentTypebotRef.current }
     if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
@@ -171,12 +171,11 @@ export const TypebotContext = ({
       showToast({ title: error.name, description: error.message })
       return
     }
-    if (!options?.disableMutation)
-      mutate({
-        typebot: typebotToSave,
-        publishedTypebot,
-        webhooks: webhooks ?? [],
-      })
+    mutate({
+      typebot: typebotToSave,
+      publishedTypebot,
+      webhooks: webhooks ?? [],
+    })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
   }
 
@@ -208,10 +207,9 @@ export const TypebotContext = ({
   )
 
   useEffect(() => {
-    const save = () => saveTypebot({ disableMutation: true })
-    Router.events.on('routeChangeStart', save)
+    Router.events.on('routeChangeStart', saveTypebot)
     return () => {
-      Router.events.off('routeChangeStart', save)
+      Router.events.off('routeChangeStart', saveTypebot)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot, publishedTypebot, webhooks])
