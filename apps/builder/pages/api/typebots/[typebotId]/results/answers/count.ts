@@ -19,11 +19,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const answersCounts: { groupId: string; totalAnswers: number }[] =
       await Promise.all(
         (typebot.publishedTypebot as unknown as PublicTypebot).groups.map(
-          async (block) => {
+          async (group) => {
             const totalAnswers = await prisma.answer.count({
-              where: { groupId: block.id },
+              where: { groupId: group.id },
             })
-            return { groupId: block.id, totalAnswers }
+            return { groupId: group.id, totalAnswers }
           }
         )
       )

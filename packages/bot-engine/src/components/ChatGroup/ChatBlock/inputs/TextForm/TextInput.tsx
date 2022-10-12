@@ -8,6 +8,7 @@ import {
 } from 'models'
 import React, { ChangeEvent, ChangeEventHandler } from 'react'
 import PhoneInput, { Value, Country } from 'react-phone-number-input'
+import { isMobile } from 'services/utils'
 
 type TextInputProps = {
   inputRef: React.RefObject<any>
@@ -112,7 +113,7 @@ export const TextInput = ({
             block.options.labels.placeholder ?? 'Your phone number...'
           }
           defaultCountry={block.options.defaultCountryCode as Country}
-          autoFocus
+          autoFocus={!isMobile}
         />
       )
     }
@@ -129,7 +130,7 @@ const ShortTextInput = React.forwardRef(
       className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       type="text"
       style={{ fontSize: '16px' }}
-      autoFocus
+      autoFocus={!isMobile}
       {...props}
     />
   )
@@ -151,7 +152,7 @@ const LongTextInput = React.forwardRef(
       data-testid="textarea"
       required
       style={{ fontSize: '16px' }}
-      autoFocus
+      autoFocus={!isMobile}
       {...props}
     />
   )
