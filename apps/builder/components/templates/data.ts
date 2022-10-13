@@ -18,8 +18,7 @@ export const templates: TemplateProps[] = [
   {
     name: 'FAQ',
     emoji: '💬',
-    fileName: 'customer-support.json',
-    isComingSoon: true,
+    fileName: 'faq.json',
   },
   {
     name: 'Conversational Resume',

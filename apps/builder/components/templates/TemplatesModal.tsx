@@ -15,7 +15,7 @@ import { ExternalLinkIcon } from 'assets/icons'
 import { TypebotViewer } from 'bot-engine'
 import { useToast } from 'components/shared/hooks/useToast'
 import { Typebot } from 'models'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import { getViewerUrl, sendRequest } from 'utils'
 import { TemplateProps, templates } from './data'
@@ -35,18 +35,22 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
 
   const { showToast } = useToast()
 
+  const fetchTemplate = useCallback(
+    async (template: TemplateProps) => {
+      setSelectedTemplate(template)
+      const { data, error } = await sendRequest(
+        `/templates/${template.fileName}`
+      )
+      if (error)
+        return showToast({ title: error.name, description: error.message })
+      setTypebot(data as Typebot)
+    },
+    [showToast]
+  )
+
   useEffect(() => {
     fetchTemplate(templates[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const fetchTemplate = async (template: TemplateProps) => {
-    setSelectedTemplate(template)
-    const { data, error } = await sendRequest(`/templates/${template.fileName}`)
-    if (error)
-      return showToast({ title: error.name, description: error.message })
-    setTypebot(data as Typebot)
-  }
+  }, [fetchTemplate])
 
   const onUseThisTemplateClick = () => {
     if (!typebot) return
