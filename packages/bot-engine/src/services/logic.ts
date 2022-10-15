@@ -16,7 +16,7 @@ import {
   PublicTypebot,
   Typebot,
   Edge,
-  VariableWithValue,
+  VariableWithUnknowValue,
 } from 'models'
 import { byId, isDefined, isNotDefined, sendRequest } from 'utils'
 import { sanitizeUrl } from './utils'
@@ -35,8 +35,8 @@ type LogicContext = {
     typebotId: string
   }) => void
   setCurrentTypebotId: (id: string) => void
-  updateVariableValue: (variableId: string, value: string) => void
-  updateVariables: (variables: VariableWithValue[]) => void
+  updateVariableValue: (variableId: string, value: unknown) => void
+  updateVariables: (variables: VariableWithUnknowValue[]) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   createEdge: (edge: Edge) => void
@@ -97,10 +97,8 @@ const executeComparison =
     if (!comparison?.variableId) return false
     const inputValue = (
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
-    )
-      .toString()
-      .trim()
-    const value = parseVariables(variables)(comparison.value).toString().trim()
+    ).trim()
+    const value = parseVariables(variables)(comparison.value).trim()
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {

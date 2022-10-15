@@ -18,6 +18,7 @@ import {
   VariableWithValue,
   MakeComBlock,
   PabblyConnectBlock,
+  VariableWithUnknowValue,
 } from 'models'
 import { stringify } from 'qs'
 import { byId, sendRequest } from 'utils'
@@ -34,8 +35,8 @@ type IntegrationContext = {
   resultValues: ResultValues
   groups: Group[]
   resultId?: string
-  updateVariables: (variables: VariableWithValue[]) => void
-  updateVariableValue: (variableId: string, value: string | number) => void
+  updateVariables: (variables: VariableWithUnknowValue[]) => void
+  updateVariableValue: (variableId: string, value: unknown) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }
 
@@ -252,7 +253,7 @@ const executeWebhook = async (
     details: JSON.stringify(error ?? data, null, 2).substring(0, 1000),
   })
   const newVariables = block.options.responseVariableMapping.reduce<
-    VariableWithValue[]
+    VariableWithUnknowValue[]
   >((newVariables, varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
     const existingVariable = variables.find(byId(varMapping.variableId))
@@ -262,13 +263,8 @@ const executeWebhook = async (
       `return data.${parseVariables(variables)(varMapping?.bodyPath)}`
     )
     try {
-      const value = func(data)
-      updateVariableValue(
-        existingVariable?.id,
-        typeof value !== 'number' && typeof value !== 'string'
-          ? JSON.stringify(value)
-          : value
-      )
+      const value: unknown = func(data)
+      updateVariableValue(existingVariable?.id, value)
       return [...newVariables, { ...existingVariable, value }]
     } catch (err) {
       return newVariables

@@ -23,10 +23,23 @@ export const parseVariables =
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
       if (isNotDefined(value)) return ''
-      if (options.escapeForJson) return jsonParse(value.toString())
-      return value.toString()
+      if (options.escapeForJson) return jsonParse(value)
+      const parsedValue = safeStringify(value)
+      if (!parsedValue) return ''
+      return parsedValue
     })
   }
+
+export const safeStringify = (val: unknown): string | null => {
+  if (isNotDefined(val)) return null
+  if (typeof val === 'string') return val
+  try {
+    return JSON.stringify(val)
+  } catch {
+    console.warn('Failed to safely stringify variable value', val)
+    return null
+  }
+}
 
 const jsonParse = (str: string) =>
   str
@@ -34,19 +47,20 @@ const jsonParse = (str: string) =>
     .replace(/"/g, `\\"`)
     .replace(/\\[^n"]/g, `\\\\ `)
 
-export const evaluateExpression = (variables: Variable[]) => (str: string) => {
-  const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-    str.includes('return ') ? str : `return ${str}`
-  )
-  try {
-    const func = Function(...variables.map((v) => v.id), evaluating)
-    const evaluatedResult = func(...variables.map((v) => v.value))
-    return isNotDefined(evaluatedResult) ? '' : evaluatedResult
-  } catch (err) {
-    console.log(`Evaluating: ${evaluating}`, err)
-    return str
+export const evaluateExpression =
+  (variables: Variable[]) =>
+  (str: string): unknown => {
+    const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
+      str.includes('return ') ? str : `return ${str}`
+    )
+    try {
+      const func = Function(...variables.map((v) => v.id), evaluating)
+      return func(...variables.map((v) => v.value))
+    } catch (err) {
+      console.log(`Evaluating: ${evaluating}`, err)
+      return str
+    }
   }
-}
 
 export const parseVariablesInObject = (
   object: { [key: string]: string | number },

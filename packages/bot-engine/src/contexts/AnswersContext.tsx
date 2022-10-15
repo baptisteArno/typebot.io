@@ -1,5 +1,11 @@
-import { Answer, ResultValues, VariableWithValue } from 'models'
+import {
+  Answer,
+  ResultValues,
+  VariableWithUnknowValue,
+  VariableWithValue,
+} from 'models'
 import React, { createContext, ReactNode, useContext, useState } from 'react'
+import { safeStringify } from 'services/variable'
 
 const answersContext = createContext<{
   resultId?: string
@@ -7,7 +13,7 @@ const answersContext = createContext<{
   addAnswer: (
     answer: Answer & { uploadedFiles: boolean }
   ) => Promise<void> | undefined
-  updateVariables: (variables: VariableWithValue[]) => void
+  updateVariables: (variables: VariableWithUnknowValue[]) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -39,13 +45,18 @@ export const AnswersContext = ({
     return onNewAnswer && onNewAnswer(answer)
   }
 
-  const updateVariables = (variables: VariableWithValue[]) =>
+  const updateVariables = (newVariables: VariableWithUnknowValue[]) => {
+    const serializedNewVariables = newVariables.map((variable) => ({
+      ...variable,
+      value: safeStringify(variable.value),
+    })) as VariableWithValue[]
+
     setResultValues((resultValues) => {
       const updatedVariables = [
         ...resultValues.variables.filter((v) =>
-          variables.every((variable) => variable.id !== v.id)
+          serializedNewVariables.every((variable) => variable.id !== v.id)
         ),
-        ...variables,
+        ...serializedNewVariables,
       ]
       if (onVariablesUpdated) onVariablesUpdated(updatedVariables)
       return {
@@ -53,6 +64,7 @@ export const AnswersContext = ({
         variables: updatedVariables,
       }
     })
+  }
 
   return (
     <answersContext.Provider

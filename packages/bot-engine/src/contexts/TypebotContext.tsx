@@ -8,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import { safeStringify } from 'services/variable'
 
 export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
@@ -28,7 +29,7 @@ const typebotContext = createContext<{
   linkedBotQueue: LinkedTypebotQueue
   isLoading: boolean
   setCurrentTypebotId: (id: string) => void
-  updateVariableValue: (variableId: string, value: string | number) => void
+  updateVariableValue: (variableId: string, value: unknown) => void
   createEdge: (edge: Edge) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
   popEdgeIdFromLinkedTypebotQueue: () => void
@@ -71,8 +72,9 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot.theme, typebot.settings])
 
-  const updateVariableValue = (variableId: string, value: string | number) => {
-    const formattedValue = formatIncomingVariableValue(value)
+  const updateVariableValue = (variableId: string, value: unknown) => {
+    const formattedValue = safeStringify(value)
+
     setLocalTypebot((typebot) => ({
       ...typebot,
       variables: typebot.variables.map((v) =>
@@ -138,16 +140,6 @@ export const TypebotContext = ({
       {children}
     </typebotContext.Provider>
   )
-}
-
-const formatIncomingVariableValue = (
-  value?: string | number
-): string | number | undefined => {
-  // This first check avoid to parse 004 as the number 4.
-  if (typeof value === 'string' && value.startsWith('0') && value.length > 1)
-    return value
-  if (typeof value === 'number') return value
-  return isNaN(value?.toString() as unknown as number) ? value : Number(value)
 }
 
 export const useTypebot = () => useContext(typebotContext)
