@@ -1,5 +1,29 @@
 # Changelog
 
+<a name="2.8.2"></a>
+
+## 2.8.2 (2022-10-16)
+
+### Added
+
+- 👷‍♂️ Add auto tag and release actions [[f9a8e78](https://github.com/baptisteArno/typebot.io/commit/f9a8e789047c55fffa475eb3b87e51a3324e65a9)]
+- ✨ (template) Add FAQ bot template [[b87ba40](https://github.com/baptisteArno/typebot.io/commit/b87ba4023dea7b47c835fe11a9d36a653d5469b0)]
+
+### Changed
+
+- ⚡ (bot) Improve variables parsing and predictability [[3dc3ab2](https://github.com/baptisteArno/typebot.io/commit/3dc3ab201db001eff8319cb8978c1073b79f1198)]
+- 🚸 (bot) disable auto focus on mobile [[40d2db5](https://github.com/baptisteArno/typebot.io/commit/40d2db59dc5168c0dd55eb9f790f308cdf63e333)]
+- 🏗️ Use tsup for bot and typebot-js packages [[e8baaca](https://github.com/baptisteArno/typebot.io/commit/e8baaca2a2a44a80a40518e08f0af36c6528ce2a)]
+
+### Fixed
+
+- 🐛 (editor) inconsistency in route change auto save [[b46d352](https://github.com/baptisteArno/typebot.io/commit/b46d35214d68fc60719128d5ea50b26d0a1b1e4d)]
+- 🐛 (stripe) add back subscription delete webhook handler [[d1cc918](https://github.com/baptisteArno/typebot.io/commit/d1cc9180c893db8d230af9acf52f8a3beaed6e54)]
+
+### Miscellaneous
+
+- 📦 Update packages [[ff52a67](https://github.com/baptisteArno/typebot.io/commit/ff52a676f6c31be9a3b80a7b4d7710def5204958)]
+
 <a name="2.8.1"></a>
 
 ## 2.8.1 (2022-10-09)
