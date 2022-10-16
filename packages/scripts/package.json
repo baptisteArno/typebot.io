@@ -10,7 +10,7 @@
     "start:prod": "NODE_ENV=production ts-node index.ts"
   },
   "devDependencies": {
-    "@types/node": "18.7.23",
+    "@types/node": "18.11.0",
     "db": "workspace:*",
     "models": "workspace:*",
     "ts-node": "10.9.1",

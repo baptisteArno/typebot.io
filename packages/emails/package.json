@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@faire/mjml-react": "2.1.4",
-    "@types/node": "18.8.3",
+    "@types/node": "18.11.0",
     "@types/nodemailer": "6.4.6",
     "@types/react": "18.0.21",
     "concurrently": "7.4.0",

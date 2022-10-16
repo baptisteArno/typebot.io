@@ -128,6 +128,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       signIn: async ({ account }) => {
+        if (!account) return false
         const requiredGroups = getRequiredGroups(account.provider)
         if (requiredGroups.length > 0) {
           const userGroups = await getUserGroups(account)
