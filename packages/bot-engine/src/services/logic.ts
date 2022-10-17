@@ -20,7 +20,7 @@ import {
 } from 'models'
 import { byId, isDefined, isNotDefined, sendRequest } from 'utils'
 import { sanitizeUrl } from './utils'
-import { evaluateExpression, parseVariables } from './variable'
+import { parseCorrectValueType, parseVariables } from './variable'
 
 type EdgeId = string
 
@@ -69,7 +69,9 @@ const executeSetVariable = (
 ): EdgeId | undefined => {
   if (!block.options?.variableId) return block.outgoingEdgeId
   const evaluatedExpression = block.options.expressionToEvaluate
-    ? evaluateExpression(variables)(block.options.expressionToEvaluate)
+    ? evaluateSetVariableExpression(variables)(
+        block.options.expressionToEvaluate
+      )
     : undefined
   const existingVariable = variables.find(byId(block.options.variableId))
   if (!existingVariable) return block.outgoingEdgeId
@@ -77,6 +79,21 @@ const executeSetVariable = (
   updateVariables([{ ...existingVariable, value: evaluatedExpression }])
   return block.outgoingEdgeId
 }
+
+const evaluateSetVariableExpression =
+  (variables: Variable[]) =>
+  (str: string): unknown => {
+    const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
+      str.includes('return ') ? str : `return ${str}`
+    )
+    try {
+      const func = Function(...variables.map((v) => v.id), evaluating)
+      return func(...variables.map((v) => parseCorrectValueType(v.value)))
+    } catch (err) {
+      console.log(`Evaluating: ${evaluating}`, err)
+      return str
+    }
+  }
 
 const executeCondition = (
   block: ConditionBlock,
@@ -161,7 +178,7 @@ const executeCode = async (
     parseVariables(variables, { fieldToParse: 'id' })(block.options.content)
   )
   try {
-    await func(...variables.map((v) => v.value))
+    await func(...variables.map((v) => parseCorrectValueType(v.value)))
   } catch (err) {
     console.error(err)
   }

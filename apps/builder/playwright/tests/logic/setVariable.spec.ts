@@ -33,16 +33,27 @@ test.describe('Set variable block', () => {
     await page.click('text=Create "Custom var"')
     await page.fill('textarea', 'Custom value')
 
+    await page.click('text=Click to edit...', { force: true })
+    await page.fill(
+      'input[placeholder="Select a variable"] >> nth=-1',
+      'Addition'
+    )
+    await page.click('text=Create "Addition"')
+    await page.fill('textarea', '1000 + {{Total}}')
+
     await page.click('text=Preview')
     await typebotViewer(page)
       .locator('input[placeholder="Type a number..."]')
       .fill('365')
     await typebotViewer(page).locator('text=Send').click()
     await expect(
-      typebotViewer(page).locator('text=Total: 365000')
+      typebotViewer(page).locator('text=Multiplication: 365000')
     ).toBeVisible()
     await expect(
       typebotViewer(page).locator('text=Custom var: Custom value')
+    ).toBeVisible()
+    await expect(
+      typebotViewer(page).locator('text=Addition: 366000')
     ).toBeVisible()
   })
 })

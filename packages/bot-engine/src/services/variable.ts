@@ -41,26 +41,29 @@ export const safeStringify = (val: unknown): string | null => {
   }
 }
 
+export const parseCorrectValueType = (
+  value: Variable['value']
+): string | boolean | number | null | undefined => {
+  if (value === null) return null
+  if (value === undefined) return undefined
+  const isNumberStartingWithZero =
+    value.startsWith('0') && !value.startsWith('0.') && value.length > 1
+  if (typeof value === 'string' && isNumberStartingWithZero) return value
+  if (typeof value === 'number') return value
+  if (value === 'true') return true
+  if (value === 'false') return false
+  if (value === 'null') return null
+  if (value === 'undefined') return undefined
+  // isNaN works with strings
+  if (isNaN(value as unknown as number)) return value
+  return Number(value)
+}
+
 const jsonParse = (str: string) =>
   str
     .replace(/\n/g, `\\n`)
     .replace(/"/g, `\\"`)
     .replace(/\\[^n"]/g, `\\\\ `)
-
-export const evaluateExpression =
-  (variables: Variable[]) =>
-  (str: string): unknown => {
-    const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-      str.includes('return ') ? str : `return ${str}`
-    )
-    try {
-      const func = Function(...variables.map((v) => v.id), evaluating)
-      return func(...variables.map((v) => v.value))
-    } catch (err) {
-      console.log(`Evaluating: ${evaluating}`, err)
-      return str
-    }
-  }
 
 export const parseVariablesInObject = (
   object: { [key: string]: string | number },

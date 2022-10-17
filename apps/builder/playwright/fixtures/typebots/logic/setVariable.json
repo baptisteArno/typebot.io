@@ -1,33 +1,32 @@
 {
-  "id": "ckz8hovd511021no1apuuyjv7b",
-  "createdAt": "2022-02-04T14:15:06.953Z",
-  "updatedAt": "2022-02-04T14:15:06.953Z",
-  "name": "My typebot",
+  "id": "cl9d7ruqe00093b6o0m9a6l0d",
+  "createdAt": "2022-10-17T20:13:24.182Z",
+  "updatedAt": "2022-10-17T20:14:48.231Z",
+  "icon": null,
+  "name": "My typebot copy",
   "publishedTypebotId": null,
   "folderId": null,
   "groups": [
     {
-      "id": "jvbBpKifJ3ssvKQxPqhBiD",
+      "id": "cl9d7ruqe00023b6op792zght",
+      "title": "Start",
       "blocks": [
         {
           "id": "rqecLJCZT7gP2JgBhRpb3a",
           "type": "start",
           "label": "Start",
-          "groupId": "jvbBpKifJ3ssvKQxPqhBiD",
-          "outgoingEdgeId": "qnD38SqA7sYEh7efPZgDoR"
+          "groupId": "cl9d7ruqe00023b6op792zght",
+          "outgoingEdgeId": "cl9d7ruqe00063b6o98bpn80p"
         }
       ],
-      "title": "Start",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
-      "id": "roD9feCwx6jTDuVCThgzM2",
-      "graphCoordinates": { "x": 200, "y": 171 },
+      "id": "cl9d7ruqe00033b6oe5nzpeub",
       "title": "Group #1",
       "blocks": [
         {
           "id": "souEkLukHsYU9jrN2rAP7YT",
-          "groupId": "roD9feCwx6jTDuVCThgzM2",
           "type": "text",
           "content": {
             "html": "<div>How old are you?</div>",
@@ -35,88 +34,103 @@
               { "type": "p", "children": [{ "text": "How old are you?" }] }
             ],
             "plainText": "How old are you?"
-          }
+          },
+          "groupId": "cl9d7ruqe00033b6oe5nzpeub"
         },
         {
           "id": "skfn5McXVrTNpi2e62RtEEY",
-          "groupId": "roD9feCwx6jTDuVCThgzM2",
           "type": "number input",
+          "groupId": "cl9d7ruqe00033b6oe5nzpeub",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type a number..." }
           },
-          "outgoingEdgeId": "5ZYDLyR1CUF6B8ESHrFXwK"
+          "outgoingEdgeId": "cl9d7ruqe00073b6oumb3wdq8"
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 200, "y": 171 }
     },
     {
-      "id": "tFFeBrrWxY4tvr11C8rjTw",
-      "graphCoordinates": { "x": 526, "y": 283 },
+      "id": "cl9d7ruqe00043b6o74n47tpt",
       "title": "Group #2",
       "blocks": [
         {
           "id": "spgqbyvunY91Ct5kVgeLLkz",
-          "groupId": "tFFeBrrWxY4tvr11C8rjTw",
           "type": "Set variable",
+          "groupId": "cl9d7ruqe00043b6o74n47tpt",
           "options": {}
         },
         {
           "id": "skeKC71L8C8wpfeuV4TTLCD",
-          "groupId": "tFFeBrrWxY4tvr11C8rjTw",
+          "type": "Set variable",
+          "groupId": "cl9d7ruqe00043b6o74n47tpt",
+          "options": {}
+        },
+        {
+          "id": "cl9d7srh8000e3b6okmpf5165",
+          "groupId": "cl9d7ruqe00043b6o74n47tpt",
           "type": "Set variable",
           "options": {},
-          "outgoingEdgeId": "7A4BD2vJT87grt3xFw86bn"
+          "outgoingEdgeId": "cl9d7svig000f3b6o5v0wlsxw"
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 526, "y": 283 }
     },
     {
-      "id": "k6jFuKuSwy29LVwKxMWasv",
-      "graphCoordinates": { "x": 691, "y": 35 },
+      "id": "cl9d7ruqe00053b6o8l0h608t",
       "title": "Group #3",
       "blocks": [
         {
           "id": "svpmd4uNoAXpoKyfYuuXTQe",
-          "groupId": "k6jFuKuSwy29LVwKxMWasv",
           "type": "text",
           "content": {
-            "html": "<div>Total: {{Total}}</div><div>Custom var: {{Custom var}}</div>",
+            "html": "<div>Multiplication: {{Total}}</div><div>Custom var: {{Custom var}}</div><div>Addition: {{Addition}}</div>",
             "richText": [
-              { "type": "p", "children": [{ "text": "Total: {{Total}}" }] },
+              {
+                "type": "p",
+                "children": [{ "text": "Multiplication: {{Total}}" }]
+              },
               {
                 "type": "p",
                 "children": [{ "text": "Custom var: {{Custom var}}" }]
+              },
+              {
+                "type": "p",
+                "children": [{ "text": "Addition: {{Addition}}" }]
               }
             ],
-            "plainText": "Total: {{Total}}Custom var: {{Custom var}}"
-          }
+            "plainText": "Multiplication: {{Total}}Custom var: {{Custom var}}Addition: {{Addition}}"
+          },
+          "groupId": "cl9d7ruqe00053b6o8l0h608t"
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 697, "y": -23 }
     }
   ],
   "variables": [],
   "edges": [
     {
+      "id": "cl9d7ruqe00063b6o98bpn80p",
+      "to": { "groupId": "cl9d7ruqe00033b6oe5nzpeub" },
       "from": {
-        "groupId": "jvbBpKifJ3ssvKQxPqhBiD",
-        "blockId": "rqecLJCZT7gP2JgBhRpb3a"
-      },
-      "to": { "groupId": "roD9feCwx6jTDuVCThgzM2" },
-      "id": "qnD38SqA7sYEh7efPZgDoR"
+        "blockId": "rqecLJCZT7gP2JgBhRpb3a",
+        "groupId": "cl9d7ruqe00023b6op792zght"
+      }
+    },
+    {
+      "id": "cl9d7ruqe00073b6oumb3wdq8",
+      "to": { "groupId": "cl9d7ruqe00043b6o74n47tpt" },
+      "from": {
+        "blockId": "skfn5McXVrTNpi2e62RtEEY",
+        "groupId": "cl9d7ruqe00033b6oe5nzpeub"
+      }
     },
     {
       "from": {
-        "groupId": "roD9feCwx6jTDuVCThgzM2",
-        "blockId": "skfn5McXVrTNpi2e62RtEEY"
+        "groupId": "cl9d7ruqe00043b6o74n47tpt",
+        "blockId": "cl9d7srh8000e3b6okmpf5165"
       },
-      "to": { "groupId": "tFFeBrrWxY4tvr11C8rjTw" },
-      "id": "5ZYDLyR1CUF6B8ESHrFXwK"
-    },
-    {
-      "from": {
-        "groupId": "tFFeBrrWxY4tvr11C8rjTw",
-        "blockId": "skeKC71L8C8wpfeuV4TTLCD"
-      },
-      "to": { "groupId": "k6jFuKuSwy29LVwKxMWasv" },
-      "id": "7A4BD2vJT87grt3xFw86bn"
+      "to": { "groupId": "cl9d7ruqe00053b6o8l0h608t" },
+      "id": "cl9d7svig000f3b6o5v0wlsxw"
     }
   ],
   "theme": {
@@ -127,6 +141,10 @@
         "placeholderColor": "#9095A0"
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
@@ -139,5 +157,9 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": null
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "isArchived": false,
+  "isClosed": false
 }
