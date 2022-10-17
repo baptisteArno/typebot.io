@@ -7,10 +7,11 @@ export const useToast = () => {
   const showToast = useCallback(
     ({ title, description, status = 'error', ...props }: UseToastOptions) => {
       toast({
-        position: 'bottom-right',
+        position: 'top-right',
         description,
         title,
         status,
+        isClosable: true,
         ...props,
       })
     },

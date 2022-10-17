@@ -11,7 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from 'assets/icons'
 import { CopyButton } from 'components/shared/buttons/CopyButton'
-import React from 'react'
+import { useToast } from 'components/shared/hooks/useToast'
+import React, { useState } from 'react'
 
 type EditableUrlProps = {
   hostname: string
@@ -24,12 +25,26 @@ export const EditableUrl = ({
   pathname,
   onPathnameChange,
 }: EditableUrlProps) => {
+  const { showToast } = useToast()
+  const [value, setValue] = useState(pathname)
+
+  const handleSubmit = (newPathname: string) => {
+    if (/^[a-z]+(-[a-z]+)*$/.test(newPathname))
+      return onPathnameChange(newPathname)
+    setValue(pathname)
+    showToast({
+      title: 'Invalid ID',
+      description: 'Should contain only contain letters and dashes.',
+    })
+  }
+
   return (
     <Editable
       as={HStack}
       spacing={3}
-      defaultValue={pathname}
-      onSubmit={onPathnameChange}
+      value={value}
+      onChange={setValue}
+      onSubmit={handleSubmit}
     >
       <HStack spacing={1}>
         <Text>{hostname}/</Text>
@@ -58,9 +73,7 @@ export const EditableUrl = ({
 const EditButton = (props: ButtonProps) => {
   const { isEditing, getEditButtonProps } = useEditableControls()
 
-  return isEditing ? (
-    <></>
-  ) : (
+  return isEditing ? null : (
     <Button leftIcon={<EditIcon />} {...props} {...getEditButtonProps()}>
       Edit
     </Button>
