@@ -15,19 +15,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: canReadTypebot(typebotId, user),
       include: { publishedTypebot: true },
     })
-    if (!typebot) return res.status(404).send({ answersCounts: [] })
-    const answersCounts: { groupId: string; totalAnswers: number }[] =
-      await Promise.all(
-        (typebot.publishedTypebot as unknown as PublicTypebot).groups.map(
-          async (group) => {
-            const totalAnswers = await prisma.answer.count({
-              where: { groupId: group.id },
-            })
-            return { groupId: group.id, totalAnswers }
-          }
-        )
-      )
-    return res.status(200).send({ answersCounts })
+    const publishedTypebot =
+      typebot?.publishedTypebot as unknown as PublicTypebot
+    if (!publishedTypebot) return res.status(404).send({ answersCounts: [] })
+    const answersCounts = await prisma.answer.groupBy({
+      by: ['groupId'],
+      where: {
+        groupId: { in: publishedTypebot.groups.map((g) => g.id) },
+      },
+      _count: { _all: true },
+    })
+    return res.status(200).send({
+      answersCounts: answersCounts.map((answer) => ({
+        groupId: answer.groupId,
+        totalAnswers: answer._count._all,
+      })),
+    })
   }
   return methodNotAllowed(res)
 }
