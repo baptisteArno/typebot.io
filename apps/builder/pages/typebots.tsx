@@ -18,15 +18,19 @@ const DashboardPage = () => {
   const { workspace } = useWorkspace()
 
   useEffect(() => {
-    const subscribePlan = query.subscribePlan as Plan | undefined
+    const { subscribePlan, chats, storage } = query as {
+      subscribePlan: Plan | undefined
+      chats: string | undefined
+      storage: string | undefined
+    }
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
       pay({
         user,
         plan: subscribePlan,
         workspaceId: workspace.id,
-        additionalChats: 0,
-        additionalStorage: 0,
+        additionalChats: chats ? parseInt(chats) : 0,
+        additionalStorage: storage ? parseInt(storage) : 0,
       })
     }
   }, [query, user, workspace])

@@ -42,7 +42,7 @@ export const PlanComparisonTables = ({
               </Th>
               <Th>Free</Th>
               <Th color="orange.200">Starter</Th>
-              <Th color="purple.200">Pro</Th>
+              <Th color="blue.200">Pro</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -100,7 +100,7 @@ export const PlanComparisonTables = ({
               </Th>
               <Th>Free</Th>
               <Th color="orange.200">Starter</Th>
-              <Th color="purple.200">Pro</Th>
+              <Th color="blue.200">Pro</Th>
             </Tr>
           </Thead>
           <Tbody>

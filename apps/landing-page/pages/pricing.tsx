@@ -11,23 +11,20 @@ import {
   Heading,
   VStack,
   Text,
-  chakra,
-  Tooltip,
   HStack,
 } from '@chakra-ui/react'
-import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Footer } from 'components/common/Footer'
 import { Header } from 'components/common/Header/Header'
 import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
 import { PlanComparisonTables } from 'components/PricingPage/PlanComparisonTables'
-import { PricingCard } from 'components/PricingPage/PricingCard'
-import { ActionButton } from 'components/PricingPage/PricingCard/ActionButton'
 import { useEffect, useState } from 'react'
 import { formatPrice, prices } from 'utils'
-import { Plan } from 'db'
 import { StripeClimateLogo } from 'assets/logos/StripeClimateLogo'
+import { FreePlanCard } from 'components/PricingPage/FreePlanCard'
+import { StarterPlanCard } from 'components/PricingPage/StarterPlanCard'
+import { ProPlanCard } from 'components/PricingPage/ProPlanCard'
 
 const Pricing = () => {
   const [starterPrice, setStarterPrice] = useState('$39')
@@ -101,166 +98,9 @@ const Pricing = () => {
               w="full"
               maxW="1200px"
             >
-              <PricingCard
-                data={{
-                  price: 'Free',
-                  name: 'Personal',
-                  features: [
-                    'Unlimited typebots',
-                    <>
-                      <Text>
-                        <chakra.span fontWeight="bold">300 chats</chakra.span>{' '}
-                        included
-                      </Text>
-                      &nbsp;
-                      <Tooltip
-                        hasArrow
-                        placement="top"
-                        label="A chat is counted whenever a user starts a discussion. It is
-                  independant of the number of messages he sends and receives."
-                      >
-                        <chakra.span cursor="pointer" h="7">
-                          <HelpCircleIcon />
-                        </chakra.span>
-                      </Tooltip>
-                    </>,
-                    'Native integrations',
-                    'Webhooks',
-                    'Custom Javascript & CSS',
-                  ],
-                }}
-                button={
-                  <NextChakraLink
-                    href="https://app.typebot.io/register"
-                    _hover={{ textDecor: 'none' }}
-                  >
-                    <ActionButton variant="outline">Get started</ActionButton>
-                  </NextChakraLink>
-                }
-              />
-              <PricingCard
-                data={{
-                  price: starterPrice,
-                  name: 'Starter',
-                  featureLabel: 'Everything in Personal, plus:',
-                  features: [
-                    <Text key="seats">
-                      <chakra.span fontWeight="bold">2 seats</chakra.span>{' '}
-                      included
-                    </Text>,
-                    <>
-                      <Text>
-                        <chakra.span fontWeight="bold">2,000 chats</chakra.span>{' '}
-                        included
-                      </Text>
-                      &nbsp;
-                      <Tooltip
-                        hasArrow
-                        placement="top"
-                        label="A chat is counted whenever a user starts a discussion. It is
-                  independant of the number of messages he sends and receives."
-                      >
-                        <chakra.span cursor="pointer" h="7">
-                          <HelpCircleIcon />
-                        </chakra.span>
-                      </Tooltip>
-                    </>,
-                    <>
-                      <Text>
-                        <chakra.span fontWeight="bold">2 GB</chakra.span>{' '}
-                        included
-                      </Text>
-                      &nbsp;
-                      <Tooltip
-                        hasArrow
-                        placement="top"
-                        label="You accumulate storage for every file that your user upload
-                      into your bot. If you delete the result, it will free up the
-                      space."
-                      >
-                        <chakra.span cursor="pointer" h="7">
-                          <HelpCircleIcon />
-                        </chakra.span>
-                      </Tooltip>
-                    </>,
-                    'Branding removed',
-                    'Collect files from users',
-                    'Create folders',
-                  ],
-                }}
-                borderWidth="1px"
-                borderColor="orange.200"
-                button={
-                  <NextChakraLink
-                    href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
-                    _hover={{ textDecor: 'none' }}
-                  >
-                    <ActionButton>Subscribe now</ActionButton>
-                  </NextChakraLink>
-                }
-              />
-              <PricingCard
-                data={{
-                  price: proPrice,
-                  name: 'Pro',
-                  featureLabel: 'Everything in Starter, plus:',
-                  features: [
-                    <Text key="seats">
-                      <chakra.span fontWeight="bold">5 seats</chakra.span>{' '}
-                      included
-                    </Text>,
-                    <>
-                      <Text>
-                        <chakra.span fontWeight="bold">
-                          10,000 chats
-                        </chakra.span>{' '}
-                        included
-                      </Text>
-                      &nbsp;
-                      <Tooltip
-                        hasArrow
-                        placement="top"
-                        label="A chat is counted whenever a user starts a discussion. It is
-                  independant of the number of messages he sends and receives."
-                      >
-                        <chakra.span cursor="pointer" h="7">
-                          <HelpCircleIcon />
-                        </chakra.span>
-                      </Tooltip>
-                    </>,
-                    <>
-                      <Text>
-                        <chakra.span fontWeight="bold">10 GB</chakra.span>{' '}
-                        included
-                      </Text>
-                      &nbsp;
-                      <Tooltip
-                        hasArrow
-                        placement="top"
-                        label="You accumulate storage for every file that your user upload
-                      into your bot. If you delete the result, it will free up the
-                      space."
-                      >
-                        <chakra.span cursor="pointer" h="7">
-                          <HelpCircleIcon />
-                        </chakra.span>
-                      </Tooltip>
-                    </>,
-                    'Custom domains',
-                    'In-depth analytics',
-                  ],
-                }}
-                borderWidth="3px"
-                borderColor="blue.200"
-                button={
-                  <NextChakraLink
-                    href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
-                    _hover={{ textDecor: 'none' }}
-                  >
-                    <ActionButton>Subscribe now</ActionButton>
-                  </NextChakraLink>
-                }
-              />
+              <FreePlanCard />
+              <StarterPlanCard />
+              <ProPlanCard />
             </Stack>
             <Text fontSize="lg">
               Need custom limits? Specific features?{' '}
