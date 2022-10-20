@@ -51,6 +51,8 @@ Used for the file upload input. It can be any S3 compatible object storage servi
 | S3_SSL        | true    | Use SSL when establishing the connection.                      |
 | S3_REGION     | --      | S3 region.                                                     |
 
+Note that for AWS S3, your endpoint is usually: `https://s3.<S3_REGION>.amazonaws.com`
+
 Your bucket must have the following policy that tells S3 to allow public read when an object is located under the public folder:
 
 ```json
