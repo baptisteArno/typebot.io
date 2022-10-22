@@ -32,12 +32,10 @@ export const GeneralSettingsForm = ({
     })
   }
 
-  const handleNewResultOnRefreshChange = (
-    isNewResultOnRefreshEnabled: boolean
-  ) =>
+  const handleNewResultOnRefreshChange = (isRememberSessionChecked: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
-      isNewResultOnRefreshEnabled,
+      isNewResultOnRefreshEnabled: !isRememberSessionChecked,
     })
 
   const handleInputPrefillChange = (isInputPrefillEnabled: boolean) =>
