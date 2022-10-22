@@ -1,4 +1,4 @@
-import { Variable } from 'models'
+import { Variable, VariableWithValue } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 
 export const stringContainsVariable = (str: string): boolean =>
@@ -18,11 +18,10 @@ export const parseVariables =
       const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
       const variable = variables.find((v) => {
         return matchedVarName === v.name && isDefined(v.value)
-      })
+      }) as VariableWithValue | undefined
       if (!variable) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
-      if (isNotDefined(value)) return ''
       if (options.escapeForJson) return jsonParse(value)
       const parsedValue = safeStringify(value)
       if (!parsedValue) return ''

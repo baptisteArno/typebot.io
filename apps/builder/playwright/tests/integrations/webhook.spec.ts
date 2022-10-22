@@ -31,31 +31,7 @@ test.describe('Webhook block', () => {
       `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`
     )
   })
-  test('Generated body should work', async ({ page }) => {
-    const typebotId = cuid()
-    await importTypebotInDatabase(
-      path.join(__dirname, '../../fixtures/typebots/integrations/webhook.json'),
-      {
-        id: typebotId,
-      }
-    )
-    await createWebhook(typebotId)
 
-    await page.goto(`/typebots/${typebotId}/edit`)
-    await page.click('text=Configure...')
-    await page.fill(
-      'input[placeholder="Paste webhook URL..."]',
-      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
-    )
-    await page.click('text=Advanced configuration')
-    await page.click('text=GET')
-    await page.click('text=POST')
-
-    await page.click('text=Test the request')
-    await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
-      '"message": "This is a sample result, it has been generated ⬇️"'
-    )
-  })
   test('its configuration should work', async ({ page }) => {
     const typebotId = cuid()
     await importTypebotInDatabase(
