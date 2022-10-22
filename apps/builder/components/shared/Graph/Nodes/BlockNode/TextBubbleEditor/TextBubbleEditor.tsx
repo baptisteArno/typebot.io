@@ -1,15 +1,14 @@
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Plate,
+  PlateProvider,
   selectEditor,
-  TEditor,
   TElement,
-  Value,
-  withPlate,
+  usePlateEditorRef,
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
-import { BaseEditor, BaseSelection, createEditor, Transforms } from 'slate'
+import { BaseEditor, BaseSelection, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
@@ -17,30 +16,25 @@ import { VariableSearchInput } from 'components/shared/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
 import { serializeHtml } from '@udecode/plate-serializer-html'
 
-type Props = {
-  initialValue: TElement[]
+type TextBubbleEditorContentProps = {
+  id: string
+  textEditorValue: TElement[]
   onClose: (newContent: TextBubbleContent) => void
 }
 
-export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
-  const randomEditorId = useMemo(() => Math.random().toString(), [])
-  const editor = useMemo(
-    () =>
-      withPlate(createEditor() as TEditor<Value>, {
-        id: randomEditorId,
-        plugins: platePlugins,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-  const [value, setValue] = useState(initialValue)
+const TextBubbleEditorContent = ({
+  id,
+  textEditorValue,
+  onClose,
+}: TextBubbleEditorContentProps) => {
+  const editor = usePlateEditorRef()
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
 
-  const closeEditor = () => onClose(convertValueToBlockContent(value))
+  const closeEditor = () => onClose(convertValueToBlockContent(textEditorValue))
 
   useOutsideClick({
     ref: textEditorRef,
@@ -94,10 +88,6 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
     ReactEditor.focus(editor as unknown as ReactEditor)
   }
 
-  const handleChangeEditorContent = (val: TElement[]) => {
-    setValue(val)
-    setIsVariableDropdownOpen(false)
-  }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.shiftKey) return
     if (e.key === 'Enter') closeEditor()
@@ -115,12 +105,9 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
       spacing={0}
       cursor="text"
     >
-      <ToolBar
-        editor={editor}
-        onVariablesButtonClick={() => setIsVariableDropdownOpen(true)}
-      />
+      <ToolBar onVariablesButtonClick={() => setIsVariableDropdownOpen(true)} />
       <Plate
-        id={randomEditorId}
+        id={id}
         editableProps={{
           style: editorStyle,
           autoFocus: true,
@@ -136,13 +123,6 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
           },
           onKeyDown: handleKeyDown,
         }}
-        initialValue={
-          initialValue.length === 0
-            ? [{ type: 'p', children: [{ text: '' }] }]
-            : initialValue
-        }
-        onChange={handleChangeEditorContent}
-        editor={editor}
       />
       {isVariableDropdownOpen && (
         <Flex
@@ -162,5 +142,38 @@ export const TextBubbleEditor = ({ initialValue, onClose }: Props) => {
         </Flex>
       )}
     </Stack>
+  )
+}
+
+type TextBubbleEditorProps = {
+  id: string
+  initialValue: TElement[]
+  onClose: (newContent: TextBubbleContent) => void
+}
+
+export const TextBubbleEditor = ({
+  id,
+  initialValue,
+  onClose,
+}: TextBubbleEditorProps) => {
+  const [textEditorValue, setTextEditorValue] = useState(initialValue)
+
+  return (
+    <PlateProvider
+      id={id}
+      plugins={platePlugins}
+      initialValue={
+        initialValue.length === 0
+          ? [{ type: 'p', children: [{ text: '' }] }]
+          : initialValue
+      }
+      onChange={setTextEditorValue}
+    >
+      <TextBubbleEditorContent
+        id={id}
+        textEditorValue={textEditorValue}
+        onClose={onClose}
+      />
+    </PlateProvider>
   )
 }

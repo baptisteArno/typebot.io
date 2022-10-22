@@ -21,6 +21,13 @@ export const platePlugins = createPlugins(
     createUnderlinePlugin(),
     createLinkPlugin({
       renderAfterEditable: PlateFloatingLink,
+      options: {
+        isUrl: (url: string) =>
+          url.startsWith('http') ||
+          url.startsWith('mailto') ||
+          url.startsWith('tel') ||
+          url.startsWith('sms'),
+      },
     }),
   ],
   {

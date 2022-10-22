@@ -147,6 +147,7 @@ export const BlockNode = ({
 
   return isEditing && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
+      id={block.id}
       initialValue={block.content.richText}
       onClose={handleCloseEditor}
     />

@@ -4,7 +4,7 @@ import {
   MARK_ITALIC,
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
-import { getPluginType, PlateEditor, Value } from '@udecode/plate-core'
+import { getPluginType, usePlateEditorRef } from '@udecode/plate-core'
 import { LinkToolbarButton } from '@udecode/plate-ui-link'
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
 import {
@@ -16,15 +16,11 @@ import {
 } from 'assets/icons'
 
 type Props = {
-  editor: PlateEditor<Value>
   onVariablesButtonClick: () => void
 } & StackProps
 
-export const ToolBar = ({
-  editor,
-  onVariablesButtonClick,
-  ...props
-}: Props) => {
+export const ToolBar = ({ onVariablesButtonClick, ...props }: Props) => {
+  const editor = usePlateEditorRef()
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
     onVariablesButtonClick()
