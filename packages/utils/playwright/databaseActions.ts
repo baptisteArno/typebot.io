@@ -62,7 +62,7 @@ const createAnswers = ({
         resultId: `${resultIdPrefix}-result${idx}`,
         content: `content${idx}`,
         blockId: 'block1',
-        groupId: 'block1',
+        groupId: 'group1',
         storageUsed: fakeStorage ? Math.round(fakeStorage / count) : null,
       })),
     ],
@@ -92,6 +92,24 @@ export const importTypebotInDatabase = async (
 export const deleteWorkspaces = async (workspaceIds: string[]) => {
   await prisma.workspace.deleteMany({
     where: { id: { in: workspaceIds } },
+  })
+}
+
+export const deleteTypebots = async (typebotIds: string[]) => {
+  await prisma.typebot.deleteMany({
+    where: { id: { in: typebotIds } },
+  })
+}
+
+export const deleteCredentials = async (credentialIds: string[]) => {
+  await prisma.credentials.deleteMany({
+    where: { id: { in: credentialIds } },
+  })
+}
+
+export const deleteWebhooks = async (webhookIds: string[]) => {
+  await prisma.webhook.deleteMany({
+    where: { id: { in: webhookIds } },
   })
 }
 

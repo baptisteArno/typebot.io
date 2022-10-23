@@ -6,17 +6,19 @@ import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
+const typebotId = cuid()
+
 test.describe.parallel('Settings page', () => {
+  test.beforeAll(async () => {
+    await importTypebotInDatabase(
+      path.join(__dirname, '../fixtures/typebots/settings.json'),
+      {
+        id: typebotId,
+      }
+    )
+  })
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = cuid()
-      await importTypebotInDatabase(
-        path.join(__dirname, '../fixtures/typebots/settings.json'),
-        {
-          id: typebotId,
-        }
-      )
-
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
@@ -134,7 +136,6 @@ test.describe.parallel('Settings page', () => {
       await expect(
         typebotViewer(page).locator('text="What\'s your name?"')
       ).toBeVisible()
-      await page.click('button:has-text("General")')
       await expect(
         page.locator('[data-testid="starter-lock-tag"]')
       ).toBeVisible()

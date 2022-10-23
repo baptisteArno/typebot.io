@@ -1,5 +1,5 @@
 {
-  "version": "2.8.2",
+  "version": "2.8.3",
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -17,18 +17,21 @@
     "build:viewer": "turbo run build --filter=viewer... && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
     "build:landing-page": "turbo run build --filter=landing-page... && ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash env.sh",
     "test:builder": "cd apps/builder && pnpm test",
+    "test:viewer": "cd apps/viewer && pnpm test",
     "lint": "turbo run lint",
     "db:migrate": "cd packages/db && pnpm migration:deploy",
+    "ci:e2e:build": "turbo run build --filter=builder... --filter=viewer... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
+    "ci:e2e:start": "turbo run start --filter=builder... --filter=viewer... --parallel",
     "generate-change-log": "pnpx gitmoji-changelog"
   },
   "devDependencies": {
     "cz-emoji": "1.3.2-canary.2",
-    "turbo": "1.5.6"
+    "turbo": "1.6.1"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@7.12.2"
+  "packageManager": "pnpm@7.14.0"
 }

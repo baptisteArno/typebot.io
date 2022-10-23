@@ -1,7 +1,7 @@
 import { CredentialsType, SmtpCredentialsData } from 'models'
 import { PrismaClient } from 'db'
 import { encrypt } from 'utils/api'
-import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
+import { proWorkspaceId } from 'utils/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 
@@ -17,7 +17,7 @@ export const createSmtpCredentials = (
       iv,
       name: smtpData.from.email as string,
       type: CredentialsType.SMTP,
-      workspaceId: freeWorkspaceId,
+      workspaceId: proWorkspaceId,
     },
   })
 }

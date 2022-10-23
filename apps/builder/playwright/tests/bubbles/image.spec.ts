@@ -33,7 +33,7 @@ test.describe.parallel('Image bubble block', () => {
       await expect(page.locator('img')).toHaveAttribute(
         'src',
         new RegExp(
-          `http://localhost:9000/typebot/public/typebots/${typebotId}/avatar.jpg`,
+          `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/public/typebots/${typebotId}/avatar.jpg`,
           'gm'
         )
       )

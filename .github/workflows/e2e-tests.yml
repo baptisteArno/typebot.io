@@ -1,0 +1,97 @@
+name: E2E tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_VIEWER_URL: http://localhost:3001
+      DATABASE_URL: postgresql://postgres:@localhost:5432/typebot
+      ENCRYPTION_SECRET: ${{ secrets.ENCRYPTION_SECRET }}
+      SMTP_HOST: smtp.ethereal.email
+      SMTP_PORT: 587
+      SMTP_SECURE: true
+      SMTP_USERNAME: tobin.tillman65@ethereal.email
+      SMTP_PASSWORD: Ty9BcwCBrK6w8AG2hx
+      NEXT_PUBLIC_SMTP_FROM: "'Typebot Notifications' <notifications@typebot.io>"
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      NEXT_PUBLIC_GOOGLE_API_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_API_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_STARTER_PRICE_ID: ${{ secrets.STRIPE_STARTER_PRICE_ID }}
+      STRIPE_PRO_PRICE_ID: ${{ secrets.STRIPE_PRO_PRICE_ID }}
+      STRIPE_ADDITIONAL_CHATS_PRICE_ID: ${{ secrets.STRIPE_ADDITIONAL_CHATS_PRICE_ID }}
+      STRIPE_ADDITIONAL_STORAGE_PRICE_ID: ${{ secrets.STRIPE_ADDITIONAL_STORAGE_PRICE_ID }}
+      NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_fYwf5fyL66hiRIkFVcpStukl00K1MTPPmG
+      S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+      S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      NEXT_PUBLIC_GIPHY_API_KEY: ${{ secrets.NEXT_PUBLIC_GIPHY_API_KEY }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_VIEWER_PROJECT_NAME: ${{ secrets.VERCEL_VIEWER_PROJECT_NAME }}
+      VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+      NEXT_PUBLIC_E2E_TEST: true
+      SENTRY_IGNORE_API_RESOLUTION_ERROR: 1
+    services:
+      postgres:
+        image: postgres:12.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: typebot
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v2
+        id: playwright-cache
+        with:
+          path: |
+            ~/Library/Caches/ms-playwright
+            ~/.cache/ms-playwright
+            ${{ github.workspace }}/node_modules/playwright
+          key: cache-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: cache-playwright-
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Install playwright deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: cd apps/builder && pnpx playwright install --with-deps && cd ../..
+
+      - name: Migrate database
+        run: pnpm db:migrate
+
+      - name: Build apps
+        run: pnpm run ci:e2e:build
+
+      - name: Run viewer tests
+        run: cd apps/viewer && DEBUG=pw:webserver pnpm run test
+      - name: Upload test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-results
+          path: ./apps/viewer/playwright-report
+
+      - name: Build builder
+        run: pnpm run build:viewer
+      - name: Run builder tests
+        run: cd apps/builder && DEBUG=pw:webserver pnpm run test
+      - name: Upload test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-results
+          path: ./apps/builder/playwright-report

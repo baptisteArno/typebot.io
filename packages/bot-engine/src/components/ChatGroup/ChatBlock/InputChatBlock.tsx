@@ -35,7 +35,7 @@ export const InputChatBlock = ({
   ) => void
   onSkip: () => void
 }) => {
-  const { typebot } = useTypebot()
+  const { typebot, isLoading } = useTypebot()
   const { addAnswer } = useAnswers()
   const [answer, setAnswer] = useState<string>()
   const [isEditting, setIsEditting] = useState(false)
@@ -65,6 +65,8 @@ export const InputChatBlock = ({
     setAnswer(undefined)
     setIsEditting(true)
   }
+
+  if (isLoading) return null
 
   if (answer) {
     const avatarUrl = typebot.theme.chat.guestAvatar?.url

@@ -21,7 +21,7 @@ test('should display user info properly', async ({ page }) => {
   await expect(page.locator('img >> nth=1')).toHaveAttribute(
     'src',
     new RegExp(
-      `http://localhost:9000/typebot/public/users/${userId}/avatar`,
+      `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/public/users/${userId}/avatar`,
       'gm'
     )
   )

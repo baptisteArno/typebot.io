@@ -18,6 +18,7 @@
     },
     "dev": {
       "dependsOn": ["^dev"]
-    }
+    },
+    "start": {}
   }
 }

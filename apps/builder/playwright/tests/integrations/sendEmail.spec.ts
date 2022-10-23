@@ -11,10 +11,9 @@ test.describe('Send email block', () => {
     if (
       !process.env.SMTP_USERNAME ||
       !process.env.SMTP_PORT ||
-      !process.env.SMTP_SECURE ||
       !process.env.SMTP_HOST ||
       !process.env.SMTP_PASSWORD ||
-      !process.env.SMTP_FROM
+      !process.env.NEXT_PUBLIC_SMTP_FROM
     )
       throw new Error('SMTP_ env vars are missing')
     await importTypebotInDatabase(
@@ -29,7 +28,7 @@ test.describe('Send email block', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
-    await page.click(`text=${process.env.SMTP_FROM}`)
+    await page.click(`text=notifications@typebot.io`)
     await page.click('text=Connect new')
     const createButton = page.locator('button >> text=Create')
     await expect(createButton).toBeDisabled()
@@ -44,7 +43,8 @@ test.describe('Send email block', () => {
       process.env.SMTP_USERNAME
     )
     await page.fill('[type="password"]', process.env.SMTP_PASSWORD)
-    if (process.env.SMTP_SECURE === 'true') await page.click('text=Use TLS?')
+    if (process.env.SMTP_SECURE === 'true')
+      await page.getByText('Secure?').click()
     await page.fill('input[role="spinbutton"]', process.env.SMTP_PORT)
     await expect(createButton).toBeEnabled()
     await createButton.click()

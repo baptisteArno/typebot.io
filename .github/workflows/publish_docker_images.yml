@@ -5,8 +5,6 @@ on:
     tags: ['v*']
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   push_builder:
