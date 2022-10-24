@@ -292,6 +292,26 @@ export const AlarmIcon = (props: any) => (
   </IconContext.Provider>
 )
 
+export const ListIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdFormatListBulleted />
+    </div>
+  </IconContext.Provider>
+)
+
+export const RadioIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdRadioButtonChecked />
+    </div>
+  </IconContext.Provider>
+)
+
 export const FilterIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}
@@ -507,5 +527,15 @@ export const CreditCardIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
     <line x1="1" y1="10" x2="23" y2="10"></line>
+  </Icon>
+)
+
+export const InfoIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 16 16"  {...featherIconsBaseProps} {...props}>
+    <path 
+      d="M8.00004 1.3335C4.32004 1.3335 1.33337 4.32016 1.33337 8.00016C1.33337 11.6802 4.32004 14.6668 8.00004 14.6668C11.68 14.6668 14.6667 11.6802 14.6667 8.00016C14.6667 4.32016 11.68 1.3335 8.00004 1.3335ZM8.00004 11.3335C7.63337 11.3335 7.33337 11.0335 7.33337 10.6668V8.00016C7.33337 7.6335 7.63337 7.3335 8.00004 7.3335C8.36671 7.3335 8.66671 7.6335 8.66671 8.00016V10.6668C8.66671 11.0335 8.36671 11.3335 8.00004 11.3335ZM8.66671 6.00016H7.33337V4.66683H8.66671V6.00016Z"
+      fill="#C4C7CF"
+      stroke="none"
+    />
   </Icon>
 )

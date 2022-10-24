@@ -7,6 +7,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   StepType,
+  WabaStepType
 } from 'models'
 import React from 'react'
 
@@ -89,6 +90,10 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Direcionar conversa</Text>
     case OctaBubbleStepType.END_CONVERSATION:
       return <Text>Encerrar conversa</Text>
+    case WabaStepType.BUTTONS:
+      return <Text>Pergunta com botões interativos</Text>
+      case WabaStepType.OPTIONS:
+        return <Text>Pergunta com lista de opções</Text>
     default:
       return <></>
   }

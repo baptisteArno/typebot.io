@@ -6,8 +6,11 @@ import {
   Portal,
   Flex,
   IconButton,
+  Icon,
   Tooltip,
   Fade,
+  Badge,
+  Spacer
 } from '@chakra-ui/react'
 import {
   BubbleStepType,
@@ -18,11 +21,12 @@ import {
   LogicStepType,
   OctaStepType,
   OctaBubbleStepType,
+  WabaStepType
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
-import { LockedIcon, UnlockedIcon } from 'assets/icons'
+import { LockedIcon, UnlockedIcon, InfoIcon, CreditCardIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 
 export const StepsSideBar = () => {
@@ -93,7 +97,9 @@ export const StepsSideBar = () => {
     return (
       type === InputStepType.DATE ||
       type === InputStepType.PHONE ||
-      type === OctaStepType.OFFICE_HOURS
+      type === OctaStepType.OFFICE_HOURS ||
+      type === WabaStepType.BUTTONS ||
+      type === WabaStepType.OPTIONS
     )
   }
 
@@ -143,6 +149,10 @@ export const StepsSideBar = () => {
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Mensagens
+          <Tooltip
+            label='Etapa que não requer interação com o usuário'>
+              <InfoIcon marginLeft="5px" />
+          </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map(
@@ -161,9 +171,38 @@ export const StepsSideBar = () => {
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Perguntas
+            <Tooltip
+              label='Etapa em que o usuário interage com o bot'>
+              <InfoIcon marginLeft="5px" />
+            </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    isDisabled={shouldDisableComponent(type)}
+                  />
+                )
+            )}
+          </SimpleGrid>
+        </Stack>
+
+        <Stack>
+          <Flex>
+            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+              Whatsapp Oficial
+            </Text>
+            <Spacer/>
+            <Badge variant='solid' colorScheme='blue' borderRadius="6px" textAlign="center"> 
+              Exclusivo
+            </Badge>
+          </Flex>
+          <SimpleGrid columns={1} spacing="3">
+            {Object.values(WabaStepType).map(
               (type) =>
                 shouldHideComponents(type) && (
                   <StepCard

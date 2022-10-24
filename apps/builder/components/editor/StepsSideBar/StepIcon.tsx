@@ -23,6 +23,8 @@ import {
   AssignToIcon,
   TextIcon,
   WebhookIcon,
+  ListIcon,
+  RadioIcon
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -39,6 +41,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   StepType,
+  WabaStepType
 } from 'models'
 import React from 'react'
 
@@ -102,6 +105,10 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <AlarmIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <AssignToIcon color="#373A86" {...props} />
+    case WabaStepType.BUTTONS:
+      return <RadioIcon color="#7B15C1" {...props} />
+    case WabaStepType.OPTIONS:
+      return <ListIcon color="#7B15C1" {...props} />
 
     case 'start':
       return <FlagIcon {...props} />

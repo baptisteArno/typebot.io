@@ -13,6 +13,13 @@ import { SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
 import { createStepDraft, duplicateStepDraft } from './steps'
 
+import {
+  BubbleStepType,
+  InputStepType,
+  OctaBubbleStepType,
+  OctaStepType,
+} from 'models'
+
 export type BlocksActions = {
   createBlock: (
     props: Coordinates & {
@@ -42,7 +49,7 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         const newBlock: Block = {
           id,
           graphCoordinates,
-          title: `Grupo #${typebot.blocks.length}`,
+          title: hisNameComponents(step),
           steps: [],
         }
         typebot.blocks.push(newBlock)
@@ -81,6 +88,36 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
       })
     ),
 })
+
+const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
+  switch (step) {
+    case BubbleStepType.TEXT:
+      return 'Envie uma mensagem de texto'
+    case BubbleStepType.IMAGE:
+      return 'Envie um arquivo'
+    case BubbleStepType.EMBED:
+      return 'Envie um arquivo'
+    case InputStepType.TEXT:
+      return 'Pergunte qualquer coisa'
+    case InputStepType.NUMBER:
+      return 'Pergunte o número do pedido'
+    case InputStepType.EMAIL:
+      return 'Pergunte o email'
+    case InputStepType.DATE:
+      return 'Pergunte uma data'
+    case InputStepType.PHONE:
+      return 'Pergunte o número de celular'
+    case InputStepType.CHOICE:
+      return 'Botão??'
+    case OctaStepType.ASSIGN_TO_TEAM:
+      return 'Direcione a conversa para um agente/time'
+    case OctaBubbleStepType.END_CONVERSATION:
+      return 'Encerre a conversa do bot'
+
+    default:
+      return 'outro'
+  }
+}
 
 const deleteBlockDraft =
   (typebot: WritableDraft<Typebot>) => (blockIndex: number) => {
