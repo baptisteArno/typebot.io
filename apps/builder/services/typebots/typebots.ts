@@ -6,6 +6,7 @@ import {
   InputStepType,
   LogicStepType,
   Step,
+  WabaStepType,
   DraggableStepType,
   DraggableStep,
   defaultTheme,
@@ -45,6 +46,8 @@ import {
   OctaBubbleStepType,
   OctaBubbleStepContent,
   defaultPaymentInputOptions,
+  defaultRequestOptions,
+  defaultRequestButtons
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -319,7 +322,7 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType| WabaStepType): BubbleStepContent => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -331,6 +334,10 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleS
       return defaultEmbedBubbleContent
     case OctaBubbleStepType.END_CONVERSATION:
       return defaultEndConversationBubbleContent
+    case WabaStepType.BUTTONS:
+      return defaultRequestButtons
+    case WabaStepType.OPTIONS:
+      return defaultRequestOptions
   }
 }
 
