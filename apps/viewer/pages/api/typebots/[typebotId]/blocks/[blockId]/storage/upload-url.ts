@@ -69,6 +69,7 @@ const checkStorageLimit = async (typebotId: string) => {
           plan: true,
           storageLimitFirstEmailSentAt: true,
           storageLimitSecondEmailSentAt: true,
+          customStorageLimit: true,
         },
       },
     },

@@ -1,14 +1,19 @@
 import { Plan } from 'db'
-import { seatsLimit } from 'utils'
+import { getSeatsLimit } from 'utils'
 
 export function checkCanInviteMember({
   plan,
+  customSeatsLimit,
   currentMembersCount,
 }: {
   plan?: Plan
+  customSeatsLimit?: number | null
   currentMembersCount?: number
 }) {
   if (!plan || !currentMembersCount) return false
 
-  return seatsLimit[plan].totalIncluded > currentMembersCount
+  return (
+    getSeatsLimit({ plan, customSeatsLimit: customSeatsLimit ?? null }) >
+    currentMembersCount
+  )
 }

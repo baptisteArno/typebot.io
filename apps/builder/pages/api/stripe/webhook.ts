@@ -40,31 +40,58 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       switch (event.type) {
         case 'checkout.session.completed': {
           const session = event.data.object as Stripe.Checkout.Session
-          const { workspaceId, plan, additionalChats, additionalStorage } =
-            session.metadata as unknown as {
-              plan: 'STARTER' | 'PRO'
-              additionalChats: string
-              additionalStorage: string
-              workspaceId: string
-            }
+          const metadata = session.metadata as unknown as
+            | {
+                plan: 'STARTER' | 'PRO'
+                additionalChats: string
+                additionalStorage: string
+                workspaceId: string
+              }
+            | { claimableCustomPlanId: string }
+          if ('plan' in metadata) {
+            const { workspaceId, plan, additionalChats, additionalStorage } =
+              metadata
+            if (!workspaceId || !plan || !additionalChats || !additionalStorage)
+              return res
+                .status(500)
+                .send({ message: `Couldn't retrieve valid metadata` })
+            await prisma.workspace.update({
+              where: { id: workspaceId },
+              data: {
+                plan: plan,
+                stripeId: session.customer as string,
+                additionalChatsIndex: parseInt(additionalChats),
+                additionalStorageIndex: parseInt(additionalStorage),
+                chatsLimitFirstEmailSentAt: null,
+                chatsLimitSecondEmailSentAt: null,
+                storageLimitFirstEmailSentAt: null,
+                storageLimitSecondEmailSentAt: null,
+              },
+            })
+          } else {
+            const { claimableCustomPlanId } = metadata
+            if (!claimableCustomPlanId)
+              return res
+                .status(500)
+                .send({ message: `Couldn't retrieve valid metadata` })
+            const { workspaceId, chatsLimit, seatsLimit, storageLimit } =
+              await prisma.claimableCustomPlan.update({
+                where: { id: claimableCustomPlanId },
+                data: { claimedAt: new Date() },
+              })
 
-          if (!workspaceId || !plan || !additionalChats || !additionalStorage)
-            return res
-              .status(500)
-              .send({ message: `Couldn't retrieve valid metadata` })
-          await prisma.workspace.update({
-            where: { id: workspaceId },
-            data: {
-              plan: plan,
-              stripeId: session.customer as string,
-              additionalChatsIndex: parseInt(additionalChats),
-              additionalStorageIndex: parseInt(additionalStorage),
-              chatsLimitFirstEmailSentAt: null,
-              chatsLimitSecondEmailSentAt: null,
-              storageLimitFirstEmailSentAt: null,
-              storageLimitSecondEmailSentAt: null,
-            },
-          })
+            await prisma.workspace.update({
+              where: { id: workspaceId },
+              data: {
+                plan: Plan.CUSTOM,
+                stripeId: session.customer as string,
+                customChatsLimit: chatsLimit,
+                customStorageLimit: storageLimit,
+                customSeatsLimit: seatsLimit,
+              },
+            })
+          }
+
           return res.status(200).send({ message: 'workspace upgraded in DB' })
         }
         case 'customer.subscription.deleted': {

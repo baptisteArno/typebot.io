@@ -104,6 +104,9 @@ test('can manage members', async ({ page }) => {
   ).toHaveAttribute('value', '')
   await expect(page.locator('text="guest@email.com"')).toBeVisible()
   await expect(page.locator('text="Pending"')).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Members (2/5)' })
+  ).toBeVisible()
   await page.fill(
     'input[placeholder="colleague@company.com"]',
     'other-user@email.com'
@@ -116,6 +119,9 @@ test('can manage members', async ({ page }) => {
   ).toHaveAttribute('value', '')
   await expect(page.locator('text="other-user@email.com"')).toBeVisible()
   await expect(page.locator('text="James Doe"')).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Members (3/5)' })
+  ).toBeVisible()
 
   await page.click('text="other-user@email.com"')
   await page.click('button >> text="Member"')

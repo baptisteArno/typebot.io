@@ -7,9 +7,13 @@ export const planColorSchemes: Record<Plan, ThemeTypings['colorSchemes']> = {
   [Plan.OFFERED]: 'orange',
   [Plan.STARTER]: 'orange',
   [Plan.FREE]: 'gray',
+  [Plan.CUSTOM]: 'yellow',
 }
 
-export const PlanTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => {
+export const PlanTag = ({
+  plan,
+  ...props
+}: { plan: Plan } & TagProps): JSX.Element => {
   switch (plan) {
     case Plan.LIFETIME: {
       return (
@@ -45,7 +49,7 @@ export const PlanTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => {
         </Tag>
       )
     }
-    default: {
+    case Plan.FREE: {
       return (
         <Tag
           colorScheme={planColorSchemes[Plan.FREE]}
@@ -53,6 +57,17 @@ export const PlanTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => {
           {...props}
         >
           Free
+        </Tag>
+      )
+    }
+    case Plan.CUSTOM: {
+      return (
+        <Tag
+          colorScheme={planColorSchemes[Plan.CUSTOM]}
+          data-testid="free-plan-tag"
+          {...props}
+        >
+          Custom
         </Tag>
       )
     }

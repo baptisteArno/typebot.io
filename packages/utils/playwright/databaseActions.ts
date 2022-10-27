@@ -1,4 +1,4 @@
-import { Plan, PrismaClient, User, Workspace, WorkspaceRole } from 'db'
+import { Plan, Prisma, PrismaClient, User, Workspace, WorkspaceRole } from 'db'
 import cuid from 'cuid'
 import { Typebot, Webhook } from 'models'
 import { readFileSync } from 'fs'
@@ -164,5 +164,15 @@ export const updateTypebot = async (
   return prisma.publicTypebot.updateMany({
     where: { typebotId: partialTypebot.id },
     data: partialTypebot,
+  })
+}
+
+export const updateWorkspace = async (
+  id: string,
+  data: Prisma.WorkspaceUncheckedUpdateManyInput
+) => {
+  await prisma.workspace.updateMany({
+    where: { id: proWorkspaceId },
+    data,
   })
 }

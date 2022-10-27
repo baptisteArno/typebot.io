@@ -4,7 +4,7 @@ import prisma from 'libs/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from 'services/api/utils'
-import { env, seatsLimit } from 'utils'
+import { env, getSeatsLimit } from 'utils'
 import { sendWorkspaceMemberInvitationEmail } from 'emails'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -70,7 +70,8 @@ const checkIfSeatsLimitReached = async (workspace: Workspace) => {
   const existingMembersCount = await prisma.memberInWorkspace.count({
     where: { workspaceId: workspace.id },
   })
-  return existingMembersCount >= seatsLimit[workspace.plan].totalIncluded
+
+  return existingMembersCount >= getSeatsLimit(workspace)
 }
 
 export default withSentry(handler)

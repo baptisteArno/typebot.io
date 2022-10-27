@@ -1,4 +1,10 @@
-import { HStack, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react'
+import {
+  Heading,
+  HStack,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+} from '@chakra-ui/react'
 import { UnlockPlanInfo } from 'components/shared/Info'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
@@ -12,6 +18,7 @@ import {
   updateMember,
   useMembers,
 } from 'services/workspace'
+import { getSeatsLimit } from 'utils'
 import { AddMemberForm } from './AddMemberForm'
 import { checkCanInviteMember } from './helpers'
 import { MemberItem } from './MemberItem'
@@ -77,9 +84,12 @@ export const MembersList = () => {
     })
   }
 
+  const currentMembersCount = members.length + invitations.length
+
   const canInviteNewMember = checkCanInviteMember({
     plan: workspace?.plan,
-    currentMembersCount: [...members, ...invitations].length,
+    customSeatsLimit: workspace?.customSeatsLimit,
+    currentMembersCount,
   })
 
   return (
@@ -91,6 +101,11 @@ export const MembersList = () => {
           power features 🚀
         `}
         />
+      )}
+      {workspace && (
+        <Heading fontSize="2xl">
+          Members ({currentMembersCount}/{getSeatsLimit(workspace)})
+        </Heading>
       )}
       {workspace?.id && canEdit && (
         <AddMemberForm
