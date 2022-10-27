@@ -49,7 +49,7 @@ export const AddMemberForm = ({
   }
 
   return (
-    <HStack as="form" onSubmit={handleInvitationSubmit} pb="4">
+    <HStack as="form" onSubmit={handleInvitationSubmit}>
       <Input
         placeholder="colleague@company.com"
         name="inviteEmail"

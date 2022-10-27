@@ -31,6 +31,9 @@ export const createNewWorkspace = async (
     | 'chatsLimitSecondEmailSentAt'
     | 'storageLimitFirstEmailSentAt'
     | 'storageLimitSecondEmailSentAt'
+    | 'customChatsLimit'
+    | 'customStorageLimit'
+    | 'customSeatsLimit'
   >
 ) =>
   sendRequest<{
@@ -77,4 +80,6 @@ export const isFreePlan = (workspace?: Pick<Workspace, 'plan'>) =>
 
 export const isWorkspaceProPlan = (workspace?: Pick<Workspace, 'plan'>) =>
   isDefined(workspace) &&
-  (workspace.plan === Plan.PRO || workspace.plan === Plan.LIFETIME)
+  (workspace.plan === Plan.PRO ||
+    workspace.plan === Plan.LIFETIME ||
+    workspace.plan === Plan.CUSTOM)

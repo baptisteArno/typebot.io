@@ -1,4 +1,10 @@
-import { CollaborationType, DashboardFolder, PrismaClient, Workspace } from 'db'
+import {
+  CollaborationType,
+  DashboardFolder,
+  Prisma,
+  PrismaClient,
+  Workspace,
+} from 'db'
 import Stripe from 'stripe'
 import { proWorkspaceId } from 'utils/playwright/databaseSetup'
 
@@ -73,4 +79,11 @@ export const createFolder = (workspaceId: string, name: string) =>
       workspaceId,
       name,
     },
+  })
+
+export const createClaimableCustomPlan = async (
+  data: Prisma.ClaimableCustomPlanUncheckedCreateInput
+) =>
+  prisma.claimableCustomPlan.create({
+    data,
   })

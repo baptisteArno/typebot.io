@@ -41,6 +41,22 @@ type WorkspaceContextProps = {
   children: ReactNode
 }
 
+const getNewWorkspaceName = (
+  userFullName: string | undefined,
+  existingWorkspaces: Workspace[]
+) => {
+  const workspaceName = userFullName
+    ? `${userFullName}'s workspace`
+    : 'My workspace'
+  let newName = workspaceName
+  let i = 1
+  while (existingWorkspaces.find((w) => w.name === newName)) {
+    newName = `${workspaceName} (${i})`
+    i++
+  }
+  return newName
+}
+
 export const WorkspaceContext = ({ children }: WorkspaceContextProps) => {
   const { query } = useRouter()
   const { user } = useUser()
@@ -97,10 +113,11 @@ export const WorkspaceContext = ({ children }: WorkspaceContextProps) => {
     setCurrentWorkspace(newWorkspace)
   }
 
-  const createWorkspace = async (name?: string) => {
+  const createWorkspace = async (userFullName?: string) => {
     if (!workspaces) return
+    const newWorkspaceName = getNewWorkspaceName(userFullName, workspaces)
     const { data, error } = await createNewWorkspace({
-      name: name ? `${name}'s workspace` : 'My workspace',
+      name: newWorkspaceName,
       plan: Plan.FREE,
     })
     if (error || !data) return

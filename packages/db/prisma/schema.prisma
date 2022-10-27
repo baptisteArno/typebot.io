@@ -84,6 +84,10 @@ model Workspace {
   storageLimitFirstEmailSentAt  DateTime?
   chatsLimitSecondEmailSentAt   DateTime?
   storageLimitSecondEmailSentAt DateTime?
+  claimableCustomPlan          ClaimableCustomPlan?
+  customChatsLimit              Int?
+  customStorageLimit            Int?
+  customSeatsLimit              Int?
 }
 
 model MemberInWorkspace {
@@ -263,6 +267,21 @@ model Webhook {
   typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }
 
+model ClaimableCustomPlan {
+  id           String @id @default(cuid())
+  createdAt    DateTime @default(now())
+  claimedAt    DateTime?
+  name         String
+  description  String?
+  price        Int
+  currency     String
+  workspaceId  String @unique
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  chatsLimit   Int
+  storageLimit Int
+  seatsLimit   Int
+}
+
 enum WorkspaceRole {
   ADMIN
   MEMBER
@@ -280,6 +299,7 @@ enum Plan {
   PRO
   LIFETIME
   OFFERED
+  CUSTOM
 }
 
 enum CollaborationType {

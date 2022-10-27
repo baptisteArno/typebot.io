@@ -41,12 +41,14 @@ const ResultsPage = () => {
         getChatsLimit({
           additionalChatsIndex: workspace.additionalChatsIndex,
           plan: workspace.plan,
+          customChatsLimit: workspace.customChatsLimit,
         })) *
         100
     )
   }, [
     usageData?.totalChatsUsed,
     workspace?.additionalChatsIndex,
+    workspace?.customChatsLimit,
     workspace?.plan,
   ])
 
@@ -60,12 +62,14 @@ const ResultsPage = () => {
         getStorageLimit({
           additionalStorageIndex: workspace.additionalStorageIndex,
           plan: workspace.plan,
+          customStorageLimit: workspace.customStorageLimit,
         })) *
         100
     )
   }, [
     usageData?.totalStorageUsed,
     workspace?.additionalStorageIndex,
+    workspace?.customStorageLimit,
     workspace?.plan,
   ])
 

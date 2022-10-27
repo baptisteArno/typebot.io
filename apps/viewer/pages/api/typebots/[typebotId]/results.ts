@@ -48,6 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 additionalChatsIndex: true,
                 chatsLimitFirstEmailSentAt: true,
                 chatsLimitSecondEmailSentAt: true,
+                customChatsLimit: true,
               },
             },
           },
@@ -71,6 +72,7 @@ const checkChatsUsage = async (
     | 'additionalChatsIndex'
     | 'chatsLimitFirstEmailSentAt'
     | 'chatsLimitSecondEmailSentAt'
+    | 'customChatsLimit'
   >
 ) => {
   const chatsLimit = getChatsLimit(workspace)

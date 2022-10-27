@@ -13,17 +13,16 @@ export const proWorkspaceId = 'proWorkspace'
 export const freeWorkspaceId = 'freeWorkspace'
 export const starterWorkspaceId = 'starterWorkspace'
 export const lifetimeWorkspaceId = 'lifetimeWorkspaceId'
+export const customWorkspaceId = 'customWorkspaceId'
 
 const setupWorkspaces = async () => {
-  await prisma.workspace.create({
-    data: {
-      id: freeWorkspaceId,
-      name: 'Free workspace',
-      plan: Plan.FREE,
-    },
-  })
   await prisma.workspace.createMany({
     data: [
+      {
+        id: freeWorkspaceId,
+        name: 'Free workspace',
+        plan: Plan.FREE,
+      },
       {
         id: starterWorkspaceId,
         name: 'Starter workspace',
@@ -39,6 +38,14 @@ const setupWorkspaces = async () => {
         id: lifetimeWorkspaceId,
         name: 'Lifetime workspace',
         plan: Plan.LIFETIME,
+      },
+      {
+        id: customWorkspaceId,
+        name: 'Custom workspace',
+        plan: Plan.CUSTOM,
+        customChatsLimit: 100000,
+        customStorageLimit: 50,
+        customSeatsLimit: 20,
       },
     ],
   })
@@ -98,6 +105,11 @@ export const setupUsers = async () => {
         role: WorkspaceRole.ADMIN,
         userId,
         workspaceId: lifetimeWorkspaceId,
+      },
+      {
+        role: WorkspaceRole.ADMIN,
+        userId,
+        workspaceId: customWorkspaceId,
       },
     ],
   })
