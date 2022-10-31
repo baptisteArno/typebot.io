@@ -100,14 +100,20 @@ const createCheckoutSession = (req: NextApiRequest) => {
 }
 
 const updateSubscription = async (req: NextApiRequest) => {
-  const { stripeId, plan, workspaceId, additionalChats, additionalStorage } = (
-    typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  ) as {
+  const {
+    stripeId,
+    plan,
+    workspaceId,
+    additionalChats,
+    additionalStorage,
+    currency,
+  } = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as {
     stripeId: string
     workspaceId: string
     additionalChats: number
     additionalStorage: number
     plan: 'STARTER' | 'PRO'
+    currency: 'eur' | 'usd'
   }
   if (!process.env.STRIPE_SECRET_KEY)
     throw Error('STRIPE_SECRET_KEY var is missing')
@@ -145,7 +151,7 @@ const updateSubscription = async (req: NextApiRequest) => {
           id: currentAdditionalChatsItemId,
           price: process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID,
           quantity: additionalChats,
-          deleted: additionalChats === 0,
+          deleted: subscription ? additionalChats === 0 : undefined,
         },
     additionalStorage === 0 && !currentAdditionalStorageItemId
       ? undefined
@@ -153,7 +159,7 @@ const updateSubscription = async (req: NextApiRequest) => {
           id: currentAdditionalStorageItemId,
           price: process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID,
           quantity: additionalStorage,
-          deleted: additionalStorage === 0,
+          deleted: subscription ? additionalStorage === 0 : undefined,
         },
   ].filter(isDefined)
 
@@ -165,6 +171,7 @@ const updateSubscription = async (req: NextApiRequest) => {
     await stripe.subscriptions.create({
       customer: stripeId,
       items,
+      currency,
     })
   }
 

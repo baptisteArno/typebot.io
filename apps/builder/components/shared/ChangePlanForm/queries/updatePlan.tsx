@@ -35,7 +35,14 @@ export const updatePlan = async ({
   const { data, error } = await sendRequest<{ message: string }>({
     method: 'PUT',
     url: '/api/stripe/subscription',
-    body: { workspaceId, plan, stripeId, additionalChats, additionalStorage },
+    body: {
+      workspaceId,
+      plan,
+      stripeId,
+      additionalChats,
+      additionalStorage,
+      currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
+    },
   })
   if (error || !data) return { error }
   return { newPlan: plan }

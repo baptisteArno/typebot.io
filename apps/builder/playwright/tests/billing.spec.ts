@@ -207,6 +207,12 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('[data-testid="current-subscription"]')).toHaveText(
     'Current workspace subscription: Free'
   )
+
+  // Upgrade again to PRO
+  await page.getByRole('button', { name: 'Upgrade' }).nth(1).click()
+  await expect(
+    page.locator('text="Workspace PRO plan successfully updated 🎉" >> nth=0')
+  ).toBeVisible({ timeout: 20 * 1000 })
 })
 
 test('should display invoices', async ({ page }) => {
