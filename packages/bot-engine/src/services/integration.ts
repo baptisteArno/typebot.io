@@ -188,8 +188,8 @@ const getRowFromGoogleSheets = async (
   const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
     (newVariables, cell) => {
       const existingVariable = variables.find(byId(cell.variableId))
-      const value = data[cell.column ?? '']
-      if (!existingVariable || !value) return newVariables
+      const value = data[cell.column ?? ''] ?? null
+      if (!existingVariable) return newVariables
       updateVariableValue(existingVariable.id, value)
       return [
         ...newVariables,
