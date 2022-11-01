@@ -20,8 +20,7 @@
     "test:viewer": "cd apps/viewer && pnpm test",
     "lint": "turbo run lint",
     "db:migrate": "cd packages/db && pnpm migration:deploy",
-    "ci:e2e:build": "turbo run build --filter=builder... --filter=viewer... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
-    "ci:e2e:start": "turbo run start --filter=builder... --filter=viewer... --parallel",
+    "build:ci": "turbo run build --filter=builder... --filter=viewer... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
     "generate-change-log": "pnpx gitmoji-changelog"
   },
   "devDependencies": {

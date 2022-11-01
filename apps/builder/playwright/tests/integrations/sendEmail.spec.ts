@@ -43,8 +43,6 @@ test.describe('Send email block', () => {
       process.env.SMTP_USERNAME
     )
     await page.fill('[type="password"]', process.env.SMTP_PASSWORD)
-    if (process.env.SMTP_SECURE === 'true')
-      await page.getByText('Secure?').click()
     await page.fill('input[role="spinbutton"]', process.env.SMTP_PORT)
     await expect(createButton).toBeEnabled()
     await createButton.click()

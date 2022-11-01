@@ -111,6 +111,7 @@
     "models": "workspace:*",
     "next-transpile-modules": "9.1.0",
     "typescript": "4.8.4",
-    "utils": "workspace:*"
+    "utils": "workspace:*",
+    "configs": "workspace:*"
   }
 }
