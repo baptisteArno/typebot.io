@@ -44,8 +44,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Build Typebot
-        uses: ./.github/actions/build
+        uses: ./.github/actions/build-typebot
 
   test-viewer:
     runs-on: ubuntu-latest
@@ -59,8 +62,11 @@ jobs:
         ports:
           - 5432:5432
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Build Typebot
-        uses: ./.github/actions/build
+        uses: ./.github/actions/build-typebot
       - name: Migrate database
         run: pnpm db:migrate
       - name: Run viewer tests
@@ -85,8 +91,11 @@ jobs:
         ports:
           - 5432:5432
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Build Typebot
-        uses: ./.github/actions/build
+        uses: ./.github/actions/build-typebot
       - name: Migrate database
         run: pnpm db:migrate
       - name: Run builder tests
