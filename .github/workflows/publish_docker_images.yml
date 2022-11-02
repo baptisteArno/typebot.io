@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Extract existing image metadata
-        id: ${{ matrix.app }}-meta
+        id: image-meta
         uses: docker/metadata-action@v4
         with:
           images: baptistearno/typebot-${{ matrix.app }}
@@ -41,7 +41,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.builder-meta.outputs.tags }}
-          labels: ${{ steps.builder-meta.outputs.labels }}
+          tags: ${{ steps.image-meta.outputs.tags }}
+          labels: ${{ steps.image-meta.outputs.labels }}
           build-args: |
             SCOPE=${{ matrix.app }}
