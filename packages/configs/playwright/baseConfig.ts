@@ -27,13 +27,12 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
     timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
   },
   retries: process.env.NO_RETRIES ? 0 : 1,
-  workers: process.env.CI ? 1 : 3,
+  workers: process.env.CI ? 2 : 3,
   reporter: [[process.env.CI ? 'github' : 'list'], ['html']],
   maxFailures: process.env.CI ? 10 : undefined,
   webServer: process.env.CI
     ? {
         command: 'pnpm run start',
-        port: 3000,
         timeout: 60_000,
         reuseExistingServer: true,
       }

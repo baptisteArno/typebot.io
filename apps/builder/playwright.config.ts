@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
   webServer: process.env.CI
     ? {
         ...(playwrightBaseConfig.webServer as { command: string }),
-        port: 3001,
+        port: 3000,
       }
     : undefined,
   use: {
