@@ -4,7 +4,6 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "dist/**", "build/**"],
-      "inputs": ["**/*.tsx", "**/*.ts", "**/*.js"],
       "outputMode": "new-only"
     },
     "db#build": {

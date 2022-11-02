@@ -1,38 +1,42 @@
-name: Publish Docker images
+name: Build Docker images
 
 on:
   create:
     tags: ['v*']
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  push_builder:
-    name: Builder
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ['builder', 'viewer']
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Extract Builder meta
-        id: builder-meta
+      - name: Extract existing image metadata
+        id: ${{ matrix.app }}-meta
         uses: docker/metadata-action@v4
         with:
-          images: baptistearno/typebot-builder
+          images: baptistearno/typebot-${{ matrix.app }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
-      - name: Log in to Docker Hub
-        if: github.event_name != 'pull_request'
+      - if: github.event_name != 'pull_request'
+        name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push builder image
+      - name: Build image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -40,38 +44,4 @@ jobs:
           tags: ${{ steps.builder-meta.outputs.tags }}
           labels: ${{ steps.builder-meta.outputs.labels }}
           build-args: |
-            SCOPE=builder
-  push_viewer:
-    name: Viewer
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Extract Viewer meta
-        id: viewer-meta
-        uses: docker/metadata-action@v4
-        with:
-          images: baptistearno/typebot-viewer
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-
-      - name: Log in to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push viewer image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.viewer-meta.outputs.tags }}
-          labels: ${{ steps.viewer-meta.outputs.labels }}
-          build-args: |
-            SCOPE=viewer
+            SCOPE=${{ matrix.app }}
