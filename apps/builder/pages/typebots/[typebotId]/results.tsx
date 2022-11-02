@@ -2,7 +2,6 @@ import { Seo } from 'components/Seo'
 import { TypebotHeader } from 'components/shared/TypebotHeader'
 import React, { useMemo } from 'react'
 import { HStack, Button, Tag, Flex, Text } from '@chakra-ui/react'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { ResultsContent } from 'components/results/ResultsContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
@@ -14,6 +13,7 @@ import { ResultsProvider } from 'contexts/ResultsProvider'
 import { UnlockPlanInfo } from 'components/shared/Info'
 import { getChatsLimit, getStorageLimit } from 'utils'
 import { useUsage } from 'components/dashboard/WorkspaceSettingsModal/BillingContent/UsageContent/useUsage'
+import Link from 'next/link'
 
 const ALERT_CHATS_PERCENT_THRESHOLD = 80
 const ALERT_STORAGE_PERCENT_THRESHOLD = 80
@@ -130,7 +130,7 @@ const ResultsPage = () => {
         >
           <HStack maxW="1600px" w="full" px="4">
             <Button
-              as={NextChakraLink}
+              as={Link}
               colorScheme={!isAnalytics ? 'blue' : 'gray'}
               variant={!isAnalytics ? 'outline' : 'ghost'}
               size="sm"
@@ -144,7 +144,7 @@ const ResultsPage = () => {
               )}
             </Button>
             <Button
-              as={NextChakraLink}
+              as={Link}
               colorScheme={isAnalytics ? 'blue' : 'gray'}
               variant={isAnalytics ? 'outline' : 'ghost'}
               href={`/typebots/${typebot?.id}/results/analytics`}

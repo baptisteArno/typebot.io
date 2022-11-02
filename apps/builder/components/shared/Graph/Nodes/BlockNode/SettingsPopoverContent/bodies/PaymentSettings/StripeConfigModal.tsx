@@ -18,12 +18,11 @@ import { CredentialsType, StripeCredentialsData } from 'models'
 import React, { useState } from 'react'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Input } from 'components/shared/Textbox'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { MoreInfoTooltip } from 'components/shared/MoreInfoTooltip'
-import { ExternalLinkIcon } from 'assets/icons'
 import { createCredentials } from 'services/credentials'
 import { omit } from 'utils'
 import { useToast } from 'components/shared/hooks/useToast'
+import { TextLink } from 'components/shared/TextLink'
 
 type Props = {
   isOpen: boolean
@@ -157,13 +156,9 @@ export const StripeConfigModal = ({
 
             <Text>
               (You can find your keys{' '}
-              <NextChakraLink
-                href="https://dashboard.stripe.com/apikeys"
-                isExternal
-                textDecor="underline"
-              >
-                here <ExternalLinkIcon />
-              </NextChakraLink>
+              <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
+                here
+              </TextLink>
               )
             </Text>
           </Stack>

@@ -28,7 +28,7 @@ test('should work as expected', async ({ page, browser }) => {
   await expect(
     typebotViewer(page).locator(`text="3 files uploaded"`)
   ).toBeVisible()
-  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text="api.json"')).toHaveAttribute(
     'href',
     /.+\/api\.json/
@@ -52,7 +52,7 @@ test('should work as expected', async ({ page, browser }) => {
   const file = readFileSync(downloadPath as string).toString()
   const { data } = parse(file)
   expect(data).toHaveLength(2)
-  expect((data[1] as unknown[])[1]).toContain('http://localhost:9000')
+  expect((data[1] as unknown[])[1]).toContain(process.env.S3_ENDPOINT)
 
   const urls = (
     await Promise.all(
@@ -72,17 +72,7 @@ test('should work as expected', async ({ page, browser }) => {
   await page.locator('button >> text="Delete" >> nth=1').click()
   await expect(page.locator('text="api.json"')).toBeHidden()
   await page2.goto(urls[0])
-  await expect(
-    page2.locator('span:has-text("The specified key does not exist.")')
-  ).toBeVisible()
-  await page2.goto(urls[1])
-  await expect(
-    page2.locator('span:has-text("The specified key does not exist.")')
-  ).toBeVisible()
-  await page2.goto(urls[2])
-  await expect(
-    page2.locator('span:has-text("The specified key does not exist.")')
-  ).toBeVisible()
+  await expect(page2.locator('pre')).toBeHidden()
 })
 
 // TODO: uncomment on 1st of November
@@ -124,7 +114,7 @@ test('should work as expected', async ({ page, browser }) => {
 //     await page.evaluate(() =>
 //       window.localStorage.setItem('workspaceId', 'starterWorkspace')
 //     )
-//     await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
+//     await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
 //     await expect(page.locator('text="150%"')).toBeVisible()
 //     await expect(page.locator('text="api.json"')).toBeHidden()
 //   })

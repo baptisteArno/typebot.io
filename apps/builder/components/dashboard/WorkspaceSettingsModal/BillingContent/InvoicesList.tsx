@@ -14,8 +14,8 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { DownloadIcon, FileIcon } from 'assets/icons'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { Workspace } from 'db'
+import Link from 'next/link'
 import React from 'react'
 import { useInvoicesQuery } from './queries/useInvoicesQuery'
 
@@ -54,12 +54,12 @@ export const InvoicesList = ({ workspace }: Props) => {
                   <Td>{getFormattedPrice(invoice.amount, invoice.currency)}</Td>
                   <Td>
                     <IconButton
-                      as={NextChakraLink}
+                      as={Link}
                       size="xs"
                       icon={<DownloadIcon />}
                       variant="outline"
                       href={invoice.url}
-                      isExternal
+                      target="_blank"
                       aria-label={'Download invoice'}
                     />
                   </Td>

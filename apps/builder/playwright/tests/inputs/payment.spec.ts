@@ -26,19 +26,19 @@ test.describe('Payment input block', () => {
     await page.fill('[placeholder="Typebot"]', 'My Stripe Account')
     await page.fill(
       '[placeholder="sk_test_..."]',
-      process.env.STRIPE_TEST_SECRET_KEY ?? ''
+      process.env.STRIPE_SECRET_KEY ?? ''
     )
     await page.fill(
       '[placeholder="sk_live_..."]',
-      process.env.STRIPE_TEST_SECRET_KEY ?? ''
+      process.env.STRIPE_SECRET_KEY ?? ''
     )
     await page.fill(
       '[placeholder="pk_test_..."]',
-      process.env.STRIPE_TEST_PUBLIC_KEY ?? ''
+      process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY ?? ''
     )
     await page.fill(
       '[placeholder="pk_live_..."]',
-      process.env.STRIPE_TEST_PUBLIC_KEY ?? ''
+      process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY ?? ''
     )
     await expect(page.locator('button >> text="Connect"')).toBeEnabled()
     await page.click('button >> text="Connect"')
@@ -66,6 +66,9 @@ test.describe('Payment input block', () => {
     await stripePaymentForm(page)
       .locator(`[placeholder="1234 1234 1234 1234"]`)
       .fill('4242424242424242')
+    const zipInput = stripePaymentForm(page).getByPlaceholder('90210')
+    const isZipInputVisible = await zipInput.isVisible()
+    if (isZipInputVisible) await zipInput.fill('12345')
     await typebotViewer(page).locator(`text="Pay 30€"`).click()
     await expect(typebotViewer(page).locator(`text="Success"`)).toBeVisible()
   })

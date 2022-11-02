@@ -1,7 +1,10 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
 import path from 'path'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import {
+  importTypebotInDatabase,
+  injectFakeResults,
+} from 'utils/playwright/databaseActions'
 import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
@@ -13,6 +16,7 @@ test('analytics are not available for non-pro workspaces', async ({ page }) => {
       workspaceId: starterWorkspaceId,
     }
   )
+  await injectFakeResults({ typebotId, count: 10 })
   await page.goto(`/typebots/${typebotId}/results/analytics`)
   const firstDropoffBox = page.locator('text="%" >> nth=0')
   await firstDropoffBox.hover()

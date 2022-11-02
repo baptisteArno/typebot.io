@@ -1,7 +1,7 @@
 import { HStack, Stack, Text } from '@chakra-ui/react'
 import { StripeClimateLogo } from 'assets/logos/StripeClimateLogo'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { ChangePlanForm } from 'components/shared/ChangePlanForm'
+import { TextLink } from 'components/shared/TextLink'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
 import React from 'react'
@@ -33,13 +33,9 @@ export const BillingContent = () => {
           <Text fontSize="xs" color="gray.500">
             Typebot is contributing 1% of your subscription to remove CO₂ from
             the atmosphere.{' '}
-            <NextChakraLink
-              href="https://climate.stripe.com/5VCRAq"
-              isExternal
-              textDecor="underline"
-            >
+            <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
               More info.
-            </NextChakraLink>
+            </TextLink>
           </Text>
         </HStack>
         {workspace.plan !== Plan.CUSTOM &&

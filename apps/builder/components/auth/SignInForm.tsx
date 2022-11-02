@@ -19,9 +19,9 @@ import {
 import { DividerWithText } from './DividerWithText'
 import { SocialLoginButtons } from './SocialLoginButtons'
 import { useRouter } from 'next/router'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { useToast } from 'components/shared/hooks/useToast'
+import { TextLink } from 'components/shared/TextLink'
 
 type Props = {
   defaultEmail?: string
@@ -76,14 +76,12 @@ export const SignInForm = ({
     return (
       <Text>
         You need to{' '}
-        <NextChakraLink
+        <TextLink
           href="https://docs.typebot.io/self-hosting/configuration"
           isExternal
-          color="blue.400"
-          textDecor="underline"
         >
           configure at least one auth provider
-        </NextChakraLink>{' '}
+        </TextLink>{' '}
         (Email, Google, GitHub, Facebook or Azure AD).
       </Text>
     )

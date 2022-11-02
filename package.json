@@ -1,5 +1,5 @@
 {
-  "version": "2.8.2",
+  "version": "2.8.3",
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -12,23 +12,24 @@
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "dev": "pnpm docker:up && NEXT_PUBLIC_E2E_TEST=false turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
     "dev:mocking": "pnpm docker:up && NEXT_PUBLIC_E2E_TEST=true turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
-    "build": "pnpm docker:up && turbo run build",
-    "build:builder": "turbo run build --filter=builder... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh",
-    "build:viewer": "turbo run build --filter=viewer... && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
+    "build": "pnpm docker:up && TURBO_CI_VENDOR_ENV_KEY=NEXT_PUBLIC_ turbo run build",
+    "build:builder": "TURBO_CI_VENDOR_ENV_KEY=NEXT_PUBLIC_ turbo run build --filter=builder... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh",
+    "build:viewer": "TURBO_CI_VENDOR_ENV_KEY=NEXT_PUBLIC_ turbo run build --filter=viewer... && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
     "build:landing-page": "turbo run build --filter=landing-page... && ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash env.sh",
     "test:builder": "cd apps/builder && pnpm test",
-    "lint": "turbo run lint",
+    "test:viewer": "cd apps/viewer && pnpm test",
     "db:migrate": "cd packages/db && pnpm migration:deploy",
+    "build:ci": "turbo run build --filter=builder... --filter=viewer... && ENVSH_ENV=./apps/builder/.env.docker ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh && ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
     "generate-change-log": "pnpx gitmoji-changelog"
   },
   "devDependencies": {
     "cz-emoji": "1.3.2-canary.2",
-    "turbo": "1.5.6"
+    "turbo": "1.6.3"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@7.12.2"
+  "packageManager": "pnpm@7.14.0"
 }

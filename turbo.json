@@ -9,15 +9,9 @@
     "db#build": {
       "cache": false
     },
-    "test": {
-      "dependsOn": [],
-      "outputs": []
-    },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
-      "dependsOn": ["^dev"]
+      "dependsOn": ["^dev"],
+      "cache": false
     }
   }
 }

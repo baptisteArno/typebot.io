@@ -17,10 +17,17 @@ const mockSmtpCredentials: SmtpCredentialsData = {
   password: 'yXZChpPy25Qa5yBbeH',
 }
 
+test.beforeAll(async () => {
+  try {
+    const credentialsId = 'send-email-credentials'
+    await createSmtpCredentials(credentialsId, mockSmtpCredentials)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 test('should send an email', async ({ page }) => {
   const typebotId = cuid()
-  const credentialsId = 'send-email-credentials'
-  await createSmtpCredentials(credentialsId, mockSmtpCredentials)
   await importTypebotInDatabase(
     path.join(__dirname, '../fixtures/typebots/sendEmail.json'),
     { id: typebotId, publicId: `${typebotId}-public` }
@@ -41,7 +48,7 @@ test('should send an email', async ({ page }) => {
   await expect(
     page.locator('text="<baptiste.arnaud95@gmail.com>" >> nth=0')
   ).toBeVisible()
-  await page.goto(`${process.env.BUILDER_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

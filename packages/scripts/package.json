@@ -5,17 +5,19 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
-    "start:local": "ts-node index.ts",
-    "start:staging": "NODE_ENV=staging ts-node index.ts",
-    "start:prod": "NODE_ENV=production ts-node index.ts"
+    "start:local": "tsx index.ts",
+    "start:staging": "NODE_ENV=staging tsx index.ts",
+    "start:prod": "NODE_ENV=production tsx index.ts"
   },
   "devDependencies": {
-    "@types/node": "18.11.0",
+    "@types/node": "18.11.9",
+    "axios": "^1.1.3",
     "db": "workspace:*",
+    "emails": "workspace:*",
+    "got": "12.5.2",
     "models": "workspace:*",
-    "ts-node": "10.9.1",
+    "tsx": "3.11.0",
     "typescript": "4.8.4",
-    "utils": "workspace:*",
-    "emails": "workspace:*"
+    "utils": "workspace:*"
   }
 }

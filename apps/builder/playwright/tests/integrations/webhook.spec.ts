@@ -24,7 +24,7 @@ test.describe('Webhook block', () => {
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste webhook URL..."]',
-      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook-easy-config`
+      `${process.env.NEXTAUTH_URL}/api/mock/webhook-easy-config`
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
@@ -46,7 +46,7 @@ test.describe('Webhook block', () => {
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste webhook URL..."]',
-      `${process.env.PLAYWRIGHT_BUILDER_TEST_BASE_URL}/api/mock/webhook`
+      `${process.env.NEXTAUTH_URL}/api/mock/webhook`
     )
     await page.click('text=Advanced configuration')
     await page.click('text=GET')

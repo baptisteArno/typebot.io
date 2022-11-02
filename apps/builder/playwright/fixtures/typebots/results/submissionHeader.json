@@ -119,12 +119,12 @@
       "graphCoordinates": { "x": 639, "y": 142 }
     },
     {
-      "id": "q5dAhqSTCaNdiGSJm9B9Rw",
+      "id": "group1",
       "blocks": [
         {
           "id": "sgtE2Sy7cKykac9B223Kq9R",
           "type": "text",
-          "groupId": "q5dAhqSTCaNdiGSJm9B9Rw",
+          "groupId": "group1",
           "content": {
             "html": "<div>What&#x27;s your name?</div>",
             "richText": [
@@ -134,9 +134,9 @@
           }
         },
         {
-          "id": "sqEsMo747LTDnY9FjQcEwUv",
+          "id": "block1",
           "type": "text input",
-          "groupId": "q5dAhqSTCaNdiGSJm9B9Rw",
+          "groupId": "group1",
           "options": {
             "isLong": false,
             "labels": {

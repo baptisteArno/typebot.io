@@ -36,8 +36,8 @@ export const Testimonial = (props: TestimonialProps) => {
           src={image}
           alt={name}
           placeholder="blur"
-          width="80px"
-          height="80px"
+          width={80}
+          height={80}
           className="rounded-full"
         />
         <Box>

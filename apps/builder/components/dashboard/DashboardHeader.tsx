@@ -12,7 +12,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { TypebotLogo } from 'assets/logos'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import {
   ChevronLeftIcon,
   HardDriveIcon,
@@ -27,6 +26,7 @@ import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { WorkspaceSettingsModal } from './WorkspaceSettingsModal'
 import { isNotDefined } from 'utils'
 import { PlanTag } from 'components/shared/PlanTag'
+import Link from 'next/link'
 
 export const DashboardHeader = () => {
   const { user } = useUser()
@@ -52,13 +52,9 @@ export const DashboardHeader = () => {
         maxW="1000px"
         flex="1"
       >
-        <NextChakraLink
-          className="w-24"
-          href="/typebots"
-          data-testid="typebot-logo"
-        >
+        <Link href="/typebots" data-testid="typebot-logo">
           <TypebotLogo w="30px" />
-        </NextChakraLink>
+        </Link>
         <HStack>
           {user && workspace && (
             <WorkspaceSettingsModal

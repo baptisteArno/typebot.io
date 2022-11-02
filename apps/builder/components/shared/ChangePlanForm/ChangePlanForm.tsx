@@ -1,9 +1,9 @@
 import { Stack, HStack, Text } from '@chakra-ui/react'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { Plan } from 'db'
 import { useToast } from '../hooks/useToast'
+import { TextLink } from '../TextLink'
 import { ProPlanContent } from './ProPlanContent'
 import { pay } from './queries/updatePlan'
 import { useCurrentSubscriptionInfo } from './queries/useCurrentSubscriptionInfo'
@@ -89,13 +89,9 @@ export const ChangePlanForm = () => {
       </HStack>
       <Text color="gray.500">
         Need custom limits? Specific features?{' '}
-        <NextChakraLink
-          href={'https://typebot.io/enterprise-lead-form'}
-          isExternal
-          textDecor="underline"
-        >
+        <TextLink href={'https://typebot.io/enterprise-lead-form'} isExternal>
           Let's chat!
-        </NextChakraLink>
+        </TextLink>
       </Text>
     </Stack>
   )

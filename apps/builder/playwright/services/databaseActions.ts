@@ -10,7 +10,7 @@ import { proWorkspaceId } from 'utils/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 
-const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY ?? '', {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-08-01',
 })
 

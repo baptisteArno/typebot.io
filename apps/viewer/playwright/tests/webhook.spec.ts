@@ -4,12 +4,15 @@ import path from 'path'
 import { HttpMethod } from 'models'
 import {
   createWebhook,
+  deleteTypebots,
+  deleteWebhooks,
   importTypebotInDatabase,
 } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
-test('should execute webhooks properly', async ({ page }) => {
-  const typebotId = cuid()
+const typebotId = cuid()
+
+test.beforeEach(async () => {
   await importTypebotInDatabase(
     path.join(__dirname, '../fixtures/typebots/webhook.json'),
     { id: typebotId, publicId: `${typebotId}-public` }
@@ -38,7 +41,18 @@ test('should execute webhooks properly', async ({ page }) => {
     method: HttpMethod.POST,
     body: `{{Full body}}`,
   })
+})
 
+test.afterEach(async () => {
+  await deleteTypebots([typebotId])
+  await deleteWebhooks([
+    'failing-webhook',
+    'partial-body-webhook',
+    'full-body-webhook',
+  ])
+})
+
+test('should execute webhooks properly', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
   await typebotViewer(page).locator('text=Send failing webhook').click()
   await typebotViewer(page)

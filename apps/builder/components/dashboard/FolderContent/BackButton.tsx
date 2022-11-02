@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react'
 import { ChevronLeftIcon } from 'assets/icons'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useTypebotDnd } from 'contexts/TypebotDndContext'
+import Link from 'next/link'
 import React, { useMemo } from 'react'
 
 export const BackButton = ({ id }: { id: string | null }) => {
@@ -17,7 +17,7 @@ export const BackButton = ({ id }: { id: string | null }) => {
   const handleMouseLeave = () => setMouseOverFolderId(undefined)
   return (
     <Button
-      as={NextChakraLink}
+      as={Link}
       href={id ? `/typebots/folders/${id}` : '/typebots'}
       leftIcon={<ChevronLeftIcon />}
       variant={'outline'}
