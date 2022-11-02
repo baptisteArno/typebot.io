@@ -7,7 +7,8 @@
   "private": true,
   "devDependencies": {
     "@playwright/test": "1.27.1",
-    "@types/node": "18.11.3",
+    "@types/node": "18.11.9",
+    "dotenv": "16.0.3",
     "utils": "workspace:*"
   }
 }

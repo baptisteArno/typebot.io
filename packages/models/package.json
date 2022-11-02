@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "typescript": "4.8.4",
-    "next": "12.3.1",
+    "next": "13.0.1",
     "db": "workspace:*"
   },
   "peerDependencies": {

@@ -4,7 +4,7 @@ import fs from 'fs'
 
 const builderLocalEnvPath = path.join(
   __dirname,
-  '../../apps/builder/.env.local'
+  '../../../apps/builder/.env.local'
 )
 const localViewerEnvPath = path.join(
   __dirname,
@@ -38,7 +38,6 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
       }
     : undefined,
   use: {
-    actionTimeout: 0,
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     locale: 'en-US',

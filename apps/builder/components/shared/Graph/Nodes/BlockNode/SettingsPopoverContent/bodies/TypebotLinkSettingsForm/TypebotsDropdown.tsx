@@ -1,8 +1,8 @@
 import { HStack, IconButton, Input } from '@chakra-ui/react'
 import { ExternalLinkIcon } from 'assets/icons'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { useToast } from 'components/shared/hooks/useToast'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useTypebots } from 'services/typebots'
@@ -54,7 +54,7 @@ export const TypebotsDropdown = ({
         <IconButton
           aria-label="Navigate to typebot"
           icon={<ExternalLinkIcon />}
-          as={NextChakraLink}
+          as={Link}
           href={`/typebots/${currentTypebot?.id}/edit?parentId=${query.typebotId}`}
         />
       )}

@@ -13,9 +13,9 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { GoogleLogo } from 'assets/logos'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { Info } from 'components/shared/Info'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import Link from 'next/link'
 import React from 'react'
 import { getGoogleSheetsConsentScreenUrl } from 'services/integrations'
 
@@ -53,7 +53,7 @@ export const GoogleSheetConnectModal = ({
           />
           <Flex>
             <Button
-              as={NextChakraLink}
+              as={Link}
               leftIcon={<GoogleLogo />}
               data-testid="google"
               isLoading={['loading', 'authenticated'].includes(status)}

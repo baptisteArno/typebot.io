@@ -8,7 +8,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { BuoyIcon, ChevronLeftIcon, RedoIcon, UndoIcon } from 'assets/icons'
-import { NextChakraLink } from 'components/nextChakra/NextChakraLink'
 import { RightPanel, useEditor } from 'contexts/EditorContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { useRouter } from 'next/router'
@@ -20,6 +19,7 @@ import { CollaborationMenuButton } from './CollaborationMenuButton'
 import { EditableTypebotName } from './EditableTypebotName'
 import { getBubbleActions } from 'typebot-js'
 import { isCloudProdInstance } from 'services/utils'
+import Link from 'next/link'
 
 export const headerHeight = 56
 
@@ -71,7 +71,7 @@ export const TypebotHeader = () => {
         right={{ base: 280, xl: 0 }}
       >
         <Button
-          as={NextChakraLink}
+          as={Link}
           href={`/typebots/${typebot?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
@@ -80,7 +80,7 @@ export const TypebotHeader = () => {
           Flow
         </Button>
         <Button
-          as={NextChakraLink}
+          as={Link}
           href={`/typebots/${typebot?.id}/theme`}
           colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
@@ -89,7 +89,7 @@ export const TypebotHeader = () => {
           Theme
         </Button>
         <Button
-          as={NextChakraLink}
+          as={Link}
           href={`/typebots/${typebot?.id}/settings`}
           colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
@@ -98,7 +98,7 @@ export const TypebotHeader = () => {
           Settings
         </Button>
         <Button
-          as={NextChakraLink}
+          as={Link}
           href={`/typebots/${typebot?.id}/share`}
           colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
@@ -108,7 +108,7 @@ export const TypebotHeader = () => {
         </Button>
         {typebot?.publishedTypebotId && (
           <Button
-            as={NextChakraLink}
+            as={Link}
             href={`/typebots/${typebot?.id}/results`}
             colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
             variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
@@ -127,7 +127,7 @@ export const TypebotHeader = () => {
       >
         <HStack alignItems="center" spacing={3}>
           <IconButton
-            as={NextChakraLink}
+            as={Link}
             aria-label="Navigate back"
             icon={<ChevronLeftIcon fontSize={25} />}
             href={
