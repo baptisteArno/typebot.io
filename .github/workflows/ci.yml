@@ -39,6 +39,7 @@ env:
   SENTRY_IGNORE_API_RESOLUTION_ERROR: 1
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_CI_VENDOR_ENV_KEY: NEXT_PUBLIC_
 
 jobs:
   build:

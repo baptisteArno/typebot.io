@@ -4,21 +4,12 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "dist/**", "build/**"],
+      "inputs": ["**/*.tsx", "**/*.ts", "**/*.js"],
       "outputMode": "new-only"
     },
-    "db#build": {
-      "cache": false
-    },
-    "test": {
-      "dependsOn": [],
-      "outputs": []
-    },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
-      "dependsOn": ["^dev"]
-    },
-    "start": {}
+      "dependsOn": ["^dev"],
+      "cache": false
+    }
   }
 }
