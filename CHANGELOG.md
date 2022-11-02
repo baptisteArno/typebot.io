@@ -1,27 +1,51 @@
 # Changelog
 
-<a name="2.8.2"></a>
+<a name="2.8.4"></a>
 
-## 2.8.2 (2022-10-16)
+## 2.8.4 (2022-11-02)
+
+### Fixed
+
+- 💚 Fix build docker image workflow [[8a8f3ec](https://github.com/baptisteArno/typebot.io/commit/8a8f3ec69a69dc7e3d6aaf6fe5b87b3c64febd0b)]
+
+<a name="2.8.3"></a>
+
+## 2.8.3 (2022-11-02)
 
 ### Added
 
+- ✨ (billing) Implement custom plan [[385853c](https://github.com/baptisteArno/typebot.io/commit/385853ca3c80d04635be91b84db8be54c85bf437)]
+- 👷‍♂️ Auto move project card to review column [[3f7dc79](https://github.com/baptisteArno/typebot.io/commit/3f7dc79918cf8455d33d0b64a90dfa9bc3e83a74)]
+- 👷‍♂️ Add script to deploy only dev or main branches on Vercel [[8582c6e](https://github.com/baptisteArno/typebot.io/commit/8582c6e841797dfe98685907663b145bc1cb675d)]
+- 👷‍♂️ Add auto link labeled issues to project [[e2e1c09](https://github.com/baptisteArno/typebot.io/commit/e2e1c098a215a80cd026235a2cca50efc642303e)]
+- ✅ (webhook) Improve bot test [[264711b](https://github.com/baptisteArno/typebot.io/commit/264711b02957e043a0f1add65842ec903c80acd7)]
+- ✨ (lp) Add custom chats and storage in pricing cards [[57c814c](https://github.com/baptisteArno/typebot.io/commit/57c814ceca777379b7a4b2a3657fac944435e9e2)]
 - 👷‍♂️ Add auto tag and release actions [[f9a8e78](https://github.com/baptisteArno/typebot.io/commit/f9a8e789047c55fffa475eb3b87e51a3324e65a9)]
 - ✨ (template) Add FAQ bot template [[b87ba40](https://github.com/baptisteArno/typebot.io/commit/b87ba4023dea7b47c835fe11a9d36a653d5469b0)]
 
 ### Changed
 
+- 🚸 (googleSheets) Set value to null if not found from sheet [[4828547](https://github.com/baptisteArno/typebot.io/commit/48285479cc23377ba54bd61ad9a77f0e077c8592)]
+- 🚸 (textBubble) Allow mailto and tel links [[baa63a7](https://github.com/baptisteArno/typebot.io/commit/baa63a781066879c0e01cfe85fcf584beb40c018)]
+- 🗃️ Add typebotId index on Result table [[f8e770c](https://github.com/baptisteArno/typebot.io/commit/f8e770c8757b93e751ddb117f7d303600ec0b517)]
+- 🚸 (share) Sanitize URL ID [[020a37c](https://github.com/baptisteArno/typebot.io/commit/020a37c1f32a1d0b44246c9364df471fe8ed51ce)]
 - ⚡ (bot) Improve variables parsing and predictability [[3dc3ab2](https://github.com/baptisteArno/typebot.io/commit/3dc3ab201db001eff8319cb8978c1073b79f1198)]
 - 🚸 (bot) disable auto focus on mobile [[40d2db5](https://github.com/baptisteArno/typebot.io/commit/40d2db59dc5168c0dd55eb9f790f308cdf63e333)]
 - 🏗️ Use tsup for bot and typebot-js packages [[e8baaca](https://github.com/baptisteArno/typebot.io/commit/e8baaca2a2a44a80a40518e08f0af36c6528ce2a)]
 
 ### Fixed
 
+- 🐛 (billing) Upgrade again after cancelling [[d132cb1](https://github.com/baptisteArno/typebot.io/commit/d132cb118afee2bcaaf43f31e0fe0b155aff8e80)]
+- 🐛 (settings) Fix remember session switch [[36a2fe3](https://github.com/baptisteArno/typebot.io/commit/36a2fe3a70a7373fd08d72ba362bc5249b1078a8)]
+- 🚑 (bot) Fix set variable number computation [[7b0bd08](https://github.com/baptisteArno/typebot.io/commit/7b0bd08dc81ac61d6788630a0b18097d0183147e)]
+- 🐛 (analytics) Fix multi usage query timeout [[9cb7f8c](https://github.com/baptisteArno/typebot.io/commit/9cb7f8cd96338a8736686cfd1e73a72dcb401164)]
+- 💚 Fix auto release actions [[f437ad6](https://github.com/baptisteArno/typebot.io/commit/f437ad6473562025ec2134805709390e000a0f5a)]
 - 🐛 (editor) inconsistency in route change auto save [[b46d352](https://github.com/baptisteArno/typebot.io/commit/b46d35214d68fc60719128d5ea50b26d0a1b1e4d)]
 - 🐛 (stripe) add back subscription delete webhook handler [[d1cc918](https://github.com/baptisteArno/typebot.io/commit/d1cc9180c893db8d230af9acf52f8a3beaed6e54)]
 
 ### Miscellaneous
 
+- 📝 Add instruction for AWS S3 endpoint [[d6dffa9](https://github.com/baptisteArno/typebot.io/commit/d6dffa924eb0368c26fb3139856338197aa75281)]
 - 📦 Update packages [[ff52a67](https://github.com/baptisteArno/typebot.io/commit/ff52a676f6c31be9a3b80a7b4d7710def5204958)]
 
 <a name="2.8.1"></a>
