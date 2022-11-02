@@ -7,6 +7,9 @@
       "inputs": ["**/*.tsx", "**/*.ts", "**/*.js"],
       "outputMode": "new-only"
     },
+    "db#build": {
+      "cache": false
+    },
     "dev": {
       "dependsOn": ["^dev"],
       "cache": false
