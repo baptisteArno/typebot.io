@@ -11,23 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Extract body from changelog
-        id: extract
         run: |
           NEW_VERSION=$(echo '${{ github.ref }}' | sed 's/refs\/tags\/v//')
           echo $NEW_VERSION
-          RELEASE_BODY=$(sed -n -e "/## ${NEW_VERSION}/,/<a/ p" ./CHANGELOG.md | sed -e '2d;$d')
-          echo "::set-output name=body::${RELEASE_BODY}"
+          sed -n -e "/## ${NEW_VERSION}/,/<a/ p" ./CHANGELOG.md | sed -e '1,2d' | sed -e '$d' | sed -e '$d' > extractedBody.md
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: |
-            ${{ steps.extract.outputs.body }}
-          draft: false
-          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: 'extractedBody.md'
