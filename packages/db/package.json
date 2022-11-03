@@ -5,7 +5,7 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "dev": "dotenv -e ../../apps/builder/.env.local prisma db push && pnpm generate:schema",
+    "dev": "dotenv -e ../../apps/builder/.env.local prisma db push && pnpm generate:schema && pnpm start:sutdio",
     "build": "pnpm generate:schema",
     "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none prisma studio",
     "generate:schema": "dotenv -e ../../apps/builder/.env.local prisma generate",

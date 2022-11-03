@@ -127,8 +127,10 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
           user: userFromDb,
         }
       },
-      signIn: async ({ account }) => {
-        if (!account) return false
+      signIn: async ({ account, user }) => {
+        const userExists = user?.graphNavigation !== undefined
+        if (!account || (process.env.DISABLE_SIGNUP === 'true' && !userExists))
+          return false
         const requiredGroups = getRequiredGroups(account.provider)
         if (requiredGroups.length > 0) {
           const userGroups = await getUserGroups(account)

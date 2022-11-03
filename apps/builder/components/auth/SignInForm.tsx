@@ -60,15 +60,20 @@ export const SignInForm = ({
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setAuthLoading(true)
-    await signIn('email', {
+    const response = await signIn('email', {
       email: emailValue,
       redirect: false,
     })
-    showToast({
-      status: 'success',
-      title: 'Success!',
-      description: 'Check your inbox to sign in',
-    })
+    response?.error
+      ? showToast({
+          title: 'Unauthorized',
+          description: 'Sign ups are disabled.',
+        })
+      : showToast({
+          status: 'success',
+          title: 'Success!',
+          description: 'Check your inbox to sign in',
+        })
     setAuthLoading(false)
   }
   if (isLoadingProviders) return <Spinner />
