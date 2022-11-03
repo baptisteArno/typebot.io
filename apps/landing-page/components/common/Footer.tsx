@@ -9,8 +9,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { NextChakraLink } from './nextChakraAdapters/NextChakraLink'
 import { Logo } from 'assets/icons/Logo'
+import { TextLink } from './TextLink'
 
 const facebookGroupUrl = 'https://www.facebook.com/groups/typebot'
 const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
@@ -35,64 +35,40 @@ export const Footer = () => {
             </HStack>
             <Text>
               Made with ❤️ by{' '}
-              <NextChakraLink href={baptisteTwitterUrl} color="gray.400">
-                @baptisteArno
-              </NextChakraLink>
+              <TextLink href={baptisteTwitterUrl}>@baptisteArno</TextLink>
             </Text>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Product</ListHeader>
-            <NextChakraLink
-              href={documentationLink}
-              isExternal
-              color="gray.400"
-            >
+            <TextLink href={documentationLink} isExternal>
               Documentation
-            </NextChakraLink>
-            <NextChakraLink href={roadmapLink} isExternal color="gray.400">
+            </TextLink>
+            <TextLink href={roadmapLink} isExternal>
               Roadmap
-            </NextChakraLink>
-            <NextChakraLink href={'/pricing'} color="gray.400">
-              Pricing
-            </NextChakraLink>
+            </TextLink>
+            <TextLink href={'/pricing'}>Pricing</TextLink>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Community</ListHeader>
-            <NextChakraLink href={githubRepoLink} isExternal color="gray.400">
+            <TextLink href={githubRepoLink} isExternal>
               GitHub repository
-            </NextChakraLink>
-            <NextChakraLink href={facebookGroupUrl} isExternal color="gray.400">
+            </TextLink>
+            <TextLink href={facebookGroupUrl} isExternal>
               Facebook Group
-            </NextChakraLink>
-            <NextChakraLink
-              href={typebotTwitterUrl}
-              isExternal
-              color="gray.400"
-            >
+            </TextLink>
+            <TextLink href={typebotTwitterUrl} isExternal>
               Twitter
-            </NextChakraLink>
-            <NextChakraLink
-              href={typebotLinkedInUrl}
-              isExternal
-              color="gray.400"
-            >
+            </TextLink>
+            <TextLink href={typebotLinkedInUrl} isExternal>
               LinkedIn
-            </NextChakraLink>
+            </TextLink>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Company</ListHeader>
-            <NextChakraLink href="/about" color="gray.400">
-              About
-            </NextChakraLink>
-            <NextChakraLink href="mailto:baptiste@typebot.io" color="gray.400">
-              Contact
-            </NextChakraLink>
-            <NextChakraLink href={'/terms-of-service'} color="gray.400">
-              Terms of Service
-            </NextChakraLink>
-            <NextChakraLink href={'/privacy-policies'} color="gray.400">
-              Privacy Policy
-            </NextChakraLink>
+            <TextLink href="/about">About</TextLink>
+            <TextLink href="mailto:baptiste@typebot.io">Contact</TextLink>
+            <TextLink href={'/terms-of-service'}>Terms of Service</TextLink>
+            <TextLink href={'/privacy-policies'}>Privacy Policy</TextLink>
           </Stack>
         </SimpleGrid>
       </Container>

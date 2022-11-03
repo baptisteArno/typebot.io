@@ -16,7 +16,7 @@ export const BillingContent = () => {
   return (
     <Stack spacing="10" w="full">
       <UsageContent workspace={workspace} />
-      <Stack gap="2">
+      <Stack spacing="2">
         <CurrentSubscriptionContent
           plan={workspace.plan}
           stripeId={workspace.stripeId}

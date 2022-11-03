@@ -93,7 +93,7 @@ export const MembersList = () => {
   })
 
   return (
-    <Stack w="full" gap="3">
+    <Stack w="full" spacing={3}>
       {!canInviteNewMember && (
         <UnlockPlanInfo
           contentLabel={`

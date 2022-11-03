@@ -1,5 +1,5 @@
 import { Heading, Button, Text, Flex, VStack } from '@chakra-ui/react'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
+import Link from 'next/link'
 import React from 'react'
 import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
@@ -31,7 +31,7 @@ export const EndCta = () => {
         </Heading>
         <Flex>
           <Button
-            as={NextChakraLink}
+            as={Link}
             href="https://app.typebot.io/register"
             size="lg"
             colorScheme="orange"

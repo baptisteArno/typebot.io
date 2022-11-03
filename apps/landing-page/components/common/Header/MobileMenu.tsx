@@ -1,5 +1,5 @@
 import { Collapse, Stack, Button, Text } from '@chakra-ui/react'
-import { NextChakraLink } from '../nextChakraAdapters/NextChakraLink'
+import Link from 'next/link'
 import { links } from './_data'
 
 type Props = { isOpen: boolean }
@@ -15,7 +15,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
       spacing={4}
     >
       <Button
-        as={NextChakraLink}
+        as={Link}
         href="https://app.typebot.io/signin"
         colorScheme="blue"
         variant="outline"
@@ -24,7 +24,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
         Sign in
       </Button>
       <Button
-        as={NextChakraLink}
+        as={Link}
         href="https://app.typebot.io/register"
         colorScheme="orange"
         fontWeight={700}
@@ -32,7 +32,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
         Create a typebot
       </Button>
       <Button
-        as={NextChakraLink}
+        as={Link}
         href="/pricing"
         variant="outline"
         colorScheme="gray"
@@ -43,7 +43,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
       <Text fontWeight="700">Resources:</Text>
       {links[0].children?.map((link, idx) => (
         <Button
-          as={NextChakraLink}
+          as={Link}
           href={link.href}
           key={idx}
           variant="outline"

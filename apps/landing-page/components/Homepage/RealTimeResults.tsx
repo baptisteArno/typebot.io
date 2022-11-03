@@ -1,8 +1,8 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { TypebotViewer } from 'bot-engine'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { PublicTypebot, Typebot } from 'models'
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { sendRequest } from 'utils'
 
@@ -72,7 +72,7 @@ export const RealTimeResults = () => {
           </Text>
           <Flex>
             <Button
-              as={NextChakraLink}
+              as={Link}
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"

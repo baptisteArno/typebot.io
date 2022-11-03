@@ -9,13 +9,15 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
+import { useEffect, useState } from 'react'
+import { formatPrice } from 'utils'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
 
 export interface PricingCardData {
   features: React.ReactNode[]
   name: string
-  price: string
+  price: number | string
   featureLabel?: string
 }
 
@@ -32,7 +34,12 @@ export const PricingCard = ({
   ...rest
 }: PricingCardProps) => {
   const { features, price, name } = data
+  const [formattedPrice, setFormattedPrice] = useState(price)
   const accentColor = useColorModeValue('blue.500', 'white')
+
+  useEffect(() => {
+    setFormattedPrice(typeof price === 'number' ? formatPrice(price) : price)
+  }, [price])
 
   return (
     <Card rounded="xl" bgColor="gray.800" {...rest}>
@@ -52,9 +59,9 @@ export const PricingCard = ({
             my="8"
           >
             <Heading size="2xl" fontWeight="inherit" lineHeight="0.9em">
-              {price}
+              {formattedPrice}
             </Heading>
-            {(price.includes('$') || price.includes('€')) && (
+            {typeof price === 'number' && (
               <Text fontWeight="inherit" fontSize="xl">
                 / month
               </Text>

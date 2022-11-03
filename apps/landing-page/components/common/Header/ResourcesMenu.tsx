@@ -8,8 +8,8 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { ChevronRightIcon } from 'assets/icons/ChevronRightIcon'
+import Link from 'next/link'
 import * as React from 'react'
-import { NextChakraLink } from '../nextChakraAdapters/NextChakraLink'
 import { links } from './_data'
 
 type Props = { isOpen: boolean }
@@ -29,7 +29,8 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
       <Box maxW="7xl" mx="auto" px="8">
         <SimpleGrid spacing="10" columns={2}>
           {links[0].children?.map((item, idx) => (
-            <NextChakraLink
+            <Box
+              as={Link}
               key={idx}
               className="group"
               href={item.href}
@@ -41,9 +42,11 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
               rounded="lg"
               _hover={{ bg: mode('gray.50', 'gray.600') }}
               _focus={{ shadow: 'outline' }}
-              isExternal={
+              target={
                 item.href.startsWith('https') &&
                 !item.href.includes('app.typebot.io')
+                  ? '_blank'
+                  : undefined
               }
             >
               <Center
@@ -80,7 +83,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
                   {item.description}
                 </Text>
               </Box>
-            </NextChakraLink>
+            </Box>
           ))}
         </SimpleGrid>
       </Box>

@@ -18,8 +18,8 @@ export const StripeClimateLogo = (props: IconProps) => (
       y2="7.8394"
       gradientTransform="matrix(1 0 0 -1 0 34)"
     >
-      <stop offset="0" stop-color="#00d924" />
-      <stop offset="1" stop-color="#00cb1b" />
+      <stop offset="0" stopColor="#00d924" />
+      <stop offset="1" stopColor="#00cb1b" />
     </linearGradient>
     <path
       d="M0 10.82h32c0 8.84-7.16 16-16 16s-16-7.16-16-16z"
@@ -34,8 +34,8 @@ export const StripeClimateLogo = (props: IconProps) => (
       y2="17.2443"
       gradientTransform="matrix(1 0 0 -1 0 34)"
     >
-      <stop offset=".1562" stop-color="#009c00" />
-      <stop offset="1" stop-color="#00be20" />
+      <stop offset=".1562" stopColor="#009c00" />
+      <stop offset="1" stopColor="#00be20" />
     </linearGradient>
     <path
       d="M32 10.82c0 2.21-1.49 4.65-5.41 4.65-3.42 0-7.27-2.37-10.59-4.65 3.52-2.43 7.39-5.63 10.59-5.63C29.86 5.18 32 8.17 32 10.82z"
@@ -50,8 +50,8 @@ export const StripeClimateLogo = (props: IconProps) => (
       y2="29.1239"
       gradientTransform="matrix(1 0 0 -1 0 34)"
     >
-      <stop offset="0" stop-color="#ffe37d" />
-      <stop offset="1" stop-color="#ffc900" />
+      <stop offset="0" stopColor="#ffe37d" />
+      <stop offset="1" stopColor="#ffc900" />
     </linearGradient>
     <path
       d="M0 10.82c0 2.21 1.49 4.65 5.41 4.65 3.42 0 7.27-2.37 10.59-4.65-3.52-2.43-7.39-5.64-10.59-5.64C2.14 5.18 0 8.17 0 10.82z"

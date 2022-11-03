@@ -17,9 +17,10 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from 'assets/icons/CheckIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { Plan } from 'db'
-import React from 'react'
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+import { chatsLimit, formatPrice, storageLimit } from 'utils'
 
 type Props = {
   starterPrice: string
@@ -31,6 +32,20 @@ export const PlanComparisonTables = ({
   proPrice,
   ...props
 }: Props) => {
+  const [additionalChatsPrice, setAdditionalChatsPrice] = useState(
+    `$${chatsLimit.STARTER.increaseStep.price}`
+  )
+  const [additionalStoragePrice, setAdditionalStoragePrice] = useState(
+    `$${storageLimit.STARTER.increaseStep.price}`
+  )
+
+  useEffect(() => {
+    setAdditionalChatsPrice(formatPrice(chatsLimit.STARTER.increaseStep.price))
+    setAdditionalStoragePrice(
+      formatPrice(storageLimit.STARTER.increaseStep.price)
+    )
+  }, [])
+
   return (
     <Stack spacing="12" {...props}>
       <TableContainer>
@@ -61,8 +76,8 @@ export const PlanComparisonTables = ({
             <Tr>
               <Td>Additional Chats</Td>
               <Td />
-              <Td>$10 per 500</Td>
-              <Td>$10 per 1,000</Td>
+              <Td>{additionalChatsPrice} per 500</Td>
+              <Td>{additionalChatsPrice} per 1,000</Td>
             </Tr>
             <Tr>
               <Td>Storage</Td>
@@ -73,8 +88,8 @@ export const PlanComparisonTables = ({
             <Tr>
               <Td>Additional Storage</Td>
               <Td />
-              <Td>$5 per 1 GB</Td>
-              <Td>$5 per 1 GB</Td>
+              <Td>{additionalStoragePrice} per 1 GB</Td>
+              <Td>{additionalStoragePrice} per 1 GB</Td>
             </Tr>
             <Tr>
               <Td>Members</Td>
@@ -331,12 +346,9 @@ export const PlanComparisonTables = ({
             Personal
           </Heading>
           <Heading as="h3">Free</Heading>
-          <NextChakraLink
-            href="https://app.typebot.io/register"
-            _hover={{ textDecor: 'none' }}
-          >
+          <Link href="https://app.typebot.io/register">
             <Button variant="outline">Get started</Button>
-          </NextChakraLink>
+          </Link>
         </Stack>
         <Stack spacing={4}>
           <Heading as="h3" size="md" color="orange.200">
@@ -345,12 +357,11 @@ export const PlanComparisonTables = ({
           <Heading as="h3">
             {starterPrice} <chakra.span fontSize="lg">/ month</chakra.span>
           </Heading>
-          <NextChakraLink
+          <Link
             href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
-            _hover={{ textDecor: 'none' }}
           >
             <Button>Subscribe</Button>
-          </NextChakraLink>
+          </Link>
         </Stack>
         <Stack spacing={4}>
           <Heading as="h3" size="md" color="blue.200">
@@ -359,12 +370,11 @@ export const PlanComparisonTables = ({
           <Heading as="h3">
             {proPrice} <chakra.span fontSize="lg">/ month</chakra.span>
           </Heading>
-          <NextChakraLink
+          <Link
             href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
-            _hover={{ textDecor: 'none' }}
           >
             <Button>Subscribe</Button>
-          </NextChakraLink>
+          </Link>
         </Stack>
       </Stack>
     </Stack>
@@ -378,12 +388,12 @@ const TdWithTooltip = ({
   text: string
   tooltip: string
 }) => (
-  <Td as={HStack}>
+  <HStack as={Td}>
     <Text>{text}</Text>
     <Tooltip hasArrow placement="top" label={tooltip}>
       <chakra.span cursor="pointer">
         <HelpCircleIcon />
       </chakra.span>
     </Tooltip>
-  </Td>
+  </HStack>
 )

@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from 'assets/icons/ChevronDownIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { Plan } from 'db'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import {
   chatsLimit,
@@ -22,10 +22,9 @@ import {
   storageLimit,
 } from 'utils'
 import { PricingCard } from './PricingCard'
-import { ActionButton } from './PricingCard/ActionButton'
 
 export const StarterPlanCard = () => {
-  const [price, setPrice] = useState('39$')
+  const [price, setPrice] = useState(39)
 
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>(0)
@@ -34,13 +33,11 @@ export const StarterPlanCard = () => {
 
   useEffect(() => {
     setPrice(
-      formatPrice(
-        computePrice(
-          Plan.STARTER,
-          selectedChatsLimitIndex ?? 0,
-          selectedStorageLimitIndex ?? 0
-        ) ?? NaN
-      )
+      computePrice(
+        Plan.STARTER,
+        selectedChatsLimitIndex ?? 0,
+        selectedStorageLimitIndex ?? 0
+      ) ?? NaN
     )
   }, [selectedChatsLimitIndex, selectedStorageLimitIndex])
 
@@ -54,67 +51,62 @@ export const StarterPlanCard = () => {
           <Text key="seats">
             <chakra.span fontWeight="bold">2 seats</chakra.span> included
           </Text>,
-          <HStack key="chats">
-            <Text>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  size="sm"
-                  variant="outline"
-                  isLoading={selectedChatsLimitIndex === undefined}
-                  colorScheme="orange"
-                >
-                  {selectedChatsLimitIndex !== undefined
-                    ? parseNumberWithCommas(
-                        chatsLimit.STARTER.totalIncluded +
-                          chatsLimit.STARTER.increaseStep.amount *
-                            selectedChatsLimitIndex
-                      )
-                    : undefined}
-                </MenuButton>
-                <MenuList>
-                  {selectedChatsLimitIndex !== 0 && (
-                    <MenuItem onClick={() => setSelectedChatsLimitIndex(0)}>
-                      {parseNumberWithCommas(chatsLimit.STARTER.totalIncluded)}
-                    </MenuItem>
-                  )}
-                  {selectedChatsLimitIndex !== 1 && (
-                    <MenuItem onClick={() => setSelectedChatsLimitIndex(1)}>
-                      {parseNumberWithCommas(
-                        chatsLimit.STARTER.totalIncluded +
-                          chatsLimit.STARTER.increaseStep.amount
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedChatsLimitIndex !== 2 && (
-                    <MenuItem onClick={() => setSelectedChatsLimitIndex(2)}>
-                      {parseNumberWithCommas(
-                        chatsLimit.STARTER.totalIncluded +
-                          chatsLimit.STARTER.increaseStep.amount * 2
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedChatsLimitIndex !== 3 && (
-                    <MenuItem onClick={() => setSelectedChatsLimitIndex(3)}>
-                      {parseNumberWithCommas(
-                        chatsLimit.STARTER.totalIncluded +
-                          chatsLimit.STARTER.increaseStep.amount * 3
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedChatsLimitIndex !== 4 && (
-                    <MenuItem onClick={() => setSelectedChatsLimitIndex(4)}>
-                      {parseNumberWithCommas(
-                        chatsLimit.STARTER.totalIncluded +
-                          chatsLimit.STARTER.increaseStep.amount * 4
-                      )}
-                    </MenuItem>
-                  )}
-                </MenuList>
-              </Menu>{' '}
-              chats/mo
-            </Text>
+          <HStack key="chats" spacing={1.5}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+              >
+                {parseNumberWithCommas(
+                  chatsLimit.STARTER.totalIncluded +
+                    chatsLimit.STARTER.increaseStep.amount *
+                      selectedChatsLimitIndex
+                )}
+              </MenuButton>
+              <MenuList>
+                {selectedChatsLimitIndex !== 0 && (
+                  <MenuItem onClick={() => setSelectedChatsLimitIndex(0)}>
+                    {parseNumberWithCommas(chatsLimit.STARTER.totalIncluded)}
+                  </MenuItem>
+                )}
+                {selectedChatsLimitIndex !== 1 && (
+                  <MenuItem onClick={() => setSelectedChatsLimitIndex(1)}>
+                    {parseNumberWithCommas(
+                      chatsLimit.STARTER.totalIncluded +
+                        chatsLimit.STARTER.increaseStep.amount
+                    )}
+                  </MenuItem>
+                )}
+                {selectedChatsLimitIndex !== 2 && (
+                  <MenuItem onClick={() => setSelectedChatsLimitIndex(2)}>
+                    {parseNumberWithCommas(
+                      chatsLimit.STARTER.totalIncluded +
+                        chatsLimit.STARTER.increaseStep.amount * 2
+                    )}
+                  </MenuItem>
+                )}
+                {selectedChatsLimitIndex !== 3 && (
+                  <MenuItem onClick={() => setSelectedChatsLimitIndex(3)}>
+                    {parseNumberWithCommas(
+                      chatsLimit.STARTER.totalIncluded +
+                        chatsLimit.STARTER.increaseStep.amount * 3
+                    )}
+                  </MenuItem>
+                )}
+                {selectedChatsLimitIndex !== 4 && (
+                  <MenuItem onClick={() => setSelectedChatsLimitIndex(4)}>
+                    {parseNumberWithCommas(
+                      chatsLimit.STARTER.totalIncluded +
+                        chatsLimit.STARTER.increaseStep.amount * 4
+                    )}
+                  </MenuItem>
+                )}
+              </MenuList>
+            </Menu>{' '}
+            <Text>chats/mo</Text>
             <Tooltip
               hasArrow
               placement="top"
@@ -126,69 +118,65 @@ export const StarterPlanCard = () => {
               </chakra.span>
             </Tooltip>
           </HStack>,
-          <HStack key="test">
-            <Text>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  size="sm"
-                  variant="outline"
-                  isLoading={selectedStorageLimitIndex === undefined}
-                  colorScheme="orange"
-                >
-                  {selectedStorageLimitIndex !== undefined
-                    ? parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded +
-                          storageLimit.STARTER.increaseStep.amount *
-                            selectedStorageLimitIndex
-                      )
-                    : undefined}
-                </MenuButton>
-                <MenuList>
-                  {selectedStorageLimitIndex !== 0 && (
-                    <MenuItem onClick={() => setSelectedStorageLimitIndex(0)}>
-                      {parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedStorageLimitIndex !== 1 && (
-                    <MenuItem onClick={() => setSelectedStorageLimitIndex(1)}>
-                      {parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded +
-                          storageLimit.STARTER.increaseStep.amount
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedStorageLimitIndex !== 2 && (
-                    <MenuItem onClick={() => setSelectedStorageLimitIndex(2)}>
-                      {parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded +
-                          storageLimit.STARTER.increaseStep.amount * 2
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedStorageLimitIndex !== 3 && (
-                    <MenuItem onClick={() => setSelectedStorageLimitIndex(3)}>
-                      {parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded +
-                          storageLimit.STARTER.increaseStep.amount * 3
-                      )}
-                    </MenuItem>
-                  )}
-                  {selectedStorageLimitIndex !== 4 && (
-                    <MenuItem onClick={() => setSelectedStorageLimitIndex(4)}>
-                      {parseNumberWithCommas(
-                        storageLimit.STARTER.totalIncluded +
-                          storageLimit.STARTER.increaseStep.amount * 4
-                      )}
-                    </MenuItem>
-                  )}
-                </MenuList>
-              </Menu>{' '}
-              GB of storage
-            </Text>
+          <HStack key="storage" spacing={1.5}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                size="sm"
+                variant="outline"
+                isLoading={selectedStorageLimitIndex === undefined}
+                colorScheme="orange"
+              >
+                {selectedStorageLimitIndex !== undefined
+                  ? parseNumberWithCommas(
+                      storageLimit.STARTER.totalIncluded +
+                        storageLimit.STARTER.increaseStep.amount *
+                          selectedStorageLimitIndex
+                    )
+                  : undefined}
+              </MenuButton>
+              <MenuList>
+                {selectedStorageLimitIndex !== 0 && (
+                  <MenuItem onClick={() => setSelectedStorageLimitIndex(0)}>
+                    {parseNumberWithCommas(storageLimit.STARTER.totalIncluded)}
+                  </MenuItem>
+                )}
+                {selectedStorageLimitIndex !== 1 && (
+                  <MenuItem onClick={() => setSelectedStorageLimitIndex(1)}>
+                    {parseNumberWithCommas(
+                      storageLimit.STARTER.totalIncluded +
+                        storageLimit.STARTER.increaseStep.amount
+                    )}
+                  </MenuItem>
+                )}
+                {selectedStorageLimitIndex !== 2 && (
+                  <MenuItem onClick={() => setSelectedStorageLimitIndex(2)}>
+                    {parseNumberWithCommas(
+                      storageLimit.STARTER.totalIncluded +
+                        storageLimit.STARTER.increaseStep.amount * 2
+                    )}
+                  </MenuItem>
+                )}
+                {selectedStorageLimitIndex !== 3 && (
+                  <MenuItem onClick={() => setSelectedStorageLimitIndex(3)}>
+                    {parseNumberWithCommas(
+                      storageLimit.STARTER.totalIncluded +
+                        storageLimit.STARTER.increaseStep.amount * 3
+                    )}
+                  </MenuItem>
+                )}
+                {selectedStorageLimitIndex !== 4 && (
+                  <MenuItem onClick={() => setSelectedStorageLimitIndex(4)}>
+                    {parseNumberWithCommas(
+                      storageLimit.STARTER.totalIncluded +
+                        storageLimit.STARTER.increaseStep.amount * 4
+                    )}
+                  </MenuItem>
+                )}
+              </MenuList>
+            </Menu>{' '}
+            <Text>GB of storage</Text>
             <Tooltip
               hasArrow
               placement="top"
@@ -209,12 +197,17 @@ export const StarterPlanCard = () => {
       borderWidth="1px"
       borderColor="orange.200"
       button={
-        <NextChakraLink
+        <Button
+          as={Link}
           href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}`}
-          _hover={{ textDecor: 'none' }}
+          colorScheme="blue"
+          size="lg"
+          w="full"
+          fontWeight="extrabold"
+          py={{ md: '8' }}
         >
-          <ActionButton>Subscribe now</ActionButton>
-        </NextChakraLink>
+          Subscribe now
+        </Button>
       }
     />
   )

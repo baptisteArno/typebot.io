@@ -5,7 +5,7 @@ import React from 'react'
 import selfie from '../public/images/about/selfie.png'
 import Image from 'next/image'
 import { Footer } from 'components/common/Footer'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
+import { TextLink } from 'components/common/TextLink'
 
 const AboutPage = () => {
   return (
@@ -67,12 +67,9 @@ const AboutPage = () => {
         </Text>
         <Text>
           If you have any questions, feel free to reach out to me at{' '}
-          <NextChakraLink
-            href={'mailto:baptiste@typebot.io'}
-            textDecor="underline"
-          >
+          <TextLink href={'mailto:baptiste@typebot.io'}>
             baptiste@typebot.io
-          </NextChakraLink>
+          </TextLink>
         </Text>
       </Stack>
       <Footer />

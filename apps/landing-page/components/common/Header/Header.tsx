@@ -7,13 +7,13 @@ import {
   useColorModeValue as mode,
   useDisclosure,
   Box,
+  Link,
 } from '@chakra-ui/react'
 import { HamburgerIcon } from 'assets/icons'
 import { ChevronDownIcon } from 'assets/icons/ChevronDownIcon'
 import { CloseIcon } from 'assets/icons/CloseIcon'
 import { Logo } from 'assets/icons/Logo'
 import * as React from 'react'
-import { NextChakraLink } from '../nextChakraAdapters/NextChakraLink'
 import { MobileMenu } from './MobileMenu'
 import { ResourcesMenu } from './ResourcesMenu'
 
@@ -40,7 +40,7 @@ export const Header = () => {
           className="nav-content__mobile"
           color={mode('white', 'white')}
         >
-          <HStack as={NextChakraLink} href="/" rel="home" ml="2">
+          <HStack as={Link} href="/" rel="home" ml="2">
             <Logo boxSize="35px" />
             <Heading as="p" fontSize="lg">
               Typebot
@@ -77,7 +77,7 @@ export const Header = () => {
             <ResourcesMenu isOpen={isOpen} />
           </Flex>
           <Button
-            as={NextChakraLink}
+            as={Link}
             href="/pricing"
             variant="ghost"
             colorScheme="gray"
@@ -86,7 +86,7 @@ export const Header = () => {
             Pricing
           </Button>
           <Button
-            as={NextChakraLink}
+            as={Link}
             href="https://app.typebot.io/signin"
             colorScheme="blue"
             variant="outline"
@@ -95,7 +95,7 @@ export const Header = () => {
             Sign in
           </Button>
           <Button
-            as={NextChakraLink}
+            as={Link}
             href="https://app.typebot.io/register"
             colorScheme="orange"
             fontWeight={700}

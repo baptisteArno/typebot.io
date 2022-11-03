@@ -2,9 +2,9 @@ import { Flex, Stack, Heading, Box, Text, Button } from '@chakra-ui/react'
 import React from 'react'
 import Image from 'next/image'
 import builderDndSrc from 'public/images/homepage/builder-dnd.png'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { Flare } from 'assets/illustrations/Flare'
+import Link from 'next/link'
 
 export const EasyBuildingExperience = () => {
   return (
@@ -41,7 +41,7 @@ export const EasyBuildingExperience = () => {
           </Text>
           <Flex>
             <Button
-              as={NextChakraLink}
+              as={Link}
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"

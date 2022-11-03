@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 import { Footer } from 'components/common/Footer'
 import { Header } from 'components/common/Header/Header'
-import { NextChakraLink } from 'components/common/nextChakraAdapters/NextChakraLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
 import { PlanComparisonTables } from 'components/PricingPage/PlanComparisonTables'
@@ -25,13 +24,13 @@ import { StripeClimateLogo } from 'assets/logos/StripeClimateLogo'
 import { FreePlanCard } from 'components/PricingPage/FreePlanCard'
 import { StarterPlanCard } from 'components/PricingPage/StarterPlanCard'
 import { ProPlanCard } from 'components/PricingPage/ProPlanCard'
+import { TextLink } from 'components/common/TextLink'
 
 const Pricing = () => {
   const [starterPrice, setStarterPrice] = useState('$39')
   const [proPrice, setProPrice] = useState('$89')
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
     setStarterPrice(formatPrice(prices.STARTER))
     setProPrice(formatPrice(prices.PRO))
   }, [])
@@ -81,13 +80,9 @@ const Pricing = () => {
               <Text fontSize="sm">
                 Typebot is contributing 1% of your subscription to remove CO₂
                 from the atmosphere.{' '}
-                <NextChakraLink
-                  href="https://climate.stripe.com/5VCRAq"
-                  isExternal
-                  textDecor="underline"
-                >
-                  More info.
-                </NextChakraLink>
+                <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
+                  More info
+                </TextLink>
               </Text>
             </HStack>
             <Stack
@@ -104,13 +99,9 @@ const Pricing = () => {
             </Stack>
             <Text fontSize="lg">
               Need custom limits? Specific features?{' '}
-              <NextChakraLink
-                href={'https://typebot.io/enterprise-lead-form'}
-                isExternal
-                textDecor="underline"
-              >
+              <TextLink href={'https://typebot.io/enterprise-lead-form'}>
                 Let's chat!
-              </NextChakraLink>
+              </TextLink>
             </Text>
           </Stack>
 
@@ -195,12 +186,9 @@ const Faq = () => {
         </Heading>
         <AccordionPanel pb={4}>
           Sure! Just{' '}
-          <NextChakraLink
-            href="mailto:baptiste@typebot.io"
-            textDecor="underline"
-          >
+          <TextLink href="mailto:baptiste@typebot.io">
             shoot me an email
-          </NextChakraLink>{' '}
+          </TextLink>{' '}
           and we'll figure things out 😀
         </AccordionPanel>
       </AccordionItem>

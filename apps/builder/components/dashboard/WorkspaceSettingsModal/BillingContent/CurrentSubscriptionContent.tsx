@@ -44,7 +44,7 @@ export const CurrentSubscriptionContent = ({
   const isSubscribed = (plan === Plan.STARTER || plan === Plan.PRO) && stripeId
 
   return (
-    <Stack gap="2">
+    <Stack spacing="2">
       <Heading fontSize="3xl">Subscription</Heading>
       <HStack data-testid="current-subscription">
         <Text>Current workspace subscription: </Text>
@@ -70,7 +70,7 @@ export const CurrentSubscriptionContent = ({
 
       {isSubscribed && !isCancelling && (
         <>
-          <Stack gap="1">
+          <Stack spacing="1">
             <Text fontSize="sm">
               Need to change payment method or billing information? Head over to
               your billing portal:

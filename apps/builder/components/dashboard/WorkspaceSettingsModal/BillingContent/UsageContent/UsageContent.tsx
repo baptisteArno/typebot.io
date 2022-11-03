@@ -127,13 +127,6 @@ export const UsageContent = ({ workspace }: Props) => {
                 </Tooltip>
               )}
             </HStack>
-            <Heading
-              fontSize="xl"
-              as="h3"
-              display="inline-flex"
-              alignItems="center"
-              gap="2"
-            ></Heading>
             <HStack>
               <Skeleton
                 fontWeight="bold"
