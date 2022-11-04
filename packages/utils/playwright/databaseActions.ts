@@ -159,7 +159,7 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
     return {
       ...typebot,
       id: typebotId,
-      publicId: typebotId + '-public',
+      publicId: typebot.publicId ?? typebotId + '-public',
     }
   })
   await prisma.typebot.createMany({
@@ -167,7 +167,7 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   })
   return prisma.publicTypebot.createMany({
     data: typebotsWithId.map((t) =>
-      parseTypebotToPublicTypebot(t.id + '-public', parseTestTypebot(t))
+      parseTypebotToPublicTypebot(t.publicId, parseTestTypebot(t))
     ),
   })
 }

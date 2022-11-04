@@ -22,16 +22,22 @@ import { getViewerUrl, isDefined, isNotDefined } from 'utils'
 import { CustomDomainsDropdown } from './customDomain/CustomDomainsDropdown'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './integrations/EmbedButton'
+import { isPublicDomainAvailableQuery } from './queries/isPublicDomainAvailableQuery'
 
 export const ShareContent = () => {
   const { workspace } = useWorkspace()
   const { typebot, updateTypebot } = useTypebot()
   const { showToast } = useToast()
 
-  const handlePublicIdChange = (publicId: string) => {
+  const handlePublicIdChange = async (publicId: string) => {
     if (publicId === typebot?.publicId) return
     if (publicId.length < 4)
       return showToast({ description: 'ID must be longer than 4 characters' })
+
+    const { data } = await isPublicDomainAvailableQuery(publicId)
+    if (!data?.isAvailable)
+      return showToast({ description: 'ID is already taken' })
+
     updateTypebot({ publicId })
   }
 
