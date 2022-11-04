@@ -108,11 +108,13 @@ const WorkspaceRoleMenuButton = ({
   )
 }
 
-export const convertWorkspaceRoleToReadable = (role: WorkspaceRole) => {
+export const convertWorkspaceRoleToReadable = (role: WorkspaceRole): string => {
   switch (role) {
     case WorkspaceRole.ADMIN:
       return 'Admin'
     case WorkspaceRole.MEMBER:
       return 'Member'
+    case WorkspaceRole.GUEST:
+      return 'Guest'
   }
 }
