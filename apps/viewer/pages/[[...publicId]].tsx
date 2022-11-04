@@ -47,7 +47,12 @@ export const getServerSideProps: GetServerSideProps = async (
         url: `https://${forwardedHost ?? host}${pathname}`,
         customHeadCode:
           isDefined(headCode) && headCode !== ''
-            ? sanitizeHtml(headCode, { allowedTags: ['script', 'meta'] })
+            ? sanitizeHtml(headCode, {
+                allowedTags: ['script', 'meta'],
+                allowedAttributes: {
+                  meta: ['name', 'content'],
+                },
+              })
             : null,
       },
     }

@@ -17,6 +17,7 @@ test('Should correctly parse metadata', async ({ page }) => {
     title: 'Custom title',
     favIconUrl: 'https://www.baptistearno.com/favicon.png',
     imageUrl: 'https://www.baptistearno.com/images/site-preview.png',
+    customHeadCode: '<meta name="author" content="John Doe">',
   }
   await createTypebots([
     {
@@ -50,6 +51,11 @@ test('Should correctly parse metadata', async ({ page }) => {
       (document.querySelector('link[rel="icon"]') as any).getAttribute('href')
     )
   ).toBe(customMetadata.favIconUrl)
+  expect(
+    await page.evaluate(
+      () => (document.querySelector('meta[name="author"]') as any).content
+    )
+  ).toBe('John Doe')
   await expect(
     typebotViewer(page).locator(
       `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
