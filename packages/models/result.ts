@@ -17,8 +17,10 @@ export type ResultValues = Pick<
 export type ResultHeaderCell = {
   id: string
   label: string
-  blockId?: string
+  blocks?: {
+    id: string
+    groupId: string
+  }[]
   blockType?: InputBlockType
-  isLong?: boolean
-  variableId?: string
+  variableIds?: string[]
 }

@@ -18,13 +18,7 @@ export const parseSampleResult =
   async (
     currentGroupId: string
   ): Promise<Record<string, string | boolean | undefined>> => {
-    const header = parseResultHeader({
-      groups: [...typebot.groups, ...linkedTypebots.flatMap((t) => t.groups)],
-      variables: [
-        ...typebot.variables,
-        ...linkedTypebots.flatMap((t) => t.variables),
-      ],
-    })
+    const header = parseResultHeader(typebot, linkedTypebots)
     const linkedInputBlocks = await extractLinkedInputBlocks(
       typebot,
       linkedTypebots
@@ -33,7 +27,7 @@ export const parseSampleResult =
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       'Submitted at': new Date().toISOString(),
-      ...parseGroupsResultSample(linkedInputBlocks, header),
+      ...parseResultSample(linkedInputBlocks, header),
     }
   }
 
@@ -81,24 +75,26 @@ const extractLinkedInputBlocks =
     ).concat(linkedBotInputs.flatMap((l) => l))
   }
 
-const parseGroupsResultSample = (
+const parseResultSample = (
   inputBlocks: InputBlock[],
-  header: ResultHeaderCell[]
+  headerCells: ResultHeaderCell[]
 ) =>
-  header.reduce<Record<string, string | boolean | undefined>>(
-    (blocks, cell) => {
-      const inputBlock = inputBlocks.find((block) => block.id === cell.blockId)
+  headerCells.reduce<Record<string, string | boolean | undefined>>(
+    (resultSample, cell) => {
+      const inputBlock = inputBlocks.find((inputBlock) =>
+        cell.blocks?.some((block) => block.id === inputBlock.id)
+      )
       if (isNotDefined(inputBlock)) {
-        if (cell.variableId)
+        if (cell.variableIds)
           return {
-            ...blocks,
+            ...resultSample,
             [cell.label]: 'content',
           }
-        return blocks
+        return resultSample
       }
       const value = getSampleValue(inputBlock)
       return {
-        ...blocks,
+        ...resultSample,
         [cell.label]: value,
       }
     },

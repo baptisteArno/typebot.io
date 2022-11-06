@@ -29,12 +29,11 @@ export const EditableUrl = ({
   const [value, setValue] = useState(pathname)
 
   const handleSubmit = (newPathname: string) => {
-    if (/^[a-z]+(-[a-z]+)*$/.test(newPathname))
-      return onPathnameChange(newPathname)
+    if (/^[a-z0-9-]*$/.test(newPathname)) return onPathnameChange(newPathname)
     setValue(pathname)
     showToast({
       title: 'Invalid ID',
-      description: 'Should contain only contain letters and dashes.',
+      description: 'Should contain only contain letters, numbers and dashes.',
     })
   }
 

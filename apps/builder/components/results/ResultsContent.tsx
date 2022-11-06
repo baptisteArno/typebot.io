@@ -27,7 +27,7 @@ export const ResultsContent = () => {
   const handleResultModalClose = () => setExpandedResultIndex(null)
 
   const handleLogOpenIndex = (index: number) => () => {
-    if (!results) return
+    if (!results[index]) return
     setInspectingLogsResultId(results[index].id)
   }
 

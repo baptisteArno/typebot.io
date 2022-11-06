@@ -21,7 +21,7 @@ test.beforeEach(async () => {
   await injectFakeResults({ typebotId, count: 200, isChronological: true })
 })
 
-test('Results', async ({ page }) => {
+test('table features should work', async ({ page }) => {
   await page.goto(`/typebots/${typebotId}/results`)
 
   await test.step('Check header format', async () => {
@@ -147,14 +147,14 @@ test('Results', async ({ page }) => {
 
 const validateExportSelection = (data: unknown[]) => {
   expect(data).toHaveLength(3)
-  expect((data[1] as unknown[])[3]).toBe('content199')
-  expect((data[2] as unknown[])[3]).toBe('content198')
+  expect((data[1] as unknown[])[0]).toBe('content199')
+  expect((data[2] as unknown[])[0]).toBe('content198')
 }
 
 const validateExportAll = (data: unknown[]) => {
   expect(data).toHaveLength(201)
-  expect((data[1] as unknown[])[3]).toBe('content199')
-  expect((data[200] as unknown[])[3]).toBe('content0')
+  expect((data[1] as unknown[])[0]).toBe('content199')
+  expect((data[200] as unknown[])[0]).toBe('content0')
 }
 
 const scrollToBottom = (page: Page) =>

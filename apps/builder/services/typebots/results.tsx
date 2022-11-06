@@ -136,7 +136,7 @@ export const parseSubmissionsColumns = (
 ): HeaderCell[] =>
   resultHeader.map((header) => ({
     Header: (
-      <HStack minW={header.isLong ? '400px' : '150px'} maxW="500px">
+      <HStack minW="150px" maxW="500px">
         <HeaderIcon header={header} />
         <Text>{header.label}</Text>
       </HStack>
@@ -144,10 +144,10 @@ export const parseSubmissionsColumns = (
     accessor: header.label,
   }))
 
-const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
+export const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
   header.blockType ? (
     <BlockIcon type={header.blockType} />
-  ) : header.variableId ? (
+  ) : header.variableIds ? (
     <CodeIcon />
   ) : (
     <CalendarIcon />
@@ -174,9 +174,13 @@ export const convertResultsToTableData = (
       if ('groupId' in answerOrVariable) {
         const answer = answerOrVariable as Answer
         const header = answer.variableId
-          ? headerCells.find((h) => h.variableId === answer.variableId)
-          : headerCells.find((h) => h.blockId === answer.blockId)
-        if (!header || !header.blockId || !header.blockType) return o
+          ? headerCells.find((headerCell) =>
+              headerCell.variableIds?.includes(answer.variableId as string)
+            )
+          : headerCells.find((headerCell) =>
+              headerCell.blocks?.some((block) => block.id === answer.blockId)
+            )
+        if (!header || !header.blocks || !header.blockType) return o
         return {
           ...o,
           [header.label]: {
@@ -186,7 +190,9 @@ export const convertResultsToTableData = (
         }
       }
       const variable = answerOrVariable as VariableWithValue
-      const key = headerCells.find((h) => h.variableId === variable.id)?.label
+      const key = headerCells.find((headerCell) =>
+        headerCell.variableIds?.includes(variable.id)
+      )?.label
       if (!key) return o
       if (isDefined(o[key])) return o
       return {

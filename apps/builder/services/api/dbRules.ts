@@ -73,7 +73,7 @@ export const canPublishFileInput = async ({
     return false
   }
   if (workspace?.plan === Plan.FREE) {
-    forbidden(res, 'You need to upgrade your plan to use this feature')
+    forbidden(res, 'You need to upgrade your plan to use file input blocks')
     return false
   }
   return true

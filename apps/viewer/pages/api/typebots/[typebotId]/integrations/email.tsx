@@ -180,13 +180,7 @@ const getEmailBody = async ({
   })) as unknown as PublicTypebot
   if (!typebot) return
   const linkedTypebots = await getLinkedTypebots(typebot)
-  const answers = parseAnswers({
-    groups: [...typebot.groups, ...linkedTypebots.flatMap((t) => t.groups)],
-    variables: [
-      ...typebot.variables,
-      ...linkedTypebots.flatMap((t) => t.variables),
-    ],
-  })(resultValues)
+  const answers = parseAnswers(typebot, linkedTypebots)(resultValues)
   return {
     html: render(
       <DefaultBotNotificationEmail

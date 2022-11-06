@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { useResults } from 'contexts/ResultsProvider'
 import React from 'react'
+import { HeaderIcon } from 'services/typebots/results'
 import { isDefined } from 'utils'
-import { HeaderIcon } from './ResultsTable/ResultsTable'
 
 type Props = {
   resultIdx: number | null

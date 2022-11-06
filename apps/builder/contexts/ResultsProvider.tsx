@@ -6,7 +6,7 @@ import {
   useResults as useFetchResults,
 } from 'services/typebots/results'
 import { KeyedMutator } from 'swr'
-import { isDefined, parseResultHeader } from 'utils'
+import { parseResultHeader } from 'utils'
 import { useTypebot } from './TypebotContext'
 
 const resultsContext = createContext<{
@@ -46,19 +46,17 @@ export const ResultsProvider = ({
     typebotId,
   })
 
+  console.log(data?.flatMap((d) => d.results) ?? [])
+
   const fetchMore = () => setSize((state) => state + 1)
 
-  const groupsAndVariables = {
-    groups: [
-      ...(publishedTypebot?.groups ?? []),
-      ...(linkedTypebots?.flatMap((t) => t.groups) ?? []),
-    ].filter(isDefined),
-    variables: [
-      ...(publishedTypebot?.variables ?? []),
-      ...(linkedTypebots?.flatMap((t) => t.variables) ?? []),
-    ].filter(isDefined),
-  }
-  const resultHeader = parseResultHeader(groupsAndVariables)
+  const resultHeader = useMemo(
+    () =>
+      publishedTypebot
+        ? parseResultHeader(publishedTypebot, linkedTypebots)
+        : [],
+    [linkedTypebots, publishedTypebot]
+  )
 
   const tableData = useMemo(
     () =>
@@ -68,8 +66,7 @@ export const ResultsProvider = ({
             resultHeader
           )
         : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [publishedTypebot?.id, resultHeader.length, data]
+    [publishedTypebot, data, resultHeader]
   )
 
   return (

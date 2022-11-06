@@ -15,7 +15,6 @@ import { ToolIcon, EyeIcon, EyeOffIcon, GripIcon } from 'assets/icons'
 import { ResultHeaderCell } from 'models'
 import React, { forwardRef, useState } from 'react'
 import { isNotDefined } from 'utils'
-import { HeaderIcon } from './ResultsTable'
 import {
   DndContext,
   closestCenter,
@@ -35,6 +34,7 @@ import {
   useSortable,
   arrayMove,
 } from '@dnd-kit/sortable'
+import { HeaderIcon } from 'services/typebots/results'
 
 type Props = {
   resultHeader: ResultHeaderCell[]

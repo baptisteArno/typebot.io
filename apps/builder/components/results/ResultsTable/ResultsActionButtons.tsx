@@ -93,18 +93,39 @@ export const ResultsActionButtons = ({
       : tableData.filter((data) =>
           selectedResultsId.includes(data.id.plainText)
         )
+
+    const fields = typebot?.resultsTablePreferences?.columnsOrder
+      ? typebot.resultsTablePreferences.columnsOrder.reduce<string[]>(
+          (currentHeaderLabels, columnId) => {
+            if (
+              typebot.resultsTablePreferences?.columnsVisibility[columnId] ===
+              false
+            )
+              return currentHeaderLabels
+            const columnLabel = resultHeader.find(
+              (headerCell) => headerCell.id === columnId
+            )?.label
+            if (!columnLabel) return currentHeaderLabels
+            return [...currentHeaderLabels, columnLabel]
+          },
+          []
+        )
+      : resultHeader.map((headerCell) => headerCell.label)
+
+    const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
+      const newObject: { [key: string]: string } = {}
+      fields?.forEach((field) => {
+        console.log(data[field])
+        newObject[field] = data[field]?.plainText
+      })
+      return newObject
+    })
+
     const csvData = new Blob(
       [
         unparse({
-          data: dataToUnparse.map<{ [key: string]: string }>((data) => {
-            const newObject: { [key: string]: string } = {}
-            Object.keys(data).forEach((key) => {
-              newObject[key] = (data[key] as { plainText: string })
-                .plainText as string
-            })
-            return newObject
-          }),
-          fields: resultHeader.map((h) => h.label),
+          data,
+          fields,
         }),
       ],
       {

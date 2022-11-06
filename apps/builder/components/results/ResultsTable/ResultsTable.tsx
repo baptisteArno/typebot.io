@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AlignLeftTextIcon, CalendarIcon, CodeIcon } from 'assets/icons'
+import { AlignLeftTextIcon } from 'assets/icons'
 import { ResultHeaderCell, ResultsTablePreferences } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
@@ -18,14 +18,13 @@ import {
   ColumnOrderState,
   ColumnDef,
 } from '@tanstack/react-table'
-import { BlockIcon } from 'components/editor/BlocksSideBar/BlockIcon'
 import { ColumnSettingsButton } from './ColumnsSettingsButton'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useDebounce } from 'use-debounce'
 import { ResultsActionButtons } from './ResultsActionButtons'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
-import { CellValueType, TableData } from 'services/typebots/results'
+import { CellValueType, HeaderIcon, TableData } from 'services/typebots/results'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
@@ -112,7 +111,7 @@ export const ResultsTable = ({
       ...resultHeader.map<ColumnDef<TableData>>((header) => ({
         id: header.id,
         accessorKey: header.label,
-        size: header.isLong ? 400 : 200,
+        size: 200,
         header: () => (
           <HStack overflow="hidden" data-testid={`${header.label} header`}>
             <HeaderIcon header={header} />
@@ -147,8 +146,7 @@ export const ResultsTable = ({
         ),
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [resultHeader]
+    [onLogOpenIndex, resultHeader]
   )
 
   const instance = useReactTable({
@@ -258,12 +256,3 @@ const IndeterminateCheckbox = React.forwardRef(
     )
   }
 )
-
-export const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
-  header.blockType ? (
-    <BlockIcon type={header.blockType} />
-  ) : header.variableId ? (
-    <CodeIcon />
-  ) : (
-    <CalendarIcon />
-  )

@@ -203,16 +203,7 @@ const getBodyContent =
     return body === '{{state}}'
       ? JSON.stringify(
           resultValues
-            ? parseAnswers({
-                groups: [
-                  ...typebot.groups,
-                  ...linkedTypebots.flatMap((t) => t.groups),
-                ],
-                variables: [
-                  ...typebot.variables,
-                  ...linkedTypebots.flatMap((t) => t.variables),
-                ],
-              })(resultValues)
+            ? parseAnswers(typebot, linkedTypebots)(resultValues)
             : await parseSampleResult(typebot, linkedTypebots)(groupId)
         )
       : body

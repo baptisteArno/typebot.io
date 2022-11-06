@@ -228,7 +228,7 @@ test('should display invoices', async ({ page }) => {
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="Invoices"')).toBeVisible()
   await expect(page.locator('tr')).toHaveCount(3)
-  await expect(page.locator('text="€39.00"')).toBeVisible()
+  await expect(page.locator('text="$39.00"')).toBeVisible()
 })
 
 test('custom plans should work', async ({ page }) => {
