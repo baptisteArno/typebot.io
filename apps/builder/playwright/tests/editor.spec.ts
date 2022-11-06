@@ -108,7 +108,7 @@ test('Drag and drop blocks and items should work', async ({ page }) => {
     'Item 3'
   )
 })
-test('Undo / Redo buttons should work', async ({ page }) => {
+test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
   const typebotId = cuid()
   await createTypebots([
     {
@@ -132,6 +132,22 @@ test('Undo / Redo buttons should work', async ({ page }) => {
   await expect(page.locator('text="Group #1"')).toBeVisible()
   await page.click('button[aria-label="Redo"]')
   await expect(page.locator('text="Group #1"')).toBeHidden()
+  await page.getByRole('button', { name: 'Zoom in' }).click()
+  await expect(page.getByTestId('graph')).toHaveAttribute(
+    'style',
+    /scale\(1\.2\);$/
+  )
+  await page.getByRole('button', { name: 'Zoom in' }).click()
+  await expect(page.getByTestId('graph')).toHaveAttribute(
+    'style',
+    /scale\(1\.4\);$/
+  )
+  await page.getByRole('button', { name: 'Zoom out' }).dblclick()
+  await page.getByRole('button', { name: 'Zoom out' }).dblclick()
+  await expect(page.getByTestId('graph')).toHaveAttribute(
+    'style',
+    /scale\(0\.6\);$/
+  )
 })
 
 test('Rename and icon change should work', async ({ page }) => {

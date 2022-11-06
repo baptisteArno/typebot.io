@@ -179,20 +179,20 @@ export const Graph = ({
   useEventListener('click', handleClick, editorContainerRef.current)
   useEventListener('mousemove', handleMouseMove)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const zoomIn = useCallback(() => zoom(zoomButtonsScaleBlock), [])
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const zoomOut = useCallback(() => zoom(-zoomButtonsScaleBlock), [])
+  const zoomIn = () => zoom(zoomButtonsScaleBlock)
+
+  const zoomOut = () => zoom(-zoomButtonsScaleBlock)
 
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
       <Flex ref={graphContainerRef} position="relative" {...props}>
-        <ZoomButtons onZoomIn={zoomIn} onZoomOut={zoomOut} />
+        <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
         <Flex
           flex="1"
           w="full"
           h="full"
           position="absolute"
+          data-testid="graph"
           style={{
             transform,
           }}
