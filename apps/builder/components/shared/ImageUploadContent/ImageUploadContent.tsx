@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Button, Flex, HStack, Stack } from '@chakra-ui/react'
 import { UploadButton } from '../buttons/UploadButton'
 import { GiphySearchForm } from './GiphySearchForm'
-import { useTypebot } from 'contexts/TypebotContext'
 import { Input } from '../Textbox/Input'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 
 type Props = {
-  url?: string
+  filePath: string
+  includeFileName?: boolean
+  defaultUrl?: string
   isEmojiEnabled?: boolean
   isGiphyEnabled?: boolean
   onSubmit: (url: string) => void
@@ -15,7 +16,9 @@ type Props = {
 }
 
 export const ImageUploadContent = ({
-  url,
+  filePath,
+  includeFileName,
+  defaultUrl,
   onSubmit,
   isEmojiEnabled = false,
   isGiphyEnabled = true,
@@ -67,25 +70,41 @@ export const ImageUploadContent = ({
         )}
       </HStack>
 
-      <BodyContent tab={currentTab} onSubmit={handleSubmit} url={url} />
+      <BodyContent
+        filePath={filePath}
+        includeFileName={includeFileName}
+        tab={currentTab}
+        onSubmit={handleSubmit}
+        defaultUrl={defaultUrl}
+      />
     </Stack>
   )
 }
 
 const BodyContent = ({
+  includeFileName,
+  filePath,
   tab,
-  url,
+  defaultUrl,
   onSubmit,
 }: {
+  includeFileName?: boolean
+  filePath: string
   tab: 'upload' | 'link' | 'giphy' | 'emoji'
-  url?: string
+  defaultUrl?: string
   onSubmit: (url: string) => void
 }) => {
   switch (tab) {
     case 'upload':
-      return <UploadFileContent onNewUrl={onSubmit} />
+      return (
+        <UploadFileContent
+          filePath={filePath}
+          includeFileName={includeFileName}
+          onNewUrl={onSubmit}
+        />
+      )
     case 'link':
-      return <EmbedLinkContent initialUrl={url} onNewUrl={onSubmit} />
+      return <EmbedLinkContent defaultUrl={defaultUrl} onNewUrl={onSubmit} />
     case 'giphy':
       return <GiphyContent onNewUrl={onSubmit} />
     case 'emoji':
@@ -93,30 +112,34 @@ const BodyContent = ({
   }
 }
 
-type ContentProps = { initialUrl?: string; onNewUrl: (url: string) => void }
+type ContentProps = { onNewUrl: (url: string) => void }
 
-const UploadFileContent = ({ onNewUrl }: ContentProps) => {
-  const { typebot } = useTypebot()
-  return (
-    <Flex justify="center" py="2">
-      <UploadButton
-        filePath={`public/typebots/${typebot?.id}`}
-        onFileUploaded={onNewUrl}
-        includeFileName
-        colorScheme="blue"
-      >
-        Choose an image
-      </UploadButton>
-    </Flex>
-  )
-}
+const UploadFileContent = ({
+  filePath,
+  includeFileName,
+  onNewUrl,
+}: ContentProps & { filePath: string; includeFileName?: boolean }) => (
+  <Flex justify="center" py="2">
+    <UploadButton
+      filePath={filePath}
+      onFileUploaded={onNewUrl}
+      includeFileName={includeFileName}
+      colorScheme="blue"
+    >
+      Choose an image
+    </UploadButton>
+  </Flex>
+)
 
-const EmbedLinkContent = ({ initialUrl, onNewUrl }: ContentProps) => (
+const EmbedLinkContent = ({
+  defaultUrl,
+  onNewUrl,
+}: ContentProps & { defaultUrl?: string }) => (
   <Stack py="2">
     <Input
       placeholder={'Paste the image link...'}
       onChange={onNewUrl}
-      defaultValue={initialUrl ?? ''}
+      defaultValue={defaultUrl ?? ''}
     />
   </Stack>
 )

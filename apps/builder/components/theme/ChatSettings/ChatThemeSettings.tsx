@@ -8,11 +8,16 @@ import { HostBubbles } from './HostBubbles'
 import { InputsTheme } from './InputsTheme'
 
 type Props = {
+  typebotId: string
   chatTheme: ChatTheme
   onChatThemeChange: (chatTheme: ChatTheme) => void
 }
 
-export const ChatThemeSettings = ({ chatTheme, onChatThemeChange }: Props) => {
+export const ChatThemeSettings = ({
+  typebotId,
+  chatTheme,
+  onChatThemeChange,
+}: Props) => {
   const handleHostBubblesChange = (hostBubbles: ContainerColors) =>
     onChatThemeChange({ ...chatTheme, hostBubbles })
   const handleGuestBubblesChange = (guestBubbles: ContainerColors) =>
@@ -30,12 +35,14 @@ export const ChatThemeSettings = ({ chatTheme, onChatThemeChange }: Props) => {
   return (
     <Stack spacing={6}>
       <AvatarForm
+        uploadFilePath={`typebots/${typebotId}/hostAvatar`}
         title="Bot avatar"
         avatarProps={chatTheme.hostAvatar}
         isDefaultCheck
         onAvatarChange={handleHostAvatarChange}
       />
       <AvatarForm
+        uploadFilePath={`typebots/${typebotId}/guestAvatar`}
         title="User avatar"
         avatarProps={chatTheme.guestAvatar}
         onAvatarChange={handleGuestAvatarChange}

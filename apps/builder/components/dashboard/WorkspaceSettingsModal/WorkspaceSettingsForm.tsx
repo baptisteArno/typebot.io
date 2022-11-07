@@ -37,11 +37,14 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
       <FormControl>
         <FormLabel>Icon</FormLabel>
         <Flex>
-          <EditableEmojiOrImageIcon
-            icon={workspace?.icon}
-            onChangeIcon={handleChangeIcon}
-            boxSize="40px"
-          />
+          {workspace && (
+            <EditableEmojiOrImageIcon
+              uploadFilePath={`workspaces/${workspace.id}/icon`}
+              icon={workspace.icon}
+              onChangeIcon={handleChangeIcon}
+              boxSize="40px"
+            />
+          )}
         </Flex>
       </FormControl>
       <FormControl>

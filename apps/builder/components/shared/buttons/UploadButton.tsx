@@ -25,7 +25,7 @@ export const UploadButton = ({
       files: [
         {
           file: await compressFile(file),
-          path: filePath + (includeFileName ? `/${file.name}` : ''),
+          path: `public/${filePath}${includeFileName ? `/${file.name}` : ''}`,
         },
       ],
     })

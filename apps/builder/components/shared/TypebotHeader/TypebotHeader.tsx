@@ -140,10 +140,13 @@ export const TypebotHeader = () => {
             size="sm"
           />
           <HStack spacing={1}>
-            <EditableEmojiOrImageIcon
-              icon={typebot?.icon}
-              onChangeIcon={handleChangeIcon}
-            />
+            {typebot && (
+              <EditableEmojiOrImageIcon
+                uploadFilePath={`typebots/${typebot.id}/icon`}
+                icon={typebot?.icon}
+                onChangeIcon={handleChangeIcon}
+              />
+            )}
             {typebot?.name && (
               <EditableTypebotName
                 name={typebot?.name}

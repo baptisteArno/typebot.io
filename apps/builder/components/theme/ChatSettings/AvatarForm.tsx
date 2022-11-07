@@ -17,6 +17,7 @@ import { ImageUploadContent } from 'components/shared/ImageUploadContent'
 import { DefaultAvatar } from 'assets/DefaultAvatar'
 
 type Props = {
+  uploadFilePath: string
   title: string
   avatarProps?: AvatarProps
   isDefaultCheck?: boolean
@@ -24,6 +25,7 @@ type Props = {
 }
 
 export const AvatarForm = ({
+  uploadFilePath,
   title,
   avatarProps,
   isDefaultCheck = false,
@@ -71,7 +73,8 @@ export const AvatarForm = ({
             <Portal>
               <PopoverContent p="4">
                 <ImageUploadContent
-                  url={avatarProps?.url}
+                  filePath={uploadFilePath}
+                  defaultUrl={avatarProps?.url}
                   onSubmit={handleImageUrl}
                 />
               </PopoverContent>

@@ -55,7 +55,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
   } = useGraph()
-  const { updateBlock } = useTypebot()
+  const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedBlockId === block.id
@@ -227,8 +227,9 @@ export const BlockNode = ({
               </SettingsModal>
             </>
           )}
-          {isMediaBubbleBlock(block) && (
+          {typebot && isMediaBubbleBlock(block) && (
             <MediaBubblePopoverContent
+              typebotId={typebot.id}
               block={block}
               onContentChange={handleContentChange}
             />

@@ -32,10 +32,11 @@ test.describe.parallel('Image bubble block', () => {
       )
       await expect(page.locator('img')).toHaveAttribute(
         'src',
-        new RegExp(
-          `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/public/typebots/${typebotId}/avatar.jpg`,
-          'gm'
-        )
+        `${process.env.S3_SSL === 'false' ? 'http://' : 'https://'}${
+          process.env.S3_ENDPOINT
+        }${process.env.S3_PORT ? `:${process.env.S3_PORT}` : ''}/${
+          process.env.S3_BUCKET
+        }/public/typebots/${typebotId}/blocks/block1`
       )
     })
 

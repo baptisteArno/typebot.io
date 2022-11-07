@@ -16,12 +16,14 @@ import { CodeEditor } from 'components/shared/CodeEditor'
 import { MoreInfoTooltip } from 'components/shared/MoreInfoTooltip'
 
 type Props = {
+  typebotId: string
   typebotName: string
   metadata: Metadata
   onMetadataChange: (metadata: Metadata) => void
 }
 
 export const MetadataForm = ({
+  typebotId,
   typebotName,
   metadata,
   onMetadataChange,
@@ -57,7 +59,8 @@ export const MetadataForm = ({
           </PopoverTrigger>
           <PopoverContent p="4">
             <ImageUploadContent
-              url={metadata.favIconUrl ?? ''}
+              filePath={`typebots/${typebotId}/favIcon`}
+              defaultUrl={metadata.favIconUrl ?? ''}
               onSubmit={handleFavIconSubmit}
               isGiphyEnabled={false}
             />
@@ -81,7 +84,8 @@ export const MetadataForm = ({
           </PopoverTrigger>
           <PopoverContent p="4">
             <ImageUploadContent
-              url={metadata.imageUrl}
+              filePath={`typebots/${typebotId}/ogImage`}
+              defaultUrl={metadata.imageUrl}
               onSubmit={handleImageSubmit}
               isGiphyEnabled={false}
             />

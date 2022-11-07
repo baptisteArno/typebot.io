@@ -52,7 +52,7 @@ export const MyAccountForm = () => {
         <Stack>
           <UploadButton
             size="sm"
-            filePath={`public/users/${user?.id}/avatar`}
+            filePath={`users/${user?.id}/avatar`}
             leftIcon={<UploadIcon />}
             onFileUploaded={handleFileUploaded}
           >

@@ -16,6 +16,7 @@ import { EmbedUploadContent } from './EmbedUploadContent'
 import { VideoUploadContent } from './VideoUploadContent'
 
 type Props = {
+  typebotId: string
   block: Exclude<BubbleBlock, TextBubbleBlock>
   onContentChange: (content: BubbleBlockContent) => void
 }
@@ -39,14 +40,19 @@ export const MediaBubblePopoverContent = (props: Props) => {
   )
 }
 
-export const MediaBubbleContent = ({ block, onContentChange }: Props) => {
+export const MediaBubbleContent = ({
+  typebotId,
+  block,
+  onContentChange,
+}: Props) => {
   const handleImageUrlChange = (url: string) => onContentChange({ url })
 
   switch (block.type) {
     case BubbleBlockType.IMAGE: {
       return (
         <ImageUploadContent
-          url={block.content?.url}
+          filePath={`typebots/${typebotId}/blocks/${block.id}`}
+          defaultUrl={block.content?.url}
           onSubmit={handleImageUrlChange}
         />
       )

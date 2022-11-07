@@ -11,12 +11,14 @@ import { EmojiOrImageIcon } from './EmojiOrImageIcon'
 import { ImageUploadContent } from './ImageUploadContent'
 
 type Props = {
+  uploadFilePath: string
   icon?: string | null
   onChangeIcon: (icon: string) => void
   boxSize?: string
 }
 
 export const EditableEmojiOrImageIcon = ({
+  uploadFilePath,
   icon,
   onChangeIcon,
   boxSize,
@@ -47,7 +49,8 @@ export const EditableEmojiOrImageIcon = ({
           </Tooltip>
           <PopoverContent p="2">
             <ImageUploadContent
-              url={icon ?? ''}
+              filePath={uploadFilePath}
+              defaultUrl={icon ?? ''}
               onSubmit={onChangeIcon}
               isGiphyEnabled={false}
               isEmojiEnabled={true}
