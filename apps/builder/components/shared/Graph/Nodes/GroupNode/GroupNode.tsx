@@ -61,16 +61,30 @@ const DraggableGroupNode = memo(
       setFocusedGroupId,
       graphPosition,
     } = useGraph()
+    const { typebot, updateGroup } = useTypebot()
+    const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
+    const { setRightPanel, setStartPreviewAtGroup } = useEditor()
 
+    const [isMouseDown, setIsMouseDown] = useState(false)
+    const [isConnecting, setIsConnecting] = useState(false)
     const [currentCoordinates, setCurrentCoordinates] = useState(
       group.graphCoordinates
     )
+    const [groupTitle, setGroupTitle] = useState(group.title)
 
-    const { typebot, updateGroup } = useTypebot()
-    const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
-    const [isMouseDown, setIsMouseDown] = useState(false)
-    const [isConnecting, setIsConnecting] = useState(false)
-    const { setRightPanel, setStartPreviewAtGroup } = useEditor()
+    // When the group is moved from external action (e.g. undo/redo), update the current coordinates
+    useEffect(() => {
+      setCurrentCoordinates({
+        x: group.graphCoordinates.x,
+        y: group.graphCoordinates.y,
+      })
+    }, [group.graphCoordinates.x, group.graphCoordinates.y])
+
+    // Same for group title
+    useEffect(() => {
+      setGroupTitle(group.title)
+    }, [group.title])
+
     const isPreviewing =
       previewingEdge?.from.groupId === group.id ||
       (previewingEdge?.to.groupId === group.id &&
@@ -183,7 +197,8 @@ const DraggableGroupNode = memo(
               zIndex={focusedGroupId === group.id ? 10 : 1}
             >
               <Editable
-                defaultValue={group.title}
+                value={groupTitle}
+                onChange={setGroupTitle}
                 onSubmit={handleTitleSubmit}
                 fontWeight="semibold"
                 pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
