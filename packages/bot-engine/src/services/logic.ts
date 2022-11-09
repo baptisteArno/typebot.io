@@ -169,11 +169,9 @@ const executeCode = async (
   if (!block.options.content) return
   console.log('isEmbedded', isEmbedded)
   if (block.options.shouldExecuteInParentContext && isEmbedded) {
-    const func = Function(
-      ...variables.map((v) => v.id),
-      parseVariables(variables)(block.options.content)
-    )
-    sendEventToParent({ codeToExecute: func })
+    sendEventToParent({
+      codeToExecute: parseVariables(variables)(block.options.content),
+    })
   } else {
     const func = Function(
       ...variables.map((v) => v.id),

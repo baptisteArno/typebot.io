@@ -62,5 +62,5 @@ const processMessage = (
   if (data.redirectUrl) window.open(data.redirectUrl)
   if (data.newVariableValue && callbacks.onNewVariableValue)
     callbacks.onNewVariableValue(data.newVariableValue)
-  if (data.codeToExecute) data.codeToExecute()
+  if (data.codeToExecute) Function(data.codeToExecute)()
 }

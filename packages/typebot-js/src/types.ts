@@ -54,7 +54,7 @@ export type Variable = {
 export type TypebotPostMessageData = {
   redirectUrl?: string
   newVariableValue?: Variable
-  codeToExecute?: Function
+  codeToExecute?: string
 }
 
 export const localStorageKeys = {
