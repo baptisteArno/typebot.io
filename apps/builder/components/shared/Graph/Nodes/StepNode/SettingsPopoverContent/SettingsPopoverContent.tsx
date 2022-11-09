@@ -25,6 +25,7 @@ import {
   TextInputSettingsBody,
   NumberInputSettingsBody,
   EmailInputSettingsBody,
+  CpfInputSettingsBody,
   UrlInputSettingsBody,
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
@@ -122,6 +123,14 @@ export const StepSettings = ({
     case InputStepType.EMAIL: {
       return (
         <EmailInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case InputStepType.CPF: {
+      return (
+        <CpfInputSettingsBody
           options={step.options}
           onOptionsChange={handleOptionsChange}
         />

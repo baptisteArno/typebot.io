@@ -94,6 +94,7 @@ const Input = ({
     case InputStepType.TEXT:
     case InputStepType.NUMBER:
     case InputStepType.EMAIL:
+    case InputStepType.CPF:
     // case InputStepType.URL:
     case InputStepType.PHONE:
       return (

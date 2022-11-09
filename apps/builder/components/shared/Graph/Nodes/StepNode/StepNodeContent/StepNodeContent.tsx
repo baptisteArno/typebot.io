@@ -60,6 +60,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case InputStepType.NUMBER:
     case InputStepType.EMAIL:
+    case InputStepType.CPF:
     // case InputStepType.URL:
     case InputStepType.PHONE: {
       return (

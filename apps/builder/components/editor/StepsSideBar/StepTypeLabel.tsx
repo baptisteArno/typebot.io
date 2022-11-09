@@ -32,7 +32,9 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Número</Text>
     case InputStepType.EMAIL:
       return <Text>Email</Text>
-    // case InputStepType.URL:
+    case InputStepType.CPF:
+      return <Text>CPF</Text>
+      // case InputStepType.URL:
     //   return <Text>Website</Text>
     case InputStepType.DATE:
       return <Text>Data</Text>

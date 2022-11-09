@@ -5,6 +5,7 @@ export type InputStep =
   | TextInputStep
   | NumberInputStep
   | EmailInputStep
+  | CpfInputStep
   | UrlInputStep
   | DateInputStep
   | PhoneNumberInputStep
@@ -16,6 +17,7 @@ export enum InputStepType {
   TEXT = 'text input',
   NUMBER = 'number input',
   EMAIL = 'email input',
+  CPF = 'cpf input',
   URL = 'url input',
   DATE = 'date input',
   PHONE = 'phone number input',
@@ -53,6 +55,11 @@ export type NumberInputStep = StepBase & {
 export type EmailInputStep = StepBase & {
   type: InputStepType.EMAIL
   options: EmailInputOptions
+}
+
+export type CpfInputStep = StepBase & {
+  type: InputStepType.CPF
+  options: CpfInputOptions
 }
 
 export type UrlInputStep = StepBase & {
@@ -111,6 +118,11 @@ export type DateInputOptions = OptionBase & {
 }
 
 export type EmailInputOptions = OptionBase & {
+  labels: { placeholder: string; button: string }
+  retryMessageContent: string
+}
+
+export type CpfInputOptions = OptionBase & {
   labels: { placeholder: string; button: string }
   retryMessageContent: string
 }
@@ -184,6 +196,15 @@ export const defaultEmailInputOptions: EmailInputOptions = {
   },
   retryMessageContent:
     "Esse email não parece ser válido. Você pode digitar novamente?",
+}
+
+export const defaultCpfInputOptions: CpfInputOptions = {
+  labels: {
+    button: defaultButtonLabel,
+    placeholder: 'Digite o seu cpf...',
+  },
+  retryMessageContent:
+    "Esse cpf não parece ser válido. Você pode digitar novamente?",
 }
 
 export const defaultUrlInputOptions: UrlInputOptions = {

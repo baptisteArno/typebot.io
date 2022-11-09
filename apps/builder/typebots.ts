@@ -20,6 +20,7 @@ import {
   defaultTextInputOptions,
   defaultNumberInputOptions,
   defaultEmailInputOptions,
+  defaultCpfInputOptions,
   defaultDateInputOptions,
   defaultPhoneInputOptions,
   defaultUrlInputOptions,
@@ -363,6 +364,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null 
       return defaultNumberInputOptions
     case InputStepType.EMAIL:
       return defaultEmailInputOptions
+    case InputStepType.CPF:
+      return defaultCpfInputOptions
     case InputStepType.DATE:
       return defaultDateInputOptions
     case InputStepType.PHONE:

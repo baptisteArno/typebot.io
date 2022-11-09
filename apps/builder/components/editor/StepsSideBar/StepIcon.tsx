@@ -24,7 +24,8 @@ import {
   TextIcon,
   WebhookIcon,
   ListIcon,
-  RadioIcon
+  RadioIcon,
+  ContactCardIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -63,6 +64,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <NumberIcon color="#256F42" {...props} />
     case InputStepType.EMAIL:
       return <EmailIcon color="#256F42" {...props} />
+    case InputStepType.CPF:
+      return <ContactCardIcon color="#256F42" {...props} />
     // case InputStepType.URL:
     //   return <GlobeIcon color="#256F42" {...props} />
     case InputStepType.DATE:

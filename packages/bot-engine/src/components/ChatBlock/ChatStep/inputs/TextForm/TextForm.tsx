@@ -1,5 +1,6 @@
 import {
   EmailInputStep,
+  CpfInputStep,
   InputStepType,
   NumberInputStep,
   PhoneNumberInputStep,
@@ -14,6 +15,7 @@ type TextFormProps = {
   step:
     | TextInputStep
     | EmailInputStep
+    | CpfInputStep
     | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep

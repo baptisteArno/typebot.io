@@ -242,6 +242,16 @@ export const EmailIcon = (props: any) => (
   </IconContext.Provider>
 )
 
+export const ContactCardIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlinePermIdentity />
+    </div>
+  </IconContext.Provider>
+)
+
 export const PhoneIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}

@@ -16,7 +16,7 @@ export const WithVariableContent = ({ step }: Props) => {
 
   return (
     <Text>
-      Collect{' '}
+      Salvar resposta em {' '}
       <chakra.span
         bgColor="orange.400"
         color="white"
