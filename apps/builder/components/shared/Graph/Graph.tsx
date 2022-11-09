@@ -1,5 +1,5 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
-import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useMemo, useEffect, useState } from 'react'
 import {
   blockWidth,
   Coordinates,

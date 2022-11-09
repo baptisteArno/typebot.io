@@ -8,7 +8,6 @@ export type IframeParams = {
 
 export type IframeCallbacks = {
   onNewVariableValue?: (v: Variable) => void
-  onVideoPlayed?: () => void
 }
 
 export type PopupParams = {
@@ -52,10 +51,10 @@ export type Variable = {
   value: string
 }
 
-export type DataFromTypebot = {
+export type TypebotPostMessageData = {
   redirectUrl?: string
   newVariableValue?: Variable
-  videoPlayed?: boolean
+  codeToExecute?: Function
 }
 
 export const localStorageKeys = {

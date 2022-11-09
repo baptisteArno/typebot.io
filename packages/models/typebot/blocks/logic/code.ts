@@ -4,6 +4,7 @@ import { LogicBlockType, blockBaseSchema } from '../shared'
 export const codeOptionsSchema = z.object({
   name: z.string(),
   content: z.string().optional(),
+  shouldExecuteInParentContext: z.boolean().optional(),
 })
 
 export const codeBlockSchema = blockBaseSchema.and(

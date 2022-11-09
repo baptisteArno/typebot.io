@@ -1,5 +1,6 @@
 import { FormLabel, Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from 'components/shared/CodeEditor'
+import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { Input } from 'components/shared/Textbox'
 import { CodeOptions } from 'models'
 import React from 'react'
@@ -14,6 +15,10 @@ export const CodeSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, name })
   const handleCodeChange = (content: string) =>
     onOptionsChange({ ...options, content })
+  const handleShouldExecuteInParentContextChange = (
+    shouldExecuteInParentContext: boolean
+  ) => onOptionsChange({ ...options, shouldExecuteInParentContext })
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -27,6 +32,13 @@ export const CodeSettings = ({ options, onOptionsChange }: Props) => {
           withVariableButton={false}
         />
       </Stack>
+      <SwitchWithLabel
+        id="shouldExecuteInParentContext"
+        label="Execute in parent window"
+        moreInfoContent="Execute the code in the parent window context (when the bot is embedded). If it isn't detected, the code will be executed in the current window context."
+        initialValue={options.shouldExecuteInParentContext ?? false}
+        onCheckChange={handleShouldExecuteInParentContextChange}
+      />
       <Stack>
         <Text>Code:</Text>
         <CodeEditor

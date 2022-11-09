@@ -9,3 +9,8 @@ export const sanitizeUrl = (url: string): string =>
 export const isMobile =
   typeof window !== 'undefined' &&
   window.matchMedia('only screen and (max-width: 760px)').matches
+
+export const isEmbedded =
+  typeof window !== 'undefined' &&
+  window.parent &&
+  window.location !== window.top?.location

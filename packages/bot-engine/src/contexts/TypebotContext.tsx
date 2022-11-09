@@ -8,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import { sendEventToParent } from 'services/chat'
 import { safeStringify } from 'services/variable'
 
 export type LinkedTypebot = Pick<
@@ -74,6 +75,15 @@ export const TypebotContext = ({
 
   const updateVariableValue = (variableId: string, value: unknown) => {
     const formattedValue = safeStringify(value)
+
+    sendEventToParent({
+      newVariableValue: {
+        name:
+          typebot.variables.find((variable) => variable.id === variableId)
+            ?.name ?? '',
+        value: formattedValue ?? '',
+      },
+    })
 
     setLocalTypebot((typebot) => ({
       ...typebot,

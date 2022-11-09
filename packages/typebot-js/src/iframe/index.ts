@@ -1,4 +1,4 @@
-import { DataFromTypebot, IframeCallbacks, IframeParams } from '../types'
+import { TypebotPostMessageData, IframeCallbacks, IframeParams } from '../types'
 import './style.css'
 
 export const createIframe = ({
@@ -24,8 +24,8 @@ export const createIframe = ({
   iframe.setAttribute('id', uniqueId)
   if (backgroundColor) iframe.style.backgroundColor = backgroundColor
   iframe.classList.add('typebot-iframe')
-  const { onNewVariableValue, onVideoPlayed } = iframeParams
-  listenForTypebotMessages({ onNewVariableValue, onVideoPlayed })
+  const { onNewVariableValue } = iframeParams
+  listenForTypebotMessages({ onNewVariableValue })
   return iframe
 }
 
@@ -50,14 +50,17 @@ const parseStarterVariables = (starterVariables?: {
 
 export const listenForTypebotMessages = (callbacks: IframeCallbacks) => {
   window.addEventListener('message', (event) => {
-    const data = event.data as { from?: 'typebot' } & DataFromTypebot
+    const data = event.data as { from?: 'typebot' } & TypebotPostMessageData
     if (data.from === 'typebot') processMessage(event.data, callbacks)
   })
 }
 
-const processMessage = (data: DataFromTypebot, callbacks: IframeCallbacks) => {
+const processMessage = (
+  data: TypebotPostMessageData,
+  callbacks: IframeCallbacks
+) => {
   if (data.redirectUrl) window.open(data.redirectUrl)
   if (data.newVariableValue && callbacks.onNewVariableValue)
     callbacks.onNewVariableValue(data.newVariableValue)
-  if (data.videoPlayed && callbacks.onVideoPlayed) callbacks.onVideoPlayed()
+  if (data.codeToExecute) data.codeToExecute()
 }

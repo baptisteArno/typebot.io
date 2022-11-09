@@ -24,6 +24,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
 
   const handleChangeIcon = (icon: string) => {
     if (!workspace?.id) return
+    console.log(icon)
     updateWorkspace(workspace?.id, { icon })
   }
 

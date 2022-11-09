@@ -17,7 +17,6 @@ import React, { useEffect, useState } from 'react'
 import {
   chatsLimit,
   computePrice,
-  formatPrice,
   parseNumberWithCommas,
   storageLimit,
 } from 'utils'

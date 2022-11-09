@@ -80,6 +80,7 @@ test('can update workspace info', async ({ page }) => {
   await page.click('[data-testid="editable-icon"]')
   await page.fill('input[placeholder="Search..."]', 'building')
   await page.click('text="🏦"')
+  await page.waitForTimeout(500)
   await page.fill('input[value="Pro workspace"]', 'My awesome workspace')
   await page.getByTestId('typebot-logo').click({ force: true })
   await expect(

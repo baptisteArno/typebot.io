@@ -88,26 +88,6 @@ describe('createIframe', () => {
     expect(v).toBe('varValue')
   })
 
-  it('should notify when video played', async () => {
-    expect.assertions(1)
-    let hit = false
-    createIframe({
-      url: 'https://typebot.io/typebot-id',
-      onVideoPlayed: () => {
-        hit = true
-      },
-    })
-    window.postMessage(
-      {
-        from: 'typebot',
-        videoPlayed: true,
-      },
-      '*'
-    )
-    await new Promise((r) => setTimeout(r, 1))
-    expect(hit).toBe(true)
-  })
-
   it("shouldn't execute callbacks if event from other than typebot", async () => {
     expect.assertions(3)
     let n, v

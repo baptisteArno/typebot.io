@@ -7,6 +7,7 @@ import {
   TypingEmulation,
 } from 'models'
 import { isBubbleBlock, isInputBlock } from 'utils'
+import type { TypebotPostMessageData } from 'typebot-js'
 
 export const computeTypingTimeout = (
   bubbleContent: string,
@@ -30,4 +31,18 @@ export const getLastChatBlockType = (
     (s) => isBubbleBlock(s) || isInputBlock(s)
   ) as (BubbleBlock | InputBlock)[]
   return displayedBlocks.pop()?.type
+}
+
+export const sendEventToParent = (data: TypebotPostMessageData) => {
+  try {
+    window.top?.postMessage(
+      {
+        from: 'typebot',
+        ...data,
+      },
+      '*'
+    )
+  } catch (error) {
+    console.error(error)
+  }
 }

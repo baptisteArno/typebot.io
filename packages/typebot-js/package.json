@@ -1,6 +1,6 @@
 {
   "name": "typebot-js",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "main": "dist/index.js",
   "unpkg": "dist/index.umd.min.js",
   "license": "AGPL-3.0-or-later",

@@ -8,13 +8,13 @@ import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const mockSmtpCredentials: SmtpCredentialsData = {
   from: {
-    email: 'sedrick.konopelski@ethereal.email',
-    name: 'Kimberly Boyer',
+    email: 'marley.cummings@ethereal.email',
+    name: 'Marley Cummings',
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  username: 'sedrick.konopelski@ethereal.email',
-  password: 'yXZChpPy25Qa5yBbeH',
+  username: 'marley.cummings@ethereal.email',
+  password: 'E5W1jHbAmv5cXXcut2',
 }
 
 test.beforeAll(async () => {
@@ -42,7 +42,9 @@ test('should send an email', async ({ page }) => {
   const { previewUrl } = await response.json()
   await page.goto(previewUrl)
   await expect(page.locator('text="Hey!"')).toBeVisible()
-  await expect(page.locator('text="Kimberly Boyer"')).toBeVisible()
+  await expect(
+    page.locator(`text="${mockSmtpCredentials.from.name}"`)
+  ).toBeVisible()
   await expect(page.locator('text="<test1@gmail.com>" >> nth=0')).toBeVisible()
   await expect(page.locator('text="<test2@gmail.com>" >> nth=0')).toBeVisible()
   await expect(

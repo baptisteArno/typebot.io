@@ -19,7 +19,8 @@ import {
   VariableWithUnknowValue,
 } from 'models'
 import { byId, isDefined, isNotDefined, sendRequest } from 'utils'
-import { sanitizeUrl } from './utils'
+import { sendEventToParent } from './chat'
+import { isEmbedded, sanitizeUrl } from './utils'
 import { parseCorrectValueType, parseVariables } from './variable'
 
 type EdgeId = string
@@ -153,14 +154,7 @@ const executeRedirect = (
     try {
       window.open(formattedUrl)
     } catch (err) {
-      //Can't access to parent window
-      window.top?.postMessage(
-        {
-          from: 'typebot',
-          redirectUrl: formattedUrl,
-        },
-        '*'
-      )
+      sendEventToParent({ redirectUrl: formattedUrl })
     }
   } else {
     window.open(formattedUrl, block.options.isNewTab ? '_blank' : '_self')
@@ -173,15 +167,25 @@ const executeCode = async (
   { typebot: { variables } }: LogicContext
 ) => {
   if (!block.options.content) return
-  const func = Function(
-    ...variables.map((v) => v.id),
-    parseVariables(variables, { fieldToParse: 'id' })(block.options.content)
-  )
-  try {
-    await func(...variables.map((v) => parseCorrectValueType(v.value)))
-  } catch (err) {
-    console.error(err)
+  console.log('isEmbedded', isEmbedded)
+  if (block.options.shouldExecuteInParentContext && isEmbedded) {
+    const func = Function(
+      ...variables.map((v) => v.id),
+      parseVariables(variables)(block.options.content)
+    )
+    sendEventToParent({ codeToExecute: func })
+  } else {
+    const func = Function(
+      ...variables.map((v) => v.id),
+      parseVariables(variables, { fieldToParse: 'id' })(block.options.content)
+    )
+    try {
+      await func(...variables.map((v) => parseCorrectValueType(v.value)))
+    } catch (err) {
+      console.error(err)
+    }
   }
+
   return block.outgoingEdgeId
 }
 
