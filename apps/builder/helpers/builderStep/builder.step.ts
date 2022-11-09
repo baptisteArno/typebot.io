@@ -2,6 +2,7 @@ import { WritableDraft } from 'immer/dist/types/types-external';
 import { Block, DraggableStep, DraggableStepType, InputStepType, Step, StepIndices, Typebot } from "models";
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateMailBot } from "./dictionary/input-email.step";
+import { templateCpfBot } from "./dictionary/input-cpf.step";
 import { BuilderStepType } from "./types.builder";
 
 export const BuildSteps = (
@@ -13,6 +14,9 @@ export const BuildSteps = (
       switch (type) {
         case InputStepType.EMAIL:
           step = templateMailBot(bot, blockId)
+          break;
+        case InputStepType.CPF:
+          step = templateCpfBot(bot, blockId)
           break;
         default:
           step = [parseNewStep(type, blockId)]
