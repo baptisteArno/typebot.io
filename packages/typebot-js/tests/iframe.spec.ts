@@ -1,4 +1,6 @@
 import { createIframe } from '../src/iframe'
+import * as Typebot from '../src'
+import { TypebotPostMessageData } from '../src'
 
 describe('createIframe', () => {
   it('should create a valid iframe element', () => {
@@ -110,5 +112,28 @@ describe('createIframe', () => {
     expect(window.open).not.toHaveBeenCalled()
     expect(n).toBeUndefined()
     expect(v).toBeUndefined()
+  })
+
+  it('should close chat when receive close command', async () => {
+    expect.assertions(2)
+    const { open } = Typebot.initBubble({
+      url: 'https://typebot.io/typebot-id2',
+    })
+    const bubble = document.getElementById('typebot-bubble')
+    open()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(bubble?.classList.contains('iframe-opened')).toBe(true)
+    const messageData: TypebotPostMessageData = {
+      closeChatBubble: true,
+    }
+    window.postMessage(
+      {
+        from: 'typebot',
+        ...messageData,
+      },
+      '*'
+    )
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(bubble?.classList.contains('iframe-opened')).toBe(false)
   })
 })

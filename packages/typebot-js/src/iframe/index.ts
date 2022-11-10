@@ -1,3 +1,4 @@
+import { closeIframe } from '../embedTypes/chat/iframe'
 import { TypebotPostMessageData, IframeCallbacks, IframeParams } from '../types'
 import './style.css'
 
@@ -55,6 +56,15 @@ export const listenForTypebotMessages = (callbacks: IframeCallbacks) => {
   })
 }
 
+const closeChatBubbleIfExisting = () => {
+  const bubble = document.querySelector('#typebot-bubble') as
+    | HTMLDivElement
+    | undefined
+  if (!bubble) return
+  const iframe = bubble.querySelector('.typebot-iframe') as HTMLIFrameElement
+  closeIframe(bubble, iframe)
+}
+
 const processMessage = (
   data: TypebotPostMessageData,
   callbacks: IframeCallbacks
@@ -63,4 +73,5 @@ const processMessage = (
   if (data.newVariableValue && callbacks.onNewVariableValue)
     callbacks.onNewVariableValue(data.newVariableValue)
   if (data.codeToExecute) Function(data.codeToExecute)()
+  if (data.closeChatBubble) closeChatBubbleIfExisting()
 }

@@ -55,6 +55,7 @@ export type TypebotPostMessageData = {
   redirectUrl?: string
   newVariableValue?: Variable
   codeToExecute?: string
+  closeChatBubble?: boolean
 }
 
 export const localStorageKeys = {
