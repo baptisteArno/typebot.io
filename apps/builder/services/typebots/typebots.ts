@@ -62,6 +62,7 @@ import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'db'
+import { defaultChatwootOptions } from 'models'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -350,6 +351,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultWebhookOptions
     case IntegrationBlockType.EMAIL:
       return defaultSendEmailOptions
+    case IntegrationBlockType.CHATWOOT:
+      return defaultChatwootOptions
   }
 }
 

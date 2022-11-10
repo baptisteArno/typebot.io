@@ -30,6 +30,7 @@ import {
   PabblyConnectLogo,
   ZapierLogo,
 } from 'assets/logos'
+import { ChatwootLogo } from 'features/chatwoot'
 import {
   BubbleBlockType,
   InputBlockType,
@@ -95,6 +96,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <PabblyConnectLogo {...props} />
     case IntegrationBlockType.EMAIL:
       return <SendEmailIcon {...props} />
+    case IntegrationBlockType.CHATWOOT:
+      return <ChatwootLogo {...props} />
     case 'start':
       return <FlagIcon {...props} />
   }

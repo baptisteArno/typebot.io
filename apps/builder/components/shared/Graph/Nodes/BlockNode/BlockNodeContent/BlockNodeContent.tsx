@@ -1,4 +1,5 @@
 import { Text } from '@chakra-ui/react'
+import { ChatwootBlockNodeLabel } from 'features/chatwoot'
 import {
   Block,
   StartBlock,
@@ -152,6 +153,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case IntegrationBlockType.EMAIL: {
       return <SendEmailContent block={block} />
+    }
+    case IntegrationBlockType.CHATWOOT: {
+      return <ChatwootBlockNodeLabel block={block} />
     }
     case 'start': {
       return <Text>Start</Text>

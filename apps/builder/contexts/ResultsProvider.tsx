@@ -46,8 +46,6 @@ export const ResultsProvider = ({
     typebotId,
   })
 
-  console.log(data?.flatMap((d) => d.results) ?? [])
-
   const fetchMore = () => setSize((state) => state + 1)
 
   const resultHeader = useMemo(

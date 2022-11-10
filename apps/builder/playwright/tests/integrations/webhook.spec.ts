@@ -65,7 +65,8 @@ test.describe('Webhook block', () => {
     )
 
     await page.click('text=Headers')
-    await page.click('text=Add a value')
+    await page.waitForTimeout(200)
+    await page.getByRole('button', { name: 'Add a value' }).click()
     await page.fill('input[placeholder="e.g. Content-Type"]', 'Custom-Typebot')
     await page.fill(
       'input[placeholder="e.g. application/json"]',

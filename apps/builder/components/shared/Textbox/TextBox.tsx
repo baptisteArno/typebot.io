@@ -1,5 +1,7 @@
 import {
   ComponentWithAs,
+  FormControl,
+  FormLabel,
   HStack,
   InputProps,
   TextareaProps,
@@ -9,6 +11,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
 import { VariablesButton } from '../buttons/VariablesButton'
+import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextBoxProps = {
   onChange: (value: string) => void
@@ -17,6 +20,8 @@ export type TextBoxProps = {
     | ComponentWithAs<'input', InputProps>
   withVariableButton?: boolean
   debounceTimeout?: number
+  label?: string
+  moreInfoTooltip?: string
 } & Omit<InputProps & TextareaProps, 'onChange'>
 
 export const TextBox = ({
@@ -24,6 +29,8 @@ export const TextBox = ({
   TextBox,
   withVariableButton = true,
   debounceTimeout = 1000,
+  label,
+  moreInfoTooltip,
   ...props
 }: TextBoxProps) => {
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
@@ -92,29 +99,36 @@ export const TextBox = ({
     setCarretPosition(textBoxRef.current.selectionStart)
   }
 
-  if (!withVariableButton) {
-    return (
-      <TextBox
-        ref={textBoxRef}
-        onChange={handleChange}
-        bgColor={'white'}
-        value={value}
-        {...props}
-      />
-    )
-  }
+  const Input = (
+    <TextBox
+      ref={textBoxRef}
+      value={value}
+      onKeyUp={handleKeyUp}
+      onClick={handleKeyUp}
+      onChange={handleChange}
+      bgColor={'white'}
+      {...props}
+    />
+  )
+
   return (
-    <HStack spacing={0} align={'flex-end'}>
-      <TextBox
-        ref={textBoxRef}
-        value={value}
-        onKeyUp={handleKeyUp}
-        onClick={handleKeyUp}
-        onChange={handleChange}
-        bgColor={'white'}
-        {...props}
-      />
-      <VariablesButton onSelectVariable={handleVariableSelected} />
-    </HStack>
+    <FormControl isRequired={props.isRequired}>
+      {label && (
+        <FormLabel>
+          {label}{' '}
+          {moreInfoTooltip && (
+            <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
+          )}
+        </FormLabel>
+      )}
+      {withVariableButton ? (
+        <HStack spacing={0} align={'flex-end'}>
+          {Input}
+          <VariablesButton onSelectVariable={handleVariableSelected} />
+        </HStack>
+      ) : (
+        Input
+      )}
+    </FormControl>
   )
 }

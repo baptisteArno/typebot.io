@@ -1,4 +1,5 @@
 import { Log } from 'db'
+import { openChatwootWidget } from 'features/chatwoot'
 import {
   IntegrationBlock,
   IntegrationBlockType,
@@ -25,7 +26,7 @@ import { byId, sendRequest } from 'utils'
 import { sendGaEvent } from '../../lib/gtag'
 import { parseVariables, parseVariablesInObject } from './variable'
 
-type IntegrationContext = {
+export type IntegrationContext = {
   apiHost: string
   typebotId: string
   groupId: string
@@ -59,6 +60,8 @@ export const executeIntegration = ({
       return executeWebhook(block, context)
     case IntegrationBlockType.EMAIL:
       return sendEmail(block, context)
+    case IntegrationBlockType.CHATWOOT:
+      return openChatwootWidget(block, context)
   }
 }
 

@@ -4,7 +4,6 @@ import { playwrightBaseConfig } from 'configs/playwright'
 
 const config: PlaywrightTestConfig = {
   ...playwrightBaseConfig,
-  testDir: path.join(__dirname, 'playwright/tests'),
   webServer: process.env.CI
     ? {
         ...(playwrightBaseConfig.webServer as { command: string }),

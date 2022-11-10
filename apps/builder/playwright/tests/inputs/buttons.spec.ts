@@ -48,10 +48,10 @@ test.describe.parallel('Buttons input block', () => {
     await expect(typebotViewer(page).locator('text=Item 3')).toBeVisible()
     await page.click('button[aria-label="Close"]')
 
-    await page.click('[data-testid="block1-icon"]')
+    await page.click('[data-testid="block2-icon"]')
     await page.click('text=Multiple choice?')
     await page.fill('#button', 'Go')
-    await page.click('[data-testid="block1-icon"]')
+    await page.click('[data-testid="block2-icon"]')
 
     await page.locator('text=Item 1').hover()
     await page.waitForTimeout(1000)

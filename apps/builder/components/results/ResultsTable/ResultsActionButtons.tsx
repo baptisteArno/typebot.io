@@ -115,7 +115,6 @@ export const ResultsActionButtons = ({
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
       const newObject: { [key: string]: string } = {}
       fields?.forEach((field) => {
-        console.log(data[field])
         newObject[field] = data[field]?.plainText
       })
       return newObject

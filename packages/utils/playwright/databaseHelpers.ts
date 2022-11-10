@@ -1,11 +1,15 @@
 import cuid from 'cuid'
 import {
   Block,
+  defaultChoiceInputOptions,
   defaultSettings,
   defaultTheme,
+  InputBlockType,
+  ItemType,
   PublicTypebot,
   Typebot,
 } from 'models'
+import { isDefined } from '../utils'
 import { proWorkspaceId } from './databaseSetup'
 
 export const parseTestTypebot = (
@@ -30,19 +34,19 @@ export const parseTestTypebot = (
   edges: [
     {
       id: 'edge1',
-      from: { groupId: 'block0', blockId: 'block0' },
-      to: { groupId: 'block1' },
+      from: { groupId: 'group0', blockId: 'block0' },
+      to: { groupId: 'group1' },
     },
   ],
   groups: [
     {
-      id: 'block0',
+      id: 'group0',
       title: 'Group #0',
       blocks: [
         {
           id: 'block0',
           type: 'start',
-          groupId: 'block0',
+          groupId: 'group0',
           label: 'Start',
           outgoingEdgeId: 'edge1',
         },
@@ -66,20 +70,41 @@ export const parseTypebotToPublicTypebot = (
   edges: typebot.edges,
 })
 
+type Options = {
+  withGoButton?: boolean
+}
+
 export const parseDefaultGroupWithBlock = (
-  block: Partial<Block>
+  block: Partial<Block>,
+  options?: Options
 ): Pick<Typebot, 'groups'> => ({
   groups: [
     {
       graphCoordinates: { x: 200, y: 200 },
-      id: 'block1',
+      id: 'group1',
       blocks: [
+        options?.withGoButton
+          ? {
+              id: 'block1',
+              groupId: 'group1',
+              type: InputBlockType.CHOICE,
+              items: [
+                {
+                  id: 'item1',
+                  blockId: 'block1',
+                  type: ItemType.BUTTON,
+                  content: 'Go',
+                },
+              ],
+              options: defaultChoiceInputOptions,
+            }
+          : undefined,
         {
-          id: 'block1',
-          groupId: 'block1',
+          id: 'block2',
+          groupId: 'group1',
           ...block,
         } as Block,
-      ],
+      ].filter(isDefined) as Block[],
       title: 'Group #1',
     },
   ],

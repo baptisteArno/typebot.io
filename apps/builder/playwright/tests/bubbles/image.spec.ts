@@ -36,7 +36,7 @@ test.describe.parallel('Image bubble block', () => {
           process.env.S3_ENDPOINT
         }${process.env.S3_PORT ? `:${process.env.S3_PORT}` : ''}/${
           process.env.S3_BUCKET
-        }/public/typebots/${typebotId}/blocks/block1`
+        }/public/typebots/${typebotId}/blocks/block2`
       )
     })
 

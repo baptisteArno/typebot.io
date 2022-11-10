@@ -1,5 +1,9 @@
 import { z } from 'zod'
 import {
+  chatwootBlockSchema,
+  chatwootOptionsSchema,
+} from '../../../features/chatwoot'
+import {
   googleAnalyticsOptionsSchema,
   googleAnalyticsBlockSchema,
 } from './googleAnalytics'
@@ -17,6 +21,7 @@ const integrationBlockOptionsSchema = googleSheetsOptionsSchema
   .or(googleAnalyticsOptionsSchema)
   .or(webhookOptionsSchema)
   .or(sendEmailOptionsSchema)
+  .or(chatwootOptionsSchema)
 
 export const integrationBlockSchema = googleSheetsBlockSchema
   .or(googleAnalyticsBlockSchema)
@@ -25,6 +30,7 @@ export const integrationBlockSchema = googleSheetsBlockSchema
   .or(zapierBlockSchema)
   .or(makeComBlockSchema)
   .or(pabblyConnectBlockSchema)
+  .or(chatwootBlockSchema)
 
 export type IntegrationBlock = z.infer<typeof integrationBlockSchema>
 export type IntegrationBlockOptions = z.infer<

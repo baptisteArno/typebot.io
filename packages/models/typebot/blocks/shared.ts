@@ -59,4 +59,5 @@ export enum IntegrationBlockType {
   ZAPIER = 'Zapier',
   MAKE_COM = 'Make.com',
   PABBLY_CONNECT = 'Pabbly',
+  CHATWOOT = 'Chatwoot',
 }

@@ -167,7 +167,6 @@ const executeCode = async (
   { typebot: { variables } }: LogicContext
 ) => {
   if (!block.options.content) return
-  console.log('isEmbedded', isEmbedded)
   if (block.options.shouldExecuteInParentContext && isEmbedded) {
     sendEventToParent({
       codeToExecute: parseVariables(variables)(block.options.content),

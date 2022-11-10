@@ -7,6 +7,7 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
+import { ChatwootSettingsForm } from 'features/chatwoot/components'
 import {
   ConditionItem,
   ConditionBlock,
@@ -271,6 +272,14 @@ export const BlockSettings = ({
     case IntegrationBlockType.EMAIL: {
       return (
         <SendEmailSettings
+          options={block.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case IntegrationBlockType.CHATWOOT: {
+      return (
+        <ChatwootSettingsForm
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />
