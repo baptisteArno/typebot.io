@@ -5,7 +5,7 @@ import { isEmbedded } from 'services/utils'
 import { parseCorrectValueType, parseVariables } from 'services/variable'
 
 const parseSetUserCode = (user: ChatwootOptions['user']) => `
-window.$chatwoot.setUser("${user?.id ?? user?.email}", {
+window.$chatwoot.setUser("${user?.id ?? ''}", {
   email: ${user?.email ? `"${user.email}"` : 'undefined'},
   name: ${user?.name ? `"${user.name}"` : 'undefined'},
   avatar_url: ${user?.avatarUrl ? `"${user.avatarUrl}"` : 'undefined'},
@@ -19,10 +19,9 @@ const parseChatwootOpenCode = ({
   user,
 }: ChatwootOptions) => `
 if (window.$chatwoot) {
-  if(${Boolean(user?.id || user?.email)}) {
+  if(${Boolean(user)}) {
     ${parseSetUserCode(user)}
   }
-  if (typeof Typebot !== 'undefined') Typebot.getBubbleActions?.().close()
   window.$chatwoot.toggle("open");
 } else {
   (function (d, t) {
@@ -42,7 +41,6 @@ if (window.$chatwoot) {
         if(${Boolean(user?.id || user?.email)}) {
           ${parseSetUserCode(user)}
         }
-        if (typeof Typebot !== 'undefined') Typebot.getBubbleActions?.().close()
         window.$chatwoot.toggle("open");
       });
     };
@@ -60,6 +58,9 @@ export const openChatwootWidget = async (
       details: null,
     })
   } else if (isEmbedded) {
+    sendEventToParent({
+      closeChatBubble: true,
+    })
     sendEventToParent({
       codeToExecute: parseVariables(variables)(
         parseChatwootOpenCode(block.options)
