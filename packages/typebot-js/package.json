@@ -1,8 +1,8 @@
 {
   "name": "typebot-js",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "main": "dist/index.js",
-  "unpkg": "dist/index.umd.min.js",
+  "unpkg": "dist/index.global.js",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "tsup --watch",
