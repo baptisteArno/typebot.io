@@ -66,11 +66,7 @@ test('can create and delete a new workspace', async ({ page }) => {
     )
   ).toBeVisible()
   await page.click('text="Delete"')
-  await expect(page.locator('text=Free workspace')).toBeVisible()
-  await page.click('text=Free workspace')
-  await expect(
-    page.locator('text="John Doe\'s workspace" >> nth=1')
-  ).toBeHidden()
+  await expect(page.locator('text="John Doe\'s workspace"')).toBeHidden()
 })
 
 test('can update workspace info', async ({ page }) => {

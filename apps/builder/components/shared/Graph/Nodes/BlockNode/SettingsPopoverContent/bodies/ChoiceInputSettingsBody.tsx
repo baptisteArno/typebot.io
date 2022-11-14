@@ -24,8 +24,7 @@ export const ChoiceInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        id={'is-multiple'}
-        label={'Multiple choice?'}
+        label="Multiple choice?"
         initialValue={options?.isMultipleChoice ?? false}
         onCheckChange={handleIsMultipleChange}
       />

@@ -28,60 +28,53 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
 
   return (
     <Stack as="form" spacing={4}>
-      <FormControl isRequired>
-        <FormLabel>From email:</FormLabel>
-        <Input
-          defaultValue={config.from.email ?? ''}
-          onChange={handleFromEmailChange}
-          placeholder="notifications@provider.com"
-          withVariableButton={false}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>From name:</FormLabel>
-        <Input
-          defaultValue={config.from.name ?? ''}
-          onChange={handleFromNameChange}
-          placeholder="John Smith"
-          withVariableButton={false}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Host:</FormLabel>
-        <Input
-          defaultValue={config.host ?? ''}
-          onChange={handleHostChange}
-          placeholder="mail.provider.com"
-          withVariableButton={false}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Username / Email:</FormLabel>
-        <Input
-          type="email"
-          defaultValue={config.username ?? ''}
-          onChange={handleUsernameChange}
-          placeholder="user@provider.com"
-          withVariableButton={false}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>Password:</FormLabel>
-        <Input
-          type="password"
-          defaultValue={config.password ?? ''}
-          onChange={handlePasswordChange}
-          withVariableButton={false}
-        />
-      </FormControl>
+      <Input
+        isRequired
+        label="From email"
+        defaultValue={config.from.email ?? ''}
+        onChange={handleFromEmailChange}
+        placeholder="notifications@provider.com"
+        withVariableButton={false}
+      />
+      <Input
+        label="From name"
+        defaultValue={config.from.name ?? ''}
+        onChange={handleFromNameChange}
+        placeholder="John Smith"
+        withVariableButton={false}
+      />
+      <Input
+        isRequired
+        label="Host"
+        defaultValue={config.host ?? ''}
+        onChange={handleHostChange}
+        placeholder="mail.provider.com"
+        withVariableButton={false}
+      />
+      <Input
+        isRequired
+        label="Username / Email"
+        type="email"
+        defaultValue={config.username ?? ''}
+        onChange={handleUsernameChange}
+        placeholder="user@provider.com"
+        withVariableButton={false}
+      />
+      <Input
+        isRequired
+        label="Password"
+        type="password"
+        defaultValue={config.password ?? ''}
+        onChange={handlePasswordChange}
+        withVariableButton={false}
+      />
       <SwitchWithLabel
-        id="Tls"
-        label={'Secure?'}
+        label="Secure?"
         initialValue={config.isTlsEnabled ?? false}
         onCheckChange={handleTlsCheck}
         moreInfoContent="If enabled, the connection will use TLS when connecting to server. If disabled then TLS is used if server supports the STARTTLS extension. In most cases enable it if you are connecting to port 465. For port 587 or 25 keep it disabled."
       />
-      <FormControl as={HStack} justifyContent="space-between">
+      <FormControl as={HStack} justifyContent="space-between" isRequired>
         <FormLabel mb="0">Port number:</FormLabel>
         <SmartNumberInput
           placeholder="25"

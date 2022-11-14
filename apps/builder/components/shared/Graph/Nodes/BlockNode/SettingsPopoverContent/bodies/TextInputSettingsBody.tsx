@@ -26,7 +26,6 @@ export const TextInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        id="switch"
         label="Long text?"
         initialValue={options?.isLong ?? false}
         onCheckChange={handleLongChange}

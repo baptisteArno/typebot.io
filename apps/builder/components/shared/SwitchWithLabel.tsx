@@ -1,9 +1,14 @@
-import { FormLabel, HStack, Switch, SwitchProps } from '@chakra-ui/react'
+import {
+  FormControl,
+  FormLabel,
+  HStack,
+  Switch,
+  SwitchProps,
+} from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { MoreInfoTooltip } from './MoreInfoTooltip'
 
 type SwitchWithLabelProps = {
-  id: string
   label: string
   initialValue: boolean
   moreInfoContent?: string
@@ -11,12 +16,11 @@ type SwitchWithLabelProps = {
 } & SwitchProps
 
 export const SwitchWithLabel = ({
-  id,
   label,
   initialValue,
   moreInfoContent,
   onCheckChange,
-  ...props
+  ...switchProps
 }: SwitchWithLabelProps) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
@@ -25,21 +29,16 @@ export const SwitchWithLabel = ({
     onCheckChange(!isChecked)
   }
   return (
-    <HStack justifyContent="space-between">
-      <HStack>
-        <FormLabel htmlFor={id} mb="0" mr="0">
-          {label}
-        </FormLabel>
+    <FormControl as={HStack} justifyContent="space-between">
+      <FormLabel mb="0">
+        {label}
         {moreInfoContent && (
-          <MoreInfoTooltip>{moreInfoContent}</MoreInfoTooltip>
+          <>
+            &nbsp;<MoreInfoTooltip>{moreInfoContent}</MoreInfoTooltip>
+          </>
         )}
-      </HStack>
-      <Switch
-        isChecked={isChecked}
-        onChange={handleChange}
-        id={id}
-        {...props}
-      />
-    </HStack>
+      </FormLabel>
+      <Switch isChecked={isChecked} onChange={handleChange} {...switchProps} />
+    </FormControl>
   )
 }

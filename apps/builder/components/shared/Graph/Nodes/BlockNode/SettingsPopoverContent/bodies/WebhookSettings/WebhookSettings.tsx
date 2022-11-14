@@ -172,7 +172,6 @@ export const WebhookSettings = ({
         withVariableButton={!provider}
       />
       <SwitchWithLabel
-        id={'easy-config'}
         label="Advanced configuration"
         initialValue={options.isAdvancedConfig ?? true}
         onCheckChange={handleAdvancedConfigChange}
@@ -225,7 +224,6 @@ export const WebhookSettings = ({
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <SwitchWithLabel
-                  id={'custom-body'}
                   label="Custom body"
                   initialValue={options.isCustomBody ?? true}
                   onCheckChange={handleBodyFormStateChange}

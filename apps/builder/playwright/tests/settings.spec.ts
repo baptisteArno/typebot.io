@@ -6,19 +6,16 @@ import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
-const typebotId = cuid()
-
 test.describe.parallel('Settings page', () => {
-  test.beforeAll(async () => {
-    await importTypebotInDatabase(
-      path.join(__dirname, '../fixtures/typebots/settings.json'),
-      {
-        id: typebotId,
-      }
-    )
-  })
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
+      const typebotId = cuid()
+      await importTypebotInDatabase(
+        path.join(__dirname, '../fixtures/typebots/settings.json'),
+        {
+          id: typebotId,
+        }
+      )
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
         typebotViewer(page).locator('a:has-text("Made with Typebot")')
@@ -72,7 +69,7 @@ test.describe.parallel('Settings page', () => {
     test('should be fillable', async ({ page }) => {
       const favIconUrl = 'https://www.baptistearno.com/favicon.png'
       const imageUrl = 'https://www.baptistearno.com/images/site-preview.png'
-      const typebotId = 'metadata-typebot'
+      const typebotId = cuid()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {
@@ -124,7 +121,7 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Free workspace', () => {
     test("can't remove branding", async ({ page }) => {
-      const typebotId = 'free-branding-typebot'
+      const typebotId = cuid()
       await importTypebotInDatabase(
         path.join(__dirname, '../fixtures/typebots/settings.json'),
         {

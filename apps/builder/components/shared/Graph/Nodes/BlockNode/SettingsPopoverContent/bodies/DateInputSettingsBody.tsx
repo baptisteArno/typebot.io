@@ -30,14 +30,12 @@ export const DateInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        id="is-range"
-        label={'Is range?'}
+        label="Is range?"
         initialValue={options.isRange}
         onCheckChange={handleIsRangeChange}
       />
       <SwitchWithLabel
-        id="with-time"
-        label={'With time?'}
+        label="With time?"
         initialValue={options.isRange}
         onCheckChange={handleHasTimeChange}
       />

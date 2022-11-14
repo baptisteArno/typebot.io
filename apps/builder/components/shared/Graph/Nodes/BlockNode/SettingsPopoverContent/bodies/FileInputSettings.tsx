@@ -28,13 +28,11 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        id="required"
         label="Required?"
         initialValue={options.isRequired ?? true}
         onCheckChange={handleRequiredChange}
       />
       <SwitchWithLabel
-        id="switch"
         label="Allow multiple files?"
         initialValue={options.isMultipleAllowed}
         onCheckChange={handleMultipleFilesChange}

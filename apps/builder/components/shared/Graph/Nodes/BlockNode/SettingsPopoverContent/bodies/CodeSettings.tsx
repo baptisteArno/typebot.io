@@ -33,7 +33,6 @@ export const CodeSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <SwitchWithLabel
-        id="shouldExecuteInParentContext"
         label="Execute in parent window"
         moreInfoContent="Execute the code in the parent window context (when the bot is embedded). If it isn't detected, the code will be executed in the current window context."
         initialValue={options.shouldExecuteInParentContext ?? false}

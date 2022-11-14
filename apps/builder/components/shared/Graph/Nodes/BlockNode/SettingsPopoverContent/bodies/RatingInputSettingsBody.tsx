@@ -68,7 +68,6 @@ export const RatingInputSettings = ({
 
       {options.buttonType === 'Icons' && (
         <SwitchWithLabel
-          id="switch"
           label="Custom icon?"
           initialValue={options.customIcon.isEnabled}
           onCheckChange={handleCustomIconCheck}

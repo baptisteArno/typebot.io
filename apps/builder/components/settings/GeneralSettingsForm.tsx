@@ -73,14 +73,12 @@ export const GeneralSettingsForm = ({
         />
       </Flex>
       <SwitchWithLabel
-        id="prefill"
         label="Prefill input"
         initialValue={generalSettings.isInputPrefillEnabled ?? true}
         onCheckChange={handleInputPrefillChange}
         moreInfoContent="Inputs are automatically pre-filled whenever their associated variable has a value"
       />
       <SwitchWithLabel
-        id="new-result"
         label="Remember session"
         initialValue={
           isDefined(generalSettings.isNewResultOnRefreshEnabled)
@@ -91,7 +89,6 @@ export const GeneralSettingsForm = ({
         moreInfoContent="If the user refreshes the page, its existing results will be overwritten. Disable this if you want to create a new results every time the user refreshes the page."
       />
       <SwitchWithLabel
-        id="query-params"
         label="Hide query params on bot start"
         initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
         onCheckChange={handleHideQueryParamsChange}

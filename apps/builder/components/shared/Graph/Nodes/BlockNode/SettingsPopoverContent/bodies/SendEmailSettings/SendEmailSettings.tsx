@@ -154,7 +154,6 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <SwitchWithLabel
-        id={'custom-body'}
         label={'Custom content?'}
         initialValue={options.isCustomBody ?? false}
         onCheckChange={handleIsCustomBodyChange}

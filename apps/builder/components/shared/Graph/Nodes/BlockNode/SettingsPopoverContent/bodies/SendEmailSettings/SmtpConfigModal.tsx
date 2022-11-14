@@ -83,10 +83,10 @@ export const SmtpConfigModal = ({
             onClick={handleCreateClick}
             isDisabled={
               isNotDefined(smtpConfig.from.email) ||
-              isNotDefined(smtpConfig.from.name) ||
               isNotDefined(smtpConfig.host) ||
               isNotDefined(smtpConfig.username) ||
-              isNotDefined(smtpConfig.password)
+              isNotDefined(smtpConfig.password) ||
+              isNotDefined(smtpConfig.port)
             }
             isLoading={isCreating}
           >

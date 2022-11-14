@@ -21,6 +21,7 @@ test('should be configurable', async ({ page }) => {
   await page.click('input[placeholder="Select a typebot"]')
   await page.click('text=My link typebot 2')
   await expect(page.locator('input[value="My link typebot 2"]')).toBeVisible()
+  await expect(page.getByText('Jump in My link typebot 2')).toBeVisible()
   await page.click('[aria-label="Navigate to typebot"]')
   await expect(page).toHaveURL(
     `/typebots/${linkedTypebotId}/edit?parentId=${typebotId}`

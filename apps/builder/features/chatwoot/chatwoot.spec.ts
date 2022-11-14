@@ -3,7 +3,6 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import cuid from 'cuid'
 import { defaultChatwootOptions, IntegrationBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const typebotId = cuid()
 
