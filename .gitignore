@@ -9,7 +9,8 @@ authenticatedState.json
 playwright-report
 dist
 test-results
-test/results
+**/src/test/results
+**/src/test/reporters
 test/report
 **/api/scripts
 .sentryclirc
