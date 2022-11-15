@@ -56,7 +56,6 @@
     "immer": "9.0.16",
     "js-video-url-parser": "0.5.1",
     "jsonwebtoken": "8.5.1",
-    "kbar": "0.1.0-beta.36",
     "micro": "9.4.1",
     "micro-cors": "0.1.1",
     "minio": "7.0.32",
