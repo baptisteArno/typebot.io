@@ -26,5 +26,18 @@ module.exports = {
   rules: {
     'react/no-unescaped-entities': [0],
     'react/display-name': [0],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          '*/src/*',
+          'src/*',
+          '*/src',
+          '@/features/*/*',
+          '!@/features/blocks/*',
+          '!@/features/*/api',
+        ],
+      },
+    ],
   },
 }
