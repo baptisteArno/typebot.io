@@ -5,12 +5,7 @@ import {
   ProactiveMessageParams,
 } from '../../types'
 import { createButton } from './button'
-import {
-  closeIframe,
-  createIframeContainer,
-  loadTypebotIfFirstOpen,
-  openIframe,
-} from './iframe'
+import { closeIframe, createIframeContainer, openIframe } from './iframe'
 import {
   createProactiveMessage,
   openProactiveMessage,
@@ -33,10 +28,7 @@ export const initBubble = (params: BubbleParams): BubbleActions => {
     !hasBeenClosed()
   ) {
     setRememberCloseInStorage()
-    setTimeout(
-      () => openIframe(bubbleElement, iframeElement),
-      params.autoOpenDelay
-    )
+    setTimeout(() => openIframe(bubbleElement), params.autoOpenDelay)
   }
   !document.body
     ? (window.onload = () => document.body.appendChild(bubbleElement))
@@ -62,8 +54,8 @@ const createBubble = (
   const iframeElement = createIframeContainer(params)
   buttonElement.addEventListener('click', () => {
     iframeElement.style.display === 'none'
-      ? openIframe(bubbleElement, iframeElement)
-      : closeIframe(bubbleElement, iframeElement)
+      ? openIframe(bubbleElement)
+      : closeIframe(bubbleElement)
   })
   if (proactiveMessageElement)
     proactiveMessageElement.addEventListener('click', () =>
@@ -77,9 +69,7 @@ const onProactiveMessageClick = (
   bubble: HTMLDivElement,
   iframe: HTMLIFrameElement
 ): void => {
-  iframe.style.display === 'none'
-    ? openIframe(bubble, iframe)
-    : closeIframe(bubble, iframe)
+  iframe.style.display === 'none' ? openIframe(bubble) : closeIframe(bubble)
   bubble.classList.remove('message-opened')
 }
 
@@ -107,10 +97,10 @@ export const getBubbleActions = (
         }
       : undefined,
     open: () => {
-      openIframe(existingBubbleElement, existingIframeElement)
+      openIframe(existingBubbleElement)
     },
     close: () => {
-      closeIframe(existingBubbleElement, existingIframeElement)
+      closeIframe(existingBubbleElement)
     },
   }
 }

@@ -30,6 +30,10 @@
   filter: brightness(0.75);
 }
 
+#typebot-bubble > button:focus {
+  outline: none;
+}
+
 #typebot-bubble > button > .icon {
   transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
 }
