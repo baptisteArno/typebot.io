@@ -1,9 +1,9 @@
+import { EmbedBubble } from '@/features/blocks/bubbles/embed'
+import { ImageBubble } from '@/features/blocks/bubbles/image'
+import { TextBubble } from '@/features/blocks/bubbles/textBubble'
+import { VideoBubble } from '@/features/blocks/bubbles/video'
 import { BubbleBlock, BubbleBlockType } from 'models'
 import React from 'react'
-import { EmbedBubble } from './EmbedBubble'
-import { ImageBubble } from './ImageBubble'
-import { TextBubble } from './TextBubble'
-import { VideoBubble } from './VideoBubble'
 
 type Props = {
   block: BubbleBlock

@@ -1,3 +1,3 @@
 export * from './components/TypebotViewer'
-export { parseVariables } from './services/variable'
+export { parseVariables } from '@/features/variables'
 export * from 'util'

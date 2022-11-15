@@ -30,5 +30,19 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/display-name': [0],
     '@next/next/no-img-element': [0],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          '*/src/*',
+          'src/*',
+          '*/src',
+          '@/features/*/*',
+          '@/index',
+          '!@/features/blocks/*',
+          '!@/features/*/api',
+        ],
+      },
+    ],
   },
 }

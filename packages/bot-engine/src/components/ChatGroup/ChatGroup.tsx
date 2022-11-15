@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { AvatarSideContainer } from './AvatarSideContainer'
-import { LinkedTypebot, useTypebot } from '../../contexts/TypebotContext'
+import { LinkedTypebot, useTypebot } from '../../providers/TypebotProvider'
 import {
   isBubbleBlock,
   isBubbleBlockType,
@@ -12,11 +12,6 @@ import {
   isLogicBlock,
   byId,
 } from 'utils'
-import { executeLogic } from 'services/logic'
-import { executeIntegration } from 'services/integration'
-import { parseRetryBlock, blockCanBeRetried } from 'services/inputs'
-import { parseVariables } from '../../services/variable'
-import { useAnswers } from 'contexts/AnswersContext'
 import {
   BubbleBlock,
   InputBlock,
@@ -24,10 +19,16 @@ import {
   PublicTypebot,
   Block,
 } from 'models'
-import { useChat } from 'contexts/ChatContext'
-import { getLastChatBlockType } from 'services/chat'
 import { HostBubble } from './ChatBlock/bubbles/HostBubble'
-import { InputChatBlock, InputSubmitContent } from './ChatBlock/InputChatBlock'
+import { InputChatBlock } from './ChatBlock/InputChatBlock'
+import { parseVariables } from '@/features/variables'
+import { useAnswers } from '@/providers/AnswersProvider'
+import { useChat } from '@/providers/ChatProvider'
+import { InputSubmitContent } from '@/types'
+import { getLastChatBlockType } from '@/utils/chat'
+import { executeIntegration } from '@/utils/executeIntegration'
+import { executeLogic } from '@/utils/executeLogic'
+import { blockCanBeRetried, parseRetryBlock } from '@/utils/inputs'
 
 type ChatGroupProps = {
   blocks: Block[]
