@@ -95,10 +95,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).send({ message: "Couldn't find email body" })
     }
     const transporter = createTransport(transportConfig)
+    const fromName = isEmpty(replyToName) ? from.name : replyToName
     const email: Mail.Options = {
-      from: `"${isEmpty(replyToName) ? from.name : replyToName}" <${
-        from.email
-      }>`,
+      from: fromName ? `"${fromName}" <${from.email}>` : from.email,
       cc,
       bcc,
       to: recipients,

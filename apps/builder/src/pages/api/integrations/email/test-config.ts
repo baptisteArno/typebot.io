@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     try {
       const info = await transporter.sendMail({
-        from: `"${from.name}" <${from.email}>`,
+        from: from.name ? `"${from.name}" <${from.email}>` : from.email,
         to,
         subject: 'Your SMTP configuration is working 🤩',
         text: 'This email has been sent to test out your SMTP config.\n\nIf your read this then it has been successful.🚀',
