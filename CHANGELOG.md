@@ -1,12 +1,42 @@
 # Changelog
 
-<a name="2.8.4"></a>
+<a name="2.8.5"></a>
 
-## 2.8.4 (2022-11-02)
+## 2.8.5 (2022-11-15)
+
+### Added
+
+- ✨ Add Chatwoot livechat integration [[ea84039](https://github.com/baptisteArno/typebot.io/commit/ea840390248cfa966e550c25d9af806bd4397295)]
+- ✨ (logic) Add execute in parent window context for code block [[b31b603](https://github.com/baptisteArno/typebot.io/commit/b31b603cc786d5b7b5205db838332f671ea6c324)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[bae710f](https://github.com/baptisteArno/typebot.io/commit/bae710fb1c09071258804a0cbc1f47a6211123fa)]
+- ♻️ (bot) Change to features-centric folder structure [[9720944](https://github.com/baptisteArno/typebot.io/commit/972094425ae72f8b962617ec54bccb89a396efb8)]
+- ♻️ (models) Change to features-centric folder structure [[a5c8a8a](https://github.com/baptisteArno/typebot.io/commit/a5c8a8a95cf108c8ad4d068f4a51675b888f7c89)]
+- ♻️ (viewer) Change to features-centric folder structure [[a9d0479](https://github.com/baptisteArno/typebot.io/commit/a9d04798bcd0d5d9c2d15ed573e9e1b60ed066c8)]
+- ♻️ (builder) Change to features-centric folder structure [[643571f](https://github.com/baptisteArno/typebot.io/commit/643571fe7d2a39f398269636bb57c7e8ae3f7a4e)]
+- 🚸 (sendEmail) Make custom sender name optional [[3686465](https://github.com/baptisteArno/typebot.io/commit/3686465a85d21bf6342ab8395a5037063e379cac)]
+- 🚸 (chatwoot) Make sure to close the chat bubble before opening Chatwoot [[d01549f](https://github.com/baptisteArno/typebot.io/commit/d01549fee6f0a9898a909496acaede91e5d0e17c)]
+- ♻️ Improve file upload management [[d102fe1](https://github.com/baptisteArno/typebot.io/commit/d102fe118c3fd0dad96e692932d9792bdb4d514f)]
+- 🚸 (signin) Better disabled signups behavior [[570a780](https://github.com/baptisteArno/typebot.io/commit/570a780db1dd204c7d473f8f6c87f6ea8d789dcd)]
 
 ### Fixed
 
+- 🚑 (typebot-js) Fix 404 unpkg entrypoint [[92147c3](https://github.com/baptisteArno/typebot.io/commit/92147c315f8d0ba92b42fab8579c0425160afc80)]
+- 🐛 (typebot-js) Fix default export from js lib [[8ab67b7](https://github.com/baptisteArno/typebot.io/commit/8ab67b7580d47731995ba7e5ddba6d2ad7cc25b6)]
+- 🐛 (editor) Fix undo / redo not moving or renaming groups [[de0158b](https://github.com/baptisteArno/typebot.io/commit/de0158be24b6e6c160b9101ee69841128ca82608)]
+- 🐛 (editor) Fix bug preventing user to manually zoom in / out [[1f44e8f](https://github.com/baptisteArno/typebot.io/commit/1f44e8f31fe54dc1f68dcbbc90fbc06501d6a683)]
+- 🐛 (results) Fix bug preventing user from seeing linked typebots results [[6dd7bd9](https://github.com/baptisteArno/typebot.io/commit/6dd7bd95620df1d34929c70085db668bb250a243)]
+- 🐛 (share) Restrict public ID to non-existant only [[63845ef](https://github.com/baptisteArno/typebot.io/commit/63845effaf6134898cb7f2bf353355c24f46a6cc)]
+- 🐛 (workspace) Correctly display Guest tag in members list [[4d38726](https://github.com/baptisteArno/typebot.io/commit/4d38726eae17e90f542e7a7db29124ca1956df1c)]
+- 🐛 (settings) Allow meta tags in head element [[ad9be92](https://github.com/baptisteArno/typebot.io/commit/ad9be922555ce6eb0a32470811e27b6db25d55b6)]
+- ✏️ (lp) Fix incorrect additional limits price [[c62e20f](https://github.com/baptisteArno/typebot.io/commit/c62e20f81add8e7ae9f12e58b8c15e18480799da)]
 - 💚 Fix build docker image workflow [[8a8f3ec](https://github.com/baptisteArno/typebot.io/commit/8a8f3ec69a69dc7e3d6aaf6fe5b87b3c64febd0b)]
+
+### Miscellaneous
+
+- 🧑‍💻 (typebot-js) Add closeChatBubble event data [[54a1dc0](https://github.com/baptisteArno/typebot.io/commit/54a1dc04313d7fbc46795cf65e123a588245cd66)]
 
 <a name="2.8.3"></a>
 
