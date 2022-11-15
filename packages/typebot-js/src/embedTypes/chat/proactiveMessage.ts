@@ -44,7 +44,7 @@ const createCloseButton = (bubble: HTMLDivElement): HTMLButtonElement => {
   return button
 }
 
-const openProactiveMessage = (bubble: HTMLDivElement): void => {
+const openProactiveMessage = (bubble: Element): void => {
   bubble.classList.add('message-opened')
 }
 
@@ -56,7 +56,7 @@ const onCloseButtonClick = (
   closeProactiveMessage(proactiveMessageElement)
 }
 
-const closeProactiveMessage = (bubble: HTMLDivElement): void => {
+const closeProactiveMessage = (bubble: Element): void => {
   setRememberCloseInStorage()
   bubble.classList.remove('message-opened')
 }

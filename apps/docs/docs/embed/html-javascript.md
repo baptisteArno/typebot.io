@@ -31,7 +31,7 @@ Here is an example:
 ```html
 <script src="https://unpkg.com/typebot-js@2.2"></script>
 <script>
-  var typebotCommands = Typebot.initPopup({
+  Typebot.initPopup({
     url: 'https://viewer.typebot.io/my-typebot',
     delay: 3000,
   })
@@ -45,17 +45,21 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-Typebot.getPopupActions().open()
+Typebot.open()
 ```
 
 ```js
-Typebot.getPopupActions().close()
+Typebot.close()
+```
+
+```js
+Typebot.toggle()
 ```
 
 You can bind these commands on a button element, for example:
 
 ```html
-<button onclick="Typebot.getPopupActions().open()">Open the popup</button>
+<button onclick="Typebot.open()">Contact us</button>
 ```
 
 ## Bubble
@@ -76,20 +80,22 @@ Here is an example:
 
 This code will automatically trigger the popup window after 3 seconds.
 
-### Open or close the proactive message
+### Open or close the preview message
 
-You can use this command:
+You can use these commands:
 
 ```js
-Typebot.getBubbleActions().openProactiveMessage()
+Typebot.showMessage()
+```
+
+```js
+Typebot.hideMessage()
 ```
 
 You can bind this command on a button element, for example:
 
 ```html
-<button onclick="Typebot.getBubbleActions().openProactiveMessage()">
-  Open proactive message
-</button>
+<button onclick="Typebot.showMessage()">Open message</button>
 ```
 
 ### Open or close the typebot
@@ -97,17 +103,21 @@ You can bind this command on a button element, for example:
 You can use these commands:
 
 ```js
-Typebot.getBubbleActions().open()
+Typebot.open()
 ```
 
 ```js
-Typebot.getBubbleActions().close()
+Typebot.close()
+```
+
+```js
+Typebot.toggle()
 ```
 
 You can bind these commands on a button element, for example:
 
 ```html
-<button onclick="Typebot.getBubbleActions().open()">Open the chat</button>
+<button onclick="Typebot.open()">Contact us</button>
 ```
 
 ## Additional configuration
