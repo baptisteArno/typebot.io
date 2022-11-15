@@ -1,11 +1,11 @@
 import React, { CSSProperties, useMemo } from 'react'
-import { TypebotContext } from '../contexts/TypebotContext'
+import { TypebotProvider } from '../providers/TypebotProvider'
 import Frame from 'react-frame-component'
 import styles from '../assets/style.css'
 import importantStyles from '../assets/importantStyles.css'
 import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
-import { AnswersContext } from '../contexts/AnswersContext'
+import { AnswersProvider } from '../providers/AnswersProvider'
 import {
   Answer,
   BackgroundType,
@@ -89,14 +89,14 @@ export const TypebotViewer = ({
           }:wght@300;400;600&display=swap');`,
         }}
       />
-      <TypebotContext
+      <TypebotProvider
         typebot={typebot}
         apiHost={apiHost}
         isPreview={isPreview}
         onNewLog={handleNewLog}
         isLoading={isLoading}
       >
-        <AnswersContext
+        <AnswersProvider
           resultId={resultId}
           onNewAnswer={handleNewAnswer}
           onVariablesUpdated={onVariablesUpdated}
@@ -120,8 +120,8 @@ export const TypebotViewer = ({
             </div>
             {typebot.settings.general.isBrandingEnabled && <LiteBadge />}
           </div>
-        </AnswersContext>
-      </TypebotContext>
+        </AnswersProvider>
+      </TypebotProvider>
     </Frame>
   )
 }

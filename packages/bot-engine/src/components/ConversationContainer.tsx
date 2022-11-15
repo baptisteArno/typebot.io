@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-
 import { ChatGroup } from './ChatGroup'
 import { useFrame } from 'react-frame-component'
-import { setCssVariablesValue } from '../services/theme'
-import { useAnswers } from '../contexts/AnswersContext'
+import { useAnswers } from '../providers/AnswersProvider'
 import { Group, Edge, PublicTypebot, Theme, VariableWithValue } from 'models'
 import { byId, isDefined, isInputBlock, isNotDefined } from 'utils'
 import { animateScroll as scroll } from 'react-scroll'
-import { LinkedTypebot, useTypebot } from 'contexts/TypebotContext'
-import { ChatContext } from 'contexts/ChatContext'
+import { LinkedTypebot, useTypebot } from '@/providers/TypebotProvider'
+import { setCssVariablesValue } from '@/features/theme'
+import { ChatProvider } from '@/providers/ChatProvider'
 
 type Props = {
   theme: Theme
@@ -139,7 +138,7 @@ export const ConversationContainer = ({
       ref={scrollableContainer}
       className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
     >
-      <ChatContext onScroll={autoScrollToBottom}>
+      <ChatProvider onScroll={autoScrollToBottom}>
         {displayedGroups.map((displayedGroup, idx) => {
           const groupAfter = displayedGroups[idx + 1]
           const groupAfterStartsWithInput =
@@ -158,7 +157,7 @@ export const ConversationContainer = ({
             />
           )
         })}
-      </ChatContext>
+      </ChatProvider>
 
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
       <div className="w-full h-32" ref={bottomAnchor} />

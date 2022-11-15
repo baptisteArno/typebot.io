@@ -1,23 +1,22 @@
 import React, { useState } from 'react'
-import { useAnswers } from '../../../contexts/AnswersContext'
+import { useAnswers } from '../../../providers/AnswersProvider'
 import { InputBlock, InputBlockType } from 'models'
 import { GuestBubble } from './bubbles/GuestBubble'
-import { TextForm } from './inputs/TextForm'
 import { byId } from 'utils'
-import { DateForm } from './inputs/DateForm'
-import { ChoiceForm } from './inputs/ChoiceForm'
-import { useTypebot } from 'contexts/TypebotContext'
-import { parseVariables } from '../../../services/variable'
-import { isInputValid } from 'services/inputs'
-import { PaymentForm } from './inputs/PaymentForm'
-import { RatingForm } from './inputs/RatingForm'
-import { FileUploadForm } from './inputs/FileUploadForm'
-
-export type InputSubmitContent = {
-  label?: string
-  value: string
-  itemId?: string
-}
+import { InputSubmitContent } from '@/types'
+import { useTypebot } from '@/providers/TypebotProvider'
+import { isInputValid } from '@/utils/inputs'
+import { parseVariables } from '@/features/variables'
+import { TextInput } from '@/features/blocks/inputs/textInput'
+import { NumberInput } from '@/features/blocks/inputs/number'
+import { EmailInput } from '@/features/blocks/inputs/email'
+import { UrlInput } from '@/features/blocks/inputs/url'
+import { PhoneInput } from '@/features/blocks/inputs/phone'
+import { DateForm } from '@/features/blocks/inputs/date'
+import { ChoiceForm } from '@/features/blocks/inputs/buttons'
+import { PaymentForm } from '@/features/blocks/inputs/payment'
+import { RatingForm } from '@/features/blocks/inputs/rating'
+import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
 
 export const InputChatBlock = ({
   block,
@@ -111,12 +110,44 @@ const Input = ({
 }) => {
   switch (block.type) {
     case InputBlockType.TEXT:
+      return (
+        <TextInput
+          block={block}
+          onSubmit={onSubmit}
+          defaultValue={defaultValue}
+          hasGuestAvatar={hasGuestAvatar}
+        />
+      )
     case InputBlockType.NUMBER:
+      return (
+        <NumberInput
+          block={block}
+          onSubmit={onSubmit}
+          defaultValue={defaultValue}
+          hasGuestAvatar={hasGuestAvatar}
+        />
+      )
     case InputBlockType.EMAIL:
+      return (
+        <EmailInput
+          block={block}
+          onSubmit={onSubmit}
+          defaultValue={defaultValue}
+          hasGuestAvatar={hasGuestAvatar}
+        />
+      )
     case InputBlockType.URL:
+      return (
+        <UrlInput
+          block={block}
+          onSubmit={onSubmit}
+          defaultValue={defaultValue}
+          hasGuestAvatar={hasGuestAvatar}
+        />
+      )
     case InputBlockType.PHONE:
       return (
-        <TextForm
+        <PhoneInput
           block={block}
           onSubmit={onSubmit}
           defaultValue={defaultValue}
