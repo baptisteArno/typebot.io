@@ -8,11 +8,11 @@
   "devDependencies": {
     "@playwright/test": "1.27.1",
     "@types/nodemailer": "6.4.6",
-    "aws-sdk": "2.1245.0",
+    "aws-sdk": "2.1254.0",
     "cuid": "2.1.8",
     "db": "workspace:*",
     "models": "workspace:*",
-    "next": "13.0.1",
+    "next": "13.0.3",
     "nodemailer": "6.8.0",
     "typescript": "4.8.4"
   },

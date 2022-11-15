@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
-import { HttpMethod } from 'models'
+import { HttpMethod, Typebot } from 'models'
 import {
   createWebhook,
   deleteTypebots,
@@ -100,9 +100,9 @@ test.describe('API', () => {
     const response = await request.get(`/api/typebots`, {
       headers: { Authorization: `Bearer ${apiToken}` },
     })
-    const { typebots } = (await response.json()) as { typebots: unknown[] }
+    const { typebots } = (await response.json()) as { typebots: Typebot[] }
     expect(typebots.length).toBeGreaterThanOrEqual(1)
-    expect(typebots[0]).toMatchObject({
+    expect(typebots.find((typebot) => typebot.id === typebotId)).toMatchObject({
       id: typebotId,
       publishedTypebotId: null,
       name: 'My typebot',

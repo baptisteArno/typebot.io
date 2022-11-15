@@ -16,10 +16,10 @@
     "migration:deploy": "prisma migrate deploy"
   },
   "dependencies": {
-    "@prisma/client": "4.5.0"
+    "@prisma/client": "4.6.1"
   },
   "devDependencies": {
-    "prisma": "4.5.0",
+    "prisma": "4.6.1",
     "typescript": "4.8.4",
     "dotenv-cli": "6.0.0"
   }
