@@ -4,7 +4,7 @@ import { playwrightBaseConfig } from 'configs/playwright'
 
 const config: PlaywrightTestConfig = {
   ...playwrightBaseConfig,
-  testDir: path.join(__dirname, 'playwright/tests'),
+  testDir: path.join(__dirname, 'src'),
   webServer: process.env.CI
     ? {
         ...(playwrightBaseConfig.webServer as { command: string }),
@@ -15,7 +15,6 @@ const config: PlaywrightTestConfig = {
     ...playwrightBaseConfig.use,
     baseURL: process.env.NEXT_PUBLIC_VIEWER_URL,
   },
-  outputDir: path.join(__dirname, 'playwright/test-results/'),
 }
 
 export default config

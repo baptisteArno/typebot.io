@@ -28,7 +28,10 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
   },
   retries: process.env.NO_RETRIES ? 0 : 1,
   workers: process.env.CI ? 2 : 3,
-  reporter: [[process.env.CI ? 'github' : 'list'], ['html']],
+  reporter: [
+    [process.env.CI ? 'github' : 'list'],
+    ['html', { outputFolder: 'src/test/reporters' }],
+  ],
   maxFailures: process.env.CI ? 10 : undefined,
   webServer: process.env.CI
     ? {
@@ -37,6 +40,7 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
         reuseExistingServer: true,
       }
     : undefined,
+  outputDir: './src/test/results',
   use: {
     trace: 'on-first-retry',
     video: 'retain-on-failure',

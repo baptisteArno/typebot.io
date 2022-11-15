@@ -15,7 +15,6 @@ const config: PlaywrightTestConfig = {
     baseURL: process.env.NEXTAUTH_URL,
     storageState: path.join(__dirname, 'src/test/storageState.json'),
   },
-  outputDir: path.join(__dirname, 'src/test/results/'),
 }
 
 export default config
