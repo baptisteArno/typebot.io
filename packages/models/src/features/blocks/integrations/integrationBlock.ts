@@ -1,8 +1,5 @@
 import { z } from 'zod'
-import {
-  chatwootBlockSchema,
-  chatwootOptionsSchema,
-} from '../../../features/chatwoot'
+import { chatwootBlockSchema, chatwootOptionsSchema } from './chatwoot'
 import {
   googleAnalyticsOptionsSchema,
   googleAnalyticsBlockSchema,

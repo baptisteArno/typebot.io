@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { settingsSchema } from './settings'
-import { blockSchema } from './blocks'
+import { blockSchema } from '../blocks'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
 

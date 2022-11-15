@@ -1,8 +1,5 @@
 import { z } from 'zod'
-import {
-  blockBaseSchema,
-  IntegrationBlockType,
-} from '../../typebot/blocks/shared'
+import { blockBaseSchema, IntegrationBlockType } from '../shared'
 
 export const chatwootOptionsSchema = z.object({
   baseUrl: z.string(),

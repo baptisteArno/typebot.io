@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { itemBaseSchema } from './shared'
-import { buttonItemSchema } from './input'
+import { buttonItemSchema } from './inputs'
 import { conditionItemSchema } from './logic'
 
 export type ItemIndices = {

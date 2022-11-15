@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { IntegrationBlockType, blockBaseSchema } from '../shared'
+import { blockBaseSchema, IntegrationBlockType } from '../shared'
 
 const variableForTestSchema = z.object({
   id: z.string(),

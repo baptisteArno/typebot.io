@@ -1,6 +1,7 @@
 import { Result as ResultFromPrisma } from 'db'
-import { Answer, VariableWithValue } from '.'
-import { InputBlockType } from './typebot/blocks/shared'
+import { Answer } from './answer'
+import { InputBlockType } from './blocks'
+import { VariableWithValue } from './typebot/variable'
 
 export type Result = Omit<ResultFromPrisma, 'createdAt' | 'variables'> & {
   createdAt: string

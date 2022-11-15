@@ -1,4 +1,4 @@
-import { ChatwootBlock, ChatwootOptions } from 'models/features/chatwoot'
+import { ChatwootBlock, ChatwootOptions } from 'models'
 import { sendEventToParent } from 'services/chat'
 import { IntegrationContext } from 'services/integration'
 import { isEmbedded } from 'services/utils'

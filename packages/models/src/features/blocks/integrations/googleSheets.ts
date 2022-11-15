@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { IntegrationBlockType, blockBaseSchema } from '../shared'
+import { blockBaseSchema, IntegrationBlockType } from '../shared'
 
 export enum GoogleSheetsAction {
   GET = 'Get data from sheet',

@@ -1,4 +1,4 @@
-export * from './input'
+export * from './inputBlock'
 export * from './text'
 export * from './email'
 export * from './number'
