@@ -1,4 +1,4 @@
-export * from './logic'
+export * from './logicBlock'
 export * from './code'
 export * from './condition'
 export * from './redirect'

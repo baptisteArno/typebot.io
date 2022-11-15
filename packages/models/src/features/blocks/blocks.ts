@@ -4,17 +4,17 @@ import {
   Item,
   LogicBlockOptions,
 } from '.'
-import { BubbleBlock, bubbleBlockSchema } from './bubble'
-import { InputBlock, inputBlockSchema } from './input'
-import { IntegrationBlock, integrationBlockSchema } from './integration'
+import { BubbleBlock, bubbleBlockSchema } from './bubbles'
+import { InputBlock, inputBlockSchema } from './inputs'
+import { IntegrationBlock, integrationBlockSchema } from './integrations'
 import { ConditionBlock, LogicBlock, logicBlockSchema } from './logic'
 import { z } from 'zod'
 import {
   BubbleBlockType,
   InputBlockType,
-  IntegrationBlockType,
   LogicBlockType,
   blockBaseSchema,
+  IntegrationBlockType,
 } from './shared'
 
 export type DraggableBlock =

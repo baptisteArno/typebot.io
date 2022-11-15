@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { IntegrationBlockType, blockBaseSchema } from '../shared'
+import { blockBaseSchema, IntegrationBlockType } from '../shared'
 import { webhookOptionsSchema } from './webhook'
 
 export const zapierBlockSchema = blockBaseSchema.and(

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { IntegrationBlockType, blockBaseSchema } from '../shared'
+import { blockBaseSchema, IntegrationBlockType } from '../shared'
 
 export const googleAnalyticsOptionsSchema = z.object({
   trackingId: z.string().optional(),
