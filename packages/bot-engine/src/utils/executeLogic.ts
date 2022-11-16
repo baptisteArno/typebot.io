@@ -25,6 +25,6 @@ export const executeLogic = async (
     case LogicBlockType.CODE:
       return { nextEdgeId: await executeCode(block, context) }
     case LogicBlockType.TYPEBOT_LINK:
-      return await executeTypebotLink(block, context)
+      return executeTypebotLink(block, context)
   }
 }

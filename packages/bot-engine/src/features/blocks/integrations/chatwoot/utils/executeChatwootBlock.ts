@@ -47,7 +47,7 @@ if (window.$chatwoot) {
   })(document, "script");
 }`
 
-export const executeChatwootBlock = async (
+export const executeChatwootBlock = (
   block: ChatwootBlock,
   { variables, isPreview, onNewLog }: IntegrationState
 ) => {
@@ -74,7 +74,7 @@ export const executeChatwootBlock = async (
       )
     )
     try {
-      await func(...variables.map((v) => parseCorrectValueType(v.value)))
+      func(...variables.map((v) => parseCorrectValueType(v.value)))
     } catch (err) {
       console.error(err)
     }

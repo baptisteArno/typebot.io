@@ -12,7 +12,7 @@ export const executeIntegration = ({
 }: {
   block: IntegrationBlock
   context: IntegrationState
-}): Promise<string | undefined> => {
+}): Promise<string | undefined> | string | undefined => {
   switch (block.type) {
     case IntegrationBlockType.GOOGLE_SHEETS:
       return executeGoogleSheetBlock(block, context)

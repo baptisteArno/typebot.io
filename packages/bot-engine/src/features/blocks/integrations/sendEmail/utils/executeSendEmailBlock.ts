@@ -4,7 +4,7 @@ import { parseLog } from '@/utils/helpers'
 import { SendEmailBlock } from 'models'
 import { sendRequest, byId } from 'utils'
 
-export const executeSendEmailBlock = async (
+export const executeSendEmailBlock = (
   block: SendEmailBlock,
   {
     variables,
@@ -25,7 +25,7 @@ export const executeSendEmailBlock = async (
     return block.outgoingEdgeId
   }
   const { options } = block
-  const { error } = await sendRequest({
+  sendRequest({
     url: `${apiHost}/api/typebots/${typebotId}/integrations/email?resultId=${resultId}`,
     method: 'POST',
     body: {
@@ -43,9 +43,11 @@ export const executeSendEmailBlock = async (
       isBodyCode: options.isBodyCode,
       resultValues,
     },
+  }).then(({ error }) => {
+    onNewLog(
+      parseLog(error, 'Succesfully sent an email', 'Failed to send an email')
+    )
   })
-  onNewLog(
-    parseLog(error, 'Succesfully sent an email', 'Failed to send an email')
-  )
+
   return block.outgoingEdgeId
 }

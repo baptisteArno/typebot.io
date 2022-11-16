@@ -58,7 +58,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
   } = useGraph()
-  const { mouseOverBlock, setMouseOverBlock, draggedItem } = useBlockDnd()
+  const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
@@ -105,7 +105,7 @@ export const BlockNode = ({
   }
 
   const handleMouseEnter = () => {
-    if (draggedItem !== undefined)
+    if (mouseOverBlock?.id !== block.id)
       setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)
       setConnectingIds({

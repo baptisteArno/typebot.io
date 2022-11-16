@@ -21,10 +21,10 @@ export const executeGoogleSheetBlock = async (
   if (!('action' in block.options)) return block.outgoingEdgeId
   switch (block.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
-      await insertRowInGoogleSheets(block.options, context)
+      insertRowInGoogleSheets(block.options, context)
       break
     case GoogleSheetsAction.UPDATE_ROW:
-      await updateRowInGoogleSheets(block.options, context)
+      updateRowInGoogleSheets(block.options, context)
       break
     case GoogleSheetsAction.GET:
       await getRowFromGoogleSheets(block.options, context)
@@ -33,7 +33,7 @@ export const executeGoogleSheetBlock = async (
   return block.outgoingEdgeId
 }
 
-const insertRowInGoogleSheets = async (
+const insertRowInGoogleSheets = (
   options: GoogleSheetsInsertRowOptions,
   { variables, apiHost, onNewLog, resultId }: IntegrationState
 ) => {
@@ -46,30 +46,31 @@ const insertRowInGoogleSheets = async (
     return
   }
   const params = stringify({ resultId })
-  const { error } = await sendRequest({
+  sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
     method: 'POST',
     body: {
       credentialsId: options.credentialsId,
       values: parseCellValues(options.cellsToInsert, variables),
     },
-  })
-  onNewLog(
-    parseLog(
-      error,
-      'Succesfully inserted a row in the sheet',
-      'Failed to insert a row in the sheet'
+  }).then(({ error }) => {
+    onNewLog(
+      parseLog(
+        error,
+        'Succesfully inserted a row in the sheet',
+        'Failed to insert a row in the sheet'
+      )
     )
-  )
+  })
 }
 
-const updateRowInGoogleSheets = async (
+const updateRowInGoogleSheets = (
   options: GoogleSheetsUpdateRowOptions,
   { variables, apiHost, onNewLog, resultId }: IntegrationState
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
   const params = stringify({ resultId })
-  const { error } = await sendRequest({
+  sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
     method: 'PATCH',
     body: {
@@ -80,14 +81,15 @@ const updateRowInGoogleSheets = async (
         value: parseVariables(variables)(options.referenceCell.value ?? ''),
       },
     },
-  })
-  onNewLog(
-    parseLog(
-      error,
-      'Succesfully updated a row in the sheet',
-      'Failed to update a row in the sheet'
+  }).then(({ error }) => {
+    onNewLog(
+      parseLog(
+        error,
+        'Succesfully updated a row in the sheet',
+        'Failed to update a row in the sheet'
+      )
     )
-  )
+  })
 }
 
 const getRowFromGoogleSheets = async (
