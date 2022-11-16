@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Google Analytics
 
 The Google Analytics integration block allows you to track a Google Analytics event at a given moment in your flow.

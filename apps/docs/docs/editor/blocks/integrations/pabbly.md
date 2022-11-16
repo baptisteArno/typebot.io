@@ -1,7 +1,3 @@
----
-sidebar_position: 6
----
-
 # Pabbly Connect
 
 The Pabbly Connect integration block allows you to trigger a workflow at a given moment in your flow.

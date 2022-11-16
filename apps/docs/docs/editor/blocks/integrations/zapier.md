@@ -1,7 +1,3 @@
----
-sidebar_position: 5
----
-
 # Zapier
 
 The Zapier integration block allows you to trigger a zap at a given moment in your flow.

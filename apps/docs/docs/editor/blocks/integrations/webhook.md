@@ -1,7 +1,3 @@
----
-sidebar_position: 3
----
-
 # Webhook / API Request
 
 The Webhook block allows you to either:
