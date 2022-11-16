@@ -34,7 +34,7 @@ import { ZapierSettings } from '@/features/blocks/integrations/zapier'
 import { CodeSettings } from '@/features/blocks/logic/code'
 import { RedirectSettings } from '@/features/blocks/logic/redirect'
 import { SetVariableSettings } from '@/features/blocks/logic/setVariable'
-import { TypebotLinkSettingsForm } from '@/features/blocks/logic/typebotLink'
+import { TypebotLinkForm } from '@/features/blocks/logic/typebotLink'
 import { ButtonsOptionsForm } from '@/features/blocks/inputs/buttons'
 import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
 
@@ -200,7 +200,7 @@ export const BlockSettings = ({
     }
     case LogicBlockType.TYPEBOT_LINK: {
       return (
-        <TypebotLinkSettingsForm
+        <TypebotLinkForm
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />

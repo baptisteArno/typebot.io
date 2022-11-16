@@ -29,7 +29,7 @@ import { WithVariableContent } from './WithVariableContent'
 import { PaymentInputContent } from '@/features/blocks/inputs/payment'
 import { RatingInputContent } from '@/features/blocks/inputs/rating'
 import { FileInputContent } from '@/features/blocks/inputs/fileUpload'
-import { TypebotLinkContent } from '@/features/blocks/logic/typebotLink'
+import { TypebotLinkNode } from '@/features/blocks/logic/typebotLink'
 import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSheets'
 import { GoogleAnalyticsNodeContent } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeContent'
 import { ZapierContent } from '@/features/blocks/integrations/zapier'
@@ -117,7 +117,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       )
     }
     case LogicBlockType.TYPEBOT_LINK:
-      return <TypebotLinkContent block={block} />
+      return <TypebotLinkNode block={block} />
 
     case IntegrationBlockType.GOOGLE_SHEETS: {
       return (

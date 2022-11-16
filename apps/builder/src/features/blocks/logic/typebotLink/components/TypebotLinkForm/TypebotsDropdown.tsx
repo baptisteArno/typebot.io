@@ -1,4 +1,4 @@
-import { HStack, IconButton, Input } from '@chakra-ui/react'
+import { HStack, IconButton, Input, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useToast } from '@/hooks/useToast'
 import Link from 'next/link'
@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { byId } from 'utils'
 import { useTypebots } from '@/features/dashboard'
 import { SearchableDropdown } from '@/components/SearchableDropdown'
+import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 
 type Props = {
   typebotId?: string | 'current'
@@ -46,7 +47,25 @@ export const TypebotsDropdown = ({
         selectedItem={
           typebotId === 'current' ? 'Current typebot' : currentTypebot?.name
         }
-        items={['Current typebot', ...(typebots ?? []).map((t) => t.name)]}
+        items={[
+          {
+            label: 'Current typebot',
+            value: 'Current typebot',
+          },
+          ...(typebots ?? []).map((typebot) => ({
+            value: typebot.name,
+            label: (
+              <HStack as="span" spacing="2">
+                <EmojiOrImageIcon
+                  icon={typebot.icon}
+                  boxSize="18px"
+                  emojiFontSize="18px"
+                />
+                <Text>{typebot.name}</Text>
+              </HStack>
+            ),
+          })),
+        ]}
         onValueChange={handleTypebotSelect}
         placeholder={'Select a typebot'}
       />

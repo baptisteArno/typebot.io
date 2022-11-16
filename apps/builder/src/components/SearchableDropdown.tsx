@@ -11,14 +11,14 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
-import { useState, useRef, useEffect, ChangeEvent } from 'react'
+import { useState, useRef, useEffect, ChangeEvent, ReactNode } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env, isDefined } from 'utils'
 import { VariablesButton } from '@/features/variables'
 
 type Props = {
   selectedItem?: string
-  items: string[]
+  items: (string | { label: ReactNode; value: string })[]
   debounceTimeout?: number
   withVariableButton?: boolean
   onValueChange?: (value: string) => void
@@ -43,7 +43,9 @@ export const SearchableDropdown = ({
   const [filteredItems, setFilteredItems] = useState([
     ...items
       .filter((item) =>
-        item.toLowerCase().includes((selectedItem ?? '').toLowerCase())
+        (typeof item === 'string' ? item : item.value)
+          .toLowerCase()
+          .includes((selectedItem ?? '').toLowerCase())
       )
       .slice(0, 50),
   ])
@@ -67,7 +69,9 @@ export const SearchableDropdown = ({
     setFilteredItems([
       ...items
         .filter((item) =>
-          item.toLowerCase().includes((selectedItem ?? '').toLowerCase())
+          (typeof item === 'string' ? item : item.value)
+            .toLowerCase()
+            .includes((selectedItem ?? '').toLowerCase())
         )
         .slice(0, 50),
     ])
@@ -91,7 +95,9 @@ export const SearchableDropdown = ({
     setFilteredItems([
       ...items
         .filter((item) =>
-          item.toLowerCase().includes((inputValue ?? '').toLowerCase())
+          (typeof item === 'string' ? item : item.value)
+            .toLowerCase()
+            .includes((inputValue ?? '').toLowerCase())
         )
         .slice(0, 50),
     ])
@@ -134,7 +140,8 @@ export const SearchableDropdown = ({
     if (inputRef.current?.selectionStart)
       setCarretPosition(inputRef.current.selectionStart)
     if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
-      handleItemClick(filteredItems[keyboardFocusIndex])()
+      const item = filteredItems[keyboardFocusIndex]
+      handleItemClick(typeof item === 'string' ? item : item.value)()
       return setKeyboardFocusIndex(undefined)
     }
     if (e.key === 'ArrowDown') {
@@ -200,7 +207,9 @@ export const SearchableDropdown = ({
                     ref={(el) => (itemsRef.current[idx] = el)}
                     minH="40px"
                     key={idx}
-                    onClick={handleItemClick(item)}
+                    onClick={handleItemClick(
+                      typeof item === 'string' ? item : item.value
+                    )}
                     fontSize="16px"
                     fontWeight="normal"
                     rounded="none"
@@ -212,7 +221,7 @@ export const SearchableDropdown = ({
                     }
                     justifyContent="flex-start"
                   >
-                    {item}
+                    {typeof item === 'string' ? item : item.label}
                   </Button>
                 )
               })}

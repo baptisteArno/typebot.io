@@ -8,7 +8,7 @@ type Props = {
   block: TypebotLinkBlock
 }
 
-export const TypebotLinkContent = ({ block }: Props) => {
+export const TypebotLinkNode = ({ block }: Props) => {
   const { linkedTypebots, typebot } = useTypebot()
   const isCurrentTypebot =
     typebot &&

@@ -10,10 +10,7 @@ type Props = {
   onOptionsChange: (options: TypebotLinkOptions) => void
 }
 
-export const TypebotLinkSettingsForm = ({
-  options,
-  onOptionsChange,
-}: Props) => {
+export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
   const { linkedTypebots, typebot } = useTypebot()
 
   const handleTypebotIdChange = (typebotId: string | 'current') =>

@@ -1,0 +1,1 @@
+export { TypebotLinkForm } from './TypebotLinkForm'

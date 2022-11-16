@@ -1,1 +1,0 @@
-export { TypebotLinkSettingsForm } from './TypebotLinkSettingsForm'
