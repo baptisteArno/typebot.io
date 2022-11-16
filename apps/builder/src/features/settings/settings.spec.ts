@@ -24,6 +24,11 @@ test.describe.parallel('Settings page', () => {
 
       await page.click('text="Remember session"')
       await expect(
+        page.locator('input[type="checkbox"] >> nth=-3')
+      ).toHaveAttribute('checked', '')
+
+      await page.click('text="Disable responses saving"')
+      await expect(
         page.locator('input[type="checkbox"] >> nth=-1')
       ).toHaveAttribute('checked', '')
 
