@@ -13,14 +13,15 @@ export const executeCondition = (
   block: ConditionBlock,
   { typebot: { variables } }: LogicState
 ): EdgeId | undefined => {
-  const { content } = block.items[0]
-  const isConditionPassed =
-    content.logicalOperator === LogicalOperator.AND
-      ? content.comparisons.every(executeComparison(variables))
-      : content.comparisons.some(executeComparison(variables))
-  return isConditionPassed
-    ? block.items[0].outgoingEdgeId
-    : block.outgoingEdgeId
+  const passedCondition = block.items.find((item) => {
+    const { content } = item
+    const isConditionPassed =
+      content.logicalOperator === LogicalOperator.AND
+        ? content.comparisons.every(executeComparison(variables))
+        : content.comparisons.some(executeComparison(variables))
+    return isConditionPassed
+  })
+  return passedCondition ? passedCondition.outgoingEdgeId : block.outgoingEdgeId
 }
 
 const executeComparison =

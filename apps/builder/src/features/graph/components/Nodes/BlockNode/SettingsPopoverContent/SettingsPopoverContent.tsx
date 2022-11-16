@@ -8,8 +8,6 @@ import {
 } from '@chakra-ui/react'
 import { ExpandIcon } from '@/components/icons'
 import {
-  ConditionItem,
-  ConditionBlock,
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
@@ -34,7 +32,6 @@ import { SendEmailSettings } from '@/features/blocks/integrations/sendEmail'
 import { WebhookSettings } from '@/features/blocks/integrations/webhook'
 import { ZapierSettings } from '@/features/blocks/integrations/zapier'
 import { CodeSettings } from '@/features/blocks/logic/code'
-import { ConditionSettingsBody } from '@/features/blocks/logic/condition'
 import { RedirectSettings } from '@/features/blocks/logic/redirect'
 import { SetVariableSettings } from '@/features/blocks/logic/setVariable'
 import { TypebotLinkSettingsForm } from '@/features/blocks/logic/typebotLink'
@@ -42,7 +39,7 @@ import { ButtonsOptionsForm } from '@/features/blocks/inputs/buttons'
 import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
 
 type Props = {
-  block: BlockWithOptions | ConditionBlock
+  block: BlockWithOptions
   webhook?: Webhook
   onExpandClick: () => void
   onBlockChange: (updates: Partial<Block>) => void
@@ -88,18 +85,14 @@ export const BlockSettings = ({
   block,
   onBlockChange,
 }: {
-  block: BlockWithOptions | ConditionBlock
+  block: BlockWithOptions
   webhook?: Webhook
   onBlockChange: (block: Partial<Block>) => void
 }): JSX.Element => {
   const handleOptionsChange = (options: BlockOptions) => {
     onBlockChange({ options } as Partial<Block>)
   }
-  const handleItemChange = (updates: Partial<ConditionItem>) => {
-    onBlockChange({
-      items: [{ ...(block as ConditionBlock).items[0], ...updates }],
-    } as Partial<Block>)
-  }
+
   switch (block.type) {
     case InputBlockType.TEXT: {
       return (
@@ -187,11 +180,6 @@ export const BlockSettings = ({
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />
-      )
-    }
-    case LogicBlockType.CONDITION: {
-      return (
-        <ConditionSettingsBody block={block} onItemChange={handleItemChange} />
       )
     }
     case LogicBlockType.REDIRECT: {

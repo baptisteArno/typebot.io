@@ -12,7 +12,6 @@ export const toggle = () => {
       ? closePopup(existingPopup)
       : openPopup(existingPopup)
   const existingBubble = document.querySelector('#typebot-bubble')
-  console.log(existingBubble)
   if (existingBubble)
     isIframeOpened(existingBubble)
       ? closeIframe(existingBubble)

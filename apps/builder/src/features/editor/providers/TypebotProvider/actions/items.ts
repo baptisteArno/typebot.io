@@ -1,9 +1,9 @@
 import {
   ItemIndices,
   Item,
-  InputBlockType,
   BlockWithItems,
-  ButtonItem,
+  defaultConditionContent,
+  ItemType,
 } from 'models'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
@@ -12,10 +12,7 @@ import { byId, blockHasItems } from 'utils'
 import cuid from 'cuid'
 
 export type ItemsActions = {
-  createItem: (
-    item: ButtonItem | Omit<ButtonItem, 'id'>,
-    indices: ItemIndices
-  ) => void
+  createItem: (item: Item | Omit<Item, 'id'>, indices: ItemIndices) => void
   updateItem: (indices: ItemIndices, updates: Partial<Omit<Item, 'id'>>) => void
   detachItemFromBlock: (indices: ItemIndices) => void
   deleteItem: (indices: ItemIndices) => void
@@ -23,18 +20,23 @@ export type ItemsActions = {
 
 const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   createItem: (
-    item: ButtonItem | Omit<ButtonItem, 'id'>,
+    item: Item | Omit<Item, 'id'>,
     { groupIndex, blockIndex, itemIndex }: ItemIndices
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[blockIndex]
-        if (block.type !== InputBlockType.CHOICE) return
+        const block = typebot.groups[groupIndex].blocks[
+          blockIndex
+        ] as BlockWithItems
+
         const newItem = {
-          ...item,
-          blockId: block.id,
           id: 'id' in item ? item.id : cuid(),
-        }
+          content:
+            item.type === ItemType.CONDITION
+              ? defaultConditionContent
+              : undefined,
+          ...item,
+        } as Item
         if (item.outgoingEdgeId) {
           const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
           edgeIndex !== -1

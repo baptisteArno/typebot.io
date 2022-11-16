@@ -53,8 +53,7 @@
       "id": "eMk84KvFM53sBxchTeackR",
       "blocks": [
         {
-          "id": "s5hz7HQki66cwELvk2738MJ",
-          "groupId": "eMk84KvFM53sBxchTeackR",
+          "id": "sv8uvEXgYWQNMfZWcdbfyCs",
           "type": "Condition",
           "items": [
             {
@@ -70,13 +69,7 @@
                 "logicalOperator": "AND"
               },
               "outgoingEdgeId": "nDjMjM11xPQF7c9Be6ukdY"
-            }
-          ]
-        },
-        {
-          "id": "sv8uvEXgYWQNMfZWcdbfyCs",
-          "type": "Condition",
-          "items": [
+            },
             {
               "id": "ijYfW38tGhCMRrCtmR3bcr",
               "type": 1,

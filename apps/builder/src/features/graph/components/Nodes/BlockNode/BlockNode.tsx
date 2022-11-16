@@ -9,12 +9,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   BubbleBlock,
   BubbleBlockContent,
-  ConditionBlock,
   DraggableBlock,
   Block,
   BlockWithOptions,
   TextBubbleContent,
   TextBubbleBlock,
+  LogicBlockType,
 } from 'models'
 import { isBubbleBlock, isTextBubbleBlock } from 'utils'
 import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
@@ -28,7 +28,12 @@ import { BlockSettings } from './SettingsPopoverContent/SettingsPopoverContent'
 import { TextBubbleEditor } from '../../../../blocks/bubbles/textBubble/components/TextBubbleEditor'
 import { TargetEndpoint } from '../../Endpoints'
 import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
-import { NodePosition, useDragDistance, useGraph } from '../../../providers'
+import {
+  NodePosition,
+  useBlockDnd,
+  useDragDistance,
+  useGraph,
+} from '../../../providers'
 import { ContextMenu } from '@/components/ContextMenu'
 import { setMultipleRefs } from '@/utils/helpers'
 import { hasDefaultConnector } from '../../../utils'
@@ -53,6 +58,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
   } = useGraph()
+  const { mouseOverBlock, setMouseOverBlock, draggedItem } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [isPopoverOpened, setIsPopoverOpened] = useState(
@@ -99,6 +105,8 @@ export const BlockNode = ({
   }
 
   const handleMouseEnter = () => {
+    if (draggedItem !== undefined)
+      setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)
       setConnectingIds({
         ...connectingIds,
@@ -107,6 +115,7 @@ export const BlockNode = ({
   }
 
   const handleMouseLeave = () => {
+    if (mouseOverBlock) setMouseOverBlock(undefined)
     if (connectingIds?.target)
       setConnectingIds({
         ...connectingIds,
@@ -238,9 +247,8 @@ export const BlockNode = ({
   )
 }
 
-const hasSettingsPopover = (
-  block: Block
-): block is BlockWithOptions | ConditionBlock => !isBubbleBlock(block)
+const hasSettingsPopover = (block: Block): block is BlockWithOptions =>
+  !isBubbleBlock(block) && block.type !== LogicBlockType.CONDITION
 
 const isMediaBubbleBlock = (
   block: Block

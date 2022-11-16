@@ -48,6 +48,7 @@ export const Graph = ({
   const {
     setGraphPosition: setGlobalGraphPosition,
     setOpenedBlockId,
+    setOpenedItemId,
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
@@ -126,6 +127,7 @@ export const Graph = ({
 
   const handleClick = () => {
     setOpenedBlockId(undefined)
+    setOpenedItemId(undefined)
     setPreviewingEdge(undefined)
   }
 

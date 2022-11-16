@@ -1,5 +1,5 @@
 import { useEventListener } from '@chakra-ui/react'
-import { ButtonItem, DraggableBlock, DraggableBlockType } from 'models'
+import { DraggableBlock, DraggableBlockType, Item } from 'models'
 import {
   createContext,
   Dispatch,
@@ -11,7 +11,7 @@ import {
 } from 'react'
 import { Coordinates } from './GraphProvider'
 
-type GroupInfo = {
+type NodeInfo = {
   id: string
   ref: React.MutableRefObject<HTMLDivElement | null>
 }
@@ -21,10 +21,12 @@ const graphDndContext = createContext<{
   setDraggedBlockType: Dispatch<SetStateAction<DraggableBlockType | undefined>>
   draggedBlock?: DraggableBlock
   setDraggedBlock: Dispatch<SetStateAction<DraggableBlock | undefined>>
-  draggedItem?: ButtonItem
-  setDraggedItem: Dispatch<SetStateAction<ButtonItem | undefined>>
-  mouseOverGroup?: GroupInfo
-  setMouseOverGroup: Dispatch<SetStateAction<GroupInfo | undefined>>
+  draggedItem?: Item
+  setDraggedItem: Dispatch<SetStateAction<Item | undefined>>
+  mouseOverGroup?: NodeInfo
+  setMouseOverGroup: Dispatch<SetStateAction<NodeInfo | undefined>>
+  mouseOverBlock?: NodeInfo
+  setMouseOverBlock: Dispatch<SetStateAction<NodeInfo | undefined>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -36,8 +38,9 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
   const [draggedBlockType, setDraggedBlockType] = useState<
     DraggableBlockType | undefined
   >()
-  const [draggedItem, setDraggedItem] = useState<ButtonItem | undefined>()
-  const [mouseOverGroup, setMouseOverGroup] = useState<GroupInfo>()
+  const [draggedItem, setDraggedItem] = useState<Item | undefined>()
+  const [mouseOverGroup, setMouseOverGroup] = useState<NodeInfo>()
+  const [mouseOverBlock, setMouseOverBlock] = useState<NodeInfo>()
 
   return (
     <graphDndContext.Provider
@@ -50,6 +53,8 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
         setDraggedItem,
         mouseOverGroup,
         setMouseOverGroup,
+        mouseOverBlock,
+        setMouseOverBlock,
       }}
     >
       {children}

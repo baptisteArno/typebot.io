@@ -6,13 +6,7 @@ import {
   useDragDistance,
 } from '../../../providers'
 import { useTypebot } from '@/features/editor'
-import {
-  ButtonItem,
-  ChoiceInputBlock,
-  Item,
-  ItemIndices,
-  ItemType,
-} from 'models'
+import { ChoiceInputBlock, Item, ItemIndices } from 'models'
 import React, { useRef, useState } from 'react'
 import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
 import { ItemNodeContent } from './ItemNodeContent'
@@ -25,30 +19,37 @@ type Props = {
   indices: ItemIndices
   onMouseDown?: (
     blockNodePosition: { absolute: Coordinates; relative: Coordinates },
-    item: ButtonItem
+    item: Item
   ) => void
+  connectionDisabled?: boolean
 }
 
-export const ItemNode = ({ item, indices, onMouseDown }: Props) => {
+export const ItemNode = ({
+  item,
+  indices,
+  onMouseDown,
+  connectionDisabled,
+}: Props) => {
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const itemRef = useRef<HTMLDivElement | null>(null)
   const isPreviewing = previewingEdge?.from.itemId === item.id
-  const isConnectable = !(
-    typebot?.groups[indices.groupIndex].blocks[
-      indices.blockIndex
-    ] as ChoiceInputBlock
-  )?.options?.isMultipleChoice
-  const isReadOnly = item.type === ItemType.CONDITION
+  const isConnectable =
+    !connectionDisabled &&
+    !(
+      typebot?.groups[indices.groupIndex].blocks[
+        indices.blockIndex
+      ] as ChoiceInputBlock
+    )?.options?.isMultipleChoice
   const onDrag = (position: NodePosition) => {
-    if (!onMouseDown || item.type !== ItemType.BUTTON) return
+    if (!onMouseDown) return
     onMouseDown(position, item)
   }
   useDragDistance({
     ref: itemRef,
     onDrag,
-    isDisabled: !onMouseDown || item.type !== ItemType.BUTTON,
+    isDisabled: !onMouseDown,
   })
 
   const handleMouseEnter = () => setIsMouseOver(true)
@@ -63,19 +64,19 @@ export const ItemNode = ({ item, indices, onMouseDown }: Props) => {
           data-testid="item"
           pos="relative"
           ref={setMultipleRefs([ref, itemRef])}
+          w="full"
         >
           <Flex
             align="center"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             shadow="sm"
-            _hover={isReadOnly ? {} : { shadow: 'md' }}
+            _hover={{ shadow: 'md' }}
             transition="box-shadow 200ms, border-color 200ms"
             rounded="md"
             borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
             borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.100'}
             margin={isOpened || isPreviewing ? '-1px' : 0}
-            pointerEvents={isReadOnly ? 'none' : 'all'}
             bgColor="white"
             w="full"
           >

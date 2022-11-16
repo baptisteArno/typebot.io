@@ -6,16 +6,10 @@ import {
   useGraph,
 } from '../../../providers'
 import { useTypebot } from '@/features/editor'
-import {
-  ButtonItem,
-  BlockIndices,
-  BlockWithItems,
-  LogicBlockType,
-} from 'models'
+import { BlockIndices, BlockWithItems, LogicBlockType, Item } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
-import { ItemNodeOverlay } from './ItemNodeOverlay'
 
 type Props = {
   block: BlockWithItems
@@ -27,14 +21,13 @@ export const ItemNodesList = ({
   indices: { groupIndex, blockIndex },
 }: Props) => {
   const { typebot, createItem, detachItemFromBlock } = useTypebot()
-  const { draggedItem, setDraggedItem, mouseOverGroup } = useBlockDnd()
+  const { draggedItem, setDraggedItem, mouseOverBlock } = useBlockDnd()
   const placeholderRefs = useRef<HTMLDivElement[]>([])
   const { graphPosition } = useGraph()
-  const groupId = typebot?.groups[groupIndex].id
-  const isDraggingOnCurrentGroup =
-    (draggedItem && mouseOverGroup?.id === groupId) ?? false
-  const isReadOnly = block.type === LogicBlockType.CONDITION
-  const showPlaceholders = draggedItem && !isReadOnly
+  const isDraggingOnCurrentBlock =
+    (draggedItem && mouseOverBlock?.id === block.id) ?? false
+  const showPlaceholders =
+    draggedItem !== undefined && block.items[0].type === draggedItem.type
 
   const isLastBlock =
     typebot?.groups[groupIndex].blocks[blockIndex + 1] === undefined
@@ -60,29 +53,37 @@ export const ItemNodesList = ({
   useEventListener('mousemove', handleGlobalMouseMove)
 
   useEffect(() => {
-    if (mouseOverGroup?.id !== block.groupId)
+    if (!showPlaceholders) return
+    if (mouseOverBlock?.id !== block.id) {
       setExpandedPlaceholderIndex(undefined)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mouseOverGroup?.id])
+  }, [mouseOverBlock?.id, showPlaceholders])
 
-  const handleMouseMoveOnGroup = (event: MouseEvent) => {
-    if (!isDraggingOnCurrentGroup || isReadOnly) return
+  const handleMouseMoveOnBlock = (event: MouseEvent) => {
+    if (!isDraggingOnCurrentBlock) return
     const index = computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
     setExpandedPlaceholderIndex(index)
   }
   useEventListener(
     'mousemove',
-    handleMouseMoveOnGroup,
-    mouseOverGroup?.ref.current
+    handleMouseMoveOnBlock,
+    mouseOverBlock?.ref.current
   )
 
   const handleMouseUpOnGroup = (e: MouseEvent) => {
+    if (
+      !showPlaceholders ||
+      !isDraggingOnCurrentBlock ||
+      !draggedItem ||
+      mouseOverBlock?.id !== block.id
+    )
+      return
     setExpandedPlaceholderIndex(undefined)
-    if (!isDraggingOnCurrentGroup) return
     const itemIndex = computeNearestPlaceholderIndex(e.pageY, placeholderRefs)
     e.stopPropagation()
     setDraggedItem(undefined)
-    createItem(draggedItem as ButtonItem, {
+    createItem(draggedItem, {
       groupIndex,
       blockIndex,
       itemIndex,
@@ -91,7 +92,7 @@ export const ItemNodesList = ({
   useEventListener(
     'mouseup',
     handleMouseUpOnGroup,
-    mouseOverGroup?.ref.current,
+    mouseOverBlock?.ref.current,
     {
       capture: true,
     }
@@ -101,9 +102,9 @@ export const ItemNodesList = ({
     (itemIndex: number) =>
     (
       { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      item: ButtonItem
+      item: Item
     ) => {
-      if (!typebot || isReadOnly) return
+      if (!typebot || block.items.length <= 1) return
       placeholderRefs.current.splice(itemIndex + 1, 1)
       detachItemFromBlock({ groupIndex, blockIndex, itemIndex })
       setPosition(absolute)
@@ -119,13 +120,7 @@ export const ItemNodesList = ({
     }
 
   return (
-    <Stack
-      flex={1}
-      spacing={1}
-      maxW="full"
-      onClick={stopPropagating}
-      pointerEvents={isReadOnly ? 'none' : 'all'}
-    >
+    <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>
       <Flex
         ref={handlePushElementRef(0)}
         h={showPlaceholders && expandedPlaceholderIndex === 0 ? '50px' : '2px'}
@@ -161,13 +156,15 @@ export const ItemNodesList = ({
           py="2"
           borderWidth="1px"
           borderColor="gray.300"
-          bgColor={isReadOnly ? '' : 'gray.50'}
+          bgColor={'gray.50'}
           rounded="md"
           pos="relative"
           align="center"
-          cursor={isReadOnly ? 'pointer' : 'not-allowed'}
+          cursor="not-allowed"
         >
-          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Default</Text>
+          <Text color="gray.500">
+            {block.type === LogicBlockType.CONDITION ? 'Else' : 'Default'}
+          </Text>
           <SourceEndpoint
             source={{
               groupId: block.groupId,
@@ -181,16 +178,23 @@ export const ItemNodesList = ({
 
       {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
-          <ItemNodeOverlay
-            item={draggedItem}
+          <Flex
+            pointerEvents="none"
             pos="fixed"
             top="0"
             left="0"
             style={{
               transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg) scale(${graphPosition.scale})`,
             }}
+            w="220px"
             transformOrigin="0 0 0"
-          />
+          >
+            <ItemNode
+              item={draggedItem}
+              indices={{ groupIndex, blockIndex, itemIndex: 0 }}
+              connectionDisabled
+            />
+          </Flex>
         </Portal>
       )}
     </Stack>

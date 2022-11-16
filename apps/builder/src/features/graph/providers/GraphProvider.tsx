@@ -69,6 +69,8 @@ const graphContext = createContext<{
   addTargetEndpoint: (endpoint: Endpoint) => void
   openedBlockId?: string
   setOpenedBlockId: Dispatch<SetStateAction<string | undefined>>
+  openedItemId?: string
+  setOpenedItemId: Dispatch<SetStateAction<string | undefined>>
   isReadOnly: boolean
   focusedGroupId?: string
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
@@ -92,6 +94,7 @@ export const GraphProvider = ({
   const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
   const [targetEndpoints, setTargetEndpoints] = useState<IdMap<Endpoint>>({})
   const [openedBlockId, setOpenedBlockId] = useState<string>()
+  const [openedItemId, setOpenedItemId] = useState<string>()
   const [focusedGroupId, setFocusedGroupId] = useState<string>()
 
   const addSourceEndpoint = (endpoint: Endpoint) => {
@@ -123,6 +126,8 @@ export const GraphProvider = ({
         addTargetEndpoint,
         openedBlockId,
         setOpenedBlockId,
+        openedItemId,
+        setOpenedItemId,
         isReadOnly,
         focusedGroupId,
         setFocusedGroupId,

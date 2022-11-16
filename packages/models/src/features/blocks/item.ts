@@ -8,7 +8,7 @@ export type ItemIndices = {
   groupIndex: number
   itemIndex: number
 }
-const itemScema = buttonItemSchema.or(conditionItemSchema)
+const itemSchema = buttonItemSchema.or(conditionItemSchema)
 
 export type ItemBase = z.infer<typeof itemBaseSchema>
-export type Item = z.infer<typeof itemScema>
+export type Item = z.infer<typeof itemSchema>

@@ -18,7 +18,7 @@ type Props = {
   isMouseOver: boolean
 }
 
-export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
+export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
