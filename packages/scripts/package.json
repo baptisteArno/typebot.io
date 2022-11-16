@@ -16,6 +16,7 @@
     "emails": "workspace:*",
     "got": "12.5.2",
     "models": "workspace:*",
+    "stripe": "10.17.0",
     "tsx": "3.12.1",
     "typescript": "4.8.4",
     "utils": "workspace:*"
