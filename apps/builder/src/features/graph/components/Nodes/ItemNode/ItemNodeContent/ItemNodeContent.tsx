@@ -14,6 +14,7 @@ export const ItemNodeContent = ({ item, indices, isMouseOver }: Props) => {
     case ItemType.BUTTON:
       return (
         <ButtonsItemNode
+          key={item.content}
           item={item}
           isMouseOver={isMouseOver}
           indices={indices}

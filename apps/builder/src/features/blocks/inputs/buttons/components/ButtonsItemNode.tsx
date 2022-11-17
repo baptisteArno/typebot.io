@@ -9,7 +9,7 @@ import {
 import { PlusIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
 import { ButtonItem, ItemIndices, ItemType } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
 type Props = {
@@ -20,15 +20,8 @@ type Props = {
 
 export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
-  const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
   const editableRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Click to edit')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item])
 
   const handleInputSubmit = () => {
     if (itemValue === '') deleteItem(indices)
@@ -38,7 +31,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape' && itemValue === 'Click to edit') deleteItem(indices)
-    if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
+    if (e.key === 'Enter' && itemValue !== '' && itemValue !== 'Click to edit')
       handlePlusClick()
   }
 
