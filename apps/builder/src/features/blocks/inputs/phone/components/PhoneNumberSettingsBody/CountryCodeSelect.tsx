@@ -203,6 +203,7 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
       <option value="TW">Taiwan (+886)</option>
       <option value="TJ">Tajikstan (+7)</option>
       <option value="TH">Thailand (+66)</option>
+      <option value="TZ">Tanzania - United Rebublic (+255)</option>
       <option value="TG">Togo (+228)</option>
       <option value="TO">Tonga (+676)</option>
       <option value="TT">Trinidad &amp; Tobago (+1868)</option>
