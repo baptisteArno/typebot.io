@@ -1,6 +1,6 @@
 {
   "name": "wordpress",
-  "version": "2.1.9",
+  "version": "2.1.11",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/2.1.9",
+    "copy": "svn copy ./trunk ./tags/2.1.11",
     "commit": "svn ci -m 'Fix standard embed when window loaded'"
   }
 }

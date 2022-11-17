@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Typebot
  * Description:       Convert more with conversational forms
- * Version:           2.1.9
+ * Version:           2.1.11
  * Author:            Typebot
  * Author URI:        http://typebot.io/
  * License:           GPL-2.0+
@@ -16,7 +16,7 @@ if (!defined('WPINC')) {
   die();
 }
 
-define('TYPEBOT_VERSION', '2.1.9');
+define('TYPEBOT_VERSION', '2.1.11');
 
 function activate_typebot()
 {
