@@ -32,6 +32,8 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
           <Text>Embed</Text>
         </Tooltip>
       )
+    case BubbleBlockType.AUDIO:
+      return <Text>Audio</Text>
     case InputBlockType.NUMBER:
       return <Text>Number</Text>
     case InputBlockType.EMAIL:

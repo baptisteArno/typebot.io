@@ -1,6 +1,6 @@
 import { IconProps, Icon } from '@chakra-ui/react'
 
-const featherIconsBaseProps: IconProps = {
+export const featherIconsBaseProps: IconProps = {
   fill: 'none',
   stroke: 'currentColor',
   strokeWidth: '2px',

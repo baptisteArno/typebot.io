@@ -28,6 +28,7 @@ export enum BubbleBlockType {
   IMAGE = 'image',
   VIDEO = 'video',
   EMBED = 'embed',
+  AUDIO = 'audio',
 }
 
 export enum InputBlockType {

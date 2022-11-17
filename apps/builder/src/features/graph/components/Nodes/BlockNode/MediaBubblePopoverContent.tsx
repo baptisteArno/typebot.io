@@ -1,4 +1,5 @@
 import { ImageUploadContent } from '@/components/ImageUploadContent'
+import { AudioBubbleForm } from '@/features/blocks/bubbles/audio/components/AudioBubbleForm'
 import { EmbedUploadContent } from '@/features/blocks/bubbles/embed'
 import { VideoUploadContent } from '@/features/blocks/bubbles/video'
 import {
@@ -69,6 +70,15 @@ export const MediaBubbleContent = ({
       return (
         <EmbedUploadContent
           content={block.content}
+          onSubmit={onContentChange}
+        />
+      )
+    }
+    case BubbleBlockType.AUDIO: {
+      return (
+        <AudioBubbleForm
+          content={block.content}
+          fileUploadPath={`typebots/${typebotId}/blocks/${block.id}`}
           onSubmit={onContentChange}
         />
       )

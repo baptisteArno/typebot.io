@@ -52,6 +52,7 @@ export const MyAccountForm = () => {
         <Stack>
           <UploadButton
             size="sm"
+            fileType="image"
             filePath={`users/${user?.id}/avatar`}
             leftIcon={<UploadIcon />}
             onFileUploaded={handleFileUploaded}

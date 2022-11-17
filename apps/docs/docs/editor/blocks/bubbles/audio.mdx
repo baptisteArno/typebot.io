@@ -1,0 +1,21 @@
+import { FlowToBot } from '../../../../src/js/FlowToBot'
+
+# Audio
+
+The Audio bubble block allows you to play a recorded audio to your user. You can upload an audio file or directly paste a URL.
+
+<FlowToBot
+  flow={
+    <img
+      src="/img/blocks/bubbles/audio/editor.png"
+      width="100%"
+      style={{ maxWidth: '400px' }}
+      alt="Audio bubble"
+    />
+  }
+  bot={
+    <video controls width="100%" style={{ maxWidth: '400px' }}>
+      <source src="/img/blocks/bubbles/audio/bot.mp4" type="video/mp4" />
+    </video>
+  }
+/>

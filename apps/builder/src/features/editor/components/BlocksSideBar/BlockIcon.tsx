@@ -35,6 +35,7 @@ import { NumberInputIcon } from '@/features/blocks/inputs/number'
 import { TextInputIcon } from '@/features/blocks/inputs/textInput'
 import { EmbedBubbleIcon } from '@/features/blocks/bubbles/embed'
 import { GoogleAnalyticsLogo } from '@/features/blocks/integrations/googleAnalytics'
+import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -47,37 +48,39 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
     case BubbleBlockType.VIDEO:
       return <VideoBubbleIcon {...props} />
     case BubbleBlockType.EMBED:
-      return <EmbedBubbleIcon color="blue.500" {...props} />
+      return <EmbedBubbleIcon {...props} />
+    case BubbleBlockType.AUDIO:
+      return <AudioBubbleIcon {...props} />
     case InputBlockType.TEXT:
-      return <TextInputIcon color="orange.500" {...props} />
+      return <TextInputIcon {...props} />
     case InputBlockType.NUMBER:
-      return <NumberInputIcon color="orange.500" {...props} />
+      return <NumberInputIcon {...props} />
     case InputBlockType.EMAIL:
-      return <EmailInputIcon color="orange.500" {...props} />
+      return <EmailInputIcon {...props} />
     case InputBlockType.URL:
-      return <UrlInputIcon color="orange.500" {...props} />
+      return <UrlInputIcon {...props} />
     case InputBlockType.DATE:
-      return <DateInputIcon color="orange.500" {...props} />
+      return <DateInputIcon {...props} />
     case InputBlockType.PHONE:
-      return <PhoneInputIcon color="orange.500" {...props} />
+      return <PhoneInputIcon {...props} />
     case InputBlockType.CHOICE:
-      return <ButtonsInputIcon color="orange.500" {...props} />
+      return <ButtonsInputIcon {...props} />
     case InputBlockType.PAYMENT:
-      return <PaymentInputIcon color="orange.500" {...props} />
+      return <PaymentInputIcon {...props} />
     case InputBlockType.RATING:
-      return <RatingInputIcon color="orange.500" {...props} />
+      return <RatingInputIcon {...props} />
     case InputBlockType.FILE:
-      return <FileInputIcon color="orange.500" {...props} />
+      return <FileInputIcon {...props} />
     case LogicBlockType.SET_VARIABLE:
-      return <SetVariableIcon color="purple.500" {...props} />
+      return <SetVariableIcon {...props} />
     case LogicBlockType.CONDITION:
-      return <ConditionIcon color="purple.500" {...props} />
+      return <ConditionIcon {...props} />
     case LogicBlockType.REDIRECT:
-      return <RedirectIcon color="purple.500" {...props} />
+      return <RedirectIcon {...props} />
     case LogicBlockType.CODE:
-      return <CodeIcon color="purple.500" {...props} />
+      return <CodeIcon {...props} />
     case LogicBlockType.TYPEBOT_LINK:
-      return <TypebotLinkIcon color="purple.500" {...props} />
+      return <TypebotLinkIcon {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:

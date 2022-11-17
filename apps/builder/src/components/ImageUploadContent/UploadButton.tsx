@@ -4,12 +4,14 @@ import { ChangeEvent, useState } from 'react'
 import { uploadFiles } from 'utils'
 
 type UploadButtonProps = {
+  fileType: 'image' | 'audio'
   filePath: string
   includeFileName?: boolean
   onFileUploaded: (url: string) => void
 } & ButtonProps
 
 export const UploadButton = ({
+  fileType,
   filePath,
   includeFileName,
   onFileUploaded,
@@ -41,7 +43,11 @@ export const UploadButton = ({
         id="file-input"
         display="none"
         onChange={handleInputChange}
-        accept=".jpg, .jpeg, .png, .svg, .gif"
+        accept={
+          fileType === 'image'
+            ? '.jpg, .jpeg, .png, .svg, .gif'
+            : '.mp3, .wav, .ogg'
+        }
       />
       <Button
         as="label"

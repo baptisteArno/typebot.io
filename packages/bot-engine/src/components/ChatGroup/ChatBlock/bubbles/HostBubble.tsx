@@ -1,3 +1,4 @@
+import { AudioBubble } from '@/features/blocks/bubbles/audio'
 import { EmbedBubble } from '@/features/blocks/bubbles/embed'
 import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
@@ -20,5 +21,12 @@ export const HostBubble = ({ block, onTransitionEnd }: Props) => {
       return <VideoBubble block={block} onTransitionEnd={onTransitionEnd} />
     case BubbleBlockType.EMBED:
       return <EmbedBubble block={block} onTransitionEnd={onTransitionEnd} />
+    case BubbleBlockType.AUDIO:
+      return (
+        <AudioBubble
+          url={block.content.url}
+          onTransitionEnd={onTransitionEnd}
+        />
+      )
   }
 }

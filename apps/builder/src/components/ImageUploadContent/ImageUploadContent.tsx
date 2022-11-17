@@ -121,6 +121,7 @@ const UploadFileContent = ({
 }: ContentProps & { filePath: string; includeFileName?: boolean }) => (
   <Flex justify="center" py="2">
     <UploadButton
+      fileType="image"
       filePath={filePath}
       onFileUploaded={onNewUrl}
       includeFileName={includeFileName}

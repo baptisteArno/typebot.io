@@ -36,6 +36,7 @@ import { ZapierContent } from '@/features/blocks/integrations/zapier'
 import { SendEmailContent } from '@/features/blocks/integrations/sendEmail'
 import { isInputBlock, isChoiceInput, blockHasItems } from 'utils'
 import { MakeComNodeContent } from '@/features/blocks/integrations/makeCom'
+import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 
 type Props = {
   block: Block | StartBlock
@@ -65,6 +66,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case BubbleBlockType.EMBED: {
       return <EmbedBubbleContent block={block} />
+    }
+    case BubbleBlockType.AUDIO: {
+      return <AudioBubbleNode url={block.content.url} />
     }
     case InputBlockType.TEXT: {
       return (

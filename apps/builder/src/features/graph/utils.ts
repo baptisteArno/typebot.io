@@ -15,6 +15,7 @@ import {
   defaultGoogleAnalyticsOptions,
   defaultGoogleSheetsOptions,
   defaultImageBubbleContent,
+  defaultAudioBubbleContent,
   defaultNumberInputOptions,
   defaultPaymentInputOptions,
   defaultPhoneInputOptions,
@@ -400,6 +401,8 @@ const parseDefaultContent = (type: BubbleBlockType): BubbleBlockContent => {
       return defaultVideoBubbleContent
     case BubbleBlockType.EMBED:
       return defaultEmbedBubbleContent
+    case BubbleBlockType.AUDIO:
+      return defaultAudioBubbleContent
   }
 }
 
