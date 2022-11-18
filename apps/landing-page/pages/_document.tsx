@@ -20,11 +20,11 @@ class MyDocument extends Document {
             {/* eslint-disable-next-line @next/next/no-css-tags */}
             <link href="./styles/aos-noscript.css" rel="stylesheet" />
           </noscript>
-          <script
+          {/* <script
             defer
             data-domain="typebot.io"
             src="https://plausible.server.baptistearno.com/js/plausible.js"
-          ></script>
+          ></script> */}
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="/__env.js" />
         </Head>
