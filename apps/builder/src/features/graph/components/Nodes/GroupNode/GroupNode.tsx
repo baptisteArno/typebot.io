@@ -17,11 +17,11 @@ import { BlockNodesList } from '../BlockNode/BlockNodesList'
 import { isDefined, isNotDefined } from 'utils'
 import { useTypebot, RightPanel, useEditor } from '@/features/editor'
 import { GroupNodeContextMenu } from './GroupNodeContextMenu'
-import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import { PlayIcon } from '@/components/icons'
 import { useDebounce } from 'use-debounce'
 import { ContextMenu } from '@/components/ContextMenu'
 import { setMultipleRefs } from '@/utils/helpers'
+import { useDrag } from '@use-gesture/react'
 
 type Props = {
   group: Group
@@ -31,10 +31,12 @@ type Props = {
 export const GroupNode = ({ group, groupIndex }: Props) => {
   const { updateGroupCoordinates } = useGroupsCoordinates()
 
-  const handleGroupDrag = useCallback((newCoord: Coordinates) => {
-    updateGroupCoordinates(group.id, newCoord)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const handleGroupDrag = useCallback(
+    (newCoord: Coordinates) => {
+      updateGroupCoordinates(group.id, newCoord)
+    },
+    [group.id, updateGroupCoordinates]
+  )
 
   return (
     <DraggableGroupNode
@@ -133,108 +135,107 @@ const DraggableGroupNode = memo(
         setConnectingIds({ ...connectingIds, target: undefined })
     }
 
-    const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
-      const { deltaX, deltaY } = draggableData
-      const newCoord = {
-        x: currentCoordinates.x + deltaX / graphPosition.scale,
-        y: currentCoordinates.y + deltaY / graphPosition.scale,
-      }
-      setCurrentCoordinates(newCoord)
-      onGroupDrag(newCoord)
-    }
-
-    const onDragStart = () => {
-      setFocusedGroupId(group.id)
-      setIsMouseDown(true)
-    }
-
     const startPreviewAtThisGroup = () => {
       setStartPreviewAtGroup(group.id)
       setRightPanel(RightPanel.PREVIEW)
     }
 
-    const onDragStop = () => setIsMouseDown(false)
+    useDrag(
+      ({ first, last, offset: [offsetX, offsetY], event, target }) => {
+        event.stopPropagation()
+        if ((target as HTMLElement).classList.contains('prevent-group-drag'))
+          return
+        if (first) {
+          setFocusedGroupId(group.id)
+          setIsMouseDown(true)
+        }
+        if (last) {
+          setIsMouseDown(false)
+        }
+        const newCoord = {
+          x: offsetX / graphPosition.scale,
+          y: offsetY / graphPosition.scale,
+        }
+        setCurrentCoordinates(newCoord)
+        onGroupDrag(newCoord)
+      },
+      {
+        target: groupRef,
+        pointer: { keys: false },
+        from: () => [
+          currentCoordinates.x * graphPosition.scale,
+          currentCoordinates.y * graphPosition.scale,
+        ],
+      }
+    )
+
     return (
       <ContextMenu<HTMLDivElement>
         renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
         isDisabled={isReadOnly || isStartGroup}
       >
         {(ref, isOpened) => (
-          <DraggableCore
-            enableUserSelectHack={false}
-            onDrag={onDrag}
-            onStart={onDragStart}
-            onStop={onDragStop}
-            onMouseDown={(e) => e.stopPropagation()}
+          <Stack
+            ref={setMultipleRefs([ref, groupRef])}
+            data-testid="group"
+            p="4"
+            rounded="xl"
+            bgColor="#ffffff"
+            borderWidth="2px"
+            borderColor={
+              isConnecting || isOpened || isPreviewing ? 'blue.400' : '#ffffff'
+            }
+            w="300px"
+            transition="border 300ms, box-shadow 200ms"
+            pos="absolute"
+            style={{
+              transform: `translate(${currentCoordinates?.x ?? 0}px, ${
+                currentCoordinates?.y ?? 0
+              }px)`,
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            cursor={isMouseDown ? 'grabbing' : 'pointer'}
+            shadow="md"
+            _hover={{ shadow: 'lg' }}
+            zIndex={focusedGroupId === group.id ? 10 : 1}
           >
-            <Stack
-              ref={setMultipleRefs([ref, groupRef])}
-              data-testid="group"
-              p="4"
-              rounded="xl"
-              bgColor="#ffffff"
-              borderWidth="2px"
-              borderColor={
-                isConnecting || isOpened || isPreviewing
-                  ? 'blue.400'
-                  : '#ffffff'
-              }
-              w="300px"
-              transition="border 300ms, box-shadow 200ms"
-              pos="absolute"
-              style={{
-                transform: `translate(${currentCoordinates?.x ?? 0}px, ${
-                  currentCoordinates?.y ?? 0
-                }px)`,
-              }}
-              onMouseDown={handleMouseDown}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              cursor={isMouseDown ? 'grabbing' : 'pointer'}
-              shadow="md"
-              _hover={{ shadow: 'lg' }}
-              zIndex={focusedGroupId === group.id ? 10 : 1}
+            <Editable
+              value={groupTitle}
+              onChange={setGroupTitle}
+              onSubmit={handleTitleSubmit}
+              fontWeight="semibold"
+              pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
+              pr="8"
             >
-              <Editable
-                value={groupTitle}
-                onChange={setGroupTitle}
-                onSubmit={handleTitleSubmit}
-                fontWeight="semibold"
-                pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
-                pr="8"
-              >
-                <EditablePreview
-                  _hover={{ bgColor: 'gray.200' }}
-                  px="1"
-                  userSelect={'none'}
-                />
-                <EditableInput
-                  minW="0"
-                  px="1"
-                  onMouseDown={(e) => e.stopPropagation()}
-                />
-              </Editable>
-              {typebot && (
-                <BlockNodesList
-                  groupId={group.id}
-                  blocks={group.blocks}
-                  groupIndex={groupIndex}
-                  groupRef={ref}
-                  isStartGroup={isStartGroup}
-                />
-              )}
-              <IconButton
-                icon={<PlayIcon />}
-                aria-label={'Preview bot from this group'}
-                pos="absolute"
-                right={2}
-                top={0}
-                size="sm"
-                variant="outline"
-                onClick={startPreviewAtThisGroup}
+              <EditablePreview
+                _hover={{ bgColor: 'gray.200' }}
+                px="1"
+                userSelect={'none'}
               />
-            </Stack>
-          </DraggableCore>
+              <EditableInput minW="0" px="1" className="prevent-group-drag" />
+            </Editable>
+            {typebot && (
+              <BlockNodesList
+                groupId={group.id}
+                blocks={group.blocks}
+                groupIndex={groupIndex}
+                groupRef={ref}
+                isStartGroup={isStartGroup}
+              />
+            )}
+            <IconButton
+              icon={<PlayIcon />}
+              aria-label={'Preview bot from this group'}
+              pos="absolute"
+              right={2}
+              top={0}
+              size="sm"
+              variant="outline"
+              onClick={startPreviewAtThisGroup}
+            />
+          </Stack>
         )}
       </ContextMenu>
     )

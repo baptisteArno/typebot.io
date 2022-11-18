@@ -11,17 +11,17 @@ import {
 import { useTypebot } from '@/features/editor'
 import { DraggableBlockType, PublicTypebot, Typebot } from 'models'
 import { useDebounce } from 'use-debounce'
-import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import GraphElements from './GraphElements'
 import cuid from 'cuid'
 import { useUser } from '@/features/account'
-import { GraphNavigation } from 'db'
 import { ZoomButtons } from './ZoomButtons'
 import { AnswersCount } from '@/features/analytics'
 import { headerHeight } from '@/features/editor'
+import { useGesture } from '@use-gesture/react'
+import { GraphNavigation } from 'db'
 
-const maxScale = 1.5
-const minScale = 0.1
+const maxScale = 2
+const minScale = 0.3
 const zoomButtonsScaleBlock = 0.2
 
 export const Graph = ({
@@ -85,20 +85,6 @@ export const Graph = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedGraphPosition])
 
-  const handleMouseWheel = (e: WheelEvent) => {
-    e.preventDefault()
-    const isPinchingTrackpad = e.ctrlKey
-    user?.graphNavigation === GraphNavigation.MOUSE
-      ? zoom(-e.deltaY * 0.001, { x: e.clientX, y: e.clientY })
-      : isPinchingTrackpad
-      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
-      : setGraphPosition({
-          ...graphPosition,
-          x: graphPosition.x - e.deltaX,
-          y: graphPosition.y - e.deltaY,
-        })
-  }
-
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
     if (draggedItem) setDraggedItem(undefined)
@@ -131,33 +117,79 @@ export const Graph = ({
     setPreviewingEdge(undefined)
   }
 
-  const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
-    const { deltaX, deltaY } = draggableData
-    setGraphPosition({
-      ...graphPosition,
-      x: graphPosition.x + deltaX,
-      y: graphPosition.y + deltaY,
-    })
+  useGesture(
+    {
+      onDrag: ({ delta: [dx, dy] }) => {
+        setGraphPosition({
+          ...graphPosition,
+          x: graphPosition.x + dx,
+          y: graphPosition.y + dy,
+        })
+      },
+      onWheel: ({ delta: [dx, dy], pinching }) => {
+        if (pinching) return
+
+        setGraphPosition({
+          ...graphPosition,
+          x: graphPosition.x - dx,
+          y: graphPosition.y - dy,
+        })
+      },
+      onPinch: ({ origin: [x, y], offset: [scale] }) => {
+        zoom({ scale, mousePosition: { x, y } })
+      },
+    },
+    {
+      target: graphContainerRef,
+      pinch: {
+        scaleBounds: { min: minScale, max: maxScale },
+        modifierKey:
+          user?.graphNavigation === GraphNavigation.MOUSE ? null : 'ctrlKey',
+      },
+      drag: { pointer: { keys: false } },
+    }
+  )
+
+  const getCenterOfGraph = (): Coordinates => {
+    const graphWidth = graphContainerRef.current?.clientWidth ?? 0
+    const graphHeight = graphContainerRef.current?.clientHeight ?? 0
+    return {
+      x: graphWidth / 2,
+      y: graphHeight / 2,
+    }
   }
 
-  const zoom = (delta = zoomButtonsScaleBlock, mousePosition?: Coordinates) => {
-    const { x: mouseX, y } = mousePosition ?? { x: 0, y: 0 }
+  const zoom = ({
+    scale,
+    mousePosition,
+    delta,
+  }: {
+    scale?: number
+    delta?: number
+    mousePosition?: Coordinates
+  }) => {
+    const { x: mouseX, y } = mousePosition ?? getCenterOfGraph()
     const mouseY = y - headerHeight
-    let scale = graphPosition.scale + delta
+    let newScale = scale ?? graphPosition.scale + (delta ?? 0)
     if (
-      (scale >= maxScale && graphPosition.scale === maxScale) ||
-      (scale <= minScale && graphPosition.scale === minScale)
+      (newScale >= maxScale && graphPosition.scale === maxScale) ||
+      (newScale <= minScale && graphPosition.scale === minScale)
     )
       return
-    scale = scale >= maxScale ? maxScale : scale <= minScale ? minScale : scale
+    newScale =
+      newScale >= maxScale
+        ? maxScale
+        : newScale <= minScale
+        ? minScale
+        : newScale
 
     const xs = (mouseX - graphPosition.x) / graphPosition.scale
     const ys = (mouseY - graphPosition.y) / graphPosition.scale
     setGraphPosition({
       ...graphPosition,
-      x: mouseX - xs * scale,
-      y: mouseY - ys * scale,
-      scale,
+      x: mouseX - xs * newScale,
+      y: mouseY - ys * newScale,
+      scale: newScale,
     })
   }
 
@@ -173,7 +205,6 @@ export const Graph = ({
     setAutoMoveDirection(undefined)
   }
 
-  useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
   useEventListener('mousedown', handleCaptureMouseDown, undefined, {
     capture: true,
   })
@@ -181,35 +212,37 @@ export const Graph = ({
   useEventListener('click', handleClick, editorContainerRef.current)
   useEventListener('mousemove', handleMouseMove)
 
-  const zoomIn = () => zoom(zoomButtonsScaleBlock)
+  // Make sure pinch doesn't interfere with native Safari zoom
+  // More info: https://use-gesture.netlify.app/docs/gestures/
+  useEventListener('gesturestart', (e) => e.preventDefault())
+  useEventListener('gesturechange', (e) => e.preventDefault())
 
-  const zoomOut = () => zoom(-zoomButtonsScaleBlock)
+  const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock })
+  const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
 
   return (
-    <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
-      <Flex ref={graphContainerRef} position="relative" {...props}>
-        <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
-        <Flex
-          flex="1"
-          w="full"
-          h="full"
-          position="absolute"
-          data-testid="graph"
-          style={{
-            transform,
-          }}
-          willChange="transform"
-          transformOrigin="0px 0px 0px"
-        >
-          <GraphElements
-            edges={typebot.edges}
-            groups={typebot.groups}
-            answersCounts={answersCounts}
-            onUnlockProPlanClick={onUnlockProPlanClick}
-          />
-        </Flex>
+    <Flex ref={graphContainerRef} position="relative" {...props}>
+      <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
+      <Flex
+        flex="1"
+        w="full"
+        h="full"
+        position="absolute"
+        data-testid="graph"
+        style={{
+          transform,
+        }}
+        willChange="transform"
+        transformOrigin="0px 0px 0px"
+      >
+        <GraphElements
+          edges={typebot.edges}
+          groups={typebot.groups}
+          answersCounts={answersCounts}
+          onUnlockProPlanClick={onUnlockProPlanClick}
+        />
       </Flex>
-    </DraggableCore>
+    </Flex>
   )
 }
 

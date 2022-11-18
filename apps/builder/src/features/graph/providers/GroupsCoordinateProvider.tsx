@@ -5,6 +5,7 @@ import {
   useEffect,
   useContext,
   createContext,
+  useCallback,
 } from 'react'
 import { GroupsCoordinates, Coordinates } from './GraphProvider'
 
@@ -40,11 +41,14 @@ export const GroupsCoordinatesProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups])
 
-  const updateGroupCoordinates = (groupId: string, newCoord: Coordinates) =>
-    setGroupsCoordinates((groupsCoordinates) => ({
-      ...groupsCoordinates,
-      [groupId]: newCoord,
-    }))
+  const updateGroupCoordinates = useCallback(
+    (groupId: string, newCoord: Coordinates) =>
+      setGroupsCoordinates((groupsCoordinates) => ({
+        ...groupsCoordinates,
+        [groupId]: newCoord,
+      })),
+    []
+  )
 
   return (
     <groupsCoordinatesContext.Provider

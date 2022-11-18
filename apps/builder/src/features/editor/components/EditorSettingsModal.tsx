@@ -1,3 +1,4 @@
+import { useUser } from '@/features/account'
 import {
   Modal,
   ModalBody,
@@ -14,13 +15,17 @@ type Props = {
 }
 
 export const EditorSettingsModal = ({ isOpen, onClose }: Props) => {
+  const { user } = useUser()
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
         <ModalBody pt="12" pb="8" px="8">
-          <EditorSettingsForm />
+          {user?.graphNavigation && (
+            <EditorSettingsForm defaultGraphNavigation={user.graphNavigation} />
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>

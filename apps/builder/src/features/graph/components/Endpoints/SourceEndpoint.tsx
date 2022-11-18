@@ -39,11 +39,13 @@ export const SourceEndpoint = ({
       data-testid="endpoint"
       boxSize="32px"
       rounded="full"
-      onMouseDownCapture={handleMouseDown}
+      onPointerDownCapture={handleMouseDown}
+      onMouseDownCapture={(e) => e.stopPropagation()}
       cursor="copy"
       justify="center"
       align="center"
       pointerEvents="all"
+      className="prevent-group-drag"
       {...props}
     >
       <Flex
@@ -52,6 +54,7 @@ export const SourceEndpoint = ({
         align="center"
         bgColor="gray.100"
         rounded="full"
+        pointerEvents="none"
       >
         <Flex
           boxSize="13px"

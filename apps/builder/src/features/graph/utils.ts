@@ -136,7 +136,7 @@ const computeFourSegments = (
     sourcePosition.x + (sourceType === 'right' ? stubLength : -stubLength)
   segments.push(`L${firstSegmentX},${sourcePosition.y}`)
   const secondSegmentY =
-    sourcePosition.y + (targetPosition.y - sourcePosition.y) / 2
+    sourcePosition.y + (targetPosition.y - sourcePosition.y) - stubLength
   segments.push(`L${firstSegmentX},${secondSegmentY}`)
 
   segments.push(`L${targetPosition.x},${secondSegmentY}`)

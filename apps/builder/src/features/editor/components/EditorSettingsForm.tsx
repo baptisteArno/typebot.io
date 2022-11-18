@@ -10,19 +10,20 @@ import {
 import { MouseIcon, LaptopIcon } from '@/components/icons'
 import { useUser } from '@/features/account'
 import { GraphNavigation } from 'db'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-export const EditorSettingsForm = () => {
-  const { user, saveUser } = useUser()
-  const [value, setValue] = useState<string>(
-    user?.graphNavigation ?? GraphNavigation.TRACKPAD
-  )
+type Props = {
+  defaultGraphNavigation: GraphNavigation
+}
 
-  useEffect(() => {
-    if (user?.graphNavigation === value) return
+export const EditorSettingsForm = ({ defaultGraphNavigation }: Props) => {
+  const { saveUser } = useUser()
+  const [value, setValue] = useState<string>(defaultGraphNavigation)
+
+  const changeEditorNavigation = (value: string) => {
+    setValue(value)
     saveUser({ graphNavigation: value as GraphNavigation }).then()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
+  }
 
   const options = [
     {
@@ -43,7 +44,7 @@ export const EditorSettingsForm = () => {
   return (
     <Stack spacing={6}>
       <Heading size="md">Editor Navigation</Heading>
-      <RadioGroup onChange={setValue} value={value}>
+      <RadioGroup onChange={changeEditorNavigation} value={value}>
         <HStack spacing={4} w="full" align="stretch">
           {options.map((option) => (
             <VStack

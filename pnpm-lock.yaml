@@ -58,6 +58,7 @@ importers:
       '@udecode/plate-serializer-html': 18.9.0
       '@udecode/plate-ui-link': 18.9.1
       '@udecode/plate-ui-toolbar': 18.9.0
+      '@use-gesture/react': ^10.2.22
       aws-sdk: 2.1254.0
       bot-engine: workspace:*
       browser-image-compression: 2.0.0
@@ -97,7 +98,6 @@ importers:
       qs: 6.11.0
       react: 18.2.0
       react-dom: 18.2.0
-      react-draggable: 4.4.5
       slate: 0.85.0
       slate-history: 0.85.0
       slate-hyperscript: 0.77.0
@@ -140,6 +140,7 @@ importers:
       '@udecode/plate-serializer-html': 18.9.0_mcaxlyuolm2h3oopex5ujcsyse
       '@udecode/plate-ui-link': 18.9.1_4zvsqcrsewxwtidgbzcpvbiljy
       '@udecode/plate-ui-toolbar': 18.9.0_4zvsqcrsewxwtidgbzcpvbiljy
+      '@use-gesture/react': 10.2.22_react@18.2.0
       aws-sdk: 2.1254.0
       bot-engine: link:../../packages/bot-engine
       browser-image-compression: 2.0.0
@@ -171,7 +172,6 @@ importers:
       qs: 6.11.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-draggable: 4.4.5_biqbaboplfbrettd7655fr4n2y
       slate: 0.85.0
       slate-history: 0.85.0_slate@0.85.0
       slate-hyperscript: 0.77.0_slate@0.85.0
@@ -6642,6 +6642,19 @@ packages:
       - react-dom
       - react-native
       - scheduler
+    dev: false
+
+  /@use-gesture/core/10.2.22:
+    resolution: {integrity: sha512-Ek0JZFYfk+hicLmoG094gm3YOuDMBNckHb988e59YOZoAkETT8dQSzT+g3QkSHSiP1m5wFXAGPSgxvOuwvGKHQ==}
+    dev: false
+
+  /@use-gesture/react/10.2.22_react@18.2.0:
+    resolution: {integrity: sha512-ECo7ig16SxBE06ENIURO1woKEB6TC8qY3a0rugJjQ2f1o0Tj28xS/eYNyJuqzQB5YT0q5IrF7ZFpbx1p/5ohYA==}
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      '@use-gesture/core': 10.2.22
+      react: 18.2.0
     dev: false
 
   /@webassemblyjs/ast/1.11.1:
@@ -15488,18 +15501,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-
-  /react-draggable/4.4.5_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
-    peerDependencies:
-      react: '>= 16.3.0'
-      react-dom: '>= 16.3.0'
-    dependencies:
-      clsx: 1.2.1
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /react-error-overlay/6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
