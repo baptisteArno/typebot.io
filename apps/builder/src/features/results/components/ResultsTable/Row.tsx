@@ -10,7 +10,12 @@ type Props = {
   onExpandButtonClick: () => void
 }
 
-export const Row = ({ row, bottomElement, onExpandButtonClick }: Props) => {
+export const Row = ({
+  row,
+  bottomElement,
+  onExpandButtonClick,
+  isSelected,
+}: Props) => {
   const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false)
 
   const showExpandButton = () => setIsExpandButtonVisible(true)
@@ -35,6 +40,7 @@ export const Row = ({ row, bottomElement, onExpandButtonClick }: Props) => {
           isExpandButtonVisible={isExpandButtonVisible}
           cellIndex={cellIndex}
           onExpandButtonClick={onExpandButtonClick}
+          isSelected={isSelected}
         />
       ))}
     </tr>

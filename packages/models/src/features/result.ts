@@ -1,14 +1,39 @@
-import { Result as ResultFromPrisma } from 'db'
-import { Answer } from './answer'
+import { z } from 'zod'
+import { answerSchema } from './answer'
 import { InputBlockType } from './blocks'
-import { VariableWithValue } from './typebot/variable'
+import { variableWithValueSchema } from './typebot/variable'
 
-export type Result = Omit<ResultFromPrisma, 'createdAt' | 'variables'> & {
-  createdAt: string
-  variables: VariableWithValue[]
-}
+export const resultSchema = z.object({
+  id: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  typebotId: z.string(),
+  variables: z.array(variableWithValueSchema),
+  isCompleted: z.boolean(),
+  hasStarted: z.boolean().nullable(),
+  isArchived: z.boolean().nullable(),
+})
 
-export type ResultWithAnswers = Result & { answers: Answer[] }
+export const resultWithAnswersSchema = resultSchema.and(
+  z.object({
+    answers: z.array(answerSchema),
+  })
+)
+
+export const logSchema = z.object({
+  id: z.string(),
+  createdAt: z.date(),
+  resultId: z.string(),
+  status: z.string(),
+  description: z.string(),
+  details: z.string().nullable(),
+})
+
+export type Result = z.infer<typeof resultSchema>
+
+export type ResultWithAnswers = z.infer<typeof resultWithAnswersSchema>
+
+export type Log = z.infer<typeof logSchema>
 
 export type ResultValues = Pick<
   ResultWithAnswers,

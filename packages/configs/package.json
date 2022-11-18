@@ -1,8 +1,6 @@
 {
   "name": "configs",
   "version": "1.0.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
   "license": "AGPL-3.0-or-later",
   "private": true,
   "devDependencies": {

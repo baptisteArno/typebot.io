@@ -39,11 +39,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'DELETE') {
-    await archiveResults(res)({
+    const { success } = await archiveResults({
       typebotId,
       user,
       resultsFilter: { typebotId },
     })
+    if (!success) return res.status(500).send({ success: false })
     await prisma.publicTypebot.deleteMany({
       where: { typebot: canWriteTypebot(typebotId, user) },
     })

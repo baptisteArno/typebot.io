@@ -160,7 +160,6 @@ export const ResultsPage = () => {
               <AnalyticsGraphContainer stats={stats} />
             ) : (
               <ResultsProvider
-                workspaceId={workspace.id}
                 typebotId={publishedTypebot.typebotId}
                 totalResults={stats?.totalStarts ?? 0}
                 onDeleteResults={handleDeletedResults}

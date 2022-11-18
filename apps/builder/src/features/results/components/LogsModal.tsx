@@ -27,7 +27,7 @@ type Props = {
   onClose: () => void
 }
 export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
-  const { isLoading, logs } = useLogs(typebotId, resultId ?? undefined)
+  const { isLoading, logs } = useLogs(typebotId, resultId)
 
   return (
     <Modal isOpen={isDefined(resultId)} onClose={onClose} size="xl">

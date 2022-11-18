@@ -10,7 +10,7 @@ export const useStats = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ stats: Stats }, Error>(
-    typebotId ? `/api/typebots/${typebotId}/results/stats` : null,
+    typebotId ? `/api/typebots/${typebotId}/analytics/stats` : null,
     fetcher
   )
   if (error) onError(error)

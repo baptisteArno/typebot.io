@@ -34,7 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues: ResultValues | undefined
+      resultValues:
+        | (Omit<ResultValues, 'createdAt'> & {
+            createdAt: string
+          })
+        | undefined
       variables: Variable[]
     }
     const typebot = (await prisma.typebot.findUnique({
@@ -83,7 +87,9 @@ export const executeWebhook =
     webhook: Webhook,
     variables: Variable[],
     groupId: string,
-    resultValues?: ResultValues,
+    resultValues?: Omit<ResultValues, 'createdAt'> & {
+      createdAt: string
+    },
     resultId?: string
   ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
@@ -193,7 +199,9 @@ const getBodyContent =
     groupId,
   }: {
     body?: string | null
-    resultValues?: ResultValues
+    resultValues?: Omit<ResultValues, 'createdAt'> & {
+      createdAt: string
+    }
     groupId: string
   }): Promise<string | undefined> => {
     if (!body) return

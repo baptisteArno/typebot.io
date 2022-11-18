@@ -12,17 +12,13 @@ import { HeaderCell, TableData } from './types'
 import { CodeIcon, CalendarIcon, FileIcon } from '@/components/icons'
 import { TextLink } from '@/components/TextLink'
 
-export const parseDateToReadable = (dateStr: string): string => {
-  const date = new Date(dateStr)
-  return (
-    date.toDateString().split(' ').slice(1, 3).join(' ') +
-    ', ' +
-    date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  )
-}
+export const parseDateToReadable = (date: Date): string =>
+  date.toDateString().split(' ').slice(1, 3).join(' ') +
+  ', ' +
+  date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 
 export const parseSubmissionsColumns = (
   resultHeader: ResultHeaderCell[]

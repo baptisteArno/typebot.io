@@ -54,7 +54,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as SendEmailOptions & {
-      resultValues: ResultValues
+      resultValues: Omit<ResultValues, 'createdAt'> & {
+        createdAt: string
+      }
       fileUrls?: string
     }
     const { name: replyToName } = parseEmailRecipient(replyTo)
@@ -162,10 +164,14 @@ const getEmailBody = async ({
   isBodyCode,
   typebotId,
   resultValues,
-}: { typebotId: string; resultValues: ResultValues } & Pick<
-  SendEmailOptions,
-  'isCustomBody' | 'isBodyCode' | 'body'
->): Promise<{ html?: string; text?: string } | undefined> => {
+}: {
+  typebotId: string
+  resultValues: Omit<ResultValues, 'createdAt'> & {
+    createdAt: string
+  }
+} & Pick<SendEmailOptions, 'isCustomBody' | 'isBodyCode' | 'body'>): Promise<
+  { html?: string; text?: string } | undefined
+> => {
   if (isCustomBody || (isNotDefined(isCustomBody) && !isEmpty(body)))
     return {
       html: isBodyCode ? body : undefined,

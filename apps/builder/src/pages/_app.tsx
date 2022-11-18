@@ -17,6 +17,7 @@ import { WorkspaceProvider } from '@/features/workspace'
 import { toTitleCase } from 'utils'
 import { Session } from 'next-auth'
 import { Plan } from 'db'
+import { trpc } from '@/lib/trpc'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
@@ -72,4 +73,4 @@ const App = ({
   )
 }
 
-export default App
+export default trpc.withTRPC(App)

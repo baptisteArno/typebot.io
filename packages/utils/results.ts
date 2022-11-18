@@ -177,7 +177,9 @@ export const parseAnswers =
     createdAt,
     answers,
     variables: resultVariables,
-  }: Pick<ResultWithAnswers, 'createdAt' | 'answers' | 'variables'>): {
+  }: Pick<ResultWithAnswers, 'answers' | 'variables'> & {
+    createdAt: string
+  }): {
     [key: string]: string
   } => {
     const header = parseResultHeader(typebot, linkedTypebots)

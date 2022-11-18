@@ -4,6 +4,7 @@ import {
   Popover,
   PopoverTrigger,
   useDisclosure,
+  useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -151,6 +152,8 @@ export const BlockNode = ({
     setIsPopoverOpened(openedBlockId === block.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openedBlockId])
+
+  useEventListener('pointerdown', (e) => e.stopPropagation(), blockRef.current)
 
   return isEditing && isTextBubbleBlock(block) ? (
     <TextBubbleEditor

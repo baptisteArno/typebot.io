@@ -13,7 +13,7 @@ export const useAnswersCount = ({
     { answersCounts: AnswersCount[] },
     Error
   >(
-    typebotId ? `/api/typebots/${typebotId}/results/answers/count` : null,
+    typebotId ? `/api/typebots/${typebotId}/analytics/answersCount` : null,
     fetcher
   )
   if (error) onError(error)

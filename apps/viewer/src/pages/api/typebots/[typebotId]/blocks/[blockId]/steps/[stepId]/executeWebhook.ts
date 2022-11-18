@@ -26,7 +26,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues: ResultValues | undefined
+      resultValues:
+        | (Omit<ResultValues, 'createdAt'> & {
+            createdAt: string
+          })
+        | undefined
       variables: Variable[]
     }
     const typebot = (await prisma.typebot.findUnique({

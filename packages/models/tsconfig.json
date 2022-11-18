@@ -1,17 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "declaration": true,
-    "declarationDir": "types",
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "emitDeclarationOnly": true
-  }
+  "extends": "tsconfig/base.json",
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

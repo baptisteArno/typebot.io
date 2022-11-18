@@ -9,8 +9,8 @@ import { SubmissionsTable } from './ResultsTable'
 export const ResultsTableContainer = () => {
   const {
     flatResults: results,
-    fetchMore,
-    hasMore,
+    fetchNextPage,
+    hasNextPage,
     resultHeader,
     tableData,
   } = useResults()
@@ -60,8 +60,8 @@ export const ResultsTableContainer = () => {
           preferences={typebot.resultsTablePreferences}
           resultHeader={resultHeader}
           data={tableData}
-          onScrollToBottom={fetchMore}
-          hasMore={hasMore}
+          onScrollToBottom={fetchNextPage}
+          hasMore={hasNextPage}
           onLogOpenIndex={handleLogOpenIndex}
           onResultExpandIndex={handleResultExpandIndex}
         />

@@ -1,7 +1,7 @@
-import { BoxProps, Flex } from '@chakra-ui/react'
+import { BoxProps, Flex, useEventListener } from '@chakra-ui/react'
 import { useGraph, useGroupsCoordinates } from '../../providers'
 import { Source } from 'models'
-import React, { MouseEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export const SourceEndpoint = ({
   source,
@@ -15,11 +15,6 @@ export const SourceEndpoint = ({
   const { groupsCoordinates } = useGroupsCoordinates()
   const ref = useRef<HTMLDivElement | null>(null)
 
-  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    setConnectingIds({ source })
-  }
-
   useEffect(() => {
     if (ranOnce || !ref.current || Object.keys(groupsCoordinates).length === 0)
       return
@@ -32,6 +27,23 @@ export const SourceEndpoint = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref.current, groupsCoordinates])
 
+  useEventListener(
+    'pointerdown',
+    (e) => {
+      e.stopPropagation()
+      setConnectingIds({ source })
+    },
+    ref.current
+  )
+
+  useEventListener(
+    'mousedown',
+    (e) => {
+      e.stopPropagation()
+    },
+    ref.current
+  )
+
   if (!groupsCoordinates) return <></>
   return (
     <Flex
@@ -39,13 +51,10 @@ export const SourceEndpoint = ({
       data-testid="endpoint"
       boxSize="32px"
       rounded="full"
-      onPointerDownCapture={handleMouseDown}
-      onMouseDownCapture={(e) => e.stopPropagation()}
       cursor="copy"
       justify="center"
       align="center"
       pointerEvents="all"
-      className="prevent-group-drag"
       {...props}
     >
       <Flex
@@ -54,7 +63,6 @@ export const SourceEndpoint = ({
         align="center"
         bgColor="gray.100"
         rounded="full"
-        pointerEvents="none"
       >
         <Flex
           boxSize="13px"

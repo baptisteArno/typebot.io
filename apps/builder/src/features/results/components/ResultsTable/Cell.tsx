@@ -9,6 +9,7 @@ type Props = {
   size: number
   isExpandButtonVisible: boolean
   cellIndex: number
+  isSelected: boolean
   onExpandButtonClick: () => void
 }
 
@@ -63,5 +64,6 @@ export default memo(
   Cell,
   (prev, next) =>
     prev.size === next.size &&
-    prev.isExpandButtonVisible === next.isExpandButtonVisible
+    prev.isExpandButtonVisible === next.isExpandButtonVisible &&
+    prev.isSelected === next.isSelected
 )

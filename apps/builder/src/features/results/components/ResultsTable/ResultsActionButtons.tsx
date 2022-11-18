@@ -13,10 +13,10 @@ import { useTypebot } from '@/features/editor'
 import { unparse } from 'papaparse'
 import React, { useState } from 'react'
 import { useToast } from '@/hooks/useToast'
-import { getAllResultsQuery } from '../../queries/getAllResultsQuery'
 import { convertResultsToTableData } from '../../utils'
-import { deleteResultsQuery } from '../../queries/deleteResultsQuery'
 import { useResults } from '../../ResultsProvider'
+import { trpc } from '@/lib/trpc'
+import { TRPCError } from '@trpc/server'
 
 type ResultsActionButtonsProps = {
   selectedResultsId: string[]
@@ -31,10 +31,8 @@ export const ResultsActionButtons = ({
   const { typebot } = useTypebot()
   const { showToast } = useToast()
   const {
-    resultsList: data,
     flatResults: results,
     resultHeader,
-    mutate,
     totalResults,
     tableData,
     onDeleteResults,
@@ -42,14 +40,44 @@ export const ResultsActionButtons = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isExportLoading, setIsExportLoading] = useState(false)
+  const trpcContext = trpc.useContext()
+  const deleteResultsMutation = trpc.results.deleteResults.useMutation({
+    onMutate: () => {
+      setIsDeleteLoading(true)
+    },
+    onError: (error) => showToast({ description: error.message }),
+    onSuccess: async () => {
+      await trpcContext.results.getResults.invalidate()
+    },
+    onSettled: () => {
+      onDeleteResults(selectedResultsId.length)
+      onClearSelection()
+      setIsDeleteLoading(false)
+    },
+  })
 
   const workspaceId = typebot?.workspaceId
   const typebotId = typebot?.id
 
   const getAllTableData = async () => {
     if (!workspaceId || !typebotId) return []
-    const results = await getAllResultsQuery(workspaceId, typebotId)
-    return convertResultsToTableData(results, resultHeader)
+    const allResults = []
+    let cursor: string | undefined | null
+    do {
+      try {
+        const { results, nextCursor } =
+          await trpcContext.results.getResults.fetch({
+            typebotId,
+            limit: '200',
+          })
+        allResults.push(...results)
+        cursor = nextCursor
+      } catch (error) {
+        showToast({ description: (error as TRPCError).message })
+      }
+    } while (cursor)
+
+    return convertResultsToTableData(allResults, resultHeader)
   }
 
   const totalSelected =
@@ -59,27 +87,13 @@ export const ResultsActionButtons = ({
 
   const deleteResults = async () => {
     if (!workspaceId || !typebotId) return
-    setIsDeleteLoading(true)
-    const { error } = await deleteResultsQuery(
-      workspaceId,
+    deleteResultsMutation.mutate({
       typebotId,
-      totalSelected === totalResults ? [] : selectedResultsId
-    )
-    if (error) showToast({ description: error.message, title: error.name })
-    else {
-      mutate(
+      ids:
         totalSelected === totalResults
-          ? []
-          : data?.map((d) => ({
-              results: d.results.filter(
-                (r) => !selectedResultsId.includes(r.id)
-              ),
-            }))
-      )
-    }
-    onDeleteResults(selectedResultsId.length)
-    onClearSelection()
-    setIsDeleteLoading(false)
+          ? undefined
+          : selectedResultsId.join(','),
+    })
   }
 
   const exportResultsToCSV = async () => {

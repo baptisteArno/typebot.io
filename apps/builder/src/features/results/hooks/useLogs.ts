@@ -1,17 +1,19 @@
-import { fetcher } from '@/utils/helpers'
-import { Log } from 'db'
-import useSWR from 'swr'
+import { trpc } from '@/lib/trpc'
+import { isDefined } from '@udecode/plate-common'
 
 export const useLogs = (
   typebotId: string,
-  resultId?: string,
-  onError?: (e: Error) => void
+  resultId: string | null,
+  onError?: (error: string) => void
 ) => {
-  const { data, error } = useSWR<{ logs: Log[] }>(
-    resultId ? `/api/typebots/${typebotId}/results/${resultId}/logs` : null,
-    fetcher
+  const { data, error } = trpc.results.getResultLogs.useQuery(
+    {
+      resultId: resultId ?? '',
+      typebotId,
+    },
+    { enabled: isDefined(resultId) }
   )
-  if (error && onError) onError(error)
+  if (error && onError) onError(error.message)
   return {
     logs: data?.logs,
     isLoading: !error && !data,
