@@ -153,7 +153,8 @@ export const TypebotHeader = () => {
             )}
             {typebot?.name && (
               <EditableTypebotName
-                name={typebot?.name}
+                key={typebot.name}
+                defaultName={typebot.name}
                 onNewName={handleNameSubmit}
               />
             )}

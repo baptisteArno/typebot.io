@@ -4,23 +4,31 @@ import {
   EditableInput,
   Tooltip,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 type EditableProps = {
-  name: string
+  defaultName: string
   onNewName: (newName: string) => void
 }
-export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
-  const [localName, setLocalName] = useState(name)
+export const EditableTypebotName = ({
+  defaultName,
+  onNewName,
+}: EditableProps) => {
+  const [currentName, setCurrentName] = useState(defaultName)
 
-  useEffect(() => {
-    if (name !== localName) setLocalName(name)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name])
+  const submitNewName = (newName: string) => {
+    if (newName === '') return setCurrentName(defaultName)
+    if (newName === defaultName) return
+    onNewName(newName)
+  }
 
   return (
     <Tooltip label="Rename">
-      <Editable value={localName} onChange={setLocalName} onSubmit={onNewName}>
+      <Editable
+        value={currentName}
+        onChange={setCurrentName}
+        onSubmit={submitNewName}
+      >
         <EditablePreview
           noOfLines={2}
           cursor="pointer"
@@ -29,6 +37,9 @@ export const EditableTypebotName = ({ name, onNewName }: EditableProps) => {
           display="flex"
           alignItems="center"
           fontSize="14px"
+          minW="30px"
+          minH="20px"
+          bgColor={currentName === '' ? 'gray.100' : 'white'}
         />
         <EditableInput fontSize="14px" />
       </Editable>
