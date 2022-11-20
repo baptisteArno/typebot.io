@@ -44,9 +44,7 @@ export const UploadButton = ({
         display="none"
         onChange={handleInputChange}
         accept={
-          fileType === 'image'
-            ? '.jpg, .jpeg, .png, .svg, .gif'
-            : '.mp3, .wav, .ogg'
+          fileType === 'image' ? '.jpg, .jpeg, .png, .svg, .gif' : '.mp3, .wav'
         }
       />
       <Button

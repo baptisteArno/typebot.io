@@ -58,7 +58,7 @@ export const AudioBubbleForm = ({
               onChange={submit}
             />
             <Text fontSize="sm" color="gray.400" textAlign="center">
-              Works with .MP3s, .WAVs and .OGGs
+              Works with .MP3s and .WAVs
             </Text>
           </>
         )}
