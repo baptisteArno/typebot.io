@@ -62,16 +62,17 @@ export const ResultsActionButtons = ({
   const getAllTableData = async () => {
     if (!workspaceId || !typebotId) return []
     const allResults = []
-    let cursor: string | undefined | null
+    let cursor: string | undefined
     do {
       try {
         const { results, nextCursor } =
           await trpcContext.results.getResults.fetch({
             typebotId,
             limit: '200',
+            cursor,
           })
         allResults.push(...results)
-        cursor = nextCursor
+        cursor = nextCursor ?? undefined
       } catch (error) {
         showToast({ description: (error as TRPCError).message })
       }

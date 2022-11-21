@@ -20,7 +20,9 @@ export const parseDateToReadable = (date: Date): string =>
     minute: '2-digit',
   })
 
-export const parseSubmissionsColumns = (
+export const parseAccessor = (label: string) => label.replaceAll('.', '')
+
+export const parseHeaderCells = (
   resultHeader: ResultHeaderCell[]
 ): HeaderCell[] =>
   resultHeader.map((header) => ({
@@ -30,7 +32,7 @@ export const parseSubmissionsColumns = (
         <Text>{header.label}</Text>
       </HStack>
     ),
-    accessor: header.label,
+    accessor: parseAccessor(header.label),
   }))
 
 export const HeaderIcon = ({ header }: { header: ResultHeaderCell }) =>
@@ -66,7 +68,7 @@ export const convertResultsToTableData = (
         if (!header || !header.blocks || !header.blockType) return o
         return {
           ...o,
-          [header.label]: {
+          [parseAccessor(header.label)]: {
             element: parseContent(answer.content, header.blockType),
             plainText: answer.content,
           },
@@ -80,7 +82,7 @@ export const convertResultsToTableData = (
       if (isDefined(o[key])) return o
       return {
         ...o,
-        [key]: { plainText: variable.value?.toString() },
+        [parseAccessor(key)]: { plainText: variable.value?.toString() },
       }
     }, {}),
   }))

@@ -24,7 +24,7 @@ import { ResultsActionButtons } from './ResultsActionButtons'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
 import { CellValueType, TableData } from '../../types'
-import { HeaderIcon } from '../../utils'
+import { HeaderIcon, parseAccessor } from '../../utils'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 
 type ResultsTableProps = {
@@ -111,7 +111,7 @@ export const ResultsTable = ({
       },
       ...resultHeader.map<ColumnDef<TableData>>((header) => ({
         id: header.id,
-        accessorKey: header.label,
+        accessorKey: parseAccessor(header.label),
         size: 200,
         header: () => (
           <HStack overflow="hidden" data-testid={`${header.label} header`}>
@@ -120,14 +120,9 @@ export const ResultsTable = ({
           </HStack>
         ),
         cell: (info) => {
-          try {
-            const value = info?.getValue() as CellValueType | undefined
-            if (!value) return
-            return value.element || value.plainText || ''
-          } catch (err) {
-            console.error(err)
-            return
-          }
+          const value = info?.getValue() as CellValueType | undefined
+          if (!value) return
+          return value.element || value.plainText || ''
         },
       })),
       {
