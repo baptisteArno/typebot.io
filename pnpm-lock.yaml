@@ -274,6 +274,7 @@ importers:
       '@types/aos': 3.0.4
       '@types/node': 18.11.9
       '@types/react': 18.0.25
+      '@vercel/analytics': 0.1.5
       aos: 2.3.4
       autoprefixer: 10.4.13
       bot-engine: workspace:*
@@ -298,6 +299,7 @@ importers:
       '@chakra-ui/react': 2.4.1_ydu7fid2w3vesyc65jyv4dbawa
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
       '@emotion/styled': 11.10.5_hmjty4frusbltjhl3xd7udcm2y
+      '@vercel/analytics': 0.1.5_react@18.2.0
       aos: 2.3.4
       bot-engine: link:../../packages/bot-engine
       db: link:../../packages/db
@@ -6606,6 +6608,14 @@ packages:
       react: '>= 16.8.0'
     dependencies:
       '@use-gesture/core': 10.2.22
+      react: 18.2.0
+    dev: false
+
+  /@vercel/analytics/0.1.5_react@18.2.0:
+    resolution: {integrity: sha512-/k9N8Ea3Yc5A52GlkjzUEbi2vE/izClrOf++ryBkxEfrZM/OZwtHkdNw/QExZ1h/B67RCZLK7bCOnKKrhG7gTg==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
       react: 18.2.0
     dev: false
 
