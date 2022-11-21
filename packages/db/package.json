@@ -5,15 +5,11 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "dev": "dotenv -e ../../apps/builder/.env.local prisma db push && pnpm generate:schema && pnpm start:sutdio",
-    "build": "pnpm generate:schema",
-    "start:sutdio": "dotenv -e ../../apps/builder/.env.local -v BROWSER=none prisma studio",
-    "generate:schema": "dotenv -e ../../apps/builder/.env.local prisma generate",
-    "prisma": "dotenv -e ../../apps/builder/.env.local prisma",
-    "migration:push": "dotenv -e ../../apps/builder/.env.local prisma db push",
-    "migration:create": "dotenv -e ../../apps/builder/.env.local prisma migrate dev",
-    "migration:reset": "dotenv -e ../../apps/builder/.env.local prisma migrate reset",
-    "migration:deploy": "prisma migrate deploy"
+    "dev": "BROWSER=none prisma studio",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:migrate": "prisma migrate deploy",
+    "create:migration": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "4.6.1"

@@ -4,16 +4,19 @@
     "lint": {
       "outputs": []
     },
+    "dev": {
+      "dependsOn": ["^dev", "^db:generate", "^db:push"],
+      "cache": false
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^db:generate"],
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
-    "db#build": {
+    "db:generate": {
       "cache": false
     },
-    "dev": {
-      "dependsOn": ["^dev"],
+    "db:push": {
       "cache": false
     }
   }

@@ -42,7 +42,7 @@ Fork the repository
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm prisma generate && pnpm build:viewer && pnpm db:migrate
+   cd ../.. && pnpm build:viewer && pnpm db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
