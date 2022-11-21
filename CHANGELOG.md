@@ -1,5 +1,46 @@
 # Changelog
 
+<a name="2.8.6"></a>
+## 2.8.6 (2022-11-21)
+
+### Added
+
+- 📈 (lp) Add Vercel analytics [[b29f732](https://github.com/baptisteArno/typebot.io/commit/b29f7325ad8bb6a47306f87d5513222d386242f0)]
+- ✨ Add audio bubble block [[7db0e01](https://github.com/baptisteArno/typebot.io/commit/7db0e01acae0731d3537e702438289c56634a60c)]
+- ✨ (settings) Add a &quot;disable responses saving&quot; option [[473d315](https://github.com/baptisteArno/typebot.io/commit/473d315e0fc3fb7b7a24408480d67e1400a269f1)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[34cfd1d](https://github.com/baptisteArno/typebot.io/commit/34cfd1db30304ff82577a77907bc0fa119e233be)]
+- 🔧 Update db turbo scripts [[bdf4e83](https://github.com/baptisteArno/typebot.io/commit/bdf4e8361720175d1c8f1cd2fc10eadf6908f025)]
+- ♻️ Add shared eslint config [[451ffbc](https://github.com/baptisteArno/typebot.io/commit/451ffbcacfe4a0417a5642a40eed533565513cd9)]
+- ♻️ (results) Introduce tRPC and use it for the results [[d58f9bd](https://github.com/baptisteArno/typebot.io/commit/d58f9bd3a19f4c963c46ec0673ee45854a9a9118)]
+- 🔧 Add Tanzania phone option [[c9cc82c](https://github.com/baptisteArno/typebot.io/commit/c9cc82cc0821390b85a0bcc23dc6fd0a3a6fbee7)]
+- ♻️ (editor) Migrate from react-draggable to @use-gesture [[7632c54](https://github.com/baptisteArno/typebot.io/commit/7632c5426c026eb1fa15f5dab20e68b4f0735fa5)]
+- 🚸 (typebotLink) Add icon in typebots dropdown [[0c3dcc5](https://github.com/baptisteArno/typebot.io/commit/0c3dcc522e95a313701431617c8eab8a4c381f8f)]
+- 🚸 (bot) Avoid waiting for blocks with no returned data [[2bd7cee](https://github.com/baptisteArno/typebot.io/commit/2bd7cee58e90824d5058119288cf1e466c95f800)]
+- 🚸 (condition) Enable multiple condition items in one block [[6725c17](https://github.com/baptisteArno/typebot.io/commit/6725c17a02f0df499b1dee3b1c3e909def649426)]
+
+### Fixed
+
+- 🐛 (results) Fix export results when more than 200 [[8c15fd1](https://github.com/baptisteArno/typebot.io/commit/8c15fd17a1405f9ef8b16d171536b0a9cb15053c)]
+- 🐛 Fix new image upload refresh when URL is the same [[fbd3304](https://github.com/baptisteArno/typebot.io/commit/fbd33046a1c16aabe7538315837825ebd892140e)]
+- 🐛 (editor) Fix empty typebot name not editable [[2489318](https://github.com/baptisteArno/typebot.io/commit/2489318fa59e70335964f7d96dba029797fb4a4b)]
+- 🐛 (audioBubble) Remove .ogg upload option because of Safari incompatibility [[e09adf5](https://github.com/baptisteArno/typebot.io/commit/e09adf5c643cd23de84ab0e676b27d5f8b6650f9)]
+- 🐛 (editor) Make sure typebot name can be editable if empty [[c7fde1d](https://github.com/baptisteArno/typebot.io/commit/c7fde1d0bc5ff124265f74e3ceb5845561e49726)]
+- 🚑 (lp) Temporarily disable plausible [[d2f617f](https://github.com/baptisteArno/typebot.io/commit/d2f617ff1e831fa4b03c7a15ef45a9b7a44134fc)]
+- 🐛 (editor) Fix undo / redo not working properly on button nodes [[c4a4aa3](https://github.com/baptisteArno/typebot.io/commit/c4a4aa3e8313e6d7fa6b961679c7b27bbdeb9dc5)]
+- 🚑 (bot) Fix custom email from field without name [[4e6b8ed](https://github.com/baptisteArno/typebot.io/commit/4e6b8ed521b1274a3d9f4a2556a3a9f8fd4211e1)]
+
+### Miscellaneous
+
+- ⚰️ (docs) Remove old link [[feaf49f](https://github.com/baptisteArno/typebot.io/commit/feaf49f137d9c7cf666e78aca8eff8f58621a35b)]
+- 📦 (wordpress) Update package version [[78fd974](https://github.com/baptisteArno/typebot.io/commit/78fd974ebe9e681555dfc85faa64c5d04c47a5b2)]
+- 📝 Add Chatwoot integration doc [[96eb77d](https://github.com/baptisteArno/typebot.io/commit/96eb77d94bfb960b73a3e44119eb8deb8a48181a)]
+- 🛂 Add setCustomPlan script [[6fdbf98](https://github.com/baptisteArno/typebot.io/commit/6fdbf98eedb0c15138383ae258ba57c7dd4b08a5)]
+- 🧑‍💻 (typebot-js) Implement easier commands: open / close / toggle [[087d24e](https://github.com/baptisteArno/typebot.io/commit/087d24e58735091a2fa758821da7423b54dc99cd)]
+
+
 <a name="2.8.5"></a>
 
 ## 2.8.5 (2022-11-15)
