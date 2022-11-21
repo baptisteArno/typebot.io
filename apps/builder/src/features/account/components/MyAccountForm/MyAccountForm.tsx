@@ -26,10 +26,8 @@ export const MyAccountForm = () => {
     isSaving,
     isOAuthProvider,
   } = useUser()
-  const [reloadParam, setReloadParam] = useState('')
 
   const handleFileUploaded = async (url: string) => {
-    setReloadParam(Date.now().toString())
     updateUser({ image: url })
   }
 
@@ -46,7 +44,7 @@ export const MyAccountForm = () => {
       <HStack spacing={6}>
         <Avatar
           size="lg"
-          src={user?.image ? `${user.image}?${reloadParam}` : undefined}
+          src={user?.image ?? undefined}
           name={user?.name ?? undefined}
         />
         <Stack>

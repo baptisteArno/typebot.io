@@ -31,7 +31,7 @@ export const UploadButton = ({
         },
       ],
     })
-    if (urls.length && urls[0]) onFileUploaded(urls[0])
+    if (urls.length && urls[0]) onFileUploaded(urls[0] + '?v=' + Date.now())
     setIsUploading(false)
   }
 
@@ -43,9 +43,7 @@ export const UploadButton = ({
         id="file-input"
         display="none"
         onChange={handleInputChange}
-        accept={
-          fileType === 'image' ? '.jpg, .jpeg, .png, .svg, .gif' : '.mp3, .wav'
-        }
+        accept={fileType === 'image' ? '.jpg, .jpeg, .png, .gif' : '.mp3, .wav'}
       />
       <Button
         as="label"
