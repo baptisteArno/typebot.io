@@ -151,13 +151,13 @@ export const TypebotHeader = () => {
                 onChangeIcon={handleChangeIcon}
               />
             )}
-            {typebot?.name && (
-              <EditableTypebotName
-                key={typebot.name}
-                defaultName={typebot.name}
-                onNewName={handleNameSubmit}
-              />
-            )}
+            (
+            <EditableTypebotName
+              key={`typebot-name-${typebot?.name ?? ''}`}
+              defaultName={typebot?.name ?? ''}
+              onNewName={handleNameSubmit}
+            />
+            )
           </HStack>
 
           <HStack>
