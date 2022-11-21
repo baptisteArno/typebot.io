@@ -14,11 +14,11 @@
     "axios": "^1.1.3",
     "db": "workspace:*",
     "emails": "workspace:*",
-    "got": "12.5.2",
+    "got": "12.5.3",
     "models": "workspace:*",
-    "stripe": "10.17.0",
+    "stripe": "11.1.0",
     "tsx": "3.12.1",
-    "typescript": "4.8.4",
+    "typescript": "4.9.3",
     "utils": "workspace:*"
   }
 }

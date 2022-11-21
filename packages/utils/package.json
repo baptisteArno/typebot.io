@@ -6,17 +6,17 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "@playwright/test": "1.27.1",
+    "@playwright/test": "1.28.0",
     "@types/nodemailer": "6.4.6",
-    "aws-sdk": "2.1254.0",
+    "aws-sdk": "2.1258.0",
     "cuid": "2.1.8",
     "db": "workspace:*",
     "dotenv": "16.0.3",
     "models": "workspace:*",
-    "next": "13.0.3",
+    "next": "13.0.4",
     "nodemailer": "6.8.0",
     "tsconfig": "workspace:*",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   },
   "peerDependencies": {
     "aws-sdk": "2.1152.0",

@@ -11,7 +11,7 @@ import { proWorkspaceId } from 'utils/playwright/databaseSetup'
 const prisma = new PrismaClient()
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-  apiVersion: '2022-08-01',
+  apiVersion: '2022-11-15',
 })
 
 export const addSubscriptionToWorkspace = async (

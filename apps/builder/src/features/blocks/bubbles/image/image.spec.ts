@@ -29,11 +29,7 @@ test.describe.parallel('Image bubble block', () => {
       await page.setInputFiles('input[type="file"]', getTestAsset('avatar.jpg'))
       await expect(page.locator('img')).toHaveAttribute(
         'src',
-        `${process.env.S3_SSL === 'false' ? 'http://' : 'https://'}${
-          process.env.S3_ENDPOINT
-        }${process.env.S3_PORT ? `:${process.env.S3_PORT}` : ''}/${
-          process.env.S3_BUCKET
-        }/public/typebots/${typebotId}/blocks/block2`
+        new RegExp(`/public/typebots/${typebotId}/blocks/block2`, 'gm')
       )
     })
 

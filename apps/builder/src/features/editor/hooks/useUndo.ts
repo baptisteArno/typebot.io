@@ -139,9 +139,9 @@ const useUndo = <T extends { updatedAt: string } | undefined>(
   const set = useCallback(
     (newPresent: T | ((current: T) => T), options = { updateDate: true }) => {
       const updatedTypebot =
-        newPresent && 'id' in newPresent
-          ? newPresent
-          : (newPresent as (current: T) => T)(presentRef.current)
+        newPresent && typeof newPresent === 'function'
+          ? newPresent(presentRef.current)
+          : newPresent
       presentRef.current = updatedTypebot
       dispatch({
         type: ActionType.Set,

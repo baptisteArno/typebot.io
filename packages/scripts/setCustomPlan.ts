@@ -14,7 +14,7 @@ export const setCustomPlan = async () => {
       'STRIPE_SECRET_KEY or STRIPE_SUBSCRIPTION_ID or STRIPE_PRODUCT_ID or process.env.WORKSPACE_ID var is missing'
     )
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2022-08-01',
+    apiVersion: '2022-11-15',
   })
 
   const claimablePlan = await prisma.claimableCustomPlan.findFirst({

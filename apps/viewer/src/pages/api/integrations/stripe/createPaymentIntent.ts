@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isPreview && stripeKeys?.test?.secretKey
         ? stripeKeys.test.secretKey
         : stripeKeys.live.secretKey,
-      { apiVersion: '2022-08-01' }
+      { apiVersion: '2022-11-15' }
     )
     const amount =
       Number(parseVariables(variables)(inputOptions.amount)) *

@@ -33,7 +33,7 @@ test('should work as expected', async ({ page }) => {
     'src',
     RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')
   )
-  await page.getByRole('button', { name: 'Preview' }).click()
+  await page.getByRole('button', { name: 'Preview', exact: true }).click()
   await expect(typebotViewer(page).locator('audio')).toHaveAttribute(
     'src',
     RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')

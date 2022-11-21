@@ -22,7 +22,7 @@ const createCheckoutSession = async (userId: string) => {
   if (!process.env.STRIPE_SECRET_KEY)
     throw Error('STRIPE_SECRET_KEY var is missing')
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2022-08-01',
+    apiVersion: '2022-11-15',
   })
 
   const claimableCustomPlan = await prisma.claimableCustomPlan.findFirst({

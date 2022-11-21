@@ -46,7 +46,7 @@ const getSubscriptionDetails =
     })
     if (!workspace?.stripeId) return forbidden(res)
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2022-08-01',
+      apiVersion: '2022-11-15',
     })
     const subscriptions = await stripe.subscriptions.list({
       customer: workspace.stripeId,
@@ -70,7 +70,7 @@ const createCheckoutSession = (req: NextApiRequest) => {
   if (!process.env.STRIPE_SECRET_KEY)
     throw Error('STRIPE_SECRET_KEY var is missing')
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2022-08-01',
+    apiVersion: '2022-11-15',
   })
   const {
     email,
@@ -118,7 +118,7 @@ const updateSubscription = async (req: NextApiRequest) => {
   if (!process.env.STRIPE_SECRET_KEY)
     throw Error('STRIPE_SECRET_KEY var is missing')
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2022-08-01',
+    apiVersion: '2022-11-15',
   })
   const { data } = await stripe.subscriptions.list({
     customer: stripeId,
@@ -203,7 +203,7 @@ const cancelSubscription =
     })
     if (!workspace?.stripeId) return forbidden(res)
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2022-08-01',
+      apiVersion: '2022-11-15',
     })
     const existingSubscription = await stripe.subscriptions.list({
       customer: workspace.stripeId,

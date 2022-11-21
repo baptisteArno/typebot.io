@@ -1,8 +1,7 @@
-import { MjmlText, MjmlTextProps, PaddingProps } from '@faire/mjml-react'
-import React from 'react'
+import { MjmlText, IMjmlTextProps } from '@faire/mjml-react'
 import { leadingRelaxed, textBase } from '../theme'
 
-export const Text = (props: MjmlTextProps & PaddingProps) => (
+export const Text = (props: IMjmlTextProps) => (
   <MjmlText
     padding="24px 0 0"
     fontSize={textBase}

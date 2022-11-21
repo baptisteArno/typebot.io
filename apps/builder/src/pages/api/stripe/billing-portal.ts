@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!workspace?.stripeId) return forbidden(res)
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2022-08-01',
+      apiVersion: '2022-11-15',
     })
     const session = await stripe.billingPortal.sessions.create({
       customer: workspace.stripeId,

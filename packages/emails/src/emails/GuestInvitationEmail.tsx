@@ -5,8 +5,8 @@ import {
   MjmlSection,
   MjmlColumn,
   MjmlSpacer,
-  render,
 } from '@faire/mjml-react'
+import { render } from '@faire/mjml-react/dist/src/utils/render'
 import { HeroImage, Text, Button, Head } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'

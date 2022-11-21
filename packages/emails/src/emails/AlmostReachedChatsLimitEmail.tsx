@@ -5,8 +5,8 @@ import {
   MjmlSection,
   MjmlColumn,
   MjmlSpacer,
-  render,
 } from '@faire/mjml-react'
+import { render } from '@faire/mjml-react/dist/src/utils/render'
 import { Button, Head, HeroImage, Text } from '../components'
 import { parseNumberWithCommas } from 'utils'
 import { SendMailOptions } from 'nodemailer'
@@ -48,7 +48,7 @@ export const AlmostReachedChatsLimitEmail = ({
               You currently reached 80% of {readableChatsLimit} chats.
             </Text>
             <Text>This limit will be reset on {readableResetDate}.</Text>
-            <Text fontWeight={800}>
+            <Text fontWeight="800">
               Your bots won&apos;t start the chat if you reach the limit before
               this date❗
             </Text>

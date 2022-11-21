@@ -18,9 +18,9 @@
     "bot-engine": "workspace:*",
     "db": "workspace:*",
     "focus-visible": "5.2.0",
-    "framer-motion": "7.6.6",
+    "framer-motion": "7.6.7",
     "models": "workspace:*",
-    "next": "13.0.3",
+    "next": "13.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "utils": "workspace:*"
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/core": "7.20.2",
     "@chakra-ui/styled-system": "2.3.5",
-    "@next/bundle-analyzer": "13.0.3",
+    "@next/bundle-analyzer": "13.0.4",
     "@types/aos": "3.0.4",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
@@ -40,6 +40,6 @@
     "postcss": "8.4.19",
     "prettier": "2.7.1",
     "tsconfig": "workspace:*",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   }
 }

@@ -5,8 +5,8 @@ import {
   MjmlSection,
   MjmlColumn,
   MjmlSpacer,
-  render,
 } from '@faire/mjml-react'
+import { render } from '@faire/mjml-react/dist/src/utils/render'
 import { Button, Head, HeroImage, Text } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
@@ -37,7 +37,7 @@ export const ReachedStorageLimitEmail = ({
               It just happened, you&apos;ve reached your {readableStorageLimit}{' '}
               storage limit 😮
             </Text>
-            <Text fontWeight={800}>
+            <Text fontWeight="800">
               It means your bots won&apos;t collect new files from your users❗
             </Text>
             <Text>

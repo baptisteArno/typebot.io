@@ -5,8 +5,8 @@ import {
   MjmlSection,
   MjmlColumn,
   MjmlSpacer,
-  render,
 } from '@faire/mjml-react'
+import { render } from '@faire/mjml-react/dist/src/utils/render'
 import { Button, Head, HeroImage, Text } from '../components'
 import { parseNumberWithCommas } from 'utils'
 import { SendMailOptions } from 'nodemailer'
@@ -46,7 +46,7 @@ export const ReachedChatsLimitEmail = ({
               It just happened, you&apos;ve reached your monthly{' '}
               {readableChatsLimit} chats limit 😮
             </Text>
-            <Text fontWeight={800}>
+            <Text fontWeight="800">
               It means your bots are closed until {readableResetDate}❗
             </Text>
             <Text>
