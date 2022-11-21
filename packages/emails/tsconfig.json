@@ -1,6 +1,5 @@
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "esModuleInterop": true
-  }
+  "extends": "tsconfig/react-library.json",
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
 }

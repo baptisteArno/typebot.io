@@ -21,12 +21,12 @@ const AboutPage = () => {
         textAlign="justify"
       >
         <Flex w="full">
-          <Heading as="h1">Typebot's story</Heading>
+          <Heading as="h1">Typebot&apos;s story</Heading>
         </Flex>
 
         <Text>
-          Typebot's team is composed of only me, Baptiste Arnaud, a Software
-          Engineer based in France.
+          Typebot&apos;s team is composed of only me, Baptiste Arnaud, a
+          Software Engineer based in France.
         </Text>
         <Flex w="full" justify="center">
           <Box as="figure" maxW="200px">
@@ -35,13 +35,13 @@ const AboutPage = () => {
         </Flex>
 
         <Text>
-          I'm passionate about great product UX and, during the first COVID
+          I&apos;m passionate about great product UX and, during the first COVID
           lockdown, I decided to create my own Typeform alternative.
         </Text>
 
         <Text>
           Typebot was launched in July 2020. It is completely independent,
-          self-funded, and bootstrapped. At the current stage, I'm not
+          self-funded, and bootstrapped. At the current stage, I&apos;m not
           interested in raising funds or taking investments.
         </Text>
         <Text>
@@ -55,15 +55,16 @@ const AboutPage = () => {
           With Typebot, I want to create the best bot-building experience. My
           goal is to empower you as a user and help you build great user
           experiences. Also, privacy comes first. While using Typebot, you
-          aren't tracked by some third-party analytics tool.
+          aren&apos;t tracked by some third-party analytics tool.
         </Text>
         <Text>
-          I'm working hard on making a living from Typebot with a simple
+          I&apos;m working hard on making a living from Typebot with a simple
           business model: <br />
           <br /> You can use the tool for free but your forms will contain a
-          "Made with Typebot" small badge that potentially gets people to know
-          about the product. If you want to remove it and also have access to
-          other advanced features, you have to subscribe for $39 per month.
+          &quot;Made with Typebot&quot; small badge that potentially gets people
+          to know about the product. If you want to remove it and also have
+          access to other advanced features, you have to subscribe for $39 per
+          month.
         </Text>
         <Text>
           If you have any questions, feel free to reach out to me at{' '}

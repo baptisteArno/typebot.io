@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { ToolIcon, EyeIcon, EyeOffIcon, GripIcon } from '@/components/icons'
 import { ResultHeaderCell } from 'models'
-import React, { forwardRef, useState } from 'react'
+import React, { useState } from 'react'
 import { isNotDefined } from 'utils'
 import {
   DndContext,
@@ -128,7 +128,7 @@ export const ColumnSettingsButton = ({
               </SortableContext>
               <Portal>
                 <DragOverlay dropAnimation={{ duration: 0 }}>
-                  {draggingColumnId ? <SortableColumnOverlay /> : null}
+                  {draggingColumnId ? <Flex /> : null}
                 </DragOverlay>
               </Portal>
             </DndContext>
@@ -210,9 +210,3 @@ const SortableColumns = ({
     </Flex>
   )
 }
-
-const SortableColumnOverlay = forwardRef(
-  (_, ref: React.LegacyRef<HTMLDivElement>) => {
-    return <HStack ref={ref}></HStack>
-  }
-)

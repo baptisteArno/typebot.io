@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   chakra,
-  Checkbox,
   Flex,
   HStack,
   Stack,
@@ -26,6 +25,7 @@ import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
 import { CellValueType, TableData } from '../../types'
 import { HeaderIcon } from '../../utils'
+import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
@@ -238,23 +238,3 @@ export const ResultsTable = ({
     </Stack>
   )
 }
-
-const IndeterminateCheckbox = React.forwardRef(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ({ indeterminate, checked, ...rest }: any, ref) => {
-    const defaultRef = React.useRef()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const resolvedRef: any = ref || defaultRef
-
-    return (
-      <Flex justify="center" data-testid="checkbox">
-        <Checkbox
-          ref={resolvedRef}
-          {...rest}
-          isIndeterminate={indeterminate}
-          isChecked={checked}
-        />
-      </Flex>
-    )
-  }
-)

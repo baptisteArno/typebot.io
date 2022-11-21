@@ -209,7 +209,7 @@ export const VariableSearchInput = ({
               leftIcon={<PlusIcon />}
               bgColor={keyboardFocusIndex === 0 ? 'gray.200' : 'transparent'}
             >
-              Create "{inputValue}"
+              Create &quot;{inputValue}&quot;
             </Button>
           )}
           {filteredItems.length > 0 && (

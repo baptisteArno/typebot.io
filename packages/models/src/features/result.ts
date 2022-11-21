@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { answerSchema } from './answer'
+import { answerInputSchema, answerSchema } from './answer'
 import { InputBlockType } from './blocks'
 import { variableWithValueSchema } from './typebot/variable'
 
@@ -20,6 +20,12 @@ export const resultWithAnswersSchema = resultSchema.and(
   })
 )
 
+export const resultWithAnswersInputSchema = resultSchema.and(
+  z.object({
+    answers: z.array(answerInputSchema),
+  })
+)
+
 export const logSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
@@ -33,10 +39,14 @@ export type Result = z.infer<typeof resultSchema>
 
 export type ResultWithAnswers = z.infer<typeof resultWithAnswersSchema>
 
+export type ResultWithAnswersInput = z.infer<
+  typeof resultWithAnswersInputSchema
+>
+
 export type Log = z.infer<typeof logSchema>
 
 export type ResultValues = Pick<
-  ResultWithAnswers,
+  ResultWithAnswersInput,
   'answers' | 'createdAt' | 'variables'
 >
 

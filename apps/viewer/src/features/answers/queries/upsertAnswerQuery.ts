@@ -1,8 +1,8 @@
-import { Answer } from 'models'
+import { Answer, AnswerInput } from 'models'
 import { sendRequest } from 'utils'
 
 export const upsertAnswerQuery = async (
-  answer: Answer & { resultId: string } & { uploadedFiles?: boolean }
+  answer: AnswerInput & { resultId: string } & { uploadedFiles?: boolean }
 ) =>
   sendRequest<Answer>({
     url: `/api/typebots/t/results/r/answers`,

@@ -56,7 +56,7 @@ const Pricing = () => {
             <VStack>
               <Heading fontSize="6xl">Plans fit for you</Heading>
               <Text maxW="900px" fontSize="xl" textAlign="center">
-                Whether you're a{' '}
+                Whether you&apos;re a{' '}
                 <Text as="span" color="orange.200" fontWeight="bold">
                   solo business owner
                 </Text>{' '}
@@ -100,7 +100,7 @@ const Pricing = () => {
             <Text fontSize="lg">
               Need custom limits? Specific features?{' '}
               <TextLink href={'https://typebot.io/enterprise-lead-form'}>
-                Let's chat!
+                Let&apos;s chat!
               </TextLink>
             </Text>
           </Stack>
@@ -155,9 +155,9 @@ const Faq = () => {
         <AccordionPanel pb={4}>
           You will receive an email notification once you reached 80% of this
           limit. Then, once you reach 100%, your users will still be able to
-          chat with your bot but their uploads won't be stored anymore. You will
-          need to upgrade the limit or free up some space to continue collecting
-          your users' files.
+          chat with your bot but their uploads won&apos;t be stored anymore. You
+          will need to upgrade the limit or free up some space to continue
+          collecting your users&apos; files.
         </AccordionPanel>
       </AccordionItem>
       <AccordionItem>
@@ -189,7 +189,7 @@ const Faq = () => {
           <TextLink href="mailto:baptiste@typebot.io">
             shoot me an email
           </TextLink>{' '}
-          and we'll figure things out 😀
+          and we&apos;ll figure things out 😀
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

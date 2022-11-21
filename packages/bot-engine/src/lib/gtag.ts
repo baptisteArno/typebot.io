@@ -1,7 +1,14 @@
 import { GoogleAnalyticsOptions } from 'models'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const gtag: any
+declare const gtag: (
+  type: string,
+  action: string | undefined,
+  options: {
+    event_category: string | undefined
+    event_label: string | undefined
+    value: number | undefined
+  }
+) => void
 
 const initGoogleAnalytics = (id: string): Promise<void> =>
   new Promise((resolve) => {

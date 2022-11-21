@@ -162,14 +162,20 @@ const ActionOptions = ({
     onOptionsChange({ ...options, cellsToExtract } as GoogleSheetsOptions)
 
   const UpdatingCellItem = useMemo(
-    () => (props: TableListItemProps<Cell>) =>
-      <CellWithValueStack {...props} columns={sheet?.columns ?? []} />,
+    () =>
+      function Component(props: TableListItemProps<Cell>) {
+        return <CellWithValueStack {...props} columns={sheet?.columns ?? []} />
+      },
     [sheet?.columns]
   )
 
   const ExtractingCellItem = useMemo(
-    () => (props: TableListItemProps<ExtractingCell>) =>
-      <CellWithVariableIdStack {...props} columns={sheet?.columns ?? []} />,
+    () =>
+      function Component(props: TableListItemProps<ExtractingCell>) {
+        return (
+          <CellWithVariableIdStack {...props} columns={sheet?.columns ?? []} />
+        )
+      },
     [sheet?.columns]
   )
 

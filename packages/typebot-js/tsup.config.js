@@ -1,4 +1,4 @@
-import { defineConfig } from 'baptistearno-tsup'
+import { defineConfig } from 'tsup'
 
 export default defineConfig((options) => ({
   entry: ['src/index.ts'],

@@ -25,6 +25,7 @@ import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { parseSampleResult } from '@/features/webhook/api'
 
 const cors = initMiddleware(Cors())
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
@@ -34,11 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues:
-        | (Omit<ResultValues, 'createdAt'> & {
-            createdAt: string
-          })
-        | undefined
+      resultValues: ResultValues | undefined
       variables: Variable[]
     }
     const typebot = (await prisma.typebot.findUnique({
@@ -87,9 +84,7 @@ export const executeWebhook =
     webhook: Webhook,
     variables: Variable[],
     groupId: string,
-    resultValues?: Omit<ResultValues, 'createdAt'> & {
-      createdAt: string
-    },
+    resultValues?: ResultValues,
     resultId?: string
   ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
@@ -199,9 +194,7 @@ const getBodyContent =
     groupId,
   }: {
     body?: string | null
-    resultValues?: Omit<ResultValues, 'createdAt'> & {
-      createdAt: string
-    }
+    resultValues?: ResultValues
     groupId: string
   }): Promise<string | undefined> => {
     if (!body) return
@@ -228,7 +221,6 @@ const convertKeyValueTableToObject = (
   }, {})
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
   try {
     return { data: JSON.parse(json), isJson: true }

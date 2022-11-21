@@ -11,15 +11,15 @@ import { Button, Head, HeroImage, Text } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
 
-type AlmostReachedStorageLimitEmailProps = {
+type ReachedStorageLimitEmailProps = {
   storageLimit: number
   url: string
 }
 
-export const AlmostReachedStorageLimitEmail = ({
+export const ReachedStorageLimitEmail = ({
   storageLimit,
   url,
-}: AlmostReachedStorageLimitEmailProps) => {
+}: ReachedStorageLimitEmailProps) => {
   const readableStorageLimit = `${storageLimit} GB`
 
   return (
@@ -28,23 +28,23 @@ export const AlmostReachedStorageLimitEmail = ({
       <MjmlBody width={600}>
         <MjmlSection padding="0">
           <MjmlColumn>
-            <HeroImage src="https://typebot.s3.fr-par.scw.cloud/public/assets/yourBotIsFlyingEmailBanner.png" />
+            <HeroImage src="https://typebot.s3.fr-par.scw.cloud/public/assets/actionRequiredEmailBanner.png" />
           </MjmlColumn>
         </MjmlSection>
         <MjmlSection padding="0 24px" cssClass="smooth">
           <MjmlColumn>
-            <Text>Your bots are working a lot. That's amazing. 🤖</Text>
             <Text>
-              This means you've almost reached your storage limit. You currently
-              reached 80% of your {readableStorageLimit} storage limit.
+              It just happened, you&apos;ve reached your {readableStorageLimit}{' '}
+              storage limit 😮
             </Text>
             <Text fontWeight={800}>
-              Your bots won't collect new files once you reach the limit❗
+              It means your bots won&apos;t collect new files from your users❗
             </Text>
             <Text>
-              To make sure it won't happen, you need to upgrade your plan or
-              delete existing results to free up space.
+              If you&apos;d like to continue collecting files, then you need to
+              upgrade your plan or remove existing results to free up space. 🚀
             </Text>
+
             <MjmlSpacer height="24px" />
             <Button link={url}>Upgrade workspace</Button>
           </MjmlColumn>
@@ -54,13 +54,13 @@ export const AlmostReachedStorageLimitEmail = ({
   )
 }
 
-export const sendAlmostReachedStorageLimitEmail = ({
+export const sendReachedStorageLimitEmail = ({
   to,
   ...props
 }: Pick<SendMailOptions, 'to'> &
-  ComponentProps<typeof AlmostReachedStorageLimitEmail>) =>
+  ComponentProps<typeof ReachedStorageLimitEmail>) =>
   sendEmail({
     to,
-    subject: "You're close to your storage limit",
-    html: render(<AlmostReachedStorageLimitEmail {...props} />).html,
+    subject: "You've reached your storage limit",
+    html: render(<ReachedStorageLimitEmail {...props} />).html,
   })

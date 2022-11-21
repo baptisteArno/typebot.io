@@ -88,7 +88,7 @@ const DeleteWorkspaceButton = ({
         message={
           <Text>
             Are you sure you want to delete {workspaceName} workspace? All its
-            folders, typebots and results will be deleted forever.'
+            folders, typebots and results will be deleted forever.
           </Text>
         }
         confirmButtonLabel="Delete"

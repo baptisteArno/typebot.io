@@ -24,7 +24,7 @@ export const SignInPage = ({ type }: Props) => {
       </Heading>
       {type === 'signin' ? (
         <Text>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <TextLink href="/register">Sign up for free</TextLink>
         </Text>
       ) : (

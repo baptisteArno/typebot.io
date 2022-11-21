@@ -84,18 +84,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }`,
       })
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const error = err as any
-      return 'raw' in error
-        ? res.status(error.raw.statusCode).send({
-            error: {
-              name: `${error.raw.type} ${error.raw.param}`,
-              message: error.raw.message,
-            },
-          })
-        : res.status(500).send({
-            error,
-          })
+      if (typeof err === 'object' && err && 'raw' in err) {
+        const error = (err as { raw: Stripe.StripeRawError }).raw
+        res.status(error.statusCode ?? 500).send({
+          error: {
+            name: `${error.type} ${error.param}`,
+            message: error.message,
+          },
+        })
+      } else {
+        res.status(500).send({
+          err,
+        })
+      }
     }
   }
   return methodNotAllowed(res)

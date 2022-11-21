@@ -106,20 +106,16 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.0.25",
     "@types/tinycolor2": "1.4.3",
-    "@typescript-eslint/eslint-plugin": "5.43.0",
-    "@typescript-eslint/parser": "5.43.0",
-    "configs": "workspace:*",
     "db": "workspace:*",
     "dotenv": "16.0.3",
-    "eslint": "8.27.0",
-    "eslint-config-next": "13.0.3",
-    "eslint-plugin-react": "7.31.10",
     "models": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "superjson": "^1.11.0",
     "tsconfig": "workspace:*",
     "typescript": "4.8.4",
     "utils": "workspace:*",
-    "zod": "3.19.1"
+    "zod": "3.19.1",
+    "eslint": "8.28.0",
+    "eslint-config-custom": "workspace:*"
   }
 }

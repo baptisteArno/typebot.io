@@ -31,7 +31,7 @@ const defaultTransportOptions = {
 
 const defaultFrom = {
   name: process.env.SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
-  email: process.env.SMTP_FROM?.match(/\<(.*)\>/)?.pop(),
+  email: process.env.SMTP_FROM?.match(/<(.*)>/)?.pop(),
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -54,9 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as SendEmailOptions & {
-      resultValues: Omit<ResultValues, 'createdAt'> & {
-        createdAt: string
-      }
+      resultValues: ResultValues
       fileUrls?: string
     }
     const { name: replyToName } = parseEmailRecipient(replyTo)
@@ -166,9 +164,7 @@ const getEmailBody = async ({
   resultValues,
 }: {
   typebotId: string
-  resultValues: Omit<ResultValues, 'createdAt'> & {
-    createdAt: string
-  }
+  resultValues: ResultValues
 } & Pick<SendEmailOptions, 'isCustomBody' | 'isBodyCode' | 'body'>): Promise<
   { html?: string; text?: string } | undefined
 > => {

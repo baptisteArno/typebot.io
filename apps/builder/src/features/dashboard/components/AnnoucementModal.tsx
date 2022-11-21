@@ -36,7 +36,7 @@ export const AnnoucementModal = ({ isOpen, onClose }: Props) => {
     <Modal isOpen={isOpen} onClose={handleCloseClick} size="2xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>What's new in Typebot 2.0?</ModalHeader>
+        <ModalHeader>What&apos;s new in Typebot 2.0?</ModalHeader>
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="6" pb="10">
           <Text>Typebo 2.0 has been launched February the 15th 🎉.</Text>

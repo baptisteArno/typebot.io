@@ -27,7 +27,6 @@ const graphDndContext = createContext<{
   setMouseOverGroup: Dispatch<SetStateAction<NodeInfo | undefined>>
   mouseOverBlock?: NodeInfo
   setMouseOverBlock: Dispatch<SetStateAction<NodeInfo | undefined>>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

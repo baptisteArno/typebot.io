@@ -16,7 +16,7 @@ export {
   hideMessage,
 }
 
-export default {
+const defaultExports = {
   initContainer,
   initPopup,
   initBubble,
@@ -28,5 +28,7 @@ export default {
   showMessage,
   hideMessage,
 }
+
+export default defaultExports
 
 export * from './types'

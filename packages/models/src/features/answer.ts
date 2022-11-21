@@ -10,6 +10,20 @@ export const answerSchema = z.object({
   storageUsed: z.number().nullable(),
 })
 
+export const answerInputSchema = answerSchema
+  .omit({
+    createdAt: true,
+    resultId: true,
+    variableId: true,
+    storageUsed: true,
+  })
+  .and(
+    z.object({
+      variableId: z.string().nullish(),
+      storageUsed: z.number().nullish(),
+    })
+  )
+
 export type Stats = {
   totalViews: number
   totalStarts: number
@@ -17,3 +31,5 @@ export type Stats = {
 }
 
 export type Answer = z.infer<typeof answerSchema>
+
+export type AnswerInput = z.infer<typeof answerInputSchema>

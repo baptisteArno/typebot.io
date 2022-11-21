@@ -246,7 +246,6 @@ const ChatChunks = ({
 }: Props) => {
   const [isSkipped, setIsSkipped] = useState(false)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const avatarSideContainerRef = useRef<any>()
 
   useEffect(() => {

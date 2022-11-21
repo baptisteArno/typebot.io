@@ -17,7 +17,6 @@ const resultsContext = createContext<{
   onDeleteResults: (totalResultsDeleted: number) => void
   fetchNextPage: () => void
   refetchResults: () => void
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

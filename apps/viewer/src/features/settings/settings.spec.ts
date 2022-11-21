@@ -151,22 +151,30 @@ test('Should correctly parse metadata', async ({ page }) => {
   ).toBe(customMetadata.title)
   expect(
     await page.evaluate(
-      () => (document.querySelector('meta[name="description"]') as any).content
+      () =>
+        (document.querySelector('meta[name="description"]') as HTMLMetaElement)
+          .content
     )
   ).toBe(customMetadata.description)
   expect(
     await page.evaluate(
-      () => (document.querySelector('meta[property="og:image"]') as any).content
+      () =>
+        (document.querySelector('meta[property="og:image"]') as HTMLMetaElement)
+          .content
     )
   ).toBe(customMetadata.imageUrl)
   expect(
     await page.evaluate(() =>
-      (document.querySelector('link[rel="icon"]') as any).getAttribute('href')
+      (
+        document.querySelector('link[rel="icon"]') as HTMLLinkElement
+      ).getAttribute('href')
     )
   ).toBe(customMetadata.favIconUrl)
   expect(
     await page.evaluate(
-      () => (document.querySelector('meta[name="author"]') as any).content
+      () =>
+        (document.querySelector('meta[name="author"]') as HTMLMetaElement)
+          .content
     )
   ).toBe('John Doe')
   await expect(

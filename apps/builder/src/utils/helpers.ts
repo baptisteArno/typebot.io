@@ -76,9 +76,9 @@ export const readFile = (file: File): Promise<string> => {
 }
 
 export const timeSince = (date: string) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000)
+  const seconds = Math.floor(
+    (new Date().getTime() - new Date(date).getTime()) / 1000
+  )
 
   let interval = seconds / 31536000
 

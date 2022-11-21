@@ -1,20 +1,20 @@
 import { safeStringify } from '@/features/variables'
 import {
   Answer,
+  AnswerInput,
   ResultValues,
   VariableWithUnknowValue,
   VariableWithValue,
 } from 'models'
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 
 const answersContext = createContext<{
   resultId?: string
   resultValues: ResultValues
   addAnswer: (
-    answer: Answer & { uploadedFiles: boolean }
+    answer: AnswerInput & { uploadedFiles: boolean }
   ) => Promise<void> | undefined
   updateVariables: (variables: VariableWithUnknowValue[]) => void
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
@@ -26,7 +26,7 @@ export const AnswersProvider = ({
 }: {
   resultId?: string
   onNewAnswer: (
-    answer: Answer & { uploadedFiles: boolean }
+    answer: AnswerInput & { uploadedFiles: boolean }
   ) => Promise<void> | undefined
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
   children: ReactNode
@@ -34,10 +34,10 @@ export const AnswersProvider = ({
   const [resultValues, setResultValues] = useState<ResultValues>({
     answers: [],
     variables: [],
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
   })
 
-  const addAnswer = (answer: Answer & { uploadedFiles: boolean }) => {
+  const addAnswer = (answer: AnswerInput & { uploadedFiles: boolean }) => {
     setResultValues((resultValues) => ({
       ...resultValues,
       answers: [...resultValues.answers, answer],

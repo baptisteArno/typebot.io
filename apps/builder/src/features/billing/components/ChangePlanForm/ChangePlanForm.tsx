@@ -90,7 +90,7 @@ export const ChangePlanForm = () => {
       <Text color="gray.500">
         Need custom limits? Specific features?{' '}
         <TextLink href={'https://typebot.io/enterprise-lead-form'} isExternal>
-          Let's chat!
+          Let&apos;s chat!
         </TextLink>
       </Text>
     </Stack>

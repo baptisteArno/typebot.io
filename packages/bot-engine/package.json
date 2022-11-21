@@ -6,9 +6,9 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm tsc --noEmit && tsup",
     "dev": "tsup --watch",
-    "lint": "eslint --fix -c ./.eslintrc.js \"./src/**/*.ts*\""
+    "lint": "eslint \"src/**/*.ts*\""
   },
   "dependencies": {
     "@stripe/react-stripe-js": "1.15.0",
@@ -28,16 +28,11 @@
     "@types/react-phone-number-input": "3.0.14",
     "@types/react-scroll": "1.8.5",
     "@types/react-transition-group": "4.4.5",
-    "@typescript-eslint/eslint-plugin": "5.43.0",
-    "@typescript-eslint/parser": "5.43.0",
     "autoprefixer": "10.4.13",
-    "baptistearno-tsup": "^0.1.0",
+    "tsup": "6.5.0",
     "db": "workspace:*",
-    "eslint": "8.27.0",
-    "eslint-config-next": "13.0.3",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.31.10",
+    "eslint": "8.28.0",
+    "eslint-config-custom": "workspace:*",
     "models": "workspace:*",
     "postcss": "8.4.19",
     "prettier": "2.7.1",
@@ -46,7 +41,8 @@
     "tailwindcss": "3.2.4",
     "typescript": "4.8.4",
     "utils": "workspace:*",
-    "typebot-js": "workspace:*"
+    "typebot-js": "workspace:*",
+    "tsconfig": "workspace:*"
   },
   "peerDependencies": {
     "db": "workspace:*",

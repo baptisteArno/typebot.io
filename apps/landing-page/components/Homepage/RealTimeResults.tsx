@@ -67,8 +67,8 @@ export const RealTimeResults = () => {
             data-aos="fade"
           >
             One of the main advantage of a chat application is that you collect
-            the user's responses on each question.{' '}
-            <strong>You won't loose any valuable data.</strong>
+            the user&apos;s responses on each question.{' '}
+            <strong>You won&apos;t loose any valuable data.</strong>
           </Text>
           <Flex>
             <Button

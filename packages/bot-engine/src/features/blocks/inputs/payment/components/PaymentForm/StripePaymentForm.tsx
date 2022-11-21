@@ -9,6 +9,7 @@ import { parseVariables } from '@/features/variables'
 import { useChat } from '@/providers/ChatProvider'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { createPaymentIntentQuery } from '../../queries/createPaymentIntentQuery'
+import { Stripe } from '@stripe/stripe-js'
 
 type Props = {
   options: PaymentInputOptions
@@ -23,8 +24,7 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
     onNewLog,
   } = useTypebot()
   const { window: frameWindow, document: frameDocument } = useFrame()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [stripe, setStripe] = useState<any>(null)
+  const [stripe, setStripe] = useState<Stripe | null>(null)
   const [clientSecret, setClientSecret] = useState('')
   const [amountLabel, setAmountLabel] = useState('')
 

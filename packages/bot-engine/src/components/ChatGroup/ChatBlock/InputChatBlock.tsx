@@ -53,7 +53,7 @@ export const InputChatBlock = ({
         blockId: block.id,
         groupId: block.groupId,
         content: value,
-        variableId: variableId ?? null,
+        variableId,
         uploadedFiles: block.type === InputBlockType.FILE,
       })
     if (!isEditting) onTransitionEnd({ label, value, itemId }, isRetry)

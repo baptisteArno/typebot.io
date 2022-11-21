@@ -43,15 +43,15 @@ export const ReachedChatsLimitEmail = ({
         <MjmlSection padding="0 24px" cssClass="smooth">
           <MjmlColumn>
             <Text>
-              It just happened, you've reached your monthly {readableChatsLimit}{' '}
-              chats limit 😮
+              It just happened, you&apos;ve reached your monthly{' '}
+              {readableChatsLimit} chats limit 😮
             </Text>
             <Text fontWeight={800}>
               It means your bots are closed until {readableResetDate}❗
             </Text>
             <Text>
-              If you'd like to continue chatting with your users this month,
-              then you need to upgrade your plan. 🚀
+              If you&apos;d like to continue chatting with your users this
+              month, then you need to upgrade your plan. 🚀
             </Text>
 
             <MjmlSpacer height="24px" />

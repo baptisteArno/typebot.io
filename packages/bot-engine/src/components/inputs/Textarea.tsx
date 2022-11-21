@@ -5,11 +5,11 @@ type TextareaProps = {
   onChange: (value: string) => void
 } & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'>
 
-export const Textarea = React.forwardRef(
-  (
-    { onChange, ...props }: TextareaProps,
-    ref: React.ForwardedRef<HTMLTextAreaElement>
-  ) => (
+export const Textarea = React.forwardRef(function Textarea(
+  { onChange, ...props }: TextareaProps,
+  ref: React.ForwardedRef<HTMLTextAreaElement>
+) {
+  return (
     <textarea
       ref={ref}
       className="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
@@ -22,4 +22,4 @@ export const Textarea = React.forwardRef(
       {...props}
     />
   )
-)
+})

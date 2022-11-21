@@ -42,15 +42,15 @@ export const AlmostReachedChatsLimitEmail = ({
         </MjmlSection>
         <MjmlSection padding="0 24px" cssClass="smooth">
           <MjmlColumn>
-            <Text>Your bots are chatting a lot. That's amazing. 💙</Text>
+            <Text>Your bots are chatting a lot. That&apos;s amazing. 💙</Text>
             <Text>
-              This means you've almost reached your monthly chats limit. You
-              currently reached 80% of {readableChatsLimit} chats.
+              This means you&apos;ve almost reached your monthly chats limit.
+              You currently reached 80% of {readableChatsLimit} chats.
             </Text>
             <Text>This limit will be reset on {readableResetDate}.</Text>
             <Text fontWeight={800}>
-              Your bots won't start the chat if you reach the limit before this
-              date❗
+              Your bots won&apos;t start the chat if you reach the limit before
+              this date❗
             </Text>
             <Text>
               If you need more monthly responses, you will need to upgrade your

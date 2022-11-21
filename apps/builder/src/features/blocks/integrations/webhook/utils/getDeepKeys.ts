@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getDeepKeys = (obj: any): string[] => {
   let keys: string[] = []
   for (const key in obj) {

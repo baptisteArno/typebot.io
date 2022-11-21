@@ -14,7 +14,6 @@ const typebotDndContext = createContext<{
   setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>
   mouseOverFolderId?: string | null
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
 }>({})
 

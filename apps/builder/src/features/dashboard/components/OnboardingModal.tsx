@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
 import { useUser } from '@/features/account'
-import { Answer, Typebot } from 'models'
+import { AnswerInput, Typebot } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { getViewerUrl, sendRequest } from 'utils'
 import confetti from 'canvas-confetti'
@@ -79,7 +79,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     setTypebot(data as Typebot)
   }
 
-  const handleNewAnswer = async (answer: Answer) => {
+  const handleNewAnswer = async (answer: AnswerInput) => {
     const isName = answer.variableId === 'cl126f4hf000i2e6d8zvzc3t1'
     const isCompany = answer.variableId === 'cl126jqww000w2e6dq9yv4ifq'
     const isCategories = answer.variableId === 'cl126mo3t001b2e6dvyi16bkd'

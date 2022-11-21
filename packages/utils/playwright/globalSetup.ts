@@ -1,5 +1,5 @@
 import { FullConfig } from '@playwright/test'
-import { setupDatabase, teardownDatabase } from 'utils/playwright/databaseSetup'
+import { setupDatabase, teardownDatabase } from './databaseSetup'
 
 async function globalSetup(config: FullConfig) {
   const { baseURL } = config.projects[0].use

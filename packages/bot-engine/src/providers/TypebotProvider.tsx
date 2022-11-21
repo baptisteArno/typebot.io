@@ -39,7 +39,6 @@ const typebotContext = createContext<{
     edgeId: string
   }) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

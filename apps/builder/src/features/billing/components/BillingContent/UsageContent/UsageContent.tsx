@@ -52,8 +52,8 @@ export const UsageContent = ({ workspace }: Props) => {
                 p="3"
                 label={
                   <Text>
-                    Your typebots are popular! You will soon reach your plan's
-                    chats limit. 🚀
+                    Your typebots are popular! You will soon reach your
+                    plan&apos;s chats limit. 🚀
                     <br />
                     <br />
                     Make sure to <strong>update your plan</strong> to increase
@@ -111,8 +111,8 @@ export const UsageContent = ({ workspace }: Props) => {
                   p="3"
                   label={
                     <Text>
-                      Your typebots are popular! You will soon reach your plan's
-                      storage limit. 🚀
+                      Your typebots are popular! You will soon reach your
+                      plan&apos;s storage limit. 🚀
                       <br />
                       <br />
                       Make sure to <strong>update your plan</strong> in order to

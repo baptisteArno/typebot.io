@@ -128,5 +128,4 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default withSentry(cors(webhookHandler as any))

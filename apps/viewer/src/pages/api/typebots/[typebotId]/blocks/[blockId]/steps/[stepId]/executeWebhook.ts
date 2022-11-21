@@ -16,6 +16,7 @@ import Cors from 'cors'
 import { executeWebhook } from '../../executeWebhook'
 
 const cors = initMiddleware(Cors())
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
@@ -26,11 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resultValues, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues:
-        | (Omit<ResultValues, 'createdAt'> & {
-            createdAt: string
-          })
-        | undefined
+      resultValues: ResultValues
       variables: Variable[]
     }
     const typebot = (await prisma.typebot.findUnique({

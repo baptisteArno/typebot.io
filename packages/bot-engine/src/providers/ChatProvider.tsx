@@ -2,7 +2,6 @@ import React, { createContext, ReactNode, useContext } from 'react'
 
 const chatContext = createContext<{
   scroll: () => void
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

@@ -1,4 +1,4 @@
-import NextErrorComponent from 'next/error'
+import NextErrorComponent, { ErrorProps } from 'next/error'
 
 import * as Sentry from '@sentry/nextjs'
 import { NextPageContext } from 'next'
@@ -24,14 +24,14 @@ const MyError = ({
 }
 
 MyError.getInitialProps = async (context: NextPageContext) => {
-  const errorInitialProps = await NextErrorComponent.getInitialProps(context)
+  const errorInitialProps = (await NextErrorComponent.getInitialProps(
+    context
+  )) as ErrorProps & { hasGetInitialPropsRun: boolean }
 
   const { res, err, asPath } = context
 
   // Workaround for https://github.com/vercel/next.js/issues/8592, mark when
   // getInitialProps has run
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   errorInitialProps.hasGetInitialPropsRun = true
 
   // Returning early because we don't want to log 404 errors to Sentry.

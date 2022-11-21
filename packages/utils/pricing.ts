@@ -169,7 +169,7 @@ const europeanUnionExclusiveLanguageCodes = [
 ]
 
 export const guessIfUserIsEuropean = () =>
-  navigator.languages.some((language) => {
+  window.navigator.languages.some((language) => {
     const [languageCode, countryCode] = language.split('-')
     return countryCode
       ? europeanUnionCountryCodes.includes(countryCode)

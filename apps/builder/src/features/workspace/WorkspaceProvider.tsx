@@ -30,7 +30,6 @@ const workspaceContext = createContext<{
   ) => Promise<void>
   deleteCurrentWorkspace: () => Promise<void>
   refreshWorkspace: (expectedUpdates: Partial<Workspace>) => void
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

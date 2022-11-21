@@ -2,12 +2,13 @@
   "name": "emails",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "preview": "concurrently \"pnpm run watch\" \"sleep 5 && pnpm run serve\" -n \"watch,serve\" -c \"bgBlue.bold,bgMagenta.bold\"",
     "watch": "tsx watch ./preview.tsx --clear-screen=false",
-    "serve": "http-server dist -a localhost -p 3223 -o"
+    "serve": "http-server dist -a localhost -p 3223 -o",
+    "lint": "eslint \"src/**/*.ts*\""
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
@@ -22,7 +23,10 @@
     "nodemailer": "6.8.0",
     "react": "18.2.0",
     "tsx": "3.12.1",
-    "utils": "workspace:*"
+    "utils": "workspace:*",
+    "eslint": "8.28.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
   },
   "peerDependencies": {
     "@faire/mjml-react": "2.1.4",

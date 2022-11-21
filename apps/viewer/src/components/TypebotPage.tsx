@@ -1,5 +1,11 @@
 import { TypebotViewer } from 'bot-engine'
-import { Answer, PublicTypebot, Typebot, VariableWithValue } from 'models'
+import {
+  Answer,
+  AnswerInput,
+  PublicTypebot,
+  Typebot,
+  VariableWithValue,
+} from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { isDefined, isNotDefined } from 'utils'
@@ -106,7 +112,7 @@ export const TypebotPage = ({
     }
 
   const handleNewAnswer = async (
-    answer: Answer & { uploadedFiles: boolean }
+    answer: AnswerInput & { uploadedFiles: boolean }
   ) => {
     if (!resultId) return setError(new Error('Error: result was not created'))
     if (publishedTypebot.settings.general.isResultSavingEnabled !== false) {

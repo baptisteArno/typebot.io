@@ -143,8 +143,10 @@ export const WebhookSettings = ({
   }
 
   const ResponseMappingInputs = useMemo(
-    () => (props: TableListItemProps<ResponseVariableMapping>) =>
-      <DataVariableInputs {...props} dataItems={responseKeys} />,
+    () =>
+      function Component(props: TableListItemProps<ResponseVariableMapping>) {
+        return <DataVariableInputs {...props} dataItems={responseKeys} />
+      },
     [responseKeys]
   )
 

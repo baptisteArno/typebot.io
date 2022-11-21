@@ -5,6 +5,7 @@
     "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3002",
     "start": "next start",
     "build": "next build",
+    "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
@@ -30,16 +31,14 @@
     "@types/aos": "3.0.4",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
-    "@typescript-eslint/eslint-plugin": "5.43.0",
-    "@typescript-eslint/parser": "5.43.0",
     "autoprefixer": "10.4.13",
     "cross-env": "7.0.3",
-    "eslint": "8.27.0",
-    "eslint-config-next": "13.0.3",
-    "eslint-plugin-react": "7.31.10",
+    "eslint": "8.28.0",
+    "eslint-config-custom": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.19",
     "prettier": "2.7.1",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "tsconfig": "workspace:*"
   }
 }

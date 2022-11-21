@@ -10,7 +10,7 @@ export const Testimonials = () => {
     <Flex as="section" justify="center">
       <VStack spacing={12} pt={'52'} px="4">
         <Heading textAlign={'center'} data-aos="fade">
-          They've tried, they never looked back. 💙
+          They&apos;ve tried, they never looked back. 💙
         </Heading>
         <Stack
           direction={{ base: 'column', xl: 'row' }}

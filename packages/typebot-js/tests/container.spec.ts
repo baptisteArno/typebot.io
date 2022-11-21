@@ -3,11 +3,9 @@ import { initContainer } from '../src/embedTypes/container'
 const observe = jest.fn()
 const unobserve = jest.fn()
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 window.IntersectionObserver = jest.fn(() => ({
   observe,
   unobserve,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 })) as any
 
 describe('initContainer', () => {

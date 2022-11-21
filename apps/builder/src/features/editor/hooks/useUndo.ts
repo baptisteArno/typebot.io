@@ -11,7 +11,7 @@ enum ActionType {
   Flush = 'FLUSH',
 }
 
-export interface Actions<T> {
+export interface Actions<T extends { updatedAt: string } | undefined> {
   set: (
     newPresent: T | ((current: T) => T),
     options?: { updateDate: boolean }
@@ -24,13 +24,13 @@ export interface Actions<T> {
   presentRef: React.MutableRefObject<T>
 }
 
-interface Action<T> {
+interface Action<T extends { updatedAt: string } | undefined> {
   type: ActionType
   newPresent?: T
   updateDate?: boolean
 }
 
-export interface State<T> {
+export interface State<T extends { updatedAt: string } | undefined> {
   past: T[]
   present: T
   future: T[]
@@ -42,7 +42,10 @@ const initialState = {
   future: [],
 }
 
-const reducer = <T>(state: State<T>, action: Action<T>) => {
+const reducer = <T extends { updatedAt: string } | undefined>(
+  state: State<T>,
+  action: Action<T>
+) => {
   const { past, present, future } = state
 
   switch (action.type) {
@@ -98,8 +101,6 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
         past: [...past, present].filter(isDefined),
         present: {
           ...newPresent,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           updatedAt: updateDate ? new Date() : newPresent.updatedAt,
         },
         future: [],
@@ -111,11 +112,13 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
   }
 }
 
-const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
+const useUndo = <T extends { updatedAt: string } | undefined>(
+  initialPresent: T
+): [State<T>, Actions<T>] => {
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     present: initialPresent,
-  }) as [State<T>, React.Dispatch<Action<T>>]
+  })
   const presentRef = useRef<T>(initialPresent)
 
   const canUndo = state.past.length !== 0
@@ -136,7 +139,7 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
   const set = useCallback(
     (newPresent: T | ((current: T) => T), options = { updateDate: true }) => {
       const updatedTypebot =
-        'id' in newPresent
+        newPresent && 'id' in newPresent
           ? newPresent
           : (newPresent as (current: T) => T)(presentRef.current)
       presentRef.current = updatedTypebot
@@ -153,7 +156,10 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
     dispatch({ type: ActionType.Flush })
   }, [])
 
-  return [state, { set, undo, redo, flush, canUndo, canRedo, presentRef }]
+  return [
+    state as State<T>,
+    { set, undo, redo, flush, canUndo, canRedo, presentRef },
+  ]
 }
 
 export default useUndo

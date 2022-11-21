@@ -42,7 +42,7 @@ export const GuestInvitationEmail = ({
           </Text>
           <Text>
             From now on you will see this typebot in your dashboard under his
-            workspace "{workspaceName}" 👍
+            workspace &quot;{workspaceName}&quot; 👍
           </Text>
           <Text>
             Make sure to log in as <i>{guestEmail}</i>.
