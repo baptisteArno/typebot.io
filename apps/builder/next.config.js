@@ -1,8 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require('@sentry/nextjs')
 const { i18n } = require('./next-i18next.config')
+require('dotenv').config({ path: `./.env.${process.env.ENVIRONMENT}` })
 
 const moduleExports = {
+  env: {
+    IS_LOCAL: process.env.IS_LOCAL,
+    NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
+    BASE_PATH: process.env.BASE_PATH
+  },
   experimental: {
     outputStandalone: true,
   },

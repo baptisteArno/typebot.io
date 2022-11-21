@@ -7,6 +7,7 @@ import {
 import React from 'react'
 import { AutoAssignToSelect } from './AutoAssignToSelect'
 import { TextBubbleEditor } from '../../../TextBubbleEditor'
+import { ASSIGN_TO } from 'enums/assign-to'
 
 type AssignToTeamSettingsBodyProps = {
   options: AssignToTeamOptions
@@ -55,8 +56,7 @@ export const AssignToTeamSettingsBody = ({
         
     onOptionsChange({
       ...options,
-      assignTo: option.assignTo,
-      assignType: option.assignType
+      ...option
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
@@ -84,7 +84,7 @@ export const AssignToTeamSettingsBody = ({
           Atribuir automaticamente para:
         </FormLabel>
         <AutoAssignToSelect
-          selectedUserGroup={options.assignTo}
+          selectedUserGroup={options.assignTo || ASSIGN_TO.noOne}
           onSelect={handleDefaultAssignToChange}
         />
       </Stack>

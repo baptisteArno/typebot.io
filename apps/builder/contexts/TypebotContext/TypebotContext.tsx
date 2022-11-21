@@ -78,7 +78,7 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: (personaName?: string) => Promise<SaveResponse>
+    save: (personaName?: string, personaThumbUrl?: string) => Promise<SaveResponse>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -176,7 +176,7 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
-  const saveTypebot = async (personaName?: string, options?: { disableMutation: boolean }) => {
+  const saveTypebot = async (personaName?: string, personaThumbUrl?: string, options?: { disableMutation: boolean }) => {
     const currentSubDomain = subDomain.getSubDomain()
 
     const typebotToSave = {
@@ -185,6 +185,7 @@ export const TypebotContext = ({
       subDomain: currentSubDomain || '',
       persona: {
         name: personaName,
+        thumbUrl: personaThumbUrl
       },
     }
 
@@ -232,7 +233,7 @@ export const TypebotContext = ({
   // )
 
   useEffect(() => {
-    const save = () => saveTypebot(typebot?.persona?.name, { disableMutation: true })
+    const save = () => saveTypebot(typebot?.persona?.name, typebot?.persona?.thumbUrl, { disableMutation: true })
     Router.events.on('routeChangeStart', save)
     return () => {
       Router.events.off('routeChangeStart', save)
@@ -379,7 +380,7 @@ export const TypebotContext = ({
       const noOne = {
         group: 'Não atribuir (Visível a todos)',
         name: 'Não atribuir (Visível a todos)',
-        optionType: ASSIGN_TO.noOne,
+        operationType: ASSIGN_TO.noOne,
       }
       const agentsGroupsList: Array<any> = [noOne]
 
