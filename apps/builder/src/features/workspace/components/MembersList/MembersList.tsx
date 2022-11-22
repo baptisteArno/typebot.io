@@ -82,7 +82,9 @@ export const MembersList = () => {
     })
   }
 
-  const currentMembersCount = members.length + invitations.length
+  const currentMembersCount =
+    members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
+    invitations.length
 
   const canInviteNewMember = checkCanInviteMember({
     plan: workspace?.plan,
