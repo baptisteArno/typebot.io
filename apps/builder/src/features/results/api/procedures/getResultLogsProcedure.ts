@@ -10,6 +10,8 @@ export const getResultLogsProcedure = authenticatedProcedure
       method: 'GET',
       path: '/typebots/{typebotId}/results/{resultId}/logs',
       protect: true,
+      summary: 'List result logs',
+      tags: ['Results'],
     },
   })
   .input(

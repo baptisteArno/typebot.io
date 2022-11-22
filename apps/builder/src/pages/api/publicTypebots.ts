@@ -4,7 +4,7 @@ import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canPublishFileInput } from '@/utils/api/dbRules'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

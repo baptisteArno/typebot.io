@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

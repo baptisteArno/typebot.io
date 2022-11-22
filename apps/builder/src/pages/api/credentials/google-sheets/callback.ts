@@ -7,7 +7,7 @@ import { CredentialsType } from 'models'
 import { badRequest, encrypt, notAuthenticated } from 'utils/api'
 import { oauth2Client } from '@/lib/googleSheets'
 import { withSentry } from '@sentry/nextjs'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

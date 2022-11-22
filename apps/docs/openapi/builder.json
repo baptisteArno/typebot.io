@@ -1,0 +1,391 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Builder API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://app.typebot.io/api/v1"
+    }
+  ],
+  "paths": {
+    "/typebots/{typebotId}/results": {
+      "get": {
+        "operationId": "query.results.getResults",
+        "summary": "List results",
+        "tags": [
+          "Results"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{1,3}$"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "typebotId": {
+                                "type": "string"
+                              },
+                              "variables": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "name",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "isCompleted": {
+                                "type": "boolean"
+                              },
+                              "hasStarted": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "isArchived": {
+                                "type": "boolean",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "createdAt",
+                              "updatedAt",
+                              "typebotId",
+                              "variables",
+                              "isCompleted",
+                              "hasStarted",
+                              "isArchived"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "answers": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "createdAt": {
+                                      "type": "string",
+                                      "format": "date-time"
+                                    },
+                                    "resultId": {
+                                      "type": "string"
+                                    },
+                                    "blockId": {
+                                      "type": "string"
+                                    },
+                                    "groupId": {
+                                      "type": "string"
+                                    },
+                                    "variableId": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "content": {
+                                      "type": "string"
+                                    },
+                                    "storageUsed": {
+                                      "type": "number",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "createdAt",
+                                    "resultId",
+                                    "blockId",
+                                    "groupId",
+                                    "variableId",
+                                    "content",
+                                    "storageUsed"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              }
+                            },
+                            "required": [
+                              "answers"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "nextCursor": {
+                      "anyOf": [
+                        {
+                          "not": {}
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "results"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "mutation.results.deleteResults",
+        "summary": "Delete results",
+        "tags": [
+          "Results"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/results/{resultId}/logs": {
+      "get": {
+        "operationId": "query.results.getResultLogs",
+        "summary": "List result logs",
+        "tags": [
+          "Results"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resultId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "resultId": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "details": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "createdAt",
+                          "resultId",
+                          "status",
+                          "description",
+                          "details"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "logs"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "responses": {
+      "error": {
+        "description": "Error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "message",
+                "code"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "url": "https://docs.typebot.io/api"
+  }
+}

@@ -8,7 +8,7 @@ import {
   notAuthenticated,
   notFound,
 } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { parseNewTypebot } from '@/features/dashboard'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

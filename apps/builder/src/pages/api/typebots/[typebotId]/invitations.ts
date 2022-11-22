@@ -9,7 +9,7 @@ import {
   methodNotAllowed,
   notAuthenticated,
 } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { env } from 'utils'
 import { sendGuestInvitationEmail } from 'emails'
 

@@ -10,6 +10,8 @@ export const deleteResultsProcedure = authenticatedProcedure
       method: 'DELETE',
       path: '/typebots/{typebotId}/results',
       protect: true,
+      summary: 'Delete results',
+      tags: ['Results'],
     },
   })
   .input(

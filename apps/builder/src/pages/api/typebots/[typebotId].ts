@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot, canWriteTypebot } from '@/utils/api/dbRules'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

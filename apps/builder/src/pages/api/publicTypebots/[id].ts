@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canPublishFileInput, canWriteTypebot } from '@/utils/api/dbRules'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

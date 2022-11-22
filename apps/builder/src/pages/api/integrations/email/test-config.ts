@@ -2,7 +2,7 @@ import { captureException, withSentry } from '@sentry/nextjs'
 import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

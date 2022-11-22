@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 import { Stats } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebot } from '@/utils/api/dbRules'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

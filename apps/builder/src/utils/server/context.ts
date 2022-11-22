@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
 

@@ -13,6 +13,8 @@ export const getResultsProcedure = authenticatedProcedure
       method: 'GET',
       path: '/typebots/{typebotId}/results',
       protect: true,
+      summary: 'List results',
+      tags: ['Results'],
     },
   })
   .input(

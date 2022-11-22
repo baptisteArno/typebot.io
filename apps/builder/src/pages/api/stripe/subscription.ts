@@ -8,7 +8,7 @@ import {
 } from 'utils/api'
 import Stripe from 'stripe'
 import { withSentry } from '@sentry/nextjs'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
 import { Plan, WorkspaceRole } from 'db'
 

@@ -1,5 +1,5 @@
 import { resultsRouter } from '@/features/results/api'
-import { router } from '../trpc'
+import { router } from '../../trpc'
 
 export const appRouter = router({
   results: resultsRouter,

@@ -1,10 +1,10 @@
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
+/** @type {import('@docusaurus/types').Config} */
 module.exports = {
   title: 'Typebot docs',
   tagline: 'Get to Typebot next level with its documentation',
   url: 'https://docs.typebot.io',
   baseUrl: '/',
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'baptisteArno', // Usually your GitHub org/user name.
@@ -16,6 +16,16 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
+        {
+          href: '/',
+          label: 'Docs',
+          position: 'left',
+        },
+        {
+          href: '/api',
+          label: 'API Reference',
+          position: 'left',
+        },
         {
           href: 'https://github.com/baptisteArno/typebot.io/tree/main/apps/docs',
           label: 'Contribute',
@@ -73,14 +83,18 @@ module.exports = {
       ],
     },
     colorMode: {
-      disableSwitch: false,
       respectPrefersColorScheme: true,
     },
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      'docusaurus-preset-openapi',
+      /** @type {import('docusaurus-preset-openapi').Options} */
       {
+        api: {
+          path: 'openapi',
+          routeBasePath: '/api',
+        },
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',

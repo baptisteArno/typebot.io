@@ -3,7 +3,7 @@ import { CustomDomain } from 'db'
 import { got, HTTPError } from 'got'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import {
   badRequest,
   forbidden,

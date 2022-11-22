@@ -76,3 +76,37 @@ details {
     transform: rotate(90deg);
   }
 }
+
+.theme-api-markdown > table {
+  font-size: 90%;
+}
+
+.theme-api-markdown table table {
+  width: calc(100% - 16px) !important;
+  margin-left: 16px;
+}
+
+.theme-api-markdown table table {
+  border-left: 3px solid var(--ifm-table-stripe-background);
+}
+
+.theme-api-markdown table table tr:first-child {
+  border-top: 0;
+}
+
+.theme-api-markdown table thead tr {
+  border-bottom-width: 3px;
+  border-top: 0;
+}
+
+.theme-api-markdown table tr {
+  background-color: transparent;
+}
+
+.theme-api-markdown table th {
+  border: 0;
+}
+
+.theme-api-markdown table td {
+  border: 0;
+}

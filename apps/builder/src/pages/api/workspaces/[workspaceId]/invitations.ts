@@ -3,7 +3,7 @@ import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { env, getSeatsLimit } from 'utils'
 import { sendWorkspaceMemberInvitationEmail } from 'emails'
 

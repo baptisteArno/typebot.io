@@ -3,7 +3,7 @@ import { Invitation } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canEditGuests } from '@/utils/api/dbRules'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,6 +1,6 @@
 import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import {
   badRequest,
   generatePresignedUrl,

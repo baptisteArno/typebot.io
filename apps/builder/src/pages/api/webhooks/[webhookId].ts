@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import { CollaborationType } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth'
+import { getAuthenticatedUser } from '@/features/auth/api'
 import {
   badRequest,
   forbidden,
