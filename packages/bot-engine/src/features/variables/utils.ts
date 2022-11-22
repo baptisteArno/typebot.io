@@ -19,7 +19,7 @@ export const parseVariables =
       const variable = variables.find((v) => {
         return matchedVarName === v.name && isDefined(v.value)
       }) as VariableWithValue | undefined
-      if (!variable) return ''
+      if (!variable || variable.value === null) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
       if (options.escapeForJson) return jsonParse(value)

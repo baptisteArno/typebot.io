@@ -75,6 +75,7 @@ export const convertResultsToTableData = (
         }
       }
       const variable = answerOrVariable as VariableWithValue
+      if (variable.value === null) return o
       const key = headerCells.find((headerCell) =>
         headerCell.variableIds?.includes(variable.id)
       )?.label

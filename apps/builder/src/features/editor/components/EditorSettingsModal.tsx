@@ -6,6 +6,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react'
+import { GraphNavigation } from 'db'
 import React from 'react'
 import { EditorSettingsForm } from './EditorSettingsForm'
 
@@ -23,9 +24,11 @@ export const EditorSettingsModal = ({ isOpen, onClose }: Props) => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody pt="12" pb="8" px="8">
-          {user?.graphNavigation && (
-            <EditorSettingsForm defaultGraphNavigation={user.graphNavigation} />
-          )}
+          <EditorSettingsForm
+            defaultGraphNavigation={
+              user?.graphNavigation ?? GraphNavigation.TRACKPAD
+            }
+          />
         </ModalBody>
       </ModalContent>
     </Modal>

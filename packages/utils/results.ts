@@ -3,7 +3,6 @@ import {
   Variable,
   InputBlock,
   ResultHeaderCell,
-  ResultWithAnswers,
   Answer,
   VariableWithValue,
   Typebot,
@@ -209,7 +208,7 @@ export const parseAnswers =
           }
         }
         const variable = answerOrVariable as VariableWithValue
-        if (isDefined(o[variable.name])) return o
+        if (isDefined(o[variable.name]) || variable.value === null) return o
         return { ...o, [variable.name]: variable.value }
       }, {}),
     }
