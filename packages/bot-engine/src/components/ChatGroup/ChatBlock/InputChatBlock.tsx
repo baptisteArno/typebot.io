@@ -41,8 +41,11 @@ export const InputChatBlock = ({
 
   const { variableId } = block.options
   const defaultValue =
-    typebot.settings.general.isInputPrefillEnabled ?? true
-      ? variableId && typebot.variables.find(byId(variableId))?.value
+    (typebot.settings.general.isInputPrefillEnabled ?? true) && variableId
+      ? typebot.variables.find(
+          (variable) =>
+            variable.name === typebot.variables.find(byId(variableId))?.name
+        )?.value
       : undefined
 
   const handleSubmit = async ({ label, value, itemId }: InputSubmitContent) => {
