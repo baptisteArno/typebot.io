@@ -13,6 +13,18 @@
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
+    "docs#build": {
+      "dependsOn": ["api:generate"],
+      "outputs": ["build/**"],
+      "outputMode": "new-only"
+    },
+    "build:env": {
+      "cache": false
+    },
+    "api:generate": {
+      "dependsOn": ["db#db:generate"],
+      "cache": false
+    },
     "db:generate": {
       "cache": false
     },
