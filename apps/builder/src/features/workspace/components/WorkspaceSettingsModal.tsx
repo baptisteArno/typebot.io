@@ -146,12 +146,14 @@ export const WorkspaceSettingsModal = ({
           </Flex>
         </Stack>
 
-        {isOpen && user.graphNavigation && (
+        {isOpen && (
           <Flex flex="1" p="10">
             <SettingsContent
               tab={selectedTab}
               onClose={onClose}
-              defaultGraphNavigation={user.graphNavigation}
+              defaultGraphNavigation={
+                user.graphNavigation ?? GraphNavigation.TRACKPAD
+              }
             />
           </Flex>
         )}
