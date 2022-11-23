@@ -3,6 +3,7 @@ import { canReadTypebot } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { ResultWithAnswers, resultWithAnswersSchema } from 'models'
+import { isDefined } from 'utils'
 import { z } from 'zod'
 
 const maxLimit = 200
@@ -57,5 +58,12 @@ export const getResultsProcedure = authenticatedProcedure
       nextCursor = nextResult?.id
     }
 
-    return { results, nextCursor }
+    return { results: parseResults(results), nextCursor }
   })
+
+// TODO: remove once DB entries are fixed
+const parseResults = (results: ResultWithAnswers[]): ResultWithAnswers[] =>
+  results.map((result) => ({
+    ...result,
+    variables: result.variables.filter((variable) => isDefined(variable.value)),
+  }))

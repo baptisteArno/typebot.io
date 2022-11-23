@@ -90,8 +90,7 @@
                                       "type": "string"
                                     },
                                     "value": {
-                                      "type": "string",
-                                      "nullable": true
+                                      "type": "string"
                                     }
                                   },
                                   "required": [

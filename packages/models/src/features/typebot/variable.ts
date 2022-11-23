@@ -12,7 +12,7 @@ export const variableSchema = z.object({
 export const variableWithValueSchema = z.object({
   id: z.string(),
   name: z.string(),
-  value: z.string().nullable(),
+  value: z.string(),
 })
 
 /**

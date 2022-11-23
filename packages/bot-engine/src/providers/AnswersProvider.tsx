@@ -1,12 +1,12 @@
 import { safeStringify } from '@/features/variables'
 import {
-  Answer,
   AnswerInput,
   ResultValues,
   VariableWithUnknowValue,
   VariableWithValue,
 } from 'models'
 import { createContext, ReactNode, useContext, useState } from 'react'
+import { isDefined } from 'utils'
 
 const answersContext = createContext<{
   resultId?: string
@@ -49,7 +49,7 @@ export const AnswersProvider = ({
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: safeStringify(variable.value),
-    })) as VariableWithValue[]
+    }))
 
     setResultValues((resultValues) => {
       const updatedVariables = [
@@ -57,7 +57,7 @@ export const AnswersProvider = ({
           serializedNewVariables.every((variable) => variable.id !== v.id)
         ),
         ...serializedNewVariables,
-      ]
+      ].filter((variable) => isDefined(variable.value)) as VariableWithValue[]
       if (onVariablesUpdated) onVariablesUpdated(updatedVariables)
       return {
         ...resultValues,
