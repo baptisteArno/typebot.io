@@ -1,9 +1,10 @@
 import { Plan, PrismaClient } from 'db'
 import Stripe from 'stripe'
+import { promptAndSetEnvironment } from './utils'
 
-const prisma = new PrismaClient()
-
-export const setCustomPlan = async () => {
+const setCustomPlan = async () => {
+  await promptAndSetEnvironment()
+  const prisma = new PrismaClient()
   if (
     !process.env.STRIPE_SECRET_KEY ||
     !process.env.STRIPE_PRODUCT_ID ||
@@ -81,3 +82,5 @@ export const setCustomPlan = async () => {
 
   console.log('Claimable plan updated!')
 }
+
+setCustomPlan()

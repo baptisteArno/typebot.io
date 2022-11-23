@@ -5,11 +5,11 @@
       "outputs": []
     },
     "dev": {
-      "dependsOn": ["^dev", "^db:generate", "^db:push"],
+      "dependsOn": ["^dev", "db#db:generate", "db#db:push"],
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build", "^db:generate"],
+      "dependsOn": ["^build", "db#db:generate"],
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },

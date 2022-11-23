@@ -27,5 +27,6 @@ firebaseServiceAccount.json
 tags
 
 dump.sql
+dump.tar
 
 __env.js
