@@ -248,6 +248,7 @@ model Answer {
   result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@unique([resultId, blockId, groupId])
+  @@index([groupId])
 }
 
 model Coupon {
