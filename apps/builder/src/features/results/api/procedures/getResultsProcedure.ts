@@ -58,12 +58,5 @@ export const getResultsProcedure = authenticatedProcedure
       nextCursor = nextResult?.id
     }
 
-    return { results: parseResults(results), nextCursor }
+    return { results, nextCursor }
   })
-
-// TODO: remove once DB entries are fixed
-const parseResults = (results: ResultWithAnswers[]): ResultWithAnswers[] =>
-  results.map((result) => ({
-    ...result,
-    variables: result.variables.filter((variable) => isDefined(variable.value)),
-  }))
