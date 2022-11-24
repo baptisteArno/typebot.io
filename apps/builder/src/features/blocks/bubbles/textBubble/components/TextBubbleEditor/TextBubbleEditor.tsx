@@ -1,4 +1,9 @@
-import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
+import {
+  Flex,
+  Stack,
+  useEventListener,
+  useOutsideClick,
+} from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Plate,
@@ -76,9 +81,13 @@ const TextBubbleEditorContent = ({
     }
   }
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation()
-  }
+  useEventListener(
+    'pointerdown',
+    (e) => {
+      e.stopPropagation()
+    },
+    textEditorRef.current
+  )
 
   const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
@@ -100,7 +109,6 @@ const TextBubbleEditorContent = ({
       borderWidth="2px"
       borderColor="blue.400"
       rounded="md"
-      onMouseDown={handleMouseDown}
       pos="relative"
       spacing={0}
       cursor="text"
