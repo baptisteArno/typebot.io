@@ -38,7 +38,10 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => onChange(e.target.value)
+  ) => {
+    console.log(e)
+    onChange(e.target.value)
+  }
 
   const handlePhoneNumberChange = (value?: Value | undefined) => {
     onChange(value as string)
