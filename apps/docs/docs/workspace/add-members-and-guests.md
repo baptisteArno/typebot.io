@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Add members and guests
 
-There are several ways users can interact with a Notion workspace:
+There are several ways users can interact with a Typebot workspace:
 
 - Admins: admins who can manage workspace settings, delete a workspace, and manage other admins, members, and guests.
 
-- Members: People on your team who can create and edit Notion pages, but not edit settings or add members.
+- Members: People on your team who can create and edit typebots, but not edit settings or add members.
 
 - Guests: People external to your team who you want to work with on specific typebots. They can be invited to individual typebots, but not an entire workspace. They can't be given workspace-wide access. They must be invited to individual typebots to view them.
 
