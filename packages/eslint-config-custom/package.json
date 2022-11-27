@@ -3,7 +3,7 @@
   "main": "index.js",
   "dependencies": {
     "eslint": "8.28.0",
-    "eslint-config-next": "13.0.4",
+    "eslint-config-next": "13.0.5",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-react": "7.31.11"
   }
