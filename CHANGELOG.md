@@ -1,7 +1,8 @@
 # Changelog
 
-<a name="2.8.6"></a>
-## 2.8.6 (2022-11-21)
+<a name="2.8.7"></a>
+
+## 2.8.7 (2022-11-27)
 
 ### Added
 
@@ -11,7 +12,7 @@
 
 ### Changed
 
-- ⬆️ Upgrade dependencies [[34cfd1d](https://github.com/baptisteArno/typebot.io/commit/34cfd1db30304ff82577a77907bc0fa119e233be)]
+- 🗃️ Add answer - groupId index [[9d69470](https://github.com/baptisteArno/typebot.io/commit/9d6947063069c80ef755724b8a89460acc4bf91a)]
 - 🔧 Update db turbo scripts [[bdf4e83](https://github.com/baptisteArno/typebot.io/commit/bdf4e8361720175d1c8f1cd2fc10eadf6908f025)]
 - ♻️ Add shared eslint config [[451ffbc](https://github.com/baptisteArno/typebot.io/commit/451ffbcacfe4a0417a5642a40eed533565513cd9)]
 - ♻️ (results) Introduce tRPC and use it for the results [[d58f9bd](https://github.com/baptisteArno/typebot.io/commit/d58f9bd3a19f4c963c46ec0673ee45854a9a9118)]
@@ -23,6 +24,14 @@
 
 ### Fixed
 
+- ✏️ Remove &quot;Notion&quot; keywords where it&#x27;s supposed to be &quot;Typebot&quot; [[ce20f96](https://github.com/baptisteArno/typebot.io/commit/ce20f960f2093660104d0cc93d0405fc83bf1250)]
+- 🐛 (graph) Make the text bubble selectable without moving group [[0593d2e](https://github.com/baptisteArno/typebot.io/commit/0593d2ead8df6ba5749887f26cccf4ce942411c7)]
+- 🐛 (results) Fix results display when variable has undefined value [[d80cc1b](https://github.com/baptisteArno/typebot.io/commit/d80cc1b248275f28928c87d076dba3fcfdc11e89)]
+- 🐛 (dashboard) Fix a bug preventing user to see settings content [[ec0e4be](https://github.com/baptisteArno/typebot.io/commit/ec0e4bee77422750dd5b2bbbcae4876e4664e77d)]
+- 💚 (docs) Fix api schema generation in CI [[635e688](https://github.com/baptisteArno/typebot.io/commit/635e6887f37616ae22d681095b1f41a3d095afe1)]
+- 🚑 (results) Fix results display when variable has null value [[e6dceca](https://github.com/baptisteArno/typebot.io/commit/e6dceca9f3124774f03a69cd90477f07a8796144)]
+- 🐛 (workspace) Filter out guests from members list count [[04af489](https://github.com/baptisteArno/typebot.io/commit/04af489119c9577e900efb28853d53ea65bec76e)]
+- 🐛 (bot) Fix input prefill when linked to another typebot [[5619eef](https://github.com/baptisteArno/typebot.io/commit/5619eef459f4c67b3667b4f9ec6bc2e277febbf7)]
 - 🐛 (results) Fix export results when more than 200 [[8c15fd1](https://github.com/baptisteArno/typebot.io/commit/8c15fd17a1405f9ef8b16d171536b0a9cb15053c)]
 - 🐛 Fix new image upload refresh when URL is the same [[fbd3304](https://github.com/baptisteArno/typebot.io/commit/fbd33046a1c16aabe7538315837825ebd892140e)]
 - 🐛 (editor) Fix empty typebot name not editable [[2489318](https://github.com/baptisteArno/typebot.io/commit/2489318fa59e70335964f7d96dba029797fb4a4b)]
@@ -34,12 +43,15 @@
 
 ### Miscellaneous
 
+- ⚰️ (results) Remove results server parser [[9548733](https://github.com/baptisteArno/typebot.io/commit/9548733543a79575148aa62669a76b1b80cfacca)]
+- 🛂 Add backup and restore database scripts [[3645607](https://github.com/baptisteArno/typebot.io/commit/3645607ed423236433a1690c31d770e9214c60b4)]
+- 📝 Introduce auto generate API doc [[11695ef](https://github.com/baptisteArno/typebot.io/commit/11695efb57011d5899202f474e688a77dd5a9f32)]
 - ⚰️ (docs) Remove old link [[feaf49f](https://github.com/baptisteArno/typebot.io/commit/feaf49f137d9c7cf666e78aca8eff8f58621a35b)]
 - 📦 (wordpress) Update package version [[78fd974](https://github.com/baptisteArno/typebot.io/commit/78fd974ebe9e681555dfc85faa64c5d04c47a5b2)]
 - 📝 Add Chatwoot integration doc [[96eb77d](https://github.com/baptisteArno/typebot.io/commit/96eb77d94bfb960b73a3e44119eb8deb8a48181a)]
 - 🛂 Add setCustomPlan script [[6fdbf98](https://github.com/baptisteArno/typebot.io/commit/6fdbf98eedb0c15138383ae258ba57c7dd4b08a5)]
 - 🧑‍💻 (typebot-js) Implement easier commands: open / close / toggle [[087d24e](https://github.com/baptisteArno/typebot.io/commit/087d24e58735091a2fa758821da7423b54dc99cd)]
-
+- 🔊 Send trpc internal errors to Sentry [[0090065](https://github.com/baptisteArno/typebot.io/commit/00900657b2cb83029117772fc6ffe2936488c821)]
 
 <a name="2.8.5"></a>
 
