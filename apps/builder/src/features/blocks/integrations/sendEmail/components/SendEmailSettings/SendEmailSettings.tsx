@@ -10,7 +10,7 @@ import {
 import { CodeEditor } from '@/components/CodeEditor'
 import { CredentialsType, SendEmailOptions, Variable } from 'models'
 import React, { useState } from 'react'
-import { env } from 'utils'
+import { env, isNotEmpty } from 'utils'
 import { SmtpConfigModal } from './SmtpConfigModal'
 import { SwitchWithLabel } from '@/components/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/VariableSearchInput'
@@ -38,6 +38,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
     const recipients: string[] = recipientsStr
       .split(',')
       .map((str) => str.trim())
+      .filter(isNotEmpty)
     onOptionsChange({
       ...options,
       recipients,
@@ -45,7 +46,10 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   }
 
   const handleCcChange = (ccStr: string) => {
-    const cc: string[] = ccStr.split(',').map((str) => str.trim())
+    const cc: string[] = ccStr
+      .split(',')
+      .map((str) => str.trim())
+      .filter(isNotEmpty)
     onOptionsChange({
       ...options,
       cc,
@@ -53,7 +57,10 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   }
 
   const handleBccChange = (bccStr: string) => {
-    const bcc: string[] = bccStr.split(',').map((str) => str.trim())
+    const bcc: string[] = bccStr
+      .split(',')
+      .map((str) => str.trim())
+      .filter(isNotEmpty)
     onOptionsChange({
       ...options,
       bcc,

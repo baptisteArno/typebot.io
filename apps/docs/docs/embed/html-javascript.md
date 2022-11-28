@@ -135,3 +135,5 @@ Typebot.initContainer('typebot-container', {
 ```
 
 It will populate the `Current URL` variable with the parent URL and the `User name` variable with "John Doe".
+
+Note that if your site URL contains query params (i.e. https://typebot.io?name=John), the variables will automatically be injected to the typebot. So you don't need to manually transfer query params to the bot embed configuration.
