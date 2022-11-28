@@ -91,7 +91,6 @@ export const TypebotPage = ({
   }, [resultId])
 
   const handleNewVariables = async (variables: VariableWithValue[]) => {
-    if (variables.length === 0) return
     if (!resultId)
       return setVariableUpdateQueue([...variableUpdateQueue, variables])
     await sendNewVariables(resultId)(variables)
