@@ -13,7 +13,7 @@ import { useTypebot } from '@/features/editor'
 import { unparse } from 'papaparse'
 import React, { useState } from 'react'
 import { useToast } from '@/hooks/useToast'
-import { convertResultsToTableData } from '../../utils'
+import { convertResultsToTableData, parseAccessor } from '../../utils'
 import { useResults } from '../../ResultsProvider'
 import { trpc } from '@/lib/trpc'
 import { TRPCError } from '@trpc/server'
@@ -128,7 +128,7 @@ export const ResultsActionButtons = ({
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
       const newObject: { [key: string]: string } = {}
       fields?.forEach((field) => {
-        newObject[field] = data[field]?.plainText
+        newObject[field] = data[parseAccessor(field)]?.plainText
       })
       return newObject
     })
