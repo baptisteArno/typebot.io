@@ -63,6 +63,7 @@ const getSubscriptionDetails =
           (item) =>
             item.price.id === process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID
         )?.quantity ?? 0,
+      currency: subscriptions.data[0]?.currency,
     }
   }
 

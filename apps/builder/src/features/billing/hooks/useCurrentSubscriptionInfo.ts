@@ -13,6 +13,7 @@ export const useCurrentSubscriptionInfo = ({
     {
       additionalChatsIndex: number
       additionalStorageIndex: number
+      currency?: 'eur' | 'usd'
     },
     Error
   >(

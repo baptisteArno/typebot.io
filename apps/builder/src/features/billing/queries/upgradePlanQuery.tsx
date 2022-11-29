@@ -15,6 +15,7 @@ type UpgradeProps = {
   workspaceId: string
   additionalChats: number
   additionalStorage: number
+  currency?: 'eur' | 'usd'
 }
 
 export const upgradePlanQuery = async ({
@@ -31,6 +32,7 @@ const updatePlan = async ({
   workspaceId,
   additionalChats,
   additionalStorage,
+  currency,
 }: Omit<UpgradeProps, 'user'>): Promise<{ newPlan?: Plan; error?: Error }> => {
   const { data, error } = await sendRequest<{ message: string }>({
     method: 'PUT',
@@ -41,7 +43,7 @@ const updatePlan = async ({
       stripeId,
       additionalChats,
       additionalStorage,
-      currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
+      currency: currency ?? (guessIfUserIsEuropean() ? 'eur' : 'usd'),
     },
   })
   if (error || !data) return { error }

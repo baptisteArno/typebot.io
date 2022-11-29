@@ -29,6 +29,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 type StarterPlanContentProps = {
   initialChatsLimitIndex?: number
   initialStorageLimitIndex?: number
+  currency?: 'eur' | 'usd'
   onPayClick: (props: {
     selectedChatsLimitIndex: number
     selectedStorageLimitIndex: number
@@ -38,6 +39,7 @@ type StarterPlanContentProps = {
 export const StarterPlanContent = ({
   initialChatsLimitIndex,
   initialStorageLimitIndex,
+  currency,
   onPayClick,
 }: StarterPlanContentProps) => {
   const { workspace } = useWorkspace()
@@ -126,7 +128,8 @@ export const StarterPlanContent = ({
               Plan.STARTER,
               selectedChatsLimitIndex ?? 0,
               selectedStorageLimitIndex ?? 0
-            ) ?? NaN
+            ) ?? NaN,
+            currency
           )}
           <chakra.span fontSize="md">/ month</chakra.span>
         </Heading>

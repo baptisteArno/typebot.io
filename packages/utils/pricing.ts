@@ -176,11 +176,11 @@ export const guessIfUserIsEuropean = () =>
       : europeanUnionExclusiveLanguageCodes.includes(languageCode)
   })
 
-export const formatPrice = (price: number) => {
+export const formatPrice = (price: number, currency?: 'eur' | 'usd') => {
   const isEuropean = guessIfUserIsEuropean()
   const formatter = new Intl.NumberFormat(isEuropean ? 'fr-FR' : 'en-US', {
     style: 'currency',
-    currency: isEuropean ? 'EUR' : 'USD',
+    currency: currency?.toUpperCase() ?? (isEuropean ? 'EUR' : 'USD'),
     maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   })
   return formatter.format(price)

@@ -42,6 +42,7 @@ export const ChangePlanForm = () => {
       workspaceId: workspace.id,
       additionalChats: selectedChatsLimitIndex,
       additionalStorage: selectedStorageLimitIndex,
+      currency: data?.currency,
     })
     if (typeof response === 'object' && response?.error) {
       showToast({ description: response.error.message })
@@ -75,6 +76,7 @@ export const ChangePlanForm = () => {
           onPayClick={(props) =>
             handlePayClick({ ...props, plan: Plan.STARTER })
           }
+          currency={data?.currency}
         />
 
         <ProPlanContent
@@ -85,6 +87,7 @@ export const ChangePlanForm = () => {
             workspace?.plan === Plan.PRO ? data?.additionalStorageIndex : 0
           }
           onPayClick={(props) => handlePayClick({ ...props, plan: Plan.PRO })}
+          currency={data?.currency}
         />
       </HStack>
       <Text color="gray.500">
