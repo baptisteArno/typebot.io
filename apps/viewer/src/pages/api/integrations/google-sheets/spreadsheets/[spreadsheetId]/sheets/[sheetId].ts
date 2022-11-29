@@ -39,7 +39,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         (row) => row[referenceCell.column as string] === referenceCell.value
       )
       if (!row) {
-        await saveErrorLog(resultId, "Couldn't find reference cell")
+        await saveErrorLog({
+          resultId,
+          message: "Couldn't find reference cell",
+        })
         return res.status(404).send({ message: "Couldn't find row" })
       }
       const response = {
@@ -48,10 +51,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           {}
         ),
       }
-      await saveSuccessLog(resultId, 'Succesfully fetched spreadsheet data')
+      await saveSuccessLog({
+        resultId,
+        message: 'Succesfully fetched spreadsheet data',
+      })
       return res.send(response)
     } catch (err) {
-      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      await saveErrorLog({
+        resultId,
+        message: "Couldn't fetch spreadsheet data",
+        details: err,
+      })
       return res.status(500).send(err)
     }
   }
@@ -74,10 +84,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await doc.loadInfo()
       const sheet = doc.sheetsById[sheetId]
       await sheet.addRow(values)
-      await saveSuccessLog(resultId, 'Succesfully inserted row')
+      await saveSuccessLog({ resultId, message: 'Succesfully inserted row' })
       return res.send({ message: 'Success' })
     } catch (err) {
-      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      await saveErrorLog({
+        resultId,
+        message: "Couldn't fetch spreadsheet data",
+        details: err,
+      })
       return res.status(500).send(err)
     }
   }
@@ -110,10 +124,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         rows[updatingRowIndex][key] = values[key]
       }
       await rows[updatingRowIndex].save()
-      await saveSuccessLog(resultId, 'Succesfully updated row')
+      await saveSuccessLog({ resultId, message: 'Succesfully updated row' })
       return res.send({ message: 'Success' })
     } catch (err) {
-      await saveErrorLog(resultId, "Couldn't fetch spreadsheet data", err)
+      await saveErrorLog({
+        resultId,
+        message: "Couldn't fetch spreadsheet data",
+        details: err,
+      })
       return res.status(500).send(err)
     }
   }

@@ -26,6 +26,7 @@ export const parsePublicTypebotToTypebot = (
   workspaceId: existingTypebot.workspaceId,
   isArchived: existingTypebot.isArchived,
   isClosed: existingTypebot.isClosed,
+  resultsTablePreferences: existingTypebot.resultsTablePreferences,
 })
 
 export const parseTypebotToPublicTypebot = (
@@ -38,8 +39,8 @@ export const parseTypebotToPublicTypebot = (
   settings: typebot.settings,
   theme: typebot.theme,
   variables: typebot.variables,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 })
 
 export const checkIfTypebotsAreEqual = (typebotA: Typebot, typebotB: Typebot) =>

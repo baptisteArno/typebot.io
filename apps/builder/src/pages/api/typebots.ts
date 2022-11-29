@@ -94,11 +94,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data:
           'groups' in data
             ? data
-            : (parseNewTypebot({
+            : parseNewTypebot({
                 ownerAvatarUrl: user.image,
                 isBrandingEnabled: workspace.plan === Plan.FREE,
                 ...data,
-              }) as Prisma.TypebotUncheckedCreateInput),
+              }),
       })
       return res.send(typebot)
     }

@@ -1,21 +1,32 @@
-import { Group, Edge, Settings, Theme, Variable } from './typebot'
-import { PublicTypebot as PublicTypebotFromPrisma } from 'db'
+import {
+  groupSchema,
+  edgeSchema,
+  variableSchema,
+  themeSchema,
+  settingsSchema,
+  typebotSchema,
+} from './typebot'
+import { PublicTypebot as PublicTypebotPrisma } from 'db'
+import { z } from 'zod'
+import { schemaForType } from './utils'
 
-export type PublicTypebot = Omit<
-  PublicTypebotFromPrisma,
-  | 'groups'
-  | 'theme'
-  | 'settings'
-  | 'variables'
-  | 'edges'
-  | 'createdAt'
-  | 'updatedAt'
-> & {
-  groups: Group[]
-  variables: Variable[]
-  edges: Edge[]
-  theme: Theme
-  settings: Settings
-  createdAt: string
-  updatedAt: string
-}
+export const publicTypebotSchema = schemaForType<PublicTypebotPrisma>()(
+  z.object({
+    id: z.string(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+    typebotId: z.string(),
+    groups: z.array(groupSchema),
+    edges: z.array(edgeSchema),
+    variables: z.array(variableSchema),
+    theme: themeSchema,
+    settings: settingsSchema,
+  })
+)
+
+const publicTypebotWithName = publicTypebotSchema.and(
+  typebotSchema.pick({ name: true, isArchived: true, isClosed: true })
+)
+
+export type PublicTypebot = z.infer<typeof publicTypebotSchema>
+export type PublicTypebotWithName = z.infer<typeof publicTypebotWithName>

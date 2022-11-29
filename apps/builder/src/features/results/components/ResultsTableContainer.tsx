@@ -57,7 +57,7 @@ export const ResultsTableContainer = () => {
 
       {typebot && (
         <SubmissionsTable
-          preferences={typebot.resultsTablePreferences}
+          preferences={typebot.resultsTablePreferences ?? undefined}
           resultHeader={resultHeader}
           data={tableData}
           onScrollToBottom={fetchNextPage}

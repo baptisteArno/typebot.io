@@ -1,7 +1,11 @@
 import { saveLog } from './utils'
 
-export const saveSuccessLog = (
-  resultId: string | undefined,
-  message: string,
+export const saveSuccessLog = ({
+  resultId,
+  message,
+  details,
+}: {
+  resultId: string | undefined
+  message: string
   details?: unknown
-) => saveLog('success', resultId, message, details)
+}) => saveLog('success', resultId, message, details)

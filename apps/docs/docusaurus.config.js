@@ -88,8 +88,8 @@ module.exports = {
   },
   presets: [
     [
-      'docusaurus-preset-openapi',
-      /** @type {import('docusaurus-preset-openapi').Options} */
+      '@typebot.io/docusaurus-preset-openapi',
+      /** @type {import('@typebot.io/docusaurus-preset-openapi').Options} */
       {
         api: {
           path: 'openapi',

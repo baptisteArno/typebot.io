@@ -110,3 +110,22 @@ details {
 .theme-api-markdown table td {
   border: 0;
 }
+
+.admonition {
+  margin-bottom: 1rem;
+}
+.admonition-heading svg {
+  margin-right: 0.5rem;
+  fill: currentColor;
+  width: 24px;
+  height: 24px;
+}
+
+.admonition-heading {
+  text-transform: capitalize;
+}
+
+.admonition-heading h5 {
+  display: flex;
+  align-items: center;
+}

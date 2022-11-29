@@ -46,9 +46,7 @@
   },
   "peerDependencies": {
     "db": "workspace:*",
-    "models": "workspace:*",
     "react": "18.0.0",
-    "react-dom": "18.0.0",
-    "utils": "workspace:*"
+    "react-dom": "18.0.0"
   }
 }

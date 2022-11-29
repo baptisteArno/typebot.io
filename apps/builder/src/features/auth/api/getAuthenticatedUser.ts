@@ -19,7 +19,6 @@ export const getAuthenticatedUser = async (
 const authenticateByToken = async (
   apiToken: string
 ): Promise<User | undefined> => {
-  console.log(window)
   if (typeof window !== 'undefined') return
   return (await prisma.user.findFirst({
     where: { apiTokens: { some: { token: apiToken } } },

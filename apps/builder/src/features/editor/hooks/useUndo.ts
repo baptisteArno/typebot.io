@@ -11,7 +11,7 @@ enum ActionType {
   Flush = 'FLUSH',
 }
 
-export interface Actions<T extends { updatedAt: string } | undefined> {
+export interface Actions<T extends { updatedAt: Date } | undefined> {
   set: (
     newPresent: T | ((current: T) => T),
     options?: { updateDate: boolean }
@@ -24,13 +24,13 @@ export interface Actions<T extends { updatedAt: string } | undefined> {
   presentRef: React.MutableRefObject<T>
 }
 
-interface Action<T extends { updatedAt: string } | undefined> {
+interface Action<T extends { updatedAt: Date } | undefined> {
   type: ActionType
   newPresent?: T
   updateDate?: boolean
 }
 
-export interface State<T extends { updatedAt: string } | undefined> {
+export interface State<T extends { updatedAt: Date } | undefined> {
   past: T[]
   present: T
   future: T[]
@@ -42,7 +42,7 @@ const initialState = {
   future: [],
 }
 
-const reducer = <T extends { updatedAt: string } | undefined>(
+const reducer = <T extends { updatedAt: Date } | undefined>(
   state: State<T>,
   action: Action<T>
 ) => {
@@ -112,7 +112,7 @@ const reducer = <T extends { updatedAt: string } | undefined>(
   }
 }
 
-const useUndo = <T extends { updatedAt: string } | undefined>(
+const useUndo = <T extends { updatedAt: Date } | undefined>(
   initialPresent: T
 ): [State<T>, Actions<T>] => {
   const [state, dispatch] = useReducer(reducer, {

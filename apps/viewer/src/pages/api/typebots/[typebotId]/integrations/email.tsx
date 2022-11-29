@@ -16,7 +16,7 @@ import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from 'emails'
 import { render } from '@faire/mjml-react/dist/src/utils/render'
 import prisma from '@/lib/prisma'
-import { getLinkedTypebots } from '@/features/typebotLink/api'
+import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
 
 const cors = initMiddleware(Cors())
 
@@ -84,14 +84,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     if (!emailBody) {
-      await saveErrorLog(resultId, 'Email not sent', {
-        transportConfig,
-        recipients,
-        subject,
-        cc,
-        bcc,
-        replyTo,
-        emailBody,
+      await saveErrorLog({
+        resultId,
+        message: 'Email not sent',
+        details: {
+          transportConfig,
+          recipients,
+          subject,
+          cc,
+          bcc,
+          replyTo,
+          emailBody,
+        },
       })
       return res.status(404).send({ message: "Couldn't find email body" })
     }
@@ -109,12 +113,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     try {
       const info = await transporter.sendMail(email)
-      await saveSuccessLog(resultId, 'Email successfully sent', {
-        transportConfig: {
-          ...transportConfig,
-          auth: { user: transportConfig.auth.user, pass: '******' },
+      await saveSuccessLog({
+        resultId,
+        message: 'Email successfully sent',
+        details: {
+          transportConfig: {
+            ...transportConfig,
+            auth: { user: transportConfig.auth.user, pass: '******' },
+          },
+          email,
         },
-        email,
       })
       return res.status(200).send({
         message: 'Email sent!',
@@ -122,13 +130,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         previewUrl: getTestMessageUrl(info),
       })
     } catch (err) {
-      await saveErrorLog(resultId, 'Email not sent', {
-        transportConfig: {
-          ...transportConfig,
-          auth: { user: transportConfig.auth.user, pass: '******' },
+      await saveErrorLog({
+        resultId,
+        message: 'Email not sent',
+        details: {
+          transportConfig: {
+            ...transportConfig,
+            auth: { user: transportConfig.auth.user, pass: '******' },
+          },
+          email,
+          error: err,
         },
-        email,
-        error: err,
       })
       return res.status(500).send({
         message: `Email not sent. Error: ${err}`,

@@ -30,6 +30,7 @@ export const parseNewTypebot = ({
   | 'icon'
   | 'isArchived'
   | 'isClosed'
+  | 'resultsTablePreferences'
 > => {
   const startGroupId = cuid()
   const startBlockId = cuid()

@@ -10,6 +10,6 @@ const openApiDocument = generateOpenApiDocument(appRouter, {
 })
 
 writeFileSync(
-  './openapi/builder.json',
+  './openapi/builder/_spec_.json',
   JSON.stringify(openApiDocument, null, 2)
 )

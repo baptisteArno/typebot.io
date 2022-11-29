@@ -235,9 +235,9 @@ importers:
       '@docusaurus/types': ^2.2.0
       '@mdx-js/react': 1.6.22
       '@svgr/webpack': 6.5.1
+      '@typebot.io/docusaurus-preset-openapi': 0.6.5
       '@types/react': 18.0.25
       clsx: 1.2.1
-      docusaurus-preset-openapi: ^0.6.3
       file-loader: 6.2.0
       prism-react-renderer: 1.3.5
       react: 17.0.2
@@ -253,8 +253,8 @@ importers:
       '@docusaurus/theme-search-algolia': 2.2.0_ysds3xf44nkbridx5gpbszqrsm
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@svgr/webpack': 6.5.1
+      '@typebot.io/docusaurus-preset-openapi': 0.6.5_bitjua5s3tgsymg7hzgopoaz4a
       clsx: 1.2.1
-      docusaurus-preset-openapi: 0.6.3_bitjua5s3tgsymg7hzgopoaz4a
       file-loader: 6.2.0_webpack@5.75.0
       prism-react-renderer: 1.3.5_react@17.0.2
       react: 17.0.2
@@ -339,6 +339,7 @@ importers:
       '@faire/mjml-react': 3.0.0
       '@playwright/test': 1.28.1
       '@sentry/nextjs': 7.21.1
+      '@trpc/server': 10.3.0
       '@types/cors': 2.8.12
       '@types/google-spreadsheet': 3.3.0
       '@types/node': 18.11.9
@@ -348,7 +349,7 @@ importers:
       '@types/react': 18.0.25
       '@types/sanitize-html': 2.6.2
       aws-sdk: 2.1261.0
-      bot-engine: '*'
+      bot-engine: workspace:*
       cors: 2.8.5
       cuid: 2.1.8
       db: workspace:*
@@ -370,11 +371,15 @@ importers:
       react-dom: 18.2.0
       sanitize-html: 2.7.3
       stripe: 11.1.0
+      superjson: ^1.11.0
+      trpc-openapi: 1.0.0-alpha.4
       tsconfig: workspace:*
       typescript: 4.9.3
       utils: workspace:*
+      zod: 3.19.1
     dependencies:
       '@sentry/nextjs': 7.21.1_next@13.0.5+react@18.2.0
+      '@trpc/server': 10.3.0
       aws-sdk: 2.1261.0
       bot-engine: link:../../packages/bot-engine
       cors: 2.8.5
@@ -389,6 +394,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       sanitize-html: 2.7.3
       stripe: 11.1.0
+      trpc-openapi: 1.0.0-alpha.4_xfmifnqysbeeolwxnsx4yhzpwe
     devDependencies:
       '@babel/preset-env': 7.20.2_@babel+core@7.20.2
       '@faire/mjml-react': 3.0.0_7tbcn2mecc3yvuxakflodiks3m
@@ -410,9 +416,11 @@ importers:
       next-transpile-modules: 10.0.0
       node-fetch: 3.3.0
       papaparse: 5.3.2
+      superjson: 1.11.0
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.3
       utils: link:../../packages/utils
+      zod: 3.19.1
 
   packages/bot-engine:
     specifiers:
@@ -5516,6 +5524,109 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: false
 
+  /@typebot.io/docusaurus-plugin-openapi/0.6.5_zneentkx4scexj4pzosurqq55y:
+    resolution: {integrity: sha512-HCCkKNkwL8Ah3A+mZPibDr8argAU31+Z0ZZVCZtArfw4+IMDmoEZl4DKy5W+Ryu0EGQ3oink0B8cE15RP/uABw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@docusaurus/mdx-loader': 2.2.0_zneentkx4scexj4pzosurqq55y
+      '@docusaurus/plugin-content-docs': 2.2.0_sfoxds7t5ydpegc3knd667wn6m
+      '@docusaurus/utils': 2.2.0_@docusaurus+types@2.2.0
+      '@docusaurus/utils-validation': 2.2.0_@docusaurus+types@2.2.0
+      axios: 0.26.1
+      chalk: 4.1.2
+      clsx: 1.2.1
+      fs-extra: 9.1.0
+      js-yaml: 4.1.0
+      json-refs: 3.0.15
+      json-schema-resolve-allof: 1.5.0
+      lodash: 4.17.21
+      openapi-to-postmanv2: 1.2.7
+      postman-collection: 4.1.5
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      remark-admonitions: 1.2.1
+      webpack: 5.75.0
+    transitivePeerDependencies:
+      - '@docusaurus/types'
+      - '@swc/core'
+      - debug
+      - esbuild
+      - supports-color
+      - uglify-js
+      - webpack-cli
+    dev: false
+
+  /@typebot.io/docusaurus-plugin-proxy/0.6.5:
+    resolution: {integrity: sha512-m2hPJvGhVbxadZ7cMoxXjLUw9KuVkogtSGiYqAVHkwkjfx1K/+umwPM71nXqBbF/APY8kuT9SSX0TpDoK9R3Yw==}
+    engines: {node: '>=14'}
+    dev: false
+
+  /@typebot.io/docusaurus-preset-openapi/0.6.5_bitjua5s3tgsymg7hzgopoaz4a:
+    resolution: {integrity: sha512-NM5+IqqBtV5WpIb0Ouba4VL0D/FivIxRGNlW3tLtk+i2JESUECgin8R/HGp/QXwJv5+/Qtox9EPzkVVW5N3rvA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@typebot.io/docusaurus-plugin-openapi': 0.6.5_zneentkx4scexj4pzosurqq55y
+      '@typebot.io/docusaurus-plugin-proxy': 0.6.5
+      '@typebot.io/docusaurus-theme-openapi': 0.6.5_bitjua5s3tgsymg7hzgopoaz4a
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    transitivePeerDependencies:
+      - '@docusaurus/types'
+      - '@swc/core'
+      - debug
+      - esbuild
+      - react-native
+      - redux
+      - supports-color
+      - uglify-js
+      - webpack-cli
+    dev: false
+
+  /@typebot.io/docusaurus-theme-openapi/0.6.5_bitjua5s3tgsymg7hzgopoaz4a:
+    resolution: {integrity: sha512-nTLJsWBPEeRZBHU2kcSdFXFCQnwllaiaDtx6yD1hNmKk02jhecVpX2mpEfNBOh24C/s+cUzT0ME9BqJ8RCcWNQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@mdx-js/react': 1.6.22_react@17.0.2
+      '@monaco-editor/react': 4.4.6_mdctwmt4gahkxlfxf2gmcvzx3a
+      '@reduxjs/toolkit': 1.9.0_csuupx2mfbspdz76fkecdgkise
+      '@typebot.io/docusaurus-plugin-openapi': 0.6.5_zneentkx4scexj4pzosurqq55y
+      buffer: 6.0.3
+      clsx: 1.2.1
+      crypto-js: 4.1.1
+      immer: 9.0.16
+      lodash: 4.17.21
+      monaco-editor: 0.31.1
+      postman-code-generators: 1.2.2
+      postman-collection: 4.1.5
+      prism-react-renderer: 1.3.5_react@17.0.2
+      process: 0.11.10
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-magic-dropzone: 1.0.1
+      react-redux: 7.2.9_sfoxds7t5ydpegc3knd667wn6m
+      redux-devtools-extension: 2.13.9_redux@4.2.0
+      webpack: 5.75.0
+    transitivePeerDependencies:
+      - '@docusaurus/types'
+      - '@swc/core'
+      - debug
+      - esbuild
+      - react-native
+      - redux
+      - supports-color
+      - uglify-js
+      - webpack-cli
+    dev: false
+
   /@types/aos/3.0.4:
     resolution: {integrity: sha512-mna6Jd6bdK1NpwarLopGvXOgUoCfj0470IwLxuVOFDElTGI0JTd7xSGQ0AjbAEnHErC/b3fA9t2uB3IXVKmckA==}
     dev: true
@@ -8820,109 +8931,6 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       esutils: 2.0.3
-
-  /docusaurus-plugin-openapi/0.6.3_zneentkx4scexj4pzosurqq55y:
-    resolution: {integrity: sha512-2i/f4zfW5aCNe8Ids6WsgSPQHFEdAwvhoe0lwb83QkNE33bYerZmoqSjJr6wSZsAEsb1HkDW+JLZNxkjSAHe2w==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      react: ^16.8.4 || ^17.0.0
-      react-dom: ^16.8.4 || ^17.0.0
-    dependencies:
-      '@docusaurus/mdx-loader': 2.2.0_zneentkx4scexj4pzosurqq55y
-      '@docusaurus/plugin-content-docs': 2.2.0_sfoxds7t5ydpegc3knd667wn6m
-      '@docusaurus/utils': 2.2.0_@docusaurus+types@2.2.0
-      '@docusaurus/utils-validation': 2.2.0_@docusaurus+types@2.2.0
-      axios: 0.26.1
-      chalk: 4.1.2
-      clsx: 1.2.1
-      fs-extra: 9.1.0
-      js-yaml: 4.1.0
-      json-refs: 3.0.15
-      json-schema-resolve-allof: 1.5.0
-      lodash: 4.17.21
-      openapi-to-postmanv2: 1.2.7
-      postman-collection: 4.1.5
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      remark-admonitions: 1.2.1
-      webpack: 5.75.0
-    transitivePeerDependencies:
-      - '@docusaurus/types'
-      - '@swc/core'
-      - debug
-      - esbuild
-      - supports-color
-      - uglify-js
-      - webpack-cli
-    dev: false
-
-  /docusaurus-plugin-proxy/0.6.3:
-    resolution: {integrity: sha512-HAR76IsuSWlVI1K6P8fEJDjhHxT3LLdXGr+ZxNBm6DJTUQ8Xf057nHR8BhB5sfwmzrDPup5wChP/nuOVAfU6wg==}
-    engines: {node: '>=14'}
-    dev: false
-
-  /docusaurus-preset-openapi/0.6.3_bitjua5s3tgsymg7hzgopoaz4a:
-    resolution: {integrity: sha512-zAkQE9SrA4WannHjLhO6PX8QaSqKVATDjFF/ZEj+0jmCikoBzyvsvh+qSGHszAb0Gkg/vKrAXYYBs/Iq1a4O7Q==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      react: ^16.8.4 || ^17.0.0
-      react-dom: ^16.8.4 || ^17.0.0
-    dependencies:
-      docusaurus-plugin-openapi: 0.6.3_zneentkx4scexj4pzosurqq55y
-      docusaurus-plugin-proxy: 0.6.3
-      docusaurus-theme-openapi: 0.6.3_bitjua5s3tgsymg7hzgopoaz4a
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    transitivePeerDependencies:
-      - '@docusaurus/types'
-      - '@swc/core'
-      - debug
-      - esbuild
-      - react-native
-      - redux
-      - supports-color
-      - uglify-js
-      - webpack-cli
-    dev: false
-
-  /docusaurus-theme-openapi/0.6.3_bitjua5s3tgsymg7hzgopoaz4a:
-    resolution: {integrity: sha512-9cFFbfP2arRHxs/HgSX4phbfpwawN1sxY8H8REZYiqwzEpirNE++qkz507K3bYz7WfOqYwYJAITkPtnPaKzjag==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      react: ^16.8.4 || ^17.0.0
-      react-dom: ^16.8.4 || ^17.0.0
-    dependencies:
-      '@mdx-js/react': 1.6.22_react@17.0.2
-      '@monaco-editor/react': 4.4.6_mdctwmt4gahkxlfxf2gmcvzx3a
-      '@reduxjs/toolkit': 1.9.0_csuupx2mfbspdz76fkecdgkise
-      buffer: 6.0.3
-      clsx: 1.2.1
-      crypto-js: 4.1.1
-      docusaurus-plugin-openapi: 0.6.3_zneentkx4scexj4pzosurqq55y
-      immer: 9.0.16
-      lodash: 4.17.21
-      monaco-editor: 0.31.1
-      postman-code-generators: 1.2.2
-      postman-collection: 4.1.5
-      prism-react-renderer: 1.3.5_react@17.0.2
-      process: 0.11.10
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-magic-dropzone: 1.0.1
-      react-redux: 7.2.9_sfoxds7t5ydpegc3knd667wn6m
-      redux-devtools-extension: 2.13.9_redux@4.2.0
-      webpack: 5.75.0
-    transitivePeerDependencies:
-      - '@docusaurus/types'
-      - '@swc/core'
-      - debug
-      - esbuild
-      - react-native
-      - redux
-      - supports-color
-      - uglify-js
-      - webpack-cli
-    dev: false
 
   /dom-converter/0.2.0:
     resolution: {integrity: sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==}

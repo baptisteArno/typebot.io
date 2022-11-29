@@ -1,0 +1,515 @@
+{
+  "id": "clauujawp00011avs2vj97zma",
+  "createdAt": "2022-11-24T09:02:23.737Z",
+  "updatedAt": "2022-11-24T09:12:57.036Z",
+  "icon": "🤖",
+  "name": "Complete bot",
+  "publishedTypebotId": null,
+  "folderId": null,
+  "groups": [
+    {
+      "id": "clauujawn0000vs1a8z6k2k7d",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "clauujawn0001vs1a0mk8docp",
+          "type": "start",
+          "label": "Start",
+          "groupId": "clauujawn0000vs1a8z6k2k7d",
+          "outgoingEdgeId": "clauuk4o300083b6q7b2iowv3"
+        }
+      ],
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "clauujxdc00063b6q42ca20gj",
+      "title": "Welcome",
+      "blocks": [
+        {
+          "id": "clauujxdd00073b6qpejnkzcy",
+          "type": "text",
+          "content": {
+            "html": "<div>Hi there! 👋</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hi there! 👋" }] }
+            ],
+            "plainText": "Hi there! 👋"
+          },
+          "groupId": "clauujxdc00063b6q42ca20gj"
+        },
+        {
+          "id": "clauukaad00093b6q07av51yc",
+          "type": "text",
+          "content": {
+            "html": "<div>Welcome. What&apos;s your name?</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Welcome. What's your name?" }]
+              }
+            ],
+            "plainText": "Welcome. What's your name?"
+          },
+          "groupId": "clauujxdc00063b6q42ca20gj"
+        },
+        {
+          "id": "clauukip8000a3b6qtzl288tu",
+          "type": "text input",
+          "groupId": "clauujxdc00063b6q42ca20gj",
+          "options": {
+            "isLong": false,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vclauuklnc000b3b6q7xchq4yf"
+          },
+          "outgoingEdgeId": "clauul0sk000f3b6q2tvy5wfi"
+        }
+      ],
+      "graphCoordinates": { "x": 5.81640625, "y": 172.359375 }
+    },
+    {
+      "id": "clauukoka000c3b6qe6chawis",
+      "title": "Age",
+      "blocks": [
+        {
+          "id": "clauukoka000d3b6qxqi38cmk",
+          "type": "text",
+          "content": {
+            "html": "<div>Nice to meet you {{Name}}</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Nice to meet you {{Name}}" }]
+              }
+            ],
+            "plainText": "Nice to meet you {{Name}}"
+          },
+          "groupId": "clauukoka000c3b6qe6chawis"
+        },
+        {
+          "id": "clauuku5o000e3b6q90rm30p1",
+          "type": "image",
+          "content": {
+            "url": "https://media2.giphy.com/media/l0MYGb1LuZ3n7dRnO/giphy-downsized.gif?cid=fe3852a3yd2leg4yi8iual3wgyw893zzocuuqlp3wytt802h&rid=giphy-downsized.gif&ct=g"
+          },
+          "groupId": "clauukoka000c3b6qe6chawis"
+        },
+        {
+          "id": "clauul4vg000g3b6qr0q2h0uy",
+          "type": "text",
+          "content": {
+            "html": "<div>How old are you?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "How old are you?" }] }
+            ],
+            "plainText": "How old are you?"
+          },
+          "groupId": "clauukoka000c3b6qe6chawis"
+        },
+        {
+          "id": "clauul90j000h3b6qjfrw9js4",
+          "type": "number input",
+          "groupId": "clauukoka000c3b6qe6chawis",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type a number..." },
+            "variableId": "vclauulfjk000i3b6qmujooweu"
+          },
+          "outgoingEdgeId": "clauum41j000n3b6qpqu12icm"
+        }
+      ],
+      "graphCoordinates": { "x": 361.17578125, "y": 170.10546875 }
+    },
+    {
+      "id": "clauulhqf000j3b6qm8y5oifc",
+      "title": "Is major?",
+      "blocks": [
+        {
+          "id": "clauulhqf000k3b6qsrc1hd74",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "clauulhqg000l3b6qaxn4qli5",
+              "type": 1,
+              "blockId": "clauulhqf000k3b6qsrc1hd74",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "clauuliyn000m3b6q10gwx8ii",
+                    "value": "21",
+                    "variableId": "vclauulfjk000i3b6qmujooweu",
+                    "comparisonOperator": "Greater than"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "clauumi0x000q3b6q9bwkqnmr"
+            }
+          ],
+          "groupId": "clauulhqf000j3b6qm8y5oifc",
+          "outgoingEdgeId": "clauumm5v000t3b6qu62qcft8"
+        }
+      ],
+      "graphCoordinates": { "x": 726.2265625, "y": 240.80078125 }
+    },
+    {
+      "id": "clauum8x7000o3b6qx8hqduf8",
+      "title": "Group #4",
+      "blocks": [
+        {
+          "id": "clauum8x7000p3b6qxjud5hdc",
+          "type": "text",
+          "content": {
+            "html": "<div>Ok, you are an adult then 😁</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Ok, you are an adult then 😁" }]
+              }
+            ],
+            "plainText": "Ok, you are an adult then 😁"
+          },
+          "groupId": "clauum8x7000o3b6qx8hqduf8",
+          "outgoingEdgeId": "clauuom2y000y3b6qkcjy2ri7"
+        }
+      ],
+      "graphCoordinates": { "x": 1073.38671875, "y": 232.25 }
+    },
+    {
+      "id": "clauumjq4000r3b6q8l6bi9ra",
+      "title": "Group #4 copy",
+      "blocks": [
+        {
+          "id": "clauumjq5000s3b6qqjhrklv4",
+          "type": "text",
+          "content": {
+            "html": "<div>Oh, you are a kid 😁</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Oh, you are a kid 😁" }] }
+            ],
+            "plainText": "Oh, you are a kid 😁"
+          },
+          "groupId": "clauumjq4000r3b6q8l6bi9ra",
+          "outgoingEdgeId": "clauuol8t000x3b6qcw1few70"
+        }
+      ],
+      "graphCoordinates": { "x": 1073.984375, "y": 408.6875 }
+    },
+    {
+      "id": "clauuoekh000u3b6q6zmlx7f9",
+      "title": "Magic number",
+      "blocks": [
+        {
+          "id": "clauuoeki000v3b6qvsh7kde1",
+          "type": "Set variable",
+          "groupId": "clauuoekh000u3b6q6zmlx7f9",
+          "options": {
+            "variableId": "vclauuohyp000w3b6qbqrs6c6w",
+            "expressionToEvaluate": "42"
+          }
+        },
+        {
+          "id": "clauuontu000z3b6q3ydx6ao1",
+          "type": "text",
+          "content": {
+            "html": "<div>My magic number is {{Magic number}}</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "My magic number is {{Magic number}}" }]
+              }
+            ],
+            "plainText": "My magic number is {{Magic number}}"
+          },
+          "groupId": "clauuoekh000u3b6q6zmlx7f9",
+          "outgoingEdgeId": "clauuq8je001e3b6qksm4j11g"
+        }
+      ],
+      "graphCoordinates": { "x": 1465.359375, "y": 299.25390625 }
+    },
+    {
+      "id": "clauuq2l6001c3b6qpmq3ivwk",
+      "graphCoordinates": { "x": 1836.43359375, "y": 295.39453125 },
+      "title": "Rate the experience",
+      "blocks": [
+        {
+          "id": "clauuq2l6001d3b6qyltfcvgb",
+          "groupId": "clauuq2l6001c3b6qpmq3ivwk",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "chat-sub-bot",
+            "groupId": "clauupd6q00183b6qcm8qbz62"
+          },
+          "outgoingEdgeId": "clauureo3001h3b6qk6epabxq"
+        }
+      ]
+    },
+    {
+      "id": "clauur7od001f3b6qq140oe55",
+      "graphCoordinates": { "x": 2201.45703125, "y": 299.1328125 },
+      "title": "Multiple input in group",
+      "blocks": [
+        {
+          "id": "clauur7od001g3b6qkoeij3f7",
+          "groupId": "clauur7od001f3b6qq140oe55",
+          "type": "text",
+          "content": {
+            "html": "<div>I&apos;m gonna shoot multiple inputs now...</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "I'm gonna shoot multiple inputs now..." }
+                ]
+              }
+            ],
+            "plainText": "I'm gonna shoot multiple inputs now..."
+          }
+        },
+        {
+          "id": "clauurluf001i3b6qjf78puug",
+          "groupId": "clauur7od001f3b6qq140oe55",
+          "type": "email input",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
+          }
+        },
+        {
+          "id": "clauurokp001j3b6qyrw7boca",
+          "groupId": "clauur7od001f3b6qq140oe55",
+          "type": "url input",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type a URL..." },
+            "retryMessageContent": "This URL doesn't seem to be valid. Can you type it again?"
+          }
+        },
+        {
+          "id": "clauurs1o001k3b6qgrj0xf59",
+          "groupId": "clauur7od001f3b6qq140oe55",
+          "type": "choice input",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
+          "items": [
+            {
+              "id": "clauurs1o001l3b6qu9hr712h",
+              "blockId": "clauurs1o001k3b6qgrj0xf59",
+              "type": 0,
+              "content": "Yes"
+            },
+            {
+              "id": "clauuru6t001m3b6qp8vkt23l",
+              "content": "No",
+              "blockId": "clauurs1o001k3b6qgrj0xf59",
+              "type": 0
+            }
+          ],
+          "outgoingEdgeId": "clauushy3001p3b6qqnyrxgtb"
+        }
+      ]
+    },
+    {
+      "id": "clauusa9z001n3b6qys3xvz1l",
+      "graphCoordinates": { "x": 2558.609375, "y": 297.078125 },
+      "title": "Get Chuck Norris joke",
+      "blocks": [
+        {
+          "id": "clauusaa0001o3b6qgddldaen",
+          "groupId": "clauusa9z001n3b6qys3xvz1l",
+          "type": "text",
+          "content": {
+            "html": "<div>Ok, you are solid 👏</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Ok, you are solid 👏" }] }
+            ],
+            "plainText": "Ok, you are solid 👏"
+          }
+        },
+        {
+          "id": "clauusrfh001q3b6q7xaapi4h",
+          "groupId": "clauusa9z001n3b6qys3xvz1l",
+          "type": "text",
+          "content": {
+            "html": "<div>Let&apos;s trigger a webhook...</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Let's trigger a webhook..." }]
+              }
+            ],
+            "plainText": "Let's trigger a webhook..."
+          }
+        },
+        {
+          "id": "clauut2nq001r3b6qi437ixc7",
+          "groupId": "clauusa9z001n3b6qys3xvz1l",
+          "type": "Webhook",
+          "options": {
+            "responseVariableMapping": [
+              {
+                "id": "clauuvvdr001t3b6qqdxzc057",
+                "bodyPath": "data.value",
+                "variableId": "vclauuwchv001u3b6qepx6e0a9"
+              }
+            ],
+            "variablesForTest": [],
+            "isAdvancedConfig": true,
+            "isCustomBody": false
+          },
+          "webhookId": "chat-webhook-id",
+          "outgoingEdgeId": "clauuwjq2001x3b6qciu53855"
+        }
+      ]
+    },
+    {
+      "id": "clauuwhyl001v3b6qarbpiqbv",
+      "graphCoordinates": { "x": 2900.9609375, "y": 288.29296875 },
+      "title": "Display joke",
+      "blocks": [
+        {
+          "id": "clauuwhyl001w3b6q7ai0zeyt",
+          "groupId": "clauuwhyl001v3b6qarbpiqbv",
+          "type": "text",
+          "content": {
+            "html": "<div>{{Joke}}</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "{{Joke}}" }] }],
+            "plainText": "{{Joke}}"
+          }
+        }
+      ]
+    }
+  ],
+  "variables": [
+    { "id": "vclauuklnc000b3b6q7xchq4yf", "name": "Name" },
+    { "id": "vclauulfjk000i3b6qmujooweu", "name": "Age" },
+    { "id": "vclauuohyp000w3b6qbqrs6c6w", "name": "Magic number" },
+    { "id": "vclauuwchv001u3b6qepx6e0a9", "name": "Joke" }
+  ],
+  "edges": [
+    {
+      "id": "clauuk4o300083b6q7b2iowv3",
+      "to": { "groupId": "clauujxdc00063b6q42ca20gj" },
+      "from": {
+        "blockId": "clauujawn0001vs1a0mk8docp",
+        "groupId": "clauujawn0000vs1a8z6k2k7d"
+      }
+    },
+    {
+      "id": "clauul0sk000f3b6q2tvy5wfi",
+      "to": { "groupId": "clauukoka000c3b6qe6chawis" },
+      "from": {
+        "blockId": "clauukip8000a3b6qtzl288tu",
+        "groupId": "clauujxdc00063b6q42ca20gj"
+      }
+    },
+    {
+      "id": "clauum41j000n3b6qpqu12icm",
+      "to": { "groupId": "clauulhqf000j3b6qm8y5oifc" },
+      "from": {
+        "blockId": "clauul90j000h3b6qjfrw9js4",
+        "groupId": "clauukoka000c3b6qe6chawis"
+      }
+    },
+    {
+      "id": "clauumi0x000q3b6q9bwkqnmr",
+      "to": { "groupId": "clauum8x7000o3b6qx8hqduf8" },
+      "from": {
+        "itemId": "clauulhqg000l3b6qaxn4qli5",
+        "blockId": "clauulhqf000k3b6qsrc1hd74",
+        "groupId": "clauulhqf000j3b6qm8y5oifc"
+      }
+    },
+    {
+      "id": "clauumm5v000t3b6qu62qcft8",
+      "to": { "groupId": "clauumjq4000r3b6q8l6bi9ra" },
+      "from": {
+        "blockId": "clauulhqf000k3b6qsrc1hd74",
+        "groupId": "clauulhqf000j3b6qm8y5oifc"
+      }
+    },
+    {
+      "id": "clauuol8t000x3b6qcw1few70",
+      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" },
+      "from": {
+        "blockId": "clauumjq5000s3b6qqjhrklv4",
+        "groupId": "clauumjq4000r3b6q8l6bi9ra"
+      }
+    },
+    {
+      "id": "clauuom2y000y3b6qkcjy2ri7",
+      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" },
+      "from": {
+        "blockId": "clauum8x7000p3b6qxjud5hdc",
+        "groupId": "clauum8x7000o3b6qx8hqduf8"
+      }
+    },
+    {
+      "from": {
+        "groupId": "clauuoekh000u3b6q6zmlx7f9",
+        "blockId": "clauuontu000z3b6q3ydx6ao1"
+      },
+      "to": { "groupId": "clauuq2l6001c3b6qpmq3ivwk" },
+      "id": "clauuq8je001e3b6qksm4j11g"
+    },
+    {
+      "from": {
+        "groupId": "clauuq2l6001c3b6qpmq3ivwk",
+        "blockId": "clauuq2l6001d3b6qyltfcvgb"
+      },
+      "to": { "groupId": "clauur7od001f3b6qq140oe55" },
+      "id": "clauureo3001h3b6qk6epabxq"
+    },
+    {
+      "from": {
+        "groupId": "clauur7od001f3b6qq140oe55",
+        "blockId": "clauurs1o001k3b6qgrj0xf59"
+      },
+      "to": { "groupId": "clauusa9z001n3b6qys3xvz1l" },
+      "id": "clauushy3001p3b6qqnyrxgtb"
+    },
+    {
+      "from": {
+        "groupId": "clauusa9z001n3b6qys3xvz1l",
+        "blockId": "clauut2nq001r3b6qi437ixc7"
+      },
+      "to": { "groupId": "clauuwhyl001v3b6qarbpiqbv" },
+      "id": "clauuwjq2001x3b6qciu53855"
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": { "font": "Open Sans", "background": { "type": "None" } }
+  },
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isResultSavingEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": false
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}

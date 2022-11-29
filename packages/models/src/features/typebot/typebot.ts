@@ -3,8 +3,10 @@ import { settingsSchema } from './settings'
 import { blockSchema } from '../blocks'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
+import { Typebot as TypebotPrisma } from 'db'
+import { schemaForType } from '../utils'
 
-const groupSchema = z.object({
+export const groupSchema = z.object({
   id: z.string(),
   title: z.string(),
   graphCoordinates: z.object({
@@ -25,7 +27,7 @@ const targetSchema = z.object({
   blockId: z.string().optional(),
 })
 
-const edgeSchema = z.object({
+export const edgeSchema = z.object({
   id: z.string(),
   from: sourceSchema,
   to: targetSchema,
@@ -37,27 +39,29 @@ const resultsTablePreferencesSchema = z.object({
   columnsWidth: z.record(z.string(), z.number()),
 })
 
-const typebotSchema = z.object({
-  version: z.enum(['2']).optional(),
-  id: z.string(),
-  name: z.string(),
-  groups: z.array(groupSchema),
-  edges: z.array(edgeSchema),
-  variables: z.array(variableSchema),
-  theme: themeSchema,
-  settings: settingsSchema,
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  icon: z.string().nullable(),
-  publishedTypebotId: z.string().nullable(),
-  folderId: z.string().nullable(),
-  publicId: z.string().nullable(),
-  customDomain: z.string().nullable(),
-  workspaceId: z.string(),
-  resultsTablePreferences: resultsTablePreferencesSchema.optional(),
-  isArchived: z.boolean(),
-  isClosed: z.boolean(),
-})
+export const typebotSchema = schemaForType<TypebotPrisma>()(
+  z.object({
+    version: z.enum(['2']).optional(),
+    id: z.string(),
+    name: z.string(),
+    groups: z.array(groupSchema),
+    edges: z.array(edgeSchema),
+    variables: z.array(variableSchema),
+    theme: themeSchema,
+    settings: settingsSchema,
+    createdAt: z.date(),
+    updatedAt: z.date(),
+    icon: z.string().nullable(),
+    publishedTypebotId: z.string().nullable(),
+    folderId: z.string().nullable(),
+    publicId: z.string().nullable(),
+    customDomain: z.string().nullable(),
+    workspaceId: z.string(),
+    resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
+    isArchived: z.boolean(),
+    isClosed: z.boolean(),
+  })
+)
 
 export type Typebot = z.infer<typeof typebotSchema>
 export type Target = z.infer<typeof targetSchema>

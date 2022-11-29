@@ -1,6 +1,6 @@
 import { duplicateWebhookQueries } from '@/features/blocks/integrations/webhook'
 import cuid from 'cuid'
-import { Plan } from 'db'
+import { Plan, Prisma } from 'db'
 import {
   ChoiceInputBlock,
   ConditionBlock,
@@ -38,7 +38,10 @@ export const importTypebotQuery = async (typebot: Typebot, userPlan: Plan) => {
 const duplicateTypebot = (
   typebot: Typebot,
   userPlan: Plan
-): { typebot: Typebot; webhookIdsMapping: Map<string, string> } => {
+): {
+  typebot: Omit<Prisma.TypebotUncheckedCreateInput, 'id'> & { id: string }
+  webhookIdsMapping: Map<string, string>
+} => {
   const groupIdsMapping = generateOldNewIdsMapping(typebot.groups)
   const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
   const webhookIdsMapping = generateOldNewIdsMapping(
@@ -119,8 +122,8 @@ const duplicateTypebot = (
               general: { ...typebot.settings.general, isBrandingEnabled: true },
             }
           : typebot.settings,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
     },
     webhookIdsMapping,

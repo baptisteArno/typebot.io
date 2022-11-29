@@ -1,6 +1,6 @@
 import { authenticateUser } from '@/features/auth/api'
-import { getLinkedTypebots } from '@/features/typebotLink/api'
-import { parseSampleResult } from '@/features/webhook/api'
+import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
+import { parseSampleResult } from '@/features/blocks/integrations/webhook/api'
 import prisma from '@/lib/prisma'
 import { Typebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'

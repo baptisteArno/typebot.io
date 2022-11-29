@@ -84,7 +84,7 @@ model Workspace {
   storageLimitFirstEmailSentAt  DateTime?
   chatsLimitSecondEmailSentAt   DateTime?
   storageLimitSecondEmailSentAt DateTime?
-  claimableCustomPlan          ClaimableCustomPlan?
+  claimableCustomPlan           ClaimableCustomPlan?
   customChatsLimit              Int?
   customStorageLimit            Int?
   customSeatsLimit              Int?
@@ -269,18 +269,25 @@ model Webhook {
 }
 
 model ClaimableCustomPlan {
-  id           String @id @default(cuid())
-  createdAt    DateTime @default(now())
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
   claimedAt    DateTime?
   name         String
   description  String?
   price        Int
   currency     String
-  workspaceId  String @unique
+  workspaceId  String    @unique
   workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   chatsLimit   Int
   storageLimit Int
   seatsLimit   Int
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  state     Json
 }
 
 enum WorkspaceRole {

@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { isNotDefined } from 'utils'
 
 export const saveLog = (
   status: 'error' | 'success',
@@ -12,12 +13,13 @@ export const saveLog = (
       resultId,
       status,
       description: message,
-      details: formatDetails(details) as string,
+      details: formatDetails(details) as string | null,
     },
   })
 }
 
 const formatDetails = (details: unknown) => {
+  if (isNotDefined(details)) return null
   try {
     return JSON.stringify(details, null, 2).substring(0, 1000)
   } catch {

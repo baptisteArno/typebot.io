@@ -20,9 +20,7 @@
   },
   "peerDependencies": {
     "aws-sdk": "2.1152.0",
-    "db": "workspace:*",
-    "models": "workspace:*",
-    "next": "12.0.0",
+    "next": "13.0.0",
     "nodemailer": "6.7.8"
   }
 }

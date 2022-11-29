@@ -20,9 +20,9 @@ import { stringify } from 'qs'
 import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import prisma from '@/lib/prisma'
-import { getLinkedTypebots } from '@/features/typebotLink/api'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
-import { parseSampleResult } from '@/features/webhook/api'
+import { parseSampleResult } from '@/features/blocks/integrations/webhook/api'
+import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
 
 const cors = initMiddleware(Cors())
 
@@ -149,10 +149,14 @@ export const executeWebhook =
     }
     try {
       const response = await got(request.url, omit(request, 'url'))
-      await saveSuccessLog(resultId, 'Webhook successfuly executed.', {
-        statusCode: response.statusCode,
-        request,
-        response: safeJsonParse(response.body).data,
+      await saveSuccessLog({
+        resultId,
+        message: 'Webhook successfuly executed.',
+        details: {
+          statusCode: response.statusCode,
+          request,
+          response: safeJsonParse(response.body).data,
+        },
       })
       return {
         statusCode: response.statusCode,
@@ -164,9 +168,13 @@ export const executeWebhook =
           statusCode: error.response.statusCode,
           data: safeJsonParse(error.response.body as string).data,
         }
-        await saveErrorLog(resultId, 'Webhook returned an error', {
-          request,
-          response,
+        await saveErrorLog({
+          resultId,
+          message: 'Webhook returned an error',
+          details: {
+            request,
+            response,
+          },
         })
         return response
       }
@@ -175,9 +183,13 @@ export const executeWebhook =
         data: { message: `Error from Typebot server: ${error}` },
       }
       console.error(error)
-      await saveErrorLog(resultId, 'Webhook failed to execute', {
-        request,
-        response,
+      await saveErrorLog({
+        resultId,
+        message: 'Webhook failed to execute',
+        details: {
+          request,
+          response,
+        },
       })
       return response
     }
