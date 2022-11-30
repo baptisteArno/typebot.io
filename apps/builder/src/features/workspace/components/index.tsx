@@ -1,1 +1,2 @@
-export { WorkspaceSettingsModal } from './WorkspaceSettingsModal'
+export * from './WorkspaceSettingsModal'
+export * from './WorkspaceDropdown'

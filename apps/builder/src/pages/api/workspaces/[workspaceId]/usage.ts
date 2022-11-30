@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const workspaceId = req.query.workspaceId as string
     const now = new Date()
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
     const totalChatsUsed = await prisma.result.count({
       where: {
         typebot: {

@@ -1,186 +1,170 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { byId } from 'utils'
-import { Plan, Workspace, WorkspaceRole } from 'db'
+import { WorkspaceRole } from 'db'
 import { useUser } from '../account/UserProvider'
 import { useRouter } from 'next/router'
-import { useTypebot } from '../editor/providers/TypebotProvider'
-import { useWorkspaces } from './hooks/useWorkspaces'
-import { createWorkspaceQuery } from './queries/createWorkspaceQuery'
-import { deleteWorkspaceQuery } from './queries/deleteWorkspaceQuery'
-import { updateWorkspaceQuery } from './queries/updateWorkspaceQuery'
-import { WorkspaceWithMembers } from './types'
+import { trpc } from '@/lib/trpc'
+import { Workspace } from 'models'
+import { useToast } from '@/hooks/useToast'
+import { parseNewName, setWorkspaceIdInLocalStorage } from './utils'
+import { useTypebot } from '../editor'
 
 const workspaceContext = createContext<{
-  workspaces?: WorkspaceWithMembers[]
-  isLoading: boolean
-  workspace?: WorkspaceWithMembers
-  canEdit: boolean
+  workspaces: Pick<Workspace, 'id' | 'name' | 'icon' | 'plan'>[]
+  workspace?: Workspace
   currentRole?: WorkspaceRole
   switchWorkspace: (workspaceId: string) => void
   createWorkspace: (name?: string) => Promise<void>
-  updateWorkspace: (
-    workspaceId: string,
-    updates: Partial<Workspace>
-  ) => Promise<void>
+  updateWorkspace: (updates: { icon?: string; name?: string }) => void
   deleteCurrentWorkspace: () => Promise<void>
-  refreshWorkspace: (expectedUpdates: Partial<Workspace>) => void
+  refreshWorkspace: () => void
   //@ts-ignore
 }>({})
 
 type WorkspaceContextProps = {
+  typebotId?: string
   children: ReactNode
 }
 
-const getNewWorkspaceName = (
-  userFullName: string | undefined,
-  existingWorkspaces: Workspace[]
-) => {
-  const workspaceName = userFullName
-    ? `${userFullName}'s workspace`
-    : 'My workspace'
-  let newName = workspaceName
-  let i = 1
-  while (existingWorkspaces.find((w) => w.name === newName)) {
-    newName = `${workspaceName} (${i})`
-    i++
-  }
-  return newName
-}
-
-export const WorkspaceProvider = ({ children }: WorkspaceContextProps) => {
+export const WorkspaceProvider = ({
+  typebotId,
+  children,
+}: WorkspaceContextProps) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
+  const [workspaceId, setWorkspaceId] = useState<string | undefined>()
+
   const { typebot } = useTypebot()
-  const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
-  const [currentWorkspace, setCurrentWorkspace] =
-    useState<WorkspaceWithMembers>()
-  const [pendingWorkspaceId, setPendingWorkspaceId] = useState<string>()
 
-  const canEdit =
-    workspaces
-      ?.find(byId(currentWorkspace?.id))
-      ?.members.find((m) => m.userId === userId)?.role === WorkspaceRole.ADMIN
+  const trpcContext = trpc.useContext()
 
-  const currentRole = currentWorkspace?.members.find(
-    (m) => m.userId === userId
+  const { data: workspacesData } = trpc.workspace.listWorkspaces.useQuery(
+    undefined,
+    {
+      enabled: !!user,
+    }
+  )
+  const workspaces = useMemo(
+    () => workspacesData?.workspaces ?? [],
+    [workspacesData?.workspaces]
+  )
+
+  const { data: workspaceData } = trpc.workspace.getWorkspace.useQuery(
+    { workspaceId: workspaceId! },
+    { enabled: !!workspaceId }
+  )
+
+  const { data: membersData } = trpc.workspace.listMembersInWorkspace.useQuery(
+    { workspaceId: workspaceId! },
+    { enabled: !!workspaceId }
+  )
+
+  const workspace = workspaceData?.workspace
+  const members = membersData?.members
+
+  const { showToast } = useToast()
+
+  const createWorkspaceMutation = trpc.workspace.createWorkspace.useMutation({
+    onError: (error) => showToast({ description: error.message }),
+    onSuccess: async () => {
+      trpcContext.workspace.listWorkspaces.invalidate()
+    },
+  })
+
+  const updateWorkspaceMutation = trpc.workspace.updateWorkspace.useMutation({
+    onError: (error) => showToast({ description: error.message }),
+    onSuccess: async () => {
+      trpcContext.workspace.getWorkspace.invalidate()
+    },
+  })
+
+  const deleteWorkspaceMutation = trpc.workspace.deleteWorkspace.useMutation({
+    onError: (error) => showToast({ description: error.message }),
+    onSuccess: async () => {
+      trpcContext.workspace.listWorkspaces.invalidate()
+    },
+  })
+
+  const currentRole = members?.find(
+    (member) =>
+      member.user.email === user?.email && member.workspaceId === workspaceId
   )?.role
 
   useEffect(() => {
-    if (!workspaces || workspaces.length === 0 || currentWorkspace) return
+    if (
+      !workspaces ||
+      workspaces.length === 0 ||
+      workspaceId ||
+      (typebotId && !typebot?.workspaceId)
+    )
+      return
     const lastWorspaceId =
-      pendingWorkspaceId ??
+      typebot?.workspaceId ??
       query.workspaceId?.toString() ??
       localStorage.getItem('workspaceId')
-    const defaultWorkspace = lastWorspaceId
-      ? workspaces.find(byId(lastWorspaceId))
-      : workspaces.find((w) =>
-          w.members.some(
-            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
-          )
-        )
-    setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [workspaces?.length])
 
-  useEffect(() => {
-    if (!currentWorkspace?.id) return
-    localStorage.setItem('workspaceId', currentWorkspace.id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWorkspace?.id])
+    const defaultWorkspaceId = lastWorspaceId
+      ? workspaces.find(byId(lastWorspaceId))?.id
+      : members?.find((member) => member.role === WorkspaceRole.ADMIN)
+          ?.workspaceId
 
-  useEffect(() => {
-    if (!currentWorkspace) return setPendingWorkspaceId(typebot?.workspaceId)
-    if (!typebot?.workspaceId || typebot.workspaceId === currentWorkspace.id)
-      return
-    switchWorkspace(typebot.workspaceId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot?.workspaceId])
+    const newWorkspaceId = defaultWorkspaceId ?? workspaces[0].id
+    setWorkspaceIdInLocalStorage(newWorkspaceId)
+    setWorkspaceId(newWorkspaceId)
+  }, [
+    members,
+    query.workspaceId,
+    typebot?.workspaceId,
+    typebotId,
+    userId,
+    workspaceId,
+    workspaces,
+  ])
 
   const switchWorkspace = (workspaceId: string) => {
-    const newWorkspace = workspaces?.find(byId(workspaceId))
-    if (!newWorkspace) return
-    setCurrentWorkspace(newWorkspace)
+    setWorkspaceId(workspaceId)
+    setWorkspaceIdInLocalStorage(workspaceId)
   }
 
   const createWorkspace = async (userFullName?: string) => {
     if (!workspaces) return
-    const newWorkspaceName = getNewWorkspaceName(userFullName, workspaces)
-    const { data, error } = await createWorkspaceQuery({
-      name: newWorkspaceName,
-      plan: Plan.FREE,
-    })
-    if (error || !data) return
-    const { workspace } = data
-    const newWorkspace = {
-      ...workspace,
-      members: [
-        {
-          role: WorkspaceRole.ADMIN,
-          userId: userId as string,
-          workspaceId: workspace.id as string,
-        },
-      ],
-    }
-    mutate({
-      workspaces: [...workspaces, newWorkspace],
-    })
-    setCurrentWorkspace(newWorkspace)
+    const name = parseNewName(userFullName, workspaces)
+    const { workspace } = await createWorkspaceMutation.mutateAsync({ name })
+    setWorkspaceId(workspace.id)
   }
 
-  const updateWorkspace = async (
-    workspaceId: string,
-    updates: Partial<Workspace>
-  ) => {
-    const { data } = await updateWorkspaceQuery({ id: workspaceId, ...updates })
-    if (!data || !currentWorkspace) return
-    setCurrentWorkspace({ ...currentWorkspace, ...updates })
-    mutate({
-      workspaces: (workspaces ?? []).map((w) =>
-        w.id === workspaceId ? { ...data.workspace, members: w.members } : w
-      ),
+  const updateWorkspace = (updates: { icon?: string; name?: string }) => {
+    if (!workspaceId) return
+    updateWorkspaceMutation.mutate({
+      workspaceId,
+      ...updates,
     })
   }
 
   const deleteCurrentWorkspace = async () => {
-    if (!currentWorkspace || !workspaces || workspaces.length < 2) return
-    const { data } = await deleteWorkspaceQuery(currentWorkspace.id)
-    if (!data || !currentWorkspace) return
-    const newWorkspaces = (workspaces ?? []).filter((w) =>
-      w.id === currentWorkspace.id
-        ? { ...data.workspace, members: w.members }
-        : w
-    )
-    setCurrentWorkspace(newWorkspaces[0])
-    mutate({
-      workspaces: newWorkspaces,
-    })
+    if (!workspaceId || !workspaces || workspaces.length < 2) return
+    await deleteWorkspaceMutation.mutateAsync({ workspaceId })
+    setWorkspaceId(workspaces[0].id)
   }
 
-  const refreshWorkspace = (expectedUpdates: Partial<Workspace>) => {
-    if (!currentWorkspace) return
-    const updatedWorkspace = { ...currentWorkspace, ...expectedUpdates }
-    mutate({
-      workspaces: (workspaces ?? []).map((w) =>
-        w.id === currentWorkspace.id ? updatedWorkspace : w
-      ),
-    })
-    setCurrentWorkspace(updatedWorkspace)
+  const refreshWorkspace = () => {
+    trpcContext.workspace.getWorkspace.invalidate()
   }
 
   return (
     <workspaceContext.Provider
       value={{
         workspaces,
-        workspace: currentWorkspace,
-        isLoading,
-        canEdit,
+        workspace,
         currentRole,
         switchWorkspace,
         createWorkspace,

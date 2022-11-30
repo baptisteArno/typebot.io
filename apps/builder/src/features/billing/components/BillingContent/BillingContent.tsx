@@ -12,6 +12,7 @@ import { ChangePlanForm } from '../ChangePlanForm'
 export const BillingContent = () => {
   const { workspace, refreshWorkspace } = useWorkspace()
 
+  console.log(workspace)
   if (!workspace) return null
   return (
     <Stack spacing="10" w="full">
@@ -20,13 +21,7 @@ export const BillingContent = () => {
         <CurrentSubscriptionContent
           plan={workspace.plan}
           stripeId={workspace.stripeId}
-          onCancelSuccess={() =>
-            refreshWorkspace({
-              plan: Plan.FREE,
-              additionalChatsIndex: 0,
-              additionalStorageIndex: 0,
-            })
-          }
+          onCancelSuccess={refreshWorkspace}
         />
         <HStack maxW="500px">
           <StripeClimateLogo />

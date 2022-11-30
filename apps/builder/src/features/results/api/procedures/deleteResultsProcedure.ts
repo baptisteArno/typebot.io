@@ -17,12 +17,17 @@ export const deleteResultsProcedure = authenticatedProcedure
   .input(
     z.object({
       typebotId: z.string(),
-      ids: z.string().optional(),
+      resultIds: z
+        .string()
+        .describe(
+          'Comma separated list of ids. If not provided, all results will be deleted. ⚠️'
+        )
+        .optional(),
     })
   )
   .output(z.void())
   .mutation(async ({ input, ctx: { user } }) => {
-    const idsArray = input.ids?.split(',')
+    const idsArray = input.resultIds?.split(',')
     const { typebotId } = input
     const { success } = await archiveResults({
       typebotId,

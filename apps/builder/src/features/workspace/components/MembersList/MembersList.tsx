@@ -23,10 +23,12 @@ import { Member } from '../../types'
 
 export const MembersList = () => {
   const { user } = useUser()
-  const { workspace, canEdit } = useWorkspace()
+  const { workspace, currentRole } = useWorkspace()
   const { members, invitations, isLoading, mutate } = useMembers({
     workspaceId: workspace?.id,
   })
+
+  const canEdit = currentRole === WorkspaceRole.ADMIN
 
   const handleDeleteMemberClick = (memberId: string) => async () => {
     if (!workspace) return

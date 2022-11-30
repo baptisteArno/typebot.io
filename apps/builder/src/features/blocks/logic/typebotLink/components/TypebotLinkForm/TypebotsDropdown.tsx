@@ -24,7 +24,6 @@ export const TypebotsDropdown = ({
   const { showToast } = useToast()
   const { typebots, isLoading } = useTypebots({
     workspaceId: currentWorkspaceId,
-    allFolders: true,
     onError: (e) => showToast({ title: e.name, description: e.message }),
   })
   const currentTypebot = useMemo(

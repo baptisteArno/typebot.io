@@ -90,7 +90,7 @@ export const ResultsActionButtons = ({
     if (!workspaceId || !typebotId) return
     deleteResultsMutation.mutate({
       typebotId,
-      ids:
+      resultIds:
         totalSelected === totalResults
           ? undefined
           : selectedResultsId.join(','),

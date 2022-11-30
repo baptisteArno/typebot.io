@@ -1,8 +1,8 @@
 import { generateOpenApiDocument } from 'trpc-openapi'
 import { writeFileSync } from 'fs'
-import { appRouter } from './routers/v1/_app'
+import { trpcRouter } from './routers/v1/trpcRouter'
 
-const openApiDocument = generateOpenApiDocument(appRouter, {
+const openApiDocument = generateOpenApiDocument(trpcRouter, {
   title: 'Builder API',
   version: '1.0.0',
   baseUrl: 'https://app.typebot.io/api/v1',

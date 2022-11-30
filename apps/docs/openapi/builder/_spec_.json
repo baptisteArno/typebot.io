@@ -10,6 +10,1041 @@
     }
   ],
   "paths": {
+    "/workspaces": {
+      "get": {
+        "operationId": "query.workspace.listWorkspaces",
+        "summary": "List workspaces",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workspaces": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "plan": {
+                            "type": "string",
+                            "enum": [
+                              "FREE",
+                              "STARTER",
+                              "PRO",
+                              "LIFETIME",
+                              "OFFERED",
+                              "CUSTOM"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "icon",
+                          "plan"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "workspaces"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "mutation.workspace.createWorkspace",
+        "summary": "Create workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workspace": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "plan": {
+                          "type": "string",
+                          "enum": [
+                            "FREE",
+                            "STARTER",
+                            "PRO",
+                            "LIFETIME",
+                            "OFFERED",
+                            "CUSTOM"
+                          ]
+                        },
+                        "stripeId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "additionalChatsIndex": {
+                          "type": "number"
+                        },
+                        "additionalStorageIndex": {
+                          "type": "number"
+                        },
+                        "chatsLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "chatsLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "customChatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customStorageLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customSeatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "createdAt",
+                        "icon",
+                        "plan",
+                        "stripeId",
+                        "additionalChatsIndex",
+                        "additionalStorageIndex",
+                        "chatsLimitFirstEmailSentAt",
+                        "chatsLimitSecondEmailSentAt",
+                        "storageLimitFirstEmailSentAt",
+                        "storageLimitSecondEmailSentAt",
+                        "customChatsLimit",
+                        "customStorageLimit",
+                        "customSeatsLimit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "workspace"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceId}": {
+      "get": {
+        "operationId": "query.workspace.getWorkspace",
+        "summary": "Get workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workspace": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "plan": {
+                          "type": "string",
+                          "enum": [
+                            "FREE",
+                            "STARTER",
+                            "PRO",
+                            "LIFETIME",
+                            "OFFERED",
+                            "CUSTOM"
+                          ]
+                        },
+                        "stripeId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "additionalChatsIndex": {
+                          "type": "number"
+                        },
+                        "additionalStorageIndex": {
+                          "type": "number"
+                        },
+                        "chatsLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "chatsLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "customChatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customStorageLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customSeatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "createdAt",
+                        "icon",
+                        "plan",
+                        "stripeId",
+                        "additionalChatsIndex",
+                        "additionalStorageIndex",
+                        "chatsLimitFirstEmailSentAt",
+                        "chatsLimitSecondEmailSentAt",
+                        "storageLimitFirstEmailSentAt",
+                        "storageLimitSecondEmailSentAt",
+                        "customChatsLimit",
+                        "customStorageLimit",
+                        "customSeatsLimit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "workspace"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "mutation.workspace.updateWorkspace",
+        "summary": "Update workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "icon": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workspace": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "plan": {
+                          "type": "string",
+                          "enum": [
+                            "FREE",
+                            "STARTER",
+                            "PRO",
+                            "LIFETIME",
+                            "OFFERED",
+                            "CUSTOM"
+                          ]
+                        },
+                        "stripeId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "additionalChatsIndex": {
+                          "type": "number"
+                        },
+                        "additionalStorageIndex": {
+                          "type": "number"
+                        },
+                        "chatsLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "chatsLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "customChatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customStorageLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customSeatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "createdAt",
+                        "icon",
+                        "plan",
+                        "stripeId",
+                        "additionalChatsIndex",
+                        "additionalStorageIndex",
+                        "chatsLimitFirstEmailSentAt",
+                        "chatsLimitSecondEmailSentAt",
+                        "storageLimitFirstEmailSentAt",
+                        "storageLimitSecondEmailSentAt",
+                        "customChatsLimit",
+                        "customStorageLimit",
+                        "customSeatsLimit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "workspace"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "mutation.workspace.deleteWorkspace",
+        "summary": "Delete workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/workspaces/{workspaceId}/members": {
+      "get": {
+        "operationId": "query.workspace.listMembersInWorkspace",
+        "summary": "List members in workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "email": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "image": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "email",
+                              "image"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "ADMIN",
+                              "MEMBER",
+                              "GUEST"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "workspaceId",
+                          "user",
+                          "role"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "members"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots": {
+      "get": {
+        "operationId": "query.typebot.listTypebots",
+        "summary": "List typebots",
+        "tags": [
+          "Typebot"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "folderId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "typebots": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "publishedTypebotId": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "icon",
+                          "id",
+                          "publishedTypebotId"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "typebots"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/webhookBlocks": {
+      "get": {
+        "operationId": "query.webhook.listWebhookBlocks",
+        "summary": "List webhook blocks",
+        "description": "Returns a list of all the webhook blocks that you can subscribe to.",
+        "tags": [
+          "Webhook"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "webhookBlocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "webhookBlocks"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
+      "post": {
+        "operationId": "query.webhook.subscribeWebhook",
+        "summary": "Subscribe to webhook block",
+        "tags": [
+          "Webhook"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
+      "post": {
+        "operationId": "query.webhook.unsubscribeWebhook",
+        "summary": "Unsubscribe from webhook block",
+        "tags": [
+          "Webhook"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "url"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
+      "get": {
+        "operationId": "query.webhook.getResultExample",
+        "summary": "Get result example",
+        "description": "Returns \"fake\" result for webhook block to help you anticipate how the webhook will behave.",
+        "tags": [
+          "Webhook"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resultExample": {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string",
+                              "enum": [
+                                "This is a sample result, it has been generated ⬇️"
+                              ]
+                            },
+                            "Submitted at": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "message",
+                            "Submitted at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": {
+                            "anyOf": [
+                              {
+                                "not": {}
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "description": "Can contain any field."
+                    }
+                  },
+                  "required": [
+                    "resultExample"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
     "/typebots/{typebotId}/results": {
       "get": {
         "operationId": "query.results.getResults",
@@ -225,12 +1260,13 @@
             }
           },
           {
-            "name": "ids",
+            "name": "resultIds",
             "in": "query",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Comma separated list of ids. If not provided, all results will be deleted. ⚠️"
           }
         ],
         "responses": {

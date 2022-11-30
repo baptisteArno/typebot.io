@@ -55,7 +55,7 @@ const App = ({
           <UserProvider>
             {typebotId ? (
               <TypebotProvider typebotId={typebotId}>
-                <WorkspaceProvider>
+                <WorkspaceProvider typebotId={typebotId}>
                   <Component />
                   <SupportBubble />
                 </WorkspaceProvider>

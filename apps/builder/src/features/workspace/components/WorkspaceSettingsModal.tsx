@@ -15,7 +15,7 @@ import {
   UsersIcon,
 } from '@/components/icons'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { GraphNavigation, User, Workspace } from 'db'
+import { GraphNavigation, User, Workspace, WorkspaceRole } from 'db'
 import { useState } from 'react'
 import { MembersList } from './MembersList'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
@@ -44,8 +44,12 @@ export const WorkspaceSettingsModal = ({
   workspace,
   onClose,
 }: Props) => {
-  const { canEdit } = useWorkspace()
+  const { currentRole } = useWorkspace()
   const [selectedTab, setSelectedTab] = useState<SettingsTab>('my-account')
+
+  console.log(currentRole)
+
+  const canEditWorkspace = currentRole === WorkspaceRole.ADMIN
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -94,7 +98,7 @@ export const WorkspaceSettingsModal = ({
               <Text pl="4" color="gray.500">
                 Workspace
               </Text>
-              {canEdit && (
+              {canEditWorkspace && (
                 <Button
                   variant={
                     selectedTab === 'workspace-settings' ? 'solid' : 'ghost'
@@ -124,7 +128,7 @@ export const WorkspaceSettingsModal = ({
               >
                 Members
               </Button>
-              {canEdit && (
+              {canEditWorkspace && (
                 <Button
                   variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
                   onClick={() => setSelectedTab('billing')}

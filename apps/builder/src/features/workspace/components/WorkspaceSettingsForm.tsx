@@ -19,12 +19,11 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
 
   const handleNameChange = (name: string) => {
     if (!workspace?.id) return
-    updateWorkspace(workspace?.id, { name })
+    updateWorkspace({ name })
   }
 
   const handleChangeIcon = (icon: string) => {
-    if (!workspace?.id) return
-    updateWorkspace(workspace?.id, { icon })
+    updateWorkspace({ icon })
   }
 
   const handleDeleteClick = async () => {

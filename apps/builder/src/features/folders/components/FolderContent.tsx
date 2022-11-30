@@ -67,10 +67,10 @@ export const FolderContent = ({ folder }: Props) => {
   const {
     typebots,
     isLoading: isTypebotLoading,
-    mutate: mutateTypebots,
+    refetch: refetchTypebots,
   } = useTypebots({
     workspaceId: workspace?.id,
-    folderId: folder?.id,
+    folderId: folder === null ? 'root' : folder.id,
     onError: (error) => {
       showToast({
         title: "Couldn't fetch typebots",
@@ -85,7 +85,7 @@ export const FolderContent = ({ folder }: Props) => {
       folderId: folderId === 'root' ? null : folderId,
     })
     if (error) showToast({ description: error.message })
-    mutateTypebots({ typebots: typebots.filter((t) => t.id !== typebotId) })
+    refetchTypebots()
   }
 
   const handleCreateFolder = async () => {
@@ -105,7 +105,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const handleTypebotDeleted = (deletedId: string) => {
     if (!typebots) return
-    mutateTypebots({ typebots: typebots.filter((t) => t.id !== deletedId) })
+    refetchTypebots()
   }
 
   const handleFolderDeleted = (deletedId: string) => {

@@ -6,8 +6,9 @@ import {
 import { HttpMethod } from 'models'
 import cuid from 'cuid'
 import { getTestAsset } from '@/test/utils/playwright'
+import { apiToken } from 'utils/playwright/databaseSetup'
 
-test.describe('Webhook block', () => {
+test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {
     const typebotId = cuid()
     await importTypebotInDatabase(
@@ -98,3 +99,83 @@ const addTestVariable = async (page: Page, name: string, value: string) => {
   await page.click(`text="${name}"`)
   await page.fill('input >> nth=-1', value)
 }
+
+test.describe('API', () => {
+  const typebotId = 'webhook-flow'
+
+  test.beforeAll(async () => {
+    try {
+      await importTypebotInDatabase(getTestAsset('typebots/api.json'), {
+        id: typebotId,
+      })
+      await createWebhook(typebotId)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
+  test('can get webhook blocks', async ({ request }) => {
+    const response = await request.get(
+      `/api/v1/typebots/${typebotId}/webhookBlocks`,
+      {
+        headers: { Authorization: `Bearer ${apiToken}` },
+      }
+    )
+    const { webhookBlocks } = await response.json()
+    expect(webhookBlocks).toHaveLength(1)
+    expect(webhookBlocks[0]).toEqual({
+      id: 'webhookBlock',
+      label: 'Webhook > webhookBlock',
+    })
+  })
+
+  test('can subscribe webhook', async ({ request }) => {
+    const url = 'https://test.com'
+    const response = await request.post(
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/subscribe`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
+        data: { url },
+      }
+    )
+    const body = await response.json()
+    expect(body).toEqual({
+      id: 'webhookBlock',
+      url,
+    })
+  })
+
+  test('can unsubscribe webhook', async ({ request }) => {
+    const response = await request.post(
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/unsubscribe`,
+      {
+        headers: { Authorization: `Bearer ${apiToken}` },
+      }
+    )
+    const body = await response.json()
+    expect(body).toEqual({
+      id: 'webhookBlock',
+      url: null,
+    })
+  })
+
+  test('can get a sample result', async ({ request }) => {
+    const response = await request.get(
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/getResultExample`,
+      {
+        headers: { Authorization: `Bearer ${apiToken}` },
+      }
+    )
+    const data = await response.json()
+    expect(data.resultExample).toMatchObject({
+      message: 'This is a sample result, it has been generated ⬇️',
+      Welcome: 'Hi!',
+      Email: 'test@email.com',
+      Name: 'answer value',
+      Services: 'Website dev, Content Marketing, Social Media, UI / UX Design',
+      'Additional information': 'answer value',
+    })
+  })
+})

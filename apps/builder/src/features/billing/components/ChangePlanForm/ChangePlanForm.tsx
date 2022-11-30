@@ -52,11 +52,7 @@ export const ChangePlanForm = () => {
       additionalChatsIndex: selectedChatsLimitIndex,
       additionalStorageIndex: selectedStorageLimitIndex,
     })
-    refreshWorkspace({
-      plan,
-      additionalChatsIndex: selectedChatsLimitIndex,
-      additionalStorageIndex: selectedStorageLimitIndex,
-    })
+    refreshWorkspace()
     showToast({
       status: 'success',
       description: `Workspace ${plan} plan successfully updated 🎉`,
