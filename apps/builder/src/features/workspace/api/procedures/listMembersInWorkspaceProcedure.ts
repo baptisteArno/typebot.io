@@ -28,7 +28,7 @@ export const listMembersInWorkspaceProcedure = authenticatedProcedure
     const members = (await prisma.memberInWorkspace.findMany({
       where: { userId: user.id, workspaceId },
       include: { user: { select: { name: true, email: true, image: true } } },
-    })) satisfies WorkspaceMember[]
+    })) as WorkspaceMember[]
 
     if (!members)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No members found' })

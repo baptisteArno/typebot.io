@@ -27,7 +27,7 @@ export const getWorkspaceProcedure = authenticatedProcedure
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = (await prisma.workspace.findFirst({
       where: { members: { some: { userId: user.id } }, id: workspaceId },
-    })) satisfies Workspace | null
+    })) as Workspace | null
 
     if (!workspace)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })

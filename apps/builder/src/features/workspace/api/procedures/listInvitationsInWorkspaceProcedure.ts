@@ -31,7 +31,7 @@ export const listInvitationsInWorkspaceProcedure = authenticatedProcedure
         workspace: { members: { some: { userId: user.id } } },
       },
       select: { createdAt: true, email: true, type: true },
-    })) satisfies WorkspaceInvitation[]
+    })) as WorkspaceInvitation[]
 
     if (!invitations)
       throw new TRPCError({

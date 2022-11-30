@@ -94,6 +94,7 @@ importers:
       next: 13.0.5
       next-auth: 4.12.3
       next-transpile-modules: 10.0.0
+      nextjs-cors: ^2.1.2
       nodemailer: 6.8.0
       nprogress: 0.2.0
       papaparse: 5.3.2
@@ -177,6 +178,7 @@ importers:
       minio: 7.0.32
       next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
       next-auth: 4.12.3_2xoejpawkzgot77rbv5mbik6ve
+      nextjs-cors: 2.1.2_next@13.0.5
       nodemailer: 6.8.0
       nprogress: 0.2.0
       papaparse: 5.3.2
@@ -363,6 +365,7 @@ importers:
       models: workspace:*
       next: 13.0.5
       next-transpile-modules: 10.0.0
+      nextjs-cors: ^2.1.2
       node-fetch: ^3.3.0
       nodemailer: 6.8.0
       papaparse: 5.3.2
@@ -388,6 +391,7 @@ importers:
       google-spreadsheet: 3.3.0
       got: 12.5.3
       next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
+      nextjs-cors: 2.1.2_next@13.0.5
       nodemailer: 6.8.0
       qs: 6.11.0
       react: 18.2.0
@@ -13922,6 +13926,15 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
+
+  /nextjs-cors/2.1.2_next@13.0.5:
+    resolution: {integrity: sha512-2yOVivaaf2ILe4f/qY32hnj3oC77VCOsUQJQfhVMGsXE/YMEWUY2zy78sH9FKUCM7eG42/l3pDofIzMD781XGA==}
+    peerDependencies:
+      next: ^8.1.1-canary.54 || ^9.0.0 || ^10.0.0-0 || ^11.0.0 || ^12.0.0 || ^13.0.0
+    dependencies:
+      cors: 2.8.5
+      next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
     dev: false
 
   /no-case/2.3.2:

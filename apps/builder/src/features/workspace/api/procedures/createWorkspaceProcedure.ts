@@ -31,7 +31,7 @@ export const createWorkspaceProcedure = authenticatedProcedure
         },
       },
       select: { name: true },
-    })) satisfies Pick<Workspace, 'name'>[]
+    })) as Pick<Workspace, 'name'>[]
 
     if (existingWorkspaceNames.some((workspace) => workspace.name === name))
       throw new TRPCError({
@@ -48,7 +48,7 @@ export const createWorkspaceProcedure = authenticatedProcedure
         members: { create: [{ role: 'ADMIN', userId: user.id }] },
         plan,
       },
-    })) satisfies Workspace
+    })) as Workspace
 
     return {
       workspace: newWorkspace,

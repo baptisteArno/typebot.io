@@ -26,7 +26,7 @@ export const listWorkspacesProcedure = authenticatedProcedure
     const workspaces = (await prisma.workspace.findMany({
       where: { members: { some: { userId: user.id } } },
       select: { name: true, id: true, icon: true, plan: true },
-    })) satisfies Pick<Workspace, 'id' | 'name' | 'icon' | 'plan'>[]
+    })) as Pick<Workspace, 'id' | 'name' | 'icon' | 'plan'>[]
 
     if (!workspaces)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })

@@ -70,6 +70,7 @@
     "minio": "7.0.32",
     "next": "13.0.5",
     "next-auth": "4.12.3",
+    "nextjs-cors": "^2.1.2",
     "nodemailer": "6.8.0",
     "nprogress": "0.2.0",
     "papaparse": "5.3.2",
@@ -109,14 +110,14 @@
     "@types/tinycolor2": "1.4.3",
     "db": "workspace:*",
     "dotenv": "16.0.3",
+    "eslint": "8.28.0",
+    "eslint-config-custom": "workspace:*",
     "models": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "superjson": "^1.11.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.3",
     "utils": "workspace:*",
-    "zod": "3.19.1",
-    "eslint": "8.28.0",
-    "eslint-config-custom": "workspace:*"
+    "zod": "3.19.1"
   }
 }
