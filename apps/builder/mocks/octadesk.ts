@@ -31,7 +31,6 @@ export const setupMockUser = async () =>
     Storage.setItem('company', mock.user.subDomain)
   
     subDomain.setSubDomain(mock.user.subDomain)
-    console.log('\n\n\n\n\n\n\n\n', mock.user.subDomain)
   
     Storage.setItem('status', mock.status)
 

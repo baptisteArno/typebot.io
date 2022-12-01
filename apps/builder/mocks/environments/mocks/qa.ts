@@ -1,55 +1,54 @@
-const subDomain = 'qas318628-92c'
+const subDomain = 'qas319100-a32'
 
 const user = {
+  id: 'c81fcd9d-4555-4ad9-8be5-75b10332bdbf',
   isEnabled: true,
-	id: '970bfa47-47c1-4425-97f9-91a1afc24b3e',
-	name: 'Lucas Araujo',
-	email: 'lucascordeiroaraujo@gmail.com',
-	othersEmail: [],
-	othersDocumentCode: {},
-	othersCustomerCode: {},
-	thumbUrlEncrypted: '',
-	avatarName: 'LA',
-	isEmailValidated: false,
-	isResetPassword: false,
-	idsGroups: [],
-	myApps: ['67e299e2-b573-4d1a-8b0b-f9b6068a5262'],
-	customField: {},
-	groupsIds: [],
-	homePage: {},
-	subDomain,
-	type: 1,
-	roleType: 1,
-	permissionType: 1,
-	permissionView: 0,
-	participantPermission: 0,
-	groups: [],
-	organizations: [],
-	products: [],
-	favoriteResponseTab: 0,
-	dateCreation: '2022-04-25T18:49:36.49Z',
-	lastLogin: '0001-01-01T00:00:00',
-	daysSinceDateCreation: 176,
-	daysSinceLastLogin: 738446,
-	accessNewList: true,
-	ticketListOrderConfig: [],
-	newOcta: true,
+  name: 'Marcos Freitas',
+  email: 'marcos.freitas@octadesk.com',
+  thumbUrl: null,
+  apps: [
+    {
+      productId: '67e299e2-b573-4d1a-8b0b-f9b6068a5262',
+      productName: 'OctaChat',
+      fields: {
+        connectionStatus: 0,
+        connectionStatusManual: false,
+        lastService: '-271821-04-20T00:00:00.000Z',
+        availability: true,
+      },
+    },
+  ],
+  myApps: ['67e299e2-b573-4d1a-8b0b-f9b6068a5262'],
+  type: 1,
+  roleType: 1,
+  webPushSubscriptions: [],
+  customFields: {},
+  active: true,
+  connectionStatus: 0,
+  connectionStatusManual: false,
+  lastService: '-271821-04-20T00:00:00.000Z',
+  availability: true,
+  subDomain,
 }
 
 const userToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJkb21haW4iOiJxYXMzMTg2MjgtOTJjIiwicm9sZSI6IjIiLCJyb2xlVHlwZSI6IjIiLCJlbWFpbCI6InJvZHJpZ28ub2tpeWFtYUBvY3RhZGVzay5jb20iLCJuYW1lIjoiUm9kcmlnbyBPa2l5YW1hIiwidHlwZSI6IjEiLCJpZCI6IjVhYjk2MTk5LTQwMDgtNDQ2ZC04N2U4LTliMTg0NTA4MjhjOSIsInBlcm1pc3Npb25UeXBlIjoiMiIsInBlcm1pc3Npb25WaWV3IjoiMCIsIm5iZiI6MTY2OTA1OTM1NiwiZXhwIjoxNzAwNTk1MzU2LCJpYXQiOjE2NjkwNTkzNTYsImlzcyI6ImFwaS5xYW9jdGFkZXNrLnNlcnZpY2VzIn0.SvLuAQr4TvoP2m8_iazqe29qWd40J6cr7J1XG6v0Iwk'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJkb21haW4iOiJxYXMzMTkxMDAtYTMyIiwicm9sZSI6IjIiLCJyb2xlVHlwZSI6IjIiLCJlbWFpbCI6InJvZHJpZ28ub2tpeWFtYUBvY3RhZGVzay5jb20iLCJuYW1lIjoicm9kcmlnby5va2l5YW1hQG9jdGFkZXNrLmNvbSIsInR5cGUiOiIxIiwiaWQiOiJkMWFiYmNlNy1kZTYzLTQ1NjUtYmZmNS00NmY4MDI0NTY4ZGMiLCJwZXJtaXNzaW9uVHlwZSI6IjEiLCJwZXJtaXNzaW9uVmlldyI6IjAiLCJuYmYiOjE2Njk5MDMwMTUsImV4cCI6MTcwMTQzOTAxNSwiaWF0IjoxNjY5OTAzMDE1LCJpc3MiOiJhcGkucWFvY3RhZGVzay5zZXJ2aWNlcyJ9.uE2Yckb__23FQXR7tjzJnzjw5wa9EJdY999jXdjjXfc'
 
 const status = {
-  daysRemaining: 0,
-	isAccountActivated: false,
-	isTrial: false,
-	isValid: true,
-	name: 'QA Cordeiro Mini-Cluster',
-	subDomain,
+  id: 'e8690b78-aa35-46c5-ad68-ed89d1399964',
+  name: 'Alexa-Para-Qa',
+  daysRemaining: 998,
+  subDomain: 'qas319100-a32',
+  isTrial: true,
+  isAccountActivated: false,
+  isValid: true,
+  paymentInformation: { updatedTime: '0001-01-01T00:00:00', status: 0 },
+  cycleType: 3,
+  totalLicenses: 1,
 }
 
 export const mock = {
   user,
   userToken,
-  status
+  status,
 }
