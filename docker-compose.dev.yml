@@ -12,9 +12,10 @@ services:
       POSTGRES_PASSWORD: 'typebot'
   minio:
     image: minio/minio
-    command: server /data
+    command: server /data --console-address ":9001"
     ports:
       - '9000:9000'
+      - '9001:9001'
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123

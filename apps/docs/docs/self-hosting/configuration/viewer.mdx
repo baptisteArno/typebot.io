@@ -37,6 +37,15 @@ Used when executing a Google Sheets block. Make sure to set the required scopes 
 | GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
 | GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
 
+### Configuration
+
+https://console.developers.google.com/apis/credentials
+
+The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path. For example,
+
+- For production: https://{YOUR_DOMAIN}/api/auth/callback/google
+- For development: http://localhost:3000/api/auth/callback/google
+
 ## S3 Storage (File upload input)
 
 Used for the file upload input. It can be any S3 compatible object storage service (Minio, Digital Oceans Space, AWS S3...)
@@ -47,11 +56,11 @@ Used for the file upload input. It can be any S3 compatible object storage servi
 | S3_SECRET_KEY | --      | S3 secret key.                                                 |
 | S3_BUCKET     | typebot | Name of the bucket where assets will be uploaded in.           |
 | S3_PORT       | --      | S3 Host port number                                            |
-| S3_ENDPOINT   | --      | S3 secret key.                                                 |
+| S3_ENDPOINT   | --      | S3 endpoint (i.e. `s3.domain.com`).                            |
 | S3_SSL        | true    | Use SSL when establishing the connection.                      |
 | S3_REGION     | --      | S3 region.                                                     |
 
-Note that for AWS S3, your endpoint is usually: `https://s3.<S3_REGION>.amazonaws.com`
+Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 
 Your bucket must have the following policy that tells S3 to allow public read when an object is located under the public folder:
 

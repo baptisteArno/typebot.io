@@ -42,11 +42,20 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google
 | GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
 | GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
 
-Used for Google Fonts:
+Used for Google Fonts (Optional):
 
 | Parameter                  | Default | Description                             |
 | -------------------------- | ------- | --------------------------------------- |
 | NEXT_PUBLIC_GOOGLE_API_KEY | --      | The API Key from the Google API Console |
+
+### Configuration
+
+https://console.developers.google.com/apis/credentials
+
+The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path. For example,
+
+- For production: https://{YOUR_DOMAIN}/api/auth/callback/google
+- For development: http://localhost:3000/api/auth/callback/google
 
 ## GitHub (Auth)
 
@@ -66,10 +75,10 @@ Follow the official GitLab guide for creating OAuth2 applications [here](https:/
 The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab`
 
 | Parameter              | Default            | Description                                                                          |
-| ---------------------- | ------------------ | ------------------------------------------------------------------------------------ | --- |
+| ---------------------- | ------------------ | ------------------------------------------------------------------------------------ |
 | GITLAB_CLIENT_ID       | --                 | Application client ID. Also used to check if it is enabled in the front-end          |
 | GITLAB_CLIENT_SECRET   | --                 | Application secret                                                                   |
-| GITLAB_BASE_URL        | https://gitlab.com | Base URL of the GitLab instance                                                      |     |
+| GITLAB_BASE_URL        | https://gitlab.com | Base URL of the GitLab instance                                                      |
 | GITLAB_REQUIRED_GROUPS | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
 | GITLAB_NAME            | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
 
@@ -104,11 +113,11 @@ Used for uploading images, videos, etc... It can be any S3 compatible object sto
 | S3_SECRET_KEY | --      | S3 secret key.                                                 |
 | S3_BUCKET     | typebot | Name of the bucket where assets will be uploaded in.           |
 | S3_PORT       | --      | S3 Host port number                                            |
-| S3_ENDPOINT   | --      | S3 secret key.                                                 |
+| S3_ENDPOINT   | --      | S3 endpoint (i.e. `s3.domain.com`).                            |
 | S3_SSL        | true    | Use SSL when establishing the connection.                      |
 | S3_REGION     | --      | S3 region.                                                     |
 
-Note that for AWS S3, your endpoint is usually: `https://s3.<S3_REGION>.amazonaws.com`
+Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 
 Your bucket must have the following policy that tells S3 to allow public read when an object is located under the public folder:
 
