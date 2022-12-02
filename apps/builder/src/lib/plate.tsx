@@ -23,10 +23,11 @@ export const platePlugins = createPlugins(
       renderAfterEditable: PlateFloatingLink,
       options: {
         isUrl: (url: string) =>
-          url.startsWith('http') ||
-          url.startsWith('mailto') ||
-          url.startsWith('tel') ||
-          url.startsWith('sms'),
+          url.startsWith('http:') ||
+          url.startsWith('https:') ||
+          url.startsWith('mailto:') ||
+          url.startsWith('tel:') ||
+          url.startsWith('sms:'),
       },
     }),
   ],

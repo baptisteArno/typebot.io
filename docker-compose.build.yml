@@ -27,6 +27,8 @@ services:
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
       - ADMIN_EMAIL=me@email.com
       - NEXTAUTH_URL_INTERNAL=http://host.docker.internal:8080
+      - GITHUB_CLIENT_ID=37a279454d016598c2df
+      - GITHUB_CLIENT_SECRET=4b288a509352b591cd4478e3ac901668b2f8ed03
   typebot-viewer:
     build:
       context: .
