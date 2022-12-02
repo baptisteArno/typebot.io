@@ -801,6 +801,97 @@
         }
       }
     },
+    "/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
+      "get": {
+        "operationId": "query.webhook.getResultExample",
+        "summary": "Get result example",
+        "description": "Returns \"fake\" result for webhook block to help you anticipate how the webhook will behave.",
+        "tags": [
+          "Webhook"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resultExample": {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string",
+                              "enum": [
+                                "This is a sample result, it has been generated ⬇️"
+                              ]
+                            },
+                            "Submitted at": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "message",
+                            "Submitted at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": {
+                            "anyOf": [
+                              {
+                                "not": {}
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "description": "Can contain any fields."
+                    }
+                  },
+                  "required": [
+                    "resultExample"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
     "/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
       "post": {
         "operationId": "query.webhook.subscribeWebhook",
@@ -942,97 +1033,6 @@
                   "required": [
                     "id",
                     "url"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
-      "get": {
-        "operationId": "query.webhook.getResultExample",
-        "summary": "Get result example",
-        "description": "Returns \"fake\" result for webhook block to help you anticipate how the webhook will behave.",
-        "tags": [
-          "Webhook"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "typebotId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "blockId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "resultExample": {
-                      "allOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "message": {
-                              "type": "string",
-                              "enum": [
-                                "This is a sample result, it has been generated ⬇️"
-                              ]
-                            },
-                            "Submitted at": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "message",
-                            "Submitted at"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "additionalProperties": {
-                            "anyOf": [
-                              {
-                                "not": {}
-                              },
-                              {
-                                "type": "string"
-                              }
-                            ]
-                          }
-                        }
-                      ],
-                      "description": "Can contain any field."
-                    }
-                  },
-                  "required": [
-                    "resultExample"
                   ],
                   "additionalProperties": false
                 }
