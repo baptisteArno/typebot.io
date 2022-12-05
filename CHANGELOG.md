@@ -1,5 +1,39 @@
 # Changelog
 
+<a name="2.8.8"></a>
+
+## 2.8.8 (2022-12-05)
+
+### Added
+
+- ✨ Enable Make.com and implement help doc buttons [[d75eceb](https://github.com/baptisteArno/typebot.io/commit/d75eceb23f1fe737a8f2104b2bc6d318d3c6a471)]
+- ✨ Add webhook blocks API public endpoints [[c799717](https://github.com/baptisteArno/typebot.io/commit/c7997179053f91d383c3c31d884f30f2196d1c69)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[2932043](https://github.com/baptisteArno/typebot.io/commit/293204305636d7871214945314d9a2249f39f452)]
+- 🗃️ Update non-string variable values in Database [[461d2e2](https://github.com/baptisteArno/typebot.io/commit/461d2e2746de2888e76d1137b8d25136c7150cae)]
+- 🔧 Enable usage limits on viewer [[cfcecaa](https://github.com/baptisteArno/typebot.io/commit/cfcecaaa1713780d1d95712315d80dbfcf13efb5)]
+- 💄 (lp) Add 2 other testimonials [[03b09ad](https://github.com/baptisteArno/typebot.io/commit/03b09ad6eb6a2465189f0e603e15925740a7239b)]
+- 💄 (lp) Update wall of love [[bdf7c0d](https://github.com/baptisteArno/typebot.io/commit/bdf7c0d5c02710be230f3c14b85dddbffb0e4671)]
+
+### Fixed
+
+- 🐛 (textBubble) Fix link parsing in text editor [[b4dc640](https://github.com/baptisteArno/typebot.io/commit/b4dc64028cb2affc3a8a487cf6c04285e64329b1)]
+- 🐛 Fix api doc CORS [[94a57ae](https://github.com/baptisteArno/typebot.io/commit/94a57aea216c51e46e0566851a45d185b516d0f7)]
+- 🚑 Attempt to fix prisma not defined trpc [[3c8820b](https://github.com/baptisteArno/typebot.io/commit/3c8820b2129ba1f5ec5ba89334c4b66a0568fd38)]
+- 🐛 (billing) Fix currency possible mismatch on sub update [[f9ffdbc](https://github.com/baptisteArno/typebot.io/commit/f9ffdbc4c52b4d6e0027eee83209cf2c5794157a)]
+- 🐛 (results) Fix export accessor parsing [[43a85b5](https://github.com/baptisteArno/typebot.io/commit/43a85b5529081c4dc90aa8d71721b21c266de7de)]
+- 🐛 (viewer) Save new variables even if empty list [[49ba434](https://github.com/baptisteArno/typebot.io/commit/49ba43435012b73f1e5ed5318739e63b772cbc69)]
+
+### Miscellaneous
+
+- 📝 Update minio setup instructions [[4b2f42b](https://github.com/baptisteArno/typebot.io/commit/4b2f42b40d638d22603103560010c86306bb8bc7)]
+- 📝 Improve Chatwoot block instructions [[ca8240b](https://github.com/baptisteArno/typebot.io/commit/ca8240ba291004f1cfe59f43a00ab64bb01287f6)]
+- 📝 Improve Google config instructions [[41149b0](https://github.com/baptisteArno/typebot.io/commit/41149b07c6dba08a224042d0fe05d3e9bacd2f0a)]
+- ⚗️ Implement chat API [[bf0d0c2](https://github.com/baptisteArno/typebot.io/commit/bf0d0c2475b0a394ca08fa9c629ac5ecf3ad74de)]
+- 📝 Improve send email doc [[3e80af6](https://github.com/baptisteArno/typebot.io/commit/3e80af638b16d19e8522fc0887b26d1692c742bd)]
+
 <a name="2.8.7"></a>
 
 ## 2.8.7 (2022-11-27)
