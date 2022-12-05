@@ -12,7 +12,7 @@
     "db:bulkUpdate": "tsx bulkUpdate.ts"
   },
   "devDependencies": {
-    "@types/node": "18.11.9",
+    "@types/node": "18.11.10",
     "@types/prompts": "^2.4.1",
     "db": "workspace:*",
     "emails": "workspace:*",

@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "typescript": "4.9.3",
-    "next": "13.0.5",
+    "next": "13.0.6",
     "db": "workspace:*",
     "tsconfig": "workspace:*"
   },

@@ -11,9 +11,9 @@
     "test": "pnpm jest"
   },
   "devDependencies": {
-    "@types/jest": "29.2.3",
+    "@types/jest": "29.2.4",
     "tsup": "6.5.0",
-    "eslint": "8.28.0",
+    "eslint": "8.29.0",
     "eslint-config-custom": "workspace:*",
     "jest": "29.3.1",
     "jest-environment-jsdom": "29.3.1",

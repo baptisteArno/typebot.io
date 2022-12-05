@@ -1273,7 +1273,9 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {}
+              }
             }
           },
           "default": {
