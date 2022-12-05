@@ -24,7 +24,6 @@ export const Testimonial = ({
     shadow="lg"
     spacing="4"
     data-aos="fade"
-    data-aos-delay="500"
   >
     <Flex justifyContent="space-between">
       <HStack spacing="4">

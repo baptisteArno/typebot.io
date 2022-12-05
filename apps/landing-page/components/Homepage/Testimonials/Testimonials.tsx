@@ -10,6 +10,8 @@ import lucasPictureSrc from 'public/images/homepage/lucas.png'
 import oscarPictureSrc from 'public/images/homepage/oscar.jpeg'
 import invictuzPictureSrc from 'public/images/homepage/invictuz.png'
 import laszloPictureSrc from 'public/images/homepage/laszlo.jpeg'
+import kurniaPictureSrc from 'public/images/homepage/kurnia.jpeg'
+import marioPictureSrc from 'public/images/homepage/barretta.jpeg'
 import { Testimonial } from './Testimonial'
 import { StaticImageData } from 'next/image'
 
@@ -48,29 +50,37 @@ const testimonials: TestimonialData[][] = [
       ),
     },
     {
-      name: 'Theo Marechal',
-      provider: 'productHunt',
-      avatarSrc: theoPictureSrc,
-      role: 'Nocode expert and content creator',
+      name: 'Mario Barretta',
+      role: 'Customer Care Manager',
+      provider: 'email',
+      avatarSrc: marioPictureSrc,
       content: (
         <>
-          Amazing product! I&apos;m using Typebot for everything when it&apos;s
-          about talking with customers.
+          Thanks to typebot I can finally make site forms much more modern and I
+          can collect information that I would have missed before. Also ,thanks
+          to Baptiste, the service is always evolving and has excellent
+          assistance not only in solving but also in listening to suggestions
+          and putting it into action.
           <br />
           <br />
-          What&apos;s amazing with Typebot is that it makes a &quot;chat
-          interface effect&quot; without the hassle of being behind my computer
-          all day responding to customers. Highly recommend !
+          Thank you thank you and thank you again .
         </>
       ),
     },
     {
-      name: 'Nicolai Grut',
-      role: 'CEO @ EcommerceNotebook.com',
-      avatarSrc: nicolaiPictureSrc,
+      name: 'Lucas Barp',
       provider: 'email',
+      avatarSrc: lucasPictureSrc,
+      role: 'Founder at Barp Digital',
       content:
-        'I am really loving using Typebot! So good. I have used all the top bots and yours is definitely the most user friendly, and yet still so powerful.',
+        'The result of your work is incredible and can make life easier for many people.',
+    },
+    {
+      name: 'Igor T.',
+      role: 'CTO',
+      provider: 'capterra',
+      content:
+        'Nice work. The developer promptly makes changes, which is quite rare. There was a suggestion for improvement and improvement, in 2 days it was implemented. Amazing! Good luck and thanks a lot',
     },
   ],
   [
@@ -90,20 +100,29 @@ const testimonials: TestimonialData[][] = [
         "This is the sickest open-source project I've ever seen and demoed. The use case is so cool and modern and I can't believe how easy this is to get started using. The feature richness and polish in this project is incredible, it feel like a mature product. Unbelievable that this was built by one person. This is better than the demos of chatbot builders I've seen from full-fledged companies. I'm going to learn Typescript so that I can contribute to this someday. Mind-blowing stuff...",
     },
     {
+      name: 'Theo Marechal',
+      provider: 'productHunt',
+      avatarSrc: theoPictureSrc,
+      role: 'Nocode expert and content creator',
+      content: (
+        <>
+          Amazing product! I&apos;m using Typebot for everything when it&apos;s
+          about talking with customers.
+          <br />
+          <br />
+          What&apos;s amazing with Typebot is that it makes a &quot;chat
+          interface effect&quot; without the hassle of being behind my computer
+          all day responding to customers. Highly recommend !
+        </>
+      ),
+    },
+    {
       name: 'Abhay Kulkarni',
       provider: 'productHunt',
       avatarSrc: abhayPictureSrc,
       role: 'Founder at Webisharp',
       content:
         'Using this tool for the last 2 hours & built a full lead capture bot. Pretty good experience till now. @baptiste_arnaud All the best for future :)',
-    },
-    {
-      name: 'Lucas Barp',
-      provider: 'email',
-      avatarSrc: lucasPictureSrc,
-      role: 'Founder at Barp Digital',
-      content:
-        'The result of your work is incredible and can make life easier for many people.',
     },
   ],
   [
@@ -130,11 +149,26 @@ const testimonials: TestimonialData[][] = [
         'I run Google ads all year long on our landing page that contains a typebot. I saw a 2x increase on our conversation rate compared to our old WordPress form.',
     },
     {
-      name: 'Igor T.',
-      role: 'CTO',
-      provider: 'capterra',
+      name: 'Kurnia Kwik',
+      role: 'Founder at DigitalPointer.ID',
+      provider: 'email',
+      avatarSrc: kurniaPictureSrc,
+      content: (
+        <>
+          I have several chatbot builders, but Typebot is the one I use the
+          most. It is simple to construct and very intuitive. <br />
+          Integration with third-party applications is simple, and you can
+          create the most sophisticated bots with its simplicity.
+        </>
+      ),
+    },
+    {
+      name: 'Nicolai Grut',
+      role: 'CEO @ EcommerceNotebook.com',
+      avatarSrc: nicolaiPictureSrc,
+      provider: 'email',
       content:
-        'Nice work. The developer promptly makes changes, which is quite rare. There was a suggestion for improvement and improvement, in 2 days it was implemented. Amazing! Good luck and thanks a lot',
+        'I am really loving using Typebot! So good. I have used all the top bots and yours is definitely the most user friendly, and yet still so powerful.',
     },
     {
       name: 'Anna Filou',
