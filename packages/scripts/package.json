@@ -8,7 +8,8 @@
     "playground": "tsx playground.ts",
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",
-    "db:setCustomPlan": "tsx setCustomPlan.ts"
+    "db:setCustomPlan": "tsx setCustomPlan.ts",
+    "db:bulkUpdate": "tsx bulkUpdate.ts"
   },
   "devDependencies": {
     "@types/node": "18.11.9",

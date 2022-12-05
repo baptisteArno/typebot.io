@@ -45,17 +45,16 @@ export const parseCorrectValueType = (
 ): string | boolean | number | null | undefined => {
   if (value === null) return null
   if (value === undefined) return undefined
-  const isNumberStartingWithZero =
-    value.startsWith('0') && !value.startsWith('0.') && value.length > 1
-  if (typeof value === 'string' && isNumberStartingWithZero) return value
   if (typeof value === 'number') return value
   if (value === 'true') return true
   if (value === 'false') return false
   if (value === 'null') return null
   if (value === 'undefined') return undefined
-  // isNaN works with strings
-  if (isNaN(value as unknown as number)) return value
-  return Number(value)
+  try {
+    return JSON.parse(value)
+  } catch {
+    return value
+  }
 }
 
 const jsonParse = (str: string) =>
