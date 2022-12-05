@@ -5,6 +5,8 @@ import {
   useEventListener,
   Portal,
   IconButton,
+  HStack,
+  Stack,
 } from '@chakra-ui/react'
 import { ExpandIcon } from '@/components/icons'
 import {
@@ -37,6 +39,8 @@ import { SetVariableSettings } from '@/features/blocks/logic/setVariable'
 import { TypebotLinkForm } from '@/features/blocks/logic/typebotLink'
 import { ButtonsOptionsForm } from '@/features/blocks/inputs/buttons'
 import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
+import { MakeComSettings } from '@/features/blocks/integrations/makeCom'
+import { HelpDocButton } from './HelpDocButton'
 
 type Props = {
   block: BlockWithOptions
@@ -58,24 +62,26 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow />
         <PopoverBody
-          pt="10"
+          pt="3"
           pb="6"
           overflowY="scroll"
           maxH="400px"
           ref={ref}
           shadow="lg"
         >
-          <BlockSettings {...props} />
+          <Stack spacing={3}>
+            <HStack justifyContent="flex-end">
+              <HelpDocButton blockType={props.block.type} />
+              <IconButton
+                aria-label="expand"
+                icon={<ExpandIcon />}
+                size="xs"
+                onClick={onExpandClick}
+              />
+            </HStack>
+            <BlockSettings {...props} />
+          </Stack>
         </PopoverBody>
-        <IconButton
-          pos="absolute"
-          top="5px"
-          right="5px"
-          aria-label="expand"
-          icon={<ExpandIcon />}
-          size="xs"
-          onClick={onExpandClick}
-        />
       </PopoverContent>
     </Portal>
   )
@@ -227,16 +233,7 @@ export const BlockSettings = ({
       return <ZapierSettings block={block} />
     }
     case IntegrationBlockType.MAKE_COM: {
-      return (
-        <WebhookSettings
-          block={block}
-          onOptionsChange={handleOptionsChange}
-          provider={{
-            name: 'Make.com',
-            url: 'https://eu1.make.com/app/invite/43fa76a621f67ea27f96cffc3a2477e1',
-          }}
-        />
-      )
+      return <MakeComSettings block={block} />
     }
     case IntegrationBlockType.PABBLY_CONNECT: {
       return (

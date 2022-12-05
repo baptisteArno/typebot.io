@@ -149,16 +149,9 @@ export const BlocksSideBar = () => {
             Integrations
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationBlockType)
-              .filter((type) => type !== IntegrationBlockType.MAKE_COM)
-              .map((type) => (
-                <BlockCard
-                  key={type}
-                  type={type}
-                  onMouseDown={handleMouseDown}
-                  isDisabled={type === IntegrationBlockType.MAKE_COM}
-                />
-              ))}
+            {Object.values(IntegrationBlockType).map((type) => (
+              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+            ))}
           </SimpleGrid>
         </Stack>
 

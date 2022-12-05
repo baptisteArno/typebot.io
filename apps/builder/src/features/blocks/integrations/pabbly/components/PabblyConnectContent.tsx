@@ -1,14 +1,14 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { defaultWebhookAttributes, MakeComBlock, Webhook } from 'models'
+import { defaultWebhookAttributes, PabblyConnectBlock, Webhook } from 'models'
 import { useEffect } from 'react'
 import { byId, isNotDefined } from 'utils'
 
 type Props = {
-  block: MakeComBlock
+  block: PabblyConnectBlock
 }
 
-export const MakeComNodeContent = ({ block }: Props) => {
+export const PabblyConnectContent = ({ block }: Props) => {
   const { webhooks, typebot, updateWebhook } = useTypebot()
   const webhook = webhooks.find(byId(block.webhookId))
 
@@ -23,8 +23,7 @@ export const MakeComNodeContent = ({ block }: Props) => {
       } as Webhook
       updateWebhook(webhookId, newWebhook)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [block, typebot, updateWebhook, webhook])
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>

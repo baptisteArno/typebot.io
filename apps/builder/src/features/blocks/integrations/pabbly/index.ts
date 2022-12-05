@@ -1,2 +1,1 @@
-export { PabblyConnectLogo } from './components/PabblyConnectLogo'
-export { PabblyConnectNodeContent } from './components/PabblyConnectNodeContent'
+export * from './components'

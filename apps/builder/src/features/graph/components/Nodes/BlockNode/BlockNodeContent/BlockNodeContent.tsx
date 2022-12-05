@@ -24,7 +24,7 @@ import { WebhookContent } from '@/features/blocks/integrations/webhook'
 import { ChatwootBlockNodeLabel } from '@/features/blocks/integrations/chatwoot'
 import { RedirectNodeContent } from '@/features/blocks/logic/redirect'
 import { CodeNodeContent } from '@/features/blocks/logic/code'
-import { PabblyConnectNodeContent } from '@/features/blocks/integrations/pabbly'
+import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly'
 import { WithVariableContent } from './WithVariableContent'
 import { PaymentInputContent } from '@/features/blocks/inputs/payment'
 import { RatingInputContent } from '@/features/blocks/inputs/rating'
@@ -35,7 +35,7 @@ import { GoogleAnalyticsNodeContent } from '@/features/blocks/integrations/googl
 import { ZapierContent } from '@/features/blocks/integrations/zapier'
 import { SendEmailContent } from '@/features/blocks/integrations/sendEmail'
 import { isInputBlock, isChoiceInput, blockHasItems } from 'utils'
-import { MakeComNodeContent } from '@/features/blocks/integrations/makeCom'
+import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 
 type Props = {
@@ -148,10 +148,10 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       return <ZapierContent block={block} />
     }
     case IntegrationBlockType.PABBLY_CONNECT: {
-      return <PabblyConnectNodeContent block={block} />
+      return <PabblyConnectContent block={block} />
     }
     case IntegrationBlockType.MAKE_COM: {
-      return <MakeComNodeContent block={block} />
+      return <MakeComContent block={block} />
     }
     case IntegrationBlockType.EMAIL: {
       return <SendEmailContent block={block} />

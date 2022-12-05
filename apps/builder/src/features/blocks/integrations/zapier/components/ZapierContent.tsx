@@ -23,8 +23,7 @@ export const ZapierContent = ({ block }: Props) => {
       } as Webhook
       updateWebhook(webhookId, newWebhook)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [block, typebot, updateWebhook, webhook])
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>
