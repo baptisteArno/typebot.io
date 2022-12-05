@@ -197,7 +197,7 @@ services:
       sleep 10;
       /usr/bin/mc config host add minio http://minio:9000 minio minio123;
       /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc policy set public minio/typebot/public;
+      /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
   typebot-builder:
@@ -325,7 +325,7 @@ services:
       sleep 10;
       /usr/bin/mc config host add minio http://minio:9000 minio minio123;
       /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc policy set public minio/typebot/public;
+      /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
 volumes:
