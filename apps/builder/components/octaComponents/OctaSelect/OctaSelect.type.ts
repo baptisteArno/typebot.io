@@ -1,9 +1,11 @@
 import { DetailedHTMLProps, InputHTMLAttributes, ChangeEvent } from 'react'
 
 export type OctaSelectProps = {
-  items: Array<SelectItems<OptionItemType>>
+  items: Array<SelectItems<any>>
   onChange: (e: OptionItemType) => void
   defaultSelected?: OptionItemType
+  label?: string;
+  findable?: boolean
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
 type SelectItems<T> = T

@@ -75,6 +75,7 @@ export const Container = styled.div`
   cursor: pointer;
   border: 1px solid #c4c7cf;
   border-radius: 6px;
+  font-size: .8rem;
 `
 
 export const DropDownIcon = styled(MdOutlineExpandMore)`
