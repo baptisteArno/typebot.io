@@ -124,6 +124,12 @@ export type EmailInputOptions = OptionBase & {
 
 export type CpfInputOptions = OptionBase & {
   labels: { placeholder: string; button: string }
+  variableId: string | undefined
+  domain: string
+  name: string
+  token: string
+  type: string | undefined
+  example: string | undefined
   retryMessageContent: string
 }
 
@@ -203,6 +209,12 @@ export const defaultCpfInputOptions: CpfInputOptions = {
     button: defaultButtonLabel,
     placeholder: 'Digite o seu cpf...',
   },
+  variableId: undefined,
+  example: undefined,
+  domain: '',
+  name: '',
+  token: '',
+  type: '',
   retryMessageContent:
     "Esse cpf não parece ser válido. Você pode digitar novamente?",
 }

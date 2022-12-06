@@ -10,9 +10,10 @@ type Props = {
 
 export const WithVariableContent = ({ step }: Props) => {
   const { typebot } = useTypebot()
-  const variableName = typebot?.variables.find(
-    byId(step.options.variableId)
-  )?.name
+  console.log(typebot?.variables)
+  const variableName = typebot?.variables.find(variable => variable.token === step.options.variableId)?.token
+
+  console.log(variableName)
 
   return (
     <Text>

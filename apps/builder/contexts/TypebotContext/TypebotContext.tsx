@@ -49,6 +49,8 @@ import { config } from 'config/octadesk.config'
 import Agents from 'services/octadesk/agents/agents'
 import Groups from 'services/octadesk/groups/groups'
 import { ASSIGN_TO } from 'enums/assign-to'
+import CustomFields from 'services/octadesk/customFields/customFields'
+import { DomainType, FieldType } from '../../enums/customFieldsEnum'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -61,7 +63,7 @@ type UpdateTypebotPayload = Partial<{
 }>
 
 type SaveResponse = {
-  saved: boolean,
+  saved: boolean
   updatedAt: Date
 }
 
@@ -78,7 +80,10 @@ const typebotContext = createContext<
     isPublished: boolean
     isPublishing: boolean
     isSavingLoading: boolean
-    save: (personaName?: string, personaThumbUrl?: string) => Promise<SaveResponse>
+    save: (
+      personaName?: string,
+      personaThumbUrl?: string
+    ) => Promise<SaveResponse>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -96,6 +101,10 @@ const typebotContext = createContext<
     publishTypebot: () => void
     restorePublishedTypebot: () => void
     octaAgents: Array<any>
+    octaPersonFields: Array<any>
+    octaChatFields: Array<any>
+    octaOrganizationFields: Array<any>
+    octaCustomFields: Array<any>
   } & BlocksActions &
   StepsActions &
   ItemsActions &
@@ -144,7 +153,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-          isDefined(step.options.typebotId)
+        isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []
@@ -176,7 +185,11 @@ export const TypebotContext = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
-  const saveTypebot = async (personaName?: string, personaThumbUrl?: string, options?: { disableMutation: boolean }) => {
+  const saveTypebot = async (
+    personaName?: string,
+    personaThumbUrl?: string,
+    options?: { disableMutation: boolean }
+  ) => {
     const currentSubDomain = subDomain.getSubDomain()
 
     const typebotToSave = {
@@ -185,12 +198,15 @@ export const TypebotContext = ({
       subDomain: currentSubDomain || '',
       persona: {
         name: personaName,
-        thumbUrl: personaThumbUrl
+        thumbUrl: personaThumbUrl,
       },
     }
 
     setIsSavingLoading(true)
-    const { error } = await updateTypebot(typebotToSave?.id || '', typebotToSave as Typebot)
+    const { error } = await updateTypebot(
+      typebotToSave?.id || '',
+      typebotToSave as Typebot
+    )
     setIsSavingLoading(false)
     if (error) {
       toast({ title: error.name, description: error.message })
@@ -233,7 +249,10 @@ export const TypebotContext = ({
   // )
 
   useEffect(() => {
-    const save = () => saveTypebot(typebot?.persona?.name, typebot?.persona?.thumbUrl, { disableMutation: true })
+    const save = () =>
+      saveTypebot(typebot?.persona?.name, typebot?.persona?.thumbUrl, {
+        disableMutation: true,
+      })
     Router.events.on('routeChangeStart', save)
     return () => {
       Router.events.off('routeChangeStart', save)
@@ -433,7 +452,6 @@ export const TypebotContext = ({
           }),
       ])
 
-
       setOctaAgents(agentsGroupsList)
     }
 
@@ -444,7 +462,110 @@ export const TypebotContext = ({
     }
   }, [])
 
-  const [botName, setBotName] = useState<string>('')
+  const [octaCustomFields, setOctaCustomFields] = useState<Array<any>>([])
+  const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
+  const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
+  const [octaOrganizationFields, setOctaOrganizationFields] = useState<Array<any>>([])
+  useEffect(() => {
+    const fetchOctaCustomFields = async (): Promise<void> => {
+      const customFieldsList: Array<any> = []
+
+      const fields = await CustomFields().getCustomFields()
+      // handleCustomFields(fields)
+      const personFields = [
+        {
+          key: 'nome-contato',
+          fieldId: 'nome-contato',
+          property: 'room.createdBy.name',
+          type: 'text',
+          domainType: DomainType.Person,
+        },
+        {
+          key: 'email-contato',
+          fieldId: 'email-contato',
+          property: 'room.createdBy.email',
+          type: 'text',
+          domainType: DomainType.Person,
+        },
+        ...fields.filter(
+          (f: { domainType: number }) => f.domainType === DomainType.Person
+        ),
+      ]
+      setOctaPersonFields(personFields)
+  
+      const chatFields = [
+        {
+          key: 'id-conversa',
+          fieldId: 'id-conversa',
+          property: 'room.key',
+          type: 'text',
+          domainType: DomainType.Chat,
+          defaultOnBot: true,
+          fieldType: FieldType.Text,
+        },
+        {
+          key: 'primeira-mensagem-cliente',
+          fieldId: 'primeira-mensagem-cliente',
+          property: 'room.messages[0].comment',
+          type: 'text',
+          domainType: DomainType.Chat,
+          defaultOnBot: true,
+          fieldType: FieldType.Text,
+        },
+        {
+          key: 'nome-empresa',
+          fieldId: 'nome-empresa',
+          property: 'room.organization.name',
+          type: 'text',
+          domainType: DomainType.Chat,
+          defaultOnBot: false,
+          fieldType: FieldType.Text,
+        },
+        {
+          key: 'nome-agente',
+          fieldId: 'nome-agente',
+          property: 'room.agent.name',
+          type: 'text',
+          domainType: DomainType.Chat,
+          defaultOnBot: false,
+          fieldType: FieldType.Text,
+        },
+        ...fields.filter(
+          (f: { domainType: number }) => f.domainType === DomainType.Chat
+        ),
+      ]
+      setOctaChatFields(chatFields)
+      
+  
+      const organizationFields = fields.filter(
+        (f: { domainType: number }) => f.domainType === DomainType.Organization
+      )
+      setOctaOrganizationFields(organizationFields)
+  
+
+      customFieldsList.push(...personFields, ...chatFields, ...organizationFields)
+      setOctaCustomFields(customFieldsList)
+      // const variablesPreset: Array<Variable> = customFieldsList.map((field: Variable) => ({
+      //   octaId: field.id || undefined,
+      //   name: `#${field.fieldId}`,
+      //   value: `#${field.fieldId}`,
+      //   domain: "PERSON",
+      //   token: `#${field.fieldId}`,
+      //   type: field.type,
+      // }))
+      // setFilteredItems(variablesPreset)
+      // console.log(' customFieldsLists\n\n', variablesPreset)
+      
+
+      // setOctaCustomFields(customFieldsList)
+    }
+
+    fetchOctaCustomFields()
+
+    return () => {
+      // setOctaCustomFields(() => [])
+    }
+  }, [])
 
   return (
     <typebotContext.Provider
@@ -472,7 +593,11 @@ export const TypebotContext = ({
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
-        octaAgents
+        octaAgents,
+        octaPersonFields,
+        octaChatFields,
+        octaOrganizationFields,
+        octaCustomFields
       }}
     >
       {children}
