@@ -1,18 +1,25 @@
-import { DetailedHTMLProps, InputHTMLAttributes, ChangeEvent } from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 
 export type OctaSelectProps = {
-  items: Array<SelectItems<any>>
-  onChange: (e: OptionItemType) => void
-  defaultSelected?: OptionItemType
+  onChange: (e: any) => void
+  defaultSelected?: any
   label?: string;
-  findable?: boolean
+  findable?: boolean;
+  options?: Array<OptionType>;
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
-type SelectItems<T> = T
+export type OptionProps = {
+  value: any;
+  children?: string;
+  key: string | number;
+  isTitle?: boolean;
+  disabled?: boolean;
+  selected: any;
+} & DetailedHTMLProps<InputHTMLAttributes<HTMLLIElement>, HTMLLIElement>
 
-export type OptionItemType = {
-  label: string
-  value: any
-  isTitle?: boolean
-  disabled?: boolean
+export type OptionType = {
+  value: any;
+  label: string;
+  isTitle?: boolean;
+  disabled?: boolean;
 }

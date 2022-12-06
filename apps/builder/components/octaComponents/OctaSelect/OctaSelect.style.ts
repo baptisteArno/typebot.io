@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { MdOutlineExpandMore } from 'react-icons/md'
+import OctaInput from '../OctaInput/OctaInput'
 
 export const OptionGroup = styled.ul`
   display: flex;
@@ -22,7 +23,8 @@ export const OptionGroup = styled.ul`
   left: 0;
   &.opened {
     top: 44px;
-    height: 400px;
+    min-height: 150px;
+    max-height: 300px;
   }
   &::-webkit-scrollbar-track {
     background-color: transparent;
@@ -47,6 +49,9 @@ export const OptionItem = styled.li`
   font-size: 0.85rem;
   color: black;
   padding: 5px;
+  font-family: 'Poppins';
+  cursor: pointer;
+
   &:hover {
     background-color: #f5f5f5;
   }
@@ -61,6 +66,10 @@ export const OptionItem = styled.li`
   &.actived{
     background-color: #f5f5f5;
   }
+
+  &.isTitle{
+    color: #bebebe;
+  }
 `
 
 export const Separator = styled.hr`
@@ -70,9 +79,9 @@ export const Separator = styled.hr`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  height: 50px;
+  padding: 15px 10px 10px 10px;
   position: relative;
-  cursor: pointer;
   border: 1px solid #c4c7cf;
   border-radius: 6px;
   font-size: .8rem;
@@ -82,6 +91,15 @@ export const DropDownIcon = styled(MdOutlineExpandMore)`
   color: #c4c7cf;
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 12px;
   font-size: 1.5rem;
 `
+
+export const InputSearch = styled(OctaInput)`
+  border: none !important;
+  width: 90%;
+  height: 28px !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;

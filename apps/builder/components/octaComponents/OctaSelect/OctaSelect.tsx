@@ -1,90 +1,96 @@
+import React, { ChangeEvent, ReactNode, SyntheticEvent, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import useOuterClick from 'hooks/useOuterClick'
-import React, { ChangeEvent, SyntheticEvent, useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import OctaInput from '../OctaInput/OctaInput'
 import {
   Container,
   OptionGroup,
   OptionItem,
   DropDownIcon,
   Separator,
+  InputSearch,
 } from './OctaSelect.style'
-import { OctaSelectProps } from './OctaSelect.type'
+import { OctaSelectProps, OptionProps } from './OctaSelect.type';
+
+const Option = ({ value, children, key, isTitle, disabled, onClick, selected }: OptionProps) => {
+  const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>):void => {
+    if((!isTitle && !disabled) && onClick) {
+      onClick(e)
+    };
+  }
+  return (
+    <OptionItem
+      key={key}
+      data-value={value}
+      data-istitle={isTitle}
+      data-disabled={!!isTitle || disabled}
+      onClick={hasActionToClick}
+      className={`${value === selected ? "actived" : ""} ${isTitle ? "isTitle" : ""}`}
+    >
+      <>{children}</>
+    </OptionItem>
+  )
+}
 
 const OctaSelect = (props: OctaSelectProps) => {
-  const [toggle, setToggle] = useState<boolean>(false)
-  const [selected, setSelected] = useState<{ value: any; label: string; }>()
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useOuterClick(toggle);
+  const [toggle, setToggle] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>();
+  const { ref, isComponentVisible, setIsComponentVisible } = useOuterClick(toggle);
+  const [search, setSearch] = useState<string>();
 
-  const allOptions = useMemo(() => (props.items), [props.items])
+  const allOptions = useMemo(() => (props.options), [props.options]);
 
   useLayoutEffect(() => {
     setIsComponentVisible(toggle)
   }, [toggle, setIsComponentVisible])
 
-  useEffect(() => {
+  useCallback(() => {
     if (props.defaultSelected) {
       setSelected(props.defaultSelected);
     }
   }, [props.defaultSelected])
 
-  const handleSelect = (e: SyntheticEvent<HTMLLIElement>): void => {
-    const dataValue = e.currentTarget.getAttribute('data-value')
-    const dataLabel = e.currentTarget.getAttribute('data-label')
-    const isTitle = e.currentTarget.getAttribute('data-istitle')
-    if (dataValue && dataLabel) {
-      props.onChange({
-        value: dataValue,
-        label: dataLabel,
-      })
-      if (!isTitle) {
-        setSelected({ label: dataLabel, value: dataValue })
-      }
-      props.onChange({ label: dataLabel, value: dataValue })
-    }
-  }
   const handleToggle = (): void => {
     setToggle((e) => !e)
   }
 
-  const handleChangeFind = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const find = allOptions.find((option) => option.label === value);
-    console.log(find);
+  const handleChangeFind = (value: any): void => {
+    setSelected(value);
   }
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target;
+    setSearch(value);
+  }
+
+  const getOptions = useCallback(() => {
+    if (!allOptions) {
+      return [];
+    }
+    return allOptions.filter((option) => ((option.label.toLocaleLowerCase().indexOf(search ? search : "")) >= 0));
+  }, [allOptions, search])
 
   return (
     <Container ref={ref} onClick={handleToggle}>
       <>
-        {!selected && props.placeholder}
-        {selected && selected.label}
+        {(!selected && !props.findable) && props.placeholder}
+        {(selected && !props.findable) && selected.label}
+        {props.findable && <InputSearch placeholder={selected ? selected.label : "Buscar"} onChange={handleSearch} defaultValue={selected && selected.label ? selected.label : ""} />}
         <OptionGroup
           className={toggle && isComponentVisible ? 'opened' : ''}
           {...(props as any)}
         >
-          {props.findable && <OctaInput placeholder='Buscar..' onChange={handleChangeFind}/>}
           {props.label && props.label}
-          {allOptions.map((item, idx) => (
-            <>
-              {item && item?.isTitle && <Separator />}
-              <OptionItem
-                key={idx}
-                data-value={item.value}
-                data-label={item.label}
-                data-istitle={item.isTitle}
-                data-disabled={!!item.isTitle || item.disabled}
-                onClick={handleSelect}
-                className={item.label === selected?.label ? "actived" : ""}
-              >
-                {item.label}
-              </OptionItem>
-            </>
-          ))}
+          <>
+            {getOptions().map(option => (
+              <Option key={option.value} value={option.value} selected={selected} onClick={() => handleChangeFind(option)} isTitle={option.isTitle} disabled={option.disabled}>
+                {option.label}
+              </Option>
+            ))}
+          </>
         </OptionGroup>
-        <DropDownIcon />
+        <DropDownIcon onClick={handleToggle} />
       </>
     </Container>
   )
 }
 
-export default OctaSelect
+export default OctaSelect;
