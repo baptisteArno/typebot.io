@@ -11,6 +11,7 @@ playwright-report
 dist
 test-results
 **/api/scripts
+apps/docs/build/
 .sentryclirc
 .docusaurus
 .cache-loader
