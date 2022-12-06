@@ -12,26 +12,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId as string
 
-    const totalViews = await prisma.result.count({
-      where: {
-        typebotId,
-        typebot: canReadTypebot(typebotId, user),
-      },
-    })
-    const totalStarts = await prisma.result.count({
-      where: {
-        typebotId,
-        typebot: canReadTypebot(typebotId, user),
-        answers: { some: {} },
-      },
-    })
-    const totalCompleted = await prisma.result.count({
-      where: {
-        typebotId,
-        typebot: canReadTypebot(typebotId, user),
-        isCompleted: true,
-      },
-    })
+    const [totalViews, totalStarts, totalCompleted] = await prisma.$transaction(
+      [
+        prisma.result.count({
+          where: {
+            typebot: canReadTypebot(typebotId, user),
+          },
+        }),
+        prisma.result.count({
+          where: {
+            typebot: canReadTypebot(typebotId, user),
+            hasStarted: true,
+          },
+        }),
+        prisma.result.count({
+          where: {
+            typebot: canReadTypebot(typebotId, user),
+            isCompleted: true,
+          },
+        }),
+      ]
+    )
     const stats: Stats = {
       totalViews,
       totalStarts,

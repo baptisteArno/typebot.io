@@ -174,6 +174,8 @@ model Typebot {
   webhooks                Webhook[]
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
+
+  @@index([workspaceId])
 }
 
 model Invitation {
@@ -222,7 +224,8 @@ model Result {
   answers     Answer[]
   logs        Log[]
 
-  @@index([typebotId])
+  @@index([typebotId, createdAt])
+  @@index([createdAt, typebotId])
 }
 
 model Log {
@@ -249,6 +252,7 @@ model Answer {
 
   @@unique([resultId, blockId, groupId])
   @@index([groupId])
+  @@index([storageUsed])
 }
 
 model Coupon {
