@@ -55,8 +55,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
     })
-    const hasReachedLimit = await checkChatsUsage(result.typebot.workspace)
-    res.send({ result, hasReachedLimit })
+    // const hasReachedLimit = await checkChatsUsage(result.typebot.workspace)
+    res.send({ result, hasReachedLimit: false })
     return
   }
   methodNotAllowed(res)

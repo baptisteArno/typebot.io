@@ -32,7 +32,7 @@ const handler = async (
     const typebotId = req.query.typebotId as string
     const blockId = req.query.blockId as string
     if (!filePath) return badRequest(res, 'Missing filePath or fileType')
-    const hasReachedStorageLimit = await checkStorageLimit(typebotId)
+    // const hasReachedStorageLimit = await checkStorageLimit(typebotId)
     const typebot = (await prisma.publicTypebot.findFirst({
       where: { typebotId },
     })) as unknown as PublicTypebot
@@ -53,7 +53,7 @@ const handler = async (
 
     return res.status(200).send({
       presignedUrl,
-      hasReachedStorageLimit,
+      hasReachedStorageLimit: false,
     })
   }
   return methodNotAllowed(res)
