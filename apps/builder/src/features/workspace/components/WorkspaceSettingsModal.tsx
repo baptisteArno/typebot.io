@@ -47,8 +47,6 @@ export const WorkspaceSettingsModal = ({
   const { currentRole } = useWorkspace()
   const [selectedTab, setSelectedTab] = useState<SettingsTab>('my-account')
 
-  console.log(currentRole)
-
   const canEditWorkspace = currentRole === WorkspaceRole.ADMIN
 
   return (

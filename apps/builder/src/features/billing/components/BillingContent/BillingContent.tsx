@@ -12,7 +12,6 @@ import { ChangePlanForm } from '../ChangePlanForm'
 export const BillingContent = () => {
   const { workspace, refreshWorkspace } = useWorkspace()
 
-  console.log(workspace)
   if (!workspace) return null
   return (
     <Stack spacing="10" w="full">

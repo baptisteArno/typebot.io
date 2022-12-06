@@ -1,5 +1,7 @@
 import { z } from 'zod'
+import { ComparisonOperators, LogicalOperator } from '../logic/condition'
 import { blockBaseSchema, IntegrationBlockType } from '../shared'
+import cuid from 'cuid'
 
 export enum GoogleSheetsAction {
   GET = 'Get data from sheet',
@@ -25,10 +27,22 @@ const googleSheetsOptionsBaseSchema = z.object({
   spreadsheetId: z.string().optional(),
 })
 
+const rowsFilterComparisonSchema = z.object({
+  id: z.string(),
+  column: z.string().optional(),
+  comparisonOperator: z.nativeEnum(ComparisonOperators).optional(),
+  value: z.string().optional(),
+})
+
 const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.and(
   z.object({
     action: z.enum([GoogleSheetsAction.GET]),
+    // TODO: remove referenceCell once migrated to filtering
     referenceCell: cellSchema.optional(),
+    filter: z.object({
+      comparisons: z.array(rowsFilterComparisonSchema),
+      logicalOperator: z.nativeEnum(LogicalOperator),
+    }),
     cellsToExtract: z.array(extractingCellSchema),
   })
 )
@@ -62,6 +76,41 @@ export const googleSheetsBlockSchema = blockBaseSchema.and(
 
 export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
 
+export const defaultGoogleSheetsGetOptions: GoogleSheetsGetOptions = {
+  action: GoogleSheetsAction.GET,
+  cellsToExtract: [
+    {
+      id: cuid(),
+    },
+  ],
+  filter: {
+    comparisons: [
+      {
+        id: cuid(),
+      },
+    ],
+    logicalOperator: LogicalOperator.AND,
+  },
+}
+
+export const defaultGoogleSheetsInsertOptions: GoogleSheetsInsertRowOptions = {
+  action: GoogleSheetsAction.INSERT_ROW,
+  cellsToInsert: [
+    {
+      id: cuid(),
+    },
+  ],
+}
+
+export const defaultGoogleSheetsUpdateOptions: GoogleSheetsUpdateRowOptions = {
+  action: GoogleSheetsAction.UPDATE_ROW,
+  cellsToUpsert: [
+    {
+      id: cuid(),
+    },
+  ],
+}
+
 export type GoogleSheetsBlock = z.infer<typeof googleSheetsBlockSchema>
 export type GoogleSheetsOptions = z.infer<typeof googleSheetsOptionsSchema>
 export type GoogleSheetsOptionsBase = z.infer<
@@ -78,3 +127,4 @@ export type GoogleSheetsUpdateRowOptions = z.infer<
 >
 export type Cell = z.infer<typeof cellSchema>
 export type ExtractingCell = z.infer<typeof extractingCellSchema>
+export type RowsFilterComparison = z.infer<typeof rowsFilterComparisonSchema>

@@ -9,4 +9,5 @@ export default defineConfig((options) => ({
   loader: {
     '.css': 'text',
   },
+  external: ['cuid'],
 }))

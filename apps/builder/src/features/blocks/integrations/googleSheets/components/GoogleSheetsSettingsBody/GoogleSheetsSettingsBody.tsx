@@ -4,6 +4,9 @@ import { useTypebot } from '@/features/editor'
 import {
   Cell,
   CredentialsType,
+  defaultGoogleSheetsGetOptions,
+  defaultGoogleSheetsInsertOptions,
+  defaultGoogleSheetsUpdateOptions,
   ExtractingCell,
   GoogleSheetsAction,
   GoogleSheetsGetOptions,
@@ -22,6 +25,7 @@ import { TableListItemProps, TableList } from '@/components/TableList'
 import { CredentialsDropdown } from '@/features/credentials'
 import { useSheets } from '../../hooks/useSheets'
 import { Sheet } from '../../types'
+import { RowsFilterTableList } from './RowsFilterTableList'
 
 type Props = {
   options: GoogleSheetsOptions
@@ -56,24 +60,21 @@ export const GoogleSheetsSettingsBody = ({
       case GoogleSheetsAction.GET: {
         const newOptions: GoogleSheetsGetOptions = {
           ...options,
-          action,
-          cellsToExtract: [],
+          ...defaultGoogleSheetsGetOptions,
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.INSERT_ROW: {
         const newOptions: GoogleSheetsInsertRowOptions = {
           ...options,
-          action,
-          cellsToInsert: [],
+          ...defaultGoogleSheetsInsertOptions,
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.UPDATE_ROW: {
         const newOptions: GoogleSheetsUpdateRowOptions = {
           ...options,
-          action,
-          cellsToUpsert: [],
+          ...defaultGoogleSheetsUpdateOptions,
         }
         return onOptionsChange({ ...newOptions })
       }
@@ -161,6 +162,10 @@ const ActionOptions = ({
   const handleExtractingCellsChange = (cellsToExtract: ExtractingCell[]) =>
     onOptionsChange({ ...options, cellsToExtract } as GoogleSheetsOptions)
 
+  const handleFilterChange = (
+    filter: NonNullable<GoogleSheetsGetOptions['filter']>
+  ) => onOptionsChange({ ...options, filter } as GoogleSheetsOptions)
+
   const UpdatingCellItem = useMemo(
     () =>
       function Component(props: TableListItemProps<Cell>) {
@@ -210,12 +215,26 @@ const ActionOptions = ({
     case GoogleSheetsAction.GET:
       return (
         <Stack>
-          <Text>Row to select</Text>
-          <CellWithValueStack
-            columns={sheet?.columns ?? []}
-            item={options.referenceCell ?? { id: 'reference' }}
-            onItemChange={handleReferenceCellChange}
-          />
+          {options.referenceCell ? (
+            <>
+              <Text>Row to select</Text>
+              <CellWithValueStack
+                columns={sheet?.columns ?? []}
+                item={options.referenceCell ?? { id: 'reference' }}
+                onItemChange={handleReferenceCellChange}
+              />
+            </>
+          ) : (
+            <>
+              <Text>Filter</Text>
+              <RowsFilterTableList
+                columns={sheet?.columns ?? []}
+                filter={options.filter}
+                onFilterChange={handleFilterChange}
+              />
+            </>
+          )}
+
           <Text>Cells to extract</Text>
           <TableList<ExtractingCell>
             initialItems={options.cellsToExtract}

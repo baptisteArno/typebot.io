@@ -11,7 +11,6 @@ import {
   Cell,
   Variable,
 } from 'models'
-import { stringify } from 'qs'
 import { sendRequest, byId } from 'utils'
 
 export const executeGoogleSheetBlock = async (
@@ -45,12 +44,13 @@ const insertRowInGoogleSheets = (
     })
     return
   }
-  const params = stringify({ resultId })
   sendRequest({
-    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'POST',
     body: {
+      action: GoogleSheetsAction.INSERT_ROW,
       credentialsId: options.credentialsId,
+      resultId,
       values: parseCellValues(options.cellsToInsert, variables),
     },
   }).then(({ error }) => {
@@ -69,13 +69,14 @@ const updateRowInGoogleSheets = (
   { variables, apiHost, onNewLog, resultId }: IntegrationState
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
-  const params = stringify({ resultId })
   sendRequest({
-    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${params}`,
-    method: 'PATCH',
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    method: 'POST',
     body: {
+      action: GoogleSheetsAction.UPDATE_ROW,
       credentialsId: options.credentialsId,
       values: parseCellValues(options.cellsToUpsert, variables),
+      resultId,
       referenceCell: {
         column: options.referenceCell.column,
         value: parseVariables(variables)(options.referenceCell.value ?? ''),
@@ -103,22 +104,33 @@ const getRowFromGoogleSheets = async (
     resultId,
   }: IntegrationState
 ) => {
-  if (!options.referenceCell || !options.cellsToExtract) return
-  const queryParams = stringify(
-    {
+  if (!options.cellsToExtract) return
+  const { data, error } = await sendRequest<{
+    rows: { [key: string]: string }[]
+  }>({
+    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
+    method: 'POST',
+    body: {
+      action: GoogleSheetsAction.GET,
       credentialsId: options.credentialsId,
-      referenceCell: {
-        column: options.referenceCell.column,
-        value: parseVariables(variables)(options.referenceCell.value ?? ''),
-      },
+      referenceCell: options.referenceCell
+        ? {
+            column: options.referenceCell.column,
+            value: parseVariables(variables)(options.referenceCell.value ?? ''),
+          }
+        : undefined,
+      filter: options.filter
+        ? {
+            comparisons: options.filter.comparisons.map((comparison) => ({
+              ...comparison,
+              value: parseVariables(variables)(comparison.value),
+            })),
+            logicalOperator: options.filter?.logicalOperator ?? 'AND',
+          }
+        : undefined,
       columns: options.cellsToExtract.map((cell) => cell.column),
       resultId,
     },
-    { indices: false }
-  )
-  const { data, error } = await sendRequest<{ [key: string]: string }>({
-    url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}?${queryParams}`,
-    method: 'GET',
   })
   onNewLog(
     parseLog(
@@ -131,7 +143,9 @@ const getRowFromGoogleSheets = async (
   const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
     (newVariables, cell) => {
       const existingVariable = variables.find(byId(cell.variableId))
-      const value = data[cell.column ?? ''] ?? null
+      const rows = data.rows
+      const randomRow = rows[Math.floor(Math.random() * rows.length)]
+      const value = randomRow[cell.column ?? ''] ?? null
       if (!existingVariable) return newVariables
       updateVariableValue(existingVariable.id, value)
       return [

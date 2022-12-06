@@ -9,10 +9,11 @@
     "zod": "3.19.1"
   },
   "devDependencies": {
-    "typescript": "4.9.3",
-    "next": "13.0.6",
+    "cuid": "2.1.8",
     "db": "workspace:*",
-    "tsconfig": "workspace:*"
+    "next": "13.0.6",
+    "tsconfig": "workspace:*",
+    "typescript": "4.9.3"
   },
   "peerDependencies": {
     "next": "13.0.0"

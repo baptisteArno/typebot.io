@@ -95,7 +95,7 @@ test.describe.parallel('Google sheets integration', () => {
               '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
             ) &&
           resp.status() === 200 &&
-          resp.request().method() === 'PATCH'
+          resp.request().method() === 'POST'
       ),
       typebotViewer(page)
         .locator('input[placeholder="Type your email..."]')
@@ -118,10 +118,21 @@ test.describe.parallel('Google sheets integration', () => {
 
     await page.click('text=Select a column')
     await page.click('button >> text="Email"')
+    await page.getByRole('button', { name: 'Select an operator' }).click()
+    await page.getByRole('menuitem', { name: 'Equal to' }).click()
     await page.click('[aria-label="Insert a variable"]')
     await page.click('button >> text="Email" >> nth=1')
 
-    await page.click('text=Add a value')
+    await page.getByRole('button', { name: 'Add filter rule' }).click()
+    await page.getByRole('button', { name: 'AND', exact: true }).click()
+    await page.getByRole('menuitem', { name: 'OR' }).click()
+
+    await page.click('text=Select a column')
+    await page.getByRole('menuitem', { name: 'Email' }).click()
+    await page.getByRole('button', { name: 'Select an operator' }).click()
+    await page.getByRole('menuitem', { name: 'Equal to' }).click()
+    await page.getByPlaceholder('Type a value...').nth(-1).fill('test@test.com')
+
     await page.click('text=Select a column')
     await page.click('text="First name"')
     await createNewVar(page, 'First name')
@@ -138,9 +149,9 @@ test.describe.parallel('Google sheets integration', () => {
     await typebotViewer(page)
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
-    await expect(
-      typebotViewer(page).locator('text=Your name is: John Smith')
-    ).toBeVisible({ timeout: 30000 })
+    await expect(typebotViewer(page).locator('text=Your name is:')).toHaveText(
+      /John|Fred|Georges/
+    )
   })
 })
 

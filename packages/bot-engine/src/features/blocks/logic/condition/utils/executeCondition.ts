@@ -31,25 +31,33 @@ const executeComparison =
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
     ).trim()
     const value = parseVariables(variables)(comparison.value).trim()
-    if (isNotDefined(value)) return false
-    switch (comparison.comparisonOperator) {
-      case ComparisonOperators.CONTAINS: {
-        return inputValue.toLowerCase().includes(value.toLowerCase())
-      }
-      case ComparisonOperators.EQUAL: {
-        return inputValue === value
-      }
-      case ComparisonOperators.NOT_EQUAL: {
-        return inputValue !== value
-      }
-      case ComparisonOperators.GREATER: {
-        return parseFloat(inputValue) > parseFloat(value)
-      }
-      case ComparisonOperators.LESS: {
-        return parseFloat(inputValue) < parseFloat(value)
-      }
-      case ComparisonOperators.IS_SET: {
-        return isDefined(inputValue) && inputValue.length > 0
-      }
+    if (isNotDefined(value) || !comparison.comparisonOperator) return false
+    return matchComparison(inputValue, comparison.comparisonOperator, value)
+  }
+
+const matchComparison = (
+  inputValue: string,
+  comparisonOperator: ComparisonOperators,
+  value: string
+) => {
+  switch (comparisonOperator) {
+    case ComparisonOperators.CONTAINS: {
+      return inputValue.toLowerCase().includes(value.toLowerCase())
+    }
+    case ComparisonOperators.EQUAL: {
+      return inputValue === value
+    }
+    case ComparisonOperators.NOT_EQUAL: {
+      return inputValue !== value
+    }
+    case ComparisonOperators.GREATER: {
+      return parseFloat(inputValue) > parseFloat(value)
+    }
+    case ComparisonOperators.LESS: {
+      return parseFloat(inputValue) < parseFloat(value)
+    }
+    case ComparisonOperators.IS_SET: {
+      return isDefined(inputValue) && inputValue.length > 0
     }
   }
+}
