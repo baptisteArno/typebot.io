@@ -16,7 +16,7 @@ export const Container = styled.div`
   input {
     width: calc(100% - 22px);
     padding: 10px;
-    height: 22px;
+    height: 32px;
     border-radius: 5px;
     font-family: 'Poppins', sans-serif;
     font-size: .8rem;
@@ -39,7 +39,7 @@ export const Container = styled.div`
 export const InputMasked = styled(InputMask)`
   width: calc(100% - 22px);
   padding: 10px;
-  height: 22px;
+  height: 32px;
   border-radius: 5px;
   font-family: 'Poppins', sans-serif;
   font-size: .8rem;

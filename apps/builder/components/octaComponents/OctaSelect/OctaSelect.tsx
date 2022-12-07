@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, SyntheticEvent, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, Ref, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useOuterClick from 'hooks/useOuterClick'
 import {
   Container,
@@ -11,8 +11,8 @@ import {
 import { OctaSelectProps, OptionProps } from './OctaSelect.type';
 
 const Option = ({ value, children, key, isTitle, disabled, onClick, selected }: OptionProps) => {
-  const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>):void => {
-    if((!isTitle && !disabled) && onClick) {
+  const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
+    if ((!isTitle && !disabled) && onClick) {
       onClick(e)
     };
   }
@@ -53,7 +53,9 @@ const OctaSelect = (props: OctaSelectProps) => {
   }
 
   const handleChangeFind = (value: any): void => {
+    setSearch(value.label);
     setSelected(value);
+    props.onChange(value.value);
   }
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -65,7 +67,9 @@ const OctaSelect = (props: OctaSelectProps) => {
     if (!allOptions) {
       return [];
     }
-    return allOptions.filter((option) => ((option.label.toLocaleLowerCase().indexOf(search ? search : "")) >= 0));
+    return allOptions.filter((option) => {
+      return option.label.toLocaleLowerCase().indexOf(search ? search : "") >= 0
+    });
   }, [allOptions, search])
 
   return (
@@ -73,15 +77,30 @@ const OctaSelect = (props: OctaSelectProps) => {
       <>
         {(!selected && !props.findable) && props.placeholder}
         {(selected && !props.findable) && selected.label}
-        {props.findable && <InputSearch placeholder={selected ? selected.label : "Buscar"} onChange={handleSearch} defaultValue={selected && selected.label ? selected.label : ""} />}
+        {props.findable
+          &&
+          <InputSearch
+            placeholder={selected ? selected.label : props.placeholder}
+            defaultValue={selected && selected.label ? selected.label : ""}
+            value={search}
+            onChange={handleSearch}
+          />
+        }
         <OptionGroup
           className={toggle && isComponentVisible ? 'opened' : ''}
           {...(props as any)}
         >
           {props.label && props.label}
           <>
-            {getOptions().map(option => (
-              <Option key={option.value} value={option.value} selected={selected} onClick={() => handleChangeFind(option)} isTitle={option.isTitle} disabled={option.disabled}>
+            {getOptions().map((option, id) => (
+              <Option
+                key={id}
+                value={option.value}
+                selected={selected}
+                onClick={() => handleChangeFind(option)}
+                isTitle={option.isTitle}
+                disabled={option.disabled}
+              >
                 {option.label}
               </Option>
             ))}
