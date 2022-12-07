@@ -43,7 +43,7 @@ export const getResultsProcedure = authenticatedProcedure
       cursor: cursor ? { id: cursor } : undefined,
       where: {
         typebot: canReadTypebot(input.typebotId, user),
-        hasStarted: true,
+        answers: { some: {} },
       },
       orderBy: {
         createdAt: 'desc',
