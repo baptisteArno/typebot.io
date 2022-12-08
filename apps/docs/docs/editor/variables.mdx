@@ -20,11 +20,19 @@ Here is a quick video that showcases advanced concepts about variables:
 
 By default, any declared variables in the bot can be prefilled by passing initial values in the URL.
 
-Let's say I have a variable named "Email" somewhere in my bot. This variable can be passed as a URL parameter. If I'm launching my bot using this URL:
+Let's say my typebot contains these variables:
 
-`https://typebot.io/my-bot?Email=test@test.com`
+- "Email"
+- "First name"
 
-Then if an input step is saving the answer into this variable, it will be first prefilled with this initial value. It can greatly improve the user experience if you already have data about him.
+They can be initialized in the URL as [URL parameters](https://www.semrush.com/blog/url-parameters/). If I'm launching my bot using this URL:
+
+`https://typebot.io/my-bot?Email=test@test.com&First%20name=John` (Note that spaces in variable names should be replaced by `%20`)
+
+Then the variables will be prefilled as following:
+
+- Email => test@test.com
+- First name => John
 
 Prefilling variables using the embed library is even easier. You need to add an object named `hiddenVariables` that contains a dictionary of your values. For example:
 
@@ -32,18 +40,19 @@ Prefilling variables using the embed library is even easier. You need to add an 
 Typebot.initBubble({
   url: `https://viewer.typebot.io/typebot-support`,
   hiddenVariables: {
-    'User ID': '123',
-    'First name': 'John',
     Email: 'test@test.com',
+    'First name': 'John',
   },
 })
 ```
 
+(Note that if your variable name contains spaces, it needs to be surrounded by quotes.)
+
 ### Hidden variables
 
-These are simply variables that are declared in the bot flow but aren't displayed to the user anywhere. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
+Your typebot's variables don't have to be displayed to the user. You could create variables that are only used internally by the bot and displayed in your results. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
 
-To enable this, you just have to make sure that the variables exist in the variables dropdown:
+You just have to make sure that the variables exist in the variables dropdown:
 
 <img src="/img/variables/declaring.png" width="300" alt="Iframe preview" />
 
