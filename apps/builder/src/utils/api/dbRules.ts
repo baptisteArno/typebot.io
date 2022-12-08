@@ -1,50 +1,37 @@
-import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
+import { Plan, Prisma, User, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiResponse } from 'next'
 import { env, isNotEmpty } from 'utils'
 import { forbidden } from 'utils/api'
 
-const parseWhereFilter = (
+export const canWriteTypebots = (
   typebotIds: string[] | string,
-  user: User,
-  type: 'read' | 'write'
+  user: Pick<User, 'email' | 'id'>
 ): Prisma.TypebotWhereInput => ({
-  OR: [
-    {
-      id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
-      collaborators: {
-        some: {
-          userId: user.id,
-          type: type === 'write' ? CollaborationType.WRITE : undefined,
+  id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+  workspace: isNotEmpty(env('E2E_TEST'))
+    ? undefined
+    : {
+        members: {
+          some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
         },
       },
-    },
-    {
-      id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
-      workspace:
-        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        isNotEmpty(env('E2E_TEST'))
-          ? undefined
-          : {
-              members: {
-                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
-              },
-            },
-    },
-  ],
 })
 
-export const canReadTypebot = (typebotId: string, user: User) =>
-  parseWhereFilter(typebotId, user, 'read')
-
-export const canWriteTypebot = (typebotId: string, user: User) =>
-  parseWhereFilter(typebotId, user, 'write')
-
-export const canReadTypebots = (typebotIds: string[], user: User) =>
-  parseWhereFilter(typebotIds, user, 'read')
-
-export const canWriteTypebots = (typebotIds: string[], user: User) =>
-  parseWhereFilter(typebotIds, user, 'write')
+export const canReadTypebots = (
+  typebotIds: string | string[],
+  user: Pick<User, 'email' | 'id'>
+) => ({
+  id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+  workspace:
+    user.email === process.env.ADMIN_EMAIL || isNotEmpty(env('E2E_TEST'))
+      ? undefined
+      : {
+          members: {
+            some: { userId: user.id },
+          },
+        },
+})
 
 export const canEditGuests = (user: User, typebotId: string) => ({
   id: typebotId,

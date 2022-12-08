@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import { CollaborationType, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebot, canWriteTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
 import {
   badRequest,
   forbidden,
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
     const invitations = await prisma.invitation.findMany({
-      where: { typebotId, typebot: canReadTypebot(typebotId, user) },
+      where: { typebotId, typebot: canReadTypebots(typebotId, user) },
     })
     return res.send({
       invitations,
@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const typebot = await prisma.typebot.findFirst({
-      where: canWriteTypebot(typebotId, user),
+      where: canWriteTypebots(typebotId, user),
       include: { workspace: { select: { name: true } } },
     })
     if (!typebot || !typebot.workspaceId) return forbidden(res)

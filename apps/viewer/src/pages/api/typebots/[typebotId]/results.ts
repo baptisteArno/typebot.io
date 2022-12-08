@@ -5,7 +5,7 @@ import {
   sendAlmostReachedChatsLimitEmail,
   sendReachedChatsLimitEmail,
 } from 'emails'
-import { ResultWithAnswers, Workspace } from 'models'
+import { ResultWithAnswers } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { env, getChatsLimit, isDefined } from 'utils'
 import { methodNotAllowed } from 'utils/api'
@@ -33,58 +33,63 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string
+    const hasReachedLimit = await checkChatsUsage(typebotId)
+    if (hasReachedLimit) return res.send({ result: null, hasReachedLimit })
     const result = await prisma.result.create({
       data: {
         typebotId,
         isCompleted: false,
       },
-      include: {
-        typebot: {
-          include: {
-            workspace: {
-              select: {
-                id: true,
-                plan: true,
-                additionalChatsIndex: true,
-                chatsLimitFirstEmailSentAt: true,
-                chatsLimitSecondEmailSentAt: true,
-                customChatsLimit: true,
-              },
-            },
-          },
-        },
-      },
     })
-    // const hasReachedLimit = await checkChatsUsage(result.typebot.workspace)
-    res.send({ result, hasReachedLimit: false })
+    res.send({ result })
     return
   }
   methodNotAllowed(res)
 }
 
-const checkChatsUsage = async (
-  workspace: Pick<
-    Workspace,
-    | 'id'
-    | 'plan'
-    | 'additionalChatsIndex'
-    | 'chatsLimitFirstEmailSentAt'
-    | 'chatsLimitSecondEmailSentAt'
-    | 'customChatsLimit'
-  >
-) => {
+const checkChatsUsage = async (typebotId: string) => {
+  const typebot = await prisma.typebot.findUnique({
+    where: {
+      id: typebotId,
+    },
+    include: {
+      workspace: {
+        select: {
+          id: true,
+          plan: true,
+          additionalChatsIndex: true,
+          chatsLimitFirstEmailSentAt: true,
+          chatsLimitSecondEmailSentAt: true,
+          customChatsLimit: true,
+        },
+      },
+    },
+  })
+
+  const workspace = typebot?.workspace
+
+  if (!workspace) return false
+
   const chatsLimit = getChatsLimit(workspace)
   if (chatsLimit === -1) return
   const now = new Date()
   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
   const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-  const chatsCount = await prisma.result.count({
-    where: {
-      typebot: { workspaceId: workspace.id },
-      hasStarted: true,
-      createdAt: { gte: firstDayOfMonth, lte: lastDayOfMonth },
-    },
+  const chatsCount = await prisma.$transaction(async (tx) => {
+    const typebotIds = await tx.typebot.findMany({
+      where: {
+        workspaceId: workspace.id,
+      },
+      select: { id: true },
+    })
+
+    return tx.result.count({
+      where: {
+        typebotId: { in: typebotIds.map((typebot) => typebot.id) },
+        hasStarted: true,
+        createdAt: { gte: firstDayOfMonth, lte: firstDayOfNextMonth },
+      },
+    })
   })
   const hasSentFirstEmail =
     workspace.chatsLimitFirstEmailSentAt !== null &&

@@ -1,6 +1,6 @@
 import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
 import prisma from '@/lib/prisma'
-import { canReadTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Typebot, Webhook } from 'models'
@@ -40,7 +40,7 @@ export const getResultExampleProcedure = authenticatedProcedure
   )
   .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
     const typebot = (await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
+      where: canReadTypebots(typebotId, user),
       select: {
         groups: true,
         edges: true,

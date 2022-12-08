@@ -224,6 +224,7 @@ model Result {
   answers     Answer[]
   logs        Log[]
 
+  @@index([typebotId])
   @@index([typebotId, createdAt])
   @@index([createdAt, typebotId])
 }

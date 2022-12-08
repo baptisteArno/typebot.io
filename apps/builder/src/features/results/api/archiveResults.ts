@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { canWriteTypebot } from '@/utils/api/dbRules'
+import { canWriteTypebots } from '@/utils/api/dbRules'
 import { deleteFiles } from '@/utils/api/storage'
 import { User, Prisma } from 'db'
 import { InputBlockType, Typebot } from 'models'
@@ -14,7 +14,7 @@ export const archiveResults = async ({
   resultsFilter?: Prisma.ResultWhereInput
 }) => {
   const typebot = await prisma.typebot.findFirst({
-    where: canWriteTypebot(typebotId, user),
+    where: canWriteTypebots(typebotId, user),
     select: { groups: true },
   })
   if (!typebot) return { success: false }

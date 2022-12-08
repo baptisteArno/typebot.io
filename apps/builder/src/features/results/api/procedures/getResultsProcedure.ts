@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { canReadTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { ResultWithAnswers, resultWithAnswersSchema } from 'models'
@@ -38,11 +38,17 @@ export const getResultsProcedure = authenticatedProcedure
         message: 'limit must be between 1 and 200',
       })
     const { cursor } = input
+    const typebot = await prisma.typebot.findFirst({
+      where: canReadTypebots(input.typebotId, user),
+      select: { id: true },
+    })
+    if (!typebot)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
     const results = (await prisma.result.findMany({
       take: limit + 1,
       cursor: cursor ? { id: cursor } : undefined,
       where: {
-        typebot: canReadTypebot(input.typebotId, user),
+        typebotId: typebot.id,
         answers: { some: {} },
       },
       orderBy: {

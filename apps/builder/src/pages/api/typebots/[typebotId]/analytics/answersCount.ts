@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/api'
-import { canReadTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots } from '@/utils/api/dbRules'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -12,8 +12,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebotId = req.query.typebotId as string
     const typebot = await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
-      include: { publishedTypebot: true },
+      where: canReadTypebots(typebotId, user),
+      select: { publishedTypebot: true },
     })
     const publishedTypebot =
       typebot?.publishedTypebot as unknown as PublicTypebot

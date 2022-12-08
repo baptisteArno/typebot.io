@@ -1,4 +1,4 @@
-import { canWriteTypebot } from '@/utils/api/dbRules'
+import { canWriteTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
@@ -34,7 +34,7 @@ export const deleteResultsProcedure = authenticatedProcedure
       user,
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,
-        typebot: canWriteTypebot(typebotId, user),
+        typebot: canWriteTypebots(typebotId, user),
       },
     })
 

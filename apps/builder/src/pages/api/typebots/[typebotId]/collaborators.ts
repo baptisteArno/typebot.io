@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots } from '@/utils/api/dbRules'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
     const collaborators = await prisma.collaboratorsOnTypebots.findMany({
-      where: { typebot: canReadTypebot(typebotId, user) },
+      where: { typebot: canReadTypebots(typebotId, user) },
       include: { user: { select: { name: true, image: true, email: true } } },
     })
     return res.send({

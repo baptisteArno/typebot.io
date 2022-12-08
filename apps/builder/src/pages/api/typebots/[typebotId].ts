@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs'
 import { CollaborationType } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebot, canWriteTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
       where: {
-        ...canReadTypebot(typebotId, user),
+        ...canReadTypebots(typebotId, user),
         isArchived: { not: true },
       },
       include: {
@@ -46,10 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!success) return res.status(500).send({ success: false })
     await prisma.publicTypebot.deleteMany({
-      where: { typebot: canWriteTypebot(typebotId, user) },
+      where: { typebot: canWriteTypebots(typebotId, user) },
     })
     const typebots = await prisma.typebot.updateMany({
-      where: canWriteTypebot(typebotId, user),
+      where: canWriteTypebots(typebotId, user),
       data: { isArchived: true },
     })
     return res.send({ typebots })
@@ -57,7 +57,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const existingTypebot = await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
+      where: canReadTypebots(typebotId, user),
+      select: { updatedAt: true },
     })
     if (
       existingTypebot &&
@@ -65,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       return res.send({ message: 'Found newer version of typebot in database' })
     const typebots = await prisma.typebot.updateMany({
-      where: canWriteTypebot(typebotId, user),
+      where: canWriteTypebots(typebotId, user),
       data: {
         ...data,
         theme: data.theme ?? undefined,
@@ -78,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.updateMany({
-      where: canWriteTypebot(typebotId, user),
+      where: canWriteTypebots(typebotId, user),
       data,
     })
     return res.send({ typebots })

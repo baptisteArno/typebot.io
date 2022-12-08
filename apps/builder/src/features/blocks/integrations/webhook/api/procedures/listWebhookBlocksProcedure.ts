@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { canReadTypebot } from '@/utils/api/dbRules'
+import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Group, Typebot, Webhook, WebhookBlock } from 'models'
@@ -36,7 +36,7 @@ export const listWebhookBlocksProcedure = authenticatedProcedure
   )
   .query(async ({ input: { typebotId }, ctx: { user } }) => {
     const typebot = (await prisma.typebot.findFirst({
-      where: canReadTypebot(typebotId, user),
+      where: canReadTypebots(typebotId, user),
       select: {
         groups: true,
         webhooks: true,

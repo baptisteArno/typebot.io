@@ -11,21 +11,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const workspaceId = req.query.workspaceId as string
     const now = new Date()
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-    const totalChatsUsed = await prisma.result.count({
-      where: {
-        typebot: {
+    const firstDayOfNextMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      1
+    )
+    const totalChatsUsed = await prisma.$transaction(async (tx) => {
+      const typebots = await tx.typebot.findMany({
+        where: {
           workspace: {
             id: workspaceId,
             members: { some: { userId: user.id } },
           },
         },
-        hasStarted: true,
-        createdAt: {
-          gte: firstDayOfMonth,
-          lte: lastDayOfMonth,
+      })
+      return tx.result.count({
+        where: {
+          typebotId: { in: typebots.map((typebot) => typebot.id) },
+          hasStarted: true,
+          createdAt: {
+            gte: firstDayOfMonth,
+            lt: firstDayOfNextMonth,
+          },
         },
-      },
+      })
     })
     const {
       _sum: { storageUsed: totalStorageUsed },
