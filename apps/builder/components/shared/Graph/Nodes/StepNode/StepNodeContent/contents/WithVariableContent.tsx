@@ -10,14 +10,14 @@ type Props = {
 
 export const WithVariableContent = ({ step }: Props) => {
   const { typebot } = useTypebot()
-  console.log(typebot?.variables)
-  const variableName = typebot?.variables.find(variable => variable.token === step.options.variableId)?.token
-
-  console.log(variableName)
+  console.log('variáveis no nome:\n', typebot?.variables)
+  const variableName = typebot?.variables.find(
+    (variable) => variable.variableId === step.options.variableId
+  )?.token
 
   return (
     <Text>
-      Salvar resposta em {' '}
+      Salvar resposta em{' '}
       <chakra.span
         bgColor="orange.400"
         color="white"

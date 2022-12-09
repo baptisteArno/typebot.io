@@ -15,6 +15,7 @@ import { EditIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
+import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
@@ -28,8 +29,17 @@ type Props = {
   debounceTimeout?: number
   isDefaultOpen?: boolean
   onSelectVariable: (
-    variable:
-      | Pick<Variable, 'id' | 'name' | 'domain' | 'type' | 'token' | 'variableId' | 'fieldId' | 'example'>
+    variable: Pick<
+      Variable,
+      | 'id'
+      | 'name'
+      | 'domain'
+      | 'type'
+      | 'token'
+      | 'variableId'
+      | 'fieldId'
+      | 'example'
+    >
   ) => void
 } & InputProps
 
@@ -51,6 +61,7 @@ export const VariableSearchInput = ({
     octaOrganizationFields,
   } = useTypebot()
   const variables = typebot?.variables ?? []
+  console.log('existing typebot', variables)
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
   )
@@ -86,17 +97,6 @@ export const VariableSearchInput = ({
   const [octaItems, setOctaItems] = useState<Variable[]>([])
   useEffect(() => {
     const items = []
-    const octaPersonProperties = mountPropertiesOptions(
-      'PERSON',
-      mountProperties(octaPersonFields, 'PERSON').filter(
-        p => p.type !== 'select'
-      )
-    )
-
-    if (octaPersonProperties) {
-      items.push(octaPersonProperties.propTitle, ...octaPersonProperties.items)
-    }
-
     const octaChatProperties = mountPropertiesOptions(
       'CHAT',
       mountProperties(octaChatFields, 'CHAT')
@@ -106,17 +106,64 @@ export const VariableSearchInput = ({
       items.push(octaChatProperties.propTitle, ...octaChatProperties.items)
     }
 
+    const octaPersonProperties = mountPropertiesOptions(
+      'PERSON',
+      mountProperties(octaPersonFields, 'PERSON').filter(
+        (p) => p.type !== 'select'
+      )
+    )
+
+    if (octaPersonProperties) {
+      items.push(octaPersonProperties.propTitle, ...octaPersonProperties.items)
+    }
+
     const octaOrganizationProperties = mountPropertiesOptions(
       'ORGANIZATION',
       mountProperties(octaOrganizationFields, 'ORGANIZATION')
     )
 
     if (octaOrganizationProperties) {
-      items.push(octaOrganizationProperties.propTitle, ...octaOrganizationProperties.items)
+      items.push(
+        octaOrganizationProperties.propTitle,
+        ...octaOrganizationProperties.items,
+      )
     }
+    variables.map(variable => console.log(variable))
+    variables.forEach(variable => {
+      if (variable.id) {
+        deleteVariable(variable.id)
+      }
+    })
+    items.forEach(item => createVariable(item))
+    // setOctaItems(items)
+    // items.map(item => {
+    //   console.log('\n\n\n\n\n\n\n\nitem\n\n\n\n\n\n', item)
+    //   const shouldInclude = variables.filter(variable => {
+    //     console.log('dentro do filter variable.token', variable.token, item.token)
+    //     console.log('dentro do filter item.token', item.token)
+    //     return variable.token === item.token
+    //   })
+    //   console.log('shouldInclude\n', shouldInclude)
+    //   console.log('item.token\n', item.token)
+    //   if(shouldInclude) {
+    //     console.log('!variables.includes(item)', !variables.includes(item))
+    //     console.log('item\n', item)
+    //     createVariable(item)
+    //   }
+    // })
+    // const test = {
+    //   domain: "PERSON",
+    //   fieldId: 'TESTE',
+    //   example: 'Qualquer texto',
+    //   name: 'customField.nome-contato',
+    //   token: '#nome-contato',
+    //   type: 'string',
+    //   variableId: '#nome-contato',
+    // }
+    // items.push(test);
 
+    // createVariable(test);
     setOctaItems(items)
-    typebot && typebot.variables.push(...items)
   }, [])
 
   const fieldTypes = (fieldType: number): string => {
@@ -147,49 +194,55 @@ export const VariableSearchInput = ({
       case 'date':
         return '13/01/0001'
     }
-  
+
     return ''
   }
 
   const mountProperties = (properties: any, type: string) => {
-    const customProperties = properties.map((h: {fieldType: number, fieldId: string}) => {
-      const type: string = fieldTypes(h.fieldType)
-      let tokenValue: any = `#${h.fieldId.replace(/_/g, '-')}`
-      let domainValue = ''
-      if(type === 'PERSON'){
-        domainValue = CustomFieldTitle.PERSON
-        tokenValue = tokenValue.append('-contato')
-      } else if(type === 'CHAT'){
-        domainValue = CustomFieldTitle.CHAT
-        tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
-      } else if(type === 'ORGANIZATION') {
-        domainValue = CustomFieldTitle.ORGANIZATION
-      }
+    const customProperties = properties.map(
+      (h: { fieldType: number; fieldId: string }) => {
+        // const type: string = fieldTypes(h.fieldType)
+        let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
+        let domainValue = ''
+        if (type === 'PERSON') {
+          domainValue = CustomFieldTitle.PERSON
+          tokenValue = tokenValue.concat('-contato')
+        } else if (type === 'CHAT') {
+          domainValue = CustomFieldTitle.CHAT
+          tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
+        } else if (type === 'ORGANIZATION') {
+          domainValue = CustomFieldTitle.ORGANIZATION
+        }
 
-      return {
-        type,
-        variableId: tokenValue,
-        token: tokenValue,
-        domain: domainValue,
-        name: `customField.${h.fieldId}`,
-        example: resolveExample(type)
+        const id = 'v' + cuid()
+
+        return {
+          type,
+          id,
+          variableId: id,
+          token: tokenValue,
+          domain: domainValue,
+          name: `customField.${h.fieldId}`,
+          example: resolveExample(type),
+        }
       }
-    })
+    )
 
     return [...customProperties]
   }
 
   const mountPropertiesOptions = (propertiesType: any, properties: any) => {
     let nameTokenValue = ''
-    if(propertiesType === 'PERSON') {
+    if (propertiesType === 'PERSON') {
       nameTokenValue = CustomFieldTitle.PERSON
-    } else if(propertiesType === 'CHAT') {
+    } else if (propertiesType === 'CHAT') {
       nameTokenValue = CustomFieldTitle.CHAT
     } else if (propertiesType === 'ORGANIZATION') {
       nameTokenValue = CustomFieldTitle.ORGANIZATION
     }
 
     const propTitle = {
+      id: nameTokenValue,
       token: nameTokenValue,
       name: nameTokenValue,
       isTitle: true,
@@ -216,8 +269,7 @@ export const VariableSearchInput = ({
     ])
   }
 
-  const handleVariableNameClick = (variable: Variable) => () => {
-    console.log('\nchamei on change')
+  const handleVariableNameClick = (variable: Variable) => {
     setInputValue(variable.token)
     onSelectVariable(variable)
     onClose()
@@ -241,30 +293,6 @@ export const VariableSearchInput = ({
     // })
     onClose()
   }
-
-  // const handleDeleteVariableClick =
-  //   (variable: Variable) => (e: React.MouseEvent) => {
-  //     e.stopPropagation()
-  //     deleteVariable(variable.id)
-  //     setFilteredItems(filteredItems.filter((item) => item.id !== variable.id))
-  //     if (variable.name === inputValue) {
-  //       setInputValue('')
-  //       debounced('')
-  //     }
-  //   }
-
-  // const handleRenameVariableClick =
-  //   (variable: Variable) => (e: React.MouseEvent) => {
-  //     e.stopPropagation()
-  //     const name = prompt('Rename variable', variable.name)
-  //     if (!name) return
-  //     updateVariable(variable.id, { name })
-  //     setFilteredItems(
-  //       filteredItems.map((item) =>
-  //         item.id === variable.id ? { ...item, name } : item
-  //       )
-  //     )
-  //   }
 
   return (
     // <Flex ref={dropdownRef} w="full">
@@ -336,14 +364,26 @@ export const VariableSearchInput = ({
     //   </Popover>
     // </Flex>
     <>
-      <OctaSelect items={octaItems.map(item => ({
-        label: item.token,
-        value: item
-      }))}
-      findable
-      onChange={(item) => handleVariableNameClick(item)}>
-      
-      </OctaSelect>
+      <div style={{ width: '100%' }}>
+        <OctaSelect
+          options={octaItems.map((item) => ({
+            label: item.token,
+            value: item,
+          }))}
+          findable
+          onChange={(item) => handleVariableNameClick(item)}
+        />
+      </div>
     </>
+    // <OctaSelect
+    //   options={octaItems.map((item) => ({
+    //     label: item.token,
+    //     value: item,
+    //   }))}
+    //   findable
+    //   onChange={(e) => handleVariableNameClick(e)}
+    //   placeholder="Selecione um expediente"
+    //   label="Qual horário de expediente este bot irá atender?"
+    // ></OctaSelect>
   )
 }

@@ -1,46 +1,72 @@
+import { DomainType } from "enums/customFieldsEnum"
+
 export const fixedPersonProperties = [
   {
-    token: '#nome-contato',
+    id: '#nome' ,
+    variableId: '#nome' ,
+    token: '#nome',
     example: 'José da Silva',
     domain: 'PERSON',
     type: 'string',
-    name: 'name'
+    name: 'name',
+    fieldId: 'nome',
+    domainType: DomainType.Person,
   },
   {
-    token: '#email-contato',
+    id: '#email' ,
+    variableId: '#email' ,
+    token: '#email',
     example: 'email@cliente.com',
     domain: 'PERSON',
     type: 'email',
-    name: 'email'
+    name: 'email',
+    fieldId: 'email',
+    domainType: DomainType.Person,
   },
   {
-    token: '#tel-celular-contato',
+    id: '#tel-celular' ,
+    variableId: '#tel-celular' ,
+    token: '#tel-celular',
     example: '(11) 98765-9999',
     domain: 'PERSON',
     type: 'phone',
-    name: 'phone'
+    name: 'phone',
+    fieldId: 'tel-celular',
+    domainType: DomainType.Person,
   },
   {
-    token: '#tel-comercial-contato',
+    id: '#tel-comercial' ,
+    variableId: '#tel-comercial' ,
+    token: '#tel-comercial',
     example: '(11) 4444-9999',
     domain: 'PERSON',
     type: 'phone',
-    name: 'phoneContact.business'
+    name: 'phoneContact.business',
+    fieldId: 'tel-comercial',
+    domainType: DomainType.Person,
   },
   {
-    token: '#tel-residencial-contato',
+    id: '#tel-residencial' ,
+    variableId: '#tel-residencial' ,
+    token: '#tel-residencial',
     example: '(11) 4444-9999',
     domain: 'PERSON',
     type: 'phone',
-    name: 'phoneContact.home'
+    name: 'phoneContact.home',
+    fieldId: 'tel-residencial',
+    domainType: DomainType.Person,
   },
   {
-    token: '#status-do-contato',
+    id: '#status-do' ,
+    variableId: '#status-do' ,
+    token: '#status-do',
     example: '',
     domain: 'PERSON',
     type: 'select',
     name: 'idContactStatus',
-    dataSource: 'contactStatus'
+    dataSource: 'contactStatus',
+    fieldId: 'status-do',
+    domainType: DomainType.Person,
   }
 ]
 

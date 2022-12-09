@@ -13,12 +13,14 @@ export type VariablesActions = {
 }
 
 export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
-  createVariable: (newVariable: Variable) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        typebot.variables.push(newVariable)
-      })
-    ),
+  createVariable: (newVariable: Variable) => {
+    console.log('newVariable', newVariable)
+    return setTypebot((typebot) =>
+    produce(typebot, (typebot) => {
+      typebot.variables.push(newVariable)
+    })
+  )
+  },
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>

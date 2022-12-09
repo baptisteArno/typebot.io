@@ -51,6 +51,7 @@ import Groups from 'services/octadesk/groups/groups'
 import { ASSIGN_TO } from 'enums/assign-to'
 import CustomFields from 'services/octadesk/customFields/customFields'
 import { DomainType, FieldType } from '../../enums/customFieldsEnum'
+import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
@@ -473,20 +474,7 @@ export const TypebotContext = ({
       const fields = await CustomFields().getCustomFields()
       // handleCustomFields(fields)
       const personFields = [
-        {
-          key: 'nome-contato',
-          fieldId: 'nome-contato',
-          property: 'room.createdBy.name',
-          type: 'text',
-          domainType: DomainType.Person,
-        },
-        {
-          key: 'email-contato',
-          fieldId: 'email-contato',
-          property: 'room.createdBy.email',
-          type: 'text',
-          domainType: DomainType.Person,
-        },
+        ...fixedPersonProperties,
         ...fields.filter(
           (f: { domainType: number }) => f.domainType === DomainType.Person
         ),

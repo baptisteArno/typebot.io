@@ -112,7 +112,7 @@ export const SearchableDropdown = ({
     )
     const newValue =
       textBeforeCursorPosition +
-      `{{${variable.name}}}` +
+      `{{${variable.token}}}` +
       textAfterCursorPosition
     setInputValue(newValue)
     debounced(newValue)
@@ -120,7 +120,7 @@ export const SearchableDropdown = ({
     setTimeout(() => {
       if (!inputRef.current) return
       inputRef.current.selectionStart = inputRef.current.selectionEnd =
-        carretPosition + `{{${variable.name}}}`.length
+        carretPosition + `{{${variable.token}}}`.length
       setCarretPosition(inputRef.current.selectionStart)
     }, 100)
   }

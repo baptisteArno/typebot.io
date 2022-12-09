@@ -17,7 +17,7 @@ export const CpfInputSettingsBody = ({
   const handleVariableChange = (variable: Variable) => {
     console.log({
       ...options,
-      variableId: variable.token,
+      variableId: variable.id,
       token: variable.token,
       name: variable.name,
       type: variable.type,
@@ -26,7 +26,7 @@ export const CpfInputSettingsBody = ({
     })
     onOptionsChange({
       ...options,
-      variableId: variable.token,
+      variableId: variable.id,
       token: variable.token,
       name: variable.name,
       type: variable.type,
@@ -45,6 +45,9 @@ export const CpfInputSettingsBody = ({
           initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
+        <span>
+          ou
+        </span>
         <OctaButton>
           Criar variável
         </OctaButton>

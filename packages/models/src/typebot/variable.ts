@@ -1,5 +1,5 @@
 export type Variable = {
-  id?: string | undefined
+  id: string
   variableId: string | undefined
   domain: "PERSON" | "ORGANIZATION" | "CHAT"
   name: string
