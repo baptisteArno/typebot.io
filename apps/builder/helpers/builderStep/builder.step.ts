@@ -1,9 +1,10 @@
 import { WritableDraft } from 'immer/dist/types/types-external';
-import { Block, DraggableStep, DraggableStepType, InputStepType, Step, StepIndices, Typebot } from "models";
+import { Block, DraggableStep, DraggableStepType, InputStepType, OctaStepType, Step, StepIndices, Typebot } from "models";
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateMailBot } from "./dictionary/input-email.step";
 import { templateCpfBot } from "./dictionary/input-cpf.step";
 import { BuilderStepType } from "./types.builder";
+import { templateOfficeHours } from './dictionary/input-officeHours.step';
 
 export const BuildSteps = (
   stepIndices: StepIndices
@@ -17,6 +18,9 @@ export const BuildSteps = (
           break;
         case InputStepType.CPF:
           step = templateCpfBot(bot, blockId)
+          break;
+        case OctaStepType.OFFICE_HOURS:
+          step = templateOfficeHours(bot, blockId)
           break;
         default:
           step = [parseNewStep(type, blockId)]

@@ -101,7 +101,7 @@ const typebotContext = createContext<
   ItemsActions &
   VariablesActions &
   EdgesActions
->({})
+>({} as any)
 
 export const TypebotContext = ({
   children,

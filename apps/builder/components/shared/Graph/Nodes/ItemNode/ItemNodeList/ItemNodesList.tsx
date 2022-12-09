@@ -5,11 +5,12 @@ import {
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, StepIndices, StepWithItems } from 'models'
+import { ButtonItem, OctaStepType, StepIndices, StepWithItems } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
-import { ItemNode } from './ItemNode'
-import { SourceEndpoint } from '../../Endpoints'
-import { ItemNodeOverlay } from './ItemNodeOverlay'
+import { ItemNode } from '../ItemNode'
+import { SourceEndpoint } from '../../../Endpoints'
+import { ItemNodeOverlay } from '../ItemNodeOverlay'
+import { Container, HandleSelectCalendar, SelectedCalendar } from './ItemNodeList.style'
 
 type Props = {
   step: StepWithItems
@@ -94,17 +95,17 @@ export const ItemNodesList = ({
 
   const handleStepMouseDown =
     (itemIndex: number) =>
-    (
-      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      item: ButtonItem
-    ) => {
-      if (!typebot || isReadOnly) return
-      placeholderRefs.current.splice(itemIndex + 1, 1)
-      detachItemFromStep({ blockIndex, stepIndex, itemIndex })
-      setPosition(absolute)
-      setRelativeCoordinates(relative)
-      setDraggedItem(item)
-    }
+      (
+        { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+        item: ButtonItem
+      ) => {
+        if (!typebot || isReadOnly) return
+        placeholderRefs.current.splice(itemIndex + 1, 1)
+        detachItemFromStep({ blockIndex, stepIndex, itemIndex })
+        setPosition(absolute)
+        setRelativeCoordinates(relative)
+        setDraggedItem(item)
+      }
 
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -121,37 +122,56 @@ export const ItemNodesList = ({
       onClick={stopPropagating}
       pointerEvents={isReadOnly ? 'none' : 'all'}
     >
-      <Flex
+      {/* <Flex
         ref={handlePushElementRef(0)}
         h={showPlaceholders && expandedPlaceholderIndex === 0 ? '50px' : '2px'}
         bgColor={'gray.300'}
         visibility={showPlaceholders ? 'visible' : 'hidden'}
         rounded="lg"
         transition={showPlaceholders ? 'height 200ms' : 'none'}
-      />
-      {step.items.map((item, idx) => (
-        <Stack key={item.id} spacing={1}>
-          <ItemNode
-            item={item}
-            indices={{ blockIndex, stepIndex, itemIndex: idx }}
-            onMouseDown={handleStepMouseDown(idx)}
-            isReadOnly={isReadOnly}
-          />
-          <Flex
-            ref={handlePushElementRef(idx + 1)}
-            h={
-              showPlaceholders && expandedPlaceholderIndex === idx + 1
-                ? '50px'
-                : '2px'
+      /> */}
+      {step.type === OctaStepType.OFFICE_HOURS && (
+        <Container>
+          { !typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && <HandleSelectCalendar>
+            Selecione o expediente que o seu bot irá seguir
+          </HandleSelectCalendar>}
+          {typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && 
+          <div>
+            Horário: &nbsp;&nbsp;
+            <SelectedCalendar>
+            {typebot?.blocks[blockIndex].steps[stepIndex].options['name']}
+            </SelectedCalendar>
+          </div>
             }
-            bgColor={'gray.300'}
-            visibility={showPlaceholders ? 'visible' : 'hidden'}
-            rounded="lg"
-            transition={showPlaceholders ? 'height 200ms' : 'none'}
-          />
-        </Stack>
-      ))}
-      {isLastStep && (
+        </Container>
+      )}
+      {step && step.items && step.items.map((item, idx) => {
+        console.log("Item s=> ", item);
+        
+        return (
+          <Stack key={item.id} spacing={1}>
+            <ItemNode
+              item={item}
+              indices={{ blockIndex, stepIndex, itemIndex: idx }}
+              onMouseDown={handleStepMouseDown(idx)}
+              isReadOnly={isReadOnly}
+            />
+            <Flex
+              ref={handlePushElementRef(idx + 1)}
+              h={
+                showPlaceholders && expandedPlaceholderIndex === idx + 1
+                  ? '50px'
+                  : '2px'
+              }
+              bgColor={'gray.300'}
+              visibility={showPlaceholders ? 'visible' : 'hidden'}
+              rounded="lg"
+              transition={showPlaceholders ? 'height 200ms' : 'none'}
+            />
+          </Stack>
+        )
+      })}
+      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && (
         <Flex
           px="4"
           py="2"
@@ -163,7 +183,7 @@ export const ItemNodesList = ({
           align="center"
           cursor={isReadOnly ? 'pointer' : 'not-allowed'}
         >
-          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão</Text>
+          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão  </Text>
           <SourceEndpoint
             source={{
               blockId: step.blockId,

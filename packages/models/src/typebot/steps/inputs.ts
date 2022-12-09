@@ -176,7 +176,7 @@ const defaultButtonLabel = 'Enviar'
 
 export const defaultTextInputOptions: TextInputOptions = {
   isLong: false,
-  labels: { button: defaultButtonLabel, placeholder: 'Digite a sua resposta...' },
+  labels: { button: defaultButtonLabel, placeholder: 'Digite um texto...' },
 }
 
 export const defaultAskNameOptions: AskNameOptions = {

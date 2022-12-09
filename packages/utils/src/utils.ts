@@ -20,7 +20,8 @@ import {
   OctaStepType,
   OctaBubbleStepType,
   OctaBubbleStep,
-  OctaStepWithOptionsType
+  OctaStepWithOptionsType,
+  OfficeHourStep
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -153,12 +154,12 @@ export const stepTypeHasWebhook = (
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE =>
-  type === LogicStepType.CONDITION || type === InputStepType.CHOICE
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS =>
+  type === LogicStepType.CONDITION || type === InputStepType.CHOICE || type === OctaStepType.OFFICE_HOURS
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep =>
+): step is ConditionStep | ChoiceInputStep | OfficeHourStep =>
   'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

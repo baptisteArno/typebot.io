@@ -1,0 +1,1 @@
+export { OfficeHoursBody } from "./OfficeHoursBody";

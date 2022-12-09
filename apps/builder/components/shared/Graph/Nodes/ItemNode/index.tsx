@@ -1,1 +1,1 @@
-export { ItemNodesList } from './ItemNodesList'
+export { ItemNodesList } from '../ItemNode/ItemNodeList'

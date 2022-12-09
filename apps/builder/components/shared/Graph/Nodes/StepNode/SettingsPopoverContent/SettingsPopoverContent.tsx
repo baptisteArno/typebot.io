@@ -35,6 +35,7 @@ import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
+import { OfficeHoursBody } from './bodies/OfficeHoursBody'
 import { PaymentSettings } from './bodies/PaymentSettings'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
@@ -61,7 +62,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   useEventListener('wheel', handleMouseWheel, ref.current)
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative">
+      <PopoverContent onMouseDown={handleMouseDown} pos="relative" w={450}>
         <PopoverArrow />
         <PopoverBody
           pt="10"
@@ -98,9 +99,9 @@ export const StepSettings = ({
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
   }
-  const handleItemChange = (updates: Partial<ConditionItem>) => {
+  const handleItemChange = (updates: Partial<any>) => {
     onStepChange({
-      items: [{ ...(step as ConditionStep).items[0], ...updates }],
+      items: [{ ...(step as any).items[0], ...updates }],
     } as Partial<Step>)
   }
   switch (step.type) {
@@ -246,6 +247,11 @@ export const StepSettings = ({
           }
           onOptionsChange={handleOptionsChange}
         />
+      )
+    }
+    case OctaStepType.OFFICE_HOURS: {
+      return (
+        <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
     case IntegrationStepType.ZAPIER: {

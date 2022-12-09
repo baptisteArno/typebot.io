@@ -52,7 +52,7 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleDefaultAssignToChange = (e: any) => {
-    const option = e && JSON.parse(e.value)
+    const option = e
         
     onOptionsChange({
       ...options,

@@ -113,7 +113,9 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Direcione a conversa para um agente/time'
     case OctaBubbleStepType.END_CONVERSATION:
       return 'Encerre a conversa do bot'
-
+    case OctaStepType.OFFICE_HOURS:
+        return 'Horário de atendimento'
+  
     default:
       return 'outro'
   }

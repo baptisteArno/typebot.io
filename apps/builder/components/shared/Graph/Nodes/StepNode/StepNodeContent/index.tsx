@@ -1,1 +1,1 @@
-export { StepNodeContent } from './StepNodeContent'
+export { StepNodeContent } from './StepNodeContent/StepNodeContent'

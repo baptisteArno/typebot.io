@@ -11,7 +11,8 @@ import {
   OctaStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
-import { ItemNodesList } from '../../ItemNode'
+import { ItemNodesList } from '../../../ItemNode'
+
 import {
   EmbedBubbleContent,
   // SetVariableContent,
@@ -19,18 +20,18 @@ import {
   VideoBubbleContent,
   WebhookContent,
   WithVariableContent,
-} from './contents'
-import { AssignToTeamContent } from './contents/AssignToTeam/AssignToTeamContent'
+} from '../contents'
+import { AssignToTeamContent } from '../contents/AssignToTeam/AssignToTeamContent'
 // import { ConfigureContent } from './contents/ConfigureContent'
-import { ImageBubbleContent } from './contents/ImageBubbleContent'
+import { ImageBubbleContent } from '../contents/ImageBubbleContent'
 // import { PaymentInputContent } from './contents/PaymentInputContent'
-import { PlaceholderContent } from './contents/PlaceholderContent'
+import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
 // import { TypebotLinkContent } from './contents/TypebotLinkContent'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
-  step: Step | StartStep
+  step: Step;
   indices: StepIndices
 }
 export const StepNodeContent = ({ step, indices }: Props) => {
@@ -160,6 +161,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       return (
         <AssignToTeamContent step={step} options={step.options.labels} />
       )
+    }
+    case OctaStepType.OFFICE_HOURS: {     
+      return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
     case 'start': {
       return <Text>Início</Text>

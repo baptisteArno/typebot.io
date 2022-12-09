@@ -14,10 +14,10 @@ export const StepNodeContextMenu = ({ indices }: Props) => {
   return (
     <MenuList>
       <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
-        Duplicate
+        Duplicar
       </MenuItem>
       <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
-        Delete
+        Deletar
       </MenuItem>
     </MenuList>
   )
