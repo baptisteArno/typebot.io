@@ -25,3 +25,5 @@ firebaseServiceAccount.json
 tags
 
 *.history/
+
+apps/docs/build/

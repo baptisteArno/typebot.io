@@ -197,7 +197,7 @@ export const WebhookSettings = ({
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
-                <Text>
+                <Text color="gray.500" fontSize="sm">
                   Adicione sua informações ao final da URL da integração
                   (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
                 </Text>
@@ -216,7 +216,7 @@ export const WebhookSettings = ({
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
-                <Text>
+                <Text color="gray.500" fontSize="sm">
                   Sua informação no cabeçalho da integração 
                   <strong> (ex.: Authorization: Basic 1234)</strong>
                 </Text> 
@@ -247,8 +247,18 @@ export const WebhookSettings = ({
                     lang="json"
                     onChange={handleBodyChange}
                     debounceTimeout={0}
-                  />
+                  >
+                    <text color="gray.500" fontSize="sm">
+                      Envie sua informação na corpo da integração  Request Body (apenas JSON)
+                    <text>
+                      Digite # para inserir campos personalizados
+                    </text>
+                    </text>
+							      {/* "Request Body (apenas JSON)",
+							      "Digite # para inserir campos personalizados" */}
+                  </CodeEditor>
                 )}
+                
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>

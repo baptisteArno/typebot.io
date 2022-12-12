@@ -101,6 +101,7 @@ export const StepsSideBar = () => {
     return (
       type === InputStepType.DATE ||
       type === InputStepType.PHONE ||
+      type === OctaStepType.OFFICE_HOURS ||
       type === WabaStepType.BUTTONS ||
       type === WabaStepType.OPTIONS
     )
