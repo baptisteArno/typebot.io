@@ -3,10 +3,8 @@ import {
   Text,
   SimpleGrid,
   useEventListener,
-  Portal,
   Flex,
   IconButton,
-  Icon,
   Tooltip,
   Fade,
   Badge,
@@ -25,8 +23,8 @@ import {
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
-import { StepCard, StepCardOverlay } from './StepCard'
-import { LockedIcon, UnlockedIcon, InfoIcon, CreditCardIcon } from 'assets/icons'
+import { StepCard } from './StepCard'
+import { LockedIcon, UnlockedIcon, InfoIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 
 export const StepsSideBar = () => {
@@ -89,14 +87,18 @@ export const StepsSideBar = () => {
       type !== LogicStepType.SET_VARIABLE &&
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
-      type !== LogicStepType.TYPEBOT_LINK
+      type !== LogicStepType.TYPEBOT_LINK &&
+      type !== IntegrationStepType.EMAIL &&
+      type !== IntegrationStepType.GOOGLE_ANALYTICS &&
+      type !== IntegrationStepType.GOOGLE_SHEETS &&
+      type !== IntegrationStepType.MAKE_COM &&
+      type !== IntegrationStepType.PABBLY_CONNECT &&
+      type !== IntegrationStepType.ZAPIER
     )
   }
 
   const shouldDisableComponent = (type: StepType) => {
     return (
-      type === InputStepType.DATE ||
-      type === InputStepType.PHONE ||
       type === OctaStepType.OFFICE_HOURS ||
       type === WabaStepType.BUTTONS ||
       type === WabaStepType.OPTIONS
@@ -238,9 +240,15 @@ export const StepsSideBar = () => {
         </Stack>
 
         <Stack>
+          <Flex>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Validações
           </Text>
+          <Spacer/>
+          <Badge variant='solid' colorScheme='purple' borderRadius="6px" textAlign="center"> 
+            PLANO SEA
+          </Badge>
+          </Flex>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map(
               (type) =>
@@ -254,7 +262,31 @@ export const StepsSideBar = () => {
             )}
           </SimpleGrid>
         </Stack>
+      <Stack>
+        <Flex>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            Superintegrações
+          </Text>
+          <Spacer/>
+          <Badge variant='solid' colorScheme='purple' borderRadius="6px" textAlign="center"> 
+            PLANO SEA
+          </Badge>
+        </Flex>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(IntegrationStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
+                )
+            )}
+          </SimpleGrid>
+        </Stack>
       </Stack>
+
       <Fade in={!isLocked} unmountOnExit>
         <Flex
           pos="absolute"

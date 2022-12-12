@@ -1,8 +1,8 @@
 import { WritableDraft } from 'immer/dist/types/types-external';
-import { Block, DraggableStep, DraggableStepType, InputStepType, Step, StepIndices, Typebot } from "models";
+import { Block, DraggableStep, DraggableStepType, InputStepType, StepIndices, Typebot } from "models";
 import { parseNewStep } from 'services/typebots/typebots'
-import { templateMailBot } from "./dictionary/input-email.step";
-import { templateCpfBot } from "./dictionary/input-cpf.step";
+import { templateTextBot } from './dictionary/input-text.step';
+import { templateDateBot } from './dictionary/input-date.step';
 import { BuilderStepType } from "./types.builder";
 
 export const BuildSteps = (
@@ -12,12 +12,28 @@ export const BuildSteps = (
     const builder = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string) => {
       let step: Array<DraggableStep>;
       switch (type) {
+        case InputStepType.TEXT: {
+          step = templateTextBot(bot, blockId, 'Pergunte qualquer coisa')
+          break;
+        }
+        case InputStepType.NUMBER: {
+          step = templateTextBot(bot, blockId, 'Pode me informar o número do seu pedido, por favor?')
+          break;
+        }
         case InputStepType.EMAIL:
-          step = templateMailBot(bot, blockId)
+          step = templateTextBot(bot, blockId, 'Por favor, digite seu email')
           break;
         case InputStepType.CPF:
-          step = templateCpfBot(bot, blockId)
+          step = templateTextBot(bot, blockId, 'Por favor, digite seu CPF')
           break;
+        case InputStepType.DATE: {
+          step = templateDateBot(bot, blockId, 'Informe uma data, por favor')
+          break;
+        }
+        case InputStepType.PHONE: 
+          step = templateTextBot(bot, blockId, 'Posso anotar seu telefone, por favor?')
+          break;
+        
         default:
           step = [parseNewStep(type, blockId)]
           break;

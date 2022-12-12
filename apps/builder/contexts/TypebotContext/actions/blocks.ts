@@ -6,6 +6,7 @@ import {
   Block,
   DraggableStep,
   DraggableStepType,
+  IntegrationStepType,
   StepIndices,
   Typebot,
 } from 'models'
@@ -103,6 +104,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Pergunte o número do pedido'
     case InputStepType.EMAIL:
       return 'Pergunte o email'
+    case InputStepType.CPF:
+      return 'Pergunte o CPF'
     case InputStepType.DATE:
       return 'Pergunte uma data'
     case InputStepType.PHONE:
@@ -113,9 +116,10 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Direcione a conversa para um agente/time'
     case OctaBubbleStepType.END_CONVERSATION:
       return 'Encerre a conversa do bot'
-
+    case IntegrationStepType.WEBHOOK:
+      return 'Conecte a outro sistema'
     default:
-      return 'outro'
+      return 'Outro'
   }
 }
 

@@ -364,6 +364,7 @@ export const TypebotContext = ({
   ) => {
     if (!typebot) return
     const { data } = await saveWebhook(webhookId, updates)
+    // console.log('data', data)
     if (data)
       mutate({
         typebot,

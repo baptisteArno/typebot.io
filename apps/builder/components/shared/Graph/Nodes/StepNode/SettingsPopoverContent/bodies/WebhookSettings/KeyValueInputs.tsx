@@ -6,16 +6,16 @@ import { KeyValue } from 'models'
 export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs
     {...props}
-    keyPlaceholder="e.g. email"
-    valuePlaceholder="e.g. {{Email}}"
+    keyPlaceholder="Ex. email"
+    valuePlaceholder="Ex. {{Email}}"
   />
 )
 
 export const HeadersInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs
     {...props}
-    keyPlaceholder="e.g. Content-Type"
-    valuePlaceholder="e.g. application/json"
+    keyPlaceholder="Ex. Content-Type"
+    valuePlaceholder="Ex. application/json"
   />
 )
 
@@ -40,7 +40,7 @@ export const KeyValueInputs = ({
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
-        <FormLabel htmlFor={'key' + item.id}>Key:</FormLabel>
+        <FormLabel htmlFor={'key' + item.id}>Chave:</FormLabel>
         <Input
           id={'key' + item.id}
           defaultValue={item.key ?? ''}
@@ -50,7 +50,7 @@ export const KeyValueInputs = ({
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Value:</FormLabel>
+        <FormLabel htmlFor={'value' + item.id}>Valor:</FormLabel>
         <Input
           id={'value' + item.id}
           defaultValue={item.value ?? ''}

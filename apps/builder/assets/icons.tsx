@@ -368,7 +368,12 @@ export const FilmIcon = (props: any) => (
 
 export const WebhookIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+    <circle cx="12" cy="9" r="1"></circle>
+    <circle cx="19" cy="9" r="1"></circle>
+    <circle cx="5" cy="9" r="1"></circle>
+    <circle cx="12" cy="15" r="1"></circle>
+    <circle cx="19" cy="15" r="1"></circle>
+    <circle cx="5" cy="15" r="1"></circle>
   </Icon>
 )
 
