@@ -1,7 +1,7 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import { Input } from 'components/shared/Textbox'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { CpfInputOptions, Variable } from 'models'
 import React from 'react'
 
@@ -38,19 +38,10 @@ export const CpfInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <Stack>
-        <FormLabel mb="0" htmlFor="variable">
-          Salvar resposta em uma variável:
-        </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}
         />
-        <span>
-          ou
-        </span>
-        <OctaButton>
-          Criar variável
-        </OctaButton>
       </Stack>
     </Stack>
   )

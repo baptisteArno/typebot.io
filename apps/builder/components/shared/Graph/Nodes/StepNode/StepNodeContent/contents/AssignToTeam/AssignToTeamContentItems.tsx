@@ -2,7 +2,7 @@ import { Stack, Box, Flex, Text } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
 import { Input } from 'components/shared/Textbox/Input'
 import { TableListItemProps } from 'components/shared/TableList'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { SourceEndpoint } from '../../../../../Endpoints'
 import { Comparison, Variable, ComparisonOperators } from 'models'
 

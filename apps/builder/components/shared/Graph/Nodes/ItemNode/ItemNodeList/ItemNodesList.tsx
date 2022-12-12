@@ -146,8 +146,6 @@ export const ItemNodesList = ({
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {
-        console.log("Item s=> ", item);
-        
         return (
           <Stack key={item.id} spacing={1}>
             <ItemNode

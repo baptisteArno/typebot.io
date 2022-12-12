@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { UrlInputOptions, Variable } from 'models'
 import React from 'react'
 

@@ -4,23 +4,22 @@ import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
 
 export type VariablesActions = {
-  createVariable: (variable: Variable) => void
+  createVariable: (variable: Variable) => void;
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>
-  ) => void
-  deleteVariable: (variableId: string) => void
+  ) => void;
+  deleteVariable: (variableId: string) => void;
+  getVariables: (variableId: string) => void
 }
 
 export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
-  createVariable: (newVariable: Variable) => {
-    console.log('newVariable', newVariable)
-    return setTypebot((typebot) =>
-    produce(typebot, (typebot) => {
-      typebot.variables.push(newVariable)
-    })
-  )
-  },
+  createVariable: (newVariable: Variable) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        typebot.variables.push(newVariable)
+      })
+    ),
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>
@@ -38,6 +37,9 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
         deleteVariableDraft(typebot, itemId)
       })
     ),
+    getVariables: async (): Promise<void> => {
+
+    }
 })
 
 export const deleteVariableDraft = (

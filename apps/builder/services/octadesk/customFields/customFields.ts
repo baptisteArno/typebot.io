@@ -29,7 +29,6 @@ const CustomFields = (): CustomFieldsServicesInterface => {
         loadParameterHeader()
       )
     ])
-    console.log('teste\n\n', values)
     return values.reduce((fields, current) => fields.concat(current.data), [])
   }
 

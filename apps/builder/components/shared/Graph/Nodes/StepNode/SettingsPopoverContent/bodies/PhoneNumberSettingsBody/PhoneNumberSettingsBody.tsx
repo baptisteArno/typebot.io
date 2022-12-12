@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { PhoneNumberInputOptions, Variable } from 'models'
 import React from 'react'
 import { CountryCodeSelect } from './CountryCodeSelect'
@@ -67,9 +67,6 @@ export const PhoneNumberSettingsBody = ({
         />
       </Stack>
       <Stack>
-        <FormLabel mb="0" htmlFor="variable">
-          Salvar resposta em uma variável:
-        </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}

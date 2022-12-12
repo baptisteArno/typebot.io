@@ -14,7 +14,7 @@ import { BaseEditor, BaseSelection, createEditor, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
 import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
 
 type Props = {
@@ -95,10 +95,12 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
   }
 
   const handleVariableSelected = (variable?: Variable) => {
+    console.log("Variable TXTBubblue => ", variable);
+    
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
     Transforms.select(editor as BaseEditor, rememberedSelection.current)
-    Transforms.insertText(editor as BaseEditor, '{{' + variable.name + '}}')
+    Transforms.insertText(editor as BaseEditor, '{{' + variable.token + '}}')
     ReactEditor.focus(editor as unknown as ReactEditor)
   }
 

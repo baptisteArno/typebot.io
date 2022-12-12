@@ -1,7 +1,7 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
 import { TableListItemProps } from 'components/shared/TableList'
 import { Input } from 'components/shared/Textbox'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { VariableForTest, Variable } from 'models'
 
 export const VariableForTestInputs = ({
