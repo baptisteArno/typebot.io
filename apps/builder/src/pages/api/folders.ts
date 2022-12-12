@@ -24,29 +24,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             workspaceId: workspaceId,
           },
           {
-            OR: [
-              {
-                workspace: {
-                  members: {
-                    some: {
-                      userId: user.id,
-                      role: { not: WorkspaceRole.GUEST },
-                    },
-                  },
+            workspace: {
+              members: {
+                some: {
+                  userId: user.id,
+                  role: { not: WorkspaceRole.GUEST },
                 },
               },
-              {
-                typebots: {
-                  some: {
-                    collaborators: {
-                      some: {
-                        userId: user.id,
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+            },
           },
         ],
       },

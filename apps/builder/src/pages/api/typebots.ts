@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs'
-import { Plan, Prisma, WorkspaceRole } from 'db'
+import { Plan, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
@@ -73,7 +73,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   some: { userId: user.id, role: WorkspaceRole.GUEST },
                 },
               },
-              collaborators: { some: { userId: user.id } },
             },
           ],
         },
