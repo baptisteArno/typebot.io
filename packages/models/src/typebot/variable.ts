@@ -1,11 +1,13 @@
 export type Variable = {
-  id?: string | undefined
+  id: string
+  variableId: string | undefined
+  domain: "PERSON" | "ORGANIZATION" | "CHAT"
   name: string
+  token: string
+  type: string | undefined
   value?: string | number
   fieldId: string
-  domain: "PERSON" | "ORGANIZATION" | "CHAT"
-  token: string
-  type?: any
+  example: string | undefined
 }
 
 export type VariableWithValue = Omit<Variable, 'value'> & {

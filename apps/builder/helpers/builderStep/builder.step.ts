@@ -1,9 +1,10 @@
 import { WritableDraft } from 'immer/dist/types/types-external';
-import { Block, DraggableStep, DraggableStepType, InputStepType, StepIndices, Typebot } from "models";
+import { Block, DraggableStep, DraggableStepType, InputStepType, OctaStepType, Step, StepIndices, Typebot } from "models";
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateTextBot } from './dictionary/input-text.step';
 import { templateDateBot } from './dictionary/input-date.step';
 import { BuilderStepType } from "./types.builder";
+import { templateOfficeHours } from './dictionary/input-officeHours.step';
 
 export const BuildSteps = (
   stepIndices: StepIndices
@@ -33,7 +34,9 @@ export const BuildSteps = (
         case InputStepType.PHONE: 
           step = templateTextBot(bot, blockId, 'Posso anotar seu telefone, por favor?')
           break;
-        
+        case OctaStepType.OFFICE_HOURS:
+          step = templateOfficeHours(bot, blockId)
+          break;
         default:
           step = [parseNewStep(type, blockId)]
           break;

@@ -1,7 +1,7 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
 import { SearchableDropdown } from 'components/shared/SearchableDropdown'
 import { TableListItemProps } from 'components/shared/TableList'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { Variable, ResponseVariableMapping } from 'models'
 
 export const DataVariableInputs = ({

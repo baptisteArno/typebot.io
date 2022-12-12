@@ -46,9 +46,12 @@ import {
 } from 'models'
 import React from 'react'
 
+import { BsCalendar2Range } from 'react-icons/bs'
+
 type StepIconProps = { type: StepType } & IconProps
 
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
+  
   switch (type) {
     case BubbleStepType.TEXT:
       return <ChatIcon color="#AA561C" {...props} />
@@ -104,15 +107,14 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
       return <WavingHandIcon color="#373A86" {...props} />
-    case OctaStepType.OFFICE_HOURS:
-      return <AlarmIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <AssignToIcon color="#373A86" {...props} />
     case WabaStepType.BUTTONS:
       return <RadioIcon color="#7B15C1" {...props} />
     case WabaStepType.OPTIONS:
       return <ListIcon color="#7B15C1" {...props} />
-
+    case OctaStepType.OFFICE_HOURS:
+      return <BsCalendar2Range color="#7B15C1" size={18}/>
     case 'start':
       return <FlagIcon {...props} />
     default:

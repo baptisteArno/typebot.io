@@ -10,7 +10,7 @@ import {
 import { UserIcon } from 'assets/icons'
 import { Variable } from 'models'
 import React from 'react'
-import { VariableSearchInput } from '../VariableSearchInput'
+import { VariableSearchInput } from '../VariableSearchInput/VariableSearchInput'
 
 type Props = {
   onSelectVariable: (

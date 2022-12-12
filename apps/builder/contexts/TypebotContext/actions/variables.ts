@@ -4,12 +4,13 @@ import { SetTypebot } from '../TypebotContext'
 import { produce } from 'immer'
 
 export type VariablesActions = {
-  createVariable: (variable: Variable) => void
+  createVariable: (variable: Variable) => void;
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>
-  ) => void
-  deleteVariable: (variableId: string) => void
+  ) => void;
+  deleteVariable: (variableId: string) => void;
+  getVariables: (variableId: string) => void
 }
 
 export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
@@ -36,6 +37,9 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
         deleteVariableDraft(typebot, itemId)
       })
     ),
+    getVariables: async (): Promise<void> => {
+
+    }
 })
 
 export const deleteVariableDraft = (

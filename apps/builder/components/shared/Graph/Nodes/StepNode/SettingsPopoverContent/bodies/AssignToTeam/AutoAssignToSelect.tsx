@@ -4,7 +4,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import {
   AssignToTeamOptions
 } from 'models'
-import { OptionItemType } from 'components/octaComponents/OctaSelect/OctaSelect.type'
+import { OptionType } from 'components/octaComponents/OctaSelect/OctaSelect.type'
 
 type Props = {
   onSelect: (option: AssignToTeamOptions) => void,
@@ -14,8 +14,8 @@ type Props = {
 export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
   const { octaAgents } = useTypebot();
 
-  const [itemsToAutoAssign, setItemsToAutoAssign] = useState<Array<OptionItemType>>([])
-  const [defaultSelected, setDefaultSelected] = useState<OptionItemType>();
+  const [itemsToAutoAssign, setItemsToAutoAssign] = useState<Array<OptionType>>([])
+  const [defaultSelected, setDefaultSelected] = useState<OptionType>();
 
   useEffect(() => {
     if (octaAgents) {
@@ -60,7 +60,8 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
     <OctaSelect
       placeholder="Não atribuir (Visível a todos)"
       defaultSelected={defaultSelected}
-      items={itemsToAutoAssign}
+      findable
+      options={itemsToAutoAssign}
       onChange={handleOnChange}
     />
   )

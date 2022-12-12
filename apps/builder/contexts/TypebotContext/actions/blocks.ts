@@ -118,6 +118,9 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Encerre a conversa do bot'
     case IntegrationStepType.WEBHOOK:
       return 'Conecte a outro sistema'
+    case OctaStepType.OFFICE_HOURS:
+        return 'Horário de atendimento'
+  
     default:
       return 'Outro'
   }

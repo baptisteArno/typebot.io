@@ -49,7 +49,7 @@ export const OptionItem = styled.li`
   font-size: 0.85rem;
   color: black;
   padding: 5px;
-  font-family: 'Poppins';
+  font-family: 'Noto Sans';
   cursor: pointer;
 
   &:hover {

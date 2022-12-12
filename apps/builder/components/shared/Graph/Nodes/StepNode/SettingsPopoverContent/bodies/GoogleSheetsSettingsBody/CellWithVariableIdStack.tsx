@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableListItemProps } from 'components/shared/TableList'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ExtractingCell, Variable } from 'models'
 
 export const CellWithVariableIdStack = ({

@@ -7,7 +7,7 @@ import {
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { StepNode } from './StepNode'
+import { StepNode } from './StepNode/StepNode'
 import { StepNodeOverlay } from './StepNodeOverlay'
 
 type Props = {

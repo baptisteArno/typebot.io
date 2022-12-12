@@ -12,22 +12,22 @@ export const parseVariables =
       escapeLineBreaks: false,
     }
   ) =>
-  (text: string | undefined): string => {
-    if (!text || text === '') return ''
-    return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
-      const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
-      const variable = variables.find((v) => {
-        return matchedVarName === v.name && isDefined(v.value)
+    (text: string | undefined): string => {
+      if (!text || text === '') return ''
+      return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
+        const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
+        const variable = variables.find((v) => {
+          return matchedVarName === v.token && isDefined(v.value)
+        })
+        if (!variable) return ''
+        if (options.fieldToParse === 'id') return variable.id
+        const { value } = variable
+        if (isNotDefined(value)) return ''
+        if (options.escapeLineBreaks)
+          return value.toString().replace(/\n/g, '\\n')
+        return value.toString()
       })
-      if (!variable) return ''
-      if (options.fieldToParse === 'id') return variable.id
-      const { value } = variable
-      if (isNotDefined(value)) return ''
-      if (options.escapeLineBreaks)
-        return value.toString().replace(/\n/g, '\\n')
-      return value.toString()
-    })
-  }
+    }
 
 export const evaluateExpression = (variables: Variable[]) => (str: string) => {
   const evaluating = parseVariables(variables, { fieldToParse: 'id' })(

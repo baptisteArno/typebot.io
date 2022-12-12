@@ -48,7 +48,10 @@ import {
   OctaBubbleStepContent,
   defaultPaymentInputOptions,
   defaultRequestOptions,
-  defaultRequestButtons
+  defaultRequestButtons,
+  OfficeHourStep,
+  defaultOfficeHoursOptions,
+  defaultOfficeHoursContent
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -93,7 +96,7 @@ export const useTypebots = ({
   onError: (error: Error) => void
 }) => {
   const params = stringify({ folderId, allFolders, workspaceId })
-  
+
   const { data, error, mutate } = useSWR<
     { typebots: TypebotInDashboard[] },
     Error
@@ -195,8 +198,8 @@ const duplicateTypebot = (
           //       blockId: blockIdsMapping.get(s.options.blockId as string),
           //     },
           //   }
-          if (stepHasItems(s))
-            return {
+          if (stepHasItems(s)) {
+            return ({
               ...s,
               items: s.items.map((item) => ({
                 ...item,
@@ -205,7 +208,9 @@ const duplicateTypebot = (
                   : undefined,
               })),
               ...newIds,
-            } as ChoiceInputStep | ConditionStep
+            } as ChoiceInputStep | ConditionStep | OfficeHourStep)
+          }
+
           if (isWebhookStep(s)) {
             return {
               ...s,
@@ -286,6 +291,8 @@ export const parseNewStep = (
   type: DraggableStepType,
   blockId: string
 ): DraggableStep => {
+  console.log("hasItems => ", stepTypeHasItems(type));
+  
   const id = cuid()
   return {
     id,
@@ -305,7 +312,7 @@ export const parseNewStep = (
 }
 
 const parseDefaultItems = (
-  type: LogicStepType.CONDITION | InputStepType.CHOICE,
+  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS,
   stepId: string
 ): Item[] => {
   switch (type) {
@@ -320,10 +327,39 @@ const parseDefaultItems = (
           content: defaultConditionContent,
         },
       ]
+    case OctaStepType.OFFICE_HOURS:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.OFFICE_HOURS,
+          content: {
+            matchType: "$eq",
+            referenceProperty: "",
+            referenceValue: null,
+            source: "",
+            subType: null,
+            values: ["@OFFICE_HOURS_TRUE"]
+          }
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.OFFICE_HOURS,
+          content: {
+            matchType: "$eq",
+            referenceProperty: "",
+            referenceValue: null,
+            source: "",
+            subType: null,
+            values: ["@OFFICE_HOURS_FALSE"]
+          }
+        }
+      ]
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType| WabaStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaStepType): BubbleStepContent => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -346,6 +382,8 @@ const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
+    case OctaStepType.OFFICE_HOURS:
+      return defaultOfficeHoursOptions
     default:
       return null
   }

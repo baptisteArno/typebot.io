@@ -17,25 +17,28 @@ import {
   TextBubbleStep,
   OctaStep,
   AssignToTeamStep,
+  OfficeHourStep,
+  OctaStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 import { isBubbleStep, isTextBubbleStep, isOctaBubbleStep } from 'utils'
-import { StepNodeContent } from './StepNodeContent/StepNodeContent'
+import { StepNodeContent } from '../StepNodeContent/StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
-import { SettingsPopoverContent } from './SettingsPopoverContent'
-import { StepNodeContextMenu } from './StepNodeContextMenu'
-import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
+import { SettingsPopoverContent } from '../SettingsPopoverContent'
+import { StepNodeContextMenu } from '../StepNodeContextMenu'
+import { SourceEndpoint } from '../../../Endpoints/SourceEndpoint'
 import { hasDefaultConnector } from 'services/typebots'
 import { useRouter } from 'next/router'
-import { SettingsModal } from './SettingsPopoverContent/SettingsModal'
-import { StepSettings } from './SettingsPopoverContent/SettingsPopoverContent'
-import { TextBubbleEditor } from './TextBubbleEditor'
-import { TargetEndpoint } from '../../Endpoints'
-import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
+import { SettingsModal } from '../SettingsPopoverContent/SettingsModal'
+import { StepSettings } from '../SettingsPopoverContent/SettingsPopoverContent'
+import { TextBubbleEditor } from '../TextBubbleEditor'
+import { TargetEndpoint } from '../../../Endpoints'
+import { MediaBubblePopoverContent } from '../MediaBubblePopoverContent'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
+import { BlockStack } from './StepNode.style'
 
 export const StepNode = ({
   step,
@@ -137,8 +140,9 @@ export const StepNode = ({
     onModalOpen()
   }
 
-  const handleStepUpdate = (updates: Partial<Step>) =>
+  const handleStepUpdate = (updates: Partial<Step>): void =>{    
     updateStep(indices, { ...step, ...updates })
+  }
 
   const handleContentChange = (content: BubbleStepContent) =>
     updateStep(indices, { ...step, content } as Step)
@@ -147,6 +151,10 @@ export const StepNode = ({
     setIsPopoverOpened(openedStepId === step.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openedStepId])
+
+  const checkisConnectable = (step: Step): boolean  => {
+    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step);
+  }
 
   return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
     <TextBubbleEditor
@@ -176,21 +184,7 @@ export const StepNode = ({
               direction="column"
             >
               <Stack spacing={2}>
-              <HStack
-                flex="1"
-                spacing={1}
-                userSelect="none"
-                p="3"
-                borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
-                borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.200'}
-                margin={isOpened || isPreviewing ? '-1px' : 0}
-                rounded="lg"
-                cursor={'pointer'}
-                bgColor="gray.50"
-                align="flex-start"
-                w="full"
-                transition="border-color 0.2s"
-              >
+              <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
                 <StepIcon
                   type={step.type}
                   mt="1"
@@ -204,9 +198,7 @@ export const StepNode = ({
                   stepId={step.id}
                 />
                 {isConnectable &&
-                  hasDefaultConnector(step) &&
-                  !isEndConversationStep(step) &&
-                  !isAssignToTeamStep(step) && (
+                  checkisConnectable(step) && (
                     <SourceEndpoint
                       source={{
                         blockId: step.blockId,
@@ -217,7 +209,7 @@ export const StepNode = ({
                       bottom="10px"
                     />
                   )}
-              </HStack>
+              </BlockStack>
 
               {step.type === 'assign to team' &&
                 hasStepRedirectNoneAvailable(step) && (
@@ -312,7 +304,13 @@ const isEndConversationStep = (
 const isAssignToTeamStep = (
   step: Step
 ): step is AssignToTeamStep => {
-  return step.type === 'assign to team'
+  return step.type === OctaStepType.ASSIGN_TO_TEAM
+}
+
+const isOfficeHoursStep = (
+  step: Step,
+): step is OfficeHourStep => {
+  return step.type === OctaStepType.OFFICE_HOURS
 }
 
 const hasStepRedirectNoneAvailable = (step: Step): step is AssignToTeamStep => {

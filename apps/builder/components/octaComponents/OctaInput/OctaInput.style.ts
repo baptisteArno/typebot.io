@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import InputMask from 'react-input-mask'
 
 export const Container = styled.div`
-  font-family: 'Poppins';
+  font-family: 'Noto Sans';
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -18,7 +18,7 @@ export const Container = styled.div`
     padding: 10px;
     height: 32px;
     border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: .8rem;
     color: #777;
     border: 1px solid #c2c2c2;
@@ -41,7 +41,7 @@ export const InputMasked = styled(InputMask)`
   padding: 10px;
   height: 32px;
   border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-size: .8rem;
   color: #777;
   border: 1px solid #c2c2c2;
