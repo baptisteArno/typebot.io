@@ -60,9 +60,23 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
     e.stopPropagation()
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
+
+  const handleWidthPerComponent = (step: Step): number|undefined => {
+    let width;
+    switch (step.type) {
+      case "office hours":
+        width = 450;
+        break;
+      default:
+        width = undefined
+        break;
+    }
+    return width;
+  }
+  
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative" w={450}>
+      <PopoverContent onMouseDown={handleMouseDown} pos="relative" w={handleWidthPerComponent(props.step)}>
         <PopoverArrow />
         <PopoverBody
           pt="10"

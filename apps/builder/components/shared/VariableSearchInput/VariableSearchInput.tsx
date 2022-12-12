@@ -23,7 +23,7 @@ import { byId, isEmpty, isNotDefined } from 'utils'
 // import CustomFields from 'services/octadesk/customFields/customFields'
 // import { DomainType, FieldType } from '../../enums/customFieldsEnum'
 import { CustomFieldTitle } from '../../../enums/customFieldsTitlesEnum'
-import { ButtonOption, Container, FormField, FormFieldRow, LabelField, OrText } from './VariableSearchInput.style'
+import { ButtonOption, CancelButton, Container, FormField, FormFieldRow, FormFieldRowMin, LabelField, OrText } from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 
@@ -61,7 +61,7 @@ export const VariableSearchInput = ({
   const variables = typebot?.variables ?? []
 
   const [inputValue, setInputValue] = useState(
-    variables.find(byId(initialVariableId))?.name ?? ''
+    variables.find(byId(initialVariableId))?.token ?? ''
   )
   const debounced = useDebouncedCallback(
     (value) => {
@@ -310,11 +310,11 @@ export const VariableSearchInput = ({
                   <FormField>
                     <OctaInput placeholder="#nome-do-campo" label="Nome do campo" mask="#****************" onChange={handleCreateVariableChange} />
                   </FormField>
-                  <FormField>
+                  <FormField style={{height: "150px"}}>
                     <LabelField>
                       Selecione o formato deste campo:
                     </LabelField>
-                    <FormFieldRow>
+                    <FormFieldRowMin>
                       <ButtonOption className={customVariable?.type === "string" ? "active" : ""} onClick={() => handleSelectTypeVariable("string")}>
                         Texto
                       </ButtonOption>
@@ -327,12 +327,15 @@ export const VariableSearchInput = ({
                       <ButtonOption className={customVariable?.type === "pedido" ? "active" : ""} onClick={() => handleSelectTypeVariable("order")}>
                         Pedido
                       </ButtonOption>
-                    </FormFieldRow>
-                    <FormField>
+                    </FormFieldRowMin>
+                    <FormFieldRow>
                       <OctaButton onClick={handleCreateVariable}>
                         Criar variável
                       </OctaButton>
-                    </FormField>
+                      <CancelButton onClick={handleToggleScreen}>
+                        Cancelar
+                      </CancelButton>
+                    </FormFieldRow>
                   </FormField>
                 </Container>
               )

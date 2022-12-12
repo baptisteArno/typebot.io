@@ -3,10 +3,10 @@ import OctaButton from 'components/octaComponents/OctaButton/OctaButton';
 
 export const Container = styled.div`
   width: 100%;
-  height: 300px;
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans', sans-serif;
+  position: relative;
 `;
 
 export const OrText = styled.div`
@@ -52,11 +52,17 @@ export const LabelField = styled.div`
   font-size: .8rem;
 `;
 
+export const FormFieldRowMin = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+`;
+
 export const FormFieldRow = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: roww;
-  height: 50px;
+  flex-direction: row;
 `;
 
 export const ButtonOption = styled(OctaButton)`
@@ -72,4 +78,9 @@ export const ButtonOption = styled(OctaButton)`
     background: rgb(19, 102, 201);
     color: #fff;
   }
+`;
+
+export const CancelButton = styled(OctaButton)`
+  background: #fff;
+  color: rgb(19, 102, 201);
 `;
