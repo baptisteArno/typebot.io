@@ -16,7 +16,6 @@ export const DashboardHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleLogOut = () => {
-    localStorage.removeItem('workspaceId')
     signOut()
   }
 
