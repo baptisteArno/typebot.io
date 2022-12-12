@@ -54,7 +54,9 @@ export const AnswersProvider = ({
     setResultValues((resultValues) => {
       const updatedVariables = [
         ...resultValues.variables.filter((v) =>
-          serializedNewVariables.every((variable) => variable.id !== v.id)
+          serializedNewVariables.every(
+            (variable) => variable.id !== v.id || variable.name !== v.name
+          )
         ),
         ...serializedNewVariables,
       ].filter((variable) => isDefined(variable.value)) as VariableWithValue[]

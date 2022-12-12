@@ -3,13 +3,14 @@ import { safeStringify } from '@/features/variables'
 import { sendEventToParent } from '@/utils/chat'
 import { Log } from 'db'
 import { Edge, PublicTypebot, Typebot } from 'models'
-import React, {
+import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
   useState,
 } from 'react'
+import { isDefined } from 'utils'
 
 export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
@@ -78,16 +79,28 @@ export const TypebotProvider = ({
     sendEventToParent({
       newVariableValue: {
         name:
-          typebot.variables.find((variable) => variable.id === variableId)
+          localTypebot.variables.find((variable) => variable.id === variableId)
             ?.name ?? '',
         value: formattedValue ?? '',
       },
     })
 
+    const variable = localTypebot.variables.find((v) => v.id === variableId)
+    const otherVariablesWithSameName = localTypebot.variables.filter(
+      (v) => v.name === variable?.name && v.id !== variableId
+    )
+    const variablesToUpdate = [variable, ...otherVariablesWithSameName].filter(
+      isDefined
+    )
+
     setLocalTypebot((typebot) => ({
       ...typebot,
-      variables: typebot.variables.map((v) =>
-        v.id === variableId ? { ...v, value: formattedValue } : v
+      variables: typebot.variables.map((variable) =>
+        variablesToUpdate.some(
+          (variableToUpdate) => variableToUpdate.id === variable.id
+        )
+          ? { ...variable, value: formattedValue }
+          : variable
       ),
     }))
   }

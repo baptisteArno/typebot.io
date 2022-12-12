@@ -11,8 +11,11 @@ test('folders navigation should work', async ({ page }) => {
   await createFolderButton.click()
   await page.click('text="New folder"')
   await page.fill('input[value="New folder"]', 'My folder #1')
-  await page.press('input[value="My folder #1"]', 'Enter'),
-    await page.click('li:has-text("My folder #1")')
+  await Promise.all([
+    page.waitForResponse((resp) => resp.request().method() === 'PATCH'),
+    page.press('input[value="My folder #1"]', 'Enter'),
+  ])
+  await page.click('li:has-text("My folder #1")')
   await expect(page.locator('h1:has-text("My folder #1")')).toBeVisible()
   await createFolderButton.click()
   await page.click('text="New folder"')
