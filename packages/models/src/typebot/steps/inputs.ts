@@ -100,7 +100,14 @@ export type CreditCardDetails = {
   cvc: string
 }
 
-type OptionBase = { variableId?: string }
+export type OctaProperty = {
+  domain: "CHAT";
+  name: string;
+  token: string;
+  type: string;
+}
+
+type OptionBase = { variableId?: string; property?: OctaProperty }
 
 type InputTextOptionsBase = {
   labels: { placeholder: string; button: string }
@@ -124,12 +131,6 @@ export type EmailInputOptions = OptionBase & {
 
 export type CpfInputOptions = OptionBase & {
   labels: { placeholder: string; button: string }
-  variableId: string | undefined
-  domain: string
-  name: string
-  token: string
-  type: string | undefined
-  example: string | undefined
   retryMessageContent: string
 }
 
@@ -210,11 +211,6 @@ export const defaultCpfInputOptions: CpfInputOptions = {
     placeholder: 'Digite o seu cpf...',
   },
   variableId: undefined,
-  example: undefined,
-  domain: '',
-  name: '',
-  token: '',
-  type: '',
   retryMessageContent:
     "Esse cpf não parece ser válido. Você pode digitar novamente?",
 }

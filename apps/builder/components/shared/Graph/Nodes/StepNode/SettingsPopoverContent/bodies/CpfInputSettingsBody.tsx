@@ -15,23 +15,14 @@ export const CpfInputSettingsBody = ({
   onOptionsChange,
 }: CpfInputSettingsBodyProps) => {
   const handleVariableChange = (variable: Variable) => {
-    console.log({
-      ...options,
-      variableId: variable.id,
-      token: variable.token,
-      name: variable.name,
-      type: variable.type,
-      domain: variable.domain,
-      example: variable.example,
-    })
     onOptionsChange({
       ...options,
-      variableId: variable.id,
-      token: variable.token,
-      name: variable.name,
-      type: variable.type,
-      domain: variable.domain,
-      example: variable.example,
+      property: {
+        domain: "CHAT",
+        name: variable.name,
+        type: variable.type ? variable.type : "string",
+        token: variable.token
+      }
     })
   }
 

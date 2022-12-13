@@ -96,91 +96,6 @@ export const VariableSearchInput = ({
     [debounced]
   )
 
-  const fieldTypes = (fieldType: number): string => {
-    switch (fieldType) {
-      case 4:
-        return 'boolean'
-      case 5:
-        return 'number'
-      case 6:
-        return 'float'
-      case 7:
-        return 'date'
-      default:
-        return 'string'
-    }
-  }
-
-  const resolveExample = (type: any) => {
-    switch (type) {
-      case 'string':
-        return 'Qualquer texto'
-      case 'boolean':
-        return 'sim ou não'
-      case 'number':
-        return '10203040'
-      case 'float':
-        return '1020,40'
-      case 'date':
-        return '13/01/0001'
-    }
-
-    return ''
-  }
-
-  const mountProperties = (properties: any, type: string) => {
-    const customProperties = properties.map(
-      (h: { fieldType: number; fieldId: string }) => {
-        // const type: string = fieldTypes(h.fieldType)
-        let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
-        let domainValue = ''
-        if (type === 'PERSON') {
-          domainValue = CustomFieldTitle.PERSON
-          tokenValue = tokenValue.concat('-contato')
-        } else if (type === 'CHAT') {
-          domainValue = CustomFieldTitle.CHAT
-          tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
-        } else if (type === 'ORGANIZATION') {
-          domainValue = CustomFieldTitle.ORGANIZATION
-        }
-
-        const id = 'v' + cuid()
-
-        return {
-          type,
-          id,
-          variableId: id,
-          token: tokenValue,
-          domain: domainValue,
-          name: `customField.${h.fieldId}`,
-          example: resolveExample(type),
-        }
-      }
-    )
-
-    return [...customProperties]
-  }
-
-  const mountPropertiesOptions = (propertiesType: any, properties: any) => {
-    let nameTokenValue = ''
-    if (propertiesType === 'PERSON') {
-      nameTokenValue = CustomFieldTitle.PERSON
-    } else if (propertiesType === 'CHAT') {
-      nameTokenValue = CustomFieldTitle.CHAT
-    } else if (propertiesType === 'ORGANIZATION') {
-      nameTokenValue = CustomFieldTitle.ORGANIZATION
-    }
-
-    const propTitle = {
-      id: nameTokenValue,
-      token: nameTokenValue,
-      name: nameTokenValue,
-      isTitle: true,
-      disabled: true,
-    }
-    return { propTitle, items: properties }
-  }
-
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     debounced(e.target.value)
@@ -203,24 +118,6 @@ export const VariableSearchInput = ({
     console.log("Variable => ", variable);
     setInputValue(variable.token)
     onSelectVariable(variable)
-    onClose()
-  }
-
-  const handleCreateNewVariableClick = () => {
-    if (!inputValue || inputValue === '') return
-    const id = 'v' + cuid()
-    const variable: Variable = {
-      id,
-      name: inputValue,
-      domain: 'CHAT',
-      token: `#${inputValue}`,
-      variableId: id,
-      example: "",
-      fieldId: inputValue,
-      type: "",
-    }
-    createVariable(variable);
-    onSelectVariable(variable);
     onClose()
   }
 

@@ -14,8 +14,22 @@ export const TextInputSettingsBody = ({
   options,
   onOptionsChange,
 }: TextInputSettingsBodyProps) => {
-  const handleVariableChange = (variable?: Variable) =>
-    onOptionsChange({ ...options, variableId: variable?.id })
+  const handleVariableChange = (variable: Variable) => {
+    if(variable){
+      onOptionsChange({
+        ...options, variableId: variable?.id, property: {
+          domain: "CHAT",
+          name: variable.name,
+          type: variable.type ? variable.type : "string",
+          token: variable.token
+        }
+      })
+    } else {
+      onOptionsChange({
+        ...options, variableId: variable.id
+      })
+    }
+  }
 
   return (
     <Stack spacing={4}>
