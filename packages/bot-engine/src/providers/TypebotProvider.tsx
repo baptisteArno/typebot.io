@@ -2,7 +2,7 @@ import { TypebotViewerProps } from '@/components/TypebotViewer'
 import { safeStringify } from '@/features/variables'
 import { sendEventToParent } from '@/utils/chat'
 import { Log } from 'db'
-import { Edge, PublicTypebot, Typebot } from 'models'
+import { Edge, PublicTypebot, Typebot, Variable } from 'models'
 import {
   createContext,
   ReactNode,
@@ -113,11 +113,15 @@ export const TypebotProvider = ({
   }
 
   const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
+    const newVariables = fillVariablesWithExistingValues(
+      typebot.variables,
+      localTypebot.variables
+    )
     const typebotToInject = {
       id: 'typebotId' in typebot ? typebot.typebotId : typebot.id,
       groups: typebot.groups,
       edges: typebot.edges,
-      variables: typebot.variables,
+      variables: newVariables,
     }
     setLinkedTypebots((typebots) => [...typebots, typebotToInject])
     const updatedTypebot = {
@@ -129,6 +133,21 @@ export const TypebotProvider = ({
     setLocalTypebot(updatedTypebot)
     return typebotToInject
   }
+
+  const fillVariablesWithExistingValues = (
+    variables: Variable[],
+    variablesWithValues: Variable[]
+  ): Variable[] =>
+    variables.map((variable) => {
+      const matchedVariable = variablesWithValues.find(
+        (variableWithValue) => variableWithValue.name === variable.name
+      )
+
+      return {
+        ...variable,
+        value: matchedVariable?.value ?? variable.value,
+      }
+    })
 
   const pushEdgeIdInLinkedTypebotQueue = (bot: {
     typebotId: string
