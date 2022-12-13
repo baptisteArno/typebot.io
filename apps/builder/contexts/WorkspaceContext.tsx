@@ -3,6 +3,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { byId } from 'utils'
@@ -16,6 +17,15 @@ import {
 import { useUser } from './UserContext'
 import { useTypebot } from './TypebotContext'
 import { useRouter } from 'next/router'
+// import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
+// import CustomFields from 'services/octadesk/customFields/customFields'
+// import { DomainType } from 'enums/customFieldsEnum'
+// import cuid from 'cuid'
+// import {
+//   fixedChatProperties,
+//   fixedOrganizationProperties,
+//   fixedPersonProperties,
+// } from 'helpers/presets/variables-presets'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 
@@ -40,7 +50,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
-  const { typebot } = useTypebot()
+  const { typebot, createVariable, deleteVariable } = useTypebot()
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
@@ -85,6 +95,189 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     switchWorkspace(typebot.workspaceId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot?.workspaceId])
+
+  // const [octaCustomProperties, setOctaCustomProperties] = useState<Array<any>>(
+  //   []
+  // )
+  // const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
+  // const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
+  // const [octaOrganizationFields, setOctaOrganizationFields] = useState<
+  //   Array<any>
+  // >([])
+
+  // const mountPropertiesOptions = (propertiesType: any, properties: any) => {
+  //   let nameTokenValue = ''
+  //   if (propertiesType === 'PERSON') {
+  //     nameTokenValue = CustomFieldTitle.PERSON
+  //   } else if (propertiesType === 'CHAT') {
+  //     nameTokenValue = CustomFieldTitle.CHAT
+  //   } else if (propertiesType === 'ORGANIZATION') {
+  //     nameTokenValue = CustomFieldTitle.ORGANIZATION
+  //   }
+
+  //   const propTitle = {
+  //     id: nameTokenValue,
+  //     token: nameTokenValue,
+  //     name: nameTokenValue,
+  //     isTitle: true,
+  //     disabled: true,
+  //   }
+  //   return { propTitle, items: properties }
+  // }
+
+  // const resolveExample = (type: any) => {
+  //   switch (type) {
+  //     case 'string':
+  //       return 'Qualquer texto'
+  //     case 'boolean':
+  //       return 'sim ou não'
+  //     case 'number':
+  //       return '10203040'
+  //     case 'float':
+  //       return '1020,40'
+  //     case 'date':
+  //       return '13/01/0001'
+  //   }
+
+  //   return ''
+  // }
+
+  // const fieldTypes = (fieldType: number): string => {
+  //   switch (fieldType) {
+  //     case 4:
+  //       return 'boolean'
+  //     case 5:
+  //       return 'number'
+  //     case 6:
+  //       return 'float'
+  //     case 7:
+  //       return 'date'
+  //     default:
+  //       return 'string'
+  //   }
+  // }
+
+  // const mountProperties = (properties: any, domainType: string) => {
+  //   const customProperties = properties.map(
+  //     (h: { fieldType: number; fieldId: string }) => {
+  //       const fieldType: string = fieldTypes(h.fieldType)
+  //       let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
+  //       let domainValue = ''
+  //       if (domainType === 'PERSON') {
+  //         domainValue = CustomFieldTitle.PERSON
+  //         tokenValue = tokenValue.concat('-contato')
+  //       } else if (domainType === 'CHAT') {
+  //         domainValue = CustomFieldTitle.CHAT
+  //         tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
+  //       } else if (domainType === 'ORGANIZATION') {
+  //         domainValue = CustomFieldTitle.ORGANIZATION
+  //       }
+
+  //       const id = 'v' + cuid()
+
+  //       return {
+  //         type: fieldType,
+  //         id,
+  //         variableId: id,
+  //         token: tokenValue,
+  //         domain: domainValue,
+  //         name: `customField.${h.fieldId}`,
+  //         example: resolveExample(fieldType),
+  //       }
+  //     }
+  //   )
+
+  //   return [...customProperties]
+  // }
+
+  // const variables = useMemo(() => (typebot ? typebot.variables : []), [typebot])
+  
+  // const items: Array<any> = []
+  // useEffect(() => {
+  //   const fetchOctaCustomFields = async (): Promise<void> => {
+  //     const customFieldsList: Array<any> = []
+
+  //     const fields = await CustomFields().getCustomFields()
+  //     const personFields = fields.filter(
+  //       (f: { domainType: number }) => f.domainType === DomainType.Person
+  //     )
+  //     setOctaPersonFields(personFields)
+
+  //     const chatFields = fields.filter(
+  //       (f: { domainType: number }) => f.domainType === DomainType.Chat
+  //     )
+
+  //     setOctaChatFields(chatFields)
+
+  //     const organizationFields = fields.filter(
+  //       (f: { domainType: number }) => f.domainType === DomainType.Organization
+  //     )
+  //     setOctaOrganizationFields(organizationFields)
+  //     customFieldsList.push(
+  //       ...personFields,
+  //       ...chatFields,
+  //       ...organizationFields
+  //     )
+
+  //     setOctaCustomProperties(customFieldsList)
+  //   }
+
+  //   const octaChatProperties = mountPropertiesOptions(
+  //     'CHAT',
+  //     mountProperties(octaChatFields, 'CHAT')
+  //   )
+
+  //   if (octaChatProperties) {
+  //     items.push(
+  //       octaChatProperties.propTitle,
+  //       ...octaChatProperties.items,
+  //       ...fixedChatProperties
+  //     )
+  //   }
+
+  //   const octaPersonProperties = mountPropertiesOptions(
+  //     'PERSON',
+  //     mountProperties(octaPersonFields, 'PERSON').filter(
+  //       (p) => p.type !== 'select'
+  //     )
+  //   )
+
+  //   if (octaPersonProperties) {
+  //     items.push(
+  //       octaPersonProperties.propTitle,
+  //       ...octaPersonProperties.items,
+  //       ...fixedPersonProperties
+  //     )
+  //   }
+
+  //   const octaOrganizationProperties = mountPropertiesOptions(
+  //     'ORGANIZATION',
+  //     mountProperties(octaOrganizationFields, 'ORGANIZATION')
+  //   )
+
+  //   if (octaOrganizationProperties) {
+  //     items.push(
+  //       octaOrganizationProperties.propTitle,
+  //       ...octaOrganizationProperties.items,
+  //       ...fixedOrganizationProperties
+  //     )
+  //   }
+
+  //   setOctaCustomProperties(items)
+  //   console.log('items\n', items)
+
+  //   console.log('variables\n', variables)
+  //   variables.map((variable) => deleteVariable(variable.id))
+  //   if (typebot && createVariable && variables) {
+  //     items.map((item) => createVariable(item))
+  //   }
+
+  //   fetchOctaCustomFields()
+
+  //   return () => {
+  //     setOctaCustomProperties(() => [])
+  //   }
+  // }, [])
 
   const switchWorkspace = (workspaceId: string) =>
     setCurrentWorkspace(workspaces?.find(byId(workspaceId)))

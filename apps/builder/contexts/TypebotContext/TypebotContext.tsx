@@ -5,7 +5,6 @@ import {
   Settings,
   Theme,
   Typebot,
-  Variable,
   Webhook,
 } from 'models'
 import { Router, useRouter } from 'next/router'
@@ -31,7 +30,7 @@ import {
 } from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
+import { isDefined, isEmpty, isNotDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -40,7 +39,6 @@ import { useRegisterActions } from 'kbar'
 import useUndo from 'services/utils/useUndo'
 import { useDebounce } from 'use-debounce'
 import { itemsAction, ItemsActions } from './actions/items'
-import { dequal } from 'dequal'
 import { saveWebhook } from 'services/webhook'
 import { stringify } from 'qs'
 import cuid from 'cuid'
@@ -50,11 +48,6 @@ import { config } from 'config/octadesk.config'
 import Agents from 'services/octadesk/agents/agents'
 import Groups from 'services/octadesk/groups/groups'
 import { ASSIGN_TO } from 'enums/assign-to'
-import CustomFields from 'services/octadesk/customFields/customFields'
-import { DomainType, FieldType } from '../../enums/customFieldsEnum'
-import { fixedPersonProperties } from 'helpers/presets/variables-presets'
-import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
-const autoSaveTimeout = 10000
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -104,10 +97,6 @@ const typebotContext = createContext<
     publishTypebot: () => void
     restorePublishedTypebot: () => void
     octaAgents: Array<any>
-    octaPersonFields: Array<any>
-    octaChatFields: Array<any>
-    octaOrganizationFields: Array<any>
-    octaCustomFields: Array<any>
   } & BlocksActions &
   StepsActions &
   ItemsActions &
@@ -466,195 +455,6 @@ export const TypebotContext = ({
     }
   }, [])
 
-  const [octaCustomFields, setOctaCustomFields] = useState<Array<any>>([])
-  const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
-  const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
-  const [octaOrganizationFields, setOctaOrganizationFields] = useState<Array<any>>([])
-
-  const mountPropertiesOptions = (propertiesType: any, properties: any) => {
-    let nameTokenValue = ''
-    if (propertiesType === 'PERSON') {
-      nameTokenValue = CustomFieldTitle.PERSON
-    } else if (propertiesType === 'CHAT') {
-      nameTokenValue = CustomFieldTitle.CHAT
-    } else if (propertiesType === 'ORGANIZATION') {
-      nameTokenValue = CustomFieldTitle.ORGANIZATION
-    }
-
-    const propTitle = {
-      id: nameTokenValue,
-      token: nameTokenValue,
-      name: nameTokenValue,
-      isTitle: true,
-      disabled: true,
-    }
-    return { propTitle, items: properties }
-  }
-
-  const resolveExample = (type: any) => {
-    switch (type) {
-      case 'string':
-        return 'Qualquer texto'
-      case 'boolean':
-        return 'sim ou não'
-      case 'number':
-        return '10203040'
-      case 'float':
-        return '1020,40'
-      case 'date':
-        return '13/01/0001'
-    }
-
-    return ''
-  }
-  
-  const mountProperties = (properties: any, type: string) => {
-    const customProperties = properties.map(
-      (h: { fieldType: number; fieldId: string }) => {
-        // const type: string = fieldTypes(h.fieldType)
-        let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
-        let domainValue = ''
-        if (type === 'PERSON') {
-          domainValue = CustomFieldTitle.PERSON
-          tokenValue = tokenValue.concat('-contato')
-        } else if (type === 'CHAT') {
-          domainValue = CustomFieldTitle.CHAT
-          tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
-        } else if (type === 'ORGANIZATION') {
-          domainValue = CustomFieldTitle.ORGANIZATION
-        }
-
-        const id = 'v' + cuid()
-
-        return {
-          type,
-          id,
-          variableId: id,
-          token: tokenValue,
-          domain: domainValue,
-          name: `customField.${h.fieldId}`,
-          example: resolveExample(type),
-        }
-      }
-    )
-
-    return [...customProperties]
-  }
-
-  
-  useEffect(() => {    
-    const fetchOctaCustomFields = async (): Promise<void> => {
-      const customFieldsList: Array<any> = []
-
-      const fields = await CustomFields().getCustomFields()
-      // handleCustomFields(fields)
-      const personFields = [
-        ...fixedPersonProperties,
-        ...fields.filter(
-          (f: { domainType: number }) => f.domainType === DomainType.Person
-        ),
-      ]
-      setOctaPersonFields(personFields)
-  
-      const chatFields = [
-        {
-          key: 'id-conversa',
-          fieldId: 'id-conversa',
-          property: 'room.key',
-          type: 'text',
-          domainType: DomainType.Chat,
-          defaultOnBot: true,
-          fieldType: FieldType.Text,
-        },
-        {
-          key: 'primeira-mensagem-cliente',
-          fieldId: 'primeira-mensagem-cliente',
-          property: 'room.messages[0].comment',
-          type: 'text',
-          domainType: DomainType.Chat,
-          defaultOnBot: true,
-          fieldType: FieldType.Text,
-        },
-        {
-          key: 'nome-empresa',
-          fieldId: 'nome-empresa',
-          property: 'room.organization.name',
-          type: 'text',
-          domainType: DomainType.Chat,
-          defaultOnBot: false,
-          fieldType: FieldType.Text,
-        },
-        {
-          key: 'nome-agente',
-          fieldId: 'nome-agente',
-          property: 'room.agent.name',
-          type: 'text',
-          domainType: DomainType.Chat,
-          defaultOnBot: false,
-          fieldType: FieldType.Text,
-        },
-        ...fields.filter(
-          (f: { domainType: number }) => f.domainType === DomainType.Chat
-        ),
-      ]
-      setOctaChatFields(chatFields)
-      
-  
-      const organizationFields = fields.filter(
-        (f: { domainType: number }) => f.domainType === DomainType.Organization
-      )
-      setOctaOrganizationFields(organizationFields)
-      customFieldsList.push(...personFields, ...chatFields, ...organizationFields)
-
-      setOctaCustomFields(customFieldsList)
-    }
-
-    console.log("OctaCustomFields => \n\n", octaCustomFields);
-    
-
-    const items: Array<any> = [];
-    const octaChatProperties = mountPropertiesOptions(
-      'CHAT',
-      mountProperties(octaChatFields, 'CHAT')
-    )
-
-    console.log("octaChatProperties => ", octaChatProperties);
-    
-
-    if (octaChatProperties) {
-      items.push(octaChatProperties.propTitle, ...octaChatProperties.items)
-    }
-
-    const octaPersonProperties = mountPropertiesOptions(
-      'PERSON',
-      mountProperties(octaPersonFields, 'PERSON').filter(
-        (p) => p.type !== 'select'
-      )
-    )
-
-    if (octaPersonProperties) {
-      items.push(octaPersonProperties.propTitle, ...octaPersonProperties.items)
-    }
-
-    const octaOrganizationProperties = mountPropertiesOptions(
-      'ORGANIZATION',
-      mountProperties(octaOrganizationFields, 'ORGANIZATION')
-    )
-
-    if (octaOrganizationProperties) {
-      items.push(
-        octaOrganizationProperties.propTitle,
-        ...octaOrganizationProperties.items,
-      )
-    }
-    
-    fetchOctaCustomFields();
-
-    return () => {
-      setOctaCustomFields(() => [])
-    }
-  }, [typebot])
-
   return (
     <typebotContext.Provider
       value={{
@@ -682,10 +482,6 @@ export const TypebotContext = ({
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
         octaAgents,
-        octaPersonFields,
-        octaChatFields,
-        octaOrganizationFields,
-        octaCustomFields
       }}
     >
       {children}
