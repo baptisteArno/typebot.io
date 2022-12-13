@@ -23,6 +23,13 @@ export const chatsLimit = {
       price: 10,
     },
   },
+  [Plan.CUSTOM]: {
+    totalIncluded: 2000,
+    increaseStep: {
+      amount: 500,
+      price: 10,
+    },
+  },
   [Plan.OFFERED]: { totalIncluded: infinity },
   [Plan.LIFETIME]: { totalIncluded: infinity },
 } as const
@@ -43,6 +50,13 @@ export const storageLimit = {
       price: 2,
     },
   },
+  [Plan.CUSTOM]: {
+    totalIncluded: 2,
+    increaseStep: {
+      amount: 1,
+      price: 2,
+    },
+  },
   [Plan.OFFERED]: { totalIncluded: 2 },
   [Plan.LIFETIME]: { totalIncluded: 10 },
 } as const
@@ -55,6 +69,9 @@ export const seatsLimit = {
   [Plan.PRO]: {
     totalIncluded: 5,
   },
+  [Plan.CUSTOM]: {
+    totalIncluded: 2,
+  },
   [Plan.OFFERED]: { totalIncluded: 2 },
   [Plan.LIFETIME]: { totalIncluded: 8 },
 } as const
@@ -64,8 +81,7 @@ export const getChatsLimit = ({
   additionalChatsIndex,
   customChatsLimit,
 }: Pick<Workspace, 'additionalChatsIndex' | 'plan' | 'customChatsLimit'>) => {
-  if (plan === Plan.CUSTOM)
-    return customChatsLimit ?? chatsLimit[Plan.FREE].totalIncluded
+  if (customChatsLimit) return customChatsLimit
   const { totalIncluded } = chatsLimit[plan]
   const increaseStep =
     plan === Plan.STARTER || plan === Plan.PRO
@@ -83,8 +99,7 @@ export const getStorageLimit = ({
   Workspace,
   'additionalStorageIndex' | 'plan' | 'customStorageLimit'
 >) => {
-  if (plan === Plan.CUSTOM)
-    return customStorageLimit ?? storageLimit[Plan.FREE].totalIncluded
+  if (customStorageLimit) return customStorageLimit
   const { totalIncluded } = storageLimit[plan]
   const increaseStep =
     plan === Plan.STARTER || plan === Plan.PRO
@@ -97,8 +112,7 @@ export const getSeatsLimit = ({
   plan,
   customSeatsLimit,
 }: Pick<Workspace, 'plan' | 'customSeatsLimit'>) => {
-  if (plan === Plan.CUSTOM)
-    return customSeatsLimit ?? seatsLimit[Plan.FREE].totalIncluded
+  if (customSeatsLimit) return customSeatsLimit
   return seatsLimit[plan].totalIncluded
 }
 
