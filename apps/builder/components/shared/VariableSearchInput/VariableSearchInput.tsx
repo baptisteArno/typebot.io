@@ -56,7 +56,8 @@ export const VariableSearchInput = ({
   const { onOpen, onClose, isOpen } = useDisclosure()
   const {
     typebot,
-    createVariable
+    createVariable,
+    deleteVariable
   } = useTypebot()
   const variables = typebot?.variables ?? []
 
@@ -92,6 +93,7 @@ export const VariableSearchInput = ({
   useEffect(
     () => () => {
       debounced.flush()
+      console.log('variables variableSearchInput', variables)
     },
     [debounced]
   )
@@ -116,6 +118,7 @@ export const VariableSearchInput = ({
 
   const handleVariableNameClick = (variable: Variable): void => {
     console.log("Variable => ", variable);
+    variables.map(variable => deleteVariable(variable.id))
     setInputValue(variable.token)
     onSelectVariable(variable)
     onClose()

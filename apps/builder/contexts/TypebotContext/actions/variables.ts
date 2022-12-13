@@ -31,11 +31,14 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
       })
     ),
   deleteVariable: (itemId: string) =>
-    setTypebot((typebot) =>
+    {
+      console.log(itemId)
+      return setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteVariableDraft(typebot, itemId)
       })
-    ),
+    )
+    }
 })
 
 export const deleteVariableDraft = (
