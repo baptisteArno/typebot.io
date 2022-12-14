@@ -21,6 +21,7 @@ const metadataSchema = z.object({
   imageUrl: z.string().optional(),
   favIconUrl: z.string().optional(),
   customHeadCode: z.string().optional(),
+  googleTagManagerId: z.string().optional(),
 })
 
 export const settingsSchema = z.object({
@@ -41,6 +42,7 @@ export const defaultSettings: Settings = {
   metadata: {
     description:
       'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.',
+    googleTagManagerId: '',
   },
 }
 

@@ -30,6 +30,8 @@ export const MetadataForm = ({
 }: Props) => {
   const handleTitleChange = (title: string) =>
     onMetadataChange({ ...metadata, title })
+  const handleGoogleTagManagerChange = (googleTagManagerId: string) =>
+  onMetadataChange({...metadata, googleTagManagerId })
   const handleDescriptionChange = (description: string) =>
     onMetadataChange({ ...metadata, description })
   const handleFavIconSubmit = (favIconUrl: string) =>
@@ -111,6 +113,18 @@ export const MetadataForm = ({
           defaultValue={metadata.description}
           onChange={handleDescriptionChange}
         />
+      </Stack>
+      <Stack>
+        <FormLabel mb="0" htmlFor="googleTagManager">
+          Google Tag Manager Id:
+          </FormLabel>
+          <Input
+          id="googleTagManager"
+          defaultValue={metadata.googleTagManagerId}
+          placeholder="GTM-XXXXXX"
+          onChange={handleGoogleTagManagerChange}
+          />
+
       </Stack>
       <Stack>
         <HStack as={FormLabel} mb="0" htmlFor="head">
