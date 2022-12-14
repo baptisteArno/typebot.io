@@ -3,35 +3,39 @@ import { DomainType } from "enums/customFieldsEnum"
 export const fixedChatProperties = [
   {
     key: 'id-conversa',
+    token: '#id-conversa',
     fieldId: 'id-conversa',
+    domain: 'CHAT',
     property: 'room.key',
     type: 'text',
     domainType: DomainType.Chat,
-    defaultOnBot: true,
   },
   {
     key: 'primeira-mensagem-cliente',
+    token: '#primeira-mensagem-cliente',
     fieldId: 'primeira-mensagem-cliente',
+    domain: 'CHAT',
     property: 'room.messages[0].comment',
     type: 'text',
     domainType: DomainType.Chat,
-    defaultOnBot: true,
   },
   {
     key: 'nome-empresa',
+    token: '#nome-empresa',
     fieldId: 'nome-empresa',
+    domain: 'CHAT',
     property: 'room.organization.name',
     type: 'text',
     domainType: DomainType.Chat,
-    defaultOnBot: false,
   },
   {
     key: 'nome-agente',
+    token: '#nome-agente',
     fieldId: 'nome-agente',
+    domain: 'CHAT',
     property: 'room.agent.name',
     type: 'text',
     domainType: DomainType.Chat,
-    defaultOnBot: false,
   },
 ]
 

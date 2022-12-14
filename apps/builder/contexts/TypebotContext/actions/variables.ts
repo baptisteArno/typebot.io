@@ -32,7 +32,6 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
     ),
   deleteVariable: (itemId: string) =>
     {
-      console.log(itemId)
       return setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteVariableDraft(typebot, itemId)

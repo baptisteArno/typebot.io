@@ -39,7 +39,6 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log(e)
     onChange(e.target.value)
   }
 

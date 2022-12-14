@@ -26,6 +26,7 @@ import {
   fixedOrganizationProperties,
   fixedPersonProperties,
 } from 'helpers/presets/variables-presets'
+import { Variable } from 'models/dist/types/typebot/variable'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 
@@ -99,6 +100,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const [octaCustomProperties, setOctaCustomProperties] = useState<Array<any>>(
     []
   )
+  const [octaVariables, setOctaVariables] = useState<Array<Variable>>()
   const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
   const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
   const [octaOrganizationFields, setOctaOrganizationFields] = useState<
@@ -190,29 +192,35 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     return [...customProperties]
   }
 
-  const variables = useMemo(() => (typebot ? typebot.variables : []), [typebot])
+  const variables = typebot?.variables ?? []
   const fixedChatPropertiesWithId = fixedChatProperties.map(chatProperty => {
+    const variableId = cuid()
     return {
       ...chatProperty,
-      id: cuid()
+      id: variableId,
+      variableId
     }
   })
   const fixedPersonPropertiesWithId = fixedPersonProperties.map(personProperty => {
+    const variableId = cuid()
     return {
       ...personProperty,
-      id: cuid()
+      id: variableId,
+      variableId
     }
   })
   const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(organizationProperty => {
+    const variableId = cuid()
     return {
       ...organizationProperty,
-      id: cuid()
+      id: variableId,
+      variableId
     }
   })
   const items: Array<any> = []
   useEffect(() => {
     const fetchOctaCustomFields = async (): Promise<void> => {
-      const customFieldsList: Array<any> = []
+      const customFieldsList: Array<Variable> = []
 
       const fields = await CustomFields().getCustomFields()
       const personFields = fields.filter(
@@ -237,6 +245,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       setOctaCustomProperties(customFieldsList)
+      setOctaVariables(customFieldsList)
     }
 
     const octaChatProperties = mountPropertiesOptions(
@@ -281,20 +290,14 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     }
 
     setOctaCustomProperties(items)
-    console.log('items\n', items)
-
-    console.log('variables\n', variables)
     variables.map((variable) => deleteVariable(variable.id))
     if (typebot && createVariable && variables) {
       items.map((item) => createVariable(item))
     }
-
-    fetchOctaCustomFields()
-
-    return () => {
-      setOctaCustomProperties(() => [])
+    if (!octaVariables) {
+      fetchOctaCustomFields()
     }
-  }, [])
+  }, [currentWorkspace?.id])
 
   const switchWorkspace = (workspaceId: string) =>
     setCurrentWorkspace(workspaces?.find(byId(workspaceId)))

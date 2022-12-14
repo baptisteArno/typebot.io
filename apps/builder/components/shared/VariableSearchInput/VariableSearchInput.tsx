@@ -93,7 +93,6 @@ export const VariableSearchInput = ({
   useEffect(
     () => () => {
       debounced.flush()
-      console.log('variables variableSearchInput', variables)
     },
     [debounced]
   )
@@ -110,15 +109,13 @@ export const VariableSearchInput = ({
     setFilteredItems([
       ...variables
         .filter((item) =>
-          item.name.toLowerCase().includes((e.target.value ?? '').toLowerCase())
+          item.token.toLowerCase().includes((e.target.value ?? '').toLowerCase())
         )
         .slice(0, 50),
     ])
   }
 
   const handleVariableNameClick = (variable: Variable): void => {
-    console.log("Variable => ", variable);
-    variables.map(variable => deleteVariable(variable.id))
     setInputValue(variable.token)
     onSelectVariable(variable)
     onClose()
