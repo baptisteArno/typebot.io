@@ -40,7 +40,13 @@ export type Node = Omit<Group, 'blocks'> & {
   })[]
 }
 
-export const graphPositionDefaultValue = { x: 400, y: 100, scale: 1 }
+export const graphPositionDefaultValue = (
+  firstGroupCoordinates: Coordinates
+) => ({
+  x: 400 - firstGroupCoordinates.x,
+  y: 100 - firstGroupCoordinates.y,
+  scale: 1,
+})
 
 export type ConnectingIds = {
   source: Source
@@ -76,7 +82,7 @@ const graphContext = createContext<{
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
   //@ts-ignore
 }>({
-  graphPosition: graphPositionDefaultValue,
+  graphPosition: graphPositionDefaultValue({ x: 0, y: 0 }),
   connectingIds: null,
 })
 
@@ -87,7 +93,9 @@ export const GraphProvider = ({
   children: ReactNode
   isReadOnly?: boolean
 }) => {
-  const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
+  const [graphPosition, setGraphPosition] = useState(
+    graphPositionDefaultValue({ x: 0, y: 0 })
+  )
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
   const [previewingEdge, setPreviewingEdge] = useState<Edge>()
   const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
