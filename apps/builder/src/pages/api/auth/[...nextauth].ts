@@ -8,7 +8,6 @@ import AzureADProvider from 'next-auth/providers/azure-ad'
 import prisma from '@/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { withSentry } from '@sentry/nextjs'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
 import { env, isNotEmpty } from 'utils'
@@ -194,4 +193,4 @@ const getRequiredGroups = (provider: string): string[] => {
 const checkHasGroups = (userGroups: string[], requiredGroups: string[]) =>
   userGroups?.some((userGroup) => requiredGroups?.includes(userGroup))
 
-export default withSentry(handler)
+export default handler

@@ -1,6 +1,5 @@
 import { authenticateUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
-import { withSentry } from '@sentry/nextjs'
 import { Typebot, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { byId } from 'utils'
@@ -38,4 +37,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default withSentry(handler)
+export default handler

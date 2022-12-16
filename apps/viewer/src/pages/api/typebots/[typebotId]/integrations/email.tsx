@@ -11,7 +11,6 @@ import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 
 import Cors from 'cors'
-import { withSentry } from '@sentry/nextjs'
 import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from 'emails'
 import { render } from '@faire/mjml-react/dist/src/utils/render'
@@ -218,4 +217,4 @@ const parseEmailRecipient = (
   }
 }
 
-export default withSentry(handler)
+export default handler

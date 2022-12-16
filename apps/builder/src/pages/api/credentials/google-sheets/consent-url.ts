@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { oauth2Client } from '@/lib/googleSheets'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -20,4 +19,4 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default withSentry(handler)
+export default handler

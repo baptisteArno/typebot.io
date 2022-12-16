@@ -1,5 +1,4 @@
 import { authenticateUser } from '@/features/auth/api'
-import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { isNotDefined } from 'utils'
 import { methodNotAllowed } from 'utils/api'
@@ -14,4 +13,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default withSentry(handler)
+export default handler

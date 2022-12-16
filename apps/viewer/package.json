@@ -12,7 +12,7 @@
     "test:report": "pnpm playwright show-report"
   },
   "dependencies": {
-    "@sentry/nextjs": "7.23.0",
+    "@sentry/nextjs": "7.26.0",
     "@trpc/server": "10.4.3",
     "aws-sdk": "2.1267.0",
     "bot-engine": "workspace:*",
@@ -27,7 +27,6 @@
     "qs": "6.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sanitize-html": "2.7.3",
     "stripe": "11.1.0",
     "trpc-openapi": "1.0.0"
   },

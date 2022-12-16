@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import {
@@ -36,4 +35,4 @@ const handler = async (
   return methodNotAllowed(res)
 }
 
-export default withSentry(handler)
+export default handler

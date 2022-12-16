@@ -4,7 +4,6 @@ import Stripe from 'stripe'
 import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from '@/lib/prisma'
-import { withSentry } from '@sentry/nextjs'
 import { Plan } from 'db'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
@@ -128,4 +127,4 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default withSentry(cors(webhookHandler as any))
+export default cors(webhookHandler as any)

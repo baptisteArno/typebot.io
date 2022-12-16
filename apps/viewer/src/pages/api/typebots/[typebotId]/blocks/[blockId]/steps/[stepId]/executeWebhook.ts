@@ -11,7 +11,6 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next'
 import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
 import { byId } from 'utils'
-import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import { executeWebhook } from '../../executeWebhook'
 
@@ -68,4 +67,4 @@ const prepareWebhookAttributes = (
   return webhook
 }
 
-export default withSentry(handler)
+export default handler

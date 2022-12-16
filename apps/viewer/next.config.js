@@ -14,6 +14,9 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
+  sentry: {
+    hideSourceMaps: true,
+  },
 }
 
 const sentryWebpackPluginOptions = {

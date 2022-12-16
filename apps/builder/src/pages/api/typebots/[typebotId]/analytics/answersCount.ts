@@ -2,7 +2,6 @@ import { PublicTypebot } from 'models'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
-import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { canReadTypebots } from '@/utils/api/dbRules'
 
@@ -35,4 +34,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default withSentry(handler)
+export default handler

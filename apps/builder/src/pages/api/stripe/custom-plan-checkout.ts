@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { Plan } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -58,4 +57,4 @@ const createCheckoutSession = async (userId: string) => {
   })
 }
 
-export default withSentry(handler)
+export default handler

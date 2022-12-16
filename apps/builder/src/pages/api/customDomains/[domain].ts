@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
@@ -30,4 +29,4 @@ const deleteDomainOnVercel = (name: string) =>
     headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
   })
 
-export default withSentry(handler)
+export default handler

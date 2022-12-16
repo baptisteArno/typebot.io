@@ -9,7 +9,6 @@ import {
 import Stripe from 'stripe'
 
 import Cors from 'cors'
-import { withSentry } from '@sentry/nextjs'
 import { PaymentInputOptions, StripeCredentialsData, Variable } from 'models'
 import prisma from '@/lib/prisma'
 import { parseVariables } from 'bot-engine'
@@ -133,4 +132,4 @@ const isZeroDecimalCurrency = (currency: string) =>
     'XPF',
   ].includes(currency)
 
-export default withSentry(handler)
+export default handler

@@ -17,7 +17,6 @@ import got, { Method, Headers, HTTPError } from 'got'
 import { byId, omit, parseAnswers } from 'utils'
 import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
 import { stringify } from 'qs'
-import { withSentry } from '@sentry/nextjs'
 import Cors from 'cors'
 import prisma from '@/lib/prisma'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
@@ -241,4 +240,4 @@ const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
   }
 }
 
-export default withSentry(handler)
+export default handler

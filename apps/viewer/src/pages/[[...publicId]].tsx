@@ -2,7 +2,6 @@ import { IncomingMessage } from 'http'
 import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import sanitizeHtml from 'sanitize-html'
 import { env, getViewerUrl, isDefined, isNotDefined, omit } from 'utils'
 import { TypebotPage, TypebotPageProps } from '../components/TypebotPage'
 import prisma from '../lib/prisma'
@@ -46,14 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (
         isIE,
         url: `https://${forwardedHost ?? host}${pathname}`,
         customHeadCode:
-          isDefined(headCode) && headCode !== ''
-            ? sanitizeHtml(headCode, {
-                allowedTags: ['script', 'meta'],
-                allowedAttributes: {
-                  meta: ['name', 'content'],
-                },
-              })
-            : null,
+          isDefined(headCode) && headCode !== '' ? headCode : null,
       },
     }
   } catch (err) {

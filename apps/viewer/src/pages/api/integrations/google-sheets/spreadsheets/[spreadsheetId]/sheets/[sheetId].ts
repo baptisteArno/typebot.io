@@ -16,7 +16,6 @@ import {
   LogicalOperator,
 } from 'models'
 import Cors from 'cors'
-import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 
@@ -237,4 +236,4 @@ const getExtractingColumns = (columns: string | string[] | undefined) => {
   if (Array.isArray(columns)) return columns
 }
 
-export default withSentry(handler)
+export default handler

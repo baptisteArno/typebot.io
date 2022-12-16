@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { CustomDomain } from 'db'
 import { got, HTTPError } from 'got'
 import prisma from '@/lib/prisma'
@@ -58,4 +57,4 @@ const createDomainOnVercel = (name: string) =>
     json: { name },
   })
 
-export default withSentry(handler)
+export default handler

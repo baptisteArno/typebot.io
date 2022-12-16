@@ -31,7 +31,7 @@
     "@giphy/react-components": "6.4.0",
     "@googleapis/drive": "4.0.0",
     "@lezer/css": "^1.1.1",
-    "@sentry/nextjs": "7.23.0",
+    "@sentry/nextjs": "7.26.0",
     "@stripe/stripe-js": "1.46.0",
     "@tanstack/react-query": "^4.19.1",
     "@tanstack/react-table": "8.7.0",

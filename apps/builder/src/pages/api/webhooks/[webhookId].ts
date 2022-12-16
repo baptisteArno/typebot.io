@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { CollaborationType } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -68,4 +67,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   methodNotAllowed(res)
 }
 
-export default withSentry(handler)
+export default handler

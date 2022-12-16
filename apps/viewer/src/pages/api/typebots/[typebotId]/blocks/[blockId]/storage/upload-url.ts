@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -164,4 +163,4 @@ const sendReachStorageLimitNotification = async ({
   })
 }
 
-export default withSentry(handler)
+export default handler

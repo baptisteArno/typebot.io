@@ -6,7 +6,6 @@ import { stringify } from 'querystring'
 import { CredentialsType } from 'models'
 import { badRequest, encrypt, notAuthenticated } from 'utils/api'
 import { oauth2Client } from '@/lib/googleSheets'
-import { withSentry } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -57,4 +56,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default withSentry(handler)
+export default handler

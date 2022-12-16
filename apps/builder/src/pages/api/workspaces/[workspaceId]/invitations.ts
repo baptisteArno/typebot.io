@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs'
 import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -74,4 +73,4 @@ const checkIfSeatsLimitReached = async (workspace: Workspace) => {
   return existingMembersCount >= getSeatsLimit(workspace)
 }
 
-export default withSentry(handler)
+export default handler
