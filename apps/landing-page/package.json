@@ -2,10 +2,10 @@
   "name": "landing-page",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3002",
+    "dev": "cross-env ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3002",
     "start": "next start",
     "build": "next build",
-    "build:env": "cd ../.. && ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash env.sh",
+    "build:env": "cd ../.. && cross-env ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash env.sh",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"
   },
