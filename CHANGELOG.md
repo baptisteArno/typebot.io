@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.8.10"></a>
+## 2.8.10 (2022-12-18)
+
+### Fixed
+
+- 🚑 (results) Fix results page crash [[6e5786c](https://github.com/baptisteArno/typebot.io/commit/6e5786cfc3ef9bd5e5a5e272c1ca636b6ba6b4f8)]
+
+
 <a name="2.8.9"></a>
 
 ## 2.8.9 (2022-12-18)
