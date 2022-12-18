@@ -41,7 +41,7 @@ importers:
       '@sentry/nextjs': 7.27.0
       '@stripe/stripe-js': 1.46.0
       '@tanstack/react-query': ^4.20.4
-      '@tanstack/react-table': 8.7.3
+      '@tanstack/react-table': 8.7.0
       '@trpc/client': 10.5.0
       '@trpc/next': 10.5.0
       '@trpc/react-query': 10.5.0
@@ -145,7 +145,7 @@ importers:
       '@sentry/nextjs': 7.27.0_next@13.0.7+react@18.2.0
       '@stripe/stripe-js': 1.46.0
       '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
-      '@tanstack/react-table': 8.7.3_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-table': 8.7.0_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.5.0_@trpc+server@10.5.0
       '@trpc/next': 10.5.0_pd3elg5u3zlm453dd4mbgdu4mm
       '@trpc/react-query': 10.5.0_hkttq5uvq7kltri3tppuogqqou
@@ -5595,20 +5595,20 @@ packages:
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/react-table/8.7.3_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-4hUSl10UGEp3DTS0sKe8ZEr0MYKEHXKXzAolzjs+w+vjVIimFICuyIjxisY6rLOvRVNXbwF5Pjyr+1YC6ptpZw==}
+  /@tanstack/react-table/8.7.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-VJ+9rsymDLaSU35rWOfX0bwNXnpW1i+T14wi+sHx8lxwAsfg6IY1Yw7FPfGADvUFP5eQn2t4nlohAJd+IoEj/Q==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@tanstack/table-core': 8.7.3
+      '@tanstack/table-core': 8.7.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/table-core/8.7.3:
-    resolution: {integrity: sha512-P+LKZuytLRUEKv0zMKFpYCLb9ZRiZ+kaFXh99HS6gOEX58tq41PltQ2BhTBe2UPlB8O6IQFsilKhx94/6w3ZMg==}
+  /@tanstack/table-core/8.7.0:
+    resolution: {integrity: sha512-DRiRbOAmDHapzUBd4/C4Yy+FTug4fdGp5sdZWWfCq4wxRoaXQraQgbzmK23a3QcbwLFtLeNezPkZrqbJWuX+VA==}
     engines: {node: '>=12'}
     dev: false
 
