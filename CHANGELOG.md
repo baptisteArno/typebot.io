@@ -1,5 +1,44 @@
 # Changelog
 
+<a name="2.8.9"></a>
+
+## 2.8.9 (2022-12-18)
+
+### Summary
+
+Tons of database-related improvements and user experience improvements.
+
+New Google Sheets Get data filtering. You can now select rows based on multiple column values and it will select a random row that matches your filter.
+
+### Added
+
+- ✨ (googleSheets) Advanced get filtering [[dcec1f0](https://github.com/baptisteArno/typebot.io/commit/dcec1f0a5c1fb81a3971952cd6af1117925c7b2d)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[f46ce47](https://github.com/baptisteArno/typebot.io/commit/f46ce4781f154cabed74d5fe2335849ff180651c)]
+- 🔧 Add cross env compatibility to scripts ([#184](https://github.com/baptisteArno/typebot.io/issues/184)) [[2cc61b1](https://github.com/baptisteArno/typebot.io/commit/2cc61b1bf1f36e533d87b10151db8f4045434618)]
+- 🚸 (editor) Automatically move graph on first group on mount [[6c55510](https://github.com/baptisteArno/typebot.io/commit/6c55510d80bce5a9383b84d35c018c2c10bb9352)]
+- 🚸 (workspace) Keep workspaceId in memory even when logging out [[578e41c](https://github.com/baptisteArno/typebot.io/commit/578e41c09f53620052eb38a859667735a2c26709)]
+- ⚡ (dashboard) Improve folders and typebots get queries [[3ab047a](https://github.com/baptisteArno/typebot.io/commit/3ab047a48753783d173fa384543ffbbbbc84aa2a)]
+- 🗃️ Write faster prisma queries [[7eac2c7](https://github.com/baptisteArno/typebot.io/commit/7eac2c71100dbe9e74afdb204eb62bcd229457d2)]
+- 🗃️ Revert usage query back optimization [[fe8a531](https://github.com/baptisteArno/typebot.io/commit/fe8a531715487e4b2ec9f55e68c393377a1bd98c)]
+- 🗃️ Optimize usage queries [[d6f90af](https://github.com/baptisteArno/typebot.io/commit/d6f90af126929dfc36af4284384dc75d99df0d11)]
+
+### Fixed
+
+- 💚 Fix sentry not receiving events [[68de7b7](https://github.com/baptisteArno/typebot.io/commit/68de7b720fa327ffdac39e45814fe41f6939f013)]
+- 🐛 (typebotLink) Populate variable value when linked typebot is injected [[92dc797](https://github.com/baptisteArno/typebot.io/commit/92dc797b6c61818b584034348dcc0575ba0f19fc)]
+- 🐛 (workspace) Read custom limits even without CUSTOM plan [[fd6b94b](https://github.com/baptisteArno/typebot.io/commit/fd6b94bb1b61f2ce416e2f004afb52dde36dbdb4)]
+- 🐛 (typebotLink) Make sure to update all linked bot variable values [[656d1e3](https://github.com/baptisteArno/typebot.io/commit/656d1e3cade64c7aaca448c9801dff6c400fd174)]
+- 🐛 (typebotLink) Fix fetching when typebot ID is current bot ID [[54dee6e](https://github.com/baptisteArno/typebot.io/commit/54dee6e3628b06a9525d57ef08f98602662a4de9)]
+- 🚑 Disable usage check on viewer [[855a285](https://github.com/baptisteArno/typebot.io/commit/855a2856c81614966c8227f52d95475cc5f334b0)]
+
+### Miscellaneous
+
+- 📝 Add embed PDF from Google Drive instructions [[8b631d7](https://github.com/baptisteArno/typebot.io/commit/8b631d77eb492e597f957024b9857c4999d028fe)]
+- 📝 Improve prefilled variables clarity [[141ffd3](https://github.com/baptisteArno/typebot.io/commit/141ffd35f7e5a4687f7fb4450e50e286a3a2d746)]
+
 <a name="2.8.8"></a>
 
 ## 2.8.8 (2022-12-05)
