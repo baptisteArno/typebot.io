@@ -15,8 +15,8 @@
   "license": "ISC",
   "devDependencies": {
     "@faire/mjml-react": "3.0.0",
-    "@types/node": "18.11.10",
-    "@types/nodemailer": "6.4.6",
+    "@types/node": "18.11.17",
+    "@types/nodemailer": "6.4.7",
     "@types/react": "18.0.26",
     "concurrently": "7.6.0",
     "http-server": "14.1.1",
@@ -24,7 +24,7 @@
     "react": "18.2.0",
     "tsx": "3.12.1",
     "utils": "workspace:*",
-    "eslint": "8.29.0",
+    "eslint": "8.30.0",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*"
   },

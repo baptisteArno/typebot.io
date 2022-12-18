@@ -2,8 +2,8 @@
   "name": "eslint-config-custom",
   "main": "index.js",
   "dependencies": {
-    "eslint": "8.29.0",
-    "eslint-config-next": "13.0.6",
+    "eslint": "8.30.0",
+    "eslint-config-next": "13.0.7",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-react": "7.31.11"
   }
