@@ -97,10 +97,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot?.workspaceId])
 
-  const [octaCustomProperties, setOctaCustomProperties] = useState<Array<any>>(
-    []
-  )
-  const [octaVariables, setOctaVariables] = useState<Array<Variable>>()
+  const [octaCustomFieldsList, setOctaCustomFieldsList] = useState<Array<Variable>>()
   const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
   const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
   const [octaOrganizationFields, setOctaOrganizationFields] = useState<
@@ -238,14 +235,14 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         (f: { domainType: number }) => f.domainType === DomainType.Organization
       )
       setOctaOrganizationFields(organizationFields)
+      
       customFieldsList.push(
         ...personFields,
         ...chatFields,
         ...organizationFields
       )
 
-      setOctaCustomProperties(customFieldsList)
-      setOctaVariables(customFieldsList)
+      setOctaCustomFieldsList(customFieldsList)
     }
 
     const octaChatProperties = mountPropertiesOptions(
@@ -289,12 +286,11 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
     }
 
-    setOctaCustomProperties(items)
     variables.map((variable) => deleteVariable(variable.id))
     if (typebot && createVariable && variables) {
       items.map((item) => createVariable(item))
     }
-    if (!octaVariables) {
+    if (!octaCustomFieldsList) {
       fetchOctaCustomFields()
     }
   }, [currentWorkspace?.id])

@@ -32,9 +32,18 @@ const CustomFields = (): CustomFieldsServicesInterface => {
     return values.reduce((fields, current) => fields.concat(current.data), [])
   }
 
+  const createCustomField = async (field: any): Promise<any> => {
+    await getCustomFieldsClient()
+      .then(client => client.post('/', field, loadParameterHeader()))
+      .catch(error => {
+        console.error('Error on create custom field', error)
+      })
+  }
+
 
   return {
     getCustomFields,
+    createCustomField
   }
 }
 
