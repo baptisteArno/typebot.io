@@ -4,25 +4,28 @@ import {
   VStack,
   Stack,
   Radio,
-  Image,
   Text,
 } from '@chakra-ui/react'
+import Image from 'next/image'
+import lightModeIllustration from 'public/images/light-mode.png'
+import darkModeIllustration from 'public/images/dark-mode.png'
+import systemModeIllustration from 'public/images/system-mode.png'
 
 const appearanceData = [
   {
     value: 'light',
     label: 'Light',
-    image: '/images/light-mode.png',
+    image: lightModeIllustration,
   },
   {
     value: 'dark',
     label: 'Dark',
-    image: '/images/dark-mode.png',
+    image: darkModeIllustration,
   },
   {
     value: 'system',
     label: 'System',
-    image: '/images/system-mode.png',
+    image: systemModeIllustration,
   },
 ]
 
@@ -51,7 +54,8 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => (
             <Image
               src={option.image}
               alt="Theme preview"
-              borderTopRadius="md"
+              style={{ borderRadius: '0.250rem' }}
+              placeholder="blur"
             />
             <Stack>
               <Text fontWeight="bold">{option.label}</Text>
