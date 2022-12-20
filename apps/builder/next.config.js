@@ -8,23 +8,26 @@ const withTM = require('next-transpile-modules')([
 ])
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withTM({
   reactStrictMode: true,
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  sentry: {
-    hideSourceMaps: true,
-  },
-}
+})
 
 const sentryWebpackPluginOptions = {
   silent: true,
 }
 
-module.exports = withTM(
-  process.env.SENTRY_AUTH_TOKEN
-    ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
-    : nextConfig
-)
+module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
+  ? withSentryConfig(
+      {
+        ...nextConfig,
+        sentry: {
+          hideSourceMaps: true,
+        },
+      },
+      sentryWebpackPluginOptions
+    )
+  : nextConfig
