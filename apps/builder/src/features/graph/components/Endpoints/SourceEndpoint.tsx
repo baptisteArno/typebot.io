@@ -1,4 +1,9 @@
-import { BoxProps, Flex, useEventListener } from '@chakra-ui/react'
+import {
+  BoxProps,
+  Flex,
+  useColorModeValue,
+  useEventListener,
+} from '@chakra-ui/react'
 import { useGraph, useGroupsCoordinates } from '../../providers'
 import { Source } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
@@ -9,6 +14,9 @@ export const SourceEndpoint = ({
 }: BoxProps & {
   source: Source
 }) => {
+  const color = useColorModeValue('blue.200', 'blue.100')
+  const connectedColor = useColorModeValue('blue.300', 'blue.200')
+  const bg = useColorModeValue('gray.100', 'gray.700')
   const [ranOnce, setRanOnce] = useState(false)
   const { setConnectingIds, addSourceEndpoint, previewingEdge } = useGraph()
 
@@ -61,7 +69,7 @@ export const SourceEndpoint = ({
         boxSize="20px"
         justify="center"
         align="center"
-        bgColor="gray.100"
+        bg={bg}
         rounded="full"
       >
         <Flex
@@ -72,8 +80,8 @@ export const SourceEndpoint = ({
           borderColor={
             previewingEdge?.from.blockId === source.blockId &&
             previewingEdge.from.itemId === source.itemId
-              ? 'blue.300'
-              : 'blue.200'
+              ? connectedColor
+              : color
           }
         />
       </Flex>

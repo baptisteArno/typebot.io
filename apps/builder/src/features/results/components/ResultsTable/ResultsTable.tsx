@@ -6,6 +6,7 @@ import {
   HStack,
   Stack,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from '@/components/icons'
 import { ResultHeaderCell, ResultsTablePreferences } from 'models'
@@ -26,6 +27,7 @@ import { HeaderRow } from './HeaderRow'
 import { CellValueType, TableData } from '../../types'
 import { HeaderIcon, parseAccessor } from '../../utils'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
+import { colors } from '@/lib/theme'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
@@ -46,6 +48,7 @@ export const ResultsTable = ({
   onLogOpenIndex,
   onResultExpandIndex,
 }: ResultsTableProps) => {
+  const background = useColorModeValue('white', colors.gray[900])
   const { updateTypebot } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
   const [columnsVisibility, setColumnsVisibility] = useState<
@@ -204,7 +207,16 @@ export const ResultsTable = ({
           onColumnOrderChange={instance.setColumnOrder}
         />
       </Flex>
-      <Box className="table-wrapper" overflow="scroll" rounded="md">
+      <Box
+        overflow="scroll"
+        rounded="md"
+        data-testid="results-table"
+        backgroundImage={`linear-gradient(to right, ${background}, ${background}), linear-gradient(to right, ${background}, ${background}),linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)),linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));`}
+        backgroundPosition="left center, right center, left center, right center"
+        backgroundRepeat="no-repeat"
+        backgroundSize="30px 100%, 30px 100%, 15px 100%, 15px 100%"
+        backgroundAttachment="local, local, scroll, scroll"
+      >
         <chakra.table rounded="md">
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
@@ -225,7 +237,13 @@ export const ResultsTable = ({
               />
             ))}
             {hasMore === true && (
-              <LoadingRows totalColumns={columns.length - 1} />
+              <LoadingRows
+                totalColumns={
+                  resultHeader.filter(
+                    (header) => columnsVisibility[header.id] !== false
+                  ).length + 1
+                }
+              />
             )}
           </tbody>
         </chakra.table>

@@ -8,6 +8,7 @@ import {
   IconButton,
   Tooltip,
   Fade,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import {
   BubbleBlockType,
@@ -18,9 +19,10 @@ import {
 } from 'models'
 import { useBlockDnd } from '@/features/graph'
 import React, { useState } from 'react'
-import { BlockCard, BlockCardOverlay } from './BlockCard'
+import { BlockCard } from './BlockCard'
 import { LockedIcon, UnlockedIcon } from '@/components/icons'
 import { headerHeight } from '../../constants'
+import { BlockCardOverlay } from './BlockCardOverlay'
 
 export const BlocksSideBar = () => {
   const { setDraggedBlockType, draggedBlockType } = useBlockDnd()
@@ -93,7 +95,7 @@ export const BlocksSideBar = () => {
         pt="2"
         pb="10"
         px="4"
-        bgColor="white"
+        bgColor={useColorModeValue('white', 'gray.900')}
         spacing={6}
         userSelect="none"
         overflowY="scroll"
@@ -105,14 +107,13 @@ export const BlocksSideBar = () => {
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
               aria-label={isLocked ? 'Unlock' : 'Lock'}
               size="sm"
-              variant="outline"
               onClick={handleLockClick}
             />
           </Tooltip>
         </Flex>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          <Text fontSize="sm" fontWeight="semibold">
             Bubbles
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -123,7 +124,7 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          <Text fontSize="sm" fontWeight="semibold">
             Inputs
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -134,7 +135,7 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          <Text fontSize="sm" fontWeight="semibold">
             Logic
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -145,7 +146,7 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+          <Text fontSize="sm" fontWeight="semibold">
             Integrations
           </Text>
           <SimpleGrid columns={2} spacing="3">

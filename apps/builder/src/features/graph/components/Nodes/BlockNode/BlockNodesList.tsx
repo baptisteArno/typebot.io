@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/features/editor'
 import { BlockNode } from './BlockNode'
 import { BlockNodeOverlay } from './BlockNodeOverlay'
+import { PlaceholderNode } from '../PlaceholderNode'
+import { isDefined } from 'utils'
 
 type Props = {
   groupId: string
@@ -49,7 +51,7 @@ export const BlockNodesList = ({
   const isDraggingOnCurrentGroup =
     (draggedBlock || draggedBlockType) && mouseOverGroup?.id === groupId
   const showSortPlaceholders =
-    !isStartGroup && (draggedBlock || draggedBlockType)
+    !isStartGroup && isDefined(draggedBlock || draggedBlockType)
 
   useEffect(() => {
     if (mouseOverGroup?.id !== groupId) setExpandedPlaceholderIndex(undefined)
@@ -126,17 +128,10 @@ export const BlockNodesList = ({
       transition="none"
       pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
     >
-      <Flex
-        ref={handlePushElementRef(0)}
-        h={
-          showSortPlaceholders && expandedPlaceholderIndex === 0
-            ? '50px'
-            : '2px'
-        }
-        bgColor={'gray.300'}
-        visibility={showSortPlaceholders ? 'visible' : 'hidden'}
-        rounded="lg"
-        transition={showSortPlaceholders ? 'height 200ms' : 'none'}
+      <PlaceholderNode
+        isVisible={showSortPlaceholders}
+        isExpanded={expandedPlaceholderIndex === 0}
+        onRef={handlePushElementRef(0)}
       />
       {typebot &&
         blocks.map((block, idx) => (
@@ -148,17 +143,10 @@ export const BlockNodesList = ({
               isConnectable={blocks.length - 1 === idx}
               onMouseDown={handleBlockMouseDown(idx)}
             />
-            <Flex
-              ref={handlePushElementRef(idx + 1)}
-              h={
-                showSortPlaceholders && expandedPlaceholderIndex === idx + 1
-                  ? '50px'
-                  : '2px'
-              }
-              bgColor={'gray.300'}
-              visibility={showSortPlaceholders ? 'visible' : 'hidden'}
-              rounded="lg"
-              transition={showSortPlaceholders ? 'height 200ms' : 'none'}
+            <PlaceholderNode
+              isVisible={showSortPlaceholders}
+              isExpanded={expandedPlaceholderIndex === idx + 1}
+              onRef={handlePushElementRef(idx + 1)}
             />
           </Stack>
         ))}

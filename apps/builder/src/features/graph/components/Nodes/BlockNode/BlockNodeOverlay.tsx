@@ -1,5 +1,5 @@
 import { BlockIcon } from '@/features/editor'
-import { StackProps, HStack } from '@chakra-ui/react'
+import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
 import { StartBlock, Block, BlockIndices } from 'models'
 import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
 
@@ -13,7 +13,8 @@ export const BlockNodeOverlay = ({
       p="3"
       borderWidth="1px"
       rounded="lg"
-      bgColor="white"
+      borderColor={useColorModeValue('gray.200', 'gray.800')}
+      bgColor={useColorModeValue('gray.50', 'gray.850')}
       cursor={'grab'}
       w="264px"
       pointerEvents="none"

@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   HStack,
+  useColorModeValue,
   useRadio,
   useRadioGroup,
   UseRadioProps,
@@ -57,9 +58,14 @@ export const RadioCard = (props: UseRadioProps & { children: ReactNode }) => {
         borderWidth="1px"
         borderRadius="md"
         _checked={{
-          bg: 'orange.400',
-          color: 'white',
-          borderColor: 'orange.400',
+          borderWidth: '2px',
+          borderColor: 'blue.400',
+        }}
+        _hover={{
+          bgColor: useColorModeValue('gray.100', 'gray.700'),
+        }}
+        _active={{
+          bgColor: useColorModeValue('gray.200', 'gray.600'),
         }}
         px={5}
         py={2}

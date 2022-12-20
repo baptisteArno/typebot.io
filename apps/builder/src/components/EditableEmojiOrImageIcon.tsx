@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   Flex,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
@@ -23,6 +24,8 @@ export const EditableEmojiOrImageIcon = ({
   onChangeIcon,
   boxSize,
 }: Props) => {
+  const bg = useColorModeValue('gray.100', 'gray.700')
+
   return (
     <Popover isLazy>
       {({ onClose }: { onClose: () => void }) => (
@@ -32,7 +35,9 @@ export const EditableEmojiOrImageIcon = ({
               cursor="pointer"
               p="2"
               rounded="md"
-              _hover={{ bgColor: 'gray.100' }}
+              _hover={{
+                bg,
+              }}
               transition="background-color 0.2s"
               data-testid="editable-icon"
             >

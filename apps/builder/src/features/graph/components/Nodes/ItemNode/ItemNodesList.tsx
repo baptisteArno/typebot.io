@@ -1,4 +1,11 @@
-import { Flex, Portal, Stack, Text, useEventListener } from '@chakra-ui/react'
+import {
+  Flex,
+  Portal,
+  Stack,
+  Text,
+  useColorModeValue,
+  useEventListener,
+} from '@chakra-ui/react'
 import {
   computeNearestPlaceholderIndex,
   useBlockDnd,
@@ -10,6 +17,8 @@ import { BlockIndices, BlockWithItems, LogicBlockType, Item } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
+import { ItemNodeOverlay } from './ItemNodeOverlay'
+import { PlaceholderNode } from '../PlaceholderNode'
 
 type Props = {
   block: BlockWithItems
@@ -121,13 +130,10 @@ export const ItemNodesList = ({
 
   return (
     <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>
-      <Flex
-        ref={handlePushElementRef(0)}
-        h={showPlaceholders && expandedPlaceholderIndex === 0 ? '50px' : '2px'}
-        bgColor={'gray.300'}
-        visibility={showPlaceholders ? 'visible' : 'hidden'}
-        rounded="lg"
-        transition={showPlaceholders ? 'height 200ms' : 'none'}
+      <PlaceholderNode
+        isVisible={showPlaceholders}
+        isExpanded={expandedPlaceholderIndex === 0}
+        onRef={handlePushElementRef(0)}
       />
       {block.items.map((item, idx) => (
         <Stack key={item.id} spacing={1}>
@@ -136,45 +142,14 @@ export const ItemNodesList = ({
             indices={{ groupIndex, blockIndex, itemIndex: idx }}
             onMouseDown={handleBlockMouseDown(idx)}
           />
-          <Flex
-            ref={handlePushElementRef(idx + 1)}
-            h={
-              showPlaceholders && expandedPlaceholderIndex === idx + 1
-                ? '50px'
-                : '2px'
-            }
-            bgColor={'gray.300'}
-            visibility={showPlaceholders ? 'visible' : 'hidden'}
-            rounded="lg"
-            transition={showPlaceholders ? 'height 200ms' : 'none'}
+          <PlaceholderNode
+            isVisible={showPlaceholders}
+            isExpanded={expandedPlaceholderIndex === idx + 1}
+            onRef={handlePushElementRef(idx + 1)}
           />
         </Stack>
       ))}
-      {isLastBlock && (
-        <Flex
-          px="4"
-          py="2"
-          borderWidth="1px"
-          borderColor="gray.300"
-          bgColor={'gray.50'}
-          rounded="md"
-          pos="relative"
-          align="center"
-          cursor="not-allowed"
-        >
-          <Text color="gray.500">
-            {block.type === LogicBlockType.CONDITION ? 'Else' : 'Default'}
-          </Text>
-          <SourceEndpoint
-            source={{
-              groupId: block.groupId,
-              blockId: block.id,
-            }}
-            pos="absolute"
-            right="-49px"
-          />
-        </Flex>
-      )}
+      {isLastBlock && <DefaultItemNode block={block} />}
 
       {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
@@ -189,14 +164,38 @@ export const ItemNodesList = ({
             w="220px"
             transformOrigin="0 0 0"
           >
-            <ItemNode
-              item={draggedItem}
-              indices={{ groupIndex, blockIndex, itemIndex: 0 }}
-              connectionDisabled
-            />
+            <ItemNodeOverlay item={draggedItem} />
           </Flex>
         </Portal>
       )}
     </Stack>
+  )
+}
+
+const DefaultItemNode = ({ block }: { block: BlockWithItems }) => {
+  return (
+    <Flex
+      px="4"
+      py="2"
+      borderWidth="1px"
+      borderColor={useColorModeValue('gray.300', undefined)}
+      bgColor={useColorModeValue('gray.50', 'gray.850')}
+      rounded="md"
+      pos="relative"
+      align="center"
+      cursor="not-allowed"
+    >
+      <Text color="gray.500">
+        {block.type === LogicBlockType.CONDITION ? 'Else' : 'Default'}
+      </Text>
+      <SourceEndpoint
+        source={{
+          groupId: block.groupId,
+          blockId: block.id,
+        }}
+        pos="absolute"
+        right="-49px"
+      />
+    </Flex>
   )
 }

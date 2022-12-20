@@ -48,6 +48,7 @@ model User {
   company                 String?
   onboardingCategories    String[]
   graphNavigation         GraphNavigation?
+  preferredAppAppearance     String?
   accounts                Account[]
   apiTokens               ApiToken[]
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]

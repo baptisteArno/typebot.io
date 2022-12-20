@@ -1,4 +1,4 @@
-import { Box, BoxProps, chakra } from '@chakra-ui/react'
+import { Box, BoxProps, chakra, useColorModeValue } from '@chakra-ui/react'
 import { flexRender, HeaderGroup } from '@tanstack/react-table'
 import React from 'react'
 import { TableData } from '../../types'
@@ -8,6 +8,7 @@ type Props = {
 }
 
 export const HeaderRow = ({ headerGroup }: Props) => {
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
   return (
     <tr key={headerGroup.id}>
       {headerGroup.headers.map((header) => {
@@ -18,7 +19,7 @@ export const HeaderRow = ({ headerGroup }: Props) => {
             py="2"
             pos="relative"
             border="1px"
-            borderColor="gray.200"
+            borderColor={borderColor}
             fontWeight="normal"
             whiteSpace="nowrap"
             wordBreak="normal"

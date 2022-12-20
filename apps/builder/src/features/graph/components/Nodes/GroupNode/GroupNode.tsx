@@ -4,6 +4,7 @@ import {
   EditablePreview,
   IconButton,
   Stack,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Group } from 'models'
@@ -52,6 +53,10 @@ const NonMemoizedDraggableGroupNode = ({
   groupIndex,
   onGroupDrag,
 }: Props & { onGroupDrag: (newCoord: Coordinates) => void }) => {
+  const bg = useColorModeValue('white', 'gray.900')
+  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const borderColor = useColorModeValue('white', 'gray.800')
+  const editableHoverBg = useColorModeValue('gray.100', 'gray.700')
   const {
     connectingIds,
     setConnectingIds,
@@ -172,16 +177,20 @@ const NonMemoizedDraggableGroupNode = ({
       renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
       isDisabled={isReadOnly || isStartGroup}
     >
-      {(ref, isOpened) => (
+      {(ref, isContextMenuOpened) => (
         <Stack
           ref={setMultipleRefs([ref, groupRef])}
           data-testid="group"
           p="4"
           rounded="xl"
-          bgColor="#ffffff"
-          borderWidth="2px"
+          bg={bg}
+          borderWidth={
+            isConnecting || isContextMenuOpened || isPreviewing ? '2px' : '1px'
+          }
           borderColor={
-            isConnecting || isOpened || isPreviewing ? 'blue.400' : '#ffffff'
+            isConnecting || isContextMenuOpened || isPreviewing
+              ? previewingBorderColor
+              : borderColor
           }
           w="300px"
           transition="border 300ms, box-shadow 200ms"
@@ -208,7 +217,9 @@ const NonMemoizedDraggableGroupNode = ({
             pr="8"
           >
             <EditablePreview
-              _hover={{ bgColor: 'gray.200' }}
+              _hover={{
+                bg: editableHoverBg,
+              }}
               px="1"
               userSelect={'none'}
             />

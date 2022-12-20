@@ -8,6 +8,7 @@ export const mockedUser: User = {
   createdAt: new Date(),
   emailVerified: null,
   graphNavigation: 'TRACKPAD',
+  preferredAppAppearance: null,
   image: 'https://avatars.githubusercontent.com/u/16015833?v=4',
   lastActivityAt: new Date(),
   onboardingCategories: [],

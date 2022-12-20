@@ -1,10 +1,12 @@
 import {
+  Flex,
+  FlexProps,
   IconButton,
   Menu,
   MenuButton,
-  MenuButtonProps,
   MenuItem,
   MenuList,
+  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import assert from 'assert'
@@ -21,7 +23,7 @@ import { isNotDefined } from 'utils'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish'
 
-export const BoardMenuButton = (props: MenuButtonProps) => {
+export const BoardMenuButton = (props: FlexProps) => {
   const { query } = useRouter()
   const { typebot } = useTypebot()
   const { user } = useUser()
@@ -55,25 +57,30 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
     setIsDownloading(false)
   }
   return (
-    <Menu>
-      <MenuButton
-        as={IconButton}
-        bgColor="white"
-        icon={<MoreVerticalIcon transform={'rotate(90deg)'} />}
-        isLoading={isDownloading}
-        size="sm"
-        shadow="lg"
-        {...props}
-      />
-      <MenuList>
-        <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-          Editor settings
-        </MenuItem>
-        <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-          Export flow
-        </MenuItem>
-      </MenuList>
-      <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
-    </Menu>
+    <Flex
+      bgColor={useColorModeValue('white', 'gray.900')}
+      rounded="md"
+      {...props}
+    >
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          icon={<MoreVerticalIcon transform={'rotate(90deg)'} />}
+          isLoading={isDownloading}
+          size="sm"
+          shadow="lg"
+          bgColor={useColorModeValue('white', undefined)}
+        />
+        <MenuList>
+          <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
+            Editor settings
+          </MenuItem>
+          <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
+            Export flow
+          </MenuItem>
+        </MenuList>
+        <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
+      </Menu>
+    </Flex>
   )
 }

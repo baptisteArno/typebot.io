@@ -1,4 +1,11 @@
-import { chakra, Checkbox, Flex, Skeleton } from '@chakra-ui/react'
+import {
+  chakra,
+  Checkbox,
+  Flex,
+  Skeleton,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import React from 'react'
 
 type LoadingRowsProps = {
@@ -6,6 +13,7 @@ type LoadingRowsProps = {
 }
 
 export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
   return (
     <>
       {Array.from(Array(3)).map((_, idx) => (
@@ -14,7 +22,7 @@ export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
             px="2"
             py="2"
             border="1px"
-            borderColor="gray.200"
+            borderColor={borderColor}
             width="40px"
           >
             <Flex ml="1">
@@ -28,7 +36,7 @@ export const LoadingRows = ({ totalColumns }: LoadingRowsProps) => {
                 px="4"
                 py="2"
                 border="1px"
-                borderColor="gray.200"
+                borderColor={borderColor}
               >
                 <Skeleton height="5px" w="full" />
               </chakra.td>

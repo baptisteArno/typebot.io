@@ -1,22 +1,44 @@
-import { extendTheme } from '@chakra-ui/react'
+import {
+  createMultiStyleConfigHelpers,
+  defineStyleConfig,
+  extendTheme,
+  StyleFunctionProps,
+  type ThemeConfig,
+} from '@chakra-ui/react'
+import { mode } from '@chakra-ui/theme-tools'
+import {
+  alertAnatomy,
+  accordionAnatomy,
+  menuAnatomy,
+  modalAnatomy,
+  popoverAnatomy,
+  switchAnatomy,
+} from '@chakra-ui/anatomy'
+
+const config: ThemeConfig = {
+  initialColorMode: 'system',
+  useSystemColorMode: true,
+}
 
 const fonts = {
-  heading: 'Outfit',
-  body: 'Open Sans',
+  heading:
+    "Outfit, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+  body: "Open Sans, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
 }
 
 export const colors = {
   gray: {
-    50: '#F9FAFB',
-    100: '#F3F4F6',
-    200: '#E5E7EB',
-    300: '#D1D5DB',
-    400: '#9CA3AF',
-    500: '#6B7280',
-    600: '#4B5563',
-    700: '#374151',
-    800: '#1F2937',
-    900: '#111827',
+    50: '#fafafa',
+    100: '#f4f4f5',
+    200: '#e4e4e7',
+    300: '#d4d4d8',
+    400: '#a1a1aa',
+    500: '#71717a',
+    600: '#52525b',
+    700: '#3f3f46',
+    800: '#27272a',
+    850: '#1f1f23',
+    900: '#18181b',
   },
   blue: {
     50: '#e0edff',
@@ -56,33 +78,137 @@ export const colors = {
   },
 }
 
+const Modal = createMultiStyleConfigHelpers(
+  modalAnatomy.keys
+).defineMultiStyleConfig({
+  baseStyle: ({ colorMode }) => ({
+    dialog: { bg: colorMode === 'dark' ? 'gray.800' : 'white' },
+  }),
+})
+
+const Popover = createMultiStyleConfigHelpers(
+  popoverAnatomy.keys
+).defineMultiStyleConfig({
+  baseStyle: ({ colorMode }) => ({
+    popper: {
+      width: 'fit-content',
+      maxWidth: 'fit-content',
+    },
+    content: {
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+    },
+  }),
+})
+
+const Menu = createMultiStyleConfigHelpers(
+  menuAnatomy.keys
+).defineMultiStyleConfig({
+  baseStyle: ({ colorMode }) => ({
+    list: {
+      shadow: 'lg',
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+    },
+    item: {
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+      _hover: {
+        bg: colorMode === 'dark' ? 'gray.700' : 'gray.100',
+      },
+    },
+  }),
+})
+
+const Accordion = createMultiStyleConfigHelpers(
+  accordionAnatomy.keys
+).defineMultiStyleConfig({
+  baseStyle: ({ colorMode }) => ({
+    button: {
+      _hover: {
+        bg: colorMode === 'dark' ? 'gray.800' : 'gray.100',
+      },
+    },
+  }),
+})
+
+const Button = defineStyleConfig({
+  baseStyle: ({ colorMode }) => ({
+    bg: colorMode === 'dark' ? 'gray.800' : 'white',
+  }),
+  variants: {
+    solid: ({ colorMode, colorScheme }) => {
+      if (colorScheme !== 'blue') return {}
+      return {
+        bg: colorMode === 'dark' ? 'blue.400' : 'blue.500',
+        color: 'white',
+        _hover: {
+          bg: colorMode === 'dark' ? 'blue.500' : 'blue.600',
+        },
+        _active: {
+          bg: colorMode === 'dark' ? 'blue.600' : 'blue.700',
+        },
+      }
+    },
+    outline: {
+      bg: 'transparent',
+    },
+    ghost: {
+      bg: 'transparent',
+    },
+  },
+})
+
+const Alert = createMultiStyleConfigHelpers(
+  alertAnatomy.keys
+).defineMultiStyleConfig({
+  variants: {
+    subtle: ({ colorScheme, colorMode }) => {
+      if (colorScheme !== 'blue' || colorMode === 'dark') return {}
+      return {
+        container: {
+          bg: 'blue.50',
+        },
+      }
+    },
+  },
+})
+
+const Switch = createMultiStyleConfigHelpers(
+  switchAnatomy.keys
+).defineMultiStyleConfig({
+  baseStyle: ({ colorMode, colorScheme }) => ({
+    track: {
+      _checked: {
+        bg: colorMode === 'dark' ? `${colorScheme}.400` : `${colorScheme}.500`,
+      },
+    },
+  }),
+})
+
 const components = {
+  Modal,
+  Popover,
+  Menu,
+  Button,
+  Accordion,
+  Alert,
+  Switch,
   Spinner: {
     defaultProps: {
       colorScheme: 'blue',
     },
   },
   NumberInput: {
-    defaultProps: {
+    baseStyle: {
       focusBorderColor: 'blue.200',
     },
   },
   Input: {
-    defaultProps: {
+    baseStyle: {
       focusBorderColor: 'blue.200',
     },
   },
   Textarea: {
-    defaultProps: {
-      focusBorderColor: 'blue.200',
-    },
-  },
-  Popover: {
     baseStyle: {
-      popper: {
-        width: 'fit-content',
-        maxWidth: 'fit-content',
-      },
+      focusBorderColor: 'blue.200',
     },
   },
   Link: {
@@ -90,20 +216,25 @@ const components = {
       _hover: { textDecoration: 'none' },
     },
   },
-  Menu: {
-    parts: ['list'],
-    defaultProps: {
-      list: {
-        shadow: 'lg',
-      },
-    },
-  },
   Tooltip: {
-    defaultProps: {
+    baseStyle: {
       rounded: 'md',
-      hasArrow: true,
     },
   },
 }
 
-export const customTheme: any = extendTheme({ colors, fonts, components })
+const styles = {
+  global: (props: StyleFunctionProps) => ({
+    body: {
+      bg: mode('white', 'gray.900')(props),
+    },
+  }),
+}
+
+export const customTheme = extendTheme({
+  colors,
+  fonts,
+  components,
+  config,
+  styles,
+})

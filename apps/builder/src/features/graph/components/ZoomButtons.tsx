@@ -1,4 +1,4 @@
-import { Stack, IconButton } from '@chakra-ui/react'
+import { Stack, IconButton, useColorModeValue } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@/components/icons'
 import { headerHeight } from '@/features/editor'
 
@@ -14,7 +14,7 @@ export const ZoomButtons = ({
     pos="fixed"
     top={`calc(${headerHeight}px + 70px)`}
     right="40px"
-    bgColor="white"
+    bgColor={useColorModeValue('white', 'gray.900')}
     rounded="md"
     zIndex={1}
     spacing="0"
@@ -25,7 +25,7 @@ export const ZoomButtons = ({
       aria-label={'Zoom in'}
       size="sm"
       onClick={onZoomIn}
-      bgColor="white"
+      bgColor={useColorModeValue('white', undefined)}
       borderBottomRadius={0}
     />
     <IconButton
@@ -33,7 +33,7 @@ export const ZoomButtons = ({
       aria-label={'Zoom out'}
       size="sm"
       onClick={onZoomOut}
-      bgColor="white"
+      bgColor={useColorModeValue('white', undefined)}
       borderTopRadius={0}
     />
   </Stack>

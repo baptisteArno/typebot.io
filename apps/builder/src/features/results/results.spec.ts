@@ -159,7 +159,7 @@ const validateExportAll = (data: unknown[]) => {
 
 const scrollToBottom = (page: Page) =>
   page.evaluate(() => {
-    const tableWrapper = document.querySelector('.table-wrapper')
+    const tableWrapper = document.querySelector('[data-testid="results-table"]')
     if (!tableWrapper) return
     tableWrapper.scrollTo(0, tableWrapper.scrollHeight)
   })

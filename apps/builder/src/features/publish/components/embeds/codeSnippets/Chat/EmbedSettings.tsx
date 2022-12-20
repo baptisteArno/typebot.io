@@ -111,7 +111,7 @@ export const ChatEmbedSettings = ({
         />
       </HStack>
       <HStack justifyContent="space-between">
-        <FormLabel htmlFor="custom-icon" mb="1" flexShrink={0}>
+        <FormLabel htmlFor="custom-icon" mb="0" flexShrink={0}>
           Custom button icon?
         </FormLabel>
         <Switch
@@ -139,9 +139,8 @@ export const ChatEmbedSettings = ({
           alignItems="center"
           w="full"
           justifyContent="space-between"
-          pr={1}
         >
-          <FormLabel htmlFor="fullscreen-option" mb="1">
+          <FormLabel htmlFor="fullscreen-option" mb="0">
             Enable popup message?
           </FormLabel>
           <Switch

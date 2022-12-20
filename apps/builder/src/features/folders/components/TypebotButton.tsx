@@ -102,7 +102,6 @@ export const TypebotButton = ({
       display="flex"
       flexDir="column"
       variant="outline"
-      color="gray.800"
       w="225px"
       h="270px"
       mr={{ sm: 6 }}

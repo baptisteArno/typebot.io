@@ -1,5 +1,11 @@
-import { Flex, HStack, StackProps, Text, Tooltip } from '@chakra-ui/react'
-import { BlockType, DraggableBlockType } from 'models'
+import {
+  Flex,
+  HStack,
+  Text,
+  Tooltip,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import { DraggableBlockType } from 'models'
 import { useBlockDnd } from '@/features/graph'
 import React, { useEffect, useState } from 'react'
 import { BlockIcon } from './BlockIcon'
@@ -28,17 +34,17 @@ export const BlockCard = ({
       <Flex pos="relative">
         <HStack
           borderWidth="1px"
-          borderColor="gray.200"
+          borderColor={useColorModeValue('gray.200', 'gray.800')}
           rounded="lg"
           flex="1"
           cursor={'grab'}
           opacity={isMouseDown || isDisabled ? '0.4' : '1'}
           onMouseDown={handleMouseDown}
-          bgColor="gray.50"
+          bgColor={useColorModeValue('gray.50', 'gray.850')}
           px="4"
           py="2"
-          _hover={{ shadow: 'md' }}
-          transition="box-shadow 200ms"
+          _hover={useColorModeValue({ shadow: 'md' }, { bgColor: 'gray.800' })}
+          transition="box-shadow 200ms, background-color 200ms"
           pointerEvents={isDisabled ? 'none' : 'auto'}
         >
           {!isMouseDown ? (
@@ -46,38 +52,9 @@ export const BlockCard = ({
               <BlockIcon type={type} />
               <BlockTypeLabel type={type} />
             </>
-          ) : (
-            <Text color="white" userSelect="none">
-              Placeholder
-            </Text>
-          )}
+          ) : null}
         </HStack>
       </Flex>
     </Tooltip>
-  )
-}
-
-export const BlockCardOverlay = ({
-  type,
-  ...props
-}: StackProps & { type: BlockType }) => {
-  return (
-    <HStack
-      borderWidth="1px"
-      rounded="lg"
-      cursor={'grabbing'}
-      w="147px"
-      transition="none"
-      pointerEvents="none"
-      px="4"
-      py="2"
-      bgColor="white"
-      shadow="xl"
-      zIndex={2}
-      {...props}
-    >
-      <BlockIcon type={type} />
-      <BlockTypeLabel type={type} />
-    </HStack>
   )
 }

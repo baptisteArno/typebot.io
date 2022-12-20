@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, useColorModeValue } from '@chakra-ui/react'
 import {
   Coordinates,
   useGraph,
@@ -30,6 +30,9 @@ export const ItemNode = ({
   onMouseDown,
   connectionDisabled,
 }: Props) => {
+  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const bg = useColorModeValue('white', undefined)
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -59,7 +62,7 @@ export const ItemNode = ({
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <ItemNodeContextMenu indices={indices} />}
     >
-      {(ref, isOpened) => (
+      {(ref, isContextMenuOpened) => (
         <Flex
           data-testid="item"
           pos="relative"
@@ -74,10 +77,14 @@ export const ItemNode = ({
             _hover={{ shadow: 'md' }}
             transition="box-shadow 200ms, border-color 200ms"
             rounded="md"
-            borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
-            borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.100'}
-            margin={isOpened || isPreviewing ? '-1px' : 0}
-            bgColor="white"
+            bg={bg}
+            borderWidth={isContextMenuOpened || isPreviewing ? '2px' : '1px'}
+            borderColor={
+              isContextMenuOpened || isPreviewing
+                ? previewingBorderColor
+                : borderColor
+            }
+            margin={isContextMenuOpened || isPreviewing ? '-1px' : 0}
             w="full"
           >
             <ItemNodeContent
