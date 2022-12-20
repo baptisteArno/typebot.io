@@ -125,12 +125,14 @@ test('Show close message', async ({ page }) => {
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = cuid()
+  const googleTagManagerId = 'GTM-M72NXKB'
   const customMetadata: Metadata = {
     description: 'My custom description',
     title: 'Custom title',
     favIconUrl: 'https://www.baptistearno.com/favicon.png',
     imageUrl: 'https://www.baptistearno.com/images/site-preview.png',
     customHeadCode: '<meta name="author" content="John Doe">',
+    googleTagManagerId,
   }
   await createTypebots([
     {
@@ -146,6 +148,11 @@ test('Should correctly parse metadata', async ({ page }) => {
     },
   ])
   await page.goto(`/${typebotId}-public`)
+  await expect(
+    typebotViewer(page).locator(
+      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+    )
+  ).toBeVisible()
   expect(
     await page.evaluate(`document.querySelector('title').textContent`)
   ).toBe(customMetadata.title)
@@ -177,9 +184,12 @@ test('Should correctly parse metadata', async ({ page }) => {
           .content
     )
   ).toBe('John Doe')
-  await expect(
-    typebotViewer(page).locator(
-      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+  expect(
+    await page.evaluate(
+      (googleTagManagerId) =>
+        document.querySelector(
+          `iframe[src="https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}"]`
+        ) as HTMLMetaElement
     )
-  ).toBeVisible()
+  ).toBeDefined()
 })
