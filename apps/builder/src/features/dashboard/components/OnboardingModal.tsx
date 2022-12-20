@@ -4,6 +4,7 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
+  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import { TypebotViewer } from 'bot-engine'
@@ -18,6 +19,10 @@ import { parseTypebotToPublicTypebot } from '@/features/publish'
 type Props = { totalTypebots: number }
 
 export const OnboardingModal = ({ totalTypebots }: Props) => {
+  const botPath = useColorModeValue(
+    '/bots/onboarding.json',
+    '/bots/onboarding-dark.json'
+  )
   const { user, saveUser } = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [typebot, setTypebot] = useState<Typebot>()
@@ -30,7 +35,6 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
 
   useEffect(() => {
     fetchTemplate()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -73,7 +77,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
   }
 
   const fetchTemplate = async () => {
-    const { data, error } = await sendRequest(`/bots/onboarding.json`)
+    const { data, error } = await sendRequest(botPath)
     if (error)
       return showToast({ title: error.name, description: error.message })
     setTypebot(data as Typebot)
@@ -116,7 +120,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
       />
       <ModalOverlay />
       <ModalContent h="85vh">
-        <ModalBody>
+        <ModalBody p="10">
           {typebot && (
             <TypebotViewer
               apiHost={getViewerUrl({ isBuilder: true })}
@@ -125,6 +129,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
                 Name: user?.name?.split(' ')[0] ?? undefined,
               }}
               onNewAnswer={handleNewAnswer}
+              style={{ borderRadius: '0.25rem' }}
             />
           )}
         </ModalBody>

@@ -1,13 +1,18 @@
 import { Stack, Heading, useColorMode } from '@chakra-ui/react'
 import { useUser } from '@/features/account'
 import { GraphNavigation } from 'db'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 
 export const UserPreferencesForm = () => {
   const { setColorMode } = useColorMode()
   const { saveUser, user } = useUser()
+
+  useEffect(() => {
+    if (!user?.graphNavigation)
+      saveUser({ graphNavigation: GraphNavigation.TRACKPAD })
+  }, [saveUser, user?.graphNavigation])
 
   const changeGraphNavigation = async (value: string) => {
     await saveUser({ graphNavigation: value as GraphNavigation })
