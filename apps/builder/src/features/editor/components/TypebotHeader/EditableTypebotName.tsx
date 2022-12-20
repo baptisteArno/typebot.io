@@ -39,7 +39,7 @@ export const EditableTypebotName = ({
           fontSize="14px"
           minW="30px"
           minH="20px"
-          bgColor={currentName === '' ? 'gray.100' : 'white'}
+          bgColor={currentName === '' ? 'gray.100' : 'inherit'}
         />
         <EditableInput fontSize="14px" />
       </Editable>

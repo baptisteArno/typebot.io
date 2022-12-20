@@ -20,9 +20,8 @@ import { useState } from 'react'
 import { MembersList } from './MembersList'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
 import { useWorkspace } from '../WorkspaceProvider'
-import { MyAccountForm } from '@/features/account'
+import { MyAccountForm, UserPreferencesForm } from '@/features/account'
 import { BillingContent } from '@/features/billing'
-import { EditorSettingsForm } from '@/features/editor'
 
 type Props = {
   isOpen: boolean
@@ -177,9 +176,7 @@ const SettingsContent = ({
     case 'my-account':
       return <MyAccountForm />
     case 'user-settings':
-      return (
-        <EditorSettingsForm defaultGraphNavigation={defaultGraphNavigation} />
-      )
+      return <UserPreferencesForm />
     case 'workspace-settings':
       return <WorkspaceSettingsForm onClose={onClose} />
     case 'members':

@@ -7,12 +7,12 @@ import { createPlugins } from '@udecode/plate-core'
 import { createLinkPlugin, ELEMENT_LINK } from '@udecode/plate-link'
 import { PlateFloatingLink } from '@udecode/plate-ui-link'
 
-export const editorStyle: React.CSSProperties = {
+export const editorStyle = (backgroundColor: string): React.CSSProperties => ({
   flex: 1,
   padding: '1rem',
-  backgroundColor: 'white',
+  backgroundColor,
   borderRadius: '0.25rem',
-}
+})
 
 export const platePlugins = createPlugins(
   [

@@ -1,4 +1,9 @@
-import { Flex, Spinner, useDisclosure } from '@chakra-ui/react'
+import {
+  Flex,
+  Spinner,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { useTypebot } from '@/features/editor'
 import { Stats } from 'models'
@@ -24,7 +29,13 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
     <Flex
       w="full"
       pos="relative"
-      bgColor="gray.50"
+      bgColor={useColorModeValue('white', 'gray.850')}
+      backgroundImage={useColorModeValue(
+        'radial-gradient(#c6d0e1 1px, transparent 0)',
+        'radial-gradient(#2f2f39 1px, transparent 0)'
+      )}
+      backgroundSize="40px 40px"
+      backgroundPosition="-19px -19px"
       h="full"
       justifyContent="center"
     >

@@ -12,6 +12,7 @@ import {
   Text,
   Tag,
   Flex,
+  Skeleton,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
 import { useToast } from '@/hooks/useToast'
@@ -205,9 +206,12 @@ export const CollaborationList = () => {
         />
       ))}
       {(isCollaboratorsLoading || isInvitationsLoading) && (
-        <HStack p="4">
-          <SkeletonCircle boxSize="32px" />
-          <SkeletonText width="200px" noOfLines={2} />
+        <HStack p="4" justifyContent="space-between">
+          <HStack>
+            <SkeletonCircle boxSize="32px" />
+            <Skeleton width="230px" h="10px" />
+          </HStack>
+          <Skeleton width="80px" h="10px" />
         </HStack>
       )}
     </Stack>

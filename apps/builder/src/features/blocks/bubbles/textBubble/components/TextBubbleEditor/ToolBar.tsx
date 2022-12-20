@@ -1,4 +1,9 @@
-import { StackProps, HStack, IconButton } from '@chakra-ui/react'
+import {
+  StackProps,
+  HStack,
+  IconButton,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import {
   MARK_BOLD,
   MARK_ITALIC,
@@ -27,7 +32,7 @@ export const ToolBar = ({ onVariablesButtonClick, ...props }: Props) => {
   }
   return (
     <HStack
-      bgColor={'white'}
+      bgColor={useColorModeValue('white', 'gray.850')}
       borderTopRadius="md"
       p={2}
       w="full"

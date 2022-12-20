@@ -1,4 +1,4 @@
-import { Flex, FlexProps } from '@chakra-ui/react'
+import { Flex, FlexProps, useColorModeValue } from '@chakra-ui/react'
 import { Item } from 'models'
 import React, { ReactNode } from 'react'
 
@@ -12,9 +12,9 @@ export const ItemNodeOverlay = ({ item, ...props }: Props) => {
       px="4"
       py="2"
       rounded="md"
-      bgColor="white"
+      bgColor={useColorModeValue('white', 'gray.850')}
       borderWidth="1px"
-      borderColor={'gray.300'}
+      borderColor={useColorModeValue('gray.200', 'gray.700')}
       w="212px"
       pointerEvents="none"
       shadow="lg"

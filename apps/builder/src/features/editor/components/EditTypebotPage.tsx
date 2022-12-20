@@ -5,7 +5,7 @@ import {
   GraphProvider,
   GroupsCoordinatesProvider,
 } from '@/features/graph'
-import { Flex, Spinner } from '@chakra-ui/react'
+import { Flex, Spinner, useColorModeValue } from '@chakra-ui/react'
 import {
   EditorProvider,
   useEditor,
@@ -31,8 +31,11 @@ export const EditTypebotPage = () => {
           flex="1"
           pos="relative"
           h="full"
-          background="#f4f5f8"
-          backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
+          bgColor={useColorModeValue('#f4f5f8', 'gray.850')}
+          backgroundImage={useColorModeValue(
+            'radial-gradient(#c6d0e1 1px, transparent 0)',
+            'radial-gradient(#2f2f39 1px, transparent 0)'
+          )}
           backgroundSize="40px 40px"
           backgroundPosition="-19px -19px"
         >
@@ -48,12 +51,7 @@ export const EditTypebotPage = () => {
               </GraphProvider>
             </GraphDndProvider>
           ) : (
-            <Flex
-              justify="center"
-              align="center"
-              boxSize="full"
-              bgColor="rgba(255, 255, 255, 0.5)"
-            >
+            <Flex justify="center" align="center" boxSize="full">
               <Spinner color="gray" />
             </Flex>
           )}

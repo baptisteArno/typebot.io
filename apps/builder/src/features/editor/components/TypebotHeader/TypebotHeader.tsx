@@ -6,6 +6,7 @@ import {
   Tooltip,
   Spinner,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import {
   BuoyIcon,
@@ -66,7 +67,7 @@ export const TypebotHeader = () => {
       h={`${headerHeight}px`}
       zIndex={100}
       pos="relative"
-      bgColor="white"
+      bgColor={useColorModeValue('white', 'gray.900')}
       flexShrink={0}
     >
       <HStack
@@ -201,6 +202,7 @@ export const TypebotHeader = () => {
         <CollaborationMenuButton isLoading={isNotDefined(typebot)} />
         {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
           <Button
+            colorScheme="gray"
             onClick={handlePreviewClick}
             isLoading={isNotDefined(typebot)}
             size="sm"

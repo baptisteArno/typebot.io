@@ -10,9 +10,6 @@
   text-decoration: underline;
 }
 
-.slate-ToolbarButton-active {
-  color: blue !important;
-}
 .slate-ToolbarButton-active > svg {
   stroke-width: 2px;
 }
@@ -22,7 +19,6 @@
 }
 
 .slate-a {
-  color: blue !important;
   text-decoration: underline;
 }
 

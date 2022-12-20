@@ -1,6 +1,5 @@
 import {
   useDisclosure,
-  useOutsideClick,
   Flex,
   Popover,
   PopoverTrigger,
@@ -10,6 +9,9 @@ import {
   InputProps,
   IconButton,
   HStack,
+  useColorModeValue,
+  PopoverAnchor,
+  useOutsideClick,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
@@ -35,6 +37,7 @@ export const VariableSearchInput = ({
   debounceTimeout = 1000,
   ...inputProps
 }: Props) => {
+  const bg = useColorModeValue('gray.200', 'gray.700')
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { typebot, createVariable, deleteVariable, updateVariable } =
     useTypebot()
@@ -56,7 +59,7 @@ export const VariableSearchInput = ({
     number | undefined
   >()
   const dropdownRef = useRef(null)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const createVariableItemRef = useRef<HTMLButtonElement | null>(null)
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
 
@@ -80,7 +83,6 @@ export const VariableSearchInput = ({
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     debounced(e.target.value)
-    onOpen()
     if (e.target.value === '') {
       onSelectVariable(undefined)
       setFilteredItems([...variables.slice(0, 50)])
@@ -175,18 +177,18 @@ export const VariableSearchInput = ({
         isLazy
         offset={[0, 2]}
       >
-        <PopoverTrigger>
+        <PopoverAnchor>
           <Input
             data-testid="variables-input"
             ref={inputRef}
             value={inputValue}
             onChange={onInputChange}
-            onClick={onOpen}
+            onFocus={onOpen}
             onKeyUp={handleKeyUp}
             placeholder={inputProps.placeholder ?? 'Select a variable'}
             {...inputProps}
           />
-        </PopoverTrigger>
+        </PopoverAnchor>
         <PopoverContent
           maxH="35vh"
           overflowY="scroll"
@@ -207,7 +209,7 @@ export const VariableSearchInput = ({
               variant="ghost"
               justifyContent="flex-start"
               leftIcon={<PlusIcon />}
-              bgColor={keyboardFocusIndex === 0 ? 'gray.200' : 'transparent'}
+              bgColor={keyboardFocusIndex === 0 ? bg : 'transparent'}
             >
               Create &quot;{inputValue}&quot;
             </Button>
@@ -232,9 +234,7 @@ export const VariableSearchInput = ({
                     variant="ghost"
                     justifyContent="space-between"
                     bgColor={
-                      keyboardFocusIndex === indexInList
-                        ? 'gray.200'
-                        : 'transparent'
+                      keyboardFocusIndex === indexInList ? bg : 'transparent'
                     }
                   >
                     {item.name}

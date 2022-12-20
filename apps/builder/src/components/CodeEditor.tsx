@@ -1,4 +1,10 @@
-import { Box, BoxProps, HStack } from '@chakra-ui/react'
+import {
+  Box,
+  BoxProps,
+  HStack,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
@@ -11,6 +17,7 @@ import { linter, LintSource } from '@codemirror/lint'
 import { VariablesButton } from '@/features/variables'
 import { Variable } from 'models'
 import { env } from 'utils'
+import { espresso, dracula } from 'thememirror'
 
 const linterExtension = linter(jsonParseLinter() as unknown as LintSource)
 
@@ -33,6 +40,7 @@ export const CodeEditor = ({
   debounceTimeout = 1000,
   ...props
 }: Props & Omit<BoxProps, 'onChange'>) => {
+  const isDark = useColorMode().colorMode === 'dark'
   const editorContainer = useRef<HTMLDivElement | null>(null)
   const editorView = useRef<EditorView | null>(null)
   const [, setPlainTextValue] = useState(value)
@@ -84,6 +92,7 @@ export const CodeEditor = ({
       updateListenerExtension,
       basicSetup,
       EditorState.readOnly.of(isReadOnly),
+      isDark ? dracula : espresso,
     ]
     if (lang === 'json') {
       extensions.push(json())
@@ -130,7 +139,13 @@ export const CodeEditor = ({
   }
 
   return (
-    <HStack align="flex-end" spacing={0}>
+    <HStack
+      align="flex-end"
+      spacing={0}
+      borderWidth={'1px'}
+      borderRadius="md"
+      bg={useColorModeValue('#FCFCFC', '#2D2F3F')}
+    >
       <Box
         w={isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%'}
         ref={editorContainer}

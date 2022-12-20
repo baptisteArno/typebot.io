@@ -126,7 +126,8 @@ export const WebhookSettings = ({
   const handleTestRequestClick = async () => {
     if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
-    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
+    await updateWebhook(localWebhook.id, localWebhook)
+    await save()
     const { data, error } = await executeWebhook(
       typebot.id,
       convertVariablesForTestToVariables(

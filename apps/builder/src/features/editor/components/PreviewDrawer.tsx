@@ -5,6 +5,7 @@ import {
   Fade,
   Flex,
   FlexProps,
+  useColorMode,
   useEventListener,
   UseToastOptions,
   VStack,
@@ -21,6 +22,7 @@ import { headerHeight } from '../constants'
 import { parseTypebotToPublicTypebot } from '@/features/publish'
 
 export const PreviewDrawer = () => {
+  const isDark = useColorMode().colorMode === 'dark'
   const { typebot } = useTypebot()
   const { setRightPanel, startPreviewAtGroup } = useEditor()
   const { setPreviewingEdge } = useGraph()
@@ -68,7 +70,8 @@ export const PreviewDrawer = () => {
       top={`0`}
       h={`100%`}
       w={`${width}px`}
-      bgColor="white"
+      bgColor={isDark ? 'gray.900' : 'white'}
+      borderLeftWidth={'1px'}
       shadow="lg"
       borderLeftRadius={'lg'}
       onMouseOver={() => setIsResizeHandleVisible(true)}
@@ -78,6 +81,7 @@ export const PreviewDrawer = () => {
     >
       <Fade in={isResizeHandleVisible}>
         <ResizeHandle
+          isDark={isDark}
           pos="absolute"
           left="-7.5px"
           top={`calc(50% - ${headerHeight}px)`}
@@ -107,6 +111,7 @@ export const PreviewDrawer = () => {
               onNewLog={handleNewLog}
               startGroupId={startPreviewAtGroup}
               isPreview
+              style={{ borderRadius: '10px' }}
             />
           </Flex>
         )}
@@ -115,20 +120,26 @@ export const PreviewDrawer = () => {
   )
 }
 
-const ResizeHandle = (props: FlexProps) => {
+const ResizeHandle = (props: FlexProps & { isDark: boolean }) => {
   return (
     <Flex
       w="15px"
       h="50px"
       borderWidth={'1px'}
-      bgColor={'white'}
+      bgColor={props.isDark ? 'gray.800' : 'white'}
       cursor={'col-resize'}
       justifyContent={'center'}
       align={'center'}
+      borderRadius={'sm'}
       {...props}
     >
-      <Box w="2px" bgColor={'gray.300'} h="70%" mr="0.5" />
-      <Box w="2px" bgColor={'gray.300'} h="70%" />
+      <Box
+        w="2px"
+        bgColor={props.isDark ? 'gray.600' : 'gray.300'}
+        h="70%"
+        mr="0.5"
+      />
+      <Box w="2px" bgColor={props.isDark ? 'gray.600' : 'gray.300'} h="70%" />
     </Flex>
   )
 }

@@ -106,7 +106,6 @@ export const TextBox = ({
       onKeyUp={handleKeyUp}
       onClick={handleKeyUp}
       onChange={handleChange}
-      bgColor={'white'}
       {...props}
     />
   )

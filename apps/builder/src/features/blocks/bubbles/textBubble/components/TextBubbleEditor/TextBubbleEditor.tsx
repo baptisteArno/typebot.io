@@ -1,6 +1,7 @@
 import {
   Flex,
   Stack,
+  useColorModeValue,
   useEventListener,
   useOutsideClick,
 } from '@chakra-ui/react'
@@ -20,6 +21,7 @@ import { ReactEditor } from 'slate-react'
 import { serializeHtml } from '@udecode/plate-serializer-html'
 import { parseHtmlStringToPlainText } from '../../utils'
 import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { colors } from '@/lib/theme'
 
 type TextBubbleEditorContentProps = {
   id: string
@@ -32,6 +34,7 @@ const TextBubbleEditorContent = ({
   textEditorValue,
   onClose,
 }: TextBubbleEditorContentProps) => {
+  const variableInputBg = useColorModeValue('white', 'gray.900')
   const editor = usePlateEditorRef()
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
@@ -112,12 +115,27 @@ const TextBubbleEditorContent = ({
       pos="relative"
       spacing={0}
       cursor="text"
+      sx={{
+        '.slate-ToolbarButton-active': {
+          color: useColorModeValue('blue.500', 'blue.300') + ' !important',
+        },
+        '.PlateFloatingLink___StyledFloatingLinkInsertRoot-sc-1bralnd-8': {
+          backgroundColor: useColorModeValue('white', 'gray.800'),
+          borderWidth: 1,
+        },
+        '.PlateFloatingLink___StyledDiv2-sc-1bralnd-2': {
+          backgroundColor: useColorModeValue('gray.200', 'gray.600'),
+        },
+        '.slate-a': {
+          color: useColorModeValue('blue.500', 'blue.300'),
+        },
+      }}
     >
       <ToolBar onVariablesButtonClick={() => setIsVariableDropdownOpen(true)} />
       <Plate
         id={id}
         editableProps={{
-          style: editorStyle,
+          style: editorStyle(useColorModeValue('white', colors.gray[850])),
           autoFocus: true,
           onFocus: () => {
             if (editor.children.length === 0) return
@@ -138,7 +156,7 @@ const TextBubbleEditorContent = ({
           ref={varDropdownRef}
           shadow="lg"
           rounded="md"
-          bgColor="white"
+          bg={variableInputBg}
           w="250px"
           zIndex={10}
         >

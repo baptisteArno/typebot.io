@@ -1,7 +1,7 @@
 import { Coordinates, useGraph, useGroupsCoordinates } from '../../providers'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Edge as EdgeProps } from 'models'
-import { Portal, useDisclosure } from '@chakra-ui/react'
+import { color, Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import { EdgeMenu } from './EdgeMenu'
 import { colors } from '@/lib/theme'
@@ -23,6 +23,7 @@ type Props = {
   edge: EdgeProps
 }
 export const Edge = ({ edge }: Props) => {
+  const isDark = useColorMode().colorMode === 'dark'
   const { deleteEdge } = useTypebot()
   const {
     previewingEdge,
@@ -141,7 +142,13 @@ export const Edge = ({ edge }: Props) => {
       <path
         data-testid="edge"
         d={path}
-        stroke={isPreviewing ? colors.blue[400] : colors.gray[400]}
+        stroke={
+          isPreviewing
+            ? colors.blue[400]
+            : isDark
+            ? colors.gray[700]
+            : colors.gray[400]
+        }
         strokeWidth="2px"
         markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
         fill="none"

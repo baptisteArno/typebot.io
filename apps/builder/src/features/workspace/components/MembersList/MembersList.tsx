@@ -96,7 +96,7 @@ export const MembersList = () => {
 
   return (
     <Stack w="full" spacing={3}>
-      {!canInviteNewMember && (
+      {true && (
         <UnlockPlanAlertInfo
           contentLabel={`
           Upgrade your plan to work with more team members, and unlock awesome

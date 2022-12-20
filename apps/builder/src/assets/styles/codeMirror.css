@@ -1,9 +1,9 @@
 .cm-editor {
   outline: 0px solid transparent !important;
   height: 100%;
+  border-radius: 1rem;
 }
 
 .cm-scroller {
   border-radius: 5px;
-  border: 1px solid #e5e7eb;
 }

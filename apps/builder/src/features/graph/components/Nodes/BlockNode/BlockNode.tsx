@@ -3,6 +3,7 @@ import {
   HStack,
   Popover,
   PopoverTrigger,
+  useColorModeValue,
   useDisclosure,
   useEventListener,
 } from '@chakra-ui/react'
@@ -26,17 +27,17 @@ import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
 import { useRouter } from 'next/router'
 import { SettingsModal } from './SettingsPopoverContent/SettingsModal'
 import { BlockSettings } from './SettingsPopoverContent/SettingsPopoverContent'
-import { TextBubbleEditor } from '../../../../blocks/bubbles/textBubble/components/TextBubbleEditor'
 import { TargetEndpoint } from '../../Endpoints'
 import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
-import {
-  NodePosition,
-  useBlockDnd,
-  useDragDistance,
-  useGraph,
-} from '../../../providers'
 import { ContextMenu } from '@/components/ContextMenu'
 import { setMultipleRefs } from '@/utils/helpers'
+import { TextBubbleEditor } from '@/features/blocks/bubbles/textBubble'
+import {
+  NodePosition,
+  useGraph,
+  useBlockDnd,
+  useDragDistance,
+} from '../../../providers'
 import { hasDefaultConnector } from '../../../utils'
 
 export const BlockNode = ({
@@ -50,6 +51,9 @@ export const BlockNode = ({
   indices: { blockIndex: number; groupIndex: number }
   onMouseDown?: (blockNodePosition: NodePosition, block: DraggableBlock) => void
 }) => {
+  const bg = useColorModeValue('gray.50', 'gray.850')
+  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const borderColor = useColorModeValue('gray.200', 'gray.800')
   const { query } = useRouter()
   const {
     setConnectingIds,
@@ -165,7 +169,7 @@ export const BlockNode = ({
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <BlockNodeContextMenu indices={indices} />}
     >
-      {(ref, isOpened) => (
+      {(ref, isContextMenuOpened) => (
         <Popover
           placement="left"
           isLazy
@@ -186,12 +190,18 @@ export const BlockNode = ({
                 flex="1"
                 userSelect="none"
                 p="3"
-                borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
-                borderColor={isOpened || isPreviewing ? 'blue.400' : 'gray.200'}
-                margin={isOpened || isPreviewing ? '-1px' : 0}
+                borderWidth={
+                  isContextMenuOpened || isPreviewing ? '2px' : '1px'
+                }
+                borderColor={
+                  isContextMenuOpened || isPreviewing
+                    ? previewingBorderColor
+                    : borderColor
+                }
+                margin={isContextMenuOpened || isPreviewing ? '-1px' : 0}
                 rounded="lg"
                 cursor={'pointer'}
-                bgColor="gray.50"
+                bg={bg}
                 align="flex-start"
                 w="full"
                 transition="border-color 0.2s"

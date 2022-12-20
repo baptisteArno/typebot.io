@@ -1,4 +1,5 @@
-/* eslint-disable @next/next/no-sync-scripts */
+import { customTheme } from '@/lib/theme'
+import { ColorModeScript } from '@chakra-ui/react'
 import { Html, Head, Main, NextScript } from 'next/document'
 
 const Document = () => (
@@ -10,9 +11,11 @@ const Document = () => (
         rel="stylesheet"
       />
       <meta name="google" content="notranslate" />
+      {/* eslint-disable-next-line @next/next/no-sync-scripts */}
       <script src="/__env.js" />
     </Head>
     <body>
+      <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
       <Main />
       <NextScript />
     </body>

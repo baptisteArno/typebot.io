@@ -5,7 +5,14 @@ import { useUsage } from '@/features/billing'
 import { useTypebot, TypebotHeader } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
 import { useToast } from '@/hooks/useToast'
-import { Flex, HStack, Button, Tag, Text } from '@chakra-ui/react'
+import {
+  Flex,
+  HStack,
+  Button,
+  Tag,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -121,8 +128,8 @@ export const ResultsPage = () => {
         <Flex
           pos="absolute"
           zIndex={2}
-          bgColor="white"
           w="full"
+          bg={useColorModeValue('white', 'gray.900')}
           justifyContent="center"
           h="60px"
           display={['none', 'flex']}

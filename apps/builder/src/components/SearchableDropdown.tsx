@@ -3,12 +3,13 @@ import {
   useOutsideClick,
   Flex,
   Popover,
-  PopoverTrigger,
   Input,
   PopoverContent,
   Button,
   InputProps,
   HStack,
+  useColorModeValue,
+  PopoverAnchor,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
 import { useState, useRef, useEffect, ChangeEvent, ReactNode } from 'react'
@@ -32,6 +33,7 @@ export const SearchableDropdown = ({
   onValueChange,
   ...inputProps
 }: Props) => {
+  const bg = useColorModeValue('gray.200', 'gray.700')
   const [carretPosition, setCarretPosition] = useState<number>(0)
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
@@ -172,13 +174,13 @@ export const SearchableDropdown = ({
         offset={[0, 0]}
         isLazy
       >
-        <PopoverTrigger>
+        <PopoverAnchor>
           <HStack spacing={0} align={'flex-end'} w="full">
             <Input
               ref={inputRef}
               value={inputValue}
               onChange={onInputChange}
-              onClick={onOpen}
+              onFocus={onOpen}
               type="text"
               onKeyUp={handleKeyUp}
               {...inputProps}
@@ -190,7 +192,7 @@ export const SearchableDropdown = ({
               />
             )}
           </HStack>
-        </PopoverTrigger>
+        </PopoverAnchor>
         <PopoverContent
           maxH="35vh"
           overflowY="scroll"
@@ -215,9 +217,7 @@ export const SearchableDropdown = ({
                     colorScheme="gray"
                     role="menuitem"
                     variant="ghost"
-                    bgColor={
-                      keyboardFocusIndex === idx ? 'gray.200' : 'transparent'
-                    }
+                    bg={keyboardFocusIndex === idx ? bg : 'transparent'}
                     justifyContent="flex-start"
                   >
                     {typeof item === 'string' ? item : item.label}

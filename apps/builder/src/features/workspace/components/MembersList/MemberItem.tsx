@@ -8,6 +8,7 @@ import {
   Stack,
   Tag,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { WorkspaceRole } from 'db'
 import React from 'react'
@@ -38,9 +39,15 @@ export const MemberItem = ({
 }: Props) => {
   const handleAdminClick = () => onSelectNewRole(WorkspaceRole.ADMIN)
   const handleMemberClick = () => onSelectNewRole(WorkspaceRole.MEMBER)
+
   return (
     <Menu placement="bottom-end" isLazy>
-      <MenuButton _hover={{ backgroundColor: 'gray.100' }} borderRadius="md">
+      <MenuButton
+        _hover={{
+          bg: useColorModeValue('gray.100', 'gray.700'),
+        }}
+        borderRadius="md"
+      >
         <MemberIdentityContent
           email={email}
           name={name}

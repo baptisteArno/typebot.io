@@ -1,4 +1,4 @@
-import { chakra, Fade, Button } from '@chakra-ui/react'
+import { chakra, Fade, Button, useColorModeValue } from '@chakra-ui/react'
 import { Cell as CellProps, flexRender } from '@tanstack/react-table'
 import { ExpandIcon } from '@/components/icons'
 import { memo } from 'react'
@@ -26,7 +26,7 @@ const Cell = ({
       px="4"
       py="2"
       border="1px"
-      borderColor="gray.200"
+      borderColor={useColorModeValue('gray.200', 'gray.700')}
       whiteSpace="nowrap"
       wordBreak="normal"
       overflow="hidden"

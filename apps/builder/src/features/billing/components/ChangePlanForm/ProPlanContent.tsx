@@ -12,6 +12,7 @@ import {
   Tooltip,
   Flex,
   Tag,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
 import { useWorkspace } from '@/features/workspace'
@@ -126,7 +127,7 @@ export const ProPlanContent = ({
       flex="1"
       flexShrink={0}
       borderWidth="1px"
-      borderColor="blue.500"
+      borderColor={useColorModeValue('blue.500', 'blue.300')}
       rounded="lg"
     >
       <Flex justifyContent="center">
@@ -134,6 +135,7 @@ export const ProPlanContent = ({
           pos="absolute"
           top="-10px"
           colorScheme="blue"
+          bg={useColorModeValue('blue.500', 'blue.400')}
           variant="solid"
           fontWeight="semibold"
           style={{ marginTop: 0 }}

@@ -15,6 +15,7 @@ import {
   SkeletonText,
   SkeletonCircle,
   WrapItem,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { FolderIcon, MoreVerticalIcon } from '@/components/icons'
 import { ConfirmModal } from '@/components/ConfirmModal'
@@ -118,7 +119,9 @@ export const FolderButton = ({
           onSubmit={onRenameSubmit}
         >
           <EditablePreview
-            _hover={{ bgColor: 'gray.300' }}
+            _hover={{
+              bg: useColorModeValue('gray.100', 'gray.700'),
+            }}
             px="2"
             textAlign="center"
           />
