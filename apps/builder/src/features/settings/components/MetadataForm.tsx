@@ -36,6 +36,8 @@ export const MetadataForm = ({
     onMetadataChange({ ...metadata, favIconUrl })
   const handleImageSubmit = (imageUrl: string) =>
     onMetadataChange({ ...metadata, imageUrl })
+  const handleGoogleTagManagerIdChange = (googleTagManagerId: string) =>
+    onMetadataChange({ ...metadata, googleTagManagerId })
   const handleHeadCodeChange = (customHeadCode: string) =>
     onMetadataChange({ ...metadata, customHeadCode })
 
@@ -92,26 +94,23 @@ export const MetadataForm = ({
           </PopoverContent>
         </Popover>
       </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="title">
-          Title:
-        </FormLabel>
-        <Input
-          id="title"
-          defaultValue={metadata.title ?? typebotName}
-          onChange={handleTitleChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="description">
-          Description:
-        </FormLabel>
-        <Textarea
-          id="description"
-          defaultValue={metadata.description}
-          onChange={handleDescriptionChange}
-        />
-      </Stack>
+      <Input
+        label="Title:"
+        defaultValue={metadata.title ?? typebotName}
+        onChange={handleTitleChange}
+      />
+      <Textarea
+        defaultValue={metadata.description}
+        onChange={handleDescriptionChange}
+        label="Description:"
+      />
+      <Input
+        defaultValue={metadata.googleTagManagerId}
+        placeholder="GTM-XXXXXX"
+        onChange={handleGoogleTagManagerIdChange}
+        label="Google Tag Manager ID:"
+        moreInfoTooltip="Do not include it if you are embedding your typebot in an existing website. GTM should be installed in the parent website instead."
+      />
       <Stack>
         <HStack as={FormLabel} mb="0" htmlFor="head">
           <Text>Custom head code:</Text>

@@ -101,13 +101,10 @@ test.describe.parallel('Settings page', () => {
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)
       await expect(websiteImg).toHaveAttribute('src', imageUrl)
 
-      // Title
-      await page.fill('input#title', 'Awesome typebot')
-
-      // Description
-      await page.fill('textarea#description', 'Lorem ipsum')
-
-      // Custom head code
+      await page.getByRole('textbox', { name: 'Title' }).fill('Awesome typebot')
+      await page
+        .getByRole('textbox', { name: 'Description' })
+        .fill('Lorem ipsum')
       await page.fill(
         'div[contenteditable=true]',
         '<script>Lorem ipsum</script>'

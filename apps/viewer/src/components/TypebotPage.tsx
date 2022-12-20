@@ -2,11 +2,12 @@ import { TypebotViewer } from 'bot-engine'
 import { AnswerInput, PublicTypebot, Typebot, VariableWithValue } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { isDefined, isNotDefined } from 'utils'
+import { isDefined, isNotDefined, isNotEmpty } from 'utils'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
 import { createResultQuery, updateResultQuery } from '@/features/results'
 import { upsertAnswerQuery } from '@/features/answers'
+import { gtmBodyElement } from '@/lib/google-tag-manager'
 
 export type TypebotPageProps = {
   publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
@@ -51,6 +52,8 @@ export const TypebotPage = ({
     initializeResult().then()
     if (isDefined(customHeadCode))
       document.head.innerHTML = document.head.innerHTML + customHeadCode
+    const gtmId = publishedTypebot.settings.metadata.googleTagManagerId
+    if (isNotEmpty(gtmId)) document.body.prepend(gtmBodyElement(gtmId))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

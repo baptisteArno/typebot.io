@@ -21,6 +21,7 @@ const metadataSchema = z.object({
   imageUrl: z.string().optional(),
   favIconUrl: z.string().optional(),
   customHeadCode: z.string().optional(),
+  googleTagManagerId: z.string().optional(),
 })
 
 export const settingsSchema = z.object({
