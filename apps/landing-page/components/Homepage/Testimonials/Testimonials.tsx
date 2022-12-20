@@ -12,6 +12,7 @@ import invictuzPictureSrc from 'public/images/homepage/invictuz.png'
 import laszloPictureSrc from 'public/images/homepage/laszlo.jpeg'
 import kurniaPictureSrc from 'public/images/homepage/kurnia.jpeg'
 import marioPictureSrc from 'public/images/homepage/barretta.jpeg'
+import stevePictureSrc from 'public/images/homepage/steve.jpg'
 import { Testimonial } from './Testimonial'
 import { StaticImageData } from 'next/image'
 
@@ -91,6 +92,21 @@ const testimonials: TestimonialData[][] = [
       avatarSrc: oscarPictureSrc,
       content:
         'Within 5 minutes of signing up you can already have your bot running thanks to the templates it comes with. I have used many tools to make bots but none as simple, easy and powerful as Typebot.',
+    },
+    {
+      name: 'Steve de Jong',
+      provider: 'email',
+      avatarSrc: stevePictureSrc,
+      role: 'CEO at Stillio',
+      content: (
+        <>
+          We recently started using Typebot for our onboarding signup process on
+          app.stillio.com, to capture some extra info from our trial users. 💪
+          <br />
+          <br />
+          It works just perfect! Thanks for your great tool!
+        </>
+      ),
     },
     {
       name: '_Invictuz',
