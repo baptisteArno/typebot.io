@@ -30,3 +30,5 @@ dump.sql
 dump.tar
 
 __env.js
+
+invalidTypebots.json

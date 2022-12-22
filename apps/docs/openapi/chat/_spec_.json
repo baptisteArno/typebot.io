@@ -10,11 +10,11 @@
     }
   ],
   "paths": {
-    "/typebots/{typebotId}/sendMessage": {
+    "/sendMessage": {
       "post": {
         "operationId": "query.chat.sendMessage",
         "summary": "Send a message",
-        "description": "To initiate a chat, don't provide a `sessionId` and enter any `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
+        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
         "requestBody": {
           "required": true,
           "content": {
@@ -24,129 +24,116 @@
                 "properties": {
                   "message": {
                     "type": "string",
-                    "description": "The answer to the previous question"
+                    "description": "The answer to the previous chat input. Do not provide it if you are starting a new chat."
                   },
                   "sessionId": {
                     "type": "string",
-                    "description": "Session ID that you get from the initial chat request to a bot"
+                    "description": "Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session."
                   },
-                  "isPreview": {
-                    "type": "boolean"
+                  "startParams": {
+                    "type": "object",
+                    "properties": {
+                      "typebotId": {
+                        "type": "string",
+                        "description": "[How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid)"
+                      },
+                      "isPreview": {
+                        "type": "boolean",
+                        "description": "If set to `true`, it will start a Preview session with the unpublished bot and it won't be saved in the Results tab."
+                      },
+                      "resultId": {
+                        "type": "string",
+                        "description": "Provide it if you'd like to overwrite an existing result."
+                      },
+                      "prefilledVariables": {
+                        "type": "object",
+                        "additionalProperties": {}
+                      }
+                    },
+                    "required": [
+                      "typebotId"
+                    ],
+                    "additionalProperties": false
                   }
                 },
-                "required": [
-                  "message"
-                ],
                 "additionalProperties": false
               }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "typebotId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "[How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid)"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "messages": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "text",
-                                  "image",
-                                  "video",
-                                  "embed",
-                                  "audio"
-                                ]
-                              },
-                              "content": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
                                 "anyOf": [
                                   {
                                     "anyOf": [
                                       {
-                                        "anyOf": [
-                                          {
-                                            "anyOf": [
-                                              {
-                                                "type": "object",
-                                                "properties": {
-                                                  "plainText": {
-                                                    "type": "string"
-                                                  },
-                                                  "html": {
-                                                    "type": "string"
-                                                  }
-                                                },
-                                                "required": [
-                                                  "plainText",
-                                                  "html"
-                                                ],
-                                                "additionalProperties": false
-                                              },
-                                              {
-                                                "type": "object",
-                                                "properties": {
-                                                  "url": {
-                                                    "type": "string"
-                                                  }
-                                                },
-                                                "additionalProperties": false
-                                              }
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "text"
                                             ]
                                           },
-                                          {
+                                          "content": {
                                             "type": "object",
                                             "properties": {
-                                              "url": {
+                                              "html": {
                                                 "type": "string"
                                               },
-                                              "id": {
+                                              "plainText": {
                                                 "type": "string"
-                                              },
-                                              "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "url",
-                                                  "youtube",
-                                                  "vimeo"
-                                                ]
                                               }
                                             },
+                                            "required": [
+                                              "html",
+                                              "plainText"
+                                            ],
                                             "additionalProperties": false
                                           }
-                                        ]
+                                        },
+                                        "required": [
+                                          "type",
+                                          "content"
+                                        ],
+                                        "additionalProperties": false
                                       },
                                       {
                                         "type": "object",
                                         "properties": {
-                                          "url": {
-                                            "type": "string"
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "image"
+                                            ]
                                           },
-                                          "height": {
-                                            "type": "number"
+                                          "content": {
+                                            "type": "object",
+                                            "properties": {
+                                              "url": {
+                                                "type": "string"
+                                              }
+                                            },
+                                            "additionalProperties": false
                                           }
                                         },
                                         "required": [
-                                          "height"
+                                          "type",
+                                          "content"
                                         ],
                                         "additionalProperties": false
                                       }
@@ -155,13 +142,91 @@
                                   {
                                     "type": "object",
                                     "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "video"
+                                        ]
+                                      },
+                                      "content": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string"
+                                          },
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "url",
+                                              "youtube",
+                                              "vimeo"
+                                            ]
+                                          }
+                                        },
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "content"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "audio"
+                                    ]
+                                  },
+                                  "content": {
+                                    "type": "object",
+                                    "properties": {
                                       "url": {
                                         "type": "string"
                                       }
                                     },
                                     "additionalProperties": false
                                   }
+                                },
+                                "required": [
+                                  "type",
+                                  "content"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "embed"
                                 ]
+                              },
+                              "content": {
+                                "type": "object",
+                                "properties": {
+                                  "url": {
+                                    "type": "string"
+                                  },
+                                  "height": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "height"
+                                ],
+                                "additionalProperties": false
                               }
                             },
                             "required": [
@@ -170,8 +235,12 @@
                             ],
                             "additionalProperties": false
                           }
-                        },
-                        "input": {
+                        ]
+                      }
+                    },
+                    "input": {
+                      "allOf": [
+                        {
                           "anyOf": [
                             {
                               "anyOf": [
@@ -457,9 +526,6 @@
                                                                           "type": "string"
                                                                         }
                                                                       },
-                                                                      "required": [
-                                                                        "retryMessageContent"
-                                                                      ],
                                                                       "additionalProperties": false
                                                                     }
                                                                   ]
@@ -1191,12 +1257,117 @@
                             }
                           ]
                         },
-                        "logic": {
+                        {
                           "type": "object",
                           "properties": {
-                            "redirectUrl": {
+                            "prefilledValue": {
                               "type": "string"
                             },
+                            "runtimeOptions": {
+                              "type": "object",
+                              "properties": {
+                                "paymentIntentSecret": {
+                                  "type": "string"
+                                },
+                                "amountLabel": {
+                                  "type": "string"
+                                },
+                                "publicKey": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "paymentIntentSecret",
+                                "amountLabel",
+                                "publicKey"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "logic": {
+                      "type": "object",
+                      "properties": {
+                        "redirect": {
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "isNewTab": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "isNewTab"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "codeToExecute": {
+                          "type": "object",
+                          "properties": {
+                            "content": {
+                              "type": "string"
+                            },
+                            "args": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "anyOf": [
+                                      {
+                                        "not": {}
+                                      },
+                                      {
+                                        "anyOf": [
+                                          {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "boolean"
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "id"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "content",
+                            "args"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "integrations": {
+                      "type": "object",
+                      "properties": {
+                        "chatwoot": {
+                          "type": "object",
+                          "properties": {
                             "codeToExecute": {
                               "type": "object",
                               "properties": {
@@ -1251,386 +1422,306 @@
                               "additionalProperties": false
                             }
                           },
+                          "required": [
+                            "codeToExecute"
+                          ],
                           "additionalProperties": false
                         },
-                        "integrations": {
+                        "googleAnalytics": {
                           "type": "object",
                           "properties": {
-                            "chatwoot": {
-                              "type": "object",
-                              "properties": {
-                                "codeToExecute": {
-                                  "type": "object",
-                                  "properties": {
-                                    "content": {
-                                      "type": "string"
-                                    },
-                                    "args": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "value": {
-                                            "anyOf": [
-                                              {
-                                                "not": {}
-                                              },
-                                              {
-                                                "anyOf": [
-                                                  {
-                                                    "anyOf": [
-                                                      {
-                                                        "type": "string"
-                                                      },
-                                                      {
-                                                        "type": "number"
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "type": "boolean"
-                                                  }
-                                                ]
-                                              }
-                                            ],
-                                            "nullable": true
-                                          }
-                                        },
-                                        "required": [
-                                          "id"
-                                        ],
-                                        "additionalProperties": false
-                                      }
-                                    }
-                                  },
-                                  "required": [
-                                    "content",
-                                    "args"
-                                  ],
-                                  "additionalProperties": false
-                                }
-                              },
-                              "required": [
-                                "codeToExecute"
-                              ],
-                              "additionalProperties": false
+                            "trackingId": {
+                              "type": "string"
                             },
-                            "googleAnalytics": {
-                              "type": "object",
-                              "properties": {
-                                "trackingId": {
-                                  "type": "string"
-                                },
-                                "category": {
-                                  "type": "string"
-                                },
-                                "action": {
-                                  "type": "string"
-                                },
-                                "label": {
-                                  "type": "string"
-                                },
-                                "value": {
-                                  "type": "number"
-                                }
-                              },
-                              "additionalProperties": false
+                            "category": {
+                              "type": "string"
+                            },
+                            "action": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "number"
                             }
                           },
                           "additionalProperties": false
                         }
                       },
-                      "required": [
-                        "messages"
-                      ],
                       "additionalProperties": false
                     },
-                    {
+                    "sessionId": {
+                      "type": "string"
+                    },
+                    "typebot": {
                       "type": "object",
                       "properties": {
-                        "sessionId": {
-                          "anyOf": [
-                            {
-                              "not": {}
-                            },
-                            {
-                              "type": "string"
-                            }
-                          ],
-                          "nullable": true
-                        },
-                        "typebot": {
-                          "anyOf": [
-                            {
-                              "not": {}
-                            },
-                            {
+                        "theme": {
+                          "type": "object",
+                          "properties": {
+                            "general": {
                               "type": "object",
                               "properties": {
-                                "theme": {
+                                "font": {
+                                  "type": "string"
+                                },
+                                "background": {
                                   "type": "object",
                                   "properties": {
-                                    "general": {
-                                      "type": "object",
-                                      "properties": {
-                                        "font": {
-                                          "type": "string"
-                                        },
-                                        "background": {
-                                          "type": "object",
-                                          "properties": {
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "Color",
-                                                "Image",
-                                                "None"
-                                              ]
-                                            },
-                                            "content": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "type"
-                                          ],
-                                          "additionalProperties": false
-                                        }
-                                      },
-                                      "required": [
-                                        "font",
-                                        "background"
-                                      ],
-                                      "additionalProperties": false
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "Color",
+                                        "Image",
+                                        "None"
+                                      ]
                                     },
-                                    "chat": {
-                                      "type": "object",
-                                      "properties": {
-                                        "hostAvatar": {
-                                          "type": "object",
-                                          "properties": {
-                                            "isEnabled": {
-                                              "type": "boolean"
-                                            },
-                                            "url": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "isEnabled"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        "guestAvatar": {
-                                          "type": "object",
-                                          "properties": {
-                                            "isEnabled": {
-                                              "type": "boolean"
-                                            },
-                                            "url": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "isEnabled"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        "hostBubbles": {
-                                          "type": "object",
-                                          "properties": {
-                                            "backgroundColor": {
-                                              "type": "string"
-                                            },
-                                            "color": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "backgroundColor",
-                                            "color"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        "guestBubbles": {
-                                          "type": "object",
-                                          "properties": {
-                                            "backgroundColor": {
-                                              "type": "string"
-                                            },
-                                            "color": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "backgroundColor",
-                                            "color"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        "buttons": {
-                                          "type": "object",
-                                          "properties": {
-                                            "backgroundColor": {
-                                              "type": "string"
-                                            },
-                                            "color": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "backgroundColor",
-                                            "color"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        "inputs": {
-                                          "allOf": [
-                                            {
-                                              "type": "object",
-                                              "properties": {
-                                                "backgroundColor": {
-                                                  "type": "string"
-                                                },
-                                                "color": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "backgroundColor",
-                                                "color"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            {
-                                              "type": "object",
-                                              "properties": {
-                                                "placeholderColor": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "placeholderColor"
-                                              ],
-                                              "additionalProperties": false
-                                            }
-                                          ]
-                                        }
-                                      },
-                                      "required": [
-                                        "hostBubbles",
-                                        "guestBubbles",
-                                        "buttons",
-                                        "inputs"
-                                      ],
-                                      "additionalProperties": false
-                                    },
-                                    "customCss": {
+                                    "content": {
                                       "type": "string"
                                     }
                                   },
                                   "required": [
-                                    "general",
-                                    "chat"
-                                  ],
-                                  "additionalProperties": false
-                                },
-                                "settings": {
-                                  "type": "object",
-                                  "properties": {
-                                    "general": {
-                                      "type": "object",
-                                      "properties": {
-                                        "isBrandingEnabled": {
-                                          "type": "boolean"
-                                        },
-                                        "isTypingEmulationEnabled": {
-                                          "type": "boolean"
-                                        },
-                                        "isInputPrefillEnabled": {
-                                          "type": "boolean"
-                                        },
-                                        "isHideQueryParamsEnabled": {
-                                          "type": "boolean"
-                                        },
-                                        "isNewResultOnRefreshEnabled": {
-                                          "type": "boolean"
-                                        },
-                                        "isResultSavingEnabled": {
-                                          "type": "boolean"
-                                        }
-                                      },
-                                      "required": [
-                                        "isBrandingEnabled"
-                                      ],
-                                      "additionalProperties": false
-                                    },
-                                    "typingEmulation": {
-                                      "type": "object",
-                                      "properties": {
-                                        "enabled": {
-                                          "type": "boolean"
-                                        },
-                                        "speed": {
-                                          "type": "number"
-                                        },
-                                        "maxDelay": {
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "enabled",
-                                        "speed",
-                                        "maxDelay"
-                                      ],
-                                      "additionalProperties": false
-                                    },
-                                    "metadata": {
-                                      "type": "object",
-                                      "properties": {
-                                        "title": {
-                                          "type": "string"
-                                        },
-                                        "description": {
-                                          "type": "string"
-                                        },
-                                        "imageUrl": {
-                                          "type": "string"
-                                        },
-                                        "favIconUrl": {
-                                          "type": "string"
-                                        },
-                                        "customHeadCode": {
-                                          "type": "string"
-                                        }
-                                      },
-                                      "additionalProperties": false
-                                    }
-                                  },
-                                  "required": [
-                                    "general",
-                                    "typingEmulation",
-                                    "metadata"
+                                    "type"
                                   ],
                                   "additionalProperties": false
                                 }
                               },
                               "required": [
-                                "theme",
-                                "settings"
+                                "font",
+                                "background"
                               ],
                               "additionalProperties": false
+                            },
+                            "chat": {
+                              "type": "object",
+                              "properties": {
+                                "hostAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "hostBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "buttons": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "inputs": {
+                                  "allOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "backgroundColor": {
+                                          "type": "string"
+                                        },
+                                        "color": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "backgroundColor",
+                                        "color"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "placeholderColor": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "placeholderColor"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "hostBubbles",
+                                "guestBubbles",
+                                "buttons",
+                                "inputs"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "customCss": {
+                              "type": "string"
                             }
+                          },
+                          "required": [
+                            "general",
+                            "chat"
                           ],
-                          "nullable": true
+                          "additionalProperties": false
+                        },
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "general": {
+                              "type": "object",
+                              "properties": {
+                                "isBrandingEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isTypingEmulationEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isInputPrefillEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isHideQueryParamsEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isNewResultOnRefreshEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isResultSavingEnabled": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "isBrandingEnabled"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "typingEmulation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "speed": {
+                                  "type": "number"
+                                },
+                                "maxDelay": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "enabled",
+                                "speed",
+                                "maxDelay"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "metadata": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string"
+                                },
+                                "description": {
+                                  "type": "string"
+                                },
+                                "imageUrl": {
+                                  "type": "string"
+                                },
+                                "favIconUrl": {
+                                  "type": "string"
+                                },
+                                "customHeadCode": {
+                                  "type": "string"
+                                },
+                                "googleTagManagerId": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "general",
+                            "typingEmulation",
+                            "metadata"
+                          ],
+                          "additionalProperties": false
                         }
                       },
+                      "required": [
+                        "theme",
+                        "settings"
+                      ],
                       "additionalProperties": false
+                    },
+                    "resultId": {
+                      "type": "string"
                     }
-                  ]
+                  },
+                  "required": [
+                    "messages"
+                  ],
+                  "additionalProperties": false
                 }
               }
             }

@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import { TypebotProvider } from '../providers/TypebotProvider'
 import Frame from 'react-frame-component'
 import styles from '../assets/style.css'
@@ -7,7 +7,6 @@ import phoneSyle from '../assets/phone.css'
 import { ConversationContainer } from './ConversationContainer'
 import { AnswersProvider } from '../providers/AnswersProvider'
 import {
-  Answer,
   AnswerInput,
   BackgroundType,
   Edge,

@@ -35,37 +35,46 @@ export const executeWebhookBlock = async (
     where: { id: block.webhookId },
   })) as Webhook | null
   if (!webhook) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: `Couldn't find webhook`,
-    })
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: `Couldn't find webhook`,
+      }))
     return { outgoingEdgeId: block.outgoingEdgeId }
   }
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-  const resultValues = await getResultValues(result.id)
+  const resultValues = result && (await getResultValues(result.id))
   if (!resultValues) return { outgoingEdgeId: block.outgoingEdgeId }
   const webhookResponse = await executeWebhook({ typebot })(
     preparedWebhook,
     typebot.variables,
     block.groupId,
     resultValues,
-    result.id
+    result?.id
   )
   const status = webhookResponse.statusCode.toString()
   const isError = status.startsWith('4') || status.startsWith('5')
 
   if (isError) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: `Webhook returned error: ${webhookResponse.data}`,
-      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
-    })
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: `Webhook returned error: ${webhookResponse.data}`,
+        details: JSON.stringify(webhookResponse.data, null, 2).substring(
+          0,
+          1000
+        ),
+      }))
   } else {
-    await saveSuccessLog({
-      resultId: result.id,
-      message: `Webhook returned success: ${webhookResponse.data}`,
-      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
-    })
+    result &&
+      (await saveSuccessLog({
+        resultId: result.id,
+        message: `Webhook returned success: ${webhookResponse.data}`,
+        details: JSON.stringify(webhookResponse.data, null, 2).substring(
+          0,
+          1000
+        ),
+      }))
   }
 
   const newVariables = block.options.responseVariableMapping.reduce<
@@ -265,6 +274,7 @@ const convertKeyValueTableToObject = (
   }, {})
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
   try {
     return { data: JSON.parse(json), isJson: true }

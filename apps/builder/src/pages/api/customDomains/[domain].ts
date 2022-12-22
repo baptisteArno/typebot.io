@@ -13,7 +13,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const domain = req.query.domain as string
     try {
       await deleteDomainOnVercel(domain)
-    } catch {}
+    } catch {
+      /* empty */
+    }
     const customDomains = await prisma.customDomain.delete({
       where: { name: domain },
     })

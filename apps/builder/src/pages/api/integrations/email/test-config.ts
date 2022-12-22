@@ -1,4 +1,4 @@
-import { captureException, withSentry } from '@sentry/nextjs'
+import { captureException } from '@sentry/nextjs'
 import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'

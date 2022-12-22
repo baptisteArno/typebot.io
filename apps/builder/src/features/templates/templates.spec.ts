@@ -14,7 +14,7 @@ test.describe.parallel('Templates page', () => {
 
   test('From file should import correctly', async ({ page }) => {
     await page.goto('/typebots/create')
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(2000)
     await page.setInputFiles(
       'input[type="file"]',
       getTestAsset('typebots/singleChoiceTarget.json')

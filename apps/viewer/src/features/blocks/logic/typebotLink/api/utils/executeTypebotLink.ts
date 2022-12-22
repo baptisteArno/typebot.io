@@ -1,7 +1,13 @@
 import { ExecuteLogicResponse } from '@/features/chat'
 import { saveErrorLog } from '@/features/logs/api'
 import prisma from '@/lib/prisma'
-import { TypebotLinkBlock, Edge, SessionState, TypebotInSession } from 'models'
+import {
+  TypebotLinkBlock,
+  Edge,
+  SessionState,
+  TypebotInSession,
+  Variable,
+} from 'models'
 import { byId } from 'utils'
 
 export const executeTypebotLink = async (
@@ -9,20 +15,22 @@ export const executeTypebotLink = async (
   block: TypebotLinkBlock
 ): Promise<ExecuteLogicResponse> => {
   if (!block.options.typebotId) {
-    saveErrorLog({
-      resultId: state.result.id,
-      message: 'Failed to link typebot',
-      details: 'Typebot ID is not specified',
-    })
+    state.result &&
+      saveErrorLog({
+        resultId: state.result.id,
+        message: 'Failed to link typebot',
+        details: 'Typebot ID is not specified',
+      })
     return { outgoingEdgeId: block.outgoingEdgeId }
   }
   const linkedTypebot = await getLinkedTypebot(state, block.options.typebotId)
   if (!linkedTypebot) {
-    saveErrorLog({
-      resultId: state.result.id,
-      message: 'Failed to link typebot',
-      details: `Typebot with ID ${block.options.typebotId} not found`,
-    })
+    state.result &&
+      saveErrorLog({
+        resultId: state.result.id,
+        message: 'Failed to link typebot',
+        details: `Typebot with ID ${block.options.typebotId} not found`,
+      })
     return { outgoingEdgeId: block.outgoingEdgeId }
   }
   let newSessionState = addLinkedTypebotToState(state, block, linkedTypebot)
@@ -32,11 +40,12 @@ export const executeTypebotLink = async (
     linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
       ?.id
   if (!nextGroupId) {
-    saveErrorLog({
-      resultId: state.result.id,
-      message: 'Failed to link typebot',
-      details: `Group with ID "${block.options.groupId}" not found`,
-    })
+    state.result &&
+      saveErrorLog({
+        resultId: state.result.id,
+        message: 'Failed to link typebot',
+        details: `Group with ID "${block.options.groupId}" not found`,
+      })
     return { outgoingEdgeId: block.outgoingEdgeId }
   }
   const portalEdge: Edge = {
@@ -65,29 +74,50 @@ const addLinkedTypebotToState = (
   state: SessionState,
   block: TypebotLinkBlock,
   linkedTypebot: TypebotInSession
-): SessionState => ({
-  ...state,
-  typebot: {
-    ...state.typebot,
-    groups: [...state.typebot.groups, ...linkedTypebot.groups],
-    variables: [...state.typebot.variables, ...linkedTypebot.variables],
-    edges: [...state.typebot.edges, ...linkedTypebot.edges],
-  },
-  linkedTypebots: {
-    typebots: [
-      ...state.linkedTypebots.typebots.filter(
-        (existingTypebots) => existingTypebots.id !== linkedTypebot.id
-      ),
-    ],
-    queue: block.outgoingEdgeId
-      ? [
-          ...state.linkedTypebots.queue,
-          { edgeId: block.outgoingEdgeId, typebotId: state.currentTypebotId },
-        ]
-      : state.linkedTypebots.queue,
-  },
-  currentTypebotId: linkedTypebot.id,
-})
+): SessionState => {
+  const incomingVariables = fillVariablesWithExistingValues(
+    linkedTypebot.variables,
+    state.typebot.variables
+  )
+  return {
+    ...state,
+    typebot: {
+      ...state.typebot,
+      groups: [...state.typebot.groups, ...linkedTypebot.groups],
+      variables: [...state.typebot.variables, ...incomingVariables],
+      edges: [...state.typebot.edges, ...linkedTypebot.edges],
+    },
+    linkedTypebots: {
+      typebots: [
+        ...state.linkedTypebots.typebots.filter(
+          (existingTypebots) => existingTypebots.id !== linkedTypebot.id
+        ),
+      ],
+      queue: block.outgoingEdgeId
+        ? [
+            ...state.linkedTypebots.queue,
+            { edgeId: block.outgoingEdgeId, typebotId: state.currentTypebotId },
+          ]
+        : state.linkedTypebots.queue,
+    },
+    currentTypebotId: linkedTypebot.id,
+  }
+}
+
+const fillVariablesWithExistingValues = (
+  variables: Variable[],
+  variablesWithValues: Variable[]
+): Variable[] =>
+  variables.map((variable) => {
+    const matchedVariable = variablesWithValues.find(
+      (variableWithValue) => variableWithValue.name === variable.name
+    )
+
+    return {
+      ...variable,
+      value: matchedVariable?.value ?? variable.value,
+    }
+  })
 
 const getLinkedTypebot = async (
   state: SessionState,

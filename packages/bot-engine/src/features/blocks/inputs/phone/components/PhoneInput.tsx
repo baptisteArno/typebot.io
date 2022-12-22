@@ -19,6 +19,7 @@ export const PhoneInput = ({
   hasGuestAvatar,
 }: PhoneInputProps) => {
   const [inputValue, setInputValue] = useState(defaultValue ?? '')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const inputRef = useRef<any>(null)
 
   const handleChange = (inputValue: Value | undefined) =>

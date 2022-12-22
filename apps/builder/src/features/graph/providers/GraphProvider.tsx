@@ -80,6 +80,7 @@ const graphContext = createContext<{
   isReadOnly: boolean
   focusedGroupId?: string
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
   graphPosition: graphPositionDefaultValue({ x: 0, y: 0 }),

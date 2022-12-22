@@ -1,4 +1,4 @@
-import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
+import { useEventListener, Stack, Portal } from '@chakra-ui/react'
 import { DraggableBlock, DraggableBlockType, Block } from 'models'
 import {
   computeNearestPlaceholderIndex,

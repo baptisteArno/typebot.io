@@ -11,7 +11,7 @@ export const useTypebots = ({
 }) => {
   const { data, isLoading, refetch } = trpc.typebot.listTypebots.useQuery(
     {
-      workspaceId: workspaceId!,
+      workspaceId: workspaceId as string,
       folderId,
     },
     {

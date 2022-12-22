@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { UploadIcon } from '@/components/icons'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 import { isDefined } from 'utils'
 import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'

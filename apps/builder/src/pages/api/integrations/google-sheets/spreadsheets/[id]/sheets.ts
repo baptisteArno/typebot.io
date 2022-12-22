@@ -3,7 +3,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from '@/lib/googleSheets'
 import { isDefined } from 'utils'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
-import { withSentry, setUser } from '@sentry/nextjs'
+import { setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

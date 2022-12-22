@@ -50,7 +50,9 @@ test.describe.parallel('Theme page', () => {
         await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
           id: typebotId,
         })
-      } catch {}
+      } catch {
+        /* empty */
+      }
 
       await page.goto(`/typebots/${typebotId}/theme`)
       await expect(

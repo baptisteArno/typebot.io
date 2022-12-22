@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma'
 import {
   SessionState,
+  StartParams,
+  Typebot,
   Variable,
   VariableWithUnknowValue,
   VariableWithValue,
@@ -99,6 +101,19 @@ export const parseVariablesInObject = (
     }
   }, {})
 
+export const parsePrefilledVariables = (
+  variables: Typebot['variables'],
+  prefilledVariables: NonNullable<StartParams['prefilledVariables']>
+): Variable[] =>
+  variables.map((variable) => {
+    const prefilledVariable = prefilledVariables[variable.name]
+    if (!prefilledVariable) return variable
+    return {
+      ...variable,
+      value: safeStringify(prefilledVariable),
+    }
+  })
+
 export const updateVariables =
   (state: SessionState) =>
   async (newVariables: VariableWithUnknowValue[]): Promise<SessionState> => ({
@@ -107,10 +122,12 @@ export const updateVariables =
       ...state.typebot,
       variables: updateTypebotVariables(state)(newVariables),
     },
-    result: {
-      ...state.result,
-      variables: await updateResultVariables(state)(newVariables),
-    },
+    result: state.result
+      ? {
+          ...state.result,
+          variables: await updateResultVariables(state)(newVariables),
+        }
+      : undefined,
   })
 
 const updateResultVariables =
@@ -118,6 +135,7 @@ const updateResultVariables =
   async (
     newVariables: VariableWithUnknowValue[]
   ): Promise<VariableWithValue[]> => {
+    if (!result) return []
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: safeStringify(variable.value),

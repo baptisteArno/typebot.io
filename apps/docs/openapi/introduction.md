@@ -14,7 +14,7 @@ The Builder API is about what you can edit on https://app.typebot.io (i.e. creat
 ## Chat
 
 :::caution
-You should not use it in production. This API is experimental at the moment and will be heavily modified with time.
+You should not use it in production. This API is experimental at the moment and will be changed without notice.
 :::
 
 The Chat API allows you to execute (chat) with a typebot.

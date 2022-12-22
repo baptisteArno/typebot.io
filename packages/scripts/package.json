@@ -22,6 +22,7 @@
     "stripe": "11.4.0",
     "tsx": "3.12.1",
     "typescript": "4.9.4",
-    "utils": "workspace:*"
+    "utils": "workspace:*",
+    "zod": "3.19.1"
   }
 }

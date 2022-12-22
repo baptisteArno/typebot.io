@@ -5,6 +5,7 @@ import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from '@/lib/prisma'
 import { Plan } from 'db'
+import { RequestHandler } from 'next/dist/server/next'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -127,4 +128,4 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return methodNotAllowed(res)
 }
 
-export default cors(webhookHandler as any)
+export default cors(webhookHandler as RequestHandler)

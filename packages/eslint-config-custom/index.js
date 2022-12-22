@@ -1,5 +1,12 @@
 module.exports = {
-  extends: ['next', 'prettier'],
+  extends: [
+    'next',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   settings: {
     react: {
       version: 'detect',
@@ -19,5 +26,6 @@ module.exports = {
         ],
       },
     ],
+    '@typescript-eslint/no-namespace': 'off',
   },
 }

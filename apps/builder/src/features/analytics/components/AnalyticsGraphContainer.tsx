@@ -46,10 +46,14 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
               flex="1"
               typebot={publishedTypebot}
               onUnlockProPlanClick={onOpen}
-              answersCounts={[
-                { ...answersCounts[0], totalAnswers: stats?.totalStarts },
-                ...answersCounts?.slice(1),
-              ]}
+              answersCounts={
+                answersCounts
+                  ? [
+                      { ...answersCounts[0], totalAnswers: stats?.totalStarts },
+                      ...answersCounts.slice(1),
+                    ]
+                  : []
+              }
             />
           </GroupsCoordinatesProvider>
         </GraphProvider>

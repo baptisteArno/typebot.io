@@ -3,7 +3,6 @@ import {
   Checkbox,
   Flex,
   Skeleton,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
 import React from 'react'

@@ -38,6 +38,7 @@ export const SearchableDropdown = ({
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
   const debounced = useDebouncedCallback(
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onValueChange ? onValueChange : () => {},
     env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )

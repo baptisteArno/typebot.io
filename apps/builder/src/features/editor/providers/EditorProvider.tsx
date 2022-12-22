@@ -16,6 +16,7 @@ const editorContext = createContext<{
   setRightPanel: Dispatch<SetStateAction<RightPanel | undefined>>
   startPreviewAtGroup: string | undefined
   setStartPreviewAtGroup: Dispatch<SetStateAction<string | undefined>>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

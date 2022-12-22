@@ -6,7 +6,6 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
-import { GlobeIcon, ToolIcon } from '@/components/icons'
 import { TypebotInDashboard } from '@/features/dashboard'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 

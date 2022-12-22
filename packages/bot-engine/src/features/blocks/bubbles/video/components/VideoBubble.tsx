@@ -83,7 +83,7 @@ const VideoContent = ({
   )
   if (!content?.type) return <></>
   switch (content.type) {
-    case VideoBubbleContentType.URL:
+    case VideoBubbleContentType.URL: {
       const isSafariBrowser = window.navigator.vendor.match(/apple/i)
       return (
         <video
@@ -102,6 +102,7 @@ const VideoContent = ({
           Sorry, your browser doesn&apos;t support embedded videos.
         </video>
       )
+    }
     case VideoBubbleContentType.VIMEO:
     case VideoBubbleContentType.YOUTUBE: {
       const baseUrl =

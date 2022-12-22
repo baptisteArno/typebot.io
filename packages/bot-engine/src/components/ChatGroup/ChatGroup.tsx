@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { LinkedTypebot, useTypebot } from '../../providers/TypebotProvider'
@@ -250,7 +250,7 @@ const ChatChunks = ({
 }: Props) => {
   const [isSkipped, setIsSkipped] = useState(false)
 
-  const avatarSideContainerRef = useRef<any>()
+  const avatarSideContainerRef = useRef<{ refreshTopOffset: () => void }>()
 
   useEffect(() => {
     refreshTopOffset()

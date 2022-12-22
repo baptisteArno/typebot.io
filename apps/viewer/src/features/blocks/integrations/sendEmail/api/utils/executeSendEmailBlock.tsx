@@ -26,7 +26,7 @@ export const executeSendEmailBlock = async (
   const { variables } = typebot
   await sendEmail({
     typebotId: typebot.id,
-    resultId: result.id,
+    resultId: result?.id,
     credentialsId: options.credentialsId,
     recipients: options.recipients.map(parseVariables(variables)),
     subject: parseVariables(variables)(options.subject ?? ''),
@@ -59,7 +59,7 @@ const sendEmail = async ({
   fileUrls,
 }: SendEmailOptions & {
   typebotId: string
-  resultId: string
+  resultId?: string
   fileUrls?: string
 }) => {
   const { name: replyToName } = parseEmailRecipient(replyTo)
@@ -114,7 +114,7 @@ const sendEmail = async ({
     ...emailBody,
   }
   try {
-    const info = await transporter.sendMail(email)
+    await transporter.sendMail(email)
     await saveSuccessLog({
       resultId,
       message: 'Email successfully sent',
@@ -169,7 +169,7 @@ const getEmailBody = async ({
   resultId,
 }: {
   typebotId: string
-  resultId: string
+  resultId?: string
 } & Pick<SendEmailOptions, 'isCustomBody' | 'isBodyCode' | 'body'>): Promise<
   { html?: string; text?: string } | undefined
 > => {

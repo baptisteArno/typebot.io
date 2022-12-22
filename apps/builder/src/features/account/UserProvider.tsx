@@ -24,6 +24,7 @@ const userContext = createContext<{
   currentWorkspaceId?: string
   updateUser: (newUser: Partial<User>) => void
   saveUser: (newUser?: Partial<User>) => Promise<void>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

@@ -15,7 +15,7 @@ import {
   UsersIcon,
 } from '@/components/icons'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { GraphNavigation, User, Workspace, WorkspaceRole } from 'db'
+import { User, Workspace, WorkspaceRole } from 'db'
 import { useState } from 'react'
 import { MembersList } from './MembersList'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
@@ -149,13 +149,7 @@ export const WorkspaceSettingsModal = ({
 
         {isOpen && (
           <Flex flex="1" p="10">
-            <SettingsContent
-              tab={selectedTab}
-              onClose={onClose}
-              defaultGraphNavigation={
-                user.graphNavigation ?? GraphNavigation.TRACKPAD
-              }
-            />
+            <SettingsContent tab={selectedTab} onClose={onClose} />
           </Flex>
         )}
       </ModalContent>
@@ -165,11 +159,9 @@ export const WorkspaceSettingsModal = ({
 
 const SettingsContent = ({
   tab,
-  defaultGraphNavigation,
   onClose,
 }: {
   tab: SettingsTab
-  defaultGraphNavigation: GraphNavigation
   onClose: () => void
 }) => {
   switch (tab) {
