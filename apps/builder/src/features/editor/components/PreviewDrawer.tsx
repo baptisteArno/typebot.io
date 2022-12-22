@@ -6,6 +6,7 @@ import {
   Flex,
   FlexProps,
   useColorMode,
+  useColorModeValue,
   useEventListener,
   UseToastOptions,
   VStack,
@@ -70,7 +71,7 @@ export const PreviewDrawer = () => {
       top={`0`}
       h={`100%`}
       w={`${width}px`}
-      bgColor={isDark ? 'gray.900' : 'white'}
+      bgColor={useColorModeValue('white', 'gray.900')}
       borderLeftWidth={'1px'}
       shadow="lg"
       borderLeftRadius={'lg'}
@@ -126,7 +127,7 @@ const ResizeHandle = (props: FlexProps & { isDark: boolean }) => {
       w="15px"
       h="50px"
       borderWidth={'1px'}
-      bgColor={props.isDark ? 'gray.800' : 'white'}
+      bgColor={useColorModeValue('white', 'gray.800')}
       cursor={'col-resize'}
       justifyContent={'center'}
       align={'center'}
@@ -135,11 +136,15 @@ const ResizeHandle = (props: FlexProps & { isDark: boolean }) => {
     >
       <Box
         w="2px"
-        bgColor={props.isDark ? 'gray.600' : 'gray.300'}
+        bgColor={useColorModeValue('gray.300', 'gray.600')}
         h="70%"
         mr="0.5"
       />
-      <Box w="2px" bgColor={props.isDark ? 'gray.600' : 'gray.300'} h="70%" />
+      <Box
+        w="2px"
+        bgColor={useColorModeValue('gray.300', 'gray.600')}
+        h="70%"
+      />
     </Flex>
   )
 }

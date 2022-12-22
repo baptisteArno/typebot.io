@@ -1,4 +1,11 @@
-import { VStack, Tag, Text, Tooltip } from '@chakra-ui/react'
+import {
+  VStack,
+  Tag,
+  Text,
+  Tooltip,
+  useColorModeValue,
+  theme,
+} from '@chakra-ui/react'
 import { useGraph, useGroupsCoordinates } from '../../providers'
 import { useTypebot } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
@@ -23,6 +30,10 @@ export const DropOffEdge = ({
   groupId,
   onUnlockProPlanClick,
 }: Props) => {
+  const dropOffColor = useColorModeValue(
+    theme.colors.red[500],
+    theme.colors.red[300]
+  )
   const { workspace } = useWorkspace()
   const { groupsCoordinates } = useGroupsCoordinates()
   const { sourceEndpoints, graphPosition } = useGraph()
@@ -82,7 +93,7 @@ export const DropOffEdge = ({
           { x: labelCoordinates.x - 300, y: labelCoordinates.y },
           sourceTop ?? 0
         )}
-        stroke="#e53e3e"
+        stroke={dropOffColor}
         strokeWidth="2px"
         markerEnd="url(#red-arrow)"
         fill="none"
@@ -98,7 +109,7 @@ export const DropOffEdge = ({
           isDisabled={isWorkspaceProPlan}
         >
           <VStack
-            bgColor={'red.500'}
+            bgColor={dropOffColor}
             color="white"
             rounded="md"
             p="2"

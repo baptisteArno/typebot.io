@@ -3,6 +3,7 @@ import {
   EditablePreview,
   EditableInput,
   Tooltip,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
@@ -14,6 +15,7 @@ export const EditableTypebotName = ({
   defaultName,
   onNewName,
 }: EditableProps) => {
+  const emptyNameBg = useColorModeValue('gray.100', 'gray.700')
   const [currentName, setCurrentName] = useState(defaultName)
 
   const submitNewName = (newName: string) => {
@@ -39,7 +41,7 @@ export const EditableTypebotName = ({
           fontSize="14px"
           minW="30px"
           minH="20px"
-          bgColor={currentName === '' ? 'gray.100' : 'inherit'}
+          bgColor={currentName === '' ? emptyNameBg : 'inherit'}
         />
         <EditableInput fontSize="14px" />
       </Editable>

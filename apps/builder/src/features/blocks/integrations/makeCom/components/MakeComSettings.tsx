@@ -23,11 +23,7 @@ export const MakeComSettings = ({ block }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Alert
-        status={webhook?.url ? 'success' : 'info'}
-        bgColor={webhook?.url ? undefined : 'blue.50'}
-        rounded="md"
-      >
+      <Alert status={webhook?.url ? 'success' : 'info'} rounded="md">
         <AlertIcon />
         {webhook?.url ? (
           <>Your scenario is correctly configured 🚀</>

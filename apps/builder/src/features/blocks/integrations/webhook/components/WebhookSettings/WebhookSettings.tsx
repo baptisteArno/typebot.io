@@ -155,7 +155,7 @@ export const WebhookSettings = ({
   return (
     <Stack spacing={4}>
       {provider && (
-        <Alert status={'info'} bgColor={'blue.50'} rounded="md">
+        <Alert status={'info'} rounded="md">
           <AlertIcon />
           <Stack>
             <Text>Head up to {provider.name} to configure this block:</Text>

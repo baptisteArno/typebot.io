@@ -13,6 +13,7 @@ import {
   PopoverArrow,
   PopoverBody,
   useEventListener,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import {
@@ -36,6 +37,7 @@ type Props = {
 }
 
 export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
+  const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
   const { typebot, createItem, updateItem } = useTypebot()
   const { openedItemId, setOpenedItemId } = useGraph()
   const ref = useRef<HTMLDivElement | null>(null)
@@ -106,7 +108,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
                       </Text>
                     )}
                     {comparison?.value && (
-                      <Tag bgColor={'gray.200'}>
+                      <Tag bgColor={comparisonValueBg}>
                         <Text noOfLines={1}>{comparison.value}</Text>
                       </Tag>
                     )}

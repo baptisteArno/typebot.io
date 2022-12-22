@@ -1,6 +1,14 @@
-import { Box, BoxProps, Flex, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  BoxProps,
+  Flex,
+  Text,
+  useColorModeValue,
+  VStack,
+} from '@chakra-ui/react'
 import { GlobeIcon, ToolIcon } from '@/components/icons'
 import { TypebotInDashboard } from '@/features/dashboard'
+import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 
 type Props = {
   typebot: TypebotInDashboard
@@ -20,25 +28,19 @@ export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
       pointerEvents="none"
       borderWidth={1}
       rounded="md"
-      bgColor="white"
+      bgColor={useColorModeValue('white', 'gray.700')}
       shadow="lg"
       opacity={0.7}
       {...props}
     >
       <VStack spacing={4}>
         <Flex
-          boxSize="45px"
           rounded="full"
           justifyContent="center"
           alignItems="center"
-          bgColor={typebot.publishedTypebotId ? 'blue.500' : 'gray.400'}
-          color="white"
+          fontSize={'4xl'}
         >
-          {typebot.publishedTypebotId ? (
-            <GlobeIcon fill="white" fontSize="20px" />
-          ) : (
-            <ToolIcon fill="white" fontSize="20px" />
-          )}
+          <EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />
         </Flex>
         <Text>{typebot.name}</Text>
       </VStack>
