@@ -1,11 +1,16 @@
 import { validateButtonInput } from '@/features/blocks/inputs/buttons/api'
 import { validateEmail } from '@/features/blocks/inputs/email/api'
-import { validatePhoneNumber } from '@/features/blocks/inputs/phone/api'
+import {
+  formatPhoneNumber,
+  validatePhoneNumber,
+} from '@/features/blocks/inputs/phone/api'
 import { validateUrl } from '@/features/blocks/inputs/url/api'
+import { parseVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import {
   Block,
+  BlockType,
   BubbleBlockType,
   ChatReply,
   InputBlock,
@@ -20,7 +25,7 @@ import { getNextGroup } from './getNextGroup'
 export const continueBotFlow =
   (state: SessionState) =>
   async (
-    reply: string
+    reply?: string
   ): Promise<ChatReply & { newSessionState?: SessionState }> => {
     const group = state.typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
@@ -30,7 +35,7 @@ export const continueBotFlow =
         (block) => block.id === state.currentBlock?.blockId
       ) ?? -1
 
-    const block = blockIndex > 0 ? group?.blocks[blockIndex ?? 0] : null
+    const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
 
     if (!block || !group)
       throw new TRPCError({
@@ -44,9 +49,15 @@ export const continueBotFlow =
         message: 'Current block is not an input block',
       })
 
-    if (!isInputValid(reply, block)) return parseRetryMessage(block)
+    const formattedReply = formatReply(reply, block.type)
 
-    const newVariables = await processAndSaveAnswer(state, block)(reply)
+    if (!formattedReply || !isReplyValid(formattedReply, block))
+      return parseRetryMessage(block)
+
+    const newVariables = await processAndSaveAnswer(
+      state,
+      block
+    )(formattedReply)
 
     const newSessionState = {
       ...state,
@@ -58,14 +69,14 @@ export const continueBotFlow =
 
     const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
 
-    if (groupHasMoreBlocks) {
+    const nextEdgeId = getOutgoingEdgeId(newSessionState)(block, formattedReply)
+
+    if (groupHasMoreBlocks && !nextEdgeId) {
       return executeGroup(newSessionState)({
         ...group,
         blocks: group.blocks.slice(blockIndex + 1),
       })
     }
-
-    const nextEdgeId = block.outgoingEdgeId
 
     if (!nextEdgeId && state.linkedTypebots.queue.length === 0)
       return { messages: [] }
@@ -80,7 +91,7 @@ export const continueBotFlow =
 const processAndSaveAnswer =
   (state: Pick<SessionState, 'result' | 'typebot'>, block: InputBlock) =>
   async (reply: string): Promise<Variable[]> => {
-    await saveAnswer(state.result.id, block)(reply)
+    state.result && (await saveAnswer(state.result.id, block)(reply))
     const newVariables = saveVariableValueIfAny(state, block)(reply)
     return newVariables
   }
@@ -105,22 +116,26 @@ const saveVariableValueIfAny =
     ]
   }
 
-const parseRetryMessage = (block: InputBlock) => ({
-  messages: [
-    {
-      type: BubbleBlockType.TEXT,
-      content: {
-        plainText:
-          'retryMessageContent' in block.options
-            ? block.options.retryMessageContent
-            : 'Invalid message. Please, try again.',
-        richText: [],
-        html: '',
+const parseRetryMessage = (
+  block: InputBlock
+): Pick<ChatReply, 'messages' | 'input'> => {
+  const retryMessage =
+    'retryMessageContent' in block.options && block.options.retryMessageContent
+      ? block.options.retryMessageContent
+      : 'Invalid message. Please, try again.'
+  return {
+    messages: [
+      {
+        type: BubbleBlockType.TEXT,
+        content: {
+          plainText: retryMessage,
+          html: `<div>${retryMessage}</div>`,
+        },
       },
-    },
-  ],
-  input: block,
-})
+    ],
+    input: block,
+  }
+}
 
 const saveAnswer =
   (resultId: string, block: InputBlock) => async (reply: string) => {
@@ -135,7 +150,35 @@ const saveAnswer =
     })
   }
 
-export const isInputValid = (inputValue: string, block: Block): boolean => {
+const getOutgoingEdgeId =
+  ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
+  (block: InputBlock, reply?: string) => {
+    if (
+      block.type === InputBlockType.CHOICE &&
+      !block.options.isMultipleChoice &&
+      reply
+    ) {
+      const matchedItem = block.items.find(
+        (item) => parseVariables(variables)(item.content) === reply
+      )
+      if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
+    }
+    return block.outgoingEdgeId
+  }
+
+export const formatReply = (
+  inputValue: string | undefined,
+  blockType: BlockType
+): string | null => {
+  if (!inputValue) return null
+  switch (blockType) {
+    case InputBlockType.PHONE:
+      return formatPhoneNumber(inputValue)
+  }
+  return inputValue
+}
+
+export const isReplyValid = (inputValue: string, block: Block): boolean => {
   switch (block.type) {
     case InputBlockType.EMAIL:
       return validateEmail(inputValue)

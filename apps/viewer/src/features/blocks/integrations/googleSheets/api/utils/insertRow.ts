@@ -23,16 +23,18 @@ export const insertRow = async (
     await doc.loadInfo()
     const sheet = doc.sheetsById[options.sheetId]
     await sheet.addRow(parsedValues)
-    await saveSuccessLog({
-      resultId: result.id,
-      message: 'Succesfully inserted row',
-    })
+    result &&
+      (await saveSuccessLog({
+        resultId: result.id,
+        message: 'Succesfully inserted row',
+      }))
   } catch (err) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: "Couldn't fetch spreadsheet data",
-      details: err,
-    })
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: "Couldn't fetch spreadsheet data",
+        details: err,
+      }))
   }
   return { outgoingEdgeId }
 }

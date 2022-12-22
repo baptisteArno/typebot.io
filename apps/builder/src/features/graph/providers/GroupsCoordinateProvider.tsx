@@ -12,6 +12,7 @@ import { GroupsCoordinates, Coordinates } from './GraphProvider'
 const groupsCoordinatesContext = createContext<{
   groupsCoordinates: GroupsCoordinates
   updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

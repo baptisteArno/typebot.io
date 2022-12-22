@@ -10,7 +10,9 @@ export const executeRedirect = (
   if (!block.options?.url) return { outgoingEdgeId: block.outgoingEdgeId }
   const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   return {
-    logic: { redirectUrl: formattedUrl },
+    logic: {
+      redirect: { url: formattedUrl, isNewTab: block.options.isNewTab },
+    },
     outgoingEdgeId: block.outgoingEdgeId,
   }
 }

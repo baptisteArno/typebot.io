@@ -1,7 +1,7 @@
 import { Coordinates, useGraph, useGroupsCoordinates } from '../../providers'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Edge as EdgeProps } from 'models'
-import { color, Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
+import { Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import { EdgeMenu } from './EdgeMenu'
 import { colors } from '@/lib/theme'

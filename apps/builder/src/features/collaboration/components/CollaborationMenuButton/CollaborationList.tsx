@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuList,
   SkeletonCircle,
-  SkeletonText,
   Text,
   Tag,
   Flex,

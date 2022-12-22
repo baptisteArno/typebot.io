@@ -20,29 +20,33 @@ test.describe('Bot', () => {
       publicId: `${typebotId}-public`,
     })
 
-    await createWebhook(typebotId, {
-      id: 'failing-webhook',
-      url: 'http://localhost:3001/api/mock/fail',
-      method: HttpMethod.POST,
-    })
+    try {
+      await createWebhook(typebotId, {
+        id: 'failing-webhook',
+        url: 'http://localhost:3001/api/mock/fail',
+        method: HttpMethod.POST,
+      })
 
-    await createWebhook(typebotId, {
-      id: 'partial-body-webhook',
-      url: 'http://localhost:3000/api/mock/webhook-easy-config',
-      method: HttpMethod.POST,
-      body: `{
+      await createWebhook(typebotId, {
+        id: 'partial-body-webhook',
+        url: 'http://localhost:3000/api/mock/webhook-easy-config',
+        method: HttpMethod.POST,
+        body: `{
         "name": "{{Name}}",
         "age": {{Age}},
         "gender": "{{Gender}}"
       }`,
-    })
+      })
 
-    await createWebhook(typebotId, {
-      id: 'full-body-webhook',
-      url: 'http://localhost:3000/api/mock/webhook-easy-config',
-      method: HttpMethod.POST,
-      body: `{{Full body}}`,
-    })
+      await createWebhook(typebotId, {
+        id: 'full-body-webhook',
+        url: 'http://localhost:3000/api/mock/webhook-easy-config',
+        method: HttpMethod.POST,
+        body: `{{Full body}}`,
+      })
+    } catch (err) {
+      console.log(err)
+    }
   })
 
   test.afterEach(async () => {

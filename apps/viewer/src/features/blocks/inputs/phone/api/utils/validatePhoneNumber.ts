@@ -1,4 +1,4 @@
-const phoneRegex = /^\+?[0-9]{6,}$/
+import { phone } from 'phone'
 
 export const validatePhoneNumber = (phoneNumber: string) =>
-  phoneRegex.test(phoneNumber)
+  phone(phoneNumber).isValid

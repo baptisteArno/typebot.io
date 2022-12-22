@@ -32,6 +32,12 @@ export const paymentInputOptionsSchema = optionBaseSchema.and(
   })
 )
 
+export const paymentInputRuntimeOptionsSchema = z.object({
+  paymentIntentSecret: z.string(),
+  amountLabel: z.string(),
+  publicKey: z.string(),
+})
+
 export const paymentInputSchema = blockBaseSchema.and(
   z.object({
     type: z.enum([InputBlockType.PAYMENT]),
@@ -47,3 +53,6 @@ export const defaultPaymentInputOptions: PaymentInputOptions = {
 
 export type PaymentInputBlock = z.infer<typeof paymentInputSchema>
 export type PaymentInputOptions = z.infer<typeof paymentInputOptionsSchema>
+export type PaymentInputRuntimeOptions = z.infer<
+  typeof paymentInputRuntimeOptionsSchema
+>

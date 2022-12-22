@@ -1,37 +1,56 @@
 {
-  "id": "cl0ibhv8d0130n21aw8doxhj5",
-  "createdAt": "2022-03-08T15:59:06.589Z",
-  "updatedAt": "2022-03-08T15:59:10.498Z",
-  "name": "Another typebot",
+  "id": "clbovazhy000t3b6ok2deqnsw",
+  "createdAt": "2022-12-15T09:17:00.598Z",
+  "updatedAt": "2022-12-15T09:17:15.366Z",
+  "icon": null,
+  "name": "Another typebot copy",
   "publishedTypebotId": null,
   "folderId": null,
   "groups": [
     {
-      "id": "p4ByLVoKiDRyRoPHKmcTfw",
+      "id": "clbovazhy000q3b6o716dlfq8",
+      "title": "Start",
       "blocks": [
         {
           "id": "rw6smEWEJzHKbiVKLUKFvZ",
           "type": "start",
           "label": "Start",
-          "groupId": "p4ByLVoKiDRyRoPHKmcTfw",
-          "outgoingEdgeId": "1z3pfiatTUHbraD2uSoA3E"
+          "groupId": "clbovazhy000q3b6o716dlfq8",
+          "outgoingEdgeId": "clbovazhy000s3b6ocjqtqedw"
         }
       ],
-      "title": "Start",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
-      "id": "bg4QEJseUsTP496H27j5k2",
-      "graphCoordinates": { "x": 366, "y": 191 },
+      "id": "clbovazhy000r3b6onjzopbsn",
       "title": "Group #1",
       "blocks": [
         {
           "id": "s8ZeBL9p5za77eBmdKECLYq",
-          "groupId": "bg4QEJseUsTP496H27j5k2",
           "type": "text input",
+          "groupId": "clbovazhy000r3b6onjzopbsn",
           "options": {
             "isLong": false,
             "labels": { "button": "Send", "placeholder": "Type your answer..." }
+          },
+          "outgoingEdgeId": "clbovbaw600123b6o3i4ouzoq"
+        }
+      ],
+      "graphCoordinates": { "x": 366, "y": 191 }
+    },
+    {
+      "id": "clbovb3vu00103b6o1pjjuagi",
+      "graphCoordinates": { "x": 740, "y": 288 },
+      "title": "Group #2",
+      "blocks": [
+        {
+          "id": "clbovb3vv00113b6oaa35zfvm",
+          "groupId": "clbovb3vu00103b6o1pjjuagi",
+          "type": "text",
+          "content": {
+            "html": "<div>Cheers!</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }],
+            "plainText": "Cheers!"
           }
         }
       ]
@@ -40,12 +59,20 @@
   "variables": [],
   "edges": [
     {
+      "id": "clbovazhy000s3b6ocjqtqedw",
+      "to": { "groupId": "clbovazhy000r3b6onjzopbsn" },
       "from": {
-        "groupId": "p4ByLVoKiDRyRoPHKmcTfw",
-        "blockId": "rw6smEWEJzHKbiVKLUKFvZ"
+        "blockId": "rw6smEWEJzHKbiVKLUKFvZ",
+        "groupId": "clbovazhy000q3b6o716dlfq8"
+      }
+    },
+    {
+      "from": {
+        "groupId": "clbovazhy000r3b6onjzopbsn",
+        "blockId": "s8ZeBL9p5za77eBmdKECLYq"
       },
-      "to": { "groupId": "bg4QEJseUsTP496H27j5k2" },
-      "id": "1z3pfiatTUHbraD2uSoA3E"
+      "to": { "groupId": "clbovb3vu00103b6o1pjjuagi" },
+      "id": "clbovbaw600123b6o3i4ouzoq"
     }
   ],
   "theme": {
@@ -56,6 +83,10 @@
         "placeholderColor": "#9095A0"
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
@@ -72,5 +103,9 @@
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
   "publicId": null,
-  "customDomain": null
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
 }

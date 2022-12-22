@@ -8,6 +8,10 @@ import { ErrorPage } from './ErrorPage'
 import { createResultQuery, updateResultQuery } from '@/features/results'
 import { upsertAnswerQuery } from '@/features/answers'
 import { gtmBodyElement } from '@/lib/google-tag-manager'
+import {
+  getExistingResultFromSession,
+  setResultInSession,
+} from '@/utils/sessionStorage'
 
 export type TypebotPageProps = {
   publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
@@ -17,8 +21,6 @@ export type TypebotPageProps = {
   isIE: boolean
   customHeadCode: string | null
 }
-
-const sessionStorageKey = 'resultId'
 
 export const TypebotPage = ({
   publishedTypebot,
@@ -152,16 +154,4 @@ export const TypebotPage = ({
       )}
     </div>
   )
-}
-
-const getExistingResultFromSession = () => {
-  try {
-    return sessionStorage.getItem(sessionStorageKey)
-  } catch {}
-}
-
-const setResultInSession = (resultId: string) => {
-  try {
-    return sessionStorage.setItem(sessionStorageKey, resultId)
-  } catch {}
 }

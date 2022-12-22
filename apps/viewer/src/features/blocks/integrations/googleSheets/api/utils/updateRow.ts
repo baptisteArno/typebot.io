@@ -45,16 +45,18 @@ export const updateRow = async (
       rows[updatingRowIndex][key] = parsedValues[key]
     }
     await rows[updatingRowIndex].save()
-    await saveSuccessLog({
-      resultId: result.id,
-      message: 'Succesfully updated row',
-    })
+    result &&
+      (await saveSuccessLog({
+        resultId: result.id,
+        message: 'Succesfully updated row',
+      }))
   } catch (err) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: "Couldn't fetch spreadsheet data",
-      details: err,
-    })
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: "Couldn't fetch spreadsheet data",
+        details: err,
+      }))
   }
   return { outgoingEdgeId }
 }

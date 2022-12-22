@@ -1,7 +1,6 @@
 import { LinkedTypebot } from '@/providers/TypebotProvider'
 import { EdgeId, LogicState } from '@/types'
 import { TypebotLinkBlock, Edge, PublicTypebot } from 'models'
-import { byId } from 'utils'
 import { fetchAndInjectTypebot } from '../queries/fetchAndInjectTypebotQuery'
 
 export const executeTypebotLink = async (

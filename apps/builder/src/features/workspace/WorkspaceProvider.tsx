@@ -1,7 +1,6 @@
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -26,6 +25,7 @@ const workspaceContext = createContext<{
   updateWorkspace: (updates: { icon?: string; name?: string }) => void
   deleteCurrentWorkspace: () => Promise<void>
   refreshWorkspace: () => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
@@ -59,12 +59,12 @@ export const WorkspaceProvider = ({
   )
 
   const { data: workspaceData } = trpc.workspace.getWorkspace.useQuery(
-    { workspaceId: workspaceId! },
+    { workspaceId: workspaceId as string },
     { enabled: !!workspaceId }
   )
 
   const { data: membersData } = trpc.workspace.listMembersInWorkspace.useQuery(
-    { workspaceId: workspaceId! },
+    { workspaceId: workspaceId as string },
     { enabled: !!workspaceId }
   )
 

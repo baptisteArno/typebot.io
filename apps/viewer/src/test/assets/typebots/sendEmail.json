@@ -1,65 +1,85 @@
 {
-  "id": "cl1rxxg6l334509lhv44f8qnx",
-  "createdAt": "2022-04-09T14:16:43.053Z",
-  "updatedAt": "2022-04-12T14:34:44.287Z",
+  "id": "clbnrow4e000h3b6o4gu6q0eo",
+  "createdAt": "2022-12-14T14:48:04.766Z",
+  "updatedAt": "2022-12-14T14:48:19.086Z",
   "icon": null,
-  "name": "My typebot",
+  "name": "My typebot copy",
   "publishedTypebotId": null,
   "folderId": null,
   "groups": [
     {
-      "id": "cl1rxxg6k000009lhd0mgfy5i",
+      "id": "clbnrow4e000c3b6oycsv9cu3",
+      "title": "Start",
       "blocks": [
         {
           "id": "cl1rxxg6k000109lh2is0gfua",
           "type": "start",
           "label": "Start",
-          "groupId": "cl1rxxg6k000009lhd0mgfy5i",
-          "outgoingEdgeId": "cl1w8rhzs000f2e694836a1k3"
+          "groupId": "clbnrow4e000c3b6oycsv9cu3",
+          "outgoingEdgeId": "clbnrow4e000f3b6ofulsqfj9"
         }
       ],
-      "title": "Start",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
-      "id": "cl1w8repd000b2e69fwiqsd00",
-      "graphCoordinates": { "x": 364, "y": -2 },
+      "id": "clbnrow4e000d3b6o7ma9ikmt",
       "title": "Group #1",
       "blocks": [
         {
           "id": "cl1w8repg000c2e699jqwrepg",
-          "groupId": "cl1w8repd000b2e69fwiqsd00",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl1w8repg000d2e69d8xnkqeq",
-              "blockId": "cl1w8repg000c2e699jqwrepg",
               "type": 0,
+              "blockId": "cl1w8repg000c2e699jqwrepg",
               "content": "Send email",
-              "outgoingEdgeId": "cl1w8rkoo000i2e69hs60pk0q"
+              "outgoingEdgeId": "clbnrow4e000g3b6oo62hh39h"
             }
-          ]
+          ],
+          "groupId": "clbnrow4e000d3b6o7ma9ikmt",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 364, "y": -2 }
     },
     {
-      "id": "cl1w8rjaf000g2e69cqd2bwvk",
-      "graphCoordinates": { "x": 715, "y": -10 },
+      "id": "clbnrow4e000e3b6ohe6yxtj6",
       "title": "Group #2",
       "blocks": [
         {
           "id": "cl1w8rjai000h2e695uvoimq7",
-          "groupId": "cl1w8rjaf000g2e69cqd2bwvk",
           "type": "Email",
+          "groupId": "clbnrow4e000e3b6ohe6yxtj6",
           "options": {
-            "credentialsId": "send-email-credentials",
-            "recipients": ["baptiste.arnaud95@gmail.com"],
-            "replyTo": "contact@baptiste-arnaud.fr",
             "cc": ["test1@gmail.com", "test2@gmail.com"],
             "bcc": ["test3@gmail.com", "test4@gmail.com"],
+            "body": "Test email",
+            "replyTo": "contact@baptiste-arnaud.fr",
             "subject": "Hey!",
-            "body": "Test email"
+            "recipients": ["baptiste.arnaud95@gmail.com"],
+            "credentialsId": "send-email-credentials"
+          },
+          "outgoingEdgeId": "clbnrp5wn000q3b6o5k21zfvh"
+        }
+      ],
+      "graphCoordinates": { "x": 715, "y": -10 }
+    },
+    {
+      "id": "clbnrp1kt000o3b6o2bh5ny0r",
+      "graphCoordinates": { "x": 1052.88671875, "y": -20.20703125 },
+      "title": "Group #3",
+      "blocks": [
+        {
+          "id": "clbnrp1ku000p3b6ouq1uit3r",
+          "groupId": "clbnrp1kt000o3b6o2bh5ny0r",
+          "type": "text",
+          "content": {
+            "html": "<div>Email sent!</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "Email sent!" }] }
+            ],
+            "plainText": "Email sent!"
           }
         }
       ]
@@ -71,21 +91,29 @@
   ],
   "edges": [
     {
+      "id": "clbnrow4e000f3b6ofulsqfj9",
+      "to": { "groupId": "clbnrow4e000d3b6o7ma9ikmt" },
       "from": {
-        "groupId": "cl1rxxg6k000009lhd0mgfy5i",
-        "blockId": "cl1rxxg6k000109lh2is0gfua"
-      },
-      "to": { "groupId": "cl1w8repd000b2e69fwiqsd00" },
-      "id": "cl1w8rhzs000f2e694836a1k3"
+        "blockId": "cl1rxxg6k000109lh2is0gfua",
+        "groupId": "clbnrow4e000c3b6oycsv9cu3"
+      }
+    },
+    {
+      "id": "clbnrow4e000g3b6oo62hh39h",
+      "to": { "groupId": "clbnrow4e000e3b6ohe6yxtj6" },
+      "from": {
+        "itemId": "cl1w8repg000d2e69d8xnkqeq",
+        "blockId": "cl1w8repg000c2e699jqwrepg",
+        "groupId": "clbnrow4e000d3b6o7ma9ikmt"
+      }
     },
     {
       "from": {
-        "groupId": "cl1w8repd000b2e69fwiqsd00",
-        "blockId": "cl1w8repg000c2e699jqwrepg",
-        "itemId": "cl1w8repg000d2e69d8xnkqeq"
+        "groupId": "clbnrow4e000e3b6ohe6yxtj6",
+        "blockId": "cl1w8rjai000h2e695uvoimq7"
       },
-      "to": { "groupId": "cl1w8rjaf000g2e69cqd2bwvk" },
-      "id": "cl1w8rkoo000i2e69hs60pk0q"
+      "to": { "groupId": "clbnrp1kt000o3b6o2bh5ny0r" },
+      "id": "clbnrp5wn000q3b6o5k21zfvh"
     }
   ],
   "theme": {
@@ -117,5 +145,9 @@
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
   "publicId": null,
-  "customDomain": null
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
 }

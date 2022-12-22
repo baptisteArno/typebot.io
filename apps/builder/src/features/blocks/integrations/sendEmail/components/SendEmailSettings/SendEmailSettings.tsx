@@ -115,7 +115,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           onCredentialsSelect={handleCredentialsSelect}
           onCreateNewClick={onOpen}
           defaultCredentialLabel={env('SMTP_FROM')
-            ?.match(/\<(.*)\>/)
+            ?.match(/<(.*)>/)
             ?.pop()}
           refreshDropdownKey={refreshCredentialsKey}
         />

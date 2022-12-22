@@ -1,10 +1,4 @@
-import {
-  Flex,
-  HStack,
-  Text,
-  Tooltip,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { Flex, HStack, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { DraggableBlockType } from 'models'
 import { useBlockDnd } from '@/features/graph'
 import React, { useEffect, useState } from 'react'

@@ -88,6 +88,7 @@ const typebotContext = createContext<
     ItemsActions &
     VariablesActions &
     EdgesActions
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 >({})
 

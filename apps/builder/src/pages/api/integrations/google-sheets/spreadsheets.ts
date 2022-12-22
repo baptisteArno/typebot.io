@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { drive } from '@googleapis/drive'
 import { getAuthenticatedGoogleClient } from '@/lib/googleSheets'
 import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
-import { setUser, withSentry } from '@sentry/nextjs'
+import { setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

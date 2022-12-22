@@ -1,58 +1,40 @@
+import { checkChatsUsage } from '@/features/usage'
+import { parsePrefilledVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
+import { Prisma } from 'db'
 import {
   chatReplySchema,
   ChatSession,
-  PublicTypebotWithName,
+  PublicTypebot,
   Result,
+  sendMessageInputSchema,
   SessionState,
-  typebotSchema,
+  StartParams,
+  Typebot,
+  Variable,
 } from 'models'
-import { z } from 'zod'
 import { continueBotFlow, getSession, startBotFlow } from '../utils'
 
 export const sendMessageProcedure = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/{typebotId}/sendMessage',
+      path: '/sendMessage',
       summary: 'Send a message',
       description:
-        "To initiate a chat, don't provide a `sessionId` and enter any `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
+        'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.',
     },
   })
-  .input(
-    z.object({
-      typebotId: z.string({
-        description:
-          '[How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid)',
-      }),
-      message: z.string().describe('The answer to the previous question'),
-      sessionId: z
-        .string()
-        .optional()
-        .describe(
-          'Session ID that you get from the initial chat request to a bot'
-        ),
-      isPreview: z.boolean().optional(),
-    })
-  )
-  .output(
-    chatReplySchema.and(
-      z.object({
-        sessionId: z.string().nullish(),
-        typebot: typebotSchema.pick({ theme: true, settings: true }).nullish(),
-      })
-    )
-  )
-  .query(async ({ input: { typebotId, sessionId, message } }) => {
+  .input(sendMessageInputSchema)
+  .output(chatReplySchema)
+  .query(async ({ input: { sessionId, message, startParams } }) => {
     const session = sessionId ? await getSession(sessionId) : null
 
     if (!session) {
-      const { sessionId, typebot, messages, input } = await startSession(
-        typebotId
-      )
+      const { sessionId, typebot, messages, input, resultId } =
+        await startSession(startParams)
       return {
         sessionId,
         typebot: typebot
@@ -60,14 +42,14 @@ export const sendMessageProcedure = publicProcedure
               theme: typebot.theme,
               settings: typebot.settings,
             }
-          : null,
+          : undefined,
         messages,
         input,
+        resultId,
       }
     } else {
-      const { messages, input, logic, newSessionState } = await continueBotFlow(
-        session.state
-      )(message)
+      const { messages, input, logic, newSessionState, integrations } =
+        await continueBotFlow(session.state)(message)
 
       await prisma.chatSession.updateMany({
         where: { id: session.id },
@@ -80,59 +62,103 @@ export const sendMessageProcedure = publicProcedure
         messages,
         input,
         logic,
+        integrations,
       }
     }
   })
 
-const startSession = async (typebotId: string) => {
-  const typebot = await prisma.typebot.findUnique({
-    where: { id: typebotId },
-    select: {
-      publishedTypebot: true,
-      name: true,
-      isClosed: true,
-      isArchived: true,
-      id: true,
-    },
-  })
+const startSession = async (startParams?: StartParams) => {
+  if (!startParams?.typebotId)
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'No typebotId provided in startParams',
+    })
+  const typebotQuery = startParams.isPreview
+    ? await prisma.typebot.findUnique({
+        where: { id: startParams.typebotId },
+        select: {
+          groups: true,
+          edges: true,
+          settings: true,
+          theme: true,
+          variables: true,
+          isArchived: true,
+        },
+      })
+    : await prisma.typebot.findUnique({
+        where: { id: startParams.typebotId },
+        select: {
+          publishedTypebot: {
+            select: {
+              groups: true,
+              edges: true,
+              settings: true,
+              theme: true,
+              variables: true,
+            },
+          },
+          name: true,
+          isClosed: true,
+          isArchived: true,
+          id: true,
+        },
+      })
 
-  if (!typebot?.publishedTypebot || typebot.isArchived)
+  const typebot =
+    typebotQuery && 'publishedTypebot' in typebotQuery
+      ? (typebotQuery.publishedTypebot as Pick<
+          PublicTypebot,
+          'groups' | 'edges' | 'settings' | 'theme' | 'variables'
+        >)
+      : (typebotQuery as Pick<
+          Typebot,
+          'groups' | 'edges' | 'settings' | 'theme' | 'variables' | 'isArchived'
+        >)
+
+  if (!typebot)
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: 'Typebot not found',
     })
 
-  if (typebot.isClosed)
+  if ('isClosed' in typebot && typebot.isClosed)
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: 'Typebot is closed',
     })
 
-  const result = (await prisma.result.create({
-    data: { isCompleted: false, typebotId },
-    select: {
-      id: true,
-      variables: true,
-      hasStarted: true,
-    },
-  })) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
+  const hasReachedLimit = !startParams.isPreview
+    ? await checkChatsUsage(startParams.typebotId)
+    : false
 
-  const publicTypebot = typebot.publishedTypebot as PublicTypebotWithName
+  if (hasReachedLimit)
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Your workspace reached its chat limit',
+    })
+
+  const startVariables = startParams.prefilledVariables
+    ? parsePrefilledVariables(typebot.variables, startParams.prefilledVariables)
+    : typebot.variables
+
+  const result = await getResult({ ...startParams, startVariables })
 
   const initialState: SessionState = {
     typebot: {
-      id: publicTypebot.typebotId,
-      groups: publicTypebot.groups,
-      edges: publicTypebot.edges,
-      variables: publicTypebot.variables,
+      id: startParams.typebotId,
+      groups: typebot.groups,
+      edges: typebot.edges,
+      variables: startVariables,
     },
     linkedTypebots: {
       typebots: [],
       queue: [],
     },
-    result: { id: result.id, variables: [], hasStarted: false },
+    result: result
+      ? { id: result.id, variables: result.variables, hasStarted: false }
+      : undefined,
     isPreview: false,
-    currentTypebotId: publicTypebot.typebotId,
+    currentTypebotId: startParams.typebotId,
   }
 
   const {
@@ -145,8 +171,6 @@ const startSession = async (typebotId: string) => {
   if (!input)
     return {
       messages,
-      typebot: null,
-      sessionId: null,
       logic,
     }
 
@@ -165,13 +189,47 @@ const startSession = async (typebotId: string) => {
   })) as ChatSession
 
   return {
+    resultId: result?.id,
     sessionId: session.id,
     typebot: {
-      theme: publicTypebot.theme,
-      settings: publicTypebot.settings,
+      theme: typebot.theme,
+      settings: typebot.settings,
     },
     messages,
     input,
     logic,
   }
+}
+
+const getResult = async ({
+  typebotId,
+  isPreview,
+  resultId,
+  startVariables,
+}: Pick<StartParams, 'isPreview' | 'resultId' | 'typebotId'> & {
+  startVariables: Variable[]
+}) => {
+  if (isPreview) return undefined
+  const data = {
+    isCompleted: false,
+    typebotId: typebotId,
+    variables: { set: startVariables.filter((variable) => variable.value) },
+  } satisfies Prisma.ResultUncheckedCreateInput
+  const select = {
+    id: true,
+    variables: true,
+    hasStarted: true,
+  } satisfies Prisma.ResultSelect
+  return (
+    resultId
+      ? await prisma.result.update({
+          where: { id: resultId },
+          data,
+          select,
+        })
+      : await prisma.result.create({
+          data,
+          select,
+        })
+  ) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
 }

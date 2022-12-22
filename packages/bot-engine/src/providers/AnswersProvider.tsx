@@ -15,6 +15,7 @@ const answersContext = createContext<{
     answer: AnswerInput & { uploadedFiles: boolean }
   ) => Promise<void> | undefined
   updateVariables: (variables: VariableWithUnknowValue[]) => void
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 

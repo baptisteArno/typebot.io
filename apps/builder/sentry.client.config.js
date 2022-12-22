@@ -14,7 +14,9 @@ Sentry.init({
           hint?.event.target.innerText
         }`
       }
-    } catch (e) {}
+    } catch (e) {
+      /* empty */
+    }
     return breadcrumb
   },
 })
