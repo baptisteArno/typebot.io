@@ -18,6 +18,7 @@ export const executeTypebotLink = async (
     createEdge,
     setCurrentTypebotId,
     pushEdgeIdInLinkedTypebotQueue,
+    pushParentTypebotId,
     currentTypebotId,
   } = context
   const linkedTypebot = (
@@ -42,6 +43,7 @@ export const executeTypebotLink = async (
       edgeId: block.outgoingEdgeId,
       typebotId: currentTypebotId,
     })
+  pushParentTypebotId(currentTypebotId)
   setCurrentTypebotId(
     'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
   )

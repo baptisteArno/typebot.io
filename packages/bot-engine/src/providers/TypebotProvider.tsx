@@ -30,10 +30,12 @@ const typebotContext = createContext<{
   isPreview: boolean
   linkedBotQueue: LinkedTypebotQueue
   isLoading: boolean
+  parentTypebotIds: string[]
   setCurrentTypebotId: (id: string) => void
   updateVariableValue: (variableId: string, value: unknown) => void
   createEdge: (edge: Edge) => void
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
+  pushParentTypebotId: (typebotId: string) => void
   popEdgeIdFromLinkedTypebotQueue: () => void
   pushEdgeIdInLinkedTypebotQueue: (bot: {
     typebotId: string
@@ -63,6 +65,7 @@ export const TypebotProvider = ({
   const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
   const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
   const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([])
+  const [parentTypebotIds, setParentTypebotIds] = useState<string[]>([])
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
@@ -149,6 +152,10 @@ export const TypebotProvider = ({
       }
     })
 
+  const pushParentTypebotId = (typebotId: string) => {
+    setParentTypebotIds((ids) => [...ids, typebotId])
+  }
+
   const pushEdgeIdInLinkedTypebotQueue = (bot: {
     typebotId: string
     edgeId: string
@@ -156,6 +163,7 @@ export const TypebotProvider = ({
 
   const popEdgeIdFromLinkedTypebotQueue = () => {
     setLinkedBotQueue((queue) => queue.slice(1))
+    setParentTypebotIds((ids) => ids.slice(1))
     setCurrentTypebotId(linkedBotQueue[0].typebotId)
   }
 
@@ -172,6 +180,8 @@ export const TypebotProvider = ({
         onNewLog,
         linkedBotQueue,
         isLoading,
+        parentTypebotIds,
+        pushParentTypebotId,
         pushEdgeIdInLinkedTypebotQueue,
         popEdgeIdFromLinkedTypebotQueue,
         currentTypebotId,

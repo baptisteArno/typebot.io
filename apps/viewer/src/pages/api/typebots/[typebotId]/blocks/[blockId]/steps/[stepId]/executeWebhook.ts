@@ -23,11 +23,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const groupId = req.query.groupId as string
     const blockId = req.query.blockId as string
     const resultId = req.query.resultId as string | undefined
-    const { resultValues, variables } = (
+    const { resultValues, variables, parentTypebotIds } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
       resultValues: ResultValues
       variables: Variable[]
+      parentTypebotIds: string[]
     }
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
@@ -43,13 +44,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-    const result = await executeWebhook(typebot)(
-      preparedWebhook,
+    const result = await executeWebhook(typebot)({
+      webhook: preparedWebhook,
       variables,
       groupId,
       resultValues,
-      resultId
-    )
+      resultId,
+      parentTypebotIds,
+    })
     return res.status(200).send(result)
   }
   return methodNotAllowed(res)

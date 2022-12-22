@@ -24,7 +24,6 @@ import { stringify } from 'qs'
 import { byId, omit, parseAnswers } from 'utils'
 import got, { Method, Headers, HTTPError } from 'got'
 import { getResultValues } from '@/features/results/api'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
 import { parseSampleResult } from './parseSampleResult'
 
 export const executeWebhookBlock = async (
@@ -45,7 +44,7 @@ export const executeWebhookBlock = async (
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
   const resultValues = await getResultValues(result.id)
   if (!resultValues) return { outgoingEdgeId: block.outgoingEdgeId }
-  const webhookResponse = await executeWebhook(typebot)(
+  const webhookResponse = await executeWebhook({ typebot })(
     preparedWebhook,
     typebot.variables,
     block.groupId,
@@ -112,7 +111,7 @@ const prepareWebhookAttributes = (
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 export const executeWebhook =
-  (typebot: SessionState['typebot']) =>
+  ({ typebot }: Pick<SessionState, 'typebot'>) =>
   async (
     webhook: Webhook,
     variables: Variable[],
@@ -148,11 +147,10 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebots = await getLinkedTypebots(typebot)
 
     const bodyContent = await getBodyContent(
       typebot,
-      linkedTypebots
+      []
     )({
       body: webhook.body,
       resultValues,

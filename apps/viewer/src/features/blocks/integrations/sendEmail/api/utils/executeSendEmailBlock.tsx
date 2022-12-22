@@ -1,4 +1,3 @@
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
 import { ExecuteIntegrationResponse } from '@/features/chat'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { parseVariables } from '@/features/variables'
@@ -183,13 +182,12 @@ const getEmailBody = async ({
     where: { typebotId },
   })) as unknown as PublicTypebot
   if (!typebot) return
-  const linkedTypebots = await getLinkedTypebots(typebot)
   const resultValues = (await prisma.result.findUnique({
     where: { id: resultId },
     include: { answers: true },
   })) as ResultValues | null
   if (!resultValues) return
-  const answers = parseAnswers(typebot, linkedTypebots)(resultValues)
+  const answers = parseAnswers(typebot, [])(resultValues)
   return {
     html: render(
       <DefaultBotNotificationEmail

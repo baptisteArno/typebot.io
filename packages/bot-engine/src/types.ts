@@ -25,6 +25,7 @@ export type LogicState = {
   typebot: TypebotViewerProps['typebot']
   linkedTypebots: LinkedTypebot[]
   currentTypebotId: string
+  pushParentTypebotId: (id: string) => void
   pushEdgeIdInLinkedTypebotQueue: (bot: {
     edgeId: string
     typebotId: string
@@ -47,6 +48,7 @@ export type IntegrationState = {
   resultValues: ResultValues
   groups: Group[]
   resultId?: string
+  parentTypebotIds: string[]
   updateVariables: (variables: VariableWithUnknowValue[]) => void
   updateVariableValue: (variableId: string, value: unknown) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void

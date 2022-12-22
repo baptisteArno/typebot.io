@@ -60,11 +60,13 @@ export const ChatGroup = ({
     createEdge,
     apiHost,
     isPreview,
+    parentTypebotIds,
     onNewLog,
     injectLinkedTypebot,
     linkedTypebots,
     setCurrentTypebotId,
     pushEdgeIdInLinkedTypebotQueue,
+    pushParentTypebotId,
   } = useTypebot()
   const { resultValues, updateVariables, resultId } = useAnswers()
   const { scroll } = useChat()
@@ -131,6 +133,7 @@ export const ChatGroup = ({
         setCurrentTypebotId,
         pushEdgeIdInLinkedTypebotQueue,
         currentTypebotId,
+        pushParentTypebotId,
       })
       const isRedirecting =
         currentBlock.type === LogicBlockType.REDIRECT &&
@@ -156,6 +159,7 @@ export const ChatGroup = ({
           groups: typebot.groups,
           onNewLog,
           resultId,
+          parentTypebotIds,
         },
       })
       nextEdgeId ? onGroupEnd({ edgeId: nextEdgeId }) : displayNextBlock()

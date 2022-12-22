@@ -22,6 +22,7 @@ export const executeWebhook = async (
     resultValues,
     onNewLog,
     resultId,
+    parentTypebotIds,
   }: IntegrationState
 ) => {
   const params = stringify({ resultId })
@@ -31,6 +32,7 @@ export const executeWebhook = async (
     body: {
       variables,
       resultValues,
+      parentTypebotIds,
     },
   })
   const statusCode = (

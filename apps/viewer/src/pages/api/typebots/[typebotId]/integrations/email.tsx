@@ -15,7 +15,7 @@ import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from 'emails'
 import { render } from '@faire/mjml-react/dist/src/utils/render'
 import prisma from '@/lib/prisma'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
+import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'
 
 const cors = initMiddleware(Cors())
 
@@ -189,7 +189,9 @@ const getEmailBody = async ({
     where: { typebotId },
   })) as unknown as PublicTypebot
   if (!typebot) return
-  const linkedTypebots = await getLinkedTypebots(typebot)
+  const linkedTypebots = await getLinkedTypebotsChildren({
+    typebots: [typebot],
+  })([])
   const answers = parseAnswers(typebot, linkedTypebots)(resultValues)
   return {
     html: render(

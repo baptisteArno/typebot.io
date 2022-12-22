@@ -21,7 +21,10 @@ import Cors from 'cors'
 import prisma from '@/lib/prisma'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { parseSampleResult } from '@/features/blocks/integrations/webhook/api'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api'
+import {
+  getLinkedTypebots,
+  getLinkedTypebotsChildren,
+} from '@/features/blocks/logic/typebotLink/api'
 
 const cors = initMiddleware(Cors())
 
@@ -31,11 +34,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebotId = req.query.typebotId as string
     const blockId = req.query.blockId as string
     const resultId = req.query.resultId as string | undefined
-    const { resultValues, variables } = (
+    const { resultValues, variables, parentTypebotIds } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
       resultValues: ResultValues | undefined
       variables: Variable[]
+      parentTypebotIds: string[]
     }
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
@@ -51,13 +55,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-    const result = await executeWebhook(typebot)(
-      preparedWebhook,
+    const result = await executeWebhook(typebot)({
+      webhook: preparedWebhook,
       variables,
-      block.groupId,
+      groupId: block.groupId,
       resultValues,
-      resultId
-    )
+      resultId,
+      parentTypebotIds,
+    })
     return res.status(200).send(result)
   }
   return methodNotAllowed(res)
@@ -79,13 +84,21 @@ const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 export const executeWebhook =
   (typebot: Typebot) =>
-  async (
-    webhook: Webhook,
-    variables: Variable[],
-    groupId: string,
-    resultValues?: ResultValues,
+  async ({
+    webhook,
+    variables,
+    groupId,
+    resultValues,
+    resultId,
+    parentTypebotIds = [],
+  }: {
+    webhook: Webhook
+    variables: Variable[]
+    groupId: string
+    resultValues?: ResultValues
     resultId?: string
-  ): Promise<WebhookResponse> => {
+    parentTypebotIds: string[]
+  }): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
       return {
         statusCode: 400,
@@ -114,11 +127,18 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebots = await getLinkedTypebots(typebot)
-    const bodyContent = await getBodyContent(
-      typebot,
-      linkedTypebots
-    )({
+    const linkedTypebotsParents = await getLinkedTypebots({
+      isPreview: !('typebotId' in typebot),
+      typebotIds: parentTypebotIds,
+    })
+    const linkedTypebotsChildren = await getLinkedTypebotsChildren({
+      isPreview: !('typebotId' in typebot),
+      typebots: [typebot],
+    })([])
+    const bodyContent = await getBodyContent(typebot, [
+      ...linkedTypebotsParents,
+      ...linkedTypebotsChildren,
+    ])({
       body: webhook.body,
       resultValues,
       groupId,
