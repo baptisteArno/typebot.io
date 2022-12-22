@@ -41,7 +41,7 @@ const App = ({
         position: 'bottom-right',
         status: 'success',
         title: 'Upgrade success!',
-        description: `Workspace upgraded to ${toTitleCase(status)} 🎉`,
+        description: `Workspace upgraded to ${toTitleCase(newPlan)} 🎉`,
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady])
