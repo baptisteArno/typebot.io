@@ -135,7 +135,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     //   )
     // }
     case IntegrationStepType.WEBHOOK: {
-      return <WebhookContent step={step} />
+      return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
     // case IntegrationStepType.ZAPIER: {
     //   return (

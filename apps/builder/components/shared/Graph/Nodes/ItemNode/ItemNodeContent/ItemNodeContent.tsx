@@ -3,6 +3,7 @@ import React from 'react'
 import { ButtonNodeContent } from './contents/ButtonNodeContent'
 import { ConditionNodeContent } from './contents/ConditionNodeContent'
 import { OfficeHoursNodeContent } from './contents/OfficeHoursNodeContent'
+import { WebhookNodeContent } from './contents/WebhooksNodeContent/WebhookNodeContent'
 
 type Props = {
   item: Item
@@ -24,6 +25,8 @@ export const ItemNodeContent = ({ item, indices, isMouseOver }: Props) => {
       return <ConditionNodeContent item={item} />
     case ItemType.OFFICE_HOURS:
         return <OfficeHoursNodeContent item={item} />
+    case ItemType.WEBHOOK:
+      return <WebhookNodeContent item={item} />
     default:
       return <></>
   }

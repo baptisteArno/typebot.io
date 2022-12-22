@@ -52,8 +52,8 @@ export type StepWithOptions =
 export type StepWithOptionsType =
   | InputStepType
   | Exclude<LogicStepType, LogicStepType.CONDITION>
+  | Exclude<IntegrationStepType, IntegrationStepType.WEBHOOK>
   | IntegrationStepType
-  // | OctaStepType
 
 export type StepOptions =
   | InputStepOptions

@@ -26,8 +26,7 @@ import {
   WebhookStep,
   defaultWebhookAttributes,
   Webhook,
-  MakeComStep,
-  PabblyConnectStep,
+  StepIndices,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -44,141 +43,100 @@ import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
 
-type Provider = {
-  name: 'Make.com' | 'Pabbly Connect'
-  url: string
-}
 type Props = {
-  step: WebhookStep | MakeComStep | PabblyConnectStep
+  step: WebhookStep,
   onOptionsChange: (options: WebhookOptions) => void
-  provider?: Provider
 }
+
+const localWebhook  = {
+  url: "",
+  method:"",
+  queryParams: "",
+  headers: [],
+  body: ""
+};
 
 export const WebhookSettings = ({
   step: { options, blockId, id: stepId, webhookId },
-  onOptionsChange,
-  provider,
+  onOptionsChange
 }: Props) => {
-  const { typebot, save, webhooks, updateWebhook } = useTypebot()
+  const { typebot } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
 
-  const toast = useToast({
-    position: 'top-right',
-    status: 'error',
-  })
-  const [localWebhook, setLocalWebhook] = useState(
-    webhooks.find(byId(webhookId))
-  )
+  // const handleUrlChange = (url?: string) =>{
+  //   localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null})
+  // }
 
-  useEffect(() => {
-    if (localWebhook) return
-    const incomingWebhook = webhooks.find(byId(webhookId))
-    setLocalWebhook(incomingWebhook)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webhooks])
+  // const handleMethodChange = (method: HttpMethod) =>
+  //   localWebhook && setLocalWebhook({ ...localWebhook, method: method ?? 'PUT'})
 
-  useEffect(() => {
-    if (!typebot) return
-    if (!localWebhook) {
-      const newWebhook = {
-        id: webhookId,
-        ...defaultWebhookAttributes,
-        typebotId: typebot.id,
-      } as Webhook
-      updateWebhook(webhookId, newWebhook)
-    }
+  // const handleQueryParamsChange = (queryParams: KeyValue[]) =>
+  //   localWebhook && setLocalWebhook({ ...localWebhook, queryParams })
 
-    return () => {
-      setLocalWebhook((localWebhook) => {
-        // if (!localWebhook) return
-        updateWebhook(webhookId, localWebhook).then()
-        return localWebhook
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // const handleHeadersChange = (headers: KeyValue[]) =>
+  //   localWebhook && setLocalWebhook({ ...localWebhook, headers })
 
-  const handleUrlChange = (url?: string) =>{
-    localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null})
-  }
+  // const handleBodyChange = (body: string) =>
+  //   localWebhook && setLocalWebhook({ ...localWebhook, body })
 
-  const handleMethodChange = (method: HttpMethod) =>
-    localWebhook && setLocalWebhook({ ...localWebhook, method: method ?? 'PUT'})
+  // const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
+  //   onOptionsChange({ ...options, variablesForTest })
 
-  const handleQueryParamsChange = (queryParams: KeyValue[]) =>
-    localWebhook && setLocalWebhook({ ...localWebhook, queryParams })
+  // const handleResponseMappingChange = (
+  //   responseVariableMapping: ResponseVariableMapping[]
+  // ) => onOptionsChange({ ...options, responseVariableMapping })
 
-  const handleHeadersChange = (headers: KeyValue[]) =>
-    localWebhook && setLocalWebhook({ ...localWebhook, headers })
+  // const handleAdvancedConfigChange = (isAdvancedConfig: boolean) =>
+  //   onOptionsChange({ ...options, isAdvancedConfig })
 
-  const handleBodyChange = (body: string) =>
-    localWebhook && setLocalWebhook({ ...localWebhook, body })
+  // const handleBodyFormStateChange = (isCustomBody: boolean) =>
+  //   onOptionsChange({ ...options, isCustomBody })
 
-  const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
-    onOptionsChange({ ...options, variablesForTest })
+  // const handleTestRequestClick = async () => {
+  //   if (!typebot || !localWebhook) return
+  //   setIsTestResponseLoading(true)
+  //   await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
+  //   const { data, error } = await executeWebhook(
+  //     typebot.id,
+  //     convertVariableForTestToVariables(
+  //       options.variablesForTest,
+  //       typebot.variables
+  //     ),
+  //     { blockId, stepId }
+  //   )
+  //   if (error) return toast({ title: error.name, description: error.message })
+  //   setTestResponse(JSON.stringify(data, undefined, 2))
+  //   setResponseKeys(getDeepKeys(data))
+  //   setIsTestResponseLoading(false)
+  // }
 
-  const handleResponseMappingChange = (
-    responseVariableMapping: ResponseVariableMapping[]
-  ) => onOptionsChange({ ...options, responseVariableMapping })
-
-  const handleAdvancedConfigChange = (isAdvancedConfig: boolean) =>
-    onOptionsChange({ ...options, isAdvancedConfig })
-
-  const handleBodyFormStateChange = (isCustomBody: boolean) =>
-    onOptionsChange({ ...options, isCustomBody })
-
-  const handleTestRequestClick = async () => {
-    if (!typebot || !localWebhook) return
-    setIsTestResponseLoading(true)
-    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
-    const { data, error } = await executeWebhook(
-      typebot.id,
-      convertVariableForTestToVariables(
-        options.variablesForTest,
-        typebot.variables
-      ),
-      { blockId, stepId }
-    )
-    if (error) return toast({ title: error.name, description: error.message })
-    setTestResponse(JSON.stringify(data, undefined, 2))
-    setResponseKeys(getDeepKeys(data))
-    setIsTestResponseLoading(false)
-  }
-
-  const ResponseMappingInputs = useMemo(
-    () => (props: TableListItemProps<ResponseVariableMapping>) =>
-      <DataVariableInputs {...props} dataItems={responseKeys} />,
-    [responseKeys]
-  )
+  // const ResponseMappingInputs = useMemo(
+  //   () => (props: TableListItemProps<ResponseVariableMapping>) =>
+  //     <DataVariableInputs {...props} dataItems={responseKeys} />,
+  //   [responseKeys]
+  // )
 
   // if (!localWebhook) return <Spinner />
+
+  const handlerDefault = (e: any) => {
+    console.log("teste");
+  }
+
   return (
     <Stack spacing={4}>
-      {provider && (
-        <Alert status={'info'} bgColor={'blue.50'} rounded="md">
-          <AlertIcon />
-          <Stack>
-            <Text>Head up to {provider.name} to configure this block:</Text>
-            <Button as={Link} href={provider.url} isExternal colorScheme="blue">
-              <Text mr="2">{provider.name}</Text> <ExternalLinkIcon />
-            </Button>
-          </Stack>
-        </Alert>
-      )}
       <Input
         placeholder="Digite o endereço da API ou do sistema"
         defaultValue={localWebhook?.url ?? ''}
-        onChange={handleUrlChange}
+        onChange={handlerDefault}
         debounceTimeout={0}
-        withVariableButton={!provider}
       />
       <SwitchWithLabel
         id={'easy-config'}
         label="Selecionar o método da integração"
         initialValue={options.isAdvancedConfig ?? true}
-        onCheckChange={handleAdvancedConfigChange}
+        onCheckChange={handlerDefault}
       />
       {(options.isAdvancedConfig ?? true) && (
         <Stack>
@@ -186,7 +144,7 @@ export const WebhookSettings = ({
             <Text>O que você quer fazer</Text>
             <DropdownList<HttpMethod>
               currentItem={localWebhook?.method as HttpMethod}
-              onItemSelect={handleMethodChange}
+              onItemSelect={handlerDefault}
               items={Object.values(HttpMethod)}
             />
           </HStack>
@@ -202,8 +160,8 @@ export const WebhookSettings = ({
                   (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
                 </Text>
                 <TableList<KeyValue>
-                  initialItems={localWebhook?.queryParams ?? []}
-                  onItemsChange={handleQueryParamsChange}
+                  initialItems={[]}
+                  onItemsChange={handlerDefault}
                   Item={QueryParamsInputs}
                   addLabel="Adicionar parâmetro"
                   debounceTimeout={0}
@@ -222,7 +180,7 @@ export const WebhookSettings = ({
                 </Text> 
                 <TableList<KeyValue>
                   initialItems={localWebhook?.headers ?? []}
-                  onItemsChange={handleHeadersChange}
+                  onItemsChange={handlerDefault}
                   Item={HeadersInputs}
                   addLabel="Adicionar parâmetro"
                   debounceTimeout={0}
@@ -239,13 +197,13 @@ export const WebhookSettings = ({
                   id={'custom-body'}
                   label="Customizar body"
                   initialValue={options.isCustomBody ?? true}
-                  onCheckChange={handleBodyFormStateChange}
+                  onCheckChange={handlerDefault}
                 />
                 {(options.isCustomBody ?? true) && (
                   <CodeEditor
                     value={localWebhook?.body ?? ''}
                     lang="json"
-                    onChange={handleBodyChange}
+                    onChange={handlerDefault}
                     debounceTimeout={0}
                   >
                     <text color="gray.500" fontSize="sm">
@@ -271,7 +229,7 @@ export const WebhookSettings = ({
                   initialItems={
                     options?.variablesForTest ?? { byId: {}, allIds: [] }
                   }
-                  onItemsChange={handleVariablesChange}
+                  onItemsChange={handlerDefault}
                   Item={VariableForTestInputs}
                   addLabel="Adicionar variável"
                   debounceTimeout={0}
@@ -281,10 +239,10 @@ export const WebhookSettings = ({
           </Accordion>
         </Stack>
       )}
-      <Stack>
+      {/* <Stack>
         {localWebhook?.url && (
           <Button
-            onClick={handleTestRequestClick}
+            onClick={handlerDefault}
             colorScheme="blue"
             isLoading={isTestResponseLoading}
           >
@@ -304,8 +262,8 @@ export const WebhookSettings = ({
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <TableList<ResponseVariableMapping>
                   initialItems={options.responseVariableMapping}
-                  onItemsChange={handleResponseMappingChange}
-                  Item={ResponseMappingInputs}
+                  onItemsChange={handlerDefault}
+                  Item={}
                   addLabel="Adicionar variável"
                   debounceTimeout={0}
                 />
@@ -313,7 +271,7 @@ export const WebhookSettings = ({
             </AccordionItem>
           </Accordion>
         )}
-      </Stack>
+      </Stack> */}
     </Stack>
   )
 }

@@ -47,7 +47,6 @@ import { ZapierSettings } from './bodies/ZapierSettings'
 
 type Props = {
   step: Exclude<Step, TextBubbleStep>
-  webhook?: Webhook
   onExpandClick: () => void
   onStepChange: (updates: Partial<Step>) => void
 }
@@ -236,23 +235,6 @@ export const StepSettings = ({
         />
       )
     }
-    case IntegrationStepType.GOOGLE_SHEETS: {
-      return (
-        <GoogleSheetsSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-          stepId={step.id}
-        />
-      )
-    }
-    case IntegrationStepType.GOOGLE_ANALYTICS: {
-      return (
-        <GoogleAnalyticsSettings
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
     case OctaStepType.ASSIGN_TO_TEAM: {
       return (
         <AssignToTeamSettingsBody
@@ -268,44 +250,9 @@ export const StepSettings = ({
         <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
-    case IntegrationStepType.ZAPIER: {
-      return <ZapierSettings step={step} />
-    }
-    case IntegrationStepType.MAKE_COM: {
-      return (
-        <WebhookSettings
-          step={step}
-          onOptionsChange={handleOptionsChange}
-          provider={{
-            name: 'Make.com',
-            url: 'https://eu1.make.com/app/invite/43fa76a621f67ea27f96cffc3a2477e1',
-          }}
-        />
-      )
-    }
-    case IntegrationStepType.PABBLY_CONNECT: {
-      return (
-        <WebhookSettings
-          step={step}
-          onOptionsChange={handleOptionsChange}
-          provider={{
-            name: 'Pabbly Connect',
-            url: 'https://www.pabbly.com/connect/integrations/typebot/',
-          }}
-        />
-      )
-    }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />
-      )
-    }
-    case IntegrationStepType.EMAIL: {
-      return (
-        <SendEmailSettings
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
       )
     }
     default: {

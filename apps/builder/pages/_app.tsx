@@ -46,7 +46,6 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
             <TypebotContext typebotId={typebotId}>
               <WorkspaceContext>
                 <Component {...pageProps} />
-                <SupportBubble />
               </WorkspaceContext>
             </TypebotContext>
           ) : (

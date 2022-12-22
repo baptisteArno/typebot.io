@@ -5,7 +5,7 @@ import {
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, OctaStepType, StepIndices, StepWithItems } from 'models'
+import { ButtonItem, IntegrationStepType, OctaStepType, StepIndices, StepWithItems } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
@@ -42,7 +42,7 @@ export const ItemNodesList = ({
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
-  >()
+  >() 
 
   const handleGlobalMouseMove = (event: MouseEvent) => {
     if (!draggedItem || draggedItem.stepId !== step.id) return
@@ -132,17 +132,22 @@ export const ItemNodesList = ({
       /> */}
       {step.type === OctaStepType.OFFICE_HOURS && (
         <Container>
-          { !typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && <HandleSelectCalendar>
+          {!typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && <HandleSelectCalendar>
             Selecione o expediente que o seu bot irá seguir
           </HandleSelectCalendar>}
-          {typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && 
-          <div>
-            Horário: &nbsp;&nbsp;
-            <SelectedCalendar>
-            {typebot?.blocks[blockIndex].steps[stepIndex].options['name']}
-            </SelectedCalendar>
-          </div>
-            }
+          {typebot?.blocks[blockIndex].steps[stepIndex].options['name'] &&
+            <div>
+              Horário: &nbsp;&nbsp;
+              <SelectedCalendar>
+                {typebot?.blocks[blockIndex].steps[stepIndex].options['name']}
+              </SelectedCalendar>
+            </div>
+          }
+        </Container>
+      )}
+      {step.type === IntegrationStepType.WEBHOOK && (
+        <Container>
+          Teste
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {
@@ -169,7 +174,7 @@ export const ItemNodesList = ({
           </Stack>
         )
       })}
-      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && (
+      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && step.type !== IntegrationStepType.WEBHOOK && (
         <Flex
           px="4"
           py="2"

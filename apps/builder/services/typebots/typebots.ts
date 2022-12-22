@@ -28,15 +28,12 @@ import {
   defaultAskNameOptions,
   defaultSetVariablesOptions,
   defaultRedirectOptions,
-  defaultGoogleSheetsOptions,
-  defaultGoogleAnalyticsOptions,
   defaultCodeOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
   Item,
   ItemType,
   defaultConditionContent,
-  defaultSendEmailOptions,
   defaultEmbedBubbleContent,
   ChoiceInputStep,
   ConditionStep,
@@ -45,13 +42,10 @@ import {
   defaultAssignToTeamOptions,
   defaultEndConversationBubbleContent,
   OctaBubbleStepType,
-  OctaBubbleStepContent,
-  defaultPaymentInputOptions,
   defaultRequestOptions,
   defaultRequestButtons,
   OfficeHourStep,
   defaultOfficeHoursOptions,
-  defaultOfficeHoursContent
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -312,7 +306,7 @@ export const parseNewStep = (
 }
 
 const parseDefaultItems = (
-  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS,
+  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK,
   stepId: string
 ): Item[] => {
   switch (type) {
@@ -353,6 +347,35 @@ const parseDefaultItems = (
             source: "",
             subType: null,
             values: ["@OFFICE_HOURS_FALSE"]
+          }
+        }
+      ]
+      case IntegrationStepType.WEBHOOK:
+        return [
+          {
+          id: cuid(),
+          stepId,
+          type: ItemType.WEBHOOK,
+          content: {
+            matchType: "$eq",
+            referenceProperty: null,
+            referenceValue: null,
+            source: "CURRENT_SESSION",
+            subType: null,
+            values: ["@CONDITIONAL_TRUE"]
+          }
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.WEBHOOK,
+          content: {
+            matchType: "$eq",
+            referenceProperty: null,
+            referenceValue: null,
+            source: "CURRENT_SESSION",
+            subType: null,
+            values: ["@CONDITIONAL_FALSE"]
           }
         }
       ]

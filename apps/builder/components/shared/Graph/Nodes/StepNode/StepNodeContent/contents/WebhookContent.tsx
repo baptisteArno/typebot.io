@@ -1,20 +1,28 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { WebhookStep } from 'models'
+import { StepIndices, WebhookStep } from 'models'
 import { byId } from 'utils'
 
 type Props = {
-  step: WebhookStep
+  step: WebhookStep,
+  indices: StepIndices,
 }
 
-export const WebhookContent = ({ step: { webhookId } }: Props) => {
-  const { webhooks } = useTypebot()
-  const webhook = webhooks.find(byId(webhookId))
+export const WebhookContent = (
+  {
+    step,
+    indices: { blockIndex, stepIndex }
+  }: Props) => {
 
-  if (!webhook?.url) return <Text color="gray.500">Configuração...</Text>
+    console.log("Webhoot step: => ", step);
+    
+
+  // {typebot?.blocks[blockIndex].steps[stepIndex].options['name']} //bloco no typebot
+
+  // const { webhooks } = useTypebot()
+  // const webhook = webhooks.find(byId(webhookId))
+
   return (
-    <Text noOfLines={2} pr="6">
-      {webhook.method} {webhook.url}
-    </Text>
+    <Text color="gray.500">Configuração...</Text>
   )
 }

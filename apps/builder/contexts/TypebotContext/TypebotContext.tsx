@@ -71,7 +71,6 @@ const typebotContext = createContext<
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
     linkedTypebots?: Typebot[]
-    webhooks: Webhook[]
     isReadOnly?: boolean
     isPublished: boolean
     isPublishing: boolean
@@ -460,7 +459,6 @@ export const TypebotContext = ({
         typebot: localTypebot,
         publishedTypebot,
         linkedTypebots,
-        webhooks: webhooks ?? [],
         isReadOnly,
         isSavingLoading,
         save: saveTypebot,
