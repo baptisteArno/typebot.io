@@ -255,6 +255,7 @@ const convertKeyValueTableToObject = (
   }, {})
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
   try {
     return { data: JSON.parse(json), isJson: true }

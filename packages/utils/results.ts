@@ -190,26 +190,28 @@ export const parseAnswers =
       ...[...answers, ...resultVariables].reduce<{
         [key: string]: string
       }>((o, answerOrVariable) => {
-        if ('blockId' in answerOrVariable) {
-          const answer = answerOrVariable as Answer
-          const key = answer.variableId
-            ? header.find(
-                (cell) =>
-                  answer.variableId &&
-                  cell.variableIds?.includes(answer.variableId)
-              )?.label
-            : header.find((cell) =>
-                cell.blocks?.some((block) => block.id === answer.blockId)
-              )?.label
-          if (!key) return o
-          return {
-            ...o,
-            [key]: answer.content.toString(),
-          }
+        const isVariable = !('blockId' in answerOrVariable)
+        if (isVariable) {
+          const variable = answerOrVariable as VariableWithValue
+          if (variable.value === null) return o
+          return { ...o, [variable.name]: variable.value }
         }
-        const variable = answerOrVariable as VariableWithValue
-        if (isDefined(o[variable.name]) || variable.value === null) return o
-        return { ...o, [variable.name]: variable.value }
+        const answer = answerOrVariable as Answer
+        const key = answer.variableId
+          ? header.find(
+              (cell) =>
+                answer.variableId &&
+                cell.variableIds?.includes(answer.variableId)
+            )?.label
+          : header.find((cell) =>
+              cell.blocks?.some((block) => block.id === answer.blockId)
+            )?.label
+        if (!key) return o
+        if (isDefined(o[key])) return o
+        return {
+          ...o,
+          [key]: answer.content.toString(),
+        }
       }, {}),
     }
   }
