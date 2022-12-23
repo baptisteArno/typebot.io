@@ -5,7 +5,7 @@ import {
   LogicBlockOptions,
 } from '.'
 import { BubbleBlock, bubbleBlockSchema } from './bubbles'
-import { InputBlock, inputBlockSchema } from './inputs'
+import { ChoiceInputBlock, InputBlock, inputBlockSchema } from './inputs'
 import { IntegrationBlock, integrationBlockSchema } from './integrations'
 import { ConditionBlock, LogicBlock, logicBlockSchema } from './logic'
 import { z } from 'zod'
@@ -51,7 +51,7 @@ export type BlockOptions =
   | LogicBlockOptions
   | IntegrationBlockOptions
 
-export type BlockWithItems = Omit<Block, 'items'> & { items: Item[] }
+export type BlockWithItems = ConditionBlock | ChoiceInputBlock
 
 export type BlockBase = z.infer<typeof blockBaseSchema>
 

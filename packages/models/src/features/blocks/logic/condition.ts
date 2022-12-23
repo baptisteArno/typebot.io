@@ -43,7 +43,6 @@ export const conditionBlockSchema = blockBaseSchema.and(
   z.object({
     type: z.enum([LogicBlockType.CONDITION]),
     items: z.array(conditionItemSchema),
-    options: z.object({}),
   })
 )
 

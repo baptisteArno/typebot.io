@@ -4,39 +4,72 @@ import {
   BlockWithItems,
   defaultConditionContent,
   ItemType,
+  Block,
+  LogicBlockType,
+  InputBlockType,
 } from 'models'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { byId, blockHasItems } from 'utils'
 import cuid from 'cuid'
+import { WritableDraft } from 'immer/dist/types/types-external'
+
+type NewItem = Pick<Item, 'blockId' | 'outgoingEdgeId' | 'type'> & Partial<Item>
 
 export type ItemsActions = {
-  createItem: (item: Item | Omit<Item, 'id'>, indices: ItemIndices) => void
+  createItem: (item: NewItem, indices: ItemIndices) => void
   updateItem: (indices: ItemIndices, updates: Partial<Omit<Item, 'id'>>) => void
   detachItemFromBlock: (indices: ItemIndices) => void
   deleteItem: (indices: ItemIndices) => void
 }
 
+const createItem = (
+  block: WritableDraft<Block>,
+  item: NewItem,
+  itemIndex: number
+) => {
+  switch (block.type) {
+    case LogicBlockType.CONDITION: {
+      if (item.type === ItemType.CONDITION) {
+        const newItem = {
+          ...item,
+          id: 'id' in item && item.id ? item.id : cuid(),
+          content: item.content ?? defaultConditionContent,
+        }
+        block.items.splice(itemIndex, 0, newItem)
+        return newItem
+      }
+      break
+    }
+    case InputBlockType.CHOICE: {
+      if (item.type === ItemType.BUTTON) {
+        const newItem = {
+          ...item,
+          id: 'id' in item && item.id ? item.id : cuid(),
+          content: item.content,
+        }
+        block.items.splice(itemIndex, 0, newItem)
+        return newItem
+      }
+      break
+    }
+  }
+}
+
 const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   createItem: (
-    item: Item | Omit<Item, 'id'>,
+    item: NewItem,
     { groupIndex, blockIndex, itemIndex }: ItemIndices
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[
-          blockIndex
-        ] as BlockWithItems
+        const block = typebot.groups[groupIndex].blocks[blockIndex]
 
-        const newItem = {
-          id: 'id' in item ? item.id : cuid(),
-          content:
-            item.type === ItemType.CONDITION
-              ? defaultConditionContent
-              : undefined,
-          ...item,
-        } as Item
+        const newItem = createItem(block, item, itemIndex)
+
+        if (!newItem) return
+
         if (item.outgoingEdgeId) {
           const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
           edgeIndex !== -1
@@ -47,7 +80,6 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
               })
             : (newItem.outgoingEdgeId = undefined)
         }
-        block.items.splice(itemIndex, 0, newItem)
       })
     ),
   updateItem: (
