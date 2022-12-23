@@ -111,7 +111,10 @@ export const FolderButton = ({
         </MenuList>
       </Menu>
       <VStack spacing="4">
-        <FolderIcon fontSize={50} color="blue.500" fill="blue.500" />
+        <FolderIcon
+          fontSize={50}
+          color={useColorModeValue('blue.500', 'blue.400')}
+        />
         <Editable
           defaultValue={folder.name}
           fontSize="18"
