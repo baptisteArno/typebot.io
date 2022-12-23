@@ -1,13 +1,17 @@
 import { LiteBadge } from './LiteBadge'
 import { createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { getViewerUrl, isDefined, isNotEmpty } from 'utils'
+import {
+  getViewerUrl,
+  injectCustomHeadCode,
+  isDefined,
+  isNotEmpty,
+} from 'utils'
 import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
 import { ConversationContainer } from './ConversationContainer'
 import css from '../assets/index.css'
 import { InitialChatReply, StartParams } from 'models'
 import { setIsMobile } from '@/utils/isMobileSignal'
 import { BotContext } from '@/types'
-import { injectHeadCode } from '@/utils/injectHeadCode'
 
 export type BotProps = StartParams & {
   initialChatReply?: InitialChatReply
@@ -25,9 +29,7 @@ export const Bot = (props: BotProps) => {
     if (isDefined(initialChatReplyValue)) {
       const customHeadCode =
         initialChatReplyValue.typebot.settings.metadata.customHeadCode
-      if (customHeadCode) {
-        injectHeadCode(customHeadCode)
-      }
+      if (customHeadCode) injectCustomHeadCode(customHeadCode)
     } else {
       const urlParams = new URLSearchParams(location.search)
       const prefilledVariables: { [key: string]: string } = {}

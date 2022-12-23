@@ -2,7 +2,12 @@ import { TypebotViewer } from 'bot-engine'
 import { AnswerInput, PublicTypebot, Typebot, VariableWithValue } from 'models'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { isDefined, isNotDefined, isNotEmpty } from 'utils'
+import {
+  injectCustomHeadCode,
+  isDefined,
+  isNotDefined,
+  isNotEmpty,
+} from 'utils'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
 import { createResultQuery, updateResultQuery } from '@/features/results'
@@ -52,8 +57,7 @@ export const TypebotPage = ({
     })
     setPredefinedVariables(predefinedVariables)
     initializeResult().then()
-    if (isDefined(customHeadCode))
-      document.head.innerHTML = document.head.innerHTML + customHeadCode
+    if (isDefined(customHeadCode)) injectCustomHeadCode(customHeadCode)
     const gtmId = publishedTypebot.settings.metadata.googleTagManagerId
     if (isNotEmpty(gtmId)) document.body.prepend(gtmBodyElement(gtmId))
     // eslint-disable-next-line react-hooks/exhaustive-deps

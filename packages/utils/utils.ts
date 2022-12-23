@@ -283,3 +283,23 @@ export const getViewerUrl = (props?: {
 
 export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+export const injectCustomHeadCode = (customHeadCode: string) => {
+  const headCodes = customHeadCode.split('</noscript>')
+  headCodes.forEach((headCode) => {
+    const [codeToInject, noScriptContentToInject] = headCode.split('<noscript>')
+    const fragment = document
+      .createRange()
+      .createContextualFragment(codeToInject)
+    document.head.append(fragment)
+
+    if (isNotDefined(noScriptContentToInject)) return
+
+    const noScriptElement = document.createElement('noscript')
+    const noScriptContentFragment = document
+      .createRange()
+      .createContextualFragment(noScriptContentToInject)
+    noScriptElement.append(noScriptContentFragment)
+    document.head.append(noScriptElement)
+  })
+}
