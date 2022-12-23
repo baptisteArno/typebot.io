@@ -17,7 +17,6 @@ import { BlockIndices, BlockWithItems, LogicBlockType, Item } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
-import { ItemNodeOverlay } from './ItemNodeOverlay'
 import { PlaceholderNode } from '../PlaceholderNode'
 
 type Props = {
@@ -164,7 +163,11 @@ export const ItemNodesList = ({
             w="220px"
             transformOrigin="0 0 0"
           >
-            <ItemNodeOverlay item={draggedItem} />
+            <ItemNode
+              item={draggedItem}
+              indices={{ groupIndex, blockIndex, itemIndex: 0 }}
+              connectionDisabled
+            />
           </Flex>
         </Portal>
       )}

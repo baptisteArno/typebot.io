@@ -104,8 +104,19 @@ test('Drag and drop blocks and items should work', async ({ page }) => {
     'Item 3'
   )
   await page.dragAndDrop('text=Item 3', 'text=Item 2-3')
-  await expect(page.locator('[data-testid="item"] >> nth=6')).toHaveText(
+  await expect(page.locator('[data-testid="item"] >> nth=7')).toHaveText(
     'Item 3'
+  )
+
+  await expect(page.locator('[data-testid="item"] >> nth=2')).toHaveText(
+    'Name=John'
+  )
+  await page.dragAndDrop(
+    '[data-testid="item"] >> nth=2',
+    '[data-testid="item"] >> nth=3'
+  )
+  await expect(page.locator('[data-testid="item"] >> nth=3')).toHaveText(
+    'Name=John'
   )
 })
 test('Undo / Redo and Zoom buttons should work', async ({ page }) => {

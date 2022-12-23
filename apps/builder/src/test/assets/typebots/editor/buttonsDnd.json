@@ -1,43 +1,42 @@
 {
-  "id": "ckz84wbbj2095no1ali9kzfz4",
-  "createdAt": "2022-02-04T08:16:59.215Z",
-  "updatedAt": "2022-02-04T08:16:59.215Z",
-  "name": "My typebot",
+  "id": "clc0ad9ah000t3b6szwnuqnzk",
+  "createdAt": "2022-12-23T09:04:08.777Z",
+  "updatedAt": "2022-12-23T09:04:36.750Z",
+  "icon": null,
+  "name": "My typebot copy",
   "publishedTypebotId": null,
   "folderId": null,
   "groups": [
     {
-      "id": "de8iZbvNxMxyhvLrnPBpt8",
+      "id": "clc0ad9ah000m3b6s82zpun2g",
+      "title": "Start",
       "blocks": [
         {
           "id": "hqgG9FuPDWrkrdHXFnSy9G",
           "type": "start",
           "label": "Start",
-          "groupId": "de8iZbvNxMxyhvLrnPBpt8",
-          "outgoingEdgeId": "41aa19ih9WQQQEurwdjmVJ"
+          "groupId": "clc0ad9ah000m3b6s82zpun2g",
+          "outgoingEdgeId": "clc0ad9ah000q3b6szdobrx23"
         }
       ],
-      "title": "Start",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
-      "id": "vmDTsAC7aLeqanVVtJ9yQx",
-      "graphCoordinates": { "x": 85, "y": 220 },
+      "id": "clc0ad9ah000n3b6sw5w6h1mp",
       "title": "Group #1",
       "blocks": [
         {
           "id": "sqUp2x8SXx8JBC8a9XuKGL9",
-          "groupId": "vmDTsAC7aLeqanVVtJ9yQx",
           "type": "text",
           "content": {
             "html": "<div>Hello!</div>",
             "richText": [{ "type": "p", "children": [{ "text": "Hello!" }] }],
             "plainText": "Hello!"
-          }
+          },
+          "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
         },
         {
           "id": "suRXuWyuJ7kpsdLUYKA6VqM",
-          "groupId": "vmDTsAC7aLeqanVVtJ9yQx",
           "type": "text",
           "content": {
             "html": "<div>How are you?</div>",
@@ -45,119 +44,147 @@
               { "type": "p", "children": [{ "text": "How are you?" }] }
             ],
             "plainText": "How are you?"
-          }
+          },
+          "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
         },
         {
           "id": "ssxDdzVUkgZYPPoPnQK4dCo",
-          "groupId": "vmDTsAC7aLeqanVVtJ9yQx",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "e7dy3bH2py8fFcak2jUJjr",
-              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
               "type": 0,
+              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
               "content": "Item 1",
-              "outgoingEdgeId": "8Ty7noiTJAP3jtaWXLsNwy"
+              "outgoingEdgeId": "clc0ad9ah000r3b6sz3jc1bym"
             },
             {
-              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
-              "type": 0,
               "id": "mBJkTavGHAygmPTjiLMQyC",
+              "type": 0,
+              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
               "content": "Item 2"
             },
             {
-              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
-              "type": 0,
               "id": "vVfToFyNLyGgRYyB8jYLkn",
+              "type": 0,
+              "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
               "content": "Item 3",
-              "outgoingEdgeId": "tprSzPvt6A5kTFf7iUNaeR"
+              "outgoingEdgeId": "clc0ad9ah000s3b6szo9q2p64"
             }
-          ]
+          ],
+          "groupId": "clc0ad9ah000n3b6sw5w6h1mp",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 85, "y": 220 }
     },
     {
-      "id": "hB4p8rwA1dUSq9A5ctTLqh",
-      "graphCoordinates": { "x": 513, "y": 152 },
+      "id": "clc0ad9ah000o3b6smmpalmfh",
       "title": "Group #2",
       "blocks": [
         {
           "id": "suHw7fjcMD9KjDRpbB413jn",
-          "groupId": "hB4p8rwA1dUSq9A5ctTLqh",
           "type": "Condition",
           "items": [
             {
               "id": "jvGN6sfftqJgfYYVRUYMuJ",
-              "blockId": "suHw7fjcMD9KjDRpbB413jn",
               "type": 1,
-              "content": { "comparisons": [], "logicalOperator": "AND" }
+              "blockId": "suHw7fjcMD9KjDRpbB413jn",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "clc0add0v00103b6s86lsrsny",
+                    "variableId": "vclc0adfvq00113b6s506hh49e",
+                    "comparisonOperator": "Equal to",
+                    "value": "John"
+                  }
+                ],
+                "logicalOperator": "AND"
+              }
+            },
+            {
+              "id": "clc0adm4t00123b6sf8o6dnvb",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "clc0admrk00133b6spgw4k125",
+                    "variableId": "vclc0adfvq00113b6s506hh49e",
+                    "comparisonOperator": "Contains",
+                    "value": "Yo"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "blockId": "suHw7fjcMD9KjDRpbB413jn",
+              "type": 1
             }
-          ]
+          ],
+          "groupId": "clc0ad9ah000o3b6smmpalmfh"
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 514.84375, "y": 135.50390625 }
     },
     {
-      "id": "t7g44CwVvCg6mN16KHVAWv",
-      "graphCoordinates": { "x": 509, "y": 489 },
+      "id": "clc0ad9ah000p3b6smiscty8y",
       "title": "Group #3",
       "blocks": [
         {
           "id": "suHztCMVss4kTAtgShANxjU",
-          "groupId": "t7g44CwVvCg6mN16KHVAWv",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "buQjAL2M3cBUVK2ofnxKW3",
-              "blockId": "suHztCMVss4kTAtgShANxjU",
               "type": 0,
+              "blockId": "suHztCMVss4kTAtgShANxjU",
               "content": "Item 2-1"
             },
             {
-              "blockId": "suHztCMVss4kTAtgShANxjU",
-              "type": 0,
               "id": "4gQe9XK1vyQUHXVzFErW4t",
+              "type": 0,
+              "blockId": "suHztCMVss4kTAtgShANxjU",
               "content": "Item 2-2"
             },
             {
-              "blockId": "suHztCMVss4kTAtgShANxjU",
-              "type": 0,
               "id": "uttagH8w5XWzibkKsW23oi",
+              "type": 0,
+              "blockId": "suHztCMVss4kTAtgShANxjU",
               "content": "Item 2-3"
             }
-          ]
+          ],
+          "groupId": "clc0ad9ah000p3b6smiscty8y",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
         }
-      ]
+      ],
+      "graphCoordinates": { "x": 509, "y": 489 }
     }
   ],
-  "variables": [],
+  "variables": [{ "id": "vclc0adfvq00113b6s506hh49e", "name": "Name" }],
   "edges": [
     {
+      "id": "clc0ad9ah000q3b6szdobrx23",
+      "to": { "groupId": "clc0ad9ah000n3b6sw5w6h1mp" },
       "from": {
-        "groupId": "de8iZbvNxMxyhvLrnPBpt8",
-        "blockId": "hqgG9FuPDWrkrdHXFnSy9G"
-      },
-      "to": { "groupId": "vmDTsAC7aLeqanVVtJ9yQx" },
-      "id": "41aa19ih9WQQQEurwdjmVJ"
+        "blockId": "hqgG9FuPDWrkrdHXFnSy9G",
+        "groupId": "clc0ad9ah000m3b6s82zpun2g"
+      }
     },
     {
+      "id": "clc0ad9ah000r3b6sz3jc1bym",
+      "to": { "groupId": "clc0ad9ah000o3b6smmpalmfh" },
       "from": {
-        "groupId": "vmDTsAC7aLeqanVVtJ9yQx",
+        "itemId": "e7dy3bH2py8fFcak2jUJjr",
         "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
-        "itemId": "e7dy3bH2py8fFcak2jUJjr"
-      },
-      "to": { "groupId": "hB4p8rwA1dUSq9A5ctTLqh" },
-      "id": "8Ty7noiTJAP3jtaWXLsNwy"
+        "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
+      }
     },
     {
+      "id": "clc0ad9ah000s3b6szo9q2p64",
+      "to": { "groupId": "clc0ad9ah000p3b6smiscty8y" },
       "from": {
-        "groupId": "vmDTsAC7aLeqanVVtJ9yQx",
+        "itemId": "vVfToFyNLyGgRYyB8jYLkn",
         "blockId": "ssxDdzVUkgZYPPoPnQK4dCo",
-        "itemId": "vVfToFyNLyGgRYyB8jYLkn"
-      },
-      "to": { "groupId": "t7g44CwVvCg6mN16KHVAWv" },
-      "id": "tprSzPvt6A5kTFf7iUNaeR"
+        "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
+      }
     }
   ],
   "theme": {
@@ -168,6 +195,10 @@
         "placeholderColor": "#9095A0"
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
@@ -180,5 +211,10 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": null
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
 }
