@@ -53,3 +53,31 @@ Link the "Default" item to determine the default path independent of what the us
     </video>
   }
 />
+
+## How to
+
+### Add a "Other" button
+
+Sometimes you want to allow your user to enter a value that is not in the predefined choices. You can do this by adding a "Other" button and connect it to a "Text" input block.
+
+<img
+  src="/img/blocks/inputs/buttons-other.png"
+  width="100%"
+  style={{ maxWidth: '900px' }}
+  alt="Other button flow"
+/>
+
+### Different replies based on multiple choices
+
+If you'd like to have different replies based on the multiple choices the user selects. You will need to
+
+1. Save the answer into a variable.
+2. Add a "Condition" block
+3. Add comparisons based on the value of this variable
+
+<img
+  src="/img/blocks/inputs/buttons-condition.png"
+  width="100%"
+  style={{ maxWidth: '900px' }}
+  alt="Condition multiple button flow"
+/>
