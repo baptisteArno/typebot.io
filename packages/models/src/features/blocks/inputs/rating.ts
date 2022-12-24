@@ -26,6 +26,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.and(
       isEnabled: z.boolean(),
       svg: z.string().optional(),
     }),
+    isOneClickSubmitEnabled: z.boolean().optional(),
   })
 )
 

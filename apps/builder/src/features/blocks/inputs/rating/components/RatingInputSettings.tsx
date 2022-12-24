@@ -42,6 +42,9 @@ export const RatingInputSettings = ({
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
 
+  const handleOneClickSubmitChange = (isOneClickSubmitEnabled: boolean) =>
+    onOptionsChange({ ...options, isOneClickSubmitEnabled })
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -108,6 +111,12 @@ export const RatingInputSettings = ({
           placeholder="Extremely likely"
         />
       </Stack>
+      <SwitchWithLabel
+        label="One click submit"
+        moreInfoContent='If enabled, the answer will be submitted as soon as the user clicks on a rating instead of showing the "Send" button.'
+        initialValue={options.isOneClickSubmitEnabled ?? false}
+        onCheckChange={handleOneClickSubmitChange}
+      />
       <Stack>
         <FormLabel mb="0" htmlFor="button">
           Button label:

@@ -18,7 +18,11 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
     onSubmit({ value: rating.toString() })
   }
 
-  const handleClick = (rating: number) => setRating(rating)
+  const handleClick = (rating: number) => {
+    if (block.options.isOneClickSubmitEnabled)
+      onSubmit({ value: rating.toString() })
+    setRating(rating)
+  }
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
