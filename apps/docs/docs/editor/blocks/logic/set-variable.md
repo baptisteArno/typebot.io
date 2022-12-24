@@ -38,6 +38,27 @@ Compute a percentage:
 {{Score}} * 100 / {{Max Score}}
 ```
 
+## Code
+
+The code value should be written Javascript. It will read the returned value of the code and set it to your variable.
+
+```js
+const name = 'John' + 'Smith'
+return name
+```
+
+If you don't provide the `return` keyword then it will be automatically prepended to the beginning of your code.
+
+```js
+'John' + 'Smith'
+```
+
+is the same as
+
+```js
+return 'John' + 'Smith'
+```
+
 ## Current Date
 
 You can create a `Submitted at` (or any other name) variable using this code:
