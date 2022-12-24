@@ -1,10 +1,14 @@
 import { checkChatsUsage } from '@/features/usage'
-import { parsePrefilledVariables } from '@/features/variables'
+import {
+  parsePrefilledVariables,
+  deepParseVariable,
+} from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Prisma } from 'db'
 import {
+  ChatReply,
   chatReplySchema,
   ChatSession,
   PublicTypebot,
@@ -192,13 +196,13 @@ const startSession = async (startParams?: StartParams) => {
     resultId: result?.id,
     sessionId: session.id,
     typebot: {
-      theme: typebot.theme,
-      settings: typebot.settings,
+      settings: deepParseVariable(typebot.variables)(typebot.settings),
+      theme: deepParseVariable(typebot.variables)(typebot.theme),
     },
     messages,
     input,
     logic,
-  }
+  } satisfies ChatReply
 }
 
 const getResult = async ({

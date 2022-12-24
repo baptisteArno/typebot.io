@@ -1,8 +1,5 @@
-import { parseVariables } from '@/features/variables'
+import { deepParseVariable } from '@/features/variables'
 import {
-  BubbleBlock,
-  BubbleBlockType,
-  ChatMessage,
   ChatReply,
   Group,
   InputBlock,
@@ -38,20 +35,22 @@ export const executeGroup =
       nextEdgeId = block.outgoingEdgeId
 
       if (isBubbleBlock(block)) {
-        messages.push(parseBubbleBlockContent(newSessionState)(block))
+        messages.push(
+          deepParseVariable(newSessionState.typebot.variables)(block)
+        )
         continue
       }
 
       if (isInputBlock(block))
         return {
           messages,
-          input: {
+          input: deepParseVariable(newSessionState.typebot.variables)({
             ...block,
             runtimeOptions: await computeRuntimeOptions(newSessionState)(block),
             prefilledValue: getPrefilledInputValue(
               newSessionState.typebot.variables
             )(block),
-          },
+          }),
           newSessionState: {
             ...newSessionState,
             currentBlock: {
@@ -98,34 +97,6 @@ const computeRuntimeOptions =
     switch (block.type) {
       case InputBlockType.PAYMENT: {
         return computePaymentInputRuntimeOptions(state)(block.options)
-      }
-    }
-  }
-
-const parseBubbleBlockContent =
-  ({ typebot: { variables } }: SessionState) =>
-  (block: BubbleBlock): ChatMessage => {
-    switch (block.type) {
-      case BubbleBlockType.TEXT: {
-        const plainText = parseVariables(variables)(block.content.plainText)
-        const html = parseVariables(variables)(block.content.html)
-        return { type: block.type, content: { plainText, html } }
-      }
-      case BubbleBlockType.IMAGE: {
-        const url = parseVariables(variables)(block.content.url)
-        return { type: block.type, content: { ...block.content, url } }
-      }
-      case BubbleBlockType.VIDEO: {
-        const url = parseVariables(variables)(block.content.url)
-        return { type: block.type, content: { ...block.content, url } }
-      }
-      case BubbleBlockType.AUDIO: {
-        const url = parseVariables(variables)(block.content.url)
-        return { type: block.type, content: { ...block.content, url } }
-      }
-      case BubbleBlockType.EMBED: {
-        const url = parseVariables(variables)(block.content.url)
-        return { type: block.type, content: { ...block.content, url } }
       }
     }
   }

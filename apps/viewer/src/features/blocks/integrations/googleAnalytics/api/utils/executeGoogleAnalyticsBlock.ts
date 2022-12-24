@@ -1,5 +1,5 @@
 import { ExecuteIntegrationResponse } from '@/features/chat'
-import { parseVariablesInObject } from '@/features/variables'
+import { deepParseVariable } from '@/features/variables'
 import { GoogleAnalyticsBlock, SessionState } from 'models'
 
 export const executeGoogleAnalyticsBlock = (
@@ -8,6 +8,6 @@ export const executeGoogleAnalyticsBlock = (
 ): ExecuteIntegrationResponse => ({
   outgoingEdgeId: block.outgoingEdgeId,
   integrations: {
-    googleAnalytics: parseVariablesInObject(block.options, variables),
+    googleAnalytics: deepParseVariable(variables)(block.options),
   },
 })
