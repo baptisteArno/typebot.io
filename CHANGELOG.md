@@ -1,12 +1,56 @@
 # Changelog
 
+<a name="2.8.11"></a>
+
+## 2.8.11 (2022-12-25)
+
+### Summary
+
+The new dark mode is here! 🌑
+
+You can now add a GTM container ID directly in the Settings tab to enable GTM in your typebot.
+
+Rating input now has a "One click submission", that disable the "Send" button.
+
+### Added
+
+- ✨ (rating) Add one click submit option [[449080b](https://github.com/baptisteArno/typebot.io/commit/449080b0add0ef570ffd27de94f39b939f6a5e83)]
+- ✨ Add Google Tag Manager ([#185](https://github.com/baptisteArno/typebot.io/issues/185)) [[a898a7a](https://github.com/baptisteArno/typebot.io/commit/a898a7aa4128ba1baff1d645bbcef3ec867a3a38)]
+- ✨ Add dark mode ([#191](https://github.com/baptisteArno/typebot.io/issues/191)) [[3394fa5](https://github.com/baptisteArno/typebot.io/commit/3394fa5e0a7ee9448fc31e3c1dd1700f64306ab7)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[b0075fd](https://github.com/baptisteArno/typebot.io/commit/b0075fd374e3a8480535289c093afbd6f89c6089)]
+- 💄 (dashboard) Fix folder color for dark mode [[752e78c](https://github.com/baptisteArno/typebot.io/commit/752e78cea207df91aa45a006f64d9129c56b2575)]
+- 🚸 (buttons) Show collected variable in buttons block preview [[f224ab9](https://github.com/baptisteArno/typebot.io/commit/f224ab9b16a7ee91f7281314498f2be5815df6b2)]
+- 💄 Fix router progress bar color for dark mode [[e55823e](https://github.com/baptisteArno/typebot.io/commit/e55823e0112291a32886908fd4c63365275106e6)]
+- ⚡ Improve app appearance radio group image loading [[25acd04](https://github.com/baptisteArno/typebot.io/commit/25acd04abc332635dfb9dcf996ff732a21df70b9)]
+
+### Fixed
+
+- 🐛 (chat) Make sure objects are deeply parsed with variables value [[431ad7c](https://github.com/baptisteArno/typebot.io/commit/431ad7c78c0e08a55e06688d20470ccfa757aa7f)]
+- 🐛 (settings) Fix custom head code with noscript injection [[2cdc2b4](https://github.com/baptisteArno/typebot.io/commit/2cdc2b43f50cc0bc2a3255ae2b34dbd9890fcacc)]
+- 🐛 (webhook) Prioritize variables parsing over answers [[64cd31c](https://github.com/baptisteArno/typebot.io/commit/64cd31cf13aec5b0df9bfe57d45dcc25952336e0)]
+- 🐛 (editor) Fix condition item drag and drop [[4109e63](https://github.com/baptisteArno/typebot.io/commit/4109e63b7b39ee63c92fe4a7310dca9fa2354fd9)]
+- 🐛 (webhook) Fix parent linked typebot data parsing in webhook [[c3985b0](https://github.com/baptisteArno/typebot.io/commit/c3985b0d50069f3983f71ee0132c86062fab0dd2)]
+- 🐛 (webhook) Fix form encoded request parsing [[9149af7](https://github.com/baptisteArno/typebot.io/commit/9149af7e6bcb4aebc77efb3c9e7e2317ff15ffac)]
+- 💚 Fix sentry not sending events [[054cbb3](https://github.com/baptisteArno/typebot.io/commit/054cbb35854b675702610306b16266c9e2f9a78e)]
+
+### Miscellaneous
+
+- 📝 Explain how code works in Set variable block [[2934af8](https://github.com/baptisteArno/typebot.io/commit/2934af883585562512dd98a781a0cfb6adfc25e3)]
+- 📝 Add &quot;How to&quot; section in Buttons block doc [[11ff7ea](https://github.com/baptisteArno/typebot.io/commit/11ff7eab56c3b54f0271a33ba313e2b90d879fa7)]
+- ⚗️ Implement bot v2 MVP ([#194](https://github.com/baptisteArno/typebot.io/issues/194)) [[1a3869a](https://github.com/baptisteArno/typebot.io/commit/1a3869ae6d9fa92fc71ef9d981bfffb8e4ee4ecc)]
+- 🩹 Fix dark mode bg remaining issues [[d1b5b6e](https://github.com/baptisteArno/typebot.io/commit/d1b5b6ebe66efce61e207e80f60d198cb47fbfd9)]
+- 📝 (lp) Add new testimonial [[2bec6bd](https://github.com/baptisteArno/typebot.io/commit/2bec6bda83a977468bffd0aace1e22aa75b1c2ee)]
+
 <a name="2.8.10"></a>
+
 ## 2.8.10 (2022-12-18)
 
 ### Fixed
 
 - 🚑 (results) Fix results page crash [[6e5786c](https://github.com/baptisteArno/typebot.io/commit/6e5786cfc3ef9bd5e5a5e272c1ca636b6ba6b4f8)]
-
 
 <a name="2.8.9"></a>
 
