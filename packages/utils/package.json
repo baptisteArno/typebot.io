@@ -6,14 +6,14 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "@playwright/test": "1.29.0",
+    "@playwright/test": "1.29.1",
     "@types/nodemailer": "6.4.7",
-    "aws-sdk": "2.1277.0",
+    "aws-sdk": "2.1282.0",
     "cuid": "2.1.8",
     "db": "workspace:*",
     "dotenv": "16.0.3",
     "models": "workspace:*",
-    "next": "13.0.7",
+    "next": "13.1.1",
     "nodemailer": "6.8.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"

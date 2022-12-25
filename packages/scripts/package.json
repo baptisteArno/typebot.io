@@ -19,10 +19,10 @@
     "got": "12.5.3",
     "models": "workspace:*",
     "prompts": "^2.4.2",
-    "stripe": "11.4.0",
+    "stripe": "11.5.0",
     "tsx": "3.12.1",
     "typescript": "4.9.4",
     "utils": "workspace:*",
-    "zod": "3.19.1"
+    "zod": "3.20.2"
   }
 }

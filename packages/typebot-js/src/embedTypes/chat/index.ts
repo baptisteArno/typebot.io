@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {
   BubbleActions,
   BubbleParams,
@@ -21,8 +22,7 @@ export const initBubble = (params: BubbleParams): BubbleActions => {
     | HTMLDivElement
     | undefined
   if (existingBubble) existingBubble.remove()
-  const { bubbleElement, proactiveMessageElement, iframeElement } =
-    createBubble(params)
+  const { bubbleElement, proactiveMessageElement } = createBubble(params)
   if (
     (params.autoOpenDelay || params.autoOpenDelay === 0) &&
     !hasBeenClosed()
@@ -33,7 +33,7 @@ export const initBubble = (params: BubbleParams): BubbleActions => {
   !document.body
     ? (window.onload = () => document.body.appendChild(bubbleElement))
     : document.body.appendChild(bubbleElement)
-  return getBubbleActions(bubbleElement, iframeElement, proactiveMessageElement)
+  return getBubbleActions(bubbleElement, proactiveMessageElement)
 }
 
 const createBubble = (
@@ -75,18 +75,12 @@ const onProactiveMessageClick = (
 
 export const getBubbleActions = (
   bubbleElement?: HTMLDivElement,
-  iframeElement?: HTMLIFrameElement,
   proactiveMessageElement?: HTMLDivElement
 ): BubbleActions => {
   const existingBubbleElement =
     bubbleElement ??
     (document.querySelector('#typebot-bubble') as HTMLDivElement | undefined)
   if (!existingBubbleElement) return { close: () => {}, open: () => {} }
-  const existingIframeElement =
-    iframeElement ??
-    (existingBubbleElement.querySelector(
-      '.typebot-iframe'
-    ) as HTMLIFrameElement)
   const existingProactiveMessage =
     proactiveMessageElement ??
     document.querySelector('#typebot-bubble .proactive-message')

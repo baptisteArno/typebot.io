@@ -12,11 +12,11 @@
     "create:migration": "prisma migrate dev"
   },
   "dependencies": {
-    "@prisma/client": "4.7.1"
+    "@prisma/client": "4.8.0"
   },
   "devDependencies": {
     "dotenv-cli": "6.0.0",
-    "prisma": "4.7.1",
+    "prisma": "4.8.0",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   }

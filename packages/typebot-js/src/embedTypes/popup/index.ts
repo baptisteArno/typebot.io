@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createIframe } from '../../iframe'
 import { PopupActions, PopupParams } from '../../types'
 import './style.css'

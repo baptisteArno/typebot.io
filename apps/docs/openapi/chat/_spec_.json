@@ -1145,6 +1145,9 @@
                                                     "isEnabled"
                                                   ],
                                                   "additionalProperties": false
+                                                },
+                                                "isOneClickSubmitEnabled": {
+                                                  "type": "boolean"
                                                 }
                                               },
                                               "required": [

@@ -43,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@algolia/client-search": "4.14.2",
+    "@algolia/client-search": "4.14.3",
     "@docusaurus/types": "^2.2.0",
     "@types/react": "18.0.26",
     "tsx": "3.12.1",

@@ -11,7 +11,7 @@
   "devDependencies": {
     "cuid": "2.1.8",
     "db": "workspace:*",
-    "next": "13.0.7",
+    "next": "13.1.1",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   },
