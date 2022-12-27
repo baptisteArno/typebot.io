@@ -9,12 +9,14 @@
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",
     "db:setCustomPlan": "tsx setCustomPlan.ts",
-    "db:bulkUpdate": "tsx bulkUpdate.ts"
+    "db:bulkUpdate": "tsx bulkUpdate.ts",
+    "db:fixTypebots": "tsx fixTypebots.ts"
   },
   "devDependencies": {
     "@types/node": "18.11.17",
     "@types/prompts": "^2.4.2",
     "db": "workspace:*",
+    "deep-object-diff": "1.1.9",
     "emails": "workspace:*",
     "got": "12.5.3",
     "models": "workspace:*",

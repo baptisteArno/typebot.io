@@ -5,6 +5,8 @@ import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
+import { typebotSchema } from 'models'
+import { captureEvent } from '@sentry/nextjs'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -55,6 +57,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    const parser = typebotSchema.safeParse(data)
+    if ('error' in parser) {
+      captureEvent({
+        message: 'Typebot schema validation failed',
+        extra: {
+          typebotId: data.id,
+          error: parser.error,
+        },
+      })
+    }
     const existingTypebot = await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: { updatedAt: true },

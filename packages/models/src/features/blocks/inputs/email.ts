@@ -11,8 +11,7 @@ export const emailInputOptionsSchema = optionBaseSchema
   .and(textInputOptionsBaseSchema)
   .and(
     z.object({
-      // TODO: make it required once database migration is done
-      retryMessageContent: z.string().optional(),
+      retryMessageContent: z.string(),
     })
   )
 
