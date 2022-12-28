@@ -135,7 +135,8 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
-  const collectedVariableId = 'options' in block && block.options.variableId
+  const collectedVariableId =
+    'options' in block && block.options && block.options.variableId
 
   return (
     <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>
