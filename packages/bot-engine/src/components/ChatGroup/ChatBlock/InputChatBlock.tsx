@@ -52,7 +52,7 @@ export const InputChatBlock = ({
     setAnswer(label ?? value)
     const isRetry = !isInputValid(value, block.type)
     if (!isRetry && addAnswer)
-      await addAnswer({
+      await addAnswer(typebot.variables)({
         blockId: block.id,
         groupId: block.groupId,
         content: value,

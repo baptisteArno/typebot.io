@@ -2,6 +2,7 @@ import { safeStringify } from '@/features/variables'
 import {
   AnswerInput,
   ResultValues,
+  Variable,
   VariableWithUnknowValue,
   VariableWithValue,
 } from 'models'
@@ -12,6 +13,8 @@ const answersContext = createContext<{
   resultId?: string
   resultValues: ResultValues
   addAnswer: (
+    existingVariables: Variable[]
+  ) => (
     answer: AnswerInput & { uploadedFiles: boolean }
   ) => Promise<void> | undefined
   updateVariables: (variables: VariableWithUnknowValue[]) => void
@@ -38,13 +41,26 @@ export const AnswersProvider = ({
     createdAt: new Date(),
   })
 
-  const addAnswer = (answer: AnswerInput & { uploadedFiles: boolean }) => {
-    setResultValues((resultValues) => ({
-      ...resultValues,
-      answers: [...resultValues.answers, answer],
-    }))
-    return onNewAnswer && onNewAnswer(answer)
-  }
+  const addAnswer =
+    (existingVariables: Variable[]) =>
+    (answer: AnswerInput & { uploadedFiles: boolean }) => {
+      if (answer.variableId)
+        updateVariables([
+          {
+            id: answer.variableId,
+            value: answer.content,
+            name:
+              existingVariables.find(
+                (existingVariable) => existingVariable.id === answer.variableId
+              )?.name ?? '',
+          },
+        ])
+      setResultValues((resultValues) => ({
+        ...resultValues,
+        answers: [...resultValues.answers, answer],
+      }))
+      return onNewAnswer && onNewAnswer(answer)
+    }
 
   const updateVariables = (newVariables: VariableWithUnknowValue[]) => {
     const serializedNewVariables = newVariables.map((variable) => ({
