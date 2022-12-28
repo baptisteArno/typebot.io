@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="2.8.12"></a>
+## 2.8.12 (2022-12-28)
+
+### Changed
+
+- 🔧 (scripts) Add typebot fix script [[ad72557](https://github.com/baptisteArno/typebot.io/commit/ad725573108daa82d4558926d2623f2ab901b598)]
+
+### Fixed
+
+- 🚑 (condition) Fix crash when adding condition block [[853ea79](https://github.com/baptisteArno/typebot.io/commit/853ea79f6bba897a1e9c216265525977440969b9)]
+
+
 <a name="2.8.11"></a>
 
 ## 2.8.11 (2022-12-25)
