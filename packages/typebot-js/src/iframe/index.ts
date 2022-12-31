@@ -1,4 +1,5 @@
 import { close } from '../commands'
+import { parseQueryParams } from '../commands/setHiddenVariables'
 import { TypebotPostMessageData, IframeCallbacks, IframeParams } from '../types'
 import './style.css'
 
@@ -29,25 +30,6 @@ export const createIframe = ({
   listenForTypebotMessages({ onNewVariableValue })
   return iframe
 }
-
-const parseQueryParams = (starterVariables?: {
-  [key: string]: string | undefined
-}): string => {
-  return parseStarterVariables(starterVariables)
-}
-
-const parseStarterVariables = (starterVariables?: {
-  [key: string]: string | undefined
-}) =>
-  starterVariables && Object.keys(starterVariables).length > 0
-    ? `?${Object.keys(starterVariables)
-        .filter((key) => starterVariables[key])
-        .map(
-          (key) =>
-            `${key}=${encodeURIComponent(starterVariables[key] as string)}`
-        )
-        .join('&')}`
-    : ''
 
 export const listenForTypebotMessages = (callbacks: IframeCallbacks) => {
   window.addEventListener('message', (event) => {
