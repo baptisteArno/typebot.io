@@ -115,7 +115,16 @@ These apps are built with awesome web technologies including [Typescript](https:
 
 Typebot is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
 
-In a few words, it means that:
+The goal of the AGPL license is to:
 
-- If you commercialize your version of Typebot. You need to be clear and provide a prominent mention and link to the original project so people that are considering using their version of the software can be aware of the original project
-- If you modify the original software, you need to open source and publish your modifications
+- Maximize user freedom and to encourage companies to contribute to open source.
+- Prevent corporations from taking our code and using it as part of their closed-source proprietary products
+- Prevent corporations from offering Typebot as a service without contributing to the open source project
+- Prevent corporations from confusing people and making them think that the service they sell is in any shape or form approved by the original team
+
+In a few words, to use Typebot in your company, you need to:
+
+- Open source and publish your modifications
+- If you commercialize your version of Typebot, be clear and provide a prominent mention and link to the original project so people that are considering using their version of the software can be aware of the original project.
+
+If you'd like to use Typebot without open-sourcing your modified code, you can purchase a commercial license to remove the copyleft restrictions and in that way support the original project. Contact me at baptiste@typebot.io.
