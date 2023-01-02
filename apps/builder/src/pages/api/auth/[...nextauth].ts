@@ -155,8 +155,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       signIn: async ({ account, user }) => {
-        const userExists = user?.graphNavigation !== undefined
-        if (!account || (process.env.DISABLE_SIGNUP === 'true' && !userExists))
+        const userExists =
+          'graphNavigation' in user && user.graphNavigation !== undefined
+        if (
+          !account ||
+          (process.env.DISABLE_SIGNUP === 'true' &&
+            !userExists &&
+            user.email !== process.env.ADMIN_EMAIL)
+        )
           return false
         const requiredGroups = getRequiredGroups(account.provider)
         if (requiredGroups.length > 0) {

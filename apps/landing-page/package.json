@@ -10,8 +10,8 @@
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
-    "@chakra-ui/icon": "3.0.13",
-    "@chakra-ui/react": "2.4.4",
+    "@chakra-ui/icon": "3.0.14",
+    "@chakra-ui/react": "2.4.6",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@vercel/analytics": "0.1.6",
@@ -28,14 +28,14 @@
   },
   "devDependencies": {
     "@babel/core": "7.20.7",
-    "@chakra-ui/styled-system": "2.5.0",
+    "@chakra-ui/styled-system": "2.5.1",
     "@next/bundle-analyzer": "13.1.1",
     "@types/aos": "3.0.4",
-    "@types/node": "18.11.17",
+    "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "autoprefixer": "10.4.13",
     "cross-env": "7.0.3",
-    "eslint": "8.30.0",
+    "eslint": "8.31.0",
     "eslint-config-custom": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.20",

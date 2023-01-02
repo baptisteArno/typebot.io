@@ -526,6 +526,9 @@
                                                                           "type": "string"
                                                                         }
                                                                       },
+                                                                      "required": [
+                                                                        "retryMessageContent"
+                                                                      ],
                                                                       "additionalProperties": false
                                                                     }
                                                                   ]

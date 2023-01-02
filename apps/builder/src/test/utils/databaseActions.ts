@@ -30,7 +30,7 @@ export const addSubscriptionToWorkspace = async (
     card: {
       number: '4242424242424242',
       exp_month: 12,
-      exp_year: 2022,
+      exp_year: 2024,
       cvc: '123',
     },
     type: 'card',

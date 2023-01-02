@@ -20,7 +20,6 @@ const userContext = createContext<{
   isLoading: boolean
   isSaving: boolean
   hasUnsavedChanges: boolean
-  isOAuthProvider: boolean
   currentWorkspaceId?: string
   updateUser: (newUser: Partial<User>) => void
   saveUser: (newUser?: Partial<User>) => Promise<void>
@@ -36,10 +35,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
 
   const [isSaving, setIsSaving] = useState(false)
-  const isOAuthProvider = useMemo(
-    () => (session?.providerType as boolean | undefined) ?? false,
-    [session?.providerType]
-  )
 
   const hasUnsavedChanges = useMemo(
     () => !dequal(session?.user, user),
@@ -97,7 +92,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         isSaving,
         isLoading: status === 'loading',
         hasUnsavedChanges,
-        isOAuthProvider,
         currentWorkspaceId,
         updateUser,
         saveUser,

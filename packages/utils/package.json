@@ -8,7 +8,7 @@
   "devDependencies": {
     "@playwright/test": "1.29.1",
     "@types/nodemailer": "6.4.7",
-    "aws-sdk": "2.1282.0",
+    "aws-sdk": "2.1286.0",
     "cuid": "2.1.8",
     "db": "workspace:*",
     "dotenv": "16.0.3",

@@ -18,14 +18,7 @@ import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '@/features/account'
 
 export const MyAccountForm = () => {
-  const {
-    user,
-    updateUser,
-    saveUser,
-    hasUnsavedChanges,
-    isSaving,
-    isOAuthProvider,
-  } = useUser()
+  const { user, updateUser, saveUser, hasUnsavedChanges, isSaving } = useUser()
 
   const handleFileUploaded = async (url: string) => {
     updateUser({ image: url })
@@ -74,12 +67,7 @@ export const MyAccountForm = () => {
           hasArrow
         >
           <FormControl>
-            <FormLabel
-              htmlFor="email"
-              color={isOAuthProvider ? 'gray.500' : 'current'}
-            >
-              Email address
-            </FormLabel>
+            <FormLabel htmlFor="email">Email address</FormLabel>
             <Input
               id="email"
               type="email"

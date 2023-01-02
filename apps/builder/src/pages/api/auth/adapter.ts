@@ -6,6 +6,7 @@ import {
   Plan,
   WorkspaceRole,
   WorkspaceInvitation,
+  Session,
 } from 'db'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
@@ -74,19 +75,23 @@ export function CustomAdapter(p: PrismaClient): Adapter {
         await convertInvitationsToCollaborations(p, user, invitations)
       if (workspaceInvitations.length > 0)
         await joinWorkspaces(p, user, workspaceInvitations)
-      return createdUser
+      return createdUser as AdapterUser
     },
-    getUser: (id) => p.user.findUnique({ where: { id } }),
-    getUserByEmail: (email) => p.user.findUnique({ where: { email } }),
+    getUser: async (id) =>
+      (await p.user.findUnique({ where: { id } })) as AdapterUser,
+    getUserByEmail: async (email) =>
+      (await p.user.findUnique({ where: { email } })) as AdapterUser,
     async getUserByAccount(provider_providerAccountId) {
       const account = await p.account.findUnique({
         where: { provider_providerAccountId },
         select: { user: true },
       })
-      return account?.user ?? null
+      return (account?.user ?? null) as AdapterUser | null
     },
-    updateUser: (data) => p.user.update({ where: { id: data.id }, data }),
-    deleteUser: (id) => p.user.delete({ where: { id } }),
+    updateUser: async (data) =>
+      (await p.user.update({ where: { id: data.id }, data })) as AdapterUser,
+    deleteUser: async (id) =>
+      (await p.user.delete({ where: { id } })) as AdapterUser,
     linkAccount: async (data) => {
       await p.account.create({
         data: {
@@ -117,7 +122,7 @@ export function CustomAdapter(p: PrismaClient): Adapter {
       })
       if (!userAndSession) return null
       const { user, ...session } = userAndSession
-      return { user, session }
+      return { user, session } as { user: AdapterUser; session: Session }
     },
     createSession: (data) => p.session.create({ data }),
     updateSession: (data) =>

@@ -7,7 +7,7 @@ import {
   useSession,
 } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'
@@ -22,31 +22,28 @@ type Props = {
 export const SocialLoginButtons = ({ providers }: Props) => {
   const { query } = useRouter()
   const { status } = useSession()
+  const [authLoading, setAuthLoading] =
+    useState<LiteralUnion<BuiltInProviderType, string>>()
 
-  const handleGitHubClick = async () =>
-    signIn('github', {
+  const handleSignIn = async (provider: string) => {
+    setAuthLoading(provider)
+    await signIn(provider, {
       callbackUrl: `/typebots?${stringify(query)}`,
     })
+    setTimeout(() => setAuthLoading(undefined), 3000)
+  }
 
-  const handleGoogleClick = async () =>
-    signIn('google', {
-      callbackUrl: `/typebots?${stringify(query)}`,
-    })
+  const handleGitHubClick = () => handleSignIn('github')
 
-  const handleFacebookClick = async () =>
-    signIn('facebook', {
-      callbackUrl: `/typebots?${stringify(query)}`,
-    })
+  const handleGoogleClick = () => handleSignIn('google')
 
-  const handleGitlabClick = async () =>
-    signIn('gitlab', {
-      callbackUrl: `/typebots?${stringify(query)}`,
-    })
+  const handleFacebookClick = () => handleSignIn('facebook')
 
-  const handleAzureAdClick = async () =>
-    signIn('azure-ad', {
-      callbackUrl: `/typebots?${stringify(query)}`,
-    })
+  const handleGitlabClick = () => handleSignIn('gitlab')
+
+  const handleAzureAdClick = () => handleSignIn('azure-ad')
+
+  const handleCustomOAuthClick = () => handleSignIn('custom-oauth')
 
   return (
     <Stack>
@@ -55,7 +52,10 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           leftIcon={<GithubIcon />}
           onClick={handleGitHubClick}
           data-testid="github"
-          isLoading={['loading', 'authenticated'].includes(status)}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'github'
+          }
           variant="outline"
         >
           Continue with GitHub
@@ -66,7 +66,10 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           leftIcon={<GoogleLogo />}
           onClick={handleGoogleClick}
           data-testid="google"
-          isLoading={['loading', 'authenticated'].includes(status)}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'google'
+          }
           variant="outline"
         >
           Continue with Google
@@ -77,7 +80,10 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           leftIcon={<FacebookLogo />}
           onClick={handleFacebookClick}
           data-testid="facebook"
-          isLoading={['loading', 'authenticated'].includes(status)}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'facebook'
+          }
           variant="outline"
         >
           Continue with Facebook
@@ -88,7 +94,10 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           leftIcon={<GitlabLogo />}
           onClick={handleGitlabClick}
           data-testid="gitlab"
-          isLoading={['loading', 'authenticated'].includes(status)}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'gitlab'
+          }
           variant="outline"
         >
           Continue with {providers.gitlab.name}
@@ -99,7 +108,10 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           leftIcon={<AzureAdLogo />}
           onClick={handleAzureAdClick}
           data-testid="azure-ad"
-          isLoading={['loading', 'authenticated'].includes(status)}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'azure-ad'
+          }
           variant="outline"
         >
           Continue with {providers['azure-ad'].name}
@@ -107,8 +119,11 @@ export const SocialLoginButtons = ({ providers }: Props) => {
       )}
       {providers?.['custom-oauth'] && (
         <Button
-          onClick={handleAzureAdClick}
-          isLoading={['loading', 'authenticated'].includes(status)}
+          onClick={handleCustomOAuthClick}
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'custom-oauth'
+          }
           variant="outline"
         >
           Continue with {providers['custom-oauth'].name}

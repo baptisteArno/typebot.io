@@ -22,7 +22,7 @@
     "resize-observer": "1.0.4"
   },
   "devDependencies": {
-    "@types/node": "18.11.17",
+    "@types/node": "18.11.18",
     "@types/qs": "6.9.7",
     "@types/react": "18.0.26",
     "@types/react-phone-number-input": "3.0.14",
@@ -30,8 +30,8 @@
     "@types/react-transition-group": "4.4.5",
     "autoprefixer": "10.4.13",
     "db": "workspace:*",
-    "esbuild": "^0.16.10",
-    "eslint": "8.30.0",
+    "esbuild": "^0.16.12",
+    "eslint": "8.31.0",
     "eslint-config-custom": "workspace:*",
     "models": "workspace:*",
     "postcss": "8.4.20",

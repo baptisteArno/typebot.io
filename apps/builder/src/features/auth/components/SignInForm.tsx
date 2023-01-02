@@ -76,6 +76,7 @@ export const SignInForm = ({
         })
     setAuthLoading(false)
   }
+
   if (isLoadingProviders) return <Spinner />
   if (hasNoAuthProvider)
     return (
