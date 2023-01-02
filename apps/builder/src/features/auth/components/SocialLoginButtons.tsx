@@ -105,6 +105,15 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           Continue with {providers['azure-ad'].name}
         </Button>
       )}
+      {providers?.['custom-oauth'] && (
+        <Button
+          onClick={handleAzureAdClick}
+          isLoading={['loading', 'authenticated'].includes(status)}
+          variant="outline"
+        >
+          Continue with {providers['custom-oauth'].name}
+        </Button>
+      )}
     </Stack>
   )
 }

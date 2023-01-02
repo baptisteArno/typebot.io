@@ -10,7 +10,7 @@ import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
-import { env, isNotEmpty } from 'utils'
+import { env, getAtPath, isNotEmpty } from 'utils'
 import { mockedUser } from '@/features/auth'
 
 const providers: Provider[] = []
@@ -95,6 +95,34 @@ if (
       tenantId: process.env.AZURE_AD_TENANT_ID,
     })
   )
+}
+
+if (isNotEmpty(process.env.CUSTOM_OAUTH_AUTHORIZATION_URL)) {
+  providers.push({
+    id: 'custom-oauth',
+    name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
+    type: 'oauth',
+    authorization: process.env.CUSTOM_OAUTH_AUTHORIZATION_URL,
+    token: process.env.CUSTOM_OAUTH_TOKEN_URL,
+    userinfo: process.env.CUSTOM_OAUTH_USERINFO_URL,
+    profile(profile) {
+      return {
+        id: getAtPath(profile, process.env.CUSTOM_OAUTH_USER_ID_PATH ?? 'id'),
+        name: getAtPath(
+          profile,
+          process.env.CUSTOM_OAUTH_USER_NAME_PATH ?? 'name'
+        ),
+        email: getAtPath(
+          profile,
+          process.env.CUSTOM_OAUTH_USER_EMAIL_PATH ?? 'email'
+        ),
+        image: getAtPath(
+          profile,
+          process.env.CUSTOM_OAUTH_USER_IMAGE_PATH ?? 'image'
+        ),
+      } as User
+    },
+  })
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
