@@ -1,13 +1,17 @@
 import { Parser } from 'htmlparser2'
+import { isNotEmpty } from 'utils'
 
 export const parseHtmlStringToPlainText = (html: string): string => {
-  let label = ''
+  let plainText = ''
   const parser = new Parser({
+    onopentag(name) {
+      if (name === 'div' && isNotEmpty(plainText)) plainText += '\n'
+    },
     ontext(text) {
-      label += `${text}`
+      plainText += `${text}`
     },
   })
   parser.write(html)
   parser.end()
-  return label
+  return plainText
 }
