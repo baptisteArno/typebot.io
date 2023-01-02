@@ -26,6 +26,7 @@ import { CreateFolderButton } from './CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderButton'
 import { TypebotButton } from './TypebotButton'
 import { TypebotCardOverlay } from './TypebotButtonOverlay'
+import { isCloudProdInstance } from '@/utils/helpers'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -162,6 +163,7 @@ export const FolderContent = ({ folder }: Props) => {
       {typebots &&
         !isTypebotLoading &&
         user &&
+        isCloudProdInstance &&
         folder === null &&
         env('E2E_TEST') !== 'true' && (
           <OnboardingModal totalTypebots={typebots.length} />

@@ -15,7 +15,7 @@ export const SupportBubble = () => {
 
   useEffect(() => {
     if (
-      isCloudProdInstance() &&
+      isCloudProdInstance &&
       (localTypebotId !== typebot?.id || localUserId !== user?.id)
     ) {
       setLocalTypebotId(typebot?.id)
