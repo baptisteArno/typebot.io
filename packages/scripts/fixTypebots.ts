@@ -1,5 +1,5 @@
 import { PrismaClient } from 'db'
-import { readFileSync, writeFileSync } from 'fs'
+import { writeFileSync } from 'fs'
 import {
   Block,
   BlockOptions,
@@ -7,20 +7,21 @@ import {
   defaultEmailInputOptions,
   Group,
   InputBlockType,
+  PublicTypebot,
+  publicTypebotSchema,
   Theme,
   Typebot,
-  typebotSchema,
 } from 'models'
 import { isNotDefined } from 'utils'
 import { promptAndSetEnvironment } from './utils'
 import { detailedDiff } from 'deep-object-diff'
 
-const fixTypebot = (brokenTypebot: Typebot) =>
+const fixTypebot = (brokenTypebot: Typebot | PublicTypebot) =>
   ({
     ...brokenTypebot,
     theme: fixTheme(brokenTypebot.theme),
     groups: fixGroups(brokenTypebot.groups),
-  } satisfies Typebot)
+  } satisfies Typebot | PublicTypebot)
 
 const fixTheme = (brokenTheme: Theme) =>
   ({
@@ -120,18 +121,12 @@ const fixTypebots = async () => {
     log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
   })
 
-  prisma.$on('query', (e) => {
-    console.log(e.query)
-    console.log(e.params)
-    console.log(e.duration, 'ms')
-  })
-
-  const typebots = JSON.parse(readFileSync('typebots.json', 'utf-8')) as any[]
+  const typebots = await prisma.publicTypebot.findMany()
 
   const total = typebots.length
   let totalFixed = 0
   let progress = 0
-  const fixedTypebots: Typebot[] = []
+  const fixedTypebots: (Typebot | PublicTypebot)[] = []
   const diffs: any[] = []
   for (const typebot of typebots) {
     progress += 1
@@ -140,17 +135,18 @@ const fixTypebots = async () => {
         (progress / total) * 100
       )}%) (${totalFixed} fixed typebots)`
     )
-    const parser = typebotSchema.safeParse({
+    const parser = publicTypebotSchema.safeParse({
       ...typebot,
       updatedAt: new Date(typebot.updatedAt),
       createdAt: new Date(typebot.createdAt),
     })
     if ('error' in parser) {
       const fixedTypebot = {
-        ...fixTypebot(typebot),
+        ...fixTypebot(typebot as Typebot | PublicTypebot),
         updatedAt: new Date(typebot.updatedAt),
         createdAt: new Date(typebot.createdAt),
       }
+      publicTypebotSchema.parse(fixedTypebot)
       fixedTypebots.push(fixedTypebot)
       totalFixed += 1
       diffs.push({
@@ -168,6 +164,24 @@ const fixTypebots = async () => {
     'logs/diffs.json',
     JSON.stringify(diffs.reverse().slice(0, 100))
   )
+
+  const queries = fixedTypebots.map((fixedTypebot) =>
+    prisma.publicTypebot.updateMany({
+      where: { id: fixedTypebot.id },
+      data: {
+        ...fixedTypebot,
+      } as any,
+    })
+  )
+
+  const totalQueries = queries.length
+  progress = 0
+  prisma.$on('query', () => {
+    progress += 1
+    console.log(`Progress: ${progress}/${totalQueries}`)
+  })
+
+  await prisma.$transaction(queries)
 }
 
 // export const parseZodError = (parser: any) => {

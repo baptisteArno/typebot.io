@@ -57,7 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const parser = typebotSchema.safeParse(data)
+    const parser = typebotSchema.safeParse({
+      ...data,
+      updatedAt: new Date(data.updatedAt),
+      createdAt: new Date(data.createdAt),
+    })
     if ('error' in parser) {
       captureEvent({
         message: 'Typebot schema validation failed',
