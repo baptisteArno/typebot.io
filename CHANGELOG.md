@@ -1,5 +1,29 @@
 # Changelog
 
+<a name="2.9.0"></a>
+## 2.9.0 (2023-01-02)
+
+### Added
+
+- ✨ (auth) Add custom OAuth provider support [[b9d3893](https://github.com/baptisteArno/typebot.io/commit/b9d38935a69e555921c9a1388bdbf2336d82ca44)]
+- ✨ (typebot-js) Add setHiddenVariables command [[99850dd](https://github.com/baptisteArno/typebot.io/commit/99850ddbeb2dbb57396ecd01ae95a715a4ce4c45)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[ec7481d](https://github.com/baptisteArno/typebot.io/commit/ec7481d002e60d6fd657a083b950bc0cc1da7cc5)]
+- 🚸 Only show onboarding modal on cloud manage version [[080353b](https://github.com/baptisteArno/typebot.io/commit/080353bffb42b30799d7e641e828649ddd6e7d61)]
+
+### Fixed
+
+- 🐛 (bot) Update result variables when overwritten by input [[f49a301](https://github.com/baptisteArno/typebot.io/commit/f49a3013d418d06ebda7d6901cc91a06e16efc55)]
+
+### Miscellaneous
+
+- 🧑‍💻 Parse line breaks for plainText attributes [[bea1a6a](https://github.com/baptisteArno/typebot.io/commit/bea1a6a3f802d69d57321dc7d42345384f5f7b3e)]
+- 📝 Add Make.com instructions [[b9ed50b](https://github.com/baptisteArno/typebot.io/commit/b9ed50b016f340ec50beb573c7f7ce8561937b9d)]
+- 📝 Improve License section in README [[60ed0b2](https://github.com/baptisteArno/typebot.io/commit/60ed0b2d4a92a5fc1d61ef221b58f8eb70f66820)]
+
+
 <a name="2.8.12"></a>
 ## 2.8.12 (2022-12-28)
 
