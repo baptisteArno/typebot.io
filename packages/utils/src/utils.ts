@@ -111,11 +111,8 @@ export const isIntegrationStep = (step: Step): step is IntegrationStep =>
 
 export const isWebhookStep = (step: Step): step is WebhookStep =>
   [
-    IntegrationStepType.WEBHOOK,
-    IntegrationStepType.PABBLY_CONNECT,
-    IntegrationStepType.ZAPIER,
-    IntegrationStepType.MAKE_COM,
-  ].includes(step.type as IntegrationStepType)
+    IntegrationStepType.WEBHOOK
+  ].includes(step.type as IntegrationStepType.WEBHOOK)
 
 export const isBubbleStepType = (type: StepType): type is BubbleStepType =>
   (Object.values(BubbleStepType) as string[]).includes(type)
@@ -146,20 +143,17 @@ export const stepTypeHasWebhook = (
   type: StepType
 ): type is IntegrationStepType.WEBHOOK =>
   Object.values([
-    IntegrationStepType.WEBHOOK,
-    IntegrationStepType.ZAPIER,
-    IntegrationStepType.MAKE_COM,
-    IntegrationStepType.PABBLY_CONNECT,
+    IntegrationStepType.WEBHOOK
   ] as string[]).includes(type)
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS =>
-  type === LogicStepType.CONDITION || type === InputStepType.CHOICE || type === OctaStepType.OFFICE_HOURS
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK =>
+  type === LogicStepType.CONDITION || type === InputStepType.CHOICE || type === OctaStepType.OFFICE_HOURS || type === IntegrationStepType.WEBHOOK
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep | OfficeHourStep =>
+): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep =>
   'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

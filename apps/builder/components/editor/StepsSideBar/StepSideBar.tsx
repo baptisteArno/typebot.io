@@ -87,13 +87,7 @@ export const StepsSideBar = () => {
       type !== LogicStepType.SET_VARIABLE &&
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
-      type !== LogicStepType.TYPEBOT_LINK &&
-      type !== IntegrationStepType.EMAIL &&
-      type !== IntegrationStepType.GOOGLE_ANALYTICS &&
-      type !== IntegrationStepType.GOOGLE_SHEETS &&
-      type !== IntegrationStepType.MAKE_COM &&
-      type !== IntegrationStepType.PABBLY_CONNECT &&
-      type !== IntegrationStepType.ZAPIER
+      type !== LogicStepType.TYPEBOT_LINK 
     )
   }
 

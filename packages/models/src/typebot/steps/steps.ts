@@ -9,7 +9,7 @@ import { BubbleStep, BubbleStepType } from './bubble'
 import { AskNameInputStep, InputStep, InputStepType } from './inputs'
 import { IntegrationStep } from './integration'
 import { ConditionStep, LogicStep, LogicStepType } from './logic'
-import { OctaBubbleStepType, OctaStep, OctaStepType, OctaBubbleStep } from './octaStep'
+import { OctaBubbleStepType, OctaStep, OctaStepType, OctaBubbleStep, OctaCommerceOptions } from './octaStep'
 import { WabaStep, WabaStepType } from './waba'
 
 export type Step =
@@ -59,6 +59,7 @@ export type StepOptions =
   | InputStepOptions
   | LogicStepOptions
   | IntegrationStepOptions
+  | OctaCommerceOptions
 
 export type StepWithItems = Omit<Step, 'items'> & { items: Item[] }
 

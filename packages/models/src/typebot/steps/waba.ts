@@ -4,15 +4,18 @@ import { TElement } from '@udecode/plate-core'
 export type WabaStep =
   | OptionsWabaStep
   | ButtonsWabaStep
+  | OctaCommerceStep
 
 export enum WabaStepType {
   OPTIONS = 'options',
   BUTTONS = 'buttons',
+  COMMERCE = 'commerce'
 }
 
 export type WabaStepContent =
   | OptionsWabaContent
   | ButtonsWabaContent
+  | OctaCommerceStep
 
 export type OptionsWabaStep = StepBase & {
   type: WabaStepType.OPTIONS
@@ -24,6 +27,15 @@ export type ButtonsWabaStep = StepBase & {
   content: ButtonsWabaContent
 }
 
+export type OctaCommerceStep = StepBase & {
+  type: WabaStepType.COMMERCE
+  content: OctaCommerceContent
+}
+
+export type OctaCommerceContent = StepBase & {
+  catalogId: string;
+  products: Array<String>;
+}
 
 export type OptionsWabaContent = {
   labels: { placeholder: string; button: string }
@@ -32,6 +44,7 @@ export type OptionsWabaContent = {
 export type ButtonsWabaContent = {
   labels: { placeholder: string; button: string }
 }
+
 
 // mudar
 

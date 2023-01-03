@@ -9,6 +9,7 @@ import {
   IntegrationStepType,
   StepIndices,
   Typebot,
+  WabaStepType,
 } from 'models'
 import { SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
@@ -120,7 +121,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Conecte a outro sistema'
     case OctaStepType.OFFICE_HOURS:
         return 'Horário de atendimento'
-  
+    case WabaStepType.COMMERCE:
+      return 'Commerce'
     default:
       return 'Outro'
   }

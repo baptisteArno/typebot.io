@@ -11,6 +11,9 @@ const moduleExports = {
   },
   experimental: {
     outputStandalone: true,
+    images: {
+      allowFutureImage: true
+    }
   },
   i18n,
   optimizeFonts: false,

@@ -88,6 +88,8 @@ export const StepTypeLabel = ({ type }: Props) => {
     //   return <Text>Email</Text>
     case OctaStepType.OFFICE_HOURS:
       return <Text>Definir horário de atendimento</Text>
+    case WabaStepType.COMMERCE:
+     return <Text>Enviar um catálogo</Text>
     case OctaStepType.ASSIGN_TO_TEAM:
       return <Text>Direcionar conversa</Text>
     case OctaBubbleStepType.END_CONVERSATION:

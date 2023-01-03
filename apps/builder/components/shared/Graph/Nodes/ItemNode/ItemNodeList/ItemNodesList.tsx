@@ -147,7 +147,7 @@ export const ItemNodesList = ({
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          Teste
+          Integre com seu sistema
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {

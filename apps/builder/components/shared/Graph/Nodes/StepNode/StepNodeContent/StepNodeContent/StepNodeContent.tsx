@@ -9,6 +9,7 @@ import {
   StepIndices,
   OctaBubbleStepType,
   OctaStepType,
+  WabaStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../../ItemNode'
@@ -24,6 +25,7 @@ import {
 import { AssignToTeamContent } from '../contents/AssignToTeam/AssignToTeamContent'
 // import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from '../contents/ImageBubbleContent'
+import { OctaCommerceContent } from '../contents/OctaCommerceContent'
 // import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
@@ -164,6 +166,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.OFFICE_HOURS: {     
       return <ItemNodesList step={step} indices={indices} isReadOnly />
+    }
+    case WabaStepType.COMMERCE: {
+      return <OctaCommerceContent step={step} options={step} />
     }
     case 'start': {
       return <Text>Início</Text>

@@ -8,8 +8,9 @@ import {
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
-import { byId, stepHasItems } from 'utils'
+
 import cuid from 'cuid'
+import { byId, stepHasItems } from 'utils'
 
 export type ItemsActions = {
   createItem: (
