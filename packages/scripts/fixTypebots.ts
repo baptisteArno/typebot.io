@@ -8,11 +8,11 @@ import {
   Group,
   InputBlockType,
   PublicTypebot,
-  publicTypebotSchema,
   Theme,
   Typebot,
+  typebotSchema,
 } from 'models'
-import { isNotDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { promptAndSetEnvironment } from './utils'
 import { detailedDiff } from 'deep-object-diff'
 
@@ -78,18 +78,22 @@ const fixBlocks = (
     }) as Block[]
 }
 
-const fixBrokenBlockOption = (option: BlockOptions, blockType: BlockType) =>
+const fixBrokenBlockOption = (options: BlockOptions, blockType: BlockType) =>
   removeUndefinedFromObject({
-    ...option,
+    ...options,
     sheetId:
-      'sheetId' in option && option.sheetId
-        ? option.sheetId.toString()
+      'sheetId' in options && isDefined(options.sheetId)
+        ? options.sheetId.toString()
         : undefined,
-    step: 'step' in option && option.step ? option.step : undefined,
-    value: 'value' in option && option.value ? option.value : undefined,
+    step:
+      'step' in options && isDefined(options.step) ? options.step : undefined,
+    value:
+      'value' in options && isDefined(options.value)
+        ? options.value
+        : undefined,
     retryMessageContent: fixRetryMessageContent(
       //@ts-ignore
-      option.retryMessageContent,
+      options.retryMessageContent,
       blockType
     ),
   }) as BlockOptions
@@ -121,7 +125,18 @@ const fixTypebots = async () => {
     log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
   })
 
-  const typebots = await prisma.publicTypebot.findMany()
+  const twoDaysAgo = new Date()
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+  const typebots = await prisma.typebot.findMany({
+    where: {
+      updatedAt: {
+        gte: twoDaysAgo,
+      },
+    },
+  })
+
+  writeFileSync('logs/typebots.json', JSON.stringify(typebots))
 
   const total = typebots.length
   let totalFixed = 0
@@ -135,7 +150,7 @@ const fixTypebots = async () => {
         (progress / total) * 100
       )}%) (${totalFixed} fixed typebots)`
     )
-    const parser = publicTypebotSchema.safeParse({
+    const parser = typebotSchema.safeParse({
       ...typebot,
       updatedAt: new Date(typebot.updatedAt),
       createdAt: new Date(typebot.createdAt),
@@ -143,18 +158,15 @@ const fixTypebots = async () => {
     if ('error' in parser) {
       const fixedTypebot = {
         ...fixTypebot(typebot as Typebot | PublicTypebot),
-        updatedAt: new Date(typebot.updatedAt),
+        updatedAt: new Date(),
         createdAt: new Date(typebot.createdAt),
       }
-      publicTypebotSchema.parse(fixedTypebot)
+      typebotSchema.parse(fixedTypebot)
       fixedTypebots.push(fixedTypebot)
       totalFixed += 1
       diffs.push({
         id: typebot.id,
-        failedObject: resolve(
-          parser.error.issues[0].path.join('.'),
-          fixedTypebot
-        ),
+        failedObject: resolve(parser.error.issues[0].path.join('.'), typebot),
         ...detailedDiff(typebot, fixedTypebot),
       })
     }
@@ -183,27 +195,5 @@ const fixTypebots = async () => {
 
   await prisma.$transaction(queries)
 }
-
-// export const parseZodError = (parser: any) => {
-//   if ('error' in parser) {
-//     console.log(
-//       parser.error.issues.map((issue) =>
-//         JSON.stringify({
-//           message: issue.message,
-//           path: issue.path,
-//         })
-//       )
-//     )
-//     writeFileSync(
-//       'failedObject.json',
-//       JSON.stringify(
-//         resolve(parser.error.issues[0].path.join('.'), fixedTypebot)
-//       )
-//     )
-//     writeFileSync('failedTypebot.json', JSON.stringify(fixedTypebot))
-//     writeFileSync('issue.json', JSON.stringify(parser.error.issues))
-//     exit()
-//   }
-// }
 
 fixTypebots()

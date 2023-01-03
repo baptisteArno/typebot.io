@@ -56,24 +56,29 @@ export const GoogleSheetsSettingsBody = ({
     onOptionsChange({ ...options, sheetId })
 
   const handleActionChange = (action: GoogleSheetsAction) => {
+    const baseOptions = {
+      credentialsId: options.credentialsId,
+      spreadsheetId: options.spreadsheetId,
+      sheetId: options.sheetId,
+    }
     switch (action) {
       case GoogleSheetsAction.GET: {
         const newOptions: GoogleSheetsGetOptions = {
-          ...options,
+          ...baseOptions,
           ...defaultGoogleSheetsGetOptions,
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.INSERT_ROW: {
         const newOptions: GoogleSheetsInsertRowOptions = {
-          ...options,
+          ...baseOptions,
           ...defaultGoogleSheetsInsertOptions,
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.UPDATE_ROW: {
         const newOptions: GoogleSheetsUpdateRowOptions = {
-          ...options,
+          ...baseOptions,
           ...defaultGoogleSheetsUpdateOptions,
         }
         return onOptionsChange({ ...newOptions })
