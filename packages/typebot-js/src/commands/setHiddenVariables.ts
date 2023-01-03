@@ -7,18 +7,17 @@ export const setHiddenVariables = (
     | HTMLIFrameElement
     | undefined
   if (!existingIframe) return
-  const hostUrlParams = new URLSearchParams(document.location.search)
-  const hostQueryObj: { [key: string]: string } = {}
-  hostUrlParams.forEach((value, key) => {
-    hostQueryObj[key] = value
+  const existingUrl =
+    existingIframe.getAttribute('data-src') || existingIframe.src
+  const existingHiddenVariables = new URLSearchParams(existingUrl.split('?')[1])
+  const existingQueryObj: { [key: string]: string } = {}
+  existingHiddenVariables.forEach((value, key) => {
+    existingQueryObj[key] = value
   })
   const isLoadWhenVisible = existingIframe.hasAttribute('data-src')
-  const url = (
-    existingIframe.getAttribute('data-src') || existingIframe.src
-  ).split('?')[0]
-  const iframeUrl = `${url}${parseQueryParams({
+  const iframeUrl = `${existingUrl.split('?')[0]}${parseQueryParams({
+    ...existingQueryObj,
     ...hiddenVariables,
-    ...hostQueryObj,
   })}`
   existingIframe.setAttribute(isLoadWhenVisible ? 'data-src' : 'src', iframeUrl)
 }
