@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               return
             }
             return {
-              id: sheet.sheetId,
+              id: sheet.sheetId.toString(),
               name: sheet.title,
               columns: sheet.headerValues,
             }
