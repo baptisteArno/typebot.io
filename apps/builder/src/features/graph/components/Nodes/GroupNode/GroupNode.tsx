@@ -120,10 +120,6 @@ const NonMemoizedDraggableGroupNode = ({
   const handleTitleSubmit = (title: string) =>
     title.length > 0 ? updateGroup(groupIndex, { title }) : undefined
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation()
-  }
-
   const handleMouseEnter = () => {
     if (isReadOnly) return
     if (mouseOverGroup?.id !== group.id && !isStartGroup)
@@ -200,7 +196,6 @@ const NonMemoizedDraggableGroupNode = ({
               currentCoordinates?.y ?? 0
             }px)`,
           }}
-          onMouseDown={handleMouseDown}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           cursor={isMouseDown ? 'grabbing' : 'pointer'}

@@ -8,9 +8,9 @@ import {
   Group,
   InputBlockType,
   PublicTypebot,
+  publicTypebotSchema,
   Theme,
   Typebot,
-  typebotSchema,
 } from 'models'
 import { isDefined, isNotDefined } from 'utils'
 import { promptAndSetEnvironment } from './utils'
@@ -125,13 +125,10 @@ const fixTypebots = async () => {
     log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
   })
 
-  const twoDaysAgo = new Date()
-  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-
-  const typebots = await prisma.typebot.findMany({
+  const typebots = await prisma.publicTypebot.findMany({
     where: {
       updatedAt: {
-        gte: twoDaysAgo,
+        gte: new Date('2023-01-01T00:00:00.000Z'),
       },
     },
   })
@@ -150,7 +147,7 @@ const fixTypebots = async () => {
         (progress / total) * 100
       )}%) (${totalFixed} fixed typebots)`
     )
-    const parser = typebotSchema.safeParse({
+    const parser = publicTypebotSchema.safeParse({
       ...typebot,
       updatedAt: new Date(typebot.updatedAt),
       createdAt: new Date(typebot.createdAt),
@@ -161,7 +158,7 @@ const fixTypebots = async () => {
         updatedAt: new Date(),
         createdAt: new Date(typebot.createdAt),
       }
-      typebotSchema.parse(fixedTypebot)
+      publicTypebotSchema.parse(fixedTypebot)
       fixedTypebots.push(fixedTypebot)
       totalFixed += 1
       diffs.push({
@@ -182,6 +179,13 @@ const fixTypebots = async () => {
       where: { id: fixedTypebot.id },
       data: {
         ...fixedTypebot,
+        // theme: fixedTypebot.theme ?? undefined,
+        // settings: fixedTypebot.settings ?? undefined,
+        // resultsTablePreferences:
+        //   'resultsTablePreferences' in fixedTypebot &&
+        //   fixedTypebot.resultsTablePreferences
+        //     ? fixedTypebot.resultsTablePreferences
+        //     : undefined,
       } as any,
     })
   )

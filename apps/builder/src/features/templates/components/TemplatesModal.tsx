@@ -68,8 +68,8 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
     >
       <ModalOverlay />
       <ModalContent h="85vh">
-        <ModalBody as={HStack} p="0">
-          <Stack w="full" h="full">
+        <ModalBody as={HStack} p="0" spacing="0">
+          <Stack w="full" h="full" spacing="4">
             <Heading pl="10" pt="4" fontSize="2xl">
               {selectedTemplate.emoji}{' '}
               <chakra.span ml="2">{selectedTemplate.name}</chakra.span>
@@ -79,6 +79,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                 apiHost={getViewerUrl({ isBuilder: true })}
                 typebot={parseTypebotToPublicTypebot(typebot)}
                 key={typebot.id}
+                style={{ borderRadius: '0.25rem' }}
               />
             )}
           </Stack>

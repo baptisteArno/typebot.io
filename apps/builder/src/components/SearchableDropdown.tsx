@@ -1,6 +1,5 @@
 import {
   useDisclosure,
-  useOutsideClick,
   Flex,
   Popover,
   Input,
@@ -16,6 +15,7 @@ import { useState, useRef, useEffect, ChangeEvent, ReactNode } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env, isDefined } from 'utils'
 import { VariablesButton } from '@/features/variables'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 
 type Props = {
   selectedItem?: string

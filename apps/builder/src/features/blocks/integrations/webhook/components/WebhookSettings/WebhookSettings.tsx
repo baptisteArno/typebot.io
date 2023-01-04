@@ -193,7 +193,7 @@ export const WebhookSettings = ({
                 Query params
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
+              <AccordionPanel py={4} as={Stack} spacing="6">
                 <TableList<KeyValue>
                   initialItems={localWebhook.queryParams}
                   onItemsChange={handleQueryParamsChange}
@@ -208,7 +208,7 @@ export const WebhookSettings = ({
                 Headers
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
+              <AccordionPanel py={4} as={Stack} spacing="6">
                 <TableList<KeyValue>
                   initialItems={localWebhook.headers}
                   onItemsChange={handleHeadersChange}
@@ -223,7 +223,7 @@ export const WebhookSettings = ({
                 Body
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
+              <AccordionPanel py={4} as={Stack} spacing="6">
                 <SwitchWithLabel
                   label="Custom body"
                   initialValue={options.isCustomBody ?? true}
@@ -244,7 +244,7 @@ export const WebhookSettings = ({
                 Variable values for test
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
+              <AccordionPanel py={4} as={Stack} spacing="6">
                 <TableList<VariableForTest>
                   initialItems={
                     options?.variablesForTest ?? { byId: {}, allIds: [] }
@@ -279,7 +279,7 @@ export const WebhookSettings = ({
                 Save in variables
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
+              <AccordionPanel py={4} as={Stack} spacing="6">
                 <TableList<ResponseVariableMapping>
                   initialItems={options.responseVariableMapping}
                   onItemsChange={handleResponseMappingChange}

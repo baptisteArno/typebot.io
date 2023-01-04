@@ -13,6 +13,7 @@ import {
   InputRightElement,
   ModalFooter,
   Link,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { env, getViewerUrl } from 'utils'
@@ -44,7 +45,7 @@ export const WordpressModal = ({
               <Link
                 href="https://wordpress.org/plugins/typebot/"
                 isExternal
-                color="blue.500"
+                color={useColorModeValue('blue.500', 'blue.300')}
               >
                 the official Typebot WordPress plugin
                 <ExternalLinkIcon mx="2px" />

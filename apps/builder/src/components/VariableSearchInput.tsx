@@ -10,7 +10,7 @@ import {
   HStack,
   useColorModeValue,
   PopoverAnchor,
-  useOutsideClick,
+  Portal,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
@@ -19,6 +19,7 @@ import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, env, isDefined, isNotDefined } from 'utils'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 
 type Props = {
   initialVariableId?: string
@@ -188,75 +189,78 @@ export const VariableSearchInput = ({
             {...inputProps}
           />
         </PopoverAnchor>
-        <PopoverContent
-          maxH="35vh"
-          overflowY="scroll"
-          role="menu"
-          w="inherit"
-          shadow="lg"
-        >
-          {isCreateVariableButtonDisplayed && (
-            <Button
-              ref={createVariableItemRef}
-              role="menuitem"
-              minH="40px"
-              onClick={handleCreateNewVariableClick}
-              fontSize="16px"
-              fontWeight="normal"
-              rounded="none"
-              colorScheme="gray"
-              variant="ghost"
-              justifyContent="flex-start"
-              leftIcon={<PlusIcon />}
-              bgColor={keyboardFocusIndex === 0 ? bg : 'transparent'}
-            >
-              Create &quot;{inputValue}&quot;
-            </Button>
-          )}
-          {filteredItems.length > 0 && (
-            <>
-              {filteredItems.map((item, idx) => {
-                const indexInList = isCreateVariableButtonDisplayed
-                  ? idx + 1
-                  : idx
-                return (
-                  <Button
-                    ref={(el) => (itemsRef.current[idx] = el)}
-                    role="menuitem"
-                    minH="40px"
-                    key={idx}
-                    onClick={handleVariableNameClick(item)}
-                    fontSize="16px"
-                    fontWeight="normal"
-                    rounded="none"
-                    colorScheme="gray"
-                    variant="ghost"
-                    justifyContent="space-between"
-                    bgColor={
-                      keyboardFocusIndex === indexInList ? bg : 'transparent'
-                    }
-                  >
-                    {item.name}
-                    <HStack>
-                      <IconButton
-                        icon={<EditIcon />}
-                        aria-label="Rename variable"
-                        size="xs"
-                        onClick={handleRenameVariableClick(item)}
-                      />
-                      <IconButton
-                        icon={<TrashIcon />}
-                        aria-label="Remove variable"
-                        size="xs"
-                        onClick={handleDeleteVariableClick(item)}
-                      />
-                    </HStack>
-                  </Button>
-                )
-              })}
-            </>
-          )}
-        </PopoverContent>
+        <Portal>
+          <PopoverContent
+            maxH="35vh"
+            overflowY="scroll"
+            role="menu"
+            w="inherit"
+            shadow="lg"
+          >
+            {isCreateVariableButtonDisplayed && (
+              <Button
+                ref={createVariableItemRef}
+                role="menuitem"
+                minH="40px"
+                onClick={handleCreateNewVariableClick}
+                fontSize="16px"
+                fontWeight="normal"
+                rounded="none"
+                colorScheme="gray"
+                variant="ghost"
+                justifyContent="flex-start"
+                leftIcon={<PlusIcon />}
+                bgColor={keyboardFocusIndex === 0 ? bg : 'transparent'}
+              >
+                Create &quot;{inputValue}&quot;
+              </Button>
+            )}
+            {filteredItems.length > 0 && (
+              <>
+                {filteredItems.map((item, idx) => {
+                  const indexInList = isCreateVariableButtonDisplayed
+                    ? idx + 1
+                    : idx
+                  return (
+                    <Button
+                      ref={(el) => (itemsRef.current[idx] = el)}
+                      role="menuitem"
+                      minH="40px"
+                      key={idx}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onClick={handleVariableNameClick(item)}
+                      fontSize="16px"
+                      fontWeight="normal"
+                      rounded="none"
+                      colorScheme="gray"
+                      variant="ghost"
+                      justifyContent="space-between"
+                      bgColor={
+                        keyboardFocusIndex === indexInList ? bg : 'transparent'
+                      }
+                    >
+                      {item.name}
+                      <HStack>
+                        <IconButton
+                          icon={<EditIcon />}
+                          aria-label="Rename variable"
+                          size="xs"
+                          onClick={handleRenameVariableClick(item)}
+                        />
+                        <IconButton
+                          icon={<TrashIcon />}
+                          aria-label="Remove variable"
+                          size="xs"
+                          onClick={handleDeleteVariableClick(item)}
+                        />
+                      </HStack>
+                    </Button>
+                  )
+                })}
+              </>
+            )}
+          </PopoverContent>
+        </Portal>
       </Popover>
     </Flex>
   )

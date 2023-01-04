@@ -3,7 +3,6 @@ import {
   Stack,
   useColorModeValue,
   useEventListener,
-  useOutsideClick,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -22,6 +21,7 @@ import { serializeHtml } from '@udecode/plate-serializer-html'
 import { parseHtmlStringToPlainText } from '../../utils'
 import { VariableSearchInput } from '@/components/VariableSearchInput'
 import { colors } from '@/lib/theme'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 
 type TextBubbleEditorContentProps = {
   id: string
