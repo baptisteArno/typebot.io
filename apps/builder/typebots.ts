@@ -211,7 +211,6 @@ const duplicateTypebot = (
           if (isWebhookStep(s)) {
             return {
               ...s,
-              webhookId: s.id,
               ...newIds,
             }
           }

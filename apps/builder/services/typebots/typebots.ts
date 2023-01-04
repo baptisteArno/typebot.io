@@ -297,8 +297,7 @@ export const parseNewStep = (
       ? parseOctaStepOptions(type)
       : stepTypeHasOption(type)
         ? parseDefaultStepOptions(type)
-        : undefined,
-    webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
+        : undefined, 
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
 }
