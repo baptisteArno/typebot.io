@@ -29,7 +29,7 @@ export const TableList = <T,>({
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
 
-  console.log("initialItems => ", initialItems);
+  // console.log("initialItems => ", initialItems);
   
   
   const [items, setItems] = useState(initialItems)

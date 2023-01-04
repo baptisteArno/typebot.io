@@ -62,9 +62,6 @@ export const WebhookSettings = ({
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
 
-  console.log("Step => ", step);
-  
-
   const localWebhook  = {
     url: "",
     method:"",
@@ -122,23 +119,23 @@ export const WebhookSettings = ({
   const handleBodyFormStateChange = (isCustomBody: boolean) =>
     onOptionsChange({ ...step.options, isCustomBody })
 
-  // const handleTestRequestClick = async () => {
-  //   if (!typebot || !localWebhook) return
-  //   setIsTestResponseLoading(true)
-  //   await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
-  //   const { data, error } = await executeWebhook(
-  //     typebot.id,
-  //     convertVariableForTestToVariables(
-  //       options.variablesForTest,
-  //       typebot.variables
-  //     ),
-  //     { blockId, stepId }
-  //   )
-  //   if (error) return toast({ title: error.name, description: error.message })
-  //   setTestResponse(JSON.stringify(data, undefined, 2))
-  //   setResponseKeys(getDeepKeys(data))
-  //   setIsTestResponseLoading(false)
-  // }
+  const handleTestRequestClick = async () => {
+    if (!typebot || !localWebhook) return
+    setIsTestResponseLoading(true)
+    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
+    const { data, error } = await executeWebhook(
+      typebot.id,
+      convertVariableForTestToVariables(
+        options.variablesForTest,
+        typebot.variables
+      ),
+      { blockId, stepId }
+    )
+    if (error) return toast({ title: error.name, description: error.message })
+    setTestResponse(JSON.stringify(data, undefined, 2))
+    setResponseKeys(getDeepKeys(data))
+    setIsTestResponseLoading(false)
+  }
 
   // const ResponseMappingInputs = useMemo(
   //   () => (props: TableListItemProps<ResponseVariableMapping>) =>
@@ -267,20 +264,20 @@ export const WebhookSettings = ({
           </Accordion>
         </Stack>
       )}
-      {/* <Stack>
-        {localWebhook?.url && (
+      <Stack>
+        {step.options.url && (
           <Button
-            onClick={handlerDefault}
+            onClick={handleTestRequestClick}
             colorScheme="blue"
             isLoading={isTestResponseLoading}
           >
             Testar request
           </Button>
         )}
-        {testResponse && (
+        {/* {testResponse && (
           <CodeEditor isReadOnly lang="json" value={testResponse} />
         )}
-        {(testResponse || options?.responseVariableMapping.length > 0) && (
+        {(testResponse || step.options?.responseVariableMapping.length > 0) && (
           <Accordion allowToggle allowMultiple>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
@@ -289,7 +286,7 @@ export const WebhookSettings = ({
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <TableList<ResponseVariableMapping>
-                  initialItems={options.responseVariableMapping}
+                  initialItems={step.options.responseVariableMapping}
                   onItemsChange={handlerDefault}
                   Item={}
                   addLabel="Adicionar variável"
@@ -298,8 +295,8 @@ export const WebhookSettings = ({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-        )}
-      </Stack> */}
+        )} */}
+      </Stack>
     </Stack>
   )
 }
