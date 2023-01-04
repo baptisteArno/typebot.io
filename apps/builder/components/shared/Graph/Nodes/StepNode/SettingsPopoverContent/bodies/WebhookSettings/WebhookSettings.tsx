@@ -41,6 +41,7 @@ import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
+import { sendOctaRequest } from 'util/octaRequest'
 
 enum HttpMethodsWebhook {
   POST = "POST",
@@ -61,6 +62,11 @@ export const WebhookSettings = ({
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
+
+  const toast = useToast({
+    position: 'top-right',
+    status: 'error',
+  })
 
   const localWebhook  = {
     url: "",
@@ -122,19 +128,28 @@ export const WebhookSettings = ({
   const handleTestRequestClick = async () => {
     if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
-    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
-    const { data, error } = await executeWebhook(
-      typebot.id,
-      convertVariableForTestToVariables(
-        options.variablesForTest,
-        typebot.variables
-      ),
-      { blockId, stepId }
-    )
-    if (error) return toast({ title: error.name, description: error.message })
-    setTestResponse(JSON.stringify(data, undefined, 2))
-    setResponseKeys(getDeepKeys(data))
+
+    const { data }  = await sendOctaRequest({
+      url: `validate/webhook`,
+      method: 'POST',
+      body: { 
+        session: {}, 
+        webhook: step.options
+      }
+    })
+
+    const { response, status, success } = data
+    
     setIsTestResponseLoading(false)
+    
+    if (!success) return toast({ title: 'Error', description: `Status returned: ${status}` })
+
+    if (typeof response === 'object') {
+      setTestResponse(JSON.stringify(response, undefined, 2))
+      setResponseKeys(getDeepKeys(response))
+    } else {
+      setTestResponse(response)
+    }
   }
 
   // const ResponseMappingInputs = useMemo(
