@@ -1,18 +1,9 @@
 import { SendButton } from '@/components/SendButton'
-import { createEffect, createSignal, Show } from 'solid-js'
-import { Stripe, StripeElements } from '@stripe/stripe-js'
+import { createSignal, onMount, Show } from 'solid-js'
+import { loadStripe } from '@stripe/stripe-js/pure'
+import type { Stripe, StripeElements } from '@stripe/stripe-js'
 import { BotContext } from '@/types'
 import { PaymentInputOptions, RuntimeOptions } from 'models'
-import '@power-elements/stripe-elements'
-declare module 'solid-js' {
-  namespace JSX {
-    interface IntrinsicElements {
-      'stripe-payment-request': unknown
-    }
-  }
-}
-
-// TODO: Implement support for payment input. (WIP)
 
 type Props = {
   context: BotContext
@@ -20,38 +11,37 @@ type Props = {
   onSuccess: () => void
 }
 
-let stripe: Stripe | undefined
-let elements: StripeElements | undefined
-let ignoreFirstPaymentIntentCall = true
+const slotName = 'stripe-payment-form'
+
+let paymentElementSlot: HTMLSlotElement
+let stripe: Stripe | null = null
+let elements: StripeElements | null = null
 
 export const StripePaymentForm = (props: Props) => {
   const [message, setMessage] = createSignal<string>()
+  const [isMounted, setIsMounted] = createSignal(false)
   const [isLoading, setIsLoading] = createSignal(false)
 
-  createEffect(() => {
+  onMount(async () => {
+    initShadowMountPoint(paymentElementSlot)
+    stripe = await loadStripe(props.options.publicKey)
     if (!stripe) return
-
-    if (ignoreFirstPaymentIntentCall)
-      return (ignoreFirstPaymentIntentCall = false)
-
-    stripe
-      .retrievePaymentIntent(props.options.paymentIntentSecret)
-      .then(({ paymentIntent }) => {
-        switch (paymentIntent?.status) {
-          case 'succeeded':
-            setMessage('Payment succeeded!')
-            break
-          case 'processing':
-            setMessage('Your payment is processing.')
-            break
-          case 'requires_payment_method':
-            setMessage('Your payment was not successful, please try again.')
-            break
-          default:
-            setMessage('Something went wrong.')
-            break
-        }
-      })
+    elements = stripe.elements({
+      appearance: {
+        theme: 'stripe',
+        variables: {
+          colorPrimary: getComputedStyle(paymentElementSlot).getPropertyValue(
+            '--typebot-button-bg-color'
+          ),
+        },
+      },
+      clientSecret: props.options.paymentIntentSecret,
+    })
+    const paymentElement = elements.create('payment', {
+      layout: 'tabs',
+    })
+    paymentElement.mount('#payment-element')
+    setTimeout(() => setIsMounted(true), 1000)
   })
 
   const handleSubmit = async (event: Event & { submitter: HTMLElement }) => {
@@ -89,31 +79,34 @@ export const StripePaymentForm = (props: Props) => {
       onSubmit={handleSubmit}
       class="flex flex-col rounded-lg p-4 typebot-input w-full items-center"
     >
-      {/* <stripe-payment-request
-        publishable-key={props.options.publicKey}
-        client-secret={props.options.paymentIntentSecret}
-        generate="source"
-        amount="125"
-        label="Double Double"
-        country="CA"
-        currency={props.options.currency}
-      /> */}
-      <SendButton
-        isLoading={isLoading() || !elements}
-        class="mt-4 w-full max-w-lg"
-        disableIcon
-      >
-        {props.options.labels.button} {props.options.amountLabel}
-      </SendButton>
+      <slot name={slotName} ref={paymentElementSlot} />
+      <Show when={isMounted()}>
+        <SendButton
+          isLoading={isLoading()}
+          class="mt-4 w-full max-w-lg animate-fade-in"
+          disableIcon
+        >
+          {props.options.labels.button} {props.options.amountLabel}
+        </SendButton>
+      </Show>
 
       <Show when={message()}>
-        <div
-          id="payment-message"
-          class="typebot-input-error-message mt-4 text-center"
-        >
+        <div class="typebot-input-error-message mt-4 text-center animate-fade-in">
           {message()}
         </div>
       </Show>
     </form>
   )
+}
+
+const initShadowMountPoint = (element: HTMLElement) => {
+  const rootNode = element.getRootNode() as ShadowRoot
+  const host = rootNode.host
+  const slotPlaceholder = document.createElement('div')
+  slotPlaceholder.style.width = '100%'
+  slotPlaceholder.slot = slotName
+  host.appendChild(slotPlaceholder)
+  const paymentElementContainer = document.createElement('div')
+  paymentElementContainer.id = 'payment-element'
+  slotPlaceholder.appendChild(paymentElementContainer)
 }

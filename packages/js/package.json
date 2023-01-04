@@ -13,7 +13,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@power-elements/stripe-elements": "3.3.0",
     "@stripe/stripe-js": "1.46.0",
     "models": "workspace:*",
     "phone": "3.1.32",
