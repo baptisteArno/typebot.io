@@ -8,6 +8,7 @@ import { validateUrl } from '@/features/blocks/inputs/url/api'
 import { parseVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
+import got from 'got'
 import {
   Block,
   BlockType,
@@ -18,7 +19,7 @@ import {
   SessionState,
   Variable,
 } from 'models'
-import { isInputBlock } from 'utils'
+import { isInputBlock, isNotDefined } from 'utils'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 
@@ -89,9 +90,14 @@ export const continueBotFlow =
   }
 
 const processAndSaveAnswer =
-  (state: Pick<SessionState, 'result' | 'typebot'>, block: InputBlock) =>
+  (
+    state: Pick<SessionState, 'result' | 'typebot' | 'isPreview'>,
+    block: InputBlock
+  ) =>
   async (reply: string): Promise<Variable[]> => {
-    state.result && (await saveAnswer(state.result.id, block)(reply))
+    state.result &&
+      !state.isPreview &&
+      (await saveAnswer(state.result.id, block)(reply))
     const newVariables = saveVariableValueIfAny(state, block)(reply)
     return newVariables
   }
@@ -139,16 +145,46 @@ const parseRetryMessage = (
 
 const saveAnswer =
   (resultId: string, block: InputBlock) => async (reply: string) => {
-    await prisma.answer.create({
-      data: {
-        resultId: resultId,
-        blockId: block.id,
-        groupId: block.groupId,
-        content: reply,
-        variableId: block.options.variableId,
+    const answer = {
+      resultId: resultId,
+      blockId: block.id,
+      groupId: block.groupId,
+      content: reply,
+      variableId: block.options.variableId,
+      storageUsed: 0,
+    }
+
+    if (reply.includes('http') && block.type === InputBlockType.FILE) {
+      answer.storageUsed = await computeStorageUsed(reply)
+    }
+
+    await prisma.answer.upsert({
+      where: {
+        resultId_blockId_groupId: {
+          resultId,
+          groupId: block.groupId,
+          blockId: block.id,
+        },
       },
+      create: answer,
+      update: answer,
     })
   }
+
+const computeStorageUsed = async (reply: string) => {
+  let storageUsed = 0
+  const fileUrls = reply.split(', ')
+  const hasReachedStorageLimit = fileUrls[0] === null
+  if (!hasReachedStorageLimit) {
+    for (const url of fileUrls) {
+      const { headers } = await got(url)
+      const size = headers['content-length']
+      if (isNotDefined(size)) continue
+      storageUsed += parseInt(size, 10)
+    }
+  }
+  return storageUsed
+}
 
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
