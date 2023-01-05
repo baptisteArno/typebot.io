@@ -11,13 +11,13 @@ import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
+import { oneDark } from '@codemirror/theme-one-dark'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { linter, LintSource } from '@codemirror/lint'
 import { VariablesButton } from '@/features/variables'
 import { Variable } from 'models'
 import { env } from 'utils'
-import { espresso, dracula } from 'thememirror'
 
 const linterExtension = linter(jsonParseLinter() as unknown as LintSource)
 
@@ -92,8 +92,8 @@ export const CodeEditor = ({
       updateListenerExtension,
       basicSetup,
       EditorState.readOnly.of(isReadOnly),
-      isDark ? dracula : espresso,
     ]
+    if (isDark) extensions.push(oneDark)
     if (lang === 'json') {
       extensions.push(json())
       extensions.push(linterExtension)
@@ -144,7 +144,7 @@ export const CodeEditor = ({
       spacing={0}
       borderWidth={'1px'}
       borderRadius="md"
-      bg={useColorModeValue('#FCFCFC', '#2D2F3F')}
+      bg={useColorModeValue('#FCFCFC', '#282C34')}
     >
       <Box
         w={isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%'}

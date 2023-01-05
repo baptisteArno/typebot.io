@@ -28,6 +28,7 @@ importers:
       '@codemirror/lang-json': 6.0.1
       '@codemirror/lint': 6.1.0
       '@codemirror/state': 6.2.0
+      '@codemirror/theme-one-dark': ^6.1.0
       '@dnd-kit/core': 6.0.6
       '@dnd-kit/sortable': 7.0.1
       '@dnd-kit/utilities': 3.2.1
@@ -117,7 +118,6 @@ importers:
       superjson: ^1.12.1
       svg-round-corners: 0.4.1
       swr: 2.0.0
-      thememirror: ^2.0.1
       tinycolor2: 1.5.1
       trpc-openapi: 1.0.0
       tsconfig: workspace:*
@@ -137,6 +137,7 @@ importers:
       '@codemirror/lang-json': 6.0.1
       '@codemirror/lint': 6.1.0
       '@codemirror/state': 6.2.0
+      '@codemirror/theme-one-dark': 6.1.0
       '@dnd-kit/core': 6.0.6_biqbaboplfbrettd7655fr4n2y
       '@dnd-kit/sortable': 7.0.1_ighjjj6vulsdnb2lagbd2egmxy
       '@dnd-kit/utilities': 3.2.1_react@18.2.0
@@ -205,7 +206,6 @@ importers:
       styled-components: 5.3.6_7i5myeigehqah43i5u7wbekgba
       svg-round-corners: 0.4.1
       swr: 2.0.0_react@18.2.0
-      thememirror: 2.0.1_skwwbccw6qaj7pvsade44nde44
       tinycolor2: 1.5.1
       trpc-openapi: 1.0.0_xfxv3otgv6nbap2imkii6swyfm
       typebot-js: link:../../packages/typebot-js
@@ -3368,6 +3368,15 @@ packages:
 
   /@codemirror/state/6.2.0:
     resolution: {integrity: sha512-69QXtcrsc3RYtOtd+GsvczJ319udtBf1PTrr2KbLWM/e2CXUPnh0Nz9AUo8WfhSQ7GeL8dPVNUmhQVgpmuaNGA==}
+    dev: false
+
+  /@codemirror/theme-one-dark/6.1.0:
+    resolution: {integrity: sha512-AiTHtFRu8+vWT9wWUWDM+cog6ZwgivJogB1Tm/g40NIpLwph7AnmxrSzWfvJN5fBVufsuwBxecQCNmdcR5D7Aw==}
+    dependencies:
+      '@codemirror/language': 6.3.2
+      '@codemirror/state': 6.2.0
+      '@codemirror/view': 6.7.1
+      '@lezer/highlight': 1.1.3
     dev: false
 
   /@codemirror/view/6.7.1:
@@ -17892,18 +17901,6 @@ packages:
 
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
-
-  /thememirror/2.0.1_skwwbccw6qaj7pvsade44nde44:
-    resolution: {integrity: sha512-d5i6FVvWWPkwrm4cHLI3t9AT1OrkAt7Ig8dtdYSofgF7C/eiyNuq6zQzSTusWTde3jpW9WLvA9J/fzNKMUsd0w==}
-    peerDependencies:
-      '@codemirror/language': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-    dependencies:
-      '@codemirror/language': 6.3.2
-      '@codemirror/state': 6.2.0
-      '@codemirror/view': 6.7.1
-    dev: false
 
   /thenify-all/1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
