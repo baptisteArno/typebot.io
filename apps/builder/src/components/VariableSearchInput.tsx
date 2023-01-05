@@ -58,7 +58,7 @@ export const VariableSearchInput = ({
   const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
     number | undefined
   >()
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const createVariableItemRef = useRef<HTMLButtonElement | null>(null)
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
@@ -70,6 +70,7 @@ export const VariableSearchInput = ({
 
   useEffect(() => {
     if (isDefaultOpen) onOpen()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

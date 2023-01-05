@@ -93,6 +93,7 @@ const Popover = createMultiStyleConfigHelpers(
     popper: {
       width: 'fit-content',
       maxWidth: 'fit-content',
+      zIndex: 'popover',
     },
     content: {
       bg: colorMode === 'dark' ? 'gray.800' : 'white',
