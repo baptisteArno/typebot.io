@@ -12,4 +12,5 @@ Sentry.init({
     'ResizeObserver is not defined',
     "Can't find variable: ResizeObserver",
   ],
+  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
 })
