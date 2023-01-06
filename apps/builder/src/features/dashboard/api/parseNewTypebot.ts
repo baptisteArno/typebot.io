@@ -7,6 +7,20 @@ import {
   Typebot,
 } from 'models'
 
+export type NewTypebotProps = Omit<
+  Typebot,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'id'
+  | 'publishedTypebotId'
+  | 'publicId'
+  | 'customDomain'
+  | 'icon'
+  | 'isArchived'
+  | 'isClosed'
+  | 'resultsTablePreferences'
+>
+
 export const parseNewTypebot = ({
   folderId,
   name,
@@ -19,19 +33,7 @@ export const parseNewTypebot = ({
   name: string
   ownerAvatarUrl?: string
   isBrandingEnabled?: boolean
-}): Omit<
-  Typebot,
-  | 'createdAt'
-  | 'updatedAt'
-  | 'id'
-  | 'publishedTypebotId'
-  | 'publicId'
-  | 'customDomain'
-  | 'icon'
-  | 'isArchived'
-  | 'isClosed'
-  | 'resultsTablePreferences'
-> => {
+}): NewTypebotProps => {
   const startGroupId = cuid()
   const startBlockId = cuid()
   const startBlock: StartBlock = {

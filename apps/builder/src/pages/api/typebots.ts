@@ -9,6 +9,7 @@ import {
 } from 'utils/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { parseNewTypebot } from '@/features/dashboard'
+import { NewTypebotProps } from '@/features/dashboard/api/parseNewTypebot'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -86,14 +87,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         select: { plan: true },
       })
       if (!workspace) return notFound(res, "Couldn't find workspace")
-      const data =
+      const data = (
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+      ) as NewTypebotProps | Omit<NewTypebotProps, 'groups'>
       const typebot = await prisma.typebot.create({
         data:
           'groups' in data
             ? data
             : parseNewTypebot({
-                ownerAvatarUrl: user.image,
+                ownerAvatarUrl: user.image ?? undefined,
                 isBrandingEnabled: workspace.plan === Plan.FREE,
                 ...data,
               }),
