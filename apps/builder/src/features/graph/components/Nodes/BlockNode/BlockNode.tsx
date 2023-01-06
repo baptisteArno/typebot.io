@@ -37,6 +37,7 @@ import {
   useGraph,
   useBlockDnd,
   useDragDistance,
+  ParentModalProvider,
 } from '../../../providers'
 import { hasDefaultConnector } from '../../../utils'
 
@@ -239,12 +240,14 @@ export const BlockNode = ({
                 onExpandClick={handleExpandClick}
                 onBlockChange={handleBlockUpdate}
               />
-              <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-                <BlockSettings
-                  block={block}
-                  onBlockChange={handleBlockUpdate}
-                />
-              </SettingsModal>
+              <ParentModalProvider>
+                <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
+                  <BlockSettings
+                    block={block}
+                    onBlockChange={handleBlockUpdate}
+                  />
+                </SettingsModal>
+              </ParentModalProvider>
             </>
           )}
           {typebot && isMediaBubbleBlock(block) && (

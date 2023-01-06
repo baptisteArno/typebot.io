@@ -20,6 +20,7 @@ import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, env, isDefined, isNotDefined } from 'utils'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { useParentModal } from '@/features/graph'
 
 type Props = {
   initialVariableId?: string
@@ -62,6 +63,7 @@ export const VariableSearchInput = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const createVariableItemRef = useRef<HTMLButtonElement | null>(null)
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
+  const { ref: parentModalRef } = useParentModal()
 
   useOutsideClick({
     ref: dropdownRef,
@@ -190,7 +192,7 @@ export const VariableSearchInput = ({
             {...inputProps}
           />
         </PopoverAnchor>
-        <Portal>
+        <Portal containerRef={parentModalRef}>
           <PopoverContent
             maxH="35vh"
             overflowY="scroll"

@@ -1,3 +1,4 @@
+import { useParentModal } from '@/features/graph'
 import {
   Modal,
   ModalOverlay,
@@ -20,13 +21,14 @@ export const SettingsModal = ({
   onClose,
   ...props
 }: Props & ModalBodyProps) => {
+  const { ref } = useParentModal()
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent onMouseDown={handleMouseDown}>
+      <ModalContent onMouseDown={handleMouseDown} ref={ref}>
         <ModalHeader mb="2">
           <ModalCloseButton />
         </ModalHeader>
