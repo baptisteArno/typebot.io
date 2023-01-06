@@ -6,7 +6,7 @@ import {
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { isEmpty, isNotDefined, omit, parseAnswers } from 'utils'
+import { isDefined, isEmpty, isNotDefined, omit, parseAnswers } from 'utils'
 import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 
@@ -107,7 +107,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       to: recipients,
       replyTo,
       subject,
-      attachments: fileUrls?.split(', ').map((url) => ({ path: url })),
+      attachments: fileUrls
+        ?.split(', ')
+        .map((url) => (url.startsWith('http') ? { path: url } : undefined))
+        .filter(isDefined),
       ...emailBody,
     }
     try {
