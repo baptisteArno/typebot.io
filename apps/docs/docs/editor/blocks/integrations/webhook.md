@@ -21,6 +21,17 @@ This gets more technical as you'll need to know more about HTTP request paramete
 
 Lots of services offer an API. They also, most likely have an API documentation. Depending on the parameters you are giving the Webhook block, it should return different info from the 3rd party service.
 
+## Custom body
+
+You can set a custom body with your collected variables. Here is a working example:
+
+```json
+{
+  "name": "{{Name}}",
+  "email": "{{Email}}"
+}
+```
+
 ### Example: fetch movie information
 
 Let's create a bot that ask for a movie and retrieve its informations (By sending an HTTP request to the [OMDB API](http://www.omdbapi.com/)).
