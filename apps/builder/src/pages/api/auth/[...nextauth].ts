@@ -102,6 +102,8 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_AUTHORIZATION_URL)) {
     id: 'custom-oauth',
     name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
     type: 'oauth',
+    clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
+    clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
     authorization: process.env.CUSTOM_OAUTH_AUTHORIZATION_URL,
     token: process.env.CUSTOM_OAUTH_TOKEN_URL,
     userinfo: process.env.CUSTOM_OAUTH_USERINFO_URL,
