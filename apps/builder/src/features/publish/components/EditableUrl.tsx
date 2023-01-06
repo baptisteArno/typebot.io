@@ -63,7 +63,7 @@ export const EditableUrl = ({
 
       <HStack>
         <EditButton size="xs" />
-        <CopyButton size="xs" textToCopy={`${hostname}/${pathname ?? ''}`} />
+        <CopyButton size="xs" textToCopy={`${hostname}/${value ?? ''}`} />
       </HStack>
     </Editable>
   )

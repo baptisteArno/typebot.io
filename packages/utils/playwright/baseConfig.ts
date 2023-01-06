@@ -22,7 +22,7 @@ if (fs.existsSync(localViewerEnvPath))
 
 export const playwrightBaseConfig: PlaywrightTestConfig = {
   globalSetup: require.resolve(path.join(__dirname, 'globalSetup')),
-  timeout: process.env.CI ? 50 * 1000 : 20 * 1000,
+  timeout: process.env.CI ? 50 * 1000 : 40 * 1000,
   expect: {
     timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
   },

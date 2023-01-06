@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "pnpm playwright test",
-    "test:report": "pnpm playwright show-report"
+    "test:show-report": "pnpm playwright show-report src/test/reporters"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.1.1",

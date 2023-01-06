@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ButtonProps, Button, useClipboard } from '@chakra-ui/react'
 
 interface CopyButtonProps extends ButtonProps {
@@ -8,7 +8,11 @@ interface CopyButtonProps extends ButtonProps {
 
 export const CopyButton = (props: CopyButtonProps) => {
   const { textToCopy, onCopied, ...buttonProps } = props
-  const { hasCopied, onCopy } = useClipboard(textToCopy)
+  const { hasCopied, onCopy, setValue } = useClipboard(textToCopy)
+
+  useEffect(() => {
+    setValue(textToCopy)
+  }, [setValue, textToCopy])
 
   return (
     <Button
