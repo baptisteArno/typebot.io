@@ -1,5 +1,37 @@
 # Changelog
 
+<a name="2.9.1"></a>
+## 2.9.1 (2023-01-06)
+
+### Added
+
+- 🔊 Improve invalid typebot update detection [[ca2c15d](https://github.com/baptisteArno/typebot.io/commit/ca2c15dbab9c673ef07c26c8b37954cbc11eb38a)]
+
+### Changed
+
+- 💄 Fix code editor transparent selection [[3f7e1ce](https://github.com/baptisteArno/typebot.io/commit/3f7e1ce1252134e664a11828b37c26707f68172f)]
+- 🔧 Explicitly add Sentry release sha [[963f887](https://github.com/baptisteArno/typebot.io/commit/963f887b34559ff07c4b098cffb3223c3e4acbfb)]
+- ♻️ (js) Implement Payment input in bot v2 [[61eff4c](https://github.com/baptisteArno/typebot.io/commit/61eff4c36db054a131e04885aceb4d732bbd7708)]
+- 🚸 (js) Improve setHiddenVariables command [[b105bf8](https://github.com/baptisteArno/typebot.io/commit/b105bf8b8ebde5998fd2bf0bb6c0f66dd7000c1f)]
+
+### Fixed
+
+- 🐛 (editor) Fix popover zIndex [[2d20f1c](https://github.com/baptisteArno/typebot.io/commit/2d20f1c41cda55aeebcb1580d542cbab3f95ceea)]
+- 🐛 (share) Fix clipboard for updated typebot ID [[fadf34a](https://github.com/baptisteArno/typebot.io/commit/fadf34ad61505b282412300457f1a113430c3d13)]
+- 🐛 (auth) Add custom oauth client id and secret params [[6cc3cbf](https://github.com/baptisteArno/typebot.io/commit/6cc3cbf182950fcfbaea00d4bb1345378244316c)]
+- 🐛 Fix new typebot creation host bubble parsing [[119f6dc](https://github.com/baptisteArno/typebot.io/commit/119f6dc348be056eb842b1b969f43151168de611)]
+- 🐛 (sendEmail) Check if attachment is URL [[7174ef0](https://github.com/baptisteArno/typebot.io/commit/7174ef0f81ceab4eb6a7d955d7d7c5d9e3ce2baa)]
+- 🐛 (editor) Fix variables dropdown behind modal [[b455078](https://github.com/baptisteArno/typebot.io/commit/b455078631d9348a4b88f065b710afc7a1b385b4)]
+- 🐛 (chat) Make sure a bot session can be restarted [[de167a8](https://github.com/baptisteArno/typebot.io/commit/de167a8daff49bff581ee76fb738cac73647164d)]
+- 🐛 (editor) Fix variable dropdown overflow [[c1a32ce](https://github.com/baptisteArno/typebot.io/commit/c1a32ce26bb0088e8af02eea544158e1bdb446da)]
+- 🐛 (sheets) Make sure sheet IDs are string [[e1af6af](https://github.com/baptisteArno/typebot.io/commit/e1af6af9c8024493e07c081fe9b177aea2a75158)]
+- 🐛 (sheets) Convert to base options before changing action [[f4615d8](https://github.com/baptisteArno/typebot.io/commit/f4615d83cde86395d238269930ba8962ec46c08e)]
+
+### Miscellaneous
+
+- 📝 Add custom body with variable example [[40d230a](https://github.com/baptisteArno/typebot.io/commit/40d230a73a489dda5f2a344669fe97c465af7b5d)]
+
+
 <a name="2.9.0"></a>
 ## 2.9.0 (2023-01-02)
 
@@ -25,6 +57,7 @@
 
 
 <a name="2.8.12"></a>
+
 ## 2.8.12 (2022-12-28)
 
 ### Changed
@@ -34,7 +67,6 @@
 ### Fixed
 
 - 🚑 (condition) Fix crash when adding condition block [[853ea79](https://github.com/baptisteArno/typebot.io/commit/853ea79f6bba897a1e9c216265525977440969b9)]
-
 
 <a name="2.8.11"></a>
 
