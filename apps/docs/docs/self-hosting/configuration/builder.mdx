@@ -105,18 +105,19 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 
 ## Custom OAuth Provider (Auth)
 
-| Parameter                      | Default      | Description                                                             |
-| ------------------------------ | ------------ | ----------------------------------------------------------------------- |
-| CUSTOM_OAUTH_NAME              | Custom OAuth | Provider name. Is displayed in the sign in form.                        |
-| CUSTOM_OAUTH_CLIENT_ID         | --           | OAuth client ID.                                                        |
-| CUSTOM_OAUTH_CLIENT_SECRET     | --           | OAuth client secret.                                                    |
-| CUSTOM_OAUTH_AUTHORIZATION_URL | --           | OAuth autorization URL (i.e. `https://kauth.kakao.com/oauth/authorize`) |
-| CUSTOM_OAUTH_TOKEN_URL         | --           | OAuth token URL (i.e. `https://kauth.kakao.com/oauth/token`)            |
-| CUSTOM_OAUTH_USERINFO_URL      | --           | User info URL (i.e. `https://kapi.kakao.com/v2/user/me`)                |
-| CUSTOM_OAUTH_USER_ID_PATH      | id           | Used to map the id from the user info object                            |
-| CUSTOM_OAUTH_USER_NAME_PATH    | name         | Used to map the name from the user info object                          |
-| CUSTOM_OAUTH_USER_EMAIL_PATH   | email        | Used to map the email from the user info object                         |
-| CUSTOM_OAUTH_USER_IMAGE_PATH   | image        | Used to map the image from the user info object                         |
+| Parameter                      | Default      | Description                                                                                                                                                                                                      |
+| ------------------------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CUSTOM_OAUTH_NAME              | Custom OAuth | Provider name. Is displayed in the sign in form.                                                                                                                                                                 |
+| CUSTOM_OAUTH_CLIENT_ID         | --           | OAuth client ID.                                                                                                                                                                                                 |
+| CUSTOM_OAUTH_CLIENT_SECRET     | --           | OAuth client secret.                                                                                                                                                                                             |
+| CUSTOM_OAUTH_AUTHORIZATION_URL | --           | OAuth autorization URL (i.e. `https://kauth.kakao.com/oauth/authorize`)                                                                                                                                          |
+| CUSTOM_OAUTH_TOKEN_URL         | --           | OAuth token URL (i.e. `https://kauth.kakao.com/oauth/token`)                                                                                                                                                     |
+| CUSTOM_OAUTH_USERINFO_URL      | --           | User info URL (i.e. `https://kapi.kakao.com/v2/user/me`)                                                                                                                                                         |
+| CUSTOM_OAUTH_ENABLE_ID_TOKEN   | false        | If set to true, the user information will be extracted from the id_token claims, instead of making a request to the userinfo endpoint. id_token is usually present in OpenID Connect (OIDC) compliant providers. |
+| CUSTOM_OAUTH_USER_ID_PATH      | id           | Used to map the id from the user info object                                                                                                                                                                     |
+| CUSTOM_OAUTH_USER_NAME_PATH    | name         | Used to map the name from the user info object                                                                                                                                                                   |
+| CUSTOM_OAUTH_USER_EMAIL_PATH   | email        | Used to map the email from the user info object                                                                                                                                                                  |
+| CUSTOM_OAUTH_USER_IMAGE_PATH   | image        | Used to map the image from the user info object                                                                                                                                                                  |
 
 For `*_PATH` parameters, you can use dot notation to access nested properties (i.e. `account.name`).
 
