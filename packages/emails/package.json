@@ -14,7 +14,7 @@
   "author": "Baptiste Arnaud",
   "license": "ISC",
   "devDependencies": {
-    "@faire/mjml-react": "3.0.0",
+    "@faire/mjml-react": "3.0.1",
     "@types/node": "18.11.18",
     "@types/nodemailer": "6.4.7",
     "@types/react": "18.0.26",

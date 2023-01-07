@@ -12,10 +12,10 @@
     "test:report": "pnpm playwright show-report"
   },
   "dependencies": {
-    "@sentry/nextjs": "7.28.1",
-    "@trpc/server": "10.7.0",
+    "@sentry/nextjs": "7.29.0",
+    "@trpc/server": "10.8.1",
     "@typebot.io/react": "workspace:*",
-    "aws-sdk": "2.1286.0",
+    "aws-sdk": "2.1290.0",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "cuid": "2.1.8",
@@ -29,13 +29,13 @@
     "qs": "6.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "11.5.0",
-    "trpc-openapi": "1.0.0"
+    "stripe": "11.6.0",
+    "trpc-openapi": "1.1.1"
   },
   "devDependencies": {
     "@babel/preset-env": "7.20.2",
-    "@faire/mjml-react": "3.0.0",
-    "@playwright/test": "1.29.1",
+    "@faire/mjml-react": "3.0.1",
+    "@playwright/test": "1.29.2",
     "@types/cors": "2.8.13",
     "@types/google-spreadsheet": "3.3.0",
     "@types/node": "18.11.18",
