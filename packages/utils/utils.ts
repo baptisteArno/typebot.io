@@ -245,15 +245,14 @@ export const uploadFiles = async ({
 
 declare const window: any
 
-const isBrowser = () => Boolean(typeof window !== 'undefined')
-
 export const env = (key = ''): string | undefined => {
-  if (isBrowser() && window.__env)
-    return isEmpty(window.__env[key]) ? undefined : window.__env[key]
+  if (typeof window === 'undefined')
+    return isEmpty(process.env['NEXT_PUBLIC_' + key])
+      ? undefined
+      : (process.env['NEXT_PUBLIC_' + key] as string)
 
-  return isEmpty(process.env['NEXT_PUBLIC_' + key])
-    ? undefined
-    : (process.env['NEXT_PUBLIC_' + key] as string)
+  if (typeof window !== 'undefined' && window.__env)
+    return isEmpty(window.__env[key]) ? undefined : window.__env[key]
 }
 
 export const hasValue = (
@@ -276,8 +275,8 @@ export const getViewerUrl = (props?: {
   return (
     'https://' +
     (props?.isBuilder
-      ? process.env.NEXT_PUBLIC_VERCEL_URL?.replace('builder-v2', 'viewer-v2')
-      : process.env.NEXT_PUBLIC_VERCEL_URL)
+      ? env('VERCEL_URL')?.replace('builder-v2', 'viewer-v2')
+      : env('VERCEL_URL'))
   )
 }
 

@@ -2,9 +2,13 @@
   "name": "@typebot.io/react",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.mjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "db:seed": "tsx scripts/seedDatabase.ts",
+    "stories:dev": "pnpm db:seed && ladle serve -p 3006",
+    "stories:build": "ladle build",
     "build": "pnpm tsc --noEmit && tsup",
     "dev": "tsup --watch",
     "lint": "eslint --fix \"src/**/*.ts*\""
@@ -13,16 +17,22 @@
   "author": "Baptiste Arnaud",
   "license": "ISC",
   "dependencies": {
-    "@typebot.io/js": "workspace:*"
+    "@ladle/react": "^2.4.5"
   },
   "devDependencies": {
+    "@typebot.io/js": "workspace:*",
+    "@types/node": "18.11.18",
     "@types/react": "18.0.26",
+    "db": "workspace:*",
     "eslint": "^8.31.0",
     "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
     "tsconfig": "workspace:*",
     "tsup": "6.5.0",
-    "typescript": "^4.9.4"
+    "tsx": "3.12.1",
+    "typescript": "^4.9.4",
+    "utils": "workspace:*",
+    "models": "workspace:*"
   },
   "peerDependencies": {
     "react": "18.0.0"

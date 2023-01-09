@@ -1,52 +1,124 @@
 import styles from '../../../assets/index.css'
-import { createSignal } from 'solid-js'
+import { createSignal, onMount, Show, splitProps, onCleanup } from 'solid-js'
+import { Bot, BotProps } from '../../../components/Bot'
+import { CommandData } from '@/features/commands'
+import { BubbleButton } from './BubbleButton'
+import { PreviewMessage, PreviewMessageProps } from './PreviewMessage'
+import { isDefined } from 'utils'
+import { BubbleParams } from '../types'
 
-export const Bubble = () => {
+export type BubbleProps = BotProps &
+  BubbleParams & {
+    onOpen?: () => void
+    onClose?: () => void
+    onPreviewMessageClick?: () => void
+  }
+
+export const Bubble = (props: BubbleProps) => {
+  const [bubbleProps, botProps] = splitProps(props, [
+    'onOpen',
+    'onClose',
+    'previewMessage',
+    'onPreviewMessageClick',
+    'button',
+  ])
+  const [prefilledVariables, setPrefilledVariables] = createSignal(
+    // eslint-disable-next-line solid/reactivity
+    botProps.prefilledVariables
+  )
+  const [isPreviewMessageDisplayed, setIsPreviewMessageDisplayed] =
+    createSignal(false)
+  const [previewMessage, setPreviewMessage] = createSignal<
+    Pick<PreviewMessageProps, 'avatarUrl' | 'message'>
+  >({
+    message: bubbleProps.previewMessage?.message ?? '',
+    avatarUrl: bubbleProps.previewMessage?.avatarUrl,
+  })
+
   const [isBotOpened, setIsBotOpened] = createSignal(false)
+  const [isBotStarted, setIsBotStarted] = createSignal(false)
+
+  onMount(() => {
+    window.addEventListener('message', processIncomingEvent)
+    const autoShowDelay = bubbleProps.previewMessage?.autoShowDelay
+    if (isDefined(autoShowDelay)) {
+      setTimeout(() => {
+        showMessage()
+      }, autoShowDelay)
+    }
+  })
+
+  onCleanup(() => {
+    window.removeEventListener('message', processIncomingEvent)
+  })
+
+  const processIncomingEvent = (event: MessageEvent<CommandData>) => {
+    const { data } = event
+    if (!data.isFromTypebot) return
+    if (data.command === 'open') openBot()
+    if (data.command === 'close') closeBot()
+    if (data.command === 'toggle') toggleBot()
+    if (data.command === 'showPreviewMessage') showMessage(data.message)
+    if (data.command === 'hidePreviewMessage') hideMessage()
+    if (data.command === 'setPrefilledVariables')
+      setPrefilledVariables((existingPrefilledVariables) => ({
+        ...existingPrefilledVariables,
+        ...data.variables,
+      }))
+  }
+
+  const openBot = () => {
+    if (!isBotStarted()) setIsBotStarted(true)
+    hideMessage()
+    setIsBotOpened(true)
+    if (isBotOpened()) bubbleProps.onOpen?.()
+  }
+
+  const closeBot = () => {
+    setIsBotOpened(false)
+    if (isBotOpened()) bubbleProps.onClose?.()
+  }
 
   const toggleBot = () => {
-    setIsBotOpened(!isBotOpened())
+    isBotOpened() ? closeBot() : openBot()
+  }
+
+  const handlePreviewMessageClick = () => {
+    bubbleProps.onPreviewMessageClick?.()
+    openBot()
+  }
+
+  const showMessage = (
+    previewMessage?: Pick<PreviewMessageProps, 'avatarUrl' | 'message'>
+  ) => {
+    if (previewMessage) setPreviewMessage(previewMessage)
+    if (isBotOpened()) return
+    setIsPreviewMessageDisplayed(true)
+  }
+
+  const hideMessage = () => {
+    setIsPreviewMessageDisplayed(false)
   }
 
   return (
     <>
       <style>{styles}</style>
-      <button
-        onClick={toggleBot}
-        class="bg-blue-500 text-red-300 absolute bottom-4 right-4 w-12 h-12 rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          style={{ transition: 'transform 200ms, opacity 200ms' }}
-          class={
-            'w-7 stroke-white stroke-2 fill-transparent absolute ' +
-            (isBotOpened() ? 'scale-0 opacity-0' : 'scale-100 opacity-100')
-          }
-        >
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-        <svg
-          viewBox="0 0 24 24"
-          style={{ transition: 'transform 200ms, opacity 200ms' }}
-          class={
-            'w-7 fill-white absolute ' +
-            (isBotOpened()
-              ? 'scale-100 rotate-0 opacity-100'
-              : 'scale-0 -rotate-180 opacity-0')
-          }
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M18.601 8.39897C18.269 8.06702 17.7309 8.06702 17.3989 8.39897L12 13.7979L6.60099 8.39897C6.26904 8.06702 5.73086 8.06702 5.39891 8.39897C5.06696 8.73091 5.06696 9.2691 5.39891 9.60105L11.3989 15.601C11.7309 15.933 12.269 15.933 12.601 15.601L18.601 9.60105C18.9329 9.2691 18.9329 8.73091 18.601 8.39897Z"
-          />
-        </svg>
-      </button>
+      <Show when={isPreviewMessageDisplayed()}>
+        <PreviewMessage
+          {...previewMessage()}
+          button={bubbleProps.button}
+          onClick={handlePreviewMessageClick}
+          onCloseClick={hideMessage}
+        />
+      </Show>
+      <BubbleButton
+        {...bubbleProps.button}
+        toggleBot={toggleBot}
+        isBotOpened={isBotOpened()}
+      />
       <div
         style={{
-          width: '400px',
-          height: 'calc(100% - 104px)',
-          'max-height': '704px',
+          height: 'calc(100% - 80px)',
           transition:
             'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin': 'bottom right',
@@ -54,10 +126,14 @@ export const Bubble = () => {
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
         }}
         class={
-          'absolute bottom-20 right-4 rounded-2xl ' +
+          'absolute bottom-20 sm:right-4 rounded-lg bg-white w-full sm:w-[400px] max-h-[704px] ' +
           (isBotOpened() ? 'opacity-1' : 'opacity-0 pointer-events-none')
         }
-      />
+      >
+        <Show when={isBotStarted()}>
+          <Bot {...botProps} prefilledVariables={prefilledVariables()} />
+        </Show>
+      </div>
     </>
   )
 }

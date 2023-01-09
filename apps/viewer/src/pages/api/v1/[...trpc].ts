@@ -6,7 +6,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
-    origin: ['https://docs.typebot.io', 'http://localhost:3005'],
+    origin: [
+      'https://docs.typebot.io',
+      'http://localhost:3005',
+      'http://localhost:3006',
+    ],
   })
 
   return createOpenApiNextHandler({

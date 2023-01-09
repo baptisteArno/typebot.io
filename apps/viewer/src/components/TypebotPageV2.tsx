@@ -3,7 +3,7 @@ import {
   getExistingResultFromSession,
   setResultInSession,
 } from '@/utils/sessionStorage'
-import Bot from '@typebot.io/react'
+import { Standard } from '@typebot.io/react'
 import { BackgroundType, InitialChatReply, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -38,6 +38,7 @@ export const TypebotPageV2 = ({ url, typebot }: TypebotPageV2Props) => {
   }, [asPath, push, typebot.settings.general.isHideQueryParamsEnabled])
 
   useEffect(() => {
+    console.log(open)
     clearQueryParamsIfNecessary()
   }, [clearQueryParamsIfNecessary])
 
@@ -89,10 +90,7 @@ export const TypebotPageV2 = ({ url, typebot }: TypebotPageV2Props) => {
         metadata={typebot.settings.metadata}
       />
       {initialChatReply && (
-        <Bot.Standard
-          typebotId={typebot.id}
-          initialChatReply={initialChatReply}
-        />
+        <Standard typebotId={typebot.id} initialChatReply={initialChatReply} />
       )}
     </div>
   )

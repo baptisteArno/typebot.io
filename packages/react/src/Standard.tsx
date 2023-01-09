@@ -17,8 +17,8 @@ declare global {
 export const Standard = (props: Props) => {
   useEffect(() => {
     ;(async () => {
-      const { registerWebComponents } = await import('@typebot.io/js')
-      registerWebComponents(props)
+      const { registerStandardComponent } = await import('@typebot.io/js')
+      registerStandardComponent(props)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

@@ -1,2 +1,5 @@
-export { registerWebComponents } from './register'
+export * from './register'
 export type { BotProps } from './components/Bot'
+export type { BubbleProps } from './features/bubble'
+export type { PopupProps } from './features/popup'
+export * from './features/commands'

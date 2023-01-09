@@ -42,7 +42,7 @@ export const ConversationContainer = (props: Props) => {
   }
 
   return (
-    <div class="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view">
+    <div class="overflow-y-scroll w-full min-h-full rounded px-3 pt-10 relative scrollable-container typebot-chat-view">
       <For each={chatChunks()}>
         {(chatChunk, index) => (
           <ChatChunk

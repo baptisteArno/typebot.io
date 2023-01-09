@@ -195,7 +195,7 @@ export const updateWorkspace = async (
   })
 }
 
-const parseCreateTypebot = (typebot: Typebot) => ({
+export const parseCreateTypebot = (typebot: Typebot) => ({
   ...typebot,
   resultsTablePreferences:
     typebot.resultsTablePreferences === null

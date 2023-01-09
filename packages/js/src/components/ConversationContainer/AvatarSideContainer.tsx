@@ -28,7 +28,7 @@ export const AvatarSideContainer = (props: Props) => {
     <div
       ref={avatarContainer}
       class={
-        'flex w-10 mr-2 mb-2 flex-shrink-0 items-center relative typebot-avatar-container ' +
+        'flex mr-2 mb-2 flex-shrink-0 items-center relative typebot-avatar-container ' +
         (isMobile() ? 'w-6' : 'w-10')
       }
     >
