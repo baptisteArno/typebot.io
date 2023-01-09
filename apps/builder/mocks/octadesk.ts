@@ -34,6 +34,8 @@ export const setupMockUser = async () =>
   
     Storage.setItem('status', mock.status)
 
+    Storage.setItem('auth', mock.miniClusterStatus)
+
     Storage.setItem('userToken', mock.userToken)
   }
 }

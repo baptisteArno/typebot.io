@@ -47,8 +47,29 @@ const status = {
   totalLicenses: 1,
 }
 
+const miniClusterStatus = {
+	access_token:
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZfaWQiOiIzZTYxNmI1ZS0zOWQ4LTQ5YTEtODMzZi00MmE0Yzg3ZGY5YmIiLCJ0bnRfaWQiOiI4YmZmYWY3MS1mYmFjLTRmZWYtOGE3Mi00MTEyOTliMGIyMmEiLCJuYW1laWQiOiI3Nzk3MjAzYi02NjgwLTQ1ZTYtYmFmMy0yNDM0ZDRmY2U1OTUiLCJzdWJkb21haW4iOiJxYXMzMTg2MjgtOTJjIiwiZ2l2ZW5fbmFtZSI6Ik50aSIsImZhbWlseV9uYW1lIjoiRGFuZGFyYSIsImVtYWlsIjoibnRpLmRhbmRhcmFAb2N0YWRlc2suY29tIiwibGFuZyI6InB0LUJSIiwiYWRtIjoidHJ1ZSIsIm5iZiI6MTY2OTA1NjA0NiwiZXhwIjoxNzAwNTkyMDQ2LCJpYXQiOjE2NjkwNTYwNDZ9.LxWMdMBsjF0OAWLglKt7jvjQMCQ1CAwmhNRKx7QhV0U',
+	octaAuthenticated: {
+		environmentId: '3e616b5e-39d8-49a1-833f-42a4c87df9bb',
+		tenantId: '8bffaf71-fbac-4fef-8a72-411299b0b22a',
+		userId: '3d7f81ad-12bc-4878-8ce6-4c14b49bf288',
+		subDomain: 'qas319100-a32',
+		firstName: 'Nti',
+		lastName: 'Dandara',
+		email: 'nti.dandara@octadesk.com',
+		languageCode: 'pt-BR',
+		timezoneCode: null,
+		admin: true,
+		profile: null,
+		newOcta: true,
+	},
+}
+
+
 export const mock = {
   user,
   userToken,
   status,
+  miniClusterStatus
 }

@@ -307,4 +307,41 @@
     FULL_ACCESS: 'FULL_ACCESS'
   };
   
+  export type FeatureFlagsProps = {
+    code: string;
+    active: boolean;
+    baseLimit: number | null;
+    qty: number | null;
+    maxLimit: number | null;
+  }
+
+  export type FeatureFlags = {
+    "new-billing": FeatureFlagsProps,
+    "whatsapp-api": FeatureFlagsProps,
+    "whatsapp-api-pkg-msg-single-250": FeatureFlagsProps,
+    "user": FeatureFlagsProps,
+    "botwebhook": FeatureFlagsProps,
+    "botconditional": FeatureFlagsProps,
+    "chatbot": FeatureFlagsProps,
+    "whatsapp": FeatureFlagsProps,
+    "messenger": FeatureFlagsProps,
+    "instagram": FeatureFlagsProps,
+    "widget": FeatureFlagsProps,
+    "email": FeatureFlagsProps,
+    "office_hours": FeatureFlagsProps,
+    "contact_custom_fields": FeatureFlagsProps,
+    "service_groups": FeatureFlagsProps,
+    "unassigned_list": FeatureFlagsProps,
+    "mensagens_prontas": FeatureFlagsProps,
+    "service_roulette": FeatureFlagsProps,
+    "service_transfer": FeatureFlagsProps,
+    "custom_reports": FeatureFlagsProps,
+    "reports_export": FeatureFlagsProps,
+    "service_survey": FeatureFlagsProps,
+    "new-octa-ticket": FeatureFlagsProps,
+    "inbox-bot-disabled": FeatureFlagsProps,
+    "commerce-enabled": FeatureFlagsProps,
+    "use-new-bot-builder": FeatureFlagsProps,
+}
+
   export type CollaborationType = (typeof CollaborationType)[keyof typeof CollaborationType]

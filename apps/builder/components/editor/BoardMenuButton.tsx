@@ -21,7 +21,7 @@ import { EditorSettingsModal } from './EditorSettingsModal'
 export const BoardMenuButton = (props: MenuButtonProps) => {
   const { query } = useRouter()
   const { typebot, save } = useTypebot()
-  const { user } = useUser()
+  const { user, verifyFeatureToggle } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { setRightPanel } = useEditor()
@@ -82,6 +82,7 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         {...props}
       />
       <MenuList>
+        {verifyFeatureToggle('use-new-bot-builder') && <>Feature flag ativa</>}
         <MenuItem icon={<EyeIcon />} onClick={handlePreviewClick}>
           Visualizar
         </MenuItem>

@@ -28,7 +28,7 @@ import { EmojiOrImageIcon } from 'components/shared/EmojiOrImageIcon'
 import { WorkspaceSettingsModal } from './WorkspaceSettingsModal'
 
 export const DashboardHeader = () => {
-  const { user } = useUser()
+  const { user, featureFlags } = useUser()
 
   const { workspace, workspaces, switchWorkspace, createWorkspace } =
     useWorkspace()
