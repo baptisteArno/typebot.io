@@ -8,15 +8,16 @@ import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
 
 ## General
 
-| Parameter              | Default                                       | Description                                                                                                                                                                                                                                 |
-| ---------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DATABASE_URL           | postgresql://postgres:typebot@db:5432/typebot | The database URL                                                                                                                                                                                                                            |
-| ENCRYPTION_SECRET      | SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6              | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
-| ADMIN_EMAIL            | --                                            | The email that will get a "Pro" plan on user creation                                                                                                                                                                                       |
-| NEXTAUTH_URL           | http://localhost:3000                         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
-| NEXT_PUBLIC_VIEWER_URL | http://localhost:3001                         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
-| NEXTAUTH_URL_INTERNAL  | --                                            | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` isn't publicly accessible                                                                                                                                        |
-| DISABLE_SIGNUP         | false                                         | To disable new sign ups but still be able to sign in with existing users or admin email                                                                                                                                                     |
+| Parameter              | Default | Description                                                                                                                                                                                                                                 |
+| ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DATABASE_URL           |         | The database URL                                                                                                                                                                                                                            |
+| ENCRYPTION_SECRET      |         | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
+| ADMIN_EMAIL            |         | The email that will get a "Pro" plan on user creation                                                                                                                                                                                       |
+| NEXTAUTH_URL           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
+| NEXT_PUBLIC_VIEWER_URL |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
+| NEXTAUTH_URL_INTERNAL  |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` isn't publicly accessible                                                                                                                                        |
+| DEFAULT_WORKSPACE_PLAN | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`. The default plan for admin user is `LIFETIME`                                                     |
+| DISABLE_SIGNUP         | false   | To disable new sign ups but still be able to sign in with existing users or admin email                                                                                                                                                     |
 
 ## Email (Auth, notifications)
 
@@ -24,11 +25,11 @@ Used for sending email notifications and authentication
 
 | Parameter             | Default | Description                                                                                                                                                                                                                                                |
 | --------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SMTP_USERNAME         | --      | SMTP username                                                                                                                                                                                                                                              |
-| SMTP_PASSWORD         | --      | SMTP password                                                                                                                                                                                                                                              |
-| SMTP_HOST             | --      | SMTP host. (i.e. `smtp.host.com`)                                                                                                                                                                                                                          |
+| SMTP_USERNAME         |         | SMTP username                                                                                                                                                                                                                                              |
+| SMTP_PASSWORD         |         | SMTP password                                                                                                                                                                                                                                              |
+| SMTP_HOST             |         | SMTP host. (i.e. `smtp.host.com`)                                                                                                                                                                                                                          |
 | SMTP_PORT             | 25      | SMTP port                                                                                                                                                                                                                                                  |
-| NEXT_PUBLIC_SMTP_FROM | -       | From name and email (i.e. `'Typebot Notifications' <notifications@host.com>`)                                                                                                                                                                              |
+| NEXT_PUBLIC_SMTP_FROM |         | From name and email (i.e. `'Typebot Notifications' <notifications@host.com>`)                                                                                                                                                                              |
 | SMTP_SECURE           | false   | If true the connection will use TLS when connecting to server. If false (the default) then TLS is used if server supports the STARTTLS extension. In most cases set this value to true if you are connecting to port 465. For port 587 or 25 keep it false |
 | SMTP_AUTH_DISABLED    | false   | To disable the authentication by email but still use the provided config for notifications                                                                                                                                                                 |
 
@@ -39,14 +40,14 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google
 
 | Parameter            | Default | Description                                   |
 | -------------------- | ------- | --------------------------------------------- |
-| GOOGLE_CLIENT_ID     | --      | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET | --      | The Client secret from the Google API Console |
+| GOOGLE_CLIENT_ID     |         | The Client ID from the Google API Console     |
+| GOOGLE_CLIENT_SECRET |         | The Client secret from the Google API Console |
 
 Used for Google Fonts (Optional):
 
 | Parameter                  | Default | Description                             |
 | -------------------------- | ------- | --------------------------------------- |
-| NEXT_PUBLIC_GOOGLE_API_KEY | --      | The API Key from the Google API Console |
+| NEXT_PUBLIC_GOOGLE_API_KEY |         | The API Key from the Google API Console |
 
 ### Configuration
 
@@ -65,8 +66,8 @@ You can create your own GitHub OAuth app [here](https://github.com/settings/deve
 
 | Parameter            | Default | Description                                                                 |
 | -------------------- | ------- | --------------------------------------------------------------------------- |
-| GITHUB_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
-| GITHUB_CLIENT_SECRET | --      | Application secret                                                          |
+| GITHUB_CLIENT_ID     |         | Application client ID. Also used to check if it is enabled in the front-end |
+| GITHUB_CLIENT_SECRET |         | Application secret                                                          |
 
 ## GitLab (Auth)
 
@@ -76,10 +77,10 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/gitlab
 
 | Parameter              | Default            | Description                                                                          |
 | ---------------------- | ------------------ | ------------------------------------------------------------------------------------ |
-| GITLAB_CLIENT_ID       | --                 | Application client ID. Also used to check if it is enabled in the front-end          |
-| GITLAB_CLIENT_SECRET   | --                 | Application secret                                                                   |
+| GITLAB_CLIENT_ID       |                    | Application client ID. Also used to check if it is enabled in the front-end          |
+| GITLAB_CLIENT_SECRET   |                    | Application secret                                                                   |
 | GITLAB_BASE_URL        | https://gitlab.com | Base URL of the GitLab instance                                                      |
-| GITLAB_REQUIRED_GROUPS | --                 | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
+| GITLAB_REQUIRED_GROUPS |                    | Comma-separated list of groups the user has to be a direct member of, e.g. `foo,bar` |
 | GITLAB_NAME            | GitLab             | Name of the GitLab instance, used for the SSO Login Button                           |
 
 ## Facebook (Auth)
@@ -89,8 +90,8 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/facebo
 
 | Parameter              | Default | Description                                                                 |
 | ---------------------- | ------- | --------------------------------------------------------------------------- |
-| FACEBOOK_CLIENT_ID     | --      | Application client ID. Also used to check if it is enabled in the front-end |
-| FACEBOOK_CLIENT_SECRET | --      | Application secret                                                          |
+| FACEBOOK_CLIENT_ID     |         | Application client ID. Also used to check if it is enabled in the front-end |
+| FACEBOOK_CLIENT_SECRET |         | Application secret                                                          |
 
 ## Azure AD (Auth)
 
@@ -99,18 +100,18 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 
 | Parameter              | Default | Description                                                   |
 | ---------------------- | ------- | ------------------------------------------------------------- |
-| AZURE_AD_CLIENT_ID     | --      | Application client ID                                         |
-| AZURE_AD_CLIENT_SECRET | --      | Application client secret. Can be obtained from Azure Portal. |
-| AZURE_AD_TENANT_ID     | --      | Azure Tenant ID                                               |
+| AZURE_AD_CLIENT_ID     |         | Application client ID                                         |
+| AZURE_AD_CLIENT_SECRET |         | Application client secret. Can be obtained from Azure Portal. |
+| AZURE_AD_TENANT_ID     |         | Azure Tenant ID                                               |
 
 ## Custom OAuth Provider (Auth)
 
 | Parameter                    | Default      | Description                                                                             |
 | ---------------------------- | ------------ | --------------------------------------------------------------------------------------- |
 | CUSTOM_OAUTH_NAME            | Custom OAuth | Provider name. Will be displayed in the sign in form.                                   |
-| CUSTOM_OAUTH_CLIENT_ID       | --           | OAuth client ID.                                                                        |
-| CUSTOM_OAUTH_CLIENT_SECRET   | --           | OAuth client secret.                                                                    |
-| CUSTOM_OAUTH_WELL_KNOWN_URL  | --           | OAuth .well-known URL (i.e. `https://auth.domain.com/.well-known/openid-configuration`) |
+| CUSTOM_OAUTH_CLIENT_ID       |              | OAuth client ID.                                                                        |
+| CUSTOM_OAUTH_CLIENT_SECRET   |              | OAuth client secret.                                                                    |
+| CUSTOM_OAUTH_WELL_KNOWN_URL  |              | OAuth .well-known URL (i.e. `https://auth.domain.com/.well-known/openid-configuration`) |
 | CUSTOM_OAUTH_USER_ID_PATH    | id           | Used to map the id from the user info object                                            |
 | CUSTOM_OAUTH_USER_NAME_PATH  | name         | Used to map the name from the user info object                                          |
 | CUSTOM_OAUTH_USER_EMAIL_PATH | email        | Used to map the email from the user info object                                         |
@@ -124,13 +125,13 @@ Used for uploading images, videos, etc... It can be any S3 compatible object sto
 
 | Parameter     | Default | Description                                                    |
 | ------------- | ------- | -------------------------------------------------------------- |
-| S3_ACCESS_KEY | --      | S3 access key. Also used to check if upload feature is enabled |
-| S3_SECRET_KEY | --      | S3 secret key.                                                 |
+| S3_ACCESS_KEY |         | S3 access key. Also used to check if upload feature is enabled |
+| S3_SECRET_KEY |         | S3 secret key.                                                 |
 | S3_BUCKET     | typebot | Name of the bucket where assets will be uploaded in.           |
-| S3_PORT       | --      | S3 Host port number                                            |
-| S3_ENDPOINT   | --      | S3 endpoint (i.e. `s3.domain.com`).                            |
+| S3_PORT       |         | S3 Host port number                                            |
+| S3_ENDPOINT   |         | S3 endpoint (i.e. `s3.domain.com`).                            |
 | S3_SSL        | true    | Use SSL when establishing the connection.                      |
-| S3_REGION     | --      | S3 region.                                                     |
+| S3_REGION     |         | S3 region.                                                     |
 
 Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 
@@ -170,7 +171,7 @@ Used to search for GIF. You can create a Giphy app [here](https://developers.gip
 
 | Parameter                 | Default | Description   |
 | ------------------------- | ------- | ------------- |
-| NEXT_PUBLIC_GIPHY_API_KEY | --      | Giphy API key |
+| NEXT_PUBLIC_GIPHY_API_KEY |         | Giphy API key |
 
 ## Others
 
@@ -186,13 +187,13 @@ The related environment variables are listed here but you are probably not inter
 
 | Parameter                          | Default | Description                 |
 | ---------------------------------- | ------- | --------------------------- |
-| NEXT_PUBLIC_STRIPE_PUBLIC_KEY      | --      | Stripe public key           |
-| STRIPE_SECRET_KEY                  | --      | Stripe secret key           |
-| STRIPE_PRO_PRICE_ID                | --      | Pro plan price id           |
-| STRIPE_STARTER_PRICE_ID            | --      | Starter plan price id       |
-| STRIPE_ADDITIONAL_CHATS_PRICE_ID   | --      | Additional chats price id   |
-| STRIPE_ADDITIONAL_STORAGE_PRICE_ID | --      | Additional storage price id |
-| STRIPE_WEBHOOK_SECRET              | --      | Stripe Webhook secret       |
+| NEXT_PUBLIC_STRIPE_PUBLIC_KEY      |         | Stripe public key           |
+| STRIPE_SECRET_KEY                  |         | Stripe secret key           |
+| STRIPE_PRO_PRICE_ID                |         | Pro plan price id           |
+| STRIPE_STARTER_PRICE_ID            |         | Starter plan price id       |
+| STRIPE_ADDITIONAL_CHATS_PRICE_ID   |         | Additional chats price id   |
+| STRIPE_ADDITIONAL_STORAGE_PRICE_ID |         | Additional storage price id |
+| STRIPE_WEBHOOK_SECRET              |         | Stripe Webhook secret       |
 
 </p></details>
 
@@ -201,10 +202,10 @@ The related environment variables are listed here but you are probably not inter
 
 | Parameter              | Default | Description                            |
 | ---------------------- | ------- | -------------------------------------- |
-| NEXT_PUBLIC_SENTRY_DSN | --      | Sentry DSN                             |
-| SENTRY_AUTH_TOKEN      | --      | Used to upload sourcemaps on app build |
-| SENTRY_PROJECT         | --      | Sentry project name                    |
-| SENTRY_ORG             | --      | Sentry organization name               |
+| NEXT_PUBLIC_SENTRY_DSN |         | Sentry DSN                             |
+| SENTRY_AUTH_TOKEN      |         | Used to upload sourcemaps on app build |
+| SENTRY_PROJECT         |         | Sentry project name                    |
+| SENTRY_ORG             |         | Sentry organization name               |
 
 These can also be added to the `viewer` environment
 
@@ -215,9 +216,9 @@ These can also be added to the `viewer` environment
 
 | Parameter                  | Default | Description                                     |
 | -------------------------- | ------- | ----------------------------------------------- |
-| VERCEL_TOKEN               | --      | Vercel API token                                |
-| VERCEL_VIEWER_PROJECT_NAME | --      | The name of the viewer project in Vercel        |
-| VERCEL_TEAM_ID             | --      | Vercel team ID that contains the viewer project |
+| VERCEL_TOKEN               |         | Vercel API token                                |
+| VERCEL_VIEWER_PROJECT_NAME |         | The name of the viewer project in Vercel        |
+| VERCEL_TEAM_ID             |         | Vercel team ID that contains the viewer project |
 
 </p></details>
 
@@ -226,7 +227,7 @@ These can also be added to the `viewer` environment
 
 | Parameter         | Default | Description                                                              |
 | ----------------- | ------- | ------------------------------------------------------------------------ |
-| SLEEKPLAN_SSO_KEY | --      | Sleekplan SSO key used to automatically authenticate a user in Sleekplan |
+| SLEEKPLAN_SSO_KEY |         | Sleekplan SSO key used to automatically authenticate a user in Sleekplan |
 
 </p></details>
 
@@ -235,7 +236,7 @@ These can also be added to the `viewer` environment
 
 | Parameter                | Default | Description                                                                                   |
 | ------------------------ | ------- | --------------------------------------------------------------------------------------------- |
-| USER_CREATED_WEBHOOK_URL | --      | Webhook URL called whenever a new user is created (used for importing a new SendGrid contact) |
+| USER_CREATED_WEBHOOK_URL |         | Webhook URL called whenever a new user is created (used for importing a new SendGrid contact) |
 
 </p></details>
 

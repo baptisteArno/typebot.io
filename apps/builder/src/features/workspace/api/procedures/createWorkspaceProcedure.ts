@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan } from 'db'
 import { Workspace, workspaceSchema } from 'models'
 import { z } from 'zod'
+import { parseWorkspaceDefaultPlan } from '../../utils'
 
 export const createWorkspaceProcedure = authenticatedProcedure
   .meta({
@@ -39,8 +39,7 @@ export const createWorkspaceProcedure = authenticatedProcedure
         message: 'Workspace with same name already exists',
       })
 
-    const plan =
-      process.env.ADMIN_EMAIL === user.email ? Plan.LIFETIME : Plan.FREE
+    const plan = parseWorkspaceDefaultPlan(user.email ?? '')
 
     const newWorkspace = (await prisma.workspace.create({
       data: {

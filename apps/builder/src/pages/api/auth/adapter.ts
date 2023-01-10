@@ -3,7 +3,6 @@ import {
   PrismaClient,
   Prisma,
   Invitation,
-  Plan,
   WorkspaceRole,
   WorkspaceInvitation,
   Session,
@@ -12,6 +11,7 @@ import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
 import { got } from 'got'
 import { generateId } from 'utils'
+import { parseWorkspaceDefaultPlan } from '@/features/workspace'
 
 type InvitationWithWorkspaceId = Invitation & {
   typebot: {
@@ -53,11 +53,7 @@ export function CustomAdapter(p: PrismaClient): Adapter {
                         name: data.name
                           ? `${data.name}'s workspace`
                           : `My workspace`,
-                        ...(process.env.ADMIN_EMAIL === data.email
-                          ? { plan: Plan.LIFETIME }
-                          : {
-                              plan: Plan.FREE,
-                            }),
+                        plan: parseWorkspaceDefaultPlan(data.email),
                       },
                     },
                   },
