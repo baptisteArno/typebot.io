@@ -97,17 +97,14 @@ if (
   )
 }
 
-if (isNotEmpty(process.env.CUSTOM_OAUTH_AUTHORIZATION_URL)) {
+if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
   providers.push({
     id: 'custom-oauth',
     name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
     type: 'oauth',
     clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
     clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
-    authorization: process.env.CUSTOM_OAUTH_AUTHORIZATION_URL,
-    token: process.env.CUSTOM_OAUTH_TOKEN_URL,
-    userinfo: process.env.CUSTOM_OAUTH_USERINFO_URL,
-    idToken: process.env.CUSTOM_OAUTH_ENABLE_ID_TOKEN === 'true',
+    wellKnown: process.env.CUSTOM_OAUTH_WELL_KNOWN_URL,
     profile(profile) {
       return {
         id: getAtPath(profile, process.env.CUSTOM_OAUTH_USER_ID_PATH ?? 'id'),
