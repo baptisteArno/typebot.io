@@ -1,0 +1,19 @@
+name: Daily database cleanup
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/scripts
+    env:
+      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm db:cleanDatabase

@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "playground": "tsx playground.ts",
+    "db:cleanDatabase": "tsx cleanDatabase.ts",
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",
     "db:setCustomPlan": "tsx setCustomPlan.ts",
