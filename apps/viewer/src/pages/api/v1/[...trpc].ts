@@ -8,8 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
     origin: [
       'https://docs.typebot.io',
+      'https://app.typebot.io',
       'http://localhost:3005',
       'http://localhost:3006',
+      'http://localhost:3000',
     ],
   })
 
