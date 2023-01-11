@@ -159,7 +159,9 @@ export const TypebotButton = ({
         >
           {<EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />}
         </Flex>
-        <Text textAlign="center">{typebot.name}</Text>
+        <Text textAlign="center" noOfLines={4} maxW="180px">
+          {typebot.name}
+        </Text>
       </VStack>
       {!isReadOnly && (
         <ConfirmModal
