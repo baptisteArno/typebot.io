@@ -27,6 +27,7 @@ type Props = {
 export const ToolBar = ({ onVariablesButtonClick, ...props }: Props) => {
   const editor = usePlateEditorRef()
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation()
     e.preventDefault()
     onVariablesButtonClick()
   }

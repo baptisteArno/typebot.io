@@ -38,7 +38,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           onSelectVariable={onSelectVariable}
           placeholder="Search for a variable"
           shadow="lg"
-          isDefaultOpen
+          autoFocus
         />
       </PopoverContent>
     </Popover>

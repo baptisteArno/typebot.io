@@ -169,5 +169,5 @@ const fillInSpreadsheetInfo = async (page: Page) => {
 
 const createNewVar = async (page: Page, name: string) => {
   await page.fill('input[placeholder="Select a variable"] >> nth=-1', name)
-  await page.click(`text=Create "${name}"`)
+  await page.getByRole('menuitem', { name: `Create ${name}` }).click()
 }

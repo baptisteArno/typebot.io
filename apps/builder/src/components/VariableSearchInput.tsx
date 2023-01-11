@@ -11,21 +11,20 @@ import {
   useColorModeValue,
   PopoverAnchor,
   Portal,
+  Tag,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
 import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import { byId, env, isDefined, isNotDefined } from 'utils'
+import { byId, isDefined, isNotDefined } from 'utils'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph'
 
 type Props = {
   initialVariableId?: string
-  debounceTimeout?: number
-  isDefaultOpen?: boolean
+  autoFocus?: boolean
   onSelectVariable: (
     variable: Pick<Variable, 'id' | 'name'> | undefined
   ) => void
@@ -34,8 +33,7 @@ type Props = {
 export const VariableSearchInput = ({
   initialVariableId,
   onSelectVariable,
-  isDefaultOpen,
-  debounceTimeout = 1000,
+  autoFocus,
   ...inputProps
 }: Props) => {
   const bg = useColorModeValue('gray.200', 'gray.700')
@@ -45,13 +43,6 @@ export const VariableSearchInput = ({
   const variables = typebot?.variables ?? []
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
-  )
-  const debounced = useDebouncedCallback(
-    (value) => {
-      const variable = variables.find((v) => v.name === value)
-      if (variable) onSelectVariable(variable)
-    },
-    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
   const [filteredItems, setFilteredItems] = useState<Variable[]>(
     variables ?? []
@@ -67,25 +58,17 @@ export const VariableSearchInput = ({
 
   useOutsideClick({
     ref: dropdownRef,
-    handler: onClose,
+    handler: () => onClose,
   })
 
   useEffect(() => {
-    if (isDefaultOpen) onOpen()
+    if (autoFocus) onOpen()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(
-    () => () => {
-      debounced.flush()
-    },
-    [debounced]
-  )
-
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
-    debounced(e.target.value)
     if (e.target.value === '') {
       onSelectVariable(undefined)
       setFilteredItems([...variables.slice(0, 50)])
@@ -104,6 +87,7 @@ export const VariableSearchInput = ({
     setInputValue(variable.name)
     onSelectVariable(variable)
     setKeyboardFocusIndex(undefined)
+    inputRef.current?.blur()
     onClose()
   }
 
@@ -112,6 +96,7 @@ export const VariableSearchInput = ({
     const id = 'v' + cuid()
     onSelectVariable({ id, name: inputValue })
     createVariable({ id, name: inputValue })
+    inputRef.current?.blur()
     onClose()
   }
 
@@ -122,7 +107,6 @@ export const VariableSearchInput = ({
       setFilteredItems(filteredItems.filter((item) => item.id !== variable.id))
       if (variable.name === inputValue) {
         setInputValue('')
-        debounced('')
       }
     }
 
@@ -147,7 +131,12 @@ export const VariableSearchInput = ({
     if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
       if (keyboardFocusIndex === 0 && isCreateVariableButtonDisplayed)
         handleCreateNewVariableClick()
-      else handleVariableNameClick(filteredItems[keyboardFocusIndex])()
+      else
+        handleVariableNameClick(
+          filteredItems[
+            keyboardFocusIndex - (isCreateVariableButtonDisplayed ? 1 : 0)
+          ]
+        )()
       return setKeyboardFocusIndex(undefined)
     }
     if (e.key === 'ArrowDown') {
@@ -199,6 +188,7 @@ export const VariableSearchInput = ({
             role="menu"
             w="inherit"
             shadow="lg"
+            onMouseDown={(e) => e.stopPropagation()}
           >
             {isCreateVariableButtonDisplayed && (
               <Button
@@ -215,7 +205,10 @@ export const VariableSearchInput = ({
                 leftIcon={<PlusIcon />}
                 bgColor={keyboardFocusIndex === 0 ? bg : 'transparent'}
               >
-                Create &quot;{inputValue}&quot;
+                Create
+                <Tag colorScheme="orange" ml="1">
+                  {inputValue}
+                </Tag>
               </Button>
             )}
             {filteredItems.length > 0 && (
@@ -230,7 +223,6 @@ export const VariableSearchInput = ({
                       role="menuitem"
                       minH="40px"
                       key={idx}
-                      onMouseDown={(e) => e.stopPropagation()}
                       onClick={handleVariableNameClick(item)}
                       fontSize="16px"
                       fontWeight="normal"

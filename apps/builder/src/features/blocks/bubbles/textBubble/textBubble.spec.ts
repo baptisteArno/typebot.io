@@ -48,7 +48,7 @@ test.describe('Text bubble block', () => {
     await page.press('div[role="textbox"]', 'Shift+Enter')
     await page.click('button[aria-label="Insert variable"]')
     await page.fill('[data-testid="variables-input"]', 'test')
-    await page.click('text=Create "test"')
+    await page.getByRole('menuitem', { name: 'Create test' }).click()
 
     await page.click('text=Preview')
     await expect(

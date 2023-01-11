@@ -23,7 +23,6 @@ export const VariableForTestInputs = ({
           id={'name' + item.id}
           initialVariableId={item.variableId}
           onSelectVariable={handleVariableSelect}
-          debounceTimeout={debounceTimeout}
         />
       </FormControl>
       <FormControl>
