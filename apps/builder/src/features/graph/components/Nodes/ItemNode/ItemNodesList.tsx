@@ -226,13 +226,21 @@ const CollectVariableLabel = ({
 }: {
   variableId: string
   variables: Variable[]
-}) => (
-  <HStack fontStyle="italic" spacing={1}>
-    <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
-      Collects
-    </Text>
-    <Tag bg="orange.400" color="white" size="sm">
-      {variables.find((variable) => variable.id === variableId)?.name}
-    </Tag>
-  </HStack>
-)
+}) => {
+  const textColor = useColorModeValue('gray.600', 'gray.400')
+  const variableName = variables.find(
+    (variable) => variable.id === variableId
+  )?.name
+
+  if (!variableName) return null
+  return (
+    <HStack fontStyle="italic" spacing={1}>
+      <Text fontSize="sm" color={textColor}>
+        Collects
+      </Text>
+      <Tag bg="orange.400" color="white" size="sm">
+        {variableName}
+      </Tag>
+    </HStack>
+  )
+}

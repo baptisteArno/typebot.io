@@ -429,8 +429,7 @@
           "type": "choice input",
           "options": {
             "buttonLabel": "Send",
-            "isMultipleChoice": false,
-            "variableId": "vcl1sfd8v600432e6exab4vhov"
+            "isMultipleChoice": false
           },
           "items": [
             {
