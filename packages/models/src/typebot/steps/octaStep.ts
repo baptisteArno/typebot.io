@@ -27,8 +27,7 @@ export enum OctaBubbleStepType {
 // Regular step types
 export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
-  ASSIGN_TO_TEAM = 'assign to team',
-  COMMERCE = 'commerce'
+  ASSIGN_TO_TEAM = 'assign to team'
 }
 
 // Regular steps types that have options
@@ -46,11 +45,6 @@ export type AssignToTeamStep = StepBase & {
   options: AssignToTeamOptions
 }
 
-export type OctaComerce = StepBase & {
-  type: OctaStepType.COMMERCE
-  options: OctaCommerceOptions
-}
-
 export type OctaCommerceOptions = BaseOctaOptions & {
   catalogId: string;
   prodducts: Array<String>;
@@ -60,6 +54,7 @@ export type OfficeHourStep = StepBase & {
   type: OctaStepType.OFFICE_HOURS
   items: [OfficeHoursItem]
 }
+
 
 export type OfficeHoursItem = ItemBase & {
   type: ItemType.OFFICE_HOURS

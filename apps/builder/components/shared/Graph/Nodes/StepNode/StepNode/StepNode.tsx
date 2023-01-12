@@ -19,6 +19,8 @@ import {
   AssignToTeamStep,
   OfficeHourStep,
   OctaStepType,
+  WebhookStep,
+  IntegrationStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -153,7 +155,7 @@ export const StepNode = ({
   }, [openedStepId])
 
   const checkisConnectable = (step: Step): boolean  => {
-    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step);
+    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step);
   }
 
   return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
@@ -311,6 +313,12 @@ const isOfficeHoursStep = (
   step: Step,
 ): step is OfficeHourStep => {
   return step.type === OctaStepType.OFFICE_HOURS
+}
+
+const isWebhookStep = (
+  step: Step,
+): step is WebhookStep => {
+  return step.type === IntegrationStepType.WEBHOOK
 }
 
 const hasStepRedirectNoneAvailable = (step: Step): step is AssignToTeamStep => {

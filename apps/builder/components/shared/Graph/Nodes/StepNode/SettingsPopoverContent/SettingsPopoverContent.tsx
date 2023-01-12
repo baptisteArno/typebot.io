@@ -19,6 +19,7 @@ import {
   StepOptions,
   TextBubbleStep,
   Webhook,
+  WabaStepType,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -35,6 +36,7 @@ import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
 import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
 import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
+import { OctaCommerceBody } from './bodies/OctaCommerceBody'
 import { OfficeHoursBody } from './bodies/OfficeHoursBody'
 import { PaymentSettings } from './bodies/PaymentSettings'
 import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
@@ -63,7 +65,10 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   const handleWidthPerComponent = (step: Step): number|undefined => {
     let width;
     switch (step.type) {
-      case "office hours":
+      case OctaStepType.OFFICE_HOURS:
+        width = 450;
+        break;
+      case WabaStepType.COMMERCE:
         width = 450;
         break;
       default:
@@ -248,6 +253,11 @@ export const StepSettings = ({
     case OctaStepType.OFFICE_HOURS: {
       return (
         <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
+      )
+    }
+    case WabaStepType.COMMERCE: {
+      return (
+        <OctaCommerceBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
     case IntegrationStepType.WEBHOOK: {

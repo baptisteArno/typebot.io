@@ -95,7 +95,7 @@ function TypebotEditPage() {
     <>
       <EditorContext>
         <Seo title="Editor" />
-        <KBar />
+        {/* <KBar /> */}
         <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
           <GettingStartedModal />
           <Flex

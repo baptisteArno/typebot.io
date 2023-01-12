@@ -1,10 +1,11 @@
 import { WritableDraft } from 'immer/dist/types/types-external';
-import { Block, DraggableStep, DraggableStepType, InputStepType, OctaStepType, Step, StepIndices, Typebot } from "models";
+import { Block, DraggableStep, DraggableStepType, InputStepType, OctaStepType, Step, StepIndices, Typebot, WabaStepType } from "models";
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateTextBot } from './dictionary/input-text.step';
 import { templateDateBot } from './dictionary/input-date.step';
 import { BuilderStepType } from "./types.builder";
 import { templateOfficeHours } from './dictionary/input-officeHours.step';
+import { templateCommerceStep } from './dictionary/input-commerce.step';
 
 export const BuildSteps = (
   stepIndices: StepIndices
@@ -37,6 +38,9 @@ export const BuildSteps = (
         case OctaStepType.OFFICE_HOURS:
           step = templateOfficeHours(bot, blockId)
           break;
+        case WabaStepType.COMMERCE:
+          step = templateCommerceStep(bot, blockId, "Este é o catálogo que selecionamos para você:")
+          break;
         default:
           step = [parseNewStep(type, blockId)]
           break;
@@ -46,6 +50,8 @@ export const BuildSteps = (
 
     const apply = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string): void => {
       const block: Array<WritableDraft<Block>> = bot.blocks
+      console.log("applt");
+      
       const steps = builder(type, bot, blockId);
       steps.map(step => (
         block[stepIndices.blockIndex].steps.splice( stepIndices.stepIndex ?? 0, 0, step)

@@ -28,15 +28,12 @@ import {
   defaultAskNameOptions,
   defaultSetVariablesOptions,
   defaultRedirectOptions,
-  defaultGoogleSheetsOptions,
-  defaultGoogleAnalyticsOptions,
   defaultCodeOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
   Item,
   ItemType,
   defaultConditionContent,
-  defaultSendEmailOptions,
   defaultEmbedBubbleContent,
   ChoiceInputStep,
   ConditionStep,
@@ -52,7 +49,7 @@ import {
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
-import { fetcher, toKebabCase } from '../utils'
+import { fetcher, toKebabCase } from './services/utils'
 import {
   isBubbleStepType,
   isOctaBubbleStepType,
@@ -149,8 +146,8 @@ export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
     webhookSteps.map((s) =>
       duplicateWebhook(
         newTypebot.id,
-        s.webhookId,
-        webhookIdsMapping.get(s.webhookId) as string
+        s.id,
+        webhookIdsMapping.get(s.id) as string
       )
     )
   )
@@ -167,7 +164,7 @@ const duplicateTypebot = (
     typebot.blocks
       .flatMap((b) => b.steps)
       .filter(isWebhookStep)
-      .map((s) => ({ id: s.webhookId }))
+      .map((s) => ({ id: s.id }))
   )
   const id = cuid()
   return {
@@ -214,7 +211,6 @@ const duplicateTypebot = (
           if (isWebhookStep(s)) {
             return {
               ...s,
-              webhookId: webhookIdsMapping.get(s.webhookId) as string,
               ...newIds,
             }
           }

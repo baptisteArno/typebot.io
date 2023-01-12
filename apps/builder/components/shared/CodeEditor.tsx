@@ -109,9 +109,9 @@ export const CodeEditor = ({
     return editor
   }
 
-  const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name'>) => {
+  const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name' | 'token'>) => {
     editorView.current?.focus()
-    const insert = `{{${variable?.name}}}`
+    const insert = `{{${variable?.token}}}`
     editorView.current?.dispatch({
       changes: {
         from: carretPosition,

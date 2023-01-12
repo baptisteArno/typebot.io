@@ -47,6 +47,7 @@ import {
 import React from 'react'
 
 import { BsCalendar2Range } from 'react-icons/bs'
+import { MdStore } from 'react-icons/md'
 
 type StepIconProps = { type: StepType } & IconProps
 
@@ -91,19 +92,9 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CodeIcon color="purple.500" {...props} />
     case LogicStepType.TYPEBOT_LINK:
       return <BoxIcon color="purple.500" {...props} />
-    case IntegrationStepType.GOOGLE_SHEETS:
-      return <GoogleSheetsLogo {...props} />
-    case IntegrationStepType.GOOGLE_ANALYTICS:
       return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
-    case IntegrationStepType.ZAPIER:
-      return <ZapierLogo {...props} />
-    case IntegrationStepType.MAKE_COM:
-      return <MakeComLogo {...props} />
-    case IntegrationStepType.PABBLY_CONNECT:
-      return <PabblyConnectLogo {...props} />
-    case IntegrationStepType.EMAIL:
       return <SendEmailIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
       return <WavingHandIcon color="#373A86" {...props} />
@@ -115,6 +106,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ListIcon color="#7B15C1" {...props} />
     case OctaStepType.OFFICE_HOURS:
       return <BsCalendar2Range color="#7B15C1" size={18}/>
+      case WabaStepType.COMMERCE:
+        return <MdStore color="#000" size={18} />
     case 'start':
       return <FlagIcon {...props} />
     default:

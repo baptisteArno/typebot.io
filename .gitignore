@@ -2,6 +2,7 @@ node_modules
 .next
 .env
 .env.local
+*.Zone.Identifier
 workspace.code-workspace
 .DS_Store
 .turbo

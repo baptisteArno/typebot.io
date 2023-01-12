@@ -29,12 +29,6 @@ export type WebhookContent = {
   subType: null
 }
 
-export enum GoogleSheetsAction {
-  GET = 'Get data from sheet',
-  INSERT_ROW = 'Insert a row',
-  UPDATE_ROW = 'Update a row',
-}
-
 export type ResponseVariableMapping = {
   id: string
   bodyPath?: string
@@ -46,6 +40,13 @@ export type WebhookOptions = {
   responseVariableMapping: ResponseVariableMapping[]
   isAdvancedConfig?: boolean
   isCustomBody?: boolean
+  method: "POST"|"GET"|"PUT";
+  headers: Array<{[key: string]: any}>;
+  queryParams: Array<{[key: string]: any}>;
+  returnMap: any;
+  typebotId: string;
+  url: string;
+  body: string;
 }
 
 export type VariableForTest = {
@@ -55,6 +56,13 @@ export type VariableForTest = {
 }
 
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
+  url: "http://octadesk.com",
+  body: "",
+  headers: [],
+  method: "GET",
+  queryParams: [],
+  returnMap: "",
+  typebotId: "0123",
   responseVariableMapping: [],
   variablesForTest: [],
   isAdvancedConfig: false,

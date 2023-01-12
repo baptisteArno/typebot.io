@@ -51,7 +51,6 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
           ) : (
             <WorkspaceContext>
               <Component {...pageProps} />
-              <SupportBubble />
             </WorkspaceContext>
           )}
         </UserContext>
