@@ -26,6 +26,7 @@ import React, { useState } from 'react'
 import { StepCard } from './StepCard'
 import { LockedIcon, UnlockedIcon, InfoIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
+import { useUser } from 'contexts/UserContext'
 
 export const StepsSideBar = () => {
   const { setDraggedStepType, draggedStepType } = useStepDnd()
@@ -36,6 +37,8 @@ export const StepsSideBar = () => {
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
+
+  const { verifyFeatureToggle } = useUser()
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!draggedStepType) return
@@ -101,9 +104,10 @@ export const StepsSideBar = () => {
     return (
       // type === InputStepType.DATE ||
       // type === InputStepType.PHONE ||
-      // type === OctaStepType.OFFICE_HOURS ||
-      type === WabaStepType.BUTTONS ||
-      type === WabaStepType.OPTIONS
+      (type === OctaStepType.OFFICE_HOURS && verifyFeatureToggle('whatsapp-api'))||
+      type === WabaStepType.BUTTONS && verifyFeatureToggle('whatsapp-api') ||
+      type === WabaStepType.OPTIONS && verifyFeatureToggle('whatsapp-api') ||
+      type === LogicStepType.CONDITION && verifyFeatureToggle('botconditional')
     )
   }
 
@@ -259,6 +263,7 @@ export const StepsSideBar = () => {
                     key={type}
                     type={type}
                     onMouseDown={handleMouseDown}
+                    isDisabled={shouldDisableComponent(type)}
                   />
                 )
             )}

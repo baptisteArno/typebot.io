@@ -24,7 +24,7 @@ export const StepCard = ({
   const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
 
   return (
-    <Tooltip label="Em breve!" isDisabled={!isDisabled}>
+    <Tooltip label="Você precisa ter o Whatsapp Business para usar esse componente!" isDisabled={!isDisabled}>
       <Flex pos="relative">
         <HStack
           borderWidth="1px"
