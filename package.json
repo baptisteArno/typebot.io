@@ -18,6 +18,7 @@
     "build:builder": "turbo run build --filter=builder... && turbo run build:env --filter=builder...",
     "build:viewer": "turbo run build --filter=viewer... && turbo run build:env --filter=viewer...",
     "build:landing-page": "turbo run build --filter=landing-page... && turbo run build:env --filter=landing-page...",
+    "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/db && pnpm run db:migrate",
     "generate-change-log": "pnpx gitmoji-changelog"
   },
