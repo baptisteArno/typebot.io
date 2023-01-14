@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "cross-env ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3001",
-    "build": "next build",
-    "build:manual": "cross-env ENVSH_ENV=.env.local bash ../../env.sh next build",
+    "build": "cross-env ENVSH_ENV=.env.local bash ../../env.sh next build",
+    "build:docker": "next build",
     "build:env": "cd ../.. && cross-env ENVSH_ENV=./apps/viewer/.env.docker ENVSH_OUTPUT=./apps/viewer/public/__env.js bash env.sh",
     "start": "next start -p 3001",
     "lint": "next lint",
