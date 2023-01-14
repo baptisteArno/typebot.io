@@ -10,7 +10,7 @@ COPY pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
 RUN pnpm fetch
 ADD . ./
 RUN pnpm install -r --offline
-RUN pnpm turbo run build --filter=${SCOPE}...
+RUN pnpm turbo run build:docker --filter=${SCOPE}...
 
 FROM base AS runner
 WORKDIR /app

@@ -13,6 +13,11 @@
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
+    "build:docker": {
+      "dependsOn": ["^build", "db#db:generate"],
+      "outputs": [".next/**", "dist/**", "build/**"],
+      "outputMode": "new-only"
+    },
     "docs#build": {
       "dependsOn": ["api:generate"],
       "outputs": ["build/**"],
