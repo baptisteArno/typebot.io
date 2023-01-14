@@ -10,18 +10,18 @@
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
-    "@chakra-ui/icon": "3.0.14",
-    "@chakra-ui/react": "2.4.6",
+    "@chakra-ui/icon": "3.0.15",
+    "@chakra-ui/react": "2.4.8",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
-    "@vercel/analytics": "0.1.6",
+    "@vercel/analytics": "0.1.8",
     "aos": "2.3.4",
     "bot-engine": "workspace:*",
     "db": "workspace:*",
     "focus-visible": "5.2.0",
-    "framer-motion": "8.2.4",
+    "framer-motion": "8.4.3",
     "models": "workspace:*",
-    "next": "13.1.1",
+    "next": "13.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "utils": "workspace:*"
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@babel/core": "7.20.12",
     "@chakra-ui/styled-system": "2.5.1",
-    "@next/bundle-analyzer": "13.1.1",
+    "@next/bundle-analyzer": "13.1.2",
     "@types/aos": "3.0.4",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
@@ -39,7 +39,7 @@
     "eslint-config-custom": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.21",
-    "prettier": "2.8.2",
+    "prettier": "2.8.3",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   }

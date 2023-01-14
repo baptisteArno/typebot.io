@@ -1,5 +1,4 @@
-import React from 'react'
-import { render } from '@faire/mjml-react/dist/src/utils/render'
+import { render } from '@faire/mjml-react/utils/render'
 import fs from 'fs'
 import path from 'path'
 import {

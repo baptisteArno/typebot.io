@@ -13,7 +13,7 @@ import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import Cors from 'cors'
 import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from 'emails'
-import { render } from '@faire/mjml-react/dist/src/utils/render'
+import { render } from '@faire/mjml-react/utils/render'
 import prisma from '@/lib/prisma'
 import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'
 

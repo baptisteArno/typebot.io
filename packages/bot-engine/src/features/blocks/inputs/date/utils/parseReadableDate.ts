@@ -18,10 +18,11 @@ export const parseReadableDate = ({
     minute: hasTime ? '2-digit' : undefined,
   }
   const fromReadable = new Date(
-    from.replace(/-/g, '/').replace(/T.+/, '')
+    hasTime ? from : from.replace(/-/g, '/')
   ).toLocaleString(currentLocale, formatOptions)
+  console.log(to, to.replace(/-/g, '/'))
   const toReadable = new Date(
-    to.replace(/-/g, '/').replace(/T.+/, '')
+    hasTime ? to : to.replace(/-/g, '/')
   ).toLocaleString(currentLocale, formatOptions)
   return `${fromReadable}${isRange ? ` to ${toReadable}` : ''}`
 }

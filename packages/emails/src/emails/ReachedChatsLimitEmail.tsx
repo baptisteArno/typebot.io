@@ -6,7 +6,7 @@ import {
   MjmlColumn,
   MjmlSpacer,
 } from '@faire/mjml-react'
-import { render } from '@faire/mjml-react/dist/src/utils/render'
+import { render } from '@faire/mjml-react/utils/render'
 import { Button, Head, HeroImage, Text } from '../components'
 import { parseNumberWithCommas } from 'utils'
 import { SendMailOptions } from 'nodemailer'

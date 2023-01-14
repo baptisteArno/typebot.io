@@ -2,7 +2,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { parseVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
-import { render } from '@faire/mjml-react/dist/src/utils/render'
+import { render } from '@faire/mjml-react/utils/render'
 import { DefaultBotNotificationEmail } from 'emails'
 import {
   PublicTypebot,
