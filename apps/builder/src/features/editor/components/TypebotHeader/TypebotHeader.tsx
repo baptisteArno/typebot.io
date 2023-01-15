@@ -27,6 +27,8 @@ import { headerHeight } from '../../constants'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { PublishButton } from '@/features/publish'
 import { CollaborationMenuButton } from '@/features/collaboration'
+import { useUndoShortcut } from '@/hooks/useUndoShortcut'
+
 
 export const TypebotHeader = () => {
   const router = useRouter()
@@ -51,6 +53,8 @@ export const TypebotHeader = () => {
     save().then()
     setRightPanel(RightPanel.PREVIEW)
   }
+
+  useUndoShortcut(canUndo, undo);
 
   const handleHelpClick = () => {
     isCloudProdInstance
