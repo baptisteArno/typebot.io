@@ -1,5 +1,37 @@
 # Changelog
 
+<a name="2.9.2"></a>
+## 2.9.2 (2023-01-14)
+
+### Added
+
+- 👷‍♂️ Adapt manual deployment scripts ([#238](https://github.com/baptisteArno/typebot.io/issues/238)) [[9b5426c](https://github.com/baptisteArno/typebot.io/commit/9b5426ce1808e6a58b0abc81e17b204a00559ff5)]
+- 👷‍♂️ Add daily database cleanup action [[4c2eaf9](https://github.com/baptisteArno/typebot.io/commit/4c2eaf9b7939f8e800828f608941e96b74070b00)]
+- ✨ Add Bubble and Popup in embed lib v2 [[21f1c7a](https://github.com/baptisteArno/typebot.io/commit/21f1c7a17e8b6576cabc992165df21fb3f57ede6)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[6459fb8](https://github.com/baptisteArno/typebot.io/commit/6459fb8ec84dd37fba66c998c2d454c8c297a1fa)]
+- 🚸 (dashboard) Improve invalid typebot import feedback [[491e60a](https://github.com/baptisteArno/typebot.io/commit/491e60a815dddb4400259b8183e7a8a980cde6ec)]
+- 🔧 Add app origin to chat API cors [[f8351e2](https://github.com/baptisteArno/typebot.io/commit/f8351e2c85487931a512c3962af810fd9a25e811)]
+- ⚡ Make the default workspace plan configurable [[b142dc1](https://github.com/baptisteArno/typebot.io/commit/b142dc18eb6f75ace3beeba00f1f2f40d7a0ba04)]
+- ♻️ Add id token config param to custom OAuth [[4bf93b4](https://github.com/baptisteArno/typebot.io/commit/4bf93b48724203f5f173b1a5bf4e0e231ffeba8a)]
+- ⬆️ Upgrade dependencies [[f79f693](https://github.com/baptisteArno/typebot.io/commit/f79f6932c220e1f53c6bf08589e639bc96e694ae)]
+
+### Fixed
+
+- 🐛 Fix date input label computation [[13d6679](https://github.com/baptisteArno/typebot.io/commit/13d66793082313d8a39b18b124fcbeaaa68367e2)]
+- 🐛 (editor) Don&#x27;t show variable collection if not recognized [[ecc7e18](https://github.com/baptisteArno/typebot.io/commit/ecc7e18226163bb50eb62aeb9e749e203b6298ee)]
+- 💚 Fix clean database script [[5462a1b](https://github.com/baptisteArno/typebot.io/commit/5462a1be6a9d451ce86e2f71761ca8bfea448209)]
+- 🐛 (dashboard) Fix typebot name overflow [[5507b8e](https://github.com/baptisteArno/typebot.io/commit/5507b8ef67f14ea21ed69a7ccdfcd5ef4825b66f)]
+- 🐛 (editor) Improve variables dropdown auto focus [[b65ffe8](https://github.com/baptisteArno/typebot.io/commit/b65ffe8c53b654885a21214f824e9e7c0d819a86)]
+
+### Miscellaneous
+
+- 📝 Update FAQ [[f1fa535](https://github.com/baptisteArno/typebot.io/commit/f1fa5358e98e9f31ad772b65883f33bf25354502)]
+- 🧑‍💻 (auth) Improve Custom OAuth set up [[3bc0240](https://github.com/baptisteArno/typebot.io/commit/3bc02406f382852d2a5f6f58fbef1d60e35432cc)]
+
+
 <a name="2.9.1"></a>
 ## 2.9.1 (2023-01-06)
 
