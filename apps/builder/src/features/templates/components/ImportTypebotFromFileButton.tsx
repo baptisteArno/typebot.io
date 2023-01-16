@@ -1,8 +1,9 @@
 import { useToast } from '@/hooks/useToast'
 import { readFile } from '@/utils/helpers'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
-import { Typebot, typebotSchema } from 'models'
+import { groupSchema, Typebot } from 'models'
 import React, { ChangeEvent } from 'react'
+import { z } from 'zod'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
@@ -20,11 +21,7 @@ export const ImportTypebotFromFileButton = ({
     const fileContent = await readFile(file)
     try {
       const typebot = JSON.parse(fileContent)
-      typebotSchema.parse({
-        ...typebot,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+      z.array(groupSchema).parse(typebot.groups)
       onNewTypebot(typebot)
     } catch (err) {
       console.error(err)
