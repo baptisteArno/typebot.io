@@ -10,6 +10,14 @@ import {
 import { Stats } from 'models'
 import React from 'react'
 
+const computeCompletionRate  = (
+  totalCompleted: number,
+  totalStarts: number
+): string => {
+  if (totalStarts === 0) return 'Not available'
+  return `${Math.round((totalCompleted / totalStarts) * 100)}%`
+}
+
 export const StatsCards = ({
   stats,
   ...props
@@ -38,7 +46,7 @@ export const StatsCards = ({
         <StatLabel>Completion rate</StatLabel>
         {stats ? (
           <StatNumber>
-            {Math.round((stats.totalCompleted / stats.totalStarts) * 100)}%
+            {computeCompletionRate(stats.totalCompleted, stats.totalStarts)}
           </StatNumber>
         ) : (
           <Skeleton w="50%" h="10px" mt="2" />
