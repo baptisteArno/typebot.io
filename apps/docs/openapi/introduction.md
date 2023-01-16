@@ -21,8 +21,18 @@ The Chat API allows you to execute (chat) with a typebot.
 
 ### How to find my `typebotId`
 
+If you'd like to execute the typebot in preview mode, you will need to provide the ID of the building typebot available in the editor URL:
+
 <img
   src="/img/api/typebotId.png"
+  width="900"
+  alt="Get typebot ID"
+/>
+
+For published typebot execution, you need to provide the public typebot ID available here:
+
+<img
+  src="/img/api/publicId.png"
   width="900"
   alt="Get typebot ID"
 />

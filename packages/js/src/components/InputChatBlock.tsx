@@ -44,7 +44,7 @@ export const InputChatBlock = (props: Props) => {
 
   const handleSubmit = async ({ label, value }: InputSubmitContent) => {
     setAnswer(label ?? value)
-    props.onSubmit(value)
+    props.onSubmit(value ?? label)
   }
 
   return (
@@ -96,37 +96,40 @@ const Input = (props: {
     <Switch>
       <Match when={props.block.type === InputBlockType.TEXT}>
         <TextInput
-          block={props.block as TextInputBlock & { prefilledValue?: string }}
+          block={props.block as TextInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.NUMBER}>
         <NumberInput
-          block={props.block as NumberInputBlock & { prefilledValue?: string }}
+          block={props.block as NumberInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.EMAIL}>
         <EmailInput
-          block={props.block as EmailInputBlock & { prefilledValue?: string }}
+          block={props.block as EmailInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.URL}>
         <UrlInput
-          block={props.block as UrlInputBlock & { prefilledValue?: string }}
+          block={props.block as UrlInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.PHONE}>
         <PhoneInput
-          block={
-            props.block as PhoneNumberInputBlock & { prefilledValue?: string }
-          }
+          block={props.block as PhoneNumberInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -146,7 +149,8 @@ const Input = (props: {
       </Match>
       <Match when={props.block.type === InputBlockType.RATING}>
         <RatingForm
-          block={props.block as RatingInputBlock & { prefilledValue?: string }}
+          block={props.block as RatingInputBlock}
+          defaultValue={props.block.prefilledValue}
           onSubmit={onSubmit}
         />
       </Match>

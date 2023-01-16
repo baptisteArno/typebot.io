@@ -4,30 +4,44 @@ import {
   sendAlmostReachedChatsLimitEmail,
   sendReachedChatsLimitEmail,
 } from 'emails'
+import { Workspace } from 'models'
 import { env, getChatsLimit, isDefined } from 'utils'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
-export const checkChatsUsage = async (typebotId: string) => {
-  const typebot = await prisma.typebot.findUnique({
-    where: {
-      id: typebotId,
-    },
-    include: {
-      workspace: {
-        select: {
-          id: true,
-          plan: true,
-          additionalChatsIndex: true,
-          chatsLimitFirstEmailSentAt: true,
-          chatsLimitSecondEmailSentAt: true,
-          customChatsLimit: true,
+export const checkChatsUsage = async (props: {
+  typebotId: string
+  workspace?: Pick<
+    Workspace,
+    | 'id'
+    | 'plan'
+    | 'additionalChatsIndex'
+    | 'chatsLimitFirstEmailSentAt'
+    | 'chatsLimitSecondEmailSentAt'
+    | 'customChatsLimit'
+  >
+}) => {
+  const typebot = props.workspace
+    ? null
+    : await prisma.typebot.findUnique({
+        where: {
+          id: props.typebotId,
         },
-      },
-    },
-  })
+        include: {
+          workspace: {
+            select: {
+              id: true,
+              plan: true,
+              additionalChatsIndex: true,
+              chatsLimitFirstEmailSentAt: true,
+              chatsLimitSecondEmailSentAt: true,
+              customChatsLimit: true,
+            },
+          },
+        },
+      })
 
-  const workspace = typebot?.workspace
+  const workspace = props.workspace || typebot?.workspace
 
   if (!workspace) return false
 

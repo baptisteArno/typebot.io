@@ -1,28 +1,31 @@
-import { InitialChatReply, SendMessageInput, StartParams } from 'models'
-import { getViewerUrl, sendRequest } from 'utils'
+import { InitialChatReply } from '@/types'
+import { SendMessageInput, StartParams } from 'models'
+import { getViewerUrl, isEmpty, sendRequest } from 'utils'
 
 export async function getInitialChatReplyQuery({
-  typebotId,
+  typebot,
   isPreview,
   apiHost,
   prefilledVariables,
+  startGroupId,
+  resultId,
 }: StartParams & {
   apiHost?: string
 }) {
-  if (!typebotId)
+  if (!typebot)
     throw new Error('Typebot ID is required to get initial messages')
 
-  const response = await sendRequest<InitialChatReply>({
+  return sendRequest<InitialChatReply>({
     method: 'POST',
-    url: `${apiHost ?? getViewerUrl()}/api/v1/sendMessage`,
+    url: `${isEmpty(apiHost) ? getViewerUrl() : apiHost}/api/v1/sendMessage`,
     body: {
       startParams: {
         isPreview,
-        typebotId,
+        typebot,
         prefilledVariables,
+        startGroupId,
+        resultId,
       },
     } satisfies SendMessageInput,
   })
-
-  return response.data
 }

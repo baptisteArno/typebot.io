@@ -1,9 +1,14 @@
 export type BubbleParams = {
-  button: ButtonParams
-  previewMessage: PreviewMessageParams
+  theme?: BubbleTheme
+  previewMessage?: PreviewMessageParams
 }
 
-export type ButtonParams = {
+export type BubbleTheme = {
+  button?: ButtonTheme
+  previewMessage?: PreviewMessageTheme
+}
+
+export type ButtonTheme = {
   backgroundColor?: string
   icon?: {
     color?: string
@@ -15,13 +20,12 @@ export type PreviewMessageParams = {
   avatarUrl?: string
   message: string
   autoShowDelay?: number
-  style?: PreviewMessageStyle
 }
 
-type PreviewMessageStyle = Partial<{
-  backgroundColor: string
-  color: string
-  fontFamily: string
-  closeButtonBgColor: string
-  closeButtonColor: string
-}>
+export type PreviewMessageTheme = {
+  backgroundColor?: string
+  color?: string
+  fontFamily?: string
+  closeButtonBgColor?: string
+  closeButtonColor?: string
+}

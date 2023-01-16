@@ -10,7 +10,9 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   settings: Settings
   inputIndex: number
   context: BotContext
+  onScrollToBottom: () => void
   onSubmit: (input: string) => void
+  onEnd?: () => void
   onSkip: () => void
 }
 
@@ -23,6 +25,9 @@ export const ChatChunk = (props: Props) => {
         ? displayedMessageIndex()
         : displayedMessageIndex() + 1
     )
+    props.onScrollToBottom()
+    if (!props.input && displayedMessageIndex() === props.messages.length)
+      return props.onEnd?.()
   }
 
   return (

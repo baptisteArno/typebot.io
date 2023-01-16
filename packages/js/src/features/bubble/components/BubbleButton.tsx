@@ -1,7 +1,7 @@
 import { Show } from 'solid-js'
-import { ButtonParams } from '../types'
+import { ButtonTheme } from '../types'
 
-type Props = ButtonParams & {
+type Props = ButtonTheme & {
   isBotOpened: boolean
   toggleBot: () => void
 }

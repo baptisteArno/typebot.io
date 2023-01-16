@@ -1,20 +1,19 @@
 import { ShortTextInput } from '@/components/inputs'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
+import { isMobile } from '@/utils/isMobileSignal'
 import { NumberInputBlock } from 'models'
-import { createSignal } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 
 type NumberInputProps = {
-  block: NumberInputBlock & { prefilledValue?: string }
+  block: NumberInputBlock
+  defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
   hasGuestAvatar: boolean
 }
 
 export const NumberInput = (props: NumberInputProps) => {
-  const [inputValue, setInputValue] = createSignal(
-    // eslint-disable-next-line solid/reactivity
-    props.block.prefilledValue ?? ''
-  )
+  const [inputValue, setInputValue] = createSignal(props.defaultValue ?? '')
   let inputRef: HTMLInputElement | undefined
 
   const handleInput = (inputValue: string) => setInputValue(inputValue)
@@ -29,6 +28,10 @@ export const NumberInput = (props: NumberInputProps) => {
   const submitWhenEnter = (e: KeyboardEvent) => {
     if (e.key === 'Enter') submit()
   }
+
+  onMount(() => {
+    if (!isMobile() && inputRef) inputRef.focus()
+  })
 
   return (
     <div

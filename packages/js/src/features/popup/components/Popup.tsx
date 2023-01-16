@@ -1,5 +1,12 @@
 import styles from '../../../assets/index.css'
-import { createSignal, onMount, Show, splitProps, onCleanup } from 'solid-js'
+import {
+  createSignal,
+  onMount,
+  Show,
+  splitProps,
+  onCleanup,
+  createEffect,
+} from 'solid-js'
 import { Bot, BotProps } from '../../../components/Bot'
 import { CommandData } from '@/features/commands'
 import { isDefined } from 'utils'
@@ -7,6 +14,8 @@ import { PopupParams } from '../types'
 
 export type PopupProps = BotProps &
   PopupParams & {
+    defaultOpen?: boolean
+    isOpen?: boolean
     onOpen?: () => void
     onClose?: () => void
   }
@@ -18,7 +27,9 @@ export const Popup = (props: PopupProps) => {
     'onOpen',
     'onClose',
     'autoShowDelay',
-    'style',
+    'theme',
+    'isOpen',
+    'defaultOpen',
   ])
 
   const [prefilledVariables, setPrefilledVariables] = createSignal(
@@ -26,10 +37,14 @@ export const Popup = (props: PopupProps) => {
     botProps.prefilledVariables
   )
 
-  const [isBotOpened, setIsBotOpened] = createSignal(false)
+  const [isBotOpened, setIsBotOpened] = createSignal(
+    // eslint-disable-next-line solid/reactivity
+    popupProps.isOpen ?? popupProps.defaultOpen ?? false
+  )
 
   onMount(() => {
-    window.addEventListener('click', processWindowClick)
+    document.addEventListener('pointerdown', processWindowClick)
+    botContainer?.addEventListener('pointerdown', stopPropagation)
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = popupProps.autoShowDelay
     if (isDefined(autoShowDelay)) {
@@ -39,14 +54,23 @@ export const Popup = (props: PopupProps) => {
     }
   })
 
-  onCleanup(() => {
-    window.removeEventListener('message', processIncomingEvent)
-    window.removeEventListener('click', processWindowClick)
+  createEffect(() => {
+    const isOpen = popupProps.isOpen
+    if (isDefined(isOpen)) setIsBotOpened(isOpen)
   })
 
-  const processWindowClick = (event: MouseEvent) => {
-    if (!botContainer || botContainer.contains(event.target as Node)) return
+  onCleanup(() => {
+    document.removeEventListener('pointerdown', processWindowClick)
+    botContainer?.removeEventListener('pointerdown', stopPropagation)
+    window.removeEventListener('message', processIncomingEvent)
+  })
+
+  const processWindowClick = () => {
     setIsBotOpened(false)
+  }
+
+  const stopPropagation = (event: MouseEvent) => {
+    event.stopPropagation()
   }
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
@@ -63,16 +87,19 @@ export const Popup = (props: PopupProps) => {
   }
 
   const openBot = () => {
-    setIsBotOpened(true)
     if (isBotOpened()) popupProps.onOpen?.()
+    if (isDefined(props.isOpen)) return
+    setIsBotOpened(true)
   }
 
   const closeBot = () => {
-    setIsBotOpened(false)
     if (isBotOpened()) popupProps.onClose?.()
+    if (isDefined(props.isOpen)) return
+    setIsBotOpened(false)
   }
 
   const toggleBot = () => {
+    if (isDefined(props.isOpen)) return
     isBotOpened() ? closeBot() : openBot()
   }
 
@@ -85,15 +112,11 @@ export const Popup = (props: PopupProps) => {
         aria-modal="true"
       >
         <style>{styles}</style>
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fade-in" />
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in" />
         <div class="fixed inset-0 z-10 overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
             <div
               class="relative h-[80vh] transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-              style={{
-                width: popupProps.style?.width ?? '100%',
-                'background-color': popupProps.style?.backgroundColor ?? '#fff',
-              }}
               ref={botContainer}
             >
               <Bot {...botProps} prefilledVariables={prefilledVariables()} />

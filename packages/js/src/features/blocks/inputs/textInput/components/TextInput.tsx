@@ -1,20 +1,19 @@
 import { Textarea, ShortTextInput } from '@/components/inputs'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
+import { isMobile } from '@/utils/isMobileSignal'
 import { TextInputBlock } from 'models'
-import { createSignal } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 
 type Props = {
-  block: TextInputBlock & { prefilledValue?: string }
-  onSubmit: (value: InputSubmitContent) => void
+  block: TextInputBlock
+  defaultValue?: string
   hasGuestAvatar: boolean
+  onSubmit: (value: InputSubmitContent) => void
 }
 
 export const TextInput = (props: Props) => {
-  const [inputValue, setInputValue] = createSignal(
-    // eslint-disable-next-line solid/reactivity
-    props.block.prefilledValue ?? ''
-  )
+  const [inputValue, setInputValue] = createSignal(props.defaultValue ?? '')
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
 
   const handleInput = (inputValue: string) => setInputValue(inputValue)
@@ -30,6 +29,10 @@ export const TextInput = (props: Props) => {
     if (props.block.options.isLong) return
     if (e.key === 'Enter') submit()
   }
+
+  onMount(() => {
+    if (!isMobile() && inputRef) inputRef.focus()
+  })
 
   return (
     <div

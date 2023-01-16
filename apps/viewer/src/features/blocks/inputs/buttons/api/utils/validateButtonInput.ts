@@ -3,4 +3,9 @@ import { ChoiceInputBlock } from 'models'
 export const validateButtonInput = (
   buttonBlock: ChoiceInputBlock,
   input: string
-) => buttonBlock.items.some((item) => item.content === input)
+) =>
+  input
+    .split(',')
+    .every((value) =>
+      buttonBlock.items.some((item) => item.content === value.trim())
+    )

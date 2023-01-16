@@ -2,6 +2,7 @@ import { checkChatsUsage } from '@/features/usage'
 import {
   parsePrefilledVariables,
   deepParseVariable,
+  parseVariables,
 } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/utils/server/trpc'
@@ -11,15 +12,17 @@ import {
   ChatReply,
   chatReplySchema,
   ChatSession,
-  PublicTypebot,
   Result,
   sendMessageInputSchema,
   SessionState,
   StartParams,
+  StartTypebot,
+  Theme,
   Typebot,
   Variable,
 } from 'models'
 import { continueBotFlow, getSession, startBotFlow } from '../utils'
+import { omit } from 'utils'
 
 export const sendMessageProcedure = publicProcedure
   .meta({
@@ -37,12 +40,13 @@ export const sendMessageProcedure = publicProcedure
     const session = sessionId ? await getSession(sessionId) : null
 
     if (!session) {
-      const { sessionId, typebot, messages, input, resultId } =
+      const { sessionId, typebot, messages, input, resultId, dynamicTheme } =
         await startSession(startParams)
       return {
         sessionId,
         typebot: typebot
           ? {
+              id: typebot.id,
               theme: typebot.theme,
               settings: typebot.settings,
             }
@@ -50,6 +54,7 @@ export const sendMessageProcedure = publicProcedure
         messages,
         input,
         resultId,
+        dynamicTheme,
       }
     } else {
       const { messages, input, logic, newSessionState, integrations } =
@@ -67,89 +72,35 @@ export const sendMessageProcedure = publicProcedure
         input,
         logic,
         integrations,
+        dynamicTheme: parseDynamicThemeReply(newSessionState),
       }
     }
   })
 
 const startSession = async (startParams?: StartParams) => {
-  if (!startParams?.typebotId)
+  if (!startParams?.typebot)
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'No typebotId provided in startParams',
-    })
-  const typebotQuery = startParams.isPreview
-    ? await prisma.typebot.findUnique({
-        where: { id: startParams.typebotId },
-        select: {
-          groups: true,
-          edges: true,
-          settings: true,
-          theme: true,
-          variables: true,
-          isArchived: true,
-        },
-      })
-    : await prisma.typebot.findUnique({
-        where: { id: startParams.typebotId },
-        select: {
-          publishedTypebot: {
-            select: {
-              groups: true,
-              edges: true,
-              settings: true,
-              theme: true,
-              variables: true,
-            },
-          },
-          name: true,
-          isClosed: true,
-          isArchived: true,
-          id: true,
-        },
-      })
-
-  const typebot =
-    typebotQuery && 'publishedTypebot' in typebotQuery
-      ? (typebotQuery.publishedTypebot as Pick<
-          PublicTypebot,
-          'groups' | 'edges' | 'settings' | 'theme' | 'variables'
-        >)
-      : (typebotQuery as Pick<
-          Typebot,
-          'groups' | 'edges' | 'settings' | 'theme' | 'variables' | 'isArchived'
-        >)
-
-  if (!typebot)
-    throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'Typebot not found',
+      message: 'No typebot provided in startParams',
     })
 
-  if ('isClosed' in typebot && typebot.isClosed)
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: 'Typebot is closed',
-    })
-
-  const hasReachedLimit = !startParams.isPreview
-    ? await checkChatsUsage(startParams.typebotId)
-    : false
-
-  if (hasReachedLimit)
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Your workspace reached its chat limit',
-    })
+  const typebot = await getTypebot(startParams)
 
   const startVariables = startParams.prefilledVariables
     ? parsePrefilledVariables(typebot.variables, startParams.prefilledVariables)
     : typebot.variables
 
-  const result = await getResult({ ...startParams, startVariables })
+  const result = await getResult({
+    ...startParams,
+    typebot: typebot.id,
+    startVariables,
+    isNewResultOnRefreshEnabled:
+      typebot.settings.general.isNewResultOnRefreshEnabled ?? false,
+  })
 
   const initialState: SessionState = {
     typebot: {
-      id: startParams.typebotId,
+      id: typebot.id,
       groups: typebot.groups,
       edges: typebot.edges,
       variables: startVariables,
@@ -161,8 +112,9 @@ const startSession = async (startParams?: StartParams) => {
     result: result
       ? { id: result.id, variables: result.variables, hasStarted: false }
       : undefined,
-    isPreview: false,
-    currentTypebotId: startParams.typebotId,
+    isPreview: startParams.isPreview || typeof startParams.typebot !== 'string',
+    currentTypebotId: typebot.id,
+    dynamicTheme: parseDynamicThemeInState(typebot.theme),
   }
 
   const {
@@ -170,16 +122,26 @@ const startSession = async (startParams?: StartParams) => {
     input,
     logic,
     newSessionState: newInitialState,
-  } = await startBotFlow(initialState)
+  } = await startBotFlow(initialState, startParams.startGroupId)
 
   if (!input)
     return {
       messages,
       logic,
+      typebot: {
+        id: typebot.id,
+        settings: deepParseVariable(newInitialState.typebot.variables)(
+          typebot.settings
+        ),
+        theme: deepParseVariable(newInitialState.typebot.variables)(
+          typebot.theme
+        ),
+      },
+      dynamicTheme: parseDynamicThemeReply(newInitialState),
     }
 
   const sessionState: ChatSession['state'] = {
-    ...(newInitialState ?? initialState),
+    ...newInitialState,
     currentBlock: {
       groupId: input.groupId,
       blockId: input.id,
@@ -196,27 +158,122 @@ const startSession = async (startParams?: StartParams) => {
     resultId: result?.id,
     sessionId: session.id,
     typebot: {
-      settings: deepParseVariable(typebot.variables)(typebot.settings),
-      theme: deepParseVariable(typebot.variables)(typebot.theme),
+      id: typebot.id,
+      settings: deepParseVariable(newInitialState.typebot.variables)(
+        typebot.settings
+      ),
+      theme: deepParseVariable(newInitialState.typebot.variables)(
+        typebot.theme
+      ),
     },
     messages,
     input,
     logic,
+    dynamicTheme: parseDynamicThemeReply(newInitialState),
   } satisfies ChatReply
 }
 
+const getTypebot = async ({
+  typebot,
+  isPreview,
+}: Pick<StartParams, 'typebot' | 'isPreview'>): Promise<StartTypebot> => {
+  if (typeof typebot !== 'string') return typebot
+  const typebotQuery = isPreview
+    ? await prisma.typebot.findUnique({
+        where: { id: typebot },
+        select: {
+          id: true,
+          groups: true,
+          edges: true,
+          settings: true,
+          theme: true,
+          variables: true,
+          isArchived: true,
+        },
+      })
+    : await prisma.publicTypebot.findFirst({
+        where: { typebot: { publicId: typebot } },
+        select: {
+          groups: true,
+          edges: true,
+          settings: true,
+          theme: true,
+          variables: true,
+          typebotId: true,
+          typebot: {
+            select: {
+              isArchived: true,
+              isClosed: true,
+              workspace: {
+                select: {
+                  id: true,
+                  plan: true,
+                  additionalChatsIndex: true,
+                  chatsLimitFirstEmailSentAt: true,
+                  chatsLimitSecondEmailSentAt: true,
+                  customChatsLimit: true,
+                },
+              },
+            },
+          },
+        },
+      })
+
+  const parsedTypebot =
+    typebotQuery && 'typebot' in typebotQuery
+      ? ({
+          id: typebotQuery.typebotId,
+          ...omit(typebotQuery.typebot, 'workspace'),
+          ...omit(typebotQuery, 'typebot', 'typebotId'),
+        } as StartTypebot & Pick<Typebot, 'isArchived' | 'isClosed'>)
+      : (typebotQuery as StartTypebot & Pick<Typebot, 'isArchived'>)
+
+  if (
+    !parsedTypebot ||
+    ('isArchived' in parsedTypebot && parsedTypebot.isArchived)
+  )
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Typebot not found',
+    })
+
+  if ('isClosed' in parsedTypebot && parsedTypebot.isClosed)
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Typebot is closed',
+    })
+
+  const hasReachedLimit =
+    typebotQuery && 'typebot' in typebotQuery
+      ? await checkChatsUsage({
+          typebotId: parsedTypebot.id,
+          workspace: typebotQuery.typebot.workspace,
+        })
+      : false
+
+  if (hasReachedLimit)
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'You have reached your chats limit',
+    })
+
+  return parsedTypebot
+}
+
 const getResult = async ({
-  typebotId,
+  typebot,
   isPreview,
   resultId,
   startVariables,
-}: Pick<StartParams, 'isPreview' | 'resultId' | 'typebotId'> & {
+  isNewResultOnRefreshEnabled,
+}: Pick<StartParams, 'isPreview' | 'resultId' | 'typebot'> & {
   startVariables: Variable[]
+  isNewResultOnRefreshEnabled: boolean
 }) => {
-  if (isPreview) return undefined
+  if (isPreview || typeof typebot !== 'string') return undefined
   const data = {
     isCompleted: false,
-    typebotId: typebotId,
+    typebotId: typebot,
     variables: { set: startVariables.filter((variable) => variable.value) },
   } satisfies Prisma.ResultUncheckedCreateInput
   const select = {
@@ -225,7 +282,7 @@ const getResult = async ({
     hasStarted: true,
   } satisfies Prisma.ResultSelect
   return (
-    resultId
+    resultId && !isNewResultOnRefreshEnabled
       ? await prisma.result.update({
           where: { id: resultId },
           data,
@@ -236,4 +293,37 @@ const getResult = async ({
           select,
         })
   ) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
+}
+
+const parseDynamicThemeInState = (theme: Theme) => {
+  const hostAvatarUrl =
+    theme.chat.hostAvatar?.isEnabled ?? true
+      ? theme.chat.hostAvatar?.url
+      : undefined
+  const guestAvatarUrl =
+    theme.chat.guestAvatar?.isEnabled ?? false
+      ? theme.chat.guestAvatar?.url
+      : undefined
+  if (!hostAvatarUrl?.startsWith('{{') && !guestAvatarUrl?.startsWith('{{'))
+    return
+  return {
+    hostAvatarUrl: hostAvatarUrl?.startsWith('{{') ? hostAvatarUrl : undefined,
+    guestAvatarUrl: guestAvatarUrl?.startsWith('{{')
+      ? guestAvatarUrl
+      : undefined,
+  }
+}
+
+const parseDynamicThemeReply = (
+  state: SessionState | undefined
+): ChatReply['dynamicTheme'] => {
+  if (!state?.dynamicTheme) return
+  return {
+    hostAvatarUrl: parseVariables(state?.typebot.variables)(
+      state.dynamicTheme.hostAvatarUrl
+    ),
+    guestAvatarUrl: parseVariables(state?.typebot.variables)(
+      state.dynamicTheme.guestAvatarUrl
+    ),
+  }
 }

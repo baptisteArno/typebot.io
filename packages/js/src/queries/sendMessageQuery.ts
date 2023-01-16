@@ -1,5 +1,5 @@
 import { ChatReply, SendMessageInput } from 'models'
-import { getViewerUrl, sendRequest } from 'utils'
+import { getViewerUrl, isEmpty, sendRequest } from 'utils'
 
 export async function sendMessageQuery({
   apiHost,
@@ -7,7 +7,7 @@ export async function sendMessageQuery({
 }: SendMessageInput & { apiHost?: string }) {
   const response = await sendRequest<ChatReply>({
     method: 'POST',
-    url: `${apiHost ?? getViewerUrl()}/api/v1/sendMessage`,
+    url: `${isEmpty(apiHost) ? getViewerUrl() : apiHost}/api/v1/sendMessage`,
     body,
   })
 

@@ -37,11 +37,10 @@ test('API chat execution should work on preview bot', async ({ request }) => {
       await request.post(`/api/v1/sendMessage`, {
         data: {
           startParams: {
-            typebotId,
+            typebot: typebotId,
             isPreview: true,
           },
-          // TODO: replace with satisfies once compatible with playwright
-        } as SendMessageInput,
+        } satisfies SendMessageInput,
       })
     ).json()
     expect(resultId).toBeUndefined()
@@ -75,10 +74,9 @@ test('API chat execution should work on published bot', async ({ request }) => {
       await request.post(`/api/v1/sendMessage`, {
         data: {
           startParams: {
-            typebotId,
+            typebot: publicId,
           },
-          // TODO: replace with satisfies once compatible with playwright
-        } as SendMessageInput,
+        } satisfies SendMessageInput,
       })
     ).json()
     chatSessionId = sessionId

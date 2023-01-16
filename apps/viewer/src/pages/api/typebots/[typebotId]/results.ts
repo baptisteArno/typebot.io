@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string
-    const hasReachedLimit = await checkChatsUsage(typebotId)
+    const hasReachedLimit = await checkChatsUsage({ typebotId })
     if (hasReachedLimit) return res.send({ result: null, hasReachedLimit })
     const result = await prisma.result.create({
       data: {

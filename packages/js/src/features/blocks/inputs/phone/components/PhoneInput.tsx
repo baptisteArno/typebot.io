@@ -3,21 +3,19 @@ import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { PhoneNumberInputBlock } from 'models'
-import { createSignal, For } from 'solid-js'
+import { createSignal, For, onMount } from 'solid-js'
 import { phoneCountries } from 'utils/phoneCountries'
 
 type PhoneInputProps = {
-  block: PhoneNumberInputBlock & { prefilledValue?: string }
+  block: PhoneNumberInputBlock
+  defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
   hasGuestAvatar: boolean
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
   const [selectedCountryCode, setSelectedCountryCode] = createSignal('INT')
-  const [inputValue, setInputValue] = createSignal(
-    // eslint-disable-next-line solid/reactivity
-    props.block.prefilledValue ?? ''
-  )
+  const [inputValue, setInputValue] = createSignal(props.defaultValue ?? '')
   let inputRef: HTMLInputElement | undefined
 
   const handleInput = (inputValue: string | undefined) => {
@@ -47,11 +45,13 @@ export const PhoneInput = (props: PhoneInputProps) => {
     setSelectedCountryCode(event.currentTarget.value)
   }
 
+  onMount(() => {
+    if (!isMobile() && inputRef) inputRef.focus()
+  })
+
   return (
     <div
-      class={
-        'flex items-end justify-between rounded-lg pr-2 typebot-input w-full'
-      }
+      class={'flex items-end justify-between rounded-lg pr-2 typebot-input'}
       data-testid="input"
       style={{
         'margin-right': props.hasGuestAvatar ? '50px' : '0.5rem',

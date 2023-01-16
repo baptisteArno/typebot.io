@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:host,
-:root {
+:host {
   --typebot-container-bg-image: none;
   --typebot-container-bg-color: transparent;
   --typebot-container-font-family: 'Open Sans';

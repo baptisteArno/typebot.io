@@ -12,7 +12,7 @@ type Props = {
 export const DateForm = (props: Props) => {
   const [inputValues, setInputValues] = createSignal({ from: '', to: '' })
   return (
-    <div class="flex flex-col w-full lg:w-4/6">
+    <div class="flex flex-col">
       <div class="flex items-center">
         <form
           class={'flex justify-between rounded-lg typebot-input pr-2 items-end'}

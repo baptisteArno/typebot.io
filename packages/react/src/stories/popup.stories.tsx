@@ -7,9 +7,10 @@ export const Default = () => {
       <button onClick={open}>Open modal</button>
       <button onClick={toggle}>Toggle modal</button>
       <Popup
-        typebotId="ladleTypebot"
+        typebot="clctayswj000l3b6y2vkh8kwg"
         apiHost="http://localhost:3001"
         autoShowDelay={3000}
+        isPreview
       />
     </>
   )

@@ -23,7 +23,7 @@ export const executeGroup =
   (state: SessionState, currentReply?: ChatReply) =>
   async (
     group: Group
-  ): Promise<ChatReply & { newSessionState?: SessionState }> => {
+  ): Promise<ChatReply & { newSessionState: SessionState }> => {
     const messages: ChatReply['messages'] = currentReply?.messages ?? []
     let logic: ChatReply['logic'] = currentReply?.logic
     let integrations: ChatReply['integrations'] = currentReply?.integrations
@@ -72,8 +72,10 @@ export const executeGroup =
         integrations = executionResponse.integrations
       if (executionResponse.newSessionState)
         newSessionState = executionResponse.newSessionState
-      if (executionResponse.outgoingEdgeId)
+      if (executionResponse.outgoingEdgeId) {
         nextEdgeId = executionResponse.outgoingEdgeId
+        break
+      }
     }
 
     if (!nextEdgeId) return { messages, newSessionState, logic, integrations }

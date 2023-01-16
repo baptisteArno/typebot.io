@@ -20,7 +20,6 @@ export const parseReadableDate = ({
   const fromReadable = new Date(
     hasTime ? from : from.replace(/-/g, '/')
   ).toLocaleString(currentLocale, formatOptions)
-  console.log(to, to.replace(/-/g, '/'))
   const toReadable = new Date(
     hasTime ? to : to.replace(/-/g, '/')
   ).toLocaleString(currentLocale, formatOptions)

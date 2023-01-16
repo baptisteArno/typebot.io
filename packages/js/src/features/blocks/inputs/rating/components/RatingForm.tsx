@@ -5,20 +5,21 @@ import { createSignal, For, Match, Switch } from 'solid-js'
 import { isDefined, isEmpty, isNotDefined } from 'utils'
 
 type Props = {
-  block: RatingInputBlock & { prefilledValue?: string }
+  block: RatingInputBlock
+  defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
 }
 
 export const RatingForm = (props: Props) => {
   const [rating, setRating] = createSignal<number | undefined>(
-    // eslint-disable-next-line solid/reactivity
-    props.block.prefilledValue ? Number(props.block.prefilledValue) : undefined
+    props.defaultValue ? Number(props.defaultValue) : undefined
   )
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault()
-    if (isNotDefined(rating)) return
-    props.onSubmit({ value: rating.toString() })
+    const selectedRating = rating()
+    if (isNotDefined(selectedRating)) return
+    props.onSubmit({ value: selectedRating.toString() })
   }
 
   const handleClick = (rating: number) => {

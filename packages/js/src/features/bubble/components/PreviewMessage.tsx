@@ -1,14 +1,14 @@
 import { createSignal } from 'solid-js'
-import { BubbleParams, PreviewMessageParams } from '../types'
+import { PreviewMessageParams, PreviewMessageTheme } from '../types'
 
 export type PreviewMessageProps = Pick<
   PreviewMessageParams,
-  'avatarUrl' | 'message' | 'style'
-> &
-  Pick<BubbleParams, 'button'> & {
-    onClick: () => void
-    onCloseClick: () => void
-  }
+  'avatarUrl' | 'message'
+> & {
+  previewMessageTheme?: PreviewMessageTheme
+  onClick: () => void
+  onCloseClick: () => void
+}
 
 const defaultFontFamily =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
@@ -23,9 +23,11 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       onClick={props.onClick}
       class="absolute bottom-20 right-4 w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4"
       style={{
-        'font-family': props.style?.fontFamily ?? defaultFontFamily,
-        'background-color': props.style?.backgroundColor ?? '#F7F8FF',
-        color: props.style?.color ?? '#303235',
+        'font-family':
+          props.previewMessageTheme?.fontFamily ?? defaultFontFamily,
+        'background-color':
+          props.previewMessageTheme?.backgroundColor ?? '#F7F8FF',
+        color: props.previewMessageTheme?.color ?? '#303235',
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}
@@ -40,8 +42,9 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
           return props.onCloseClick()
         }}
         style={{
-          'background-color': props.style?.closeButtonBgColor ?? '#F7F8FF',
-          color: props.style?.closeButtonColor ?? '#303235',
+          'background-color':
+            props.previewMessageTheme?.closeButtonBgColor ?? '#F7F8FF',
+          color: props.previewMessageTheme?.closeButtonColor ?? '#303235',
         }}
       >
         <svg

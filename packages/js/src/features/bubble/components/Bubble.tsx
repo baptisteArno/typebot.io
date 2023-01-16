@@ -20,7 +20,7 @@ export const Bubble = (props: BubbleProps) => {
     'onClose',
     'previewMessage',
     'onPreviewMessageClick',
-    'button',
+    'theme',
   ])
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     // eslint-disable-next-line solid/reactivity
@@ -106,13 +106,13 @@ export const Bubble = (props: BubbleProps) => {
       <Show when={isPreviewMessageDisplayed()}>
         <PreviewMessage
           {...previewMessage()}
-          button={bubbleProps.button}
+          previewMessageTheme={bubbleProps.theme?.previewMessage}
           onClick={handlePreviewMessageClick}
           onCloseClick={hideMessage}
         />
       </Show>
       <BubbleButton
-        {...bubbleProps.button}
+        {...bubbleProps.theme?.button}
         toggleBot={toggleBot}
         isBotOpened={isBotOpened()}
       />
@@ -126,7 +126,7 @@ export const Bubble = (props: BubbleProps) => {
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
         }}
         class={
-          'absolute bottom-20 sm:right-4 rounded-lg bg-white w-full sm:w-[400px] max-h-[704px] ' +
+          'absolute bottom-20 sm:right-4 rounded-lg w-full sm:w-[400px] max-h-[704px] ' +
           (isBotOpened() ? 'opacity-1' : 'opacity-0 pointer-events-none')
         }
       >

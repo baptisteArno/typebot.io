@@ -24,8 +24,14 @@ const typebotInSessionStateSchema = publicTypebotSchema.pick({
   variables: true,
 })
 
+const dynamicThemeSchema = z.object({
+  hostAvatarUrl: z.string().optional(),
+  guestAvatarUrl: z.string().optional(),
+})
+
 export const sessionStateSchema = z.object({
   typebot: typebotInSessionStateSchema,
+  dynamicTheme: dynamicThemeSchema.optional(),
   linkedTypebots: z.object({
     typebots: z.array(typebotInSessionStateSchema),
     queue: z.array(z.object({ edgeId: z.string(), typebotId: z.string() })),
@@ -95,11 +101,21 @@ const codeToExecuteSchema = z.object({
   ),
 })
 
+const startTypebotSchema = typebotSchema.pick({
+  id: true,
+  groups: true,
+  edges: true,
+  variables: true,
+  settings: true,
+  theme: true,
+})
+
 const startParamsSchema = z.object({
-  typebotId: z.string({
-    description:
-      '[How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid)',
-  }),
+  typebot: startTypebotSchema
+    .or(z.string())
+    .describe(
+      'Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid)).'
+    ),
   isPreview: z
     .boolean()
     .optional()
@@ -110,7 +126,16 @@ const startParamsSchema = z.object({
     .string()
     .optional()
     .describe("Provide it if you'd like to overwrite an existing result."),
-  prefilledVariables: z.record(z.unknown()).optional(),
+  startGroupId: z
+    .string()
+    .optional()
+    .describe('Start chat from a specific group.'),
+  prefilledVariables: z
+    .record(z.unknown())
+    .optional()
+    .describe(
+      '[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)'
+    ),
 })
 
 export const sendMessageInputSchema = z.object({
@@ -158,25 +183,20 @@ export const chatReplySchema = z.object({
     })
     .optional(),
   sessionId: z.string().optional(),
-  typebot: typebotSchema.pick({ theme: true, settings: true }).optional(),
+  typebot: typebotSchema
+    .pick({ id: true, theme: true, settings: true })
+    .optional(),
   resultId: z.string().optional(),
+  dynamicTheme: dynamicThemeSchema.optional(),
 })
-
-export const initialChatReplySchema = z
-  .object({
-    sessionId: z.string(),
-    resultId: z.string(),
-    typebot: typebotSchema.pick({ theme: true, settings: true }),
-  })
-  .and(chatReplySchema)
 
 export type ChatSession = z.infer<typeof chatSessionSchema>
 export type SessionState = z.infer<typeof sessionStateSchema>
 export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
 export type ChatReply = z.infer<typeof chatReplySchema>
-export type InitialChatReply = z.infer<typeof initialChatReplySchema>
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 export type SendMessageInput = z.infer<typeof sendMessageInputSchema>
 export type CodeToExecute = z.infer<typeof codeToExecuteSchema>
 export type StartParams = z.infer<typeof startParamsSchema>
 export type RuntimeOptions = z.infer<typeof runtimeOptionsSchema>
+export type StartTypebot = z.infer<typeof startTypebotSchema>

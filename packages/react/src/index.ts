@@ -5,6 +5,6 @@ import { Popup } from './Popup'
 
 export { Standard, Bubble, Popup }
 
-export default { Standard, Bubble, Popup }
+// export default { Standard, Bubble, Popup }
 
 export * from '@typebot.io/js/src/features/commands'

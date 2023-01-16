@@ -38,7 +38,7 @@ export const LiteBadge = (props: Props) => {
       href={'https://www.typebot.io/?utm_source=litebadge'}
       target="_blank"
       rel="noopener noreferrer"
-      class="fixed py-1 px-2 bg-white z-50 rounded shadow-md lite-badge"
+      class="absolute py-1 px-2 bg-white z-50 rounded shadow-md lite-badge text-gray-900"
       style={{ bottom: '20px' }}
       id="lite-badge"
     >

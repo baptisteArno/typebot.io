@@ -56,12 +56,12 @@ const getTypebotFromPublicId = async (
   const typebot = (await prisma.typebot.findUnique({
     where: { publicId },
     select: {
-      id: true,
       theme: true,
       name: true,
       settings: true,
       isArchived: true,
       isClosed: true,
+      publicId: true,
     },
   })) as TypebotPageV2Props['typebot'] | null
   if (isNotDefined(typebot)) return null

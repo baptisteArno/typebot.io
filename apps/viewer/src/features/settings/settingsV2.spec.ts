@@ -27,8 +27,8 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
   ])
   const { resultId } = await response.json()
   expect(resultId).toBeDefined()
-
   await expect(page.getByRole('textbox')).toBeVisible()
+
   const [, secondResponse] = await Promise.all([
     page.reload(),
     page.waitForResponse(/sendMessage/),

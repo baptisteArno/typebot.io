@@ -32,7 +32,7 @@ export const Default = () => {
       </div>
 
       <Bubble
-        typebotId="ladleTypebot"
+        typebot="ladleTypebot"
         apiHost="http://localhost:3001"
         prefilledVariables={{
           Name: 'John',
@@ -42,12 +42,15 @@ export const Default = () => {
           message: 'Hello, I am a preview message',
           autoShowDelay: 3000,
         }}
-        button={{
-          backgroundColor: '#FF7537',
-          icon: {
-            color: 'white',
+        theme={{
+          button: {
+            backgroundColor: '#FF7537',
+            icon: {
+              color: 'white',
+            },
           },
         }}
+        isPreview
       />
     </div>
   )
