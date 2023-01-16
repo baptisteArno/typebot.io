@@ -1,0 +1,23 @@
+name: Publish @typebot.io/react package to NPM
+
+on:
+  push:
+    tags:
+      - 'react-v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/js
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm build
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          package: './packages/js/package.json'
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public

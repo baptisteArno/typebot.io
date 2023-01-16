@@ -27,3 +27,15 @@ jobs:
         with:
           package_root: '/packages/typebot-js'
           tag_prefix: 'js-lib-v'
+
+      - name: 'Create typebot-js tag'
+        uses: Klemensas/action-autotag@stable
+        with:
+          package_root: '/packages/js'
+          tag_prefix: 'js-v'
+
+      - name: 'Create typebot-js tag'
+        uses: Klemensas/action-autotag@stable
+        with:
+          package_root: '/packages/react'
+          tag_prefix: 'react-v'
