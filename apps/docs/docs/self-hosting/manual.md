@@ -1,0 +1,81 @@
+---
+sidebar_position: 3
+---
+
+# Manual
+
+:::note
+The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). It takes 1 minute to try out the tool for free. You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
+
+That's also the best way to support my work, open-source software, and you'll get great service!
+:::
+
+## Requirements
+- A PostgresDB database hosted somewhere. [Supabase](https://supabase.com/) offer great free options. But you can also setup your own database on your server.
+- A server with Node.js 14+, Nginx and PM2 installed
+- Experience deploying Next.js applications with PM2. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for more information.
+
+## Getting Started
+
+1. Fork/clone the repository
+```sh
+git clone git@github.com:<username>/typebot.io.git
+```
+
+2. Setup environment variables by copying the example files and following the [configuration guide](/self-hosting/configuration) to fill in the missing values.
+```sh
+cd typebot.io
+# check out the latest stable version or the one you want to use
+git checkout v2.9.1
+# copy the example env file
+cp packages/db/.env.example packages/db/.env
+cp apps/builder/.env.local.example apps/builder/.env.local
+cp apps/viewer/.env.local.example apps/viewer/.env.local
+```
+> Note: The database user should have the `SUPERUSER` role. You can setup and migrate the database with the `pnpm prisma generate && pnpm db:migrate` command.
+
+3. Install dependencies
+```sh
+pnpm install
+```
+
+4. Build the builder and viewer
+```sh
+pnpm run build:apps
+# or build them separately
+pnpm run build:builder
+pnpm run build:viewer
+```
+> Note: If you face the issue `Node ran out of memory`, then you should increase the memory limit for Node.js. For example,`NODE_OPTIONS=--max-old-space-size=4096` will increase the memory limit to 4GB. Check [this stackoverflow answer](https://stackoverflow.com/questions/53230823/fatal-error-ineffective-mark-compacts-near-heap-limit-allocation-failed-javas) for more information.
+
+### Deploy the builder
+
+1. Cd into the builder directory and make sure it can be started with `pnpm start`
+```sh
+cd apps/builder
+pnpm start
+# You may have to set the port if it's already in use
+pnpm next start -p 3001
+```
+2. Deploy the builder with PM2
+```sh
+pm2 start --name=typebot pnpm -- start
+# or select a different port
+pm2 start --name=typebot pnpm -- next start -p 3001
+```
+
+### Deploy the viewer
+
+1. Cd into the viewer directory and make sure it can be started with `pnpm start`
+```sh
+cd apps/viewer
+pnpm start
+# You may have to set the port if it's already in use
+pnpm next start -p 3002
+```
+2. Deploy the viewer with PM2
+```sh
+pm2 start --name=typebot pnpm -- start
+# or select a different port
+pm2 start --name=typebot pnpm -- next start -p 3002
+```
