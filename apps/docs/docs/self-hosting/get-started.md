@@ -20,3 +20,4 @@ I've written guides on how to deploy Typebot using:
 
 - [Docker](/self-hosting/docker)
 - [Vercel](/self-hosting/vercel)
+- [Manual](/self-hosting/manual)
