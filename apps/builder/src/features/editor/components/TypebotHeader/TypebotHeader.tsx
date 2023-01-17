@@ -17,7 +17,7 @@ import {
 import { RightPanel, useEditor } from '../../providers/EditorProvider'
 import { useTypebot } from '../../providers/TypebotProvider'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { isNotDefined } from 'utils'
 import { EditableTypebotName } from './EditableTypebotName'
 import { getBubbleActions } from 'typebot-js'
@@ -28,7 +28,7 @@ import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { PublishButton } from '@/features/publish'
 import { CollaborationMenuButton } from '@/features/collaboration'
 import { useUndoShortcut } from '@/hooks/useUndoShortcut'
-
+import { useDebouncedCallback } from 'use-debounce'
 
 export const TypebotHeader = () => {
   const router = useRouter()
@@ -43,6 +43,11 @@ export const TypebotHeader = () => {
     isSavingLoading,
   } = useTypebot()
   const { setRightPanel, rightPanel, setStartPreviewAtGroup } = useEditor()
+  const [isUndoShortcutTooltipOpen, setUndoShortcutTooltipOpen] =
+    useState(false)
+  const hideUndoShortcutTooltipLater = useDebouncedCallback(() => {
+    setUndoShortcutTooltipOpen(false)
+  }, 1000)
 
   const handleNameSubmit = (name: string) => updateTypebot({ name })
 
@@ -54,7 +59,13 @@ export const TypebotHeader = () => {
     setRightPanel(RightPanel.PREVIEW)
   }
 
-  useUndoShortcut(canUndo, undo);
+  useUndoShortcut(() => {
+    if (!canUndo) return
+    hideUndoShortcutTooltipLater.flush()
+    setUndoShortcutTooltipOpen(true)
+    hideUndoShortcutTooltipLater()
+    undo()
+  })
 
   const handleHelpClick = () => {
     isCloudProdInstance
@@ -166,7 +177,11 @@ export const TypebotHeader = () => {
           </HStack>
 
           <HStack>
-            <Tooltip label="Undo">
+            <Tooltip
+              label={isUndoShortcutTooltipOpen ? 'Changes reverted!' : 'Undo'}
+              isOpen={isUndoShortcutTooltipOpen ? true : undefined}
+              hasArrow={isUndoShortcutTooltipOpen}
+            >
               <IconButton
                 display={['none', 'flex']}
                 icon={<UndoIcon />}
