@@ -5,7 +5,6 @@ import {
   DraggableBlockType,
   BlockIndices,
 } from 'models'
-import { removeEmptyGroups } from './groups'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
@@ -13,7 +12,7 @@ import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import cuid from 'cuid'
 import { byId, isWebhookBlock, blockHasItems } from 'utils'
 import { duplicateItemDraft } from './items'
-import { parseNewBlock } from '@/features/graph'
+import { parseNewBlock } from '@/features/graph/utils'
 
 export type BlocksActions = {
   createBlock: (
@@ -30,7 +29,7 @@ export type BlocksActions = {
   deleteBlock: (indices: BlockIndices) => void
 }
 
-const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
+export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
   createBlock: (
     groupId: string,
     block: DraggableBlock | DraggableBlockType,
@@ -78,7 +77,7 @@ const removeBlockFromGroup =
     typebot.groups[groupIndex].blocks.splice(blockIndex, 1)
   }
 
-const createBlockDraft = (
+export const createBlockDraft = (
   typebot: WritableDraft<Typebot>,
   block: DraggableBlock | DraggableBlockType,
   groupId: string,
@@ -134,7 +133,7 @@ const moveBlockToGroup = (
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
 }
 
-const duplicateBlockDraft =
+export const duplicateBlockDraft =
   (groupId: string) =>
   (block: Block): Block => {
     const blockId = cuid()
@@ -162,4 +161,19 @@ const duplicateBlockDraft =
     }
   }
 
-export { blocksAction, createBlockDraft, duplicateBlockDraft }
+export const deleteGroupDraft =
+  (typebot: WritableDraft<Typebot>) => (groupIndex: number) => {
+    cleanUpEdgeDraft(typebot, typebot.groups[groupIndex].id)
+    typebot.groups.splice(groupIndex, 1)
+  }
+
+export const removeEmptyGroups = (typebot: WritableDraft<Typebot>) => {
+  const emptyGroupsIndices = typebot.groups.reduce<number[]>(
+    (arr, group, idx) => {
+      group.blocks.length === 0 && arr.push(idx)
+      return arr
+    },
+    []
+  )
+  emptyGroupsIndices.forEach(deleteGroupDraft(typebot))
+}

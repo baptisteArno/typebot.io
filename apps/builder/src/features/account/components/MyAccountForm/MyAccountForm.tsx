@@ -1,35 +1,28 @@
-import {
-  Stack,
-  HStack,
-  Avatar,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Tooltip,
-  Flex,
-  Text,
-} from '@chakra-ui/react'
+import { Stack, HStack, Avatar, Text, Tooltip } from '@chakra-ui/react'
 import { UploadIcon } from '@/components/icons'
-import React, { ChangeEvent } from 'react'
-import { isDefined } from 'utils'
+import React, { useState } from 'react'
 import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '@/features/account'
+import { Input } from '@/components/inputs/Input'
 
 export const MyAccountForm = () => {
-  const { user, updateUser, saveUser, hasUnsavedChanges, isSaving } = useUser()
+  const { user, updateUser } = useUser()
+  const [name, setName] = useState(user?.name ?? '')
+  const [email, setEmail] = useState(user?.email ?? '')
 
   const handleFileUploaded = async (url: string) => {
     updateUser({ image: url })
   }
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateUser({ name: e.target.value })
+  const handleNameChange = (newName: string) => {
+    setName(newName)
+    updateUser({ name: newName })
   }
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateUser({ email: e.target.value })
+  const handleEmailChange = (newEmail: string) => {
+    setEmail(newEmail)
+    updateUser({ email: newEmail })
   }
 
   return (
@@ -56,40 +49,26 @@ export const MyAccountForm = () => {
         </Stack>
       </HStack>
 
-      <FormControl>
-        <FormLabel htmlFor="name">Name</FormLabel>
-        <Input id="name" value={user?.name ?? ''} onChange={handleNameChange} />
-      </FormControl>
-      {isDefined(user?.email) && (
-        <Tooltip
-          label="Updating email is not available."
-          placement="left"
-          hasArrow
-        >
-          <FormControl>
-            <FormLabel htmlFor="email">Email address</FormLabel>
-            <Input
-              id="email"
-              type="email"
-              isDisabled
-              value={user?.email ?? ''}
-              onChange={handleEmailChange}
-            />
-          </FormControl>
-        </Tooltip>
-      )}
-
-      {hasUnsavedChanges && (
-        <Flex justifyContent="flex-end">
-          <Button
-            colorScheme="blue"
-            onClick={() => saveUser()}
-            isLoading={isSaving}
-          >
-            Save
-          </Button>
-        </Flex>
-      )}
+      <Input
+        value={name}
+        onChange={handleNameChange}
+        label="Name:"
+        withVariableButton={false}
+        debounceTimeout={0}
+      />
+      <Tooltip label="Updating email is not available. Contact the support if you want to change it.">
+        <span>
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            label="Email address:"
+            withVariableButton={false}
+            debounceTimeout={0}
+            isDisabled
+          />
+        </span>
+      </Tooltip>
 
       {user && <ApiTokensList user={user} />}
     </Stack>

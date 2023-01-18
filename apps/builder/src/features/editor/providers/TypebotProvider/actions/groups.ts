@@ -1,16 +1,12 @@
 import cuid from 'cuid'
 import { produce } from 'immer'
-import { WritableDraft } from 'immer/dist/internal'
-import {
-  Group,
-  DraggableBlock,
-  DraggableBlockType,
-  BlockIndices,
-  Typebot,
-} from 'models'
+import { Group, DraggableBlock, DraggableBlockType, BlockIndices } from 'models'
 import { SetTypebot } from '../TypebotProvider'
-import { cleanUpEdgeDraft } from './edges'
-import { createBlockDraft, duplicateBlockDraft } from './blocks'
+import {
+  deleteGroupDraft,
+  createBlockDraft,
+  duplicateBlockDraft,
+} from './blocks'
 import { Coordinates } from '@/features/graph'
 
 export type GroupsActions = {
@@ -82,21 +78,4 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     ),
 })
 
-const deleteGroupDraft =
-  (typebot: WritableDraft<Typebot>) => (groupIndex: number) => {
-    cleanUpEdgeDraft(typebot, typebot.groups[groupIndex].id)
-    typebot.groups.splice(groupIndex, 1)
-  }
-
-const removeEmptyGroups = (typebot: WritableDraft<Typebot>) => {
-  const emptyGroupsIndices = typebot.groups.reduce<number[]>(
-    (arr, group, idx) => {
-      group.blocks.length === 0 && arr.push(idx)
-      return arr
-    },
-    []
-  )
-  emptyGroupsIndices.forEach(deleteGroupDraft(typebot))
-}
-
-export { groupsActions, removeEmptyGroups }
+export { groupsActions }

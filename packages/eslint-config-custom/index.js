@@ -13,19 +13,6 @@ module.exports = {
     },
   },
   rules: {
-    'no-restricted-imports': [
-      'error',
-      {
-        patterns: [
-          '*/src/*',
-          'src/*',
-          '*/src',
-          '@/features/*/*',
-          '!@/features/blocks/*',
-          '!@/features/*/api',
-        ],
-      },
-    ],
     '@typescript-eslint/no-namespace': 'off',
   },
 }

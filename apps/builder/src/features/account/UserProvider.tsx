@@ -5,27 +5,28 @@ import {
   ReactNode,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react'
-import { isDefined, isNotDefined } from 'utils'
-import { dequal } from 'dequal'
+import { env, isDefined, isNotDefined } from 'utils'
 import { User } from 'db'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'
+import { useDebouncedCallback } from 'use-debounce'
 
 const userContext = createContext<{
   user?: User
   isLoading: boolean
-  isSaving: boolean
-  hasUnsavedChanges: boolean
   currentWorkspaceId?: string
   updateUser: (newUser: Partial<User>) => void
-  saveUser: (newUser?: Partial<User>) => Promise<void>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-}>({})
+}>({
+  isLoading: false,
+  updateUser: () => {
+    console.log('updateUser not implemented')
+  },
+})
+
+const debounceTimeout = 1000
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
@@ -33,13 +34,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | undefined>()
   const { showToast } = useToast()
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
-
-  const [isSaving, setIsSaving] = useState(false)
-
-  const hasUnsavedChanges = useMemo(
-    () => !dequal(session?.user, user),
-    [session?.user, user]
-  )
 
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return
@@ -70,31 +64,36 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
 
-  const updateUser = (newUser: Partial<User>) => {
+  const updateUser = (updates: Partial<User>) => {
     if (isNotDefined(user)) return
-    setUser({ ...user, ...newUser })
+    const newUser = { ...user, ...updates }
+    setUser(newUser)
+    saveUser(newUser)
   }
 
-  const saveUser = async (newUser?: Partial<User>) => {
-    if (isNotDefined(user)) return
-    setIsSaving(true)
-    if (newUser) updateUser(newUser)
-    const { error } = await updateUserQuery(user.id, { ...user, ...newUser })
-    if (error) showToast({ title: error.name, description: error.message })
-    await refreshUser()
-    setIsSaving(false)
-  }
+  const saveUser = useDebouncedCallback(
+    async (newUser?: Partial<User>) => {
+      if (isNotDefined(user)) return
+      const { error } = await updateUserQuery(user.id, { ...user, ...newUser })
+      if (error) showToast({ title: error.name, description: error.message })
+      await refreshUser()
+    },
+    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
+  )
+
+  useEffect(() => {
+    return () => {
+      saveUser.flush()
+    }
+  }, [saveUser])
 
   return (
     <userContext.Provider
       value={{
         user,
-        isSaving,
         isLoading: status === 'loading',
-        hasUnsavedChanges,
         currentWorkspaceId,
         updateUser,
-        saveUser,
       }}
     >
       {children}

@@ -17,11 +17,11 @@ import {
   useState,
 } from 'react'
 import { isDefined, isNotDefined, omit } from 'utils'
+import { edgesAction, EdgesActions } from './actions/edges'
+import { itemsAction, ItemsActions } from './actions/items'
 import { GroupsActions, groupsActions } from './actions/groups'
 import { blocksAction, BlocksActions } from './actions/blocks'
 import { variablesAction, VariablesActions } from './actions/variables'
-import { edgesAction, EdgesActions } from './actions/edges'
-import { itemsAction, ItemsActions } from './actions/items'
 import { dequal } from 'dequal'
 import cuid from 'cuid'
 import { useToast } from '@/hooks/useToast'
@@ -30,17 +30,19 @@ import useUndo from '../../hooks/useUndo'
 import { useLinkedTypebots } from '@/hooks/useLinkedTypebots'
 import { updateTypebotQuery } from '../../queries/updateTypebotQuery'
 import { preventUserFromRefreshing } from '@/utils/helpers'
-import { updatePublishedTypebotQuery } from '@/features/publish'
-import { saveWebhookQuery } from '@/features/blocks/integrations/webhook/queries/saveWebhookQuery'
 import {
   createPublishedTypebotQuery,
+  updatePublishedTypebotQuery,
   deletePublishedTypebotQuery,
+} from '@/features/publish/queries'
+import { saveWebhookQuery } from '@/features/blocks/integrations/webhook/queries/saveWebhookQuery'
+import {
   checkIfTypebotsAreEqual,
   checkIfPublished,
   parseTypebotToPublicTypebot,
   parseDefaultPublicId,
   parsePublicTypebotToTypebot,
-} from '@/features/publish'
+} from '@/features/publish/utils'
 import { useAutoSave } from '@/hooks/useAutoSave'
 
 const autoSaveTimeout = 10000
@@ -60,6 +62,7 @@ type UpdateTypebotPayload = Partial<{
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)
 ) => void
+
 const typebotContext = createContext<
   {
     typebot?: Typebot

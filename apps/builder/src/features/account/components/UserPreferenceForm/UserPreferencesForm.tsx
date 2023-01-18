@@ -7,20 +7,20 @@ import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 
 export const UserPreferencesForm = () => {
   const { setColorMode } = useColorMode()
-  const { saveUser, user } = useUser()
+  const { user, updateUser } = useUser()
 
   useEffect(() => {
     if (!user?.graphNavigation)
-      saveUser({ graphNavigation: GraphNavigation.TRACKPAD })
-  }, [saveUser, user?.graphNavigation])
+      updateUser({ graphNavigation: GraphNavigation.TRACKPAD })
+  }, [updateUser, user?.graphNavigation])
 
   const changeGraphNavigation = async (value: string) => {
-    await saveUser({ graphNavigation: value as GraphNavigation })
+    updateUser({ graphNavigation: value as GraphNavigation })
   }
 
   const changeAppearance = async (value: string) => {
     setColorMode(value)
-    await saveUser({ preferredAppAppearance: value })
+    updateUser({ preferredAppAppearance: value })
   }
 
   return (

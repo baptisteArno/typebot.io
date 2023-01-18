@@ -10,7 +10,7 @@ import { Variable } from 'models'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
-import { VariablesButton } from '../../features/variables/components/VariablesButton'
+import { VariablesButton } from '@/features/variables'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextBoxProps = {

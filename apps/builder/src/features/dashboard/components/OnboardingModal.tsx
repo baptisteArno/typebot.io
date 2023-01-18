@@ -23,7 +23,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     '/bots/onboarding.json',
     '/bots/onboarding-dark.json'
   )
-  const { user, saveUser } = useUser()
+  const { user, updateUser } = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [typebot, setTypebot] = useState<Typebot>()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
@@ -88,15 +88,15 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     const isCompany = answer.variableId === 'cl126jqww000w2e6dq9yv4ifq'
     const isCategories = answer.variableId === 'cl126mo3t001b2e6dvyi16bkd'
     const isOtherCategories = answer.variableId === 'cl126q38p001q2e6d0hj23f6b'
-    if (isName) saveUser({ name: answer.content })
-    if (isCompany) saveUser({ company: answer.content })
+    if (isName) updateUser({ name: answer.content })
+    if (isCompany) updateUser({ company: answer.content })
     if (isCategories) {
       const onboardingCategories = answer.content.split(', ')
-      saveUser({ onboardingCategories })
+      updateUser({ onboardingCategories })
       setChosenCategories(onboardingCategories)
     }
     if (isOtherCategories)
-      saveUser({
+      updateUser({
         onboardingCategories: [...chosenCategories, answer.content],
       })
   }

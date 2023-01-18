@@ -14,13 +14,13 @@ import {
   Tag,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider/TypebotProvider'
 import cuid from 'cuid'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { byId, isDefined, isNotDefined } from 'utils'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
-import { useParentModal } from '@/features/graph'
+import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
   initialVariableId?: string

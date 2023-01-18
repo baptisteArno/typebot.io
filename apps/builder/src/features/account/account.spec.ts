@@ -7,13 +7,10 @@ test.describe.configure({ mode: 'parallel' })
 test('should display user info properly', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
-  const saveButton = page.locator('button:has-text("Save")')
-  await expect(saveButton).toBeHidden()
   expect(
     page.locator('input[type="email"]').getAttribute('disabled')
   ).toBeDefined()
-  await page.fill('#name', 'John Doe')
-  expect(saveButton).toBeVisible()
+  await page.getByRole('textbox', { name: 'Name:' }).fill('John Doe')
   await page.setInputFiles('input[type="file"]', getTestAsset('avatar.jpg'))
   await expect(page.locator('img >> nth=1')).toHaveAttribute(
     'src',
