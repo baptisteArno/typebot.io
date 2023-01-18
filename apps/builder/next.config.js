@@ -14,6 +14,19 @@ const nextConfig = withTM({
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
+  headers: async () => {
+    return [
+      {
+        source: '/(.*)?',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+        ],
+      },
+    ]
+  },
 })
 
 const sentryWebpackPluginOptions = {

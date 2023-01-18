@@ -60,5 +60,18 @@ module.exports = withTM(
         ],
       }
     },
+    headers: async () => {
+      return [
+        {
+          source: '/(.*)?',
+          headers: [
+            {
+              key: 'X-Frame-Options',
+              value: 'DENY',
+            },
+          ],
+        },
+      ]
+    },
   })
 )
