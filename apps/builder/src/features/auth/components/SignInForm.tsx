@@ -6,6 +6,7 @@ import {
   HStack,
   Text,
   Spinner,
+  Tooltip,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
@@ -35,6 +36,8 @@ export const SignInForm = ({
   const [isLoadingProviders, setIsLoadingProviders] = useState(true)
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? '')
+  const [isMagicLinkSent, setIsMagicLinkSent] = useState(false)
+
   const { showToast } = useToast()
   const [providers, setProviders] =
     useState<
@@ -59,21 +62,25 @@ export const SignInForm = ({
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (isMagicLinkSent) return
     setAuthLoading(true)
     const response = await signIn('email', {
       email: emailValue,
       redirect: false,
     })
-    response?.error
-      ? showToast({
-          title: 'Unauthorized',
-          description: 'Sign ups are disabled.',
-        })
-      : showToast({
-          status: 'success',
-          title: 'Success!',
-          description: 'Check your inbox to sign in',
-        })
+    if (response?.error) {
+      showToast({
+        title: 'Unauthorized',
+        description: 'Sign ups are disabled.',
+      })
+    } else {
+      setIsMagicLinkSent(true)
+      showToast({
+        status: 'success',
+        title: 'Success!',
+        description: 'Check your inbox to sign in',
+      })
+    }
     setAuthLoading(false)
   }
 
@@ -107,14 +114,20 @@ export const SignInForm = ({
               value={emailValue}
               onChange={handleEmailChange}
             />
-            <Button
-              type="submit"
-              isLoading={
-                ['loading', 'authenticated'].includes(status) || authLoading
-              }
+            <Tooltip
+              label="A sign in email was sent. Make sure to check your SPAM folder."
+              isDisabled={!isMagicLinkSent}
             >
-              Submit
-            </Button>
+              <Button
+                type="submit"
+                isLoading={
+                  ['loading', 'authenticated'].includes(status) || authLoading
+                }
+                isDisabled={isMagicLinkSent}
+              >
+                Submit
+              </Button>
+            </Tooltip>
           </HStack>
         </>
       )}
