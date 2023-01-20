@@ -16,10 +16,8 @@ const typebotDndContext = createContext<{
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
 }>({
   setDraggedTypebot: () => {
-    console.log('Not implemented')
   },
   setMouseOverFolderId: () => {
-    console.log('Not implemented')
   },
 })
 

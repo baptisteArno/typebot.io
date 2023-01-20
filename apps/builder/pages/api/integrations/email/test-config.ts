@@ -26,7 +26,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       res.status(200).send({ message: 'Email sent!', info })
     } catch (err) {
-      console.log(err)
       res.status(500).send(err)
     }
   }

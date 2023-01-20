@@ -6,7 +6,6 @@ import { isNotDefined, sendRequest } from 'utils'
 import { fetcher } from '../utils'
 
 export const useWorkspaces = ({ userId }: { userId?: string }) => {
-  console.log(process.env.IS_LOCAL)
   const { data, error, mutate } = useSWR<
     {
       workspaces: WorkspaceWithMembers[]

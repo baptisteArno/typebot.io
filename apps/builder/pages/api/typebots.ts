@@ -12,11 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
       const client = await services.chatBots.getClient()
-      console.log("HEADERS => ", headers.getAuthorizedHeaders());
-  
-      console.log(Storage.getItem('userToken'))
-      console.log(Storage.getItem('company'))
-
+      
       const response = await client.get(`builder/all`, headers.getAuthorizedHeaders())
       return res.send({ typebots: response.data })
     }

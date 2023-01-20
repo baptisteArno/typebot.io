@@ -26,7 +26,6 @@ const SelectProducts = ({ products, onSelect }: Props) => {
   };
 
   const handleSelectProduct = (product: ProductType): void => {
-    console.log("product => ", product);
     onSelect(product);
   }
 
@@ -90,7 +89,7 @@ const SelectProducts = ({ products, onSelect }: Props) => {
                     <VariationControl>
                       <VariationLabel>{variation.name}</VariationLabel>
                       <VariationOption>
-                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ label: value.value, value: value.id }))} onChange={(e) => console.log(e)} />
+                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ label: value.value, value: value.id }))}  />
                       </VariationOption>
                     </VariationControl>
                   ))}

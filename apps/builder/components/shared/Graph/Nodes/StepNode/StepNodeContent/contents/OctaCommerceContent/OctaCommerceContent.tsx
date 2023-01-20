@@ -8,9 +8,6 @@ type Props = {
 }
 
 const OctaCommerceContent = ({ step, options }: Props) => {
-  console.log("Step => ", step);
-  console.log("Options => ", options);
-  
   return (
     <div>
       Selecione os produtos a serem enviados
