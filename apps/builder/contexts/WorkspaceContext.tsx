@@ -105,15 +105,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   >([])
 
   const mountPropertiesOptions = (propertiesType: any, properties: any) => {
-    let nameTokenValue = ''
-    if (propertiesType === 'PERSON') {
-      nameTokenValue = CustomFieldTitle.PERSON
-    } else if (propertiesType === 'CHAT') {
-      nameTokenValue = CustomFieldTitle.CHAT
-    } else if (propertiesType === 'ORGANIZATION') {
-      nameTokenValue = CustomFieldTitle.ORGANIZATION
-    }
-
     return { items: properties }
   }
 
@@ -172,7 +163,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
           id,
           variableId: id,
           token: tokenValue,
-          domain: domainValue,
+          domain: domainType,
           name: `customField.${h.fieldId}`,
           example: resolveExample(fieldType),
         }
