@@ -11,30 +11,27 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from '@/components/icons'
 import { CopyButton } from '@/components/CopyButton'
-import { useToast } from '@/hooks/useToast'
 import React, { useState } from 'react'
 
 type EditableUrlProps = {
   hostname: string
   pathname?: string
+  isValid: (newPathname: string) => Promise<boolean> | boolean
   onPathnameChange: (pathname: string) => void
 }
 
 export const EditableUrl = ({
   hostname,
   pathname,
+  isValid,
   onPathnameChange,
 }: EditableUrlProps) => {
-  const { showToast } = useToast()
   const [value, setValue] = useState(pathname)
 
-  const handleSubmit = (newPathname: string) => {
-    if (/^[a-z0-9-]*$/.test(newPathname)) return onPathnameChange(newPathname)
+  const handleSubmit = async (newPathname: string) => {
+    if (newPathname === pathname) return
+    if (await isValid(newPathname)) return onPathnameChange(newPathname)
     setValue(pathname)
-    showToast({
-      title: 'Invalid ID',
-      description: 'Should contain only contain letters, numbers and dashes.',
-    })
   }
 
   return (

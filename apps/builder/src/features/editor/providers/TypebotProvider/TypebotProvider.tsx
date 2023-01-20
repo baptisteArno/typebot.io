@@ -261,10 +261,9 @@ export const TypebotProvider = ({
       await saveTypebot()
     }
     if (!publishedTypebot) {
-      const newPublicId = parseDefaultPublicId(
-        localTypebot.name,
-        localTypebot.id
-      )
+      const newPublicId =
+        localTypebot.publicId ??
+        parseDefaultPublicId(localTypebot.name, localTypebot.id)
       updateLocalTypebot({ publicId: newPublicId, publishedTypebotId })
       newLocalTypebot.publicId = newPublicId
       await saveTypebot()

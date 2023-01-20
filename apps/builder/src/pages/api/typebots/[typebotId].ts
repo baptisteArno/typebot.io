@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const typebots = await prisma.typebot.updateMany({
       where: canWriteTypebots(typebotId, user),
-      data: { isArchived: true },
+      data: { isArchived: true, publicId: null },
     })
     return res.send({ typebots })
   }

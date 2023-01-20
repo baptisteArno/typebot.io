@@ -52,9 +52,8 @@ export const getServerSideProps: GetServerSideProps = async (
 const getTypebotFromPublicId = async (
   publicId?: string
 ): Promise<TypebotPageV2Props['typebot'] | null> => {
-  if (!publicId) return null
   const typebot = (await prisma.typebot.findUnique({
-    where: { publicId },
+    where: { publicId: publicId ?? '' },
     select: {
       theme: true,
       name: true,

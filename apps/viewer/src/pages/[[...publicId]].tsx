@@ -62,9 +62,8 @@ export const getServerSideProps: GetServerSideProps = async (
 const getTypebotFromPublicId = async (
   publicId?: string
 ): Promise<TypebotPageProps['publishedTypebot'] | null> => {
-  if (!publicId) return null
   const publishedTypebot = await prisma.publicTypebot.findFirst({
-    where: { typebot: { publicId } },
+    where: { typebot: { publicId: publicId ?? '' } },
     include: {
       typebot: { select: { name: true, isClosed: true, isArchived: true } },
     },

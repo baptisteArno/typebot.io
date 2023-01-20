@@ -10,6 +10,7 @@ import { CustomDomainsDropdown } from '@/features/customDomains'
 import { TypebotHeader, useTypebot } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
 import { useToast } from '@/hooks/useToast'
+import { isCloudProdInstance } from '@/utils/helpers'
 import {
   Flex,
   Heading,
@@ -32,14 +33,6 @@ export const SharePage = () => {
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
-    if (publicId === typebot?.publicId) return
-    if (publicId.length < 4)
-      return showToast({ description: 'ID must be longer than 4 characters' })
-
-    const { data } = await isPublicDomainAvailableQuery(publicId)
-    if (!data?.isAvailable)
-      return showToast({ description: 'ID is already taken' })
-
     updateTypebot({ publicId })
   }
 
@@ -59,6 +52,40 @@ export const SharePage = () => {
   const handleCustomDomainChange = (customDomain: string | undefined) =>
     updateTypebot({ customDomain })
 
+  const checkIfPathnameIsValid = (pathname: string) => {
+    const isCorrectlyFormatted =
+      /^([a-z0-9]+-[a-z0-9]+)*$/.test(pathname) || /^[a-z0-9]*$/.test(pathname)
+
+    if (!isCorrectlyFormatted) {
+      showToast({
+        description:
+          'Should contain only contain letters, numbers. Words can be separated by dashes.',
+      })
+      return false
+    }
+    return true
+  }
+
+  const checkIfPublicIdIsValid = async (publicId: string) => {
+    const isLongerThanAllowed = publicId.length >= 4
+    if (!isLongerThanAllowed && isCloudProdInstance) {
+      showToast({
+        description: 'Should be longer than 4 characters',
+      })
+      return false
+    }
+
+    if (!checkIfPathnameIsValid(publicId)) return false
+
+    const { data } = await isPublicDomainAvailableQuery(publicId)
+    if (!data?.isAvailable) {
+      showToast({ description: 'ID is already taken' })
+      return false
+    }
+
+    return true
+  }
+
   return (
     <Flex flexDir="column" pb="40">
       <Seo title="Share" />
@@ -75,6 +102,7 @@ export const SharePage = () => {
                   getViewerUrl({ isBuilder: true }) ?? 'https://typebot.io'
                 }
                 pathname={publicId}
+                isValid={checkIfPublicIdIsValid}
                 onPathnameChange={handlePublicIdChange}
               />
             )}
@@ -83,6 +111,7 @@ export const SharePage = () => {
                 <EditableUrl
                   hostname={'https://' + typebot.customDomain.split('/')[0]}
                   pathname={typebot.customDomain.split('/')[1]}
+                  isValid={checkIfPathnameIsValid}
                   onPathnameChange={handlePathnameChange}
                 />
                 <IconButton

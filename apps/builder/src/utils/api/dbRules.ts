@@ -9,7 +9,7 @@ export const canWriteTypebots = (
   user: Pick<User, 'email' | 'id'>
 ): Prisma.TypebotWhereInput =>
   isNotEmpty(env('E2E_TEST'))
-    ? {}
+    ? { id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds } }
     : {
         id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
         OR: [
