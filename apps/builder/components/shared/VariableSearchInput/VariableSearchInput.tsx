@@ -20,12 +20,10 @@ import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, isEmpty, isNotDefined } from 'utils'
-// import CustomFields from 'services/octadesk/customFields/customFields'
-// import { DomainType, FieldType } from '../../enums/customFieldsEnum'
-import { CustomFieldTitle } from '../../../enums/customFieldsTitlesEnum'
 import { ButtonOption, CancelButton, Container, FormField, FormFieldRow, FormFieldRowMin, LabelField, OrText } from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
+import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 
 type Props = {
   initialVariableId?: string
@@ -59,8 +57,54 @@ export const VariableSearchInput = ({
     createVariable,
     deleteVariable
   } = useTypebot()
+  
   const variables = typebot?.variables ?? []
 
+  const makeTitle = (propertiesType: string): any => {
+    let title;
+    switch (propertiesType) {
+      case 'PERSON':
+        title = CustomFieldTitle.PERSON
+        break;
+      case 'CHAT':
+        title = CustomFieldTitle.CHAT
+        break;
+      case 'ORGANIZATION':
+        title = CustomFieldTitle.ORGANIZATION
+        break;
+      default:
+        title = '';
+        break;
+    }
+    return {
+      id: '',
+      token: title,
+      name: title,
+      isTitle: true,
+      disabled: true,
+    };
+  }
+
+  const grouped = typebot?.variables.reduce((acc, current) => {
+    acc[current.domain] = acc[current.domain] || []
+    acc[current.domain].push(current);
+        
+    return acc;
+  }, Object.create(null))
+
+  const options = Object.values(grouped).map((group: any, id: number): any => {    
+    if(Object.keys(grouped)[id] !== 'undefined'){
+      return [makeTitle(Object.keys(grouped)[id]),...group]
+    }
+  }).filter(item => item != undefined);  
+
+  //todo:
+  /**
+   * - criar um array novo com as variáveis
+   * - adiciionar titles antes dos items
+   */
+
+  
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.token ?? ''
   )
@@ -151,7 +195,7 @@ export const VariableSearchInput = ({
 
   const handleCreateVariable = (): void => {
     const id = 'v' + cuid()
-    if(customVariable){
+    if (customVariable) {
       const customVariableDraft: Variable = {
         id,
         name: customVariable.name,
@@ -161,7 +205,7 @@ export const VariableSearchInput = ({
         example: "",
         fieldId: customVariable.fieldId,
         type: customVariable.type,
-      }      
+      }
       createVariable(customVariableDraft)
       setInputValue(customVariableDraft.token)
       onSelectVariable(customVariableDraft)
@@ -207,7 +251,7 @@ export const VariableSearchInput = ({
                   <FormField>
                     <OctaInput placeholder="#nome-do-campo" label="Nome do campo" mask="#****************" onChange={handleCreateVariableChange} />
                   </FormField>
-                  <FormField style={{height: "150px"}}>
+                  <FormField style={{ height: "150px" }}>
                     <LabelField>
                       Selecione o formato deste campo:
                     </LabelField>
@@ -248,7 +292,7 @@ export const VariableSearchInput = ({
         >
           {variables.length > 0 && (
             <>
-              {variables.map((item, idx) => {
+              {options.flat().map((item, idx) => {
                 return (
                   <Button
                     role="menuitem"

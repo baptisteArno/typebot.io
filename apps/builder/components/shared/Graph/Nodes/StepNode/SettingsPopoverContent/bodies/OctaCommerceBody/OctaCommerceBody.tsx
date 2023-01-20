@@ -1,6 +1,7 @@
 import OctaLoading from 'components/octaComponents/OctaLoading/OctaLoading';
-import { Step } from 'models'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useTypebot } from 'contexts/TypebotContext';
+import { Step, StepOptions } from 'models'
+import React, { useEffect, useState } from 'react'
 import { CommerceService } from 'services/octadesk/commerce/commerce';
 import { ListCatalogType, ProductType } from 'services/octadesk/commerce/commerce.type';
 import {
@@ -13,7 +14,7 @@ import {
 import SelectProducts from './SelectProducts/SelectProducts';
 
 type Props = {
-  step: Step;
+  step: StepOptions;
   onOptionsChange: (options: any) => void;
   onExpand?: () => void;
 }
@@ -22,6 +23,7 @@ export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => 
   const [catalog, setCatalog] = useState<Array<ListCatalogType>>();
   const [products, setProducts] = useState<Array<ProductType>>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedProducts, setSelectedProducts] = useState<Array<string>>(step.options);
 
   useEffect(() => {
     const getCatalogs = async (): Promise<void> => {
@@ -54,9 +56,13 @@ export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => 
   }, [catalog])
 
   const handleSelectProducts = (product: ProductType) => {
-    onOptionsChange(product);
+    if(!step.options){
+      return [product.id];
+    }
+    const products = [];
+    products.push(product.id)
+    onOptionsChange(products);
   }
-  
 
   return (
     <>
@@ -65,7 +71,7 @@ export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => 
           Enviar catálogo
         </Title>
         {loading && <OctaLoading />}
-        {products && <SelectProducts products={products} />}
+        {products && <SelectProducts products={products} onSelect={handleSelectProducts}/>}
 
       </Container>
     </>
