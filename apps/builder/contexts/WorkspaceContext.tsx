@@ -147,13 +147,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
         let domainValue = ''
         if (domainType === 'PERSON') {
-          domainValue = CustomFieldTitle.PERSON
           tokenValue = tokenValue.concat('-contato')
         } else if (domainType === 'CHAT') {
-          domainValue = CustomFieldTitle.CHAT
           tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
         } else if (domainType === 'ORGANIZATION') {
-          domainValue = CustomFieldTitle.ORGANIZATION
         }
 
         const id = 'v' + cuid()
