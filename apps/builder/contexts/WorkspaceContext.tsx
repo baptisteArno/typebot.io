@@ -114,14 +114,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       nameTokenValue = CustomFieldTitle.ORGANIZATION
     }
 
-    const propTitle = {
-      id: nameTokenValue,
-      token: nameTokenValue,
-      name: nameTokenValue,
-      isTitle: true,
-      disabled: true,
-    }
-    return { propTitle, items: properties }
+    return { items: properties }
   }
 
   const resolveExample = (type: any) => {
@@ -252,7 +245,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     if (octaChatProperties) {
       items.push(
-        octaChatProperties.propTitle,
         ...octaChatProperties.items,
         ...fixedChatPropertiesWithId
       )
@@ -267,7 +259,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     if (octaPersonProperties) {
       items.push(
-        octaPersonProperties.propTitle,
         ...octaPersonProperties.items,
         ...fixedPersonPropertiesWithId
       )
@@ -280,7 +271,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     if (octaOrganizationProperties) {
       items.push(
-        octaOrganizationProperties.propTitle,
         ...octaOrganizationProperties.items,
         ...fixedOrganizationPropertiesWithId
       )
@@ -293,7 +283,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     if (!octaCustomFieldsList) {
       fetchOctaCustomFields()
     }
-  }, [currentWorkspace?.id])
+  }, [])
 
   const switchWorkspace = (workspaceId: string) =>
     setCurrentWorkspace(workspaces?.find(byId(workspaceId)))

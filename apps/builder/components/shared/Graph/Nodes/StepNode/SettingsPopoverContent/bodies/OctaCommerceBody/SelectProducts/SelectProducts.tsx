@@ -6,10 +6,11 @@ import { Title } from '../OctaCommerceBody.style'
 import { Container, ListProducts, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
 
 type Props = {
-  products: Array<ProductType>
+  products: Array<ProductType>;
+  onSelect: (product: ProductType) => void;
 }
 
-const SelectProducts = ({ products }: Props) => {
+const SelectProducts = ({ products, onSelect }: Props) => {
   const [screen, setScreen] = useState<"LIST" | "VARIATION">("LIST");
   const [variationProduct, setVariationProduct] = useState<ProductType>();
   const convertToBRLCurrency = (value: number, currency: string): string => {
@@ -26,7 +27,7 @@ const SelectProducts = ({ products }: Props) => {
 
   const handleSelectProduct = (product: ProductType): void => {
     console.log("product => ", product);
-    
+    onSelect(product);
   }
 
   return (
