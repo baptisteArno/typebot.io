@@ -2,7 +2,7 @@ import { Spinner, SendButton } from '@/components/SendButton'
 import { useAnswers } from '@/providers/AnswersProvider'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { InputSubmitContent } from '@/types'
-import { FileInputBlock } from 'models'
+import { defaultFileInputOptions, FileInputBlock } from 'models'
 import React, { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
 import { uploadFiles } from 'utils'
 
@@ -181,7 +181,7 @@ export const FileUploadForm = ({
             }
             onClick={onSkip}
           >
-            Skip
+            {labels.skip ?? defaultFileInputOptions.labels.skip}
           </button>
         </div>
       )}
@@ -195,17 +195,17 @@ export const FileUploadForm = ({
                 }
                 onClick={clearFiles}
               >
-                Clear
+                {labels.clear ?? defaultFileInputOptions.labels.clear}
               </button>
             )}
             <SendButton
               type="submit"
               label={
-                labels.button
+                labels.button === defaultFileInputOptions.labels.button
                   ? `${labels.button} ${selectedFiles.length} file${
                       selectedFiles.length > 1 ? 's' : ''
                     }`
-                  : 'Upload'
+                  : labels.button
               }
               disableIcon
             />

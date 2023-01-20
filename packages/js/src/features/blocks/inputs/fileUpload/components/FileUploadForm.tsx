@@ -1,6 +1,6 @@
 import { SendButton, Spinner } from '@/components/SendButton'
 import { BotContext, InputSubmitContent } from '@/types'
-import { FileInputBlock } from 'models'
+import { defaultFileInputOptions, FileInputBlock } from 'models'
 import { createSignal, Match, Show, Switch } from 'solid-js'
 import { uploadFiles } from 'utils'
 
@@ -179,7 +179,8 @@ export const FileUploadForm = (props: Props) => {
             }
             onClick={() => props.onSkip()}
           >
-            Skip
+            {props.block.options.labels.skip ??
+              defaultFileInputOptions.labels.skip}
           </button>
         </div>
       </Show>
@@ -199,15 +200,17 @@ export const FileUploadForm = (props: Props) => {
                 }
                 onClick={clearFiles}
               >
-                Clear
+                {props.block.options.labels.clear ??
+                  defaultFileInputOptions.labels.clear}
               </button>
             </Show>
             <SendButton type="submit" disableIcon>
-              {props.block.options.labels.button
-                ? `${props.block.options.labels.button} ${
-                    selectedFiles().length
-                  } file${selectedFiles().length > 1 ? 's' : ''}`
-                : 'Upload'}
+              {props.block.options.labels.button ===
+              defaultFileInputOptions.labels.button
+                ? `Upload ${selectedFiles().length} file${
+                    selectedFiles().length > 1 ? 's' : ''
+                  }`
+                : props.block.options.labels.button}
             </SendButton>
           </div>
         </div>

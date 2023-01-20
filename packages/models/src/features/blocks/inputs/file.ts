@@ -8,6 +8,8 @@ export const fileInputOptionsSchema = optionBaseSchema.and(
     labels: z.object({
       placeholder: z.string(),
       button: z.string(),
+      clear: z.string().optional(),
+      skip: z.string().optional(),
     }),
     sizeLimit: z.number().optional(),
   })
@@ -29,6 +31,8 @@ export const defaultFileInputOptions: FileInputOptions = {
     </strong> or drag and drop<br>
     (size limit: 10MB)`,
     button: 'Upload',
+    clear: 'Clear',
+    skip: 'Skip',
   },
 }
 

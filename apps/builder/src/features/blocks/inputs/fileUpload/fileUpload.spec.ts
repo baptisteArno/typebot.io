@@ -37,9 +37,11 @@ test('options should work', async ({ page }) => {
   await page.click('text="Allow multiple files?"')
   await page.fill('div[contenteditable=true]', '<strong>Upload now!!</strong>')
   await page.fill('[value="Upload"]', 'Go')
+  await page.fill('[value="Clear"]', 'Reset')
+  await page.fill('[value="Skip"]', 'Pass')
   await page.fill('input[value="10"]', '20')
   await page.click('text="Restart"')
-  await expect(typebotViewer(page).locator(`text="Skip"`)).toBeVisible()
+  await expect(typebotViewer(page).locator(`text="Pass"`)).toBeVisible()
   await expect(typebotViewer(page).locator(`text="Upload now!!"`)).toBeVisible()
   await typebotViewer(page)
     .locator(`input[type="file"]`)
@@ -49,7 +51,7 @@ test('options should work', async ({ page }) => {
       getTestAsset('avatar.jpg'),
     ])
   await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
-  await typebotViewer(page).locator('text="Go 3 files"').click()
+  await typebotViewer(page).locator('text="Go"').click()
   await expect(
     typebotViewer(page).locator(`text="3 files uploaded"`)
   ).toBeVisible()
