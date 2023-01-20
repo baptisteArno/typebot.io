@@ -59,6 +59,7 @@ export const VariableSearchInput = ({
   } = useTypebot()
   
   const variables = typebot?.variables ?? []
+  console.log('')
 
   const makeTitle = (propertiesType: string): any => {
     let title;
