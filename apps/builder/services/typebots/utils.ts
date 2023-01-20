@@ -15,7 +15,7 @@ export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
 
   if (url.startsWith('/getTypebot-')) {
     const typebotId = url.replace('/getTypebot-', '')
-    console.log('typebotId', typebotId)
+    
     const client = await services.chatBots.getClient()
     const response = await client.get(`builder/${typebotId}`, headers.getAuthorizedHeaders())
     const typebot = response.data

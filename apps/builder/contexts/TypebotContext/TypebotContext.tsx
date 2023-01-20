@@ -144,7 +144,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-        isDefined(step.options.typebotId)
+          isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []

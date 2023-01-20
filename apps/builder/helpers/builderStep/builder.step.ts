@@ -50,7 +50,6 @@ export const BuildSteps = (
 
     const apply = (type: DraggableStepType, bot: WritableDraft<Typebot>, blockId: string): void => {
       const block: Array<WritableDraft<Block>> = bot.blocks
-      console.log("applt");
       
       const steps = builder(type, bot, blockId);
       steps.map(step => (

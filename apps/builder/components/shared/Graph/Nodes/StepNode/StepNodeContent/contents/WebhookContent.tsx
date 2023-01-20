@@ -14,9 +14,6 @@ export const WebhookContent = (
     indices: { blockIndex, stepIndex }
   }: Props) => {
 
-    console.log("Webhoot step: => ", step);
-    
-
   // {typebot?.blocks[blockIndex].steps[stepIndex].options['name']} //bloco no typebot
 
   // const { webhooks } = useTypebot()

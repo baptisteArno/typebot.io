@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //   include: { members: true },
     //   orderBy: { createdAt: 'asc' },
     // })
-    // console.log('workspaces', workspaces)
     return res.send({ workspaces })
   }
   // if (req.method === 'POST') {
