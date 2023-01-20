@@ -67,8 +67,9 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
   const computeTargetCoord = () => {
     const selection = window.getSelection()
     const relativeParent = textEditorRef.current
+    
     if (!selection || !relativeParent) return { top: 0, left: 0 }
-    console.log(selection);
+
     const range = selection.getRangeAt(0)
     const selectionBoundingRect = range.getBoundingClientRect()
     const relativeRect = relativeParent.getBoundingClientRect()
@@ -95,8 +96,6 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
   }
 
   const handleVariableSelected = (variable?: Variable) => {
-    console.log("Variable TXTBubblue => ", variable);
-    
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
     Transforms.select(editor as BaseEditor, rememberedSelection.current)

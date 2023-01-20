@@ -87,13 +87,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       ) {
         return state
       }
-      // Uncomment to debug history ⬇️
-      // console.log(
-      //   diff(
-      //     JSON.parse(JSON.stringify(newPresent)),
-      //     present ? JSON.parse(JSON.stringify(present)) : {}
-      //   )
-      // )
+      
       return {
         past: [...past, present].filter(isDefined),
         present: {

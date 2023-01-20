@@ -141,8 +141,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
 
   const handleHoursToDaysSelected = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value, name, dataset } = e.target;
-    console.log("Memo => ", daysOfWeekMemo);
-
+    
     let day;
     let mount;
     switch (name) {
@@ -190,11 +189,9 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
       default:
         break;
     }
-    console.log(daysOfWeekMemo);
   }
 
   const handleOfficeHourSelect = (calendar: any): void => {
-    console.log(calendar);
     onOptionsChange(calendar);
   }
 
@@ -236,7 +233,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
           <FormArea>
             <FormControl>
               {
-                optionsTimezone && <OctaSelect findable options={optionsTimezone} onChange={(e) => console.log(e)} placeholder="Selecione um fuso horário" label="Qual é o fuso horário do expediente?" />
+                optionsTimezone && <OctaSelect findable options={optionsTimezone} placeholder="Selecione um fuso horário" label="Qual é o fuso horário do expediente?" />
               }
             </FormControl>
           </FormArea>

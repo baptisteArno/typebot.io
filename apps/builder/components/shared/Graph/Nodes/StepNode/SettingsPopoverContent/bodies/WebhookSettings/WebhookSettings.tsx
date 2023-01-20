@@ -161,7 +161,6 @@ export const WebhookSettings = ({
   // if (!localWebhook) return <Spinner />
 
   const handlerDefault = (e: any) => {
-    console.log("teste");
   }
 
   return (
