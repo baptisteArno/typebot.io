@@ -1398,6 +1398,12 @@
                                                                           },
                                                                           "button": {
                                                                             "type": "string"
+                                                                          },
+                                                                          "clear": {
+                                                                            "type": "string"
+                                                                          },
+                                                                          "skip": {
+                                                                            "type": "string"
                                                                           }
                                                                         },
                                                                         "required": [
@@ -4331,6 +4337,12 @@
                                                   "type": "string"
                                                 },
                                                 "button": {
+                                                  "type": "string"
+                                                },
+                                                "clear": {
+                                                  "type": "string"
+                                                },
+                                                "skip": {
                                                   "type": "string"
                                                 }
                                               },

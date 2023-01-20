@@ -41,7 +41,7 @@ export const EditTypebotPage = () => {
         >
           {typebot ? (
             <GraphDndProvider>
-              <BlocksSideBar />
+              {!isReadOnly && <BlocksSideBar />}
               <GraphProvider isReadOnly={isReadOnly}>
                 <GroupsCoordinatesProvider groups={typebot.groups}>
                   <Graph flex="1" typebot={typebot} />

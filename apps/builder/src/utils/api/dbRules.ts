@@ -1,4 +1,4 @@
-import { Plan, Prisma, User, WorkspaceRole } from 'db'
+import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiResponse } from 'next'
 import { env, isNotEmpty } from 'utils'
@@ -7,16 +7,26 @@ import { forbidden } from 'utils/api'
 export const canWriteTypebots = (
   typebotIds: string[] | string,
   user: Pick<User, 'email' | 'id'>
-): Prisma.TypebotWhereInput => ({
-  id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
-  workspace: isNotEmpty(env('E2E_TEST'))
-    ? undefined
+): Prisma.TypebotWhereInput =>
+  isNotEmpty(env('E2E_TEST'))
+    ? {}
     : {
-        members: {
-          some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
-        },
-      },
-})
+        id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+        OR: [
+          {
+            workspace: {
+              members: {
+                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
+              },
+            },
+          },
+          {
+            collaborators: {
+              some: { userId: user.id, type: { not: CollaborationType.READ } },
+            },
+          },
+        ],
+      }
 
 export const canReadTypebots = (
   typebotIds: string | string[],

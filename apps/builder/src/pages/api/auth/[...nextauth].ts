@@ -10,8 +10,9 @@ import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CustomAdapter } from './adapter'
 import { User } from 'db'
-import { env, getAtPath, isNotEmpty } from 'utils'
+import { env, getAtPath, isDefined, isNotEmpty } from 'utils'
 import { mockedUser } from '@/features/auth'
+import { getNewUserInvitations } from '@/features/auth/api'
 
 const providers: Provider[] = []
 
@@ -155,15 +156,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       signIn: async ({ account, user }) => {
-        const userExists =
-          'graphNavigation' in user && user.graphNavigation !== undefined
-        if (
-          !account ||
-          (process.env.DISABLE_SIGNUP === 'true' &&
-            !userExists &&
-            user.email !== process.env.ADMIN_EMAIL)
-        )
-          return false
+        if (!account) return false
+        const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
+        if (process.env.DISABLE_SIGNUP === 'true' && isNewUser && user.email) {
+          const { invitations, workspaceInvitations } =
+            await getNewUserInvitations(prisma, user.email)
+          if (invitations.length === 0 && workspaceInvitations.length === 0)
+            return false
+        }
         const requiredGroups = getRequiredGroups(account.provider)
         if (requiredGroups.length > 0) {
           const userGroups = await getUserGroups(account)

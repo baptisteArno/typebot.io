@@ -1,38 +1,29 @@
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
-import {
-  PrismaClient,
-  Prisma,
-  Invitation,
-  WorkspaceRole,
-  WorkspaceInvitation,
-  Session,
-} from 'db'
+import { PrismaClient, Prisma, WorkspaceRole, Session } from 'db'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import cuid from 'cuid'
 import { got } from 'got'
 import { generateId } from 'utils'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace'
-
-type InvitationWithWorkspaceId = Invitation & {
-  typebot: {
-    workspaceId: string | null
-  }
-}
+import {
+  getNewUserInvitations,
+  convertInvitationsToCollaborations,
+  joinWorkspaces,
+} from '@/features/auth/api'
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
     createUser: async (data: Omit<AdapterUser, 'id'>) => {
       const user = { id: cuid(), email: data.email as string }
-      const invitations = await p.invitation.findMany({
-        where: { email: user.email },
-        include: { typebot: { select: { workspaceId: true } } },
-      })
-      const workspaceInvitations = await p.workspaceInvitation.findMany({
-        where: { email: user.email },
-      })
+      const { invitations, workspaceInvitations } = await getNewUserInvitations(
+        p,
+        user.email
+      )
       if (
         process.env.DISABLE_SIGNUP === 'true' &&
-        process.env.ADMIN_EMAIL !== data.email
+        process.env.ADMIN_EMAIL !== user.email &&
+        invitations.length === 0 &&
+        workspaceInvitations.length === 0
       )
         throw Error('New users are forbidden')
       const createdUser = await p.user.create({
@@ -136,68 +127,4 @@ export function CustomAdapter(p: PrismaClient): Adapter {
       }
     },
   }
-}
-
-const convertInvitationsToCollaborations = async (
-  p: PrismaClient,
-  { id, email }: { id: string; email: string },
-  invitations: InvitationWithWorkspaceId[]
-) => {
-  await p.collaboratorsOnTypebots.createMany({
-    data: invitations.map((invitation) => ({
-      typebotId: invitation.typebotId,
-      type: invitation.type,
-      userId: id,
-    })),
-  })
-  const workspaceInvitations = invitations.reduce<InvitationWithWorkspaceId[]>(
-    (acc, invitation) =>
-      acc.some(
-        (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId
-      )
-        ? acc
-        : [...acc, invitation],
-    []
-  )
-  for (const invitation of workspaceInvitations) {
-    if (!invitation.typebot.workspaceId) continue
-    await p.memberInWorkspace.upsert({
-      where: {
-        userId_workspaceId: {
-          userId: id,
-          workspaceId: invitation.typebot.workspaceId,
-        },
-      },
-      create: {
-        userId: id,
-        workspaceId: invitation.typebot.workspaceId,
-        role: WorkspaceRole.GUEST,
-      },
-      update: {},
-    })
-  }
-  return p.invitation.deleteMany({
-    where: {
-      email,
-    },
-  })
-}
-
-const joinWorkspaces = async (
-  p: PrismaClient,
-  { id, email }: { id: string; email: string },
-  invitations: WorkspaceInvitation[]
-) => {
-  await p.memberInWorkspace.createMany({
-    data: invitations.map((invitation) => ({
-      workspaceId: invitation.workspaceId,
-      role: invitation.type,
-      userId: id,
-    })),
-  })
-  return p.workspaceInvitation.deleteMany({
-    where: {
-      email,
-    },
-  })
 }
