@@ -38,6 +38,12 @@ Compute a percentage:
 {{Score}} * 100 / {{Max Score}}
 ```
 
+Extract the first name from a full name:
+
+```
+{{Full name}}.split(' ')[0]
+```
+
 ## Code
 
 The code value should be written Javascript. It will read the returned value of the code and set it to your variable.
