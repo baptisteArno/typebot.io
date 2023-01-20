@@ -1,5 +1,38 @@
 # Changelog
 
+<a name="2.9.3"></a>
+## 2.9.3 (2023-01-20)
+
+### Added
+
+- 👷‍♂️ Add js and react lib auto publish actions [[ef9170d](https://github.com/baptisteArno/typebot.io/commit/ef9170dcb664705270c6859de16d92ea7c8071b7)]
+
+### Changed
+
+- 🚸 (auth) Disable email sign in button when email was sent [[eff83d6](https://github.com/baptisteArno/typebot.io/commit/eff83d63279176f6abba3a362898fa7282018c52)]
+- 🚸 (publish) Improve invalid public ID feedback [[0febaf9](https://github.com/baptisteArno/typebot.io/commit/0febaf9760521bffe50f5b32105e7847435fe9ff)]
+- 🚸 (fileUpload) Add clear and skip button labels customization [[f697a5e](https://github.com/baptisteArno/typebot.io/commit/f697a5e99c37d331e391597fdb58a99dd51c728f)]
+- 🚸 (account) Improve account form and fix cyclic dependencies [[49058da](https://github.com/baptisteArno/typebot.io/commit/49058da206b5ae10ca91ccf991cacf4282ca6b52)]
+- ⚡ (editor) Add Ctrl + z shortcut to undo changes in editor ([#255](https://github.com/baptisteArno/typebot.io/issues/255)) [[c711f36](https://github.com/baptisteArno/typebot.io/commit/c711f3660f906f5694dfd67e26a860202729b03a)]
+- 🚸 (dashboard) Soften imported bot model check [[67ee197](https://github.com/baptisteArno/typebot.io/commit/67ee197d9b9e4bc74766908bafcd53c92f55a348)]
+- ⚡ (chat) Improve chat API compatibility with preview mode [[7311988](https://github.com/baptisteArno/typebot.io/commit/7311988901db728a4cd162fc2cfca03971e28135)]
+
+### Fixed
+
+- 🐛 (collaboration) Fix a database rule preventing collaborators to edit a bot [[fe2952d](https://github.com/baptisteArno/typebot.io/commit/fe2952d407874e2104a7e17661b69c89f40ccc45)]
+- 🐛 (analytics) Add better completion rate parsing ([#258](https://github.com/baptisteArno/typebot.io/issues/258)) [[cf5520b](https://github.com/baptisteArno/typebot.io/commit/cf5520b0d85f49f45e15583f06cdbfff1478afab)]
+- 🐛 (editor) Show variable highlight only when strictly equal [[dbe5c3c](https://github.com/baptisteArno/typebot.io/commit/dbe5c3cdb1f51826cfe7dae14456e720e0d7efee)]
+
+### Security
+
+- 🔒 Add X-Frame-Options header in builder and lp [[aa32fe7](https://github.com/baptisteArno/typebot.io/commit/aa32fe782f5be63ab0cbc02616bd6e88775ff8f3)]
+
+### Miscellaneous
+
+- 📝 Add extract first name example [[4435fb0](https://github.com/baptisteArno/typebot.io/commit/4435fb0d7ef9ac12f73da3ad5d9464f0b7370021)]
+- 📝 Self-hosting manual docs ([#260](https://github.com/baptisteArno/typebot.io/issues/260)) [[930fef2](https://github.com/baptisteArno/typebot.io/commit/930fef2c34f9ea986a15f1a526d464aa547dc18a)]
+
+
 <a name="2.9.2"></a>
 ## 2.9.2 (2023-01-14)
 
