@@ -21,7 +21,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Plan } from 'db'
-import { isDefined, getViewerUrl, isNotDefined } from 'utils'
+import { isDefined, getViewerUrl, isNotDefined, env } from 'utils'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
 import { parseDefaultPublicId } from '../utils'
 import { EditableUrl } from './EditableUrl'
@@ -122,7 +122,8 @@ export const SharePage = () => {
                 />
               </HStack>
             )}
-            {isNotDefined(typebot?.customDomain) ? (
+            {isNotDefined(typebot?.customDomain) &&
+            env('VERCEL_VIEWER_PROJECT_NAME') ? (
               <>
                 {isProPlan(workspace) ? (
                   <CustomDomainsDropdown

@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const deleteDomainOnVercel = (name: string) =>
   got.delete({
-    url: `https://api.vercel.com/v8/projects/${process.env.VERCEL_VIEWER_PROJECT_NAME}/domains/${name}?teamId=${process.env.VERCEL_TEAM_ID}`,
+    url: `https://api.vercel.com/v8/projects/${process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME}/domains/${name}?teamId=${process.env.VERCEL_TEAM_ID}`,
     headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
   })
 

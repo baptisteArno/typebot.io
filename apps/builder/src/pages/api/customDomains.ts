@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const createDomainOnVercel = (name: string) =>
   got.post({
-    url: `https://api.vercel.com/v8/projects/${process.env.VERCEL_VIEWER_PROJECT_NAME}/domains?teamId=${process.env.VERCEL_TEAM_ID}`,
+    url: `https://api.vercel.com/v8/projects/${process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME}/domains?teamId=${process.env.VERCEL_TEAM_ID}`,
     headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
     json: { name },
   })
