@@ -187,3 +187,12 @@ export const sanitizeUrl = (url: string): string =>
   url.startsWith('sms:')
     ? url
     : `https://${url}`
+
+export const validateUrl =(url: string) =>{
+  const regexp =
+		/^((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|\/\/))?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/
+	const regexs = /^[/][a-z][a-z0-9.-]{0,49}$/
+	const candidate = url.replace(/ /g, '').trim()
+
+	return regexp.test(candidate) || regexs.test(candidate)
+}

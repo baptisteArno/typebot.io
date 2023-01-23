@@ -3,7 +3,7 @@ import { TrashIcon, PlusIcon } from 'assets/icons'
 import cuid from 'cuid'
 import React, { useState } from 'react'
 
-type ItemWithId<T> = T & { id: string }
+type ItemWithId<T> = T & { id: string, type: string}
 
 export type TableListItemProps<T> = {
   item: T
@@ -15,6 +15,7 @@ type Props<T> = {
   initialItems: ItemWithId<T>[]
   addLabel?: string
   debounceTimeout?: number
+  type?: string
   onItemsChange?: (items: ItemWithId<T>[]) => void
   Item: (props: TableListItemProps<T>) => JSX.Element
   ComponentBetweenItems?: (props: unknown) => JSX.Element
@@ -24,17 +25,18 @@ export const TableList = <T,>({
   initialItems,
   onItemsChange,
   addLabel = 'Add',
+  type,
   debounceTimeout,
   Item,
   ComponentBetweenItems = () => <></>,
-}: Props<T>) => {
+}: Props<T>) => {  
   
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
   const createItem = () => {
     const id = cuid()
-    const newItem = { id } as ItemWithId<T>
+    const newItem = { id, type } as ItemWithId<T>
     setItems([...items, newItem])
     if (onItemsChange) onItemsChange([...items, newItem])
   }

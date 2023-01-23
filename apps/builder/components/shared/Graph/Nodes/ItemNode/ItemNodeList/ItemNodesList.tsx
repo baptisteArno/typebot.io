@@ -5,7 +5,7 @@ import {
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, IntegrationStepType, OctaStepType, StepIndices, StepWithItems } from 'models'
+import { ButtonItem, IntegrationStepType, OctaStepType, StepIndices, StepWithItems, WebhookStep } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
@@ -16,12 +16,14 @@ type Props = {
   step: StepWithItems
   indices: StepIndices
   isReadOnly?: boolean
+  localWebhook?: WebhookStep
 }
 
 export const ItemNodesList = ({
   step,
   indices: { blockIndex, stepIndex },
   isReadOnly = false,
+  localWebhook
 }: Props) => {
   const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
@@ -147,7 +149,10 @@ export const ItemNodesList = ({
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          Conecte a outro sistema
+          <SelectedCalendar>
+            {/* {typebot?.blocks[blockIndex]} */}
+          {localWebhook?.id ?? 'Conecte a outro sistema'}
+          </SelectedCalendar>
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {

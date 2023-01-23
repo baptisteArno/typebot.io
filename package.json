@@ -12,6 +12,7 @@
     "dev:prepare": "turbo run build --scope=bot-engine --no-deps --include-dependencies && turbo run build --scope=typebot-js --no-deps",
     "dev": "yarn docker:up && yarn dev:prepare && turbo run dx --parallel",
     "dev:mocking": "yarn docker:up && NEXT_PUBLIC_E2E_TEST=enabled turbo run dx --parallel",
+    "dev:windows": "set ENVIRONMENT=local&&next dev -p 3000",
     "build": "yarn docker:up && turbo run build",
     "test:builder": "cd apps/builder && yarn test",
     "lint": "turbo run lint",

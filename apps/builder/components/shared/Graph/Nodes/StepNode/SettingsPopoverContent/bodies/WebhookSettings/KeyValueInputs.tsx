@@ -1,9 +1,10 @@
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
 import { TableListItemProps } from 'components/shared/TableList'
-import { KeyValue } from 'models'
+import { KeyValue, QueryParameters, Variable } from 'models'
+import { useTypebot } from 'contexts/TypebotContext'
 
-export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
+export const QueryParamsInputs = (props: TableListItemProps<QueryParameters>) => (
   <KeyValueInputs
     {...props}
     keyPlaceholder="Ex. email"
@@ -11,7 +12,7 @@ export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
   />
 )
 
-export const HeadersInputs = (props: TableListItemProps<KeyValue>) => (
+export const HeadersInputs = (props: TableListItemProps<QueryParameters>) => (
   <KeyValueInputs
     {...props}
     keyPlaceholder="Ex. Content-Type"
@@ -25,24 +26,31 @@ export const KeyValueInputs = ({
   keyPlaceholder,
   valuePlaceholder,
   debounceTimeout,
-}: TableListItemProps<KeyValue> & {
+}: TableListItemProps<QueryParameters> & {
   keyPlaceholder?: string
   valuePlaceholder?: string
 }) => {
+
+  const { typebot } = useTypebot()
+
   const handleKeyChange = (key: string) => {
     if (key === item.key) return
-    onItemChange({ ...item, key })
+    onItemChange({ ...item, key, isNew: true, type: 'query'})
   }
+
   const handleValueChange = (value: string) => {
     if (value === item.value) return
-    onItemChange({ ...item, value })
+    const name = value.replace('{{', '').replace('}}', '')
+    const variable = typebot?.variables.filter(item => item.token === name) || []
+    onItemChange({ ...item, value, properties: variable[0] })
   }
+
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
-        <FormLabel htmlFor={'key' + item.id}>Chave:</FormLabel>
+        <FormLabel htmlFor={'key' + item.key}>Chave:</FormLabel>
         <Input
-          id={'key' + item.id}
+          id={'key' + item.key}
           defaultValue={item.key ?? ''}
           onChange={handleKeyChange}
           placeholder={keyPlaceholder}
@@ -50,9 +58,9 @@ export const KeyValueInputs = ({
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Valor:</FormLabel>
+        <FormLabel htmlFor={'value' + item.value}>Valor:</FormLabel>
         <Input
-          id={'value' + item.id}
+          id={'value' + item.value}
           defaultValue={item.value ?? ''}
           onChange={handleValueChange}
           placeholder={valuePlaceholder}

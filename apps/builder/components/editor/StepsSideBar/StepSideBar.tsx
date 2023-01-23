@@ -24,7 +24,7 @@ import {
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard } from './StepCard'
-import { LockedIcon, UnlockedIcon, InfoIcon } from 'assets/icons'
+import { LockedIcon, UnlockedIcon, InformationIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useUser } from 'contexts/UserContext'
 
@@ -153,7 +153,13 @@ export const StepsSideBar = () => {
             Mensagens
           <Tooltip
             label='Etapa que não requer interação com o usuário'>
-              <InfoIcon marginLeft="5px" />
+            <IconButton
+              icon={<InformationIcon marginLeft="5px" />}
+              aria-label="back"
+              variant="ghost"
+              colorScheme="gray"
+              mr={1}
+            />
           </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -175,7 +181,13 @@ export const StepsSideBar = () => {
             Perguntas
             <Tooltip
               label='Etapa em que o usuário interage com o bot'>
-              <InfoIcon marginLeft="5px" />
+              <IconButton
+              icon={<InformationIcon marginLeft="5px" />}
+              aria-label="back"
+              variant="ghost"
+              colorScheme="gray"
+              mr={1}
+            />
             </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
