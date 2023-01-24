@@ -616,7 +616,10 @@
         "url": "https://s3.eu-west-3.amazonaws.com/typebot/typebots/ckzp7a2za005809lczf2knzix/273013187_1315820332248257_6244778509534754615_n.jpg"
       }
     },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
   },
   "settings": {
     "general": {

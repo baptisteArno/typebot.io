@@ -551,7 +551,10 @@
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
   },
   "settings": {
     "general": {

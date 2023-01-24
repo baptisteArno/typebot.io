@@ -58,7 +58,10 @@ export const defaultTheme: Theme = {
       placeholderColor: '#9095A0',
     },
   },
-  general: { font: 'Open Sans', background: { type: BackgroundType.NONE } },
+  general: {
+    font: 'Open Sans',
+    background: { type: BackgroundType.COLOR, content: '#ffffff' },
+  },
 }
 
 export type Theme = z.infer<typeof themeSchema>
