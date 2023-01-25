@@ -291,13 +291,14 @@ importers:
       '@emotion/react': 11.10.5
       '@emotion/styled': 11.10.5
       '@next/bundle-analyzer': 13.1.4
+      '@typebot.io/js': workspace:*
+      '@typebot.io/react': workspace:*
       '@types/aos': 3.0.4
       '@types/node': 18.11.18
       '@types/react': 18.0.27
       '@vercel/analytics': 0.1.8
       aos: 2.3.4
       autoprefixer: 10.4.13
-      bot-engine: workspace:*
       cross-env: 7.0.3
       db: workspace:*
       eslint: 8.32.0
@@ -319,9 +320,10 @@ importers:
       '@chakra-ui/react': 2.4.9_ldho2is67tyoj4oiqudu5lhoj4
       '@emotion/react': 11.10.5_yxdp3dl3eazy3vwpbmv4fq727a
       '@emotion/styled': 11.10.5_4erqsq3n444jecyuvaxwc5b3vi
+      '@typebot.io/js': link:../../packages/js
+      '@typebot.io/react': link:../../packages/react
       '@vercel/analytics': 0.1.8_react@18.2.0
       aos: 2.3.4
-      bot-engine: link:../../packages/bot-engine
       db: link:../../packages/db
       focus-visible: 5.2.0
       framer-motion: 8.5.0_biqbaboplfbrettd7655fr4n2y

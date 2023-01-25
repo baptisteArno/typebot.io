@@ -110,7 +110,8 @@
           "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "variableId": "3VFChNVSCXQ2rXv4DrJ8Ah"
+            "variableId": "3VFChNVSCXQ2rXv4DrJ8Ah",
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
           },
           "outgoingEdgeId": "w3MiN1Ct38jT5NykVsgmb5"
         }

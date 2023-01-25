@@ -37,12 +37,16 @@ export const executeWebhookBlock = async (
     where: { id: block.webhookId },
   })) as Webhook | null
   if (!webhook) {
+    log = {
+      status: 'error',
+      description: `Couldn't find webhook with id ${block.webhookId}`,
+    }
     result &&
       (await saveErrorLog({
         resultId: result.id,
-        message: `Couldn't find webhook`,
+        message: log.description,
       }))
-    return { outgoingEdgeId: block.outgoingEdgeId }
+    return { outgoingEdgeId: block.outgoingEdgeId, logs: [log] }
   }
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
   const resultValues = result && (await getResultValues(result.id))

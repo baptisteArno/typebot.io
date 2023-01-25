@@ -1,10 +1,13 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
+import { Standard } from '@typebot.io/react'
 import { ArrowRight } from 'assets/icons/ArrowRight'
-import { TypebotViewer } from 'bot-engine'
 import { PublicTypebot, Typebot } from 'models'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { sendRequest } from 'utils'
+
+const nameBlockId = 'shuUtMDMw9P4iAHbz7B5SqJ'
+const messageBlockId = 'sqvXpT1YXE3Htp6BCPvVGv3'
 
 export const RealTimeResults = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
@@ -21,23 +24,17 @@ export const RealTimeResults = () => {
 
   useEffect(() => {
     fetchTemplate()
-    window.addEventListener('message', processMessage)
-    const interval = setInterval(refreshIframeContent, 30000)
-
-    return () => {
-      clearInterval(interval)
-      window.removeEventListener('message', processMessage)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const processMessage = (event: MessageEvent) => {
-    if (event.data.from === 'typebot') refreshIframeContent()
-  }
 
   const refreshIframeContent = () => {
     if (!iframeRef.current) return
     iframeRef.current.src += ''
+  }
+
+  const handleAnswer = ({ blockId }: { blockId: string }) => {
+    if ([nameBlockId, messageBlockId].includes(blockId)) {
+      refreshIframeContent()
+    }
   }
 
   return (
@@ -91,13 +88,15 @@ export const RealTimeResults = () => {
           data-aos="fade"
         >
           {typebot && (
-            <Flex w="full" h="full" minH="300" borderWidth="1px" rounded="md">
-              <TypebotViewer
-                typebot={typebot}
-                style={{ borderRadius: '0.375rem' }}
-                apiHost="https://typebot.io"
-              />
-            </Flex>
+            <Standard
+              typebot={typebot}
+              onAnswer={handleAnswer}
+              style={{
+                borderRadius: '0.375rem',
+                borderWidth: '1px',
+                height: '533px',
+              }}
+            />
           )}
           <iframe
             ref={iframeRef}

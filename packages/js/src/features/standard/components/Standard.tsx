@@ -11,26 +11,27 @@ const hostElementCss = `
 }
 `
 
-export const Standard = (props: BotProps) => {
+export const Standard = (
+  props: BotProps,
+  { element }: { element: HTMLElement }
+) => {
   const [isBotDisplayed, setIsBotDisplayed] = createSignal(false)
 
   const launchBot = () => {
     setIsBotDisplayed(true)
   }
 
-  const observer = new IntersectionObserver((intersections) => {
+  const botLauncherObserver = new IntersectionObserver((intersections) => {
     if (intersections.some((intersection) => intersection.isIntersecting))
       launchBot()
   })
 
   onMount(() => {
-    const standardElement = document.querySelector('typebot-standard')
-    if (!standardElement) return
-    observer.observe(standardElement)
+    botLauncherObserver.observe(element)
   })
 
   onCleanup(() => {
-    observer.disconnect()
+    botLauncherObserver.disconnect()
   })
 
   return (

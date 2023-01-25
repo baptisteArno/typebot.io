@@ -1,3 +1,4 @@
+/* eslint-disable solid/reactivity */
 import { BubbleProps } from './features/bubble'
 import { PopupProps } from './features/popup'
 import { BotProps } from './components/Bot'
@@ -10,10 +11,10 @@ import {
   toggle,
 } from './features/commands'
 
-export const initStandard = (
-  props: BotProps & { style?: string; class?: string }
-) => {
-  const standardElement = document.querySelector('typebot-standard')
+export const initStandard = (props: BotProps & { id?: string }) => {
+  const standardElement = props.id
+    ? document.getElementById(props.id)
+    : document.querySelector('typebot-standard')
   if (!standardElement) throw new Error('<typebot-standard> element not found.')
   Object.assign(standardElement, props)
 }

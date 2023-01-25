@@ -2,76 +2,69 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withTM = require('next-transpile-modules')([
-  'utils',
-  'models',
-  'bot-engine',
-])
 
 const pages = ['pricing', 'privacy-policies', 'terms-of-service', 'about']
 
-module.exports = withTM(
-  withBundleAnalyzer({
-    async redirects() {
-      return [
+module.exports = withBundleAnalyzer({
+  transpilePackages: ['utils', 'models'],
+  async redirects() {
+    return [
+      {
+        source: '/typebot-lib',
+        destination:
+          'https://unpkg.com/typebot-js@2.0.21/dist/index.umd.min.js',
+        permanent: true,
+      },
+      {
+        source: '/typebot-lib/v2',
+        destination: 'https://unpkg.com/typebot-js@2.1.3/dist/index.umd.min.js',
+        permanent: true,
+      },
+    ]
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
         {
-          source: '/typebot-lib',
+          source: '/_next/static/:static*',
           destination:
-            'https://unpkg.com/typebot-js@2.0.21/dist/index.umd.min.js',
-          permanent: true,
-        },
-        {
-          source: '/typebot-lib/v2',
-          destination:
-            'https://unpkg.com/typebot-js@2.1.3/dist/index.umd.min.js',
-          permanent: true,
-        },
-      ]
-    },
-    async rewrites() {
-      return {
-        beforeFiles: [
-          {
-            source: '/_next/static/:static*',
-            destination:
-              process.env.NEXT_PUBLIC_VIEWER_URL + '/_next/static/:static*',
-            has: [
-              {
-                type: 'header',
-                key: 'referer',
-                value:
-                  process.env.LANDING_PAGE_HOST +
-                  '/(?!' +
-                  pages.join('|') +
-                  '|\\?).+',
-              },
-            ],
-          },
-        ],
-        fallback: [
-          {
-            source: '/:typebotId*',
-            destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/:typebotId*',
-          },
-          {
-            source: '/api/:path*',
-            destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/api/:path*',
-          },
-        ],
-      }
-    },
-    headers: async () => {
-      return [
-        {
-          source: '/(.*)?',
-          headers: [
+            process.env.NEXT_PUBLIC_VIEWER_URL + '/_next/static/:static*',
+          has: [
             {
-              key: 'X-Frame-Options',
-              value: 'DENY',
+              type: 'header',
+              key: 'referer',
+              value:
+                process.env.LANDING_PAGE_HOST +
+                '/(?!' +
+                pages.join('|') +
+                '|\\?).+',
             },
           ],
         },
-      ]
-    },
-  })
-)
+      ],
+      fallback: [
+        {
+          source: '/:typebotId*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/:typebotId*',
+        },
+        {
+          source: '/api/:path*',
+          destination: process.env.NEXT_PUBLIC_VIEWER_URL + '/api/:path*',
+        },
+      ],
+    }
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/(.*)?',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+        ],
+      },
+    ]
+  },
+})
