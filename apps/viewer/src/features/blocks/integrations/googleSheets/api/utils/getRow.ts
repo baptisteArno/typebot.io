@@ -4,6 +4,7 @@ import {
   VariableWithValue,
   ComparisonOperators,
   LogicalOperator,
+  ReplyLog,
 } from 'models'
 import { saveErrorLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc } from './helpers'
@@ -20,7 +21,9 @@ export const getRow = async (
   }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
 ): Promise<ExecuteIntegrationResponse> => {
   const { sheetId, cellsToExtract, referenceCell, filter } = options
-  if (!cellsToExtract || !sheetId || !referenceCell) return { outgoingEdgeId }
+  if (!sheetId) return { outgoingEdgeId }
+
+  let log: ReplyLog | undefined
 
   const variables = state.typebot.variables
   const resultId = state.result?.id
@@ -40,11 +43,15 @@ export const getRow = async (
         : matchFilter(row, filter)
     )
     if (filteredRows.length === 0) {
+      log = {
+        status: 'error',
+        description: `Couldn't find any rows matching the filter`,
+      }
       await saveErrorLog({
         resultId,
-        message: "Couldn't find reference cell",
+        message: log.description,
       })
-      return { outgoingEdgeId }
+      return { outgoingEdgeId, logs: log ? [log] : undefined }
     }
     const randomIndex = Math.floor(Math.random() * filteredRows.length)
     const extractingColumns = cellsToExtract
@@ -81,13 +88,18 @@ export const getRow = async (
       newSessionState,
     }
   } catch (err) {
+    log = {
+      status: 'error',
+      description: `An error occurred while fetching the spreadsheet data`,
+      details: err,
+    }
     await saveErrorLog({
       resultId,
-      message: "Couldn't fetch spreadsheet data",
+      message: log.description,
       details: err,
     })
   }
-  return { outgoingEdgeId }
+  return { outgoingEdgeId, logs: log ? [log] : undefined }
 }
 
 const matchFilter = (

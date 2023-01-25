@@ -1,10 +1,8 @@
 import { IncomingMessage } from 'http'
-import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { env, getViewerUrl, isNotDefined } from 'utils'
 import prisma from '@/lib/prisma'
-import { TypebotPageV2, TypebotPageV2Props } from '@/components/TypebotPageV2'
-import { ErrorPage } from '@/components/ErrorPage'
+import { TypebotPage, TypebotPageProps } from '@/components/TypebotPageV2'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -51,18 +49,16 @@ export const getServerSideProps: GetServerSideProps = async (
 
 const getTypebotFromPublicId = async (
   publicId?: string
-): Promise<TypebotPageV2Props['typebot'] | null> => {
+): Promise<TypebotPageProps['typebot'] | null> => {
   const typebot = (await prisma.typebot.findUnique({
     where: { publicId: publicId ?? '' },
     select: {
       theme: true,
       name: true,
       settings: true,
-      isArchived: true,
-      isClosed: true,
       publicId: true,
     },
-  })) as TypebotPageV2Props['typebot'] | null
+  })) as TypebotPageProps['typebot'] | null
   if (isNotDefined(typebot)) return null
   return typebot
 }
@@ -74,11 +70,8 @@ const getHost = (
   forwardedHost: req?.headers['x-forwarded-host'] as string | undefined,
 })
 
-const App = ({ typebot, url }: TypebotPageV2Props) => {
-  if (!typebot || typebot.isArchived) return <NotFoundPage />
-  if (typebot.isClosed)
-    return <ErrorPage error={new Error('This bot is now closed')} />
-  return <TypebotPageV2 typebot={typebot} url={url} />
-}
+const App = ({ typebot, url }: TypebotPageProps) => (
+  <TypebotPage typebot={typebot} url={url} />
+)
 
 export default App

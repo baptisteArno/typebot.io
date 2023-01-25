@@ -1,4 +1,4 @@
-import { SessionState, GoogleSheetsUpdateRowOptions } from 'models'
+import { SessionState, GoogleSheetsUpdateRowOptions, ReplyLog } from 'models'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc, parseCellValues } from './helpers'
 import { TRPCError } from '@trpc/server'
@@ -15,6 +15,8 @@ export const updateRow = async (
   const { sheetId, referenceCell } = options
   if (!options.cellsToUpsert || !sheetId || !referenceCell)
     return { outgoingEdgeId }
+
+  let log: ReplyLog | undefined
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
@@ -45,18 +47,27 @@ export const updateRow = async (
       rows[updatingRowIndex][key] = parsedValues[key]
     }
     await rows[updatingRowIndex].save()
+    log = log = {
+      status: 'success',
+      description: `Succesfully updated row in ${doc.title} > ${sheet.title}`,
+    }
     result &&
       (await saveSuccessLog({
         resultId: result.id,
-        message: 'Succesfully updated row',
+        message: log.description,
       }))
   } catch (err) {
+    log = {
+      status: 'error',
+      description: `An error occured while updating the row`,
+      details: err,
+    }
     result &&
       (await saveErrorLog({
         resultId: result.id,
-        message: "Couldn't fetch spreadsheet data",
+        message: log.description,
         details: err,
       }))
   }
-  return { outgoingEdgeId }
+  return { outgoingEdgeId, logs: log ? [log] : undefined }
 }

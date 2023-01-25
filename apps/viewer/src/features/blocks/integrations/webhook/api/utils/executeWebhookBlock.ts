@@ -19,6 +19,7 @@ import {
   ResultValues,
   PublicTypebot,
   KeyValue,
+  ReplyLog,
 } from 'models'
 import { stringify } from 'qs'
 import { byId, omit, parseAnswers } from 'utils'
@@ -31,6 +32,7 @@ export const executeWebhookBlock = async (
   block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
 ): Promise<ExecuteIntegrationResponse> => {
   const { typebot, result } = state
+  let log: ReplyLog | undefined
   const webhook = (await prisma.webhook.findUnique({
     where: { id: block.webhookId },
   })) as Webhook | null
@@ -56,20 +58,27 @@ export const executeWebhookBlock = async (
   const isError = status.startsWith('4') || status.startsWith('5')
 
   if (isError) {
+    log = {
+      status: 'error',
+      description: `Webhook returned error: ${webhookResponse.data}`,
+      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
+    }
     result &&
       (await saveErrorLog({
         resultId: result.id,
-        message: `Webhook returned error: ${webhookResponse.data}`,
-        details: JSON.stringify(webhookResponse.data, null, 2).substring(
-          0,
-          1000
-        ),
+        message: log.description,
+        details: log.details,
       }))
   } else {
+    log = {
+      status: 'success',
+      description: `Webhook executed successfully!`,
+      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
+    }
     result &&
       (await saveSuccessLog({
         resultId: result.id,
-        message: `Webhook returned success: ${webhookResponse.data}`,
+        message: log.description,
         details: JSON.stringify(webhookResponse.data, null, 2).substring(
           0,
           1000
@@ -102,7 +111,7 @@ export const executeWebhookBlock = async (
     }
   }
 
-  return { outgoingEdgeId: block.outgoingEdgeId }
+  return { outgoingEdgeId: block.outgoingEdgeId, logs: log ? [log] : undefined }
 }
 
 const prepareWebhookAttributes = (

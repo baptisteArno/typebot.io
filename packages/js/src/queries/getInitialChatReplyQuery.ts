@@ -1,6 +1,7 @@
 import { InitialChatReply } from '@/types'
-import { SendMessageInput, StartParams } from 'models'
-import { getViewerUrl, isEmpty, sendRequest } from 'utils'
+import { guessApiHost } from '@/utils/guessApiHost'
+import type { SendMessageInput, StartParams } from 'models'
+import { isNotEmpty, sendRequest } from 'utils'
 
 export async function getInitialChatReplyQuery({
   typebot,
@@ -17,7 +18,7 @@ export async function getInitialChatReplyQuery({
 
   return sendRequest<InitialChatReply>({
     method: 'POST',
-    url: `${isEmpty(apiHost) ? getViewerUrl() : apiHost}/api/v1/sendMessage`,
+    url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sendMessage`,
     body: {
       startParams: {
         isPreview,

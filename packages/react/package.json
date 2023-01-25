@@ -3,14 +3,13 @@
   "version": "0.0.1",
   "description": "React library to display typebots on your website",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "db:seed": "tsx scripts/seedDatabase.ts",
-    "stories:dev": "pnpm db:seed && ladle serve -p 3006",
+    "stories:dev": "ladle serve -p 3006",
     "stories:build": "ladle build",
-    "build": "pnpm tsc --noEmit && tsup",
-    "dev": "tsup --watch",
+    "dev": "rollup --watch --config rollup.config.js",
+    "build": "rollup --config rollup.config.js",
     "lint": "eslint --fix \"src/**/*.ts*\""
   },
   "keywords": [],
@@ -20,21 +19,29 @@
     "@ladle/react": "^2.4.5"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.18.6",
+    "@rollup/plugin-babel": "6.0.3",
+    "@rollup/plugin-node-resolve": "15.0.1",
+    "@rollup/plugin-terser": "^0.3.0",
+    "@rollup/plugin-typescript": "11.0.0",
     "@typebot.io/js": "workspace:*",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "db": "workspace:*",
     "eslint": "^8.32.0",
     "eslint-config-custom": "workspace:*",
+    "models": "workspace:*",
     "react": "18.2.0",
+    "rollup": "3.10.0",
+    "rollup-plugin-typescript-paths": "^1.4.0",
     "tsconfig": "workspace:*",
-    "tsup": "6.5.0",
+    "tslib": "^2.4.1",
     "tsx": "3.12.2",
     "typescript": "^4.9.4",
-    "utils": "workspace:*",
-    "models": "workspace:*"
+    "utils": "workspace:*"
   },
   "peerDependencies": {
-    "react": "18.0.0"
+    "react": "18.0.0",
+    "@typebot.io/js": "workspace:*"
   }
 }

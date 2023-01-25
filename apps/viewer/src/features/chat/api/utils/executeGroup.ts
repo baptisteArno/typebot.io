@@ -27,6 +27,7 @@ export const executeGroup =
     const messages: ChatReply['messages'] = currentReply?.messages ?? []
     let logic: ChatReply['logic'] = currentReply?.logic
     let integrations: ChatReply['integrations'] = currentReply?.integrations
+    let logs: ChatReply['logs'] = currentReply?.logs
     let nextEdgeId = null
 
     let newSessionState = state
@@ -58,6 +59,9 @@ export const executeGroup =
               blockId: block.id,
             },
           },
+          logic,
+          integrations,
+          logs,
         }
       const executionResponse = isLogicBlock(block)
         ? await executeLogic(newSessionState)(block)
@@ -67,9 +71,11 @@ export const executeGroup =
 
       if (!executionResponse) continue
       if ('logic' in executionResponse && executionResponse.logic)
-        logic = executionResponse.logic
+        logic = { ...logic, ...executionResponse.logic }
       if ('integrations' in executionResponse && executionResponse.integrations)
-        integrations = executionResponse.integrations
+        integrations = { ...integrations, ...executionResponse.integrations }
+      if (executionResponse.logs)
+        logs = [...(logs ?? []), ...executionResponse.logs]
       if (executionResponse.newSessionState)
         newSessionState = executionResponse.newSessionState
       if (executionResponse.outgoingEdgeId) {
@@ -78,19 +84,23 @@ export const executeGroup =
       }
     }
 
-    if (!nextEdgeId) return { messages, newSessionState, logic, integrations }
+    if (!nextEdgeId)
+      return { messages, newSessionState, logic, integrations, logs }
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
     if (nextGroup?.updatedContext) newSessionState = nextGroup.updatedContext
 
     if (!nextGroup) {
-      return { messages, newSessionState, logic, integrations }
+      return { messages, newSessionState, logic, integrations, logs }
     }
 
-    return executeGroup(newSessionState, { messages, logic, integrations })(
-      nextGroup.group
-    )
+    return executeGroup(newSessionState, {
+      messages,
+      logic,
+      integrations,
+      logs,
+    })(nextGroup.group)
   }
 
 const computeRuntimeOptions =

@@ -5,15 +5,7 @@ import cors from 'nextjs-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await cors(req, res, {
-    origin: [
-      'https://docs.typebot.io',
-      'https://app.typebot.io',
-      'http://localhost:3005',
-      'http://localhost:3006',
-      'http://localhost:3000',
-    ],
-  })
+  await cors(req, res)
 
   return createOpenApiNextHandler({
     router: appRouter,
@@ -25,4 +17,5 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   })(req, res)
 }
+
 export default handler

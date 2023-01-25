@@ -1,5 +1,6 @@
-import { TypingBubble } from '@/components/bubbles/TypingBubble'
-import { VideoBubbleContent, VideoBubbleContentType } from 'models'
+import { TypingBubble } from '@/components'
+import type { VideoBubbleContent } from 'models'
+import { VideoBubbleContentType } from 'models/features/blocks/bubbles/video/enums'
 import { createSignal, Match, onMount, Switch } from 'solid-js'
 
 type Props = {
@@ -64,10 +65,7 @@ const VideoContent = (props: VideoContentProps) => {
       <Match
         when={
           props.content?.type &&
-          [
-            VideoBubbleContentType.VIMEO,
-            VideoBubbleContentType.YOUTUBE,
-          ].includes(props.content.type)
+          props.content.type === VideoBubbleContentType.URL
         }
       >
         <video

@@ -22,9 +22,9 @@ export const ContainerEmbedCode = ({
 
   const snippet = prettier.format(
     parseSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       heightLabel,
       widthLabel,
     }),

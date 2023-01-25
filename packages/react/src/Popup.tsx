@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { PopupProps } from '@typebot.io/js'
-import { defaultPopupProps } from './constants'
 
-type Props = PopupProps & { style?: React.CSSProperties; className?: string }
+type Props = PopupProps
 
 declare global {
   namespace JSX {
@@ -15,49 +14,38 @@ declare global {
   }
 }
 
-export const Popup = ({ style, className, ...props }: Props) => {
-  const ref = useRef<(HTMLDivElement & Props) | null>(null)
+type PopupElement = HTMLElement & Props
+
+export const Popup = (props: Props) => {
+  const ref = useRef<PopupElement | null>(null)
 
   useEffect(() => {
     ;(async () => {
-      const { registerPopupComponent } = await import('@typebot.io/js')
-      registerPopupComponent(defaultPopupProps)
+      await import('@typebot.io/js/dist/web')
     })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    if (!ref.current) return
-    ref.current.typebot = props.typebot
-    ref.current.prefilledVariables = props.prefilledVariables
-    ref.current.onClose = props.onClose
-    ref.current.onOpen = props.onOpen
-    ref.current.onNewInputBlock = props.onNewInputBlock
-    ref.current.onAnswer = props.onAnswer
-    ref.current.onEnd = props.onEnd
-    ref.current.onInit = props.onInit
-  }, [
-    props.onAnswer,
-    props.onClose,
-    props.onEnd,
-    props.onNewInputBlock,
-    props.onOpen,
-    props.onInit,
-    props.prefilledVariables,
-    props.typebot,
-  ])
+  const updateProps = (element: PopupElement | null, props: Props) => {
+    if (!element) return
+    Object.assign(element, props)
+  }
 
-  return (
-    <typebot-popup
-      ref={ref}
-      api-host={props.apiHost}
-      start-group-id={props.startGroupId}
-      result-id={props.resultId}
-      is-preview={props.isPreview}
-      is-open={props.isOpen}
-      default-open={props.defaultOpen}
-      class={className}
-      style={style}
-    />
-  )
+  const initBubble = async () => {
+    const popupElement = document.createElement('typebot-popup') as PopupElement
+    ref.current = popupElement
+    document.body.append(popupElement)
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      if (!ref.current) await initBubble()
+      updateProps(ref.current, props)
+    })()
+
+    return () => {
+      ref.current?.remove()
+    }
+  }, [props])
+
+  return null
 }

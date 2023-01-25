@@ -15,6 +15,7 @@
   "dependencies": {
     "@sentry/nextjs": "7.31.1",
     "@trpc/server": "10.9.0",
+    "@typebot.io/js": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "aws-sdk": "2.1299.0",
     "bot-engine": "workspace:*",

@@ -3,24 +3,21 @@ import { BackgroundType, Typebot } from 'models'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
 
-export type TypebotPageV2Props = {
+export type TypebotPageProps = {
   url: string
-  typebot: Pick<
-    Typebot,
-    'settings' | 'theme' | 'name' | 'isClosed' | 'isArchived' | 'publicId'
-  >
+  typebot?: Pick<Typebot, 'settings' | 'theme' | 'name' | 'publicId'>
 }
 
-export const TypebotPageV2 = ({ url, typebot }: TypebotPageV2Props) => {
-  const { asPath, push } = useRouter()
+export const TypebotPage = ({ url, typebot }: TypebotPageProps) => {
+  const { asPath, push, query } = useRouter()
 
-  const background = typebot.theme.general.background
+  const background = typebot?.theme.general.background
 
   const clearQueryParamsIfNecessary = () => {
     const hasQueryParams = asPath.includes('?')
     if (
       !hasQueryParams ||
-      !(typebot.settings.general.isHideQueryParamsEnabled ?? true)
+      !(typebot?.settings.general.isHideQueryParamsEnabled ?? true)
     )
       return
     push(asPath.split('?')[0], undefined, { shallow: true })
@@ -32,22 +29,22 @@ export const TypebotPageV2 = ({ url, typebot }: TypebotPageV2Props) => {
         height: '100vh',
         // Set background color to avoid SSR flash
         backgroundColor:
-          background.type === BackgroundType.COLOR
-            ? background.content
+          background?.type === BackgroundType.COLOR
+            ? background?.content
             : 'white',
       }}
     >
-      <SEO
-        url={url}
-        typebotName={typebot.name}
-        metadata={typebot.settings.metadata}
-      />
-      {typebot.publicId && (
-        <Standard
-          typebot={typebot.publicId}
-          onInit={clearQueryParamsIfNecessary}
+      {typebot && (
+        <SEO
+          url={url}
+          typebotName={typebot.name}
+          metadata={typebot.settings.metadata}
         />
       )}
+      <Standard
+        typebot={typebot?.publicId ?? query.publicId?.toString() ?? 'n'}
+        onInit={clearQueryParamsIfNecessary}
+      />
     </div>
   )
 }

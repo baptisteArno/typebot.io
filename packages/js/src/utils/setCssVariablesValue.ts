@@ -1,12 +1,12 @@
 import {
   Background,
-  BackgroundType,
   ChatTheme,
   ContainerColors,
   GeneralTheme,
   InputColors,
   Theme,
 } from 'models'
+import { BackgroundType } from 'models/features/typebot/theme/enums'
 
 const cssVariableNames = {
   general: {

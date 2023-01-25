@@ -1,7 +1,7 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { DateInputOptions } from 'models'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { parseReadableDate } from '../utils/parseReadableDate'
 
 type DateInputProps = {

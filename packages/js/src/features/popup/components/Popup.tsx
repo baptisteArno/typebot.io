@@ -7,10 +7,10 @@ import {
   onCleanup,
   createEffect,
 } from 'solid-js'
-import { Bot, BotProps } from '../../../components/Bot'
-import { CommandData } from '@/features/commands'
-import { isDefined } from 'utils'
+import { CommandData } from '../../commands'
+import { isDefined, isNotDefined } from 'utils'
 import { PopupParams } from '../types'
+import { Bot, BotProps } from '../../../components/Bot'
 
 export type PopupProps = BotProps &
   PopupParams & {
@@ -43,8 +43,6 @@ export const Popup = (props: PopupProps) => {
   )
 
   onMount(() => {
-    document.addEventListener('pointerdown', processWindowClick)
-    botContainer?.addEventListener('pointerdown', stopPropagation)
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = popupProps.autoShowDelay
     if (isDefined(autoShowDelay)) {
@@ -54,20 +52,14 @@ export const Popup = (props: PopupProps) => {
     }
   })
 
-  createEffect(() => {
-    const isOpen = popupProps.isOpen
-    if (isDefined(isOpen)) setIsBotOpened(isOpen)
-  })
-
   onCleanup(() => {
-    document.removeEventListener('pointerdown', processWindowClick)
-    botContainer?.removeEventListener('pointerdown', stopPropagation)
     window.removeEventListener('message', processIncomingEvent)
   })
 
-  const processWindowClick = () => {
-    setIsBotOpened(false)
-  }
+  createEffect(() => {
+    if (isNotDefined(props.isOpen) || props.isOpen === isBotOpened()) return
+    toggleBot()
+  })
 
   const stopPropagation = (event: MouseEvent) => {
     event.stopPropagation()
@@ -87,24 +79,28 @@ export const Popup = (props: PopupProps) => {
   }
 
   const openBot = () => {
-    if (isBotOpened()) popupProps.onOpen?.()
-    if (isDefined(props.isOpen)) return
     setIsBotOpened(true)
+    popupProps.onOpen?.()
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('pointerdown', closeBot)
+    botContainer?.addEventListener('pointerdown', stopPropagation)
   }
 
   const closeBot = () => {
-    if (isBotOpened()) popupProps.onClose?.()
-    if (isDefined(props.isOpen)) return
     setIsBotOpened(false)
+    popupProps.onClose?.()
+    document.body.style.overflow = 'auto'
+    document.removeEventListener('pointerdown', closeBot)
+    botContainer?.removeEventListener('pointerdown', stopPropagation)
   }
 
   const toggleBot = () => {
-    if (isDefined(props.isOpen)) return
     isBotOpened() ? closeBot() : openBot()
   }
 
   return (
     <Show when={isBotOpened()}>
+      <style>{styles}</style>
       <div
         class="relative z-10"
         aria-labelledby="modal-title"

@@ -23,10 +23,7 @@ export const SettingsPage = () => {
         <SettingsSideMenu />
         <Flex flex="1">
           {publicTypebot && (
-            <TypebotViewer
-              apiHost={getViewerUrl({ isBuilder: true })}
-              typebot={publicTypebot}
-            />
+            <TypebotViewer apiHost={getViewerUrl()} typebot={publicTypebot} />
           )}
         </Flex>
       </Flex>

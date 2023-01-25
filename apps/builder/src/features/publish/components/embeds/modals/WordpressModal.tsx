@@ -58,15 +58,13 @@ export const WordpressModal = ({
                   pr="4.5rem"
                   type={'text'}
                   defaultValue={`${
-                    env('VIEWER_INTERNAL_URL') ??
-                    getViewerUrl({ isBuilder: true })
+                    env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
                   }/${publicId}`}
                 />
                 <InputRightElement width="4.5rem">
                   <CopyButton
                     textToCopy={`${
-                      env('VIEWER_INTERNAL_URL') ??
-                      getViewerUrl({ isBuilder: true })
+                      env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
                     }/${publicId}`}
                   />
                 </InputRightElement>

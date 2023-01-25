@@ -106,7 +106,7 @@ export const PreviewDrawer = () => {
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
             <TypebotViewer
-              apiHost={getViewerUrl({ isBuilder: true })}
+              apiHost={getViewerUrl()}
               typebot={publicTypebot}
               onNewGroupVisible={setPreviewingEdge}
               onNewLog={handleNewLog}

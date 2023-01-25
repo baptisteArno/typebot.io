@@ -1,8 +1,8 @@
-import { Textarea, ShortTextInput } from '@/components/inputs'
+import { Textarea, ShortTextInput } from '@/components'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { TextInputBlock } from 'models'
+import type { TextInputBlock } from 'models'
 import { createSignal, onMount } from 'solid-js'
 
 type Props = {
@@ -69,7 +69,7 @@ export const TextInput = (props: Props) => {
         type="button"
         isDisabled={inputValue() === ''}
         class="my-2 ml-2"
-        onClick={submit}
+        on:click={submit}
       >
         {props.block.options?.labels?.button ?? 'Send'}
       </SendButton>

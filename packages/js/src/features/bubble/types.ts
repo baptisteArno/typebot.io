@@ -10,10 +10,8 @@ export type BubbleTheme = {
 
 export type ButtonTheme = {
   backgroundColor?: string
-  icon?: {
-    color?: string
-    url?: string
-  }
+  iconColor?: string
+  customIconSrc?: string
 }
 
 export type PreviewMessageParams = {
@@ -24,8 +22,7 @@ export type PreviewMessageParams = {
 
 export type PreviewMessageTheme = {
   backgroundColor?: string
-  color?: string
-  fontFamily?: string
-  closeButtonBgColor?: string
-  closeButtonColor?: string
+  textColor?: string
+  closeButtonBackgroundColor?: string
+  closeButtonIconColor?: string
 }

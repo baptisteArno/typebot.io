@@ -1,10 +1,9 @@
 import { LiteBadge } from './LiteBadge'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { getViewerUrl, injectCustomHeadCode, isEmpty, isNotEmpty } from 'utils'
+import { injectCustomHeadCode, isNotEmpty } from 'utils'
 import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
 import { ConversationContainer } from './ConversationContainer'
-import css from '../assets/index.css'
-import { StartParams } from 'models'
+import type { ChatReply, StartParams } from 'models'
 import { setIsMobile } from '@/utils/isMobileSignal'
 import { BotContext, InitialChatReply } from '@/types'
 import { ErrorMessage } from './ErrorMessage'
@@ -20,20 +19,19 @@ export type BotProps = StartParams & {
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
   onEnd?: () => void
+  onNewLogs?: (logs: ChatReply['logs']) => void
 }
 
-export const Bot = (props: BotProps) => {
+export const Bot = (props: BotProps & { class?: string }) => {
   const [initialChatReply, setInitialChatReply] = createSignal<
     InitialChatReply | undefined
   >()
-  const [error, setError] = createSignal<Error | undefined>(
-    // eslint-disable-next-line solid/reactivity
-    isEmpty(isEmpty(props.apiHost) ? getViewerUrl() : props.apiHost)
-      ? new Error('process.env.NEXT_PUBLIC_VIEWER_URL is missing in env')
-      : undefined
-  )
+  const [customCss, setCustomCss] = createSignal('')
+  const [isInitialized, setIsInitialized] = createSignal(false)
+  const [error, setError] = createSignal<Error | undefined>()
 
   const initializeBot = async () => {
+    setIsInitialized(true)
     const urlParams = new URLSearchParams(location.search)
     props.onInit?.()
     const prefilledVariables: { [key: string]: string } = {}
@@ -56,37 +54,51 @@ export const Bot = (props: BotProps) => {
     if (error && 'code' in error && typeof error.code === 'string') {
       if (['BAD_REQUEST', 'FORBIDDEN'].includes(error.code))
         setError(new Error('This bot is now closed.'))
-      if (error.code === 'NOT_FOUND') setError(new Error('Typebot not found.'))
+      if (error.code === 'NOT_FOUND')
+        setError(new Error("The bot you're looking for doesn't exist."))
       return
     }
 
-    if (!data) return setError(new Error("Couldn't initiate the chat"))
+    if (!data) return setError(new Error("Error! Couldn't initiate the chat."))
 
     if (data.resultId) setResultInSession(data.resultId)
     setInitialChatReply(data)
+    setCustomCss(data.typebot.theme.customCss ?? '')
 
     if (data.input?.id && props.onNewInputBlock)
       props.onNewInputBlock({
         id: data.input.id,
         groupId: data.input.groupId,
       })
+    if (data.logs) props.onNewLogs?.(data.logs)
     const customHeadCode = data.typebot.settings.metadata.customHeadCode
     if (customHeadCode) injectCustomHeadCode(customHeadCode)
   }
 
-  onMount(() => {
+  createEffect(() => {
+    if (!props.typebot || isInitialized()) return
     initializeBot().then()
+  })
+
+  createEffect(() => {
+    if (typeof props.typebot === 'string') return
+    setCustomCss(props.typebot.theme.customCss ?? '')
+  })
+
+  onCleanup(() => {
+    setIsInitialized(false)
   })
 
   return (
     <>
-      <style>{css}</style>
+      <style>{customCss()}</style>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>
       <Show when={initialChatReply()} keyed>
         {(initialChatReply) => (
           <BotContent
+            class={props.class}
             initialChatReply={{
               ...initialChatReply,
               typebot: {
@@ -103,11 +115,13 @@ export const Bot = (props: BotProps) => {
             }}
             context={{
               apiHost: props.apiHost,
-              isPreview: props.isPreview ?? false,
+              isPreview:
+                typeof props.typebot !== 'string' || (props.isPreview ?? false),
               typebotId: initialChatReply.typebot.id,
               resultId: initialChatReply.resultId,
             }}
             onNewInputBlock={props.onNewInputBlock}
+            onNewLogs={props.onNewLogs}
             onAnswer={props.onAnswer}
             onEnd={props.onEnd}
           />
@@ -120,9 +134,11 @@ export const Bot = (props: BotProps) => {
 type BotContentProps = {
   initialChatReply: InitialChatReply
   context: BotContext
-  onNewInputBlock?: (ids: { id: string; groupId: string }) => void
+  class?: string
+  onNewInputBlock?: (block: { id: string; groupId: string }) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
+  onNewLogs?: (logs: ChatReply['logs']) => void
 }
 
 const BotContent = (props: BotContentProps) => {
@@ -160,7 +176,10 @@ const BotContent = (props: BotContentProps) => {
   return (
     <div
       ref={botContainer}
-      class="relative flex w-full h-full text-base overflow-hidden bg-cover flex-col items-center typebot-container"
+      class={
+        'relative flex w-full h-full text-base overflow-hidden bg-cover flex-col items-center typebot-container ' +
+        props.class
+      }
     >
       <div class="flex w-full h-full justify-center">
         <ConversationContainer
@@ -169,6 +188,7 @@ const BotContent = (props: BotContentProps) => {
           onNewInputBlock={props.onNewInputBlock}
           onAnswer={props.onAnswer}
           onEnd={props.onEnd}
+          onNewLogs={props.onNewLogs}
         />
       </div>
       <Show

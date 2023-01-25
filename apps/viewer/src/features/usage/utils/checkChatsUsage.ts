@@ -5,7 +5,8 @@ import {
   sendReachedChatsLimitEmail,
 } from 'emails'
 import { Workspace } from 'models'
-import { env, getChatsLimit, isDefined } from 'utils'
+import { env, isDefined } from 'utils'
+import { getChatsLimit } from 'utils/pricing'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 

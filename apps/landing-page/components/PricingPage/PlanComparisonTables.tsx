@@ -20,7 +20,7 @@ import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from 'db'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { chatsLimit, formatPrice, storageLimit } from 'utils'
+import { chatsLimit, formatPrice, storageLimit } from 'utils/pricing'
 
 type Props = {
   starterPrice: string

@@ -7,9 +7,7 @@ export const executeWebhook = (
   { blockId }: { blockId: string }
 ) =>
   sendRequest<WebhookResponse>({
-    url: `${getViewerUrl({
-      isBuilder: true,
-    })}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook`,
+    url: `${getViewerUrl()}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook`,
     method: 'POST',
     body: {
       variables,

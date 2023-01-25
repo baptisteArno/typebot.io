@@ -1852,21 +1852,6 @@
                                                                                       {
                                                                                         "anyOf": [
                                                                                           {
-                                                                                            "type": "object",
-                                                                                            "properties": {
-                                                                                              "credentialsId": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "sheetId": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "spreadsheetId": {
-                                                                                                "type": "string"
-                                                                                              }
-                                                                                            },
-                                                                                            "additionalProperties": false
-                                                                                          },
-                                                                                          {
                                                                                             "allOf": [
                                                                                               {
                                                                                                 "type": "object",
@@ -1989,6 +1974,62 @@
                                                                                                 "additionalProperties": false
                                                                                               }
                                                                                             ]
+                                                                                          },
+                                                                                          {
+                                                                                            "allOf": [
+                                                                                              {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                  "credentialsId": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "sheetId": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "spreadsheetId": {
+                                                                                                    "type": "string"
+                                                                                                  }
+                                                                                                },
+                                                                                                "additionalProperties": false
+                                                                                              },
+                                                                                              {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                  "action": {
+                                                                                                    "type": "string",
+                                                                                                    "enum": [
+                                                                                                      "Insert a row"
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  "cellsToInsert": {
+                                                                                                    "type": "array",
+                                                                                                    "items": {
+                                                                                                      "type": "object",
+                                                                                                      "properties": {
+                                                                                                        "column": {
+                                                                                                          "type": "string"
+                                                                                                        },
+                                                                                                        "value": {
+                                                                                                          "type": "string"
+                                                                                                        },
+                                                                                                        "id": {
+                                                                                                          "type": "string"
+                                                                                                        }
+                                                                                                      },
+                                                                                                      "required": [
+                                                                                                        "id"
+                                                                                                      ],
+                                                                                                      "additionalProperties": false
+                                                                                                    }
+                                                                                                  }
+                                                                                                },
+                                                                                                "required": [
+                                                                                                  "action",
+                                                                                                  "cellsToInsert"
+                                                                                                ],
+                                                                                                "additionalProperties": false
+                                                                                              }
+                                                                                            ]
                                                                                           }
                                                                                         ]
                                                                                       },
@@ -2015,10 +2056,10 @@
                                                                                               "action": {
                                                                                                 "type": "string",
                                                                                                 "enum": [
-                                                                                                  "Insert a row"
+                                                                                                  "Update a row"
                                                                                                 ]
                                                                                               },
-                                                                                              "cellsToInsert": {
+                                                                                              "cellsToUpsert": {
                                                                                                 "type": "array",
                                                                                                 "items": {
                                                                                                   "type": "object",
@@ -2038,11 +2079,29 @@
                                                                                                   ],
                                                                                                   "additionalProperties": false
                                                                                                 }
+                                                                                              },
+                                                                                              "referenceCell": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                  "column": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "value": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "id": {
+                                                                                                    "type": "string"
+                                                                                                  }
+                                                                                                },
+                                                                                                "required": [
+                                                                                                  "id"
+                                                                                                ],
+                                                                                                "additionalProperties": false
                                                                                               }
                                                                                             },
                                                                                             "required": [
                                                                                               "action",
-                                                                                              "cellsToInsert"
+                                                                                              "cellsToUpsert"
                                                                                             ],
                                                                                             "additionalProperties": false
                                                                                           }
@@ -2051,78 +2110,19 @@
                                                                                     ]
                                                                                   },
                                                                                   {
-                                                                                    "allOf": [
-                                                                                      {
-                                                                                        "type": "object",
-                                                                                        "properties": {
-                                                                                          "credentialsId": {
-                                                                                            "type": "string"
-                                                                                          },
-                                                                                          "sheetId": {
-                                                                                            "type": "string"
-                                                                                          },
-                                                                                          "spreadsheetId": {
-                                                                                            "type": "string"
-                                                                                          }
-                                                                                        },
-                                                                                        "additionalProperties": false
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                      "credentialsId": {
+                                                                                        "type": "string"
                                                                                       },
-                                                                                      {
-                                                                                        "type": "object",
-                                                                                        "properties": {
-                                                                                          "action": {
-                                                                                            "type": "string",
-                                                                                            "enum": [
-                                                                                              "Update a row"
-                                                                                            ]
-                                                                                          },
-                                                                                          "cellsToUpsert": {
-                                                                                            "type": "array",
-                                                                                            "items": {
-                                                                                              "type": "object",
-                                                                                              "properties": {
-                                                                                                "column": {
-                                                                                                  "type": "string"
-                                                                                                },
-                                                                                                "value": {
-                                                                                                  "type": "string"
-                                                                                                },
-                                                                                                "id": {
-                                                                                                  "type": "string"
-                                                                                                }
-                                                                                              },
-                                                                                              "required": [
-                                                                                                "id"
-                                                                                              ],
-                                                                                              "additionalProperties": false
-                                                                                            }
-                                                                                          },
-                                                                                          "referenceCell": {
-                                                                                            "type": "object",
-                                                                                            "properties": {
-                                                                                              "column": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "value": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "id": {
-                                                                                                "type": "string"
-                                                                                              }
-                                                                                            },
-                                                                                            "required": [
-                                                                                              "id"
-                                                                                            ],
-                                                                                            "additionalProperties": false
-                                                                                          }
-                                                                                        },
-                                                                                        "required": [
-                                                                                          "action",
-                                                                                          "cellsToUpsert"
-                                                                                        ],
-                                                                                        "additionalProperties": false
+                                                                                      "sheetId": {
+                                                                                        "type": "string"
+                                                                                      },
+                                                                                      "spreadsheetId": {
+                                                                                        "type": "string"
                                                                                       }
-                                                                                    ]
+                                                                                    },
+                                                                                    "additionalProperties": false
                                                                                   }
                                                                                 ]
                                                                               }
@@ -4850,6 +4850,36 @@
                         }
                       },
                       "additionalProperties": false
+                    },
+                    "logs": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "description"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "details": {}
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
                     }
                   },
                   "required": [

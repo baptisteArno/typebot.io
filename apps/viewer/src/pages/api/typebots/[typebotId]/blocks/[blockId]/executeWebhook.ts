@@ -11,7 +11,6 @@ import {
   WebhookBlock,
   HttpMethod,
 } from 'models'
-import { parseVariables } from 'bot-engine'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
 import { byId, omit, parseAnswers } from 'utils'
@@ -25,6 +24,7 @@ import {
   getLinkedTypebots,
   getLinkedTypebotsChildren,
 } from '@/features/blocks/logic/typebotLink/api'
+import { parseVariables } from '@/features/variables'
 
 const cors = initMiddleware(Cors())
 

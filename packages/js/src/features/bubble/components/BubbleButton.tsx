@@ -1,4 +1,5 @@
 import { Show } from 'solid-js'
+import { isNotDefined } from 'utils'
 import { ButtonTheme } from '../types'
 
 type Props = ButtonTheme & {
@@ -7,6 +8,7 @@ type Props = ButtonTheme & {
 }
 
 const defaultButtonColor = '#0042DA'
+const defaultIconColor = 'white'
 
 export const BubbleButton = (props: Props) => {
   return (
@@ -20,27 +22,23 @@ export const BubbleButton = (props: Props) => {
         'background-color': props.backgroundColor ?? defaultButtonColor,
       }}
     >
-      <Show when={props.icon?.color} keyed>
-        {(color) => (
-          <svg
-            viewBox="0 0 24 24"
-            style={{
-              stroke: color,
-            }}
-            class={
-              `w-7 stroke-2 fill-transparent absolute duration-200 transition ` +
-              (props.isBotOpened
-                ? 'scale-0 opacity-0'
-                : 'scale-100 opacity-100')
-            }
-          >
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-          </svg>
-        )}
+      <Show when={isNotDefined(props.customIconSrc)} keyed>
+        <svg
+          viewBox="0 0 24 24"
+          style={{
+            stroke: props.iconColor ?? defaultIconColor,
+          }}
+          class={
+            `w-7 stroke-2 fill-transparent absolute duration-200 transition ` +
+            (props.isBotOpened ? 'scale-0 opacity-0' : 'scale-100 opacity-100')
+          }
+        >
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+        </svg>
       </Show>
-      <Show when={props.icon?.url}>
+      <Show when={props.customIconSrc}>
         <img
-          src={props.icon?.url}
+          src={props.customIconSrc}
           class="w-7 h-7 rounded-full object-cover"
           alt="Bubble button icon"
         />
@@ -48,7 +46,7 @@ export const BubbleButton = (props: Props) => {
 
       <svg
         viewBox="0 0 24 24"
-        style={{ fill: props.icon?.color ?? 'white' }}
+        style={{ fill: props.iconColor ?? 'white' }}
         class={
           `w-7 absolute duration-200 transition ` +
           (props.isBotOpened

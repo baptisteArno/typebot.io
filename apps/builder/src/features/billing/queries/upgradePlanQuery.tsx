@@ -1,12 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js/pure'
 import { Plan, User } from 'db'
-import {
-  env,
-  guessIfUserIsEuropean,
-  isDefined,
-  isEmpty,
-  sendRequest,
-} from 'utils'
+import { env, isDefined, isEmpty, sendRequest } from 'utils'
+import { guessIfUserIsEuropean } from 'utils/pricing'
 
 type UpgradeProps = {
   user: User

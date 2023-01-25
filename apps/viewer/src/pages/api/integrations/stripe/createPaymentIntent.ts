@@ -11,7 +11,7 @@ import Stripe from 'stripe'
 import Cors from 'cors'
 import { PaymentInputOptions, StripeCredentialsData, Variable } from 'models'
 import prisma from '@/lib/prisma'
-import { parseVariables } from 'bot-engine'
+import { parseVariables } from '@/features/variables'
 
 const cors = initMiddleware(Cors())
 

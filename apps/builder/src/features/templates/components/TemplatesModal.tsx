@@ -76,7 +76,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             </Heading>
             {typebot && (
               <TypebotViewer
-                apiHost={getViewerUrl({ isBuilder: true })}
+                apiHost={getViewerUrl()}
                 typebot={parseTypebotToPublicTypebot(typebot)}
                 key={typebot.id}
                 style={{ borderRadius: '0.25rem' }}

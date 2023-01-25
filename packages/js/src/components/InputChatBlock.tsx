@@ -1,10 +1,9 @@
-import {
+import type {
   ChatReply,
   ChoiceInputBlock,
   DateInputOptions,
   EmailInputBlock,
   FileInputBlock,
-  InputBlockType,
   NumberInputBlock,
   PaymentInputOptions,
   PhoneNumberInputBlock,
@@ -14,6 +13,7 @@ import {
   Theme,
   UrlInputBlock,
 } from 'models'
+import { InputBlockType } from 'models/features/blocks/inputs/enums'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { BotContext, InputSubmitContent } from '@/types'
 import { TextInput } from '@/features/blocks/inputs/textInput'
@@ -35,6 +35,7 @@ type Props = {
   guestAvatar?: Theme['chat']['guestAvatar']
   inputIndex: number
   context: BotContext
+  isInputPrefillEnabled: boolean
   onSubmit: (answer: string) => void
   onSkip: () => void
 }
@@ -72,6 +73,7 @@ export const InputChatBlock = (props: Props) => {
             context={props.context}
             block={props.block}
             inputIndex={props.inputIndex}
+            isInputPrefillEnabled={props.isInputPrefillEnabled}
             onSubmit={handleSubmit}
             onSkip={() => props.onSkip()}
             hasGuestAvatar={props.guestAvatar?.isEnabled ?? false}
@@ -87,17 +89,21 @@ const Input = (props: {
   block: NonNullable<ChatReply['input']>
   inputIndex: number
   hasGuestAvatar: boolean
+  isInputPrefillEnabled: boolean
   onSubmit: (answer: InputSubmitContent) => void
   onSkip: () => void
 }) => {
   const onSubmit = (answer: InputSubmitContent) => props.onSubmit(answer)
+
+  const getPrefilledValue = () =>
+    props.isInputPrefillEnabled ? props.block.prefilledValue : undefined
 
   return (
     <Switch>
       <Match when={props.block.type === InputBlockType.TEXT}>
         <TextInput
           block={props.block as TextInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -105,7 +111,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.NUMBER}>
         <NumberInput
           block={props.block as NumberInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -113,7 +119,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.EMAIL}>
         <EmailInput
           block={props.block as EmailInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -121,7 +127,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.URL}>
         <UrlInput
           block={props.block as UrlInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -129,7 +135,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.PHONE}>
         <PhoneInput
           block={props.block as PhoneNumberInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
         />
@@ -150,7 +156,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.RATING}>
         <RatingForm
           block={props.block as RatingInputBlock}
-          defaultValue={props.block.prefilledValue}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
         />
       </Match>

@@ -13,9 +13,9 @@ export const IframeEmbedCode = ({
   heightLabel,
 }: Props & FlexProps) => {
   const { typebot } = useTypebot()
-  const src = `${
-    env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-  }/${typebot?.publicId}`
+  const src = `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+    typebot?.publicId
+  }`
   const code = `<iframe src="${src}" width="${widthLabel}" height="${heightLabel}" style="border: none"></iframe>`
 
   return <CodeEditor value={code} lang="html" isReadOnly />

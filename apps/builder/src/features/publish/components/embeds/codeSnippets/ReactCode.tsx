@@ -20,9 +20,9 @@ export const StandardReactDiv = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseContainerSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       heightLabel,
       widthLabel,
     }),
@@ -70,9 +70,9 @@ export const PopupReactCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parsePopupSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       delay,
     }),
     {
@@ -119,9 +119,9 @@ export const ChatReactCode = ({
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     parseBubbleSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       button,
       proactiveMessage,
     }),

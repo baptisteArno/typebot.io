@@ -1,4 +1,4 @@
-import { CodeToExecute } from 'models'
+import type { CodeToExecute } from 'models'
 
 export const executeCode = async ({ content, args }: CodeToExecute) => {
   const func = Function(...args.map((arg) => arg.id), content)

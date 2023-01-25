@@ -1,5 +1,5 @@
-import { TypingBubble } from '@/components/bubbles/TypingBubble'
-import { AudioBubbleContent } from 'models'
+import { TypingBubble } from '@/components'
+import type { AudioBubbleContent } from 'models'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {

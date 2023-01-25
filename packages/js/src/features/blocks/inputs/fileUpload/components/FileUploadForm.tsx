@@ -1,6 +1,7 @@
 import { SendButton, Spinner } from '@/components/SendButton'
 import { BotContext, InputSubmitContent } from '@/types'
-import { defaultFileInputOptions, FileInputBlock } from 'models'
+import { FileInputBlock } from 'models'
+import { defaultFileInputOptions } from 'models/features/blocks/inputs/file'
 import { createSignal, Match, Show, Switch } from 'solid-js'
 import { uploadFiles } from 'utils'
 
@@ -140,7 +141,7 @@ export const FileUploadForm = (props: Props) => {
                   <span class="relative">
                     <FileIcon />
                     <div
-                      class="total-files-indicator flex items-center justify-center absolute -right-1 rounded-full px-1 h-4"
+                      class="total-files-indicator flex items-center justify-center absolute -right-1 rounded-full px-1 w-4 h-4"
                       style={{ bottom: '5px' }}
                     >
                       {selectedFiles().length}
@@ -177,7 +178,7 @@ export const FileUploadForm = (props: Props) => {
             class={
               'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
             }
-            onClick={() => props.onSkip()}
+            on:click={() => props.onSkip()}
           >
             {props.block.options.labels.skip ??
               defaultFileInputOptions.labels.skip}
@@ -198,7 +199,7 @@ export const FileUploadForm = (props: Props) => {
                 class={
                   'secondary-button py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 mr-2'
                 }
-                onClick={clearFiles}
+                on:click={clearFiles}
               >
                 {props.block.options.labels.clear ??
                   defaultFileInputOptions.labels.clear}
@@ -233,7 +234,7 @@ const UploadIcon = () => (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="mb-3"
+    class="mb-3 text-gray-500"
   >
     <polyline points="16 16 12 12 8 16" />
     <line x1="12" y1="12" x2="12" y2="21" />
@@ -244,7 +245,6 @@ const UploadIcon = () => (
 
 const FileIcon = () => (
   <svg
-    class="mb-3"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -254,6 +254,7 @@ const FileIcon = () => (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
+    class="mb-3 text-gray-500"
   >
     <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
     <polyline points="13 2 13 9 20 9" />

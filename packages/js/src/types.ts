@@ -1,4 +1,4 @@
-import { ChatReply } from 'models'
+import type { ChatReply } from 'models'
 
 export type InputSubmitContent = {
   label?: string

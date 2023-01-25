@@ -123,7 +123,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
         <ModalBody p="10">
           {typebot && (
             <TypebotViewer
-              apiHost={getViewerUrl({ isBuilder: true })}
+              apiHost={getViewerUrl()}
               typebot={parseTypebotToPublicTypebot(typebot)}
               predefinedVariables={{
                 Name: user?.name?.split(' ')[0] ?? undefined,

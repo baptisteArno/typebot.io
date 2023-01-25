@@ -3,15 +3,15 @@ import { EmbedBubble } from '@/features/blocks/bubbles/embed'
 import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
 import { VideoBubble } from '@/features/blocks/bubbles/video'
-import {
+import type {
   AudioBubbleContent,
-  BubbleBlockType,
   ChatMessage,
   EmbedBubbleContent,
   ImageBubbleContent,
   TextBubbleContent,
   VideoBubbleContent,
 } from 'models'
+import { BubbleBlockType } from 'models/features/blocks/bubbles/enums'
 import { Match, Switch } from 'solid-js'
 
 type Props = {

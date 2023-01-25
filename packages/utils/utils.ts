@@ -1,23 +1,23 @@
-import {
+import type {
   BubbleBlock,
-  BubbleBlockType,
   ChoiceInputBlock,
   ConditionBlock,
   InputBlock,
-  InputBlockType,
   IntegrationBlock,
-  IntegrationBlockType,
   LogicBlock,
-  LogicBlockType,
   Block,
   TextInputBlock,
   TextBubbleBlock,
   WebhookBlock,
   BlockType,
-  BlockWithOptionsType,
   ImageBubbleBlock,
   VideoBubbleBlock,
+  BlockWithOptionsType,
 } from 'models'
+import { InputBlockType } from 'models/features/blocks/inputs/enums'
+import { BubbleBlockType } from 'models/features/blocks/bubbles/enums'
+import { LogicBlockType } from 'models/features/blocks/logic/enums'
+import { IntegrationBlockType } from 'models/features/blocks/integrations/enums'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -265,20 +265,9 @@ export const hasValue = (
   value !== 'null'
 
 export const getViewerUrl = (props?: {
-  isBuilder?: boolean
   returnAll?: boolean
-}): string | undefined => {
-  if (env('VIEWER_URL'))
-    return props?.returnAll
-      ? env('VIEWER_URL')
-      : env('VIEWER_URL')?.split(',')[0]
-  return (
-    'https://' +
-    (props?.isBuilder
-      ? env('VERCEL_URL')?.replace('builder-v2', 'viewer-v2')
-      : env('VERCEL_URL'))
-  )
-}
+}): string | undefined =>
+  props?.returnAll ? env('VIEWER_URL') : env('VIEWER_URL')?.split(',')[0]
 
 export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

@@ -1,5 +1,4 @@
 import { Show } from 'solid-js'
-import { isDefined } from 'utils'
 import { Avatar } from '../avatars/Avatar'
 
 type Props = {
@@ -19,8 +18,8 @@ export const GuestBubble = (props: Props) => (
     >
       {props.message}
     </span>
-    <Show when={isDefined(props.avatarSrc)}>
-      <Avatar avatarSrc={props.avatarSrc} />
+    <Show when={props.showAvatar}>
+      <Avatar initialAvatarSrc={props.avatarSrc} />
     </Show>
   </div>
 )

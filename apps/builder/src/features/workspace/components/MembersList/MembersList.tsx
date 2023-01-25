@@ -8,7 +8,7 @@ import {
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { WorkspaceInvitation, WorkspaceRole } from 'db'
 import React from 'react'
-import { getSeatsLimit } from 'utils'
+import { getSeatsLimit } from 'utils/pricing'
 import { AddMemberForm } from './AddMemberForm'
 import { checkCanInviteMember } from './helpers'
 import { MemberItem } from './MemberItem'

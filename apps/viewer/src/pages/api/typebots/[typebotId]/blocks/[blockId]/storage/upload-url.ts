@@ -2,7 +2,8 @@ import prisma from '@/lib/prisma'
 import { InputBlockType, PublicTypebot } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { badRequest, generatePresignedUrl, methodNotAllowed } from 'utils/api'
-import { byId, env, getStorageLimit, isDefined } from 'utils'
+import { byId, env, isDefined } from 'utils'
+import { getStorageLimit } from 'utils/pricing'
 import {
   sendAlmostReachedStorageLimitEmail,
   sendReachedStorageLimitEmail,

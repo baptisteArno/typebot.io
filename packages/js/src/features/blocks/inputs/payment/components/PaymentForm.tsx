@@ -1,5 +1,6 @@
 import { BotContext } from '@/types'
-import { PaymentInputOptions, PaymentProvider, RuntimeOptions } from 'models'
+import type { PaymentInputOptions, RuntimeOptions } from 'models'
+import { PaymentProvider } from 'models/features/blocks/inputs/payment/enums'
 import { Match, Switch } from 'solid-js'
 import { StripePaymentForm } from './StripePaymentForm'
 

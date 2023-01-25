@@ -1,5 +1,5 @@
 import { sendGaEvent } from '@/lib/gtag'
-import { GoogleAnalyticsOptions } from 'models'
+import type { GoogleAnalyticsOptions } from 'models'
 
 export const executeGoogleAnalyticsBlock = async (
   options: GoogleAnalyticsOptions

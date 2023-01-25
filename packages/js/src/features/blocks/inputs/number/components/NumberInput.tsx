@@ -1,8 +1,8 @@
-import { ShortTextInput } from '@/components/inputs'
+import { ShortTextInput } from '@/components'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { NumberInputBlock } from 'models'
+import type { NumberInputBlock } from 'models'
 import { createSignal, onMount } from 'solid-js'
 
 type NumberInputProps = {
@@ -62,7 +62,7 @@ export const NumberInput = (props: NumberInputProps) => {
         type="button"
         isDisabled={inputValue() === ''}
         class="my-2 ml-2"
-        onClick={submit}
+        on:click={submit}
       >
         {props.block.options?.labels?.button ?? 'Send'}
       </SendButton>

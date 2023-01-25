@@ -1,6 +1,6 @@
 import { BotContext } from '@/types'
-import { ChatReply, Settings, Theme } from 'models'
-import { createSignal, For, Show } from 'solid-js'
+import type { ChatReply, Settings, Theme } from 'models'
+import { createSignal, For, onMount, Show } from 'solid-js'
 import { HostBubble } from '../bubbles/HostBubble'
 import { InputChatBlock } from '../InputChatBlock'
 import { AvatarSideContainer } from './AvatarSideContainer'
@@ -18,6 +18,10 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
 
 export const ChatChunk = (props: Props) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
+
+  onMount(() => {
+    props.onScrollToBottom()
+  })
 
   const displayNextMessage = () => {
     setDisplayedMessageIndex(
@@ -70,6 +74,9 @@ export const ChatChunk = (props: Props) => {
             onSkip={props.onSkip}
             guestAvatar={props.theme.chat.guestAvatar}
             context={props.context}
+            isInputPrefillEnabled={
+              props.settings.general.isInputPrefillEnabled ?? true
+            }
           />
         )}
       </div>

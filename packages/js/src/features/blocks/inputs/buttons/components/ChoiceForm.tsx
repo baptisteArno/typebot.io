@@ -1,6 +1,6 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { ChoiceInputBlock } from 'models'
+import type { ChoiceInputBlock } from 'models'
 import { createSignal, For } from 'solid-js'
 
 type Props = {
@@ -12,8 +12,7 @@ type Props = {
 export const ChoiceForm = (props: Props) => {
   const [selectedIndices, setSelectedIndices] = createSignal<number[]>([])
 
-  const handleClick = (itemIndex: number) => (e: MouseEvent) => {
-    e.preventDefault()
+  const handleClick = (itemIndex: number) => {
     if (props.block.options?.isMultipleChoice)
       toggleSelectedItemIndex(itemIndex)
     else props.onSubmit({ value: props.block.items[itemIndex].content ?? '' })
@@ -47,7 +46,8 @@ export const ChoiceForm = (props: Props) => {
                 role={
                   props.block.options?.isMultipleChoice ? 'checkbox' : 'button'
                 }
-                onClick={(event) => handleClick(index())(event)}
+                type="button"
+                on:click={() => handleClick(index())}
                 class={
                   'py-2 px-4 text-left font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
                   (selectedIndices().some(

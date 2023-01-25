@@ -1,4 +1,4 @@
-import { GoogleAnalyticsOptions } from 'models'
+import type { GoogleAnalyticsOptions } from 'models'
 
 declare const gtag: (
   type: string,

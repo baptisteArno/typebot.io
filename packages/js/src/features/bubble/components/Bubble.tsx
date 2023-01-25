@@ -1,11 +1,11 @@
-import styles from '../../../assets/index.css'
 import { createSignal, onMount, Show, splitProps, onCleanup } from 'solid-js'
-import { Bot, BotProps } from '../../../components/Bot'
-import { CommandData } from '@/features/commands'
+import styles from '../../../assets/index.css'
+import { CommandData } from '../../commands'
 import { BubbleButton } from './BubbleButton'
 import { PreviewMessage, PreviewMessageProps } from './PreviewMessage'
 import { isDefined } from 'utils'
 import { BubbleParams } from '../types'
+import { Bot, BotProps } from '../../../components/Bot'
 
 export type BubbleProps = BotProps &
   BubbleParams & {
@@ -131,7 +131,11 @@ export const Bubble = (props: BubbleProps) => {
         }
       >
         <Show when={isBotStarted()}>
-          <Bot {...botProps} prefilledVariables={prefilledVariables()} />
+          <Bot
+            {...botProps}
+            prefilledVariables={prefilledVariables()}
+            class="rounded-lg"
+          />
         </Show>
       </div>
     </>

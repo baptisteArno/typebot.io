@@ -40,8 +40,15 @@ export const sendMessageProcedure = publicProcedure
     const session = sessionId ? await getSession(sessionId) : null
 
     if (!session) {
-      const { sessionId, typebot, messages, input, resultId, dynamicTheme } =
-        await startSession(startParams)
+      const {
+        sessionId,
+        typebot,
+        messages,
+        input,
+        resultId,
+        dynamicTheme,
+        logs,
+      } = await startSession(startParams)
       return {
         sessionId,
         typebot: typebot
@@ -55,9 +62,10 @@ export const sendMessageProcedure = publicProcedure
         input,
         resultId,
         dynamicTheme,
+        logs,
       }
     } else {
-      const { messages, input, logic, newSessionState, integrations } =
+      const { messages, input, logic, newSessionState, integrations, logs } =
         await continueBotFlow(session.state)(message)
 
       await prisma.chatSession.updateMany({
@@ -73,6 +81,7 @@ export const sendMessageProcedure = publicProcedure
         logic,
         integrations,
         dynamicTheme: parseDynamicThemeReply(newSessionState),
+        logs,
       }
     }
   })
@@ -84,6 +93,9 @@ const startSession = async (startParams?: StartParams) => {
       message: 'No typebot provided in startParams',
     })
 
+  const isPreview =
+    startParams?.isPreview || typeof startParams?.typebot !== 'string'
+
   const typebot = await getTypebot(startParams)
 
   const startVariables = startParams.prefilledVariables
@@ -92,6 +104,7 @@ const startSession = async (startParams?: StartParams) => {
 
   const result = await getResult({
     ...startParams,
+    isPreview,
     typebot: typebot.id,
     startVariables,
     isNewResultOnRefreshEnabled:
@@ -112,7 +125,7 @@ const startSession = async (startParams?: StartParams) => {
     result: result
       ? { id: result.id, variables: result.variables, hasStarted: false }
       : undefined,
-    isPreview: startParams.isPreview || typeof startParams.typebot !== 'string',
+    isPreview,
     currentTypebotId: typebot.id,
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
   }
@@ -122,6 +135,7 @@ const startSession = async (startParams?: StartParams) => {
     input,
     logic,
     newSessionState: newInitialState,
+    logs,
   } = await startBotFlow(initialState, startParams.startGroupId)
 
   if (!input)
@@ -138,6 +152,7 @@ const startSession = async (startParams?: StartParams) => {
         ),
       },
       dynamicTheme: parseDynamicThemeReply(newInitialState),
+      logs,
     }
 
   const sessionState: ChatSession['state'] = {
@@ -170,6 +185,7 @@ const startSession = async (startParams?: StartParams) => {
     input,
     logic,
     dynamicTheme: parseDynamicThemeReply(newInitialState),
+    logs,
   } satisfies ChatReply
 }
 

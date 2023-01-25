@@ -1,4 +1,4 @@
-import { ChatReply, SendMessageInput } from 'models'
+import type { ChatReply, SendMessageInput } from 'models'
 import { getViewerUrl, isEmpty, sendRequest } from 'utils'
 
 export async function sendMessageQuery({

@@ -1,5 +1,5 @@
-import { ChatReply, Theme } from 'models'
-import { createSignal, For } from 'solid-js'
+import type { ChatReply, Theme } from 'models'
+import { createEffect, createSignal, For } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
 import { BotContext, InitialChatReply } from '@/types'
@@ -7,24 +7,26 @@ import { executeIntegrations } from '@/utils/executeIntegrations'
 import { executeLogic } from '@/utils/executeLogic'
 
 const parseDynamicTheme = (
-  theme: Theme,
+  initialTheme: Theme,
   dynamicTheme: ChatReply['dynamicTheme']
 ): Theme => ({
-  ...theme,
+  ...initialTheme,
   chat: {
-    ...theme.chat,
-    hostAvatar: theme.chat.hostAvatar
-      ? {
-          ...theme.chat.hostAvatar,
-          url: dynamicTheme?.hostAvatarUrl,
-        }
-      : undefined,
-    guestAvatar: theme.chat.guestAvatar
-      ? {
-          ...theme.chat.guestAvatar,
-          url: dynamicTheme?.guestAvatarUrl,
-        }
-      : undefined,
+    ...initialTheme.chat,
+    hostAvatar:
+      initialTheme.chat.hostAvatar && dynamicTheme?.hostAvatarUrl
+        ? {
+            ...initialTheme.chat.hostAvatar,
+            url: dynamicTheme.hostAvatarUrl,
+          }
+        : initialTheme.chat.hostAvatar,
+    guestAvatar:
+      initialTheme.chat.guestAvatar && dynamicTheme?.guestAvatarUrl
+        ? {
+            ...initialTheme.chat.guestAvatar,
+            url: dynamicTheme?.guestAvatarUrl,
+          }
+        : initialTheme.chat.guestAvatar,
   },
 })
 
@@ -34,9 +36,11 @@ type Props = {
   onNewInputBlock?: (ids: { id: string; groupId: string }) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
+  onNewLogs?: (logs: ChatReply['logs']) => void
 }
 
 export const ConversationContainer = (props: Props) => {
+  let chatContainer: HTMLDivElement | undefined
   let bottomSpacer: HTMLDivElement | undefined
   const [chatChunks, setChatChunks] = createSignal<ChatReply[]>([
     {
@@ -44,12 +48,16 @@ export const ConversationContainer = (props: Props) => {
       messages: props.initialChatReply.messages,
     },
   ])
-  const [theme, setTheme] = createSignal(
-    parseDynamicTheme(
-      props.initialChatReply.typebot.theme,
-      props.initialChatReply.dynamicTheme
+  const [dynamicTheme, setDynamicTheme] = createSignal<
+    ChatReply['dynamicTheme']
+  >(props.initialChatReply.dynamicTheme)
+  const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme)
+
+  createEffect(() => {
+    setTheme(
+      parseDynamicTheme(props.initialChatReply.typebot.theme, dynamicTheme())
     )
-  )
+  })
 
   const sendMessage = async (message: string) => {
     const currentBlockId = chatChunks().at(-1)?.input?.id
@@ -61,7 +69,8 @@ export const ConversationContainer = (props: Props) => {
       message,
     })
     if (!data) return
-    if (data.dynamicTheme) applyDynamicTheme(data.dynamicTheme)
+    if (data.logs) props.onNewLogs?.(data.logs)
+    if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme)
     if (data.input?.id && props.onNewInputBlock) {
       props.onNewInputBlock({
         id: data.input.id,
@@ -83,19 +92,18 @@ export const ConversationContainer = (props: Props) => {
     ])
   }
 
-  const applyDynamicTheme = (dynamicTheme: ChatReply['dynamicTheme']) => {
-    setTheme((theme) => parseDynamicTheme(theme, dynamicTheme))
-  }
-
   const autoScrollToBottom = () => {
     if (!bottomSpacer) return
     setTimeout(() => {
-      bottomSpacer?.scrollIntoView({ behavior: 'smooth' })
-    }, 200)
+      chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+    }, 50)
   }
 
   return (
-    <div class="overflow-y-scroll w-full min-h-full rounded px-3 pt-10 relative scrollable-container typebot-chat-view">
+    <div
+      ref={chatContainer}
+      class="overflow-y-scroll w-full min-h-full rounded px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth"
+    >
       <For each={chatChunks()}>
         {(chatChunk, index) => (
           <ChatChunk

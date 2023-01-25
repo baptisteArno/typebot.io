@@ -1,6 +1,6 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { RatingInputBlock, RatingInputOptions } from 'models'
+import type { RatingInputBlock, RatingInputOptions } from 'models'
 import { createSignal, For, Match, Switch } from 'solid-js'
 import { isDefined, isEmpty, isNotDefined } from 'utils'
 
@@ -84,7 +84,7 @@ const RatingButton = (props: RatingButtonProps) => {
     <Switch>
       <Match when={props.buttonType === 'Numbers'}>
         <button
-          onClick={(e) => {
+          on:click={(e) => {
             e.preventDefault()
             props.onClick(props.idx)
           }}
@@ -111,7 +111,7 @@ const RatingButton = (props: RatingButtonProps) => {
               ? props.customIcon.svg
               : defaultIcon
           }
-          onClick={() => props.onClick(props.idx)}
+          on:click={() => props.onClick(props.idx)}
         />
       </Match>
     </Switch>

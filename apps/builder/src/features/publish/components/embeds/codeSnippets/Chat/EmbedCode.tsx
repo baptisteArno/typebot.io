@@ -20,9 +20,9 @@ export const ChatEmbedCode = ({
 
   const snippet = prettier.format(
     createSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       button,
       proactiveMessage,
     }),

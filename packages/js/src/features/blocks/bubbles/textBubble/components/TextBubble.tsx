@@ -1,5 +1,5 @@
-import { TypingBubble } from '@/components/bubbles/TypingBubble'
-import { TextBubbleContent, TypingEmulation } from 'models'
+import { TypingBubble } from '@/components'
+import type { TextBubbleContent, TypingEmulation } from 'models'
 import { createSignal, onMount } from 'solid-js'
 import { computeTypingDuration } from '../utils/computeTypingDuration'
 

@@ -1,6 +1,6 @@
 import { createSignal, onCleanup, onMount } from 'solid-js'
-import { Avatar } from '@/components/avatars/Avatar'
 import { isMobile } from '@/utils/isMobileSignal'
+import { Avatar } from '../avatars/Avatar'
 
 type Props = { hostAvatarSrc?: string }
 
@@ -42,7 +42,7 @@ export const AvatarSideContainer = (props: Props) => {
           transition: 'top 350ms ease-out',
         }}
       >
-        <Avatar avatarSrc={props.hostAvatarSrc} />
+        <Avatar initialAvatarSrc={props.hostAvatarSrc} />
       </div>
     </div>
   )

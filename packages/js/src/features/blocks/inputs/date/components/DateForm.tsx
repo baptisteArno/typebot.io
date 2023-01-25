@@ -1,6 +1,6 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { DateInputOptions } from 'models'
+import type { DateInputOptions } from 'models'
 import { createSignal } from 'solid-js'
 import { parseReadableDate } from '../utils/parseReadableDate'
 

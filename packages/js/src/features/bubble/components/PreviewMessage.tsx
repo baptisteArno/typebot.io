@@ -10,8 +10,8 @@ export type PreviewMessageProps = Pick<
   onCloseClick: () => void
 }
 
-const defaultFontFamily =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"
+const defaultBackgroundColor = '#F7F8FF'
+const defaultTextColor = '#303235'
 
 export const PreviewMessage = (props: PreviewMessageProps) => {
   const [isPreviewMessageHovered, setIsPreviewMessageHovered] =
@@ -23,11 +23,9 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       onClick={props.onClick}
       class="absolute bottom-20 right-4 w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4"
       style={{
-        'font-family':
-          props.previewMessageTheme?.fontFamily ?? defaultFontFamily,
         'background-color':
-          props.previewMessageTheme?.backgroundColor ?? '#F7F8FF',
-        color: props.previewMessageTheme?.color ?? '#303235',
+          props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,
+        color: props.previewMessageTheme?.textColor ?? defaultTextColor,
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}
@@ -43,8 +41,10 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
         }}
         style={{
           'background-color':
-            props.previewMessageTheme?.closeButtonBgColor ?? '#F7F8FF',
-          color: props.previewMessageTheme?.closeButtonColor ?? '#303235',
+            props.previewMessageTheme?.closeButtonBackgroundColor ??
+            defaultBackgroundColor,
+          color:
+            props.previewMessageTheme?.closeButtonIconColor ?? defaultTextColor,
         }}
       >
         <svg

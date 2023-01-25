@@ -12,7 +12,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "declaration": true,
-    "declarationDir": "dts",
+    "declarationMap": true,
+    "outDir": "dist",
     "emitDeclarationOnly": true
   }
 }

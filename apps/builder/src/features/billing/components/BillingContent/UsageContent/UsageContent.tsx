@@ -11,7 +11,8 @@ import {
 import { AlertIcon } from '@/components/icons'
 import { Plan, Workspace } from 'db'
 import React from 'react'
-import { getChatsLimit, getStorageLimit, parseNumberWithCommas } from 'utils'
+import { parseNumberWithCommas } from 'utils'
+import { getChatsLimit, getStorageLimit } from 'utils/pricing'
 import { storageToReadable } from './helpers'
 import { useUsage } from '../../../hooks/useUsage'
 

@@ -14,15 +14,15 @@ import { ChevronLeftIcon } from '@/components/icons'
 import { useWorkspace } from '@/features/workspace'
 import { Plan } from 'db'
 import { useEffect, useState } from 'react'
+import { parseNumberWithCommas } from 'utils'
 import {
   chatsLimit,
+  computePrice,
+  formatPrice,
   getChatsLimit,
   getStorageLimit,
   storageLimit,
-  parseNumberWithCommas,
-  computePrice,
-  formatPrice,
-} from 'utils'
+} from 'utils/pricing'
 import { FeaturesList } from './components/FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 

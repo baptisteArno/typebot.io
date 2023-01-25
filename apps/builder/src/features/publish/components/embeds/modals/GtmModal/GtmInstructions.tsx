@@ -40,9 +40,7 @@ const StandardInstructions = ({ publicId }: Pick<ModalProps, 'publicId'>) => {
   })
 
   const jsCode = parseInitContainerCode({
-    url: `${
-      env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-    }/${publicId}`,
+    url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${publicId}`,
   })
   const headCode = `${typebotJsHtml}
   <script>

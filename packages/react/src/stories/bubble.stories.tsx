@@ -8,6 +8,7 @@ import {
   setPrefilledVariables,
 } from '@typebot.io/js'
 import { useState } from 'react'
+import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
 
 export const Default = () => {
   const [name, setName] = useState('John')
@@ -32,7 +33,7 @@ export const Default = () => {
       </div>
 
       <Bubble
-        typebot="ladleTypebot"
+        typebot={leadGenerationTypebot}
         apiHost="http://localhost:3001"
         prefilledVariables={{
           Name: 'John',
@@ -45,9 +46,7 @@ export const Default = () => {
         theme={{
           button: {
             backgroundColor: '#FF7537',
-            icon: {
-              color: 'white',
-            },
+            iconColor: 'white',
           },
         }}
         isPreview

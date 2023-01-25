@@ -17,9 +17,9 @@ export const PopupEmbedCode = ({ delay }: PopupEmbedCodeProps & FlexProps) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     createSnippet({
-      url: `${
-        env('VIEWER_INTERNAL_URL') ?? getViewerUrl({ isBuilder: true })
-      }/${typebot?.publicId}`,
+      url: `${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}/${
+        typebot?.publicId
+      }`,
       delay,
     }),
     {

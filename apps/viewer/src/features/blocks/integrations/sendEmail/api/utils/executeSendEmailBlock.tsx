@@ -19,11 +19,21 @@ import { decrypt } from 'utils/api'
 import { defaultFrom, defaultTransportOptions } from '../constants'
 
 export const executeSendEmailBlock = async (
-  { result, typebot }: SessionState,
+  { result, typebot, isPreview }: SessionState,
   block: SendEmailBlock
 ): Promise<ExecuteIntegrationResponse> => {
   const { options } = block
   const { variables } = typebot
+  if (isPreview)
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+      logs: [
+        {
+          status: 'info',
+          description: 'Emails are not sent in preview mode',
+        },
+      ],
+    }
   await sendEmail({
     typebotId: typebot.id,
     resultId: result?.id,

@@ -1,4 +1,4 @@
-import { TypingEmulation } from 'models'
+import type { TypingEmulation } from 'models'
 
 export const computeTypingDuration = (
   bubbleContent: string,

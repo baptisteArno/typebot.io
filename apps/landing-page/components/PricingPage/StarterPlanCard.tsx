@@ -14,12 +14,8 @@ import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from 'db'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import {
-  chatsLimit,
-  computePrice,
-  parseNumberWithCommas,
-  storageLimit,
-} from 'utils'
+import { parseNumberWithCommas } from 'utils'
+import { chatsLimit, computePrice, storageLimit } from 'utils/pricing'
 import { PricingCard } from './PricingCard'
 
 export const StarterPlanCard = () => {

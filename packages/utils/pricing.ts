@@ -1,4 +1,5 @@
-import { Plan, Workspace } from 'db'
+import type { Workspace } from 'db'
+import { Plan } from 'db'
 
 const infinity = -1
 

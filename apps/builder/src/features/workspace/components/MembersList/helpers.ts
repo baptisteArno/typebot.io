@@ -1,5 +1,5 @@
 import { Plan } from 'db'
-import { getSeatsLimit } from 'utils'
+import { getSeatsLimit } from 'utils/pricing'
 
 export function checkCanInviteMember({
   plan,

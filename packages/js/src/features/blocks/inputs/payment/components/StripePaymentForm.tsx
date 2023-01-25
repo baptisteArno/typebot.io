@@ -1,9 +1,9 @@
 import { SendButton } from '@/components/SendButton'
 import { createSignal, onMount, Show } from 'solid-js'
-import { loadStripe } from '@stripe/stripe-js/pure'
 import type { Stripe, StripeElements } from '@stripe/stripe-js'
 import { BotContext } from '@/types'
-import { PaymentInputOptions, RuntimeOptions } from 'models'
+import type { PaymentInputOptions, RuntimeOptions } from 'models'
+import { loadStripe } from '@/lib/stripe'
 
 type Props = {
   context: BotContext

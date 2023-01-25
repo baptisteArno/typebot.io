@@ -1,4 +1,4 @@
-import { RedirectOptions } from 'models'
+import type { RedirectOptions } from 'models'
 
 export const executeRedirect = ({ url, isNewTab }: RedirectOptions) => {
   if (!url) return

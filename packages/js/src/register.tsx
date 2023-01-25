@@ -1,19 +1,16 @@
 import { customElement } from 'solid-element'
-import { Bot, BotProps } from './components/Bot'
-import { Bubble, BubbleProps } from './features/bubble'
-import { Popup, PopupProps } from './features/popup'
+import {
+  defaultBotProps,
+  defaultBubbleProps,
+  defaultPopupProps,
+} from './constants'
+import { Bubble } from './features/bubble'
+import { Popup } from './features/popup'
+import { Standard } from './features/standard'
 
-export const registerStandardComponent = (props: BotProps) => {
+export const registerWebComponents = () => {
   if (typeof window === 'undefined') return
-  customElement('typebot-standard', props, Bot)
-}
-
-export const registerBubbleComponent = (props: BubbleProps) => {
-  if (typeof window === 'undefined') return
-  customElement('typebot-bubble', props, Bubble)
-}
-
-export const registerPopupComponent = (props: PopupProps) => {
-  if (typeof window === 'undefined') return
-  customElement('typebot-popup', props, Popup)
+  customElement('typebot-standard', defaultBotProps, Standard)
+  customElement('typebot-bubble', defaultBubbleProps, Bubble)
+  customElement('typebot-popup', defaultPopupProps, Popup)
 }

@@ -50,7 +50,7 @@ if (window.$chatwoot) {
 }`
 
 export const executeChatwootBlock = (
-  { typebot: { variables } }: SessionState,
+  { typebot: { variables }, isPreview }: SessionState,
   block: ChatwootBlock
 ): ExecuteIntegrationResponse => {
   const chatwootCode = parseChatwootOpenCode(block.options)
@@ -71,5 +71,14 @@ export const executeChatwootBlock = (
         },
       },
     },
+    logs: isPreview
+      ? [
+          {
+            status: 'info',
+            description: 'Chatwoot block is not supported in preview',
+            details: null,
+          },
+        ]
+      : undefined,
   }
 }
