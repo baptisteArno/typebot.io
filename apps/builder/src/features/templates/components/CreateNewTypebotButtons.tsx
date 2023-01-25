@@ -41,7 +41,13 @@ export const CreateNewTypebotButtons = () => {
               ...typebot.theme,
               chat: {
                 ...typebot.theme.chat,
-                hostAvatar: { isEnabled: true, url: user.image ?? undefined },
+                hostAvatar: {
+                  isEnabled: true,
+                  url:
+                    typebot.theme.chat.hostAvatar?.url ??
+                    user.image ??
+                    undefined,
+                },
               },
             },
           },
