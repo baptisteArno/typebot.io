@@ -89,7 +89,8 @@ export const RealTimeResults = () => {
         >
           {typebot && (
             <Standard
-              typebot={typebot}
+              typebot="airtable-real-time"
+              apiHost="https://typebot.io"
               onAnswer={handleAnswer}
               style={{
                 borderRadius: '0.375rem',
