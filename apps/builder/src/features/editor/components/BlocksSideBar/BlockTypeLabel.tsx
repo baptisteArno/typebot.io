@@ -77,6 +77,8 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
           <Text>Typebot</Text>
         </Tooltip>
       )
+    case LogicBlockType.WAIT:
+      return <Text>Wait</Text>
     case IntegrationBlockType.GOOGLE_SHEETS:
       return (
         <Tooltip label="Google Sheets">

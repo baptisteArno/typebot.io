@@ -37,6 +37,7 @@ import { SendEmailContent } from '@/features/blocks/integrations/sendEmail'
 import { isInputBlock, isChoiceInput, blockHasItems } from 'utils'
 import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
+import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
 
 type Props = {
   block: Block | StartBlock
@@ -119,6 +120,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
           content={block.options.content}
         />
       )
+    }
+    case LogicBlockType.WAIT: {
+      return <WaitNodeContent options={block.options} />
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />

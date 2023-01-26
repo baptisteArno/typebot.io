@@ -13,9 +13,7 @@ import React from 'react'
 import { VariableSearchInput } from '@/components/VariableSearchInput'
 
 type Props = {
-  onSelectVariable: (
-    variable: Pick<Variable, 'name' | 'id'> | undefined
-  ) => void
+  onSelectVariable: (variable: Pick<Variable, 'name' | 'id'>) => void
 } & Omit<IconButtonProps, 'aria-label'>
 
 export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {

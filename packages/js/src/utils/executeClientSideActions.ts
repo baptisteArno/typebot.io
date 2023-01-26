@@ -2,6 +2,7 @@ import { executeChatwoot } from '@/features/blocks/integrations/chatwoot'
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics'
 import { executeCode } from '@/features/blocks/logic/code'
 import { executeRedirect } from '@/features/blocks/logic/redirect'
+import { executeWait } from '@/features/blocks/logic/wait/utils/executeWait'
 import type { ChatReply } from 'models'
 
 export const executeClientSideAction = async (
@@ -18,5 +19,8 @@ export const executeClientSideAction = async (
   }
   if ('redirect' in clientSideAction) {
     executeRedirect(clientSideAction.redirect)
+  }
+  if ('wait' in clientSideAction) {
+    await executeWait(clientSideAction.wait)
   }
 }

@@ -41,6 +41,7 @@ import { ButtonsOptionsForm } from '@/features/blocks/inputs/buttons'
 import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom'
 import { HelpDocButton } from './HelpDocButton'
+import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -207,6 +208,14 @@ export const BlockSettings = ({
     case LogicBlockType.TYPEBOT_LINK: {
       return (
         <TypebotLinkForm
+          options={block.options}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case LogicBlockType.WAIT: {
+      return (
+        <WaitSettings
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />

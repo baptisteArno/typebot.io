@@ -4,4 +4,5 @@ export enum LogicBlockType {
   REDIRECT = 'Redirect',
   CODE = 'Code',
   TYPEBOT_LINK = 'Typebot link',
+  WAIT = 'Wait',
 }

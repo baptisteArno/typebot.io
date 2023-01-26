@@ -4,6 +4,7 @@ import { executeCondition } from '@/features/blocks/logic/condition'
 import { executeRedirect } from '@/features/blocks/logic/redirect'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable'
 import { executeTypebotLink } from '@/features/blocks/logic/typebotLink'
+import { executeWait } from '@/features/blocks/logic/wait'
 import { LinkedTypebot } from '@/providers/TypebotProvider'
 import { EdgeId, LogicState } from '@/types'
 import { LogicBlock, LogicBlockType } from 'models'
@@ -26,5 +27,7 @@ export const executeLogic = async (
       return { nextEdgeId: await executeCode(block, context) }
     case LogicBlockType.TYPEBOT_LINK:
       return executeTypebotLink(block, context)
+    case LogicBlockType.WAIT:
+      return { nextEdgeId: await executeWait(block, context) }
   }
 }

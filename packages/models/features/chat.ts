@@ -184,6 +184,13 @@ const clientSideActionSchema = z
       googleAnalytics: googleAnalyticsOptionsSchema,
     })
   )
+  .or(
+    z.object({
+      wait: z.object({
+        secondsToWaitFor: z.number(),
+      }),
+    })
+  )
 
 export const chatReplySchema = z.object({
   messages: z.array(chatMessageSchema),

@@ -14,14 +14,6 @@ The "Code" block allows you to execute Javascript code. If you want to set a var
 window.location.reload()
 ```
 
-### Wait for 3 seconds
-
-By default, Promises will be awaited. So something like this will work:
-
-```js
-return new Promise((res) => setTimeout(res, 3000))
-```
-
 ### Post a message to parent
 
 ```js

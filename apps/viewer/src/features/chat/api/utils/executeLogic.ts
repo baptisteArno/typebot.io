@@ -3,6 +3,7 @@ import { executeCondition } from '@/features/blocks/logic/condition/api'
 import { executeRedirect } from '@/features/blocks/logic/redirect/api'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable/api'
 import { executeTypebotLink } from '@/features/blocks/logic/typebotLink/api'
+import { executeWait } from '@/features/blocks/logic/wait/api/utils/executeWait'
 import { LogicBlock, LogicBlockType, SessionState } from 'models'
 import { ExecuteLogicResponse } from '../../types'
 
@@ -20,5 +21,7 @@ export const executeLogic =
         return executeCode(state, block)
       case LogicBlockType.TYPEBOT_LINK:
         return executeTypebotLink(state, block)
+      case LogicBlockType.WAIT:
+        return executeWait(state, block)
     }
   }

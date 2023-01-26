@@ -40,6 +40,8 @@ const getHelpDocUrl = (blockType: BlockWithOptions['type']): string | null => {
       return 'https://docs.typebot.io/editor/blocks/logic/redirect'
     case LogicBlockType.CODE:
       return 'https://docs.typebot.io/editor/blocks/logic/code'
+    case LogicBlockType.WAIT:
+      return 'https://docs.typebot.io/editor/blocks/logic/wait'
     case InputBlockType.TEXT:
       return 'https://docs.typebot.io/editor/blocks/inputs/text'
     case InputBlockType.NUMBER:

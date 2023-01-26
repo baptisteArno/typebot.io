@@ -25,9 +25,7 @@ import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 type Props = {
   initialVariableId?: string
   autoFocus?: boolean
-  onSelectVariable: (
-    variable: Pick<Variable, 'id' | 'name'> | undefined
-  ) => void
+  onSelectVariable: (variable: Pick<Variable, 'id' | 'name'>) => void
 } & InputProps
 
 export const VariableSearchInput = ({
@@ -70,7 +68,6 @@ export const VariableSearchInput = ({
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     if (e.target.value === '') {
-      onSelectVariable(undefined)
       setFilteredItems([...variables.slice(0, 50)])
       return
     }

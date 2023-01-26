@@ -36,6 +36,7 @@ import { TextInputIcon } from '@/features/blocks/inputs/textInput'
 import { EmbedBubbleIcon } from '@/features/blocks/bubbles/embed'
 import { GoogleAnalyticsLogo } from '@/features/blocks/integrations/googleAnalytics'
 import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio'
+import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -82,6 +83,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <RedirectIcon color={purple} {...props} />
     case LogicBlockType.CODE:
       return <CodeIcon color={purple} {...props} />
+    case LogicBlockType.WAIT:
+      return <WaitIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:

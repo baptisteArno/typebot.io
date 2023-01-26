@@ -10,16 +10,19 @@ import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
 
+type Props = {
+  value?: number
+  debounceTimeout?: number
+  withVariableButton?: boolean
+  onValueChange: (value?: number) => void
+} & NumberInputProps
+
 export const SmartNumberInput = ({
   value,
   onValueChange,
   debounceTimeout = 1000,
   ...props
-}: {
-  value?: number
-  debounceTimeout?: number
-  onValueChange: (value?: number) => void
-} & NumberInputProps) => {
+}: Props) => {
   const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
   const debounced = useDebouncedCallback(
     onValueChange,
