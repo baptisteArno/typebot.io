@@ -15,7 +15,7 @@ import {
 } from 'models'
 import { Log } from 'db'
 import { LiteBadge } from './LiteBadge'
-import { getViewerUrl, isEmpty } from 'utils'
+import { getViewerUrl, isEmpty, isNotEmpty } from 'utils'
 
 export type TypebotViewerProps = {
   typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
@@ -84,13 +84,15 @@ export const TypebotViewer = ({
       name="Typebot viewer"
       style={{ width: '100%', height: '100%', border: 'none', ...style }}
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `@import url('https://fonts.googleapis.com/css2?family=${
-            typebot?.theme?.general?.font ?? 'Open Sans'
-          }:wght@300;400;600&display=swap');`,
-        }}
-      />
+      {isNotEmpty(typebot?.theme?.general?.font) && (
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `@import url('https://fonts.googleapis.com/css2?family=${
+              typebot.theme.general.font ?? 'Open Sans'
+            }:wght@300;400;600&display=swap');`,
+          }}
+        />
+      )}
       <TypebotProvider
         typebot={typebot}
         apiHost={apiHost}
