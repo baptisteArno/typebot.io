@@ -1,13 +1,13 @@
 import React from 'react'
 import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
-import { SettingsIcon } from '@/components/icons'
+import { HardDriveIcon, SettingsIcon } from '@/components/icons'
 import { signOut } from 'next-auth/react'
 import { useUser } from '@/features/account'
 import { useWorkspace, WorkspaceDropdown } from '@/features/workspace'
 import { isNotDefined } from 'utils'
 import Link from 'next/link'
-import { TypebotLogo } from '@/components/TypebotLogo'
 import { WorkspaceSettingsModal } from '@/features/workspace'
+import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 
 export const DashboardHeader = () => {
   const { user } = useUser()
@@ -32,7 +32,11 @@ export const DashboardHeader = () => {
         flex="1"
       >
         <Link href="/typebots" data-testid="typebot-logo">
-          <TypebotLogo w="30px" />
+          <EmojiOrImageIcon
+            boxSize="30px"
+            icon={workspace?.icon}
+            defaultIcon={HardDriveIcon}
+          />
         </Link>
         <HStack>
           {user && workspace && (

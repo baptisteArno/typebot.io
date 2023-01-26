@@ -89,7 +89,15 @@ export const ResultsPage = () => {
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo
-        title={router.pathname.endsWith('analytics') ? 'Analytics' : 'Results'}
+        title={
+          router.pathname.endsWith('analytics')
+            ? typebot?.name
+              ? `${typebot.name} | Analytics`
+              : 'Analytics'
+            : typebot?.name
+            ? `${typebot.name} | Results`
+            : 'Results'
+        }
       />
       <TypebotHeader />
       {chatsLimitPercentage > ALERT_CHATS_PERCENT_THRESHOLD && (

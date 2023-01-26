@@ -35,7 +35,7 @@ export const DashboardPage = () => {
 
   return (
     <Stack minH="100vh">
-      <Seo title="My typebots" />
+      <Seo title={workspace?.name ?? 'My typebots'} />
       <DashboardHeader />
       <TypebotDndProvider>
         {isLoading ? (

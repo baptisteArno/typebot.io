@@ -12,7 +12,6 @@ import {
   MenuButton,
   Button,
   HStack,
-  SkeletonCircle,
   MenuList,
   MenuItem,
   Text,
@@ -40,18 +39,6 @@ export const WorkspaceDropdown = ({
     <Menu placement="bottom-end">
       <MenuButton as={Button} variant="outline" px="2">
         <HStack>
-          <SkeletonCircle
-            isLoaded={currentWorkspace !== undefined}
-            alignItems="center"
-            display="flex"
-            boxSize="20px"
-          >
-            <EmojiOrImageIcon
-              boxSize="20px"
-              icon={currentWorkspace?.icon}
-              defaultIcon={HardDriveIcon}
-            />
-          </SkeletonCircle>
           {currentWorkspace && (
             <>
               <Text noOfLines={1} maxW="200px">

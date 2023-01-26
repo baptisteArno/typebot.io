@@ -17,7 +17,7 @@ export const SettingsPage = () => {
 
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
-      <Seo title="Settings" />
+      <Seo title={typebot?.name ? `${typebot.name} | Settings` : 'Settings'} />
       <TypebotHeader />
       <Flex h="full" w="full">
         <SettingsSideMenu />

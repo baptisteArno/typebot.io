@@ -18,12 +18,12 @@ import { GettingStartedModal } from './GettingStartedModal'
 import { PreviewDrawer } from './PreviewDrawer'
 import { TypebotHeader } from './TypebotHeader'
 
-export const EditTypebotPage = () => {
+export const EditorPage = () => {
   const { typebot, isReadOnly } = useTypebot()
 
   return (
     <EditorProvider>
-      <Seo title="Editor" />
+      <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
         <GettingStartedModal />
         <TypebotHeader />

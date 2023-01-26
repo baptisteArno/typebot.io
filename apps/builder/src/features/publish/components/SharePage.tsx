@@ -88,7 +88,7 @@ export const SharePage = () => {
 
   return (
     <Flex flexDir="column" pb="40">
-      <Seo title="Share" />
+      <Seo title={typebot?.name ? `${typebot.name} | Share` : 'Share'} />
       <TypebotHeader />
       <Flex h="full" w="full" justifyContent="center" align="flex-start">
         <Stack maxW="1000px" w="full" pt="10" spacing={10}>

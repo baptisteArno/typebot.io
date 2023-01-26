@@ -1,5 +1,5 @@
-import { EditTypebotPage } from '@/features/editor'
+import { EditorPage } from '@/features/editor'
 
 export default function Page() {
-  return <EditTypebotPage />
+  return <EditorPage />
 }

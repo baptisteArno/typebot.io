@@ -12,7 +12,7 @@ export const ThemePage = () => {
 
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
-      <Seo title="Theme" />
+      <Seo title={typebot?.name ? `${typebot.name} | Theme` : 'Theme'} />
       <TypebotHeader />
       <Flex h="full" w="full">
         <ThemeSideMenu />
