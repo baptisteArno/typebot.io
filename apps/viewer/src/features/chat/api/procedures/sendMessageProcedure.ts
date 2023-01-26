@@ -48,6 +48,7 @@ export const sendMessageProcedure = publicProcedure
         resultId,
         dynamicTheme,
         logs,
+        clientSideActions,
       } = await startSession(startParams)
       return {
         sessionId,
@@ -63,9 +64,10 @@ export const sendMessageProcedure = publicProcedure
         resultId,
         dynamicTheme,
         logs,
+        clientSideActions,
       }
     } else {
-      const { messages, input, logic, newSessionState, integrations, logs } =
+      const { messages, input, clientSideActions, newSessionState, logs } =
         await continueBotFlow(session.state)(message)
 
       await prisma.chatSession.updateMany({
@@ -78,8 +80,7 @@ export const sendMessageProcedure = publicProcedure
       return {
         messages,
         input,
-        logic,
-        integrations,
+        clientSideActions,
         dynamicTheme: parseDynamicThemeReply(newSessionState),
         logs,
       }
@@ -133,7 +134,7 @@ const startSession = async (startParams?: StartParams) => {
   const {
     messages,
     input,
-    logic,
+    clientSideActions,
     newSessionState: newInitialState,
     logs,
   } = await startBotFlow(initialState, startParams.startGroupId)
@@ -141,7 +142,7 @@ const startSession = async (startParams?: StartParams) => {
   if (!input)
     return {
       messages,
-      logic,
+      clientSideActions,
       typebot: {
         id: typebot.id,
         settings: deepParseVariable(newInitialState.typebot.variables)(
@@ -183,7 +184,7 @@ const startSession = async (startParams?: StartParams) => {
     },
     messages,
     input,
-    logic,
+    clientSideActions,
     dynamicTheme: parseDynamicThemeReply(newInitialState),
     logs,
   } satisfies ChatReply

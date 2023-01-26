@@ -12,14 +12,17 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   context: BotContext
   onScrollToBottom: () => void
   onSubmit: (input: string) => void
-  onEnd?: () => void
   onSkip: () => void
+  onAllBubblesDisplayed: () => void
 }
 
 export const ChatChunk = (props: Props) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
 
   onMount(() => {
+    if (props.messages.length === 0) {
+      props.onAllBubblesDisplayed()
+    }
     props.onScrollToBottom()
   })
 
@@ -30,8 +33,9 @@ export const ChatChunk = (props: Props) => {
         : displayedMessageIndex() + 1
     )
     props.onScrollToBottom()
-    if (!props.input && displayedMessageIndex() === props.messages.length)
-      return props.onEnd?.()
+    if (displayedMessageIndex() === props.messages.length) {
+      props.onAllBubblesDisplayed()
+    }
   }
 
   return (

@@ -7,7 +7,9 @@ export const executeGoogleAnalyticsBlock = (
   block: GoogleAnalyticsBlock
 ): ExecuteIntegrationResponse => ({
   outgoingEdgeId: block.outgoingEdgeId,
-  integrations: {
-    googleAnalytics: deepParseVariable(variables)(block.options),
-  },
+  clientSideActions: [
+    {
+      googleAnalytics: deepParseVariable(variables)(block.options),
+    },
+  ],
 })

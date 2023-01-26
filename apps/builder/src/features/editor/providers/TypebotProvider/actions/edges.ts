@@ -108,17 +108,18 @@ const deleteOutgoingEdgeIdProps = (
   const block = typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as
     | Block
     | undefined
+  if (!block) return
   const fromItemIndex =
-    edge.from.itemId && block && blockHasItems(block)
+    edge.from.itemId && blockHasItems(block)
       ? block.items.findIndex(byId(edge.from.itemId))
       : -1
-  if (fromBlockIndex !== -1)
-    typebot.groups[fromGroupIndex].blocks[fromBlockIndex].outgoingEdgeId =
-      undefined
-  if (fromItemIndex !== -1)
-    (
+  if (fromItemIndex !== -1) {
+    ;(
       typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as BlockWithItems
     ).items[fromItemIndex].outgoingEdgeId = undefined
+  } else if (fromBlockIndex !== -1)
+    typebot.groups[fromGroupIndex].blocks[fromBlockIndex].outgoingEdgeId =
+      undefined
 }
 
 export const cleanUpEdgeDraft = (

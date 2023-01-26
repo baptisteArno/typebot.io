@@ -3,8 +3,8 @@ import { createEffect, createSignal, For } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
 import { BotContext, InitialChatReply } from '@/types'
-import { executeIntegrations } from '@/utils/executeIntegrations'
-import { executeLogic } from '@/utils/executeLogic'
+import { isNotDefined } from 'utils'
+import { executeClientSideAction } from '@/utils/executeClientSideActions'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -42,10 +42,13 @@ type Props = {
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
   let bottomSpacer: HTMLDivElement | undefined
-  const [chatChunks, setChatChunks] = createSignal<ChatReply[]>([
+  const [chatChunks, setChatChunks] = createSignal<
+    Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>[]
+  >([
     {
       input: props.initialChatReply.input,
       messages: props.initialChatReply.messages,
+      clientSideActions: props.initialChatReply.clientSideActions,
     },
   ])
   const [dynamicTheme, setDynamicTheme] = createSignal<
@@ -77,17 +80,12 @@ export const ConversationContainer = (props: Props) => {
         groupId: data.input.groupId,
       })
     }
-    if (data.integrations) {
-      executeIntegrations(data.integrations)
-    }
-    if (data.logic) {
-      await executeLogic(data.logic)
-    }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,
       {
         input: data.input,
         messages: data.messages,
+        clientSideActions: data.clientSideActions,
       },
     ])
   }
@@ -97,6 +95,19 @@ export const ConversationContainer = (props: Props) => {
     setTimeout(() => {
       chatContainer?.scrollTo(0, chatContainer.scrollHeight)
     }, 50)
+  }
+
+  const handleAllBubblesDisplayed = async () => {
+    const lastChunk = chatChunks().at(-1)
+    if (!lastChunk) return
+    if (lastChunk.clientSideActions) {
+      for (const action of lastChunk.clientSideActions) {
+        await executeClientSideAction(action)
+      }
+    }
+    if (isNotDefined(lastChunk.input)) {
+      props.onEnd?.()
+    }
   }
 
   return (
@@ -112,12 +123,12 @@ export const ConversationContainer = (props: Props) => {
             input={chatChunk.input}
             theme={theme()}
             settings={props.initialChatReply.typebot.settings}
+            onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
             onScrollToBottom={autoScrollToBottom}
             onSkip={() => {
               // TODO: implement skip
             }}
-            onEnd={props.onEnd}
             context={props.context}
           />
         )}

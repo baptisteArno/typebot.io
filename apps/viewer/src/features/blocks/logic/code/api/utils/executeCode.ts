@@ -24,11 +24,13 @@ export const executeCode = (
 
   return {
     outgoingEdgeId: block.outgoingEdgeId,
-    logic: {
-      codeToExecute: {
-        content,
-        args,
+    clientSideActions: [
+      {
+        codeToExecute: {
+          content,
+          args,
+        },
       },
-    },
+    ],
   }
 }

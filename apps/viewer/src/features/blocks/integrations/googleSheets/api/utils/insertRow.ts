@@ -10,7 +10,6 @@ export const insertRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsInsertRowOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  console.log('insertRow', options)
   if (!options.cellsToInsert || !options.sheetId) return { outgoingEdgeId }
 
   let log: ReplyLog | undefined

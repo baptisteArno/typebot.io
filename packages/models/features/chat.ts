@@ -165,6 +165,26 @@ const replyLogSchema = logSchema
   })
   .and(z.object({ details: z.unknown().optional() }))
 
+const clientSideActionSchema = z
+  .object({
+    codeToExecute: codeToExecuteSchema,
+  })
+  .or(
+    z.object({
+      redirect: redirectOptionsSchema,
+    })
+  )
+  .or(
+    z.object({
+      chatwoot: z.object({ codeToExecute: codeToExecuteSchema }),
+    })
+  )
+  .or(
+    z.object({
+      googleAnalytics: googleAnalyticsOptionsSchema,
+    })
+  )
+
 export const chatReplySchema = z.object({
   messages: z.array(chatMessageSchema),
   input: inputBlockSchema
@@ -175,22 +195,7 @@ export const chatReplySchema = z.object({
       })
     )
     .optional(),
-  logic: z
-    .object({
-      redirect: redirectOptionsSchema.optional(),
-      codeToExecute: codeToExecuteSchema.optional(),
-    })
-    .optional(),
-  integrations: z
-    .object({
-      chatwoot: z
-        .object({
-          codeToExecute: codeToExecuteSchema,
-        })
-        .optional(),
-      googleAnalytics: googleAnalyticsOptionsSchema.optional(),
-    })
-    .optional(),
+  clientSideActions: z.array(clientSideActionSchema).optional(),
   sessionId: z.string().optional(),
   typebot: typebotSchema
     .pick({ id: true, theme: true, settings: true })

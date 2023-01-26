@@ -56,21 +56,23 @@ export const executeChatwootBlock = (
   const chatwootCode = parseChatwootOpenCode(block.options)
   return {
     outgoingEdgeId: block.outgoingEdgeId,
-    integrations: {
-      chatwoot: {
-        codeToExecute: {
-          content: parseVariables(variables, { fieldToParse: 'id' })(
-            chatwootCode
-          ),
-          args: extractVariablesFromText(variables)(chatwootCode).map(
-            (variable) => ({
-              id: variable.id,
-              value: parseCorrectValueType(variable.value),
-            })
-          ),
+    clientSideActions: [
+      {
+        chatwoot: {
+          codeToExecute: {
+            content: parseVariables(variables, { fieldToParse: 'id' })(
+              chatwootCode
+            ),
+            args: extractVariablesFromText(variables)(chatwootCode).map(
+              (variable) => ({
+                id: variable.id,
+                value: parseCorrectValueType(variable.value),
+              })
+            ),
+          },
         },
       },
-    },
+    ],
     logs: isPreview
       ? [
           {

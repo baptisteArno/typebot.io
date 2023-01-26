@@ -25,8 +25,8 @@ export const executeGroup =
     group: Group
   ): Promise<ChatReply & { newSessionState: SessionState }> => {
     const messages: ChatReply['messages'] = currentReply?.messages ?? []
-    let logic: ChatReply['logic'] = currentReply?.logic
-    let integrations: ChatReply['integrations'] = currentReply?.integrations
+    let clientSideActions: ChatReply['clientSideActions'] =
+      currentReply?.clientSideActions
     let logs: ChatReply['logs'] = currentReply?.logs
     let nextEdgeId = null
 
@@ -59,8 +59,7 @@ export const executeGroup =
               blockId: block.id,
             },
           },
-          logic,
-          integrations,
+          clientSideActions,
           logs,
         }
       const executionResponse = isLogicBlock(block)
@@ -70,10 +69,14 @@ export const executeGroup =
         : null
 
       if (!executionResponse) continue
-      if ('logic' in executionResponse && executionResponse.logic)
-        logic = { ...logic, ...executionResponse.logic }
-      if ('integrations' in executionResponse && executionResponse.integrations)
-        integrations = { ...integrations, ...executionResponse.integrations }
+      if (
+        'clientSideActions' in executionResponse &&
+        executionResponse.clientSideActions
+      )
+        clientSideActions = [
+          ...(clientSideActions ?? []),
+          ...executionResponse.clientSideActions,
+        ]
       if (executionResponse.logs)
         logs = [...(logs ?? []), ...executionResponse.logs]
       if (executionResponse.newSessionState)
@@ -85,20 +88,19 @@ export const executeGroup =
     }
 
     if (!nextEdgeId)
-      return { messages, newSessionState, logic, integrations, logs }
+      return { messages, newSessionState, clientSideActions, logs }
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
     if (nextGroup?.updatedContext) newSessionState = nextGroup.updatedContext
 
     if (!nextGroup) {
-      return { messages, newSessionState, logic, integrations, logs }
+      return { messages, newSessionState, clientSideActions, logs }
     }
 
     return executeGroup(newSessionState, {
       messages,
-      logic,
-      integrations,
+      clientSideActions,
       logs,
     })(nextGroup.group)
   }
