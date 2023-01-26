@@ -148,6 +148,9 @@ const TextBubbleEditorContent = ({
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
+          onClick: () => {
+            setIsVariableDropdownOpen(false)
+          },
         }}
       />
       {isVariableDropdownOpen && (

@@ -58,7 +58,7 @@ export const VariableSearchInput = ({
 
   useOutsideClick({
     ref: dropdownRef,
-    handler: () => onClose,
+    handler: onClose,
   })
 
   useEffect(() => {
@@ -189,6 +189,7 @@ export const VariableSearchInput = ({
             w="inherit"
             shadow="lg"
             onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             {isCreateVariableButtonDisplayed && (
               <Button
