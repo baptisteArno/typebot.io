@@ -12,8 +12,12 @@ export function checkCanInviteMember({
 }) {
   if (!plan || !currentMembersCount) return false
 
-  return (
-    getSeatsLimit({ plan, customSeatsLimit: customSeatsLimit ?? null }) >
-    currentMembersCount
-  )
+  const seatsLimit = getSeatsLimit({
+    plan,
+    customSeatsLimit: customSeatsLimit ?? null,
+  })
+
+  if (seatsLimit === -1) return true
+
+  return seatsLimit > currentMembersCount
 }

@@ -8,6 +8,7 @@ export const planColorSchemes: Record<Plan, ThemeTypings['colorSchemes']> = {
   [Plan.STARTER]: 'orange',
   [Plan.FREE]: 'gray',
   [Plan.CUSTOM]: 'yellow',
+  [Plan.UNLIMITED]: 'yellow',
 }
 
 export const PlanTag = ({
@@ -64,10 +65,21 @@ export const PlanTag = ({
       return (
         <Tag
           colorScheme={planColorSchemes[Plan.CUSTOM]}
-          data-testid="free-plan-tag"
+          data-testid="custom-plan-tag"
           {...props}
         >
           Custom
+        </Tag>
+      )
+    }
+    case Plan.UNLIMITED: {
+      return (
+        <Tag
+          colorScheme={planColorSchemes[Plan.UNLIMITED]}
+          data-testid="custom-unlimite-tag"
+          {...props}
+        >
+          Unlimited
         </Tag>
       )
     }

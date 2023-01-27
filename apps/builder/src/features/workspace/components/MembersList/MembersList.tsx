@@ -106,7 +106,10 @@ export const MembersList = () => {
       )}
       {workspace && (
         <Heading fontSize="2xl">
-          Members ({currentMembersCount}/{getSeatsLimit(workspace)})
+          Members{' '}
+          {getSeatsLimit(workspace) === -1
+            ? ''
+            : `(${currentMembersCount}/${getSeatsLimit(workspace)})`}
         </Heading>
       )}
       {workspace?.id && canEdit && (

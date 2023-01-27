@@ -33,6 +33,7 @@ export const chatsLimit = {
   },
   [Plan.OFFERED]: { totalIncluded: infinity },
   [Plan.LIFETIME]: { totalIncluded: infinity },
+  [Plan.UNLIMITED]: { totalIncluded: infinity },
 } as const
 
 export const storageLimit = {
@@ -60,6 +61,7 @@ export const storageLimit = {
   },
   [Plan.OFFERED]: { totalIncluded: 2 },
   [Plan.LIFETIME]: { totalIncluded: 10 },
+  [Plan.UNLIMITED]: { totalIncluded: infinity },
 } as const
 
 export const seatsLimit = {
@@ -75,6 +77,7 @@ export const seatsLimit = {
   },
   [Plan.OFFERED]: { totalIncluded: 2 },
   [Plan.LIFETIME]: { totalIncluded: 8 },
+  [Plan.UNLIMITED]: { totalIncluded: infinity },
 } as const
 
 export const getChatsLimit = ({

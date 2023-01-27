@@ -136,7 +136,12 @@ export const UsageContent = ({ workspace }: Props) => {
               >
                 {storageToReadable(totalStorageUsed)}
               </Skeleton>
-              <Text>/ {workspaceStorageLimit} GB</Text>
+              <Text>
+                /{' '}
+                {workspaceStorageLimit === -1
+                  ? 'Unlimited'
+                  : `${workspaceStorageLimit} GB`}
+              </Text>
             </HStack>
           </Flex>
           <Progress

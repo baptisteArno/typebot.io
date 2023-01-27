@@ -34,6 +34,7 @@ export const BillingContent = () => {
         </HStack>
         {workspace.plan !== Plan.CUSTOM &&
           workspace.plan !== Plan.LIFETIME &&
+          workspace.plan !== Plan.UNLIMITED &&
           workspace.plan !== Plan.OFFERED && <ChangePlanForm />}
       </Stack>
 

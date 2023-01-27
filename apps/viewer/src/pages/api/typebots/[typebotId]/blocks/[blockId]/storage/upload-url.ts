@@ -32,7 +32,7 @@ const handler = async (
     const typebotId = req.query.typebotId as string
     const blockId = req.query.blockId as string
     if (!filePath) return badRequest(res, 'Missing filePath or fileType')
-    const hasReachedStorageLimit = await checkStorageLimit(typebotId)
+    const hasReachedStorageLimit = await checkIfStorageLimitReached(typebotId)
     const typebot = (await prisma.publicTypebot.findFirst({
       where: { typebotId },
     })) as unknown as PublicTypebot
@@ -59,7 +59,9 @@ const handler = async (
   return methodNotAllowed(res)
 }
 
-const checkStorageLimit = async (typebotId: string): Promise<boolean> => {
+const checkIfStorageLimitReached = async (
+  typebotId: string
+): Promise<boolean> => {
   const typebot = await prisma.typebot.findUnique({
     where: { id: typebotId },
     include: {
@@ -94,6 +96,7 @@ const checkStorageLimit = async (typebotId: string): Promise<boolean> => {
   const hasSentFirstEmail = workspace.storageLimitFirstEmailSentAt !== null
   const hasSentSecondEmail = workspace.storageLimitSecondEmailSentAt !== null
   const storageLimit = getStorageLimit(typebot.workspace)
+  if (storageLimit === -1) return false
   const storageLimitBytes = storageLimit * 1024 * 1024 * 1024
   if (
     totalStorageUsed >= storageLimitBytes * LIMIT_EMAIL_TRIGGER_PERCENT &&

@@ -314,6 +314,7 @@ enum Plan {
   LIFETIME
   OFFERED
   CUSTOM
+  UNLIMITED
 }
 
 enum CollaborationType {
