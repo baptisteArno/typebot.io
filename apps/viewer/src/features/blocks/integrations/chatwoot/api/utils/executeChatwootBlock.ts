@@ -51,13 +51,15 @@ if (window.$chatwoot) {
 
 export const executeChatwootBlock = (
   { typebot: { variables }, isPreview }: SessionState,
-  block: ChatwootBlock
+  block: ChatwootBlock,
+  lastBubbleBlockId?: string
 ): ExecuteIntegrationResponse => {
   const chatwootCode = parseChatwootOpenCode(block.options)
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        lastBubbleBlockId,
         chatwoot: {
           codeToExecute: {
             content: parseVariables(variables, { fieldToParse: 'id' })(

@@ -29,6 +29,7 @@ export const executeGroup =
       currentReply?.clientSideActions
     let logs: ChatReply['logs'] = currentReply?.logs
     let nextEdgeId = null
+    let lastBubbleBlockId: string | undefined
 
     let newSessionState = state
 
@@ -39,6 +40,7 @@ export const executeGroup =
         messages.push(
           deepParseVariable(newSessionState.typebot.variables)(block)
         )
+        lastBubbleBlockId = block.id
         continue
       }
 
@@ -63,9 +65,9 @@ export const executeGroup =
           logs,
         }
       const executionResponse = isLogicBlock(block)
-        ? await executeLogic(newSessionState)(block)
+        ? await executeLogic(newSessionState, lastBubbleBlockId)(block)
         : isIntegrationBlock(block)
-        ? await executeIntegration(newSessionState)(block)
+        ? await executeIntegration(newSessionState, lastBubbleBlockId)(block)
         : null
 
       if (!executionResponse) continue

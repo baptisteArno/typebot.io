@@ -8,7 +8,8 @@ import { CodeBlock, SessionState } from 'models'
 
 export const executeCode = (
   { typebot: { variables } }: SessionState,
-  block: CodeBlock
+  block: CodeBlock,
+  lastBubbleBlockId?: string
 ): ExecuteLogicResponse => {
   if (!block.options.content) return { outgoingEdgeId: block.outgoingEdgeId }
 
@@ -30,6 +31,7 @@ export const executeCode = (
           content,
           args,
         },
+        lastBubbleBlockId,
       },
     ],
   }

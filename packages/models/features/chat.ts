@@ -87,11 +87,15 @@ const embedMessageSchema = z.object({
   content: embedBubbleContentSchema,
 })
 
-const chatMessageSchema = textMessageSchema
-  .or(imageMessageSchema)
-  .or(videoMessageSchema)
-  .or(audioMessageSchema)
-  .or(embedMessageSchema)
+const chatMessageSchema = z
+  .object({ id: z.string() })
+  .and(
+    textMessageSchema
+      .or(imageMessageSchema)
+      .or(videoMessageSchema)
+      .or(audioMessageSchema)
+      .or(embedMessageSchema)
+  )
 
 const codeToExecuteSchema = z.object({
   content: z.string(),
@@ -167,29 +171,35 @@ const replyLogSchema = logSchema
 
 const clientSideActionSchema = z
   .object({
-    codeToExecute: codeToExecuteSchema,
+    lastBubbleBlockId: z.string().optional(),
   })
-  .or(
-    z.object({
-      redirect: redirectOptionsSchema,
-    })
-  )
-  .or(
-    z.object({
-      chatwoot: z.object({ codeToExecute: codeToExecuteSchema }),
-    })
-  )
-  .or(
-    z.object({
-      googleAnalytics: googleAnalyticsOptionsSchema,
-    })
-  )
-  .or(
-    z.object({
-      wait: z.object({
-        secondsToWaitFor: z.number(),
-      }),
-    })
+  .and(
+    z
+      .object({
+        codeToExecute: codeToExecuteSchema,
+      })
+      .or(
+        z.object({
+          redirect: redirectOptionsSchema,
+        })
+      )
+      .or(
+        z.object({
+          chatwoot: z.object({ codeToExecute: codeToExecuteSchema }),
+        })
+      )
+      .or(
+        z.object({
+          googleAnalytics: googleAnalyticsOptionsSchema,
+        })
+      )
+      .or(
+        z.object({
+          wait: z.object({
+            secondsToWaitFor: z.number(),
+          }),
+        })
+      )
   )
 
 export const chatReplySchema = z.object({

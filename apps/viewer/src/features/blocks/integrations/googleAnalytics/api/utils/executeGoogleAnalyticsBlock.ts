@@ -4,12 +4,14 @@ import { GoogleAnalyticsBlock, SessionState } from 'models'
 
 export const executeGoogleAnalyticsBlock = (
   { typebot: { variables } }: SessionState,
-  block: GoogleAnalyticsBlock
+  block: GoogleAnalyticsBlock,
+  lastBubbleBlockId?: string
 ): ExecuteIntegrationResponse => ({
   outgoingEdgeId: block.outgoingEdgeId,
   clientSideActions: [
     {
       googleAnalytics: deepParseVariable(variables)(block.options),
+      lastBubbleBlockId,
     },
   ],
 })

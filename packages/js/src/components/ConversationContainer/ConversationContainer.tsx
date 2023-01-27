@@ -1,10 +1,11 @@
 import type { ChatReply, Theme } from 'models'
-import { createEffect, createSignal, For } from 'solid-js'
+import { createEffect, createSignal, For, Show } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
 import { BotContext, InitialChatReply } from '@/types'
 import { isNotDefined } from 'utils'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
+import { LoadingChunk } from './LoadingChunk'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -55,6 +56,7 @@ export const ConversationContainer = (props: Props) => {
     ChatReply['dynamicTheme']
   >(props.initialChatReply.dynamicTheme)
   const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme)
+  const [isSending, setIsSending] = createSignal(false)
 
   createEffect(() => {
     setTheme(
@@ -66,11 +68,16 @@ export const ConversationContainer = (props: Props) => {
     const currentBlockId = chatChunks().at(-1)?.input?.id
     if (currentBlockId && props.onAnswer)
       props.onAnswer({ message, blockId: currentBlockId })
+    const longRequest = setTimeout(() => {
+      setIsSending(true)
+    }, 1000)
     const data = await sendMessageQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
       message,
     })
+    clearTimeout(longRequest)
+    setIsSending(false)
     if (!data) return
     if (data.logs) props.onNewLogs?.(data.logs)
     if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme)
@@ -101,12 +108,28 @@ export const ConversationContainer = (props: Props) => {
     const lastChunk = chatChunks().at(-1)
     if (!lastChunk) return
     if (lastChunk.clientSideActions) {
-      for (const action of lastChunk.clientSideActions) {
+      const actionsToExecute = lastChunk.clientSideActions.filter((action) =>
+        isNotDefined(action.lastBubbleBlockId)
+      )
+      for (const action of actionsToExecute) {
         await executeClientSideAction(action)
       }
     }
     if (isNotDefined(lastChunk.input)) {
       props.onEnd?.()
+    }
+  }
+
+  const handleNewBubbleDisplayed = async (blockId: string) => {
+    const lastChunk = chatChunks().at(-1)
+    if (!lastChunk) return
+    if (lastChunk.clientSideActions) {
+      const actionsToExecute = lastChunk.clientSideActions.filter(
+        (action) => action.lastBubbleBlockId === blockId
+      )
+      for (const action of actionsToExecute) {
+        await executeClientSideAction(action)
+      }
     }
   }
 
@@ -123,6 +146,8 @@ export const ConversationContainer = (props: Props) => {
             input={chatChunk.input}
             theme={theme()}
             settings={props.initialChatReply.typebot.settings}
+            isLoadingBubbleDisplayed={isSending()}
+            onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
             onScrollToBottom={autoScrollToBottom}
@@ -133,6 +158,9 @@ export const ConversationContainer = (props: Props) => {
           />
         )}
       </For>
+      <Show when={isSending()}>
+        <LoadingChunk theme={theme()} />
+      </Show>
       <BottomSpacer ref={bottomSpacer} />
     </div>
   )

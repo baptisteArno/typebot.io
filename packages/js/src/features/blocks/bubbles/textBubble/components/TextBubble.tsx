@@ -53,11 +53,8 @@ export const TextBubble = (props: Props) => {
             {isTyping() && <TypingBubble />}
           </div>
           <p
-            style={{
-              'text-overflow': 'ellipsis',
-            }}
             class={
-              'overflow-hidden text-fade-in mx-4 my-2 whitespace-pre-wrap slate-html-container relative ' +
+              'overflow-hidden text-fade-in mx-4 my-2 whitespace-pre-wrap slate-html-container relative text-ellipsis ' +
               (isTyping() ? 'opacity-0 h-6' : 'opacity-100 h-full')
             }
             innerHTML={props.content.html}

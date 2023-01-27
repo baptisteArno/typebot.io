@@ -132,6 +132,7 @@ const parseRetryMessage = (
   return {
     messages: [
       {
+        id: block.id,
         type: BubbleBlockType.TEXT,
         content: {
           plainText: retryMessage,

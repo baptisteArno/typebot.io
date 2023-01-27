@@ -3231,7 +3231,19 @@
                     "messages": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          },
                           {
                             "anyOf": [
                               {
@@ -3239,36 +3251,65 @@
                                   {
                                     "anyOf": [
                                       {
-                                        "type": "object",
-                                        "properties": {
-                                          "type": {
-                                            "type": "string",
-                                            "enum": [
-                                              "text"
-                                            ]
-                                          },
-                                          "content": {
+                                        "anyOf": [
+                                          {
                                             "type": "object",
                                             "properties": {
-                                              "html": {
-                                                "type": "string"
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "text"
+                                                ]
                                               },
-                                              "plainText": {
-                                                "type": "string"
+                                              "content": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "html": {
+                                                    "type": "string"
+                                                  },
+                                                  "plainText": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "html",
+                                                  "plainText"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
-                                              "html",
-                                              "plainText"
+                                              "type",
+                                              "content"
+                                            ],
+                                            "additionalProperties": false
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "image"
+                                                ]
+                                              },
+                                              "content": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "url": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "content"
                                             ],
                                             "additionalProperties": false
                                           }
-                                        },
-                                        "required": [
-                                          "type",
-                                          "content"
-                                        ],
-                                        "additionalProperties": false
+                                        ]
                                       },
                                       {
                                         "type": "object",
@@ -3276,7 +3317,7 @@
                                           "type": {
                                             "type": "string",
                                             "enum": [
-                                              "image"
+                                              "video"
                                             ]
                                           },
                                           "content": {
@@ -3284,6 +3325,17 @@
                                             "properties": {
                                               "url": {
                                                 "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "url",
+                                                  "youtube",
+                                                  "vimeo"
+                                                ]
                                               }
                                             },
                                             "additionalProperties": false
@@ -3303,7 +3355,7 @@
                                       "type": {
                                         "type": "string",
                                         "enum": [
-                                          "video"
+                                          "audio"
                                         ]
                                       },
                                       "content": {
@@ -3311,17 +3363,6 @@
                                         "properties": {
                                           "url": {
                                             "type": "string"
-                                          },
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "type": {
-                                            "type": "string",
-                                            "enum": [
-                                              "url",
-                                              "youtube",
-                                              "vimeo"
-                                            ]
                                           }
                                         },
                                         "additionalProperties": false
@@ -3341,7 +3382,7 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "audio"
+                                      "embed"
                                     ]
                                   },
                                   "content": {
@@ -3349,8 +3390,14 @@
                                     "properties": {
                                       "url": {
                                         "type": "string"
+                                      },
+                                      "height": {
+                                        "type": "number"
                                       }
                                     },
+                                    "required": [
+                                      "height"
+                                    ],
                                     "additionalProperties": false
                                   }
                                 },
@@ -3361,37 +3408,6 @@
                                 "additionalProperties": false
                               }
                             ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "embed"
-                                ]
-                              },
-                              "content": {
-                                "type": "object",
-                                "properties": {
-                                  "url": {
-                                    "type": "string"
-                                  },
-                                  "height": {
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "height"
-                                ],
-                                "additionalProperties": false
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "content"
-                            ],
-                            "additionalProperties": false
                           }
                         ]
                       }
@@ -4461,7 +4477,16 @@
                     "clientSideActions": {
                       "type": "array",
                       "items": {
-                        "anyOf": [
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "lastBubbleBlockId": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
                           {
                             "anyOf": [
                               {
@@ -4469,88 +4494,163 @@
                                   {
                                     "anyOf": [
                                       {
-                                        "type": "object",
-                                        "properties": {
-                                          "codeToExecute": {
+                                        "anyOf": [
+                                          {
                                             "type": "object",
                                             "properties": {
-                                              "content": {
-                                                "type": "string"
-                                              },
-                                              "args": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "id": {
-                                                      "type": "string"
-                                                    },
-                                                    "value": {
-                                                      "anyOf": [
-                                                        {
-                                                          "not": {}
+                                              "codeToExecute": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "content": {
+                                                    "type": "string"
+                                                  },
+                                                  "args": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
                                                         },
-                                                        {
+                                                        "value": {
                                                           "anyOf": [
+                                                            {
+                                                              "not": {}
+                                                            },
                                                             {
                                                               "anyOf": [
                                                                 {
-                                                                  "type": "string"
+                                                                  "anyOf": [
+                                                                    {
+                                                                      "type": "string"
+                                                                    },
+                                                                    {
+                                                                      "type": "number"
+                                                                    }
+                                                                  ]
                                                                 },
                                                                 {
-                                                                  "type": "number"
+                                                                  "type": "boolean"
                                                                 }
                                                               ]
-                                                            },
-                                                            {
-                                                              "type": "boolean"
                                                             }
-                                                          ]
+                                                          ],
+                                                          "nullable": true
                                                         }
+                                                      },
+                                                      "required": [
+                                                        "id"
                                                       ],
-                                                      "nullable": true
+                                                      "additionalProperties": false
                                                     }
-                                                  },
-                                                  "required": [
-                                                    "id"
-                                                  ],
-                                                  "additionalProperties": false
-                                                }
+                                                  }
+                                                },
+                                                "required": [
+                                                  "content",
+                                                  "args"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
-                                              "content",
-                                              "args"
+                                              "codeToExecute"
+                                            ],
+                                            "additionalProperties": false
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "redirect": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "isNewTab": {
+                                                    "type": "boolean"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "isNewTab"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "required": [
+                                              "redirect"
                                             ],
                                             "additionalProperties": false
                                           }
-                                        },
-                                        "required": [
-                                          "codeToExecute"
-                                        ],
-                                        "additionalProperties": false
+                                        ]
                                       },
                                       {
                                         "type": "object",
                                         "properties": {
-                                          "redirect": {
+                                          "chatwoot": {
                                             "type": "object",
                                             "properties": {
-                                              "url": {
-                                                "type": "string"
-                                              },
-                                              "isNewTab": {
-                                                "type": "boolean"
+                                              "codeToExecute": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "content": {
+                                                    "type": "string"
+                                                  },
+                                                  "args": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "anyOf": [
+                                                            {
+                                                              "not": {}
+                                                            },
+                                                            {
+                                                              "anyOf": [
+                                                                {
+                                                                  "anyOf": [
+                                                                    {
+                                                                      "type": "string"
+                                                                    },
+                                                                    {
+                                                                      "type": "number"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                {
+                                                                  "type": "boolean"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ],
+                                                          "nullable": true
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  }
+                                                },
+                                                "required": [
+                                                  "content",
+                                                  "args"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
-                                              "isNewTab"
+                                              "codeToExecute"
                                             ],
                                             "additionalProperties": false
                                           }
                                         },
                                         "required": [
-                                          "redirect"
+                                          "chatwoot"
                                         ],
                                         "additionalProperties": false
                                       }
@@ -4559,71 +4659,30 @@
                                   {
                                     "type": "object",
                                     "properties": {
-                                      "chatwoot": {
+                                      "googleAnalytics": {
                                         "type": "object",
                                         "properties": {
-                                          "codeToExecute": {
-                                            "type": "object",
-                                            "properties": {
-                                              "content": {
-                                                "type": "string"
-                                              },
-                                              "args": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "id": {
-                                                      "type": "string"
-                                                    },
-                                                    "value": {
-                                                      "anyOf": [
-                                                        {
-                                                          "not": {}
-                                                        },
-                                                        {
-                                                          "anyOf": [
-                                                            {
-                                                              "anyOf": [
-                                                                {
-                                                                  "type": "string"
-                                                                },
-                                                                {
-                                                                  "type": "number"
-                                                                }
-                                                              ]
-                                                            },
-                                                            {
-                                                              "type": "boolean"
-                                                            }
-                                                          ]
-                                                        }
-                                                      ],
-                                                      "nullable": true
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "id"
-                                                  ],
-                                                  "additionalProperties": false
-                                                }
-                                              }
-                                            },
-                                            "required": [
-                                              "content",
-                                              "args"
-                                            ],
-                                            "additionalProperties": false
+                                          "trackingId": {
+                                            "type": "string"
+                                          },
+                                          "category": {
+                                            "type": "string"
+                                          },
+                                          "action": {
+                                            "type": "string"
+                                          },
+                                          "label": {
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "type": "number"
                                           }
                                         },
-                                        "required": [
-                                          "codeToExecute"
-                                        ],
                                         "additionalProperties": false
                                       }
                                     },
                                     "required": [
-                                      "chatwoot"
+                                      "googleAnalytics"
                                     ],
                                     "additionalProperties": false
                                   }
@@ -4632,55 +4691,25 @@
                               {
                                 "type": "object",
                                 "properties": {
-                                  "googleAnalytics": {
+                                  "wait": {
                                     "type": "object",
                                     "properties": {
-                                      "trackingId": {
-                                        "type": "string"
-                                      },
-                                      "category": {
-                                        "type": "string"
-                                      },
-                                      "action": {
-                                        "type": "string"
-                                      },
-                                      "label": {
-                                        "type": "string"
-                                      },
-                                      "value": {
+                                      "secondsToWaitFor": {
                                         "type": "number"
                                       }
                                     },
+                                    "required": [
+                                      "secondsToWaitFor"
+                                    ],
                                     "additionalProperties": false
                                   }
                                 },
                                 "required": [
-                                  "googleAnalytics"
+                                  "wait"
                                 ],
                                 "additionalProperties": false
                               }
                             ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "wait": {
-                                "type": "object",
-                                "properties": {
-                                  "secondsToWaitFor": {
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "secondsToWaitFor"
-                                ],
-                                "additionalProperties": false
-                              }
-                            },
-                            "required": [
-                              "wait"
-                            ],
-                            "additionalProperties": false
                           }
                         ]
                       }

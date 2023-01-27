@@ -4,19 +4,29 @@ import { SessionState, WaitBlock } from 'models'
 
 export const executeWait = async (
   { typebot: { variables } }: SessionState,
-  block: WaitBlock
+  block: WaitBlock,
+  lastBubbleBlockId?: string
 ): Promise<ExecuteLogicResponse> => {
   if (!block.options.secondsToWaitFor)
     return { outgoingEdgeId: block.outgoingEdgeId }
-  const parsedSecondsToWaitFor = parseVariables(variables)(
-    block.options.secondsToWaitFor
+  const parsedSecondsToWaitFor = safeParseInt(
+    parseVariables(variables)(block.options.secondsToWaitFor)
   )
 
   return {
     outgoingEdgeId: block.outgoingEdgeId,
-    // @ts-expect-error isNaN can be used with strings
-    clientSideActions: isNaN(parsedSecondsToWaitFor)
-      ? undefined
-      : [{ wait: { secondsToWaitFor: parsedSecondsToWaitFor } }],
+    clientSideActions: parsedSecondsToWaitFor
+      ? [
+          {
+            wait: { secondsToWaitFor: parsedSecondsToWaitFor },
+            lastBubbleBlockId,
+          },
+        ]
+      : undefined,
   }
+}
+
+const safeParseInt = (value: string) => {
+  const parsedValue = parseInt(value)
+  return isNaN(parsedValue) ? undefined : parsedValue
 }

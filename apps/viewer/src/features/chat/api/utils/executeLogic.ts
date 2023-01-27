@@ -8,7 +8,7 @@ import { LogicBlock, LogicBlockType, SessionState } from 'models'
 import { ExecuteLogicResponse } from '../../types'
 
 export const executeLogic =
-  (state: SessionState) =>
+  (state: SessionState, lastBubbleBlockId?: string) =>
   async (block: LogicBlock): Promise<ExecuteLogicResponse> => {
     switch (block.type) {
       case LogicBlockType.SET_VARIABLE:
@@ -16,12 +16,12 @@ export const executeLogic =
       case LogicBlockType.CONDITION:
         return executeCondition(state, block)
       case LogicBlockType.REDIRECT:
-        return executeRedirect(state, block)
+        return executeRedirect(state, block, lastBubbleBlockId)
       case LogicBlockType.CODE:
-        return executeCode(state, block)
+        return executeCode(state, block, lastBubbleBlockId)
       case LogicBlockType.TYPEBOT_LINK:
         return executeTypebotLink(state, block)
       case LogicBlockType.WAIT:
-        return executeWait(state, block)
+        return executeWait(state, block, lastBubbleBlockId)
     }
   }
