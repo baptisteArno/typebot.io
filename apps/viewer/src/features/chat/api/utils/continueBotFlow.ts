@@ -52,7 +52,11 @@ export const continueBotFlow =
 
     const formattedReply = formatReply(reply, block.type)
 
-    if (!formattedReply || !isReplyValid(formattedReply, block))
+    if (
+      !formattedReply ||
+      !isReplyValid(formattedReply, block) ||
+      (!formatReply && !canSkip(block.type))
+    )
       return parseRetryMessage(block)
 
     const newVariables = await processAndSaveAnswer(
@@ -229,3 +233,6 @@ export const isReplyValid = (inputValue: string, block: Block): boolean => {
   }
   return true
 }
+
+export const canSkip = (inputType: InputBlockType) =>
+  inputType === InputBlockType.FILE

@@ -64,9 +64,9 @@ export const ConversationContainer = (props: Props) => {
     )
   })
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (message: string | undefined) => {
     const currentBlockId = chatChunks().at(-1)?.input?.id
-    if (currentBlockId && props.onAnswer)
+    if (currentBlockId && props.onAnswer && message)
       props.onAnswer({ message, blockId: currentBlockId })
     const longRequest = setTimeout(() => {
       setIsSending(true)
@@ -133,6 +133,8 @@ export const ConversationContainer = (props: Props) => {
     }
   }
 
+  const handleSkip = () => sendMessage(undefined)
+
   return (
     <div
       ref={chatContainer}
@@ -151,9 +153,7 @@ export const ConversationContainer = (props: Props) => {
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
             onScrollToBottom={autoScrollToBottom}
-            onSkip={() => {
-              // TODO: implement skip
-            }}
+            onSkip={handleSkip}
             context={props.context}
           />
         )}
