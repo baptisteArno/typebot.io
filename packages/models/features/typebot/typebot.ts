@@ -52,7 +52,6 @@ export const typebotSchema = schemaForType<TypebotPrisma>()(
     createdAt: z.date(),
     updatedAt: z.date(),
     icon: z.string().nullable(),
-    publishedTypebotId: z.string().nullable(),
     folderId: z.string().nullable(),
     publicId: z.string().nullable(),
     customDomain: z.string().nullable(),

@@ -56,7 +56,6 @@ const duplicateTypebot = (
       ...typebot,
       id,
       name: `${typebot.name} copy`,
-      publishedTypebotId: null,
       publicId: null,
       customDomain: null,
       groups: typebot.groups.map((b) => ({

@@ -12,7 +12,6 @@ export type NewTypebotProps = Omit<
   | 'createdAt'
   | 'updatedAt'
   | 'id'
-  | 'publishedTypebotId'
   | 'publicId'
   | 'customDomain'
   | 'icon'

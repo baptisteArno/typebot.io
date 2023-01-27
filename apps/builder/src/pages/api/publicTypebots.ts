@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!workspaceId) return badRequest(res, 'workspaceId is required')
       const data = (
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-      ) as PublicTypebot
+      ) as Omit<PublicTypebot, 'id'>
       const typebotContainsFileInput = data.groups
         .flatMap((g) => g.blocks)
         .some((b) => b.type === InputBlockType.FILE)

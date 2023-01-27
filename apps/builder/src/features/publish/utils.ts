@@ -20,7 +20,6 @@ export const parsePublicTypebotToTypebot = (
   customDomain: existingTypebot.customDomain,
   createdAt: existingTypebot.createdAt,
   updatedAt: existingTypebot.updatedAt,
-  publishedTypebotId: typebot.id,
   folderId: existingTypebot.folderId,
   icon: existingTypebot.icon,
   workspaceId: existingTypebot.workspaceId,

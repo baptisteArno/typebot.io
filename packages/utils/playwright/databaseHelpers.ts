@@ -24,7 +24,6 @@ export const parseTestTypebot = (
   publicId: null,
   updatedAt: new Date(),
   createdAt: new Date(),
-  publishedTypebotId: null,
   customDomain: null,
   icon: null,
   isArchived: false,

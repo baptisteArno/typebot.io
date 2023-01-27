@@ -2,7 +2,8 @@ import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { WorkspaceRole } from 'db'
-import { Typebot, typebotSchema } from 'models'
+import { PublicTypebot, Typebot, typebotSchema } from 'models'
+import { omit } from 'utils'
 import { z } from 'zod'
 
 export const listTypebotsProcedure = authenticatedProcedure
@@ -19,12 +20,13 @@ export const listTypebotsProcedure = authenticatedProcedure
   .output(
     z.object({
       typebots: z.array(
-        typebotSchema.pick({
-          name: true,
-          icon: true,
-          id: true,
-          publishedTypebotId: true,
-        })
+        typebotSchema
+          .pick({
+            name: true,
+            icon: true,
+            id: true,
+          })
+          .and(z.object({ publishedTypebotId: z.string().optional() }))
       ),
     })
   )
@@ -58,11 +60,23 @@ export const listTypebotsProcedure = authenticatedProcedure
         ],
       },
       orderBy: { createdAt: 'desc' },
-      select: { name: true, publishedTypebotId: true, id: true, icon: true },
-    })) as Pick<Typebot, 'name' | 'id' | 'icon' | 'publishedTypebotId'>[]
+      select: {
+        name: true,
+        publishedTypebot: { select: { id: true } },
+        id: true,
+        icon: true,
+      },
+    })) as (Pick<Typebot, 'name' | 'id' | 'icon'> & {
+      publishedTypebot: Pick<PublicTypebot, 'id'>
+    })[]
 
     if (!typebots)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebots found' })
 
-    return { typebots }
+    return {
+      typebots: typebots.map((typebot) => ({
+        publishedTypebotId: typebot.publishedTypebot?.id,
+        ...omit(typebot, 'publishedTypebot'),
+      })),
+    }
   })

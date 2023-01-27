@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ],
         },
         orderBy: { createdAt: 'desc' },
-        select: { name: true, publishedTypebotId: true, id: true, icon: true },
+        select: { name: true, id: true, icon: true },
       })
       return res.send({ typebots })
     }

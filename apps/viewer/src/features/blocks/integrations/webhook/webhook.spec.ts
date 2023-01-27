@@ -108,7 +108,6 @@ test.describe('API', () => {
     expect(typebots.length).toBeGreaterThanOrEqual(1)
     expect(typebots.find((typebot) => typebot.id === typebotId)).toMatchObject({
       id: typebotId,
-      publishedTypebotId: null,
       name: 'My typebot',
     })
   })

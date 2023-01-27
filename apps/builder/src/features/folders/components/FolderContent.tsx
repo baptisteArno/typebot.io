@@ -104,7 +104,7 @@ export const FolderContent = ({ folder }: Props) => {
     if (newFolder) mutateFolders({ folders: [...folders, newFolder] })
   }
 
-  const handleTypebotDeleted = () => {
+  const handleTypebotUpdated = () => {
     if (!typebots) return
     refetchTypebots()
   }
@@ -208,7 +208,7 @@ export const FolderContent = ({ folder }: Props) => {
                 <TypebotButton
                   key={typebot.id.toString()}
                   typebot={typebot}
-                  onTypebotDeleted={handleTypebotDeleted}
+                  onTypebotUpdated={handleTypebotUpdated}
                   onMouseDown={handleMouseDown(typebot)}
                 />
               ))}

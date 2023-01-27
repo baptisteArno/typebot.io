@@ -155,7 +155,6 @@ model Typebot {
   updatedAt               DateTime                  @default(now()) @updatedAt
   icon                    String?
   name                    String
-  publishedTypebotId      String?
   folderId                String?
   groups                  Json
   variables               Json[]

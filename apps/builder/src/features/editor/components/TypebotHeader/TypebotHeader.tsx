@@ -18,7 +18,7 @@ import { RightPanel, useEditor } from '../../providers/EditorProvider'
 import { useTypebot } from '../../providers/TypebotProvider'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { isNotDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { EditableTypebotName } from './EditableTypebotName'
 import { getBubbleActions } from 'typebot-js'
 import Link from 'next/link'
@@ -34,6 +34,7 @@ export const TypebotHeader = () => {
   const router = useRouter()
   const {
     typebot,
+    publishedTypebot,
     updateTypebot,
     save,
     undo,
@@ -126,7 +127,7 @@ export const TypebotHeader = () => {
         >
           Share
         </Button>
-        {typebot?.publishedTypebotId && (
+        {isDefined(publishedTypebot) && (
           <Button
             as={Link}
             href={`/typebots/${typebot?.id}/results`}

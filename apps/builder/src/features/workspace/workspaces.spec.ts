@@ -80,7 +80,7 @@ test('can update workspace info', async ({ page }) => {
   await page.fill('input[value="Pro workspace"]', 'My awesome workspace')
   await page.getByTestId('typebot-logo').click({ force: true })
   await expect(
-    page.getByRole('button', { name: '🏦 My awesome workspace Pro' })
+    page.getByRole('button', { name: 'My awesome workspace Pro' })
   ).toBeVisible()
 })
 

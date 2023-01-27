@@ -13,7 +13,6 @@ import {
 import { useRouter } from 'next/router'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { GripIcon } from '@/components/icons'
-import { Typebot } from 'models'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import { useDebounce } from 'use-debounce'
 import { Plan } from 'db'
@@ -24,23 +23,25 @@ import {
   getTypebotQuery,
   deleteTypebotQuery,
   importTypebotQuery,
+  TypebotInDashboard,
 } from '@/features/dashboard'
 import { MoreButton } from './MoreButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
+import { deletePublishedTypebotQuery } from '@/features/publish/queries/deletePublishedTypebotQuery'
 
-type ChatbotCardProps = {
-  typebot: Pick<Typebot, 'id' | 'publishedTypebotId' | 'name' | 'icon'>
+type Props = {
+  typebot: TypebotInDashboard
   isReadOnly?: boolean
-  onTypebotDeleted?: () => void
+  onTypebotUpdated: () => void
   onMouseDown?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const TypebotButton = ({
   typebot,
-  onTypebotDeleted,
   isReadOnly = false,
+  onTypebotUpdated,
   onMouseDown,
-}: ChatbotCardProps) => {
+}: Props) => {
   const router = useRouter()
   const { workspace } = useWorkspace()
   const { draggedTypebot } = useTypebotDnd()
@@ -70,7 +71,7 @@ export const TypebotButton = ({
         title: "Couldn't delete typebot",
         description: error.message,
       })
-    if (onTypebotDeleted) onTypebotDeleted()
+    onTypebotUpdated()
   }
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
@@ -93,6 +94,17 @@ export const TypebotButton = ({
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onDeleteOpen()
+  }
+
+  const handleUnpublishClick = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!typebot.publishedTypebotId) return
+    const { error } = await deletePublishedTypebotQuery({
+      publishedTypebotId: typebot.publishedTypebotId,
+      typebotId: typebot.id,
+    })
+    if (error) showToast({ description: error.message })
+    else onTypebotUpdated()
   }
 
   return (
@@ -143,6 +155,9 @@ export const TypebotButton = ({
             right="20px"
             aria-label={`Show ${typebot.name} menu`}
           >
+            {typebot.publishedTypebotId && (
+              <MenuItem onClick={handleUnpublishClick}>Unpublish</MenuItem>
+            )}
             <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
             <MenuItem color="red" onClick={handleDeleteClick}>
               Delete

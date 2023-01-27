@@ -29,7 +29,7 @@ import { integrationsList } from './embeds/EmbedButton'
 
 export const SharePage = () => {
   const { workspace } = useWorkspace()
-  const { typebot, updateTypebot } = useTypebot()
+  const { typebot, updateTypebot, publishedTypebot } = useTypebot()
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
@@ -39,7 +39,7 @@ export const SharePage = () => {
   const publicId = typebot
     ? typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id)
     : ''
-  const isPublished = isDefined(typebot?.publishedTypebotId)
+  const isPublished = isDefined(publishedTypebot)
 
   const handlePathnameChange = (pathname: string) => {
     if (!typebot?.customDomain) return

@@ -16,14 +16,13 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined, isNotDefined, omit } from 'utils'
+import { isDefined, omit } from 'utils'
 import { edgesAction, EdgesActions } from './actions/edges'
 import { itemsAction, ItemsActions } from './actions/items'
 import { GroupsActions, groupsActions } from './actions/groups'
 import { blocksAction, BlocksActions } from './actions/blocks'
 import { variablesAction, VariablesActions } from './actions/variables'
 import { dequal } from 'dequal'
-import cuid from 'cuid'
 import { useToast } from '@/hooks/useToast'
 import { useTypebotQuery } from '@/hooks/useTypebotQuery'
 import useUndo from '../../hooks/useUndo'
@@ -52,7 +51,6 @@ type UpdateTypebotPayload = Partial<{
   settings: Settings
   publicId: string
   name: string
-  publishedTypebotId: string
   icon: string
   customDomain: string
   resultsTablePreferences: ResultsTablePreferences
@@ -254,17 +252,12 @@ export const TypebotProvider = ({
 
   const publishTypebot = async () => {
     if (!localTypebot) return
-    const publishedTypebotId = cuid()
     const newLocalTypebot = { ...localTypebot }
-    if (publishedTypebot && isNotDefined(localTypebot.publishedTypebotId)) {
-      updateLocalTypebot({ publishedTypebotId: publishedTypebot.id })
-      await saveTypebot()
-    }
     if (!publishedTypebot) {
       const newPublicId =
         localTypebot.publicId ??
         parseDefaultPublicId(localTypebot.name, localTypebot.id)
-      updateLocalTypebot({ publicId: newPublicId, publishedTypebotId })
+      updateLocalTypebot({ publicId: newPublicId })
       newLocalTypebot.publicId = newPublicId
       await saveTypebot()
     }
@@ -277,8 +270,7 @@ export const TypebotProvider = ({
       setIsPublishing(true)
       const { data, error } = await createPublishedTypebotQuery(
         {
-          ...parseTypebotToPublicTypebot(newLocalTypebot),
-          id: publishedTypebotId,
+          ...omit(parseTypebotToPublicTypebot(newLocalTypebot), 'id'),
         },
         localTypebot.workspaceId
       )

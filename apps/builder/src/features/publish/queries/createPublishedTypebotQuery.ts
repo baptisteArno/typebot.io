@@ -2,7 +2,7 @@ import { PublicTypebot } from 'models'
 import { sendRequest } from 'utils'
 
 export const createPublishedTypebotQuery = async (
-  typebot: PublicTypebot,
+  typebot: Omit<PublicTypebot, 'id'>,
   workspaceId: string
 ) =>
   sendRequest<PublicTypebot>({
