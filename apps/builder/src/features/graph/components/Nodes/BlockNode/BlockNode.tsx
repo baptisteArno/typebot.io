@@ -215,8 +215,8 @@ export const BlockNode = ({
                 <BlockNodeContent block={block} indices={indices} />
                 <TargetEndpoint
                   pos="absolute"
-                  left="-32px"
-                  top="19px"
+                  left="-34px"
+                  top="16px"
                   blockId={block.id}
                 />
                 {isConnectable && hasDefaultConnector(block) && (

@@ -343,7 +343,7 @@ export const getEndpointTopOffset = ({
   if (!endpointId) return
   const endpointRef = endpoints[endpointId]?.ref
   if (!endpointRef?.current) return
-  const endpointHeight = 34 * graphScale
+  const endpointHeight = 20 * graphScale
   return (
     (endpointRef.current.getBoundingClientRect().y +
       endpointHeight / 2 -

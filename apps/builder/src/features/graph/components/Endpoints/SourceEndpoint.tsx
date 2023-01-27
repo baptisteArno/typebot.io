@@ -55,7 +55,6 @@ export const SourceEndpoint = ({
   if (!groupsCoordinates) return <></>
   return (
     <Flex
-      ref={ref}
       data-testid="endpoint"
       boxSize="32px"
       rounded="full"
@@ -66,6 +65,7 @@ export const SourceEndpoint = ({
       {...props}
     >
       <Flex
+        ref={ref}
         boxSize="20px"
         justify="center"
         align="center"

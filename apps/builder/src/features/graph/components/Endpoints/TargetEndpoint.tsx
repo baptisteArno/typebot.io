@@ -25,7 +25,7 @@ export const TargetEndpoint = ({
   return (
     <Box
       ref={ref}
-      boxSize="15px"
+      boxSize="20px"
       rounded="full"
       bgColor="blue.500"
       cursor="pointer"
