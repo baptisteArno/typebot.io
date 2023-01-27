@@ -1,4 +1,3 @@
-import { executeCode } from '@/features/blocks/logic/code/api'
 import { executeCondition } from '@/features/blocks/logic/condition/api'
 import { executeRedirect } from '@/features/blocks/logic/redirect/api'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable/api'
@@ -6,6 +5,7 @@ import { executeTypebotLink } from '@/features/blocks/logic/typebotLink/api'
 import { executeWait } from '@/features/blocks/logic/wait/api/utils/executeWait'
 import { LogicBlock, LogicBlockType, SessionState } from 'models'
 import { ExecuteLogicResponse } from '../../types'
+import { executeScript } from '@/features/blocks/logic/script/executeScript'
 
 export const executeLogic =
   (state: SessionState, lastBubbleBlockId?: string) =>
@@ -17,8 +17,8 @@ export const executeLogic =
         return executeCondition(state, block)
       case LogicBlockType.REDIRECT:
         return executeRedirect(state, block, lastBubbleBlockId)
-      case LogicBlockType.CODE:
-        return executeCode(state, block, lastBubbleBlockId)
+      case LogicBlockType.SCRIPT:
+        return executeScript(state, block, lastBubbleBlockId)
       case LogicBlockType.TYPEBOT_LINK:
         return executeTypebotLink(state, block)
       case LogicBlockType.WAIT:

@@ -6,9 +6,9 @@ import { getTestAsset } from '@/test/utils/playwright'
 
 const typebotId = cuid()
 
-test.describe('Code block', () => {
-  test('code should trigger', async ({ page }) => {
-    await importTypebotInDatabase(getTestAsset('typebots/logic/code.json'), {
+test.describe('Script block', () => {
+  test('script should trigger', async ({ page }) => {
+    await importTypebotInDatabase(getTestAsset('typebots/logic/script.json'), {
       id: typebotId,
     })
 

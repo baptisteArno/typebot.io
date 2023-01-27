@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { CodeOptions } from 'models'
+import { ScriptOptions } from 'models'
 
-type Props = CodeOptions
+type Props = ScriptOptions
 
-export const CodeNodeContent = ({ name, content }: Props) => (
+export const ScriptNodeContent = ({ name, content }: Props) => (
   <Text color={content ? 'currentcolor' : 'gray.500'} noOfLines={1}>
     {content ? `Run ${name}` : 'Configure...'}
   </Text>

@@ -6,7 +6,6 @@ import {
   BubbleBlockType,
   defaultChatwootOptions,
   defaultChoiceInputOptions,
-  defaultCodeOptions,
   defaultConditionContent,
   defaultDateInputOptions,
   defaultEmailInputOptions,
@@ -38,6 +37,7 @@ import {
   ItemType,
   LogicBlockType,
   defaultWaitOptions,
+  defaultScriptOptions,
 } from 'models'
 import {
   stubLength,
@@ -433,8 +433,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultSetVariablesOptions
     case LogicBlockType.REDIRECT:
       return defaultRedirectOptions
-    case LogicBlockType.CODE:
-      return defaultCodeOptions
+    case LogicBlockType.SCRIPT:
+      return defaultScriptOptions
     case LogicBlockType.WAIT:
       return defaultWaitOptions
     case LogicBlockType.TYPEBOT_LINK:

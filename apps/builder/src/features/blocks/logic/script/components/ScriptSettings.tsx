@@ -1,16 +1,16 @@
 import { FormLabel, Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/CodeEditor'
-import { CodeOptions } from 'models'
 import React from 'react'
 import { SwitchWithLabel } from '@/components/SwitchWithLabel'
 import { Input } from '@/components/inputs'
+import { ScriptOptions } from 'models'
 
 type Props = {
-  options: CodeOptions
-  onOptionsChange: (options: CodeOptions) => void
+  options: ScriptOptions
+  onOptionsChange: (options: ScriptOptions) => void
 }
 
-export const CodeSettings = ({ options, onOptionsChange }: Props) => {
+export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
   const handleNameChange = (name: string) =>
     onOptionsChange({ ...options, name })
   const handleCodeChange = (content: string) =>

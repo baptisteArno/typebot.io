@@ -1,18 +1,18 @@
 import { z } from 'zod'
-import { codeOptionsSchema, codeBlockSchema } from './code'
+import { scriptOptionsSchema, scriptBlockSchema } from './script'
 import { conditionBlockSchema } from './condition'
 import { redirectOptionsSchema, redirectBlockSchema } from './redirect'
 import { setVariableOptionsSchema, setVariableBlockSchema } from './setVariable'
 import { typebotLinkOptionsSchema, typebotLinkBlockSchema } from './typebotLink'
 import { waitBlockSchema, waitOptionsSchema } from './wait'
 
-const logicBlockOptionsSchema = codeOptionsSchema
+const logicBlockOptionsSchema = scriptOptionsSchema
   .or(redirectOptionsSchema)
   .or(setVariableOptionsSchema)
   .or(typebotLinkOptionsSchema)
   .or(waitOptionsSchema)
 
-export const logicBlockSchema = codeBlockSchema
+export const logicBlockSchema = scriptBlockSchema
   .or(conditionBlockSchema)
   .or(redirectBlockSchema)
   .or(typebotLinkBlockSchema)

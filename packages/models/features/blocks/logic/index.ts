@@ -1,4 +1,4 @@
-export * from './code'
+export * from './script'
 export * from './condition'
 export * from './enums'
 export * from './logicBlock'

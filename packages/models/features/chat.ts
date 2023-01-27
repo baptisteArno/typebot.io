@@ -97,7 +97,7 @@ const chatMessageSchema = z
       .or(embedMessageSchema)
   )
 
-const codeToExecuteSchema = z.object({
+const scriptToExecuteSchema = z.object({
   content: z.string(),
   args: z.array(
     z.object({
@@ -176,7 +176,7 @@ const clientSideActionSchema = z
   .and(
     z
       .object({
-        codeToExecute: codeToExecuteSchema,
+        scriptToExecute: scriptToExecuteSchema,
       })
       .or(
         z.object({
@@ -185,7 +185,7 @@ const clientSideActionSchema = z
       )
       .or(
         z.object({
-          chatwoot: z.object({ codeToExecute: codeToExecuteSchema }),
+          chatwoot: z.object({ scriptToExecute: scriptToExecuteSchema }),
         })
       )
       .or(
@@ -228,7 +228,7 @@ export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
 export type ChatReply = z.infer<typeof chatReplySchema>
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 export type SendMessageInput = z.infer<typeof sendMessageInputSchema>
-export type CodeToExecute = z.infer<typeof codeToExecuteSchema>
+export type ScriptToExecute = z.infer<typeof scriptToExecuteSchema>
 export type StartParams = z.infer<typeof startParamsSchema>
 export type RuntimeOptions = z.infer<typeof runtimeOptionsSchema>
 export type StartTypebot = z.infer<typeof startTypebotSchema>

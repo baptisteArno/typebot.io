@@ -4498,7 +4498,7 @@
                                           {
                                             "type": "object",
                                             "properties": {
-                                              "codeToExecute": {
+                                              "scriptToExecute": {
                                                 "type": "object",
                                                 "properties": {
                                                   "content": {
@@ -4553,7 +4553,7 @@
                                               }
                                             },
                                             "required": [
-                                              "codeToExecute"
+                                              "scriptToExecute"
                                             ],
                                             "additionalProperties": false
                                           },
@@ -4589,7 +4589,7 @@
                                           "chatwoot": {
                                             "type": "object",
                                             "properties": {
-                                              "codeToExecute": {
+                                              "scriptToExecute": {
                                                 "type": "object",
                                                 "properties": {
                                                   "content": {
@@ -4644,7 +4644,7 @@
                                               }
                                             },
                                             "required": [
-                                              "codeToExecute"
+                                              "scriptToExecute"
                                             ],
                                             "additionalProperties": false
                                           }

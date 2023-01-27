@@ -2,10 +2,10 @@ import { parseVariables, parseCorrectValueType } from '@/features/variables'
 import { LogicState } from '@/types'
 import { sendEventToParent } from '@/utils/chat'
 import { isEmbedded } from '@/utils/helpers'
-import { CodeBlock } from 'models'
+import { ScriptBlock } from 'models'
 
-export const executeCode = async (
-  block: CodeBlock,
+export const executeScript = async (
+  block: ScriptBlock,
   { typebot: { variables } }: LogicState
 ) => {
   if (!block.options.content) return

@@ -4,11 +4,11 @@ import {
   parseCorrectValueType,
   extractVariablesFromText,
 } from '@/features/variables'
-import { CodeBlock, SessionState } from 'models'
+import { ScriptBlock, SessionState } from 'models'
 
-export const executeCode = (
+export const executeScript = (
   { typebot: { variables } }: SessionState,
-  block: CodeBlock,
+  block: ScriptBlock,
   lastBubbleBlockId?: string
 ): ExecuteLogicResponse => {
   if (!block.options.content) return { outgoingEdgeId: block.outgoingEdgeId }
@@ -27,7 +27,7 @@ export const executeCode = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
-        codeToExecute: {
+        scriptToExecute: {
           content,
           args,
         },

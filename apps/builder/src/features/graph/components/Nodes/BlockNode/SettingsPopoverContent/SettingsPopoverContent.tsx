@@ -33,7 +33,6 @@ import { GoogleSheetsSettingsBody } from '@/features/blocks/integrations/googleS
 import { SendEmailSettings } from '@/features/blocks/integrations/sendEmail'
 import { WebhookSettings } from '@/features/blocks/integrations/webhook'
 import { ZapierSettings } from '@/features/blocks/integrations/zapier'
-import { CodeSettings } from '@/features/blocks/logic/code'
 import { RedirectSettings } from '@/features/blocks/logic/redirect'
 import { SetVariableSettings } from '@/features/blocks/logic/setVariable'
 import { TypebotLinkForm } from '@/features/blocks/logic/typebotLink'
@@ -42,6 +41,7 @@ import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom'
 import { HelpDocButton } from './HelpDocButton'
 import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
+import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -197,9 +197,9 @@ export const BlockSettings = ({
         />
       )
     }
-    case LogicBlockType.CODE: {
+    case LogicBlockType.SCRIPT: {
       return (
-        <CodeSettings
+        <ScriptSettings
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />

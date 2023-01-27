@@ -23,7 +23,6 @@ import { SetVariableContent } from '@/features/blocks/logic/setVariable'
 import { WebhookContent } from '@/features/blocks/integrations/webhook'
 import { ChatwootBlockNodeLabel } from '@/features/blocks/integrations/chatwoot'
 import { RedirectNodeContent } from '@/features/blocks/logic/redirect'
-import { CodeNodeContent } from '@/features/blocks/logic/code'
 import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly'
 import { WithVariableContent } from './WithVariableContent'
 import { PaymentInputContent } from '@/features/blocks/inputs/payment'
@@ -38,6 +37,7 @@ import { isInputBlock, isChoiceInput, blockHasItems } from 'utils'
 import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
+import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
 
 type Props = {
   block: Block | StartBlock
@@ -113,9 +113,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     case LogicBlockType.REDIRECT: {
       return <RedirectNodeContent url={block.options.url} />
     }
-    case LogicBlockType.CODE: {
+    case LogicBlockType.SCRIPT: {
       return (
-        <CodeNodeContent
+        <ScriptNodeContent
           name={block.options.name}
           content={block.options.content}
         />

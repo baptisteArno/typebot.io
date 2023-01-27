@@ -1,6 +1,8 @@
-import { executeCode } from '@/features/blocks/logic/code'
-import type { CodeToExecute } from 'models'
+import { executeScript } from '@/features/blocks/logic/script/executeScript'
+import type { ScriptToExecute } from 'models'
 
-export const executeChatwoot = (chatwoot: { codeToExecute: CodeToExecute }) => {
-  executeCode(chatwoot.codeToExecute)
+export const executeChatwoot = (chatwoot: {
+  scriptToExecute: ScriptToExecute
+}) => {
+  executeScript(chatwoot.scriptToExecute)
 }

@@ -65,10 +65,10 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
       return <Text>Condition</Text>
     case LogicBlockType.REDIRECT:
       return <Text>Redirect</Text>
-    case LogicBlockType.CODE:
+    case LogicBlockType.SCRIPT:
       return (
         <Tooltip label="Run Javascript code">
-          <Text>Code</Text>
+          <Text>Script</Text>
         </Tooltip>
       )
     case LogicBlockType.TYPEBOT_LINK:

@@ -1,6 +1,6 @@
-import type { CodeToExecute } from 'models'
+import type { ScriptToExecute } from 'models'
 
-export const executeCode = async ({ content, args }: CodeToExecute) => {
+export const executeScript = async ({ content, args }: ScriptToExecute) => {
   const func = Function(...args.map((arg) => arg.id), content)
   try {
     await func(...args.map((arg) => arg.value))

@@ -54,7 +54,8 @@
                               "PRO",
                               "LIFETIME",
                               "OFFERED",
-                              "CUSTOM"
+                              "CUSTOM",
+                              "UNLIMITED"
                             ]
                           }
                         },
@@ -145,7 +146,8 @@
                             "PRO",
                             "LIFETIME",
                             "OFFERED",
-                            "CUSTOM"
+                            "CUSTOM",
+                            "UNLIMITED"
                           ]
                         },
                         "stripeId": {
@@ -280,7 +282,8 @@
                             "PRO",
                             "LIFETIME",
                             "OFFERED",
-                            "CUSTOM"
+                            "CUSTOM",
+                            "UNLIMITED"
                           ]
                         },
                         "stripeId": {
@@ -432,7 +435,8 @@
                             "PRO",
                             "LIFETIME",
                             "OFFERED",
-                            "CUSTOM"
+                            "CUSTOM",
+                            "UNLIMITED"
                           ]
                         },
                         "stripeId": {

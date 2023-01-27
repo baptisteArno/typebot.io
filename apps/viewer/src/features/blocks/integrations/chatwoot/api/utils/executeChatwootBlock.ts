@@ -61,7 +61,7 @@ export const executeChatwootBlock = (
       {
         lastBubbleBlockId,
         chatwoot: {
-          codeToExecute: {
+          scriptToExecute: {
             content: parseVariables(variables, { fieldToParse: 'id' })(
               chatwootCode
             ),

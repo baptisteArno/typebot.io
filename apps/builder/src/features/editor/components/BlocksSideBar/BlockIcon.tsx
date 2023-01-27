@@ -19,7 +19,6 @@ import { ZapierLogo } from '@/features/blocks/integrations/zapier'
 import { WebhookIcon } from '@/features/blocks/integrations/webhook'
 import { GoogleSheetsLogo } from '@/features/blocks/integrations/googleSheets'
 import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink'
-import { CodeIcon } from '@/features/blocks/logic/code'
 import { RedirectIcon } from '@/features/blocks/logic/redirect'
 import { ConditionIcon } from '@/features/blocks/logic/condition'
 import { SetVariableIcon } from '@/features/blocks/logic/setVariable'
@@ -37,6 +36,7 @@ import { EmbedBubbleIcon } from '@/features/blocks/bubbles/embed'
 import { GoogleAnalyticsLogo } from '@/features/blocks/integrations/googleAnalytics'
 import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
+import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -81,8 +81,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <ConditionIcon color={purple} {...props} />
     case LogicBlockType.REDIRECT:
       return <RedirectIcon color={purple} {...props} />
-    case LogicBlockType.CODE:
-      return <CodeIcon color={purple} {...props} />
+    case LogicBlockType.SCRIPT:
+      return <ScriptIcon {...props} />
     case LogicBlockType.WAIT:
       return <WaitIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
