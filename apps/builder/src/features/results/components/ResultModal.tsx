@@ -44,9 +44,7 @@ export const ResultModal = ({ resultIdx, onClose }: Props) => {
                   {getHeaderValue(result[header.label])}
                 </Text>
               </Stack>
-            ) : (
-              <></>
-            )
+            ) : null
           )}
         </ModalBody>
       </ModalContent>

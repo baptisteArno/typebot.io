@@ -47,7 +47,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
               typebot={publishedTypebot}
               onUnlockProPlanClick={onOpen}
               answersCounts={
-                answersCounts
+                answersCounts[0]
                   ? [
                       { ...answersCounts[0], totalAnswers: stats?.totalStarts },
                       ...answersCounts.slice(1),

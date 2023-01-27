@@ -1,4 +1,3 @@
-import { captureException } from '@sentry/nextjs'
 import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
@@ -30,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       res.status(200).send({ message: 'Email sent!', info })
     } catch (err) {
-      captureException(err)
       console.log(err)
       res.status(500).send(err)
     }

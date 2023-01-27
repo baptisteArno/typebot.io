@@ -32,7 +32,7 @@ export const DropOffEdge = ({
 }: Props) => {
   const dropOffColor = useColorModeValue(
     theme.colors.red[500],
-    theme.colors.red[300]
+    theme.colors.red[400]
   )
   const { workspace } = useWorkspace()
   const { groupsCoordinates } = useGroupsCoordinates()
