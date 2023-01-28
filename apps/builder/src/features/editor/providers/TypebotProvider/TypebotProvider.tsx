@@ -52,7 +52,7 @@ type UpdateTypebotPayload = Partial<{
   publicId: string
   name: string
   icon: string
-  customDomain: string
+  customDomain: string | null
   resultsTablePreferences: ResultsTablePreferences
   isClosed: boolean
 }>

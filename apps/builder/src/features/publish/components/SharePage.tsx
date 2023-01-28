@@ -49,7 +49,7 @@ export const SharePage = () => {
     handleCustomDomainChange(newDomain)
   }
 
-  const handleCustomDomainChange = (customDomain: string | undefined) =>
+  const handleCustomDomainChange = (customDomain: string | null) =>
     updateTypebot({ customDomain })
 
   const checkIfPathnameIsValid = (pathname: string) => {
@@ -116,7 +116,7 @@ export const SharePage = () => {
                   icon={<TrashIcon />}
                   aria-label="Remove custom domain"
                   size="xs"
-                  onClick={() => handleCustomDomainChange(undefined)}
+                  onClick={() => handleCustomDomainChange(null)}
                 />
               </HStack>
             )}
