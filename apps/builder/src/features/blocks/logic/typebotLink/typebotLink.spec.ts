@@ -26,6 +26,7 @@ test('should be configurable', async ({ page }) => {
   await expect(page).toHaveURL(
     `/typebots/${linkedTypebotId}/edit?parentId=${typebotId}`
   )
+  await page.waitForTimeout(500)
   await page.click('[aria-label="Navigate back"]')
   await expect(page).toHaveURL(`/typebots/${typebotId}/edit`)
   await page.click('text=Jump in My link typebot 2')

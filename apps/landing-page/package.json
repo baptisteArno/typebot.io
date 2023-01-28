@@ -20,9 +20,9 @@
     "aos": "2.3.4",
     "db": "workspace:*",
     "focus-visible": "5.2.0",
-    "framer-motion": "8.5.0",
+    "framer-motion": "8.5.4",
     "models": "workspace:*",
-    "next": "13.1.4",
+    "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "utils": "workspace:*"
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/core": "7.20.12",
     "@chakra-ui/styled-system": "2.5.1",
-    "@next/bundle-analyzer": "13.1.4",
+    "@next/bundle-analyzer": "13.1.6",
     "@types/aos": "3.0.4",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",

@@ -9,9 +9,9 @@
     "zod": "3.20.2"
   },
   "devDependencies": {
-    "cuid": "2.1.8",
+    "cuid": "3.0.0",
     "db": "workspace:*",
-    "next": "13.1.4",
+    "next": "13.1.6",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   },

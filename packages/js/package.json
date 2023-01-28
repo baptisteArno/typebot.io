@@ -21,7 +21,7 @@
   "devDependencies": {
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-node-resolve": "15.0.1",
-    "@rollup/plugin-terser": "^0.3.0",
+    "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "11.0.0",
     "autoprefixer": "10.4.13",
     "babel-preset-solid": "1.6.9",
@@ -30,8 +30,7 @@
     "eslint-plugin-solid": "0.9.3",
     "postcss": "8.4.21",
     "react": "18.2.0",
-    "rollup": "3.10.1",
-    "rollup-plugin-babel": "4.4.0",
+    "rollup": "3.12.0",
     "rollup-plugin-dts": "5.1.1",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-typescript-paths": "^1.4.0",

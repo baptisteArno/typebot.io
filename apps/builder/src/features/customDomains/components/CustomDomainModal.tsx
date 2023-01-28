@@ -118,7 +118,11 @@ export const CustomDomainModal = ({
                     <Stack>
                       <Text fontWeight="bold">Value</Text>
                       <Text>
-                        {env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}
+                        {
+                          new URL(
+                            env('VIEWER_INTERNAL_URL') ?? getViewerUrl() ?? ''
+                          ).hostname
+                        }
                       </Text>
                     </Stack>
                   </HStack>
