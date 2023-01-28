@@ -5,16 +5,18 @@ export const joinWorkspaces = async (
   { id, email }: { id: string; email: string },
   invitations: WorkspaceInvitation[]
 ) => {
-  await p.memberInWorkspace.createMany({
-    data: invitations.map((invitation) => ({
-      workspaceId: invitation.workspaceId,
-      role: invitation.type,
-      userId: id,
-    })),
-  })
-  return p.workspaceInvitation.deleteMany({
-    where: {
-      email,
-    },
-  })
+  await p.$transaction([
+    p.memberInWorkspace.createMany({
+      data: invitations.map((invitation) => ({
+        workspaceId: invitation.workspaceId,
+        role: invitation.type,
+        userId: id,
+      })),
+    }),
+    p.workspaceInvitation.deleteMany({
+      where: {
+        email,
+      },
+    }),
+  ])
 }
