@@ -696,30 +696,38 @@
                     "typebots": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "icon": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "icon",
+                              "id"
+                            ],
+                            "additionalProperties": false
                           },
-                          "icon": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "publishedTypebotId": {
-                            "type": "string",
-                            "nullable": true
+                          {
+                            "type": "object",
+                            "properties": {
+                              "publishedTypebotId": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
                           }
-                        },
-                        "required": [
-                          "name",
-                          "icon",
-                          "id",
-                          "publishedTypebotId"
-                        ],
-                        "additionalProperties": false
+                        ]
                       }
                     }
                   },

@@ -14,6 +14,7 @@ import { VariablesButton } from '@/features/variables'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextBoxProps = {
+  defaultValue?: string
   onChange: (value: string) => void
   TextBox:
     | ComponentWithAs<'textarea', TextareaProps>
@@ -22,7 +23,7 @@ export type TextBoxProps = {
   debounceTimeout?: number
   label?: string
   moreInfoTooltip?: string
-} & Omit<InputProps & TextareaProps, 'onChange'>
+} & Omit<InputProps & TextareaProps, 'onChange' | 'defaultValue'>
 
 export const TextBox = ({
   onChange,
@@ -36,8 +37,10 @@ export const TextBox = ({
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
     null
   )
-  const [carretPosition, setCarretPosition] = useState<number>(0)
-  const [value, setValue] = useState(props.defaultValue ?? '')
+  const [value, setValue] = useState<string>(props.defaultValue ?? '')
+  const [carretPosition, setCarretPosition] = useState<number>(
+    props.defaultValue?.length ?? 0
+  )
   const [isTouched, setIsTouched] = useState(false)
   const debounced = useDebouncedCallback(
     (value) => {
@@ -68,16 +71,12 @@ export const TextBox = ({
   }
 
   const handleVariableSelected = (variable?: Variable) => {
-    if (!textBoxRef.current || !variable) return
+    if (!variable) return
     setIsTouched(true)
-    const cursorPosition = carretPosition
-    const textBeforeCursorPosition = textBoxRef.current.value.substring(
-      0,
-      cursorPosition
-    )
-    const textAfterCursorPosition = textBoxRef.current.value.substring(
-      cursorPosition,
-      textBoxRef.current.value.length
+    const textBeforeCursorPosition = value.substring(0, carretPosition)
+    const textAfterCursorPosition = value.substring(
+      carretPosition,
+      value.length
     )
     const newValue =
       textBeforeCursorPosition +
@@ -85,17 +84,18 @@ export const TextBox = ({
       textAfterCursorPosition
     setValue(newValue)
     debounced(newValue)
-    textBoxRef.current.focus()
+    const newCarretPosition = carretPosition + `{{${variable.name}}}`.length
+    setCarretPosition(newCarretPosition)
+    textBoxRef.current?.focus()
     setTimeout(() => {
       if (!textBoxRef.current) return
       textBoxRef.current.selectionStart = textBoxRef.current.selectionEnd =
-        carretPosition + `{{${variable.name}}}`.length
-      setCarretPosition(textBoxRef.current.selectionStart)
+        newCarretPosition
     }, 100)
   }
 
-  const handleKeyUp = () => {
-    if (!textBoxRef.current?.selectionStart) return
+  const updateCarretPosition = () => {
+    if (textBoxRef.current?.selectionStart === undefined) return
     setCarretPosition(textBoxRef.current.selectionStart)
   }
 
@@ -103,8 +103,8 @@ export const TextBox = ({
     <TextBox
       ref={textBoxRef}
       value={value}
-      onKeyUp={handleKeyUp}
-      onClick={handleKeyUp}
+      onKeyUp={updateCarretPosition}
+      onClick={updateCarretPosition}
       onChange={handleChange}
       {...props}
     />
