@@ -1,5 +1,48 @@
 # Changelog
 
+<a name="2.9.4"></a>
+## 2.9.4 (2023-01-28)
+
+### Added
+
+- ✨ Add Wait block [[fa9e4b7](https://github.com/baptisteArno/typebot.io/commit/fa9e4b7b673571949d7d5c721dae9040a1857902)]
+
+### Changed
+
+- ⚡ (editor) Improve textbox incoming variable detection [[8d592a3](https://github.com/baptisteArno/typebot.io/commit/8d592a3cc3e5ef3edd736a53e55f945c097c9d20)]
+- ⬆️ Upgrade dependencies [[201939f](https://github.com/baptisteArno/typebot.io/commit/201939f8a3d586a42a7d4a44accb4ced6c44e985)]
+- ♻️ (auth) Group join workspaces queries in a transaction [[bfd85b4](https://github.com/baptisteArno/typebot.io/commit/bfd85b4fd3002451f7e3b247282fba2114106e81)]
+- ⚡ (engine) Implement skip on engine v2 [[d54822a](https://github.com/baptisteArno/typebot.io/commit/d54822af2b5081616fee790998772c547d45011c)]
+- 🚸 (dashboard) Add unpublish menu item in dashboard [[f93bc2f](https://github.com/baptisteArno/typebot.io/commit/f93bc2fcb2cd8df1152f6dce3c9780fda05302ac)]
+- ♻️ Rename Code block to Script block [[a842f57](https://github.com/baptisteArno/typebot.io/commit/a842f572974123884b67ac4c01d4c6d09abe08a8)]
+- 💄 Improve edges alignment when connected to blocks [[068f9bb](https://github.com/baptisteArno/typebot.io/commit/068f9bbd17bd7796308983a9abcd4de0ead3b7a5)]
+- ♻️ Add a new unlimited plan [[409e764](https://github.com/baptisteArno/typebot.io/commit/409e7643ad59732d78704cb39d7d921e09904671)]
+- 🚸 (engine) Improve engine v2 client loading and timings [[4f78dda](https://github.com/baptisteArno/typebot.io/commit/4f78dda640ee43811fdcdc2f99e2849af8ae2d13)]
+- 🚸 Add better page titles and dashboard icons [[ee864d9](https://github.com/baptisteArno/typebot.io/commit/ee864d972923a6f8f0b2e3d891385b8c119e0145)]
+- ⚡ Improve new bot engine client side actions [[9aab6dd](https://github.com/baptisteArno/typebot.io/commit/9aab6ddb2cbc50544dc5b57782f322e6c3252348)]
+- ♻️ (lp) Remove old bot-engine from landing page [[79622c6](https://github.com/baptisteArno/typebot.io/commit/79622c6884a4647215b24812ed65f7229e06f325)]
+- ⚡ (engine) Improve engine overall robustness [[30baa61](https://github.com/baptisteArno/typebot.io/commit/30baa611e5308f45470552160e92d724c47b5310)]
+- ♻️ Migrate default background to white [[ff62b92](https://github.com/baptisteArno/typebot.io/commit/ff62b922a04a21119f21fcb81f675dfb4a45536f)]
+- 🚸 (share) Hide custom domain dropdown when env isn&#x27;t configured [[393f5f2](https://github.com/baptisteArno/typebot.io/commit/393f5f27ed3042f84fa26faea21e886219e5e901)]
+- ⬆️ Upgrade dependencies [[04d206e](https://github.com/baptisteArno/typebot.io/commit/04d206eab10f6a889b16cd3edd04c95f6d804358)]
+
+### Fixed
+
+- 🐛 (share) Fix custom domain delete [[cb83935](https://github.com/baptisteArno/typebot.io/commit/cb83935da937dc0e872f33c4b0947bde7694b2a4)]
+- 🐛 Fix misc bugs [[a738897](https://github.com/baptisteArno/typebot.io/commit/a738897dbb544102a9ce4ca546c309ece5eecc77)]
+- 🐛 (editor) Fix outside click not working in some cases [[0fc82cf](https://github.com/baptisteArno/typebot.io/commit/0fc82cf73be5249e829959d87e3ac43afdd66460)]
+- 🐛 (viewer) Should not import google font url if empty [[14e6ee3](https://github.com/baptisteArno/typebot.io/commit/14e6ee373fa141af6d3b2aa39a93b5a7b1f862ec)]
+- 🐛 (lp) Fix real time airtable bot [[eb01fd2](https://github.com/baptisteArno/typebot.io/commit/eb01fd254e997e8dd3a8abc40bf05d2b7f6edbdd)]
+- 🐛 (engine) Fix button validation when item content includes a comma [[07f2626](https://github.com/baptisteArno/typebot.io/commit/07f26262ef5aecbc8b53b3566a75afe53955ac03)]
+- 🐛 (share) Fix custom domain button not showing [[2d51a8a](https://github.com/baptisteArno/typebot.io/commit/2d51a8a359ef74f4e2615633224a3c9ebd3839d8)]
+
+### Miscellaneous
+
+- 📝 Add affiliate program faq section [[8e0043d](https://github.com/baptisteArno/typebot.io/commit/8e0043d51d7fbf57fe5a662d519536ccf111aabc)]
+- 📝 Write a guide about UTM params forwarding [[01c9691](https://github.com/baptisteArno/typebot.io/commit/01c969117517a90c52e8a8770aee6041fb5a721e)]
+- 📝 Improve the description of NEXTAUTH_URL_INTERNAL [[3d2d401](https://github.com/baptisteArno/typebot.io/commit/3d2d4017b203169b755894e35ff93c9d4e710a1c)]
+
+
 <a name="2.9.3"></a>
 ## 2.9.3 (2023-01-20)
 
