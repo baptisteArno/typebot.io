@@ -10,6 +10,7 @@ import {
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { parseNewTypebot } from '@/features/dashboard'
 import { NewTypebotProps } from '@/features/dashboard/api/parseNewTypebot'
+import { omit } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -87,13 +88,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         select: { plan: true },
       })
       if (!workspace) return notFound(res, "Couldn't find workspace")
-      const data = (
+      const data =
         typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-      ) as NewTypebotProps | Omit<NewTypebotProps, 'groups'>
+      const formattedData = removeOldProperties(data) as
+        | NewTypebotProps
+        | Omit<NewTypebotProps, 'groups'>
       const typebot = await prisma.typebot.create({
         data:
-          'groups' in data
-            ? data
+          'groups' in formattedData
+            ? formattedData
             : parseNewTypebot({
                 ownerAvatarUrl: user.image ?? undefined,
                 isBrandingEnabled: workspace.plan === Plan.FREE,
@@ -110,6 +113,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     return res.status(500).send({ message: 'An error occured', error: err })
   }
+}
+
+const removeOldProperties = (data: unknown) => {
+  if (data && typeof data === 'object' && 'publishedTypebotId' in data) {
+    return omit(data, 'publishedTypebotId')
+  }
+  return data
 }
 
 export default handler
