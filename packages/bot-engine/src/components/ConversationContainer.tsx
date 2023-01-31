@@ -78,7 +78,10 @@ export const ConversationContainer = ({
     onNewGroupVisible(nextEdge)
     setDisplayedGroups([
       ...displayedGroups,
-      { group: nextGroup, startBlockIndex },
+      {
+        group: nextGroup,
+        startBlockIndex: startBlockIndex === -1 ? 0 : startBlockIndex,
+      },
     ])
   }
 

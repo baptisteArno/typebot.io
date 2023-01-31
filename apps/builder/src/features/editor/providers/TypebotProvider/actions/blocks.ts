@@ -130,6 +130,11 @@ const moveBlockToGroup = (
         : (newBlock.outgoingEdgeId = undefined)
     }
   }
+  typebot.edges.forEach((edge) => {
+    if (edge.to.blockId === block.id) {
+      edge.to.groupId = groupId
+    }
+  })
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
 }
 
