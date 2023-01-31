@@ -14,6 +14,13 @@ const nextConfig = withTM({
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [...config.externals, '@prisma/client']
+    }
+
+    return config
+  },
   headers: async () => {
     return [
       {

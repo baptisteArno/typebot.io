@@ -6,7 +6,7 @@ RUN npm --global install pnpm
 
 FROM base AS builder
 RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git
-COPY pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm fetch
 ADD . ./
 RUN pnpm install -r --offline
