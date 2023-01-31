@@ -7,13 +7,6 @@ const pages = ['pricing', 'privacy-policies', 'terms-of-service', 'about']
 
 module.exports = withBundleAnalyzer({
   transpilePackages: ['utils', 'models'],
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals = [...config.externals, '@prisma/client']
-    }
-
-    return config
-  },
   async redirects() {
     return [
       {
