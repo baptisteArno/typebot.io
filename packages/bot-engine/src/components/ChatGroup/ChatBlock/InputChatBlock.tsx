@@ -63,11 +63,6 @@ export const InputChatBlock = ({
     setIsEditting(false)
   }
 
-  const handleGuestBubbleClick = () => {
-    setAnswer(undefined)
-    setIsEditting(true)
-  }
-
   if (isLoading) return null
 
   if (answer) {
@@ -77,7 +72,6 @@ export const InputChatBlock = ({
         message={answer}
         showAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
         avatarSrc={avatarUrl && parseVariables(typebot.variables)(avatarUrl)}
-        onClick={handleGuestBubbleClick}
       />
     )
   }

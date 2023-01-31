@@ -6,33 +6,19 @@ interface Props {
   message: string
   showAvatar: boolean
   avatarSrc?: string
-  onClick: () => void
 }
 
 export const GuestBubble = ({
   message,
   showAvatar,
   avatarSrc,
-  onClick,
 }: Props): JSX.Element => {
   const [content] = useState(message)
-  const [isDragging, setIsDragging] = useState(false)
-
-  const handleMouseDown = () => setIsDragging(false)
-  const handleMouseMove = () => setIsDragging(true)
-  const handleMouseUp = () => {
-    setIsDragging(false)
-    if (isDragging) return
-    onClick()
-  }
 
   return (
     <CSSTransition classNames="bubble" timeout={1000}>
       <div
         className="flex justify-end mb-2 items-end"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
         style={{ marginLeft: '50px' }}
       >
         <span
