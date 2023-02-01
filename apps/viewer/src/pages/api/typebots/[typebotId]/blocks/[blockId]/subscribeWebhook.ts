@@ -29,7 +29,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.webhook.upsert({
         where: { id: webhookId },
         update: { url, body: '{{state}}', method: 'POST' },
-        create: { url, body: '{{state}}', method: 'POST', typebotId },
+        create: {
+          url,
+          body: '{{state}}',
+          method: 'POST',
+          typebotId,
+          headers: [],
+          queryParams: [],
+        },
       })
 
       return res.send({ message: 'success' })

@@ -46,9 +46,9 @@ model User {
   emailVerified           DateTime?
   image                   String?
   company                 String?
-  onboardingCategories    String[]
+  onboardingCategories    Json
   graphNavigation         GraphNavigation?
-  preferredAppAppearance     String?
+  preferredAppAppearance  String?
   accounts                Account[]
   apiTokens               ApiToken[]
   CollaboratorsOnTypebots CollaboratorsOnTypebots[]
@@ -157,7 +157,7 @@ model Typebot {
   name                    String
   folderId                String?
   groups                  Json
-  variables               Json[]
+  variables               Json
   edges                   Json
   theme                   Json
   settings                Json
@@ -204,7 +204,7 @@ model PublicTypebot {
   updatedAt DateTime @default(now()) @updatedAt
   typebotId String   @unique
   groups    Json
-  variables Json[]
+  variables Json
   edges     Json
   theme     Json
   settings  Json
@@ -216,7 +216,7 @@ model Result {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   typebotId   String
-  variables   Json[]
+  variables   Json
   isCompleted Boolean
   hasStarted  Boolean?
   isArchived  Boolean? @default(false)
@@ -266,8 +266,8 @@ model Webhook {
   id          String  @id @default(cuid())
   url         String?
   method      String
-  queryParams Json[]
-  headers     Json[]
+  queryParams Json
+  headers     Json
   body        String?
   typebotId   String
   typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)

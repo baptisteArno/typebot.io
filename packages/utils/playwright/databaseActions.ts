@@ -41,7 +41,8 @@ export const injectFakeResults = async ({
             : new Date(),
           isCompleted: rand > 0.5,
           hasStarted: true,
-        }
+          variables: [],
+        } satisfies Prisma.ResultCreateManyInput
       }),
     ],
   })
@@ -135,7 +136,10 @@ export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
 
 export const updateUser = (data: Partial<User>) =>
   prisma.user.update({
-    data,
+    data: {
+      ...data,
+      onboardingCategories: data.onboardingCategories ?? [],
+    },
     where: {
       id: userId,
     },
@@ -149,7 +153,14 @@ export const createWebhook = async (
     await prisma.webhook.delete({ where: { id: 'webhook1' } })
   } catch {}
   return prisma.webhook.create({
-    data: { method: 'GET', typebotId, id: 'webhook1', ...webhookProps },
+    data: {
+      method: 'GET',
+      typebotId,
+      id: 'webhook1',
+      ...webhookProps,
+      queryParams: webhookProps?.queryParams ?? [],
+      headers: webhookProps?.headers ?? [],
+    },
   })
 }
 

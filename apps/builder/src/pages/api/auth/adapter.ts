@@ -49,6 +49,7 @@ export function CustomAdapter(p: PrismaClient): Adapter {
                     },
                   },
                 },
+          onboardingCategories: [],
         },
       })
       if (process.env.USER_CREATED_WEBHOOK_URL)

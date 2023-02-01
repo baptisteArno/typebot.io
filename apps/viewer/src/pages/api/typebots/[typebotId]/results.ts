@@ -32,6 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         typebotId,
         isCompleted: false,
+        variables: [],
       },
     })
     res.send({ result })
