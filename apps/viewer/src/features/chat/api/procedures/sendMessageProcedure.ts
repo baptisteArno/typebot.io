@@ -291,7 +291,7 @@ const getResult = async ({
   const data = {
     isCompleted: false,
     typebotId: typebot,
-    variables: { set: startVariables.filter((variable) => variable.value) },
+    variables: startVariables.filter((variable) => variable.value),
   } satisfies Prisma.ResultUncheckedCreateInput
   const select = {
     id: true,
