@@ -21,7 +21,7 @@ const bulkUpdate = async () => {
 
   const results = (await prisma.result.findMany({
     where: {
-      variables: { isEmpty: false },
+      variables: { equals: [] },
     },
     select: { variables: true, id: true },
   })) as Pick<Result, 'variables' | 'id'>[]
