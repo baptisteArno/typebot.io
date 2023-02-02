@@ -1,5 +1,35 @@
 # Changelog
 
+<a name="2.10.0"></a>
+## 2.10.0 (2023-02-02)
+
+### Added
+
+- 👷‍♂️ Add expired records database cleanup scripts [[1b060da](https://github.com/baptisteArno/typebot.io/commit/1b060dac2de4f9631713b8c742ecb06606aa8b98)]
+
+### Changed
+
+- 🗃️ Set new fields column to not null [[a5dc982](https://github.com/baptisteArno/typebot.io/commit/a5dc9821d6cf8dbf839ebcebe0b0f67a1a4c11d0)]
+- 🗃️ Remove list types from db schema [[6e0f0e4](https://github.com/baptisteArno/typebot.io/commit/6e0f0e487bac1d5cb04bbd702e76f8fa5401d8ff)]
+
+### Removed
+
+- 🔥 Remove inline edit in old engine [[58c6efc](https://github.com/baptisteArno/typebot.io/commit/58c6efc5c86d31ed96a9b9bc30a9c0fc6423d892)]
+
+### Fixed
+
+- 🐛 Remove deny X-Frame on typebot.io [[2c57eba](https://github.com/baptisteArno/typebot.io/commit/2c57eba994fe318867d8a6b27fc94626653752de)]
+- 🐛 Fix workspace member lock banner always on [[1806840](https://github.com/baptisteArno/typebot.io/commit/1806840119476743be7e2c1c4c424c36f5480c13)]
+- 🚑 Revert prisma fix [[1dfe4ca](https://github.com/baptisteArno/typebot.io/commit/1dfe4cadf7ab8e01c9f330765459efa66ad12103)]
+- 🐛 Fix crash when outgoing edge blockId does not exist [[58ca1c3](https://github.com/baptisteArno/typebot.io/commit/58ca1c3ad69cb4ffc2a8695c074cadf9d80383a0)]
+
+### Miscellaneous
+
+- 📝 Add google sheets callback URL instruction [[4a9f2b1](https://github.com/baptisteArno/typebot.io/commit/4a9f2b1b02ca4be041a265d977142fc86e57a25d)]
+- 🩹 Better fix for ENOENT schema.prisma [[3851b2d](https://github.com/baptisteArno/typebot.io/commit/3851b2d70b58af87beb6e652e0ea32b6a892c3c5)]
+- 🩹 Still accept old bot property when importing [[42d4bc3](https://github.com/baptisteArno/typebot.io/commit/42d4bc3882fa767b6c4df2f0d7d327e277997256)]
+
+
 <a name="2.9.4"></a>
 ## 2.9.4 (2023-01-28)
 
