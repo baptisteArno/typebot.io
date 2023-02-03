@@ -225,8 +225,6 @@ model Result {
   logs        Log[]
 
   @@index([typebotId])
-  @@index([typebotId, createdAt])
-  @@index([createdAt, typebotId])
 }
 
 model Log {
@@ -253,7 +251,6 @@ model Answer {
 
   @@unique([resultId, blockId, groupId])
   @@index([groupId])
-  @@index([storageUsed])
 }
 
 model Coupon {
@@ -263,14 +260,16 @@ model Coupon {
 }
 
 model Webhook {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
   url         String?
   method      String
   queryParams Json
   headers     Json
   body        String?
   typebotId   String
-  typebot     Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }
 
 model ClaimableCustomPlan {

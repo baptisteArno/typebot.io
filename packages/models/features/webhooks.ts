@@ -16,7 +16,7 @@ export type KeyValue = { id: string; key?: string; value?: string }
 
 export type Webhook = Omit<
   WebhookFromPrisma,
-  'queryParams' | 'headers' | 'method'
+  'queryParams' | 'headers' | 'method' | 'createdAt' | 'updatedAt'
 > & {
   queryParams: KeyValue[]
   headers: KeyValue[]
