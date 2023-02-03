@@ -1,4 +1,4 @@
-import { CollaborationType } from 'db'
+import { CollaborationType, Prisma } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
@@ -7,6 +7,7 @@ import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
 import { typebotSchema } from 'models'
 import { captureEvent } from '@sentry/nextjs'
+import { omit } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -82,12 +83,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send({ message: 'Found newer version of typebot in database' })
     const typebots = await prisma.typebot.updateMany({
       where: canWriteTypebots(typebotId, user),
-      data: {
+      data: removeOldProperties({
         ...data,
         theme: data.theme ?? undefined,
         settings: data.settings ?? undefined,
         resultsTablePreferences: data.resultsTablePreferences ?? undefined,
-      },
+      }) as Prisma.TypebotUpdateInput,
     })
     return res.send({ typebots })
   }
@@ -100,6 +101,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebots })
   }
   return methodNotAllowed(res)
+}
+
+// TODO: Remove in a month
+const removeOldProperties = (data: unknown) => {
+  if (data && typeof data === 'object' && 'publishedTypebotId' in data) {
+    return omit(data, 'publishedTypebotId')
+  }
+  return data
 }
 
 export default handler
