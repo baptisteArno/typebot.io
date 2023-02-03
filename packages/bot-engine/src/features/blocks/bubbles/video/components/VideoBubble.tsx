@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import {
   Variable,
@@ -23,25 +23,24 @@ export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
-  useEffect(() => {
-    if (!isTyping || isLoading) return
-    showContentAfterMediaLoad()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
-
-  const showContentAfterMediaLoad = () => {
-    setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, 1000)
-  }
-
-  const onTypingEnd = () => {
+  const onTypingEnd = useCallback(() => {
     setIsTyping(false)
     setTimeout(() => {
       onTransitionEnd()
     }, showAnimationDuration)
-  }
+  }, [onTransitionEnd])
+
+  useEffect(() => {
+    if (!isTyping || isLoading) return
+    const timeout = setTimeout(() => {
+      setIsTyping(false)
+      onTypingEnd()
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [isLoading, isTyping, onTypingEnd])
 
   return (
     <div className="flex flex-col" ref={messageContainer}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { EmbedBubbleBlock } from 'models'
 import { TypingBubble } from '../../../../../components/TypingBubble'
 import { parseVariables } from '@/features/variables'
@@ -21,25 +21,24 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
     [block.content?.url, typebot.variables]
   )
 
-  useEffect(() => {
-    if (!isTyping || isLoading) return
-    showContentAfterMediaLoad()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
-
-  const showContentAfterMediaLoad = () => {
-    setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, 1000)
-  }
-
-  const onTypingEnd = () => {
+  const onTypingEnd = useCallback(() => {
     setIsTyping(false)
     setTimeout(() => {
       onTransitionEnd()
     }, showAnimationDuration)
-  }
+  }, [onTransitionEnd])
+
+  useEffect(() => {
+    if (!isTyping || isLoading) return
+    const timeout = setTimeout(() => {
+      setIsTyping(false)
+      onTypingEnd()
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [isLoading, isTyping, onTypingEnd])
 
   return (
     <div className="flex flex-col w-full" ref={messageContainer}>

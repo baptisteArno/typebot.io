@@ -63,6 +63,7 @@ export const BlockNode = ({
     setOpenedBlockId,
     setFocusedGroupId,
     previewingEdge,
+    isReadOnly,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
@@ -111,6 +112,7 @@ export const BlockNode = ({
   }
 
   const handleMouseEnter = () => {
+    if (isReadOnly) return
     if (mouseOverBlock?.id !== block.id)
       setMouseOverBlock({ id: block.id, ref: blockRef })
     if (connectingIds)

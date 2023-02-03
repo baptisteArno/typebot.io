@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { ImageBubbleBlock } from 'models'
 import { TypingBubble } from '@/components/TypingBubble'
@@ -24,31 +24,37 @@ export const ImageBubble = ({ block, onTransitionEnd }: Props) => {
     [block.content?.url, typebot.variables]
   )
 
-  useEffect(() => {
-    if (!isTyping || isLoading) return
-    showContentAfterMediaLoad()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
-
-  const showContentAfterMediaLoad = () => {
-    if (!image.current) return
-    const timeout = setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, mediaLoadingFallbackTimeout)
-    image.current.onload = () => {
-      clearTimeout(timeout)
-      setIsTyping(false)
-      onTypingEnd()
-    }
-  }
-
-  const onTypingEnd = () => {
+  const onTypingEnd = useCallback(() => {
     setIsTyping(false)
     setTimeout(() => {
       onTransitionEnd()
     }, showAnimationDuration)
-  }
+  }, [onTransitionEnd])
+
+  useEffect(() => {
+    if (!isTyping || isLoading) return
+
+    const timeout = setTimeout(() => {
+      setIsTyping(false)
+      onTypingEnd()
+    }, mediaLoadingFallbackTimeout)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [isLoading, isTyping, onTypingEnd])
+
+  useEffect(() => {
+    const currentImage = image.current
+    if (!currentImage || isLoading || !isTyping) return
+    currentImage.onload = () => {
+      setIsTyping(false)
+      onTypingEnd()
+    }
+    return () => {
+      currentImage.onload = null
+    }
+  }, [isLoading, isTyping, onTypingEnd])
 
   return (
     <div className="flex flex-col" ref={messageContainer}>

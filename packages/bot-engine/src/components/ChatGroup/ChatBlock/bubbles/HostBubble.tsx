@@ -4,7 +4,6 @@ import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
 import { VideoBubble } from '@/features/blocks/bubbles/video'
 import { BubbleBlock, BubbleBlockType } from 'models'
-import React from 'react'
 
 type Props = {
   block: BubbleBlock

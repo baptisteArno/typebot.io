@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { BubbleBlockType, TextBubbleBlock } from 'models'
 import { computeTypingDuration } from '../utils/computeTypingDuration'
@@ -27,24 +27,34 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
     parseVariables(typebot.variables)(block.content.html)
   )
 
-  useEffect(() => {
-    if (!isTyping || isLoading) return
-    const typingTimeout = computeTypingDuration(
-      block.content.plainText,
-      typebot.settings?.typingEmulation ?? defaultTypingEmulation
-    )
-    setTimeout(() => {
-      onTypingEnd()
-    }, typingTimeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
-
-  const onTypingEnd = () => {
+  const onTypingEnd = useCallback(() => {
     setIsTyping(false)
     setTimeout(() => {
       onTransitionEnd()
     }, showAnimationDuration)
-  }
+  }, [onTransitionEnd])
+
+  useEffect(() => {
+    if (!isTyping || isLoading) return
+
+    const typingTimeout = computeTypingDuration(
+      block.content.plainText,
+      typebot.settings?.typingEmulation ?? defaultTypingEmulation
+    )
+    const timeout = setTimeout(() => {
+      onTypingEnd()
+    }, typingTimeout)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [
+    block.content.plainText,
+    isLoading,
+    isTyping,
+    onTypingEnd,
+    typebot.settings?.typingEmulation,
+  ])
 
   return (
     <div className="flex flex-col" ref={messageContainer}>

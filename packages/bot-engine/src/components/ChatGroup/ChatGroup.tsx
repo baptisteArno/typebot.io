@@ -307,7 +307,7 @@ const ChatChunks = ({
           unmountOnExit
           in={isDefined(input)}
         >
-          {input && (
+          {input ? (
             <InputChatBlock
               block={input}
               onTransitionEnd={onDisplayNextBlock}
@@ -315,6 +315,8 @@ const ChatChunks = ({
               hasAvatar={hostAvatar.isEnabled}
               hasGuestAvatar={hasGuestAvatar}
             />
+          ) : (
+            <div />
           )}
         </CSSTransition>
       )}
