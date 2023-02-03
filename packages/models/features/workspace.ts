@@ -10,7 +10,7 @@ import {
 } from 'db'
 
 export const workspaceMemberSchema = schemaForType<
-  Omit<MemberInWorkspacePrisma, 'userId'> & {
+  Omit<MemberInWorkspacePrisma, 'userId' | 'createdAt' | 'updatedAt'> & {
     user: Pick<UserPrisma, 'name' | 'email' | 'image'>
   }
 >()(
@@ -29,17 +29,19 @@ export const workspaceInvitationSchema = schemaForType<
   Omit<WorkspaceInvitationPrisma, 'workspaceId' | 'userId' | 'id'>
 >()(
   z.object({
+    createdAt: z.date(),
+    updatedAt: z.date(),
     email: z.string(),
     type: z.nativeEnum(WorkspaceRole),
-    createdAt: z.date(),
   })
 )
 
 export const workspaceSchema = schemaForType<WorkspacePrisma>()(
   z.object({
     id: z.string(),
-    name: z.string(),
     createdAt: z.date(),
+    updatedAt: z.date(),
+    name: z.string(),
     icon: z.string().nullable(),
     plan: z.nativeEnum(Plan),
     stripeId: z.string().nullable(),

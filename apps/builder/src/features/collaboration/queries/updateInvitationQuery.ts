@@ -4,7 +4,7 @@ import { sendRequest } from 'utils'
 export const updateInvitationQuery = (
   typebotId: string,
   email: string,
-  invitation: Omit<Invitation, 'createdAt' | 'id'>
+  invitation: Omit<Invitation, 'createdAt' | 'id' | 'updatedAt'>
 ) =>
   sendRequest({
     method: 'PATCH',

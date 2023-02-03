@@ -57,20 +57,20 @@ model User {
 }
 
 model ApiToken {
-  id         String   @id @default(cuid())
-  token      String   @unique
-  name       String
-  ownerId    String
-  lastUsedAt DateTime @default(now())
-  createdAt  DateTime @default(now())
-  owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  token     String   @unique
+  name      String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Workspace {
   id                            String                @id @default(cuid())
+  createdAt                     DateTime              @default(now())
+  updatedAt                     DateTime              @default(now()) @updatedAt
   name                          String
   icon                          String?
-  createdAt                     DateTime              @default(now())
   plan                          Plan                  @default(FREE)
   stripeId                      String?               @unique
   credentials                   Credentials[]
@@ -92,6 +92,8 @@ model Workspace {
 }
 
 model MemberInWorkspace {
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
   userId      String
   workspaceId String
   role        WorkspaceRole
@@ -104,6 +106,7 @@ model MemberInWorkspace {
 model WorkspaceInvitation {
   id          String        @id @default(cuid())
   createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
   email       String
   workspaceId String
   type        WorkspaceRole
@@ -180,6 +183,7 @@ model Typebot {
 
 model Invitation {
   createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
   email     String
   typebotId String
   type      CollaborationType
@@ -189,6 +193,8 @@ model Invitation {
 }
 
 model CollaboratorsOnTypebots {
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
   userId    String
   typebotId String
   type      CollaborationType
@@ -240,7 +246,7 @@ model Log {
 }
 
 model Answer {
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now()) @updatedAt
   resultId    String
   blockId     String
   groupId     String

@@ -127,12 +127,16 @@
                         "id": {
                           "type": "string"
                         },
-                        "name": {
-                          "type": "string"
-                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "name": {
+                          "type": "string"
                         },
                         "icon": {
                           "type": "string",
@@ -195,8 +199,9 @@
                       },
                       "required": [
                         "id",
-                        "name",
                         "createdAt",
+                        "updatedAt",
+                        "name",
                         "icon",
                         "plan",
                         "stripeId",
@@ -263,12 +268,16 @@
                         "id": {
                           "type": "string"
                         },
-                        "name": {
-                          "type": "string"
-                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "name": {
+                          "type": "string"
                         },
                         "icon": {
                           "type": "string",
@@ -331,8 +340,9 @@
                       },
                       "required": [
                         "id",
-                        "name",
                         "createdAt",
+                        "updatedAt",
+                        "name",
                         "icon",
                         "plan",
                         "stripeId",
@@ -416,12 +426,16 @@
                         "id": {
                           "type": "string"
                         },
-                        "name": {
-                          "type": "string"
-                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "name": {
+                          "type": "string"
                         },
                         "icon": {
                           "type": "string",
@@ -484,8 +498,9 @@
                       },
                       "required": [
                         "id",
-                        "name",
                         "createdAt",
+                        "updatedAt",
+                        "name",
                         "icon",
                         "plan",
                         "stripeId",

@@ -4,7 +4,7 @@ import { sendRequest } from 'utils'
 export const updateCollaboratorQuery = (
   typebotId: string,
   userId: string,
-  collaborator: CollaboratorsOnTypebots
+  collaborator: Omit<CollaboratorsOnTypebots, 'createdAt' | 'updatedAt'>
 ) =>
   sendRequest({
     method: 'PATCH',

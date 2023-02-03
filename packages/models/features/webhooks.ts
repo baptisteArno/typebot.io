@@ -30,7 +30,7 @@ export type WebhookResponse = {
 
 export const defaultWebhookAttributes: Omit<
   Webhook,
-  'id' | 'body' | 'url' | 'typebotId'
+  'id' | 'body' | 'url' | 'typebotId' | 'createdAt' | 'updatedAt'
 > = {
   method: HttpMethod.POST,
   headers: [],
