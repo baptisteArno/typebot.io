@@ -26,12 +26,6 @@ export const getServerSideProps: GetServerSideProps = async (
     const typebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : null
-    if (!typebot)
-      console.log(
-        isMatchingViewerUrl
-          ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
-          : `Couldn't find customDomain`
-      )
     return {
       props: {
         typebot,

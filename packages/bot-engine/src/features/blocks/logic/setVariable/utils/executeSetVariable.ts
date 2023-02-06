@@ -30,7 +30,6 @@ const evaluateSetVariableExpression =
       const func = Function(...variables.map((v) => v.id), evaluating)
       return func(...variables.map((v) => parseCorrectValueType(v.value)))
     } catch (err) {
-      console.log(`Evaluating: ${evaluating}`, err)
       return str
     }
   }

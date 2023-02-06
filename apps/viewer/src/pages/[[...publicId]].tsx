@@ -32,12 +32,6 @@ export const getServerSideProps: GetServerSideProps = async (
     const publishedTypebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain)
-    if (!publishedTypebot)
-      console.log(
-        isMatchingViewerUrl
-          ? `Couldn't find publicId: ${context.query.publicId?.toString()}`
-          : `Couldn't find customDomain: ${customDomain}`
-      )
     const headCode = publishedTypebot?.settings.metadata.customHeadCode
     return {
       props: {
