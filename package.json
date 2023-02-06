@@ -1,5 +1,5 @@
 {
-  "version": "2.10.0",
+  "version": "2.10.1",
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -20,7 +20,7 @@
     "build:landing-page": "turbo run build --filter=landing-page... && turbo run build:env --filter=landing-page...",
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/db && pnpm run db:migrate",
-    "generate-change-log": "pnpx gitmoji-changelog"
+    "generate-change-log": "git fetch --all && pnpx gitmoji-changelog"
   },
   "devDependencies": {
     "cross-env": "7.0.3",

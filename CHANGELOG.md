@@ -1,5 +1,29 @@
 # Changelog
 
+<a name="2.10.1"></a>
+## 2.10.1 (2023-02-06)
+
+### Changed
+
+- ⚡ Improve old engine bubbles display robustness [[ae88d2c](https://github.com/baptisteArno/typebot.io/commit/ae88d2cae1d8fbc5089891ffa3cdef56eb8effff)]
+- 🗃️ Add updatedAt fields where missing [[0b34321](https://github.com/baptisteArno/typebot.io/commit/0b34321bf7ea36dc8cd15a63107e541b70841813)]
+- 🗃️ Fix schema migration diff [[bf60728](https://github.com/baptisteArno/typebot.io/commit/bf607289f43a33d43d7d26ae3962ad8459f098af)]
+
+### Removed
+
+- 🔥 Remove useless console logs [[77df555](https://github.com/baptisteArno/typebot.io/commit/77df5556f475757d3ceecbdefe0bce0b755ed1ec)]
+
+### Fixed
+
+- 🐛 Fix searchable dropdown z-index issues [[2b36ced](https://github.com/baptisteArno/typebot.io/commit/2b36cedb7bce77e932285a83923c3459d3e9539d)]
+- 🐛 Fix phone input placeholder color [[4e0df33](https://github.com/baptisteArno/typebot.io/commit/4e0df33551946219a60598e23631a69177393d8c)]
+- 🐛 Fix overflow issue for Theme and Settings pages [[17d94a9](https://github.com/baptisteArno/typebot.io/commit/17d94a9f9ff80338604346fe33fb1d5219b19cc6)]
+
+### Miscellaneous
+
+- 🩹 Clean up typebot before updating [[f42d144](https://github.com/baptisteArno/typebot.io/commit/f42d1445c6f0518e7466401df3988e458a055d1c)]
+
+
 <a name="2.10.0"></a>
 ## 2.10.0 (2023-02-02)
 
