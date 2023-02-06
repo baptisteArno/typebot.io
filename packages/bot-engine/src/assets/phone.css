@@ -162,3 +162,7 @@
 .PhoneInputCountryIconImg {
   border-radius: 3px;
 }
+
+input.PhoneInputInput::placeholder {
+  color: var(--typebot-input-placeholder-color);
+}
