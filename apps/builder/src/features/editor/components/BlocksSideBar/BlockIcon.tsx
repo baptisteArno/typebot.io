@@ -11,7 +11,7 @@ import { TextBubbleIcon } from '@/features/blocks/bubbles/textBubble'
 import { ImageBubbleIcon } from '@/features/blocks/bubbles/image'
 import { VideoBubbleIcon } from '@/features/blocks/bubbles/video'
 import { ChatwootLogo } from '@/features/blocks/integrations/chatwoot'
-import { FlagIcon } from '@/components/icons'
+import { CreditCardIcon, FlagIcon } from '@/components/icons'
 import { SendEmailIcon } from '@/features/blocks/integrations/sendEmail'
 import { PabblyConnectLogo } from '@/features/blocks/integrations/pabbly'
 import { MakeComLogo } from '@/features/blocks/integrations/makeCom'
@@ -85,6 +85,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <ScriptIcon {...props} />
     case LogicBlockType.WAIT:
       return <WaitIcon color={purple} {...props} />
+    case LogicBlockType.TRANSFER:
+      return <CreditCardIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:

@@ -42,6 +42,7 @@ import { MakeComSettings } from '@/features/blocks/integrations/makeCom'
 import { HelpDocButton } from './HelpDocButton'
 import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
 import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
+import TransferSettings from '@/features/blocks/logic/transfer/components/TransferSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -278,4 +279,11 @@ export const BlockSettings = ({
       )
     }
   }
+
+  return (
+    <TransferSettings
+      options={block.options}
+      onOptionsChange={handleOptionsChange}
+    />
+  )
 }

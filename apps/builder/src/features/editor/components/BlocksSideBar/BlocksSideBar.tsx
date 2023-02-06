@@ -117,9 +117,25 @@ export const BlocksSideBar = () => {
             Bubbles
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            <BlockCard
+              type={BubbleBlockType.TEXT}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={BubbleBlockType.IMAGE}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={BubbleBlockType.VIDEO}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={BubbleBlockType.AUDIO}
+              onMouseDown={handleMouseDown}
+            />
           </SimpleGrid>
         </Stack>
 
@@ -128,9 +144,10 @@ export const BlocksSideBar = () => {
             Inputs
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            <BlockCard
+              type={InputBlockType.TEXT}
+              onMouseDown={handleMouseDown}
+            />
           </SimpleGrid>
         </Stack>
 
@@ -139,9 +156,35 @@ export const BlocksSideBar = () => {
             Logic
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            <BlockCard
+              type={LogicBlockType.SET_VARIABLE}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={LogicBlockType.CONDITION}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={LogicBlockType.SCRIPT}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={LogicBlockType.TYPEBOT_LINK}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={LogicBlockType.WAIT}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={LogicBlockType.TRANSFER}
+              onMouseDown={handleMouseDown}
+            />
           </SimpleGrid>
         </Stack>
 
@@ -150,9 +193,40 @@ export const BlocksSideBar = () => {
             Integrations
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            <BlockCard
+              type={IntegrationBlockType.GOOGLE_SHEETS}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.GOOGLE_ANALYTICS}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.WEBHOOK}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.EMAIL}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.ZAPIER}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.MAKE_COM}
+              onMouseDown={handleMouseDown}
+            />
+
+            <BlockCard
+              type={IntegrationBlockType.PABBLY_CONNECT}
+              onMouseDown={handleMouseDown}
+            />
           </SimpleGrid>
         </Stack>
 

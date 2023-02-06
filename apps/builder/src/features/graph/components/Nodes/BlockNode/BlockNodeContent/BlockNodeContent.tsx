@@ -38,6 +38,7 @@ import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
+import TransferNodeContent from '@/features/blocks/logic/transfer/components/TransferNodeContent'
 
 type Props = {
   block: Block | StartBlock
@@ -124,6 +125,10 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     case LogicBlockType.WAIT: {
       return <WaitNodeContent options={block.options} />
     }
+
+    case LogicBlockType.TRANSFER:
+      return <TransferNodeContent />
+
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />
 
