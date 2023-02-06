@@ -1,23 +1,14 @@
-// This file configures the initialization of Sentry on the browser.
-// The config you add here will be used whenever a page is visited.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
 import * as Sentry from '@sentry/nextjs'
 
+const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
+
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: SENTRY_DSN,
   ignoreErrors: ['ResizeObserver loop limit exceeded'],
-  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-  beforeBreadcrumb(breadcrumb, hint) {
-    try {
-      if (breadcrumb.category?.startsWith('ui')) {
-        breadcrumb.message = `${hint?.event.target.tagName.toLowerCase()}: ${
-          hint?.event.target.innerText
-        }`
-      }
-    } catch (e) {
-      /* empty */
-    }
-    return breadcrumb
+  debug: true,
+  beforeSend: (event) => {
+    console.log('[SENTRY] beforeSend event:', event)
+    return event
   },
+  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-builder',
 })

@@ -26,6 +26,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
 import { PlaceholderNode } from '../PlaceholderNode'
+import { isDefined } from 'utils'
 
 type Props = {
   block: BlockWithItems
@@ -46,7 +47,8 @@ export const ItemNodesList = ({
     draggedItem !== undefined && block.items[0].type === draggedItem.type
 
   const isLastBlock =
-    typebot?.groups[groupIndex].blocks[blockIndex + 1] === undefined
+    isDefined(typebot) &&
+    typebot.groups[groupIndex].blocks[blockIndex + 1] === undefined
 
   const [position, setPosition] = useState({
     x: 0,

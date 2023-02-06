@@ -13,7 +13,7 @@
     "test:report": "pnpm playwright show-report"
   },
   "dependencies": {
-    "@sentry/nextjs": "7.34.0",
+    "@sentry/nextjs": "7.36.0",
     "@trpc/server": "10.9.0",
     "@typebot.io/js": "workspace:*",
     "@typebot.io/react": "workspace:*",

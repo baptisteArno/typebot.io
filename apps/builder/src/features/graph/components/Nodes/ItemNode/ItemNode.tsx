@@ -13,6 +13,7 @@ import { ItemNodeContent } from './ItemNodeContent'
 import { ItemNodeContextMenu } from './ItemNodeContextMenu'
 import { ContextMenu } from '@/components/ContextMenu'
 import { setMultipleRefs } from '@/utils/helpers'
+import { isDefined } from 'utils'
 
 type Props = {
   item: Item
@@ -39,11 +40,12 @@ export const ItemNode = ({
   const itemRef = useRef<HTMLDivElement | null>(null)
   const isPreviewing = previewingEdge?.from.itemId === item.id
   const isConnectable =
+    isDefined(typebot) &&
     !connectionDisabled &&
     !(
-      typebot?.groups[indices.groupIndex].blocks[
-        indices.blockIndex
-      ] as ChoiceInputBlock
+      typebot.groups[indices.groupIndex].blocks[indices.blockIndex] as
+        | ChoiceInputBlock
+        | undefined
     )?.options?.isMultipleChoice
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown) return

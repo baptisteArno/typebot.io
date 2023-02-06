@@ -31,6 +31,7 @@ const nextConfig = withTM({
 
 const sentryWebpackPluginOptions = {
   silent: true,
+  release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-builder',
 }
 
 module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
