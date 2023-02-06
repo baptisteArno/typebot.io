@@ -50,6 +50,7 @@ test('should be configurable', async ({ page }) => {
 
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Start in My link typebot 2')
+  await page.waitForTimeout(1000)
   await page.click('input[value="My link typebot 2"]', { clickCount: 3 })
   await page.press('input[value="My link typebot 2"]', 'Backspace')
   await page.click('button >> text=My link typebot 1')

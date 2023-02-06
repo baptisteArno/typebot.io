@@ -9,6 +9,7 @@ import {
   HStack,
   useColorModeValue,
   PopoverAnchor,
+  Portal,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
 import { useState, useRef, useEffect, ChangeEvent, ReactNode } from 'react'
@@ -194,40 +195,44 @@ export const SearchableDropdown = ({
             )}
           </HStack>
         </PopoverAnchor>
-        <PopoverContent
-          maxH="35vh"
-          overflowY="scroll"
-          role="menu"
-          w="inherit"
-          shadow="lg"
-        >
-          {filteredItems.length > 0 && (
-            <>
-              {filteredItems.map((item, idx) => {
-                return (
-                  <Button
-                    ref={(el) => (itemsRef.current[idx] = el)}
-                    minH="40px"
-                    key={idx}
-                    onClick={handleItemClick(
-                      typeof item === 'string' ? item : item.value
-                    )}
-                    fontSize="16px"
-                    fontWeight="normal"
-                    rounded="none"
-                    colorScheme="gray"
-                    role="menuitem"
-                    variant="ghost"
-                    bg={keyboardFocusIndex === idx ? bg : 'transparent'}
-                    justifyContent="flex-start"
-                  >
-                    {typeof item === 'string' ? item : item.label}
-                  </Button>
-                )
-              })}
-            </>
-          )}
-        </PopoverContent>
+        <Portal>
+          <PopoverContent
+            maxH="35vh"
+            overflowY="scroll"
+            role="menu"
+            w="inherit"
+            shadow="lg"
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            {filteredItems.length > 0 && (
+              <>
+                {filteredItems.map((item, idx) => {
+                  return (
+                    <Button
+                      ref={(el) => (itemsRef.current[idx] = el)}
+                      minH="40px"
+                      key={idx}
+                      onClick={handleItemClick(
+                        typeof item === 'string' ? item : item.value
+                      )}
+                      fontSize="16px"
+                      fontWeight="normal"
+                      rounded="none"
+                      colorScheme="gray"
+                      role="menuitem"
+                      variant="ghost"
+                      bg={keyboardFocusIndex === idx ? bg : 'transparent'}
+                      justifyContent="flex-start"
+                    >
+                      {typeof item === 'string' ? item : item.label}
+                    </Button>
+                  )
+                })}
+              </>
+            )}
+          </PopoverContent>
+        </Portal>
       </Popover>
     </Flex>
   )
