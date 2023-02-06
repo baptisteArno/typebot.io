@@ -16,7 +16,7 @@ export const ThemePage = () => {
       <TypebotHeader />
       <Flex h="full" w="full">
         <ThemeSideMenu />
-        <Flex flex="1">
+        <Flex flex="1" overflow="hidden">
           {publicTypebot && (
             <TypebotViewer apiHost={getViewerUrl()} typebot={publicTypebot} />
           )}

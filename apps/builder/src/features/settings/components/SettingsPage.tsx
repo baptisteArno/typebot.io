@@ -21,7 +21,7 @@ export const SettingsPage = () => {
       <TypebotHeader />
       <Flex h="full" w="full">
         <SettingsSideMenu />
-        <Flex flex="1">
+        <Flex flex="1" overflow="hidden">
           {publicTypebot && (
             <TypebotViewer apiHost={getViewerUrl()} typebot={publicTypebot} />
           )}
