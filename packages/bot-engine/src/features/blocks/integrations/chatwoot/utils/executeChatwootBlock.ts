@@ -1,4 +1,4 @@
-import { parseVariables, parseCorrectValueType } from '@/features/variables'
+import { parseVariables } from '@/features/variables'
 import { IntegrationState } from '@/types'
 import { sendEventToParent } from '@/utils/chat'
 import { isEmbedded } from '@/utils/helpers'
@@ -68,13 +68,10 @@ export const executeChatwootBlock = (
     })
   } else {
     const func = Function(
-      ...variables.map((v) => v.id),
-      parseVariables(variables, { fieldToParse: 'id' })(
-        parseChatwootOpenCode(block.options)
-      )
+      parseVariables(variables)(parseChatwootOpenCode(block.options))
     )
     try {
-      func(...variables.map((v) => parseCorrectValueType(v.value)))
+      func()
     } catch (err) {
       console.error(err)
     }
