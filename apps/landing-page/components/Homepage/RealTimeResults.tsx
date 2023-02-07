@@ -65,7 +65,7 @@ export const RealTimeResults = () => {
           >
             One of the main advantage of a chat application is that you collect
             the user&apos;s responses on each question.{' '}
-            <strong>You won&apos;t loose any valuable data.</strong>
+            <strong>You won&apos;t lose any valuable data.</strong>
           </Text>
           <Flex>
             <Button
