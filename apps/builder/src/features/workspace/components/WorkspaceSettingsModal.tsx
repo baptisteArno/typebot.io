@@ -22,6 +22,7 @@ import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
 import { useWorkspace } from '../WorkspaceProvider'
 import { MyAccountForm, UserPreferencesForm } from '@/features/account'
 import { BillingContent } from '@/features/billing'
+import packageJson from '../../../../../../package.json'
 
 type Props = {
   isOpen: boolean
@@ -142,7 +143,7 @@ export const WorkspaceSettingsModal = ({
 
           <Flex justify="center" pt="10">
             <Text color="gray.500" fontSize="xs">
-              Version: 2.10.1
+              Version: {packageJson.version}
             </Text>
           </Flex>
         </Stack>

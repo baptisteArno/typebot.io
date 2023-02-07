@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="2.10.2"></a>
+## 2.10.2 (2023-02-07)
+
+### Added
+
+- 👷‍♂️ Improve sentry release detection [[f07bf25](https://github.com/baptisteArno/typebot.io/commit/f07bf2532e69e49ba61e314b1efe475886cc0343)]
+
+### Fixed
+
+- 🐛 (chatwoot) Fix setUser with variables [[f936d4f](https://github.com/baptisteArno/typebot.io/commit/f936d4fae319ff7ed35438b07f74f4aad902421d)]
+
+
 <a name="2.10.1"></a>
 ## 2.10.1 (2023-02-06)
 
