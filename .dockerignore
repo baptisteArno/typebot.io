@@ -1,6 +1,6 @@
 Dockerfile
 .dockerignore
-node_modules
+**/node_modules
 npm-debug.log
 README.md
 .next
@@ -10,5 +10,5 @@ README.md
 
 landing-page
 docs
-scripts
+packages/scripts
 wordpress

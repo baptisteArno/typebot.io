@@ -5,19 +5,22 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "dev": "cross-env BROWSER=none prisma studio",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:migrate": "prisma migrate deploy",
-    "create:migration": "prisma migrate dev"
+    "dev": "tsx scripts/studio.ts",
+    "db:generate": "tsx scripts/db-generate.ts",
+    "db:push": "tsx scripts/db-push.ts",
+    "migrate:deploy": "tsx scripts/migrate-deploy.ts",
+    "migrate:dev": "tsx scripts/migrate-dev.ts",
+    "db:migrate": "pnpm migrate:deploy"
   },
   "dependencies": {
     "@prisma/client": "4.9.0"
   },
   "devDependencies": {
-    "dotenv-cli": "7.0.0",
+    "@types/node": "18.11.18",
+    "dotenv": "16.0.3",
     "prisma": "4.9.0",
     "tsconfig": "workspace:*",
+    "tsx": "3.12.2",
     "typescript": "4.9.4"
   }
 }

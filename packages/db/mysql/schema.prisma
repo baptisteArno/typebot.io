@@ -1,0 +1,349 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  oauth_token_secret       String?
+  oauth_token              String?
+  refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id                      String                    @id @default(cuid())
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  lastActivityAt          DateTime                  @default(now())
+  name                    String?                   @db.VarChar(255)
+  email                   String?                   @unique
+  emailVerified           DateTime?
+  image                   String?                   @db.VarChar(1000)
+  company                 String?
+  onboardingCategories    Json
+  graphNavigation         GraphNavigation?
+  preferredAppAppearance  String?
+  accounts                Account[]
+  apiTokens               ApiToken[]
+  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
+  workspaces              MemberInWorkspace[]
+  sessions                Session[]
+}
+
+model ApiToken {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  token     String   @unique
+  name      String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+}
+
+model Workspace {
+  id                            String                @id @default(cuid())
+  createdAt                     DateTime              @default(now())
+  updatedAt                     DateTime              @default(now()) @updatedAt
+  name                          String                @db.VarChar(255)
+  icon                          String?               @db.VarChar(1000)
+  plan                          Plan                  @default(FREE)
+  stripeId                      String?               @unique
+  credentials                   Credentials[]
+  customDomains                 CustomDomain[]
+  folders                       DashboardFolder[]
+  members                       MemberInWorkspace[]
+  typebots                      Typebot[]
+  invitations                   WorkspaceInvitation[]
+  additionalChatsIndex          Int                   @default(0)
+  additionalStorageIndex        Int                   @default(0)
+  chatsLimitFirstEmailSentAt    DateTime?
+  storageLimitFirstEmailSentAt  DateTime?
+  chatsLimitSecondEmailSentAt   DateTime?
+  storageLimitSecondEmailSentAt DateTime?
+  claimableCustomPlan           ClaimableCustomPlan?
+  customChatsLimit              Int?
+  customStorageLimit            Int?
+  customSeatsLimit              Int?
+}
+
+model MemberInWorkspace {
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  userId      String
+  workspaceId String
+  role        WorkspaceRole
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model WorkspaceInvitation {
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  email       String
+  workspaceId String
+  type        WorkspaceRole
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model CustomDomain {
+  name        String    @id @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model Credentials {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  workspaceId String
+  data        String
+  name        String
+  type        String
+  iv          String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model DashboardFolder {
+  id             String            @id @default(cuid())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
+  name           String            @db.VarChar(255)
+  parentFolderId String?
+  workspaceId    String
+  parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  childrenFolder DashboardFolder[] @relation("ParentChild")
+  typebots       Typebot[]
+
+  @@index([workspaceId])
+  @@index([parentFolderId])
+}
+
+model Typebot {
+  id                      String                    @id @default(cuid())
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  icon                    String?                   @db.VarChar(1000)
+  name                    String                    @db.VarChar(255)
+  folderId                String?
+  groups                  Json
+  variables               Json
+  edges                   Json
+  theme                   Json
+  settings                Json
+  publicId                String?                   @unique
+  customDomain            String?                   @unique
+  workspaceId             String
+  resultsTablePreferences Json?
+  folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
+  workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  collaborators           CollaboratorsOnTypebots[]
+  invitations             Invitation[]
+  publishedTypebot        PublicTypebot?
+  results                 Result[]
+  webhooks                Webhook[]
+  isArchived              Boolean                   @default(false)
+  isClosed                Boolean                   @default(false)
+
+  @@index([workspaceId])
+  @@index([folderId])
+}
+
+model Invitation {
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
+  email     String
+  typebotId String
+  type      CollaborationType
+  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+
+  @@unique([email, typebotId])
+  @@index([typebotId])
+}
+
+model CollaboratorsOnTypebots {
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
+  userId    String
+  typebotId String
+  type      CollaborationType
+  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, typebotId])
+  @@index([typebotId])
+}
+
+model PublicTypebot {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  typebotId String   @unique
+  groups    Json
+  variables Json
+  edges     Json
+  theme     Json
+  settings  Json
+  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+}
+
+model Result {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  typebotId   String
+  variables   Json
+  isCompleted Boolean
+  hasStarted  Boolean?
+  isArchived  Boolean? @default(false)
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  logs        Log[]
+
+  @@index([typebotId])
+}
+
+model Log {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  resultId    String
+  status      String
+  description String   @db.Text
+  details     String?  @db.Text
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+
+  @@index([resultId])
+}
+
+model Answer {
+  createdAt   DateTime @default(now()) @updatedAt
+  resultId    String
+  blockId     String
+  groupId     String
+  variableId  String?
+  content     String
+  storageUsed Int?
+  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+
+  @@unique([resultId, blockId, groupId])
+  @@index([groupId])
+}
+
+model Coupon {
+  userPropertiesToUpdate Json
+  code                   String    @id @unique
+  dateRedeemed           DateTime?
+}
+
+model Webhook {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  url         String?  @db.VarChar(2000)
+  method      String
+  queryParams Json
+  headers     Json
+  body        String?  @db.Text
+  typebotId   String
+  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+
+  @@index([typebotId])
+}
+
+model ClaimableCustomPlan {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  claimedAt    DateTime?
+  name         String
+  description  String?
+  price        Int
+  currency     String
+  workspaceId  String    @unique
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  chatsLimit   Int
+  storageLimit Int
+  seatsLimit   Int
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  state     Json
+}
+
+enum WorkspaceRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+enum GraphNavigation {
+  MOUSE
+  TRACKPAD
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  LIFETIME
+  OFFERED
+  CUSTOM
+  UNLIMITED
+}
+
+enum CollaborationType {
+  READ
+  WRITE
+  FULL_ACCESS
+}

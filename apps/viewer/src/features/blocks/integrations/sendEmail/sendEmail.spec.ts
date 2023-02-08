@@ -6,15 +6,15 @@ import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const mockSmtpCredentials: SmtpCredentialsData = {
+export const mockSmtpCredentials: SmtpCredentialsData = {
   from: {
-    email: 'ted.kreiger@ethereal.email',
-    name: 'Ted Kreiger',
+    email: 'sunny.cremin66@ethereal.email',
+    name: 'Sunny Cremin',
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  username: 'ted.kreiger@ethereal.email',
-  password: 'bFYFHfWjFxB9MK28zS',
+  username: 'sunny.cremin66@ethereal.email',
+  password: 'yJDHkf2bYbNydaRvTq',
 }
 
 test.beforeAll(async () => {
