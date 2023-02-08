@@ -16,14 +16,12 @@ type Props = {
   step: StepWithItems
   indices: StepIndices
   isReadOnly?: boolean
-  localWebhook?: WebhookStep
 }
 
 export const ItemNodesList = ({
   step,
   indices: { blockIndex, stepIndex },
-  isReadOnly = false,
-  localWebhook
+  isReadOnly = false
 }: Props) => {
   const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
@@ -116,6 +114,8 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
+  const webhook = typebot?.blocks[blockIndex].steps[stepIndex].options?.url
+
   return (
     <Stack
       flex={1}
@@ -149,10 +149,17 @@ export const ItemNodesList = ({
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          <SelectedCalendar>
-            {/* {typebot?.blocks[blockIndex]} */}
-          {localWebhook?.id ?? 'Conecte a outro sistema'}
-          </SelectedCalendar>
+          {!webhook &&
+          <Text color={'gray.500'} noOfLines={0}>
+            {'Conecte a outro sistema'}
+          </Text>
+          }
+          {webhook &&
+            <Text color={'gray.500'} noOfLines={0}>
+              {typebot?.blocks[blockIndex].steps[stepIndex].options?.method} <br/>
+              {webhook}
+            </Text>
+          }
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {

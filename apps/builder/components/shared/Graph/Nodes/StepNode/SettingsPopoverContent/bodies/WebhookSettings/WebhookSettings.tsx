@@ -53,15 +53,6 @@ enum HttpMethodsWebhook {
   PUT = "PUT"
 }
 
-export const validateUrl =(url: string) =>{
-  const regexp =
-		/^((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|\/\/))?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/
-	const regexs = /^[/][a-z][a-z0-9.-]{0,49}$/
-	const candidate = url.replace(/ /g, '').trim()
-
-	return regexp.test(candidate) || regexs.test(candidate)
-}
-
 type Props = {
   step: WebhookStep,
   onOptionsChange: (options: WebhookOptions) => void
@@ -83,7 +74,9 @@ export const WebhookSettings = ({
 
   const handleUrlChange = (url?: string) =>{
     // validateUrl
-    if (url && url.length > 5 && validateUrl(url)) {
+    // && url.length > 5 && validateUrl(url)
+    if(step.options.url != url) clearOptions()
+    if (url && url.length > 5) {
       const newUrl = new URL(url.replace(/ /g, '').trim())
       url = newUrl.origin
       
@@ -96,6 +89,16 @@ export const WebhookSettings = ({
         url: url ? url: ""
       })
     }
+  }
+
+  const clearOptions = () => {
+    const options = step.options
+    options.parameters = []
+    options.path = []
+    options.returnMap = ""
+    options.responseVariableMapping = []
+    options.variablesForTest = []
+    options.headers = []
   }
 
   const handleParams = (url: string) => {
@@ -195,11 +198,9 @@ export const WebhookSettings = ({
     if (!success) return toast({ title: 'Error', description: `Não foi possivel realizar a sua integração 😢` })
 
     if (typeof response === 'object') {
-      debugger
       setTestResponse(JSON.stringify(response, undefined, 2))
       setResponseKeys(getDeepKeys(response))
     } else {
-      debugger
       setTestResponse(response)
     }
   }
@@ -209,8 +210,6 @@ export const WebhookSettings = ({
       <DataVariableInputs {...props} dataItems={responseKeys} />,
     [responseKeys]
   )
-
-  // if (!localWebhook) return <Spinner />
 
   const handlerDefault = (e: any) => {
   }
@@ -271,7 +270,7 @@ export const WebhookSettings = ({
                   <strong> (ex.: Authorization: Basic 1234)</strong>
                 </Text> 
                 <TableList<QueryParameters>
-                  initialItems={[]}
+                  initialItems={step.options.headers}
                   onItemsChange={handleHeadersChange}
                   Item={QueryParamsInputs}
                   addLabel="Adicionar parâmetro"
