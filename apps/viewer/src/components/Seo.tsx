@@ -23,7 +23,7 @@ export const SEO = ({
       <link
         rel="icon"
         type="image/png"
-        href={favIconUrl ?? 'https://bot.typebot.io/favicon.png'}
+        href={favIconUrl ?? 'https://viewer.typebot.io/favicon.png'}
       />
       <meta name="title" content={title ?? typebotName} />
       <meta
