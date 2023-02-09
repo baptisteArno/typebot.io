@@ -1,3 +1,3 @@
 import { executePrismaCommand } from './executeCommand'
 
-executePrismaCommand('prisma generate')
+executePrismaCommand('prisma generate', { force: true })

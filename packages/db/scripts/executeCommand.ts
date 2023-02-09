@@ -9,8 +9,13 @@ require('dotenv').config({
 const postgesqlSchemaPath = join(__dirname, '../postgresql/schema.prisma')
 const mysqlSchemaPath = join(__dirname, '../mysql/schema.prisma')
 
-export const executePrismaCommand = (command: string) => {
-  const databaseUrl = process.env.DATABASE_URL
+type Options = {
+  force?: boolean
+}
+
+export const executePrismaCommand = (command: string, options?: Options) => {
+  const databaseUrl =
+    process.env.DATABASE_URL ?? (options?.force ? 'postgresql://' : undefined)
 
   if (!databaseUrl) {
     console.error('Could not find DATABASE_URL in environment')
