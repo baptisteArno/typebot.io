@@ -1,7 +1,7 @@
 import { useToast } from '@/hooks/useToast'
 import { ResultHeaderCell, ResultWithAnswers } from 'models'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
-import { parseResultHeader } from 'utils'
+import { parseResultHeader } from 'utils/results'
 import { useTypebot } from '../editor/providers/TypebotProvider'
 import { useResultsQuery } from './hooks/useResultsQuery'
 import { TableData } from './types'

@@ -6,7 +6,8 @@ import {
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { isDefined, isEmpty, isNotDefined, omit, parseAnswers } from 'utils'
+import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
+import { parseAnswers } from 'utils/results'
 import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 

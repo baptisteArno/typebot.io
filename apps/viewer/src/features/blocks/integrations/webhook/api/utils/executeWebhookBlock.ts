@@ -22,7 +22,8 @@ import {
   ReplyLog,
 } from 'models'
 import { stringify } from 'qs'
-import { byId, omit, parseAnswers } from 'utils'
+import { byId, omit } from 'utils'
+import { parseAnswers } from 'utils/results'
 import got, { Method, Headers, HTTPError } from 'got'
 import { getResultValues } from '@/features/results/api'
 import { parseSampleResult } from './parseSampleResult'

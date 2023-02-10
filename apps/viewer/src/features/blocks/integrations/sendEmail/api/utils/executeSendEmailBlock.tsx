@@ -14,7 +14,8 @@ import {
 } from 'models'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
-import { byId, isEmpty, isNotDefined, omit, parseAnswers } from 'utils'
+import { byId, isEmpty, isNotDefined, omit } from 'utils'
+import { parseAnswers } from 'utils/results'
 import { decrypt } from 'utils/api'
 import { defaultFrom, defaultTransportOptions } from '../constants'
 
