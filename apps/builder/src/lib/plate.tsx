@@ -27,7 +27,8 @@ export const platePlugins = createPlugins(
           url.startsWith('https:') ||
           url.startsWith('mailto:') ||
           url.startsWith('tel:') ||
-          url.startsWith('sms:'),
+          url.startsWith('sms:') ||
+          (url.startsWith('{{') && url.endsWith('}}')),
       },
     }),
   ],

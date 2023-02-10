@@ -48,15 +48,19 @@ export const blockHasOptions = (block: Block) => 'options' in block
 
 export const parseVariableHighlight = (content: string, typebot: Typebot) => {
   const varNames = typebot.variables.map((v) => v.name)
-  return content.replace(/\{\{(.*?)\}\}/g, (fullMatch, foundVar) => {
-    if (varNames.some((val) => foundVar === val)) {
-      return `<span style="background-color:#ff8b1a; color:#ffffff; padding: 0.125rem 0.25rem; border-radius: 0.35rem">${fullMatch.replace(
-        /{{|}}/g,
-        ''
-      )}</span>`
+  console.log(content)
+  return content.replace(
+    new RegExp(`(?<!href="){{(${varNames.join('|')})}}`, 'g'),
+    (fullMatch, foundVar) => {
+      if (varNames.some((val) => foundVar === val)) {
+        return `<span style="background-color:#ff8b1a; color:#ffffff; padding: 0.125rem 0.25rem; border-radius: 0.35rem">${fullMatch.replace(
+          /{{|}}/g,
+          ''
+        )}</span>`
+      }
+      return fullMatch
     }
-    return fullMatch
-  })
+  )
 }
 
 export const setMultipleRefs =
