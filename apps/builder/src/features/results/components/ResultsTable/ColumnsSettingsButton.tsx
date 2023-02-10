@@ -83,9 +83,9 @@ export const ColumnSettingsButton = ({
     const { active, over } = event
 
     if (active.id !== over?.id) {
-      onColumnOrderChange
       const oldIndex = columnOrder.indexOf(active.id as string)
       const newIndex = columnOrder.indexOf(over?.id as string)
+      if (newIndex === -1 || oldIndex === -1) return
       const newColumnOrder = arrayMove(columnOrder, oldIndex, newIndex)
       onColumnOrderChange(newColumnOrder)
     }

@@ -41,12 +41,17 @@ export const ResultsProvider = ({
     },
   })
 
+  const flatResults = useMemo(
+    () => data?.flatMap((d) => d.results) ?? [],
+    [data]
+  )
+
   const resultHeader = useMemo(
     () =>
       publishedTypebot
-        ? parseResultHeader(publishedTypebot, linkedTypebots)
+        ? parseResultHeader(publishedTypebot, linkedTypebots, flatResults)
         : [],
-    [linkedTypebots, publishedTypebot]
+    [flatResults, linkedTypebots, publishedTypebot]
   )
 
   const tableData = useMemo(
@@ -64,7 +69,7 @@ export const ResultsProvider = ({
     <resultsContext.Provider
       value={{
         resultsList: data,
-        flatResults: data?.flatMap((d) => d.results) ?? [],
+        flatResults,
         hasNextPage: hasNextPage ?? true,
         tableData,
         resultHeader,

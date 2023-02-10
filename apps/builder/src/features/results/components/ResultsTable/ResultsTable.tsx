@@ -15,12 +15,11 @@ import { LoadingRows } from './LoadingRows'
 import {
   useReactTable,
   getCoreRowModel,
-  ColumnOrderState,
   ColumnDef,
+  Updater,
 } from '@tanstack/react-table'
 import { ColumnSettingsButton } from './ColumnsSettingsButton'
 import { useTypebot } from '@/features/editor'
-import { useDebounce } from 'use-debounce'
 import { ResultsActionButtons } from './ResultsActionButtons'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
@@ -51,39 +50,52 @@ export const ResultsTable = ({
   const background = useColorModeValue('white', colors.gray[900])
   const { updateTypebot } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
-  const [columnsVisibility, setColumnsVisibility] = useState<
-    Record<string, boolean>
-  >(preferences?.columnsVisibility || {})
-  const [columnsWidth, setColumnsWidth] = useState<Record<string, number>>(
-    preferences?.columnsWidth || {}
-  )
-  const [debouncedColumnsWidth] = useDebounce(columnsWidth, 500)
-  const [columnsOrder, setColumnsOrder] = useState<ColumnOrderState>([
-    'select',
-    ...(preferences?.columnsOrder
-      ? resultHeader
-          .map((h) => h.id)
-          .sort(
-            (a, b) =>
-              preferences?.columnsOrder.indexOf(a) -
-              preferences?.columnsOrder.indexOf(b)
-          )
-      : resultHeader.map((h) => h.id)),
-    'logs',
-  ])
-
-  useEffect(() => {
-    updateTypebot({
-      resultsTablePreferences: {
-        columnsVisibility,
-        columnsOrder,
-        columnsWidth: debouncedColumnsWidth,
-      },
-    })
-  }, [columnsOrder, columnsVisibility, debouncedColumnsWidth, updateTypebot])
-
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)
+
+  const {
+    columnsOrder = parseDefaultColumnOrder(resultHeader),
+    columnsVisibility = {},
+    columnsWidth = {},
+  } = preferences ?? {}
+
+  const changeColumnOrder = (newColumnOrder: string[]) => {
+    if (typeof newColumnOrder === 'function') return
+    console.log(newColumnOrder)
+    updateTypebot({
+      resultsTablePreferences: {
+        columnsOrder: newColumnOrder,
+        columnsVisibility,
+        columnsWidth,
+      },
+    })
+  }
+
+  const changeColumnVisibility = (
+    newColumnVisibility: Record<string, boolean>
+  ) => {
+    if (typeof newColumnVisibility === 'function') return
+    updateTypebot({
+      resultsTablePreferences: {
+        columnsVisibility: newColumnVisibility,
+        columnsWidth,
+        columnsOrder,
+      },
+    })
+  }
+
+  const changeColumnSizing = (
+    newColumnSizing: Updater<Record<string, number>>
+  ) => {
+    if (typeof newColumnSizing === 'object') return
+    updateTypebot({
+      resultsTablePreferences: {
+        columnsWidth: newColumnSizing(columnsWidth),
+        columnsVisibility,
+        columnsOrder,
+      },
+    })
+  }
 
   const columns = React.useMemo<ColumnDef<TableData>[]>(
     () => [
@@ -160,9 +172,7 @@ export const ResultsTable = ({
     getRowId: (row) => row.id.plainText,
     columnResizeMode: 'onChange',
     onRowSelectionChange: setRowSelection,
-    onColumnVisibilityChange: setColumnsVisibility,
-    onColumnSizingChange: setColumnsWidth,
-    onColumnOrderChange: setColumnsOrder,
+    onColumnSizingChange: changeColumnSizing,
     getCoreRowModel: getCoreRowModel(),
   })
 
@@ -174,6 +184,7 @@ export const ResultsTable = ({
     }
     const observer = new IntersectionObserver(handleObserver, options)
     if (bottomElement.current) observer.observe(bottomElement.current)
+
     return () => {
       observer.disconnect()
     }
@@ -202,9 +213,9 @@ export const ResultsTable = ({
         <ColumnSettingsButton
           resultHeader={resultHeader}
           columnVisibility={columnsVisibility}
-          setColumnVisibility={setColumnsVisibility}
+          setColumnVisibility={changeColumnVisibility}
           columnOrder={columnsOrder}
-          onColumnOrderChange={instance.setColumnOrder}
+          onColumnOrderChange={changeColumnOrder}
         />
       </Flex>
       <Box
@@ -251,3 +262,9 @@ export const ResultsTable = ({
     </Stack>
   )
 }
+
+const parseDefaultColumnOrder = (resultHeader: ResultHeaderCell[]) => [
+  'select',
+  ...resultHeader.map((h) => h.id),
+  'logs',
+]
