@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   importTypebotInDatabase,
   injectFakeResults,
@@ -9,7 +9,7 @@ import { apiToken } from 'utils/playwright/databaseSetup'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('Big groups should work as expected', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(getTestAsset('typebots/hugeGroup.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
@@ -32,7 +32,7 @@ test('Big groups should work as expected', async ({ page }) => {
 })
 
 test('can list results with API', async ({ request }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(getTestAsset('typebots/api.json'), {
     id: typebotId,
   })

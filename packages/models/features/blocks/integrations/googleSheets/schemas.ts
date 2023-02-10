@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ComparisonOperators, LogicalOperator } from '../../logic/condition'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { IntegrationBlockType } from '../enums'
 import { GoogleSheetsAction } from './enums'
 import { blockBaseSchema } from '../../baseSchemas'
@@ -76,13 +76,13 @@ export const defaultGoogleSheetsGetOptions: GoogleSheetsGetOptions = {
   action: GoogleSheetsAction.GET,
   cellsToExtract: [
     {
-      id: cuid(),
+      id: createId(),
     },
   ],
   filter: {
     comparisons: [
       {
-        id: cuid(),
+        id: createId(),
       },
     ],
     logicalOperator: LogicalOperator.AND,
@@ -93,7 +93,7 @@ export const defaultGoogleSheetsInsertOptions: GoogleSheetsInsertRowOptions = {
   action: GoogleSheetsAction.INSERT_ROW,
   cellsToInsert: [
     {
-      id: cuid(),
+      id: createId(),
     },
   ],
 }
@@ -102,7 +102,7 @@ export const defaultGoogleSheetsUpdateOptions: GoogleSheetsUpdateRowOptions = {
   action: GoogleSheetsAction.UPDATE_ROW,
   cellsToUpsert: [
     {
-      id: cuid(),
+      id: createId(),
     },
   ],
 }

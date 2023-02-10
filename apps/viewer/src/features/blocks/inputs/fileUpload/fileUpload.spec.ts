@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { parse } from 'papaparse'
 import { readFileSync } from 'fs'
 import { isDefined } from 'utils'
@@ -15,7 +15,7 @@ import { Plan } from 'db'
 const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 
 test('should work as expected', async ({ page, browser }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
@@ -79,8 +79,8 @@ test('should work as expected', async ({ page, browser }) => {
 })
 
 test.describe('Storage limit is reached', () => {
-  const typebotId = cuid()
-  const workspaceId = cuid()
+  const typebotId = createId()
+  const workspaceId = createId()
 
   test.beforeAll(async () => {
     await createWorkspaces([{ id: workspaceId, plan: Plan.STARTER }])

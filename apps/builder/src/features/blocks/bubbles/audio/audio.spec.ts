@@ -2,7 +2,7 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultAudioBubbleContent } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
@@ -10,7 +10,7 @@ const audioSampleUrl =
   'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
 
 test('should work as expected', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,

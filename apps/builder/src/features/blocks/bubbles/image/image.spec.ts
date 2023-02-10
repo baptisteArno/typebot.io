@@ -2,7 +2,7 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultImageBubbleContent } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -12,7 +12,7 @@ const unsplashImageSrc =
 test.describe.parallel('Image bubble block', () => {
   test.describe('Content settings', () => {
     test('should upload image file correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -34,7 +34,7 @@ test.describe.parallel('Image bubble block', () => {
     })
 
     test('should import image link correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -57,7 +57,7 @@ test.describe.parallel('Image bubble block', () => {
     })
 
     test('should import gifs correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -102,7 +102,7 @@ test.describe.parallel('Image bubble block', () => {
 
   test.describe('Preview', () => {
     test('should display correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,

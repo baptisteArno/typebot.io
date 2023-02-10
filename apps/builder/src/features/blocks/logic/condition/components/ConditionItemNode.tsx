@@ -28,7 +28,7 @@ import { byId, isNotDefined } from 'utils'
 import { PlusIcon } from '@/components/icons'
 import { ConditionItemForm } from './ConditionItemForm'
 import { useGraph } from '@/features/graph'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 
 type Props = {
   item: ConditionItem
@@ -55,7 +55,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
   const handlePlusClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     const itemIndex = indices.itemIndex + 1
-    const newItemId = cuid()
+    const newItemId = createId()
     createItem(
       {
         blockId: item.blockId,

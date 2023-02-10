@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
@@ -12,7 +12,7 @@ const guestAvatarUrl =
 test.describe.parallel('Theme page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       const chatContainer = typebotViewer(page).locator(
         '[data-testid="container"]'
       )
@@ -165,7 +165,7 @@ test.describe.parallel('Theme page', () => {
 
   test.describe('Custom CSS', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
         id: typebotId,
       })

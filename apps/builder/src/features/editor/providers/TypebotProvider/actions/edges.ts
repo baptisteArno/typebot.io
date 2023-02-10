@@ -10,7 +10,7 @@ import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import { produce } from 'immer'
 import { byId, isDefined, blockHasItems } from 'utils'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void
@@ -24,7 +24,7 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
       produce(typebot, (typebot) => {
         const newEdge = {
           ...edge,
-          id: cuid(),
+          id: createId(),
         }
         removeExistingEdge(typebot, edge)
         typebot.edges.push(newEdge)

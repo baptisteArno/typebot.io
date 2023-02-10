@@ -1,4 +1,4 @@
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   Block,
   defaultChoiceInputOptions,
@@ -15,7 +15,7 @@ import { proWorkspaceId } from './databaseSetup'
 export const parseTestTypebot = (
   partialTypebot: Partial<Typebot>
 ): Typebot => ({
-  id: cuid(),
+  id: createId(),
   workspaceId: proWorkspaceId,
   folderId: null,
   name: 'My typebot',

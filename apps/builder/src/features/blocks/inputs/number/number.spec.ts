@@ -3,11 +3,11 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultNumberInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from 'utils/playwright/testHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Number input block', () => {
   test('options should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

@@ -7,12 +7,12 @@ importers:
       cross-env: 7.0.3
       cz-emoji: 1.3.2-canary.2
       husky: ^8.0.3
-      turbo: 1.7.0
+      turbo: 1.7.4
     devDependencies:
       cross-env: 7.0.3
       cz-emoji: 1.3.2-canary.2
       husky: 8.0.3
-      turbo: 1.7.0
+      turbo: 1.7.4
 
   apps/builder:
     specifiers:
@@ -40,6 +40,7 @@ importers:
       '@giphy/react-components': 6.5.2
       '@googleapis/drive': 4.0.1
       '@lezer/css': ^1.1.1
+      '@paralleldrive/cuid2': 2.0.1
       '@playwright/test': 1.30.0
       '@sentry/nextjs': 7.36.0
       '@stripe/stripe-js': 1.46.0
@@ -76,7 +77,6 @@ importers:
       canvas-confetti: 1.6.0
       chakra-react-select: ^4.4.3
       codemirror: 6.0.1
-      cuid: 3.0.0
       db: workspace:*
       deep-object-diff: 1.1.9
       dequal: 2.0.3
@@ -149,6 +149,7 @@ importers:
       '@giphy/react-components': 6.5.2_57czaiyk6rdr5iy5tfs5pior4u
       '@googleapis/drive': 4.0.1
       '@lezer/css': 1.1.1
+      '@paralleldrive/cuid2': 2.0.1
       '@sentry/nextjs': 7.36.0_next@13.1.6+react@18.2.0
       '@stripe/stripe-js': 1.46.0
       '@tanstack/react-query': 4.24.4_biqbaboplfbrettd7655fr4n2y
@@ -171,7 +172,6 @@ importers:
       canvas-confetti: 1.6.0
       chakra-react-select: 4.4.3_alpyulvd3cwjobv54jo7ctrw7u
       codemirror: 6.0.1_@lezer+common@1.0.2
-      cuid: 3.0.0
       deep-object-diff: 1.1.9
       dequal: 2.0.3
       emails: link:../../packages/emails
@@ -353,6 +353,7 @@ importers:
     specifiers:
       '@babel/preset-env': 7.20.2
       '@faire/mjml-react': 3.1.0
+      '@paralleldrive/cuid2': 2.0.1
       '@playwright/test': 1.30.0
       '@sentry/nextjs': 7.36.0
       '@trpc/server': 10.9.0
@@ -369,7 +370,6 @@ importers:
       aws-sdk: 2.1304.0
       bot-engine: workspace:*
       cors: 2.8.5
-      cuid: 3.0.0
       db: workspace:*
       dotenv: 16.0.3
       emails: workspace:*
@@ -397,6 +397,7 @@ importers:
       utils: workspace:*
       zod: 3.20.2
     dependencies:
+      '@paralleldrive/cuid2': 2.0.1
       '@sentry/nextjs': 7.36.0_next@13.1.6+react@18.2.0
       '@trpc/server': 10.9.0
       '@typebot.io/js': link:../../packages/js
@@ -404,7 +405,6 @@ importers:
       aws-sdk: 2.1304.0
       bot-engine: link:../../packages/bot-engine
       cors: 2.8.5
-      cuid: 3.0.0
       db: link:../../packages/db
       google-spreadsheet: 3.3.0
       got: 12.5.3
@@ -630,7 +630,7 @@ importers:
 
   packages/models:
     specifiers:
-      cuid: 3.0.0
+      '@paralleldrive/cuid2': 2.0.1
       db: workspace:*
       next: 13.1.6
       tsconfig: workspace:*
@@ -639,7 +639,7 @@ importers:
     dependencies:
       zod: 3.20.2
     devDependencies:
-      cuid: 3.0.0
+      '@paralleldrive/cuid2': 2.0.1
       db: link:../db
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       tsconfig: link:../tsconfig
@@ -751,10 +751,10 @@ importers:
 
   packages/utils:
     specifiers:
+      '@paralleldrive/cuid2': 2.0.1
       '@playwright/test': 1.30.0
       '@types/nodemailer': 6.4.7
       aws-sdk: 2.1304.0
-      cuid: 3.0.0
       db: workspace:*
       dotenv: 16.0.3
       models: workspace:*
@@ -763,10 +763,10 @@ importers:
       tsconfig: workspace:*
       typescript: 4.9.4
     devDependencies:
+      '@paralleldrive/cuid2': 2.0.1
       '@playwright/test': 1.30.0
       '@types/nodemailer': 6.4.7
       aws-sdk: 2.1304.0
-      cuid: 3.0.0
       db: link:../db
       dotenv: 16.0.3
       models: link:../models
@@ -6034,6 +6034,9 @@ packages:
     requiresBuild: true
     optional: true
 
+  /@noble/hashes/1.2.0:
+    resolution: {integrity: sha512-FZfhjEDbT5GRswV3C6uvLPHMiVD6lQBmpoX5+eSiPaMTXte/IKqI5dykDxzZB/WBeK/CDuQRBWarPdi3FNY2zQ==}
+
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -6055,6 +6058,11 @@ packages:
   /@panva/hkdf/1.0.2:
     resolution: {integrity: sha512-MSAs9t3Go7GUkMhpKC44T58DJ5KGk2vBo+h1cqQeqlMfdGkxaVB78ZWpv9gYi/g2fa4sopag9gJsNvS8XGgWJA==}
     dev: false
+
+  /@paralleldrive/cuid2/2.0.1:
+    resolution: {integrity: sha512-fi9nN5kCPGv9pcKQjk9g3riSTVcwR5TCFAGPUStbR61b1nXZ07GvxeoyStELKsJDCji1lwuUiUwLtagNTBllQA==}
+    dependencies:
+      '@noble/hashes': 1.2.0
 
   /@pkgr/utils/2.3.1:
     resolution: {integrity: sha512-wfzX8kc1PMyUILA+1Z/EqoE4UCXGy0iRGMhPwdfae1+f0OXlLqCk+By+aMzgJBzR9AzS4CDizioG6Ss1gvAFJw==}
@@ -10128,10 +10136,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-
-  /cuid/3.0.0:
-    resolution: {integrity: sha512-WZYYkHdIDnaxdeP8Misq3Lah5vFjJwGuItJuV+tvMafosMzw0nF297T7mrm8IOWiPJkV6gc7sa8pzx27+w25Zg==}
-    deprecated: Cuid and other k-sortable and non-cryptographic ids (Ulid, ObjectId, KSUID, all UUIDs) are all insecure. Use @paralleldrive/cuid2 instead.
 
   /cz-emoji/1.3.2-canary.2:
     resolution: {integrity: sha512-XVH9N3P5sepyCRZGVqXJcEkVHT9dPcgBipTmZgkeQUhOJEtaGy0hakMcNdaq1d7N0ZwWVEnsCIs2m/NgLT+SaA==}
@@ -19448,65 +19452,65 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /turbo-darwin-64/1.7.0:
-    resolution: {integrity: sha512-hSGAueSf5Ko8J67mpqjpt9FsP6ePn1nMcl7IVPoJq5dHsgX3anCP/BPlexJ502bNK+87DDyhQhJ/LPSJXKrSYQ==}
+  /turbo-darwin-64/1.7.4:
+    resolution: {integrity: sha512-ZyYrQlUl8K/mYN1e6R7bEhPPYjMakz0DYMaexkyD7TAijQtWmTSd4a+I7VknOYNEssnUZ/v41GU3gPV1JAzxxQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.7.0:
-    resolution: {integrity: sha512-BLLOW5W6VZxk5+0ZOj5AO1qjM0P5isIgjbEuyAl8lHZ4s9antUbY4CtFrspT32XxPTYoDl4UjviPMcSsbcl3WQ==}
+  /turbo-darwin-arm64/1.7.4:
+    resolution: {integrity: sha512-CKIXg9uqp1a+Yeq/c4U0alPOqvwLUq5SBZf1PGYhGqJsfG0fRBtJfkUjHuBsuJIOGXg8rCmcGSWGIsIF6fqYuw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.7.0:
-    resolution: {integrity: sha512-aw2qxmfZa+kT87SB3GNUoFimqEPzTlzlRqhPgHuAAT6Uf0JHnmebPt4K+ZPtDNl5yfVmtB05bhHPqw+5QV97Yg==}
+  /turbo-linux-64/1.7.4:
+    resolution: {integrity: sha512-RIUl4RUFFyzD2T024vL7509Ygwcw+SEa8NOwPfaN6TtJHK7RZV/SBP3fLNVOptG9WRLnOWX3OvsLMbiOqDLLyA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.7.0:
-    resolution: {integrity: sha512-AJEx2jX+zO5fQtJpO3r6uhTabj4oSA5ZhB7zTs/rwu/XqoydsvStA4X8NDW4poTbOjF7DcSHizqwi04tSMzpJw==}
+  /turbo-linux-arm64/1.7.4:
+    resolution: {integrity: sha512-Bg65F0AjYYYxqE6RPf2H5TIGuA/EyWMeGOATHVSZOWAbYcnG3Ly03GZii8AHnUi7ntWBdjwvXf/QbOS1ayNB6A==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.7.0:
-    resolution: {integrity: sha512-ewj7PPv2uxqv0r31hgnBa3E5qwUu7eyVRP5M1gB/TJXfSHduU79gbxpKCyxIZv2fL/N2/3U7EPOQPSZxBAoljA==}
+  /turbo-windows-64/1.7.4:
+    resolution: {integrity: sha512-rTaV50XZ2BRxRHOHqt1UsWfeDmYLbn8UKE6g2D2ED+uW+kmnTvR9s01nmlGWd2sAuWcRYQyQ2V+O09VfKPKcQw==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.7.0:
-    resolution: {integrity: sha512-LzjOUzveWkvTD0jP8DBMYiAnYemmydsvqxdSmsUapHHJkl6wKZIOQNSO7pxsy+9XM/1/+0f9Y9F9ZNl5lePTEA==}
+  /turbo-windows-arm64/1.7.4:
+    resolution: {integrity: sha512-h8sxdKPvHTnWUPtwnYszFMmSO0P/iUUwmYY9n7iYThA71zSao28UeZ0H0Gw75cY3MPjvkjn2C4EBAUGPjuZJLw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.7.0:
-    resolution: {integrity: sha512-cwympNwQNnQZ/TffBd8yT0i0O10Cf/hlxccCYgUcwhcGEb9rDjE5thDbHoHw1hlJQUF/5ua7ERJe7Zr0lNE/ww==}
+  /turbo/1.7.4:
+    resolution: {integrity: sha512-8RLedDoUL0kkVKWEZ/RMM70BvKLyDFen06QuKKhYC2XNOfNKqFDqzIdcY/vGick869bNIWalChoy4O07k0HLsA==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.7.0
-      turbo-darwin-arm64: 1.7.0
-      turbo-linux-64: 1.7.0
-      turbo-linux-arm64: 1.7.0
-      turbo-windows-64: 1.7.0
-      turbo-windows-arm64: 1.7.0
+      turbo-darwin-64: 1.7.4
+      turbo-darwin-arm64: 1.7.4
+      turbo-linux-64: 1.7.4
+      turbo-linux-arm64: 1.7.4
+      turbo-windows-64: 1.7.4
+      turbo-windows-arm64: 1.7.4
     dev: true
 
   /type-check/0.3.2:

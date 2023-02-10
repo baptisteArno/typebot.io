@@ -1,5 +1,5 @@
 import { duplicateWebhookQueries } from '@/features/blocks/integrations/webhook'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { Plan, Prisma } from 'db'
 import {
   ChoiceInputBlock,
@@ -50,7 +50,7 @@ const duplicateTypebot = (
       .filter(isWebhookBlock)
       .map((s) => ({ id: s.webhookId }))
   )
-  const id = cuid()
+  const id = createId()
   return {
     typebot: {
       ...typebot,
@@ -131,6 +131,6 @@ const duplicateTypebot = (
 
 const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
   const idsMapping: Map<string, string> = new Map()
-  itemWithId.forEach((item) => idsMapping.set(item.id, cuid()))
+  itemWithId.forEach((item) => idsMapping.set(item.id, createId()))
   return idsMapping
 }

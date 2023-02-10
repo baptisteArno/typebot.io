@@ -12,7 +12,7 @@ import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { byId, blockHasItems } from 'utils'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { WritableDraft } from 'immer/dist/types/types-external'
 
 type NewItem = Pick<Item, 'blockId' | 'outgoingEdgeId' | 'type'> & Partial<Item>
@@ -34,7 +34,7 @@ const createItem = (
       if (item.type === ItemType.CONDITION) {
         const newItem = {
           ...item,
-          id: 'id' in item && item.id ? item.id : cuid(),
+          id: 'id' in item && item.id ? item.id : createId(),
           content: item.content ?? defaultConditionContent,
         }
         block.items.splice(itemIndex, 0, newItem)
@@ -46,7 +46,7 @@ const createItem = (
       if (item.type === ItemType.BUTTON) {
         const newItem = {
           ...item,
-          id: 'id' in item && item.id ? item.id : cuid(),
+          id: 'id' in item && item.id ? item.id : createId(),
           content: item.content,
         }
         block.items.splice(itemIndex, 0, newItem)
@@ -122,7 +122,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
 
 const duplicateItemDraft = (blockId: string) => (item: Item) => ({
   ...item,
-  id: cuid(),
+  id: createId(),
   blockId,
   outgoingEdgeId: undefined,
 })

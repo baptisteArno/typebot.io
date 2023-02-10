@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider/TypebotProvider'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { Variable } from 'models'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { byId, isDefined, isNotDefined } from 'utils'
@@ -90,7 +90,7 @@ export const VariableSearchInput = ({
 
   const handleCreateNewVariableClick = () => {
     if (!inputValue || inputValue === '') return
-    const id = 'v' + cuid()
+    const id = 'v' + createId()
     onSelectVariable({ id, name: inputValue })
     createVariable({ id, name: inputValue })
     inputRef.current?.blur()

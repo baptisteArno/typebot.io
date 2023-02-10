@@ -1,12 +1,12 @@
 import test, { expect } from '@playwright/test'
 import { InputBlockType, defaultTextInputOptions } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test('should be able to connect custom domain', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -43,7 +43,7 @@ test('should be able to connect custom domain', async ({ page }) => {
 
 test.describe('Starter workspace', () => {
   test("Add my domain shouldn't be available", async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

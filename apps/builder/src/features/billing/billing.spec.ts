@@ -3,7 +3,7 @@ import {
   createClaimableCustomPlan,
 } from '@/test/utils/databaseActions'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { Plan } from 'db'
 import {
   createTypebots,
@@ -12,10 +12,10 @@ import {
   injectFakeResults,
 } from 'utils/playwright/databaseActions'
 
-const usageWorkspaceId = cuid()
-const usageTypebotId = cuid()
-const planChangeWorkspaceId = cuid()
-const enterpriseWorkspaceId = cuid()
+const usageWorkspaceId = createId()
+const usageTypebotId = createId()
+const planChangeWorkspaceId = createId()
+const enterpriseWorkspaceId = createId()
 
 test.beforeAll(async () => {
   await createWorkspaces([

@@ -1,4 +1,4 @@
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { produce } from 'immer'
 import { Group, DraggableBlock, DraggableBlockType, BlockIndices } from 'models'
 import { SetTypebot } from '../TypebotProvider'
@@ -56,7 +56,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const group = typebot.groups[groupIndex]
-        const id = cuid()
+        const id = createId()
         const newGroup: Group = {
           ...group,
           title: `${group.title} copy`,

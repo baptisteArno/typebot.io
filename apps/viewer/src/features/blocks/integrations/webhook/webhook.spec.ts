@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { HttpMethod, Typebot } from 'models'
 import {
   createWebhook,
@@ -12,7 +12,7 @@ import { apiToken } from 'utils/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe('Bot', () => {
-  const typebotId = cuid()
+  const typebotId = createId()
 
   test.beforeEach(async () => {
     await importTypebotInDatabase(getTestAsset('typebots/webhook.json'), {

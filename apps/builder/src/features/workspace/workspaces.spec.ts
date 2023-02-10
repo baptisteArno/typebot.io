@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { defaultTextInputOptions, InputBlockType } from 'models'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import {
@@ -9,8 +9,8 @@ import {
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { mockSessionResponsesToOtherUser } from 'utils/playwright/testHelpers'
 
-const proTypebotId = cuid()
-const starterTypebotId = cuid()
+const proTypebotId = createId()
+const starterTypebotId = createId()
 
 test.beforeAll(async () => {
   await createTypebots([

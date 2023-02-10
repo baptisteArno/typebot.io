@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = cuid()
+const typebotId = createId()
 
 test.describe('Send email block', () => {
   test('its configuration should work', async ({ page }) => {

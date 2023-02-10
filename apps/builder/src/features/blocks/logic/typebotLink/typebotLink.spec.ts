@@ -1,12 +1,12 @@
 import test, { expect } from '@playwright/test'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test('should be configurable', async ({ page }) => {
-  const typebotId = cuid()
-  const linkedTypebotId = cuid()
+  const typebotId = createId()
+  const linkedTypebotId = createId()
   await importTypebotInDatabase(
     getTestAsset('typebots/logic/linkTypebots/1.json'),
     { id: typebotId, name: 'My link typebot 1' }

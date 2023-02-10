@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import { createSmtpCredentials } from '../../../../test/utils/databaseActions'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { SmtpCredentialsData } from 'models'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -26,7 +26,7 @@ test.beforeAll(async () => {
 })
 
 test('should send an email', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(getTestAsset('typebots/sendEmail.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,

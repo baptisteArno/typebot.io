@@ -2,13 +2,13 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultPaymentInputOptions, InputBlockType } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { stripePaymentForm } from '@/test/utils/selectorUtils'
 
 test.describe('Payment input block', () => {
   test('Can configure Stripe account', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

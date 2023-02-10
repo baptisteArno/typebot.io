@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { defaultTextInputOptions } from 'models'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
@@ -9,7 +9,7 @@ import { typebotViewer } from 'utils/playwright/testHelpers'
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
@@ -47,7 +47,7 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Typing emulation', () => {
     test('should be fillable', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
@@ -68,7 +68,7 @@ test.describe.parallel('Settings page', () => {
     test('should be fillable', async ({ page }) => {
       const favIconUrl = 'https://www.baptistearno.com/favicon.png'
       const imageUrl = 'https://www.baptistearno.com/images/site-preview.png'
-      const typebotId = cuid()
+      const typebotId = createId()
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
@@ -114,7 +114,7 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Free workspace', () => {
     test("can't remove branding", async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
         workspaceId: freeWorkspaceId,

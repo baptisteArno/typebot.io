@@ -1,4 +1,4 @@
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { PublicTypebot, Typebot } from 'models'
 import { dequal } from 'dequal'
 import { omit } from 'utils'
@@ -31,7 +31,7 @@ export const parsePublicTypebotToTypebot = (
 export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
-  id: cuid(),
+  id: createId(),
   typebotId: typebot.id,
   groups: typebot.groups,
   edges: typebot.edges,

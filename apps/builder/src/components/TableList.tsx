@@ -1,6 +1,6 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from '@/components/icons'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import React, { useState } from 'react'
 
 type ItemWithId<T> = T & { id: string }
@@ -32,7 +32,7 @@ export const TableList = <T,>({
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
   const createItem = () => {
-    const id = cuid()
+    const id = createId()
     const newItem = { id } as ItemWithId<T>
     setItems([...items, newItem])
     onItemsChange([...items, newItem])

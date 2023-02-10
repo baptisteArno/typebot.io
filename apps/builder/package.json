@@ -57,7 +57,7 @@
     "canvas-confetti": "1.6.0",
     "chakra-react-select": "^4.4.3",
     "codemirror": "6.0.1",
-    "cuid": "3.0.0",
+    "@paralleldrive/cuid2": "2.0.1",
     "deep-object-diff": "1.1.9",
     "dequal": "2.0.3",
     "emails": "workspace:*",

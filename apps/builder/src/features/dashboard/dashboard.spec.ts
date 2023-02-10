@@ -1,7 +1,7 @@
 import { createFolders } from '@/test/utils/databaseActions'
 import { deleteButtonInConfirmDialog } from '@/test/utils/selectorUtils'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from 'utils/playwright/databaseActions'
 
 test('folders navigation should work', async ({ page }) => {
@@ -47,7 +47,7 @@ test('folders and typebots should be deletable', async ({ page }) => {
 })
 
 test('folders and typebots should be movable', async ({ page }) => {
-  const droppableFolderId = cuid()
+  const droppableFolderId = createId()
   await createFolders([{ id: droppableFolderId, name: 'Droppable folder' }])
   await createTypebots([{ name: 'Draggable typebot' }])
   await page.goto('/typebots')

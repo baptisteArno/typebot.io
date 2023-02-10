@@ -9,7 +9,7 @@
     "@playwright/test": "1.30.0",
     "@types/nodemailer": "6.4.7",
     "aws-sdk": "2.1304.0",
-    "cuid": "3.0.0",
+    "@paralleldrive/cuid2": "2.0.1",
     "db": "workspace:*",
     "dotenv": "16.0.3",
     "models": "workspace:*",

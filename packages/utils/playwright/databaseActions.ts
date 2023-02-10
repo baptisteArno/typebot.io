@@ -1,5 +1,5 @@
 import { Plan, Prisma, PrismaClient, User, Workspace, WorkspaceRole } from 'db'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { Typebot, Webhook } from 'models'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'
@@ -25,7 +25,7 @@ export const injectFakeResults = async ({
   isChronological,
   fakeStorage,
 }: CreateFakeResultsProps) => {
-  const resultIdPrefix = customResultIdPrefix ?? cuid()
+  const resultIdPrefix = customResultIdPrefix ?? createId()
   await prisma.result.createMany({
     data: [
       ...Array.from(Array(count)).map((_, idx) => {
@@ -115,7 +115,7 @@ export const deleteWebhooks = async (webhookIds: string[]) => {
 }
 
 export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
-  const workspaceIds = workspaces.map((workspace) => workspace.id ?? cuid())
+  const workspaceIds = workspaces.map((workspace) => workspace.id ?? createId())
   await prisma.workspace.createMany({
     data: workspaces.map((workspace, index) => ({
       id: workspaceIds[index],
@@ -166,7 +166,7 @@ export const createWebhook = async (
 
 export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
   const typebotsWithId = partialTypebots.map((typebot) => {
-    const typebotId = typebot.id ?? cuid()
+    const typebotId = typebot.id ?? createId()
     return {
       ...typebot,
       id: typebotId,

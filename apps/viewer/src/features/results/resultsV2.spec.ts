@@ -1,10 +1,10 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 
 test('Big groups should work as expected', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(getTestAsset('typebots/hugeGroup.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,

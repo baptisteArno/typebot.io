@@ -2,11 +2,11 @@ import test from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultGoogleAnalyticsOptions, IntegrationBlockType } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Google Analytics block', () => {
   test('its configuration should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

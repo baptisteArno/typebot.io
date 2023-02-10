@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { CollaborationType, Plan, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { InputBlockType, defaultTextInputOptions } from 'models'
@@ -13,8 +13,8 @@ import { createFolder } from '@/test/utils/databaseActions'
 
 test.describe('Typebot owner', () => {
   test('Can invite collaborators', async ({ page }) => {
-    const typebotId = cuid()
-    const guestWorkspaceId = cuid()
+    const typebotId = createId()
+    const guestWorkspaceId = createId()
     await prisma.workspace.create({
       data: {
         id: guestWorkspaceId,
@@ -66,8 +66,8 @@ test.describe('Typebot owner', () => {
 
 test.describe('Guest with read access', () => {
   test('should have shared typebots displayed', async ({ page }) => {
-    const typebotId = cuid()
-    const guestWorkspaceId = cuid()
+    const typebotId = createId()
+    const guestWorkspaceId = createId()
     await prisma.workspace.create({
       data: {
         id: guestWorkspaceId,
@@ -124,8 +124,8 @@ test.describe('Guest with read access', () => {
 
 test.describe('Guest with write access', () => {
   test('should have shared typebots displayed', async ({ page }) => {
-    const typebotId = cuid()
-    const guestWorkspaceId = cuid()
+    const typebotId = createId()
+    const guestWorkspaceId = createId()
     await prisma.workspace.create({
       data: {
         id: guestWorkspaceId,

@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   defaultSettings,
   defaultTextInputOptions,
@@ -11,7 +11,7 @@ import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('Result should be in storage by default', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -37,7 +37,7 @@ test('Result should be in storage by default', async ({ page }) => {
 
 test.describe('Create result on page refresh enabled', () => {
   test('should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,
@@ -80,7 +80,7 @@ test.describe('Create result on page refresh enabled', () => {
 })
 
 test('Hide query params', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -108,7 +108,7 @@ test('Hide query params', async ({ page }) => {
 })
 
 test('Show close message', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -124,7 +124,7 @@ test('Show close message', async ({ page }) => {
 })
 
 test('Should correctly parse metadata', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   const googleTagManagerId = 'GTM-M72NXKB'
   const customMetadata: Metadata = {
     description: 'My custom description',

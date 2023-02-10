@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { Plan } from 'db'
 import { defaultSettings } from 'models'
 import {
@@ -11,8 +11,8 @@ import {
 
 test('should not start if chat limit is reached', async ({ page, context }) => {
   await test.step('Free plan', async () => {
-    const workspaceId = cuid()
-    const typebotId = cuid()
+    const workspaceId = createId()
+    const typebotId = createId()
     await createWorkspaces([{ id: workspaceId, plan: Plan.FREE }])
     await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
       id: typebotId,
@@ -27,8 +27,8 @@ test('should not start if chat limit is reached', async ({ page, context }) => {
   })
 
   await test.step('Lifetime plan', async () => {
-    const workspaceId = cuid()
-    const typebotId = cuid()
+    const workspaceId = createId()
+    const typebotId = createId()
     await createWorkspaces([{ id: workspaceId, plan: Plan.LIFETIME }])
     await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
       id: typebotId,
@@ -41,8 +41,8 @@ test('should not start if chat limit is reached', async ({ page, context }) => {
   })
 
   await test.step('Custom plan', async () => {
-    const workspaceId = cuid()
-    const typebotId = cuid()
+    const workspaceId = createId()
+    const typebotId = createId()
     await createWorkspaces([
       { id: workspaceId, plan: Plan.CUSTOM, customChatsLimit: 1000 },
     ])

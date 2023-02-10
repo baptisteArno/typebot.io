@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import { BubbleBlockType, defaultEmbedBubbleContent } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { typebotViewer } from 'utils/playwright/testHelpers'
@@ -11,7 +11,7 @@ const siteSrc = 'https://app.cal.com/baptistearno/15min'
 test.describe.parallel('Embed bubble block', () => {
   test.describe('Content settings', () => {
     test('should import and parse embed correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -31,7 +31,7 @@ test.describe.parallel('Embed bubble block', () => {
 
   test.describe('Preview', () => {
     test('should display embed correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,

@@ -3,7 +3,7 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultRatingInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from 'utils/playwright/testHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 
 const boxSvg = `<svg
     xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ const boxSvg = `<svg
   </svg>`
 
 test('options should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,

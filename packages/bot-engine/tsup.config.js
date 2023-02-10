@@ -9,5 +9,5 @@ export default defineConfig((options) => ({
   loader: {
     '.css': 'text',
   },
-  external: ['cuid'],
+  external: ['@paralleldrive/cuid2'],
 }))

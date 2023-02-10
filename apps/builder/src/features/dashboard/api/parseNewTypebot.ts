@@ -1,4 +1,4 @@
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   defaultSettings,
   defaultTheme,
@@ -33,8 +33,8 @@ export const parseNewTypebot = ({
   ownerAvatarUrl?: string
   isBrandingEnabled?: boolean
 }): NewTypebotProps => {
-  const startGroupId = cuid()
-  const startBlockId = cuid()
+  const startGroupId = createId()
+  const startBlockId = createId()
   const startBlock: StartBlock = {
     groupId: startGroupId,
     id: startBlockId,

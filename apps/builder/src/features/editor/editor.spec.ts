@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import { defaultTextInputOptions, InputBlockType } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   createTypebots,
   importTypebotInDatabase,
@@ -17,7 +17,7 @@ import { getTestAsset } from '@/test/utils/playwright'
 test.describe.configure({ mode: 'parallel' })
 
 test('Edges connection should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -68,7 +68,7 @@ test('Edges connection should work', async ({ page }) => {
   expect(total).toBe(1)
 })
 test('Drag and drop blocks and items should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(
     getTestAsset('typebots/editor/buttonsDnd.json'),
     {
@@ -120,7 +120,7 @@ test('Drag and drop blocks and items should work', async ({ page }) => {
   )
 })
 test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -162,7 +162,7 @@ test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
 })
 
 test('Rename and icon change should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -189,7 +189,7 @@ test('Rename and icon change should work', async ({ page }) => {
 })
 
 test('Preview from group should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(
     getTestAsset('typebots/editor/previewFromGroup.json'),
     {
@@ -214,7 +214,7 @@ test('Preview from group should work', async ({ page }) => {
 })
 
 test('Published typebot menu should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,

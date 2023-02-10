@@ -1,12 +1,12 @@
 import test, { expect, Page } from '@playwright/test'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/integrations/googleSheets.json'),
       {
@@ -55,7 +55,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Update row should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/integrations/googleSheets.json'),
       {
@@ -104,7 +104,7 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Get row should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/integrations/googleSheetsGet.json'),
       {

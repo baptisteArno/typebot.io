@@ -3,14 +3,14 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultFileInputOptions, InputBlockType } from 'models'
 import { typebotViewer } from 'utils/playwright/testHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.configure({ mode: 'parallel' })
 
 test('options should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
@@ -59,7 +59,7 @@ test('options should work', async ({ page }) => {
 
 test.describe('Free workspace', () => {
   test("shouldn't be able to publish typebot", async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

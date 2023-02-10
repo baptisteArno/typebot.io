@@ -5,13 +5,13 @@ import {
 } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,
@@ -75,7 +75,7 @@ test.describe.parallel('Buttons input block', () => {
 })
 
 test('Variable buttons should work', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(
     getTestAsset('typebots/inputs/variableButton.json'),
     {

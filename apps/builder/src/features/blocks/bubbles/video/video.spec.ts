@@ -6,7 +6,7 @@ import {
   defaultVideoBubbleContent,
   VideoBubbleContentType,
 } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const videoSrc =
@@ -17,7 +17,7 @@ const vimeoVideoSrc = 'https://vimeo.com/649301125'
 test.describe.parallel('Video bubble block', () => {
   test.describe('Content settings', () => {
     test('should import video url correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -41,7 +41,7 @@ test.describe.parallel('Video bubble block', () => {
 
   test.describe('Preview', () => {
     test('should display video correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -63,7 +63,7 @@ test.describe.parallel('Video bubble block', () => {
     })
 
     test('should display youtube video correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,
@@ -87,7 +87,7 @@ test.describe.parallel('Video bubble block', () => {
     })
 
     test('should display vimeo video correctly', async ({ page }) => {
-      const typebotId = cuid()
+      const typebotId = createId()
       await createTypebots([
         {
           id: typebotId,

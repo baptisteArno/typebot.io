@@ -1,12 +1,12 @@
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { defaultTextInputOptions, InputBlockType } from 'models'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 
 test('should not be able to submit taken url ID', async ({ page }) => {
-  const takenTypebotId = cuid()
-  const typebotId = cuid()
+  const takenTypebotId = createId()
+  const typebotId = createId()
   await createTypebots([
     {
       id: takenTypebotId,

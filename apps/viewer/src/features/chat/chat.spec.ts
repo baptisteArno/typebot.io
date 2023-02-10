@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import prisma from '@/lib/prisma'
 import { HttpMethod, SendMessageInput } from 'models'
 import {
@@ -16,7 +16,7 @@ test.afterEach(async () => {
 })
 
 test('API chat execution should work on preview bot', async ({ request }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   const publicId = `${typebotId}-public`
   await importTypebotInDatabase(getTestAsset('typebots/chat/main.json'), {
     id: typebotId,
@@ -52,7 +52,7 @@ test('API chat execution should work on preview bot', async ({ request }) => {
 })
 
 test('API chat execution should work on published bot', async ({ request }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   const publicId = `${typebotId}-public`
   await importTypebotInDatabase(getTestAsset('typebots/chat/main.json'), {
     id: typebotId,

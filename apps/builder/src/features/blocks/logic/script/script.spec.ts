@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = cuid()
+const typebotId = createId()
 
 test.describe('Script block', () => {
   test('script should trigger', async ({ page }) => {

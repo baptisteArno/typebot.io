@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import {
   importTypebotInDatabase,
   injectFakeResults,
@@ -8,7 +8,7 @@ import {
 import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
 
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
-  const typebotId = cuid()
+  const typebotId = createId()
   await importTypebotInDatabase(
     getTestAsset('typebots/results/submissionHeader.json'),
     {

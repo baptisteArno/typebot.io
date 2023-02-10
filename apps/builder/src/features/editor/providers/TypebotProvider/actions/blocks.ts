@@ -9,7 +9,7 @@ import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { byId, isWebhookBlock, blockHasItems } from 'utils'
 import { duplicateItemDraft } from './items'
 import { parseNewBlock } from '@/features/graph/utils'
@@ -141,7 +141,7 @@ const moveBlockToGroup = (
 export const duplicateBlockDraft =
   (groupId: string) =>
   (block: Block): Block => {
-    const blockId = cuid()
+    const blockId = createId()
     if (blockHasItems(block))
       return {
         ...block,
@@ -155,7 +155,7 @@ export const duplicateBlockDraft =
         ...block,
         groupId,
         id: blockId,
-        webhookId: cuid(),
+        webhookId: createId(),
         outgoingEdgeId: undefined,
       }
     return {

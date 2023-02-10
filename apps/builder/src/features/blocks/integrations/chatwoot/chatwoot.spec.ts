@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { defaultChatwootOptions, IntegrationBlockType } from 'models'
 
-const typebotId = cuid()
+const typebotId = createId()
 
 const chatwootTestWebsiteToken = 'tueXiiqEmrWUCZ4NUyoR7nhE'
 

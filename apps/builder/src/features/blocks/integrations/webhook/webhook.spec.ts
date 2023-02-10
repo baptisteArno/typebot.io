@@ -4,13 +4,13 @@ import {
   importTypebotInDatabase,
 } from 'utils/playwright/databaseActions'
 import { HttpMethod } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { apiToken } from 'utils/playwright/databaseSetup'
 
 test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/integrations/easyConfigWebhook.json'),
       {
@@ -31,7 +31,7 @@ test.describe('Builder', () => {
   })
 
   test('its configuration should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/integrations/webhook.json'),
       {

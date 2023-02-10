@@ -2,12 +2,12 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultTextBubbleContent } from 'models'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
-    const typebotId = cuid()
+    const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,

@@ -1,7 +1,7 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import { deleteButtonInConfirmDialog } from '@/test/utils/selectorUtils'
 import test, { expect, Page } from '@playwright/test'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { readFileSync } from 'fs'
 import { parse } from 'papaparse'
 import {
@@ -9,7 +9,7 @@ import {
   injectFakeResults,
 } from 'utils/playwright/databaseActions'
 
-const typebotId = cuid()
+const typebotId = createId()
 
 test.beforeEach(async () => {
   await importTypebotInDatabase(

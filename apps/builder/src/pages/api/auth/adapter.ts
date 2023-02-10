@@ -1,7 +1,7 @@
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
 import { PrismaClient, Prisma, WorkspaceRole, Session } from 'db'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
-import cuid from 'cuid'
+import { createId } from '@paralleldrive/cuid2'
 import { got } from 'got'
 import { generateId } from 'utils'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace'
@@ -14,7 +14,7 @@ import {
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
     createUser: async (data: Omit<AdapterUser, 'id'>) => {
-      const user = { id: cuid(), email: data.email as string }
+      const user = { id: createId(), email: data.email as string }
       const { invitations, workspaceInvitations } = await getNewUserInvitations(
         p,
         user.email
