@@ -74,12 +74,14 @@ export const TypebotViewer = ({
     <Frame
       id="typebot-iframe"
       head={
-        <style>
-          {phoneSyle}
-          {styles}
-          {typebot.theme?.customCss}
-          {importantStyles}
-        </style>
+        <>
+          <style>
+            {phoneSyle}
+            {styles}
+          </style>
+          <style>{typebot.theme?.customCss}</style>
+          <style>{importantStyles}</style>
+        </>
       }
       name="Typebot viewer"
       style={{ width: '100%', height: '100%', border: 'none', ...style }}
