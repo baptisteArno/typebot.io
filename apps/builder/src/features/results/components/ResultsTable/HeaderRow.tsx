@@ -1,3 +1,4 @@
+import { colors } from '@/lib/theme'
 import { Box, BoxProps, chakra, useColorModeValue } from '@chakra-ui/react'
 import { flexRender, HeaderGroup } from '@tanstack/react-table'
 import React from 'react'
@@ -5,10 +6,13 @@ import { TableData } from '../../types'
 
 type Props = {
   headerGroup: HeaderGroup<TableData>
+  isTableScrolled: boolean
 }
 
-export const HeaderRow = ({ headerGroup }: Props) => {
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
+export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
+  const borderColor = useColorModeValue(colors.gray[200], colors.gray[700])
+  const backgroundColor = useColorModeValue('white', colors.gray[900])
+
   return (
     <tr key={headerGroup.id}>
       {headerGroup.headers.map((header) => {
@@ -16,14 +20,18 @@ export const HeaderRow = ({ headerGroup }: Props) => {
           <chakra.th
             key={header.id}
             px="4"
-            py="2"
-            pos="relative"
-            border="1px"
+            py="3"
+            borderX="1px"
             borderColor={borderColor}
+            backgroundColor={isTableScrolled ? backgroundColor : undefined}
+            zIndex={10}
+            pos="sticky"
+            top="0"
             fontWeight="normal"
             whiteSpace="nowrap"
             wordBreak="normal"
             colSpan={header.colSpan}
+            shadow={`inset 0 1px 0 ${borderColor}, inset 0 -1px 0 ${borderColor}; `}
             style={{
               minWidth: header.getSize(),
               maxWidth: header.getSize(),

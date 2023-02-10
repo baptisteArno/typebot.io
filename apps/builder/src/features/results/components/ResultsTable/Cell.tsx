@@ -8,6 +8,7 @@ type Props = {
   cell: CellProps<TableData, unknown>
   size: number
   isExpandButtonVisible: boolean
+  rowIndex: number
   cellIndex: number
   isSelected: boolean
   onExpandButtonClick: () => void
@@ -17,6 +18,7 @@ const Cell = ({
   cell,
   size,
   isExpandButtonVisible,
+  rowIndex,
   cellIndex,
   onExpandButtonClick,
 }: Props) => {
@@ -25,7 +27,7 @@ const Cell = ({
       key={cell.id}
       px="4"
       py="2"
-      border="1px"
+      borderWidth={rowIndex === 0 ? '0 1px 1px 1px' : '1px'}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
       whiteSpace="nowrap"
       wordBreak="normal"

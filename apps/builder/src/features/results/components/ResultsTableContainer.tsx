@@ -4,7 +4,7 @@ import { LogsModal } from './LogsModal'
 import { useTypebot } from '@/features/editor'
 import { useResults } from '../ResultsProvider'
 import { ResultModal } from './ResultModal'
-import { SubmissionsTable } from './ResultsTable'
+import { ResultsTable } from './ResultsTable'
 
 export const ResultsTableContainer = () => {
   const {
@@ -35,14 +35,7 @@ export const ResultsTableContainer = () => {
     setExpandedResultIndex(index)
 
   return (
-    <Stack
-      pb="28"
-      px={['4', '0']}
-      spacing="4"
-      maxW="1600px"
-      overflow="scroll"
-      w="full"
-    >
+    <Stack pb="28" px={['4', '0']} spacing="4" maxW="1600px" w="full">
       {publishedTypebot && (
         <LogsModal
           typebotId={publishedTypebot?.typebotId}
@@ -56,7 +49,7 @@ export const ResultsTableContainer = () => {
       />
 
       {typebot && (
-        <SubmissionsTable
+        <ResultsTable
           preferences={typebot.resultsTablePreferences ?? undefined}
           resultHeader={resultHeader}
           data={tableData}

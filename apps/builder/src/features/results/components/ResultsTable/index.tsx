@@ -1,1 +1,1 @@
-export { ResultsTable as SubmissionsTable } from './ResultsTable'
+export { ResultsTable } from './ResultsTable'

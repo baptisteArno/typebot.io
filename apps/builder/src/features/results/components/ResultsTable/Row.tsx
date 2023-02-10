@@ -38,6 +38,7 @@ export const Row = ({
           cell={cell}
           size={cell.column.getSize()}
           isExpandButtonVisible={isExpandButtonVisible}
+          rowIndex={row.index}
           cellIndex={cellIndex}
           onExpandButtonClick={onExpandButtonClick}
           isSelected={isSelected}

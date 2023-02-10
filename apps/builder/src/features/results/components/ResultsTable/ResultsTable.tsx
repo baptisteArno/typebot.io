@@ -50,6 +50,7 @@ export const ResultsTable = ({
   const background = useColorModeValue('white', colors.gray[900])
   const { updateTypebot } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
+  const [isTableScrolled, setIsTableScrolled] = useState(false)
   const bottomElement = useRef<HTMLDivElement | null>(null)
   const tableWrapper = useRef<HTMLDivElement | null>(null)
 
@@ -197,13 +198,7 @@ export const ResultsTable = ({
   }
 
   return (
-    <Stack
-      maxW="1600px"
-      px="4"
-      overflow="scroll"
-      spacing={6}
-      ref={tableWrapper}
-    >
+    <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
       <Flex w="full" justifyContent="flex-end">
         <ResultsActionButtons
           selectedResultsId={Object.keys(rowSelection)}
@@ -219,6 +214,7 @@ export const ResultsTable = ({
         />
       </Flex>
       <Box
+        ref={tableWrapper}
         overflow="scroll"
         rounded="md"
         data-testid="results-table"
@@ -227,11 +223,18 @@ export const ResultsTable = ({
         backgroundRepeat="no-repeat"
         backgroundSize="30px 100%, 30px 100%, 15px 100%, 15px 100%"
         backgroundAttachment="local, local, scroll, scroll"
+        onScroll={(e) =>
+          setIsTableScrolled((e.target as HTMLElement).scrollTop > 0)
+        }
       >
         <chakra.table rounded="md">
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
-              <HeaderRow key={headerGroup.id} headerGroup={headerGroup} />
+              <HeaderRow
+                key={headerGroup.id}
+                headerGroup={headerGroup}
+                isTableScrolled={isTableScrolled}
+              />
             ))}
           </thead>
 

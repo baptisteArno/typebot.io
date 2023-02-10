@@ -96,66 +96,68 @@ export const ColumnSettingsButton = ({
       <PopoverTrigger>
         <Button leftIcon={<ToolIcon />}>Columns</Button>
       </PopoverTrigger>
-      <PopoverContent w="400px">
-        <PopoverBody
-          as={Stack}
-          spacing="4"
-          p="4"
-          maxH="450px"
-          overflowY="scroll"
-        >
-          <Stack>
-            <Text fontWeight="semibold" fontSize="sm">
-              Shown in table:
-            </Text>
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={columnOrder}
-                strategy={verticalListSortingStrategy}
-              >
-                {visibleHeaders.map((header) => (
-                  <SortableColumns
-                    key={header.id}
-                    header={header}
-                    onEyeClick={onEyeClick}
-                  />
-                ))}
-              </SortableContext>
-              <Portal>
-                <DragOverlay dropAnimation={{ duration: 0 }}>
-                  {draggingColumnId ? <Flex /> : null}
-                </DragOverlay>
-              </Portal>
-            </DndContext>
-          </Stack>
-          {hiddenHeaders.length > 0 && (
+      <Portal>
+        <PopoverContent w="400px">
+          <PopoverBody
+            as={Stack}
+            spacing="4"
+            p="4"
+            maxH="450px"
+            overflowY="scroll"
+          >
             <Stack>
               <Text fontWeight="semibold" fontSize="sm">
-                Hidden in table:
+                Shown in table:
               </Text>
-              {hiddenHeaders.map((header) => (
-                <Flex key={header.id} justify="space-between">
-                  <HStack>
-                    <HeaderIcon header={header} />
-                    <Text>{header.label}</Text>
-                  </HStack>
-                  <IconButton
-                    icon={<EyeOffIcon />}
-                    size="sm"
-                    aria-label={'Hide column'}
-                    onClick={onEyeClick(header.id)}
-                  />
-                </Flex>
-              ))}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={columnOrder}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {visibleHeaders.map((header) => (
+                    <SortableColumns
+                      key={header.id}
+                      header={header}
+                      onEyeClick={onEyeClick}
+                    />
+                  ))}
+                </SortableContext>
+                <Portal>
+                  <DragOverlay dropAnimation={{ duration: 0 }}>
+                    {draggingColumnId ? <Flex /> : null}
+                  </DragOverlay>
+                </Portal>
+              </DndContext>
             </Stack>
-          )}
-        </PopoverBody>
-      </PopoverContent>
+            {hiddenHeaders.length > 0 && (
+              <Stack>
+                <Text fontWeight="semibold" fontSize="sm">
+                  Hidden in table:
+                </Text>
+                {hiddenHeaders.map((header) => (
+                  <Flex key={header.id} justify="space-between">
+                    <HStack>
+                      <HeaderIcon header={header} />
+                      <Text>{header.label}</Text>
+                    </HStack>
+                    <IconButton
+                      icon={<EyeOffIcon />}
+                      size="sm"
+                      aria-label={'Hide column'}
+                      onClick={onEyeClick(header.id)}
+                    />
+                  </Flex>
+                ))}
+              </Stack>
+            )}
+          </PopoverBody>
+        </PopoverContent>
+      </Portal>
     </Popover>
   )
 }
