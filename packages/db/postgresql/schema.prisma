@@ -179,6 +179,7 @@ model Typebot {
   isClosed                Boolean                   @default(false)
 
   @@index([workspaceId])
+  @@index([isArchived, createdAt(sort: Desc)])
 }
 
 model Invitation {
@@ -230,7 +231,8 @@ model Result {
   answers     Answer[]
   logs        Log[]
 
-  @@index([typebotId])
+  @@index([typebotId, hasStarted, createdAt(sort: Desc)])
+  @@index([typebotId, isCompleted])
 }
 
 model Log {
@@ -257,6 +259,7 @@ model Answer {
 
   @@unique([resultId, blockId, groupId])
   @@index([groupId])
+  @@index([storageUsed])
 }
 
 model Coupon {

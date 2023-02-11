@@ -196,6 +196,7 @@ model Typebot {
 
   @@index([workspaceId])
   @@index([folderId])
+  @@index([isArchived, createdAt(sort: Desc)])
 }
 
 model Invitation {
@@ -249,7 +250,8 @@ model Result {
   answers     Answer[]
   logs        Log[]
 
-  @@index([typebotId])
+  @@index([typebotId, hasStarted, createdAt(sort: Desc)])
+  @@index([typebotId, isCompleted])
 }
 
 model Log {
@@ -270,12 +272,13 @@ model Answer {
   blockId     String
   groupId     String
   variableId  String?
-  content     String
+  content     String   @db.Text
   storageUsed Int?
   result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@unique([resultId, blockId, groupId])
   @@index([groupId])
+  @@index([storageUsed])
 }
 
 model Coupon {
