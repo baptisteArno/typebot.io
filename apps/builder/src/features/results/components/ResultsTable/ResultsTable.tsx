@@ -62,7 +62,6 @@ export const ResultsTable = ({
 
   const changeColumnOrder = (newColumnOrder: string[]) => {
     if (typeof newColumnOrder === 'function') return
-    console.log(newColumnOrder)
     updateTypebot({
       resultsTablePreferences: {
         columnsOrder: newColumnOrder,

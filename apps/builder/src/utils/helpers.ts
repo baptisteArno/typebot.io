@@ -48,7 +48,6 @@ export const blockHasOptions = (block: Block) => 'options' in block
 
 export const parseVariableHighlight = (content: string, typebot: Typebot) => {
   const varNames = typebot.variables.map((v) => v.name)
-  console.log(content)
   return content.replace(
     new RegExp(`(?<!href="){{(${varNames.join('|')})}}`, 'g'),
     (fullMatch, foundVar) => {
