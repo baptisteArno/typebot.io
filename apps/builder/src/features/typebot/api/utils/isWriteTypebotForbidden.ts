@@ -10,7 +10,6 @@ export const isWriteTypebotForbidden = async (
   user: Pick<User, 'email' | 'id'>
 ) => {
   if (
-    process.env.ADMIN_EMAIL === user.email ||
     typebot.collaborators.find(
       (collaborator) => collaborator.userId === user.id
     )?.type === CollaborationType.WRITE
