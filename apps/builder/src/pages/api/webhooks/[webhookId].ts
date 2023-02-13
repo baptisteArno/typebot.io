@@ -1,4 +1,3 @@
-import { CollaborationType } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/api'
@@ -8,6 +7,7 @@ import {
   methodNotAllowed,
   notAuthenticated,
 } from 'utils/api'
+import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -36,23 +36,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     const data = req.body
     if (!('typebotId' in data)) return badRequest(res)
-    const typebot = await prisma.typebot.findFirst({
-      where: {
-        OR: [
-          {
-            id: data.typebotId,
-            workspace: { members: { some: { userId: user.id } } },
-          },
-          {
-            collaborators: {
-              some: {
-                userId: user.id,
-                type: CollaborationType.WRITE,
-              },
-            },
-          },
-        ],
-      },
+    const typebot = await getTypebot({
+      accessLevel: 'write',
+      typebotId: data.typebotId,
+      user,
     })
     if (!typebot) return forbidden(res)
     const webhook = await prisma.webhook.upsert({

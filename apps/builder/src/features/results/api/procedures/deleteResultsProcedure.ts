@@ -44,6 +44,7 @@ export const deleteResultsProcedure = authenticatedProcedure
       typebot,
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,
+        typebotId,
       },
     })
 
