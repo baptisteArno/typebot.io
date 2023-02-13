@@ -29,19 +29,15 @@ export const convertInvitationsToCollaborations = async (
   )
   for (const invitation of workspaceInvitations) {
     if (!invitation.typebot.workspaceId) continue
-    await p.memberInWorkspace.upsert({
-      where: {
-        userId_workspaceId: {
+    await p.memberInWorkspace.createMany({
+      data: [
+        {
           userId: id,
           workspaceId: invitation.typebot.workspaceId,
+          role: WorkspaceRole.GUEST,
         },
-      },
-      create: {
-        userId: id,
-        workspaceId: invitation.typebot.workspaceId,
-        role: WorkspaceRole.GUEST,
-      },
-      update: {},
+      ],
+      skipDuplicates: true,
     })
   }
   return p.invitation.deleteMany({

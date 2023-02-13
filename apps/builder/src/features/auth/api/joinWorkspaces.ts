@@ -12,6 +12,7 @@ export const joinWorkspaces = async (
         role: invitation.type,
         userId: id,
       })),
+      skipDuplicates: true,
     }),
     p.workspaceInvitation.deleteMany({
       where: {

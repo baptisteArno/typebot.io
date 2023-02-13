@@ -120,6 +120,22 @@ export const getSeatsLimit = ({
   return seatsLimit[plan].totalIncluded
 }
 
+export const isSeatsLimitReached = ({
+  existingMembersCount,
+  existingInvitationsCount,
+  plan,
+  customSeatsLimit,
+}: { existingMembersCount: number; existingInvitationsCount: number } & Pick<
+  Workspace,
+  'plan' | 'customSeatsLimit'
+>) => {
+  const seatsLimit = getSeatsLimit({ plan, customSeatsLimit })
+  return (
+    seatsLimit !== infinity &&
+    seatsLimit <= existingMembersCount + existingInvitationsCount
+  )
+}
+
 export const computePrice = (
   plan: Plan,
   selectedTotalChatsIndex: number,

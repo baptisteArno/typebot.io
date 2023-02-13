@@ -1,11 +1,11 @@
-import { Workspace, WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
-import { getSeatsLimit } from 'utils/pricing'
 import { sendWorkspaceMemberInvitationEmail } from 'emails'
 import { env } from 'utils'
+import { isSeatsLimitReached } from 'utils/pricing'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -23,7 +23,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!workspace) return forbidden(res)
 
-    if (await checkIfSeatsLimitReached(workspace))
+    const [existingMembersCount, existingInvitationsCount] =
+      await prisma.$transaction([
+        prisma.memberInWorkspace.count({
+          where: { workspaceId: workspace.id },
+        }),
+        prisma.workspaceInvitation.count({
+          where: { workspaceId: workspace.id },
+        }),
+      ])
+    if (
+      isSeatsLimitReached({
+        existingMembersCount,
+        existingInvitationsCount,
+        ...workspace,
+      })
+    )
       return res.status(400).send('Seats limit reached')
     if (existingUser) {
       await prisma.memberInWorkspace.create({
@@ -64,14 +79,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   methodNotAllowed(res)
-}
-
-const checkIfSeatsLimitReached = async (workspace: Workspace) => {
-  const existingMembersCount = await prisma.memberInWorkspace.count({
-    where: { workspaceId: workspace.id },
-  })
-
-  return existingMembersCount >= getSeatsLimit(workspace)
 }
 
 export default handler

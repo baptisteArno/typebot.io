@@ -8,9 +8,8 @@ import {
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { WorkspaceInvitation, WorkspaceRole } from 'db'
 import React from 'react'
-import { getSeatsLimit } from 'utils/pricing'
+import { getSeatsLimit, isSeatsLimitReached } from 'utils/pricing'
 import { AddMemberForm } from './AddMemberForm'
-import { checkCanInviteMember } from './helpers'
 import { MemberItem } from './MemberItem'
 import { useUser } from '@/features/account'
 import { useWorkspace } from '../../WorkspaceProvider'
@@ -20,6 +19,7 @@ import { updateMemberQuery } from '../../queries/updateMemberQuery'
 import { deleteInvitationQuery } from '../../queries/deleteInvitationQuery'
 import { updateInvitationQuery } from '../../queries/updateInvitationQuery'
 import { Member } from '../../types'
+import { isDefined } from 'utils'
 
 export const MembersList = () => {
   const { user } = useUser()
@@ -88,11 +88,16 @@ export const MembersList = () => {
     members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
     invitations.length
 
-  const canInviteNewMember = checkCanInviteMember({
-    plan: workspace?.plan,
-    customSeatsLimit: workspace?.customSeatsLimit,
-    currentMembersCount,
-  })
+  const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined
+
+  const canInviteNewMember =
+    workspace &&
+    !isSeatsLimitReached({
+      plan: workspace?.plan,
+      customSeatsLimit: workspace?.customSeatsLimit,
+      existingMembersCount: currentMembersCount,
+      existingInvitationsCount: invitations.length,
+    })
 
   return (
     <Stack w="full" spacing={3}>
@@ -104,12 +109,12 @@ export const MembersList = () => {
         `}
         />
       )}
-      {workspace && (
+      {isDefined(seatsLimit) && (
         <Heading fontSize="2xl">
           Members{' '}
-          {getSeatsLimit(workspace) === -1
+          {seatsLimit === -1
             ? ''
-            : `(${currentMembersCount}/${getSeatsLimit(workspace)})`}
+            : `(${currentMembersCount + invitations.length}/${seatsLimit})`}
         </Heading>
       )}
       {workspace?.id && canEdit && (
