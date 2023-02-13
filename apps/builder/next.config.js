@@ -21,7 +21,7 @@ const nextConfig = withTM({
         headers: [
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
         ],
       },
