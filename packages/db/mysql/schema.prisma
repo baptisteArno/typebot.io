@@ -135,7 +135,7 @@ model Credentials {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
   workspaceId String
-  data        String
+  data        String    @db.Text
   name        String
   type        String
   iv          String

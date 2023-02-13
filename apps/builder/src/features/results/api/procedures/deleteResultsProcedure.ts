@@ -1,6 +1,7 @@
-import { canWriteTypebots } from '@/utils/api/dbRules'
+import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
+import { Typebot } from 'models'
 import { z } from 'zod'
 import { archiveResults } from '../archiveResults'
 
@@ -29,12 +30,20 @@ export const deleteResultsProcedure = authenticatedProcedure
   .mutation(async ({ input, ctx: { user } }) => {
     const idsArray = input.resultIds?.split(',')
     const { typebotId } = input
-    const { success } = await archiveResults({
+    const typebot = (await getTypebot({
+      accessLevel: 'write',
       typebotId,
       user,
+      select: {
+        groups: true,
+      },
+    })) as Pick<Typebot, 'groups'> | null
+    if (!typebot)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    const { success } = await archiveResults({
+      typebot,
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,
-        typebot: canWriteTypebots(typebotId, user),
       },
     })
 

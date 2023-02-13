@@ -1,4 +1,4 @@
-import { CollaborationType, CollaboratorsOnTypebots, Prisma, User } from 'db'
+import { CollaborationType, Prisma } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
@@ -6,7 +6,9 @@ import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
 import { Typebot, typebotSchema } from 'models'
 import { captureEvent } from '@sentry/nextjs'
-import { isDefined, omit } from 'utils'
+import { omit } from 'utils'
+import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
+import { isReadTypebotForbidden } from '@/features/typebot/api/utils/isReadTypebotForbidden'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -25,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         webhooks: true,
       },
     })
-    if (!typebot || !(await canReadTypebots(typebot, user)))
+    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       return res.status(404).send({ typebot: null })
 
     const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
@@ -42,18 +44,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'DELETE') {
-    const typebot = await prisma.typebot.findFirst({
-      where: { id: typebotId },
-      select: {
-        workspaceId: true,
-        collaborators: { select: { userId: true, type: true } },
-      },
-    })
-    if (!typebot || !(await canWriteTypebots(typebot, user)))
-      return res.status(404).send({ typebot: null })
-    const { success } = await archiveResults({
-      typebotId,
+    const typebot = (await getTypebot({
+      accessLevel: 'write',
       user,
+      typebotId,
+      select: {
+        groups: true,
+      },
+    })) as Pick<Typebot, 'groups'> | null
+    if (!typebot) return res.status(404).send({ typebot: null })
+    const { success } = await archiveResults({
+      typebot,
       resultsFilter: { typebotId },
     })
     if (!success) return res.status(500).send({ success: false })
@@ -84,18 +85,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const typebot = await prisma.typebot.findFirst({
-      where: { id: typebotId },
+    const typebot = await getTypebot({
+      accessLevel: 'write',
+      typebotId,
+      user,
       select: {
         updatedAt: true,
-        workspaceId: true,
-        collaborators: { select: { userId: true, type: true } },
       },
     })
-    if (!typebot || !(await canWriteTypebots(typebot, user)))
-      return res.status(404).send({ message: 'Typebot not found' })
+    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
 
-    if (typebot.updatedAt > new Date(data.updatedAt))
+    if ((typebot.updatedAt as Date) > new Date(data.updatedAt))
       return res.send({ message: 'Found newer version of typebot in database' })
     const typebots = await prisma.typebot.updateMany({
       where: { id: typebotId },
@@ -110,16 +110,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'PATCH') {
-    const typebot = await prisma.typebot.findFirst({
-      where: { id: typebotId },
-      select: {
-        updatedAt: true,
-        workspaceId: true,
-        collaborators: { select: { userId: true, type: true } },
-      },
+    const typebot = await getTypebot({
+      accessLevel: 'write',
+      typebotId,
+      user,
     })
-    if (!typebot || !(await canWriteTypebots(typebot, user)))
-      return res.status(404).send({ message: 'Typebot not found' })
+    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const typebots = await prisma.typebot.updateMany({
       where: { id: typebotId },
@@ -128,50 +124,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebots })
   }
   return methodNotAllowed(res)
-}
-
-const canReadTypebots = async (
-  typebot: Pick<Typebot, 'workspaceId'> & {
-    collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
-  },
-  user: Pick<User, 'email' | 'id'>
-) => {
-  if (
-    process.env.ADMIN_EMAIL === user.email ||
-    typebot.collaborators.find(
-      (collaborator) => collaborator.userId === user.id
-    )
-  )
-    return true
-  const memberInWorkspace = await prisma.memberInWorkspace.findFirst({
-    where: {
-      workspaceId: typebot.workspaceId,
-      userId: user.id,
-    },
-  })
-  return isDefined(memberInWorkspace)
-}
-
-const canWriteTypebots = async (
-  typebot: Pick<Typebot, 'workspaceId'> & {
-    collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
-  },
-  user: Pick<User, 'email' | 'id'>
-) => {
-  if (
-    process.env.ADMIN_EMAIL === user.email ||
-    typebot.collaborators.find(
-      (collaborator) => collaborator.userId === user.id
-    )?.type === CollaborationType.WRITE
-  )
-    return true
-  const memberInWorkspace = await prisma.memberInWorkspace.findFirst({
-    where: {
-      workspaceId: typebot.workspaceId,
-      userId: user.id,
-    },
-  })
-  return memberInWorkspace && memberInWorkspace?.role !== 'GUEST'
 }
 
 // TODO: Remove in a month

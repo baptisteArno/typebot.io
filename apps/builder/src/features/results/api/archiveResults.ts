@@ -1,24 +1,16 @@
 import prisma from '@/lib/prisma'
-import { canWriteTypebots } from '@/utils/api/dbRules'
 import { deleteFiles } from '@/utils/api/storage'
-import { User, Prisma } from 'db'
+import { Prisma } from 'db'
 import { InputBlockType, Typebot } from 'models'
 
 export const archiveResults = async ({
-  typebotId,
-  user,
+  typebot,
   resultsFilter,
 }: {
-  typebotId: string
-  user: User
+  typebot: Pick<Typebot, 'groups'>
   resultsFilter?: Prisma.ResultWhereInput
 }) => {
-  const typebot = await prisma.typebot.findFirst({
-    where: canWriteTypebots(typebotId, user),
-    select: { groups: true },
-  })
-  if (!typebot) return { success: false }
-  const fileUploadBlockIds = (typebot as Typebot).groups
+  const fileUploadBlockIds = typebot.groups
     .flatMap((g) => g.blocks)
     .filter((b) => b.type === InputBlockType.FILE)
     .map((b) => b.id)
