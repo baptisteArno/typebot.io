@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const typebot = await prisma.typebot.findFirst({
       where: {
-        ...canReadTypebots(typebotId, user),
+        id: typebotId,
         isArchived: { not: true },
       },
       include: {
@@ -27,6 +27,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
     if (!typebot) return res.send({ typebot: null })
+    const memberInWorkspace = await prisma.memberInWorkspace.findFirst({
+      where: {
+        workspaceId: typebot.workspaceId,
+        userId: user.id,
+      },
+    })
+    if (process.env.ADMIN_EMAIL !== user.email && !memberInWorkspace)
+      return res.send({ typebot: null })
+
     const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
       typebot
     const isReadOnly =
