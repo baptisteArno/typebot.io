@@ -24,7 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typebots: [typebot],
       user,
     })([])
-    return res.send(await parseSampleResult(typebot, linkedTypebots)(groupId))
+    return res.send(
+      await parseSampleResult(typebot, linkedTypebots)(groupId, [])
+    )
   }
   methodNotAllowed(res)
 }

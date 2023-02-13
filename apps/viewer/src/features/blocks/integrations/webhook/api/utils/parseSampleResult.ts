@@ -7,6 +7,7 @@ import {
   Block,
   Typebot,
   TypebotLinkBlock,
+  Variable,
 } from 'models'
 import { isInputBlock, byId, isNotDefined } from 'utils'
 import { parseResultHeader } from 'utils/results'
@@ -17,7 +18,8 @@ export const parseSampleResult =
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async (
-    currentGroupId: string
+    currentGroupId: string,
+    variables: Variable[]
   ): Promise<Record<string, string | boolean | undefined>> => {
     const header = parseResultHeader(typebot, linkedTypebots)
     const linkedInputBlocks = await extractLinkedInputBlocks(
@@ -28,7 +30,7 @@ export const parseSampleResult =
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       'Submitted at': new Date().toISOString(),
-      ...parseResultSample(linkedInputBlocks, header),
+      ...parseResultSample(linkedInputBlocks, header, variables),
     }
   }
 
@@ -78,7 +80,8 @@ const extractLinkedInputBlocks =
 
 const parseResultSample = (
   inputBlocks: InputBlock[],
-  headerCells: ResultHeaderCell[]
+  headerCells: ResultHeaderCell[],
+  variables: Variable[]
 ) =>
   headerCells.reduce<Record<string, string | boolean | undefined>>(
     (resultSample, cell) => {
@@ -86,14 +89,23 @@ const parseResultSample = (
         cell.blocks?.some((block) => block.id === inputBlock.id)
       )
       if (isNotDefined(inputBlock)) {
-        if (cell.variableIds)
+        if (cell.variableIds) {
+          const variableValue = variables.find(
+            (variable) =>
+              cell.variableIds?.includes(variable.id) && variable.value
+          )?.value
           return {
             ...resultSample,
-            [cell.label]: 'content',
+            [cell.label]: variableValue ?? 'content',
           }
+        }
+
         return resultSample
       }
-      const value = getSampleValue(inputBlock)
+      const variableValue = variables.find(
+        (variable) => cell.variableIds?.includes(variable.id) && variable.value
+      )?.value
+      const value = variableValue ?? getSampleValue(inputBlock)
       return {
         ...resultSample,
         [cell.label]: value,
