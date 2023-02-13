@@ -35,6 +35,10 @@
     },
     "db:push": {
       "cache": false
+    },
+    "db:cleanDatabase": {
+      "dependsOn": ["db#db:generate"],
+      "cache": false
     }
   }
 }

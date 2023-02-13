@@ -16,5 +16,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
-      - run: cd ../db && pnpm db:generate && cd ../scripts
-      - run: pnpm db:cleanDatabase
+      - run: pnpm turbo run db:cleanDatabase
