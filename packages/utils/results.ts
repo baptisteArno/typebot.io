@@ -7,15 +7,12 @@ import {
   VariableWithValue,
   Typebot,
   ResultWithAnswersInput,
-  ResultWithAnswers,
-  InputBlockType,
 } from 'models'
-import { isInputBlock, isDefined, byId, isNotEmpty } from './utils'
+import { isInputBlock, isDefined, byId } from './utils'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,
-  linkedTypebots: Pick<Typebot, 'groups' | 'variables'>[] | undefined,
-  results: ResultWithAnswers[] = []
+  linkedTypebots: Pick<Typebot, 'groups' | 'variables'>[] | undefined
 ): ResultHeaderCell[] => {
   const parsedGroups = [
     ...typebot.groups,
@@ -35,7 +32,6 @@ export const parseResultHeader = (
     { label: 'Submitted at', id: 'date' },
     ...inputsResultHeader,
     ...parseVariablesHeaders(parsedVariables, inputsResultHeader),
-    ...parseResultsFromPreviousBotVersions(results, inputsResultHeader),
   ]
 }
 
@@ -171,32 +167,6 @@ const parseVariablesHeaders = (
 
     return [...existingHeaders, newHeaderCell]
   }, [])
-
-const parseResultsFromPreviousBotVersions = (
-  results: ResultWithAnswers[],
-  existingInputResultHeaders: ResultHeaderCell[]
-): ResultHeaderCell[] =>
-  results
-    .flatMap((result) => result.answers)
-    .filter(
-      (answer) =>
-        !answer.variableId &&
-        existingInputResultHeaders.every(
-          (header) => header.id !== answer.blockId
-        ) &&
-        isNotEmpty(answer.content)
-    )
-    .map((answer) => ({
-      id: answer.blockId,
-      label: `Deleted block`,
-      blocks: [
-        {
-          id: answer.blockId,
-          groupId: answer.groupId,
-        },
-      ],
-      blockType: InputBlockType.TEXT,
-    }))
 
 export const parseAnswers =
   (

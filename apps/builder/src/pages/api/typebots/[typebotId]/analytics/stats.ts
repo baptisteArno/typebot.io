@@ -23,17 +23,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         prisma.result.count({
           where: {
             typebotId: typebot.id,
+            isArchived: false,
           },
         }),
         prisma.result.count({
           where: {
             typebotId: typebot.id,
+            isArchived: false,
             hasStarted: true,
           },
         }),
         prisma.result.count({
           where: {
             typebotId: typebot.id,
+            isArchived: false,
             isCompleted: true,
           },
         }),

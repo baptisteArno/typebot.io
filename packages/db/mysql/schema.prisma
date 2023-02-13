@@ -250,8 +250,8 @@ model Result {
   answers     Answer[]
   logs        Log[]
 
-  @@index([typebotId, hasStarted, createdAt(sort: Desc)])
-  @@index([typebotId, isCompleted])
+  @@index([typebotId, isArchived, hasStarted, createdAt(sort: Desc)])
+  @@index([typebotId, isArchived, isCompleted])
 }
 
 model Log {

@@ -49,9 +49,9 @@ export const ResultsProvider = ({
   const resultHeader = useMemo(
     () =>
       publishedTypebot
-        ? parseResultHeader(publishedTypebot, linkedTypebots, flatResults)
+        ? parseResultHeader(publishedTypebot, linkedTypebots)
         : [],
-    [flatResults, linkedTypebots, publishedTypebot]
+    [linkedTypebots, publishedTypebot]
   )
 
   const tableData = useMemo(

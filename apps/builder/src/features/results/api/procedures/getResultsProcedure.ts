@@ -50,6 +50,7 @@ export const getResultsProcedure = authenticatedProcedure
       where: {
         typebotId: typebot.id,
         hasStarted: true,
+        isArchived: false,
       },
       orderBy: {
         createdAt: 'desc',
