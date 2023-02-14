@@ -47,6 +47,7 @@ const App = ({
   }, [isReady])
 
   const typebotId = query.typebotId?.toString()
+
   return (
     <>
       <ToastContainer />

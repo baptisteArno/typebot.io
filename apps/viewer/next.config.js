@@ -27,6 +27,7 @@ module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
         ...nextConfig,
         sentry: {
           hideSourceMaps: true,
+          widenClientFileUpload: true,
         },
       },
       sentryWebpackPluginOptions

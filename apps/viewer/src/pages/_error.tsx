@@ -1,9 +1,6 @@
 /**
  * NOTE: This requires `@sentry/nextjs` version 7.3.0 or higher.
  *
- * NOTE: If using this with `next` version 12.2.0 or lower, uncomment the
- * penultimate line in `CustomErrorComponent`.
- *
  * This page is loaded by Nextjs:
  *  - on the server, when data-fetching methods throw or reject
  *  - on the client, when `getInitialProps` throws or rejects
@@ -17,13 +14,11 @@
  */
 
 import * as Sentry from '@sentry/nextjs'
+import type { NextPage } from 'next'
+import type { ErrorProps } from 'next/error'
 import NextErrorComponent from 'next/error'
 
-const CustomErrorComponent = (props: {
-  statusCode: number
-  hasGetInitialPropsRun: boolean
-  err: Error
-}) => {
+const CustomErrorComponent: NextPage<ErrorProps> = (props) => {
   // If you're using a Nextjs version prior to 12.2.1, uncomment this to
   // compensate for https://github.com/vercel/next.js/issues/8592
   // Sentry.captureUnderscoreErrorException(props);
@@ -31,7 +26,7 @@ const CustomErrorComponent = (props: {
   return <NextErrorComponent statusCode={props.statusCode} />
 }
 
-CustomErrorComponent.getInitialProps = async (contextData: any) => {
+CustomErrorComponent.getInitialProps = async (contextData) => {
   // In case this is running in a serverless function, await this in order to give Sentry
   // time to send the error before the lambda exits
   await Sentry.captureUnderscoreErrorException(contextData)
