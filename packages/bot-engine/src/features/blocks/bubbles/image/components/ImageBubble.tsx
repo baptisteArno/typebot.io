@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { ImageBubbleBlock } from 'models'
 import { TypingBubble } from '@/components/TypingBubble'
@@ -18,11 +18,7 @@ export const ImageBubble = ({ block, onTransitionEnd }: Props) => {
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const image = useRef<HTMLImageElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
-
-  const url = useMemo(
-    () => parseVariables(typebot.variables)(block.content?.url),
-    [block.content?.url, typebot.variables]
-  )
+  const [url] = useState(parseVariables(typebot.variables)(block.content?.url))
 
   const onTypingEnd = useCallback(() => {
     setIsTyping(false)

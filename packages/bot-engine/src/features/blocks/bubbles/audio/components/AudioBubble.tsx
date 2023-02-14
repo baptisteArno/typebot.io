@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { AudioBubbleContent } from 'models'
 import { TypingBubble } from '@/components/TypingBubble'
@@ -16,11 +16,7 @@ export const AudioBubble = ({ url, onTransitionEnd }: Props) => {
   const { typebot, isLoading } = useTypebot()
   const audio = useRef<HTMLAudioElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
-
-  const parsedUrl = useMemo(
-    () => parseVariables(typebot.variables)(url),
-    [url, typebot.variables]
-  )
+  const [parsedUrl] = useState(parseVariables(typebot.variables)(url))
 
   useEffect(() => {
     if (!isTyping || isLoading) return

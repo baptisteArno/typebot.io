@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { EmbedBubbleBlock } from 'models'
 import { TypingBubble } from '../../../../../components/TypingBubble'
 import { parseVariables } from '@/features/variables'
@@ -15,11 +15,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
   const { typebot, isLoading } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
-
-  const url = useMemo(
-    () => parseVariables(typebot.variables)(block.content?.url),
-    [block.content?.url, typebot.variables]
-  )
+  const [url] = useState(parseVariables(typebot.variables)(block.content?.url))
 
   const onTypingEnd = useCallback(() => {
     setIsTyping(false)

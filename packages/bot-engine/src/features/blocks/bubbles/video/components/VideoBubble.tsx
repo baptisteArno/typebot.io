@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
 import {
   Variable,
@@ -75,12 +75,10 @@ const VideoContent = ({
   isTyping: boolean
   variables: Variable[]
 }) => {
-  const url = useMemo(
-    () => parseVariables(variables)(content?.url),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [variables]
-  )
+  const [url] = useState(parseVariables(variables)(content?.url))
+
   if (!content?.type) return <></>
+
   switch (content.type) {
     case VideoBubbleContentType.URL: {
       const isSafariBrowser = window.navigator.vendor.match(/apple/i)
