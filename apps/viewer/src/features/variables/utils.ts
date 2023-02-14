@@ -24,10 +24,13 @@ export const parseVariables =
     if (!text || text === '') return ''
     return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
       const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
-      const variable = variables.find((v) => {
-        return matchedVarName === v.name && isDefined(v.value)
+      const variable = variables.find((variable) => {
+        return (
+          matchedVarName === variable.name &&
+          (options.fieldToParse === 'id' || isDefined(variable.value))
+        )
       }) as VariableWithValue | undefined
-      if (!variable || variable.value === null) return ''
+      if (!variable) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
       if (options.escapeForJson) return jsonParse(value)
