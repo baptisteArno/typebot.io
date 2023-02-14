@@ -186,17 +186,28 @@ const parseResultsFromPreviousBotVersions = (
         ) &&
         isNotEmpty(answer.content)
     )
-    .map((answer) => ({
-      id: answer.blockId,
-      label: `Deleted block`,
-      blocks: [
+    .reduce<ResultHeaderCell[]>((existingHeaders, answer) => {
+      if (
+        existingHeaders.some(
+          (existingHeader) => existingHeader.id === answer.blockId
+        )
+      )
+        return existingHeaders
+      return [
+        ...existingHeaders,
         {
           id: answer.blockId,
-          groupId: answer.groupId,
+          label: `${answer.blockId} (deleted block)`,
+          blocks: [
+            {
+              id: answer.blockId,
+              groupId: answer.groupId,
+            },
+          ],
+          blockType: InputBlockType.TEXT,
         },
-      ],
-      blockType: InputBlockType.TEXT,
-    }))
+      ]
+    }, [])
 
 export const parseAnswers =
   (
