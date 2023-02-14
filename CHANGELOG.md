@@ -1,5 +1,51 @@
 # Changelog
 
+<a name="2.10.3"></a>
+## 2.10.3 (2023-02-14)
+
+### Changed
+
+- 🚸 (bot) Keep bubble content in local state for each bubble [[97e2578](https://github.com/baptisteArno/typebot.io/commit/97e2578bcce56eac8ab79d6e4d4eca4b9fb2bcf2)]
+- 🚸 (results) Improve results action buttons [[08e33fb](https://github.com/baptisteArno/typebot.io/commit/08e33fbe702cac9cb057fb346f25b5469beec24b)]
+- 🗃️ Improve result logs query [[1a3596b](https://github.com/baptisteArno/typebot.io/commit/1a3596b15c66baeace496c65881d19383c449c24)]
+- 🗃️ (webhook) Improve webhook creation query [[e39cd94](https://github.com/baptisteArno/typebot.io/commit/e39cd94eef32338cebc349094957ba4aea3820b2)]
+- 🗃️ (results) Improve result delete queries [[1d4d39c](https://github.com/baptisteArno/typebot.io/commit/1d4d39c649be6591290c379522fc602b765fbb86)]
+- 🗃️ Improve get typebot query performance [[c0757f8](https://github.com/baptisteArno/typebot.io/commit/c0757f81872dfcf97d071f7f82f6c2f01accc098)]
+- 🗃️ Improve usage queries [[e9a1d16](https://github.com/baptisteArno/typebot.io/commit/e9a1d1683eb7a3a64106fb3745899f0423e12857)]
+- 🚸 (results) Remove useless scrollbars and make header sticky [[b98aef5](https://github.com/baptisteArno/typebot.io/commit/b98aef53fddd86d9fab98629333b6e29d4fa1924)]
+- 🚸 (results) Show deleted block answers if any [[3ab6790](https://github.com/baptisteArno/typebot.io/commit/3ab67902c0b305d33902bbd79c92284701b5f527)]
+- 💄 Correct default favicon for viewer [[5e358ca](https://github.com/baptisteArno/typebot.io/commit/5e358caee21e2b6b45d52382c2d4fb4a0d38840d)]
+- 🏗️ Add compatibility with different prisma clients [[caf5432](https://github.com/baptisteArno/typebot.io/commit/caf54321ece0934c2979007aa7182a63a992b601)]
+
+### Removed
+
+- 🔇 Remove unused logs [[23ec5aa](https://github.com/baptisteArno/typebot.io/commit/23ec5aa4d5d9c813f5265a199903a3393fa158dc)]
+
+### Fixed
+
+- 🐛 (bot) Still parse variable ID in code if has no value [[17020c8](https://github.com/baptisteArno/typebot.io/commit/17020c8fef6e2371926308228cf97fa30a3e078d)]
+- 🐛 (results) Fix export with deleted blocks [[c35ba58](https://github.com/baptisteArno/typebot.io/commit/c35ba58fae94a5cd677ab6cf2e0654697e2c2c4c)]
+- 🐛 Fix 404 error page [[eef015e](https://github.com/baptisteArno/typebot.io/commit/eef015e39587ea3c3a830c2c6d9109203a56788e)]
+- 🐛 (editor) Fix text bubble regex not compatible with Safari [[2c80e3a](https://github.com/baptisteArno/typebot.io/commit/2c80e3a1c06ca2b3a4e79aa2f2df54405db9a71e)]
+- 🐛 Fix X-Frame-Option header [[7baa610](https://github.com/baptisteArno/typebot.io/commit/7baa610b2d47afee60dbe9d8225e0ebb66d72e84)]
+- 🐛 (editor) Fix typebot update permissions [[bac97a8](https://github.com/baptisteArno/typebot.io/commit/bac97a8ee4dfb944863ee07959255dff4757ab6a)]
+- 🐛 (webhook) Parse test variables in webhook body sample [[8a02c70](https://github.com/baptisteArno/typebot.io/commit/8a02c701da2970346de179881b18402df0cffd5e)]
+- 🐛 (results) Fix results still appearing when deleted [[3728bca](https://github.com/baptisteArno/typebot.io/commit/3728bca17386d3f1faeac3c564f041ab3f21c325)]
+- 🐛 (workspace) Fix members invitation when having unlimited plan [[0dba994](https://github.com/baptisteArno/typebot.io/commit/0dba994210407e46a1157b14b626b18f57375241)]
+- 💚 Fix clean database script [[770b29e](https://github.com/baptisteArno/typebot.io/commit/770b29e7673a07e3812529b7f4028c81c59ea847)]
+- 💚 Fix utils export issue [[c175ade](https://github.com/baptisteArno/typebot.io/commit/c175ade4d0521c196d6cca23f827f28f606279ba)]
+- 🐛 (editor) Allow variables in bubble text links [[2dbf0fb](https://github.com/baptisteArno/typebot.io/commit/2dbf0fb848ea5d8ea427c0a68ad57ba1e4b099a6)]
+- 🐛 Fix custom CSS initialization [[c386bb5](https://github.com/baptisteArno/typebot.io/commit/c386bb5a08b67fff509b7036e0ba6e59b97ba230)]
+- 💚 Fix docker build prisma generate script [[c9fda15](https://github.com/baptisteArno/typebot.io/commit/c9fda1518f5cf1ecceadacb40c738383a4c1d657)]
+
+### Miscellaneous
+
+- 📝 Add a planetscale guide [[46e9271](https://github.com/baptisteArno/typebot.io/commit/46e9271aaa051a4b3e0fd3c52867b1b7d978b0b8)]
+- 📦 Update cuid to cuid2 [[51f7670](https://github.com/baptisteArno/typebot.io/commit/51f76700b2aa72a3e8e0250d431627064310f0aa)]
+- 📝 Remove advanced section in Condition docs [[c879c6f](https://github.com/baptisteArno/typebot.io/commit/c879c6f83a719aae50912b15f935003d9b3a4269)]
+- 📝 Fix landing page typo ([#301](https://github.com/baptisteArno/typebot.io/issues/301)) [[c50c2b8](https://github.com/baptisteArno/typebot.io/commit/c50c2b84b6eef085dec77c27a745ea458e70861e)]
+
+
 <a name="2.10.2"></a>
 ## 2.10.2 (2023-02-07)
 
