@@ -8,6 +8,7 @@ import {
   Stack,
   Tag,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { CollaborationType } from 'db'
 import React from 'react'
@@ -34,13 +35,14 @@ export const CollaboratorItem = ({
   onDeleteClick,
   onChangeCollaborationType,
 }: Props) => {
+  const hoverBgColor = useColorModeValue('gray.100', 'gray.700')
   const handleEditClick = () =>
     onChangeCollaborationType(CollaborationType.WRITE)
   const handleViewClick = () =>
     onChangeCollaborationType(CollaborationType.READ)
   return (
     <Menu placement="bottom-end">
-      <MenuButton _hover={{ backgroundColor: 'gray.100' }} borderRadius="md">
+      <MenuButton _hover={{ backgroundColor: hoverBgColor }} borderRadius="md">
         <CollaboratorIdentityContent
           email={email}
           name={name}
@@ -80,7 +82,7 @@ export const CollaboratorIdentityContent = ({
   email: string
 }) => (
   <HStack justifyContent="space-between" maxW="full" py="2" px="4">
-    <HStack minW={0}>
+    <HStack minW={0} spacing={3}>
       <Avatar name={name} src={image} size="sm" />
       <Stack spacing={0} minW="0">
         {name && (

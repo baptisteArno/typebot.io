@@ -15,7 +15,8 @@ import { sendGuestInvitationEmail } from 'emails'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)
-  const typebotId = req.query.typebotId as string
+  const typebotId = req.query.typebotId as string | undefined
+  if (!typebotId) return badRequest(res)
   if (req.method === 'GET') {
     const invitations = await prisma.invitation.findMany({
       where: { typebotId, typebot: canReadTypebots(typebotId, user) },

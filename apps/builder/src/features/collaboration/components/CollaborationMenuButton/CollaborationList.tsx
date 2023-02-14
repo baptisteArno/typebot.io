@@ -137,8 +137,8 @@ export const CollaborationList = () => {
   }
 
   return (
-    <Stack spacing={4} py="4">
-      <HStack as="form" onSubmit={handleInvitationSubmit} px="4">
+    <Stack spacing={1} pt="4" pb="2">
+      <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"
           placeholder="colleague@company.com"
@@ -167,9 +167,9 @@ export const CollaborationList = () => {
         </Button>
       </HStack>
       {workspace && (
-        <Flex py="2" px="4" justifyContent="space-between">
-          <HStack minW={0}>
-            <EmojiOrImageIcon icon={workspace.icon} />
+        <Flex py="2" px="4" justifyContent="space-between" alignItems="center">
+          <HStack minW={0} spacing={3}>
+            <EmojiOrImageIcon icon={workspace.icon} boxSize="32px" />
             <Text fontSize="15px" noOfLines={1}>
               Everyone at {workspace.name}
             </Text>
@@ -208,7 +208,10 @@ export const CollaborationList = () => {
         <HStack p="4" justifyContent="space-between">
           <HStack>
             <SkeletonCircle boxSize="32px" />
-            <Skeleton width="230px" h="10px" />
+            <Stack>
+              <Skeleton width="130px" h="6px" />
+              <Skeleton width="200px" h="6px" />
+            </Stack>
           </HStack>
           <Skeleton width="80px" h="10px" />
         </HStack>
