@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma'
 import { CollaboratorsOnTypebots, User } from 'db'
 import { Typebot } from 'models'
-import { isNotDefined } from 'utils'
 
 export const isReadTypebotForbidden = async (
   typebot: Pick<Typebot, 'workspaceId'> & {
@@ -22,5 +21,5 @@ export const isReadTypebotForbidden = async (
       userId: user.id,
     },
   })
-  return isNotDefined(memberInWorkspace)
+  return memberInWorkspace === null
 }

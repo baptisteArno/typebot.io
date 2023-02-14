@@ -52,9 +52,10 @@ test('table features should work', async ({ page }) => {
       page.locator('[data-testid="Submitted at header"]')
     ).toBeVisible()
     await expect(page.locator('[data-testid="Email header"]')).toBeVisible()
-    await page.click('button >> text="Columns"')
+    await page.getByRole('button', { name: 'Open table settings' }).click()
+    await page.getByRole('button', { name: 'Column settings' }).click()
     await page.click('[aria-label="Hide column"] >> nth=0')
-    await page.click('[aria-label="Hide column"] >> nth=1')
+    await page.click('[aria-label="Hide column"] >> nth=2')
     await expect(
       page.locator('[data-testid="Submitted at header"]')
     ).toBeHidden()
@@ -65,23 +66,23 @@ test('table features should work', async ({ page }) => {
     await expect(page.locator('th >> nth=1')).toHaveText('Welcome')
     await expect(page.locator('th >> nth=2')).toHaveText('Name')
     await page.dragAndDrop(
-      '[aria-label="Drag"] >> nth=0',
-      '[aria-label="Drag"] >> nth=0',
+      '[aria-label="Drag"] >> nth=3',
+      '[aria-label="Drag"] >> nth=3',
       { targetPosition: { x: 0, y: 80 }, force: true }
     )
-    await expect(page.locator('th >> nth=1')).toHaveText('Name')
-    await expect(page.locator('th >> nth=2')).toHaveText('Welcome')
+    await expect(page.locator('th >> nth=3')).toHaveText('Name')
+    await expect(page.locator('th >> nth=1')).toHaveText('Welcome')
   })
 
   await test.step('Preferences should be persisted', async () => {
     await saveAndReload(page)
-    expect((await page.locator('th >> nth=1').boundingBox())?.width).toBe(345)
+    expect((await page.locator('th >> nth=3').boundingBox())?.width).toBe(345)
     await expect(
       page.locator('[data-testid="Submitted at header"]')
     ).toBeHidden()
     await expect(page.locator('[data-testid="Email header"]')).toBeHidden()
-    await expect(page.locator('th >> nth=1')).toHaveText('Name')
-    await expect(page.locator('th >> nth=2')).toHaveText('Welcome')
+    await expect(page.locator('th >> nth=1')).toHaveText('Welcome')
+    await expect(page.locator('th >> nth=3')).toHaveText('Name')
   })
 
   await test.step('Infinite scroll', async () => {
@@ -105,9 +106,10 @@ test('table features should work', async ({ page }) => {
     // For some reason, we need to double click on checkboxes to check them
     await getNthCheckbox(page, 1).dblclick()
     await getNthCheckbox(page, 2).dblclick()
+    await expect(page.getByRole('button', { name: '2 selected' })).toBeVisible()
     const [download] = await Promise.all([
       page.waitForEvent('download'),
-      page.getByRole('button', { name: 'Export 2' }).click(),
+      page.getByRole('button', { name: 'Export' }).click(),
     ])
     const path = await download.path()
     expect(path).toBeDefined()
@@ -116,9 +118,12 @@ test('table features should work', async ({ page }) => {
     validateExportSelection(data)
 
     await getNthCheckbox(page, 0).click()
+    await expect(
+      page.getByRole('button', { name: '200 selected' })
+    ).toBeVisible()
     const [downloadAll] = await Promise.all([
       page.waitForEvent('download'),
-      page.getByRole('button', { name: 'Export 200' }).click(),
+      page.getByRole('button', { name: 'Export' }).click(),
     ])
     const pathAll = await downloadAll.path()
     expect(pathAll).toBeDefined()
@@ -126,18 +131,30 @@ test('table features should work', async ({ page }) => {
     const { data: dataAll } = parse(fileAll)
     validateExportAll(dataAll)
     await getNthCheckbox(page, 0).click()
+    await page.getByRole('button', { name: 'Open table settings' }).click()
+    await page.getByRole('button', { name: 'Export all' }).click()
+    const [downloadAllFromMenu] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: 'Export' }).click(),
+    ])
+    const pathAllFromMenu = await downloadAllFromMenu.path()
+    expect(pathAllFromMenu).toBeDefined()
+    const fileAllFromMenu = readFileSync(pathAllFromMenu as string).toString()
+    const { data: dataAllFromMenu } = parse(fileAllFromMenu)
+    validateExportAll(dataAllFromMenu)
+    await page.getByRole('button', { name: 'Cancel' }).click()
   })
 
   await test.step('Delete', async () => {
     await getNthCheckbox(page, 1).click()
     await getNthCheckbox(page, 2).click()
-    await page.click('text="Delete"')
+    await page.getByRole('button', { name: 'Delete' }).click()
     await deleteButtonInConfirmDialog(page).click()
     await expect(page.locator('text=content199')).toBeHidden()
     await expect(page.locator('text=content198')).toBeHidden()
     await page.waitForTimeout(1000)
     await page.click('[data-testid="checkbox"] >> nth=0')
-    await page.click('text="Delete"')
+    await page.getByRole('button', { name: 'Delete' }).click()
     await deleteButtonInConfirmDialog(page).click()
     await page.waitForTimeout(1000)
     expect(await page.locator('tr').count()).toBe(1)
@@ -147,14 +164,14 @@ test('table features should work', async ({ page }) => {
 
 const validateExportSelection = (data: unknown[]) => {
   expect(data).toHaveLength(3)
-  expect((data[1] as unknown[])[0]).toBe('content199')
-  expect((data[2] as unknown[])[0]).toBe('content198')
+  expect((data[1] as unknown[])[2]).toBe('content199')
+  expect((data[2] as unknown[])[2]).toBe('content198')
 }
 
 const validateExportAll = (data: unknown[]) => {
   expect(data).toHaveLength(201)
-  expect((data[1] as unknown[])[0]).toBe('content199')
-  expect((data[200] as unknown[])[0]).toBe('content0')
+  expect((data[1] as unknown[])[2]).toBe('content199')
+  expect((data[200] as unknown[])[2]).toBe('content0')
 }
 
 const scrollToBottom = (page: Page) =>

@@ -3,17 +3,15 @@ import { createId } from '@paralleldrive/cuid2'
 import { HttpMethod, Typebot } from 'models'
 import {
   createWebhook,
-  deleteTypebots,
-  deleteWebhooks,
   importTypebotInDatabase,
 } from 'utils/playwright/databaseActions'
 import { typebotViewer } from 'utils/playwright/testHelpers'
 import { apiToken } from 'utils/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
 
-test.describe('Bot', () => {
-  const typebotId = createId()
+const typebotId = createId()
 
+test.describe('Bot', () => {
   test.beforeEach(async () => {
     await importTypebotInDatabase(getTestAsset('typebots/webhook.json'), {
       id: typebotId,
@@ -45,17 +43,8 @@ test.describe('Bot', () => {
         body: `{{Full body}}`,
       })
     } catch (err) {
-      console.log(err)
+      // Webhooks already created
     }
-  })
-
-  test.afterEach(async () => {
-    await deleteTypebots([typebotId])
-    await deleteWebhooks([
-      'failing-webhook',
-      'partial-body-webhook',
-      'full-body-webhook',
-    ])
   })
 
   test('should execute webhooks properly', async ({ page }) => {

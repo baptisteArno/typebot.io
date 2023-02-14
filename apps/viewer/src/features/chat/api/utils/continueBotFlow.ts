@@ -99,9 +99,10 @@ const processAndSaveAnswer =
     block: InputBlock
   ) =>
   async (reply: string): Promise<Variable[]> => {
-    state.result &&
-      !state.isPreview &&
-      (await saveAnswer(state.result.id, block)(reply))
+    if (!state.isPreview && state.result) {
+      await saveAnswer(state.result.id, block)(reply)
+      if (!state.result.hasStarted) await setResultAsStarted(state.result.id)
+    }
     const newVariables = saveVariableValueIfAny(state, block)(reply)
     return newVariables
   }
@@ -125,6 +126,13 @@ const saveVariableValueIfAny =
       },
     ]
   }
+
+const setResultAsStarted = async (resultId: string) => {
+  await prisma.result.update({
+    where: { id: resultId },
+    data: { hasStarted: true },
+  })
+}
 
 const parseRetryMessage = (
   block: InputBlock

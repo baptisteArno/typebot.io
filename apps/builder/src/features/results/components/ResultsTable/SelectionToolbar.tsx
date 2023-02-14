@@ -1,11 +1,10 @@
 import {
   HStack,
   Button,
-  Fade,
-  Tag,
   Text,
   useDisclosure,
-  StackProps,
+  IconButton,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { DownloadIcon, TrashIcon } from '@/components/icons'
 import { ConfirmModal } from '@/components/ConfirmModal'
@@ -13,21 +12,20 @@ import { useTypebot } from '@/features/editor'
 import { unparse } from 'papaparse'
 import React, { useState } from 'react'
 import { useToast } from '@/hooks/useToast'
-import { convertResultsToTableData, parseAccessor } from '../../utils'
+import { parseAccessor } from '../../utils'
 import { useResults } from '../../ResultsProvider'
 import { trpc } from '@/lib/trpc'
-import { TRPCError } from '@trpc/server'
 
-type ResultsActionButtonsProps = {
+type Props = {
   selectedResultsId: string[]
   onClearSelection: () => void
 }
 
-export const ResultsActionButtons = ({
+export const SelectionToolbar = ({
   selectedResultsId,
   onClearSelection,
-  ...props
-}: ResultsActionButtonsProps & StackProps) => {
+}: Props) => {
+  const selectLabelColor = useColorModeValue('blue.500', 'blue.200')
   const { typebot } = useTypebot()
   const { showToast } = useToast()
   const {
@@ -59,28 +57,6 @@ export const ResultsActionButtons = ({
   const workspaceId = typebot?.workspaceId
   const typebotId = typebot?.id
 
-  const getAllTableData = async () => {
-    if (!workspaceId || !typebotId) return []
-    const allResults = []
-    let cursor: string | undefined
-    do {
-      try {
-        const { results, nextCursor } =
-          await trpcContext.results.getResults.fetch({
-            typebotId,
-            limit: '200',
-            cursor,
-          })
-        allResults.push(...results)
-        cursor = nextCursor ?? undefined
-      } catch (error) {
-        showToast({ description: (error as TRPCError).message })
-      }
-    } while (cursor)
-
-    return convertResultsToTableData(allResults, resultHeader)
-  }
-
   const totalSelected =
     selectedResultsId.length > 0 && selectedResultsId.length === results?.length
       ? totalResults
@@ -90,22 +66,16 @@ export const ResultsActionButtons = ({
     if (!workspaceId || !typebotId) return
     deleteResultsMutation.mutate({
       typebotId,
-      resultIds:
-        totalSelected === totalResults
-          ? undefined
-          : selectedResultsId.join(','),
+      resultIds: selectedResultsId.join(','),
     })
   }
 
   const exportResultsToCSV = async () => {
     setIsExportLoading(true)
-    const isSelectAll = totalSelected === 0 || totalSelected === totalResults
 
-    const dataToUnparse = isSelectAll
-      ? await getAllTableData()
-      : tableData.filter((data) =>
-          selectedResultsId.includes(data.id.plainText)
-        )
+    const dataToUnparse = tableData.filter((data) =>
+      selectedResultsId.includes(data.id.plainText)
+    )
 
     const fields = typebot?.resultsTablePreferences?.columnsOrder
       ? typebot.resultsTablePreferences.columnsOrder.reduce<string[]>(
@@ -144,64 +114,65 @@ export const ResultsActionButtons = ({
         type: 'text/csv;charset=utf-8;',
       }
     )
-    const fileName =
-      `typebot-export_${new Date().toLocaleDateString().replaceAll('/', '-')}` +
-      (isSelectAll ? `_all` : ``)
+    const fileName = `typebot-export_${new Date()
+      .toLocaleDateString()
+      .replaceAll('/', '-')}`
     const tempLink = document.createElement('a')
     tempLink.href = window.URL.createObjectURL(csvData)
     tempLink.setAttribute('download', `${fileName}.csv`)
     tempLink.click()
     setIsExportLoading(false)
   }
+
+  if (totalSelected === 0) return null
+
   return (
-    <HStack {...props}>
-      <HStack
-        as={Button}
+    <HStack rounded="md" spacing={0}>
+      <Button
+        color={selectLabelColor}
+        borderRightWidth="1px"
+        borderRightRadius="none"
+        onClick={onClearSelection}
+        size="sm"
+      >
+        {totalSelected} selected
+      </Button>
+      <IconButton
+        borderRightWidth="1px"
+        borderRightRadius="none"
+        borderLeftRadius="none"
+        aria-label="Export"
+        icon={<DownloadIcon />}
         onClick={exportResultsToCSV}
         isLoading={isExportLoading}
-      >
-        <DownloadIcon />
-        <Text>Export {totalSelected > 0 ? '' : 'all'}</Text>
+        size="sm"
+      />
 
-        {totalSelected && (
-          <Tag variant="solid" size="sm">
-            {totalSelected}
-          </Tag>
-        )}
-      </HStack>
+      <IconButton
+        aria-label="Delete"
+        borderLeftRadius="none"
+        icon={<TrashIcon />}
+        onClick={onOpen}
+        isLoading={isDeleteLoading}
+        size="sm"
+      />
 
-      <Fade in={totalSelected > 0} unmountOnExit>
-        <HStack
-          as={Button}
-          colorScheme="red"
-          onClick={onOpen}
-          isLoading={isDeleteLoading}
-        >
-          <TrashIcon />
-          <Text>Delete</Text>
-          {totalSelected > 0 && (
-            <Tag colorScheme="red" variant="subtle" size="sm">
-              {totalSelected}
-            </Tag>
-          )}
-        </HStack>
-        <ConfirmModal
-          isOpen={isOpen}
-          onConfirm={deleteResults}
-          onClose={onClose}
-          message={
-            <Text>
-              You are about to delete{' '}
-              <strong>
-                {totalSelected} submission
-                {totalSelected > 1 ? 's' : ''}
-              </strong>
-              . Are you sure you wish to continue?
-            </Text>
-          }
-          confirmButtonLabel={'Delete'}
-        />
-      </Fade>
+      <ConfirmModal
+        isOpen={isOpen}
+        onConfirm={deleteResults}
+        onClose={onClose}
+        message={
+          <Text>
+            You are about to delete{' '}
+            <strong>
+              {totalSelected} submission
+              {totalSelected > 1 ? 's' : ''}
+            </strong>
+            . Are you sure you wish to continue?
+          </Text>
+        }
+        confirmButtonLabel={'Delete'}
+      />
     </HStack>
   )
 }

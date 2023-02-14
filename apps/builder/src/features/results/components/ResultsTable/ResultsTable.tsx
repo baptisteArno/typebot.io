@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   chakra,
-  Flex,
   HStack,
   Stack,
   Text,
@@ -18,9 +17,9 @@ import {
   ColumnDef,
   Updater,
 } from '@tanstack/react-table'
-import { ColumnSettingsButton } from './ColumnsSettingsButton'
+import { TableSettingsButton } from './TableSettingsButton'
 import { useTypebot } from '@/features/editor'
-import { ResultsActionButtons } from './ResultsActionButtons'
+import { SelectionToolbar } from './SelectionToolbar'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
 import { CellValueType, TableData } from '../../types'
@@ -55,10 +54,13 @@ export const ResultsTable = ({
   const tableWrapper = useRef<HTMLDivElement | null>(null)
 
   const {
-    columnsOrder = parseDefaultColumnOrder(resultHeader),
+    columnsOrder,
     columnsVisibility = {},
     columnsWidth = {},
-  } = preferences ?? {}
+  } = {
+    ...preferences,
+    columnsOrder: parseColumnOrder(preferences?.columnsOrder, resultHeader),
+  }
 
   const changeColumnOrder = (newColumnOrder: string[]) => {
     if (typeof newColumnOrder === 'function') return
@@ -198,20 +200,19 @@ export const ResultsTable = ({
 
   return (
     <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
-      <Flex w="full" justifyContent="flex-end">
-        <ResultsActionButtons
+      <HStack w="full" justifyContent="flex-end">
+        <SelectionToolbar
           selectedResultsId={Object.keys(rowSelection)}
           onClearSelection={() => setRowSelection({})}
-          mr="2"
         />
-        <ColumnSettingsButton
+        <TableSettingsButton
           resultHeader={resultHeader}
           columnVisibility={columnsVisibility}
           setColumnVisibility={changeColumnVisibility}
           columnOrder={columnsOrder}
           onColumnOrderChange={changeColumnOrder}
         />
-      </Flex>
+      </HStack>
       <Box
         ref={tableWrapper}
         overflow="scroll"
@@ -265,8 +266,16 @@ export const ResultsTable = ({
   )
 }
 
-const parseDefaultColumnOrder = (resultHeader: ResultHeaderCell[]) => [
-  'select',
-  ...resultHeader.map((h) => h.id),
-  'logs',
-]
+const parseColumnOrder = (
+  existingOrder: string[] | undefined,
+  resultHeader: ResultHeaderCell[]
+) =>
+  existingOrder
+    ? [
+        ...existingOrder.slice(0, -1),
+        ...resultHeader
+          .filter((header) => !existingOrder.includes(header.id))
+          .map((h) => h.id),
+        'logs',
+      ]
+    : ['select', ...resultHeader.map((h) => h.id), 'logs']

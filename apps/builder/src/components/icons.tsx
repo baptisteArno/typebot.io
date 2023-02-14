@@ -31,6 +31,12 @@ export const ChevronLeftIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const ChevronRightIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </Icon>
+)
+
 export const PlusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -54,6 +60,14 @@ export const MoreVerticalIcon = (props: IconProps) => (
     <circle cx="12" cy="12" r="1"></circle>
     <circle cx="12" cy="5" r="1"></circle>
     <circle cx="12" cy="19" r="1"></circle>
+  </Icon>
+)
+
+export const MoreHorizontalIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="1"></circle>
+    <circle cx="19" cy="12" r="1"></circle>
+    <circle cx="5" cy="12" r="1"></circle>
   </Icon>
 )
 
@@ -503,5 +517,16 @@ export const CloudOffIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <path d="M22.61 16.95A5 5 0 0 0 18 10h-1.26a8 8 0 0 0-7.05-6M5 5a8 8 0 0 0 4 15h9a5 5 0 0 0 1.7-.3"></path>
     <line x1="1" y1="1" x2="23" y2="23"></line>
+  </Icon>
+)
+
+export const ListIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <line x1="8" y1="6" x2="21" y2="6"></line>
+    <line x1="8" y1="12" x2="21" y2="12"></line>
+    <line x1="8" y1="18" x2="21" y2="18"></line>
+    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+    <line x1="3" y1="18" x2="3.01" y2="18"></line>
   </Icon>
 )

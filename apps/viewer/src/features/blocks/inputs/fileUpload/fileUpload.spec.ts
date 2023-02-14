@@ -48,7 +48,7 @@ test('should work as expected', async ({ page, browser }) => {
   await page.click('[data-testid="checkbox"] >> nth=0')
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.locator('text="Export"').click(),
+    page.getByRole('button', { name: 'Export' }).click(),
   ])
   const downloadPath = await download.path()
   expect(downloadPath).toBeDefined()
@@ -71,8 +71,8 @@ test('should work as expected', async ({ page, browser }) => {
   await page2.goto(urls[0])
   await expect(page2.locator('pre')).toBeVisible()
 
+  page.getByRole('button', { name: 'Delete' }).click()
   await page.locator('button >> text="Delete"').click()
-  await page.locator('button >> text="Delete" >> nth=1').click()
   await expect(page.locator('text="api.json"')).toBeHidden()
   await page2.goto(urls[0])
   await expect(page2.locator('pre')).toBeHidden()

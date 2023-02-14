@@ -6,7 +6,7 @@ import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 
 export const UserPreferencesForm = () => {
-  const { setColorMode } = useColorMode()
+  const { colorMode, setColorMode } = useColorMode()
   const { user, updateUser } = useUser()
 
   useEffect(() => {
@@ -35,7 +35,11 @@ export const UserPreferencesForm = () => {
       <Stack spacing={6}>
         <Heading size="md">Appearance</Heading>
         <AppearanceRadioGroup
-          defaultValue={user?.preferredAppAppearance ?? 'system'}
+          defaultValue={
+            user?.preferredAppAppearance
+              ? user.preferredAppAppearance
+              : colorMode
+          }
           onChange={changeAppearance}
         />
       </Stack>
