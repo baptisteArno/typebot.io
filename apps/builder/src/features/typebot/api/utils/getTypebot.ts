@@ -22,6 +22,7 @@ export const getTypebot = async <T extends Prisma.TypebotSelect>({
     },
     select: {
       ...select,
+      id: true,
       workspaceId: true,
       collaborators: { select: { userId: true, type: true } },
     },
