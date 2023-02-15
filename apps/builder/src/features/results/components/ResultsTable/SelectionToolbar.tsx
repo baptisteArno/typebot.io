@@ -28,13 +28,7 @@ export const SelectionToolbar = ({
   const selectLabelColor = useColorModeValue('blue.500', 'blue.200')
   const { typebot } = useTypebot()
   const { showToast } = useToast()
-  const {
-    flatResults: results,
-    resultHeader,
-    totalResults,
-    tableData,
-    onDeleteResults,
-  } = useResults()
+  const { resultHeader, tableData, onDeleteResults } = useResults()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isExportLoading, setIsExportLoading] = useState(false)
@@ -57,10 +51,7 @@ export const SelectionToolbar = ({
   const workspaceId = typebot?.workspaceId
   const typebotId = typebot?.id
 
-  const totalSelected =
-    selectedResultsId.length > 0 && selectedResultsId.length === results?.length
-      ? totalResults
-      : selectedResultsId.length
+  const totalSelected = selectedResultsId.length
 
   const deleteResults = async () => {
     if (!workspaceId || !typebotId) return
