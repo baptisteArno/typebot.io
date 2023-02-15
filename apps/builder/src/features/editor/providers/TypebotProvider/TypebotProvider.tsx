@@ -124,16 +124,18 @@ export const TypebotProvider = ({
     },
   ] = useUndo<Typebot | undefined>(undefined)
 
-  const linkedTypebotIds = localTypebot?.groups
-    .flatMap((b) => b.blocks)
-    .reduce<string[]>(
-      (typebotIds, block) =>
-        block.type === LogicBlockType.TYPEBOT_LINK &&
-        isDefined(block.options.typebotId)
-          ? [...typebotIds, block.options.typebotId]
-          : typebotIds,
-      []
-    )
+  const linkedTypebotIds =
+    localTypebot?.groups
+      .flatMap((b) => b.blocks)
+      .reduce<string[]>(
+        (typebotIds, block) =>
+          block.type === LogicBlockType.TYPEBOT_LINK &&
+          isDefined(block.options.typebotId) &&
+          !typebotIds.includes(block.options.typebotId)
+            ? [...typebotIds, block.options.typebotId]
+            : typebotIds,
+        []
+      ) ?? []
 
   const { typebots: linkedTypebots } = useLinkedTypebots({
     workspaceId: localTypebot?.workspaceId ?? undefined,

@@ -1,4 +1,4 @@
-import { Plan, WorkspaceRole } from 'db'
+import { Plan } from 'db'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
@@ -18,67 +18,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
       const workspaceId = req.query.workspaceId as string | undefined
-      const folderId = req.query.allFolders
-        ? undefined
-        : req.query.folderId
-        ? req.query.folderId.toString()
-        : null
       if (!workspaceId) return badRequest(res)
-      const typebotIds = req.query.typebotIds as string[] | undefined
-      if (typebotIds) {
-        const typebots = await prisma.typebot.findMany({
-          where: {
-            OR: [
-              {
-                workspace: { members: { some: { userId: user.id } } },
-                id: { in: typebotIds },
-                isArchived: { not: true },
-              },
-              {
-                id: { in: typebotIds },
-                collaborators: {
-                  some: {
-                    userId: user.id,
-                  },
-                },
-                isArchived: { not: true },
-              },
-            ],
-          },
-          orderBy: { createdAt: 'desc' },
-          select: { name: true, id: true, groups: true, variables: true },
-        })
-        return res.send({ typebots })
-      }
+      const typebotIds = req.query.typebotIds as string[]
       const typebots = await prisma.typebot.findMany({
         where: {
           OR: [
             {
+              workspace: { members: { some: { userId: user.id } } },
+              id: { in: typebotIds },
               isArchived: { not: true },
-              folderId,
-              workspace: {
-                id: workspaceId,
-                members: {
-                  some: {
-                    userId: user.id,
-                    role: { not: WorkspaceRole.GUEST },
-                  },
-                },
-              },
             },
             {
-              isArchived: { not: true },
-              workspace: {
-                id: workspaceId,
-                members: {
-                  some: { userId: user.id, role: WorkspaceRole.GUEST },
+              id: { in: typebotIds },
+              collaborators: {
+                some: {
+                  userId: user.id,
                 },
               },
+              isArchived: { not: true },
             },
           ],
         },
         orderBy: { createdAt: 'desc' },
-        select: { name: true, id: true, icon: true },
+        select: { name: true, id: true, groups: true, variables: true },
       })
       return res.send({ typebots })
     }

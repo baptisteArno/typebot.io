@@ -11,7 +11,7 @@ export const useLinkedTypebots = ({
 }: {
   workspaceId?: string
   typebotId?: string
-  typebotIds?: string[]
+  typebotIds: string[]
   onError: (error: Error) => void
 }) => {
   const params = stringify({ typebotIds, workspaceId }, { indices: false })
@@ -21,8 +21,8 @@ export const useLinkedTypebots = ({
     },
     Error
   >(
-    workspaceId
-      ? typebotIds?.every((id) => typebotId === id)
+    workspaceId && typebotIds.length > 0
+      ? typebotIds.every((id) => typebotId === id)
         ? undefined
         : `/api/typebots?${params}`
       : null,
