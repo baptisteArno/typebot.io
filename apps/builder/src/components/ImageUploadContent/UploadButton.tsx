@@ -1,3 +1,4 @@
+import { useToast } from '@/hooks/useToast'
 import { compressFile } from '@/utils/helpers'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
@@ -18,11 +19,14 @@ export const UploadButton = ({
   ...props
 }: UploadButtonProps) => {
   const [isUploading, setIsUploading] = useState(false)
+  const { showToast } = useToast()
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return
     setIsUploading(true)
-    const file = e.target.files[0]
+    const file = e.target.files[0] as File | undefined
+    if (!file)
+      return showToast({ description: 'Could not read file.', status: 'error' })
     const urls = await uploadFiles({
       files: [
         {
