@@ -18,6 +18,7 @@ import { toTitleCase } from 'utils'
 import { Session } from 'next-auth'
 import { Plan } from 'db'
 import { trpc } from '@/lib/trpc'
+import { NewVersionPopup } from '@/components/NewVersionPopup'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
@@ -59,12 +60,14 @@ const App = ({
                 <WorkspaceProvider typebotId={typebotId}>
                   <Component />
                   <SupportBubble />
+                  <NewVersionPopup />
                 </WorkspaceProvider>
               </TypebotProvider>
             ) : (
               <WorkspaceProvider>
                 <Component {...pageProps} />
                 <SupportBubble />
+                <NewVersionPopup />
               </WorkspaceProvider>
             )}
           </UserProvider>
