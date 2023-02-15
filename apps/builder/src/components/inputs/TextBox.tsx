@@ -32,14 +32,16 @@ export const TextBox = ({
   debounceTimeout = 1000,
   label,
   moreInfoTooltip,
+  defaultValue,
+  isRequired,
   ...props
 }: TextBoxProps) => {
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
     null
   )
-  const [value, setValue] = useState<string>(props.defaultValue ?? '')
+  const [value, setValue] = useState<string>(defaultValue ?? '')
   const [carretPosition, setCarretPosition] = useState<number>(
-    props.defaultValue?.length ?? 0
+    defaultValue?.length ?? 0
   )
   const [isTouched, setIsTouched] = useState(false)
   const debounced = useDebouncedCallback(
@@ -50,10 +52,9 @@ export const TextBox = ({
   )
 
   useEffect(() => {
-    if (props.defaultValue !== value && value === '' && !isTouched)
-      setValue(props.defaultValue ?? '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.defaultValue])
+    if (isTouched || defaultValue === value) return
+    setValue(defaultValue ?? '')
+  }, [defaultValue, isTouched, value])
 
   useEffect(
     () => () => {
@@ -111,7 +112,7 @@ export const TextBox = ({
   )
 
   return (
-    <FormControl isRequired={props.isRequired}>
+    <FormControl isRequired={isRequired}>
       {label && (
         <FormLabel>
           {label}{' '}

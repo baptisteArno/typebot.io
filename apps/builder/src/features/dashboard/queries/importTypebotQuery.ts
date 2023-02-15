@@ -1,4 +1,4 @@
-import { duplicateWebhookQueries } from '@/features/blocks/integrations/webhook'
+import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook'
 import { createId } from '@paralleldrive/cuid2'
 import { Plan, Prisma } from 'db'
 import {
@@ -25,11 +25,13 @@ export const importTypebotQuery = async (typebot: Typebot, userPlan: Plan) => {
     .filter(isWebhookBlock)
   await Promise.all(
     webhookBlocks.map((s) =>
-      duplicateWebhookQueries(
-        newTypebot.id,
-        s.webhookId,
-        webhookIdsMapping.get(s.webhookId) as string
-      )
+      duplicateWebhookQuery({
+        existingIds: { typebotId: typebot.id, webhookId: s.webhookId },
+        newIds: {
+          typebotId: newTypebot.id,
+          webhookId: webhookIdsMapping.get(s.webhookId) as string,
+        },
+      })
     )
   )
   return { data, error }

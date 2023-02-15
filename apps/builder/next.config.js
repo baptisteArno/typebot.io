@@ -14,15 +14,6 @@ const nextConfig = withTM({
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  async redirects() {
-    return [
-      {
-        source: '/typebots/:typebotId',
-        destination: '/typebots/:typebotId/edit',
-        permanent: true,
-      },
-    ]
-  },
   headers: async () => {
     return [
       {

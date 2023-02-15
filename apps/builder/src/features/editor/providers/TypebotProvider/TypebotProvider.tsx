@@ -11,6 +11,7 @@ import { Router, useRouter } from 'next/router'
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -34,7 +35,7 @@ import {
   updatePublishedTypebotQuery,
   deletePublishedTypebotQuery,
 } from '@/features/publish/queries'
-import { saveWebhookQuery } from '@/features/blocks/integrations/webhook/queries/saveWebhookQuery'
+import { updateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/updateWebhookQuery'
 import {
   checkIfTypebotsAreEqual,
   checkIfPublished,
@@ -43,6 +44,8 @@ import {
   parsePublicTypebotToTypebot,
 } from '@/features/publish/utils'
 import { useAutoSave } from '@/hooks/useAutoSave'
+import { createWebhookQuery } from '@/features/blocks/integrations/webhook/queries/createWebhookQuery'
+import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/duplicateWebhookQuery'
 
 const autoSaveTimeout = 10000
 
@@ -306,20 +309,61 @@ export const TypebotProvider = ({
     return saveTypebot()
   }
 
-  const updateWebhook = async (
-    webhookId: string,
-    updates: Partial<Webhook>
+  const updateWebhook = useCallback(
+    async (webhookId: string, updates: Partial<Webhook>) => {
+      if (!typebot) return
+      const { data } = await updateWebhookQuery({
+        typebotId: typebot.id,
+        webhookId,
+        data: updates,
+      })
+      if (data)
+        mutate({
+          typebot,
+          publishedTypebot,
+          webhooks: (webhooks ?? []).map((w) =>
+            w.id === webhookId ? data.webhook : w
+          ),
+        })
+    },
+    [mutate, publishedTypebot, typebot, webhooks]
+  )
+
+  const createWebhook = async (data: Partial<Webhook>) => {
+    if (!typebot) return
+    const response = await createWebhookQuery({
+      typebotId: typebot.id,
+      data,
+    })
+    if (!response.data?.webhook) return
+    mutate({
+      typebot,
+      publishedTypebot,
+      webhooks: (webhooks ?? []).concat(response.data?.webhook),
+    })
+  }
+
+  const duplicateWebhook = async (
+    existingWebhookId: string,
+    newWebhookId: string
   ) => {
     if (!typebot) return
-    const { data } = await saveWebhookQuery(webhookId, updates)
-    if (data)
-      mutate({
-        typebot,
-        publishedTypebot,
-        webhooks: (webhooks ?? []).map((w) =>
-          w.id === webhookId ? data.webhook : w
-        ),
-      })
+    const newWebhook = await duplicateWebhookQuery({
+      existingIds: {
+        typebotId: typebot.id,
+        webhookId: existingWebhookId,
+      },
+      newIds: {
+        typebotId: typebot.id,
+        webhookId: newWebhookId,
+      },
+    })
+    if (!newWebhook) return
+    mutate({
+      typebot,
+      publishedTypebot,
+      webhooks: (webhooks ?? []).concat(newWebhook),
+    })
   }
 
   return (
@@ -343,8 +387,14 @@ export const TypebotProvider = ({
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
         updateWebhook,
-        ...groupsActions(setLocalTypebot as SetTypebot),
-        ...blocksAction(setLocalTypebot as SetTypebot),
+        ...groupsActions(setLocalTypebot as SetTypebot, {
+          onWebhookBlockCreated: createWebhook,
+          onWebhookBlockDuplicated: duplicateWebhook,
+        }),
+        ...blocksAction(setLocalTypebot as SetTypebot, {
+          onWebhookBlockCreated: createWebhook,
+          onWebhookBlockDuplicated: duplicateWebhook,
+        }),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),

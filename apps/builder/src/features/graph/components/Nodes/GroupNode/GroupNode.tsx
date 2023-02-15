@@ -195,6 +195,7 @@ const NonMemoizedDraggableGroupNode = ({
             transform: `translate(${currentCoordinates?.x ?? 0}px, ${
               currentCoordinates?.y ?? 0
             }px)`,
+            touchAction: 'none',
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

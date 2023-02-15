@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { Webhook } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import {
@@ -6,48 +7,44 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
+  notFound,
 } from 'utils/api'
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
-  if (!user) return notAuthenticated(res)
+  const typebotId = req.query.typebotId as string
   const webhookId = req.query.webhookId as string
+  if (!user) return notAuthenticated(res)
   if (req.method === 'GET') {
+    const typebot = getTypebot({
+      accessLevel: 'read',
+      typebotId,
+      user,
+    })
+    if (!typebot) return notFound(res)
     const webhook = await prisma.webhook.findFirst({
       where: {
         id: webhookId,
-        typebot: {
-          OR: [
-            { workspace: { members: { some: { userId: user.id } } } },
-            {
-              collaborators: {
-                some: {
-                  userId: user.id,
-                },
-              },
-            },
-          ],
-        },
+        typebotId,
       },
     })
     return res.send({ webhook })
   }
-  if (req.method === 'PUT') {
-    const data = req.body
+  if (req.method === 'PATCH') {
+    const data = req.body.data as Partial<Webhook>
     if (!('typebotId' in data)) return badRequest(res)
     const typebot = await getTypebot({
       accessLevel: 'write',
-      typebotId: data.typebotId,
+      typebotId,
       user,
     })
     if (!typebot) return forbidden(res)
-    const webhook = await prisma.webhook.upsert({
+    const webhook = await prisma.webhook.update({
       where: {
         id: webhookId,
       },
-      create: data,
-      update: data,
+      data,
     })
     return res.send({ webhook })
   }

@@ -112,9 +112,7 @@ export const MembersList = () => {
       {isDefined(seatsLimit) && (
         <Heading fontSize="2xl">
           Members{' '}
-          {seatsLimit === -1
-            ? ''
-            : `(${currentMembersCount + invitations.length}/${seatsLimit})`}
+          {seatsLimit === -1 ? '' : `(${currentMembersCount}/${seatsLimit})`}
         </Heading>
       )}
       {workspace?.id && canEdit && (

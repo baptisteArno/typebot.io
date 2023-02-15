@@ -4,6 +4,7 @@ import {
   DraggableBlock,
   DraggableBlockType,
   BlockIndices,
+  Webhook,
 } from 'models'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
@@ -29,7 +30,18 @@ export type BlocksActions = {
   deleteBlock: (indices: BlockIndices) => void
 }
 
-export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
+export type WebhookCallBacks = {
+  onWebhookBlockCreated: (data: Partial<Webhook>) => void
+  onWebhookBlockDuplicated: (
+    existingWebhookId: string,
+    newWebhookId: string
+  ) => void
+}
+
+export const blocksAction = (
+  setTypebot: SetTypebot,
+  { onWebhookBlockCreated, onWebhookBlockDuplicated }: WebhookCallBacks
+): BlocksActions => ({
   createBlock: (
     groupId: string,
     block: DraggableBlock | DraggableBlockType,
@@ -37,7 +49,13 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        createBlockDraft(typebot, block, groupId, indices)
+        createBlockDraft(
+          typebot,
+          block,
+          groupId,
+          indices,
+          onWebhookBlockCreated
+        )
       })
     ),
   updateBlock: (
@@ -54,7 +72,10 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = { ...typebot.groups[groupIndex].blocks[blockIndex] }
-        const newBlock = duplicateBlockDraft(block.groupId)(block)
+        const newBlock = duplicateBlockDraft(block.groupId)(
+          block,
+          onWebhookBlockDuplicated
+        )
         typebot.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock)
       })
     ),
@@ -81,7 +102,8 @@ export const createBlockDraft = (
   typebot: WritableDraft<Typebot>,
   block: DraggableBlock | DraggableBlockType,
   groupId: string,
-  { groupIndex, blockIndex }: BlockIndices
+  { groupIndex, blockIndex }: BlockIndices,
+  onWebhookBlockCreated?: (data: Partial<Webhook>) => void
 ) => {
   const blocks = typebot.groups[groupIndex].blocks
   if (
@@ -91,7 +113,13 @@ export const createBlockDraft = (
   )
     deleteEdgeDraft(typebot, blocks[blockIndex - 1].outgoingEdgeId as string)
   typeof block === 'string'
-    ? createNewBlock(typebot, block, groupId, { groupIndex, blockIndex })
+    ? createNewBlock(
+        typebot,
+        block,
+        groupId,
+        { groupIndex, blockIndex },
+        onWebhookBlockCreated
+      )
     : moveBlockToGroup(typebot, block, groupId, { groupIndex, blockIndex })
   removeEmptyGroups(typebot)
 }
@@ -100,10 +128,13 @@ const createNewBlock = async (
   typebot: WritableDraft<Typebot>,
   type: DraggableBlockType,
   groupId: string,
-  { groupIndex, blockIndex }: BlockIndices
+  { groupIndex, blockIndex }: BlockIndices,
+  onWebhookBlockCreated?: (data: Partial<Webhook>) => void
 ) => {
   const newBlock = parseNewBlock(type, groupId)
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+  if (onWebhookBlockCreated && 'webhookId' in newBlock && newBlock.webhookId)
+    onWebhookBlockCreated({ id: newBlock.webhookId })
 }
 
 const moveBlockToGroup = (
@@ -140,7 +171,10 @@ const moveBlockToGroup = (
 
 export const duplicateBlockDraft =
   (groupId: string) =>
-  (block: Block): Block => {
+  (
+    block: Block,
+    onWebhookBlockDuplicated: WebhookCallBacks['onWebhookBlockDuplicated']
+  ): Block => {
     const blockId = createId()
     if (blockHasItems(block))
       return {
@@ -150,14 +184,17 @@ export const duplicateBlockDraft =
         items: block.items.map(duplicateItemDraft(blockId)),
         outgoingEdgeId: undefined,
       } as Block
-    if (isWebhookBlock(block))
+    if (isWebhookBlock(block)) {
+      const newWebhookId = createId()
+      onWebhookBlockDuplicated(block.webhookId, newWebhookId)
       return {
         ...block,
         groupId,
         id: blockId,
-        webhookId: createId(),
+        webhookId: newWebhookId,
         outgoingEdgeId: undefined,
       }
+    }
     return {
       ...block,
       groupId,

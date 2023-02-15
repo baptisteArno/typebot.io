@@ -223,7 +223,12 @@ export const Graph = ({
   const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
 
   return (
-    <Flex ref={graphContainerRef} position="relative" {...props}>
+    <Flex
+      ref={graphContainerRef}
+      position="relative"
+      style={{ touchAction: 'none' }}
+      {...props}
+    >
       <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
       <Flex
         flex="1"

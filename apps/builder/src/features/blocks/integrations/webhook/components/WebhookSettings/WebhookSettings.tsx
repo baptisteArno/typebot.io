@@ -22,17 +22,16 @@ import {
   VariableForTest,
   ResponseVariableMapping,
   WebhookBlock,
-  defaultWebhookAttributes,
-  Webhook,
   MakeComBlock,
   PabblyConnectBlock,
+  Webhook,
 } from 'models'
 import { DropdownList } from '@/components/DropdownList'
 import { CodeEditor } from '@/components/CodeEditor'
 import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
-import { byId } from 'utils'
+import { byId, env } from 'utils'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useToast } from '@/hooks/useToast'
 import { SwitchWithLabel } from '@/components/SwitchWithLabel'
@@ -41,11 +40,15 @@ import { executeWebhook } from '../../queries/executeWebhookQuery'
 import { getDeepKeys } from '../../utils/getDeepKeys'
 import { Input } from '@/components/inputs'
 import { convertVariablesForTestToVariables } from '../../utils/convertVariablesForTestToVariables'
+import { useDebouncedCallback } from 'use-debounce'
+
+const debounceWebhookTimeout = 2000
 
 type Provider = {
-  name: 'Make.com' | 'Pabbly Connect'
+  name: 'Pabbly Connect'
   url: string
 }
+
 type Props = {
   block: WebhookBlock | MakeComBlock | PabblyConnectBlock
   onOptionsChange: (options: WebhookOptions) => void
@@ -61,39 +64,28 @@ export const WebhookSettings = ({
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
-
   const { showToast } = useToast()
-  const [localWebhook, setLocalWebhook] = useState(
+  const [localWebhook, _setLocalWebhook] = useState(
     webhooks.find(byId(webhookId))
   )
+  const updateWebhookDebounced = useDebouncedCallback(
+    async (newLocalWebhook) => {
+      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
+    },
+    env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
+  )
 
-  useEffect(() => {
-    if (localWebhook) return
-    const incomingWebhook = webhooks.find(byId(webhookId))
-    setLocalWebhook(incomingWebhook)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webhooks])
+  const setLocalWebhook = (newLocalWebhook: Webhook) => {
+    _setLocalWebhook(newLocalWebhook)
+    updateWebhookDebounced(newLocalWebhook)
+  }
 
-  useEffect(() => {
-    if (!typebot) return
-    if (!localWebhook) {
-      const newWebhook = {
-        id: webhookId,
-        ...defaultWebhookAttributes,
-        typebotId: typebot.id,
-      } as Webhook
-      updateWebhook(webhookId, newWebhook)
-    }
-
-    return () => {
-      setLocalWebhook((localWebhook) => {
-        if (!localWebhook) return
-        updateWebhook(webhookId, localWebhook).then()
-        return localWebhook
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useEffect(
+    () => () => {
+      updateWebhookDebounced.flush()
+    },
+    [updateWebhookDebounced]
+  )
 
   const handleUrlChange = (url?: string) =>
     localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null })
@@ -126,8 +118,7 @@ export const WebhookSettings = ({
   const handleTestRequestClick = async () => {
     if (!typebot || !localWebhook) return
     setIsTestResponseLoading(true)
-    await updateWebhook(localWebhook.id, localWebhook)
-    await save()
+    await Promise.all([updateWebhook(localWebhook.id, localWebhook), save()])
     const { data, error } = await executeWebhook(
       typebot.id,
       convertVariablesForTestToVariables(
@@ -152,6 +143,7 @@ export const WebhookSettings = ({
   )
 
   if (!localWebhook) return <Spinner />
+
   return (
     <Stack spacing={4}>
       {provider && (

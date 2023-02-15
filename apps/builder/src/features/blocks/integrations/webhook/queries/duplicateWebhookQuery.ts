@@ -1,17 +1,27 @@
 import { Webhook } from 'models'
 import { sendRequest } from 'utils'
-import { saveWebhookQuery } from './saveWebhookQuery'
+import { createWebhookQuery } from './createWebhookQuery'
 
-export const duplicateWebhookQueries = async (
-  typebotId: string,
-  existingWebhookId: string,
-  newWebhookId: string
-): Promise<Webhook | undefined> => {
+type Props = {
+  existingIds: { typebotId: string; webhookId: string }
+  newIds: { typebotId: string; webhookId: string }
+}
+export const duplicateWebhookQuery = async ({
+  existingIds,
+  newIds,
+}: Props): Promise<Webhook | undefined> => {
   const { data } = await sendRequest<{ webhook: Webhook }>(
-    `/api/webhooks/${existingWebhookId}`
+    `/api/typebots/${existingIds.typebotId}/webhooks/${existingIds.webhookId}`
   )
   if (!data) return
-  const newWebhook = { ...data.webhook, id: newWebhookId, typebotId }
-  await saveWebhookQuery(newWebhook.id, newWebhook)
+  const newWebhook = {
+    ...data.webhook,
+    id: newIds.webhookId,
+    typebotId: newIds.typebotId,
+  }
+  await createWebhookQuery({
+    typebotId: newIds.typebotId,
+    data: { ...data.webhook, id: newIds.webhookId },
+  })
   return newWebhook
 }

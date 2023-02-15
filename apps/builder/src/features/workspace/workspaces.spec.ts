@@ -88,6 +88,9 @@ test('can manage members', async ({ page }) => {
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text="Members"')
+  await expect(
+    page.getByRole('heading', { name: 'Members (1/5)' })
+  ).toBeVisible()
   await expect(page.locator('text="user@email.com"').nth(1)).toBeVisible()
   await expect(page.locator('button >> text="Invite"')).toBeEnabled()
   await page.fill(
