@@ -4,8 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { archiveResults } from '@/features/results/api'
-import { Typebot, typebotSchema } from 'models'
-import { captureEvent } from '@sentry/nextjs'
+import { Typebot } from 'models'
 import { omit } from 'utils'
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 import { isReadTypebotForbidden } from '@/features/typebot/api/utils/isReadTypebotForbidden'
@@ -69,21 +68,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'PUT') {
-    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const parser = typebotSchema.safeParse({
-      ...data,
-      updatedAt: new Date(data.updatedAt),
-      createdAt: new Date(data.createdAt),
-    })
-    if ('error' in parser) {
-      captureEvent({
-        message: 'Typebot schema validation failed',
-        extra: {
-          typebotId: data.id,
-          error: parser.error,
-        },
-      })
-    }
+    const data = (
+      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    ) as Typebot
 
     const typebot = await getTypebot({
       accessLevel: 'write',
@@ -96,17 +83,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
 
     if ((typebot.updatedAt as Date) > new Date(data.updatedAt))
-      return res.send({ message: 'Found newer version of typebot in database' })
-    const typebots = await prisma.typebot.updateMany({
+      return res.send({
+        message: 'Found newer version of the typebot in database',
+      })
+
+    const updates = {
+      ...omit(data, 'id', 'createdAt', 'updatedAt'),
+      theme: data.theme ?? undefined,
+      settings: data.settings ?? undefined,
+      resultsTablePreferences: data.resultsTablePreferences ?? undefined,
+    } satisfies Prisma.TypebotUpdateInput
+
+    const { count } = await prisma.typebot.updateMany({
       where: { id: typebotId },
-      data: removeOldProperties({
-        ...data,
-        theme: data.theme ?? undefined,
-        settings: data.settings ?? undefined,
-        resultsTablePreferences: data.resultsTablePreferences ?? undefined,
-      }) as Prisma.TypebotUpdateInput,
+      data: updates,
     })
-    return res.send({ typebots })
+    return res.send({ count })
   }
 
   if (req.method === 'PATCH') {
@@ -124,14 +116,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebots })
   }
   return methodNotAllowed(res)
-}
-
-// TODO: Remove in a month
-const removeOldProperties = (data: unknown) => {
-  if (data && typeof data === 'object' && 'publishedTypebotId' in data) {
-    return omit(data, 'publishedTypebotId')
-  }
-  return data
 }
 
 export default handler
