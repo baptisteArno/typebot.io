@@ -94,11 +94,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       resultsTablePreferences: data.resultsTablePreferences ?? undefined,
     } satisfies Prisma.TypebotUpdateInput
 
-    const { count } = await prisma.typebot.updateMany({
+    const updatedTypebot = await prisma.typebot.update({
       where: { id: typebotId },
       data: updates,
     })
-    return res.send({ count })
+
+    return res.send({ typebot: updatedTypebot })
   }
 
   if (req.method === 'PATCH') {
@@ -109,11 +110,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const typebots = await prisma.typebot.updateMany({
+    const updatedTypebot = await prisma.typebot.update({
       where: { id: typebotId },
       data,
     })
-    return res.send({ typebots })
+    return res.send({ typebot: updatedTypebot })
   }
   return methodNotAllowed(res)
 }

@@ -169,7 +169,11 @@ export const TypebotProvider = ({
     if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
       return
     setIsSavingLoading(true)
-    const { error } = await updateTypebotQuery(typebotToSave.id, typebotToSave)
+    const { data, error } = await updateTypebotQuery(
+      typebotToSave.id,
+      typebotToSave
+    )
+    if (data?.typebot) setLocalTypebot({ ...data.typebot })
     setIsSavingLoading(false)
     if (error) {
       showToast({ title: error.name, description: error.message })

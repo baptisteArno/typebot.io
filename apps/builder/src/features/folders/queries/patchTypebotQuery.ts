@@ -5,7 +5,7 @@ export const patchTypebotQuery = async (
   id: string,
   typebot: Partial<Typebot>
 ) =>
-  sendRequest({
+  sendRequest<{ typebot: Typebot }>({
     url: `/api/typebots/${id}`,
     method: 'PATCH',
     body: typebot,
