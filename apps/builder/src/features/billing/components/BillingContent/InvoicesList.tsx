@@ -18,6 +18,7 @@ import { Workspace } from 'db'
 import Link from 'next/link'
 import React from 'react'
 import { useInvoicesQuery } from './queries/useInvoicesQuery'
+import { isDefined } from 'utils'
 
 type Props = {
   workspace: Workspace
@@ -44,27 +45,33 @@ export const InvoicesList = ({ workspace }: Props) => {
               </Tr>
             </Thead>
             <Tbody>
-              {invoices?.map((invoice) => (
-                <Tr key={invoice.id}>
-                  <Td>
-                    <FileIcon />
-                  </Td>
-                  <Td>{invoice.id}</Td>
-                  <Td>{new Date(invoice.date * 1000).toDateString()}</Td>
-                  <Td>{getFormattedPrice(invoice.amount, invoice.currency)}</Td>
-                  <Td>
-                    <IconButton
-                      as={Link}
-                      size="xs"
-                      icon={<DownloadIcon />}
-                      variant="outline"
-                      href={invoice.url}
-                      target="_blank"
-                      aria-label={'Download invoice'}
-                    />
-                  </Td>
-                </Tr>
-              ))}
+              {invoices
+                ?.filter((invoice) => isDefined(invoice.url))
+                .map((invoice) => (
+                  <Tr key={invoice.id}>
+                    <Td>
+                      <FileIcon />
+                    </Td>
+                    <Td>{invoice.id}</Td>
+                    <Td>{new Date(invoice.date * 1000).toDateString()}</Td>
+                    <Td>
+                      {getFormattedPrice(invoice.amount, invoice.currency)}
+                    </Td>
+                    <Td>
+                      {invoice.url && (
+                        <IconButton
+                          as={Link}
+                          size="xs"
+                          icon={<DownloadIcon />}
+                          variant="outline"
+                          href={invoice.url}
+                          target="_blank"
+                          aria-label={'Download invoice'}
+                        />
+                      )}
+                    </Td>
+                  </Tr>
+                ))}
               {isLoading &&
                 Array.from({ length: 3 }).map((_, idx) => (
                   <Tr key={idx}>

@@ -4,7 +4,7 @@ import { env } from 'utils'
 
 type Invoice = {
   id: string
-  url: string
+  url: string | null
   date: number
   currency: string
   amount: number
