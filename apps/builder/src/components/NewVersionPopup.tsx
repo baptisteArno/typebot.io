@@ -1,14 +1,13 @@
 import { useTypebot } from '@/features/editor'
-import { HStack, Stack, Text } from '@chakra-ui/react'
+import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { sendRequest } from 'utils'
 import { PackageIcon } from './icons'
-import { MotionStack } from './MotionStack'
 
-const intervalDuration = 1000 * 30 // 30 seconds
+const intervalDuration = 1000 * 60 // 30 seconds
 
 export const NewVersionPopup = () => {
-  const { save } = useTypebot()
+  const { typebot, save } = useTypebot()
   const [currentVersion, setCurrentVersion] = useState<string>()
   const [isNewVersionAvailable, setIsNewVersionAvailable] = useState(false)
   const [isReloading, setIsReloading] = useState(false)
@@ -46,35 +45,40 @@ export const NewVersionPopup = () => {
   if (!isNewVersionAvailable) return null
 
   return (
-    <MotionStack
+    <Stack
       pos="fixed"
-      bottom="20px"
-      left="20px"
+      bottom="18px"
+      left="18px"
       bgColor="blue.400"
-      color="white"
-      cursor="pointer"
       p="4"
       px="4"
-      rounded="xl"
+      rounded="lg"
       shadow="lg"
-      onClick={saveAndReload}
       zIndex={10}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      borderWidth="2px"
+      borderWidth="1px"
       borderColor="blue.300"
+      maxW="320px"
     >
       <HStack spacing={3}>
-        <PackageIcon boxSize="32px" />
-        <Stack spacing={0}>
-          <Text fontWeight="bold">Typebot is ready to update!</Text>
-          <Text fontSize="sm" color="gray.200">
-            Click to restart
-          </Text>
+        <Stack spacing={4}>
+          <Stack spacing={1} color="white">
+            <HStack>
+              <PackageIcon />{' '}
+              <Text fontWeight="bold">New version available!</Text>
+            </HStack>
+
+            <Text fontSize="sm" color="gray.100">
+              An improved version of Typebot is available. Please reload now to
+              upgrade.
+            </Text>
+          </Stack>
+          <Flex justifyContent="flex-end">
+            <Button size="sm" onClick={saveAndReload}>
+              {typebot?.id ? 'Save and reload' : 'Reload'}
+            </Button>
+          </Flex>
         </Stack>
       </HStack>
-    </MotionStack>
+    </Stack>
   )
 }
