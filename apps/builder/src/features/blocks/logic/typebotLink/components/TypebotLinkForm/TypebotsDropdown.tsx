@@ -10,12 +10,14 @@ import { SearchableDropdown } from '@/components/SearchableDropdown'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 
 type Props = {
+  idsToExclude: string[]
   typebotId?: string | 'current'
   currentWorkspaceId: string
   onSelectTypebotId: (typebotId: string | 'current') => void
 }
 
 export const TypebotsDropdown = ({
+  idsToExclude,
   typebotId,
   onSelectTypebotId,
   currentWorkspaceId,
@@ -51,19 +53,21 @@ export const TypebotsDropdown = ({
             label: 'Current typebot',
             value: 'Current typebot',
           },
-          ...(typebots ?? []).map((typebot) => ({
-            value: typebot.name,
-            label: (
-              <HStack as="span" spacing="2">
-                <EmojiOrImageIcon
-                  icon={typebot.icon}
-                  boxSize="18px"
-                  emojiFontSize="18px"
-                />
-                <Text>{typebot.name}</Text>
-              </HStack>
-            ),
-          })),
+          ...(typebots ?? [])
+            .filter((typebot) => !idsToExclude.includes(typebot.id))
+            .map((typebot) => ({
+              value: typebot.name,
+              label: (
+                <HStack as="span" spacing="2">
+                  <EmojiOrImageIcon
+                    icon={typebot.icon}
+                    boxSize="18px"
+                    emojiFontSize="18px"
+                  />
+                  <Text>{typebot.name}</Text>
+                </HStack>
+              ),
+            })),
         ]}
         onValueChange={handleTypebotSelect}
         placeholder={'Select a typebot'}

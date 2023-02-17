@@ -22,6 +22,7 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
     <Stack>
       {typebot && (
         <TypebotsDropdown
+          idsToExclude={[typebot.id]}
           typebotId={options.typebotId}
           onSelectTypebotId={handleTypebotIdChange}
           currentWorkspaceId={typebot.workspaceId as string}
