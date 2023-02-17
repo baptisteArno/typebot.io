@@ -34,16 +34,18 @@ type ProPlanContentProps = {
   initialChatsLimitIndex?: number
   initialStorageLimitIndex?: number
   currency?: 'usd' | 'eur'
+  isLoading: boolean
   onPayClick: (props: {
     selectedChatsLimitIndex: number
     selectedStorageLimitIndex: number
-  }) => Promise<void>
+  }) => void
 }
 
 export const ProPlanContent = ({
   initialChatsLimitIndex,
   initialStorageLimitIndex,
   currency,
+  isLoading,
   onPayClick,
 }: ProPlanContentProps) => {
   const { workspace } = useWorkspace()
@@ -51,7 +53,6 @@ export const ProPlanContent = ({
     useState<number>()
   const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
     useState<number>()
-  const [isPaying, setIsPaying] = useState(false)
 
   useEffect(() => {
     if (
@@ -110,12 +111,10 @@ export const ProPlanContent = ({
       selectedStorageLimitIndex === undefined
     )
       return
-    setIsPaying(true)
-    await onPayClick({
+    onPayClick({
       selectedChatsLimitIndex,
       selectedStorageLimitIndex,
     })
-    setIsPaying(false)
   }
 
   return (
@@ -335,7 +334,7 @@ export const ProPlanContent = ({
             colorScheme="blue"
             variant="outline"
             onClick={handlePayClick}
-            isLoading={isPaying}
+            isLoading={isLoading}
             isDisabled={isCurrentPlan}
           >
             {getButtonLabel()}

@@ -158,6 +158,7 @@ export const WorkspaceProvider = ({
 
   const refreshWorkspace = () => {
     trpcContext.workspace.getWorkspace.invalidate()
+    trpcContext.billing.getSubscription.invalidate()
   }
 
   return (

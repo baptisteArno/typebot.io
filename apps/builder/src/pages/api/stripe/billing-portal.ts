@@ -10,6 +10,7 @@ import { getAuthenticatedUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
 import { WorkspaceRole } from 'db'
 
+// TO-DO: Delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)

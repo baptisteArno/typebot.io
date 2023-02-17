@@ -8,7 +8,7 @@ const t = initTRPC.context<Context>().meta<OpenApiMeta>().create({
 })
 
 const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.user) {
+  if (!ctx.user?.id) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     })

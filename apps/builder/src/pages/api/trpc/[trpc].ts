@@ -11,5 +11,9 @@ export default createNextApiHandler({
       captureException(error)
       console.error('Something went wrong', error)
     }
+    return error
+  },
+  batching: {
+    enabled: true,
   },
 })

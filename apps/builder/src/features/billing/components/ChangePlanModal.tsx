@@ -1,4 +1,5 @@
 import { AlertInfo } from '@/components/AlertInfo'
+import { useWorkspace } from '@/features/workspace'
 import {
   Modal,
   ModalBody,
@@ -30,6 +31,7 @@ export const ChangePlanModal = ({
   isOpen,
   type,
 }: ChangePlanModalProps) => {
+  const { workspace, refreshWorkspace } = useWorkspace()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -40,7 +42,12 @@ export const ChangePlanModal = ({
               You need to upgrade your plan in order to {type}
             </AlertInfo>
           )}
-          <ChangePlanForm />
+          {workspace && (
+            <ChangePlanForm
+              workspace={workspace}
+              onUpgradeSuccess={refreshWorkspace}
+            />
+          )}
         </ModalBody>
 
         <ModalFooter>

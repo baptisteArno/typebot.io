@@ -14,23 +14,32 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { DownloadIcon, FileIcon } from '@/components/icons'
-import { Workspace } from 'db'
 import Link from 'next/link'
 import React from 'react'
-import { useInvoicesQuery } from './queries/useInvoicesQuery'
-import { isDefined } from 'utils'
+import { trpc } from '@/lib/trpc'
+import { useToast } from '@/hooks/useToast'
 
 type Props = {
-  workspace: Workspace
+  workspaceId: string
 }
 
-export const InvoicesList = ({ workspace }: Props) => {
-  const { invoices, isLoading } = useInvoicesQuery(workspace.stripeId)
+export const InvoicesList = ({ workspaceId }: Props) => {
+  const { showToast } = useToast()
+  const { data, status } = trpc.billing.listInvoices.useQuery(
+    {
+      workspaceId,
+    },
+    {
+      onError: (error) => {
+        showToast({ description: error.message })
+      },
+    }
+  )
 
   return (
     <Stack spacing={6}>
       <Heading fontSize="3xl">Invoices</Heading>
-      {invoices.length === 0 && !isLoading ? (
+      {data?.invoices.length === 0 && status !== 'loading' ? (
         <Text>No invoices found for this workspace.</Text>
       ) : (
         <TableContainer>
@@ -45,34 +54,34 @@ export const InvoicesList = ({ workspace }: Props) => {
               </Tr>
             </Thead>
             <Tbody>
-              {invoices
-                ?.filter((invoice) => isDefined(invoice.url))
-                .map((invoice) => (
-                  <Tr key={invoice.id}>
-                    <Td>
-                      <FileIcon />
-                    </Td>
-                    <Td>{invoice.id}</Td>
-                    <Td>{new Date(invoice.date * 1000).toDateString()}</Td>
-                    <Td>
-                      {getFormattedPrice(invoice.amount, invoice.currency)}
-                    </Td>
-                    <Td>
-                      {invoice.url && (
-                        <IconButton
-                          as={Link}
-                          size="xs"
-                          icon={<DownloadIcon />}
-                          variant="outline"
-                          href={invoice.url}
-                          target="_blank"
-                          aria-label={'Download invoice'}
-                        />
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
-              {isLoading &&
+              {data?.invoices.map((invoice) => (
+                <Tr key={invoice.id}>
+                  <Td>
+                    <FileIcon />
+                  </Td>
+                  <Td>{invoice.id}</Td>
+                  <Td>
+                    {invoice.date
+                      ? new Date(invoice.date * 1000).toDateString()
+                      : ''}
+                  </Td>
+                  <Td>{getFormattedPrice(invoice.amount, invoice.currency)}</Td>
+                  <Td>
+                    {invoice.url && (
+                      <IconButton
+                        as={Link}
+                        size="xs"
+                        icon={<DownloadIcon />}
+                        variant="outline"
+                        href={invoice.url}
+                        target="_blank"
+                        aria-label={'Download invoice'}
+                      />
+                    )}
+                  </Td>
+                </Tr>
+              ))}
+              {status === 'loading' &&
                 Array.from({ length: 3 }).map((_, idx) => (
                   <Tr key={idx}>
                     <Td>

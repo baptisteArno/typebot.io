@@ -18,8 +18,7 @@ export const BillingContent = () => {
       <UsageContent workspace={workspace} />
       <Stack spacing="4">
         <CurrentSubscriptionContent
-          plan={workspace.plan}
-          stripeId={workspace.stripeId}
+          workspace={workspace}
           onCancelSuccess={refreshWorkspace}
         />
         <HStack maxW="500px">
@@ -35,10 +34,15 @@ export const BillingContent = () => {
         {workspace.plan !== Plan.CUSTOM &&
           workspace.plan !== Plan.LIFETIME &&
           workspace.plan !== Plan.UNLIMITED &&
-          workspace.plan !== Plan.OFFERED && <ChangePlanForm />}
+          workspace.plan !== Plan.OFFERED && (
+            <ChangePlanForm
+              workspace={workspace}
+              onUpgradeSuccess={refreshWorkspace}
+            />
+          )}
       </Stack>
 
-      {workspace.stripeId && <InvoicesList workspace={workspace} />}
+      {workspace.stripeId && <InvoicesList workspaceId={workspace.id} />}
     </Stack>
   )
 }

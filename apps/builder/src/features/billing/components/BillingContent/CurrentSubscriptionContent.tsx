@@ -1,47 +1,36 @@
-import {
-  Text,
-  HStack,
-  Link,
-  Spinner,
-  Stack,
-  Button,
-  Heading,
-} from '@chakra-ui/react'
+import { Text, HStack, Link, Spinner, Stack, Heading } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { Plan } from 'db'
-import React, { useState } from 'react'
-import { cancelSubscriptionQuery } from './queries/cancelSubscriptionQuery'
+import React from 'react'
 import { PlanTag } from '../PlanTag'
+import { BillingPortalButton } from './BillingPortalButton'
+import { trpc } from '@/lib/trpc'
+import { Workspace } from 'models'
 
 type CurrentSubscriptionContentProps = {
-  plan: Plan
-  stripeId?: string | null
+  workspace: Pick<Workspace, 'id' | 'plan' | 'stripeId'>
   onCancelSuccess: () => void
 }
 
 export const CurrentSubscriptionContent = ({
-  plan,
-  stripeId,
+  workspace,
   onCancelSuccess,
 }: CurrentSubscriptionContentProps) => {
-  const [isCancelling, setIsCancelling] = useState(false)
-  const [isRedirectingToBillingPortal, setIsRedirectingToBillingPortal] =
-    useState(false)
   const { showToast } = useToast()
 
-  const cancelSubscription = async () => {
-    if (!stripeId) return
-    setIsCancelling(true)
-    const { error } = await cancelSubscriptionQuery(stripeId)
-    if (error) {
-      showToast({ description: error.message })
-      return
-    }
-    onCancelSuccess()
-    setIsCancelling(false)
-  }
+  const { mutate: cancelSubscription, isLoading: isCancelling } =
+    trpc.billing.cancelSubscription.useMutation({
+      onError: (error) => {
+        showToast({
+          description: error.message,
+        })
+      },
+      onSuccess: onCancelSuccess,
+    })
 
-  const isSubscribed = (plan === Plan.STARTER || plan === Plan.PRO) && stripeId
+  const isSubscribed =
+    (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&
+    workspace.stripeId
 
   return (
     <Stack spacing="4">
@@ -52,14 +41,16 @@ export const CurrentSubscriptionContent = ({
           <Spinner color="gray.500" size="xs" />
         ) : (
           <>
-            <PlanTag plan={plan} />
+            <PlanTag plan={workspace.plan} />
             {isSubscribed && (
               <Link
                 as="button"
                 color="gray.500"
                 textDecor="underline"
                 fontSize="sm"
-                onClick={cancelSubscription}
+                onClick={() =>
+                  cancelSubscription({ workspaceId: workspace.id })
+                }
               >
                 Cancel my subscription
               </Link>
@@ -75,14 +66,7 @@ export const CurrentSubscriptionContent = ({
               Need to change payment method or billing information? Head over to
               your billing portal:
             </Text>
-            <Button
-              as={Link}
-              href={`/api/stripe/billing-portal?stripeId=${stripeId}`}
-              onClick={() => setIsRedirectingToBillingPortal(true)}
-              isLoading={isRedirectingToBillingPortal}
-            >
-              Billing Portal
-            </Button>
+            <BillingPortalButton workspaceId={workspace.id} />
           </Stack>
         </>
       )}

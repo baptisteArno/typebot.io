@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { methodNotAllowed, notAuthenticated } from 'utils/api'
 
+// TODO: Delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
   if (!user) return notAuthenticated(res)

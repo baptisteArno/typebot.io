@@ -1,3 +1,4 @@
+import { billingRouter } from '@/features/billing/api/router'
 import { webhookRouter } from '@/features/blocks/integrations/webhook/api'
 import { resultsRouter } from '@/features/results/api'
 import { typebotRouter } from '@/features/typebot/api'
@@ -9,6 +10,7 @@ export const trpcRouter = router({
   typebot: typebotRouter,
   webhook: webhookRouter,
   results: resultsRouter,
+  billing: billingRouter,
 })
 
 export type AppRouter = typeof trpcRouter

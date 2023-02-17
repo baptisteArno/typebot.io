@@ -1,22 +1,54 @@
 import { Stack, HStack, Text } from '@chakra-ui/react'
 import { useUser } from '@/features/account'
-import { useWorkspace } from '@/features/workspace'
 import { Plan } from 'db'
 import { ProPlanContent } from './ProPlanContent'
-import { upgradePlanQuery } from '../../queries/upgradePlanQuery'
-import { useCurrentSubscriptionInfo } from '../../hooks/useCurrentSubscriptionInfo'
 import { StarterPlanContent } from './StarterPlanContent'
 import { TextLink } from '@/components/TextLink'
 import { useToast } from '@/hooks/useToast'
+import { trpc } from '@/lib/trpc'
+import { guessIfUserIsEuropean } from 'utils/pricing'
+import { useRouter } from 'next/router'
+import { Workspace } from 'models'
 
-export const ChangePlanForm = () => {
+type Props = {
+  workspace: Pick<Workspace, 'id' | 'stripeId' | 'plan'>
+  onUpgradeSuccess: () => void
+}
+
+export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
+  const router = useRouter()
   const { user } = useUser()
-  const { workspace, refreshWorkspace } = useWorkspace()
   const { showToast } = useToast()
-  const { data, mutate: refreshCurrentSubscriptionInfo } =
-    useCurrentSubscriptionInfo({
-      stripeId: workspace?.stripeId,
-      plan: workspace?.plan,
+  const { data } = trpc.billing.getSubscription.useQuery({
+    workspaceId: workspace.id,
+  })
+
+  const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
+    trpc.billing.createCheckoutSession.useMutation({
+      onError: (error) => {
+        showToast({
+          description: error.message,
+        })
+      },
+      onSuccess: ({ checkoutUrl }) => {
+        router.push(checkoutUrl)
+      },
+    })
+
+  const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
+    trpc.billing.updateSubscription.useMutation({
+      onError: (error) => {
+        showToast({
+          description: error.message,
+        })
+      },
+      onSuccess: ({ workspace: { plan } }) => {
+        onUpgradeSuccess()
+        showToast({
+          status: 'success',
+          description: `Workspace ${plan} plan successfully updated 🎉`,
+        })
+      },
     })
 
   const handlePayClick = async ({
@@ -30,33 +62,29 @@ export const ChangePlanForm = () => {
   }) => {
     if (
       !user ||
-      !workspace ||
       selectedChatsLimitIndex === undefined ||
       selectedStorageLimitIndex === undefined
     )
       return
-    const response = await upgradePlanQuery({
-      stripeId: workspace.stripeId ?? undefined,
-      user,
+
+    const newSubscription = {
       plan,
       workspaceId: workspace.id,
       additionalChats: selectedChatsLimitIndex,
       additionalStorage: selectedStorageLimitIndex,
-      currency: data?.currency,
-    })
-    if (typeof response === 'object' && response?.error) {
-      showToast({ description: response.error.message })
-      return
+      currency:
+        data?.subscription.currency ??
+        (guessIfUserIsEuropean() ? 'eur' : 'usd'),
+    } as const
+    if (workspace.stripeId) {
+      updateSubscription(newSubscription)
+    } else {
+      createCheckoutSession({
+        ...newSubscription,
+        returnUrl: window.location.href,
+        prefilledEmail: user.email ?? undefined,
+      })
     }
-    refreshCurrentSubscriptionInfo({
-      additionalChatsIndex: selectedChatsLimitIndex,
-      additionalStorageIndex: selectedStorageLimitIndex,
-    })
-    refreshWorkspace()
-    showToast({
-      status: 'success',
-      description: `Workspace ${plan} plan successfully updated 🎉`,
-    })
   }
 
   return (
@@ -64,26 +92,36 @@ export const ChangePlanForm = () => {
       <HStack alignItems="stretch" spacing="4" w="full">
         <StarterPlanContent
           initialChatsLimitIndex={
-            workspace?.plan === Plan.STARTER ? data?.additionalChatsIndex : 0
+            workspace?.plan === Plan.STARTER
+              ? data?.subscription.additionalChatsIndex
+              : 0
           }
           initialStorageLimitIndex={
-            workspace?.plan === Plan.STARTER ? data?.additionalStorageIndex : 0
+            workspace?.plan === Plan.STARTER
+              ? data?.subscription.additionalStorageIndex
+              : 0
           }
           onPayClick={(props) =>
             handlePayClick({ ...props, plan: Plan.STARTER })
           }
-          currency={data?.currency}
+          isLoading={isCreatingCheckout || isUpdatingSubscription}
+          currency={data?.subscription.currency}
         />
 
         <ProPlanContent
           initialChatsLimitIndex={
-            workspace?.plan === Plan.PRO ? data?.additionalChatsIndex : 0
+            workspace?.plan === Plan.PRO
+              ? data?.subscription.additionalChatsIndex
+              : 0
           }
           initialStorageLimitIndex={
-            workspace?.plan === Plan.PRO ? data?.additionalStorageIndex : 0
+            workspace?.plan === Plan.PRO
+              ? data?.subscription.additionalStorageIndex
+              : 0
           }
           onPayClick={(props) => handlePayClick({ ...props, plan: Plan.PRO })}
-          currency={data?.currency}
+          isLoading={isCreatingCheckout || isUpdatingSubscription}
+          currency={data?.subscription.currency}
         />
       </HStack>
       <Text color="gray.500">

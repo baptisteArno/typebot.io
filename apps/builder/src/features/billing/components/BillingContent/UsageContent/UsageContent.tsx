@@ -14,14 +14,16 @@ import React from 'react'
 import { parseNumberWithCommas } from 'utils'
 import { getChatsLimit, getStorageLimit } from 'utils/pricing'
 import { storageToReadable } from './helpers'
-import { useUsage } from '../../../hooks/useUsage'
+import { trpc } from '@/lib/trpc'
 
 type Props = {
   workspace: Workspace
 }
 
 export const UsageContent = ({ workspace }: Props) => {
-  const { data, isLoading } = useUsage(workspace.id)
+  const { data, isLoading } = trpc.billing.getUsage.useQuery({
+    workspaceId: workspace.id,
+  })
   const totalChatsUsed = data?.totalChatsUsed ?? 0
   const totalStorageUsed = data?.totalStorageUsed ?? 0
 

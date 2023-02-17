@@ -30,15 +30,17 @@ type StarterPlanContentProps = {
   initialChatsLimitIndex?: number
   initialStorageLimitIndex?: number
   currency?: 'eur' | 'usd'
+  isLoading?: boolean
   onPayClick: (props: {
     selectedChatsLimitIndex: number
     selectedStorageLimitIndex: number
-  }) => Promise<void>
+  }) => void
 }
 
 export const StarterPlanContent = ({
   initialChatsLimitIndex,
   initialStorageLimitIndex,
+  isLoading,
   currency,
   onPayClick,
 }: StarterPlanContentProps) => {
@@ -47,7 +49,6 @@ export const StarterPlanContent = ({
     useState<number>()
   const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
     useState<number>()
-  const [isPaying, setIsPaying] = useState(false)
 
   useEffect(() => {
     if (
@@ -107,12 +108,10 @@ export const StarterPlanContent = ({
       selectedStorageLimitIndex === undefined
     )
       return
-    setIsPaying(true)
-    await onPayClick({
+    onPayClick({
       selectedChatsLimitIndex,
       selectedStorageLimitIndex,
     })
-    setIsPaying(false)
   }
 
   return (
@@ -278,7 +277,7 @@ export const StarterPlanContent = ({
         colorScheme="orange"
         variant="outline"
         onClick={handlePayClick}
-        isLoading={isPaying}
+        isLoading={isLoading}
         isDisabled={isCurrentPlan}
       >
         {getButtonLabel()}

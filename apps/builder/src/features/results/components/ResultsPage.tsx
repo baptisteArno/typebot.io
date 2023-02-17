@@ -1,7 +1,5 @@
 import { Seo } from '@/components/Seo'
-import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { AnalyticsGraphContainer } from '@/features/analytics'
-import { useUsage } from '@/features/billing'
 import { useTypebot, TypebotHeader } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
 import { useToast } from '@/hooks/useToast'
@@ -16,13 +14,10 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { getChatsLimit, getStorageLimit } from 'utils/pricing'
 import { useStats } from '../hooks/useStats'
 import { ResultsProvider } from '../ResultsProvider'
 import { ResultsTableContainer } from './ResultsTableContainer'
-
-const ALERT_CHATS_PERCENT_THRESHOLD = 80
-const ALERT_STORAGE_PERCENT_THRESHOLD = 80
+import { UsageAlertBanners } from './UsageAlertBanners'
 
 export const ResultsPage = () => {
   const router = useRouter()
@@ -38,46 +33,6 @@ export const ResultsPage = () => {
     typebotId: publishedTypebot?.typebotId,
     onError: (err) => showToast({ title: err.name, description: err.message }),
   })
-  const { data: usageData } = useUsage(workspace?.id)
-
-  const chatsLimitPercentage = useMemo(() => {
-    if (!usageData?.totalChatsUsed || !workspace?.plan) return 0
-    return Math.round(
-      (usageData.totalChatsUsed /
-        getChatsLimit({
-          additionalChatsIndex: workspace.additionalChatsIndex,
-          plan: workspace.plan,
-          customChatsLimit: workspace.customChatsLimit,
-        })) *
-        100
-    )
-  }, [
-    usageData?.totalChatsUsed,
-    workspace?.additionalChatsIndex,
-    workspace?.customChatsLimit,
-    workspace?.plan,
-  ])
-
-  const storageLimitPercentage = useMemo(() => {
-    if (!usageData?.totalStorageUsed || !workspace?.plan) return 0
-    return Math.round(
-      (usageData.totalStorageUsed /
-        1024 /
-        1024 /
-        1024 /
-        getStorageLimit({
-          additionalStorageIndex: workspace.additionalStorageIndex,
-          plan: workspace.plan,
-          customStorageLimit: workspace.customStorageLimit,
-        })) *
-        100
-    )
-  }, [
-    usageData?.totalStorageUsed,
-    workspace?.additionalStorageIndex,
-    workspace?.customStorageLimit,
-    workspace?.plan,
-  ])
 
   const handleDeletedResults = (total: number) => {
     if (!stats) return
@@ -100,38 +55,7 @@ export const ResultsPage = () => {
         }
       />
       <TypebotHeader />
-      {chatsLimitPercentage > ALERT_CHATS_PERCENT_THRESHOLD && (
-        <Flex p="4">
-          <UnlockPlanAlertInfo
-            status="warning"
-            contentLabel={
-              <>
-                Your workspace collected{' '}
-                <strong>{chatsLimitPercentage}%</strong> of your total chats
-                limit this month. Upgrade your plan to continue chatting with
-                your customers beyond this limit.
-              </>
-            }
-            buttonLabel="Upgrade"
-          />
-        </Flex>
-      )}
-      {storageLimitPercentage > ALERT_STORAGE_PERCENT_THRESHOLD && (
-        <Flex p="4">
-          <UnlockPlanAlertInfo
-            status="warning"
-            contentLabel={
-              <>
-                Your workspace collected{' '}
-                <strong>{storageLimitPercentage}%</strong> of your total storage
-                allowed. Upgrade your plan or delete some existing results to
-                continue collecting files from your user beyond this limit.
-              </>
-            }
-            buttonLabel="Upgrade"
-          />
-        </Flex>
-      )}
+      {workspace && <UsageAlertBanners workspace={workspace} />}
       <Flex h="full" w="full">
         <Flex
           pos="absolute"

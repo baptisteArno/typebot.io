@@ -1400,6 +1400,563 @@
           }
         }
       }
+    },
+    "/billing/subscription/portal": {
+      "get": {
+        "operationId": "query.billing.getBillingPortalUrl",
+        "summary": "Get Stripe billing portal URL",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "billingPortalUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "billingPortalUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/billing/invoices": {
+      "get": {
+        "operationId": "query.billing.listInvoices",
+        "summary": "List invoices",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoices": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "date": {
+                            "type": "number",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "url",
+                          "amount",
+                          "currency",
+                          "date"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "invoices"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/billing/subscription": {
+      "delete": {
+        "operationId": "mutation.billing.cancelSubscription",
+        "summary": "Cancel current subscription",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "mutation.billing.updateSubscription",
+        "summary": "Update subscription",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "workspaceId": {
+                    "type": "string"
+                  },
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "STARTER",
+                      "PRO"
+                    ]
+                  },
+                  "additionalChats": {
+                    "type": "number"
+                  },
+                  "additionalStorage": {
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "usd",
+                      "eur"
+                    ]
+                  }
+                },
+                "required": [
+                  "workspaceId",
+                  "plan",
+                  "additionalChats",
+                  "additionalStorage",
+                  "currency"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workspace": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "plan": {
+                          "type": "string",
+                          "enum": [
+                            "FREE",
+                            "STARTER",
+                            "PRO",
+                            "LIFETIME",
+                            "OFFERED",
+                            "CUSTOM",
+                            "UNLIMITED"
+                          ]
+                        },
+                        "stripeId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "additionalChatsIndex": {
+                          "type": "number"
+                        },
+                        "additionalStorageIndex": {
+                          "type": "number"
+                        },
+                        "chatsLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "chatsLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitFirstEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "storageLimitSecondEmailSentAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "customChatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customStorageLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "customSeatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "createdAt",
+                        "updatedAt",
+                        "name",
+                        "icon",
+                        "plan",
+                        "stripeId",
+                        "additionalChatsIndex",
+                        "additionalStorageIndex",
+                        "chatsLimitFirstEmailSentAt",
+                        "chatsLimitSecondEmailSentAt",
+                        "storageLimitFirstEmailSentAt",
+                        "storageLimitSecondEmailSentAt",
+                        "customChatsLimit",
+                        "customStorageLimit",
+                        "customSeatsLimit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "workspace"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "get": {
+        "operationId": "query.billing.getSubscription",
+        "summary": "List invoices",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "type": "object",
+                      "properties": {
+                        "additionalChatsIndex": {
+                          "type": "number"
+                        },
+                        "additionalStorageIndex": {
+                          "type": "number"
+                        },
+                        "currency": {
+                          "type": "string",
+                          "enum": [
+                            "eur",
+                            "usd"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "additionalChatsIndex",
+                        "additionalStorageIndex",
+                        "currency"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "subscription"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/billing/subscription/checkout": {
+      "post": {
+        "operationId": "mutation.billing.createCheckoutSession",
+        "summary": "Create checkout session to create a new subscription",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "workspaceId": {
+                    "type": "string"
+                  },
+                  "prefilledEmail": {
+                    "type": "string"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "usd",
+                      "eur"
+                    ]
+                  },
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "STARTER",
+                      "PRO"
+                    ]
+                  },
+                  "returnUrl": {
+                    "type": "string"
+                  },
+                  "additionalChats": {
+                    "type": "number"
+                  },
+                  "additionalStorage": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "workspaceId",
+                  "currency",
+                  "plan",
+                  "returnUrl",
+                  "additionalChats",
+                  "additionalStorage"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "checkoutUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "checkoutUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/billing/usage": {
+      "get": {
+        "operationId": "query.billing.getUsage",
+        "summary": "Get current plan usage",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalChatsUsed": {
+                      "type": "number"
+                    },
+                    "totalStorageUsed": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "totalChatsUsed",
+                    "totalStorageUsed"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
     }
   },
   "components": {
