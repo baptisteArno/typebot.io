@@ -10,6 +10,7 @@ import {
   notFound,
 } from 'utils/api'
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
+import { omit } from 'utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -44,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         id: webhookId,
       },
-      data,
+      data: omit(data, 'id', 'typebotId'),
     })
     return res.send({ webhook })
   }
