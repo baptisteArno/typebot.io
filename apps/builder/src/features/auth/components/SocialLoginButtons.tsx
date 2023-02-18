@@ -12,6 +12,7 @@ import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'
 import { AzureAdLogo, FacebookLogo, GitlabLogo } from './logos'
+import { omit } from 'utils'
 
 type Props = {
   providers:
@@ -28,7 +29,9 @@ export const SocialLoginButtons = ({ providers }: Props) => {
   const handleSignIn = async (provider: string) => {
     setAuthLoading(provider)
     await signIn(provider, {
-      callbackUrl: `/typebots?${stringify(query)}`,
+      callbackUrl:
+        query.callbackUrl?.toString() ??
+        `/typebots?${stringify(omit(query, 'error', 'callbackUrl'))}`,
     })
     setTimeout(() => setAuthLoading(undefined), 3000)
   }

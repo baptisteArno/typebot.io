@@ -46,6 +46,7 @@ import {
 import { useAutoSave } from '@/hooks/useAutoSave'
 import { createWebhookQuery } from '@/features/blocks/integrations/webhook/queries/createWebhookQuery'
 import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/duplicateWebhookQuery'
+import { useSession } from 'next-auth/react'
 
 const autoSaveTimeout = 10000
 
@@ -103,7 +104,8 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId: string
 }) => {
-  const router = useRouter()
+  const { status } = useSession()
+  const { push } = useRouter()
   const { showToast } = useToast()
 
   const { typebot, publishedTypebot, webhooks, isReadOnly, isLoading, mutate } =
@@ -246,15 +248,15 @@ export const TypebotProvider = ({
   }, [localTypebot])
 
   useEffect(() => {
-    if (isLoading) return
+    if (status !== 'authenticated' || isLoading) return
     if (!typebot) {
       showToast({ status: 'info', description: "Couldn't find typebot" })
-      router.replace('/typebots')
+      push('/typebots')
       return
     }
     setLocalTypebot({ ...typebot })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
+  }, [status, isLoading])
 
   const updateLocalTypebot = (updates: UpdateTypebotPayload) =>
     localTypebot && setLocalTypebot({ ...localTypebot, ...updates })

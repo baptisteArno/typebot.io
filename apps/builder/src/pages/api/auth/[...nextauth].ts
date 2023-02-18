@@ -146,6 +146,9 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     session: {
       strategy: 'database',
     },
+    pages: {
+      signIn: '/signin',
+    },
     callbacks: {
       session: async ({ session, user }) => {
         const userFromDb = user as User

@@ -25,7 +25,7 @@ const { ToastContainer, toast } = createStandaloneToast(customTheme)
 const App = ({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps<{ session: Session }>) => {
+}: AppProps<{ session?: Session }>) => {
   useRouterProgressBar()
   const { query, pathname, isReady } = useRouter()
 

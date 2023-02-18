@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { useToast } from '@/hooks/useToast'
 import { TextLink } from '@/components/TextLink'
+import { SignInError } from './SignInError'
 
 type Props = {
   defaultEmail?: string
@@ -48,8 +49,10 @@ export const SignInForm = ({
     !isLoadingProviders && Object.keys(providers ?? {}).length === 0
 
   useEffect(() => {
-    if (status === 'authenticated')
-      router.replace({ pathname: '/typebots', query: router.query })
+    if (status === 'authenticated') {
+      router.replace(router.query.callbackUrl?.toString() ?? '/typebots')
+      return
+    }
     ;(async () => {
       const providers = await getProviders()
       setProviders(providers ?? undefined)
@@ -130,6 +133,9 @@ export const SignInForm = ({
             </Tooltip>
           </HStack>
         </>
+      )}
+      {router.query.error && (
+        <SignInError error={router.query.error.toString()} />
       )}
     </Stack>
   )

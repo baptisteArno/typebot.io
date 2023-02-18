@@ -14,6 +14,8 @@ import {
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
     createUser: async (data: Omit<AdapterUser, 'id'>) => {
+      if (!data.email)
+        throw Error('Provider did not forward email but it is required')
       const user = { id: createId(), email: data.email as string }
       const { invitations, workspaceInvitations } = await getNewUserInvitations(
         p,
