@@ -1,5 +1,39 @@
 # Changelog
 
+<a name="2.10.4"></a>
+## 2.10.4 (2023-02-19)
+
+### Changed
+
+- ⚡ (embedBubble) Enable variable embed height [[621cd58](https://github.com/baptisteArno/typebot.io/commit/621cd58244d5a21271a2dff6223b64f2c3a8ceb5)]
+- ♻️ (auth) Make sure new users have an email [[0831dcf](https://github.com/baptisteArno/typebot.io/commit/0831dcf72a3f0761e583555185dc41c114ae6f43)]
+- 💄 Improve new version popup ui [[0e1fa4e](https://github.com/baptisteArno/typebot.io/commit/0e1fa4e339aad615a2925f3b2ac6a56c8d0315c5)]
+- ♻️ (billing) Refactor billing server code to trpc [[b73282d](https://github.com/baptisteArno/typebot.io/commit/b73282d8108dbeca7d09e46920d627d07ed52c1a)]
+- 🚸 (typebotLink) Exclude current bot name from select list [[9624387](https://github.com/baptisteArno/typebot.io/commit/962438768ec5c2e97f47781b5d3dbad04cdfb9a2)]
+- 🚸 (editor) Improve typebot updatedAt detection [[4a0dd0b](https://github.com/baptisteArno/typebot.io/commit/4a0dd0b3dda546b3a472f6f2b8c336daf02cceac)]
+- ♿ (editor) Improve variables popover click detection [[618eb8a](https://github.com/baptisteArno/typebot.io/commit/618eb8a8827e1789d9041b34e6d0a474c74436ea)]
+- ♿ Add an update notification popup [[8ac3784](https://github.com/baptisteArno/typebot.io/commit/8ac3784c0fa477b9b6ecd5b6102865268e4c4d1f)]
+- 💄 Add proper italic fonts in bot [[435edd0](https://github.com/baptisteArno/typebot.io/commit/435edd03c09073442fdd19fb32157bd21e2c16ff)]
+- ♻️ (results) Remove unecessary totalSelected compute [[44d7740](https://github.com/baptisteArno/typebot.io/commit/44d77409523a62850d712f4550caa5b6fdd9a8e5)]
+- ♻️ (editor) Improve webhook creation [[ac464ea](https://github.com/baptisteArno/typebot.io/commit/ac464eabdf65c62049b41736d6e597f2521970b0)]
+- 💄 (collaborator) Fix collab list UI [[6e066c4](https://github.com/baptisteArno/typebot.io/commit/6e066c44e109ccb830d0f4672790a5e66f190699)]
+
+### Fixed
+
+- 💚 Build docker images for postgresql only [[8a0155d](https://github.com/baptisteArno/typebot.io/commit/8a0155dab8651c0deca4a65b265879e36b731674)]
+- 🐛 (typebot) Make sure old typebot properties are removed when pulled [[d22cc45](https://github.com/baptisteArno/typebot.io/commit/d22cc45a97bc6466c2fb32408e1ca49a88b13d5e)]
+- 🐛 (webhook) Fix record to update not found [[c32aadc](https://github.com/baptisteArno/typebot.io/commit/c32aadc95b8a812100e10a7994284b0746e6074f)]
+- 🐛 (billing) Fix crash when having a draft invoice [[d805ea9](https://github.com/baptisteArno/typebot.io/commit/d805ea9c10c393c5e7285602286ec28916c9373b)]
+- 🐛 (bot) Still parse variables value if code fails [[44cb14d](https://github.com/baptisteArno/typebot.io/commit/44cb14d0cb95e046117ac9fe8b2b7d319600da9a)]
+- 🐛 (editor) Fix update typebot when having more than 100.000 results [[3a9e359](https://github.com/baptisteArno/typebot.io/commit/3a9e35916abfc957637389df9313f8573fc60fbb)]
+- 🐛 Fix input file empty error [[d0a8faa](https://github.com/baptisteArno/typebot.io/commit/d0a8faa3e7fded1b917d204174eb74c9c1e5a7b9)]
+- 🐛 (typebotLink) Fix typebotIds infinite query param [[2f7e71f](https://github.com/baptisteArno/typebot.io/commit/2f7e71f66e7eb88b2ddc681fd0cb9f81cb38bc21)]
+
+### Miscellaneous
+
+- 📝 Add a &quot;Publish&quot; doc [[fde14a8](https://github.com/baptisteArno/typebot.io/commit/fde14a800dba9f11cfd6589e44916758c98d3687)]
+
+
 <a name="2.10.3"></a>
 ## 2.10.3 (2023-02-14)
 
