@@ -8,6 +8,7 @@ import { Typebot } from 'models'
 import { omit } from 'utils'
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 import { isReadTypebotForbidden } from '@/features/typebot/api/utils/isReadTypebotForbidden'
+import { removeTypebotOldProperties } from '@/features/typebot/api/utils/removeTypebotOldProperties'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -15,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const typebotId = req.query.typebotId as string
   if (req.method === 'GET') {
-    const typebot = await prisma.typebot.findFirst({
+    const fullTypebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
         isArchived: { not: true },
@@ -26,16 +27,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         webhooks: true,
       },
     })
-    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
+    if (!fullTypebot || (await isReadTypebotForbidden(fullTypebot, user)))
       return res.status(404).send({ typebot: null })
 
-    const { publishedTypebot, collaborators, webhooks, ...restOfTypebot } =
-      typebot
+    const { publishedTypebot, collaborators, webhooks, ...typebot } =
+      fullTypebot
     const isReadOnly =
       collaborators.find((c) => c.userId === user.id)?.type ===
       CollaborationType.READ
     return res.send({
-      typebot: restOfTypebot,
+      typebot: removeTypebotOldProperties(typebot),
       publishedTypebot,
       isReadOnly,
       webhooks,
