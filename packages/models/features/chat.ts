@@ -84,7 +84,11 @@ const audioMessageSchema = z.object({
 
 const embedMessageSchema = z.object({
   type: z.enum([BubbleBlockType.EMBED]),
-  content: embedBubbleContentSchema,
+  content: embedBubbleContentSchema
+    .omit({
+      height: true,
+    })
+    .and(z.object({ height: z.number().optional() })),
 })
 
 const chatMessageSchema = z

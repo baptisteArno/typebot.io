@@ -53,7 +53,7 @@ test('should be configurable', async ({ page }) => {
   await page.waitForTimeout(1000)
   await page.click('input[value="My link typebot 2"]', { clickCount: 3 })
   await page.press('input[value="My link typebot 2"]', 'Backspace')
-  await page.click('button >> text=My link typebot 1')
+  await page.click('button >> text=Current typebot')
   await page.click('input[placeholder="Select a block"]', {
     clickCount: 3,
   })

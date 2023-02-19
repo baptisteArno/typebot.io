@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from '@chakra-ui/react'
+import { FormLabel, HStack, Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/CodeEditor'
 import { FileInputOptions, Variable } from 'models'
 import React from 'react'
@@ -48,16 +48,16 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options.isMultipleAllowed}
         onCheckChange={handleMultipleFilesChange}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="limit">
-          Size limit (MB):
-        </FormLabel>
+      <HStack>
         <SmartNumberInput
-          id="limit"
-          value={options.sizeLimit ?? 10}
+          label={'Size limit:'}
+          defaultValue={options.sizeLimit ?? 10}
           onValueChange={handleSizeLimitChange}
+          withVariableButton={false}
         />
-      </Stack>
+        <Text>MB</Text>
+      </HStack>
+
       <Stack>
         <FormLabel mb="0">Placeholder:</FormLabel>
         <CodeEditor

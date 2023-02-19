@@ -26,12 +26,12 @@
     "cross-env": "7.0.3",
     "cz-emoji": "1.3.2-canary.2",
     "husky": "^8.0.3",
-    "turbo": "1.7.4"
+    "turbo": "1.8.1"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@7.25.1"
+  "packageManager": "pnpm@7.27.1"
 }

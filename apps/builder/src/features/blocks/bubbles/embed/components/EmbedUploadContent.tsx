@@ -16,7 +16,7 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
     onSubmit({ ...content, url: iframeUrl })
   }
 
-  const handleHeightChange = (height?: number) =>
+  const handleHeightChange = (height?: EmbedBubbleContent['height']) =>
     height && onSubmit({ ...content, height })
 
   return (
@@ -32,12 +32,13 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
         </Text>
       </Stack>
 
-      <HStack justify="space-between">
-        <Text>Height: </Text>
+      <HStack>
         <SmartNumberInput
-          value={content?.height}
+          label="Height:"
+          defaultValue={content?.height}
           onValueChange={handleHeightChange}
         />
+        <Text>px</Text>
       </HStack>
     </Stack>
   )

@@ -7,3 +7,9 @@ export const schemaForType =
   <S extends z.ZodType<T, any, any>>(arg: S) => {
     return arg
   }
+
+export const variableStringSchema = z.custom<`{{${string}}}`>((val) =>
+  /^{{.+}}$/g.test(val as string)
+)
+
+export type VariableString = z.infer<typeof variableStringSchema>

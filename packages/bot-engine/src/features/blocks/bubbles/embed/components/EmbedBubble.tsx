@@ -36,6 +36,12 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
     }
   }, [isLoading, isTyping, onTypingEnd])
 
+  const height = block.content.height
+    ? typeof block.content.height === 'string'
+      ? parseVariables(typebot.variables)(block.content.height) + 'px'
+      : block.content.height
+    : '2rem'
+
   return (
     <div className="flex flex-col w-full" ref={messageContainer}>
       <div className="flex mb-2 w-full lg:w-11/12 items-center">
@@ -61,7 +67,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
               (isTyping ? 'opacity-0' : 'opacity-100')
             }
             style={{
-              height: isTyping ? '2rem' : block.content.height,
+              height: isTyping ? '2rem' : height,
               borderRadius: '15px',
             }}
           />

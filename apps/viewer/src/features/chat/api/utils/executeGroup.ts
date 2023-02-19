@@ -1,5 +1,7 @@
 import { deepParseVariable } from '@/features/variables'
 import {
+  BubbleBlock,
+  BubbleBlockType,
   ChatReply,
   Group,
   InputBlock,
@@ -38,7 +40,7 @@ export const executeGroup =
 
       if (isBubbleBlock(block)) {
         messages.push(
-          deepParseVariable(newSessionState.typebot.variables)(block)
+          parseBubbleBlock(newSessionState.typebot.variables)(block)
         )
         lastBubbleBlockId = block.id
         continue
@@ -125,4 +127,26 @@ const getPrefilledInputValue =
           variable.id === block.options.variableId && isDefined(variable.value)
       )?.value ?? undefined
     )
+  }
+
+const parseBubbleBlock =
+  (variables: SessionState['typebot']['variables']) =>
+  (block: BubbleBlock): ChatReply['messages'][0] => {
+    switch (block.type) {
+      case BubbleBlockType.EMBED: {
+        const message = deepParseVariable(variables)(block)
+        return {
+          ...message,
+          content: {
+            ...message.content,
+            height:
+              typeof message.content.height === 'string'
+                ? parseFloat(message.content.height)
+                : message.content.height,
+          },
+        }
+      }
+      default:
+        return deepParseVariable(variables)(block)
+    }
   }

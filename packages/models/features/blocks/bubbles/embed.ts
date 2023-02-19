@@ -1,10 +1,11 @@
 import { z } from 'zod'
+import { variableStringSchema } from '../../utils'
 import { blockBaseSchema } from '../baseSchemas'
 import { BubbleBlockType } from './enums'
 
 export const embedBubbleContentSchema = z.object({
   url: z.string().optional(),
-  height: z.number(),
+  height: z.number().or(variableStringSchema),
 })
 
 export const embedBubbleBlockSchema = blockBaseSchema.and(

@@ -36,32 +36,24 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
       </Flex>
       {typingEmulation.enabled && (
         <Stack pl={10}>
-          <Flex justify="space-between" align="center">
-            <FormLabel htmlFor="speed" mb="0">
-              Words per minutes:
-            </FormLabel>
-            <SmartNumberInput
-              id="speed"
-              data-testid="speed"
-              value={typingEmulation.speed}
-              onValueChange={handleSpeedChange}
-              maxW="100px"
-              step={30}
-            />
-          </Flex>
-          <Flex justify="space-between" align="center">
-            <FormLabel htmlFor="max-delay" mb="0">
-              Max delay (in seconds):
-            </FormLabel>
-            <SmartNumberInput
-              id="max-delay"
-              data-testid="max-delay"
-              value={typingEmulation.maxDelay}
-              onValueChange={handleMaxDelayChange}
-              maxW="100px"
-              step={0.1}
-            />
-          </Flex>
+          <SmartNumberInput
+            label="Words per minutes:"
+            data-testid="speed"
+            defaultValue={typingEmulation.speed}
+            onValueChange={handleSpeedChange}
+            withVariableButton={false}
+            maxW="100px"
+            step={30}
+          />
+          <SmartNumberInput
+            label="Max delay (in seconds):"
+            data-testid="max-delay"
+            defaultValue={typingEmulation.maxDelay}
+            onValueChange={handleMaxDelayChange}
+            withVariableButton={false}
+            maxW="100px"
+            step={0.1}
+          />
         </Stack>
       )}
     </Stack>

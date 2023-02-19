@@ -1,3 +1,4 @@
+import { VariablesButton } from '@/features/variables'
 import {
   NumberInputProps,
   NumberInput,
@@ -5,54 +6,110 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  HStack,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react'
+import { Variable, VariableString } from 'models'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
+import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
-type Props = {
-  value?: number
+type Value<HasVariable> = HasVariable extends undefined | true
+  ? number | VariableString
+  : number
+
+type Props<HasVariable extends boolean> = {
+  defaultValue?: Value<HasVariable>
   debounceTimeout?: number
-  withVariableButton?: boolean
-  onValueChange: (value?: number) => void
-} & NumberInputProps
+  withVariableButton?: HasVariable
+  label?: string
+  moreInfoTooltip?: string
+  isRequired?: boolean
+  onValueChange: (value?: Value<HasVariable>) => void
+} & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
 
-export const SmartNumberInput = ({
-  value,
+export const SmartNumberInput = <HasVariable extends boolean>({
+  defaultValue,
   onValueChange,
+  withVariableButton,
   debounceTimeout = 1000,
+  label,
+  moreInfoTooltip,
+  isRequired,
   ...props
-}: Props) => {
-  const [currentValue, setCurrentValue] = useState(value?.toString() ?? '')
-  const debounced = useDebouncedCallback(
+}: Props<HasVariable>) => {
+  const [value, setValue] = useState(defaultValue?.toString() ?? '')
+
+  const onValueChangeDebounced = useDebouncedCallback(
     onValueChange,
     env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 
   useEffect(
     () => () => {
-      debounced.flush()
+      onValueChangeDebounced.flush()
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [onValueChangeDebounced]
   )
 
   const handleValueChange = (value: string) => {
-    setCurrentValue(value)
+    setValue(value)
     if (value.endsWith('.') || value.endsWith(',')) return
-    if (value === '') return debounced(undefined)
+    if (value === '') return onValueChangeDebounced(undefined)
+    if (
+      value.startsWith('{{') &&
+      value.endsWith('}}') &&
+      value.length > 4 &&
+      (withVariableButton ?? true)
+    ) {
+      onValueChangeDebounced(value as Value<HasVariable>)
+      return
+    }
     const newValue = parseFloat(value)
     if (isNaN(newValue)) return
-    debounced(newValue)
+    onValueChangeDebounced(newValue)
   }
 
-  return (
-    <NumberInput onChange={handleValueChange} value={currentValue} {...props}>
+  const handleVariableSelected = (variable?: Variable) => {
+    if (!variable) return
+    const newValue = `{{${variable.name}}}`
+    handleValueChange(newValue)
+  }
+
+  const Input = (
+    <NumberInput onChange={handleValueChange} value={value} {...props}>
       <NumberInputField placeholder={props.placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />
       </NumberInputStepper>
     </NumberInput>
+  )
+
+  return (
+    <FormControl
+      as={HStack}
+      isRequired={isRequired}
+      justifyContent="space-between"
+    >
+      {label && (
+        <FormLabel mb="0" flexShrink={0}>
+          {label}{' '}
+          {moreInfoTooltip && (
+            <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
+          )}
+        </FormLabel>
+      )}
+      {withVariableButton ?? true ? (
+        <HStack spacing={0}>
+          {Input}
+          <VariablesButton onSelectVariable={handleVariableSelected} />
+        </HStack>
+      ) : (
+        Input
+      )}
+    </FormControl>
   )
 }
