@@ -10,6 +10,8 @@ on:
 
 jobs:
   build:
+    env:
+      DATABASE_URL: 'postgresql://'
     strategy:
       matrix:
         app: ['builder', 'viewer']
