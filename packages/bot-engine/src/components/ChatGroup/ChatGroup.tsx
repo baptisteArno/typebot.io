@@ -29,6 +29,7 @@ import { getLastChatBlockType } from '@/utils/chat'
 import { executeIntegration } from '@/utils/executeIntegration'
 import { executeLogic } from '@/utils/executeLogic'
 import { blockCanBeRetried, parseRetryBlock } from '@/utils/inputs'
+import { PopupBlockedToast } from '../PopupBlockedToast'
 
 type ChatGroupProps = {
   blocks: Block[]
@@ -72,6 +73,7 @@ export const ChatGroup = ({
   const { scroll } = useChat()
   const [processedBlocks, setProcessedBlocks] = useState<Block[]>([])
   const [displayedChunks, setDisplayedChunks] = useState<ChatDisplayChunk[]>([])
+  const [blockedPopupUrl, setBlockedPopupUrl] = useState<string>()
 
   const insertBlockInStack = (nextBlock: Block) => {
     setProcessedBlocks([...processedBlocks, nextBlock])
@@ -120,21 +122,25 @@ export const ChatGroup = ({
     const currentBlock = [...processedBlocks].pop()
     if (!currentBlock) return
     if (isLogicBlock(currentBlock)) {
-      const { nextEdgeId, linkedTypebot } = await executeLogic(currentBlock, {
-        isPreview,
-        apiHost,
-        typebot,
-        linkedTypebots,
-        updateVariableValue,
-        updateVariables,
-        injectLinkedTypebot,
-        onNewLog,
-        createEdge,
-        setCurrentTypebotId,
-        pushEdgeIdInLinkedTypebotQueue,
-        currentTypebotId,
-        pushParentTypebotId,
-      })
+      const { nextEdgeId, linkedTypebot, blockedPopupUrl } = await executeLogic(
+        currentBlock,
+        {
+          isPreview,
+          apiHost,
+          typebot,
+          linkedTypebots,
+          updateVariableValue,
+          updateVariables,
+          injectLinkedTypebot,
+          onNewLog,
+          createEdge,
+          setCurrentTypebotId,
+          pushEdgeIdInLinkedTypebotQueue,
+          currentTypebotId,
+          pushParentTypebotId,
+        }
+      )
+      if (blockedPopupUrl) setBlockedPopupUrl(blockedPopupUrl)
       const isRedirecting =
         currentBlock.type === LogicBlockType.REDIRECT &&
         currentBlock.options.isNewTab === false
@@ -224,6 +230,8 @@ export const ChatGroup = ({
             hasGuestAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
             onDisplayNextBlock={displayNextBlock}
             keepShowingHostAvatar={keepShowingHostAvatar}
+            blockedPopupUrl={blockedPopupUrl}
+            onBlockedPopupLinkClick={() => setBlockedPopupUrl(undefined)}
           />
         ))}
       </div>
@@ -236,6 +244,8 @@ type Props = {
   hostAvatar: { isEnabled: boolean; src?: string }
   hasGuestAvatar: boolean
   keepShowingHostAvatar: boolean
+  blockedPopupUrl?: string
+  onBlockedPopupLinkClick: () => void
   onDisplayNextBlock: (
     answerContent?: InputSubmitContent,
     isRetry?: boolean
@@ -246,6 +256,8 @@ const ChatChunks = ({
   hostAvatar,
   hasGuestAvatar,
   keepShowingHostAvatar,
+  blockedPopupUrl,
+  onBlockedPopupLinkClick,
   onDisplayNextBlock,
 }: Props) => {
   const [isSkipped, setIsSkipped] = useState(false)
@@ -320,6 +332,14 @@ const ChatChunks = ({
           )}
         </CSSTransition>
       )}
+      {blockedPopupUrl ? (
+        <div className="flex justify-end">
+          <PopupBlockedToast
+            url={blockedPopupUrl}
+            onLinkClick={onBlockedPopupLinkClick}
+          />
+        </div>
+      ) : null}
     </>
   )
 }

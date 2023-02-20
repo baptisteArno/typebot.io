@@ -7,21 +7,33 @@ import { sanitizeUrl } from 'utils'
 export const executeRedirect = (
   block: RedirectBlock,
   { typebot: { variables } }: LogicState
-): EdgeId | undefined => {
-  if (!block.options?.url) return block.outgoingEdgeId
+): {
+  nextEdgeId?: EdgeId
+  blockedPopupUrl?: string
+} => {
+  if (!block.options?.url) return { nextEdgeId: block.outgoingEdgeId }
   const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   const isEmbedded = window.parent && window.location !== window.top?.location
+  let newWindow: Window | null = null
   if (isEmbedded) {
-    if (!block.options.isNewTab)
-      return ((window.top as Window).location.href = formattedUrl)
+    if (!block.options.isNewTab) {
+      ;(window.top as Window).location.href = formattedUrl
+      return { nextEdgeId: block.outgoingEdgeId }
+    }
 
     try {
-      window.open(formattedUrl)
+      newWindow = window.open(formattedUrl)
     } catch (err) {
       sendEventToParent({ redirectUrl: formattedUrl })
     }
   } else {
-    window.open(formattedUrl, block.options.isNewTab ? '_blank' : '_self')
+    newWindow = window.open(
+      formattedUrl,
+      block.options.isNewTab ? '_blank' : '_self'
+    )
   }
-  return block.outgoingEdgeId
+  return {
+    nextEdgeId: block.outgoingEdgeId,
+    blockedPopupUrl: newWindow ? undefined : formattedUrl,
+  }
 }

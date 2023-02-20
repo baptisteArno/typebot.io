@@ -7,20 +7,20 @@ import type { ChatReply } from 'models'
 
 export const executeClientSideAction = async (
   clientSideAction: NonNullable<ChatReply['clientSideActions']>[0]
-) => {
+): Promise<{ blockedPopupUrl: string } | void> => {
   if ('chatwoot' in clientSideAction) {
-    executeChatwoot(clientSideAction.chatwoot)
+    return executeChatwoot(clientSideAction.chatwoot)
   }
   if ('googleAnalytics' in clientSideAction) {
-    executeGoogleAnalyticsBlock(clientSideAction.googleAnalytics)
+    return executeGoogleAnalyticsBlock(clientSideAction.googleAnalytics)
   }
   if ('scriptToExecute' in clientSideAction) {
-    await executeScript(clientSideAction.scriptToExecute)
+    return executeScript(clientSideAction.scriptToExecute)
   }
   if ('redirect' in clientSideAction) {
-    executeRedirect(clientSideAction.redirect)
+    return executeRedirect(clientSideAction.redirect)
   }
   if ('wait' in clientSideAction) {
-    await executeWait(clientSideAction.wait)
+    return executeWait(clientSideAction.wait)
   }
 }

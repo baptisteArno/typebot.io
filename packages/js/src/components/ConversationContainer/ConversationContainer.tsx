@@ -6,6 +6,7 @@ import { BotContext, InitialChatReply } from '@/types'
 import { isNotDefined } from 'utils'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
+import { PopupBlockedToast } from './PopupBlockedToast'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -57,6 +58,7 @@ export const ConversationContainer = (props: Props) => {
   >(props.initialChatReply.dynamicTheme)
   const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme)
   const [isSending, setIsSending] = createSignal(false)
+  const [blockedPopupUrl, setBlockedPopupUrl] = createSignal<string>()
 
   createEffect(() => {
     setTheme(
@@ -112,7 +114,8 @@ export const ConversationContainer = (props: Props) => {
         isNotDefined(action.lastBubbleBlockId)
       )
       for (const action of actionsToExecute) {
-        await executeClientSideAction(action)
+        const response = await executeClientSideAction(action)
+        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
       }
     }
     if (isNotDefined(lastChunk.input)) {
@@ -128,7 +131,8 @@ export const ConversationContainer = (props: Props) => {
         (action) => action.lastBubbleBlockId === blockId
       )
       for (const action of actionsToExecute) {
-        await executeClientSideAction(action)
+        const response = await executeClientSideAction(action)
+        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
       }
     }
   }
@@ -160,6 +164,16 @@ export const ConversationContainer = (props: Props) => {
       </For>
       <Show when={isSending()}>
         <LoadingChunk theme={theme()} />
+      </Show>
+      <Show when={blockedPopupUrl()} keyed>
+        {(blockedPopupUrl) => (
+          <div class="flex justify-end">
+            <PopupBlockedToast
+              url={blockedPopupUrl}
+              onLinkClick={() => setBlockedPopupUrl(undefined)}
+            />
+          </div>
+        )}
       </Show>
       <BottomSpacer ref={bottomSpacer} />
     </div>

@@ -15,6 +15,7 @@ export const executeLogic = async (
 ): Promise<{
   nextEdgeId?: EdgeId
   linkedTypebot?: TypebotViewerProps['typebot'] | LinkedTypebot
+  blockedPopupUrl?: string
 }> => {
   switch (block.type) {
     case LogicBlockType.SET_VARIABLE:
@@ -22,7 +23,7 @@ export const executeLogic = async (
     case LogicBlockType.CONDITION:
       return { nextEdgeId: executeCondition(block, context) }
     case LogicBlockType.REDIRECT:
-      return { nextEdgeId: executeRedirect(block, context) }
+      return executeRedirect(block, context)
     case LogicBlockType.SCRIPT:
       return { nextEdgeId: await executeScript(block, context) }
     case LogicBlockType.TYPEBOT_LINK:
