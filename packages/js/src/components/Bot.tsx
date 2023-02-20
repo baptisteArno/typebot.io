@@ -152,7 +152,7 @@ const BotContent = (props: BotContentProps) => {
     const font = document.createElement('link')
     font.href = `https://fonts.googleapis.com/css2?family=${
       props.initialChatReply.typebot?.theme?.general?.font ?? 'Open Sans'
-    }:wght@300;400;600&display=swap')`
+    }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');')`
     font.rel = 'stylesheet'
     document.head.appendChild(font)
   }

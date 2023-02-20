@@ -48,6 +48,11 @@ export const InputChatBlock = (props: Props) => {
     props.onSubmit(value ?? label)
   }
 
+  const handleSkip = (label: string) => {
+    setAnswer(label)
+    props.onSkip()
+  }
+
   return (
     <Switch>
       <Match when={answer()} keyed>
@@ -75,7 +80,7 @@ export const InputChatBlock = (props: Props) => {
             inputIndex={props.inputIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
             onSubmit={handleSubmit}
-            onSkip={() => props.onSkip()}
+            onSkip={handleSkip}
             hasGuestAvatar={props.guestAvatar?.isEnabled ?? false}
           />
         </div>
@@ -91,7 +96,7 @@ const Input = (props: {
   hasGuestAvatar: boolean
   isInputPrefillEnabled: boolean
   onSubmit: (answer: InputSubmitContent) => void
-  onSkip: () => void
+  onSkip: (label: string) => void
 }) => {
   const onSubmit = (answer: InputSubmitContent) => props.onSubmit(answer)
 
@@ -165,7 +170,6 @@ const Input = (props: {
           context={props.context}
           block={props.block as FileInputBlock}
           onSubmit={onSubmit}
-          // eslint-disable-next-line solid/reactivity
           onSkip={props.onSkip}
         />
       </Match>

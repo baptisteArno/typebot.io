@@ -23,7 +23,7 @@ export const fileInputStepSchema = blockBaseSchema.and(
   })
 )
 
-export const defaultFileInputOptions: FileInputOptions = {
+export const defaultFileInputOptions = {
   isRequired: true,
   isMultipleAllowed: false,
   labels: {
@@ -35,7 +35,7 @@ export const defaultFileInputOptions: FileInputOptions = {
     clear: 'Clear',
     skip: 'Skip',
   },
-}
+} satisfies FileInputOptions
 
 export type FileInputBlock = z.infer<typeof fileInputStepSchema>
 export type FileInputOptions = z.infer<typeof fileInputOptionsSchema>

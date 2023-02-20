@@ -124,6 +124,7 @@ export const Bubble = (props: BubbleProps) => {
           'transform-origin': 'bottom right',
           transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
+          'background-color': bubbleProps.theme?.chatWindow?.backgroundColor,
         }}
         class={
           'absolute bottom-20 sm:right-4 rounded-lg w-full sm:w-[400px] max-h-[704px] ' +

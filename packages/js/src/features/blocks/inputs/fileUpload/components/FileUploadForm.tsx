@@ -9,7 +9,7 @@ type Props = {
   context: BotContext
   block: FileInputBlock
   onSubmit: (url: InputSubmitContent) => void
-  onSkip: () => void
+  onSkip: (label: string) => void
 }
 
 export const FileUploadForm = (props: Props) => {
@@ -178,7 +178,12 @@ export const FileUploadForm = (props: Props) => {
             class={
               'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
             }
-            on:click={() => props.onSkip()}
+            on:click={() =>
+              props.onSkip(
+                props.block.options.labels.skip ??
+                  defaultFileInputOptions.labels.skip
+              )
+            }
           >
             {props.block.options.labels.skip ??
               defaultFileInputOptions.labels.skip}

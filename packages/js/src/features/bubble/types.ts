@@ -4,8 +4,13 @@ export type BubbleParams = {
 }
 
 export type BubbleTheme = {
+  chatWindow?: ChatWindowTheme
   button?: ButtonTheme
   previewMessage?: PreviewMessageTheme
+}
+
+export type ChatWindowTheme = {
+  backgroundColor?: string
 }
 
 export type ButtonTheme = {

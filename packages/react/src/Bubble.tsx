@@ -22,8 +22,16 @@ export const Bubble = (props: Props) => {
   useEffect(() => {
     ;(async () => {
       await import('@typebot.io/js/dist/web')
+      initBubble()
     })()
+    return () => {
+      ref.current?.remove()
+    }
   }, [])
+
+  useEffect(() => {
+    updateProps(ref.current, props)
+  }, [props])
 
   const updateProps = (element: BubbleElement | null, props: Props) => {
     if (!element) return
@@ -34,20 +42,10 @@ export const Bubble = (props: Props) => {
     const bubbleElement = document.createElement(
       'typebot-bubble'
     ) as BubbleElement
+    if (ref.current) return
     ref.current = bubbleElement
-    document.body.append(bubbleElement)
+    document.body.append(ref.current)
   }
-
-  useEffect(() => {
-    ;(async () => {
-      if (!ref.current) await initBubble()
-      updateProps(ref.current, props)
-    })()
-
-    return () => {
-      ref.current?.remove()
-    }
-  }, [props])
 
   return null
 }

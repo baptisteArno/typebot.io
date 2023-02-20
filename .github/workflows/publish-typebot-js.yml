@@ -8,15 +8,16 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/js
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
-      - run: pnpm build
-      - run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-      - run: pnpm publish --no-git-checks --access public
+      - run: pnpm turbo build --filter=@typebot.io/js...
+      - name: Set NPM_TOKEN in config
+        run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        working-directory: ./packages/js
+      - name: Publish
+        run: pnpm publish --no-git-checks --access public
+        working-directory: ./packages/js

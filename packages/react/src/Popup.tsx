@@ -22,30 +22,28 @@ export const Popup = (props: Props) => {
   useEffect(() => {
     ;(async () => {
       await import('@typebot.io/js/dist/web')
+      initPopup()
     })()
+    return () => {
+      ref.current?.remove()
+    }
   }, [])
+
+  useEffect(() => {
+    updateProps(ref.current, props)
+  }, [props])
 
   const updateProps = (element: PopupElement | null, props: Props) => {
     if (!element) return
     Object.assign(element, props)
   }
 
-  const initBubble = async () => {
+  const initPopup = async () => {
     const popupElement = document.createElement('typebot-popup') as PopupElement
+    if (ref.current) return
     ref.current = popupElement
-    document.body.append(popupElement)
+    document.body.append(ref.current)
   }
-
-  useEffect(() => {
-    ;(async () => {
-      if (!ref.current) await initBubble()
-      updateProps(ref.current, props)
-    })()
-
-    return () => {
-      ref.current?.remove()
-    }
-  }, [props])
 
   return null
 }

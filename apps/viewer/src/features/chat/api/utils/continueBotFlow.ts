@@ -52,11 +52,10 @@ export const continueBotFlow =
 
     const formattedReply = formatReply(reply, block.type)
 
-    if (
-      !formattedReply ||
-      !isReplyValid(formattedReply, block) ||
-      (!formatReply && !canSkip(block.type))
-    )
+    if (!formattedReply && !canSkip(block.type)) {
+      return parseRetryMessage(block)
+    }
+    if (formattedReply && !isReplyValid(formattedReply, block))
       return parseRetryMessage(block)
 
     const newVariables = await processAndSaveAnswer(
@@ -98,7 +97,8 @@ const processAndSaveAnswer =
     state: Pick<SessionState, 'result' | 'typebot' | 'isPreview'>,
     block: InputBlock
   ) =>
-  async (reply: string): Promise<Variable[]> => {
+  async (reply: string | null): Promise<Variable[]> => {
+    if (!reply) return state.typebot.variables
     if (!state.isPreview && state.result) {
       await saveAnswer(state.result.id, block)(reply)
       if (!state.result.hasStarted) await setResultAsStarted(state.result.id)
@@ -201,7 +201,7 @@ const computeStorageUsed = async (reply: string) => {
 
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
-  (block: InputBlock, reply?: string) => {
+  (block: InputBlock, reply: string | null) => {
     if (
       block.type === InputBlockType.CHOICE &&
       !block.options.isMultipleChoice &&
