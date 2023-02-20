@@ -83,7 +83,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
 
-    if ((typebot.updatedAt as Date) > new Date(data.updatedAt))
+    if (
+      (typebot.updatedAt as Date).getTime() > new Date(data.updatedAt).getTime()
+    )
       return res.send({
         message: 'Found newer version of the typebot in database',
       })

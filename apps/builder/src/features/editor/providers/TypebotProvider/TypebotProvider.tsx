@@ -156,8 +156,8 @@ export const TypebotProvider = ({
       setLocalTypebot({ ...typebot }, { updateDate: false })
       flush()
     } else if (
-      new Date(typebot.updatedAt) >
-      new Date(currentTypebotRef.current.updatedAt)
+      new Date(typebot.updatedAt).getTime() >
+      new Date(currentTypebotRef.current.updatedAt).getTime()
     ) {
       setLocalTypebot({ ...typebot })
     }
