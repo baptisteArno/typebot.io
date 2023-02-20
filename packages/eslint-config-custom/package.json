@@ -1,5 +1,6 @@
 {
   "name": "eslint-config-custom",
+  "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
     "eslint": "8.32.0",

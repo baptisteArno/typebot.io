@@ -11,13 +11,12 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/react
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
       - run: pnpm build
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          package: './packages/react/package.json'
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
+      - run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+      - run: pnpm publish --no-git-checks --access public
