@@ -604,10 +604,8 @@ importers:
       utils: workspace:*
     dependencies:
       '@stripe/stripe-js': 1.46.0
-      models: link:../models
       solid-element: 1.6.3_solid-js@1.6.9
       solid-js: 1.6.9
-      utils: link:../utils
     devDependencies:
       '@rollup/plugin-babel': 6.0.3_47rlmjyel4xatve6tpwvwuyiju
       '@rollup/plugin-node-resolve': 15.0.1_rollup@3.12.0
@@ -618,6 +616,7 @@ importers:
       eslint: 8.32.0
       eslint-config-custom: link:../eslint-config-custom
       eslint-plugin-solid: 0.9.3_7uibuqfxkfaozanbtbziikiqje
+      models: link:../models
       postcss: 8.4.21
       react: 18.2.0
       rollup: 3.12.0
@@ -627,6 +626,7 @@ importers:
       tailwindcss: 3.2.4_postcss@8.4.21
       tsconfig: link:../tsconfig
       typescript: 4.9.4
+      utils: link:../utils
 
   packages/models:
     specifiers:

@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -13,10 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@stripe/stripe-js": "1.46.0",
-    "models": "workspace:*",
     "solid-element": "1.6.3",
-    "solid-js": "1.6.9",
-    "utils": "workspace:*"
+    "solid-js": "1.6.9"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "6.0.3",
@@ -27,6 +25,8 @@
     "babel-preset-solid": "1.6.9",
     "eslint": "8.32.0",
     "eslint-config-custom": "workspace:*",
+    "models": "workspace:*",
+    "utils": "workspace:*",
     "eslint-plugin-solid": "0.9.3",
     "postcss": "8.4.21",
     "react": "18.2.0",
