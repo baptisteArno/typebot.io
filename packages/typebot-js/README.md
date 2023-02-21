@@ -1,3 +1,5 @@
+> ⚠️ This library is deprecated in favor of [`@typebot.io/js`](https://www.npmjs.com/package/@typebot.io/js) and [`@typebot.io/react`](https://www.npmjs.com/package/@typebot.io/react)
+
 # Typebot JS library
 
 Frontend library to embed typebots from [Typebot](https://www.typebot.io/).

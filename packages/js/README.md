@@ -1,8 +1,30 @@
----
-sidebar_position: 4
----
+# Typebot JS library
 
-# HTML & Javascript
+Frontend library to embed typebots from [Typebot](https://www.typebot.io/).
+
+## Installation
+
+### Using npm
+
+To install, simply run:
+
+```bash
+npm install @typebot.io/js
+```
+
+### Directly in your HTML
+
+```
+<script type="module">
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js/dist/web.js'
+
+  Typebot.initStandard({
+    typebot: 'my-typebot',
+  })
+</script>
+
+<typebot-standard style="width: 100%; height: 600px; "></typebot-standard>
+```
 
 ## Standard
 

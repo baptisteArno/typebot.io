@@ -24,7 +24,13 @@ export const BubbleSettings = ({
   const updatePreviewMessage = (
     previewMessage: BubbleProps['previewMessage']
   ) => {
-    onPreviewMessageChange(previewMessage)
+    if (!previewMessage) return onPreviewMessageChange(undefined)
+    onPreviewMessageChange({
+      ...previewMessage,
+      autoShowDelay: previewMessage?.autoShowDelay
+        ? previewMessage.autoShowDelay * 1000
+        : undefined,
+    })
   }
 
   const updateTheme = (theme: BubbleProps['theme']) => {
