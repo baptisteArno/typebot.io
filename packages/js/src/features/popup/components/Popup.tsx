@@ -62,6 +62,14 @@ export const Popup = (props: PopupProps) => {
     toggleBot()
   })
 
+  createEffect(() => {
+    if (!props.prefilledVariables) return
+    setPrefilledVariables((existingPrefilledVariables) => ({
+      ...existingPrefilledVariables,
+      ...props.prefilledVariables,
+    }))
+  })
+
   const stopPropagation = (event: MouseEvent) => {
     event.stopPropagation()
   }

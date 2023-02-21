@@ -1,4 +1,11 @@
-import { createSignal, onMount, Show, splitProps, onCleanup } from 'solid-js'
+import {
+  createSignal,
+  onMount,
+  Show,
+  splitProps,
+  onCleanup,
+  createEffect,
+} from 'solid-js'
 import styles from '../../../assets/index.css'
 import { CommandData } from '../../commands'
 import { BubbleButton } from './BubbleButton'
@@ -50,6 +57,14 @@ export const Bubble = (props: BubbleProps) => {
 
   onCleanup(() => {
     window.removeEventListener('message', processIncomingEvent)
+  })
+
+  createEffect(() => {
+    if (!props.prefilledVariables) return
+    setPrefilledVariables((existingPrefilledVariables) => ({
+      ...existingPrefilledVariables,
+      ...props.prefilledVariables,
+    }))
   })
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
