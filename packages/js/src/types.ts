@@ -16,3 +16,9 @@ export type InitialChatReply = ChatReply & {
   typebot: NonNullable<ChatReply['typebot']>
   sessionId: NonNullable<ChatReply['sessionId']>
 }
+
+export type OutgoingLog = {
+  status: string
+  description: string
+  details?: unknown
+}

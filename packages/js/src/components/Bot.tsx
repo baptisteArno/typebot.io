@@ -3,9 +3,8 @@ import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
 import { injectCustomHeadCode, isNotEmpty } from 'utils'
 import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
 import { ConversationContainer } from './ConversationContainer'
-import type { ChatReply, StartParams } from 'models'
 import { setIsMobile } from '@/utils/isMobileSignal'
-import { BotContext, InitialChatReply } from '@/types'
+import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
 import { ErrorMessage } from './ErrorMessage'
 import {
   getExistingResultIdFromSession,
@@ -13,13 +12,18 @@ import {
 } from '@/utils/sessionStorage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 
-export type BotProps = StartParams & {
+export type BotProps = {
+  typebot: string | any
+  isPreview?: boolean
+  resultId?: string
+  startGroupId?: string
+  prefilledVariables?: Record<string, unknown>
   apiHost?: string
   onNewInputBlock?: (ids: { id: string; groupId: string }) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
   onEnd?: () => void
-  onNewLogs?: (logs: ChatReply['logs']) => void
+  onNewLogs?: (logs: OutgoingLog[]) => void
 }
 
 export const Bot = (props: BotProps & { class?: string }) => {
@@ -138,7 +142,7 @@ type BotContentProps = {
   onNewInputBlock?: (block: { id: string; groupId: string }) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
-  onNewLogs?: (logs: ChatReply['logs']) => void
+  onNewLogs?: (logs: OutgoingLog[]) => void
 }
 
 const BotContent = (props: BotContentProps) => {

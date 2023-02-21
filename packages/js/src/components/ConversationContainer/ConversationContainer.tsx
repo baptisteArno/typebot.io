@@ -2,7 +2,7 @@ import type { ChatReply, Theme } from 'models'
 import { createEffect, createSignal, For, Show } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
-import { BotContext, InitialChatReply } from '@/types'
+import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
 import { isNotDefined } from 'utils'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
@@ -38,7 +38,7 @@ type Props = {
   onNewInputBlock?: (ids: { id: string; groupId: string }) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
-  onNewLogs?: (logs: ChatReply['logs']) => void
+  onNewLogs?: (logs: OutgoingLog[]) => void
 }
 
 export const ConversationContainer = (props: Props) => {

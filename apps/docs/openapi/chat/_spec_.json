@@ -335,7 +335,12 @@
                                                                             "type": "string"
                                                                           },
                                                                           "height": {
-                                                                            "type": "number"
+                                                                            "anyOf": [
+                                                                              {
+                                                                                "type": "number"
+                                                                              },
+                                                                              {}
+                                                                            ]
                                                                           }
                                                                         },
                                                                         "required": [
@@ -3386,19 +3391,26 @@
                                     ]
                                   },
                                   "content": {
-                                    "type": "object",
-                                    "properties": {
-                                      "url": {
-                                        "type": "string"
+                                    "allOf": [
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "additionalProperties": false
                                       },
-                                      "height": {
-                                        "type": "number"
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "height": {
+                                            "type": "number"
+                                          }
+                                        },
+                                        "additionalProperties": false
                                       }
-                                    },
-                                    "required": [
-                                      "height"
-                                    ],
-                                    "additionalProperties": false
+                                    ]
                                   }
                                 },
                                 "required": [

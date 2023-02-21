@@ -39,10 +39,11 @@ export const Popup = (props: PopupProps) => {
 
   const [isBotOpened, setIsBotOpened] = createSignal(
     // eslint-disable-next-line solid/reactivity
-    popupProps.isOpen ?? popupProps.defaultOpen ?? false
+    popupProps.isOpen ?? false
   )
 
   onMount(() => {
+    if (popupProps.defaultOpen) openBot()
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = popupProps.autoShowDelay
     if (isDefined(autoShowDelay)) {
