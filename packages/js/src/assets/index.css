@@ -222,3 +222,8 @@ textarea {
   background-color: var(--typebot-host-bubble-bg-color);
   color: var(--typebot-host-bubble-color);
 }
+
+.typebot-country-select {
+  color: var(--typebot-input-color);
+  background-color: var(--typebot-input-bg-color);
+}

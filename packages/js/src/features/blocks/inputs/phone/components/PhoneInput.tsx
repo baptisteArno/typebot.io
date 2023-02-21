@@ -4,6 +4,7 @@ import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { PhoneNumberInputBlock } from 'models'
 import { createSignal, For, onMount } from 'solid-js'
+import { isEmpty } from 'utils'
 import { phoneCountries } from 'utils/phoneCountries'
 
 type PhoneInputProps = {
@@ -14,7 +15,12 @@ type PhoneInputProps = {
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
-  const [selectedCountryCode, setSelectedCountryCode] = createSignal('INT')
+  // eslint-disable-next-line solid/reactivity
+  const defaultCountryCode = props.block.options.defaultCountryCode
+
+  const [selectedCountryCode, setSelectedCountryCode] = createSignal(
+    isEmpty(defaultCountryCode) ? 'INT' : defaultCountryCode
+  )
   const [inputValue, setInputValue] = createSignal(props.defaultValue ?? '')
   let inputRef: HTMLInputElement | undefined
 
@@ -32,7 +38,15 @@ export const PhoneInput = (props: PhoneInputProps) => {
     inputValue() !== '' && inputRef?.reportValidity()
 
   const submit = () => {
-    if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })
+    const selectedCountryDialCode = phoneCountries.find(
+      (country) => country.code === selectedCountryCode()
+    )?.dial_code
+    if (checkIfInputIsValid())
+      props.onSubmit({
+        value: inputValue().startsWith('+')
+          ? inputValue()
+          : `${selectedCountryDialCode ?? ''}${inputValue()}`,
+      })
   }
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -62,7 +76,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
       <div class="flex flex-1">
         <select
           onChange={selectNewCountryCode}
-          class="w-12 pl-2 focus:outline-none"
+          class="w-12 pl-2 focus:outline-none rounded-lg typebot-country-select"
         >
           <option selected>
             {
