@@ -15,10 +15,11 @@ export const BubbleButton = (props: Props) => {
     <button
       onClick={() => props.toggleBot()}
       class={
-        'absolute bottom-4 right-4 shadow-md w-12 h-12 rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in'
+        'fixed bottom-4 right-4 shadow-md w-12 h-12 rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in'
       }
       style={{
         'background-color': props.backgroundColor ?? defaultButtonColor,
+        'z-index': 42424242,
       }}
     >
       <Show when={isNotDefined(props.customIconSrc)} keyed>

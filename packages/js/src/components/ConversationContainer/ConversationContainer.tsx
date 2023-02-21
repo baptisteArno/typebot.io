@@ -89,6 +89,15 @@ export const ConversationContainer = (props: Props) => {
         groupId: data.input.groupId,
       })
     }
+    if (data.clientSideActions) {
+      const actionsToExecute = data.clientSideActions.filter((action) =>
+        isNotDefined(action.lastBubbleBlockId)
+      )
+      for (const action of actionsToExecute) {
+        const response = await executeClientSideAction(action)
+        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
+      }
+    }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,
       {
@@ -109,15 +118,6 @@ export const ConversationContainer = (props: Props) => {
   const handleAllBubblesDisplayed = async () => {
     const lastChunk = chatChunks().at(-1)
     if (!lastChunk) return
-    if (lastChunk.clientSideActions) {
-      const actionsToExecute = lastChunk.clientSideActions.filter((action) =>
-        isNotDefined(action.lastBubbleBlockId)
-      )
-      for (const action of actionsToExecute) {
-        const response = await executeClientSideAction(action)
-        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
-      }
-    }
     if (isNotDefined(lastChunk.input)) {
       props.onEnd?.()
     }

@@ -56,7 +56,6 @@ export const ChoiceForm = (props: Props) => {
                     ? ''
                     : 'selectable')
                 }
-                data-testid="button"
                 data-itemid={item.id}
               >
                 {item.content}

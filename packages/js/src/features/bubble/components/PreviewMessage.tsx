@@ -19,13 +19,13 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
 
   return (
     <div
-      // eslint-disable-next-line solid/reactivity
-      onClick={props.onClick}
-      class="absolute bottom-20 right-4 w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4"
+      onClick={() => props.onClick()}
+      class="fixed bottom-20 right-4 w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4"
       style={{
         'background-color':
           props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,
         color: props.previewMessageTheme?.textColor ?? defaultTextColor,
+        'z-index': 42424242,
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}

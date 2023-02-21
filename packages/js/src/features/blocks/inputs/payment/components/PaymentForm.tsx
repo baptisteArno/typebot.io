@@ -14,7 +14,6 @@ export const PaymentForm = (props: Props) => (
   <Switch>
     <Match when={props.options.provider === PaymentProvider.STRIPE}>
       <StripePaymentForm
-        // eslint-disable-next-line solid/reactivity
         onSuccess={props.onSuccess}
         options={props.options}
         context={props.context}

@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@stripe/stripe-js": "1.46.0",
     "solid-element": "1.6.3",
-    "solid-js": "1.6.9"
+    "solid-js": "1.6.11"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "6.0.3",
@@ -22,18 +22,18 @@
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "11.0.0",
     "autoprefixer": "10.4.13",
-    "babel-preset-solid": "1.6.9",
+    "babel-preset-solid": "1.6.10",
     "eslint": "8.32.0",
     "eslint-config-custom": "workspace:*",
     "models": "workspace:*",
     "utils": "workspace:*",
-    "eslint-plugin-solid": "0.9.3",
+    "eslint-plugin-solid": "0.10.0",
     "postcss": "8.4.21",
     "react": "18.2.0",
-    "rollup": "3.12.0",
+    "rollup": "3.17.2",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-typescript-paths": "^1.4.0",
-    "tailwindcss": "3.2.4",
+    "tailwindcss": "3.2.7",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   }

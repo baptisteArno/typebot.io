@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "React library to display typebots on your website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,7 @@
     "eslint-config-custom": "workspace:*",
     "models": "workspace:*",
     "react": "18.2.0",
-    "rollup": "3.12.0",
+    "rollup": "3.17.2",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "tsconfig": "workspace:*",
     "tslib": "^2.5.0",
