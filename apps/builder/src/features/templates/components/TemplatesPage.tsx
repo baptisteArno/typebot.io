@@ -4,7 +4,7 @@ import { VStack } from '@chakra-ui/react'
 import { CreateNewTypebotButtons } from './CreateNewTypebotButtons'
 
 export const TemplatesPage = () => (
-  <VStack>
+  <VStack h="100vh">
     <Seo title="Templates" />
     <DashboardHeader />
     <CreateNewTypebotButtons />

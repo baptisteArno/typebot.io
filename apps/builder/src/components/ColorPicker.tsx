@@ -29,12 +29,12 @@ const colorsSelection: `#${string}`[] = [
 ]
 
 type Props = {
-  initialColor: string
+  initialColor?: string
   onColorChange: (color: string) => void
 }
 
 export const ColorPicker = ({ initialColor, onColorChange }: Props) => {
-  const [color, setColor] = useState(initialColor)
+  const [color, setColor] = useState(initialColor ?? '')
 
   useEffect(() => {
     onColorChange(color)

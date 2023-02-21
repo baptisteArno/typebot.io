@@ -6,21 +6,22 @@
   "folderId": null,
   "groups": [
     {
-      "id": "cl1265zct0000mb1a6bir36w7",
+      "id": "clcueadzi00043b6s1r8wnql8",
+      "title": "Start",
       "blocks": [
         {
           "id": "cl1265zct0001mb1afel460do",
           "type": "start",
           "label": "Start",
-          "groupId": "cl1265zct0000mb1a6bir36w7",
-          "outgoingEdgeId": "cl1266kt100082e6d1wks5dtp"
+          "groupId": "clcueadzi00043b6s1r8wnql8",
+          "outgoingEdgeId": "clcuefdfv000r3b6sqzv3prz3"
         }
       ],
-      "title": "Start",
       "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
-      "id": "cl1266bah00032e6dgdnj4vgz",
+      "id": "clcueadzi00063b6sch7b1f32",
+      "title": "Name",
       "blocks": [
         {
           "id": "cl1266bam00042e6dm0gn22vy",
@@ -40,47 +41,39 @@
                 ],
                 "logicalOperator": "AND"
               },
-              "outgoingEdgeId": "cl12bk3j6000c2e69bak89ja9"
+              "outgoingEdgeId": "clcueadzi000l3b6smlf218u7"
             }
           ],
-          "groupId": "cl1266bah00032e6dgdnj4vgz",
-          "outgoingEdgeId": "cl12bnfyd000g2e69g7lr3czq"
-        }
-      ],
-      "title": "Group #1",
-      "graphCoordinates": { "x": 266, "y": 162 }
-    },
-    {
-      "id": "cl1267q1z000d2e6d949f2ge4",
-      "blocks": [
+          "groupId": "clcueadzi00063b6sch7b1f32"
+        },
         {
           "id": "cl1267q2c000e2e6dynjeg83n",
           "type": "text",
-          "groupId": "cl1267q1z000d2e6d949f2ge4",
           "content": {
             "html": "<div>Welcome 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome 👋" }] }
             ],
             "plainText": "Welcome 👋"
-          }
+          },
+          "groupId": "clcueadzi00063b6sch7b1f32"
         },
         {
           "id": "cl1267y1u000f2e6d4rlglv6g",
           "type": "text",
-          "groupId": "cl1267q1z000d2e6d949f2ge4",
           "content": {
             "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
             ],
             "plainText": "What's your name?"
-          }
+          },
+          "groupId": "clcueadzi00063b6sch7b1f32"
         },
         {
           "id": "cl126820m000g2e6dfleq78bt",
           "type": "text input",
-          "groupId": "cl1267q1z000d2e6d949f2ge4",
+          "groupId": "clcueadzi00063b6sch7b1f32",
           "options": {
             "isLong": false,
             "labels": {
@@ -88,41 +81,31 @@
               "placeholder": "Type your answer..."
             },
             "variableId": "cl126f4hf000i2e6d8zvzc3t1"
-          }
-        },
-        {
-          "id": "cl1289y1s00142e6dvbkpvbje",
-          "type": "Code",
-          "groupId": "cl1267q1z000d2e6d949f2ge4",
-          "options": {
-            "name": "Store Name in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeName\", content: {{Name}}}, \"*\")"
           },
-          "outgoingEdgeId": "cl12bk56s000d2e69oll3nqxm"
+          "outgoingEdgeId": "clcuecvjo000q3b6s42ouw3zz"
         }
       ],
-      "title": "Group #3",
-      "graphCoordinates": { "x": 269, "y": 381 }
+      "graphCoordinates": { "x": 328.22861564828236, "y": -1.7421511890097776 }
     },
     {
-      "id": "cl126ixoq000p2e6dfbz9sype",
+      "id": "clcueadzi00073b6sqz8n5vxp",
+      "title": "Company",
       "blocks": [
         {
           "id": "cl1266v6f000a2e6db7wj3ux7",
           "type": "text",
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
           "content": {
             "html": "<div>Welcome {{Name}} 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome {{Name}} 👋" }] }
             ],
             "plainText": "Welcome {{Name}} 👋"
-          }
+          },
+          "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
         {
           "id": "cl126hb9m000l2e6d5qk3mohn",
           "type": "text",
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
           "content": {
             "html": "<div>I&#x27;m super pumped that you&#x27;ve decided to try out Typebot 😍</div>",
             "richText": [
@@ -136,12 +119,12 @@
               }
             ],
             "plainText": "I'm super pumped that you've decided to try out Typebot 😍"
-          }
+          },
+          "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
         {
           "id": "cl126hpw1000m2e6dneousygl",
           "type": "text",
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
           "content": {
             "html": "<div>You are small steps away from meaningful, hyper-personalized experience for your users</div>",
             "richText": [
@@ -155,12 +138,12 @@
               }
             ],
             "plainText": "You are small steps away from meaningful, hyper-personalized experience for your users"
-          }
+          },
+          "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
         {
           "id": "cl126guhd000k2e6d6ypkex9z",
           "type": "text",
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
           "content": {
             "html": "<div>Let&#x27;s get you set up for your Typebot journey.</div>",
             "richText": [
@@ -172,12 +155,12 @@
               }
             ],
             "plainText": "Let's get you set up for your Typebot journey."
-          }
+          },
+          "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
         {
           "id": "cl126ixp9000q2e6dslh0zypi",
           "type": "text",
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
           "content": {
             "html": "<div>Do you work for a specific company?</div>",
             "richText": [
@@ -187,7 +170,8 @@
               }
             ],
             "plainText": "Do you work for a specific company?"
-          }
+          },
+          "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
         {
           "id": "cl126jb2q000r2e6dgqlnxnt8",
@@ -197,31 +181,23 @@
               "id": "cl126jb2q000s2e6dm60yq5p2",
               "type": 0,
               "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-              "content": "Yes",
-              "outgoingEdgeId": "cl126jsoo000x2e6ditu7dgf8"
+              "content": "Yes"
             },
             {
               "id": "cl126jc5a000t2e6dqv91w7j6",
               "type": 0,
               "blockId": "cl126jb2q000r2e6dgqlnxnt8",
               "content": "No",
-              "outgoingEdgeId": "cl126l5tx00122e6dmisci6h5"
+              "outgoingEdgeId": "clcueadzi000f3b6sb7lxyeta"
             }
           ],
-          "groupId": "cl126ixoq000p2e6dfbz9sype",
+          "groupId": "clcueadzi00073b6sqz8n5vxp",
           "options": { "buttonLabel": "Send", "isMultipleChoice": false }
-        }
-      ],
-      "title": "Group #5",
-      "graphCoordinates": { "x": 614, "y": 244 }
-    },
-    {
-      "id": "cl126jioj000u2e6dqssno3hv",
-      "blocks": [
+        },
         {
           "id": "cl126jioz000v2e6dwrk1f2cb",
           "type": "text input",
-          "groupId": "cl126jioj000u2e6dqssno3hv",
+          "groupId": "clcueadzi00073b6sqz8n5vxp",
           "options": {
             "isLong": false,
             "labels": {
@@ -229,43 +205,34 @@
               "placeholder": "Type the company name..."
             },
             "variableId": "cl126jqww000w2e6dq9yv4ifq"
-          }
-        },
-        {
-          "id": "cl12890kw00132e6dp9v5dexm",
-          "type": "Code",
-          "groupId": "cl126jioj000u2e6dqssno3hv",
-          "options": {
-            "name": "Store company in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeCompany\", content: {{Company}}}, \"*\")"
           },
-          "outgoingEdgeId": "cl128ag8i00162e6dufv3tgo0"
+          "outgoingEdgeId": "clcueb0cl000p3b6sisrc741n"
         }
       ],
-      "title": "Group #6",
-      "graphCoordinates": { "x": 969, "y": 308 }
+      "graphCoordinates": { "x": 679.828061917379, "y": 3.351428911218571 }
     },
     {
-      "id": "cl126krbp00102e6dnjelmfa1",
+      "id": "clcueadzi00093b6s82ivles8",
+      "title": "Bot category",
       "blocks": [
         {
           "id": "cl126krck00112e6d1m6ctxpn",
           "type": "text",
-          "groupId": "cl126krbp00102e6dnjelmfa1",
           "content": {
-            "html": "<div>What type of forms are you planning to build with Typebot?</div>",
+            "html": "<div>What type of bots are you planning to build with Typebot?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [
                   {
-                    "text": "What type of forms are you planning to build with Typebot?"
+                    "text": "What type of bots are you planning to build with Typebot?"
                   }
                 ]
               }
             ],
-            "plainText": "What type of forms are you planning to build with Typebot?"
-          }
+            "plainText": "What type of bots are you planning to build with Typebot?"
+          },
+          "groupId": "clcueadzi00093b6s82ivles8"
         },
         {
           "id": "cl126lb8v00142e6duv5qe08l",
@@ -320,153 +287,13 @@
               "content": "Other"
             }
           ],
-          "groupId": "cl126krbp00102e6dnjelmfa1",
+          "groupId": "clcueadzi00093b6s82ivles8",
           "options": {
             "variableId": "cl126mo3t001b2e6dvyi16bkd",
             "buttonLabel": "Send",
             "isMultipleChoice": true
           }
         },
-        {
-          "id": "cl128ain900172e6d1osj4u90",
-          "type": "Code",
-          "groupId": "cl126krbp00102e6dnjelmfa1",
-          "options": {
-            "name": "Store categories in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeCategories\", content: {{Categories}}}, \"*\")"
-          },
-          "outgoingEdgeId": "cl128azam00182e6dct61k7v5"
-        }
-      ],
-      "title": "Group #6",
-      "graphCoordinates": { "x": 1218, "y": 510 }
-    },
-    {
-      "id": "cl126p75m001j2e6d73qmes0m",
-      "blocks": [
-        {
-          "id": "cl126p76d001k2e6dbhnf2ysq",
-          "type": "text",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "content": {
-            "html": "<div>Thank you for answering those questions!</div>",
-            "richText": [
-              {
-                "type": "p",
-                "children": [
-                  { "text": "Thank you for answering those questions!" }
-                ]
-              }
-            ],
-            "plainText": "Thank you for answering those questions!"
-          }
-        },
-        {
-          "id": "cl128375600112e6d4l0jtuyf",
-          "type": "Code",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "options": {
-            "name": "Shoot confettis",
-            "content": "postMessage({from: \"typebot\", action: \"shootConfettis\"}, \"*\")"
-          }
-        },
-        {
-          "id": "cl126rfy6001t2e6d21gcb6b0",
-          "type": "image",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "content": {
-            "url": "https://media4.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif?cid=fe3852a3i4c33635xdtj3nesr9uq4zteujaab6b0jr42gpxx&rid=giphy.gif&ct=g"
-          }
-        },
-        {
-          "id": "cl126txta001y2e6dtxrbsnek",
-          "type": "text",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "content": {
-            "html": "<div>You can reach out to me using the contact bubble on the bottom right corner 🤓</div>",
-            "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "You can reach out to me using the contact bubble on the bottom right corner 🤓"
-                  }
-                ]
-              }
-            ],
-            "plainText": "You can reach out to me using the contact bubble on the bottom right corner 🤓"
-          }
-        },
-        {
-          "id": "cl12buyly00172e6991bz38ch",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "type": "text",
-          "content": {
-            "html": "<div>Let&#x27;s create your first typebot...</div>",
-            "richText": [
-              {
-                "type": "p",
-                "children": [{ "text": "Let's create your first typebot..." }]
-              }
-            ],
-            "plainText": "Let's create your first typebot..."
-          }
-        },
-        {
-          "id": "cl12bwpi800182e69kcivnp1s",
-          "groupId": "cl126p75m001j2e6d73qmes0m",
-          "type": "Code",
-          "options": {
-            "name": "Go to typebot creation",
-            "content": "setTimeout(() => {window.location.href = \"https://app.typebot.io/typebots/create?isFirstBot=true\"}, 4000)"
-          }
-        }
-      ],
-      "title": "Group #7",
-      "graphCoordinates": { "x": 1612, "y": 1103 }
-    },
-    {
-      "id": "cl126pv6w001n2e6dp0qkvthu",
-      "blocks": [
-        {
-          "id": "cl127yxym000b2e6d9hksxo6h",
-          "type": "text",
-          "groupId": "cl126pv6w001n2e6dp0qkvthu",
-          "content": {
-            "html": "<div>What else?</div>",
-            "richText": [
-              { "type": "p", "children": [{ "text": "What else?" }] }
-            ],
-            "plainText": "What else?"
-          }
-        },
-        {
-          "id": "cl126pv7n001o2e6dajltc4qz",
-          "type": "text input",
-          "groupId": "cl126pv6w001n2e6dp0qkvthu",
-          "options": {
-            "isLong": false,
-            "labels": { "button": "Send", "placeholder": "Type your answer" },
-            "variableId": "cl126q38p001q2e6d0hj23f6b"
-          }
-        },
-        {
-          "id": "cl128b34o00192e6dqjxs3cxf",
-          "type": "Code",
-          "groupId": "cl126pv6w001n2e6dp0qkvthu",
-          "options": {
-            "name": "Store Other categories in DB",
-            "content": "postMessage({from: \"typebot\", action: \"storeOtherCategories\", content: {{Other categories}}}, \"*\")"
-          },
-          "outgoingEdgeId": "cl128c0fu001a2e6droq69g6z"
-        }
-      ],
-      "title": "Group #8",
-      "graphCoordinates": { "x": 1943, "y": 895 }
-    },
-    {
-      "id": "cl1278gx9002v2e6d4kf3v89s",
-      "blocks": [
         {
           "id": "cl1278gyk002w2e6d744eb87n",
           "type": "Condition",
@@ -486,15 +313,110 @@
                 ],
                 "logicalOperator": "AND"
               },
-              "outgoingEdgeId": "cl1278r3b002z2e6d6d6rk9dh"
+              "outgoingEdgeId": "clcueadzi000g3b6sdb6o0xet"
             }
           ],
-          "groupId": "cl1278gx9002v2e6d4kf3v89s",
-          "outgoingEdgeId": "cl1278trd00312e6dxmzhcmmn"
+          "groupId": "clcueadzi00093b6s82ivles8",
+          "outgoingEdgeId": "clcueadzi000h3b6shpxplygo"
         }
       ],
-      "title": "Group #13",
-      "graphCoordinates": { "x": 1585, "y": 792 }
+      "graphCoordinates": { "x": 1030.2081982319628, "y": -0.2818258211374715 }
+    },
+    {
+      "id": "clcueadzi000a3b6spk404zpz",
+      "title": "Bye",
+      "blocks": [
+        {
+          "id": "cl126p76d001k2e6dbhnf2ysq",
+          "type": "text",
+          "content": {
+            "html": "<div>Thank you for answering those questions!</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Thank you for answering those questions!" }
+                ]
+              }
+            ],
+            "plainText": "Thank you for answering those questions!"
+          },
+          "groupId": "clcueadzi000a3b6spk404zpz"
+        },
+        {
+          "id": "cl126rfy6001t2e6d21gcb6b0",
+          "type": "image",
+          "content": {
+            "url": "https://media4.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif?cid=fe3852a3i4c33635xdtj3nesr9uq4zteujaab6b0jr42gpxx&rid=giphy.gif&ct=g"
+          },
+          "groupId": "clcueadzi000a3b6spk404zpz"
+        },
+        {
+          "id": "cl126txta001y2e6dtxrbsnek",
+          "type": "text",
+          "content": {
+            "html": "<div>You can reach out to me using the contact bubble on the bottom right corner 🤓</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You can reach out to me using the contact bubble on the bottom right corner 🤓"
+                  }
+                ]
+              }
+            ],
+            "plainText": "You can reach out to me using the contact bubble on the bottom right corner 🤓"
+          },
+          "groupId": "clcueadzi000a3b6spk404zpz"
+        },
+        {
+          "id": "cl12buyly00172e6991bz38ch",
+          "type": "text",
+          "content": {
+            "html": "<div>Let&#x27;s create your first typebot...</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Let's create your first typebot..." }]
+              }
+            ],
+            "plainText": "Let's create your first typebot..."
+          },
+          "groupId": "clcueadzi000a3b6spk404zpz"
+        }
+      ],
+      "graphCoordinates": { "x": 1585.6402200792238, "y": 219.28927860860924 }
+    },
+    {
+      "id": "clcueadzi000b3b6sv6936vs4",
+      "title": "Other category",
+      "blocks": [
+        {
+          "id": "cl127yxym000b2e6d9hksxo6h",
+          "type": "text",
+          "content": {
+            "html": "<div>What else?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "What else?" }] }
+            ],
+            "plainText": "What else?"
+          },
+          "groupId": "clcueadzi000b3b6sv6936vs4"
+        },
+        {
+          "id": "cl126pv7n001o2e6dajltc4qz",
+          "type": "text input",
+          "groupId": "clcueadzi000b3b6sv6936vs4",
+          "options": {
+            "isLong": false,
+            "labels": { "button": "Send", "placeholder": "Type your answer" },
+            "variableId": "cl126q38p001q2e6d0hj23f6b"
+          },
+          "outgoingEdgeId": "clcuehrt2000s3b6skmk7rhje"
+        }
+      ],
+      "graphCoordinates": { "x": 1369.6844213687823, "y": -7.90789096298402 }
     }
   ],
   "variables": [
@@ -505,99 +427,71 @@
   ],
   "edges": [
     {
-      "id": "cl1266kt100082e6d1wks5dtp",
-      "to": { "groupId": "cl1266bah00032e6dgdnj4vgz" },
-      "from": {
-        "blockId": "cl1265zct0001mb1afel460do",
-        "groupId": "cl1265zct0000mb1a6bir36w7"
-      }
-    },
-    {
-      "id": "cl126jsoo000x2e6ditu7dgf8",
-      "to": { "groupId": "cl126jioj000u2e6dqssno3hv" },
-      "from": {
-        "itemId": "cl126jb2q000s2e6dm60yq5p2",
-        "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-        "groupId": "cl126ixoq000p2e6dfbz9sype"
-      }
-    },
-    {
-      "id": "cl126l5tx00122e6dmisci6h5",
-      "to": { "groupId": "cl126krbp00102e6dnjelmfa1" },
+      "id": "clcueadzi000f3b6sb7lxyeta",
+      "to": { "groupId": "clcueadzi00093b6s82ivles8" },
       "from": {
         "itemId": "cl126jc5a000t2e6dqv91w7j6",
         "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-        "groupId": "cl126ixoq000p2e6dfbz9sype"
+        "groupId": "clcueadzi00073b6sqz8n5vxp"
       }
     },
     {
-      "id": "cl1278r3b002z2e6d6d6rk9dh",
-      "to": { "groupId": "cl126pv6w001n2e6dp0qkvthu" },
+      "id": "clcueadzi000g3b6sdb6o0xet",
+      "to": { "groupId": "clcueadzi000b3b6sv6936vs4" },
       "from": {
         "itemId": "cl1278gyk002x2e6dwmpzs3nf",
         "blockId": "cl1278gyk002w2e6d744eb87n",
-        "groupId": "cl1278gx9002v2e6d4kf3v89s"
+        "groupId": "clcueadzi00093b6s82ivles8"
       }
     },
     {
-      "id": "cl1278trd00312e6dxmzhcmmn",
-      "to": { "groupId": "cl126p75m001j2e6d73qmes0m" },
+      "id": "clcueadzi000h3b6shpxplygo",
+      "to": { "groupId": "clcueadzi000a3b6spk404zpz" },
       "from": {
         "blockId": "cl1278gyk002w2e6d744eb87n",
-        "groupId": "cl1278gx9002v2e6d4kf3v89s"
+        "groupId": "clcueadzi00093b6s82ivles8"
       }
     },
     {
-      "id": "cl128ag8i00162e6dufv3tgo0",
-      "to": { "groupId": "cl126krbp00102e6dnjelmfa1" },
+      "id": "clcueadzi000l3b6smlf218u7",
+      "to": { "groupId": "clcueadzi00073b6sqz8n5vxp" },
       "from": {
-        "blockId": "cl12890kw00132e6dp9v5dexm",
-        "groupId": "cl126jioj000u2e6dqssno3hv"
-      }
-    },
-    {
-      "id": "cl128azam00182e6dct61k7v5",
-      "to": { "groupId": "cl1278gx9002v2e6d4kf3v89s" },
-      "from": {
-        "blockId": "cl128ain900172e6d1osj4u90",
-        "groupId": "cl126krbp00102e6dnjelmfa1"
-      }
-    },
-    {
-      "id": "cl128c0fu001a2e6droq69g6z",
-      "to": { "groupId": "cl126p75m001j2e6d73qmes0m" },
-      "from": {
-        "blockId": "cl128b34o00192e6dqjxs3cxf",
-        "groupId": "cl126pv6w001n2e6dp0qkvthu"
-      }
-    },
-    {
-      "from": {
-        "groupId": "cl1266bah00032e6dgdnj4vgz",
+        "itemId": "cl1266bam00052e6dn1sdjnax",
         "blockId": "cl1266bam00042e6dm0gn22vy",
-        "itemId": "cl1266bam00052e6dn1sdjnax"
-      },
-      "to": { "groupId": "cl126ixoq000p2e6dfbz9sype" },
-      "id": "cl12bk3j6000c2e69bak89ja9"
+        "groupId": "clcueadzi00063b6sch7b1f32"
+      }
     },
     {
       "from": {
-        "groupId": "cl1267q1z000d2e6d949f2ge4",
-        "blockId": "cl1289y1s00142e6dvbkpvbje"
+        "groupId": "clcueadzi00073b6sqz8n5vxp",
+        "blockId": "cl126jioz000v2e6dwrk1f2cb"
       },
-      "to": {
-        "groupId": "cl126ixoq000p2e6dfbz9sype",
-        "blockId": "cl126hb9m000l2e6d5qk3mohn"
-      },
-      "id": "cl12bk56s000d2e69oll3nqxm"
+      "to": { "groupId": "clcueadzi00093b6s82ivles8" },
+      "id": "clcueb0cl000p3b6sisrc741n"
     },
     {
       "from": {
-        "groupId": "cl1266bah00032e6dgdnj4vgz",
-        "blockId": "cl1266bam00042e6dm0gn22vy"
+        "groupId": "clcueadzi00063b6sch7b1f32",
+        "blockId": "cl126820m000g2e6dfleq78bt"
       },
-      "to": { "groupId": "cl1267q1z000d2e6d949f2ge4" },
-      "id": "cl12bnfyd000g2e69g7lr3czq"
+      "to": { "groupId": "clcueadzi00073b6sqz8n5vxp" },
+      "id": "clcuecvjo000q3b6s42ouw3zz"
+    },
+    {
+      "from": {
+        "groupId": "clcueadzi00043b6s1r8wnql8",
+        "blockId": "cl1265zct0001mb1afel460do"
+      },
+      "to": { "groupId": "clcueadzi00063b6sch7b1f32" },
+      "id": "clcuefdfv000r3b6sqzv3prz3"
+    },
+    {
+      "from": {
+        "groupId": "clcueadzi000b3b6sv6936vs4",
+        "blockId": "cl126pv7n001o2e6dajltc4qz"
+      },
+      "to": { "groupId": "clcueadzi000a3b6spk404zpz" },
+      "id": "clcuehrt2000s3b6skmk7rhje"
     }
   ],
   "theme": {
@@ -608,12 +502,12 @@
         "placeholderColor": "#9095A0"
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
-        "isEnabled": true,
-        "url": "https://s3.eu-west-3.amazonaws.com/typebot/typebots/ckzp7a2za005809lczf2knzix/273013187_1315820332248257_6244778509534754615_n.jpg"
-      }
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
     "general": {
       "font": "Open Sans",
@@ -631,6 +525,10 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": "typebot-onboarding",
-  "customDomain": null
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
 }

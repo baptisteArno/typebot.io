@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultUrlInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Url input block', () => {
@@ -22,11 +21,13 @@ test.describe('Url input block', () => {
 
     await page.click('text=Preview')
     await expect(
-      typebotViewer(page).locator(
+      page.locator(
         `input[placeholder="${defaultUrlInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'url')
-    await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
+    await expect(
+      page.locator('typebot-standard').locator(`button`)
+    ).toBeDisabled()
 
     await page.click(`text=${defaultUrlInputOptions.labels.placeholder}`)
     await page.fill('#placeholder', 'Your URL...')
@@ -38,19 +39,15 @@ test.describe('Url input block', () => {
     )
 
     await page.click('text=Restart')
-    await typebotViewer(page)
+    await page
       .locator(`input[placeholder="Your URL..."]`)
       .fill('https://https://test')
-    await typebotViewer(page).locator('button >> text="Go"').click()
-    await expect(
-      typebotViewer(page).locator('text=Try again bro')
-    ).toBeVisible()
-    await typebotViewer(page)
+    await page.locator('button >> text="Go"').click()
+    await expect(page.locator('text=Try again bro')).toBeVisible()
+    await page
       .locator(`input[placeholder="Your URL..."]`)
       .fill('https://website.com')
-    await typebotViewer(page).locator('button >> text="Go"').click()
-    await expect(
-      typebotViewer(page).locator('text=https://website.com')
-    ).toBeVisible()
+    await page.locator('button >> text="Go"').click()
+    await expect(page.locator('text=https://website.com')).toBeVisible()
   })
 })

@@ -41,8 +41,8 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
       <Stack>
         <Text>Code:</Text>
         <CodeEditor
-          value={options.content ?? ''}
-          lang="js"
+          defaultValue={options.content ?? ''}
+          lang="javascript"
           onChange={handleCodeChange}
         />
       </Stack>

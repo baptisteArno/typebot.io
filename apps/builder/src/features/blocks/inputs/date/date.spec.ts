@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultDateInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Date input block', () => {
@@ -21,15 +20,14 @@ test.describe('Date input block', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
 
     await page.click('text=Preview')
-    await expect(
-      typebotViewer(page).locator('[data-testid="from-date"]')
-    ).toHaveAttribute('type', 'date')
-    await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
-    await typebotViewer(page)
-      .locator('[data-testid="from-date"]')
-      .fill('2021-01-01')
-    await typebotViewer(page).locator(`button`).click()
-    await expect(typebotViewer(page).locator('text="01/01/2021"')).toBeVisible()
+    await expect(page.locator('[data-testid="from-date"]')).toHaveAttribute(
+      'type',
+      'date'
+    )
+    await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
+    await page.locator('[data-testid="from-date"]').fill('2021-01-01')
+    await page.getByRole('button', { name: 'Send' }).click()
+    await expect(page.locator('text="01/01/2021"')).toBeVisible()
 
     await page.click(`text=Pick a date...`)
     await page.click('text=Is range?')
@@ -39,23 +37,19 @@ test.describe('Date input block', () => {
     await page.fill('#button', 'Go')
 
     await page.click('text=Restart')
+    await expect(page.locator(`[data-testid="from-date"]`)).toHaveAttribute(
+      'type',
+      'datetime-local'
+    )
+    await expect(page.locator(`[data-testid="to-date"]`)).toHaveAttribute(
+      'type',
+      'datetime-local'
+    )
+    await page.locator('[data-testid="from-date"]').fill('2021-01-01T11:00')
+    await page.locator('[data-testid="to-date"]').fill('2022-01-01T09:00')
+    await page.getByRole('button', { name: 'Go' }).click()
     await expect(
-      typebotViewer(page).locator(`[data-testid="from-date"]`)
-    ).toHaveAttribute('type', 'datetime-local')
-    await expect(
-      typebotViewer(page).locator(`[data-testid="to-date"]`)
-    ).toHaveAttribute('type', 'datetime-local')
-    await typebotViewer(page)
-      .locator('[data-testid="from-date"]')
-      .fill('2021-01-01T11:00')
-    await typebotViewer(page)
-      .locator('[data-testid="to-date"]')
-      .fill('2022-01-01T09:00')
-    await typebotViewer(page).locator(`button`).click()
-    await expect(
-      typebotViewer(page).locator(
-        'text="01/01/2021, 11:00 AM to 01/01/2022, 09:00 AM"'
-      )
+      page.locator('text="01/01/2021, 11:00 AM to 01/01/2022, 09:00 AM"')
     ).toBeVisible()
   })
 })

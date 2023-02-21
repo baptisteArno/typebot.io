@@ -64,6 +64,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
     isReadOnly,
+    previewingBlock,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
@@ -76,7 +77,10 @@ export const BlockNode = ({
   )
   const blockRef = useRef<HTMLDivElement | null>(null)
 
-  const isPreviewing = isConnecting || previewingEdge?.to.blockId === block.id
+  const isPreviewing =
+    isConnecting ||
+    previewingEdge?.to.blockId === block.id ||
+    previewingBlock?.id === block.id
 
   const onDrag = (position: NodePosition) => {
     if (block.type === 'start' || !onMouseDown) return

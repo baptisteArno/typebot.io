@@ -10,6 +10,7 @@ export const parsePublicTypebotToTypebot = (
   existingTypebot: Typebot
 ): Typebot => ({
   id: typebot.typebotId,
+  version: typebot.version,
   groups: typebot.groups,
   edges: typebot.edges,
   name: existingTypebot.name,
@@ -32,6 +33,7 @@ export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): PublicTypebot => ({
   id: createId(),
+  version: typebot.version,
   typebotId: typebot.id,
   groups: typebot.groups,
   edges: typebot.edges,

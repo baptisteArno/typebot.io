@@ -13,6 +13,7 @@ import { schemaForType } from './utils'
 export const publicTypebotSchema = schemaForType<PublicTypebotPrisma>()(
   z.object({
     id: z.string(),
+    version: z.enum(['3']).nullable(),
     createdAt: z.date(),
     updatedAt: z.date(),
     typebotId: z.string(),

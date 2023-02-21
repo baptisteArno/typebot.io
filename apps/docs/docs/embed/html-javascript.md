@@ -12,10 +12,10 @@ There, you can change the container dimensions. Here is a code example:
 
 ```html
 <script src="https://unpkg.com/typebot-js@2.2"></script>
-<div id="typebot-container" style="width: 100%; height: 600px;"></div>
+<typebot-standard style="width: 100%; height: 600px;"></typebot-standard>
 <script>
-  Typebot.initContainer('typebot-container', {
-    url: 'https://viewer.typebot.io/my-typebot',
+  Typebot.initStandard({
+    typebot: 'my-typebot',
   })
 </script>
 ```
@@ -32,8 +32,8 @@ Here is an example:
 <script src="https://unpkg.com/typebot-js@2.2"></script>
 <script>
   Typebot.initPopup({
-    url: 'https://viewer.typebot.io/my-typebot',
-    delay: 3000,
+    typebot: 'my-typebot',
+    autoShowDelay: 2000,
   })
 </script>
 ```
@@ -71,9 +71,8 @@ Here is an example:
 ```html
 <script src="https://unpkg.com/typebot-js@2.2"></script>
 <script>
-  var typebotCommands = Typebot.initPopup({
-    url: 'https://viewer.typebot.io/my-typebot',
-    delay: 3000,
+  Typebot.initBubble({
+    typebot: 'my-typebot',
   })
 </script>
 ```
@@ -122,12 +121,12 @@ You can bind these commands on a button element, for example:
 
 ## Additional configuration
 
-You can add hidden variable values in your embed code by adding the `hiddenVariables` option. Here is an example:
+You can prefill the bot variable values in your embed code by adding the `prefilledVariables` option. Here is an example:
 
 ```js
-Typebot.initContainer('typebot-container', {
-  url: 'https://viewer.typebot.io/my-typebot',
-  hiddenVariables: {
+Typebot.initStandard({
+  typebot: 'my-typebot',
+  prefilledVariables: {
     'Current URL': 'https://my-site/account',
     'User name': 'John Doe',
   },

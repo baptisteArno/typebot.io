@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { isDefined, isNotDefined } from 'utils'
 import { EditableTypebotName } from './EditableTypebotName'
-import { getBubbleActions } from 'typebot-js'
+import { open as openSupportBubble } from '@typebot.io/js'
 import Link from 'next/link'
 import { isCloudProdInstance } from '@/utils/helpers'
 import { headerHeight } from '../../constants'
@@ -70,7 +70,7 @@ export const TypebotHeader = () => {
 
   const handleHelpClick = () => {
     isCloudProdInstance
-      ? getBubbleActions().open()
+      ? openSupportBubble()
       : window.open('https://docs.typebot.io', '_blank')
   }
 

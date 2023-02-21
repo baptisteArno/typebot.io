@@ -3,7 +3,6 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultImageBubbleContent } from 'models'
 import { createId } from '@paralleldrive/cuid2'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
 const unsplashImageSrc =
@@ -117,10 +116,7 @@ test.describe.parallel('Image bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(typebotViewer(page).locator('img')).toHaveAttribute(
-        'src',
-        unsplashImageSrc
-      )
+      await expect(page.locator('img')).toHaveAttribute('src', unsplashImageSrc)
     })
   })
 })

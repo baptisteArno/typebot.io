@@ -8,9 +8,8 @@ import {
 } from 'models'
 import { createTypebots, updateTypebot } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
-test('Result should be in storage by default', async ({ page }) => {
+test('Result should be overwritten on page refresh', async ({ page }) => {
   const typebotId = createId()
   await createTypebots([
     {
@@ -21,18 +20,21 @@ test('Result should be in storage by default', async ({ page }) => {
       }),
     },
   ])
-  await Promise.all([
+
+  const [, response] = await Promise.all([
     page.goto(`/${typebotId}-public`),
-    page.waitForResponse(
-      (resp) =>
-        resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'POST'
-    ),
+    page.waitForResponse(/sendMessage/),
   ])
-  await page.reload()
-  const resultId = await page.evaluate(() => sessionStorage.getItem('resultId'))
+  const { resultId } = await response.json()
   expect(resultId).toBeDefined()
+  await expect(page.getByRole('textbox')).toBeVisible()
+
+  const [, secondResponse] = await Promise.all([
+    page.reload(),
+    page.waitForResponse(/sendMessage/),
+  ])
+  const { resultId: secondResultId } = await secondResponse.json()
+  expect(secondResultId).toBe(resultId)
 })
 
 test.describe('Create result on page refresh enabled', () => {
@@ -54,28 +56,20 @@ test.describe('Create result on page refresh enabled', () => {
         }),
       },
     ])
-    await Promise.all([
+    const [, response] = await Promise.all([
       page.goto(`/${typebotId}-public`),
-      page.waitForResponse(
-        (resp) =>
-          resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-          resp.status() === 200 &&
-          resp.request().method() === 'POST'
-      ),
+      page.waitForResponse(/sendMessage/),
     ])
-    await Promise.all([
+    const { resultId } = await response.json()
+    expect(resultId).toBeDefined()
+
+    await expect(page.getByRole('textbox')).toBeVisible()
+    const [, secondResponse] = await Promise.all([
       page.reload(),
-      page.waitForResponse(
-        (resp) =>
-          resp.request().url().includes(`/api/typebots/${typebotId}/results`) &&
-          resp.status() === 200 &&
-          resp.request().method() === 'POST'
-      ),
+      page.waitForResponse(/sendMessage/),
     ])
-    const resultId = await page.evaluate(() =>
-      sessionStorage.getItem('resultId')
-    )
-    expect(resultId).toBe(null)
+    const { resultId: secondResultId } = await secondResponse.json()
+    expect(secondResultId).not.toBe(resultId)
   })
 })
 
@@ -125,14 +119,12 @@ test('Show close message', async ({ page }) => {
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = createId()
-  const googleTagManagerId = 'GTM-M72NXKB'
   const customMetadata: Metadata = {
     description: 'My custom description',
     title: 'Custom title',
     favIconUrl: 'https://www.baptistearno.com/favicon.png',
     imageUrl: 'https://www.baptistearno.com/images/site-preview.png',
     customHeadCode: '<meta name="author" content="John Doe">',
-    googleTagManagerId,
   }
   await createTypebots([
     {
@@ -148,11 +140,6 @@ test('Should correctly parse metadata', async ({ page }) => {
     },
   ])
   await page.goto(`/${typebotId}-public`)
-  await expect(
-    typebotViewer(page).locator(
-      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
-    )
-  ).toBeVisible()
   expect(
     await page.evaluate(`document.querySelector('title').textContent`)
   ).toBe(customMetadata.title)
@@ -177,6 +164,11 @@ test('Should correctly parse metadata', async ({ page }) => {
       ).getAttribute('href')
     )
   ).toBe(customMetadata.favIconUrl)
+  await expect(
+    page.locator(
+      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+    )
+  ).toBeVisible()
   expect(
     await page.evaluate(
       () =>
@@ -184,12 +176,4 @@ test('Should correctly parse metadata', async ({ page }) => {
           .content
     )
   ).toBe('John Doe')
-  expect(
-    await page.evaluate(
-      (googleTagManagerId) =>
-        document.querySelector(
-          `iframe[src="https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}"]`
-        ) as HTMLMetaElement
-    )
-  ).toBeDefined()
 })

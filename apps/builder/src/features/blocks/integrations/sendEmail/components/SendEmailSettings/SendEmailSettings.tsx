@@ -181,7 +181,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           </Flex>
           {options.isBodyCode ? (
             <CodeEditor
-              value={options.body ?? ''}
+              defaultValue={options.body ?? ''}
               onChange={handleBodyChange}
               lang="html"
             />

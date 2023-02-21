@@ -1,6 +1,5 @@
 import test, { expect } from '@playwright/test'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -64,7 +63,7 @@ test.describe('Send email block', () => {
     await page.fill('[data-testid="body-input"]', 'Here is my email')
 
     await page.click('text=Preview')
-    await typebotViewer(page).locator('text=Go').click()
+    await page.locator('typebot-standard').locator('text=Go').click()
     await expect(
       page.locator('text=Emails are not sent in preview mode >> nth=0')
     ).toBeVisible()

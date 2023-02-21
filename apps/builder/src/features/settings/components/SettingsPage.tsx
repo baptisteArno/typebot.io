@@ -1,19 +1,12 @@
 import { Seo } from '@/components/Seo'
 import { TypebotHeader, useTypebot } from '@/features/editor'
 import { Flex } from '@chakra-ui/react'
-import { TypebotViewer } from 'bot-engine'
-import { useMemo } from 'react'
+import { Standard } from '@typebot.io/react'
 import { getViewerUrl } from 'utils'
 import { SettingsSideMenu } from './SettingsSideMenu'
-import { parseTypebotToPublicTypebot } from '@/features/publish'
 
 export const SettingsPage = () => {
   const { typebot } = useTypebot()
-  const publicTypebot = useMemo(
-    () => (typebot ? parseTypebotToPublicTypebot(typebot) : undefined),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typebot?.settings]
-  )
 
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
@@ -21,10 +14,8 @@ export const SettingsPage = () => {
       <TypebotHeader />
       <Flex h="full" w="full">
         <SettingsSideMenu />
-        <Flex flex="1" overflow="hidden">
-          {publicTypebot && (
-            <TypebotViewer apiHost={getViewerUrl()} typebot={publicTypebot} />
-          )}
+        <Flex flex="1">
+          {typebot && <Standard apiHost={getViewerUrl()} typebot={typebot} />}
         </Flex>
       </Flex>
     </Flex>

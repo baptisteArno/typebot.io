@@ -557,7 +557,7 @@
   },
   "settings": {
     "general": {
-      "isBrandingEnabled": false,
+      "isBrandingEnabled": true,
       "isInputPrefillEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": false

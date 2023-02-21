@@ -51,9 +51,9 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
 
         {options.isCode ?? false ? (
           <CodeEditor
-            value={options.expressionToEvaluate ?? ''}
+            defaultValue={options.expressionToEvaluate ?? ''}
             onChange={handleExpressionChange}
-            lang="js"
+            lang="javascript"
           />
         ) : (
           <Textarea

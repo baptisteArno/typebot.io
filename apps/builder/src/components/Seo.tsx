@@ -2,7 +2,6 @@ import Head from 'next/head'
 
 export const Seo = ({
   title,
-  currentUrl = 'https://app.typebot.io',
   description = 'Create and publish conversational forms that collect 4 times more answers and feel native to your product',
   imagePreviewUrl = 'https://app.typebot.io/site-preview.png',
 }: {
@@ -19,9 +18,6 @@ export const Seo = ({
       <meta name="title" content={title} />
       <meta property="og:title" content={title} />
       <meta property="twitter:title" content={title} />
-
-      <meta property="twitter:url" content={currentUrl} />
-      <meta property="og:url" content={currentUrl} />
 
       <meta name="description" content={description} />
       <meta property="twitter:description" content={description} />

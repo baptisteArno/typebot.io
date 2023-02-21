@@ -30,7 +30,8 @@
           "type": "email input",
           "options": {
             "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "variableId": "qyLW6xD1AyLeedso2tHmhw"
+            "variableId": "qyLW6xD1AyLeedso2tHmhw",
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
           },
           "outgoingEdgeId": "4yg9V76fdDntpDEw6H3tvU"
         }

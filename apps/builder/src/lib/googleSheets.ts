@@ -27,7 +27,7 @@ export const getAuthenticatedGoogleClient = async (
   ) as GoogleSheetsCredentialsData
 
   oauth2Client.setCredentials(data)
-  oauth2Client.on('tokens', updateTokens(credentialsId, data))
+  oauth2Client.on('tokens', updateTokens(credentials.id, data))
   return { client: oauth2Client, credentials }
 }
 

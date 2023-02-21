@@ -8,7 +8,6 @@ import {
   importTypebotInDatabase,
   injectFakeResults,
 } from 'utils/playwright/databaseActions'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 import { Plan } from 'db'
 
@@ -21,18 +20,16 @@ test('should work as expected', async ({ page, browser }) => {
     publicId: `${typebotId}-public`,
   })
   await page.goto(`/${typebotId}-public`)
-  await typebotViewer(page)
+  await page
     .locator(`input[type="file"]`)
     .setInputFiles([
       getTestAsset('typebots/api.json'),
       getTestAsset('typebots/fileUpload.json'),
       getTestAsset('typebots/hugeGroup.json'),
     ])
-  await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
-  await typebotViewer(page).locator('text="Upload 3 files"').click()
-  await expect(
-    typebotViewer(page).locator(`text="3 files uploaded"`)
-  ).toBeVisible()
+  await expect(page.locator(`text="3"`)).toBeVisible()
+  await page.locator('text="Upload 3 files"').click()
+  await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
   await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.getByRole('link', { name: 'api.json' })).toHaveAttribute(
     'href',
@@ -100,18 +97,16 @@ test.describe('Storage limit is reached', () => {
     page,
   }) => {
     await page.goto(`/${typebotId}-public`)
-    await typebotViewer(page)
+    await page
       .locator(`input[type="file"]`)
       .setInputFiles([
         getTestAsset('typebots/api.json'),
         getTestAsset('typebots/fileUpload.json'),
         getTestAsset('typebots/hugeGroup.json'),
       ])
-    await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
-    await typebotViewer(page).locator('text="Upload 3 files"').click()
-    await expect(
-      typebotViewer(page).locator(`text="3 files uploaded"`)
-    ).toBeVisible()
+    await expect(page.locator(`text="3"`)).toBeVisible()
+    await page.locator('text="Upload 3 files"').click()
+    await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
     await page.evaluate(() =>
       window.localStorage.setItem('workspaceId', 'starterWorkspace')
     )

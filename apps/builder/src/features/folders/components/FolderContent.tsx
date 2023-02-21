@@ -1,5 +1,4 @@
 import { DashboardFolder, WorkspaceRole } from 'db'
-import { env } from 'utils'
 import {
   Flex,
   Heading,
@@ -11,7 +10,6 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from '../TypebotDndProvider'
-import { useUser } from '@/features/account'
 import React, { useState } from 'react'
 import { BackButton } from './BackButton'
 import { OnboardingModal } from '../../dashboard/components/OnboardingModal'
@@ -26,14 +24,12 @@ import { CreateFolderButton } from './CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderButton'
 import { TypebotButton } from './TypebotButton'
 import { TypebotCardOverlay } from './TypebotButtonOverlay'
-import { isCloudProdInstance } from '@/utils/helpers'
 
 type Props = { folder: DashboardFolder | null }
 
 const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
-  const { user } = useUser()
   const { workspace, currentRole } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
@@ -160,14 +156,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
-      {typebots &&
-        !isTypebotLoading &&
-        user &&
-        isCloudProdInstance &&
-        folder === null &&
-        env('E2E_TEST') !== 'true' && (
-          <OnboardingModal totalTypebots={typebots.length} />
-        )}
+      {typebots && <OnboardingModal totalTypebots={typebots.length} />}
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>

@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultEmailInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Email input block', () => {
@@ -22,11 +21,11 @@ test.describe('Email input block', () => {
 
     await page.click('text=Preview')
     await expect(
-      typebotViewer(page).locator(
+      page.locator(
         `input[placeholder="${defaultEmailInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'email')
-    await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
+    await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultEmailInputOptions.labels.placeholder}`)
     await page.fill(
@@ -41,19 +40,13 @@ test.describe('Email input block', () => {
     )
 
     await page.click('text=Restart')
-    await typebotViewer(page)
-      .locator(`input[placeholder="Your email..."]`)
-      .fill('test@test')
-    await typebotViewer(page).locator('text=Go').click()
-    await expect(
-      typebotViewer(page).locator('text=Try again bro')
-    ).toBeVisible()
-    await typebotViewer(page)
+    await page.locator(`input[placeholder="Your email..."]`).fill('test@test')
+    await page.getByRole('button', { name: 'Go' }).click()
+    await expect(page.locator('text=Try again bro')).toBeVisible()
+    await page
       .locator(`input[placeholder="Your email..."]`)
       .fill('test@test.com')
-    await typebotViewer(page).locator('text=Go').click()
-    await expect(
-      typebotViewer(page).locator('text=test@test.com')
-    ).toBeVisible()
+    await page.getByRole('button', { name: 'Go' }).click()
+    await expect(page.locator('text=test@test.com')).toBeVisible()
   })
 })

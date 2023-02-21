@@ -11,31 +11,24 @@ import {
   UseToastOptions,
   VStack,
 } from '@chakra-ui/react'
-import { TypebotViewer } from 'bot-engine'
-import { useToast } from '@/hooks/useToast'
 import { useEditor } from '../providers/EditorProvider'
 import { useGraph } from '@/features/graph'
 import { useTypebot } from '../providers/TypebotProvider'
-import { Log } from 'db'
-import React, { useMemo, useState } from 'react'
-import { getViewerUrl } from 'utils'
+import React, { useState } from 'react'
 import { headerHeight } from '../constants'
-import { parseTypebotToPublicTypebot } from '@/features/publish'
+import { Standard } from '@typebot.io/react'
+import { ChatReply } from 'models'
+import { useToast } from '@/hooks/useToast'
 
 export const PreviewDrawer = () => {
   const isDark = useColorMode().colorMode === 'dark'
-  const { typebot } = useTypebot()
+  const { typebot, save, isSavingLoading } = useTypebot()
   const { setRightPanel, startPreviewAtGroup } = useEditor()
-  const { setPreviewingEdge } = useGraph()
+  const { setPreviewingBlock } = useGraph()
   const [isResizing, setIsResizing] = useState(false)
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
   const [restartKey, setRestartKey] = useState(0)
-
-  const publicTypebot = useMemo(
-    () => (typebot ? { ...parseTypebotToPublicTypebot(typebot) } : undefined),
-    [typebot]
-  )
 
   const { showToast } = useToast()
 
@@ -54,15 +47,19 @@ export const PreviewDrawer = () => {
   }
   useEventListener('mouseup', handleMouseUp)
 
-  const handleRestartClick = () => setRestartKey((key) => key + 1)
+  const handleRestartClick = async () => {
+    await save()
+    setRestartKey((key) => key + 1)
+  }
 
   const handleCloseClick = () => {
-    setPreviewingEdge(undefined)
+    setPreviewingBlock(undefined)
     setRightPanel(undefined)
   }
 
-  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
-    showToast(log as UseToastOptions)
+  const handleNewLogs = (logs: ChatReply['logs']) => {
+    logs?.forEach((log) => showToast(log as UseToastOptions))
+  }
 
   return (
     <Flex
@@ -92,29 +89,25 @@ export const PreviewDrawer = () => {
 
       <VStack w="full" spacing={4}>
         <Flex justifyContent={'space-between'} w="full">
-          <Button onClick={handleRestartClick}>Restart</Button>
+          <Button onClick={handleRestartClick} isLoading={isSavingLoading}>
+            Restart
+          </Button>
           <CloseButton onClick={handleCloseClick} />
         </Flex>
 
-        {publicTypebot && (
-          <Flex
-            borderWidth={'1px'}
-            borderRadius={'lg'}
-            h="full"
-            w="full"
+        {typebot && (
+          <Standard
             key={restartKey + (startPreviewAtGroup ?? '')}
-            pointerEvents={isResizing ? 'none' : 'auto'}
-          >
-            <TypebotViewer
-              apiHost={getViewerUrl()}
-              typebot={publicTypebot}
-              onNewGroupVisible={setPreviewingEdge}
-              onNewLog={handleNewLog}
-              startGroupId={startPreviewAtGroup}
-              isPreview
-              style={{ borderRadius: '10px' }}
-            />
-          </Flex>
+            typebot={typebot}
+            startGroupId={startPreviewAtGroup}
+            onNewInputBlock={setPreviewingBlock}
+            onNewLogs={handleNewLogs}
+            style={{
+              borderWidth: '1px',
+              borderRadius: '0.25rem',
+              pointerEvents: isResizing ? 'none' : 'auto',
+            }}
+          />
         )}
       </VStack>
     </Flex>

@@ -1,6 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -33,25 +32,17 @@ test.describe.parallel('Google sheets integration', () => {
     )
 
     await page.click('text=Preview')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('georges@gmail.com')
-    await Promise.all([
-      page.waitForResponse(
-        (resp) =>
-          resp
-            .request()
-            .url()
-            .includes(
-              '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
-            ) &&
-          resp.status() === 200 &&
-          resp.request().method() === 'POST'
-      ),
-      typebotViewer(page)
-        .locator('input[placeholder="Type your email..."]')
-        .press('Enter'),
-    ])
+    await page
+      .locator('typebot-standard')
+      .locator('input[placeholder="Type your email..."]')
+      .press('Enter')
+    await expect(
+      page.getByText('Succesfully inserted row in CRM > Sheet1').nth(0)
+    ).toBeVisible()
   })
 
   test('Update row should work', async ({ page }) => {
@@ -82,25 +73,17 @@ test.describe.parallel('Google sheets integration', () => {
     )
 
     await page.click('text=Preview')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('test@test.com')
-    await Promise.all([
-      page.waitForResponse(
-        (resp) =>
-          resp
-            .request()
-            .url()
-            .includes(
-              '/api/integrations/google-sheets/spreadsheets/1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM/sheets/0'
-            ) &&
-          resp.status() === 200 &&
-          resp.request().method() === 'POST'
-      ),
-      typebotViewer(page)
-        .locator('input[placeholder="Type your email..."]')
-        .press('Enter'),
-    ])
+    await page
+      .locator('typebot-standard')
+      .locator('input[placeholder="Type your email..."]')
+      .press('Enter')
+    await expect(
+      page.getByText('Succesfully updated row in CRM > Sheet1').nth(0)
+    ).toBeVisible()
   })
 
   test('Get row should work', async ({ page }) => {
@@ -143,15 +126,17 @@ test.describe.parallel('Google sheets integration', () => {
     await createNewVar(page, 'Last name')
 
     await page.click('text=Preview')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('test2@test.com')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
-    await expect(typebotViewer(page).locator('text=Your name is:')).toHaveText(
-      /John|Fred|Georges/
-    )
+    await expect(
+      page.locator('typebot-standard').locator('text=Your name is:')
+    ).toHaveText(/John|Fred|Georges/)
   })
 })
 

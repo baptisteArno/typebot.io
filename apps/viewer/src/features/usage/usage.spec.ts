@@ -8,7 +8,6 @@ import {
   importTypebotInDatabase,
   injectFakeResults,
 } from 'utils/playwright/databaseActions'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test('should not start if chat limit is reached', async ({ page, context }) => {
   await test.step('Free plan', async () => {
@@ -38,9 +37,7 @@ test('should not start if chat limit is reached', async ({ page, context }) => {
     })
     await injectFakeResults({ typebotId, count: 3000 })
     await page.goto(`/${typebotId}-public`)
-    await expect(
-      typebotViewer(page).locator('text="Hey there, upload please"')
-    ).toBeVisible()
+    await expect(page.locator('text="Hey there, upload please"')).toBeVisible()
   })
 
   await test.step('Custom plan', async () => {
@@ -63,9 +60,7 @@ test('should not start if chat limit is reached', async ({ page, context }) => {
     })
     const page = await context.newPage()
     await page.goto(`/${typebotId}-public`)
-    await expect(
-      typebotViewer(page).locator('text="Hey there, upload please"')
-    ).toBeVisible()
+    await expect(page.locator('text="Hey there, upload please"')).toBeVisible()
     await injectFakeResults({ typebotId, count: 2000 })
     await page.goto(`/${typebotId}-public`)
     await expect(page.locator('text="This bot is now closed."')).toBeVisible()

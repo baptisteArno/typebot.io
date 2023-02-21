@@ -3,7 +3,6 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultTextBubbleContent } from 'models'
 import { createId } from '@paralleldrive/cuid2'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
@@ -51,17 +50,17 @@ test.describe('Text bubble block', () => {
     await page.getByRole('menuitem', { name: 'Create test' }).click()
 
     await page.click('text=Preview')
+    await expect(page.locator('span.slate-bold >> nth=0')).toHaveText(
+      'Bold text'
+    )
+    await expect(page.locator('span.slate-italic >> nth=0')).toHaveText(
+      'Italic text'
+    )
+    await expect(page.locator('span.slate-underline >> nth=0')).toHaveText(
+      'Underlined text'
+    )
     await expect(
-      typebotViewer(page).locator('span.slate-bold >> nth=0')
-    ).toHaveText('Bold text')
-    await expect(
-      typebotViewer(page).locator('span.slate-italic >> nth=0')
-    ).toHaveText('Italic text')
-    await expect(
-      typebotViewer(page).locator('span.slate-underline >> nth=0')
-    ).toHaveText('Underlined text')
-    await expect(
-      typebotViewer(page).locator('a[href="https://github.com"]')
+      page.locator('typebot-standard').locator('a[href="https://github.com"]')
     ).toHaveText('My super link')
   })
 })

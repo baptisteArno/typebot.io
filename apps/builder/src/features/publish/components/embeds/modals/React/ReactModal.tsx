@@ -1,65 +1,25 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  IconButton,
-  Heading,
-  HStack,
-} from '@chakra-ui/react'
-import { ChevronLeftIcon } from '@/components/icons'
 import React, { useState } from 'react'
 import { ModalProps } from '../../EmbedButton'
-import { ChooseEmbedTypeList } from '../ChooseEmbedTypeList'
-import { capitalize } from 'utils'
-import { ReactInstructions } from './ReactInstructions'
-import { AlertInfo } from '@/components/AlertInfo'
+import { EmbedModal } from '../../EmbedModal'
+import { isDefined } from '@udecode/plate-common'
+import { ReactInstructions } from './instructions/ReactInstructions'
 
 export const ReactModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
-  const [chosenEmbedType, setChosenEmbedType] = useState<
+  const [selectedEmbedType, setSelectedEmbedType] = useState<
     'standard' | 'popup' | 'bubble' | undefined
   >()
   return (
-    <Modal
+    <EmbedModal
+      titlePrefix="React"
       isOpen={isOpen}
       onClose={onClose}
-      size={!chosenEmbedType ? '2xl' : 'xl'}
+      isPublished={isPublished}
+      onSelectEmbedType={setSelectedEmbedType}
+      selectedEmbedType={selectedEmbedType}
     >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          <HStack>
-            {chosenEmbedType && (
-              <IconButton
-                icon={<ChevronLeftIcon />}
-                aria-label="back"
-                variant="ghost"
-                colorScheme="gray"
-                mr={2}
-                onClick={() => setChosenEmbedType(undefined)}
-              />
-            )}
-            <Heading size="md">
-              React {chosenEmbedType && `- ${capitalize(chosenEmbedType)}`}
-            </Heading>
-          </HStack>
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          {!isPublished && (
-            <AlertInfo mb="2">You need to publish your bot first.</AlertInfo>
-          )}
-          {!chosenEmbedType ? (
-            <ChooseEmbedTypeList onSelectEmbedType={setChosenEmbedType} />
-          ) : (
-            <ReactInstructions type={chosenEmbedType} />
-          )}
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+      {isDefined(selectedEmbedType) && (
+        <ReactInstructions type={selectedEmbedType} />
+      )}
+    </EmbedModal>
   )
 }

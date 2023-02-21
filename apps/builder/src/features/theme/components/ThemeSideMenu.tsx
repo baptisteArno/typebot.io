@@ -38,6 +38,7 @@ export const ThemeSideMenu = () => {
       spacing={10}
       overflowY="scroll"
       pb="20"
+      position="relative"
     >
       <Heading fontSize="xl" textAlign="center">
         Customize the theme

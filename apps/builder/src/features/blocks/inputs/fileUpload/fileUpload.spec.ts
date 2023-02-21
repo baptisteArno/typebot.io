@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultFileInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -24,14 +23,12 @@ test('options should work', async ({ page }) => {
   await page.goto(`/typebots/${typebotId}/edit`)
 
   await page.click('text=Preview')
-  await expect(
-    typebotViewer(page).locator(`text=Click to upload`)
-  ).toBeVisible()
-  await expect(typebotViewer(page).locator(`text="Skip"`)).toBeHidden()
-  await typebotViewer(page)
+  await expect(page.locator(`text=Click to upload`)).toBeVisible()
+  await expect(page.locator(`text="Skip"`)).toBeHidden()
+  await page
     .locator(`input[type="file"]`)
     .setInputFiles([getTestAsset('avatar.jpg')])
-  await expect(typebotViewer(page).locator(`text=File uploaded`)).toBeVisible()
+  await expect(page.locator(`text=File uploaded`)).toBeVisible()
   await page.click('text="Collect file"')
   await page.click('text="Required?"')
   await page.click('text="Allow multiple files?"')
@@ -41,20 +38,18 @@ test('options should work', async ({ page }) => {
   await page.fill('[value="Skip"]', 'Pass')
   await page.fill('input[value="10"]', '20')
   await page.click('text="Restart"')
-  await expect(typebotViewer(page).locator(`text="Pass"`)).toBeVisible()
-  await expect(typebotViewer(page).locator(`text="Upload now!!"`)).toBeVisible()
-  await typebotViewer(page)
+  await expect(page.locator(`text="Pass"`)).toBeVisible()
+  await expect(page.locator(`text="Upload now!!"`)).toBeVisible()
+  await page
     .locator(`input[type="file"]`)
     .setInputFiles([
       getTestAsset('avatar.jpg'),
       getTestAsset('avatar.jpg'),
       getTestAsset('avatar.jpg'),
     ])
-  await expect(typebotViewer(page).locator(`text="3"`)).toBeVisible()
-  await typebotViewer(page).locator('text="Go"').click()
-  await expect(
-    typebotViewer(page).locator(`text="3 files uploaded"`)
-  ).toBeVisible()
+  await expect(page.locator(`text="3"`)).toBeVisible()
+  await page.locator('text="Go"').click()
+  await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
 })
 
 test.describe('Free workspace', () => {
