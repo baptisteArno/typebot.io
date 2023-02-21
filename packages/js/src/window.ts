@@ -31,36 +31,37 @@ export const initBubble = (props: BubbleProps) => {
   document.body.appendChild(bubbleElement)
 }
 
+type Typebot = {
+  initStandard: typeof initStandard
+  initPopup: typeof initPopup
+  initBubble: typeof initBubble
+  close: typeof close
+  hidePreviewMessage: typeof hidePreviewMessage
+  open: typeof open
+  setPrefilledVariables: typeof setPrefilledVariables
+  showPreviewMessage: typeof showPreviewMessage
+  toggle: typeof toggle
+}
+
 declare const window:
   | {
-      Typebot:
-        | {
-            initStandard: typeof initStandard
-            initPopup: typeof initPopup
-            initBubble: typeof initBubble
-            close: typeof close
-            hidePreviewMessage: typeof hidePreviewMessage
-            open: typeof open
-            setPrefilledVariables: typeof setPrefilledVariables
-            showPreviewMessage: typeof showPreviewMessage
-            toggle: typeof toggle
-          }
-        | undefined
+      Typebot: Typebot | undefined
     }
   | undefined
 
-export const injectTypebotInWindow = () => {
-  if (typeof window === 'undefined') return
+export const parseTypebot = () => ({
+  initStandard,
+  initPopup,
+  initBubble,
+  close,
+  hidePreviewMessage,
+  open,
+  setPrefilledVariables,
+  showPreviewMessage,
+  toggle,
+})
 
-  window.Typebot = {
-    initStandard,
-    initPopup,
-    initBubble,
-    close,
-    hidePreviewMessage,
-    open,
-    setPrefilledVariables,
-    showPreviewMessage,
-    toggle,
-  }
+export const injectTypebotInWindow = (typebot: Typebot) => {
+  if (typeof window === 'undefined') return
+  window.Typebot = { ...typebot }
 }

@@ -1,5 +1,10 @@
 import { registerWebComponents } from './register'
-import { injectTypebotInWindow } from './window'
+import { parseTypebot, injectTypebotInWindow } from './window'
 
 registerWebComponents()
-injectTypebotInWindow()
+
+const typebot = parseTypebot()
+
+injectTypebotInWindow(typebot)
+
+export default typebot
