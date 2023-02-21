@@ -25,6 +25,9 @@ export const Bubble = (props: Props) => {
       await import('@typebot.io/js/dist/web')
       setIsInitialized(true)
     })()
+    return () => {
+      ref.current?.remove()
+    }
   }, [])
 
   const attachBubbleToDom = useCallback((props: Props) => {
