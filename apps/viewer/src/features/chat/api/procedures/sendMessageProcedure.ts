@@ -21,7 +21,12 @@ import {
   Typebot,
   Variable,
 } from 'models'
-import { continueBotFlow, getSession, startBotFlow } from '../utils'
+import {
+  continueBotFlow,
+  getSession,
+  setResultAsCompleted,
+  startBotFlow,
+} from '../utils'
 import { omit } from 'utils'
 
 export const sendMessageProcedure = publicProcedure
@@ -76,6 +81,9 @@ export const sendMessageProcedure = publicProcedure
           state: newSessionState,
         },
       })
+
+      if (!input && session.state.result?.hasStarted)
+        await setResultAsCompleted(session.state.result.id)
 
       return {
         messages,

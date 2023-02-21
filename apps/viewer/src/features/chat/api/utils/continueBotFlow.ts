@@ -5,7 +5,7 @@ import {
   validatePhoneNumber,
 } from '@/features/blocks/inputs/phone/api'
 import { validateUrl } from '@/features/blocks/inputs/url/api'
-import { parseVariables } from '@/features/variables'
+import { parseVariables, updateVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import got from 'got'
@@ -17,7 +17,6 @@ import {
   InputBlock,
   InputBlockType,
   SessionState,
-  Variable,
 } from 'models'
 import { isInputBlock, isNotDefined } from 'utils'
 import { executeGroup } from './executeGroup'
@@ -58,18 +57,10 @@ export const continueBotFlow =
     if (formattedReply && !isReplyValid(formattedReply, block))
       return parseRetryMessage(block)
 
-    const newVariables = await processAndSaveAnswer(
+    const newSessionState = await processAndSaveAnswer(
       state,
       block
     )(formattedReply)
-
-    const newSessionState = {
-      ...state,
-      typebot: {
-        ...state.typebot,
-        variables: newVariables,
-      },
-    }
 
     const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
 
@@ -93,44 +84,49 @@ export const continueBotFlow =
   }
 
 const processAndSaveAnswer =
-  (
-    state: Pick<SessionState, 'result' | 'typebot' | 'isPreview'>,
-    block: InputBlock
-  ) =>
-  async (reply: string | null): Promise<Variable[]> => {
-    if (!reply) return state.typebot.variables
+  (state: SessionState, block: InputBlock) =>
+  async (reply: string | null): Promise<SessionState> => {
+    if (!reply) return state
     if (!state.isPreview && state.result) {
       await saveAnswer(state.result.id, block)(reply)
       if (!state.result.hasStarted) await setResultAsStarted(state.result.id)
     }
-    const newVariables = saveVariableValueIfAny(state, block)(reply)
-    return newVariables
+    const newState = await saveVariableValueIfAny(state, block)(reply)
+    return {
+      ...newState,
+      result: newState.result
+        ? { ...newState.result, hasStarted: true }
+        : undefined,
+    }
   }
 
 const saveVariableValueIfAny =
-  (state: Pick<SessionState, 'result' | 'typebot'>, block: InputBlock) =>
-  (reply: string): Variable[] => {
-    if (!block.options.variableId) return state.typebot.variables
-    const variable = state.typebot.variables.find(
+  (state: SessionState, block: InputBlock) =>
+  async (reply: string): Promise<SessionState> => {
+    if (!block.options.variableId) return state
+    const foundVariable = state.typebot.variables.find(
       (variable) => variable.id === block.options.variableId
     )
-    if (!variable) return state.typebot.variables
+    if (!foundVariable) return state
 
-    return [
-      ...state.typebot.variables.filter(
-        (variable) => variable.id !== block.options.variableId
-      ),
-      {
-        ...variable,
-        value: reply,
-      },
-    ]
+    const newSessionState = await updateVariables(state)([
+      { ...foundVariable, value: reply },
+    ])
+
+    return newSessionState
   }
 
 const setResultAsStarted = async (resultId: string) => {
   await prisma.result.update({
     where: { id: resultId },
     data: { hasStarted: true },
+  })
+}
+
+export const setResultAsCompleted = async (resultId: string) => {
+  await prisma.result.update({
+    where: { id: resultId },
+    data: { isCompleted: true },
   })
 }
 
