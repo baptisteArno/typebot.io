@@ -1,5 +1,6 @@
 import { SendButton, Spinner } from '@/components/SendButton'
 import { BotContext, InputSubmitContent } from '@/types'
+import { guessApiHost } from '@/utils/guessApiHost'
 import { FileInputBlock } from 'models'
 import { defaultFileInputOptions } from 'models/features/blocks/inputs/file'
 import { createSignal, Match, Show, Switch } from 'solid-js'
@@ -50,7 +51,9 @@ export const FileUploadForm = (props: Props) => {
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${props.context.typebotId}/blocks/${props.block.id}`,
+      basePath: `${props.context.apiHost ?? guessApiHost()}/api/typebots/${
+        props.context.typebotId
+      }/blocks/${props.block.id}`,
       files: [
         {
           file,
@@ -73,7 +76,9 @@ export const FileUploadForm = (props: Props) => {
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${props.context.typebotId}/blocks/${props.block.id}`,
+      basePath: `${props.context.apiHost ?? guessApiHost()}/api/typebots/${
+        props.context.typebotId
+      }/blocks/${props.block.id}`,
       files: files.map((file) => ({
         file: file,
         path: `public/results/${props.context.resultId}/${props.block.id}/${file.name}`,
