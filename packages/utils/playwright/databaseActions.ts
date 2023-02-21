@@ -78,6 +78,7 @@ export const importTypebotInDatabase = async (
     ...JSON.parse(readFileSync(path).toString()),
     workspaceId: proWorkspaceId,
     ...updates,
+    version: '3',
   }
   await prisma.typebot.create({
     data: parseCreateTypebot(typebot),

@@ -337,7 +337,10 @@
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
+      "hostAvatar": {
+        "isEnabled": true
+      }
     },
     "general": {
       "font": "Open Sans",

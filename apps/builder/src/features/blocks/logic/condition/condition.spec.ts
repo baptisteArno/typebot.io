@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -51,30 +50,33 @@ test.describe('Condition block', () => {
     await page.fill('input[placeholder="Type a value..."]', '20')
 
     await page.click('text=Preview')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('15')
-    await typebotViewer(page).locator('text=Send').click()
+    await page.locator('typebot-standard').locator('text=Send').click()
     await expect(
-      typebotViewer(page).locator('text=You are younger than 20')
+      page.locator('typebot-standard').getByText('You are younger than 20')
     ).toBeVisible()
 
     await page.click('text=Restart')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('45')
-    await typebotViewer(page).locator('text=Send').click()
+    await page.locator('typebot-standard').locator('text=Send').click()
     await expect(
-      typebotViewer(page).locator('text=You are older than 20')
+      page.locator('typebot-standard').getByText('You are older than 20')
     ).toBeVisible()
 
     await page.click('text=Restart')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('90')
-    await typebotViewer(page).locator('text=Send').click()
+    await page.locator('typebot-standard').locator('text=Send').click()
     await expect(
-      typebotViewer(page).locator('text=You are older than 80')
+      page.locator('typebot-standard').getByText('You are older than 80')
     ).toBeVisible()
   })
 })

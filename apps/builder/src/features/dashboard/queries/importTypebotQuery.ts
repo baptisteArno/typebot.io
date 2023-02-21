@@ -56,6 +56,7 @@ const duplicateTypebot = (
   return {
     typebot: {
       ...typebot,
+      version: '3',
       id,
       name: `${typebot.name} copy`,
       publicId: null,

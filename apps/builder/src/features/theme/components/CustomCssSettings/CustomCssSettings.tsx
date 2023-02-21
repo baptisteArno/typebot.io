@@ -9,7 +9,7 @@ type Props = {
 export const CustomCssSettings = ({ customCss, onCustomCssChange }: Props) => {
   return (
     <CodeEditor
-      value={customCss ?? ''}
+      defaultValue={customCss ?? ''}
       lang="css"
       onChange={onCustomCssChange}
     />

@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.0
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 2.1.11
+Stable Tag: 3.0.0
 
 Build beautiful conversational forms
 
@@ -26,6 +26,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 3.0.0 =
+* Complete rework of the plugin. You are now required to generate a code snippet on https://app.typebot.io
+
 = 2.1.9 =
 * Fix standard embed when window is already loaded
 

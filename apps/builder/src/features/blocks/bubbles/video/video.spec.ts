@@ -7,7 +7,6 @@ import {
   VideoBubbleContentType,
 } from 'models'
 import { createId } from '@paralleldrive/cuid2'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
@@ -57,9 +56,10 @@ test.describe.parallel('Video bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(
-        typebotViewer(page).locator('video > source')
-      ).toHaveAttribute('src', videoSrc)
+      await expect(page.locator('video > source').nth(1)).toHaveAttribute(
+        'src',
+        videoSrc
+      )
     })
 
     test('should display youtube video correctly', async ({ page }) => {
@@ -80,7 +80,7 @@ test.describe.parallel('Video bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(typebotViewer(page).locator('iframe')).toHaveAttribute(
+      await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
         'https://www.youtube.com/embed/dQw4w9WgXcQ'
       )
@@ -104,7 +104,7 @@ test.describe.parallel('Video bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(typebotViewer(page).locator('iframe')).toHaveAttribute(
+      await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
         'https://player.vimeo.com/video/649301125'
       )

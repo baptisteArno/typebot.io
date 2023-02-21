@@ -62,11 +62,18 @@ export type Endpoint = {
 
 export type GroupsCoordinates = IdMap<Coordinates>
 
+type PreviewingBlock = {
+  id: string
+  groupId: string
+}
+
 const graphContext = createContext<{
   graphPosition: Position
   setGraphPosition: Dispatch<SetStateAction<Position>>
   connectingIds: ConnectingIds | null
   setConnectingIds: Dispatch<SetStateAction<ConnectingIds | null>>
+  previewingBlock?: PreviewingBlock
+  setPreviewingBlock: Dispatch<SetStateAction<PreviewingBlock | undefined>>
   previewingEdge?: Edge
   setPreviewingEdge: Dispatch<SetStateAction<Edge | undefined>>
   sourceEndpoints: IdMap<Endpoint>
@@ -99,6 +106,7 @@ export const GraphProvider = ({
   )
   const [connectingIds, setConnectingIds] = useState<ConnectingIds | null>(null)
   const [previewingEdge, setPreviewingEdge] = useState<Edge>()
+  const [previewingBlock, setPreviewingBlock] = useState<PreviewingBlock>()
   const [sourceEndpoints, setSourceEndpoints] = useState<IdMap<Endpoint>>({})
   const [targetEndpoints, setTargetEndpoints] = useState<IdMap<Endpoint>>({})
   const [openedBlockId, setOpenedBlockId] = useState<string>()
@@ -139,6 +147,8 @@ export const GraphProvider = ({
         isReadOnly,
         focusedGroupId,
         setFocusedGroupId,
+        setPreviewingBlock,
+        previewingBlock,
       }}
     >
       {children}

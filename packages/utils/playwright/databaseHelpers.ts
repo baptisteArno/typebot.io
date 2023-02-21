@@ -16,6 +16,7 @@ export const parseTestTypebot = (
   partialTypebot: Partial<Typebot>
 ): Typebot => ({
   id: createId(),
+  version: '3',
   workspaceId: proWorkspaceId,
   folderId: null,
   name: 'My typebot',
@@ -62,6 +63,7 @@ export const parseTypebotToPublicTypebot = (
   typebot: Typebot
 ): Omit<PublicTypebot, 'createdAt' | 'updatedAt'> => ({
   id,
+  version: typebot.version,
   groups: typebot.groups,
   typebotId: typebot.id,
   theme: typebot.theme,

@@ -1,29 +1,26 @@
 import {
-  Box,
   BoxProps,
+  Fade,
   HStack,
-  useColorMode,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { EditorView, basicSetup } from 'codemirror'
-import { EditorState } from '@codemirror/state'
-import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { css } from '@codemirror/lang-css'
-import { javascript } from '@codemirror/lang-javascript'
-import { html } from '@codemirror/lang-html'
-import { oneDark } from '@codemirror/theme-one-dark'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { linter, LintSource } from '@codemirror/lint'
 import { VariablesButton } from '@/features/variables'
 import { Variable } from 'models'
 import { env } from 'utils'
-
-const linterExtension = linter(jsonParseLinter() as unknown as LintSource)
+import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
+import { tokyoNight } from '@uiw/codemirror-theme-tokyo-night'
+import { githubLight } from '@uiw/codemirror-theme-github'
+import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
+import { isDefined } from '@udecode/plate-common'
+import { CopyButton } from './CopyButton'
 
 type Props = {
-  value: string
-  lang?: 'css' | 'json' | 'js' | 'html'
+  value?: string
+  defaultValue?: string
+  lang: LanguageName
   isReadOnly?: boolean
   debounceTimeout?: number
   withVariableButton?: boolean
@@ -31,7 +28,7 @@ type Props = {
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
-  value,
+  defaultValue,
   lang,
   onChange,
   height = '250px',
@@ -40,91 +37,25 @@ export const CodeEditor = ({
   debounceTimeout = 1000,
   ...props
 }: Props & Omit<BoxProps, 'onChange'>) => {
-  const isDark = useColorMode().colorMode === 'dark'
-  const editorContainer = useRef<HTMLDivElement | null>(null)
-  const editorView = useRef<EditorView | null>(null)
-  const [, setPlainTextValue] = useState(value)
+  const theme = useColorModeValue(githubLight, tokyoNight)
+  const codeEditor = useRef<ReactCodeMirrorRef | null>(null)
   const [carretPosition, setCarretPosition] = useState<number>(0)
   const isVariableButtonDisplayed = withVariableButton && !isReadOnly
+  const [value, _setValue] = useState(defaultValue ?? '')
+  const { onOpen, onClose, isOpen } = useDisclosure()
 
-  const debounced = useDebouncedCallback(
+  const setValue = useDebouncedCallback(
     (value) => {
-      setPlainTextValue(value)
+      _setValue(value)
       onChange && onChange(value)
     },
     env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 
-  useEffect(
-    () => () => {
-      debounced.flush()
-    },
-    [debounced]
-  )
-
-  useEffect(() => {
-    if (!editorView.current || !isReadOnly) return
-    editorView.current.dispatch({
-      changes: {
-        from: 0,
-        to: editorView.current.state.doc.length,
-        insert: value,
-      },
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
-
-  useEffect(() => {
-    const editor = initEditor(value)
-    return () => {
-      editor?.destroy()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const initEditor = (value: string) => {
-    if (!editorContainer.current) return
-    const updateListenerExtension = EditorView.updateListener.of((update) => {
-      if (update.docChanged && onChange)
-        debounced(update.state.doc.toJSON().join('\n'))
-    })
-    const extensions = [
-      updateListenerExtension,
-      basicSetup,
-      EditorState.readOnly.of(isReadOnly),
-    ]
-    if (isDark) extensions.push(oneDark)
-    if (lang === 'json') {
-      extensions.push(json())
-      extensions.push(linterExtension)
-    }
-    if (lang === 'css') extensions.push(css())
-    if (lang === 'js') extensions.push(javascript())
-    if (lang === 'html') extensions.push(html())
-    extensions.push(
-      EditorView.theme({
-        '&': { maxHeight: '500px' },
-        '.cm-gutter,.cm-content': { minHeight: isReadOnly ? '0' : height },
-        '.cm-scroller': { overflow: 'auto' },
-      })
-    )
-    const editor = new EditorView({
-      state: EditorState.create({
-        extensions,
-      }),
-      parent: editorContainer.current,
-    })
-    editor.dispatch({
-      changes: { from: 0, insert: value },
-    })
-    editorView.current = editor
-    return editor
-  }
-
   const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name'>) => {
-    editorView.current?.focus()
+    codeEditor.current?.view?.focus()
     const insert = `{{${variable?.name}}}`
-    editorView.current?.dispatch({
+    codeEditor.current?.view?.dispatch({
       changes: {
         from: carretPosition,
         insert,
@@ -133,9 +64,10 @@ export const CodeEditor = ({
     })
   }
 
-  const handleKeyUp = () => {
-    if (!editorContainer.current) return
-    setCarretPosition(editorView.current?.state.selection.main.from ?? 0)
+  const handleChange = (newValue: string) => {
+    if (isDefined(props.value)) return
+    setValue(newValue)
+    setCarretPosition(codeEditor.current?.state?.selection.main.head ?? 0)
   }
 
   return (
@@ -143,18 +75,60 @@ export const CodeEditor = ({
       align="flex-end"
       spacing={0}
       borderWidth={'1px'}
-      borderRadius="md"
-      bg={useColorModeValue('#FCFCFC', '#282C34')}
+      rounded="md"
+      bg={useColorModeValue('white', '#1A1B26')}
+      width="full"
+      h="full"
+      pos="relative"
+      onMouseEnter={onOpen}
+      onMouseLeave={onClose}
+      sx={{
+        '& .cm-editor': {
+          maxH: '70vh',
+          outline: '0px solid transparent !important',
+          rounded: 'md',
+        },
+        '& .cm-scroller': {
+          rounded: 'md',
+          overflow: 'auto',
+        },
+        '& .cm-gutter,.cm-content': {
+          minH: isReadOnly ? '0' : height,
+        },
+        '& .ͼ1 .cm-scroller': {
+          fontSize: '14px',
+          fontFamily:
+            'JetBrainsMono, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace',
+        },
+      }}
     >
-      <Box
-        w={isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%'}
-        ref={editorContainer}
+      <CodeMirror
         data-testid="code-editor"
-        {...props}
-        onKeyUp={handleKeyUp}
+        ref={codeEditor}
+        value={props.value ?? value}
+        onChange={handleChange}
+        theme={theme}
+        extensions={[loadLanguage(lang)].filter(isDefined)}
+        editable={!isReadOnly}
+        style={{
+          width: isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%',
+        }}
+        spellCheck={false}
       />
       {isVariableButtonDisplayed && (
         <VariablesButton onSelectVariable={handleVariableSelected} size="sm" />
+      )}
+      {isReadOnly && (
+        <Fade in={isOpen}>
+          <CopyButton
+            textToCopy={props.value ?? value}
+            pos="absolute"
+            right={0.5}
+            top={0.5}
+            size="xs"
+            colorScheme="blue"
+          />
+        </Fade>
       )}
     </HStack>
   )

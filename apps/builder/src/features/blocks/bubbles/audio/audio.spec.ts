@@ -4,7 +4,6 @@ import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { BubbleBlockType, defaultAudioBubbleContent } from 'models'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const audioSampleUrl =
   'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
@@ -34,7 +33,7 @@ test('should work as expected', async ({ page }) => {
     RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')
   )
   await page.getByRole('button', { name: 'Preview', exact: true }).click()
-  await expect(typebotViewer(page).locator('audio')).toHaveAttribute(
+  await expect(page.locator('audio')).toHaveAttribute(
     'src',
     RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')
   )

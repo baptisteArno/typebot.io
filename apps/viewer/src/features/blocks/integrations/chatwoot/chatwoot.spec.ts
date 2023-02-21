@@ -3,7 +3,6 @@ import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultChatwootOptions, IntegrationBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const typebotId = createId()
 
@@ -26,6 +25,6 @@ test('should work as expected', async ({ page }) => {
     },
   ])
   await page.goto(`/${typebotId}-public`)
-  await typebotViewer(page).getByRole('button', { name: 'Go' }).click()
+  await page.getByRole('button', { name: 'Go' }).click()
   await expect(page.locator('#chatwoot_live_chat_widget')).toBeVisible()
 })

@@ -170,6 +170,7 @@ model DashboardFolder {
 
 model Typebot {
   id                      String                    @id @default(cuid())
+  version                 String?                   @db.VarChar(10)
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @default(now()) @updatedAt
   icon                    String?                   @db.VarChar(1000)
@@ -226,6 +227,7 @@ model CollaboratorsOnTypebots {
 
 model PublicTypebot {
   id        String   @id @default(cuid())
+  version   String?  @db.VarChar(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   typebotId String   @unique

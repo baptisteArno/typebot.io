@@ -23,6 +23,7 @@ import {
   IframeModal,
   WixModal,
 } from './modals'
+import { OtherModal } from './modals/OtherModal'
 
 export type ModalProps = {
   publicId: string
@@ -139,7 +140,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<OtherLogo height={100} width="70px" />}
       label="Other"
-      Modal={JavascriptModal}
+      Modal={OtherModal}
       {...props}
     />
   ),

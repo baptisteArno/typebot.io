@@ -3,7 +3,6 @@ import { BubbleBlockType, defaultEmbedBubbleContent } from 'models'
 import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 const pdfSrc = 'https://www.orimi.com/pdf-test.pdf'
 const siteSrc = 'https://app.cal.com/baptistearno/15min'
@@ -47,9 +46,10 @@ test.describe.parallel('Embed bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(
-        typebotViewer(page).locator('iframe#embed-bubble-content')
-      ).toHaveAttribute('src', siteSrc)
+      await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
+        'src',
+        siteSrc
+      )
     })
   })
 })

@@ -61,6 +61,7 @@ const NonMemoizedDraggableGroupNode = ({
     connectingIds,
     setConnectingIds,
     previewingEdge,
+    previewingBlock,
     isReadOnly,
     focusedGroupId,
     setFocusedGroupId,
@@ -91,6 +92,7 @@ const NonMemoizedDraggableGroupNode = ({
   }, [group.title])
 
   const isPreviewing =
+    previewingBlock?.groupId === group.id ||
     previewingEdge?.from.groupId === group.id ||
     (previewingEdge?.to.groupId === group.id &&
       isNotDefined(previewingEdge.to.blockId))

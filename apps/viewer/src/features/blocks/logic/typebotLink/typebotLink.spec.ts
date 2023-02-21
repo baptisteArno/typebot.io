@@ -1,9 +1,8 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
-const typebotId = 'cl0ibhi7s0018n21aarlmg0cm1'
+const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'
 const linkedTypebotId = 'cl0ibhv8d0130n21aw8doxhj5'
 
 test.beforeAll(async () => {
@@ -23,16 +22,9 @@ test.beforeAll(async () => {
 
 test('should work as expected', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
-  await typebotViewer(page).locator('input').fill('Hello there!')
-  await Promise.all([
-    page.waitForResponse(
-      (resp) =>
-        resp.request().url().includes(`/api/typebots/t/results`) &&
-        resp.status() === 200 &&
-        resp.request().method() === 'PUT'
-    ),
-    typebotViewer(page).locator('input').press('Enter'),
-  ])
+  await page.locator('input').fill('Hello there!')
+  await page.locator('input').press('Enter')
+  await expect(page.getByText('Cheers!')).toBeVisible()
   await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text=Hello there!')).toBeVisible()
 })

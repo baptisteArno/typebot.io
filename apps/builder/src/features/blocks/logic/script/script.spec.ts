@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -20,7 +19,7 @@ test.describe('Script block', () => {
     )
 
     await page.click('text=Preview')
-    await typebotViewer(page).locator('text=Trigger code').click()
+    await page.getByRole('button', { name: 'Trigger code' }).click()
     await expect(page).toHaveURL('https://www.google.com')
   })
 })

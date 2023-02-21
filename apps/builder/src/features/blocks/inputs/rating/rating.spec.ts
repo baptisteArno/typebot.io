@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultRatingInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 
 const boxSvg = `<svg
@@ -33,10 +32,10 @@ test('options should work', async ({ page }) => {
   await page.goto(`/typebots/${typebotId}/edit`)
 
   await page.click('text=Preview')
-  await expect(typebotViewer(page).locator(`text=Send`)).toBeHidden()
-  await typebotViewer(page).locator(`text=8`).click()
-  await typebotViewer(page).locator(`text=Send`).click()
-  await expect(typebotViewer(page).locator(`text=8`)).toBeVisible()
+  await expect(page.locator(`text=Send`)).toBeHidden()
+  await page.locator(`text=8`).click()
+  await page.locator(`text=Send`).click()
+  await expect(page.locator(`text=8`)).toBeVisible()
   await page.click('text=Rate from 0 to 10')
   await page.click('text="10"')
   await page.click('text="5"')
@@ -48,14 +47,10 @@ test('options should work', async ({ page }) => {
   await page.fill('[placeholder="Not likely at all"]', 'Not likely at all')
   await page.fill('[placeholder="Extremely likely"]', 'Extremely likely')
   await page.click('text="Restart"')
-  await expect(typebotViewer(page).locator(`text=8`)).toBeHidden()
-  await expect(typebotViewer(page).locator(`text=4`)).toBeHidden()
-  await expect(
-    typebotViewer(page).locator(`text=Not likely at all`)
-  ).toBeVisible()
-  await expect(
-    typebotViewer(page).locator(`text=Extremely likely`)
-  ).toBeVisible()
-  await typebotViewer(page).locator(`svg >> nth=4`).click()
-  await expect(typebotViewer(page).locator(`text=5`)).toBeVisible()
+  await expect(page.locator(`text=8`)).toBeHidden()
+  await expect(page.locator(`text=4`)).toBeHidden()
+  await expect(page.locator(`text=Not likely at all`)).toBeVisible()
+  await expect(page.locator(`text=Extremely likely`)).toBeVisible()
+  await page.locator(`svg >> nth=4`).click()
+  await expect(page.locator(`text=5`)).toBeVisible()
 })

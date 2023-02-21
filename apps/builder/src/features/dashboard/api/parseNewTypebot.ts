@@ -50,6 +50,7 @@ export const parseNewTypebot = ({
   return {
     folderId,
     name,
+    version: '3',
     workspaceId,
     groups: [startGroup],
     edges: [],

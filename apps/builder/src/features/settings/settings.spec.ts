@@ -4,7 +4,6 @@ import { createId } from '@paralleldrive/cuid2'
 import { defaultTextInputOptions } from 'models'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
@@ -15,12 +14,10 @@ test.describe.parallel('Settings page', () => {
       })
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
-        typebotViewer(page).locator('a:has-text("Made with Typebot")')
+        page.locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
       await page.click('text="Typebot.io branding"')
-      await expect(
-        typebotViewer(page).locator('a:has-text("Made with Typebot")')
-      ).toBeHidden()
+      await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
 
       await page.click('text="Remember session"')
       await expect(
@@ -32,13 +29,13 @@ test.describe.parallel('Settings page', () => {
         page.locator('input[type="checkbox"] >> nth=-1')
       ).toHaveAttribute('checked', '')
 
-      await expect(
-        typebotViewer(page).locator('input[value="Baptiste"]')
-      ).toBeVisible()
+      await expect(page.getByPlaceholder('Type your answer...')).toHaveValue(
+        'Baptiste'
+      )
       await page.click('text=Prefill input')
       await page.click('text=Theme')
       await expect(
-        typebotViewer(page).locator(
+        page.locator(
           `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
         )
       ).toHaveValue('')
@@ -53,7 +50,7 @@ test.describe.parallel('Settings page', () => {
       })
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
-        typebotViewer(page).locator('a:has-text("Made with Typebot")')
+        page.locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
       await page.click('button:has-text("Typing emulation")')
       await page.fill('[data-testid="speed"] input', '350')
@@ -74,7 +71,7 @@ test.describe.parallel('Settings page', () => {
       })
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
-        typebotViewer(page).locator(
+        page.locator(
           `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
         )
       ).toHaveValue('Baptiste')
@@ -120,9 +117,7 @@ test.describe.parallel('Settings page', () => {
         workspaceId: freeWorkspaceId,
       })
       await page.goto(`/typebots/${typebotId}/settings`)
-      await expect(
-        typebotViewer(page).locator('text="What\'s your name?"')
-      ).toBeVisible()
+      await expect(page.locator('text="What\'s your name?"')).toBeVisible()
       await expect(
         page.locator('[data-testid="starter-lock-tag"]')
       ).toBeVisible()

@@ -93,7 +93,7 @@ window.location.href
 
 :::caution
 It will not give you the parent URL if you embed the bot on your site.
-A more bulletproof option is to pass the URL as a hidden variable in the embed code options. You can find an example [here](/embed/html-javascript#additional-configuration).
+A more bulletproof option is to pass the URL as a prefilled variable in the embed code options. You can find an example [here](/embed/html-javascript#additional-configuration).
 :::
 
 ## Extract a cookie

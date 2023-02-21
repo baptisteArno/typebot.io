@@ -34,12 +34,12 @@ Then the variables will be prefilled as following:
 - Email => test@test.com
 - First name => John
 
-Prefilling variables using the embed library is even easier. You need to add an object named `hiddenVariables` that contains a dictionary of your values. For example:
+Prefilling variables using the embed library is even easier. You need to add an object named `prefilledVariables` that contains a dictionary of your values. For example:
 
 ```js
 Typebot.initBubble({
-  url: `https://viewer.typebot.io/typebot-support`,
-  hiddenVariables: {
+  typebot: `my-bot`,
+  prefilledVariables: {
     Email: 'test@test.com',
     'First name': 'John',
   },

@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -20,7 +19,7 @@ test.describe('Redirect block', () => {
     await page.fill('input[placeholder="Type a URL..."]', 'google.com')
 
     await page.click('text=Preview')
-    await typebotViewer(page).locator('text=Go to URL').click()
+    await page.locator('typebot-standard').locator('text=Go to URL').click()
     await expect(page).toHaveURL('https://www.google.com')
     await page.goBack()
 
@@ -30,7 +29,7 @@ test.describe('Redirect block', () => {
     await page.click('text=Preview')
     const [newPage] = await Promise.all([
       context.waitForEvent('page'),
-      typebotViewer(page).locator('text=Go to URL').click(),
+      page.locator('typebot-standard').locator('text=Go to URL').click(),
     ])
     await newPage.waitForLoadState()
     await expect(newPage).toHaveURL('https://www.google.com')

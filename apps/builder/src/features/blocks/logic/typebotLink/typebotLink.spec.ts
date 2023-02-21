@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -35,7 +34,9 @@ test('should be configurable', async ({ page }) => {
   await page.click('text=Group #2')
 
   await page.click('text=Preview')
-  await expect(typebotViewer(page).locator('text=Second block')).toBeVisible()
+  await expect(
+    page.locator('typebot-standard').locator('text=Second block')
+  ).toBeVisible()
 
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Group #2 in My link typebot 2')
@@ -44,9 +45,11 @@ test('should be configurable', async ({ page }) => {
   await page.click('button >> text=Start')
 
   await page.click('text=Preview')
-  await typebotViewer(page).locator('input').fill('Hello there!')
-  await typebotViewer(page).locator('input').press('Enter')
-  await expect(typebotViewer(page).locator('text=Hello there!')).toBeVisible()
+  await page.locator('typebot-standard').locator('input').fill('Hello there!')
+  await page.locator('typebot-standard').locator('input').press('Enter')
+  await expect(
+    page.locator('typebot-standard').locator('text=Hello there!')
+  ).toBeVisible()
 
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Start in My link typebot 2')
@@ -61,5 +64,7 @@ test('should be configurable', async ({ page }) => {
   await page.click('button >> text=Hello')
 
   await page.click('text=Preview')
-  await expect(typebotViewer(page).locator('text=Hello world')).toBeVisible()
+  await expect(
+    page.locator('typebot-standard').locator('text=Hello world')
+  ).toBeVisible()
 })

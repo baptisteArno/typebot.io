@@ -223,7 +223,7 @@ export const WebhookSettings = ({
                 />
                 {(options.isCustomBody ?? true) && (
                   <CodeEditor
-                    value={localWebhook.body ?? ''}
+                    defaultValue={localWebhook.body ?? ''}
                     lang="json"
                     onChange={handleBodyChange}
                     debounceTimeout={0}
@@ -262,7 +262,7 @@ export const WebhookSettings = ({
           </Button>
         )}
         {testResponse && (
-          <CodeEditor isReadOnly lang="json" value={testResponse} />
+          <CodeEditor isReadOnly lang="json" defaultValue={testResponse} />
         )}
         {(testResponse || options?.responseVariableMapping.length > 0) && (
           <Accordion allowMultiple>

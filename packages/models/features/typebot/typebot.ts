@@ -41,7 +41,7 @@ const resultsTablePreferencesSchema = z.object({
 
 export const typebotSchema = schemaForType<TypebotPrisma>()(
   z.object({
-    version: z.enum(['2']).optional(),
+    version: z.enum(['3']).nullable(),
     id: z.string(),
     name: z.string(),
     groups: z.array(groupSchema),

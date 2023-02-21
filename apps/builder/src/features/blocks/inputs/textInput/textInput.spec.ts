@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultTextInputOptions, InputBlockType } from 'models'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe.parallel('Text input block', () => {
@@ -22,11 +21,11 @@ test.describe.parallel('Text input block', () => {
 
     await page.click('text=Preview')
     await expect(
-      typebotViewer(page).locator(
+      page.locator(
         `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'text')
-    await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
+    await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
     await page.fill('#placeholder', 'Your name...')
@@ -35,8 +34,8 @@ test.describe.parallel('Text input block', () => {
 
     await page.click('text=Restart')
     await expect(
-      typebotViewer(page).locator(`textarea[placeholder="Your name..."]`)
+      page.locator(`textarea[placeholder="Your name..."]`)
     ).toBeVisible()
-    await expect(typebotViewer(page).locator(`text=Go`)).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
   })
 })

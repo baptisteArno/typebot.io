@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -42,18 +41,19 @@ test.describe('Set variable block', () => {
     await page.fill('textarea', '1000 + {{Total}}')
 
     await page.click('text=Preview')
-    await typebotViewer(page)
+    await page
+      .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('365')
-    await typebotViewer(page).locator('text=Send').click()
+    await page.locator('typebot-standard').locator('text=Send').click()
     await expect(
-      typebotViewer(page).locator('text=Multiplication: 365000')
+      page.locator('typebot-standard').locator('text=Multiplication: 365000')
     ).toBeVisible()
     await expect(
-      typebotViewer(page).locator('text=Custom var: Custom value')
+      page.locator('typebot-standard').locator('text=Custom var: Custom value')
     ).toBeVisible()
     await expect(
-      typebotViewer(page).locator('text=Addition: 366000')
+      page.locator('typebot-standard').locator('text=Addition: 366000')
     ).toBeVisible()
   })
 })

@@ -1,4 +1,4 @@
-export * from './IframeModal'
+export * from './IframeModal/IframeModal'
 export * from './NotionModal'
 export * from './WordpressModal'
 export * from './WixModal'

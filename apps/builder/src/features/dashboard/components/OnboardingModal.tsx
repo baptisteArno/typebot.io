@@ -1,64 +1,49 @@
-import {
-  chakra,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  useColorModeValue,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { TypebotViewer } from 'bot-engine'
+import { chakra, useColorModeValue } from '@chakra-ui/react'
+import { Popup } from '@typebot.io/react'
 import { useUser } from '@/features/account'
-import { AnswerInput, Typebot } from 'models'
+import { Typebot } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
-import { getViewerUrl, sendRequest } from 'utils'
+import { sendRequest } from 'utils'
 import confetti from 'canvas-confetti'
 import { useToast } from '@/hooks/useToast'
-import { parseTypebotToPublicTypebot } from '@/features/publish'
+import { useRouter } from 'next/router'
 
 type Props = { totalTypebots: number }
 
 export const OnboardingModal = ({ totalTypebots }: Props) => {
+  const { push } = useRouter()
   const botPath = useColorModeValue(
     '/bots/onboarding.json',
     '/bots/onboarding-dark.json'
   )
   const { user, updateUser } = useUser()
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [typebot, setTypebot] = useState<Typebot>()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
   const confettiCanon = useRef<confetti.CreateTypes>()
   const [chosenCategories, setChosenCategories] = useState<string[]>([])
-  const [openedOnce, setOpenedOnce] = useState(false)
 
   const { showToast } = useToast()
 
-  useEffect(() => {
-    fetchTemplate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const isNewUser =
+    user &&
+    new Date(user?.createdAt as unknown as string).toDateString() ===
+      new Date().toDateString() &&
+    totalTypebots === 0
 
   useEffect(() => {
-    if (openedOnce) return
-    const isNewUser =
-      user &&
-      new Date(user?.createdAt as unknown as string).toDateString() ===
-        new Date().toDateString() &&
-      totalTypebots === 0
-    if (isNewUser) {
-      onOpen()
-      setOpenedOnce(true)
+    const fetchTemplate = async () => {
+      const { data, error } = await sendRequest(botPath)
+      if (error)
+        return showToast({ title: error.name, description: error.message })
+      setTypebot(data as Typebot)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+
+    fetchTemplate()
+  }, [botPath, showToast])
 
   useEffect(() => {
     initConfettis()
-    return () => {
-      window.removeEventListener('message', handleIncomingMessage)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [confettiCanvaContainer.current])
+  }, [])
 
   const initConfettis = () => {
     if (!confettiCanvaContainer.current || confettiCanon.current) return
@@ -66,48 +51,41 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
       resize: true,
       useWorker: true,
     })
-    window.addEventListener('message', handleIncomingMessage)
   }
 
-  const handleIncomingMessage = (message: MessageEvent) => {
-    if (message.data.from === 'typebot') {
-      if (message.data.action === 'shootConfettis' && confettiCanon.current)
-        shootConfettis(confettiCanon.current)
-    }
+  const handleBotEnd = () => {
+    setTimeout(() => {
+      push('/typebots/create', { query: { isFirstBot: true } })
+    }, 2000)
   }
 
-  const fetchTemplate = async () => {
-    const { data, error } = await sendRequest(botPath)
-    if (error)
-      return showToast({ title: error.name, description: error.message })
-    setTypebot(data as Typebot)
-  }
-
-  const handleNewAnswer = async (answer: AnswerInput) => {
-    const isName = answer.variableId === 'cl126f4hf000i2e6d8zvzc3t1'
-    const isCompany = answer.variableId === 'cl126jqww000w2e6dq9yv4ifq'
-    const isCategories = answer.variableId === 'cl126mo3t001b2e6dvyi16bkd'
-    const isOtherCategories = answer.variableId === 'cl126q38p001q2e6d0hj23f6b'
-    if (isName) updateUser({ name: answer.content })
-    if (isCompany) updateUser({ company: answer.content })
+  const handleNewAnswer = async (answer: {
+    message: string
+    blockId: string
+  }) => {
+    const isName = answer.blockId === 'cl126820m000g2e6dfleq78bt'
+    const isCompany = answer.blockId === 'cl126jioz000v2e6dwrk1f2cb'
+    const isCategories = answer.blockId === 'cl126lb8v00142e6duv5qe08l'
+    const isOtherCategories = answer.blockId === 'cl126pv7n001o2e6dajltc4qz'
+    const answeredAllQuestions =
+      isOtherCategories || (isCategories && !answer.message.includes('Other'))
+    if (answeredAllQuestions && confettiCanon.current)
+      shootConfettis(confettiCanon.current)
+    if (isName) updateUser({ name: answer.message })
+    if (isCompany) updateUser({ company: answer.message })
     if (isCategories) {
-      const onboardingCategories = answer.content.split(', ')
+      const onboardingCategories = answer.message.split(', ')
       updateUser({ onboardingCategories })
       setChosenCategories(onboardingCategories)
     }
     if (isOtherCategories)
       updateUser({
-        onboardingCategories: [...chosenCategories, answer.content],
+        onboardingCategories: [...chosenCategories, answer.message],
       })
   }
 
   return (
-    <Modal
-      size="3xl"
-      isOpen={isOpen}
-      onClose={onClose}
-      blockScrollOnMount={false}
-    >
+    <>
       <chakra.canvas
         ref={confettiCanvaContainer}
         pos="fixed"
@@ -118,23 +96,18 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
         zIndex={9999}
         pointerEvents="none"
       />
-      <ModalOverlay />
-      <ModalContent h="85vh">
-        <ModalBody p="10">
-          {typebot && (
-            <TypebotViewer
-              apiHost={getViewerUrl()}
-              typebot={parseTypebotToPublicTypebot(typebot)}
-              predefinedVariables={{
-                Name: user?.name?.split(' ')[0] ?? undefined,
-              }}
-              onNewAnswer={handleNewAnswer}
-              style={{ borderRadius: '0.25rem' }}
-            />
-          )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+      {typebot && (
+        <Popup
+          typebot={typebot}
+          prefilledVariables={{
+            Name: user?.name?.split(' ')[0] ?? undefined,
+          }}
+          defaultOpen={isNewUser}
+          onAnswer={handleNewAnswer}
+          onEnd={handleBotEnd}
+        />
+      )}
+    </>
   )
 }
 

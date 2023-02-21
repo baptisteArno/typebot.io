@@ -93,6 +93,7 @@ export const SmartNumberInput = <HasVariable extends boolean>({
       as={HStack}
       isRequired={isRequired}
       justifyContent="space-between"
+      width={label ? 'full' : 'auto'}
     >
       {label && (
         <FormLabel mb="0" flexShrink={0}>

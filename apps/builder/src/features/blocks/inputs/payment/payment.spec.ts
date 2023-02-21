@@ -3,7 +3,6 @@ import { createTypebots } from 'utils/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultPaymentInputOptions, InputBlockType } from 'models'
 import { createId } from '@paralleldrive/cuid2'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { stripePaymentForm } from '@/test/utils/selectorUtils'
 
 test.describe('Payment input block', () => {
@@ -59,9 +58,9 @@ test.describe('Payment input block', () => {
       .locator(`[placeholder="MM / YY"]`)
       .fill('12 / 25')
     await stripePaymentForm(page).locator(`[placeholder="CVC"]`).fill('240')
-    await typebotViewer(page).locator(`text="Pay 30€"`).click()
+    await page.locator(`text="Pay 30€"`).click()
     await expect(
-      typebotViewer(page).locator(`text="Your card has been declined."`)
+      page.locator(`text="Your card has been declined."`)
     ).toBeVisible()
     await stripePaymentForm(page)
       .locator(`[placeholder="1234 1234 1234 1234"]`)
@@ -69,7 +68,7 @@ test.describe('Payment input block', () => {
     const zipInput = stripePaymentForm(page).getByPlaceholder('90210')
     const isZipInputVisible = await zipInput.isVisible()
     if (isZipInputVisible) await zipInput.fill('12345')
-    await typebotViewer(page).locator(`text="Pay 30€"`).click()
-    await expect(typebotViewer(page).locator(`text="Success"`)).toBeVisible()
+    await page.locator(`text="Pay 30€"`).click()
+    await expect(page.locator(`text="Success"`)).toBeVisible()
   })
 })

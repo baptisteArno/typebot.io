@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
@@ -17,10 +16,14 @@ test.describe('Wait block', () => {
     await page.getByRole('textbox', { name: 'Seconds to wait for:' }).fill('3')
 
     await page.click('text=Preview')
-    await typebotViewer(page).locator('text=Wait now').click()
+    await page.getByRole('button', { name: 'Wait now' }).click()
     await page.waitForTimeout(1000)
-    await expect(typebotViewer(page).locator('text="Hi there!"')).toBeHidden()
+    await expect(
+      page.locator('typebot-standard').locator('text="Hi there!"')
+    ).toBeHidden()
     await page.waitForTimeout(3000)
-    await expect(typebotViewer(page).locator('text="Hi there!"')).toBeVisible()
+    await expect(
+      page.locator('typebot-standard').locator('text="Hi there!"')
+    ).toBeVisible()
   })
 })

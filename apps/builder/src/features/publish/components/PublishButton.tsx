@@ -11,6 +11,7 @@ import {
   MenuItem,
   useDisclosure,
   ButtonProps,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import {
   ChevronLeftIcon,
@@ -27,6 +28,7 @@ import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
 import { timeSince } from '@/utils/helpers'
 
 export const PublishButton = (props: ButtonProps) => {
+  const warningTextColor = useColorModeValue('red.300', 'red.600')
   const { workspace } = useWorkspace()
   const { push, query } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -71,12 +73,17 @@ export const PublishButton = (props: ButtonProps) => {
         type={LimitReached.FILE_INPUT}
       />
       <Tooltip
-        borderRadius="md"
-        hasArrow
         placement="bottom-end"
         label={
           <Stack>
-            <Text>There are non published changes.</Text>
+            {!publishedTypebot?.version ? (
+              <Text color={warningTextColor} fontWeight="semibold">
+                This will deploy your bot with an updated engine. Make sure to
+                test it properly in preview mode before publishing.
+              </Text>
+            ) : (
+              <Text>There are non published changes.</Text>
+            )}
             <Text fontStyle="italic">
               Published version from{' '}
               {publishedTypebot &&

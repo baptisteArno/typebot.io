@@ -1,6 +1,5 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 
 test.describe.parallel('Templates page', () => {
   test('From scratch should create a blank typebot', async ({ page }) => {
@@ -26,9 +25,7 @@ test.describe.parallel('Templates page', () => {
     await page.goto('/typebots/create')
     await page.click('text=Start from a template')
     await page.click('text=Customer Support')
-    await expect(
-      typebotViewer(page).locator('text=How can I help you?')
-    ).toBeVisible()
+    await expect(page.locator('text=How can I help you?')).toBeVisible()
     await page.click('text=Use this template')
     await expect(page).toHaveURL(new RegExp(`/edit`))
   })

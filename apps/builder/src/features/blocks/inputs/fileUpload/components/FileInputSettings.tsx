@@ -63,7 +63,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         <CodeEditor
           lang="html"
           onChange={handlePlaceholderLabelChange}
-          value={options.labels.placeholder}
+          defaultValue={options.labels.placeholder}
           height={'100px'}
           withVariableButton={false}
         />

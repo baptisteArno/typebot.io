@@ -6,7 +6,6 @@ import {
 import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
 import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
 import { createId } from '@paralleldrive/cuid2'
-import { typebotViewer } from 'utils/playwright/testHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.parallel('Buttons input block', () => {
@@ -42,10 +41,10 @@ test.describe.parallel('Buttons input block', () => {
     await expect(page.locator('text=Item 2')).toBeHidden()
 
     await page.click('text=Preview')
-    const item3Button = typebotViewer(page).locator('button >> text=Item 3')
+    const item3Button = page.locator('button >> text=Item 3')
     await item3Button.click()
     await expect(item3Button).toBeHidden()
-    await expect(typebotViewer(page).locator('text=Item 3')).toBeVisible()
+    await expect(page.getByTestId('guest-bubble')).toHaveText('Item 3')
     await page.click('button[aria-label="Close"]')
 
     await page.click('[data-testid="block2-icon"]')
@@ -64,13 +63,11 @@ test.describe.parallel('Buttons input block', () => {
 
     await page.click('text=Preview')
 
-    await typebotViewer(page).locator('button >> text="Item 3"').click()
-    await typebotViewer(page).locator('button >> text="Item 1"').click()
-    await typebotViewer(page).locator('text=Go').click()
+    await page.locator('button >> text="Item 3"').click()
+    await page.locator('button >> text="Item 1"').click()
+    await page.locator('text=Go').click()
 
-    await expect(
-      typebotViewer(page).locator('text="Item 3, Item 1"')
-    ).toBeVisible()
+    await expect(page.locator('text="Item 3, Item 1"')).toBeVisible()
   })
 })
 
@@ -85,18 +82,18 @@ test('Variable buttons should work', async ({ page }) => {
 
   await page.goto(`/typebots/${typebotId}/edit`)
   await page.click('text=Preview')
-  await typebotViewer(page).locator('text=Variable item').click()
-  await expect(typebotViewer(page).locator('text=Variable item')).toBeVisible()
-  await expect(typebotViewer(page).locator('text=Ok great!')).toBeVisible()
+  await page.getByRole('button', { name: 'Variable item' }).click()
+  await expect(page.getByTestId('guest-bubble')).toHaveText('Variable item')
+  await expect(page.locator('text=Ok great!')).toBeVisible()
   await page.click('text="Item 1"')
   await page.fill('input[value="Item 1"]', '{{Item 2}}')
   await page.click('[data-testid="block1-icon"]')
   await page.click('text=Multiple choice?')
   await page.click('text="Restart"')
-  await typebotViewer(page).locator('text="Variable item" >> nth=0').click()
-  await typebotViewer(page).locator('text="Variable item" >> nth=1').click()
-  await typebotViewer(page).locator('text="Send"').click()
+  await page.getByTestId('button').first().click()
+  await page.getByTestId('button').nth(1).click()
+  await page.locator('text="Send"').click()
   await expect(
-    typebotViewer(page).locator('text="Variable item, Variable item"')
+    page.locator('text="Variable item, Variable item"')
   ).toBeVisible()
 })

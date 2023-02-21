@@ -3,8 +3,9 @@ import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { env, getViewerUrl, isDefined, isNotDefined, omit } from 'utils'
-import { TypebotPage, TypebotPageProps } from '../components/TypebotPage'
 import prisma from '../lib/prisma'
+import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
+import { TypebotPageV3 } from '@/components/TypebotPageV3'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -76,7 +77,14 @@ const getTypebotFromCustomDomain = async (
   const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { customDomain } },
     include: {
-      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+      typebot: {
+        select: {
+          name: true,
+          isClosed: true,
+          isArchived: true,
+          publicId: true,
+        },
+      },
     },
   })
   if (isNotDefined(publishedTypebot)) return null
@@ -99,7 +107,19 @@ const App = ({ publishedTypebot, ...props }: TypebotPageProps) => {
     return <NotFoundPage />
   if (publishedTypebot.typebot.isClosed)
     return <ErrorPage error={new Error('This bot is now closed')} />
-  return <TypebotPage publishedTypebot={publishedTypebot} {...props} />
+  return publishedTypebot.version === '3' ? (
+    <TypebotPageV3
+      url={props.url}
+      typebot={{
+        name: publishedTypebot.typebot.name,
+        publicId: publishedTypebot.typebot.publicId,
+        settings: publishedTypebot.settings,
+        theme: publishedTypebot.theme,
+      }}
+    />
+  ) : (
+    <TypebotPageV2 publishedTypebot={publishedTypebot} {...props} />
+  )
 }
 
 export default App
