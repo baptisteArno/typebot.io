@@ -7,11 +7,11 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@prettier/plugin-php": "0.19.3",
-    "prettier": "2.8.3"
+    "prettier": "2.8.4"
   },
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/2.1.11",
-    "commit": "svn ci -m 'Fix standard embed when window loaded'"
+    "copy": "svn copy ./trunk ./tags/3.0.0",
+    "commit": "svn ci -m 'Introduce new bot engine'"
   }
 }
