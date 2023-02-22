@@ -29,4 +29,4 @@ export const parseReactBotProps = ({ typebot, apiHost }: BotProps) => {
   return `${typebotLine} ${apiHostLine}`
 }
 
-export const typebotImportUrl = `https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.13/dist/web.js`
+export const typebotImportUrl = `https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.14/dist/web.js`

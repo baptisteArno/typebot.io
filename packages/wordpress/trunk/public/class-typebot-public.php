@@ -52,7 +52,7 @@ class Typebot_Public
 
   public function add_typebot_container($attributes = [])
   {
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.9/dist/web.js";
+    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.14/dist/web.js";
     $width = '100%';
     $height = '500px';
     if (array_key_exists('width', $attributes)) {
