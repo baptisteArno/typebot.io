@@ -102,7 +102,7 @@ export const TypebotProvider = ({
   typebotId,
 }: {
   children: ReactNode
-  typebotId: string
+  typebotId?: string
 }) => {
   const { status } = useSession()
   const { push } = useRouter()

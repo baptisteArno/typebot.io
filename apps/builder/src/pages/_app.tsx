@@ -26,7 +26,7 @@ const App = ({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session?: Session }>) => {
   useRouterProgressBar()
-  const { query, pathname, isReady } = useRouter()
+  const { query, pathname } = useRouter()
 
   useEffect(() => {
     pathname.endsWith('/edit')
@@ -38,13 +38,12 @@ const App = ({
     const newPlan = query.stripe?.toString()
     if (newPlan === Plan.STARTER || newPlan === Plan.PRO)
       toast({
-        position: 'bottom-right',
+        position: 'top-right',
         status: 'success',
         title: 'Upgrade success!',
         description: `Workspace upgraded to ${toTitleCase(newPlan)} 🎉`,
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady])
+  }, [query.stripe])
 
   const typebotId = query.typebotId?.toString()
 
@@ -54,21 +53,13 @@ const App = ({
       <ChakraProvider theme={customTheme}>
         <SessionProvider session={session}>
           <UserProvider>
-            {typebotId ? (
-              <TypebotProvider typebotId={typebotId}>
-                <WorkspaceProvider typebotId={typebotId}>
-                  <Component />
-                  <SupportBubble />
-                  <NewVersionPopup />
-                </WorkspaceProvider>
-              </TypebotProvider>
-            ) : (
-              <WorkspaceProvider>
+            <TypebotProvider typebotId={typebotId}>
+              <WorkspaceProvider typebotId={typebotId}>
                 <Component {...pageProps} />
                 <SupportBubble />
                 <NewVersionPopup />
               </WorkspaceProvider>
-            )}
+            </TypebotProvider>
           </UserProvider>
         </SessionProvider>
       </ChakraProvider>

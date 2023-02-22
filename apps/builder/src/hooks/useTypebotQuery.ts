@@ -7,7 +7,7 @@ export const useTypebotQuery = ({
   typebotId,
   onError,
 }: {
-  typebotId: string
+  typebotId?: string
   onError?: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<
@@ -18,7 +18,7 @@ export const useTypebotQuery = ({
       isReadOnly?: boolean
     },
     Error
-  >(`/api/typebots/${typebotId}`, fetcher, {
+  >(typebotId ? `/api/typebots/${typebotId}` : null, fetcher, {
     dedupingInterval: env('E2E_TEST') === 'true' ? 0 : undefined,
   })
   if (error && onError) onError(error)
