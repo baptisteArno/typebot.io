@@ -26,7 +26,7 @@ export const SettingsModal = ({
     e.stopPropagation()
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent onMouseDown={handleMouseDown} ref={ref}>
         <ModalHeader mb="2">
