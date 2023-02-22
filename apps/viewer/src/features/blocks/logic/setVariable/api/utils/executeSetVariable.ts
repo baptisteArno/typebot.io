@@ -37,6 +37,9 @@ export const executeSetVariable = async (
 const evaluateSetVariableExpression =
   (variables: Variable[]) =>
   (str: string): unknown => {
+    const isSingleVariable =
+      str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
+    if (isSingleVariable) return parseVariables(variables)(str)
     const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
       str.includes('return ') ? str : `return ${str}`
     )
