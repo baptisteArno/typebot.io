@@ -3,4 +3,5 @@ export type TemplateProps = {
   emoji: string
   fileName: string
   isComingSoon?: boolean
+  isNew?: boolean
 }

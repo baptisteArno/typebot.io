@@ -33,7 +33,7 @@ export const settingsSchema = z.object({
 export const defaultSettings: Settings = {
   general: {
     isBrandingEnabled: true,
-    isNewResultOnRefreshEnabled: false,
+    isNewResultOnRefreshEnabled: true,
     isInputPrefillEnabled: true,
     isHideQueryParamsEnabled: true,
     isResultSavingEnabled: true,

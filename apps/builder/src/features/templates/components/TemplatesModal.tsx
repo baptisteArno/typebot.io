@@ -9,6 +9,8 @@ import {
   ModalContent,
   ModalOverlay,
   Stack,
+  Tag,
+  Text,
   Tooltip,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
@@ -120,10 +122,18 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                         }
                         isDisabled={template.isComingSoon}
                       >
-                        {template.emoji}{' '}
-                        <chakra.span minW="200px" textAlign="left" ml="3">
-                          {template.name}
-                        </chakra.span>
+                        <HStack justifyContent="space-between" w="full">
+                          <HStack>
+                            <Text>{template.emoji}</Text>
+                            <Text>{template.name}</Text>
+                          </HStack>
+
+                          {template.isNew && (
+                            <Tag colorScheme="orange" size="sm">
+                              New
+                            </Tag>
+                          )}
+                        </HStack>
                       </Button>
                     </span>
                   </Tooltip>

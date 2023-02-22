@@ -5,6 +5,7 @@ export const templates: TemplateProps[] = [
   { name: 'Customer Support', emoji: '😍', fileName: 'customer-support.json' },
   { name: 'Quiz', emoji: '🕹️', fileName: 'quiz.json' },
   { name: 'Lead Scoring', emoji: '🏆', fileName: 'lead-scoring.json' },
+
   {
     name: 'Digital Product Payment',
     emoji: '🖼️',
@@ -16,14 +17,14 @@ export const templates: TemplateProps[] = [
     fileName: 'faq.json',
   },
   {
-    name: 'Conversational Resume',
-    emoji: '👨‍💼',
-    fileName: 'customer-support.json',
-    isComingSoon: true,
-  },
-  {
     name: 'User Onboarding',
     emoji: '🧑‍🚀',
+    fileName: 'onboarding.json',
+    isNew: true,
+  },
+  {
+    name: 'Conversational Resume',
+    emoji: '👨‍💼',
     fileName: 'customer-support.json',
     isComingSoon: true,
   },
