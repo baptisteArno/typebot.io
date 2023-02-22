@@ -37,6 +37,12 @@ export const ChevronRightIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const ChevronDownIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </Icon>
+)
+
 export const PlusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <line x1="12" y1="5" x2="12" y2="19"></line>

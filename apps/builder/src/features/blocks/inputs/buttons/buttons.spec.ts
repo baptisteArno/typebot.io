@@ -90,8 +90,16 @@ test('Variable buttons should work', async ({ page }) => {
   await page.click('[data-testid="block1-icon"]')
   await page.click('text=Multiple choice?')
   await page.click('text="Restart"')
-  await page.getByTestId('button').first().click()
-  await page.getByTestId('button').nth(1).click()
+  await page
+    .locator('typebot-standard')
+    .getByRole('checkbox', { name: 'Variable item' })
+    .first()
+    .click()
+  await page
+    .locator('typebot-standard')
+    .getByRole('checkbox', { name: 'Variable item' })
+    .nth(1)
+    .click()
   await page.locator('text="Send"').click()
   await expect(
     page.locator('text="Variable item, Variable item"')

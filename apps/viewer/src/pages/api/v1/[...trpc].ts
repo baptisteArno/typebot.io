@@ -3,12 +3,14 @@ import { captureException } from '@sentry/nextjs'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { createContext } from '@/utils/server/context'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
 
   return createOpenApiNextHandler({
     router: appRouter,
+    createContext,
     onError({ error }) {
       if (error.code === 'INTERNAL_SERVER_ERROR') {
         captureException(error)

@@ -47,7 +47,7 @@ test.describe('Builder', () => {
       `${process.env.NEXTAUTH_URL}/api/mock/webhook`
     )
     await page.click('text=Advanced configuration')
-    await page.click('text=GET')
+    await page.getByRole('button', { name: 'GET' }).click()
     await page.click('text=POST')
 
     await page.click('text=Query params')

@@ -27,7 +27,7 @@ import {
   setResultAsCompleted,
   startBotFlow,
 } from '../utils'
-import { omit } from 'utils'
+import { env, omit } from 'utils'
 
 export const sendMessageProcedure = publicProcedure
   .meta({
@@ -41,61 +41,63 @@ export const sendMessageProcedure = publicProcedure
   })
   .input(sendMessageInputSchema)
   .output(chatReplySchema)
-  .query(async ({ input: { sessionId, message, startParams } }) => {
-    const session = sessionId ? await getSession(sessionId) : null
+  .query(
+    async ({ input: { sessionId, message, startParams }, ctx: { user } }) => {
+      const session = sessionId ? await getSession(sessionId) : null
 
-    if (!session) {
-      const {
-        sessionId,
-        typebot,
-        messages,
-        input,
-        resultId,
-        dynamicTheme,
-        logs,
-        clientSideActions,
-      } = await startSession(startParams)
-      return {
-        sessionId,
-        typebot: typebot
-          ? {
-              id: typebot.id,
-              theme: typebot.theme,
-              settings: typebot.settings,
-            }
-          : undefined,
-        messages,
-        input,
-        resultId,
-        dynamicTheme,
-        logs,
-        clientSideActions,
-      }
-    } else {
-      const { messages, input, clientSideActions, newSessionState, logs } =
-        await continueBotFlow(session.state)(message)
+      if (!session) {
+        const {
+          sessionId,
+          typebot,
+          messages,
+          input,
+          resultId,
+          dynamicTheme,
+          logs,
+          clientSideActions,
+        } = await startSession(startParams, user?.id)
+        return {
+          sessionId,
+          typebot: typebot
+            ? {
+                id: typebot.id,
+                theme: typebot.theme,
+                settings: typebot.settings,
+              }
+            : undefined,
+          messages,
+          input,
+          resultId,
+          dynamicTheme,
+          logs,
+          clientSideActions,
+        }
+      } else {
+        const { messages, input, clientSideActions, newSessionState, logs } =
+          await continueBotFlow(session.state)(message)
 
-      await prisma.chatSession.updateMany({
-        where: { id: session.id },
-        data: {
-          state: newSessionState,
-        },
-      })
+        await prisma.chatSession.updateMany({
+          where: { id: session.id },
+          data: {
+            state: newSessionState,
+          },
+        })
 
-      if (!input && session.state.result?.hasStarted)
-        await setResultAsCompleted(session.state.result.id)
+        if (!input && session.state.result?.hasStarted)
+          await setResultAsCompleted(session.state.result.id)
 
-      return {
-        messages,
-        input,
-        clientSideActions,
-        dynamicTheme: parseDynamicThemeReply(newSessionState),
-        logs,
+        return {
+          messages,
+          input,
+          clientSideActions,
+          dynamicTheme: parseDynamicThemeReply(newSessionState),
+          logs,
+        }
       }
     }
-  })
+  )
 
-const startSession = async (startParams?: StartParams) => {
+const startSession = async (startParams?: StartParams, userId?: string) => {
   if (!startParams?.typebot)
     throw new TRPCError({
       code: 'BAD_REQUEST',
@@ -105,7 +107,7 @@ const startSession = async (startParams?: StartParams) => {
   const isPreview =
     startParams?.isPreview || typeof startParams?.typebot !== 'string'
 
-  const typebot = await getTypebot(startParams)
+  const typebot = await getTypebot(startParams, userId)
 
   const startVariables = startParams.prefilledVariables
     ? parsePrefilledVariables(typebot.variables, startParams.prefilledVariables)
@@ -198,14 +200,16 @@ const startSession = async (startParams?: StartParams) => {
   } satisfies ChatReply
 }
 
-const getTypebot = async ({
-  typebot,
-  isPreview,
-}: Pick<StartParams, 'typebot' | 'isPreview'>): Promise<StartTypebot> => {
+const getTypebot = async (
+  { typebot, isPreview }: Pick<StartParams, 'typebot' | 'isPreview'>,
+  userId?: string
+): Promise<StartTypebot> => {
   if (typeof typebot !== 'string') return typebot
+  if (isPreview && !userId && env('E2E_TEST') !== 'true')
+    throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
   const typebotQuery = isPreview
-    ? await prisma.typebot.findUnique({
-        where: { id: typebot },
+    ? await prisma.typebot.findFirst({
+        where: { id: typebot, workspace: { members: { some: { userId } } } },
         select: {
           id: true,
           groups: true,

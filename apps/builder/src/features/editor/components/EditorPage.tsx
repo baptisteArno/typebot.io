@@ -15,7 +15,7 @@ import { useTypebot } from '../providers/TypebotProvider'
 import { BlocksSideBar } from './BlocksSideBar'
 import { BoardMenuButton } from './BoardMenuButton'
 import { GettingStartedModal } from './GettingStartedModal'
-import { PreviewDrawer } from './PreviewDrawer'
+import { PreviewDrawer } from '@/features/preview/components/PreviewDrawer'
 import { TypebotHeader } from './TypebotHeader'
 
 export const EditorPage = () => {
