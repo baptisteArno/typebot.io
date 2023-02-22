@@ -2,7 +2,6 @@ name: Build Docker images
 
 on:
   create:
-    tags: ['v*']
     tags-ignore: ['js-v*', 'react-v*', 'js-lib-v*']
   push:
     branches: [main]
