@@ -90,8 +90,6 @@ const NonMemoizedDraggableGroupNode = ({
   const [debouncedGroupPosition] = useDebounce(currentCoordinates, 100)
   const [isFocused, setIsFocused] = useState(false)
 
-  const [ignoreNextFocusIntent, setIgnoreNextFocusIntent] = useState(false)
-
   useOutsideClick({
     handler: () => setIsFocused(false),
     ref: groupRef,
@@ -151,15 +149,15 @@ const NonMemoizedDraggableGroupNode = ({
   }
 
   useDrag(
-    ({ first, last, offset: [offsetX, offsetY], distance, event, target }) => {
+    ({ first, last, offset: [offsetX, offsetY], event, target }) => {
       event.stopPropagation()
       if ((target as HTMLElement).classList.contains('prevent-group-drag'))
         return
       if (first) {
+        setIsFocused(true)
         setIsMouseDown(true)
       }
       if (last) {
-        if (distance[0] > 1 || distance[1] > 1) setIgnoreNextFocusIntent(true)
         setIsMouseDown(false)
       }
       const newCoord = {
@@ -179,14 +177,6 @@ const NonMemoizedDraggableGroupNode = ({
     }
   )
 
-  const focusGroup = () => {
-    if (ignoreNextFocusIntent) {
-      setIgnoreNextFocusIntent(false)
-      return
-    }
-    setIsFocused(true)
-  }
-
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
@@ -195,7 +185,6 @@ const NonMemoizedDraggableGroupNode = ({
       {(ref, isContextMenuOpened) => (
         <Stack
           ref={setMultipleRefs([ref, groupRef])}
-          onClick={focusGroup}
           data-testid="group"
           p="4"
           rounded="xl"

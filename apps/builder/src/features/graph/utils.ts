@@ -56,6 +56,7 @@ import {
   blockTypeHasItems,
   isChoiceInput,
   isConditionBlock,
+  isDefined,
 } from 'utils'
 
 const roundSize = 20
@@ -456,4 +457,6 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
 }
 
 export const hasDefaultConnector = (block: Block) =>
-  !isChoiceInput(block) && !isConditionBlock(block)
+  (!isChoiceInput(block) && !isConditionBlock(block)) ||
+  (block.type === InputBlockType.CHOICE &&
+    isDefined(block.options.dynamicVariableId))
