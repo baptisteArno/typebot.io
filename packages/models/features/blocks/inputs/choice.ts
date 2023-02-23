@@ -9,6 +9,7 @@ export const choiceInputOptionsSchema = optionBaseSchema.and(
   z.object({
     isMultipleChoice: z.boolean(),
     buttonLabel: z.string(),
+    dynamicVariableId: z.string().optional(),
   })
 )
 

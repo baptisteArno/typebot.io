@@ -106,7 +106,12 @@ const scriptToExecuteSchema = z.object({
   args: z.array(
     z.object({
       id: z.string(),
-      value: z.string().or(z.number()).or(z.boolean()).nullish(),
+      value: z
+        .string()
+        .or(z.number())
+        .or(z.boolean())
+        .or(z.array(z.string()))
+        .nullish(),
     })
   ),
 })

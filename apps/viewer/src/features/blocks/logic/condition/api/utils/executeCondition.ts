@@ -34,7 +34,9 @@ const executeComparison =
     if (!comparison?.variableId) return false
     const inputValue = (
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
-    ).trim()
+    )
+      .toString()
+      .trim()
     const value = parseVariables(variables)(comparison.value).trim()
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {

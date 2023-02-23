@@ -20,6 +20,7 @@ import { executeLogic } from './executeLogic'
 import { getNextGroup } from './getNextGroup'
 import { executeIntegration } from './executeIntegration'
 import { computePaymentInputRuntimeOptions } from '@/features/blocks/inputs/payment/api'
+import { injectVariableValuesInButtonsInputBlock } from '@/features/blocks/inputs/buttons/api/utils/injectVariableValuesInButtonsInputBlock'
 
 export const executeGroup =
   (state: SessionState, currentReply?: ChatReply) =>
@@ -49,13 +50,7 @@ export const executeGroup =
       if (isInputBlock(block))
         return {
           messages,
-          input: deepParseVariable(newSessionState.typebot.variables)({
-            ...block,
-            runtimeOptions: await computeRuntimeOptions(newSessionState)(block),
-            prefilledValue: getPrefilledInputValue(
-              newSessionState.typebot.variables
-            )(block),
-          }),
+          input: await injectVariablesValueInBlock(newSessionState)(block),
           newSessionState: {
             ...newSessionState,
             currentBlock: {
@@ -110,7 +105,7 @@ export const executeGroup =
   }
 
 const computeRuntimeOptions =
-  (state: SessionState) =>
+  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
   (block: InputBlock): Promise<RuntimeOptions> | undefined => {
     switch (block.type) {
       case InputBlockType.PAYMENT: {
@@ -122,10 +117,13 @@ const computeRuntimeOptions =
 const getPrefilledInputValue =
   (variables: SessionState['typebot']['variables']) => (block: InputBlock) => {
     return (
-      variables.find(
-        (variable) =>
-          variable.id === block.options.variableId && isDefined(variable.value)
-      )?.value ?? undefined
+      variables
+        .find(
+          (variable) =>
+            variable.id === block.options.variableId &&
+            isDefined(variable.value)
+        )
+        ?.value?.toString() ?? undefined
     )
   }
 
@@ -148,5 +146,26 @@ const parseBubbleBlock =
       }
       default:
         return deepParseVariable(variables)(block)
+    }
+  }
+
+const injectVariablesValueInBlock =
+  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
+  async (block: InputBlock): Promise<ChatReply['input']> => {
+    switch (block.type) {
+      case InputBlockType.CHOICE: {
+        return injectVariableValuesInButtonsInputBlock(state.typebot.variables)(
+          block
+        )
+      }
+      default: {
+        return deepParseVariable(state.typebot.variables)({
+          ...block,
+          runtimeOptions: await computeRuntimeOptions(state)(block),
+          prefilledValue: getPrefilledInputValue(state.typebot.variables)(
+            block
+          ),
+        })
+      }
     }
   }

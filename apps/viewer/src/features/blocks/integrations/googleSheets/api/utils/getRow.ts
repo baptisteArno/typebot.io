@@ -53,24 +53,21 @@ export const getRow = async (
       })
       return { outgoingEdgeId, logs: log ? [log] : undefined }
     }
-    const randomIndex = Math.floor(Math.random() * filteredRows.length)
     const extractingColumns = cellsToExtract
       .map((cell) => cell.column)
       .filter(isNotEmpty)
-    const selectedRow = filteredRows
-      .map((row) =>
-        extractingColumns.reduce<{ [key: string]: string }>(
-          (obj, column) => ({ ...obj, [column]: row[column] }),
-          {}
-        )
+    const selectedRows = filteredRows.map((row) =>
+      extractingColumns.reduce<{ [key: string]: string }>(
+        (obj, column) => ({ ...obj, [column]: row[column] }),
+        {}
       )
-      .at(randomIndex)
-    if (!selectedRow) return { outgoingEdgeId }
+    )
+    if (!selectedRows) return { outgoingEdgeId }
 
     const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
       (newVariables, cell) => {
         const existingVariable = variables.find(byId(cell.variableId))
-        const value = selectedRow[cell.column ?? ''] ?? null
+        const value = selectedRows.map((row) => row[cell.column ?? ''])
         if (!existingVariable) return newVariables
         return [
           ...newVariables,

@@ -25,7 +25,10 @@ export const parseVariables =
       if (!variable) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
-      if (options.escapeForJson) return jsonParse(value)
+      if (options.escapeForJson)
+        return typeof value === 'string'
+          ? jsonParse(value)
+          : jsonParse(JSON.stringify(value))
       const parsedValue = safeStringify(value)
       if (!parsedValue) return ''
       return parsedValue
@@ -45,9 +48,10 @@ export const safeStringify = (val: unknown): string | null => {
 
 export const parseCorrectValueType = (
   value: Variable['value']
-): string | boolean | number | null | undefined => {
+): string | string[] | boolean | number | null | undefined => {
   if (value === null) return null
   if (value === undefined) return undefined
+  if (Array.isArray(value)) return value
   if (typeof value === 'number') return value
   if (value === 'true') return true
   if (value === 'false') return false

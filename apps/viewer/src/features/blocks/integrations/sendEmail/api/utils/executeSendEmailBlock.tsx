@@ -71,7 +71,7 @@ const sendEmail = async ({
 }: SendEmailOptions & {
   typebotId: string
   resultId?: string
-  fileUrls?: string
+  fileUrls?: string | string[]
 }) => {
   const { name: replyToName } = parseEmailRecipient(replyTo)
 
@@ -121,7 +121,11 @@ const sendEmail = async ({
     to: recipients,
     replyTo,
     subject,
-    attachments: fileUrls?.split(', ').map((url) => ({ path: url })),
+    attachments: fileUrls
+      ? (typeof fileUrls === 'string' ? fileUrls.split(', ') : fileUrls).map(
+          (url) => ({ path: url })
+        )
+      : undefined,
     ...emailBody,
   }
   try {

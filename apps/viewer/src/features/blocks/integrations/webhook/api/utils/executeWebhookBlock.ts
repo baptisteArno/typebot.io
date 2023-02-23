@@ -50,8 +50,8 @@ export const executeWebhookBlock = async (
     return { outgoingEdgeId: block.outgoingEdgeId, logs: [log] }
   }
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-  const resultValues = result && (await getResultValues(result.id))
-  if (!resultValues) return { outgoingEdgeId: block.outgoingEdgeId }
+  const resultValues =
+    (result && (await getResultValues(result.id))) ?? undefined
   const webhookResponse = await executeWebhook({ typebot })(
     preparedWebhook,
     typebot.variables,
@@ -139,8 +139,8 @@ export const executeWebhook =
     webhook: Webhook,
     variables: Variable[],
     groupId: string,
-    resultValues: ResultValues,
-    resultId: string
+    resultValues?: ResultValues,
+    resultId?: string
   ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
       return {

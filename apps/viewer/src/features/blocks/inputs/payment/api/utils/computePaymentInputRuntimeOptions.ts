@@ -11,11 +11,12 @@ import Stripe from 'stripe'
 import { decrypt } from 'utils/api/encryption'
 
 export const computePaymentInputRuntimeOptions =
-  (state: SessionState) => (options: PaymentInputOptions) =>
+  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
+  (options: PaymentInputOptions) =>
     createStripePaymentIntent(state)(options)
 
 const createStripePaymentIntent =
-  (state: SessionState) =>
+  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
   async (options: PaymentInputOptions): Promise<PaymentInputRuntimeOptions> => {
     const {
       isPreview,

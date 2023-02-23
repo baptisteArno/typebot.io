@@ -33,7 +33,10 @@ export const parseVariables =
       if (!variable) return ''
       if (options.fieldToParse === 'id') return variable.id
       const { value } = variable
-      if (options.escapeForJson) return jsonParse(value)
+      if (options.escapeForJson)
+        return jsonParse(
+          typeof value !== 'string' ? JSON.stringify(value) : value
+        )
       const parsedValue = safeStringify(value)
       if (!parsedValue) return ''
       return parsedValue
@@ -67,9 +70,10 @@ export const safeStringify = (val: unknown): string | null => {
 
 export const parseCorrectValueType = (
   value: Variable['value']
-): string | boolean | number | null | undefined => {
+): string | string[] | boolean | number | null | undefined => {
   if (value === null) return null
   if (value === undefined) return undefined
+  if (typeof value !== 'string') return value
   const isNumberStartingWithZero =
     value.startsWith('0') && !value.startsWith('0.') && value.length > 1
   if (typeof value === 'string' && isNumberStartingWithZero) return value
@@ -152,7 +156,9 @@ const updateResultVariables =
     if (!result) return []
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
-      value: safeStringify(variable.value),
+      value: Array.isArray(variable.value)
+        ? variable.value.map(safeStringify).filter(isDefined)
+        : safeStringify(variable.value),
     }))
 
     const updatedVariables = [
@@ -181,7 +187,9 @@ const updateTypebotVariables =
   (newVariables: VariableWithUnknowValue[]): Variable[] => {
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
-      value: safeStringify(variable.value),
+      value: Array.isArray(variable.value)
+        ? variable.value.map(safeStringify).filter(isDefined)
+        : safeStringify(variable.value),
     }))
 
     return [

@@ -235,7 +235,7 @@ export const parseAnswers =
         if (isVariable) {
           const variable = answerOrVariable as VariableWithValue
           if (variable.value === null) return o
-          return { ...o, [variable.name]: variable.value }
+          return { ...o, [variable.name]: variable.value.toString() }
         }
         const answer = answerOrVariable as Answer
         const key = answer.variableId

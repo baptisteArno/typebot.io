@@ -100,8 +100,7 @@ export const BlockNode = ({
 
   useEffect(() => {
     if (query.blockId?.toString() === block.id) setOpenedBlockId(block.id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query])
+  }, [block.id, query, setOpenedBlockId])
 
   useEffect(() => {
     setIsConnecting(

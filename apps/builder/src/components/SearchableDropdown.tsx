@@ -17,6 +17,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import { env, isDefined } from 'utils'
 import { VariablesButton } from '@/features/variables'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
   selectedItem?: string
@@ -58,6 +59,7 @@ export const SearchableDropdown = ({
   const dropdownRef = useRef(null)
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
+  const { ref: parentModalRef } = useParentModal()
 
   useEffect(
     () => () => {
@@ -195,7 +197,7 @@ export const SearchableDropdown = ({
             )}
           </HStack>
         </PopoverAnchor>
-        <Portal>
+        <Portal containerRef={parentModalRef}>
           <PopoverContent
             maxH="35vh"
             overflowY="scroll"

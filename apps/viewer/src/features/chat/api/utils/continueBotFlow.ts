@@ -232,7 +232,8 @@ export const isReplyValid = (inputValue: string, block: Block): boolean => {
     case InputBlockType.URL:
       return validateUrl(inputValue)
     case InputBlockType.CHOICE:
-      if (block.options.isMultipleChoice) return true
+      if (block.options.isMultipleChoice || block.options.dynamicVariableId)
+        return true
       return validateButtonInput(block, inputValue)
   }
   return true

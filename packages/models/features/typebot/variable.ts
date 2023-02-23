@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const variableSchema = z.object({
   id: z.string(),
   name: z.string(),
-  value: z.string().nullish(),
+  value: z.string().or(z.array(z.string())).nullish(),
 })
 
 /**
@@ -12,7 +12,7 @@ export const variableSchema = z.object({
 export const variableWithValueSchema = z.object({
   id: z.string(),
   name: z.string(),
-  value: z.string(),
+  value: z.string().or(z.array(z.string())),
 })
 
 /**

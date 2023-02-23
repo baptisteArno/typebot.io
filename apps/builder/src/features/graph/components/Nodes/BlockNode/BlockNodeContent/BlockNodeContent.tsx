@@ -33,20 +33,18 @@ import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSh
 import { GoogleAnalyticsNodeContent } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeContent'
 import { ZapierContent } from '@/features/blocks/integrations/zapier'
 import { SendEmailContent } from '@/features/blocks/integrations/sendEmail'
-import { isInputBlock, isChoiceInput, blockHasItems } from 'utils'
+import { isInputBlock, isChoiceInput } from 'utils'
 import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
+import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 
 type Props = {
   block: Block | StartBlock
   indices: BlockIndices
 }
 export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
-  if (blockHasItems(block))
-    return <ItemNodesList block={block} indices={indices} />
-
   if (
     isInputBlock(block) &&
     !isChoiceInput(block) &&
@@ -92,6 +90,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     case InputBlockType.URL: {
       return <UrlNodeContent placeholder={block.options.labels.placeholder} />
     }
+    case InputBlockType.CHOICE: {
+      return <ButtonsBlockNode block={block} indices={indices} />
+    }
     case InputBlockType.PHONE: {
       return <PhoneNodeContent placeholder={block.options.labels.placeholder} />
     }
@@ -126,7 +127,8 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />
-
+    case LogicBlockType.CONDITION:
+      return <ItemNodesList block={block} indices={indices} />
     case IntegrationBlockType.GOOGLE_SHEETS: {
       return (
         <GoogleSheetsNodeContent
