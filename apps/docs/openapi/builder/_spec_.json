@@ -1242,14 +1242,7 @@
                       }
                     },
                     "nextCursor": {
-                      "anyOf": [
-                        {
-                          "not": {}
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ],
+                      "type": "string",
                       "nullable": true
                     }
                   },

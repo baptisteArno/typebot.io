@@ -13,14 +13,14 @@
     "db:migrate": "pnpm migrate:deploy"
   },
   "dependencies": {
-    "@prisma/client": "4.9.0"
+    "@prisma/client": "4.10.1"
   },
   "devDependencies": {
-    "@types/node": "18.11.18",
+    "@types/node": "18.14.0",
     "dotenv": "16.0.3",
-    "prisma": "4.9.0",
+    "prisma": "4.10.1",
     "tsconfig": "workspace:*",
-    "tsx": "3.12.2",
-    "typescript": "4.9.4"
+    "tsx": "3.12.3",
+    "typescript": "4.9.5"
   }
 }

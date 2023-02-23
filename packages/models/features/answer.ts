@@ -19,7 +19,6 @@ export const answerInputSchema =
     answerSchema
       .omit({
         createdAt: true,
-        updatedAt: true,
         resultId: true,
         variableId: true,
         storageUsed: true,

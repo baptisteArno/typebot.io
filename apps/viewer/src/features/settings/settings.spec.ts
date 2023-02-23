@@ -14,6 +14,13 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
   await createTypebots([
     {
       id: typebotId,
+      settings: {
+        ...defaultSettings,
+        general: {
+          ...defaultSettings.general,
+          isNewResultOnRefreshEnabled: false,
+        },
+      },
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
         options: defaultTextInputOptions,
@@ -43,13 +50,6 @@ test.describe('Create result on page refresh enabled', () => {
     await createTypebots([
       {
         id: typebotId,
-        settings: {
-          ...defaultSettings,
-          general: {
-            ...defaultSettings.general,
-            isNewResultOnRefreshEnabled: true,
-          },
-        },
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
           options: defaultTextInputOptions,

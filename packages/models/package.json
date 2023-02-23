@@ -6,14 +6,14 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "zod": "3.20.2"
+    "zod": "3.20.6"
   },
   "devDependencies": {
-    "@paralleldrive/cuid2": "2.0.1",
+    "@paralleldrive/cuid2": "2.2.0",
     "db": "workspace:*",
     "next": "13.1.6",
     "tsconfig": "workspace:*",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "peerDependencies": {
     "next": "13.0.0"

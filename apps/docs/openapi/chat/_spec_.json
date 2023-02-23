@@ -2910,14 +2910,7 @@
                                       "type": "string"
                                     },
                                     "value": {
-                                      "anyOf": [
-                                        {
-                                          "not": {}
-                                        },
-                                        {
-                                          "type": "string"
-                                        }
-                                      ],
+                                      "type": "string",
                                       "nullable": true
                                     }
                                   },
@@ -4527,24 +4520,17 @@
                                                         "value": {
                                                           "anyOf": [
                                                             {
-                                                              "not": {}
-                                                            },
-                                                            {
                                                               "anyOf": [
                                                                 {
-                                                                  "anyOf": [
-                                                                    {
-                                                                      "type": "string"
-                                                                    },
-                                                                    {
-                                                                      "type": "number"
-                                                                    }
-                                                                  ]
+                                                                  "type": "string"
                                                                 },
                                                                 {
-                                                                  "type": "boolean"
+                                                                  "type": "number"
                                                                 }
                                                               ]
+                                                            },
+                                                            {
+                                                              "type": "boolean"
                                                             }
                                                           ],
                                                           "nullable": true
@@ -4618,24 +4604,17 @@
                                                         "value": {
                                                           "anyOf": [
                                                             {
-                                                              "not": {}
-                                                            },
-                                                            {
                                                               "anyOf": [
                                                                 {
-                                                                  "anyOf": [
-                                                                    {
-                                                                      "type": "string"
-                                                                    },
-                                                                    {
-                                                                      "type": "number"
-                                                                    }
-                                                                  ]
+                                                                  "type": "string"
                                                                 },
                                                                 {
-                                                                  "type": "boolean"
+                                                                  "type": "number"
                                                                 }
                                                               ]
+                                                            },
+                                                            {
+                                                              "type": "boolean"
                                                             }
                                                           ],
                                                           "nullable": true
