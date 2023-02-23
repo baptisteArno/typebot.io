@@ -95,9 +95,9 @@ const TextBubbleEditorContent = ({
   const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
+    ReactEditor.focus(editor as unknown as ReactEditor)
     Transforms.select(editor as BaseEditor, rememberedSelection.current)
     Transforms.insertText(editor as BaseEditor, '{{' + variable.name + '}}')
-    ReactEditor.focus(editor as unknown as ReactEditor)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
