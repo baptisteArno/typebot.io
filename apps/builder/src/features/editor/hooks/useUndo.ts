@@ -50,7 +50,7 @@ const reducer = <T extends { updatedAt: Date } | undefined>(
 
   switch (action.type) {
     case ActionType.Undo: {
-      if (past.length === 0) {
+      if (past.length === 0 || !present) {
         return state
       }
 
@@ -59,7 +59,7 @@ const reducer = <T extends { updatedAt: Date } | undefined>(
 
       return {
         past: newPast,
-        present: previous,
+        present: { ...previous, updatedAt: present.updatedAt },
         future: [present, ...future],
       }
     }
@@ -79,7 +79,7 @@ const reducer = <T extends { updatedAt: Date } | undefined>(
     }
 
     case ActionType.Set: {
-      const { newPresent, updateDate } = action
+      const { newPresent } = action
       if (
         isNotDefined(newPresent) ||
         (present &&
@@ -90,19 +90,10 @@ const reducer = <T extends { updatedAt: Date } | undefined>(
       ) {
         return state
       }
-      // Uncomment to debug history ⬇️
-      // console.log(
-      //   diff(
-      //     JSON.parse(JSON.stringify(newPresent)),
-      //     present ? JSON.parse(JSON.stringify(present)) : {}
-      //   )
-      // )
+
       return {
         past: [...past, present].filter(isDefined),
-        present: {
-          ...newPresent,
-          updatedAt: updateDate ? new Date() : newPresent.updatedAt,
-        },
+        present: newPresent,
         future: [],
       }
     }
@@ -136,21 +127,17 @@ const useUndo = <T extends { updatedAt: Date } | undefined>(
     }
   }, [canRedo])
 
-  const set = useCallback(
-    (newPresent: T | ((current: T) => T), options = { updateDate: true }) => {
-      const updatedTypebot =
-        newPresent && typeof newPresent === 'function'
-          ? newPresent(presentRef.current)
-          : newPresent
-      presentRef.current = updatedTypebot
-      dispatch({
-        type: ActionType.Set,
-        newPresent: updatedTypebot,
-        updateDate: options.updateDate,
-      })
-    },
-    []
-  )
+  const set = useCallback((newPresent: T | ((current: T) => T)) => {
+    const updatedTypebot =
+      newPresent && typeof newPresent === 'function'
+        ? newPresent(presentRef.current)
+        : newPresent
+    presentRef.current = updatedTypebot
+    dispatch({
+      type: ActionType.Set,
+      newPresent: updatedTypebot,
+    })
+  }, [])
 
   const flush = useCallback(() => {
     dispatch({ type: ActionType.Flush })
