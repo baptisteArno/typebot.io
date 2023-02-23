@@ -197,11 +197,19 @@ test('Preview from group should work', async ({ page }) => {
   )
 
   await page.goto(`/typebots/${typebotId}/edit`)
-  await page.click('[aria-label="Preview bot from this group"] >> nth=1')
+  await page
+    .getByTestId('group')
+    .nth(1)
+    .click({ position: { x: 100, y: 10 } })
+  await page.click('[aria-label="Preview bot from this group"]')
   await expect(
     page.locator('typebot-standard').locator('text="Hello this is group 1"')
   ).toBeVisible()
-  await page.click('[aria-label="Preview bot from this group"] >> nth=2')
+  await page
+    .getByTestId('group')
+    .nth(2)
+    .click({ position: { x: 100, y: 10 } })
+  await page.click('[aria-label="Preview bot from this group"]')
   await expect(
     page.locator('typebot-standard').locator('text="Hello this is group 2"')
   ).toBeVisible()
