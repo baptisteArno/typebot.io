@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { sendRequest } from 'utils'
 import { PackageIcon } from './icons'
 
-const intervalDuration = 1000 * 60 // 30 seconds
+const intervalDuration = 1000 * 60
 
 export const NewVersionPopup = () => {
   const { typebot, save } = useTypebot()

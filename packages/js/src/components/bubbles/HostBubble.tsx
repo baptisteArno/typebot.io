@@ -9,6 +9,7 @@ import type {
   EmbedBubbleContent,
   ImageBubbleContent,
   TextBubbleContent,
+  TypingEmulation,
   VideoBubbleContent,
 } from 'models'
 import { BubbleBlockType } from 'models/features/blocks/bubbles/enums'
@@ -16,6 +17,7 @@ import { Match, Switch } from 'solid-js'
 
 type Props = {
   message: ChatMessage
+  typingEmulation: TypingEmulation
   onTransitionEnd: () => void
 }
 
@@ -29,6 +31,7 @@ export const HostBubble = (props: Props) => {
       <Match when={props.message.type === BubbleBlockType.TEXT}>
         <TextBubble
           content={props.message.content as Omit<TextBubbleContent, 'richText'>}
+          typingEmulation={props.typingEmulation}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>

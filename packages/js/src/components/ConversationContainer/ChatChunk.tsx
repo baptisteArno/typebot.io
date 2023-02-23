@@ -68,6 +68,7 @@ export const ChatChunk = (props: Props) => {
               {(message) => (
                 <HostBubble
                   message={message}
+                  typingEmulation={props.settings.typingEmulation}
                   onTransitionEnd={displayNextMessage}
                 />
               )}

@@ -5,8 +5,8 @@ import { computeTypingDuration } from '../utils/computeTypingDuration'
 
 type Props = {
   content: Pick<TextBubbleContent, 'html' | 'plainText'>
+  typingEmulation: TypingEmulation
   onTransitionEnd: () => void
-  typingEmulation?: TypingEmulation
 }
 
 export const showAnimationDuration = 400
@@ -29,10 +29,13 @@ export const TextBubble = (props: Props) => {
 
   onMount(() => {
     if (!isTyping) return
-    const typingDuration = computeTypingDuration(
-      props.content.plainText,
-      props.typingEmulation ?? defaultTypingEmulation
-    )
+    const typingDuration =
+      props.typingEmulation?.enabled === false
+        ? 0
+        : computeTypingDuration(
+            props.content.plainText,
+            props.typingEmulation ?? defaultTypingEmulation
+          )
     setTimeout(() => {
       onTypingEnd()
     }, typingDuration)
