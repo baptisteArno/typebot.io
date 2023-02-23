@@ -13,6 +13,7 @@ import {
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 
 export type BotProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typebot: string | any
   isPreview?: boolean
   resultId?: string

@@ -103,6 +103,13 @@ const Input = (props: {
   const getPrefilledValue = () =>
     props.isInputPrefillEnabled ? props.block.prefilledValue : undefined
 
+  const submitPaymentSuccess = () =>
+    props.onSubmit({
+      value:
+        (props.block.options as PaymentInputOptions).labels.success ??
+        'Success',
+    })
+
   return (
     <Switch>
       <Match when={props.block.type === InputBlockType.TEXT}>
@@ -182,13 +189,7 @@ const Input = (props: {
               ...props.block.runtimeOptions,
             } as PaymentInputOptions & RuntimeOptions
           }
-          onSuccess={() =>
-            props.onSubmit({
-              value:
-                (props.block.options as PaymentInputOptions).labels.success ??
-                'Success',
-            })
-          }
+          onSuccess={submitPaymentSuccess}
         />
       </Match>
     </Switch>

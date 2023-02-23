@@ -8,20 +8,18 @@ export const LiteBadge = (props: Props) => {
   let liteBadge: HTMLAnchorElement | undefined
   let observer: MutationObserver | undefined
 
-  onMount(() => {
-    if (!document || !props.botContainer) return
-    observer = new MutationObserver(function (mutations_list) {
-      mutations_list.forEach(function (mutation) {
-        mutation.removedNodes.forEach(function (removed_node) {
-          if (
-            'id' in removed_node &&
-            liteBadge &&
-            removed_node.id == 'lite-badge'
-          )
-            props.botContainer?.append(liteBadge)
-        })
+  const appendBadgeIfNecessary = (mutations: MutationRecord[]) => {
+    mutations.forEach((mutation) => {
+      mutation.removedNodes.forEach((removedNode) => {
+        if ('id' in removedNode && liteBadge && removedNode.id == 'lite-badge')
+          props.botContainer?.append(liteBadge)
       })
     })
+  }
+
+  onMount(() => {
+    if (!document || !props.botContainer) return
+    observer = new MutationObserver(appendBadgeIfNecessary)
     observer.observe(props.botContainer, {
       subtree: false,
       childList: true,

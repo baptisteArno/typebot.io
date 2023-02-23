@@ -92,7 +92,7 @@ const components = {
   },
 }
 
-export const theme: any = extendTheme({
+export const theme = extendTheme({
   fonts,
   components,
   colors,
