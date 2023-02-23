@@ -3,43 +3,76 @@ import { deleteFiles } from '@/utils/api/storage'
 import { Prisma } from 'db'
 import { InputBlockType, Typebot } from 'models'
 
-export const archiveResults = async ({
-  typebot,
-  resultsFilter,
-}: {
+const batchSize = 100
+
+type Props = {
   typebot: Pick<Typebot, 'groups'>
-  resultsFilter?: Prisma.ResultWhereInput
-}) => {
-  const fileUploadBlockIds = typebot.groups
-    .flatMap((g) => g.blocks)
-    .filter((b) => b.type === InputBlockType.FILE)
-    .map((b) => b.id)
-  if (fileUploadBlockIds.length > 0) {
-    const filesToDelete = await prisma.answer.findMany({
-      where: { result: resultsFilter, blockId: { in: fileUploadBlockIds } },
-    })
-    if (filesToDelete.length > 0)
-      await deleteFiles({
-        urls: filesToDelete.flatMap((a) => a.content.split(', ')),
-      })
+  resultsFilter?: Omit<Prisma.ResultWhereInput, 'typebotId'> & {
+    typebotId: string
   }
-  await prisma.log.deleteMany({
-    where: {
-      result: resultsFilter,
-    },
-  })
-  await prisma.answer.deleteMany({
-    where: {
-      result: resultsFilter,
-    },
-  })
-  await prisma.result.updateMany({
-    where: resultsFilter,
-    data: {
-      isArchived: true,
-      variables: [],
-    },
-  })
+}
+
+export const archiveResults = async ({ typebot, resultsFilter }: Props) => {
+  const fileUploadBlockIds = typebot.groups
+    .flatMap((group) => group.blocks)
+    .filter((block) => block.type === InputBlockType.FILE)
+    .map((block) => block.id)
+
+  let currentTotalResults = 0
+
+  do {
+    const resultsToDelete = await prisma.result.findMany({
+      where: {
+        ...resultsFilter,
+        isArchived: false,
+      },
+      select: {
+        id: true,
+      },
+      take: batchSize,
+    })
+
+    if (resultsToDelete.length === 0) break
+
+    currentTotalResults = resultsToDelete.length
+
+    const resultIds = resultsToDelete.map((result) => result.id)
+
+    if (fileUploadBlockIds.length > 0) {
+      const filesToDelete = await prisma.answer.findMany({
+        where: {
+          resultId: { in: resultIds },
+          blockId: { in: fileUploadBlockIds },
+        },
+      })
+      if (filesToDelete.length > 0)
+        await deleteFiles({
+          urls: filesToDelete.flatMap((a) => a.content.split(', ')),
+        })
+    }
+
+    await prisma.$transaction([
+      prisma.log.deleteMany({
+        where: {
+          resultId: { in: resultIds },
+        },
+      }),
+      prisma.answer.deleteMany({
+        where: {
+          resultId: { in: resultIds },
+        },
+      }),
+      prisma.result.updateMany({
+        where: {
+          id: { in: resultIds },
+        },
+        data: {
+          isArchived: true,
+          variables: [],
+        },
+      }),
+    ])
+  } while (currentTotalResults >= batchSize)
 
   return { success: true }
 }

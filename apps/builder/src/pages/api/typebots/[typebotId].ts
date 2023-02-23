@@ -57,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typebot,
       resultsFilter: { typebotId },
     })
-    if (!success) return res.status(500).send({ success: false })
+    if (!success) return res.status(500).send({ success: false, error: '' })
     await prisma.publicTypebot.deleteMany({
       where: { typebotId },
     })
