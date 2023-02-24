@@ -102,6 +102,7 @@ const sendEmail = async ({
       resultId,
       message: 'Email not sent',
       details: {
+        error: 'No email body found',
         transportConfig,
         recipients,
         subject,
@@ -146,12 +147,12 @@ const sendEmail = async ({
       resultId,
       message: 'Email not sent',
       details: {
+        error: err,
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: '******' },
         },
         email,
-        error: err,
       },
     })
   }
