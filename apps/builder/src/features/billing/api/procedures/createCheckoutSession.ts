@@ -77,6 +77,10 @@ export const createCheckoutSession = authenticatedProcedure
         mode: 'subscription',
         metadata: { workspaceId, plan, additionalChats, additionalStorage },
         currency,
+        tax_id_collection: {
+          enabled: true,
+        },
+        billing_address_collection: 'required',
         automatic_tax: { enabled: true },
         line_items: parseSubscriptionItems(
           plan,
