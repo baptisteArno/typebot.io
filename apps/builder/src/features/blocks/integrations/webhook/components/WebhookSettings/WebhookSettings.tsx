@@ -262,7 +262,7 @@ export const WebhookSettings = ({
           </Button>
         )}
         {testResponse && (
-          <CodeEditor isReadOnly lang="json" defaultValue={testResponse} />
+          <CodeEditor isReadOnly lang="json" value={testResponse} />
         )}
         {(testResponse || options?.responseVariableMapping.length > 0) && (
           <Accordion allowMultiple>
