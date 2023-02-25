@@ -82,7 +82,6 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
       createCheckoutSession({
         ...newSubscription,
         returnUrl: window.location.href,
-        prefilledEmail: user.email ?? undefined,
       })
     }
   }
