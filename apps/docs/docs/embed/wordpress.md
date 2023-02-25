@@ -24,6 +24,10 @@ You can use these variables anywhere on your typebot. For more informations, che
 
 ## Your typebot isn't showing?
 
+### You have litespeed with "Localise Resources" enabled
+
+There is an a box where there is a list of URLs it localises, one of them was ‘https://cdn.jsdelivr.net’. This URL should be removed from it since it is used to import the embed library.
+
 ### You have a cache plugin
 
 Plugins like WP Rocket prevent Typebot to work.
