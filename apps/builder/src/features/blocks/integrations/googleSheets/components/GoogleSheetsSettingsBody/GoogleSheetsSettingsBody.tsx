@@ -26,6 +26,7 @@ import { CredentialsDropdown } from '@/features/credentials'
 import { useSheets } from '../../hooks/useSheets'
 import { Sheet } from '../../types'
 import { RowsFilterTableList } from './RowsFilterTableList'
+import { createId } from '@paralleldrive/cuid2'
 
 type Props = {
   options: GoogleSheetsOptions
@@ -65,21 +66,21 @@ export const GoogleSheetsSettingsBody = ({
       case GoogleSheetsAction.GET: {
         const newOptions: GoogleSheetsGetOptions = {
           ...baseOptions,
-          ...defaultGoogleSheetsGetOptions,
+          ...defaultGoogleSheetsGetOptions(createId),
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.INSERT_ROW: {
         const newOptions: GoogleSheetsInsertRowOptions = {
           ...baseOptions,
-          ...defaultGoogleSheetsInsertOptions,
+          ...defaultGoogleSheetsInsertOptions(createId),
         }
         return onOptionsChange({ ...newOptions })
       }
       case GoogleSheetsAction.UPDATE_ROW: {
         const newOptions: GoogleSheetsUpdateRowOptions = {
           ...baseOptions,
-          ...defaultGoogleSheetsUpdateOptions,
+          ...defaultGoogleSheetsUpdateOptions(createId),
         }
         return onOptionsChange({ ...newOptions })
       }

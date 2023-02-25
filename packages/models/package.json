@@ -9,7 +9,6 @@
     "zod": "3.20.6"
   },
   "devDependencies": {
-    "@paralleldrive/cuid2": "2.2.0",
     "db": "workspace:*",
     "next": "13.1.6",
     "tsconfig": "workspace:*",

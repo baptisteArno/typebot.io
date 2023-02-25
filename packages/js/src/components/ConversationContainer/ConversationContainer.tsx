@@ -67,7 +67,7 @@ export const ConversationContainer = (props: Props) => {
   })
 
   const sendMessage = async (message: string | undefined) => {
-    const currentBlockId = chatChunks().at(-1)?.input?.id
+    const currentBlockId = [...chatChunks()].pop()?.input?.id
     if (currentBlockId && props.onAnswer && message)
       props.onAnswer({ message, blockId: currentBlockId })
     const longRequest = setTimeout(() => {
@@ -116,7 +116,7 @@ export const ConversationContainer = (props: Props) => {
   }
 
   const handleAllBubblesDisplayed = async () => {
-    const lastChunk = chatChunks().at(-1)
+    const lastChunk = [...chatChunks()].pop()
     if (!lastChunk) return
     if (isNotDefined(lastChunk.input)) {
       props.onEnd?.()
@@ -124,7 +124,7 @@ export const ConversationContainer = (props: Props) => {
   }
 
   const handleNewBubbleDisplayed = async (blockId: string) => {
-    const lastChunk = chatChunks().at(-1)
+    const lastChunk = [...chatChunks()].pop()
     if (!lastChunk) return
     if (lastChunk.clientSideActions) {
       const actionsToExecute = lastChunk.clientSideActions.filter(

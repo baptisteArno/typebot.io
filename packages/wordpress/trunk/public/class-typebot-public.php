@@ -45,6 +45,8 @@ class Typebot_Public
         }
         $arr_js = substr($arr_js, 0, -1) . '];';
         echo $arr_js;
+      } else {
+        echo 'const typebotExcludePaths = null;';
       }
       if (get_option('init_snippet') && get_option('init_snippet') !== '') {
 

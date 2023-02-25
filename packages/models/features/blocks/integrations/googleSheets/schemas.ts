@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { ComparisonOperators, LogicalOperator } from '../../logic/condition'
-import { createId } from '@paralleldrive/cuid2'
 import { IntegrationBlockType } from '../enums'
 import { GoogleSheetsAction } from './enums'
 import { blockBaseSchema } from '../../baseSchemas'
@@ -72,7 +71,9 @@ export const googleSheetsBlockSchema = blockBaseSchema.and(
 
 export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
 
-export const defaultGoogleSheetsGetOptions: GoogleSheetsGetOptions = {
+export const defaultGoogleSheetsGetOptions = (
+  createId: () => string
+): GoogleSheetsGetOptions => ({
   action: GoogleSheetsAction.GET,
   cellsToExtract: [
     {
@@ -87,25 +88,29 @@ export const defaultGoogleSheetsGetOptions: GoogleSheetsGetOptions = {
     ],
     logicalOperator: LogicalOperator.AND,
   },
-}
+})
 
-export const defaultGoogleSheetsInsertOptions: GoogleSheetsInsertRowOptions = {
+export const defaultGoogleSheetsInsertOptions = (
+  createId: () => string
+): GoogleSheetsInsertRowOptions => ({
   action: GoogleSheetsAction.INSERT_ROW,
   cellsToInsert: [
     {
       id: createId(),
     },
   ],
-}
+})
 
-export const defaultGoogleSheetsUpdateOptions: GoogleSheetsUpdateRowOptions = {
+export const defaultGoogleSheetsUpdateOptions = (
+  createId: () => string
+): GoogleSheetsUpdateRowOptions => ({
   action: GoogleSheetsAction.UPDATE_ROW,
   cellsToUpsert: [
     {
       id: createId(),
     },
   ],
-}
+})
 
 export type GoogleSheetsBlock = z.infer<typeof googleSheetsBlockSchema>
 export type GoogleSheetsOptions = z.infer<typeof googleSheetsOptionsSchema>

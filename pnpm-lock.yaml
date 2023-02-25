@@ -389,7 +389,6 @@ importers:
       utils: workspace:*
       zod: 3.20.6
     dependencies:
-      '@paralleldrive/cuid2': 2.2.0
       '@sentry/nextjs': 7.38.0_next@13.1.6+react@18.2.0
       '@trpc/server': 10.12.0
       '@typebot.io/js': link:../../packages/js
@@ -412,6 +411,7 @@ importers:
     devDependencies:
       '@babel/preset-env': 7.20.2_@babel+core@7.21.0
       '@faire/mjml-react': 3.1.1_7tbcn2mecc3yvuxakflodiks3m
+      '@paralleldrive/cuid2': 2.2.0
       '@playwright/test': 1.31.1
       '@types/cors': 2.8.13
       '@types/google-spreadsheet': 3.3.1
@@ -622,7 +622,6 @@ importers:
 
   packages/models:
     specifiers:
-      '@paralleldrive/cuid2': 2.2.0
       db: workspace:*
       next: 13.1.6
       tsconfig: workspace:*
@@ -631,7 +630,6 @@ importers:
     dependencies:
       zod: 3.20.6
     devDependencies:
-      '@paralleldrive/cuid2': 2.2.0
       db: link:../db
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       tsconfig: link:../tsconfig

@@ -33,5 +33,5 @@
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@7.27.1"
+  "packageManager": "pnpm@7.28.0"
 }
