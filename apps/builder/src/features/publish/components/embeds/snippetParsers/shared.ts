@@ -1,4 +1,6 @@
 import { BotProps } from '@typebot.io/js'
+import parserBabel from 'prettier/parser-babel'
+import prettier from 'prettier/standalone'
 import { isDefined } from 'utils'
 
 export const parseStringParam = (fieldName: string, fieldValue?: string) =>
@@ -30,3 +32,12 @@ export const parseReactBotProps = ({ typebot, apiHost }: BotProps) => {
 }
 
 export const typebotImportUrl = `https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.14/dist/web.js`
+
+export const parseInlineScript = (script: string) =>
+  prettier.format(
+    `const typebotInitScript = document.createElement("script");
+  typebotInitScript.type = "module";
+  typebotInitScript.innerHTML = \`${script}\`;
+  document.body.append(typebotInitScript);`,
+    { parser: 'babel', plugins: [parserBabel] }
+  )

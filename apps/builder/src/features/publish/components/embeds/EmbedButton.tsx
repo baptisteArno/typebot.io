@@ -24,6 +24,8 @@ import {
   WixModal,
 } from './modals'
 import { OtherModal } from './modals/OtherModal'
+import { ScriptIcon } from '@/features/blocks/logic/script'
+import { ScriptModal } from './modals/Script/ScriptModal'
 
 export type ModalProps = {
   publicId: string
@@ -109,6 +111,14 @@ export const integrationsList = [
       logo={<ReactLogo height={100} width="70px" />}
       label="React"
       Modal={ReactModal}
+      {...props}
+    />
+  ),
+  (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
+    <EmbedButton
+      logo={<ScriptIcon height={100} width="70px" color="gray.300" />}
+      label="Script"
+      Modal={ScriptModal}
       {...props}
     />
   ),
