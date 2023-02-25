@@ -1,4 +1,11 @@
-import { Button, useDisclosure, VStack, WrapItem, Text } from '@chakra-ui/react'
+import {
+  Button,
+  useDisclosure,
+  VStack,
+  WrapItem,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import {
   WordpressLogo,
   ShopifyLogo,
@@ -116,7 +123,13 @@ export const integrationsList = [
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton
-      logo={<ScriptIcon height={100} width="70px" color="gray.300" />}
+      logo={
+        <ScriptIcon
+          height={100}
+          width="70px"
+          color={useColorModeValue('gray.800', 'gray.300')}
+        />
+      }
       label="Script"
       Modal={ScriptModal}
       {...props}

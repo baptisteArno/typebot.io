@@ -8,7 +8,6 @@ import {
   parseReactNumberOrBoolParam,
   parseReactStringParam,
   parseStringParam,
-  typebotImportUrl,
 } from './shared'
 
 const parsePopupTheme = (theme: PopupProps['theme']): string => {
@@ -41,15 +40,10 @@ export const parseInitPopupCode = ({
   const botProps = parseBotProps({ typebot, apiHost })
   const bubbleProps = parsePopupProps({ theme, autoShowDelay })
 
-  return prettier.format(
-    `import Typebot from '${typebotImportUrl}'
-    
-  Typebot.initPopup({${botProps}${bubbleProps}});`,
-    {
-      parser: 'babel',
-      plugins: [parserBabel],
-    }
-  )
+  return prettier.format(`Typebot.initPopup({${botProps}${bubbleProps}});`, {
+    parser: 'babel',
+    plugins: [parserBabel],
+  })
 }
 
 const parseReactThemeProp = (theme: PopupProps['theme']): string => {

@@ -6,7 +6,6 @@ import {
   parseBotProps,
   parseNumberOrBoolParam,
   parseReactBotProps,
-  typebotImportUrl,
 } from './shared'
 
 const parseButtonTheme = (
@@ -111,15 +110,10 @@ export const parseInitBubbleCode = ({
   const botProps = parseBotProps({ typebot, apiHost })
   const bubbleProps = parseBubbleProps({ previewMessage, theme })
 
-  return prettier.format(
-    `import Typebot from '${typebotImportUrl}'
-    
-  Typebot.initBubble({${botProps}${bubbleProps}});`,
-    {
-      parser: 'babel',
-      plugins: [parserBabel],
-    }
-  )
+  return prettier.format(`Typebot.initBubble({${botProps}${bubbleProps}});`, {
+    parser: 'babel',
+    plugins: [parserBabel],
+  })
 }
 
 const parseReactBubbleTheme = (theme: BubbleProps['theme']): string => {

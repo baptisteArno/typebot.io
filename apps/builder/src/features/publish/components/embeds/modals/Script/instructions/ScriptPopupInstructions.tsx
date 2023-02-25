@@ -6,20 +6,25 @@ import { useState } from 'react'
 import { env, getViewerUrl } from 'utils'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers'
-import { parseInlineScript } from '../../../snippetParsers/shared'
+import {
+  parseInlineScript,
+  typebotImportCode,
+} from '../../../snippetParsers/shared'
 
 export const ScriptPopupInstructions = () => {
   const { typebot } = useTypebot()
   const [inputValue, setInputValue] = useState<number>()
 
   const scriptSnippet = parseInlineScript(
-    parseInitPopupCode({
-      typebot: typebot?.publicId ?? '',
-      apiHost: isCloudProdInstance
-        ? undefined
-        : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
-      autoShowDelay: inputValue,
-    })
+    `${typebotImportCode}
+
+${parseInitPopupCode({
+  typebot: typebot?.publicId ?? '',
+  apiHost: isCloudProdInstance
+    ? undefined
+    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  autoShowDelay: inputValue,
+})}`
   )
 
   return (

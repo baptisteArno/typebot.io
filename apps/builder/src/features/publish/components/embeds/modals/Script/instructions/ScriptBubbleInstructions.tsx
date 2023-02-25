@@ -7,7 +7,11 @@ import { Typebot } from 'models'
 import { useState } from 'react'
 import { env, getViewerUrl } from 'utils'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
-import { parseInlineScript, parseInitBubbleCode } from '../../../snippetParsers'
+import {
+  parseInlineScript,
+  parseInitBubbleCode,
+  typebotImportCode,
+} from '../../../snippetParsers'
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
@@ -29,14 +33,16 @@ export const ScriptBubbleInstructions = () => {
     useState<BubbleProps['previewMessage']>()
 
   const scriptSnippet = parseInlineScript(
-    parseInitBubbleCode({
-      typebot: typebot?.publicId ?? '',
-      apiHost: isCloudProdInstance
-        ? undefined
-        : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
-      theme,
-      previewMessage,
-    })
+    `${typebotImportCode}
+
+${parseInitBubbleCode({
+  typebot: typebot?.publicId ?? '',
+  apiHost: isCloudProdInstance
+    ? undefined
+    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  theme,
+  previewMessage,
+})}`
   )
 
   return (

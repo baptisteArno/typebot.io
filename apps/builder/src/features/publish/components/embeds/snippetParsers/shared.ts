@@ -31,7 +31,7 @@ export const parseReactBotProps = ({ typebot, apiHost }: BotProps) => {
   return `${typebotLine} ${apiHostLine}`
 }
 
-export const typebotImportUrl = `https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.14/dist/web.js`
+export const typebotImportCode = `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'`
 
 export const parseInlineScript = (script: string) =>
   prettier.format(

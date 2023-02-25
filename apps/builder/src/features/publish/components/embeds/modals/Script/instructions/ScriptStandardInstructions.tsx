@@ -7,7 +7,10 @@ import { env, getViewerUrl } from 'utils'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import { parseInitStandardCode } from '../../../snippetParsers/standard'
 import { parseStandardElementCode } from '../../Javascript/JavascriptStandardSnippet'
-import { parseInlineScript } from '../../../snippetParsers/shared'
+import {
+  parseInlineScript,
+  typebotImportCode,
+} from '../../../snippetParsers/shared'
 
 export const ScriptStandardInstructions = () => {
   const { typebot } = useTypebot()
@@ -24,14 +27,14 @@ export const ScriptStandardInstructions = () => {
     inputValues.heightLabel
   )
 
-  const scriptSnippet = parseInlineScript(
-    parseInitStandardCode({
-      typebot: typebot?.publicId ?? '',
-      apiHost: isCloudProdInstance
-        ? undefined
-        : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
-    })
-  )
+  const scriptSnippet = parseInlineScript(`${typebotImportCode}
+  
+${parseInitStandardCode({
+  typebot: typebot?.publicId ?? '',
+  apiHost: isCloudProdInstance
+    ? undefined
+    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+})}`)
 
   return (
     <Stack spacing={4}>

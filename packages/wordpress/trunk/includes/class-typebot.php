@@ -42,7 +42,6 @@ class Typebot
 	private function define_admin_hooks()
 	{
 		$plugin_admin = new Typebot_Admin($this->get_version());
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'my_admin_menu');
 		$this->loader->add_action('admin_init', $plugin_admin, 'register_typebot_settings');
 	}

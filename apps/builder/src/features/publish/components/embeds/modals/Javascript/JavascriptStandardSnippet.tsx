@@ -1,6 +1,6 @@
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
-import { parseInitStandardCode } from '../../snippetParsers'
+import { parseInitStandardCode, typebotImportCode } from '../../snippetParsers'
 import { useTypebot } from '@/features/editor'
 import { CodeEditor } from '@/components/CodeEditor'
 import { isCloudProdInstance } from '@/utils/helpers'
@@ -31,12 +31,14 @@ export const JavascriptStandardSnippet = ({
 
 export const parseStandardHeadCode = (publicId?: string | null) =>
   prettier.format(
-    `<script type="module">${parseInitStandardCode({
-      typebot: publicId ?? '',
-      apiHost: isCloudProdInstance
-        ? undefined
-        : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
-    })}</script>`,
+    `<script type="module">${typebotImportCode};
+
+${parseInitStandardCode({
+  typebot: publicId ?? '',
+  apiHost: isCloudProdInstance
+    ? undefined
+    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+})}</script>`,
     { parser: 'html', plugins: [parserHtml] }
   )
 

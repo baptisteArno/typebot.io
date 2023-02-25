@@ -1,7 +1,7 @@
 import { useTypebot } from '@/features/editor'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
-import { parseInitPopupCode } from '../../snippetParsers'
+import { parseInitPopupCode, typebotImportCode } from '../../snippetParsers'
 import { CodeEditor } from '@/components/CodeEditor'
 import { PopupProps } from '@typebot.io/js'
 import { isCloudProdInstance } from '@/utils/helpers'
@@ -29,5 +29,7 @@ export const JavascriptPopupSnippet = ({ autoShowDelay }: Props) => {
 
 const createSnippet = (params: PopupProps): string => {
   const jsCode = parseInitPopupCode(params)
-  return `<script type="module">${jsCode}</script>`
+  return `<script type="module">${typebotImportCode}
+
+${jsCode}</script>`
 }

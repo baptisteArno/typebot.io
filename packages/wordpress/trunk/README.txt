@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.0
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 3.0.1
+Stable Tag: 3.1.0
 
 Build beautiful conversational forms
 
@@ -26,6 +26,11 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 3.1.0 =
+* Breaking change! You will need to import the new code snippet again.
+* Fix wp admin crash
+* Introduce excluded pages input
+
 = 3.0.1 =
 * Fix flow not proceeding on unknown domains
 

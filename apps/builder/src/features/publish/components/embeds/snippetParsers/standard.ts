@@ -1,7 +1,7 @@
 import { BotProps } from '@typebot.io/js'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
-import { parseBotProps, typebotImportUrl } from './shared'
+import { parseBotProps } from './shared'
 
 export const parseInitStandardCode = ({
   typebot,
@@ -9,13 +9,8 @@ export const parseInitStandardCode = ({
 }: Pick<BotProps, 'typebot' | 'apiHost'>) => {
   const botProps = parseBotProps({ typebot, apiHost })
 
-  return prettier.format(
-    `import Typebot from '${typebotImportUrl}'
-  
-  Typebot.initStandard({${botProps}});`,
-    {
-      parser: 'babel',
-      plugins: [parserBabel],
-    }
-  )
+  return prettier.format(`Typebot.initStandard({${botProps}});`, {
+    parser: 'babel',
+    plugins: [parserBabel],
+  })
 }
