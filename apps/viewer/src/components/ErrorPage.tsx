@@ -10,6 +10,7 @@ export const ErrorPage = ({ error }: { error: Error }) => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        padding: '0 1rem',
       }}
     >
       {isEmpty(getViewerUrl()) ? (
@@ -26,7 +27,7 @@ export const ErrorPage = ({ error }: { error: Error }) => {
           </h2>
         </>
       ) : (
-        <p style={{ fontSize: '24px' }}>{error.message}</p>
+        <p style={{ fontSize: '24px', textAlign: 'center' }}>{error.message}</p>
       )}
     </div>
   )

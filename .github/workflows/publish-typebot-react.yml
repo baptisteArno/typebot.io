@@ -15,9 +15,4 @@ jobs:
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
       - run: pnpm turbo build --filter=@typebot.io/react...
-      - name: Set NPM_TOKEN in config
-        run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-        working-directory: ./packages/react
-      - name: Publish
-        run: pnpm publish --no-git-checks --access public
-        working-directory: ./packages/react
+      - run: cd packages/react && pnpm publish --no-git-checks --access public

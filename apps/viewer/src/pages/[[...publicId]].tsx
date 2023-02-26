@@ -7,10 +7,29 @@ import prisma from '../lib/prisma'
 import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
 import { TypebotPageV3 } from '@/components/TypebotPageV3'
 
+// Browsers that doesn't support ES modules and/or web components
+const incompatibleBrowsers = [
+  {
+    name: 'UC Browser',
+    regex: /ucbrowser/i,
+  },
+  {
+    name: 'Internet Explorer',
+    regex: /msie|trident/i,
+  },
+  {
+    name: 'Opera Mini',
+    regex: /opera mini/i,
+  },
+]
+
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const isIE = /MSIE|Trident/.test(context.req.headers['user-agent'] ?? '')
+  const incompatibleBrowser =
+    incompatibleBrowsers.find((browser) =>
+      browser.regex.test(context.req.headers['user-agent'] ?? '')
+    )?.name ?? null
   const pathname = context.resolvedUrl.split('?')[0]
   const { host, forwardedHost } = getHost(context.req)
   try {
@@ -37,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (
     return {
       props: {
         publishedTypebot,
-        isIE,
+        incompatibleBrowser,
         url: `https://${forwardedHost ?? host}${pathname}`,
         customHeadCode:
           isDefined(headCode) && headCode !== '' ? headCode : null,
@@ -48,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (
   }
   return {
     props: {
-      isIE,
+      incompatibleBrowser,
       url: `https://${forwardedHost ?? host}${pathname}`,
     },
   }
@@ -102,7 +121,21 @@ const getHost = (
   forwardedHost: req?.headers['x-forwarded-host'] as string | undefined,
 })
 
-const App = ({ publishedTypebot, ...props }: TypebotPageProps) => {
+const App = ({
+  publishedTypebot,
+  incompatibleBrowser,
+  ...props
+}: TypebotPageProps & { incompatibleBrowser: string | null }) => {
+  if (incompatibleBrowser)
+    return (
+      <ErrorPage
+        error={
+          new Error(
+            `Your web browser: ${incompatibleBrowser}, is not supported.`
+          )
+        }
+      />
+    )
   if (!publishedTypebot || publishedTypebot.typebot.isArchived)
     return <NotFoundPage />
   if (publishedTypebot.typebot.isClosed)
