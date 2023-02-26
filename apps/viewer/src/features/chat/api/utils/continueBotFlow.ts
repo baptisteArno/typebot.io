@@ -1,4 +1,3 @@
-import { validateButtonInput } from '@/features/blocks/inputs/buttons/api'
 import { validateEmail } from '@/features/blocks/inputs/email/api'
 import {
   formatPhoneNumber,
@@ -231,10 +230,6 @@ export const isReplyValid = (inputValue: string, block: Block): boolean => {
       return validatePhoneNumber(inputValue)
     case InputBlockType.URL:
       return validateUrl(inputValue)
-    case InputBlockType.CHOICE:
-      if (block.options.isMultipleChoice || block.options.dynamicVariableId)
-        return true
-      return validateButtonInput(block, inputValue)
   }
   return true
 }
