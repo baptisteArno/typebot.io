@@ -5,7 +5,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { VariablesButton } from '@/features/variables'
 import { Variable } from 'models'
@@ -69,6 +69,13 @@ export const CodeEditor = ({
     setValue(newValue)
     setCarretPosition(codeEditor.current?.state?.selection.main.head ?? 0)
   }
+
+  useEffect(
+    () => () => {
+      setValue.flush()
+    },
+    [setValue]
+  )
 
   return (
     <HStack
