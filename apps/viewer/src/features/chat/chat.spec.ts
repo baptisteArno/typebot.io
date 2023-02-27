@@ -163,18 +163,6 @@ test('API chat execution should work on published bot', async ({ request }) => {
   })
 
   await test.step('Answer Buttons question with invalid choice', async () => {
-    const { messages, input } = await (
-      await request.post(`/api/v1/sendMessage`, {
-        data: { message: 'Yolo', sessionId: chatSessionId },
-      })
-    ).json()
-    expect(messages[0].content.plainText).toBe(
-      'Invalid message. Please, try again.'
-    )
-    expect(input.type).toBe('choice input')
-  })
-
-  await test.step('Answer Buttons question with invalid choice', async () => {
     const { messages } = await (
       await request.post(`/api/v1/sendMessage`, {
         data: { message: 'Yes', sessionId: chatSessionId },

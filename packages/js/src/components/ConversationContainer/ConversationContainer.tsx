@@ -1,5 +1,5 @@
 import type { ChatReply, Theme } from 'models'
-import { createEffect, createSignal, For, Show } from 'solid-js'
+import { createEffect, createSignal, For, onMount, Show } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
 import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
@@ -60,6 +60,21 @@ export const ConversationContainer = (props: Props) => {
   const [isSending, setIsSending] = createSignal(false)
   const [blockedPopupUrl, setBlockedPopupUrl] = createSignal<string>()
 
+  onMount(() => {
+    ;(async () => {
+      const initialChunk = chatChunks()[0]
+      if (initialChunk.clientSideActions) {
+        const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
+          (action) => isNotDefined(action.lastBubbleBlockId)
+        )
+        for (const action of actionsBeforeFirstBubble) {
+          const response = await executeClientSideAction(action)
+          if (response) setBlockedPopupUrl(response.blockedPopupUrl)
+        }
+      }
+    })()
+  })
+
   createEffect(() => {
     setTheme(
       parseDynamicTheme(props.initialChatReply.typebot.theme, dynamicTheme())
@@ -90,10 +105,10 @@ export const ConversationContainer = (props: Props) => {
       })
     }
     if (data.clientSideActions) {
-      const actionsToExecute = data.clientSideActions.filter((action) =>
+      const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>
         isNotDefined(action.lastBubbleBlockId)
       )
-      for (const action of actionsToExecute) {
+      for (const action of actionsBeforeFirstBubble) {
         const response = await executeClientSideAction(action)
         if (response) setBlockedPopupUrl(response.blockedPopupUrl)
       }
