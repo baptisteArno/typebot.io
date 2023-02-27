@@ -2,10 +2,17 @@ import { CodeEditor } from '@/components/CodeEditor'
 import { TextLink } from '@/components/TextLink'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { Code, ListItem, OrderedList, Stack, Text } from '@chakra-ui/react'
+import {
+  Code,
+  ListItem,
+  OrderedList,
+  Stack,
+  StackProps,
+  Text,
+} from '@chakra-ui/react'
 import { env, getViewerUrl } from 'utils'
 
-export const ApiPreviewInstructions = () => {
+export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot()
   const { startPreviewAtGroup } = useEditor()
 
@@ -30,60 +37,69 @@ export const ApiPreviewInstructions = () => {
 }`
 
   return (
-    <OrderedList
-      p="4"
-      spacing={6}
-      w="full"
+    <Stack
+      spacing={10}
       overflowY="scroll"
       className="hide-scrollbar"
+      w="full"
+      {...props}
     >
-      <ListItem>
-        All your requests need to be authenticated with an API token.{' '}
-        <TextLink href="https://docs.typebot.io/api/builder/authenticate">
-          See instructions
-        </TextLink>
-        .
-      </ListItem>
-      <ListItem>
-        <Stack>
-          <Text>
-            To start the chat, send a <Code>POST</Code> request to
-          </Text>
-          <CodeEditor
-            isReadOnly
-            lang={'shell'}
-            value={`${
-              env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-            }/api/v1/sendMessage`}
-          />
-          <Text>with the following JSON body:</Text>
-          <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        The first response will contain a <Code>sessionId</Code> that you will
-        need for subsequent requests.
-      </ListItem>
-      <ListItem>
-        <Stack>
-          <Text>
-            To send replies, send <Code>POST</Code> requests to
-          </Text>
-          <CodeEditor
-            isReadOnly
-            lang={'shell'}
-            value={`${
-              env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-            }/api/v1/sendMessage`}
-          />
-          <Text>With the following JSON body:</Text>
-          <CodeEditor isReadOnly lang={'json'} value={replyBody} />
-          <Text>
-            Replace <Code>{'<ID_FROM_FIRST_RESPONSE>'}</Code> with{' '}
-            <Code>sessionId</Code>.
-          </Text>
-        </Stack>
-      </ListItem>
-    </OrderedList>
+      <OrderedList spacing={6}>
+        <ListItem>
+          All your requests need to be authenticated with an API token.{' '}
+          <TextLink href="https://docs.typebot.io/api/builder/authenticate">
+            See instructions
+          </TextLink>
+          .
+        </ListItem>
+        <ListItem>
+          <Stack>
+            <Text>
+              To start the chat, send a <Code>POST</Code> request to
+            </Text>
+            <CodeEditor
+              isReadOnly
+              lang={'shell'}
+              value={`${
+                env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
+              }/api/v1/sendMessage`}
+            />
+            <Text>with the following JSON body:</Text>
+            <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
+          </Stack>
+        </ListItem>
+        <ListItem>
+          The first response will contain a <Code>sessionId</Code> that you will
+          need for subsequent requests.
+        </ListItem>
+        <ListItem>
+          <Stack>
+            <Text>
+              To send replies, send <Code>POST</Code> requests to
+            </Text>
+            <CodeEditor
+              isReadOnly
+              lang={'shell'}
+              value={`${
+                env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
+              }/api/v1/sendMessage`}
+            />
+            <Text>With the following JSON body:</Text>
+            <CodeEditor isReadOnly lang={'json'} value={replyBody} />
+            <Text>
+              Replace <Code>{'<ID_FROM_FIRST_RESPONSE>'}</Code> with{' '}
+              <Code>sessionId</Code>.
+            </Text>
+          </Stack>
+        </ListItem>
+      </OrderedList>
+      <Text fontSize="sm">
+        Check out the{' '}
+        <TextLink href="https://docs.typebot.io/api/send-a-message" isExternal>
+          API reference
+        </TextLink>{' '}
+        for more information
+      </Text>
+    </Stack>
   )
 }

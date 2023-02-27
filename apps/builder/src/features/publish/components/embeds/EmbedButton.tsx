@@ -33,6 +33,8 @@ import {
 import { OtherModal } from './modals/OtherModal'
 import { ScriptIcon } from '@/features/blocks/logic/script'
 import { ScriptModal } from './modals/Script/ScriptModal'
+import { CodeIcon } from '@/components/icons'
+import { ApiModal } from './modals/ApiModal'
 
 export type ModalProps = {
   publicId: string
@@ -123,15 +125,9 @@ export const integrationsList = [
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton
-      logo={
-        <ScriptIcon
-          height={100}
-          width="70px"
-          color={useColorModeValue('gray.800', 'gray.300')}
-        />
-      }
-      label="Script"
-      Modal={ScriptModal}
+      logo={<CodeIcon height={100} width="60px" />}
+      label="API"
+      Modal={ApiModal}
       {...props}
     />
   ),
@@ -148,6 +144,20 @@ export const integrationsList = [
       logo={<WebflowLogo height={100} width="70px" />}
       label="Webflow"
       Modal={WebflowModal}
+      {...props}
+    />
+  ),
+  (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
+    <EmbedButton
+      logo={
+        <ScriptIcon
+          height={100}
+          width="70px"
+          color={useColorModeValue('gray.800', 'gray.300')}
+        />
+      }
+      label="Script"
+      Modal={ScriptModal}
       {...props}
     />
   ),

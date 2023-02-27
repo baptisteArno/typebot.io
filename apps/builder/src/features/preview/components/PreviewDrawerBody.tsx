@@ -12,7 +12,7 @@ export const PreviewDrawerBody = ({ runtime }: Props) => {
       return <WebPreview />
     }
     case 'API': {
-      return <ApiPreviewInstructions />
+      return <ApiPreviewInstructions pt="4" />
     }
   }
 }
