@@ -2,24 +2,23 @@ import { ShortTextInput } from '@/components'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { PhoneNumberInputBlock } from 'models'
+import type { PhoneNumberInputOptions } from 'models'
 import { createSignal, For, onMount } from 'solid-js'
 import { isEmpty } from 'utils'
 import { phoneCountries } from 'utils/phoneCountries'
 
-type PhoneInputProps = {
-  block: PhoneNumberInputBlock
+type PhoneInputProps = Pick<
+  PhoneNumberInputOptions,
+  'labels' | 'defaultCountryCode'
+> & {
   defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
   hasGuestAvatar: boolean
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
-  // eslint-disable-next-line solid/reactivity
-  const defaultCountryCode = props.block.options.defaultCountryCode
-
   const [selectedCountryCode, setSelectedCountryCode] = createSignal(
-    isEmpty(defaultCountryCode) ? 'INT' : defaultCountryCode
+    isEmpty(props.defaultCountryCode) ? 'INT' : props.defaultCountryCode
   )
   const [inputValue, setInputValue] = createSignal(props.defaultValue ?? '')
   let inputRef: HTMLInputElement | undefined
@@ -102,9 +101,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
           ref={inputRef}
           value={inputValue()}
           onInput={handleInput}
-          placeholder={
-            props.block.options.labels.placeholder ?? 'Your phone number...'
-          }
+          placeholder={props.labels.placeholder ?? 'Your phone number...'}
           autofocus={!isMobile()}
         />
       </div>
@@ -115,7 +112,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
         class="my-2 ml-2"
         on:click={submit}
       >
-        {props.block.options?.labels?.button ?? 'Send'}
+        {props.labels?.button ?? 'Send'}
       </SendButton>
     </div>
   )

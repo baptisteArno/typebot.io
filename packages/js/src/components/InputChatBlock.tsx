@@ -146,7 +146,10 @@ const Input = (props: {
       </Match>
       <Match when={props.block.type === InputBlockType.PHONE}>
         <PhoneInput
-          block={props.block as PhoneNumberInputBlock}
+          labels={(props.block as PhoneNumberInputBlock).options.labels}
+          defaultCountryCode={
+            (props.block as PhoneNumberInputBlock).options.defaultCountryCode
+          }
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
           hasGuestAvatar={props.hasGuestAvatar}
