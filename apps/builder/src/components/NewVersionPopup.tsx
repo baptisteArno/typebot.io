@@ -1,4 +1,5 @@
 import { useTypebot } from '@/features/editor'
+import { trpc } from '@/lib/trpc'
 import {
   Button,
   DarkMode,
@@ -9,39 +10,22 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { sendRequest } from 'utils'
 import { PackageIcon } from './icons'
-
-const intervalDuration = 1000 * 60
 
 export const NewVersionPopup = () => {
   const { typebot, save } = useTypebot()
+  const [isReloading, setIsReloading] = useState(false)
+  const { data } = trpc.getAppVersionProcedure.useQuery()
   const [currentVersion, setCurrentVersion] = useState<string>()
   const [isNewVersionAvailable, setIsNewVersionAvailable] = useState(false)
-  const [isReloading, setIsReloading] = useState(false)
 
   useEffect(() => {
-    if (isNewVersionAvailable) return
-    let cancelRequest = false
-    const interval = setInterval(async () => {
-      const { data } = await sendRequest<{
-        commitSha: string | undefined
-      }>('/api/version')
-      if (!data || cancelRequest) return
-      if (!currentVersion) {
-        setCurrentVersion(data.commitSha)
-        return
-      }
-      if (currentVersion !== data.commitSha) {
-        setIsNewVersionAvailable(true)
-      }
-    }, intervalDuration)
-
-    return () => {
-      cancelRequest = true
-      clearInterval(interval)
-    }
-  }, [currentVersion, isNewVersionAvailable])
+    if (!data?.commitSha) return
+    if (currentVersion === data.commitSha) return
+    setCurrentVersion(data.commitSha)
+    if (currentVersion === undefined) return
+    setIsNewVersionAvailable(true)
+  }, [data, currentVersion])
 
   const saveAndReload = async () => {
     if (isReloading) return
