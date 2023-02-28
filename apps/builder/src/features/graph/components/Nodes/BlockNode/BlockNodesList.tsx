@@ -95,15 +95,18 @@ export const BlockNodesList = ({
   const handleBlockMouseDown =
     (blockIndex: number) =>
     (
-      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+      { relative, absolute }: { absolute: Coordinates; relative: Coordinates },
       block: DraggableBlock
     ) => {
       if (isReadOnly) return
       placeholderRefs.current.splice(blockIndex + 1, 1)
-      detachBlockFromGroup({ groupIndex, blockIndex })
-      setPosition(absolute)
       setMousePositionInElement(relative)
+      setPosition({
+        x: absolute.x - relative.x,
+        y: absolute.y - relative.y,
+      })
       setDraggedBlock(block)
+      detachBlockFromGroup({ groupIndex, blockIndex })
     }
 
   const handlePushElementRef =

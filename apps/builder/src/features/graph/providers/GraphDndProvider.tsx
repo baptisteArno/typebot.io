@@ -7,6 +7,7 @@ import {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react'
@@ -114,19 +115,34 @@ export const useDragDistance = ({
   }
   useEventListener('mousedown', handleMouseDown, ref.current)
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!mouseDownPosition.current) return
-    const { clientX, clientY } = e
-    if (
-      Math.abs(mouseDownPosition.current.absolute.x - clientX) >
-        distanceTolerance ||
-      Math.abs(mouseDownPosition.current.absolute.y - clientY) >
-        distanceTolerance
-    ) {
-      onDrag(mouseDownPosition.current)
+  useEffect(() => {
+    let triggered = false
+    const triggerDragCallbackIfMouseMovedEnough = (e: MouseEvent) => {
+      if (!mouseDownPosition.current || triggered) return
+      const { clientX, clientY } = e
+      if (
+        Math.abs(mouseDownPosition.current.absolute.x - clientX) >
+          distanceTolerance ||
+        Math.abs(mouseDownPosition.current.absolute.y - clientY) >
+          distanceTolerance
+      ) {
+        triggered = true
+        onDrag(mouseDownPosition.current)
+      }
     }
-  }
-  useEventListener('mousemove', handleMouseMove)
+
+    document.addEventListener(
+      'mousemove',
+      triggerDragCallbackIfMouseMovedEnough
+    )
+
+    return () => {
+      document.removeEventListener(
+        'mousemove',
+        triggerDragCallbackIfMouseMovedEnough
+      )
+    }
+  }, [distanceTolerance, onDrag])
 }
 
 export const computeNearestPlaceholderIndex = (

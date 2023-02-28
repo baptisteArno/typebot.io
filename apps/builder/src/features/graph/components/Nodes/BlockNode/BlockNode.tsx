@@ -5,7 +5,6 @@ import {
   PopoverTrigger,
   useColorModeValue,
   useDisclosure,
-  useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -30,7 +29,6 @@ import { BlockSettings } from './SettingsPopoverContent/SettingsPopoverContent'
 import { TargetEndpoint } from '../../Endpoints'
 import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
 import { ContextMenu } from '@/components/ContextMenu'
-import { setMultipleRefs } from '@/utils/helpers'
 import { TextBubbleEditor } from '@/features/blocks/bubbles/textBubble'
 import {
   NodePosition,
@@ -40,6 +38,7 @@ import {
   ParentModalProvider,
 } from '../../../providers'
 import { hasDefaultConnector } from '../../../utils'
+import { setMultipleRefs } from '@/utils/helpers'
 
 export const BlockNode = ({
   block,
@@ -86,6 +85,7 @@ export const BlockNode = ({
     if (block.type === 'start' || !onMouseDown) return
     onMouseDown(position, block)
   }
+
   useDragDistance({
     ref: blockRef,
     onDrag,
@@ -160,10 +160,19 @@ export const BlockNode = ({
 
   useEffect(() => {
     setIsPopoverOpened(openedBlockId === block.id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openedBlockId])
+  }, [block.id, openedBlockId])
 
-  useEventListener('pointerdown', (e) => e.stopPropagation(), blockRef.current)
+  useEffect(() => {
+    if (!blockRef.current) return
+    const blockElement = blockRef.current
+    blockElement.addEventListener('pointerdown', (e) => e.stopPropagation())
+
+    return () => {
+      blockElement.removeEventListener('pointerdown', (e) =>
+        e.stopPropagation()
+      )
+    }
+  }, [])
 
   const hasIcomingEdge = typebot?.edges.some((edge) => {
     return edge.to.blockId === block.id
