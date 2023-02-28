@@ -6,7 +6,16 @@ import {
 } from '@chakra-ui/react'
 import { useGraph, useGroupsCoordinates } from '../../providers'
 import { Source } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { useEndpoints } from '../../providers/EndpointsProvider'
+
+const endpointHeight = 32
 
 export const SourceEndpoint = ({
   source,
@@ -17,23 +26,61 @@ export const SourceEndpoint = ({
   const color = useColorModeValue('blue.200', 'blue.100')
   const connectedColor = useColorModeValue('blue.300', 'blue.200')
   const bg = useColorModeValue('gray.100', 'gray.700')
-  const [ranOnce, setRanOnce] = useState(false)
-  const { setConnectingIds, addSourceEndpoint, previewingEdge } = useGraph()
-
+  const { setConnectingIds, previewingEdge, graphPosition } = useGraph()
+  const { setSourceEndpointYOffset: addSourceEndpoint } = useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
   const ref = useRef<HTMLDivElement | null>(null)
+  const [groupHeight, setGroupHeight] = useState<number>()
+  const [groupTransformProp, setGroupTransformProp] = useState<string>()
+
+  const endpointY = useMemo(
+    () =>
+      ref.current
+        ? (ref.current?.getBoundingClientRect().y +
+            (endpointHeight * graphPosition.scale) / 2 -
+            graphPosition.y) /
+          graphPosition.scale
+        : undefined,
+    // We need to force recompute whenever the group height and position changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [graphPosition.scale, graphPosition.y, groupHeight, groupTransformProp]
+  )
+
+  useLayoutEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      setGroupHeight(entries[0].contentRect.height)
+    })
+    const groupElement = document.getElementById(`group-${source.groupId}`)
+    if (!groupElement) return
+    resizeObserver.observe(groupElement)
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [source.groupId])
+
+  useLayoutEffect(() => {
+    const mutationObserver = new MutationObserver((entries) => {
+      setGroupTransformProp((entries[0].target as HTMLElement).style.transform)
+    })
+    const groupElement = document.getElementById(`group-${source.groupId}`)
+    if (!groupElement) return
+    mutationObserver.observe(groupElement, {
+      attributes: true,
+      attributeFilter: ['style'],
+    })
+    return () => {
+      mutationObserver.disconnect()
+    }
+  }, [source.groupId])
 
   useEffect(() => {
-    if (ranOnce || !ref.current || Object.keys(groupsCoordinates).length === 0)
-      return
+    if (!endpointY) return
     const id = source.itemId ?? source.blockId
-    addSourceEndpoint({
+    addSourceEndpoint?.({
       id,
-      ref,
+      y: endpointY,
     })
-    setRanOnce(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref.current, groupsCoordinates])
+  }, [addSourceEndpoint, endpointY, source.blockId, source.itemId])
 
   useEventListener(
     'pointerdown',
@@ -55,6 +102,7 @@ export const SourceEndpoint = ({
   if (!groupsCoordinates) return <></>
   return (
     <Flex
+      ref={ref}
       data-testid="endpoint"
       boxSize="32px"
       rounded="full"
@@ -65,7 +113,6 @@ export const SourceEndpoint = ({
       {...props}
     >
       <Flex
-        ref={ref}
         boxSize="20px"
         justify="center"
         align="center"

@@ -1,6 +1,7 @@
 import { AnswersCount } from '@/features/analytics'
 import { Edge, Group } from 'models'
 import React, { memo } from 'react'
+import { EndpointsProvider } from '../providers/EndpointsProvider'
 import { Edges } from './Edges'
 import { GroupNode } from './Nodes/GroupNode'
 
@@ -17,7 +18,7 @@ const GroupNodes = ({
   onUnlockProPlanClick,
 }: Props) => {
   return (
-    <>
+    <EndpointsProvider>
       <Edges
         edges={edges}
         answersCounts={answersCounts}
@@ -26,7 +27,7 @@ const GroupNodes = ({
       {groups.map((group, idx) => (
         <GroupNode group={group} groupIndex={idx} key={group.id} />
       ))}
-    </>
+    </EndpointsProvider>
   )
 }
 

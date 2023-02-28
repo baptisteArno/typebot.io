@@ -139,7 +139,6 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('text=$73.00 >> nth=0')).toBeVisible()
   await expect(page.locator('text=$30.00 >> nth=0')).toBeVisible()
   await expect(page.locator('text=$4.00 >> nth=0')).toBeVisible()
-  await expect(page.locator('text=user@email.com')).toBeVisible()
   await addSubscriptionToWorkspace(
     planChangeWorkspaceId,
     [

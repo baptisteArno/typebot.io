@@ -5,15 +5,16 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useRef,
   useState,
 } from 'react'
 import { Coordinates } from './GraphProvider'
 
-type NodeInfo = {
+type NodeElement = {
   id: string
-  ref: React.MutableRefObject<HTMLDivElement | null>
+  element: HTMLDivElement
 }
 
 const graphDndContext = createContext<{
@@ -23,10 +24,10 @@ const graphDndContext = createContext<{
   setDraggedBlock: Dispatch<SetStateAction<DraggableBlock | undefined>>
   draggedItem?: Item
   setDraggedItem: Dispatch<SetStateAction<Item | undefined>>
-  mouseOverGroup?: NodeInfo
-  setMouseOverGroup: Dispatch<SetStateAction<NodeInfo | undefined>>
-  mouseOverBlock?: NodeInfo
-  setMouseOverBlock: Dispatch<SetStateAction<NodeInfo | undefined>>
+  mouseOverGroup?: NodeElement
+  setMouseOverGroup: (node: NodeElement | undefined) => void
+  mouseOverBlock?: NodeElement
+  setMouseOverBlock: (node: NodeElement | undefined) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -39,8 +40,24 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
     DraggableBlockType | undefined
   >()
   const [draggedItem, setDraggedItem] = useState<Item | undefined>()
-  const [mouseOverGroup, setMouseOverGroup] = useState<NodeInfo>()
-  const [mouseOverBlock, setMouseOverBlock] = useState<NodeInfo>()
+  const [mouseOverGroup, _setMouseOverGroup] = useState<NodeElement>()
+  const [mouseOverBlock, _setMouseOverBlock] = useState<NodeElement>()
+
+  const setMouseOverGroup = useCallback(
+    (node: NodeElement | undefined) => {
+      if (node && !draggedBlock && !draggedBlockType) return
+      _setMouseOverGroup(node)
+    },
+    [draggedBlock, draggedBlockType]
+  )
+
+  const setMouseOverBlock = useCallback(
+    (node: NodeElement | undefined) => {
+      if (node && !draggedItem) return
+      _setMouseOverBlock(node)
+    },
+    [draggedItem]
+  )
 
   return (
     <graphDndContext.Provider

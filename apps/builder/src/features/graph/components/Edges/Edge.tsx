@@ -1,16 +1,12 @@
 import { Coordinates, useGraph, useGroupsCoordinates } from '../../providers'
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Edge as EdgeProps } from 'models'
 import { Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import { EdgeMenu } from './EdgeMenu'
 import { colors } from '@/lib/theme'
-import {
-  getEndpointTopOffset,
-  getSourceEndpointId,
-  getAnchorsPosition,
-  computeEdgePath,
-} from '../../utils'
+import { getAnchorsPosition, computeEdgePath } from '../../utils'
+import { useEndpoints } from '../../providers/EndpointsProvider'
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates
@@ -22,22 +18,17 @@ export type AnchorsPositionProps = {
 type Props = {
   edge: EdgeProps
 }
+
 export const Edge = ({ edge }: Props) => {
   const isDark = useColorMode().colorMode === 'dark'
   const { deleteEdge } = useTypebot()
-  const {
-    previewingEdge,
-    sourceEndpoints,
-    targetEndpoints,
-    graphPosition,
-    isReadOnly,
-    setPreviewingEdge,
-  } = useGraph()
+  const { previewingEdge, graphPosition, isReadOnly, setPreviewingEdge } =
+    useGraph()
+  const { sourceEndpointYOffsets, targetEndpointYOffsets } = useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })
-  const [refreshEdge, setRefreshEdge] = useState(false)
 
   const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
@@ -46,46 +37,19 @@ export const Edge = ({ edge }: Props) => {
   const targetGroupCoordinates =
     groupsCoordinates && groupsCoordinates[edge.to.groupId]
 
-  const sourceTop = useMemo(
+  const sourceTop = useMemo(() => {
+    const endpointId = edge?.from.itemId ?? edge?.from.blockId
+    if (!endpointId) return
+    return sourceEndpointYOffsets.get(endpointId)?.y
+  }, [edge?.from.itemId, edge?.from.blockId, sourceEndpointYOffsets])
+
+  const targetTop = useMemo(
     () =>
-      getEndpointTopOffset({
-        endpoints: sourceEndpoints,
-        graphOffsetY: graphPosition.y,
-        endpointId: getSourceEndpointId(edge),
-        graphScale: graphPosition.scale,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceGroupCoordinates?.y, edge, sourceEndpoints, refreshEdge]
+      edge?.to.blockId
+        ? targetEndpointYOffsets.get(edge?.to.blockId)?.y
+        : undefined,
+    [edge?.to.blockId, targetEndpointYOffsets]
   )
-
-  useEffect(() => {
-    setTimeout(() => setRefreshEdge(true), 50)
-  }, [])
-
-  const [targetTop, setTargetTop] = useState(
-    getEndpointTopOffset({
-      endpoints: targetEndpoints,
-      graphOffsetY: graphPosition.y,
-      endpointId: edge?.to.blockId,
-      graphScale: graphPosition.scale,
-    })
-  )
-  useLayoutEffect(() => {
-    setTargetTop(
-      getEndpointTopOffset({
-        endpoints: targetEndpoints,
-        graphOffsetY: graphPosition.y,
-        endpointId: edge?.to.blockId,
-        graphScale: graphPosition.scale,
-      })
-    )
-  }, [
-    targetGroupCoordinates?.y,
-    targetEndpoints,
-    graphPosition.y,
-    edge?.to.blockId,
-    graphPosition.scale,
-  ])
 
   const path = useMemo(() => {
     if (!sourceGroupCoordinates || !targetGroupCoordinates || !sourceTop)
@@ -98,13 +62,12 @@ export const Edge = ({ edge }: Props) => {
       graphScale: graphPosition.scale,
     })
     return computeEdgePath(anchorsPosition)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    sourceGroupCoordinates?.x,
-    sourceGroupCoordinates?.y,
-    targetGroupCoordinates?.x,
-    targetGroupCoordinates?.y,
+    sourceGroupCoordinates,
+    targetGroupCoordinates,
     sourceTop,
+    targetTop,
+    graphPosition.scale,
   ])
 
   const handleMouseEnter = () => setIsMouseOver(true)

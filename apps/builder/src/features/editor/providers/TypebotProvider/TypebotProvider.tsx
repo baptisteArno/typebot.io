@@ -26,7 +26,7 @@ import { variablesAction, VariablesActions } from './actions/variables'
 import { dequal } from 'dequal'
 import { useToast } from '@/hooks/useToast'
 import { useTypebotQuery } from '@/hooks/useTypebotQuery'
-import useUndo from '../../hooks/useUndo'
+import { useUndo } from '../../hooks/useUndo'
 import { useLinkedTypebots } from '@/hooks/useLinkedTypebots'
 import { updateTypebotQuery } from '../../queries/updateTypebotQuery'
 import { preventUserFromRefreshing } from '@/utils/helpers'
@@ -46,7 +46,6 @@ import {
 import { useAutoSave } from '@/hooks/useAutoSave'
 import { createWebhookQuery } from '@/features/blocks/integrations/webhook/queries/createWebhookQuery'
 import { duplicateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/duplicateWebhookQuery'
-import { useSession } from 'next-auth/react'
 
 const autoSaveTimeout = 10000
 
@@ -104,27 +103,24 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
-  const { status } = useSession()
   const { push } = useRouter()
   const { showToast } = useToast()
 
-  const { typebot, publishedTypebot, webhooks, isReadOnly, isLoading, mutate } =
-    useTypebotQuery({
-      typebotId,
-    })
+  const {
+    typebot,
+    publishedTypebot,
+    webhooks,
+    isReadOnly,
+    isLoading: isFetchingTypebot,
+    mutate,
+  } = useTypebotQuery({
+    typebotId,
+  })
 
   const [
-    { present: localTypebot },
-    {
-      redo,
-      undo,
-      flush,
-      canRedo,
-      canUndo,
-      set: setLocalTypebot,
-      presentRef: currentTypebotRef,
-    },
-  ] = useUndo<Typebot | undefined>(undefined)
+    localTypebot,
+    { redo, undo, flush, canRedo, canUndo, set: setLocalTypebot },
+  ] = useUndo<Typebot>(undefined)
 
   const linkedTypebotIds =
     localTypebot?.groups
@@ -151,23 +147,34 @@ export const TypebotProvider = ({
   })
 
   useEffect(() => {
-    if (!typebot || !currentTypebotRef.current) return
-    if (typebotId !== currentTypebotRef.current.id) {
-      setLocalTypebot({ ...typebot }, { updateDate: false })
-      flush()
-    } else if (
+    if (!typebot && isDefined(localTypebot)) setLocalTypebot(undefined)
+    if (isFetchingTypebot) return
+    if (!typebot) {
+      showToast({ status: 'info', description: "Couldn't find typebot" })
+      push('/typebots')
+      return
+    }
+    if (
+      typebot.id !== localTypebot?.id ||
       new Date(typebot.updatedAt).getTime() >
-      new Date(currentTypebotRef.current.updatedAt).getTime()
+        new Date(localTypebot.updatedAt).getTime()
     ) {
       setLocalTypebot({ ...typebot })
+      flush()
     }
+  }, [
+    flush,
+    isFetchingTypebot,
+    localTypebot,
+    push,
+    setLocalTypebot,
+    showToast,
+    typebot,
+  ])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot])
-
-  const saveTypebot = async () => {
-    if (!currentTypebotRef.current || !typebot) return
-    const typebotToSave = { ...currentTypebotRef.current }
+  const saveTypebot = useCallback(async () => {
+    if (!localTypebot || !typebot) return
+    const typebotToSave = { ...localTypebot }
     if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
       return
     setIsSavingLoading(true)
@@ -187,7 +194,15 @@ export const TypebotProvider = ({
       webhooks: webhooks ?? [],
     })
     window.removeEventListener('beforeunload', preventUserFromRefreshing)
-  }
+  }, [
+    localTypebot,
+    mutate,
+    publishedTypebot,
+    setLocalTypebot,
+    showToast,
+    typebot,
+    webhooks,
+  ])
 
   const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {
     if (!localTypebot) return
@@ -201,7 +216,7 @@ export const TypebotProvider = ({
     if (error)
       return showToast({ title: error.name, description: error.message })
     mutate({
-      typebot: currentTypebotRef.current as Typebot,
+      typebot: localTypebot,
       publishedTypebot: newPublishedTypebot,
       webhooks: webhooks ?? [],
     })
@@ -213,7 +228,7 @@ export const TypebotProvider = ({
       item: localTypebot,
       debounceTimeout: autoSaveTimeout,
     },
-    [typebot, publishedTypebot, webhooks]
+    [saveTypebot, localTypebot]
   )
 
   useEffect(() => {
@@ -221,8 +236,7 @@ export const TypebotProvider = ({
     return () => {
       Router.events.off('routeChangeStart', saveTypebot)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot, publishedTypebot, webhooks])
+  }, [saveTypebot])
 
   const [isSavingLoading, setIsSavingLoading] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
@@ -237,26 +251,14 @@ export const TypebotProvider = ({
 
   useEffect(() => {
     if (!localTypebot || !typebot) return
-    currentTypebotRef.current = localTypebot
     if (!checkIfTypebotsAreEqual(localTypebot, typebot)) {
-      window.removeEventListener('beforeunload', preventUserFromRefreshing)
       window.addEventListener('beforeunload', preventUserFromRefreshing)
-    } else {
+    }
+
+    return () => {
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localTypebot])
-
-  useEffect(() => {
-    if (status !== 'authenticated' || isLoading) return
-    if (!typebot) {
-      showToast({ status: 'info', description: "Couldn't find typebot" })
-      push('/typebots')
-      return
-    }
-    setLocalTypebot({ ...typebot })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, isLoading])
+  }, [localTypebot, typebot])
 
   const updateLocalTypebot = (updates: UpdateTypebotPayload) =>
     localTypebot && setLocalTypebot({ ...localTypebot, ...updates })

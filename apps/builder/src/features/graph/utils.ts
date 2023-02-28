@@ -29,8 +29,6 @@ import {
   defaultWebhookOptions,
   DraggableBlock,
   DraggableBlockType,
-  Edge,
-  IdMap,
   InputBlockType,
   IntegrationBlockType,
   Item,
@@ -43,7 +41,6 @@ import {
   stubLength,
   blockWidth,
   blockAnchorsOffset,
-  Endpoint,
   Coordinates,
 } from './providers'
 import { roundCorners } from 'svg-round-corners'
@@ -329,32 +326,6 @@ export const computeEdgePathToMouse = ({
     roundSize
   ).path
 }
-
-export const getEndpointTopOffset = ({
-  endpoints,
-  graphOffsetY,
-  endpointId,
-  graphScale,
-}: {
-  endpoints: IdMap<Endpoint>
-  graphOffsetY: number
-  endpointId?: string
-  graphScale: number
-}): number | undefined => {
-  if (!endpointId) return
-  const endpointRef = endpoints[endpointId]?.ref
-  if (!endpointRef?.current) return
-  const endpointHeight = 20 * graphScale
-  return (
-    (endpointRef.current.getBoundingClientRect().y +
-      endpointHeight / 2 -
-      graphOffsetY) /
-    graphScale
-  )
-}
-
-export const getSourceEndpointId = (edge?: Edge) =>
-  edge?.from.itemId ?? edge?.from.blockId
 
 export const parseNewBlock = (
   type: DraggableBlockType,

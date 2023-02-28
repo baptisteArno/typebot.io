@@ -67,19 +67,14 @@ export const ItemNodesList = ({
     if (mouseOverBlock?.id !== block.id) {
       setExpandedPlaceholderIndex(undefined)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mouseOverBlock?.id, showPlaceholders])
+  }, [block.id, mouseOverBlock?.id, showPlaceholders])
 
   const handleMouseMoveOnBlock = (event: MouseEvent) => {
     if (!isDraggingOnCurrentBlock) return
     const index = computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
     setExpandedPlaceholderIndex(index)
   }
-  useEventListener(
-    'mousemove',
-    handleMouseMoveOnBlock,
-    mouseOverBlock?.ref.current
-  )
+  useEventListener('mousemove', handleMouseMoveOnBlock, mouseOverBlock?.element)
 
   const handleMouseUpOnGroup = (e: MouseEvent) => {
     if (
@@ -99,14 +94,9 @@ export const ItemNodesList = ({
       itemIndex,
     })
   }
-  useEventListener(
-    'mouseup',
-    handleMouseUpOnGroup,
-    mouseOverBlock?.ref.current,
-    {
-      capture: true,
-    }
-  )
+  useEventListener('mouseup', handleMouseUpOnGroup, mouseOverBlock?.element, {
+    capture: true,
+  })
 
   const handleBlockMouseDown =
     (itemIndex: number) =>

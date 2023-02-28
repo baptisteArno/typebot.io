@@ -162,6 +162,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       </Stack>
       <SwitchWithLabel
         label={'Custom content?'}
+        moreInfoContent="By default, the email body will be a recap of what has been collected so far. You can override it with this option."
         initialValue={options.isCustomBody ?? false}
         onCheckChange={handleIsCustomBodyChange}
       />

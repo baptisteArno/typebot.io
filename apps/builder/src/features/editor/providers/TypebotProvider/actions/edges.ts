@@ -34,8 +34,10 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
         )
         const itemIndex = edge.from.itemId
           ? (
-              typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems
-            ).items.findIndex(byId(edge.from.itemId))
+              typebot.groups[groupIndex].blocks[blockIndex] as
+                | BlockWithItems
+                | undefined
+            )?.items.findIndex(byId(edge.from.itemId))
           : null
 
         isDefined(itemIndex) && itemIndex !== -1

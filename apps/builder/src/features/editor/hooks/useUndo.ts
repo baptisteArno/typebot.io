@@ -1,152 +1,108 @@
 import { isDefined } from '@udecode/plate-core'
 import { dequal } from 'dequal'
-// import { diff } from 'deep-object-diff'
-import { useReducer, useCallback, useRef } from 'react'
-import { isNotDefined } from 'utils'
+import { useCallback, useRef, useState } from 'react'
 
-enum ActionType {
-  Undo = 'UNDO',
-  Redo = 'REDO',
-  Set = 'SET',
-  Flush = 'FLUSH',
-}
-
-export interface Actions<T extends { updatedAt: Date } | undefined> {
-  set: (
-    newPresent: T | ((current: T) => T),
-    options?: { updateDate: boolean }
-  ) => void
+export interface Actions<T extends { updatedAt: Date }> {
+  set: (newPresent: T | ((current: T) => T) | undefined) => void
   undo: () => void
   redo: () => void
   flush: () => void
   canUndo: boolean
   canRedo: boolean
-  presentRef: React.MutableRefObject<T>
 }
 
-interface Action<T extends { updatedAt: Date } | undefined> {
-  type: ActionType
-  newPresent?: T
-  updateDate?: boolean
-}
-
-export interface State<T extends { updatedAt: Date } | undefined> {
+export interface History<T extends { updatedAt: Date }> {
   past: T[]
-  present: T
+  present: T | undefined
   future: T[]
 }
 
 const initialState = {
   past: [],
-  present: null,
+  present: undefined,
   future: [],
 }
 
-const reducer = <T extends { updatedAt: Date } | undefined>(
-  state: State<T>,
-  action: Action<T>
-) => {
-  const { past, present, future } = state
+export const useUndo = <T extends { updatedAt: Date }>(
+  initialPresent?: T
+): [T | undefined, Actions<T>] => {
+  const [history, setHistory] = useState<History<T>>(initialState)
+  const presentRef = useRef<T | null>(initialPresent ?? null)
 
-  switch (action.type) {
-    case ActionType.Undo: {
-      if (past.length === 0 || !present) {
-        return state
-      }
+  const canUndo = history.past.length !== 0
+  const canRedo = history.future.length !== 0
 
-      const previous = past[past.length - 1]
-      const newPast = past.slice(0, past.length - 1)
+  const undo = useCallback(() => {
+    const { past, present, future } = history
+    if (past.length === 0 || !present) return
 
-      return {
-        past: newPast,
-        present: { ...previous, updatedAt: present.updatedAt },
-        future: [present, ...future],
-      }
-    }
+    const previous = past[past.length - 1]
+    const newPast = past.slice(0, past.length - 1)
 
-    case ActionType.Redo: {
-      if (future.length === 0) {
-        return state
-      }
-      const next = future[0]
-      const newFuture = future.slice(1)
+    const newPresent = { ...previous, updatedAt: present.updatedAt }
 
-      return {
-        past: [...past, present],
-        present: next,
-        future: newFuture,
-      }
-    }
+    setHistory({
+      past: newPast,
+      present: newPresent,
+      future: [present, ...future],
+    })
+    presentRef.current = newPresent
+  }, [history])
 
-    case ActionType.Set: {
-      const { newPresent } = action
+  const redo = useCallback(() => {
+    const { past, present, future } = history
+    if (future.length === 0) return
+    const next = future[0]
+    const newFuture = future.slice(1)
+
+    setHistory({
+      past: present ? [...past, present] : past,
+      present: next,
+      future: newFuture,
+    })
+    presentRef.current = next
+  }, [history])
+
+  const set = useCallback(
+    (newPresentArg: T | ((current: T) => T) | undefined) => {
+      const { past, present } = history
+      const newPresent =
+        typeof newPresentArg === 'function'
+          ? newPresentArg(presentRef.current as T)
+          : newPresentArg
       if (
-        isNotDefined(newPresent) ||
-        (present &&
-          dequal(
-            JSON.parse(JSON.stringify(newPresent)),
-            JSON.parse(JSON.stringify(present))
-          ))
+        newPresent &&
+        present &&
+        dequal(
+          JSON.parse(JSON.stringify(newPresent)),
+          JSON.parse(JSON.stringify(present))
+        )
       ) {
-        return state
+        return
       }
 
-      return {
+      if (newPresent === undefined) {
+        presentRef.current = null
+        setHistory(initialState)
+        return
+      }
+      setHistory({
         past: [...past, present].filter(isDefined),
         present: newPresent,
         future: [],
-      }
-    }
+      })
+      presentRef.current = newPresent
+    },
+    [history]
+  )
 
-    case ActionType.Flush:
-      return { ...initialState, present }
-  }
-}
-
-const useUndo = <T extends { updatedAt: Date } | undefined>(
-  initialPresent: T
-): [State<T>, Actions<T>] => {
-  const [state, dispatch] = useReducer(reducer, {
-    ...initialState,
-    present: initialPresent,
-  })
-  const presentRef = useRef<T>(initialPresent)
-
-  const canUndo = state.past.length !== 0
-  const canRedo = state.future.length !== 0
-
-  const undo = useCallback(() => {
-    if (canUndo) {
-      dispatch({ type: ActionType.Undo })
-    }
-  }, [canUndo])
-
-  const redo = useCallback(() => {
-    if (canRedo) {
-      dispatch({ type: ActionType.Redo })
-    }
-  }, [canRedo])
-
-  const set = useCallback((newPresent: T | ((current: T) => T)) => {
-    const updatedTypebot =
-      newPresent && typeof newPresent === 'function'
-        ? newPresent(presentRef.current)
-        : newPresent
-    presentRef.current = updatedTypebot
-    dispatch({
-      type: ActionType.Set,
-      newPresent: updatedTypebot,
+  const flush = useCallback(() => {
+    setHistory({
+      present: presentRef.current ?? undefined,
+      past: [],
+      future: [],
     })
   }, [])
 
-  const flush = useCallback(() => {
-    dispatch({ type: ActionType.Flush })
-  }, [])
-
-  return [
-    state as State<T>,
-    { set, undo, redo, flush, canUndo, canRedo, presentRef },
-  ]
+  return [history.present, { set, undo, redo, flush, canUndo, canRedo }]
 }
-
-export default useUndo

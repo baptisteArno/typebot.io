@@ -73,7 +73,6 @@ export const Graph = ({
     editorContainerRef.current = document.getElementById(
       'editor-container'
     ) as HTMLDivElement
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -84,8 +83,7 @@ export const Graph = ({
       y: top + debouncedGraphPosition.y,
       scale: debouncedGraphPosition.scale,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedGraphPosition])
+  }, [debouncedGraphPosition, setGlobalGraphPosition])
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
@@ -304,5 +302,4 @@ const useAutoMoveBoard = (
     return () => {
       clearInterval(interval)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoMoveDirection])
+  }, [autoMoveDirection, setGraphPosition])

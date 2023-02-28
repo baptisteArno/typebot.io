@@ -18,7 +18,7 @@ import {
   TextBubbleBlock,
   LogicBlockType,
 } from 'models'
-import { isBubbleBlock, isTextBubbleBlock } from 'utils'
+import { isBubbleBlock, isDefined, isTextBubbleBlock } from 'utils'
 import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
 import { BlockIcon, useTypebot } from '@/features/editor'
 import { SettingsPopoverContent } from './SettingsPopoverContent'
@@ -116,8 +116,8 @@ export const BlockNode = ({
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
-    if (mouseOverBlock?.id !== block.id)
-      setMouseOverBlock({ id: block.id, ref: blockRef })
+    if (mouseOverBlock?.id !== block.id && blockRef.current)
+      setMouseOverBlock({ id: block.id, element: blockRef.current })
     if (connectingIds)
       setConnectingIds({
         ...connectingIds,
@@ -164,6 +164,10 @@ export const BlockNode = ({
   }, [openedBlockId])
 
   useEventListener('pointerdown', (e) => e.stopPropagation(), blockRef.current)
+
+  const hasIcomingEdge = typebot?.edges.some((edge) => {
+    return edge.to.blockId === block.id
+  })
 
   return isEditing && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
@@ -218,12 +222,15 @@ export const BlockNode = ({
                   data-testid={`${block.id}-icon`}
                 />
                 <BlockNodeContent block={block} indices={indices} />
-                <TargetEndpoint
-                  pos="absolute"
-                  left="-34px"
-                  top="16px"
-                  blockId={block.id}
-                />
+                {(hasIcomingEdge || isDefined(connectingIds)) && (
+                  <TargetEndpoint
+                    pos="absolute"
+                    left="-34px"
+                    top="16px"
+                    blockId={block.id}
+                    groupId={block.groupId}
+                  />
+                )}
                 {isConnectable && hasDefaultConnector(block) && (
                   <SourceEndpoint
                     source={{

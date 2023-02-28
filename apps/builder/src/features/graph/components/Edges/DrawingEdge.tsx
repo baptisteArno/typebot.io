@@ -9,20 +9,15 @@ import {
 import { useTypebot } from '@/features/editor'
 import { colors } from '@/lib/theme'
 import React, { useMemo, useState } from 'react'
-import {
-  computeConnectingEdgePath,
-  computeEdgePathToMouse,
-  getEndpointTopOffset,
-} from '../../utils'
+import { computeConnectingEdgePath, computeEdgePathToMouse } from '../../utils'
+import { useEndpoints } from '../../providers/EndpointsProvider'
 
 export const DrawingEdge = () => {
+  const { graphPosition, setConnectingIds, connectingIds } = useGraph()
   const {
-    graphPosition,
-    setConnectingIds,
-    connectingIds,
-    sourceEndpoints,
-    targetEndpoints,
-  } = useGraph()
+    sourceEndpointYOffsets: sourceEndpoints,
+    targetEndpointYOffsets: targetEndpoints,
+  } = useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
   const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null)
@@ -34,24 +29,15 @@ export const DrawingEdge = () => {
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0
-    return getEndpointTopOffset({
-      endpoints: sourceEndpoints,
-      graphOffsetY: graphPosition.y,
-      endpointId: connectingIds.source.itemId ?? connectingIds.source.blockId,
-      graphScale: graphPosition.scale,
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const endpointId =
+      connectingIds.source.itemId ?? connectingIds.source.blockId
+    return sourceEndpoints.get(endpointId)?.y
   }, [connectingIds, sourceEndpoints])
 
   const targetTop = useMemo(() => {
     if (!connectingIds) return 0
-    return getEndpointTopOffset({
-      endpoints: targetEndpoints,
-      graphOffsetY: graphPosition.y,
-      endpointId: connectingIds.target?.blockId,
-      graphScale: graphPosition.scale,
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const endpointId = connectingIds.target?.blockId
+    return endpointId ? targetEndpoints.get(endpointId)?.y : undefined
   }, [connectingIds, targetEndpoints])
 
   const path = useMemo(() => {

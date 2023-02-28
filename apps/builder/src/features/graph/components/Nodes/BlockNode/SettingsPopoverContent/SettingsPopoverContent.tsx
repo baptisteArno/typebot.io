@@ -7,6 +7,7 @@ import {
   IconButton,
   HStack,
   Stack,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { ExpandIcon } from '@/components/icons'
 import {
@@ -49,6 +50,7 @@ type Props = {
 }
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
+  const arrowColor = useColorModeValue('white', 'gray.800')
   const ref = useRef<HTMLDivElement | null>(null)
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -59,7 +61,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   return (
     <Portal>
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
-        <PopoverArrow />
+        <PopoverArrow bgColor={arrowColor} />
         <PopoverBody
           pt="3"
           pb="6"

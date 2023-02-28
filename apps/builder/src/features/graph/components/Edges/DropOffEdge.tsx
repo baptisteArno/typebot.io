@@ -6,18 +6,15 @@ import {
   useColorModeValue,
   theme,
 } from '@chakra-ui/react'
-import { useGraph, useGroupsCoordinates } from '../../providers'
+import { useGroupsCoordinates } from '../../providers'
 import { useTypebot } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
 import React, { useMemo } from 'react'
 import { byId, isDefined } from 'utils'
 import { isProPlan } from '@/features/billing'
 import { AnswersCount } from '@/features/analytics'
-import {
-  getEndpointTopOffset,
-  computeSourceCoordinates,
-  computeDropOffPath,
-} from '../../utils'
+import { computeSourceCoordinates, computeDropOffPath } from '../../utils'
+import { useEndpoints } from '../../providers/EndpointsProvider'
 
 type Props = {
   groupId: string
@@ -36,7 +33,7 @@ export const DropOffEdge = ({
   )
   const { workspace } = useWorkspace()
   const { groupsCoordinates } = useGroupsCoordinates()
-  const { sourceEndpoints, graphPosition } = useGraph()
+  const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
   const { publishedTypebot } = useTypebot()
 
   const isWorkspaceProPlan = isProPlan(workspace)
@@ -68,17 +65,11 @@ export const DropOffEdge = ({
   }, [answersCounts, groupId, totalAnswers, publishedTypebot])
 
   const group = publishedTypebot?.groups.find(byId(groupId))
-  const sourceTop = useMemo(
-    () =>
-      getEndpointTopOffset({
-        endpoints: sourceEndpoints,
-        graphOffsetY: graphPosition.y,
-        endpointId: group?.blocks[group.blocks.length - 1].id,
-        graphScale: graphPosition.scale,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [group?.blocks, sourceEndpoints, groupsCoordinates]
-  )
+
+  const sourceTop = useMemo(() => {
+    const endpointId = group?.blocks[group.blocks.length - 1].id
+    return endpointId ? sourceEndpoints.get(endpointId)?.y : undefined
+  }, [group?.blocks, sourceEndpoints])
 
   const labelCoordinates = useMemo(() => {
     if (!groupsCoordinates[groupId]) return

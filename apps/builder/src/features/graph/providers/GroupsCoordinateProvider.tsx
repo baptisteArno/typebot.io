@@ -31,14 +31,13 @@ export const GroupsCoordinatesProvider = ({
   useEffect(() => {
     setGroupsCoordinates(
       groups.reduce(
-        (coords, block) => ({
+        (coords, group) => ({
           ...coords,
-          [block.id]: block.graphCoordinates,
+          [group.id]: group.graphCoordinates,
         }),
         {}
       )
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups])
 
   const updateGroupCoordinates = useCallback(

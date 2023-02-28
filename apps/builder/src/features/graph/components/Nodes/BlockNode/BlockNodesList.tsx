@@ -55,8 +55,7 @@ export const BlockNodesList = ({
 
   useEffect(() => {
     if (mouseOverGroup?.id !== groupId) setExpandedPlaceholderIndex(undefined)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mouseOverGroup?.id])
+  }, [groupId, mouseOverGroup?.id])
 
   const handleMouseMoveGlobal = (event: MouseEvent) => {
     if (!draggedBlock || draggedBlock.groupId !== groupId) return
@@ -114,14 +113,10 @@ export const BlockNodesList = ({
 
   useEventListener('mousemove', handleMouseMoveGlobal)
   useEventListener('mousemove', handleMouseMoveOnGroup, groupRef.current)
-  useEventListener(
-    'mouseup',
-    handleMouseUpOnGroup,
-    mouseOverGroup?.ref.current,
-    {
-      capture: true,
-    }
-  )
+  useEventListener('mouseup', handleMouseUpOnGroup, mouseOverGroup?.element, {
+    capture: true,
+  })
+
   return (
     <Stack
       spacing={1}

@@ -131,8 +131,8 @@ const NonMemoizedDraggableGroupNode = ({
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
-    if (mouseOverGroup?.id !== group.id && !isStartGroup)
-      setMouseOverGroup({ id: group.id, ref: groupRef })
+    if (mouseOverGroup?.id !== group.id && !isStartGroup && groupRef.current)
+      setMouseOverGroup({ id: group.id, element: groupRef.current })
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { groupId: group.id } })
   }
@@ -185,6 +185,7 @@ const NonMemoizedDraggableGroupNode = ({
       {(ref, isContextMenuOpened) => (
         <Stack
           ref={setMultipleRefs([ref, groupRef])}
+          id={`group-${group.id}`}
           data-testid="group"
           p="4"
           rounded="xl"
@@ -239,24 +240,26 @@ const NonMemoizedDraggableGroupNode = ({
               isStartGroup={isStartGroup}
             />
           )}
-          <SlideFade
-            in={isFocused}
-            style={{
-              position: 'absolute',
-              top: '-50px',
-              right: 0,
-            }}
-            unmountOnExit
-          >
-            <GroupFocusToolbar
-              onPlayClick={startPreviewAtThisGroup}
-              onDuplicateClick={() => {
-                setIsFocused(false)
-                duplicateGroup(groupIndex)
+          {!isReadOnly && (
+            <SlideFade
+              in={isFocused}
+              style={{
+                position: 'absolute',
+                top: '-50px',
+                right: 0,
               }}
-              onDeleteClick={() => deleteGroup(groupIndex)}
-            />
-          </SlideFade>
+              unmountOnExit
+            >
+              <GroupFocusToolbar
+                onPlayClick={startPreviewAtThisGroup}
+                onDuplicateClick={() => {
+                  setIsFocused(false)
+                  duplicateGroup(groupIndex)
+                }}
+                onDeleteClick={() => deleteGroup(groupIndex)}
+              />
+            </SlideFade>
+          )}
         </Stack>
       )}
     </ContextMenu>
