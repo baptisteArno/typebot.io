@@ -21,10 +21,10 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
     if (octaAgents) {
       const items = octaAgents.map((agentGroup) => ({
         label: agentGroup.name,
-        value: JSON.stringify({
+        value: {
           assignTo: agentGroup.id,
           assignType: agentGroup.operationType
-        }),
+        },
         isTitle: agentGroup.isTitle,
       }))
       setItemsToAutoAssign(items);
@@ -44,10 +44,10 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
       if(defaults){
         setDefaultSelected({
           label: defaults.name,
-          value: JSON.stringify({
+          value: {
             assignTo: defaults.id,
             assignType: defaults.operationType
-          })
+          }
         })
       }
     }

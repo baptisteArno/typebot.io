@@ -82,7 +82,6 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         {...props}
       />
       <MenuList>
-        {verifyFeatureToggle('use-new-bot-builder') && <>Feature flag ativa</>}
         <MenuItem icon={<EyeIcon />} onClick={handlePreviewClick}>
           Visualizar
         </MenuItem>
