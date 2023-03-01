@@ -172,37 +172,40 @@ export const TypebotProvider = ({
     typebot,
   ])
 
-  const saveTypebot = useCallback(async () => {
-    if (!localTypebot || !typebot) return
-    const typebotToSave = { ...localTypebot }
-    if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
-      return
-    setIsSavingLoading(true)
-    const { data, error } = await updateTypebotQuery(
-      typebotToSave.id,
-      typebotToSave
-    )
-    if (data?.typebot) setLocalTypebot({ ...data.typebot })
-    setIsSavingLoading(false)
-    if (error) {
-      showToast({ title: error.name, description: error.message })
-      return
-    }
-    mutate({
-      typebot: typebotToSave,
+  const saveTypebot = useCallback(
+    async (updates?: Partial<Typebot>) => {
+      if (!localTypebot || !typebot) return
+      const typebotToSave = { ...localTypebot, ...updates }
+      if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
+        return
+      setIsSavingLoading(true)
+      const { data, error } = await updateTypebotQuery(
+        typebotToSave.id,
+        typebotToSave
+      )
+      if (data?.typebot) setLocalTypebot({ ...data.typebot })
+      setIsSavingLoading(false)
+      if (error) {
+        showToast({ title: error.name, description: error.message })
+        return
+      }
+      mutate({
+        typebot: typebotToSave,
+        publishedTypebot,
+        webhooks: webhooks ?? [],
+      })
+      window.removeEventListener('beforeunload', preventUserFromRefreshing)
+    },
+    [
+      localTypebot,
+      mutate,
       publishedTypebot,
-      webhooks: webhooks ?? [],
-    })
-    window.removeEventListener('beforeunload', preventUserFromRefreshing)
-  }, [
-    localTypebot,
-    mutate,
-    publishedTypebot,
-    setLocalTypebot,
-    showToast,
-    typebot,
-    webhooks,
-  ])
+      setLocalTypebot,
+      showToast,
+      typebot,
+      webhooks,
+    ]
+  )
 
   const savePublishedTypebot = async (newPublishedTypebot: PublicTypebot) => {
     if (!localTypebot) return
@@ -232,9 +235,9 @@ export const TypebotProvider = ({
   )
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', saveTypebot)
+    Router.events.on('routeChangeStart', () => saveTypebot())
     return () => {
-      Router.events.off('routeChangeStart', saveTypebot)
+      Router.events.off('routeChangeStart', () => saveTypebot())
     }
   }, [saveTypebot])
 
@@ -266,13 +269,12 @@ export const TypebotProvider = ({
   const publishTypebot = async () => {
     if (!localTypebot) return
     const newLocalTypebot = { ...localTypebot }
-    if (!publishedTypebot) {
+    if (!publishedTypebot || !localTypebot.publicId) {
       const newPublicId =
         localTypebot.publicId ??
         parseDefaultPublicId(localTypebot.name, localTypebot.id)
-      updateLocalTypebot({ publicId: newPublicId })
       newLocalTypebot.publicId = newPublicId
-      await saveTypebot()
+      await saveTypebot({ publicId: newPublicId })
     }
     if (publishedTypebot) {
       await savePublishedTypebot({
