@@ -1,6 +1,11 @@
 name: Build Docker images
 
 on:
+  create:
+    tags:
+      - 'v*'
+      - '!js-v*'
+      - '!react-v*'
   push:
     branches: [main]
   pull_request:
