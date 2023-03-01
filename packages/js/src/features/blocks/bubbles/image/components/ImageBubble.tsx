@@ -1,6 +1,6 @@
 import { TypingBubble } from '@/components'
 import type { ImageBubbleContent } from 'models'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   url: ImageBubbleContent['url']
@@ -11,11 +11,14 @@ export const showAnimationDuration = 400
 
 export const mediaLoadingFallbackTimeout = 5000
 
+let typingTimeout: NodeJS.Timeout
+
 export const ImageBubble = (props: Props) => {
   let image: HTMLImageElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
+    if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
       props.onTransitionEnd()
@@ -24,15 +27,15 @@ export const ImageBubble = (props: Props) => {
 
   onMount(() => {
     if (!image) return
-    const timeout = setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, mediaLoadingFallbackTimeout)
+    typingTimeout = setTimeout(onTypingEnd, mediaLoadingFallbackTimeout)
     image.onload = () => {
-      clearTimeout(timeout)
-      setIsTyping(false)
+      clearTimeout(typingTimeout)
       onTypingEnd()
     }
+  })
+
+  onCleanup(() => {
+    if (typingTimeout) clearTimeout(typingTimeout)
   })
 
   return (

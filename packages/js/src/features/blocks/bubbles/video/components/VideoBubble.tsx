@@ -1,7 +1,7 @@
 import { TypingBubble } from '@/components'
 import type { VideoBubbleContent } from 'models'
 import { VideoBubbleContentType } from 'models/features/blocks/bubbles/video/enums'
-import { createSignal, Match, onMount, Switch } from 'solid-js'
+import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
 
 type Props = {
   content: VideoBubbleContent
@@ -10,28 +10,25 @@ type Props = {
 
 export const showAnimationDuration = 400
 
-export const mediaLoadingFallbackTimeout = 5000
+let typingTimeout: NodeJS.Timeout
 
 export const VideoBubble = (props: Props) => {
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
+    if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
       props.onTransitionEnd()
     }, showAnimationDuration)
   }
 
-  const showContentAfterMediaLoad = () => {
-    setTimeout(() => {
-      setIsTyping(false)
-      onTypingEnd()
-    }, 1000)
-  }
-
   onMount(() => {
-    if (!isTyping) return
-    showContentAfterMediaLoad()
+    typingTimeout = setTimeout(onTypingEnd, 2000)
+  })
+
+  onCleanup(() => {
+    if (typingTimeout) clearTimeout(typingTimeout)
   })
 
   return (

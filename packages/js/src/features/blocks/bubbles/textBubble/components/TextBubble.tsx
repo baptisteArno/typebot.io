@@ -1,6 +1,6 @@
 import { TypingBubble } from '@/components'
 import type { TextBubbleContent, TypingEmulation } from 'models'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onCleanup, onMount } from 'solid-js'
 import { computeTypingDuration } from '../utils/computeTypingDuration'
 
 type Props = {
@@ -17,10 +17,13 @@ const defaultTypingEmulation = {
   maxDelay: 1.5,
 }
 
+let typingTimeout: NodeJS.Timeout
+
 export const TextBubble = (props: Props) => {
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
+    if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
       props.onTransitionEnd()
@@ -36,9 +39,11 @@ export const TextBubble = (props: Props) => {
             props.content.plainText,
             props.typingEmulation ?? defaultTypingEmulation
           )
-    setTimeout(() => {
-      onTypingEnd()
-    }, typingDuration)
+    typingTimeout = setTimeout(onTypingEnd, typingDuration)
+  })
+
+  onCleanup(() => {
+    if (typingTimeout) clearTimeout(typingTimeout)
   })
 
   return (

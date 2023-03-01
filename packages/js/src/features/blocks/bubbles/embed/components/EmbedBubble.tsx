@@ -1,11 +1,13 @@
 import { TypingBubble } from '@/components'
 import type { EmbedBubbleContent } from 'models'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   content: EmbedBubbleContent
   onTransitionEnd: () => void
 }
+
+let typingTimeout: NodeJS.Timeout
 
 export const showAnimationDuration = 400
 
@@ -13,12 +15,16 @@ export const EmbedBubble = (props: Props) => {
   const [isTyping, setIsTyping] = createSignal(true)
 
   onMount(() => {
-    setTimeout(() => {
+    typingTimeout = setTimeout(() => {
       setIsTyping(false)
       setTimeout(() => {
         props.onTransitionEnd()
       }, showAnimationDuration)
-    }, 1000)
+    }, 2000)
+  })
+
+  onCleanup(() => {
+    if (typingTimeout) clearTimeout(typingTimeout)
   })
 
   return (
