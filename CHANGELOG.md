@@ -1,5 +1,25 @@
 # Changelog
 
+<a name="2.11.2"></a>
+## 2.11.2 (2023-03-02)
+
+### Changed
+
+- ♿ (js) Use px instead of rem to look good on any website [[cce63df](https://github.com/baptisteArno/typebot.io/commit/cce63dfea307338ff7f954024bd705f76aeb022a)]
+- 🚸 (webhook) Also add atomic deep keys selection [[73f4846](https://github.com/baptisteArno/typebot.io/commit/73f4846e1ba8a0ebf726099527f3de6c73e4bbf0)]
+
+### Fixed
+
+- 🚑 (webhook) Remove get deep keys test sample [[9d96805](https://github.com/baptisteArno/typebot.io/commit/9d96805d84810390586e01b9806ee157d522afb4)]
+- 🐛 (viewer) Fix client side action when in separate group [[a1cf1e8](https://github.com/baptisteArno/typebot.io/commit/a1cf1e89e79855d3788693a801ebc7db23290240)]
+- 🐛 (settings) Fix custom head code not updating [[4968ed4](https://github.com/baptisteArno/typebot.io/commit/4968ed4202fe99031be559bc44f2b3ed6222925f)]
+- 🐛 (condition) Fix contains not working with lists [[506fe00](https://github.com/baptisteArno/typebot.io/commit/506fe003d1c25b3f9b4b0ec4443db4aff7efb668)]
+
+### Miscellaneous
+
+- 📝 Add change password faq [[b2ad91c](https://github.com/baptisteArno/typebot.io/commit/b2ad91c11fff7cc9595eb5e109ebbf1e3e7b87a4)]
+
+
 <a name="2.11.1"></a>
 ## 2.11.1 (2023-03-02)
 
