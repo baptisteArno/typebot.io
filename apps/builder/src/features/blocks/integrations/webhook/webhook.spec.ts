@@ -89,7 +89,7 @@ test.describe('Builder', () => {
     await page.click('text=Save in variables')
     await page.click('text=Add an entry >> nth=-1')
     await page.click('input[placeholder="Select the data"]')
-    await page.click('text=data.map(item => item.name)')
+    await page.click('text=data.flatMap(item => item.name)')
   })
 })
 

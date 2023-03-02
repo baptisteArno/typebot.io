@@ -1,8 +1,9 @@
 import { checkChatsUsage } from '@/features/usage'
 import {
-  parsePrefilledVariables,
+  prefillVariables,
   deepParseVariable,
   parseVariables,
+  injectVariablesFromExistingResult,
 } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/utils/server/trpc'
@@ -20,6 +21,7 @@ import {
   Theme,
   Typebot,
   Variable,
+  VariableWithValue,
 } from 'models'
 import {
   continueBotFlow,
@@ -27,7 +29,7 @@ import {
   setResultAsCompleted,
   startBotFlow,
 } from '../utils'
-import { env, omit } from 'utils'
+import { env, isDefined, omit } from 'utils'
 
 export const sendMessageProcedure = publicProcedure
   .meta({
@@ -109,18 +111,23 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
 
   const typebot = await getTypebot(startParams, userId)
 
-  const startVariables = startParams.prefilledVariables
-    ? parsePrefilledVariables(typebot.variables, startParams.prefilledVariables)
+  const prefilledVariables = startParams.prefilledVariables
+    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
     : typebot.variables
 
   const result = await getResult({
     ...startParams,
     isPreview,
     typebot: typebot.id,
-    startVariables,
+    prefilledVariables,
     isNewResultOnRefreshEnabled:
       typebot.settings.general.isNewResultOnRefreshEnabled ?? false,
   })
+
+  const startVariables =
+    result && result.variables.length > 0
+      ? injectVariablesFromExistingResult(prefilledVariables, result.variables)
+      : prefilledVariables
 
   const initialState: SessionState = {
     typebot: {
@@ -293,35 +300,64 @@ const getResult = async ({
   typebot,
   isPreview,
   resultId,
-  startVariables,
+  prefilledVariables,
   isNewResultOnRefreshEnabled,
 }: Pick<StartParams, 'isPreview' | 'resultId' | 'typebot'> & {
-  startVariables: Variable[]
+  prefilledVariables: Variable[]
   isNewResultOnRefreshEnabled: boolean
 }) => {
-  if (isPreview || typeof typebot !== 'string') return undefined
-  const data = {
-    isCompleted: false,
-    typebotId: typebot,
-    variables: startVariables.filter((variable) => variable.value),
-  } satisfies Prisma.ResultUncheckedCreateInput
+  if (isPreview || typeof typebot !== 'string') return
   const select = {
     id: true,
     variables: true,
     hasStarted: true,
   } satisfies Prisma.ResultSelect
-  return (
+
+  const existingResult =
     resultId && !isNewResultOnRefreshEnabled
-      ? await prisma.result.update({
+      ? ((await prisma.result.findFirst({
           where: { id: resultId },
-          data,
           select,
-        })
-      : await prisma.result.create({
-          data,
-          select,
-        })
-  ) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
+        })) as Pick<Result, 'id' | 'variables' | 'hasStarted'>)
+      : undefined
+
+  if (existingResult) {
+    const prefilledVariableWithValue = prefilledVariables.filter(
+      (prefilledVariable) => isDefined(prefilledVariable.value)
+    )
+    const updatedResult = {
+      variables: prefilledVariableWithValue.concat(
+        existingResult.variables.filter(
+          (resultVariable) =>
+            isDefined(resultVariable.value) &&
+            !prefilledVariableWithValue.some(
+              (prefilledVariable) =>
+                prefilledVariable.name === resultVariable.name
+            )
+        )
+      ) as VariableWithValue[],
+    }
+    await prisma.result.updateMany({
+      where: { id: existingResult.id },
+      data: updatedResult,
+    })
+    return {
+      id: existingResult.id,
+      variables: updatedResult.variables,
+      hasStarted: existingResult.hasStarted,
+    }
+  } else {
+    return (await prisma.result.create({
+      data: {
+        isCompleted: false,
+        typebotId: typebot,
+        variables: prefilledVariables.filter((variable) =>
+          isDefined(variable.value)
+        ),
+      },
+      select,
+    })) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
+  }
 }
 
 const parseDynamicThemeInState = (theme: Theme) => {

@@ -88,7 +88,7 @@ export const GeneralSettingsForm = ({
             : true
         }
         onCheckChange={handleNewResultOnRefreshChange}
-        moreInfoContent="If the user refreshes the page, its existing results will be overwritten. Disable this if you want to create a new results every time the user refreshes the page."
+        moreInfoContent="If the user refreshes the page or opens the typebot again during the same session, his previous variables will be prefilled and his new answers will override the previous ones."
       />
       <SwitchWithLabel
         label="Hide query params on bot start"

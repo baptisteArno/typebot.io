@@ -235,9 +235,12 @@ export const TypebotProvider = ({
   )
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', () => saveTypebot())
+    const handleSaveTypebot = () => {
+      saveTypebot()
+    }
+    Router.events.on('routeChangeStart', handleSaveTypebot)
     return () => {
-      Router.events.off('routeChangeStart', () => saveTypebot())
+      Router.events.off('routeChangeStart', handleSaveTypebot)
     }
   }, [saveTypebot])
 

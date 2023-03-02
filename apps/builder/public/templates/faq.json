@@ -558,6 +558,7 @@
     "general": {
       "isBrandingEnabled": true,
       "isInputPrefillEnabled": true,
+      "isResultSavingEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": true
     },

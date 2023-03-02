@@ -336,11 +336,11 @@
         "placeholderColor": "#9095A0"
       },
       "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
         "isEnabled": true
-      }
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
     "general": {
       "font": "Open Sans",
@@ -348,7 +348,13 @@
     }
   },
   "settings": {
-    "general": { "isBrandingEnabled": true },
+    "general": {
+      "isBrandingEnabled": true,
+      "isInputPrefillEnabled": true,
+      "isResultSavingEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": true
+    },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
     },

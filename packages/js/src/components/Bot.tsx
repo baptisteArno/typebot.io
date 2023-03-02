@@ -43,13 +43,15 @@ export const Bot = (props: BotProps & { class?: string }) => {
     urlParams.forEach((value, key) => {
       prefilledVariables[key] = value
     })
+    const typebotIdFromProps =
+      typeof props.typebot === 'string' ? props.typebot : undefined
     const { data, error } = await getInitialChatReplyQuery({
       typebot: props.typebot,
       apiHost: props.apiHost,
       isPreview: props.isPreview ?? false,
       resultId: isNotEmpty(props.resultId)
         ? props.resultId
-        : getExistingResultIdFromSession(),
+        : getExistingResultIdFromSession(typebotIdFromProps),
       startGroupId: props.startGroupId,
       prefilledVariables: {
         ...prefilledVariables,
@@ -66,7 +68,8 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
     if (!data) return setError(new Error("Error! Couldn't initiate the chat."))
 
-    if (data.resultId) setResultInSession(data.resultId)
+    if (data.resultId && typebotIdFromProps)
+      setResultInSession(typebotIdFromProps, data.resultId)
     setInitialChatReply(data)
     setCustomCss(data.typebot.theme.customCss ?? '')
 

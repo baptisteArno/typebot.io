@@ -467,7 +467,6 @@
       "hostAvatar": {
         "isEnabled": true
       },
-      "guestAvatar": { "isEnabled": false },
       "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
     },
@@ -480,6 +479,7 @@
     "general": {
       "isBrandingEnabled": true,
       "isInputPrefillEnabled": true,
+      "isResultSavingEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": true
     },

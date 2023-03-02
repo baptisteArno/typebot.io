@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import {
+  Result,
   SessionState,
   StartParams,
   Typebot,
@@ -119,7 +120,7 @@ export const deepParseVariable =
       return { ...newObj, [key]: currentValue }
     }, {} as T)
 
-export const parsePrefilledVariables = (
+export const prefillVariables = (
   variables: Typebot['variables'],
   prefilledVariables: NonNullable<StartParams['prefilledVariables']>
 ): Variable[] =>
@@ -129,6 +130,22 @@ export const parsePrefilledVariables = (
     return {
       ...variable,
       value: safeStringify(prefilledVariable),
+    }
+  })
+
+export const injectVariablesFromExistingResult = (
+  variables: Typebot['variables'],
+  resultVariables: Result['variables']
+): Variable[] =>
+  variables.map((variable) => {
+    const resultVariable = resultVariables.find(
+      (resultVariable) =>
+        resultVariable.name === variable.name && !variable.value
+    )
+    if (!resultVariable) return variable
+    return {
+      ...variable,
+      value: resultVariable.value,
     }
   })
 
