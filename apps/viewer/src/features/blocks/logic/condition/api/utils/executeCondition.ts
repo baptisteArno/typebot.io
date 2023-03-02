@@ -32,16 +32,17 @@ export const executeCondition = (
 const executeComparison =
   (variables: Variable[]) => (comparison: Comparison) => {
     if (!comparison?.variableId) return false
-    const inputValue = (
+    const inputValue =
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
-    )
-      .toString()
-      .trim()
-    const value = parseVariables(variables)(comparison.value).trim()
+    const value = parseVariables(variables)(comparison.value)
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
-        return inputValue.toLowerCase().includes(value.toLowerCase())
+        const normalizeString = (value: string) => value.toLowerCase().trim()
+        const contains = (inputValue: string) =>
+          normalizeString(inputValue).includes(normalizeString(value))
+        if (typeof inputValue === 'string') return contains(inputValue)
+        return inputValue.some(contains)
       }
       case ComparisonOperators.EQUAL: {
         return inputValue === value
@@ -50,9 +51,11 @@ const executeComparison =
         return inputValue !== value
       }
       case ComparisonOperators.GREATER: {
+        if (typeof inputValue !== 'string') return false
         return parseFloat(inputValue) > parseFloat(value)
       }
       case ComparisonOperators.LESS: {
+        if (typeof inputValue !== 'string') return false
         return parseFloat(inputValue) < parseFloat(value)
       }
       case ComparisonOperators.IS_SET: {
