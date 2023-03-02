@@ -130,39 +130,7 @@ export const WebhookSettings = ({
     if (error)
       return showToast({ title: error.name, description: error.message })
     setTestResponse(JSON.stringify(data, undefined, 2))
-    setResponseKeys(
-      getDeepKeys({
-        employees: [
-          {
-            name: 'Shyam',
-            email: 'shyamjaiswal@gmail.com',
-            employees: [
-              { name: 'Shyam', email: 'shyamjaiswal@gmail.com' },
-              { name: 'Bob', email: 'bob32@gmail.com' },
-              { name: 'Jai', email: 'jai87@gmail.com' },
-            ],
-          },
-          {
-            name: 'Bob',
-            email: 'bob32@gmail.com',
-            employees: [
-              { name: 'Shyam', email: 'shyamjaiswal@gmail.com' },
-              { name: 'Bob', email: 'bob32@gmail.com' },
-              { name: 'Jai', email: 'jai87@gmail.com' },
-            ],
-          },
-          {
-            name: 'Jai',
-            email: 'jai87@gmail.com',
-            employees: [
-              { name: 'Shyam', email: 'shyamjaiswal@gmail.com' },
-              { name: 'Bob', email: 'bob32@gmail.com' },
-              { name: 'Jai', email: 'jai87@gmail.com' },
-            ],
-          },
-        ],
-      })
-    )
+    setResponseKeys(getDeepKeys(data))
     setIsTestResponseLoading(false)
   }
 
