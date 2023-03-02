@@ -23,11 +23,13 @@ export const SourceEndpoint = ({
 }: BoxProps & {
   source: Source
 }) => {
+  const id = source.itemId ?? source.blockId
   const color = useColorModeValue('blue.200', 'blue.100')
   const connectedColor = useColorModeValue('blue.300', 'blue.200')
   const bg = useColorModeValue('gray.100', 'gray.700')
   const { setConnectingIds, previewingEdge, graphPosition } = useGraph()
-  const { setSourceEndpointYOffset: addSourceEndpoint } = useEndpoints()
+  const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =
+    useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
   const ref = useRef<HTMLDivElement | null>(null)
   const [groupHeight, setGroupHeight] = useState<number>()
@@ -75,12 +77,18 @@ export const SourceEndpoint = ({
 
   useEffect(() => {
     if (!endpointY) return
-    const id = source.itemId ?? source.blockId
-    addSourceEndpoint?.({
+    setSourceEndpointYOffset?.({
       id,
       y: endpointY,
     })
-  }, [addSourceEndpoint, endpointY, source.blockId, source.itemId])
+  }, [setSourceEndpointYOffset, endpointY, id])
+
+  useEffect(
+    () => () => {
+      deleteSourceEndpointYOffset?.(id)
+    },
+    [deleteSourceEndpointYOffset, id]
+  )
 
   useEventListener(
     'pointerdown',

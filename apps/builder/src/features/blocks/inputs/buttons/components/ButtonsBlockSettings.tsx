@@ -6,15 +6,12 @@ import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { ChoiceInputOptions, Variable } from 'models'
 import React from 'react'
 
-type ButtonsOptionsFormProps = {
+type Props = {
   options?: ChoiceInputOptions
   onOptionsChange: (options: ChoiceInputOptions) => void
 }
 
-export const ButtonsOptionsForm = ({
-  options,
-  onOptionsChange,
-}: ButtonsOptionsFormProps) => {
+export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   const handleIsMultipleChange = (isMultipleChoice: boolean) =>
     options && onOptionsChange({ ...options, isMultipleChoice })
   const handleButtonLabelChange = (buttonLabel: string) =>

@@ -14,6 +14,7 @@ export type Endpoint = {
 export const endpointsContext = createContext<{
   sourceEndpointYOffsets: Map<string, Endpoint>
   setSourceEndpointYOffset?: (endpoint: Endpoint) => void
+  deleteSourceEndpointYOffset?: (endpointId: string) => void
   targetEndpointYOffsets: Map<string, Endpoint>
   setTargetEnpointYOffset?: (endpoint: Endpoint) => void
 }>({
@@ -35,6 +36,13 @@ export const EndpointsProvider = ({ children }: { children: ReactNode }) => {
     )
   }, [])
 
+  const deleteSourceEndpointYOffset = useCallback((endpointId: string) => {
+    setSourceEndpoints((endpoints) => {
+      endpoints.delete(endpointId)
+      return endpoints
+    })
+  }, [])
+
   const setTargetEnpointYOffset = useCallback((endpoint: Endpoint) => {
     setTargetEndpoints((endpoints) =>
       new Map(endpoints).set(endpoint.id, endpoint)
@@ -47,6 +55,7 @@ export const EndpointsProvider = ({ children }: { children: ReactNode }) => {
         sourceEndpointYOffsets,
         targetEndpointYOffsets,
         setSourceEndpointYOffset,
+        deleteSourceEndpointYOffset,
         setTargetEnpointYOffset,
       }}
     >

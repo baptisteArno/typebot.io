@@ -36,7 +36,7 @@ import { ZapierSettings } from '@/features/blocks/integrations/zapier'
 import { RedirectSettings } from '@/features/blocks/logic/redirect'
 import { SetVariableSettings } from '@/features/blocks/logic/setVariable'
 import { TypebotLinkForm } from '@/features/blocks/logic/typebotLink'
-import { ButtonsOptionsForm } from '@/features/blocks/inputs/buttons'
+import { ButtonsBlockSettings } from '@/features/blocks/inputs/buttons'
 import { ChatwootSettingsForm } from '@/features/blocks/integrations/chatwoot'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom'
 import { HelpDocButton } from './HelpDocButton'
@@ -150,7 +150,7 @@ export const BlockSettings = ({
     }
     case InputBlockType.CHOICE: {
       return (
-        <ButtonsOptionsForm
+        <ButtonsBlockSettings
           options={block.options}
           onOptionsChange={handleOptionsChange}
         />
