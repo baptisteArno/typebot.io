@@ -61,7 +61,7 @@ export const ChatChunk = (props: Props) => {
             style={{
               'margin-right': props.theme.chat.guestAvatar?.isEnabled
                 ? '50px'
-                : '0.5rem',
+                : '8px',
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>

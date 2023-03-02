@@ -36,8 +36,8 @@ export const EmbedBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
             style={{
-              width: isTyping() ? '4rem' : '100%',
-              height: isTyping() ? '2rem' : '100%',
+              width: isTyping() ? '64px' : '100%',
+              height: isTyping() ? '32px' : '100%',
             }}
           >
             {isTyping() && <TypingBubble />}
@@ -50,7 +50,7 @@ export const EmbedBubble = (props: Props) => {
               (isTyping() ? 'opacity-0' : 'opacity-100')
             }
             style={{
-              height: isTyping() ? '2rem' : `${props.content.height}px`,
+              height: isTyping() ? '32px' : `${props.content.height}px`,
             }}
           />
         </div>

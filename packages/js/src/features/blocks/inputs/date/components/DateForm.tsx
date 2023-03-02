@@ -46,7 +46,7 @@ export const DateForm = (props: Props) => {
               <input
                 class="focus:outline-none flex-1 w-full text-input"
                 style={{
-                  'min-height': '2rem',
+                  'min-height': '32px',
                   'min-width': '100px',
                   'font-size': '16px',
                 }}
@@ -70,7 +70,7 @@ export const DateForm = (props: Props) => {
                 <input
                   class="focus:outline-none flex-1 w-full text-input ml-2"
                   style={{
-                    'min-height': '2rem',
+                    'min-height': '32px',
                     'min-width': '100px',
                     'font-size': '16px',
                   }}

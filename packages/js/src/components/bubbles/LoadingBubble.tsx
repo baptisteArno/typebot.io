@@ -7,8 +7,8 @@ export const LoadingBubble = () => (
         <div
           class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing "
           style={{
-            width: '4rem',
-            height: '2rem',
+            width: '64px',
+            height: '32px',
           }}
           data-testid="host-bubble"
         >

@@ -38,8 +38,8 @@ export const VideoBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
             style={{
-              width: isTyping() ? '4rem' : '100%',
-              height: isTyping() ? '2rem' : '100%',
+              width: isTyping() ? '64px' : '100%',
+              height: isTyping() ? '32px' : '100%',
             }}
           >
             {isTyping() && <TypingBubble />}
@@ -72,7 +72,7 @@ const VideoContent = (props: VideoContentProps) => {
             (props.isTyping ? 'opacity-0' : 'opacity-100')
           }
           style={{
-            height: props.isTyping ? '2rem' : 'auto',
+            height: props.isTyping ? '32px' : 'auto',
             'max-height': window.navigator.vendor.match(/apple/i) ? '40vh' : '',
           }}
           autoplay
@@ -100,7 +100,7 @@ const VideoContent = (props: VideoContentProps) => {
             'w-full p-4 text-fade-in z-10 rounded-md ' +
             (props.isTyping ? 'opacity-0' : 'opacity-100')
           }
-          height={props.isTyping ? '2rem' : '200px'}
+          height={props.isTyping ? '32px' : '200px'}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         />

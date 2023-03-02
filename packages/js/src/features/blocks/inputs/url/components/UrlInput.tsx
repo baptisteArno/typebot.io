@@ -46,7 +46,7 @@ export const UrlInput = (props: Props) => {
       }
       data-testid="input"
       style={{
-        'margin-right': props.hasGuestAvatar ? '50px' : '0.5rem',
+        'margin-right': props.hasGuestAvatar ? '50px' : '8px',
         'max-width': '350px',
       }}
       onKeyDown={submitWhenEnter}
