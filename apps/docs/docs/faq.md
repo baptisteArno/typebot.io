@@ -21,3 +21,7 @@ I'm not planning on having a Typebot affiliation program.
 As a customer, I don't like when someone promotes a tool with an affiliation because we could think that the only reason he's promoting it is that he can win big comparing with other tools.
 
 Natural recommendations resonate a lot more with me. My goal is to create the best user experience possible, so I really hope you will recommend Typebot for free. 🤝
+
+## How can I change my password
+
+Typebot doesn't store any password. Its login works with Github, Google, Facebook and Magic link email.
