@@ -121,7 +121,7 @@ export const MetadataForm = ({
         </HStack>
         <CodeEditor
           id="head"
-          value={metadata.customHeadCode ?? ''}
+          defaultValue={metadata.customHeadCode ?? ''}
           onChange={handleHeadCodeChange}
           lang="html"
           withVariableButton={false}
