@@ -1,5 +1,19 @@
 # Changelog
 
+<a name="2.11.1"></a>
+## 2.11.1 (2023-03-02)
+
+### Changed
+
+- 🚸 (js) Parse script to content to remove useless script tags if any [[cc07389](https://github.com/baptisteArno/typebot.io/commit/cc07389c37e1008dc5041bb22162bfc69fd5eac4)]
+
+### Fixed
+
+- 🐛 (js) Improve session remember behavior [[ba253cf](https://github.com/baptisteArno/typebot.io/commit/ba253cf3e9574ba53ec6d142e87a8ef44da69f10)]
+- 🐛 (editor) Graph connectors still displayed when switching to dynamic buttons [[c172a44](https://github.com/baptisteArno/typebot.io/commit/c172a44566ae6f27710c38286b0b60ea4a7f7e0a)]
+- 🐛 (share) Fix publicId null when publishing [[eebcbb1](https://github.com/baptisteArno/typebot.io/commit/eebcbb10b820a0a5ac8705a28a965d8fcb2243e8)]
+
+
 <a name="2.11.0"></a>
 ## 2.11.0 (2023-03-01)
 
