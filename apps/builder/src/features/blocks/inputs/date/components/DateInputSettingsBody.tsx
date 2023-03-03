@@ -1,6 +1,6 @@
-import { Input } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { TextInput } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DateInputOptions, Variable } from 'models'
 import React from 'react'
@@ -40,39 +40,24 @@ export const DateInputSettingsBody = ({
         onCheckChange={handleHasTimeChange}
       />
       {options.isRange && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="from">
-            From label:
-          </FormLabel>
-          <Input
-            id="from"
+        <>
+          <TextInput
+            label="From label:"
             defaultValue={options.labels.from}
             onChange={handleFromChange}
           />
-        </Stack>
-      )}
-      {options?.isRange && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="to">
-            To label:
-          </FormLabel>
-          <Input
-            id="to"
+          <TextInput
+            label="To label:"
             defaultValue={options.labels.to}
             onChange={handleToChange}
           />
-        </Stack>
+        </>
       )}
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          Button label:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options.labels.button}
-          onChange={handleButtonLabelChange}
-        />
-      </Stack>
+      <TextInput
+        label="Button label:"
+        defaultValue={options.labels.button}
+        onChange={handleButtonLabelChange}
+      />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Save answer in a variable:

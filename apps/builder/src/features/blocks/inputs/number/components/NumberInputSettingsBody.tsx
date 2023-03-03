@@ -1,5 +1,5 @@
-import { Input, SmartNumberInput } from '@/components/inputs'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { TextInput, NumberInput } from '@/components/inputs'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { removeUndefinedFields } from '@/utils/helpers'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { NumberInputOptions, Variable } from 'models'
@@ -30,39 +30,29 @@ export const NumberInputSettingsBody = ({
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Placeholder:
-        </FormLabel>
-        <Input
-          id="placeholder"
-          defaultValue={options.labels.placeholder}
-          onChange={handlePlaceholderChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          Button label:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options?.labels?.button ?? 'Send'}
-          onChange={handleButtonLabelChange}
-        />
-      </Stack>
-      <SmartNumberInput
+      <TextInput
+        label="Placeholder:"
+        defaultValue={options.labels.placeholder}
+        onChange={handlePlaceholderChange}
+      />
+      <TextInput
+        label="Button label:"
+        defaultValue={options?.labels?.button ?? 'Send'}
+        onChange={handleButtonLabelChange}
+      />
+      <NumberInput
         label="Min:"
         defaultValue={options.min}
         onValueChange={handleMinChange}
         withVariableButton={false}
       />
-      <SmartNumberInput
+      <NumberInput
         label="Max:"
         defaultValue={options.max}
         onValueChange={handleMaxChange}
         withVariableButton={false}
       />
-      <SmartNumberInput
+      <NumberInput
         label="Step:"
         defaultValue={options.step}
         onValueChange={handleBlockChange}

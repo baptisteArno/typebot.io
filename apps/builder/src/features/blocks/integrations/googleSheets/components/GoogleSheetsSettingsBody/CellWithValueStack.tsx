@@ -2,7 +2,7 @@ import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { Cell } from 'models'
 import { TableListItemProps } from '@/components/TableList'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 
 export const CellWithValueStack = ({
   item,
@@ -25,7 +25,7 @@ export const CellWithValueStack = ({
         items={columns}
         placeholder="Select a column"
       />
-      <Input
+      <TextInput
         defaultValue={item.value ?? ''}
         onChange={handleValueChange}
         placeholder="Type a value..."

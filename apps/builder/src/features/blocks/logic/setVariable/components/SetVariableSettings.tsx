@@ -1,8 +1,8 @@
 import { FormLabel, HStack, Stack, Switch, Text } from '@chakra-ui/react'
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SetVariableOptions, Variable } from 'models'
 import React from 'react'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Textarea } from '@/components/inputs'
 
 type Props = {

@@ -1,6 +1,6 @@
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
-import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import { KeyValue } from 'models'
 
 export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
@@ -39,26 +39,20 @@ export const KeyValueInputs = ({
   }
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <FormControl>
-        <FormLabel htmlFor={'key' + item.id}>Key:</FormLabel>
-        <Input
-          id={'key' + item.id}
-          defaultValue={item.key ?? ''}
-          onChange={handleKeyChange}
-          placeholder={keyPlaceholder}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Value:</FormLabel>
-        <Input
-          id={'value' + item.id}
-          defaultValue={item.value ?? ''}
-          onChange={handleValueChange}
-          placeholder={valuePlaceholder}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
+      <TextInput
+        label="Key:"
+        defaultValue={item.key ?? ''}
+        onChange={handleKeyChange}
+        placeholder={keyPlaceholder}
+        debounceTimeout={debounceTimeout}
+      />
+      <TextInput
+        label="Value:"
+        defaultValue={item.value ?? ''}
+        onChange={handleValueChange}
+        placeholder={valuePlaceholder}
+        debounceTimeout={debounceTimeout}
+      />
     </Stack>
   )
 }

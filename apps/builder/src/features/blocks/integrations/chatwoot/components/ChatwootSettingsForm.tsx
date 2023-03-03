@@ -1,4 +1,4 @@
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import {
   Accordion,
   AccordionButton,
@@ -18,7 +18,7 @@ type Props = {
 export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
-      <Input
+      <TextInput
         isRequired
         label="Base URL"
         defaultValue={options.baseUrl}
@@ -27,7 +27,7 @@ export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
         }}
         withVariableButton={false}
       />
-      <Input
+      <TextInput
         isRequired
         label="Website token"
         defaultValue={options.websiteToken}
@@ -43,14 +43,14 @@ export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="4">
-            <Input
+            <TextInput
               label="ID"
               defaultValue={options.user?.id}
               onChange={(id: string) => {
                 onOptionsChange({ ...options, user: { ...options.user, id } })
               }}
             />
-            <Input
+            <TextInput
               label="Name"
               defaultValue={options.user?.name}
               onChange={(name: string) => {
@@ -60,7 +60,7 @@ export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
                 })
               }}
             />
-            <Input
+            <TextInput
               label="Email"
               defaultValue={options.user?.email}
               onChange={(email: string) => {
@@ -70,7 +70,7 @@ export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
                 })
               }}
             />
-            <Input
+            <TextInput
               label="Avatar URL"
               defaultValue={options.user?.avatarUrl}
               onChange={(avatarUrl: string) => {
@@ -80,7 +80,7 @@ export const ChatwootSettingsForm = ({ options, onOptionsChange }: Props) => {
                 })
               }}
             />
-            <Input
+            <TextInput
               label="Phone number"
               defaultValue={options.user?.phoneNumber}
               onChange={(phoneNumber: string) => {

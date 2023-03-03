@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { useState, useEffect } from 'react'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   onUpdateWindowSettings: (windowSettings: {

@@ -27,18 +27,18 @@ import {
   Webhook,
 } from 'models'
 import { DropdownList } from '@/components/DropdownList'
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { byId, env } from 'utils'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useToast } from '@/hooks/useToast'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TableListItemProps, TableList } from '@/components/TableList'
 import { executeWebhook } from '../../queries/executeWebhookQuery'
 import { getDeepKeys } from '../../utils/getDeepKeys'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { convertVariablesForTestToVariables } from '../../utils/convertVariablesForTestToVariables'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -157,7 +157,7 @@ export const WebhookSettings = ({
           </Stack>
         </Alert>
       )}
-      <Input
+      <TextInput
         placeholder="Paste webhook URL..."
         defaultValue={localWebhook.url ?? ''}
         onChange={handleUrlChange}

@@ -5,37 +5,47 @@ import {
   FormControl,
   FormLabel,
   HStack,
-  Textarea as ChakraTextarea,
-  TextareaProps,
+  Input as ChakraInput,
+  InputProps,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
-type Props = {
-  id?: string
+export type TextInputProps = {
   defaultValue?: string
+  onChange: (value: string) => void
   debounceTimeout?: number
-  label?: string
+  label?: ReactNode
   moreInfoTooltip?: string
   withVariableButton?: boolean
   isRequired?: boolean
-  onChange: (value: string) => void
-} & Pick<TextareaProps, 'minH'>
+  placeholder?: string
+  isDisabled?: boolean
+} & Pick<
+  InputProps,
+  'autoComplete' | 'onFocus' | 'onKeyUp' | 'type' | 'autoFocus'
+>
 
-export const Textarea = ({
-  id,
+export const TextInput = ({
+  type,
   defaultValue,
-  onChange: _onChange,
   debounceTimeout = 1000,
   label,
   moreInfoTooltip,
   withVariableButton = true,
   isRequired,
-}: Props) => {
-  const inputRef = useRef<HTMLTextAreaElement | null>(null)
+  placeholder,
+  autoComplete,
+  isDisabled,
+  autoFocus,
+  onChange: _onChange,
+  onFocus,
+  onKeyUp,
+}: TextInputProps) => {
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const [isTouched, setIsTouched] = useState(false)
   const [localValue, setLocalValue] = useState<string>(defaultValue ?? '')
   const [carretPosition, setCarretPosition] = useState<number>(
@@ -76,17 +86,23 @@ export const Textarea = ({
     focusInput({ at: newCarretPosition, input: inputRef.current })
   }
 
-  const updateCarretPosition = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+  const updateCarretPosition = (e: React.FocusEvent<HTMLInputElement>) => {
     const carretPosition = e.target.selectionStart
     if (!carretPosition) return
     setCarretPosition(carretPosition)
   }
 
-  const Textarea = (
-    <ChakraTextarea
+  const Input = (
+    <ChakraInput
+      type={type}
       ref={inputRef}
-      id={id}
       value={localValue}
+      autoComplete={autoComplete}
+      placeholder={placeholder}
+      isDisabled={isDisabled}
+      autoFocus={autoFocus}
+      onFocus={onFocus}
+      onKeyUp={onKeyUp}
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
     />
@@ -104,11 +120,11 @@ export const Textarea = ({
       )}
       {withVariableButton ? (
         <HStack spacing={0} align={'flex-end'}>
-          {Textarea}
+          {Input}
           <VariablesButton onSelectVariable={handleVariableSelected} />
         </HStack>
       ) : (
-        Textarea
+        Input
       )}
     </FormControl>
   )

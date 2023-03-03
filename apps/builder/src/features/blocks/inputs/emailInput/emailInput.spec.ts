@@ -33,7 +33,7 @@ test.describe('Email input block', () => {
       'Your email...'
     )
     await expect(page.locator('text=Your email...')).toBeVisible()
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill(
       `input[value="${defaultEmailInputOptions.retryMessageContent}"]`,
       'Try again bro'

@@ -49,7 +49,7 @@ test.describe.parallel('Buttons input block', () => {
 
     await page.click('[data-testid="block2-icon"]')
     await page.click('text=Multiple choice?')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.getByPlaceholder('Select a variable').nth(1).click()
     await page.getByText('var1').click()
     await expect(page.getByText('Collectsvar1')).toBeVisible()

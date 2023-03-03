@@ -19,7 +19,7 @@ import React, { useState } from 'react'
 import { useWorkspace } from '@/features/workspace'
 import { omit } from 'utils'
 import { useToast } from '@/hooks/useToast'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TextLink } from '@/components/TextLink'
 import { createCredentialsQuery } from '@/features/credentials'
@@ -102,14 +102,13 @@ export const StripeConfigModal = ({
         <ModalCloseButton />
         <ModalBody>
           <Stack as="form" spacing={4}>
-            <FormControl isRequired>
-              <FormLabel>Account name:</FormLabel>
-              <Input
-                onChange={handleNameChange}
-                placeholder="Typebot"
-                withVariableButton={false}
-              />
-            </FormControl>
+            <TextInput
+              isRequired
+              label="Account name:"
+              onChange={handleNameChange}
+              placeholder="Typebot"
+              withVariableButton={false}
+            />
             <Stack>
               <FormLabel>
                 Test keys:{' '}
@@ -118,34 +117,30 @@ export const StripeConfigModal = ({
                 </MoreInfoTooltip>
               </FormLabel>
               <HStack>
-                <FormControl>
-                  <Input
-                    onChange={handleTestPublicKeyChange}
-                    placeholder="pk_test_..."
-                    withVariableButton={false}
-                  />
-                </FormControl>
-                <FormControl>
-                  <Input
-                    onChange={handleTestSecretKeyChange}
-                    placeholder="sk_test_..."
-                    withVariableButton={false}
-                  />
-                </FormControl>
+                <TextInput
+                  onChange={handleTestPublicKeyChange}
+                  placeholder="pk_test_..."
+                  withVariableButton={false}
+                />
+                <TextInput
+                  onChange={handleTestSecretKeyChange}
+                  placeholder="sk_test_..."
+                  withVariableButton={false}
+                />
               </HStack>
             </Stack>
             <Stack>
               <FormLabel>Live keys:</FormLabel>
               <HStack>
                 <FormControl>
-                  <Input
+                  <TextInput
                     onChange={handlePublicKeyChange}
                     placeholder="pk_live_..."
                     withVariableButton={false}
                   />
                 </FormControl>
                 <FormControl>
-                  <Input
+                  <TextInput
                     onChange={handleSecretKeyChange}
                     placeholder="sk_live_..."
                     withVariableButton={false}

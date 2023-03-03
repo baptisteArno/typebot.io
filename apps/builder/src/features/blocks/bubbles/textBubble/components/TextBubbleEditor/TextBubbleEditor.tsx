@@ -19,7 +19,7 @@ import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
 import { ReactEditor } from 'slate-react'
 import { serializeHtml } from '@udecode/plate-serializer-html'
 import { parseHtmlStringToPlainText } from '../../utils'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { colors } from '@/lib/theme'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 

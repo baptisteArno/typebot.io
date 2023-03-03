@@ -1,6 +1,6 @@
-import { Input } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { TextInput } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { TextInputOptions, Variable } from 'models'
 import React from 'react'
@@ -30,26 +30,16 @@ export const TextInputSettingsBody = ({
         initialValue={options?.isLong ?? false}
         onCheckChange={handleLongChange}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Placeholder:
-        </FormLabel>
-        <Input
-          id="placeholder"
-          defaultValue={options.labels.placeholder}
-          onChange={handlePlaceholderChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          Button label:
-        </FormLabel>
-        <Input
-          id="button"
-          defaultValue={options.labels.button}
-          onChange={handleButtonLabelChange}
-        />
-      </Stack>
+      <TextInput
+        label="Placeholder:"
+        defaultValue={options.labels.placeholder}
+        onChange={handlePlaceholderChange}
+      />
+      <TextInput
+        label="Button label:"
+        defaultValue={options.labels.button}
+        onChange={handleButtonLabelChange}
+      />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Save answer in a variable:

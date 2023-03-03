@@ -4,7 +4,7 @@ import urlParser from 'js-video-url-parser/lib/base'
 import 'js-video-url-parser/lib/provider/vimeo'
 import 'js-video-url-parser/lib/provider/youtube'
 import { isDefined } from 'utils'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 
 type Props = {
   content?: VideoBubbleContent
@@ -24,7 +24,7 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   }
   return (
     <Stack p="2">
-      <Input
+      <TextInput
         placeholder="Paste the video link..."
         defaultValue={content?.url ?? ''}
         onChange={handleUrlChange}

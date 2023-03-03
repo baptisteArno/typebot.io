@@ -6,7 +6,7 @@ import {
   SwitchProps,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { MoreInfoTooltip } from './MoreInfoTooltip'
+import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type SwitchWithLabelProps = {
   label: string

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
-import { SearchableDropdown } from '@/components/SearchableDropdown'
 import { env, isEmpty } from 'utils'
+import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
 
 type FontSelectorProps = {
   activeFont?: string
@@ -32,7 +32,7 @@ export const FontSelector = ({
   }
 
   const handleFontSelected = (nextFont: string) => {
-    if (nextFont == currentFont) return
+    if (nextFont === currentFont) return
     setCurrentFont(nextFont)
     onSelectFont(nextFont)
   }
@@ -40,10 +40,11 @@ export const FontSelector = ({
   return (
     <HStack justify="space-between" align="center">
       <Text>Font</Text>
-      <SearchableDropdown
-        selectedItem={activeFont}
+      <AutocompleteInput
+        defaultValue={activeFont}
         items={googleFonts}
-        onValueChange={handleFontSelected}
+        onChange={handleFontSelected}
+        withVariableButton={false}
       />
     </HStack>
   )

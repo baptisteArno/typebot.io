@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Flex, HStack, Stack } from '@chakra-ui/react'
 import { UploadButton } from './UploadButton'
 import { GiphySearchForm } from './GiphySearchForm'
-import { Input } from '../inputs/Input'
+import { TextInput } from '../inputs/TextInput'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 
 type Props = {
@@ -137,7 +137,7 @@ const EmbedLinkContent = ({
   onNewUrl,
 }: ContentProps & { defaultUrl?: string }) => (
   <Stack py="2">
-    <Input
+    <TextInput
       placeholder={'Paste the image link...'}
       onChange={onNewUrl}
       defaultValue={defaultUrl ?? ''}

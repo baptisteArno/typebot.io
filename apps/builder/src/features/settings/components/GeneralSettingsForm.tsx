@@ -5,7 +5,7 @@ import { GeneralSettings } from 'models'
 import React from 'react'
 import { isDefined } from 'utils'
 import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { LockTag } from '@/features/billing'
 
 type Props = {

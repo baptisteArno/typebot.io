@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
 import { Typebot } from 'models'
 import { useState } from 'react'

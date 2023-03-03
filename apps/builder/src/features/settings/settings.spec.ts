@@ -88,11 +88,14 @@ test.describe.parallel('Settings page', () => {
         favIconUrl
       )
       await expect(favIconImg).toHaveAttribute('src', favIconUrl)
+      // Close popover
+      await page.getByText('Image:').click()
+      await page.waitForTimeout(1000)
 
       // Website image
       const websiteImg = page.locator('img >> nth=1')
       await expect(websiteImg).toHaveAttribute('src', '/viewer-preview.png')
-      await websiteImg.click({ position: { x: 0, y: 160 }, force: true })
+      await websiteImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
       await page.click('button >> text="Embed link"')
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)

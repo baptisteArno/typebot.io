@@ -15,7 +15,7 @@ import { tokyoNight } from '@uiw/codemirror-theme-tokyo-night'
 import { githubLight } from '@uiw/codemirror-theme-github'
 import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { isDefined } from '@udecode/plate-common'
-import { CopyButton } from './CopyButton'
+import { CopyButton } from '../CopyButton'
 
 type Props = {
   value?: string

@@ -1,7 +1,7 @@
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { ChoiceInputOptions, Variable } from 'models'
 import React from 'react'
@@ -29,16 +29,11 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={handleIsMultipleChange}
       />
       {options?.isMultipleChoice && (
-        <Stack>
-          <FormLabel mb="0" htmlFor="button">
-            Button label:
-          </FormLabel>
-          <Input
-            id="button"
-            defaultValue={options?.buttonLabel ?? 'Send'}
-            onChange={handleButtonLabelChange}
-          />
-        </Stack>
+        <TextInput
+          label="Button label:"
+          defaultValue={options?.buttonLabel ?? 'Send'}
+          onChange={handleButtonLabelChange}
+        />
       )}
       <FormControl>
         <FormLabel>

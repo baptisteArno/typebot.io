@@ -2,7 +2,7 @@ import { Flex, FormLabel, Stack, Switch } from '@chakra-ui/react'
 import { TypingEmulation } from 'models'
 import React from 'react'
 import { isDefined } from 'utils'
-import { SmartNumberInput } from '@/components/inputs'
+import { NumberInput } from '@/components/inputs'
 
 type Props = {
   typingEmulation: TypingEmulation
@@ -36,7 +36,7 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
       </Flex>
       {typingEmulation.enabled && (
         <Stack pl={10}>
-          <SmartNumberInput
+          <NumberInput
             label="Words per minutes:"
             data-testid="speed"
             defaultValue={typingEmulation.speed}
@@ -45,7 +45,7 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
             maxW="100px"
             step={30}
           />
-          <SmartNumberInput
+          <NumberInput
             label="Max delay (in seconds):"
             data-testid="max-delay"
             defaultValue={typingEmulation.maxDelay}

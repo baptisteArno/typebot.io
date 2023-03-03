@@ -1,4 +1,4 @@
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import {
   Accordion,
   AccordionButton,
@@ -42,39 +42,24 @@ export const GoogleAnalyticsSettings = ({
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="tracking-id">
-          Tracking ID:
-        </FormLabel>
-        <Input
-          id="tracking-id"
-          defaultValue={options?.trackingId ?? ''}
-          placeholder="G-123456..."
-          onChange={handleTrackingIdChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="category">
-          Event category:
-        </FormLabel>
-        <Input
-          id="category"
-          defaultValue={options?.category ?? ''}
-          placeholder="Example: Typebot"
-          onChange={handleCategoryChange}
-        />
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="action">
-          Event action:
-        </FormLabel>
-        <Input
-          id="action"
-          defaultValue={options?.action ?? ''}
-          placeholder="Example: Submit email"
-          onChange={handleActionChange}
-        />
-      </Stack>
+      <TextInput
+        label="Tracking ID:"
+        defaultValue={options?.trackingId ?? ''}
+        placeholder="G-123456..."
+        onChange={handleTrackingIdChange}
+      />
+      <TextInput
+        label="Event category:"
+        defaultValue={options?.category ?? ''}
+        placeholder="Example: Typebot"
+        onChange={handleCategoryChange}
+      />
+      <TextInput
+        label="Event action:"
+        defaultValue={options?.action ?? ''}
+        placeholder="Example: Submit email"
+        onChange={handleActionChange}
+      />
       <Accordion allowToggle>
         <AccordionItem>
           <h2>
@@ -86,28 +71,28 @@ export const GoogleAnalyticsSettings = ({
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4} as={Stack} spacing="6">
-            <Stack>
-              <FormLabel mb="0" htmlFor="label">
-                Event label <Tag>Optional</Tag>:
-              </FormLabel>
-              <Input
-                id="label"
-                defaultValue={options?.label ?? ''}
-                placeholder="Example: Campaign Z"
-                onChange={handleLabelChange}
-              />
-            </Stack>
-            <Stack>
-              <FormLabel mb="0" htmlFor="value">
-                Event value <Tag>Optional</Tag>:
-              </FormLabel>
-              <Input
-                id="value"
-                defaultValue={options?.value?.toString() ?? ''}
-                placeholder="Example: 0"
-                onChange={handleValueChange}
-              />
-            </Stack>
+            <TextInput
+              label={
+                <>
+                  Event label <Tag>Optional</Tag>:
+                </>
+              }
+              defaultValue={options?.label ?? ''}
+              placeholder="Example: Campaign Z"
+              onChange={handleLabelChange}
+            />
+            <TextInput
+              label={
+                <>
+                  <FormLabel mb="0" htmlFor="value">
+                    Event value <Tag>Optional</Tag>:
+                  </FormLabel>
+                </>
+              }
+              defaultValue={options?.value?.toString() ?? ''}
+              placeholder="Example: 0"
+              onChange={handleValueChange}
+            />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

@@ -1,4 +1,4 @@
-import { Input, SmartNumberInput } from '@/components/inputs'
+import { TextInput, NumberInput } from '@/components/inputs'
 import { HStack, Stack, Text } from '@chakra-ui/react'
 import { EmbedBubbleContent } from 'models'
 import { sanitizeUrl } from 'utils'
@@ -22,7 +22,7 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
   return (
     <Stack p="2" spacing={6}>
       <Stack>
-        <Input
+        <TextInput
           placeholder="Paste the link or code..."
           defaultValue={content?.url ?? ''}
           onChange={handleUrlChange}
@@ -33,7 +33,7 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
       </Stack>
 
       <HStack>
-        <SmartNumberInput
+        <NumberInput
           label="Height:"
           defaultValue={content?.height}
           onValueChange={handleHeightChange}

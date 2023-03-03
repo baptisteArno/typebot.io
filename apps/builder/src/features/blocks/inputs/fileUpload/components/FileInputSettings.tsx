@@ -1,10 +1,10 @@
 import { FormLabel, HStack, Stack, Text } from '@chakra-ui/react'
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { FileInputOptions, Variable } from 'models'
 import React from 'react'
-import { Input, SmartNumberInput } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { TextInput, NumberInput } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
 type Props = {
   options: FileInputOptions
@@ -49,7 +49,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={handleMultipleFilesChange}
       />
       <HStack>
-        <SmartNumberInput
+        <NumberInput
           label={'Size limit:'}
           defaultValue={options.sizeLimit ?? 10}
           onValueChange={handleSizeLimitChange}
@@ -68,21 +68,21 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           withVariableButton={false}
         />
       </Stack>
-      <Input
+      <TextInput
         label="Button label:"
         defaultValue={options.labels.button}
         onChange={handleButtonLabelChange}
         withVariableButton={false}
       />
-      <Input
+      <TextInput
         label="Clear button label:"
-        defaultValue={options.labels.clear}
+        defaultValue={options.labels.clear ?? ''}
         onChange={updateClearButtonLabel}
         withVariableButton={false}
       />
-      <Input
+      <TextInput
         label="Skip button label:"
-        defaultValue={options.labels.skip}
+        defaultValue={options.labels.skip ?? ''}
         onChange={updateSkipButtonLabel}
         withVariableButton={false}
       />

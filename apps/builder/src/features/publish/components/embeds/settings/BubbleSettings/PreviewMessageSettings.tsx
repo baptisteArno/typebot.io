@@ -1,4 +1,4 @@
-import { SmartNumberInput } from '@/components/inputs'
+import { NumberInput } from '@/components/inputs'
 import { FormLabel, HStack, Input, Stack, Switch, Text } from '@chakra-ui/react'
 import { PreviewMessageParams } from '@typebot.io/js/dist/features/bubble/types'
 import { useState } from 'react'
@@ -101,7 +101,7 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
             {isAutoShowEnabled && (
               <>
                 <Text>After</Text>
-                <SmartNumberInput
+                <NumberInput
                   size="sm"
                   w="70px"
                   defaultValue={autoShowDelay}

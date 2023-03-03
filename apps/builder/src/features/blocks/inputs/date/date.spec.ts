@@ -32,9 +32,9 @@ test.describe('Date input block', () => {
     await page.click(`text=Pick a date...`)
     await page.click('text=Is range?')
     await page.click('text=With time?')
-    await page.fill('#from', 'Previous:')
-    await page.fill('#to', 'After:')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('From label:').fill('Previous:')
+    await page.getByLabel('To label:').fill('After:')
+    await page.getByLabel('Button label:').fill('Go')
 
     await page.click('text=Restart')
     await expect(page.locator(`[data-testid="from-date"]`)).toHaveAttribute(

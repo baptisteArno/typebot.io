@@ -1,6 +1,6 @@
-import { SearchableDropdown } from '@/components/SearchableDropdown'
+import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
 import { TableListItemProps } from '@/components/TableList'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
 import { Variable, ResponseVariableMapping } from 'models'
 
@@ -18,10 +18,10 @@ export const DataVariableInputs = ({
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
         <FormLabel htmlFor="name">Data:</FormLabel>
-        <SearchableDropdown
+        <AutocompleteInput
           items={dataItems}
-          value={item.bodyPath}
-          onValueChange={handleBodyPathChange}
+          defaultValue={item.bodyPath}
+          onChange={handleBodyPathChange}
           placeholder="Select the data"
           withVariableButton
         />

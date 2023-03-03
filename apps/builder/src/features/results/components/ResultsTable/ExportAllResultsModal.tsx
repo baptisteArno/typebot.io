@@ -1,6 +1,6 @@
 import { AlertInfo } from '@/components/AlertInfo'
 import { DownloadIcon } from '@/components/icons'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { useTypebot } from '@/features/editor'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'

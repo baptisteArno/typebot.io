@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '@/features/account'
-import { Input } from '@/components/inputs/Input'
+import { TextInput } from '@/components/inputs/TextInput'
 
 export const MyAccountForm = () => {
   const { user, updateUser } = useUser()
@@ -49,8 +49,8 @@ export const MyAccountForm = () => {
         </Stack>
       </HStack>
 
-      <Input
-        value={name}
+      <TextInput
+        defaultValue={name}
         onChange={handleNameChange}
         label="Name:"
         withVariableButton={false}
@@ -58,9 +58,9 @@ export const MyAccountForm = () => {
       />
       <Tooltip label="Updating email is not available. Contact the support if you want to change it.">
         <span>
-          <Input
+          <TextInput
             type="email"
-            value={email}
+            defaultValue={email}
             onChange={handleEmailChange}
             label="Email address:"
             withVariableButton={false}

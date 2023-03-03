@@ -11,7 +11,7 @@ import { ConfirmModal } from '@/components/ConfirmModal'
 import React from 'react'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useWorkspace } from '../WorkspaceProvider'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   const { workspace, workspaces, updateWorkspace, deleteCurrentWorkspace } =
@@ -46,17 +46,14 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
           )}
         </Flex>
       </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="name">Name</FormLabel>
-        {workspace && (
-          <Input
-            id="name"
-            withVariableButton={false}
-            defaultValue={workspace?.name}
-            onChange={handleNameChange}
-          />
-        )}
-      </FormControl>
+      {workspace && (
+        <TextInput
+          label="Name:"
+          withVariableButton={false}
+          defaultValue={workspace?.name}
+          onChange={handleNameChange}
+        />
+      )}
       {workspace && workspaces && workspaces.length > 1 && (
         <DeleteWorkspaceButton
           onConfirm={handleDeleteClick}

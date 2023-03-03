@@ -1,6 +1,6 @@
 import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { AudioBubbleContent } from 'models'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { useState } from 'react'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 
@@ -52,7 +52,7 @@ export const AudioBubbleForm = ({
         )}
         {currentTab === 'link' && (
           <>
-            <Input
+            <TextInput
               placeholder="Paste the audio file link..."
               defaultValue={content.url ?? ''}
               onChange={submit}

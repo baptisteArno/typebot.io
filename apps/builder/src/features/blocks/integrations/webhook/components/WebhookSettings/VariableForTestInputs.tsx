@@ -1,6 +1,6 @@
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
 import { VariableForTest, Variable } from 'models'
 
@@ -25,15 +25,12 @@ export const VariableForTestInputs = ({
           onSelectVariable={handleVariableSelect}
         />
       </FormControl>
-      <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Test value:</FormLabel>
-        <Input
-          id={'value' + item.id}
-          defaultValue={item.value ?? ''}
-          onChange={handleValueChange}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
+      <TextInput
+        label="Test value:"
+        defaultValue={item.value ?? ''}
+        onChange={handleValueChange}
+        debounceTimeout={debounceTimeout}
+      />
     </Stack>
   )
 }

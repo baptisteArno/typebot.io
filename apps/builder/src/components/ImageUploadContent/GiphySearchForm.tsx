@@ -4,7 +4,7 @@ import { Grid } from '@giphy/react-components'
 import { GiphyLogo } from './GiphyLogo'
 import React, { useState } from 'react'
 import { env, isEmpty } from 'utils'
-import { Input } from '../inputs'
+import { TextInput } from '../inputs'
 
 type GiphySearchFormProps = {
   onSubmit: (url: string) => void
@@ -26,8 +26,7 @@ export const GiphySearchForm = ({ onSubmit }: GiphySearchFormProps) => {
   ) : (
     <Stack>
       <Flex align="center">
-        <Input
-          flex="1"
+        <TextInput
           autoFocus
           placeholder="Search..."
           onChange={setInputValue}

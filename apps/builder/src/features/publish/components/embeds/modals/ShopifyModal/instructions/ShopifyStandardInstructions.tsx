@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { OrderedList, ListItem, Stack, Text, Code } from '@chakra-ui/react'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'

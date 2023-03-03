@@ -1,4 +1,4 @@
-import { SmartNumberInput } from '@/components/inputs'
+import { NumberInput } from '@/components/inputs'
 import {
   StackProps,
   Stack,
@@ -37,7 +37,7 @@ export const PopupSettings = ({ onUpdateSettings, ...props }: Props) => {
         />
         {isEnabled && (
           <>
-            <SmartNumberInput
+            <NumberInput
               label="After"
               size="sm"
               w="70px"

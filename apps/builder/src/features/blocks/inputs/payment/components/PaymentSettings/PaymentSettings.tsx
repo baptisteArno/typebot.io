@@ -16,7 +16,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { currencies } from './currencies'
 import { StripeConfigModal } from './StripeConfigModal'
 import { CredentialsDropdown } from '@/features/credentials'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 
 type Props = {
   options: PaymentInputOptions
@@ -105,14 +105,12 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <HStack>
-        <Stack>
-          <Text>Price amount:</Text>
-          <Input
-            onChange={handleAmountChange}
-            defaultValue={options.amount}
-            placeholder="30.00"
-          />
-        </Stack>
+        <TextInput
+          label="Price amount:"
+          onChange={handleAmountChange}
+          defaultValue={options.amount ?? ''}
+          placeholder="30.00"
+        />
         <Stack>
           <Text>Currency:</Text>
           <Select
@@ -128,22 +126,18 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           </Select>
         </Stack>
       </HStack>
-      <Stack>
-        <Text>Button label:</Text>
-        <Input
-          onChange={handleButtonLabelChange}
-          defaultValue={options.labels.button}
-          placeholder="Pay"
-        />
-      </Stack>
-      <Stack>
-        <Text>Success message:</Text>
-        <Input
-          onChange={handleSuccessLabelChange}
-          defaultValue={options.labels.success ?? 'Success'}
-          placeholder="Success"
-        />
-      </Stack>
+      <TextInput
+        label="Button label:"
+        onChange={handleButtonLabelChange}
+        defaultValue={options.labels.button}
+        placeholder="Pay"
+      />
+      <TextInput
+        label="Success message:"
+        onChange={handleSuccessLabelChange}
+        defaultValue={options.labels.success ?? 'Success'}
+        placeholder="Success"
+      />
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton justifyContent="space-between">
@@ -151,30 +145,24 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
-            <Stack>
-              <Text>Name:</Text>
-              <Input
-                defaultValue={options.additionalInformation?.name ?? ''}
-                onChange={handleNameChange}
-                placeholder="John Smith"
-              />
-            </Stack>
-            <Stack>
-              <Text>Email:</Text>
-              <Input
-                defaultValue={options.additionalInformation?.email ?? ''}
-                onChange={handleEmailChange}
-                placeholder="john@gmail.com"
-              />
-            </Stack>
-            <Stack>
-              <Text>Phone number:</Text>
-              <Input
-                defaultValue={options.additionalInformation?.phoneNumber ?? ''}
-                onChange={handlePhoneNumberChange}
-                placeholder="+33XXXXXXXXX"
-              />
-            </Stack>
+            <TextInput
+              label="Name:"
+              defaultValue={options.additionalInformation?.name ?? ''}
+              onChange={handleNameChange}
+              placeholder="John Smith"
+            />
+            <TextInput
+              label="Email:"
+              defaultValue={options.additionalInformation?.email ?? ''}
+              onChange={handleEmailChange}
+              placeholder="john@gmail.com"
+            />
+            <TextInput
+              label="Phone number:"
+              defaultValue={options.additionalInformation?.phoneNumber ?? ''}
+              onChange={handlePhoneNumberChange}
+              placeholder="+33XXXXXXXXX"
+            />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

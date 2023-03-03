@@ -1,6 +1,6 @@
-import { Input } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/SwitchWithLabel'
-import { FormLabel, Stack } from '@chakra-ui/react'
+import { TextInput } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { Stack } from '@chakra-ui/react'
 import { RedirectOptions } from 'models'
 import React from 'react'
 
@@ -17,17 +17,12 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="tracking-id">
-          Url:
-        </FormLabel>
-        <Input
-          id="tracking-id"
-          defaultValue={options.url ?? ''}
-          placeholder="Type a URL..."
-          onChange={handleUrlChange}
-        />
-      </Stack>
+      <TextInput
+        label="Url:"
+        defaultValue={options.url ?? ''}
+        placeholder="Type a URL..."
+        onChange={handleUrlChange}
+      />
       <SwitchWithLabel
         label="Open in new tab?"
         initialValue={options.isNewTab}

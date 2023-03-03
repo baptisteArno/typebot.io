@@ -7,12 +7,14 @@ import {
   IconButtonProps,
   useDisclosure,
   PopoverAnchor,
+  Portal,
 } from '@chakra-ui/react'
 import { UserIcon } from '@/components/icons'
 import { Variable } from 'models'
 import React, { useRef } from 'react'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
   onSelectVariable: (variable: Pick<Variable, 'name' | 'id'>) => void
@@ -21,6 +23,7 @@ type Props = {
 export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const popoverRef = useRef<HTMLDivElement>(null)
+  const { ref: parentModalRef } = useParentModal()
 
   useOutsideClick({
     ref: popoverRef,
@@ -28,7 +31,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
   })
 
   return (
-    <Popover isLazy placement="bottom-end" gutter={0} isOpen={isOpen}>
+    <Popover isLazy isOpen={isOpen}>
       <PopoverAnchor>
         <Flex>
           <Tooltip label="Insert a variable">
@@ -42,17 +45,19 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           </Tooltip>
         </Flex>
       </PopoverAnchor>
-      <PopoverContent w="full" ref={popoverRef}>
-        <VariableSearchInput
-          onSelectVariable={(variable) => {
-            onClose()
-            if (variable) onSelectVariable(variable)
-          }}
-          placeholder="Search for a variable"
-          shadow="lg"
-          autoFocus
-        />
-      </PopoverContent>
+      <Portal containerRef={parentModalRef}>
+        <PopoverContent w="full" ref={popoverRef}>
+          <VariableSearchInput
+            onSelectVariable={(variable) => {
+              onClose()
+              if (variable) onSelectVariable(variable)
+            }}
+            placeholder="Search for a variable"
+            shadow="lg"
+            autoFocus
+          />
+        </PopoverContent>
+      </Portal>
     </Popover>
   )
 }

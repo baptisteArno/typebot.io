@@ -28,9 +28,9 @@ test.describe('Number input block', () => {
     await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultNumberInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', 'Your number...')
+    await page.getByLabel('Placeholder:').fill('Your number...')
     await expect(page.locator('text=Your number...')).toBeVisible()
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill('[role="spinbutton"] >> nth=0', '0')
     await page.fill('[role="spinbutton"] >> nth=1', '100')
     await page.fill('[role="spinbutton"] >> nth=2', '10')

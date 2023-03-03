@@ -29,7 +29,9 @@ test('should be configurable', async ({ page }) => {
   await page.click('[aria-label="Navigate back"]')
   await expect(page).toHaveURL(`/typebots/${typebotId}/edit`)
   await page.click('text=Jump in My link typebot 2')
-  await expect(page.locator('input[value="My link typebot 2"]')).toBeVisible()
+  await expect(page.getByTestId('selected-item-label').first()).toHaveText(
+    'My link typebot 2'
+  )
   await page.click('input[placeholder="Select a block"]')
   await page.click('text=Group #2')
 
@@ -40,8 +42,7 @@ test('should be configurable', async ({ page }) => {
 
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Group #2 in My link typebot 2')
-  await page.click('input[value="Group #2"]', { clickCount: 3 })
-  await page.press('input[value="Group #2"]', 'Backspace')
+  await page.getByTestId('selected-item-label').nth(1).click({ force: true })
   await page.click('button >> text=Start')
 
   await page.click('text=Preview')
@@ -54,13 +55,9 @@ test('should be configurable', async ({ page }) => {
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Start in My link typebot 2')
   await page.waitForTimeout(1000)
-  await page.click('input[value="My link typebot 2"]', { clickCount: 3 })
-  await page.press('input[value="My link typebot 2"]', 'Backspace')
+  await page.getByTestId('selected-item-label').first().click({ force: true })
   await page.click('button >> text=Current typebot')
-  await page.click('input[placeholder="Select a block"]', {
-    clickCount: 3,
-  })
-  await page.press('input[placeholder="Select a block"]', 'Backspace')
+  await page.getByPlaceholder('Select a block').click()
   await page.click('button >> text=Hello')
 
   await page.click('text=Preview')

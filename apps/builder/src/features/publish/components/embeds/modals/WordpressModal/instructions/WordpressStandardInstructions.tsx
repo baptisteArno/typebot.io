@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ExternalLinkIcon } from '@/components/icons'
 import {
   OrderedList,

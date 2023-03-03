@@ -10,10 +10,10 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react'
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { Input, Textarea } from '@/components/inputs'
+import { TextInput, Textarea } from '@/components/inputs'
 
 type Props = {
   typebotId: string
@@ -94,7 +94,7 @@ export const MetadataForm = ({
           </PopoverContent>
         </Popover>
       </Stack>
-      <Input
+      <TextInput
         label="Title:"
         defaultValue={metadata.title ?? typebotName}
         onChange={handleTitleChange}
@@ -104,7 +104,7 @@ export const MetadataForm = ({
         onChange={handleDescriptionChange}
         label="Description:"
       />
-      <Input
+      <TextInput
         defaultValue={metadata.googleTagManagerId}
         placeholder="GTM-XXXXXX"
         onChange={handleGoogleTagManagerIdChange}

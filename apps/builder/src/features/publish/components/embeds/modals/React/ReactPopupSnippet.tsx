@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/CodeEditor'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { useTypebot } from '@/features/editor'
 import { PopupProps } from '@typebot.io/js'
 import parserBabel from 'prettier/parser-babel'

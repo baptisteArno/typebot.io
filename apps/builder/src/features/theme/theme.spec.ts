@@ -19,7 +19,7 @@ test.describe.parallel('Theme page', () => {
       await expect(page.locator('button >> text="Go"')).toBeVisible()
 
       // Font
-      await page.fill('input[type="text"]', 'Roboto Slab')
+      await page.getByRole('textbox').fill('Roboto Slab')
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'font-family',
         /"Roboto Slab"/

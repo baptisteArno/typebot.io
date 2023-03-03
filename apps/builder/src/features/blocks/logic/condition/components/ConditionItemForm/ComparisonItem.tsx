@@ -2,8 +2,8 @@ import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { Comparison, Variable, ComparisonOperators } from 'models'
 import { TableListItemProps } from '@/components/TableList'
-import { VariableSearchInput } from '@/components/VariableSearchInput'
-import { Input } from '@/components/inputs'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
+import { TextInput } from '@/components/inputs'
 
 export const ComparisonItem = ({
   item,
@@ -39,7 +39,7 @@ export const ComparisonItem = ({
         placeholder="Select an operator"
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET && (
-        <Input
+        <TextInput
           defaultValue={item.value ?? ''}
           onChange={handleChangeValue}
           placeholder="Type a value..."

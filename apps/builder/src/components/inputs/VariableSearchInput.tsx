@@ -36,7 +36,7 @@ export const VariableSearchInput = ({
   autoFocus,
   ...inputProps
 }: Props) => {
-  const bg = useColorModeValue('gray.200', 'gray.700')
+  const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { typebot, createVariable, deleteVariable, updateVariable } =
     useTypebot()
@@ -63,9 +63,7 @@ export const VariableSearchInput = ({
 
   useEffect(() => {
     if (autoFocus) onOpen()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [autoFocus, onOpen])
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
@@ -178,7 +176,7 @@ export const VariableSearchInput = ({
             value={inputValue}
             onChange={onInputChange}
             onFocus={onOpen}
-            onKeyUp={handleKeyUp}
+            onKeyDown={handleKeyUp}
             placeholder={inputProps.placeholder ?? 'Select a variable'}
             {...inputProps}
           />
@@ -206,7 +204,9 @@ export const VariableSearchInput = ({
                 variant="ghost"
                 justifyContent="flex-start"
                 leftIcon={<PlusIcon />}
-                bgColor={keyboardFocusIndex === 0 ? bg : 'transparent'}
+                bgColor={
+                  keyboardFocusIndex === 0 ? focusedItemBgColor : 'transparent'
+                }
               >
                 Create
                 <Tag colorScheme="orange" ml="1">
@@ -234,8 +234,11 @@ export const VariableSearchInput = ({
                       variant="ghost"
                       justifyContent="space-between"
                       bgColor={
-                        keyboardFocusIndex === indexInList ? bg : 'transparent'
+                        keyboardFocusIndex === indexInList
+                          ? focusedItemBgColor
+                          : 'transparent'
                       }
+                      transition="none"
                     >
                       {item.name}
                       <HStack>

@@ -1,3 +1,3 @@
-export { Input } from './Input'
+export { TextInput } from './TextInput'
 export { Textarea } from './Textarea'
-export { SmartNumberInput } from './SmartNumberInput'
+export { NumberInput } from './NumberInput'

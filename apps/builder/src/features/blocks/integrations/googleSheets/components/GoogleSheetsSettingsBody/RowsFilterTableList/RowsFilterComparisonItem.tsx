@@ -1,5 +1,5 @@
 import { DropdownList } from '@/components/DropdownList'
-import { Input } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
 import { ComparisonOperators, RowsFilterComparison } from 'models'
@@ -42,7 +42,7 @@ export const RowsFilterComparisonItem = ({
         placeholder="Select an operator"
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET && (
-        <Input
+        <TextInput
           defaultValue={item.value ?? ''}
           onChange={handleChangeValue}
           placeholder="Type a value..."

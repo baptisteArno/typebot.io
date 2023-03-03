@@ -1,7 +1,7 @@
 import { VariablesButton } from '@/features/variables'
 import {
   NumberInputProps,
-  NumberInput,
+  NumberInput as ChakraNumberInput,
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
@@ -30,7 +30,7 @@ type Props<HasVariable extends boolean> = {
   onValueChange: (value?: Value<HasVariable>) => void
 } & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
 
-export const SmartNumberInput = <HasVariable extends boolean>({
+export const NumberInput = <HasVariable extends boolean>({
   defaultValue,
   onValueChange,
   withVariableButton,
@@ -79,13 +79,13 @@ export const SmartNumberInput = <HasVariable extends boolean>({
   }
 
   const Input = (
-    <NumberInput onChange={handleValueChange} value={value} {...props}>
+    <ChakraNumberInput onChange={handleValueChange} value={value} {...props}>
       <NumberInputField placeholder={props.placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />
       </NumberInputStepper>
-    </NumberInput>
+    </ChakraNumberInput>
   )
 
   return (

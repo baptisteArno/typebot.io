@@ -28,8 +28,8 @@ test.describe('Phone input block', () => {
     await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultPhoneInputOptions.labels.placeholder}`)
-    await page.fill('#placeholder', '+33 XX XX XX XX')
-    await page.fill('#button', 'Go')
+    await page.getByLabel('Placeholder:').fill('+33 XX XX XX XX')
+    await page.getByLabel('Button label:').fill('Go')
     await page.fill(
       `input[value="${defaultPhoneInputOptions.retryMessageContent}"]`,
       'Try again bro'
