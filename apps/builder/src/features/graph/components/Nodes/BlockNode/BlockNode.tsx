@@ -224,6 +224,7 @@ export const BlockNode = ({
                 align="flex-start"
                 w="full"
                 transition="border-color 0.2s"
+                overflow="hidden"
               >
                 <BlockIcon
                   type={block.type}

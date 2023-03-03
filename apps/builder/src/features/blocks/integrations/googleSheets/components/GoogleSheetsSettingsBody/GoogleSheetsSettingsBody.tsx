@@ -51,9 +51,9 @@ export const GoogleSheetsSettingsBody = ({
   )
   const handleCredentialsIdChange = (credentialsId?: string) =>
     onOptionsChange({ ...omit(options, 'credentialsId'), credentialsId })
-  const handleSpreadsheetIdChange = (spreadsheetId: string) =>
+  const handleSpreadsheetIdChange = (spreadsheetId: string | undefined) =>
     onOptionsChange({ ...options, spreadsheetId })
-  const handleSheetIdChange = (sheetId: string) =>
+  const handleSheetIdChange = (sheetId: string | undefined) =>
     onOptionsChange({ ...options, sheetId })
 
   const handleActionChange = (action: GoogleSheetsAction) => {

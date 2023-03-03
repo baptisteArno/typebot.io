@@ -5,7 +5,7 @@ import { useSpreadsheets } from '../../hooks/useSpreadsheets'
 type Props = {
   credentialsId: string
   spreadsheetId?: string
-  onSelectSpreadsheetId: (id: string) => void
+  onSelectSpreadsheetId: (id: string | undefined) => void
 }
 
 export const SpreadsheetsDropdown = ({

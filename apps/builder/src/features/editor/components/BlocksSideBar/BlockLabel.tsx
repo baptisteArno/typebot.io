@@ -1,6 +1,4 @@
-import { HStack, Text, Tooltip } from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
+import { Text } from '@chakra-ui/react'
 import {
   BubbleBlockType,
   InputBlockType,
@@ -9,13 +7,10 @@ import {
   BlockType,
 } from 'models'
 import React from 'react'
-import { isFreePlan, LockTag } from '@/features/billing'
 
 type Props = { type: BlockType }
 
-export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
-  const { workspace } = useWorkspace()
-
+export const BlockLabel = ({ type }: Props): JSX.Element => {
   switch (type) {
     case 'start':
       return <Text>Start</Text>
@@ -27,11 +22,7 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
     case BubbleBlockType.VIDEO:
       return <Text>Video</Text>
     case BubbleBlockType.EMBED:
-      return (
-        <Tooltip label="Embed a pdf, an iframe, a website...">
-          <Text>Embed</Text>
-        </Tooltip>
-      )
+      return <Text>Embed</Text>
     case BubbleBlockType.AUDIO:
       return <Text>Audio</Text>
     case InputBlockType.NUMBER:
@@ -51,14 +42,7 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
     case InputBlockType.RATING:
       return <Text>Rating</Text>
     case InputBlockType.FILE:
-      return (
-        <Tooltip label="Upload Files">
-          <HStack>
-            <Text>File</Text>
-            {isFreePlan(workspace) && <LockTag plan={Plan.STARTER} />}
-          </HStack>
-        </Tooltip>
-      )
+      return <Text>File</Text>
     case LogicBlockType.SET_VARIABLE:
       return <Text>Set variable</Text>
     case LogicBlockType.CONDITION:
@@ -66,31 +50,17 @@ export const BlockTypeLabel = ({ type }: Props): JSX.Element => {
     case LogicBlockType.REDIRECT:
       return <Text>Redirect</Text>
     case LogicBlockType.SCRIPT:
-      return (
-        <Tooltip label="Run Javascript code">
-          <Text>Script</Text>
-        </Tooltip>
-      )
+      return <Text>Script</Text>
     case LogicBlockType.TYPEBOT_LINK:
-      return (
-        <Tooltip label="Link to another of your typebots">
-          <Text>Typebot</Text>
-        </Tooltip>
-      )
+      return <Text>Typebot</Text>
     case LogicBlockType.WAIT:
       return <Text>Wait</Text>
+    case LogicBlockType.JUMP:
+      return <Text>Jump</Text>
     case IntegrationBlockType.GOOGLE_SHEETS:
-      return (
-        <Tooltip label="Google Sheets">
-          <Text>Sheets</Text>
-        </Tooltip>
-      )
+      return <Text>Sheets</Text>
     case IntegrationBlockType.GOOGLE_ANALYTICS:
-      return (
-        <Tooltip label="Google Analytics">
-          <Text>Analytics</Text>
-        </Tooltip>
-      )
+      return <Text>Analytics</Text>
     case IntegrationBlockType.WEBHOOK:
       return <Text>Webhook</Text>
     case IntegrationBlockType.ZAPIER:

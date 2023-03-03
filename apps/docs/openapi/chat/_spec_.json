@@ -1456,59 +1456,193 @@
                                                               {
                                                                 "anyOf": [
                                                                   {
-                                                                    "allOf": [
+                                                                    "anyOf": [
                                                                       {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                          "id": {
-                                                                            "type": "string"
-                                                                          },
-                                                                          "groupId": {
-                                                                            "type": "string"
-                                                                          },
-                                                                          "outgoingEdgeId": {
-                                                                            "type": "string"
-                                                                          }
-                                                                        },
-                                                                        "required": [
-                                                                          "id",
-                                                                          "groupId"
-                                                                        ],
-                                                                        "additionalProperties": false
-                                                                      },
-                                                                      {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                          "type": {
-                                                                            "type": "string",
-                                                                            "enum": [
-                                                                              "Code"
-                                                                            ]
-                                                                          },
-                                                                          "options": {
+                                                                        "allOf": [
+                                                                          {
                                                                             "type": "object",
                                                                             "properties": {
-                                                                              "name": {
+                                                                              "id": {
                                                                                 "type": "string"
                                                                               },
-                                                                              "content": {
+                                                                              "groupId": {
                                                                                 "type": "string"
                                                                               },
-                                                                              "shouldExecuteInParentContext": {
-                                                                                "type": "boolean"
+                                                                              "outgoingEdgeId": {
+                                                                                "type": "string"
                                                                               }
                                                                             },
                                                                             "required": [
-                                                                              "name"
+                                                                              "id",
+                                                                              "groupId"
+                                                                            ],
+                                                                            "additionalProperties": false
+                                                                          },
+                                                                          {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "type": {
+                                                                                "type": "string",
+                                                                                "enum": [
+                                                                                  "Code"
+                                                                                ]
+                                                                              },
+                                                                              "options": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                  "name": {
+                                                                                    "type": "string"
+                                                                                  },
+                                                                                  "content": {
+                                                                                    "type": "string"
+                                                                                  },
+                                                                                  "shouldExecuteInParentContext": {
+                                                                                    "type": "boolean"
+                                                                                  }
+                                                                                },
+                                                                                "required": [
+                                                                                  "name"
+                                                                                ],
+                                                                                "additionalProperties": false
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "type",
+                                                                              "options"
                                                                             ],
                                                                             "additionalProperties": false
                                                                           }
-                                                                        },
-                                                                        "required": [
-                                                                          "type",
-                                                                          "options"
-                                                                        ],
-                                                                        "additionalProperties": false
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "allOf": [
+                                                                          {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "id": {
+                                                                                "type": "string"
+                                                                              },
+                                                                              "groupId": {
+                                                                                "type": "string"
+                                                                              },
+                                                                              "outgoingEdgeId": {
+                                                                                "type": "string"
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "id",
+                                                                              "groupId"
+                                                                            ],
+                                                                            "additionalProperties": false
+                                                                          },
+                                                                          {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "type": {
+                                                                                "type": "string",
+                                                                                "enum": [
+                                                                                  "Condition"
+                                                                                ]
+                                                                              },
+                                                                              "items": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                  "allOf": [
+                                                                                    {
+                                                                                      "type": "object",
+                                                                                      "properties": {
+                                                                                        "id": {
+                                                                                          "type": "string"
+                                                                                        },
+                                                                                        "blockId": {
+                                                                                          "type": "string"
+                                                                                        },
+                                                                                        "outgoingEdgeId": {
+                                                                                          "type": "string"
+                                                                                        }
+                                                                                      },
+                                                                                      "required": [
+                                                                                        "id",
+                                                                                        "blockId"
+                                                                                      ],
+                                                                                      "additionalProperties": false
+                                                                                    },
+                                                                                    {
+                                                                                      "type": "object",
+                                                                                      "properties": {
+                                                                                        "type": {
+                                                                                          "type": "number",
+                                                                                          "enum": [
+                                                                                            1
+                                                                                          ]
+                                                                                        },
+                                                                                        "content": {
+                                                                                          "type": "object",
+                                                                                          "properties": {
+                                                                                            "logicalOperator": {
+                                                                                              "type": "string",
+                                                                                              "enum": [
+                                                                                                "OR",
+                                                                                                "AND"
+                                                                                              ]
+                                                                                            },
+                                                                                            "comparisons": {
+                                                                                              "type": "array",
+                                                                                              "items": {
+                                                                                                "type": "object",
+                                                                                                "properties": {
+                                                                                                  "id": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "variableId": {
+                                                                                                    "type": "string"
+                                                                                                  },
+                                                                                                  "comparisonOperator": {
+                                                                                                    "type": "string",
+                                                                                                    "enum": [
+                                                                                                      "Equal to",
+                                                                                                      "Not equal",
+                                                                                                      "Contains",
+                                                                                                      "Greater than",
+                                                                                                      "Less than",
+                                                                                                      "Is set"
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  "value": {
+                                                                                                    "type": "string"
+                                                                                                  }
+                                                                                                },
+                                                                                                "required": [
+                                                                                                  "id"
+                                                                                                ],
+                                                                                                "additionalProperties": false
+                                                                                              }
+                                                                                            }
+                                                                                          },
+                                                                                          "required": [
+                                                                                            "logicalOperator",
+                                                                                            "comparisons"
+                                                                                          ],
+                                                                                          "additionalProperties": false
+                                                                                        }
+                                                                                      },
+                                                                                      "required": [
+                                                                                        "type",
+                                                                                        "content"
+                                                                                      ],
+                                                                                      "additionalProperties": false
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "type",
+                                                                              "items"
+                                                                            ],
+                                                                            "additionalProperties": false
+                                                                          }
+                                                                        ]
                                                                       }
                                                                     ]
                                                                   },
@@ -1539,104 +1673,28 @@
                                                                           "type": {
                                                                             "type": "string",
                                                                             "enum": [
-                                                                              "Condition"
+                                                                              "Redirect"
                                                                             ]
                                                                           },
-                                                                          "items": {
-                                                                            "type": "array",
-                                                                            "items": {
-                                                                              "allOf": [
-                                                                                {
-                                                                                  "type": "object",
-                                                                                  "properties": {
-                                                                                    "id": {
-                                                                                      "type": "string"
-                                                                                    },
-                                                                                    "blockId": {
-                                                                                      "type": "string"
-                                                                                    },
-                                                                                    "outgoingEdgeId": {
-                                                                                      "type": "string"
-                                                                                    }
-                                                                                  },
-                                                                                  "required": [
-                                                                                    "id",
-                                                                                    "blockId"
-                                                                                  ],
-                                                                                  "additionalProperties": false
-                                                                                },
-                                                                                {
-                                                                                  "type": "object",
-                                                                                  "properties": {
-                                                                                    "type": {
-                                                                                      "type": "number",
-                                                                                      "enum": [
-                                                                                        1
-                                                                                      ]
-                                                                                    },
-                                                                                    "content": {
-                                                                                      "type": "object",
-                                                                                      "properties": {
-                                                                                        "logicalOperator": {
-                                                                                          "type": "string",
-                                                                                          "enum": [
-                                                                                            "OR",
-                                                                                            "AND"
-                                                                                          ]
-                                                                                        },
-                                                                                        "comparisons": {
-                                                                                          "type": "array",
-                                                                                          "items": {
-                                                                                            "type": "object",
-                                                                                            "properties": {
-                                                                                              "id": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "variableId": {
-                                                                                                "type": "string"
-                                                                                              },
-                                                                                              "comparisonOperator": {
-                                                                                                "type": "string",
-                                                                                                "enum": [
-                                                                                                  "Equal to",
-                                                                                                  "Not equal",
-                                                                                                  "Contains",
-                                                                                                  "Greater than",
-                                                                                                  "Less than",
-                                                                                                  "Is set"
-                                                                                                ]
-                                                                                              },
-                                                                                              "value": {
-                                                                                                "type": "string"
-                                                                                              }
-                                                                                            },
-                                                                                            "required": [
-                                                                                              "id"
-                                                                                            ],
-                                                                                            "additionalProperties": false
-                                                                                          }
-                                                                                        }
-                                                                                      },
-                                                                                      "required": [
-                                                                                        "logicalOperator",
-                                                                                        "comparisons"
-                                                                                      ],
-                                                                                      "additionalProperties": false
-                                                                                    }
-                                                                                  },
-                                                                                  "required": [
-                                                                                    "type",
-                                                                                    "content"
-                                                                                  ],
-                                                                                  "additionalProperties": false
-                                                                                }
-                                                                              ]
-                                                                            }
+                                                                          "options": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                              "url": {
+                                                                                "type": "string"
+                                                                              },
+                                                                              "isNewTab": {
+                                                                                "type": "boolean"
+                                                                              }
+                                                                            },
+                                                                            "required": [
+                                                                              "isNewTab"
+                                                                            ],
+                                                                            "additionalProperties": false
                                                                           }
                                                                         },
                                                                         "required": [
                                                                           "type",
-                                                                          "items"
+                                                                          "options"
                                                                         ],
                                                                         "additionalProperties": false
                                                                       }
@@ -1671,22 +1729,19 @@
                                                                       "type": {
                                                                         "type": "string",
                                                                         "enum": [
-                                                                          "Redirect"
+                                                                          "Typebot link"
                                                                         ]
                                                                       },
                                                                       "options": {
                                                                         "type": "object",
                                                                         "properties": {
-                                                                          "url": {
+                                                                          "typebotId": {
                                                                             "type": "string"
                                                                           },
-                                                                          "isNewTab": {
-                                                                            "type": "boolean"
+                                                                          "groupId": {
+                                                                            "type": "string"
                                                                           }
                                                                         },
-                                                                        "required": [
-                                                                          "isNewTab"
-                                                                        ],
                                                                         "additionalProperties": false
                                                                       }
                                                                     },
@@ -1727,17 +1782,20 @@
                                                                   "type": {
                                                                     "type": "string",
                                                                     "enum": [
-                                                                      "Typebot link"
+                                                                      "Set variable"
                                                                     ]
                                                                   },
                                                                   "options": {
                                                                     "type": "object",
                                                                     "properties": {
-                                                                      "typebotId": {
+                                                                      "variableId": {
                                                                         "type": "string"
                                                                       },
-                                                                      "groupId": {
+                                                                      "expressionToEvaluate": {
                                                                         "type": "string"
+                                                                      },
+                                                                      "isCode": {
+                                                                        "type": "boolean"
                                                                       }
                                                                     },
                                                                     "additionalProperties": false
@@ -1780,20 +1838,14 @@
                                                               "type": {
                                                                 "type": "string",
                                                                 "enum": [
-                                                                  "Set variable"
+                                                                  "Wait"
                                                                 ]
                                                               },
                                                               "options": {
                                                                 "type": "object",
                                                                 "properties": {
-                                                                  "variableId": {
+                                                                  "secondsToWaitFor": {
                                                                     "type": "string"
-                                                                  },
-                                                                  "expressionToEvaluate": {
-                                                                    "type": "string"
-                                                                  },
-                                                                  "isCode": {
-                                                                    "type": "boolean"
                                                                   }
                                                                 },
                                                                 "additionalProperties": false
@@ -1836,13 +1888,16 @@
                                                           "type": {
                                                             "type": "string",
                                                             "enum": [
-                                                              "Wait"
+                                                              "Jump"
                                                             ]
                                                           },
                                                           "options": {
                                                             "type": "object",
                                                             "properties": {
-                                                              "secondsToWaitFor": {
+                                                              "groupId": {
+                                                                "type": "string"
+                                                              },
+                                                              "blockId": {
                                                                 "type": "string"
                                                               }
                                                             },

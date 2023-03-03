@@ -1,7 +1,7 @@
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
 import { BlockType } from 'models'
 import { BlockIcon } from './BlockIcon'
-import { BlockTypeLabel } from './BlockTypeLabel'
+import { BlockLabel } from './BlockLabel'
 
 export const BlockCardOverlay = ({
   type,
@@ -24,7 +24,7 @@ export const BlockCardOverlay = ({
       {...props}
     >
       <BlockIcon type={type} />
-      <BlockTypeLabel type={type} />
+      <BlockLabel type={type} />
     </HStack>
   )
 }

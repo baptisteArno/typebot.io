@@ -6,6 +6,7 @@ import { executeWait } from '@/features/blocks/logic/wait/api/utils/executeWait'
 import { LogicBlock, LogicBlockType, SessionState } from 'models'
 import { ExecuteLogicResponse } from '../../types'
 import { executeScript } from '@/features/blocks/logic/script/executeScript'
+import { executeJumpBlock } from '@/features/blocks/logic/jump/executeJumpBlock'
 
 export const executeLogic =
   (state: SessionState, lastBubbleBlockId?: string) =>
@@ -23,5 +24,7 @@ export const executeLogic =
         return executeTypebotLink(state, block)
       case LogicBlockType.WAIT:
         return executeWait(state, block, lastBubbleBlockId)
+      case LogicBlockType.JUMP:
+        return executeJumpBlock(state, block.options)
     }
   }

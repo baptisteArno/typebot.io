@@ -12,14 +12,16 @@ import {
   InputRightElement,
   Text,
   Box,
+  IconButton,
+  HStack,
 } from '@chakra-ui/react'
 import { useState, useRef, ChangeEvent } from 'react'
 import { isDefined } from 'utils'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
-import { ChevronDownIcon } from '../icons'
+import { ChevronDownIcon, CloseIcon } from '../icons'
 
-const dropdownCloseAnimationDuration = 200
+const dropdownCloseAnimationDuration = 300
 
 type Item = string | { icon?: JSX.Element; label: string; value: string }
 
@@ -27,7 +29,7 @@ type Props = {
   selectedItem?: string
   items: Item[]
   placeholder?: string
-  onSelect?: (value: string) => void
+  onSelect?: (value: string | undefined) => void
 }
 
 export const Select = ({
@@ -119,6 +121,14 @@ export const Select = ({
     }
   }
 
+  const clearSelection = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setInputValue('')
+    onSelect?.(undefined)
+    setKeyboardFocusIndex(undefined)
+    closeDropwdown()
+  }
+
   const resetIsTouched = () => {
     setTimeout(() => {
       setIsTouched(false)
@@ -136,7 +146,15 @@ export const Select = ({
       >
         <PopoverAnchor>
           <InputGroup>
-            <Box pos="absolute" py={2} pl={4} pr={6}>
+            <Box
+              pos="absolute"
+              pb={2}
+              // We need absolute positioning the overlay match the underlying input
+              pt="8.5px"
+              pl="17px"
+              pr={selectedItem ? 16 : 8}
+              w="full"
+            >
               {!isTouched && (
                 <Text noOfLines={1} data-testid="selected-item-label">
                   {inputValue}
@@ -156,10 +174,26 @@ export const Select = ({
               onChange={handleInputChange}
               onFocus={onOpen}
               onKeyDown={handleKeyUp}
+              pr={selectedItem ? 16 : undefined}
             />
 
-            <InputRightElement pointerEvents="none" cursor="pointer">
-              <ChevronDownIcon />
+            <InputRightElement
+              width={selectedItem ? '5rem' : undefined}
+              pointerEvents="none"
+            >
+              <HStack>
+                {selectedItem && (
+                  <IconButton
+                    onClick={clearSelection}
+                    icon={<CloseIcon />}
+                    aria-label={'Clear'}
+                    size="sm"
+                    variant="ghost"
+                    pointerEvents="all"
+                  />
+                )}
+                <ChevronDownIcon />
+              </HStack>
             </InputRightElement>
           </InputGroup>
         </PopoverAnchor>

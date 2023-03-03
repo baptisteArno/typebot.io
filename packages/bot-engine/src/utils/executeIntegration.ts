@@ -27,5 +27,7 @@ export const executeIntegration = ({
       return executeSendEmailBlock(block, context)
     case IntegrationBlockType.CHATWOOT:
       return executeChatwootBlock(block, context)
+    default:
+      return
   }
 }

@@ -1,19 +1,102 @@
 import { Flex, HStack, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { DraggableBlockType } from 'models'
+import {
+  BubbleBlockType,
+  DraggableBlockType,
+  InputBlockType,
+  IntegrationBlockType,
+  LogicBlockType,
+} from 'models'
 import { useBlockDnd } from '@/features/graph'
 import React, { useEffect, useState } from 'react'
 import { BlockIcon } from './BlockIcon'
-import { BlockTypeLabel } from './BlockTypeLabel'
+import { isFreePlan, LockTag } from '@/features/billing'
+import { Plan } from 'db'
+import { useWorkspace } from '@/features/workspace'
+import { BlockLabel } from './BlockLabel'
 
-export const BlockCard = ({
-  type,
-  onMouseDown,
-  isDisabled = false,
-}: {
+type Props = {
   type: DraggableBlockType
+  tooltip?: string
   isDisabled?: boolean
+  children: React.ReactNode
   onMouseDown: (e: React.MouseEvent, type: DraggableBlockType) => void
-}) => {
+}
+
+export const BlockCard = (
+  props: Pick<Props, 'type' | 'onMouseDown'>
+): JSX.Element => {
+  const { workspace } = useWorkspace()
+
+  switch (props.type) {
+    case BubbleBlockType.EMBED:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip="Embed a pdf, an iframe, a website..."
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case InputBlockType.FILE:
+      return (
+        <BlockCardLayout {...props} tooltip="Upload Files">
+          <BlockIcon type={props.type} />
+          <HStack>
+            <BlockLabel type={props.type} />
+            {isFreePlan(workspace) && <LockTag plan={Plan.STARTER} />}
+          </HStack>
+        </BlockCardLayout>
+      )
+    case LogicBlockType.SCRIPT:
+      return (
+        <BlockCardLayout {...props} tooltip="Execute Javascript code">
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case LogicBlockType.TYPEBOT_LINK:
+      return (
+        <BlockCardLayout {...props} tooltip="Link and jump to another typebot">
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case LogicBlockType.JUMP:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip="Fast forward the flow to another group"
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.GOOGLE_SHEETS:
+      return (
+        <BlockCardLayout {...props} tooltip="Google Sheets">
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.GOOGLE_ANALYTICS:
+      return (
+        <BlockCardLayout {...props} tooltip="Google Analytics">
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    default:
+      return (
+        <BlockCardLayout {...props}>
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+  }
+}
+
+const BlockCardLayout = ({ type, onMouseDown, tooltip, children }: Props) => {
   const { draggedBlockType } = useBlockDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
 
@@ -24,7 +107,7 @@ export const BlockCard = ({
   const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
 
   return (
-    <Tooltip label="Coming soon!" isDisabled={!isDisabled}>
+    <Tooltip label={tooltip}>
       <Flex pos="relative">
         <HStack
           borderWidth="1px"
@@ -32,21 +115,15 @@ export const BlockCard = ({
           rounded="lg"
           flex="1"
           cursor={'grab'}
-          opacity={isMouseDown || isDisabled ? '0.4' : '1'}
+          opacity={isMouseDown ? '0.4' : '1'}
           onMouseDown={handleMouseDown}
           bgColor={useColorModeValue('gray.50', 'gray.850')}
           px="4"
           py="2"
           _hover={useColorModeValue({ shadow: 'md' }, { bgColor: 'gray.800' })}
           transition="box-shadow 200ms, background-color 200ms"
-          pointerEvents={isDisabled ? 'none' : 'auto'}
         >
-          {!isMouseDown ? (
-            <>
-              <BlockIcon type={type} />
-              <BlockTypeLabel type={type} />
-            </>
-          ) : null}
+          {!isMouseDown ? children : null}
         </HStack>
       </Flex>
     </Tooltip>

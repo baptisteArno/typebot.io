@@ -39,6 +39,7 @@ import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
 import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
+import { JumpNodeBody } from '@/features/blocks/logic/jump/components/JumpNodeBody'
 
 type Props = {
   block: Block | StartBlock
@@ -124,6 +125,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case LogicBlockType.WAIT: {
       return <WaitNodeContent options={block.options} />
+    }
+    case LogicBlockType.JUMP: {
+      return <JumpNodeBody options={block.options} />
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />

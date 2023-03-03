@@ -7,7 +7,7 @@ type Props = {
   sheets: Sheet[]
   isLoading: boolean
   sheetId?: string
-  onSelectSheetId: (id: string) => void
+  onSelectSheetId: (id: string | undefined) => void
 }
 
 export const SheetsDropdown = ({

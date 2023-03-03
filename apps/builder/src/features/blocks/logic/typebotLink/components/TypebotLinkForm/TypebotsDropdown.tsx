@@ -11,7 +11,7 @@ type Props = {
   idsToExclude: string[]
   typebotId?: string | 'current'
   currentWorkspaceId: string
-  onSelect: (typebotId: string | 'current') => void
+  onSelect: (typebotId: string | 'current' | undefined) => void
 }
 
 export const TypebotsDropdown = ({

@@ -227,6 +227,7 @@ const NonMemoizedDraggableGroupNode = ({
                 bg: editableHoverBg,
               }}
               px="1"
+              noOfLines={2}
               userSelect={'none'}
             />
             <EditableInput minW="0" px="1" className="prevent-group-drag" />

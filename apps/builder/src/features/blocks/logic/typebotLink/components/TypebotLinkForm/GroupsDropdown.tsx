@@ -5,7 +5,7 @@ import { Group } from 'models'
 type Props = {
   groups: Group[]
   groupId?: string
-  onGroupIdSelected: (groupId: string) => void
+  onGroupIdSelected: (groupId: string | undefined) => void
   isLoading?: boolean
 }
 

@@ -409,6 +409,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultScriptOptions
     case LogicBlockType.WAIT:
       return defaultWaitOptions
+    case LogicBlockType.JUMP:
+      return {}
     case LogicBlockType.TYPEBOT_LINK:
       return {}
     case IntegrationBlockType.GOOGLE_SHEETS:

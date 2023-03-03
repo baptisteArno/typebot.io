@@ -37,10 +37,11 @@ import { GoogleAnalyticsLogo } from '@/features/blocks/integrations/googleAnalyt
 import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
+import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
-export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
+export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
   const blue = useColorModeValue('blue.500', 'blue.300')
   const orange = useColorModeValue('orange.500', 'orange.300')
   const purple = useColorModeValue('purple.500', 'purple.300')
@@ -85,6 +86,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps) => {
       return <ScriptIcon {...props} />
     case LogicBlockType.WAIT:
       return <WaitIcon color={purple} {...props} />
+    case LogicBlockType.JUMP:
+      return <JumpIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:

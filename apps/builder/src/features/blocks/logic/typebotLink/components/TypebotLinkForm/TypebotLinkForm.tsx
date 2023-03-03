@@ -13,9 +13,9 @@ type Props = {
 export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
   const { linkedTypebots, typebot } = useTypebot()
 
-  const handleTypebotIdChange = (typebotId: string | 'current') =>
+  const handleTypebotIdChange = (typebotId: string | 'current' | undefined) =>
     onOptionsChange({ ...options, typebotId })
-  const handleGroupIdChange = (groupId: string) =>
+  const handleGroupIdChange = (groupId: string | undefined) =>
     onOptionsChange({ ...options, groupId })
 
   return (
