@@ -8,7 +8,7 @@ import {
 } from 'models'
 import { saveErrorLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc } from './helpers'
-import { updateVariables } from '@/features/variables'
+import { deepParseVariable, updateVariables } from '@/features/variables'
 import { isNotEmpty, byId, isDefined } from 'utils'
 import { ExecuteIntegrationResponse } from '@/features/chat'
 import type { GoogleSpreadsheetRow } from 'google-spreadsheet'
@@ -20,7 +20,9 @@ export const getRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  const { sheetId, cellsToExtract, referenceCell, filter } = options
+  const { sheetId, cellsToExtract, referenceCell, filter } = deepParseVariable(
+    state.typebot.variables
+  )(options)
   if (!sheetId) return { outgoingEdgeId }
 
   let log: ReplyLog | undefined

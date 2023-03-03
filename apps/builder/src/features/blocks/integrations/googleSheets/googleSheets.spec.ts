@@ -136,7 +136,9 @@ test.describe.parallel('Google sheets integration', () => {
       .press('Enter')
     await expect(
       page.locator('typebot-standard').locator('text=Your name is:')
-    ).toHaveText(/John|Fred|Georges/)
+    ).toHaveText(
+      `Your name is: ["Georges","John","Fred","Georges","Georges"] ["Last name","Smith","Smith"]`
+    )
   })
 })
 

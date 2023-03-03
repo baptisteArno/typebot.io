@@ -2,7 +2,7 @@ import { SessionState, GoogleSheetsUpdateRowOptions, ReplyLog } from 'models'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc, parseCellValues } from './helpers'
 import { TRPCError } from '@trpc/server'
-import { parseVariables } from '@/features/variables'
+import { deepParseVariable } from '@/features/variables'
 import { ExecuteIntegrationResponse } from '@/features/chat'
 
 export const updateRow = async (
@@ -12,7 +12,7 @@ export const updateRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsUpdateRowOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  const { sheetId, referenceCell } = options
+  const { sheetId, referenceCell } = deepParseVariable(variables)(options)
   if (!options.cellsToUpsert || !sheetId || !referenceCell)
     return { outgoingEdgeId }
 
@@ -23,10 +23,6 @@ export const updateRow = async (
     spreadsheetId: options.spreadsheetId,
   })
 
-  const parsedReferenceCell = {
-    column: referenceCell.column,
-    value: parseVariables(variables)(referenceCell.value),
-  }
   const parsedValues = parseCellValues(variables)(options.cellsToUpsert)
 
   try {
@@ -34,8 +30,7 @@ export const updateRow = async (
     const sheet = doc.sheetsById[sheetId]
     const rows = await sheet.getRows()
     const updatingRowIndex = rows.findIndex(
-      (row) =>
-        row[parsedReferenceCell.column as string] === parsedReferenceCell.value
+      (row) => row[referenceCell.column as string] === referenceCell.value
     )
     if (updatingRowIndex === -1) {
       new TRPCError({
