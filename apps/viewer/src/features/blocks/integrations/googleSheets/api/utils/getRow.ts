@@ -73,7 +73,7 @@ export const getRow = async (
           ...newVariables,
           {
             ...existingVariable,
-            value,
+            value: value.length === 1 ? value[0] : value,
           },
         ]
       },

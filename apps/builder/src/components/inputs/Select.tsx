@@ -27,7 +27,6 @@ type Props = {
   selectedItem?: string
   items: Item[]
   placeholder?: string
-  debounceTimeout?: number
   onSelect?: (value: string) => void
 }
 
