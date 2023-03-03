@@ -102,11 +102,13 @@ export const RatingInputSettings = ({
         initialValue={options.isOneClickSubmitEnabled ?? false}
         onCheckChange={handleOneClickSubmitChange}
       />
-      <TextInput
-        label="Button label:"
-        defaultValue={options.labels.button}
-        onChange={handleButtonLabelChange}
-      />
+      {!options.isOneClickSubmitEnabled && (
+        <TextInput
+          label="Button label:"
+          defaultValue={options.labels.button}
+          onChange={handleButtonLabelChange}
+        />
+      )}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           Save answer in a variable:
