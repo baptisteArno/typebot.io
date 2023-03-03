@@ -94,19 +94,12 @@ const testimonials: TestimonialData[][] = [
         'Within 5 minutes of signing up you can already have your bot running thanks to the templates it comes with. I have used many tools to make bots but none as simple, easy and powerful as Typebot.',
     },
     {
-      name: 'Steve de Jong',
+      name: 'Julien Muratot',
+      role: 'Growth Manager @ Hornetwork',
+      avatarSrc: julienPictureSrc,
       provider: 'email',
-      avatarSrc: stevePictureSrc,
-      role: 'CEO at Stillio',
-      content: (
-        <>
-          We recently started using Typebot for our onboarding signup process on
-          app.stillio.com, to capture some extra info from our trial users. 💪
-          <br />
-          <br />
-          It works just perfect! Thanks for your great tool!
-        </>
-      ),
+      content:
+        'I run Google ads all year long on our landing page that contains a typebot. I saw a 2x increase on our conversation rate compared to our old WordPress form.',
     },
     {
       name: '_Invictuz',
@@ -143,6 +136,26 @@ const testimonials: TestimonialData[][] = [
   ],
   [
     {
+      name: 'Steve de Jong',
+      provider: 'email',
+      avatarSrc: stevePictureSrc,
+      role: 'CEO at Stillio',
+      content: (
+        <>
+          We built our own onboarding template last December for all signups for
+          Stillio and it works fantastic and reliably.
+          <br />
+          <br />
+          We send the collected data to a Make-com webhook and from there,
+          post-process and send to Encharge (email drip campaigns) and Pipedrive
+          (CRM).
+          <br />
+          We are now working on personalizing the email templates based on the
+          answers (user industry and role) given in the typebot. We are big fan!
+        </>
+      ),
+    },
+    {
       name: 'Goran Milic',
       role: 'General Manager, Beefii',
       provider: 'email',
@@ -155,14 +168,6 @@ const testimonials: TestimonialData[][] = [
           helps promote your business on social media or any other platform.,
         </>
       ),
-    },
-    {
-      name: 'Julien Muratot',
-      role: 'Growth Manager @ Hornetwork',
-      avatarSrc: julienPictureSrc,
-      provider: 'email',
-      content:
-        'I run Google ads all year long on our landing page that contains a typebot. I saw a 2x increase on our conversation rate compared to our old WordPress form.',
     },
     {
       name: 'Kurnia Kwik',
