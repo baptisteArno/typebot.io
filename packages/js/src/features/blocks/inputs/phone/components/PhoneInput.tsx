@@ -25,11 +25,32 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
   const handleInput = (inputValue: string | undefined) => {
     setInputValue(inputValue as string)
-    const matchedCountry = phoneCountries.find(
-      (country) =>
-        country.dial_code === inputValue &&
-        country.code !== selectedCountryCode()
+    if (
+      (inputValue === '' || inputValue === '+') &&
+      selectedCountryCode() !== 'INT'
     )
+      setSelectedCountryCode('INT')
+    const matchedCountry =
+      inputValue?.startsWith('+') &&
+      inputValue.length > 2 &&
+      phoneCountries.reduce<typeof phoneCountries[number] | null>(
+        (matchedCountry, country) => {
+          if (
+            !country?.dial_code ||
+            (matchedCountry !== null && !matchedCountry.dial_code)
+          ) {
+            return matchedCountry
+          }
+          if (
+            inputValue?.startsWith(country.dial_code) &&
+            country.dial_code.length > (matchedCountry?.dial_code.length ?? 0)
+          ) {
+            return country
+          }
+          return matchedCountry
+        },
+        null
+      )
     if (matchedCountry) setSelectedCountryCode(matchedCountry.code)
   }
 

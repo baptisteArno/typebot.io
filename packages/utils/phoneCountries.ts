@@ -1481,4 +1481,4 @@ export const phoneCountries = [
     code: 'ZW',
     dial_code: '+263',
   },
-]
+] as const

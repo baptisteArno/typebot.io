@@ -1,4 +1,3 @@
-import React from 'react'
 import { Head, Text, Button } from '../components'
 import {
   Mjml,
@@ -25,12 +24,11 @@ export const DefaultBotNotificationEmail = ({
     <MjmlBody width={600}>
       <MjmlSection padding="32px" cssClass="smooth" border="1px solid #e2e8f0">
         <MjmlColumn>
-          <Text padding="0">Your typebot has collected a new response! 🥳</Text>
-          {Object.keys(answers).map((key) => {
+          {Object.keys(answers).map((key, index) => {
             const isEmail = emailRegex.test(answers[key])
 
             return (
-              <Text key={key}>
+              <Text key={key} paddingTop={index === 0 ? 0 : undefined}>
                 <b>{key}</b>:{' '}
                 {isEmail ? (
                   <a href={`mailto:${answers[key]}`}>{answers[key]}</a>
