@@ -22,15 +22,6 @@ export const getUsage = authenticatedProcedure
     z.object({ totalChatsUsed: z.number(), totalStorageUsed: z.number() })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    if (
-      !process.env.STRIPE_SECRET_KEY ||
-      !process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID ||
-      !process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID
-    )
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Stripe environment variables are missing',
-      })
     const workspace = await prisma.workspace.findFirst({
       where: {
         id: workspaceId,
