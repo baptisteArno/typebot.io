@@ -1,4 +1,5 @@
 import { Item, ItemBase, ItemType, StepBase } from '.'
+import { Variable } from '../variable';
 
 export type IntegrationStep = WebhookStep
 
@@ -35,14 +36,25 @@ export type ResponseVariableMapping = {
   variableId?: string
 }
 
+export type QueryParameters = {
+    id?: string,
+    key: string,
+    value: string,
+    displayValue: string,
+    type: string,
+    isNew: boolean,
+    properties?: Variable
+}
+
 export type WebhookOptions = {
   variablesForTest: VariableForTest[]
   responseVariableMapping: ResponseVariableMapping[]
   isAdvancedConfig?: boolean
   isCustomBody?: boolean
   method: "POST"|"GET"|"PUT";
-  headers: Array<{[key: string]: any}>;
-  queryParams: Array<{[key: string]: any}>;
+  headers: QueryParameters[];
+  parameters: QueryParameters[];
+  path: QueryParameters[];
   returnMap: any;
   typebotId: string;
   url: string;
@@ -56,13 +68,14 @@ export type VariableForTest = {
 }
 
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
-  url: "http://octadesk.com",
+  url: "",
   body: "",
   headers: [],
   method: "GET",
-  queryParams: [],
+  parameters: [],
+  path: [],
   returnMap: "",
-  typebotId: "0123",
+  typebotId: "",
   responseVariableMapping: [],
   variablesForTest: [],
   isAdvancedConfig: false,

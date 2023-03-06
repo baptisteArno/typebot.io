@@ -5,7 +5,7 @@ import {
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, IntegrationStepType, OctaStepType, StepIndices, StepWithItems } from 'models'
+import { ButtonItem, IntegrationStepType, OctaStepType, StepIndices, StepWithItems, WebhookStep } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
@@ -21,7 +21,7 @@ type Props = {
 export const ItemNodesList = ({
   step,
   indices: { blockIndex, stepIndex },
-  isReadOnly = false,
+  isReadOnly = false
 }: Props) => {
   const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
@@ -114,6 +114,8 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
+  const webhook = typebot?.blocks[blockIndex].steps[stepIndex].options?.url
+
   return (
     <Stack
       flex={1}
@@ -147,7 +149,17 @@ export const ItemNodesList = ({
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          Conecte a outro sistema
+          {!webhook &&
+          <Text color={'gray.500'} noOfLines={0}>
+            {'Conecte a outro sistema'}
+          </Text>
+          }
+          {webhook &&
+            <Text color={'gray.500'} noOfLines={0}>
+              {typebot?.blocks[blockIndex].steps[stepIndex].options?.method} <br/>
+              {webhook}
+            </Text>
+          }
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {

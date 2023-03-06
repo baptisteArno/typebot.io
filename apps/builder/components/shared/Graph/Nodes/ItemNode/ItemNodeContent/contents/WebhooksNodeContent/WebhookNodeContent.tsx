@@ -10,12 +10,14 @@ export const WebhookNodeContent = ({ item }: Props) => {
 
   return (
     <Container>
-      {item.content.values.map((value) => (
-        <>
-        {value === "@CONDITIONAL_TRUE" && "Se a regra for válida, ir para"}
-        {value === "@CONDITIONAL_FALSE" && "Se a regra não for válida, ir para"}
-        </>
-      ))}
+      <ul style={{listStyle: "none"}}>
+        {item.content.values.map(value =>
+          <li key="{value}">
+            {value === "@CONDITIONAL_TRUE" && "Se a regra for válida, ir para"}
+            {value === "@CONDITIONAL_FALSE" && "Se a regra não for válida, ir para"}
+          </li>
+        )}
+      </ul>
     </Container>
   )
 }

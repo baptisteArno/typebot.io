@@ -74,7 +74,7 @@ export const TextBox = ({
     )
     const newValue =
       textBeforeCursorPosition +
-      `{{${variable.name}}}` +
+      `{{${variable.token}}}` +
       textAfterCursorPosition
     setValue(newValue)
     debounced(newValue)
@@ -82,7 +82,7 @@ export const TextBox = ({
     setTimeout(() => {
       if (!textBoxRef.current) return
       textBoxRef.current.selectionStart = textBoxRef.current.selectionEnd =
-        carretPosition + `{{${variable.name}}}`.length
+        carretPosition + `{{${variable.token}}}`.length
       setCarretPosition(textBoxRef.current.selectionStart)
     }, 100)
   }

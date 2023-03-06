@@ -26,6 +26,8 @@ import {
   defaultWebhookAttributes,
   Webhook,
   StepIndices,
+  QueryParameters,
+  Variable
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -42,6 +44,8 @@ import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
 import { sendOctaRequest } from 'util/octaRequest'
+import { debug } from 'console'
+// import { validateUrl } from 'utils'
 
 enum HttpMethodsWebhook {
   POST = "POST",
@@ -68,18 +72,53 @@ export const WebhookSettings = ({
     status: 'error',
   })
 
-  const localWebhook  = {
-    url: "",
-    method:"",
-    queryParams: "",
-    headers: [],
-    body: ""
-  };
-
   const handleUrlChange = (url?: string) =>{
-    onOptionsChange({
-      ...step.options,
-      url: url ? url: ""
+    // validateUrl
+    // && url.length > 5 && validateUrl(url)
+    if(step.options.url != url) clearOptions()
+    if (url && url.length > 5) {
+      const newUrl = new URL(url.replace(/ /g, '').trim())
+      url = newUrl.origin
+      
+      if (newUrl.search) handleParams(newUrl.search)
+      
+      addParams('path', '', newUrl.pathname, newUrl.pathname)
+      
+      onOptionsChange({
+        ...step.options,
+        url: url ? url: ""
+      })
+    }
+  }
+
+  const clearOptions = () => {
+    const options = step.options
+    options.parameters = []
+    options.path = []
+    options.returnMap = ""
+    options.responseVariableMapping = []
+    options.variablesForTest = []
+    options.headers = []
+  }
+
+  const handleParams = (url: string) => {
+    const params = url.substring(1).split('&')
+    params.forEach(p => {
+			const keyValue = p.split('=')
+			if (keyValue.length === 2) {
+				addParams('query', keyValue[0], keyValue[1], keyValue[1])
+			}
+	})
+  }
+
+  const addParams = (type: string, key: string, value:string, displayValue: string, properties?: Variable | undefined) => {
+    step.options.path.push({
+      key: key || '',
+      value: value || '',
+      displayValue: displayValue || '',
+      type,
+      isNew: true,
+      properties: properties
     })
   }
 
@@ -90,14 +129,19 @@ export const WebhookSettings = ({
     })
   }
 
-  const handleQueryParamsChange = (queryParams: KeyValue[]) => {
-        onOptionsChange({
+  const handleQueryParamsChange = (parameters: QueryParameters[]) => {
+    onOptionsChange({
       ...step.options,
-      queryParams
+      parameters
     })
   }
+//     onOptionsChange({
+//       ...step.options,
+//       parameters: [...step.options.parameters, ...parameters] as QueryParameters[]
+//     })
 
-  const handleHeadersChange = (headers: KeyValue[]) => {
+
+  const handleHeadersChange = (headers: QueryParameters[]) => {
     onOptionsChange({
       ...step.options,
       headers
@@ -110,7 +154,6 @@ export const WebhookSettings = ({
       body: body
     })
   }
-    // localWebhook && setLocalWebhook({ ...localWebhook, body })
 
   // const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
   //   onOptionsChange({ ...options, variablesForTest })
@@ -126,15 +169,25 @@ export const WebhookSettings = ({
     onOptionsChange({ ...step.options, isCustomBody })
 
   const handleTestRequestClick = async () => {
-    if (!typebot || !localWebhook) return
+    if (!typebot || !step.options) return
     setIsTestResponseLoading(true)
+    
+    const options = step.options as WebhookOptions
+    const parameters = options.parameters.concat(options.path, options.headers)
+
+    const localWebhook = {
+      method: options.method,
+      body: options.body,
+      parameters: parameters,
+      url: options.url
+    }
 
     const { data }  = await sendOctaRequest({
       url: `validate/webhook`,
       method: 'POST',
       body: { 
         session: {}, 
-        webhook: step.options
+        webhook: localWebhook
       }
     })
 
@@ -142,7 +195,7 @@ export const WebhookSettings = ({
     
     setIsTestResponseLoading(false)
     
-    if (!success) return toast({ title: 'Error', description: `Status returned: ${status}` })
+    if (!success) return toast({ title: 'Error', description: `Não foi possivel realizar a sua integração 😢` })
 
     if (typeof response === 'object') {
       setTestResponse(JSON.stringify(response, undefined, 2))
@@ -152,13 +205,11 @@ export const WebhookSettings = ({
     }
   }
 
-  // const ResponseMappingInputs = useMemo(
-  //   () => (props: TableListItemProps<ResponseVariableMapping>) =>
-  //     <DataVariableInputs {...props} dataItems={responseKeys} />,
-  //   [responseKeys]
-  // )
-
-  // if (!localWebhook) return <Spinner />
+  const ResponseMappingInputs = useMemo(
+    () => (props: TableListItemProps<ResponseVariableMapping>) =>
+      <DataVariableInputs {...props} dataItems={responseKeys} />,
+    [responseKeys]
+  )
 
   const handlerDefault = (e: any) => {
   }
@@ -198,11 +249,12 @@ export const WebhookSettings = ({
                   Adicione sua informações ao final da URL da integração
                   (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
                 </Text>
-                <TableList<KeyValue>
-                  initialItems={[]}
+                <TableList<QueryParameters>
+                  initialItems={step.options.parameters}
                   onItemsChange={handleQueryParamsChange}
                   Item={QueryParamsInputs}
                   addLabel="Adicionar parâmetro"
+                  type="query"
                   debounceTimeout={0}
                 />
               </AccordionPanel>
@@ -217,15 +269,17 @@ export const WebhookSettings = ({
                   Sua informação no cabeçalho da integração 
                   <strong> (ex.: Authorization: Basic 1234)</strong>
                 </Text> 
-                <TableList<KeyValue>
-                  initialItems={localWebhook?.headers ?? []}
+                <TableList<QueryParameters>
+                  initialItems={step.options.headers}
                   onItemsChange={handleHeadersChange}
-                  Item={HeadersInputs}
+                  Item={QueryParamsInputs}
                   addLabel="Adicionar parâmetro"
+                  type="query"
                   debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
+            {(step.options?.method === 'POST') && (
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Body
@@ -258,6 +312,7 @@ export const WebhookSettings = ({
                 
               </AccordionPanel>
             </AccordionItem>
+            )}
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Valores variáveis para teste
@@ -288,7 +343,7 @@ export const WebhookSettings = ({
             Testar request
           </Button>
         )}
-        {/* {testResponse && (
+        {testResponse && (
           <CodeEditor isReadOnly lang="json" value={testResponse} />
         )}
         {(testResponse || step.options?.responseVariableMapping.length > 0) && (
@@ -302,14 +357,14 @@ export const WebhookSettings = ({
                 <TableList<ResponseVariableMapping>
                   initialItems={step.options.responseVariableMapping}
                   onItemsChange={handlerDefault}
-                  Item={}
+                  Item={ResponseMappingInputs}
                   addLabel="Adicionar variável"
                   debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-        )} */}
+        )}
       </Stack>
     </Stack>
   )
