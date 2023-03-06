@@ -1,31 +1,68 @@
-import {
-  Alert,
-  AlertIcon,
-  Button,
-  Input,
-  Link,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
-import { MakeComBlock } from 'models'
-import React from 'react'
-import { byId } from 'utils'
+import { MakeComBlock, Webhook, WebhookOptions } from 'models'
+import React, { useCallback, useEffect, useState } from 'react'
+import { byId, env } from 'utils'
+import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
+import { useDebouncedCallback } from 'use-debounce'
+
+const debounceWebhookTimeout = 2000
 
 type Props = {
   block: MakeComBlock
+  onOptionsChange: (options: WebhookOptions) => void
 }
 
-export const MakeComSettings = ({ block }: Props) => {
-  const { webhooks } = useTypebot()
-  const webhook = webhooks.find(byId(block.webhookId))
+export const MakeComSettings = ({
+  block: { webhookId, id: blockId, options },
+  onOptionsChange,
+}: Props) => {
+  const { webhooks, updateWebhook } = useTypebot()
+  const webhook = webhooks.find(byId(webhookId))
+
+  const [localWebhook, _setLocalWebhook] = useState(webhook)
+  const updateWebhookDebounced = useDebouncedCallback(
+    async (newLocalWebhook) => {
+      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
+    },
+    env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
+  )
+
+  const setLocalWebhook = useCallback(
+    (newLocalWebhook: Webhook) => {
+      _setLocalWebhook(newLocalWebhook)
+      updateWebhookDebounced(newLocalWebhook)
+    },
+    [updateWebhookDebounced]
+  )
+
+  useEffect(() => {
+    if (
+      !localWebhook ||
+      localWebhook.url ||
+      !webhook?.url ||
+      webhook.url === localWebhook.url
+    )
+      return
+    setLocalWebhook({
+      ...localWebhook,
+      url: webhook?.url,
+    })
+  }, [webhook, localWebhook, setLocalWebhook])
+
+  useEffect(
+    () => () => {
+      updateWebhookDebounced.flush()
+    },
+    [updateWebhookDebounced]
+  )
 
   return (
     <Stack spacing={4}>
-      <Alert status={webhook?.url ? 'success' : 'info'} rounded="md">
+      <Alert status={localWebhook?.url ? 'success' : 'info'} rounded="md">
         <AlertIcon />
-        {webhook?.url ? (
+        {localWebhook?.url ? (
           <>Your scenario is correctly configured 🚀</>
         ) : (
           <Stack>
@@ -41,7 +78,15 @@ export const MakeComSettings = ({ block }: Props) => {
           </Stack>
         )}
       </Alert>
-      {webhook?.url && <Input value={webhook?.url} isDisabled />}
+      {localWebhook && (
+        <WebhookAdvancedConfigForm
+          blockId={blockId}
+          webhook={localWebhook}
+          options={options}
+          onWebhookChange={setLocalWebhook}
+          onOptionsChange={onOptionsChange}
+        />
+      )}
     </Stack>
   )
 }

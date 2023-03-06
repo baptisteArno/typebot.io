@@ -1,27 +1,29 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
-import { Webhook, WebhookOptions, ZapierBlock } from 'models'
-import React, { useCallback, useEffect, useState } from 'react'
+import { PabblyConnectBlock, Webhook, WebhookOptions } from 'models'
+import React, { useEffect, useState } from 'react'
 import { byId, env } from 'utils'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
 import { useDebouncedCallback } from 'use-debounce'
+import { TextInput } from '@/components/inputs'
 
 const debounceWebhookTimeout = 2000
 
 type Props = {
-  block: ZapierBlock
+  block: PabblyConnectBlock
   onOptionsChange: (options: WebhookOptions) => void
 }
 
-export const ZapierSettings = ({
+export const PabblyConnectSettings = ({
   block: { webhookId, id: blockId, options },
   onOptionsChange,
 }: Props) => {
   const { webhooks, updateWebhook } = useTypebot()
-  const webhook = webhooks.find(byId(webhookId))
 
-  const [localWebhook, _setLocalWebhook] = useState(webhook)
+  const [localWebhook, _setLocalWebhook] = useState(
+    webhooks.find(byId(webhookId))
+  )
 
   const updateWebhookDebounced = useDebouncedCallback(
     async (newLocalWebhook) => {
@@ -30,27 +32,10 @@ export const ZapierSettings = ({
     env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
   )
 
-  const setLocalWebhook = useCallback(
-    (newLocalWebhook: Webhook) => {
-      _setLocalWebhook(newLocalWebhook)
-      updateWebhookDebounced(newLocalWebhook)
-    },
-    [updateWebhookDebounced]
-  )
-
-  useEffect(() => {
-    if (
-      !localWebhook ||
-      localWebhook.url ||
-      !webhook?.url ||
-      webhook.url === localWebhook.url
-    )
-      return
-    setLocalWebhook({
-      ...localWebhook,
-      url: webhook?.url,
-    })
-  }, [webhook, localWebhook, setLocalWebhook])
+  const setLocalWebhook = (newLocalWebhook: Webhook) => {
+    _setLocalWebhook(newLocalWebhook)
+    updateWebhookDebounced(newLocalWebhook)
+  }
 
   useEffect(
     () => () => {
@@ -59,26 +44,40 @@ export const ZapierSettings = ({
     [updateWebhookDebounced]
   )
 
+  const handleUrlChange = (url: string) =>
+    localWebhook &&
+    setLocalWebhook({
+      ...localWebhook,
+      url,
+    })
+
   return (
     <Stack spacing={4}>
       <Alert status={localWebhook?.url ? 'success' : 'info'} rounded="md">
         <AlertIcon />
         {localWebhook?.url ? (
-          <>Your zap is correctly configured 🚀</>
+          <>Your scenario is correctly configured 🚀</>
         ) : (
           <Stack>
-            <Text>Head up to Zapier to configure this block:</Text>
+            <Text>Head up to Pabbly Connect to get the webhook URL:</Text>
             <Button
               as={Link}
-              href="https://zapier.com/apps/typebot/integrations"
+              href="https://www.pabbly.com/connect/integrations/typebot/"
               isExternal
               colorScheme="blue"
             >
-              <Text mr="2">Zapier</Text> <ExternalLinkIcon />
+              <Text mr="2">Pabbly.com</Text> <ExternalLinkIcon />
             </Button>
           </Stack>
         )}
       </Alert>
+      <TextInput
+        placeholder="Paste webhook URL..."
+        defaultValue={localWebhook?.url ?? ''}
+        onChange={handleUrlChange}
+        withVariableButton={false}
+        debounceTimeout={0}
+      />
       {localWebhook && (
         <WebhookAdvancedConfigForm
           blockId={blockId}
