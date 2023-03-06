@@ -26,6 +26,7 @@ import { CellValueType, TableData } from '../../types'
 import { HeaderIcon, parseAccessor } from '../../utils'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
+import { parseColumnOrder } from '../../utils/parseColumnsOrder'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
@@ -265,17 +266,3 @@ export const ResultsTable = ({
     </Stack>
   )
 }
-
-const parseColumnOrder = (
-  existingOrder: string[] | undefined,
-  resultHeader: ResultHeaderCell[]
-) =>
-  existingOrder
-    ? [
-        ...existingOrder.slice(0, -1),
-        ...resultHeader
-          .filter((header) => !existingOrder.includes(header.id))
-          .map((h) => h.id),
-        'logs',
-      ]
-    : ['select', ...resultHeader.map((h) => h.id), 'logs']

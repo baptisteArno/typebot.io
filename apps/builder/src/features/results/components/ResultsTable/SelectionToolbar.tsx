@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/useToast'
 import { parseAccessor } from '../../utils'
 import { useResults } from '../../ResultsProvider'
 import { trpc } from '@/lib/trpc'
+import { parseColumnOrder } from '../../utils/parseColumnsOrder'
 
 type Props = {
   selectedResultsId: string[]
@@ -68,23 +69,32 @@ export const SelectionToolbar = ({
       selectedResultsId.includes(data.id.plainText)
     )
 
-    const fields = typebot?.resultsTablePreferences?.columnsOrder
-      ? typebot.resultsTablePreferences.columnsOrder.reduce<string[]>(
-          (currentHeaderLabels, columnId) => {
-            if (
-              typebot.resultsTablePreferences?.columnsVisibility[columnId] ===
-              false
-            )
-              return currentHeaderLabels
-            const columnLabel = resultHeader.find(
-              (headerCell) => headerCell.id === columnId
-            )?.label
-            if (!columnLabel) return currentHeaderLabels
-            return [...currentHeaderLabels, columnLabel]
-          },
-          []
+    const fields = parseColumnOrder(
+      typebot?.resultsTablePreferences?.columnsOrder,
+      resultHeader
+    )
+      .reduce<string[]>((currentHeaderLabels, columnId) => {
+        if (
+          typebot?.resultsTablePreferences?.columnsVisibility[columnId] ===
+          false
         )
-      : resultHeader.map((headerCell) => headerCell.label)
+          return currentHeaderLabels
+        const columnLabel = resultHeader.find(
+          (headerCell) => headerCell.id === columnId
+        )?.label
+        if (!columnLabel) return currentHeaderLabels
+        return [...currentHeaderLabels, columnLabel]
+      }, [])
+      .concat(
+        resultHeader
+          .filter(
+            (headerCell) =>
+              !typebot?.resultsTablePreferences?.columnsOrder.includes(
+                headerCell.id
+              )
+          )
+          .map((headerCell) => headerCell.label)
+      )
 
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
       const newObject: { [key: string]: string } = {}
