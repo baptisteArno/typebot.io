@@ -7,8 +7,9 @@ import { TextLink } from '@/components/TextLink'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import { guessIfUserIsEuropean } from 'utils/pricing'
-import { useRouter } from 'next/router'
 import { Workspace } from 'models'
+import { PreCheckoutModal, PreCheckoutModalProps } from '../PreCheckoutModal'
+import { useState } from 'react'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'stripeId' | 'plan'>
@@ -16,24 +17,14 @@ type Props = {
 }
 
 export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
-  const router = useRouter()
   const { user } = useUser()
   const { showToast } = useToast()
+  const [preCheckoutPlan, setPreCheckoutPlan] =
+    useState<PreCheckoutModalProps['selectedSubscription']>()
+
   const { data } = trpc.billing.getSubscription.useQuery({
     workspaceId: workspace.id,
   })
-
-  const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
-    trpc.billing.createCheckoutSession.useMutation({
-      onError: (error) => {
-        showToast({
-          description: error.message,
-        })
-      },
-      onSuccess: ({ checkoutUrl }) => {
-        router.push(checkoutUrl)
-      },
-    })
 
   const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
     trpc.billing.updateSubscription.useMutation({
@@ -79,15 +70,20 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
     if (workspace.stripeId) {
       updateSubscription(newSubscription)
     } else {
-      createCheckoutSession({
-        ...newSubscription,
-        returnUrl: window.location.href,
-      })
+      setPreCheckoutPlan(newSubscription)
     }
   }
 
   return (
     <Stack spacing={6}>
+      {!workspace.stripeId && (
+        <PreCheckoutModal
+          selectedSubscription={preCheckoutPlan}
+          existingEmail={user?.email ?? undefined}
+          existingCompany={user?.company ?? undefined}
+          onClose={() => setPreCheckoutPlan(undefined)}
+        />
+      )}
       <HStack alignItems="stretch" spacing="4" w="full">
         <StarterPlanContent
           initialChatsLimitIndex={
@@ -103,7 +99,7 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
           onPayClick={(props) =>
             handlePayClick({ ...props, plan: Plan.STARTER })
           }
-          isLoading={isCreatingCheckout || isUpdatingSubscription}
+          isLoading={isUpdatingSubscription}
           currency={data?.subscription.currency}
         />
 
@@ -119,7 +115,7 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
               : 0
           }
           onPayClick={(props) => handlePayClick({ ...props, plan: Plan.PRO })}
-          isLoading={isCreatingCheckout || isUpdatingSubscription}
+          isLoading={isUpdatingSubscription}
           currency={data?.subscription.currency}
         />
       </HStack>

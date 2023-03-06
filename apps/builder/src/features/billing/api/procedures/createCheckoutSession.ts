@@ -18,6 +18,8 @@ export const createCheckoutSession = authenticatedProcedure
   })
   .input(
     z.object({
+      email: z.string(),
+      company: z.string(),
       workspaceId: z.string(),
       prefilledEmail: z.string().optional(),
       currency: z.enum(['usd', 'eur']),
@@ -35,8 +37,9 @@ export const createCheckoutSession = authenticatedProcedure
   .mutation(
     async ({
       input: {
+        email,
+        company,
         workspaceId,
-        prefilledEmail,
         currency,
         plan,
         returnUrl,
@@ -69,11 +72,21 @@ export const createCheckoutSession = authenticatedProcedure
         apiVersion: '2022-11-15',
       })
 
+      const customer = await stripe.customers.create({
+        email,
+        name: company,
+        metadata: { workspaceId },
+      })
+
       const session = await stripe.checkout.sessions.create({
         success_url: `${returnUrl}?stripe=${plan}&success=true`,
         cancel_url: `${returnUrl}?stripe=cancel`,
         allow_promotion_codes: true,
-        customer_email: prefilledEmail,
+        customer: customer.id,
+        customer_update: {
+          address: 'auto',
+          name: 'auto',
+        },
         mode: 'subscription',
         metadata: { workspaceId, plan, additionalChats, additionalStorage },
         currency,
