@@ -1,19 +1,17 @@
-=== Typebot | Build beautiful conversational forms ===
+=== Typebot | Create advanced chat experiences without coding ===
 Contributors: baptisteArno
 Tags: typebot, forms, surveys, quizzes, form builder, survey builder, quiz builder, custom forms, mobile forms, payment forms, order forms, feedback forms, enquiry forms, stripe, dropbox, google sheets, mailchimp, salesforce, hubspot, activecampaign, infusionsoft, asana, hipchat, slack, trello, zendesk
 Requires at least: 5.0
 Tested up to: 6.0
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 3.1.1
-
-Build beautiful conversational forms
+Stable Tag: 3.1.3
 
 == Description ==
-Collect 4x more responses with your conversational forms using Typebot.
+Collect 4x more responses with conversational apps using Typebot.
 
-👉 Build beautiful conversational forms and embed them directly in your applications without a line of code.
-👉 Typebot helps you publish forms that feel native to your product and it provides the best experience for your users.
+👉 Build beautiful conversational apps and easily embed them in your Wordpress site.
+👉 Typebot helps you publish chat apps that feel native to your product and it provides the best experience for your users.
 👉 With Typebot, you collect the answer as soon as the user answers the first question. You get to know exactly when the user tends to drop your form.
 
 This plugin relies on Typebot which is a tool that allows you to create conversational forms and directly integrate them on your Wordpress site.
