@@ -37,7 +37,7 @@ export const LiteBadge = (props: Props) => {
       target="_blank"
       rel="noopener noreferrer"
       class="absolute py-1 px-2 bg-white z-50 rounded shadow-md lite-badge text-gray-900"
-      style={{ bottom: '20px' }}
+      style={{ bottom: '20px', display: 'block' }}
       id="lite-badge"
     >
       Made with <span class="text-blue-500">Typebot</span>.
