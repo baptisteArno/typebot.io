@@ -78,36 +78,34 @@ export const ColumnSettings = ({
 
   return (
     <Stack>
-      <Stack>
-        <Text fontWeight="semibold" fontSize="sm">
-          Shown in table:
-        </Text>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+      <Text fontWeight="semibold" fontSize="sm">
+        Shown in table:
+      </Text>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={columnOrder}
+          strategy={verticalListSortingStrategy}
         >
-          <SortableContext
-            items={columnOrder}
-            strategy={verticalListSortingStrategy}
-          >
-            {sortedHeader.map((header) => (
-              <SortableColumns
-                key={header.id}
-                header={header}
-                onEyeClick={onEyeClick}
-                hiddenHeaders={hiddenHeaders}
-              />
-            ))}
-          </SortableContext>
-          <Portal>
-            <DragOverlay dropAnimation={{ duration: 0 }}>
-              {draggingColumnId ? <Flex /> : null}
-            </DragOverlay>
-          </Portal>
-        </DndContext>
-      </Stack>
+          {sortedHeader.map((header) => (
+            <SortableColumns
+              key={header.id}
+              header={header}
+              onEyeClick={onEyeClick}
+              hiddenHeaders={hiddenHeaders}
+            />
+          ))}
+        </SortableContext>
+        <Portal>
+          <DragOverlay dropAnimation={{ duration: 0 }}>
+            {draggingColumnId ? <Flex /> : null}
+          </DragOverlay>
+        </Portal>
+      </DndContext>
     </Stack>
   )
 }
@@ -147,7 +145,7 @@ const SortableColumns = ({
       opacity={isDragging || isHidden ? 0.5 : 1}
       {...attributes}
     >
-      <HStack>
+      <HStack overflow="hidden">
         <IconButton
           size="sm"
           cursor="grab"

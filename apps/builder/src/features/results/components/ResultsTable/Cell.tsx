@@ -29,9 +29,7 @@ const Cell = ({
       py="2"
       borderWidth={rowIndex === 0 ? '0 1px 1px 1px' : '1px'}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
-      whiteSpace="nowrap"
-      wordBreak="normal"
-      overflow="hidden"
+      whiteSpace="pre-wrap"
       pos="relative"
       style={{
         minWidth: size,

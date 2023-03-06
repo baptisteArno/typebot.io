@@ -12,6 +12,7 @@ import {
   PopoverAnchor,
   Portal,
   Tag,
+  Text,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider/TypebotProvider'
@@ -210,7 +211,9 @@ export const VariableSearchInput = ({
               >
                 Create
                 <Tag colorScheme="orange" ml="1">
-                  {inputValue}
+                  <Text noOfLines={0} display="block">
+                    {inputValue}
+                  </Text>
                 </Tag>
               </Button>
             )}
@@ -240,7 +243,10 @@ export const VariableSearchInput = ({
                       }
                       transition="none"
                     >
-                      {item.name}
+                      <Text noOfLines={0} display="block" pr="2">
+                        {item.name}
+                      </Text>
+
                       <HStack>
                         <IconButton
                           icon={<EditIcon />}
