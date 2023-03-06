@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const typebots = await prisma.typebot.updateMany({
       where: { id: typebotId },
-      data: { isArchived: true, publicId: null },
+      data: { isArchived: true, publicId: null, customDomain: null },
     })
     return res.send({ typebots })
   }
@@ -101,12 +101,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       edges: data.edges ?? [],
     } satisfies Prisma.TypebotUpdateInput
 
-    const updatedTypebot = await prisma.typebot.update({
-      where: { id: typebotId },
-      data: updates,
-    })
-
-    return res.send({ typebot: updatedTypebot })
+    try {
+      const updatedTypebot = await prisma.typebot.update({
+        where: { id: typebotId },
+        data: updates,
+      })
+      return res.send({ typebot: updatedTypebot })
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          return res.status(409).send({
+            message:
+              err.meta && 'target' in err.meta && Array.isArray(err.meta.target)
+                ? `${err.meta.target[0]} already exists`
+                : 'Duplicate conflict',
+          })
+        }
+        return res.status(500).send({ message: err.message })
+      }
+    }
   }
 
   if (req.method === 'PATCH') {
