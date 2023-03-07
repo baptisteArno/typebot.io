@@ -1,8 +1,13 @@
 import { TextInput } from '@/components/inputs'
+import { Select } from '@/components/inputs/Select'
+import { useParentModal } from '@/features/graph'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import {
   Button,
+  FormControl,
+  FormLabel,
+  HStack,
   Modal,
   ModalBody,
   ModalContent,
@@ -12,6 +17,7 @@ import {
 import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import { isDefined } from 'utils'
+import { taxIdTypes } from '../taxIdTypes'
 
 export type PreCheckoutModalProps = {
   selectedSubscription:
@@ -28,12 +34,22 @@ export type PreCheckoutModalProps = {
   onClose: () => void
 }
 
+const vatCodeLabels = taxIdTypes.map((taxIdType) => ({
+  label: `${taxIdType.emoji} ${taxIdType.name} (${taxIdType.code})`,
+  value: taxIdType.type,
+  extras: {
+    placeholder: taxIdType.placeholder,
+  },
+}))
+
 export const PreCheckoutModal = ({
   selectedSubscription,
   existingCompany,
   existingEmail,
   onClose,
 }: PreCheckoutModalProps) => {
+  const { ref } = useParentModal()
+  const vatValueInputRef = React.useRef<HTMLInputElement>(null)
   const router = useRouter()
   const { showToast } = useToast()
   const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
@@ -51,7 +67,12 @@ export const PreCheckoutModal = ({
   const [customer, setCustomer] = useState({
     company: existingCompany ?? '',
     email: existingEmail ?? '',
+    vat: {
+      type: undefined as string | undefined,
+      value: '',
+    },
   })
+  const [vatValuePlaceholder, setVatValuePlaceholder] = useState('')
 
   const updateCustomerCompany = (company: string) => {
     setCustomer((customer) => ({ ...customer, company }))
@@ -61,23 +82,53 @@ export const PreCheckoutModal = ({
     setCustomer((customer) => ({ ...customer, email }))
   }
 
-  const createCustomer = (e: FormEvent) => {
+  const updateVatType = (
+    type: string | undefined,
+    vatCode?: (typeof vatCodeLabels)[number]
+  ) => {
+    setCustomer((customer) => ({
+      ...customer,
+      vat: {
+        ...customer.vat,
+        type,
+      },
+    }))
+    setVatValuePlaceholder(vatCode?.extras?.placeholder ?? '')
+    vatValueInputRef.current?.focus()
+  }
+
+  const updateVatValue = (value: string) => {
+    setCustomer((customer) => ({
+      ...customer,
+      vat: {
+        ...customer.vat,
+        value,
+      },
+    }))
+  }
+
+  const goToCheckout = (e: FormEvent) => {
     e.preventDefault()
     if (!selectedSubscription) return
+    const { email, company, vat } = customer
     createCheckoutSession({
       ...selectedSubscription,
-      email: customer.email,
-      company: customer.company,
+      email,
+      company,
       returnUrl: window.location.href,
+      vat:
+        vat.value && vat.type
+          ? { type: vat.type, value: vat.value }
+          : undefined,
     })
   }
 
   return (
     <Modal isOpen={isDefined(selectedSubscription)} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent ref={ref}>
         <ModalBody py="8">
-          <Stack as="form" onSubmit={createCustomer} spacing="4">
+          <Stack as="form" spacing="4" onSubmit={goToCheckout}>
             <TextInput
               isRequired
               label="Company name"
@@ -95,6 +146,25 @@ export const PreCheckoutModal = ({
               withVariableButton={false}
               debounceTimeout={0}
             />
+            <FormControl>
+              <FormLabel>Tax ID</FormLabel>
+              <HStack>
+                <Select
+                  placeholder="ID type"
+                  items={vatCodeLabels}
+                  isPopoverMatchingInputWidth={false}
+                  onSelect={updateVatType}
+                />
+                <TextInput
+                  ref={vatValueInputRef}
+                  onChange={updateVatValue}
+                  withVariableButton={false}
+                  debounceTimeout={0}
+                  placeholder={vatValuePlaceholder}
+                />
+              </HStack>
+            </FormControl>
+
             <Button
               type="submit"
               isLoading={isCreatingCheckout}

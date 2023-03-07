@@ -5,6 +5,7 @@ import {
   PreCheckoutModalProps,
 } from '@/features/billing/components/PreCheckoutModal'
 import { TypebotDndProvider, FolderContent } from '@/features/folders'
+import { ParentModalProvider } from '@/features/graph'
 import { useWorkspace } from '@/features/workspace'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
 import { Plan } from 'db'
@@ -44,12 +45,14 @@ export const DashboardPage = () => {
       <Seo title={workspace?.name ?? 'My typebots'} />
       <DashboardHeader />
       {!workspace?.stripeId && (
-        <PreCheckoutModal
-          selectedSubscription={preCheckoutPlan}
-          existingEmail={user?.email ?? undefined}
-          existingCompany={workspace?.name ?? undefined}
-          onClose={() => setPreCheckoutPlan(undefined)}
-        />
+        <ParentModalProvider>
+          <PreCheckoutModal
+            selectedSubscription={preCheckoutPlan}
+            existingEmail={user?.email ?? undefined}
+            existingCompany={workspace?.name ?? undefined}
+            onClose={() => setPreCheckoutPlan(undefined)}
+          />
+        </ParentModalProvider>
       )}
       <TypebotDndProvider>
         {isLoading ? (

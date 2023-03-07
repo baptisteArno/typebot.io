@@ -27,6 +27,12 @@ export const createCheckoutSession = authenticatedProcedure
       returnUrl: z.string(),
       additionalChats: z.number(),
       additionalStorage: z.number(),
+      vat: z
+        .object({
+          type: z.string(),
+          value: z.string(),
+        })
+        .optional(),
     })
   )
   .output(
@@ -37,6 +43,7 @@ export const createCheckoutSession = authenticatedProcedure
   .mutation(
     async ({
       input: {
+        vat,
         email,
         company,
         workspaceId,
@@ -72,10 +79,22 @@ export const createCheckoutSession = authenticatedProcedure
         apiVersion: '2022-11-15',
       })
 
+      await prisma.user.updateMany({
+        where: {
+          id: user.id,
+        },
+        data: {
+          company,
+        },
+      })
+
       const customer = await stripe.customers.create({
         email,
         name: company,
         metadata: { workspaceId },
+        tax_id_data: vat
+          ? [vat as Stripe.CustomerCreateParams.TaxIdDatum]
+          : undefined,
       })
 
       const session = await stripe.checkout.sessions.create({
@@ -85,14 +104,11 @@ export const createCheckoutSession = authenticatedProcedure
         customer: customer.id,
         customer_update: {
           address: 'auto',
-          name: 'auto',
+          name: 'never',
         },
         mode: 'subscription',
         metadata: { workspaceId, plan, additionalChats, additionalStorage },
         currency,
-        tax_id_collection: {
-          enabled: true,
-        },
         billing_address_collection: 'required',
         automatic_tax: { enabled: true },
         line_items: parseSubscriptionItems(

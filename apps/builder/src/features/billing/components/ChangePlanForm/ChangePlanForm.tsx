@@ -10,6 +10,7 @@ import { guessIfUserIsEuropean } from 'utils/pricing'
 import { Workspace } from 'models'
 import { PreCheckoutModal, PreCheckoutModalProps } from '../PreCheckoutModal'
 import { useState } from 'react'
+import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'stripeId' | 'plan'>
@@ -77,12 +78,14 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
   return (
     <Stack spacing={6}>
       {!workspace.stripeId && (
-        <PreCheckoutModal
-          selectedSubscription={preCheckoutPlan}
-          existingEmail={user?.email ?? undefined}
-          existingCompany={user?.company ?? undefined}
-          onClose={() => setPreCheckoutPlan(undefined)}
-        />
+        <ParentModalProvider>
+          <PreCheckoutModal
+            selectedSubscription={preCheckoutPlan}
+            existingEmail={user?.email ?? undefined}
+            existingCompany={user?.company ?? undefined}
+            onClose={() => setPreCheckoutPlan(undefined)}
+          />
+        </ParentModalProvider>
       )}
       <HStack alignItems="stretch" spacing="4" w="full">
         <StarterPlanContent

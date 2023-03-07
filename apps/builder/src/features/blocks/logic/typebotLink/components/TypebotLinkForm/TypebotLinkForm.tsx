@@ -28,21 +28,24 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
           currentWorkspaceId={typebot.workspaceId as string}
         />
       )}
-      <GroupsDropdown
-        groups={
-          typebot &&
-          (options.typebotId === typebot.id || options.typebotId === 'current')
-            ? typebot.groups
-            : linkedTypebots?.find(byId(options.typebotId))?.groups ?? []
-        }
-        groupId={options.groupId}
-        onGroupIdSelected={handleGroupIdChange}
-        isLoading={
-          linkedTypebots === undefined &&
-          typebot &&
-          typebot.id !== options.typebotId
-        }
-      />
+      {options.typebotId && (
+        <GroupsDropdown
+          groups={
+            typebot &&
+            (options.typebotId === typebot.id ||
+              options.typebotId === 'current')
+              ? typebot.groups
+              : linkedTypebots?.find(byId(options.typebotId))?.groups ?? []
+          }
+          groupId={options.groupId}
+          onGroupIdSelected={handleGroupIdChange}
+          isLoading={
+            linkedTypebots === undefined &&
+            typebot &&
+            typebot.id !== options.typebotId
+          }
+        />
+      )}
     </Stack>
   )
 }

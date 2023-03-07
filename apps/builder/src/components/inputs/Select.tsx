@@ -23,21 +23,30 @@ import { ChevronDownIcon, CloseIcon } from '../icons'
 
 const dropdownCloseAnimationDuration = 300
 
-type Item = string | { icon?: JSX.Element; label: string; value: string }
+type Item =
+  | string
+  | {
+      icon?: JSX.Element
+      label: string
+      value: string
+      extras?: Record<string, unknown>
+    }
 
-type Props = {
+type Props<T extends Item> = {
+  isPopoverMatchingInputWidth?: boolean
   selectedItem?: string
-  items: Item[]
+  items: T[]
   placeholder?: string
-  onSelect?: (value: string | undefined) => void
+  onSelect?: (value: string | undefined, item?: T) => void
 }
 
-export const Select = ({
+export const Select = <T extends Item>({
+  isPopoverMatchingInputWidth = true,
   selectedItem,
   placeholder,
   items,
   onSelect,
-}: Props) => {
+}: Props<T>) => {
   const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
   const selectedItemBgColor = useColorModeValue('blue.50', 'blue.400')
   const [isTouched, setIsTouched] = useState(false)
@@ -87,20 +96,22 @@ export const Select = ({
     setInputValue(e.target.value)
   }
 
-  const handleItemClick = (item: Item) => () => {
+  const handleItemClick = (item: T) => () => {
     if (!isTouched) setIsTouched(true)
     setInputValue(getItemLabel(item))
-    onSelect?.(getItemValue(item))
+    onSelect?.(getItemValue(item), item)
     setKeyboardFocusIndex(undefined)
     closeDropwdown()
   }
 
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
+      e.preventDefault()
       handleItemClick(filteredItems[keyboardFocusIndex])()
       return setKeyboardFocusIndex(undefined)
     }
     if (e.key === 'ArrowDown') {
+      e.preventDefault()
       if (keyboardFocusIndex === undefined) return setKeyboardFocusIndex(0)
       if (keyboardFocusIndex === filteredItems.length - 1)
         return setKeyboardFocusIndex(0)
@@ -111,6 +122,7 @@ export const Select = ({
       return setKeyboardFocusIndex(keyboardFocusIndex + 1)
     }
     if (e.key === 'ArrowUp') {
+      e.preventDefault()
       if (keyboardFocusIndex === 0 || keyboardFocusIndex === undefined)
         return setKeyboardFocusIndex(filteredItems.length - 1)
       itemsRef.current[keyboardFocusIndex - 1]?.scrollIntoView({
@@ -140,7 +152,8 @@ export const Select = ({
       <Popover
         isOpen={isOpen}
         initialFocusRef={inputRef}
-        matchWidth
+        matchWidth={isPopoverMatchingInputWidth}
+        placement="bottom-start"
         offset={[0, 1]}
         isLazy
       >
@@ -150,7 +163,7 @@ export const Select = ({
               pos="absolute"
               pb={2}
               // We need absolute positioning the overlay match the underlying input
-              pt="8.5px"
+              pt="8px"
               pl="17px"
               pr={selectedItem ? 16 : 8}
               w="full"
@@ -173,7 +186,7 @@ export const Select = ({
               onBlur={resetIsTouched}
               onChange={handleInputChange}
               onFocus={onOpen}
-              onKeyDown={handleKeyUp}
+              onKeyDown={handleKeyDown}
               pr={selectedItem ? 16 : undefined}
             />
 

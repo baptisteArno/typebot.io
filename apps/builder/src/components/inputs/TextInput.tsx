@@ -9,7 +9,14 @@ import {
   InputProps,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
@@ -29,23 +36,27 @@ export type TextInputProps = {
   'autoComplete' | 'onFocus' | 'onKeyUp' | 'type' | 'autoFocus'
 >
 
-export const TextInput = ({
-  type,
-  defaultValue,
-  debounceTimeout = 1000,
-  label,
-  moreInfoTooltip,
-  withVariableButton = true,
-  isRequired,
-  placeholder,
-  autoComplete,
-  isDisabled,
-  autoFocus,
-  onChange: _onChange,
-  onFocus,
-  onKeyUp,
-}: TextInputProps) => {
+export const TextInput = forwardRef(function TextInput(
+  {
+    type,
+    defaultValue,
+    debounceTimeout = 1000,
+    label,
+    moreInfoTooltip,
+    withVariableButton = true,
+    isRequired,
+    placeholder,
+    autoComplete,
+    isDisabled,
+    autoFocus,
+    onChange: _onChange,
+    onFocus,
+    onKeyUp,
+  }: TextInputProps,
+  ref
+) {
   const inputRef = useRef<HTMLInputElement | null>(null)
+  useImperativeHandle(ref, () => inputRef.current)
   const [isTouched, setIsTouched] = useState(false)
   const [localValue, setLocalValue] = useState<string>(defaultValue ?? '')
   const [carretPosition, setCarretPosition] = useState<number>(
@@ -128,4 +139,4 @@ export const TextInput = ({
       )}
     </FormControl>
   )
-}
+})
