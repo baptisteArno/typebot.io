@@ -32,6 +32,7 @@ import { PaymentForm } from '@/features/blocks/inputs/payment'
 
 type Props = {
   block: NonNullable<ChatReply['input']>
+  hasHostAvatar: boolean
   guestAvatar?: Theme['chat']['guestAvatar']
   inputIndex: number
   context: BotContext
@@ -66,7 +67,7 @@ export const InputChatBlock = (props: Props) => {
       </Match>
       <Match when={isNotDefined(answer())}>
         <div class="flex justify-end animate-fade-in">
-          {props.guestAvatar?.isEnabled && (
+          {props.hasHostAvatar && (
             <div
               class={
                 'flex mr-2 mb-2 mt-1 flex-shrink-0 items-center ' +
@@ -81,7 +82,6 @@ export const InputChatBlock = (props: Props) => {
             isInputPrefillEnabled={props.isInputPrefillEnabled}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
-            hasGuestAvatar={props.guestAvatar?.isEnabled ?? false}
           />
         </div>
       </Match>
@@ -93,7 +93,6 @@ const Input = (props: {
   context: BotContext
   block: NonNullable<ChatReply['input']>
   inputIndex: number
-  hasGuestAvatar: boolean
   isInputPrefillEnabled: boolean
   onSubmit: (answer: InputSubmitContent) => void
   onSkip: (label: string) => void
@@ -117,7 +116,6 @@ const Input = (props: {
           block={props.block as TextInputBlock}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
-          hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.NUMBER}>
@@ -125,7 +123,6 @@ const Input = (props: {
           block={props.block as NumberInputBlock}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
-          hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.EMAIL}>
@@ -133,7 +130,6 @@ const Input = (props: {
           block={props.block as EmailInputBlock}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
-          hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.URL}>
@@ -141,7 +137,6 @@ const Input = (props: {
           block={props.block as UrlInputBlock}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
-          hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.PHONE}>
@@ -152,7 +147,6 @@ const Input = (props: {
           }
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
-          hasGuestAvatar={props.hasGuestAvatar}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.DATE}>

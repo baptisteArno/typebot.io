@@ -13,7 +13,6 @@ type PhoneInputProps = Pick<
 > & {
   defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
-  hasGuestAvatar: boolean
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
@@ -88,7 +87,6 @@ export const PhoneInput = (props: PhoneInputProps) => {
       class={'flex items-end justify-between rounded-lg pr-2 typebot-input'}
       data-testid="input"
       style={{
-        'margin-right': props.hasGuestAvatar ? '50px' : '8px',
         'max-width': '400px',
       }}
       onKeyDown={submitWhenEnter}

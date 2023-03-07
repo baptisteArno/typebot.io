@@ -16,16 +16,7 @@ export const LoadingChunk = (props: Props) => (
             hostAvatarSrc={props.theme.chat.hostAvatar?.url}
           />
         </Show>
-        <div
-          class="flex-1"
-          style={{
-            'margin-right': props.theme.chat.guestAvatar?.isEnabled
-              ? '50px'
-              : '8px',
-          }}
-        >
-          <LoadingBubble />
-        </div>
+        <LoadingBubble />
       </div>
     </div>
   </div>

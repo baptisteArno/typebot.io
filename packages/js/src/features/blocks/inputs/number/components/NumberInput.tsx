@@ -9,7 +9,6 @@ type NumberInputProps = {
   block: NumberInputBlock
   defaultValue?: string
   onSubmit: (value: InputSubmitContent) => void
-  hasGuestAvatar: boolean
 }
 
 export const NumberInput = (props: NumberInputProps) => {
@@ -40,7 +39,6 @@ export const NumberInput = (props: NumberInputProps) => {
       }
       data-testid="input"
       style={{
-        'margin-right': props.hasGuestAvatar ? '50px' : '8px',
         'max-width': '350px',
       }}
       onKeyDown={submitWhenEnter}

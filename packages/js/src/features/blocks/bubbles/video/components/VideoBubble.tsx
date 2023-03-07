@@ -33,7 +33,7 @@ export const VideoBubble = (props: Props) => {
 
   return (
     <div class="flex flex-col animate-fade-in">
-      <div class="flex mb-2 w-full lg:w-11/12 items-center">
+      <div class="flex mb-2 w-full items-center">
         <div class={'flex relative z-10 items-start typebot-host-bubble'}>
           <div
             class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "

@@ -8,7 +8,6 @@ import { createSignal, onMount } from 'solid-js'
 type Props = {
   block: TextInputBlock
   defaultValue?: string
-  hasGuestAvatar: boolean
   onSubmit: (value: InputSubmitContent) => void
 }
 
@@ -41,7 +40,6 @@ export const TextInput = (props: Props) => {
       }
       data-testid="input"
       style={{
-        'margin-right': props.hasGuestAvatar ? '50px' : '8px',
         'max-width': props.block.options.isLong ? undefined : '350px',
       }}
       onKeyDown={submitWhenEnter}

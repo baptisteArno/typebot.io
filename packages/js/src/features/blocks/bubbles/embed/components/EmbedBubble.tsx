@@ -29,7 +29,7 @@ export const EmbedBubble = (props: Props) => {
 
   return (
     <div class="flex flex-col w-full animate-fade-in">
-      <div class="flex mb-2 w-full lg:w-11/12 items-center">
+      <div class="flex mb-2 w-full items-center">
         <div
           class={'flex relative z-10 items-start typebot-host-bubble w-full'}
         >

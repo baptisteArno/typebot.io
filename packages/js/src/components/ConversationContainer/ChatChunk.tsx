@@ -1,4 +1,5 @@
 import { BotContext } from '@/types'
+import { isMobile } from '@/utils/isMobileSignal'
 import type { ChatReply, Settings, Theme } from 'models'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { HostBubble } from '../bubbles/HostBubble'
@@ -60,8 +61,10 @@ export const ChatChunk = (props: Props) => {
             class="flex-1"
             style={{
               'margin-right': props.theme.chat.guestAvatar?.isEnabled
-                ? '50px'
-                : '8px',
+                ? isMobile()
+                  ? '32px'
+                  : '48px'
+                : undefined,
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
@@ -81,6 +84,7 @@ export const ChatChunk = (props: Props) => {
             inputIndex={props.inputIndex}
             onSubmit={props.onSubmit}
             onSkip={props.onSkip}
+            hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
             guestAvatar={props.theme.chat.guestAvatar}
             context={props.context}
             isInputPrefillEnabled={
