@@ -13,7 +13,7 @@ import {
   ChatReply,
   chatReplySchema,
   ChatSession,
-  Result,
+  ResultInSession,
   sendMessageInputSchema,
   SessionState,
   StartParams,
@@ -85,7 +85,11 @@ export const sendMessageProcedure = publicProcedure
           },
         })
 
-        if (!input && session.state.result?.hasStarted)
+        if (
+          !input &&
+          session.state.result.answers.length > 0 &&
+          session.state.result.id
+        )
           await setResultAsCompleted(session.state.result.id)
 
         return {
@@ -106,9 +110,6 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
       message: 'No typebot provided in startParams',
     })
 
-  const isPreview =
-    startParams?.isPreview || typeof startParams?.typebot !== 'string'
-
   const typebot = await getTypebot(startParams, userId)
 
   const prefilledVariables = startParams.prefilledVariables
@@ -117,8 +118,8 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
 
   const result = await getResult({
     ...startParams,
-    isPreview,
-    typebot: typebot.id,
+    isPreview: startParams.isPreview || typeof startParams.typebot !== 'string',
+    typebotId: typebot.id,
     prefilledVariables,
     isNewResultOnRefreshEnabled:
       typebot.settings.general.isNewResultOnRefreshEnabled ?? false,
@@ -140,10 +141,11 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
       typebots: [],
       queue: [],
     },
-    result: result
-      ? { id: result.id, variables: result.variables, hasStarted: false }
-      : undefined,
-    isPreview,
+    result: {
+      id: result?.id,
+      variables: result?.variables ?? [],
+      answers: result?.answers ?? [],
+    },
     currentTypebotId: typebot.id,
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
   }
@@ -297,20 +299,21 @@ const getTypebot = async (
 }
 
 const getResult = async ({
-  typebot,
+  typebotId,
   isPreview,
   resultId,
   prefilledVariables,
   isNewResultOnRefreshEnabled,
-}: Pick<StartParams, 'isPreview' | 'resultId' | 'typebot'> & {
+}: Pick<StartParams, 'isPreview' | 'resultId'> & {
+  typebotId: string
   prefilledVariables: Variable[]
   isNewResultOnRefreshEnabled: boolean
 }) => {
-  if (isPreview || typeof typebot !== 'string') return
+  if (isPreview) return
   const select = {
     id: true,
     variables: true,
-    hasStarted: true,
+    answers: { select: { blockId: true, variableId: true, content: true } },
   } satisfies Prisma.ResultSelect
 
   const existingResult =
@@ -318,7 +321,7 @@ const getResult = async ({
       ? ((await prisma.result.findFirst({
           where: { id: resultId },
           select,
-        })) as Pick<Result, 'id' | 'variables' | 'hasStarted'>)
+        })) as ResultInSession)
       : undefined
 
   if (existingResult) {
@@ -344,19 +347,19 @@ const getResult = async ({
     return {
       id: existingResult.id,
       variables: updatedResult.variables,
-      hasStarted: existingResult.hasStarted,
+      answers: existingResult.answers,
     }
   } else {
     return (await prisma.result.create({
       data: {
         isCompleted: false,
-        typebotId: typebot,
+        typebotId,
         variables: prefilledVariables.filter((variable) =>
           isDefined(variable.value)
         ),
       },
       select,
-    })) as Pick<Result, 'id' | 'variables' | 'hasStarted'>
+    })) as ResultInSession
   }
 }
 

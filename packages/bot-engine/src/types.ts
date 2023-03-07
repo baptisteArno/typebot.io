@@ -3,7 +3,7 @@ import {
   Edge,
   Group,
   PublicTypebot,
-  ResultValues,
+  ResultValuesInput,
   Typebot,
   Variable,
   VariableWithUnknowValue,
@@ -45,7 +45,7 @@ export type IntegrationState = {
   blockId: string
   isPreview: boolean
   variables: Variable[]
-  resultValues: ResultValues
+  resultValues: ResultValuesInput
   groups: Group[]
   resultId?: string
   parentTypebotIds: string[]

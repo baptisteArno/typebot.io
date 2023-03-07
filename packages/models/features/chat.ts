@@ -6,8 +6,6 @@ import {
   redirectOptionsSchema,
 } from './blocks'
 import { publicTypebotSchema } from './publicTypebot'
-import { ChatSession as ChatSessionPrisma } from 'db'
-import { schemaForType } from './utils'
 import { logSchema, resultSchema } from './result'
 import { typebotSchema } from './typebot'
 import {
@@ -18,6 +16,7 @@ import {
   audioBubbleContentSchema,
   embedBubbleContentSchema,
 } from './blocks/bubbles'
+import { answerSchema } from './answer'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,
@@ -31,6 +30,23 @@ const dynamicThemeSchema = z.object({
   guestAvatarUrl: z.string().optional(),
 })
 
+const answerInSessionStateSchema = answerSchema.pick({
+  content: true,
+  blockId: true,
+  variableId: true,
+})
+
+const resultInSessionStateSchema = resultSchema
+  .pick({
+    variables: true,
+  })
+  .and(
+    z.object({
+      answers: z.array(answerInSessionStateSchema),
+      id: z.string().optional(),
+    })
+  )
+
 export const sessionStateSchema = z.object({
   typebot: typebotInSessionStateSchema,
   dynamicTheme: dynamicThemeSchema.optional(),
@@ -39,10 +55,7 @@ export const sessionStateSchema = z.object({
     queue: z.array(z.object({ edgeId: z.string(), typebotId: z.string() })),
   }),
   currentTypebotId: z.string(),
-  result: resultSchema
-    .pick({ id: true, variables: true, hasStarted: true })
-    .optional(),
-  isPreview: z.boolean(),
+  result: resultInSessionStateSchema,
   currentBlock: z
     .object({
       blockId: z.string(),
@@ -51,14 +64,12 @@ export const sessionStateSchema = z.object({
     .optional(),
 })
 
-const chatSessionSchema = schemaForType<ChatSessionPrisma>()(
-  z.object({
-    id: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-    state: sessionStateSchema,
-  })
-)
+const chatSessionSchema = z.object({
+  id: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  state: sessionStateSchema,
+})
 
 const textMessageSchema = z.object({
   type: z.enum([BubbleBlockType.TEXT]),
@@ -234,6 +245,7 @@ export const chatReplySchema = z.object({
 export type ChatSession = z.infer<typeof chatSessionSchema>
 export type SessionState = z.infer<typeof sessionStateSchema>
 export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
+export type ResultInSession = z.infer<typeof resultInSessionStateSchema>
 export type ChatReply = z.infer<typeof chatReplySchema>
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 export type SendMessageInput = z.infer<typeof sendMessageInputSchema>

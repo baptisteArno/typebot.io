@@ -3009,9 +3009,6 @@
                                       },
                                       "isNewResultOnRefreshEnabled": {
                                         "type": "boolean"
-                                      },
-                                      "isResultSavingEnabled": {
-                                        "type": "boolean"
                                       }
                                     },
                                     "required": [
@@ -4992,9 +4989,6 @@
                                   "type": "boolean"
                                 },
                                 "isNewResultOnRefreshEnabled": {
-                                  "type": "boolean"
-                                },
-                                "isResultSavingEnabled": {
                                   "type": "boolean"
                                 }
                               },

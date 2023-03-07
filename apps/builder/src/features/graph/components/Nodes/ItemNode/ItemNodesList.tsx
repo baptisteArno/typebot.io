@@ -40,7 +40,7 @@ export const ItemNodesList = ({
 
   const isLastBlock =
     isDefined(typebot) &&
-    typebot.groups[groupIndex].blocks[blockIndex + 1] === undefined
+    typebot.groups[groupIndex]?.blocks?.[blockIndex + 1] === undefined
 
   const [position, setPosition] = useState({
     x: 0,

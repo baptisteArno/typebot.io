@@ -46,12 +46,6 @@ export const GeneralSettingsForm = ({
       isHideQueryParamsEnabled,
     })
 
-  const handleDisableResultsSavingChange = (isResultSavingEnabled: boolean) =>
-    onGeneralSettingsChange({
-      ...generalSettings,
-      isResultSavingEnabled: !isResultSavingEnabled,
-    })
-
   return (
     <Stack spacing={6}>
       <ChangePlanModal
@@ -95,16 +89,6 @@ export const GeneralSettingsForm = ({
         initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
         onCheckChange={handleHideQueryParamsChange}
         moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
-      />
-      <SwitchWithLabel
-        label="Disable responses saving"
-        initialValue={
-          isDefined(generalSettings.isResultSavingEnabled)
-            ? !generalSettings.isResultSavingEnabled
-            : false
-        }
-        onCheckChange={handleDisableResultsSavingChange}
-        moreInfoContent="Prevent responses from being saved on Typebot. Chats limit usage will still be tracked."
       />
     </Stack>
   )

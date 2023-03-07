@@ -157,12 +157,10 @@ export const updateVariables =
       ...state.typebot,
       variables: updateTypebotVariables(state)(newVariables),
     },
-    result: state.result
-      ? {
-          ...state.result,
-          variables: await updateResultVariables(state)(newVariables),
-        }
-      : undefined,
+    result: {
+      ...state.result,
+      variables: await updateResultVariables(state)(newVariables),
+    },
   })
 
 const updateResultVariables =
@@ -170,7 +168,6 @@ const updateResultVariables =
   async (
     newVariables: VariableWithUnknowValue[]
   ): Promise<VariableWithValue[]> => {
-    if (!result) return []
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: Array.isArray(variable.value)
@@ -187,14 +184,15 @@ const updateResultVariables =
       ...serializedNewVariables,
     ].filter((variable) => isDefined(variable.value)) as VariableWithValue[]
 
-    await prisma.result.update({
-      where: {
-        id: result.id,
-      },
-      data: {
-        variables: updatedVariables,
-      },
-    })
+    if (result.id)
+      await prisma.result.update({
+        where: {
+          id: result.id,
+        },
+        data: {
+          variables: updatedVariables,
+        },
+      })
 
     return updatedVariables
   }

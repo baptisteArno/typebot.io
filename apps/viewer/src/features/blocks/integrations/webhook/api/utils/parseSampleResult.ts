@@ -29,7 +29,7 @@ export const parseSampleResult =
 
     return {
       message: 'This is a sample result, it has been generated ⬇️',
-      'Submitted at': new Date().toISOString(),
+      submittedAt: new Date().toISOString(),
       ...parseResultSample(linkedInputBlocks, header, variables),
     }
   }

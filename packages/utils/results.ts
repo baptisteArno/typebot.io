@@ -6,9 +6,9 @@ import {
   Answer,
   VariableWithValue,
   Typebot,
-  ResultWithAnswersInput,
   ResultWithAnswers,
   InputBlockType,
+  ResultInSession,
 } from 'models'
 import { isInputBlock, isDefined, byId, isNotEmpty } from './utils'
 
@@ -218,16 +218,16 @@ export const parseAnswers =
     createdAt,
     answers,
     variables: resultVariables,
-  }: Pick<ResultWithAnswersInput, 'answers' | 'variables'> & {
-    // TODO: remove once we are using 100% tRPC
-    createdAt: Date | string
-  }): {
+  }: Omit<ResultInSession, 'hasStarted'> & { createdAt?: Date | string }): {
     [key: string]: string
   } => {
     const header = parseResultHeader(typebot, linkedTypebots)
     return {
-      submittedAt:
-        typeof createdAt === 'string' ? createdAt : createdAt.toISOString(),
+      submittedAt: !createdAt
+        ? new Date().toISOString()
+        : typeof createdAt === 'string'
+        ? createdAt
+        : createdAt.toISOString(),
       ...[...answers, ...resultVariables].reduce<{
         [key: string]: string
       }>((o, answerOrVariable) => {

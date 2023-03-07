@@ -54,7 +54,7 @@ export const Graph = ({
   } = useGraph()
   const { updateGroupCoordinates } = useGroupsCoordinates()
   const [graphPosition, setGraphPosition] = useState(
-    graphPositionDefaultValue(typebot.groups[0].graphCoordinates)
+    graphPositionDefaultValue(typebot.groups[0]?.graphCoordinates)
   )
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(

@@ -113,7 +113,7 @@ export const executeGroup =
   }
 
 const computeRuntimeOptions =
-  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
+  (state: Pick<SessionState, 'result' | 'typebot'>) =>
   (block: InputBlock): Promise<RuntimeOptions> | undefined => {
     switch (block.type) {
       case InputBlockType.PAYMENT: {
@@ -158,7 +158,7 @@ const parseBubbleBlock =
   }
 
 const injectVariablesValueInBlock =
-  (state: Pick<SessionState, 'isPreview' | 'typebot'>) =>
+  (state: Pick<SessionState, 'result' | 'typebot'>) =>
   async (block: InputBlock): Promise<ChatReply['input']> => {
     switch (block.type) {
       case InputBlockType.CHOICE: {

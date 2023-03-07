@@ -107,8 +107,6 @@ export const TypebotPageV2 = ({
 
   const sendNewVariables =
     (resultId: string) => async (variables: VariableWithValue[]) => {
-      if (publishedTypebot.settings.general.isResultSavingEnabled === false)
-        return
       const { error } = await updateResultQuery(resultId, { variables })
       if (error) setError(error)
     }
@@ -117,10 +115,8 @@ export const TypebotPageV2 = ({
     answer: AnswerInput & { uploadedFiles: boolean }
   ) => {
     if (!resultId) return setError(new Error('Error: result was not created'))
-    if (publishedTypebot.settings.general.isResultSavingEnabled !== false) {
-      const { error } = await upsertAnswerQuery({ ...answer, resultId })
-      if (error) setError(error)
-    }
+    const { error } = await upsertAnswerQuery({ ...answer, resultId })
+    if (error) setError(error)
     if (chatStarted) return
     updateResultQuery(resultId, {
       hasStarted: true,
@@ -128,8 +124,6 @@ export const TypebotPageV2 = ({
   }
 
   const handleCompleted = async () => {
-    if (publishedTypebot.settings.general.isResultSavingEnabled === false)
-      return
     if (!resultId) return setError(new Error('Error: result was not created'))
     const { error } = await updateResultQuery(resultId, { isCompleted: true })
     if (error) setError(error)

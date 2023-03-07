@@ -1,7 +1,7 @@
 import { safeStringify } from '@/features/variables'
 import {
   AnswerInput,
-  ResultValues,
+  ResultValuesInput,
   Variable,
   VariableWithUnknowValue,
   VariableWithValue,
@@ -11,7 +11,7 @@ import { isDefined } from 'utils'
 
 const answersContext = createContext<{
   resultId?: string
-  resultValues: ResultValues
+  resultValues: ResultValuesInput
   addAnswer: (
     existingVariables: Variable[]
   ) => (
@@ -35,7 +35,7 @@ export const AnswersProvider = ({
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
   children: ReactNode
 }) => {
-  const [resultValues, setResultValues] = useState<ResultValues>({
+  const [resultValues, setResultValues] = useState<ResultValuesInput>({
     answers: [],
     variables: [],
     createdAt: new Date(),

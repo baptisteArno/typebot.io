@@ -115,7 +115,8 @@ const getLinkedTypebot = async (
   state: SessionState,
   typebotId: string
 ): Promise<TypebotInSession | null> => {
-  const { typebot, isPreview } = state
+  const { typebot, result } = state
+  const isPreview = !result.id
   if (typebotId === 'current') return typebot
   const availableTypebots =
     'linkedTypebots' in state
@@ -123,12 +124,12 @@ const getLinkedTypebot = async (
       : [typebot]
   const linkedTypebot =
     availableTypebots.find(byId(typebotId)) ??
-    (await fetchTypebot({ isPreview }, typebotId))
+    (await fetchTypebot(isPreview, typebotId))
   return linkedTypebot
 }
 
 const fetchTypebot = async (
-  { isPreview }: Pick<SessionState, 'isPreview'>,
+  isPreview: boolean,
   typebotId: string
 ): Promise<TypebotInSession | null> => {
   if (isPreview) {

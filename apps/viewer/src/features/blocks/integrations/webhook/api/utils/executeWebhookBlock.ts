@@ -16,16 +16,15 @@ import {
   WebhookOptions,
   defaultWebhookAttributes,
   HttpMethod,
-  ResultValues,
   PublicTypebot,
   KeyValue,
   ReplyLog,
+  ResultInSession,
 } from 'models'
 import { stringify } from 'qs'
 import { byId, omit } from 'utils'
 import { parseAnswers } from 'utils/results'
 import got, { Method, Headers, HTTPError } from 'got'
-import { getResultValues } from '@/features/results/api'
 import { parseSampleResult } from './parseSampleResult'
 
 export const executeWebhookBlock = async (
@@ -50,14 +49,11 @@ export const executeWebhookBlock = async (
     return { outgoingEdgeId: block.outgoingEdgeId, logs: [log] }
   }
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-  const resultValues =
-    (result && (await getResultValues(result.id))) ?? undefined
   const webhookResponse = await executeWebhook({ typebot })(
     preparedWebhook,
     typebot.variables,
     block.groupId,
-    resultValues,
-    result?.id
+    result
   )
   const status = webhookResponse.statusCode.toString()
   const isError = status.startsWith('4') || status.startsWith('5')
@@ -139,8 +135,7 @@ export const executeWebhook =
     webhook: Webhook,
     variables: Variable[],
     groupId: string,
-    resultValues?: ResultValues,
-    resultId?: string
+    result: ResultInSession
   ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
       return {
@@ -176,7 +171,7 @@ export const executeWebhook =
       []
     )({
       body: webhook.body,
-      resultValues,
+      result,
       groupId,
       variables,
     })
@@ -206,7 +201,7 @@ export const executeWebhook =
     try {
       const response = await got(request.url, omit(request, 'url'))
       await saveSuccessLog({
-        resultId,
+        resultId: result.id,
         message: 'Webhook successfuly executed.',
         details: {
           statusCode: response.statusCode,
@@ -225,7 +220,7 @@ export const executeWebhook =
           data: safeJsonParse(error.response.body as string).data,
         }
         await saveErrorLog({
-          resultId,
+          resultId: result.id,
           message: 'Webhook returned an error',
           details: {
             request,
@@ -240,7 +235,7 @@ export const executeWebhook =
       }
       console.error(error)
       await saveErrorLog({
-        resultId,
+        resultId: result.id,
         message: 'Webhook failed to execute',
         details: {
           request,
@@ -258,20 +253,20 @@ const getBodyContent =
   ) =>
   async ({
     body,
-    resultValues,
+    result,
     groupId,
     variables,
   }: {
     body?: string | null
-    resultValues?: ResultValues
+    result?: ResultInSession
     groupId: string
     variables: Variable[]
   }): Promise<string | undefined> => {
     if (!body) return
     return body === '{{state}}'
       ? JSON.stringify(
-          resultValues
-            ? parseAnswers(typebot, linkedTypebots)(resultValues)
+          result
+            ? parseAnswers(typebot, linkedTypebots)(result)
             : await parseSampleResult(typebot, linkedTypebots)(
                 groupId,
                 variables

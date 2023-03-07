@@ -48,8 +48,13 @@ export type ResultWithAnswersInput = z.infer<
 >
 export type Log = z.infer<typeof logSchema>
 
-export type ResultValues = Pick<
+export type ResultValuesInput = Pick<
   ResultWithAnswersInput,
+  'answers' | 'createdAt' | 'variables'
+>
+
+export type ResultValues = Pick<
+  ResultWithAnswers,
   'answers' | 'createdAt' | 'variables'
 >
 

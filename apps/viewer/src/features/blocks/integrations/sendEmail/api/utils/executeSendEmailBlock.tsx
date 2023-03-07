@@ -6,7 +6,7 @@ import { render } from '@faire/mjml-react/utils/render'
 import { DefaultBotNotificationEmail } from 'emails'
 import {
   PublicTypebot,
-  ResultValues,
+  ResultInSession,
   SendEmailBlock,
   SendEmailOptions,
   SessionState,
@@ -20,11 +20,12 @@ import { decrypt } from 'utils/api'
 import { defaultFrom, defaultTransportOptions } from '../constants'
 
 export const executeSendEmailBlock = async (
-  { result, typebot, isPreview }: SessionState,
+  { result, typebot }: SessionState,
   block: SendEmailBlock
 ): Promise<ExecuteIntegrationResponse> => {
   const { options } = block
   const { variables } = typebot
+  const isPreview = !result.id
   if (isPreview)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -37,7 +38,7 @@ export const executeSendEmailBlock = async (
     }
   await sendEmail({
     typebotId: typebot.id,
-    resultId: result?.id,
+    result,
     credentialsId: options.credentialsId,
     recipients: options.recipients.map(parseVariables(variables)),
     subject: parseVariables(variables)(options.subject ?? ''),
@@ -57,7 +58,7 @@ export const executeSendEmailBlock = async (
 
 const sendEmail = async ({
   typebotId,
-  resultId,
+  result,
   credentialsId,
   recipients,
   body,
@@ -70,7 +71,7 @@ const sendEmail = async ({
   fileUrls,
 }: SendEmailOptions & {
   typebotId: string
-  resultId?: string
+  result: ResultInSession
   fileUrls?: string | string[]
 }) => {
   const { name: replyToName } = parseEmailRecipient(replyTo)
@@ -94,12 +95,12 @@ const sendEmail = async ({
     isCustomBody,
     isBodyCode,
     typebotId,
-    resultId,
+    result,
   })
 
   if (!emailBody) {
     await saveErrorLog({
-      resultId,
+      resultId: result.id,
       message: 'Email not sent',
       details: {
         error: 'No email body found',
@@ -132,7 +133,7 @@ const sendEmail = async ({
   try {
     await transporter.sendMail(email)
     await saveSuccessLog({
-      resultId,
+      resultId: result.id,
       message: 'Email successfully sent',
       details: {
         transportConfig: {
@@ -144,7 +145,7 @@ const sendEmail = async ({
     })
   } catch (err) {
     await saveErrorLog({
-      resultId,
+      resultId: result.id,
       message: 'Email not sent',
       details: {
         error: err,
@@ -182,10 +183,10 @@ const getEmailBody = async ({
   isCustomBody,
   isBodyCode,
   typebotId,
-  resultId,
+  result,
 }: {
   typebotId: string
-  resultId?: string
+  result: ResultInSession
 } & Pick<SendEmailOptions, 'isCustomBody' | 'isBodyCode' | 'body'>): Promise<
   { html?: string; text?: string } | undefined
 > => {
@@ -198,12 +199,7 @@ const getEmailBody = async ({
     where: { typebotId },
   })) as unknown as PublicTypebot
   if (!typebot) return
-  const resultValues = (await prisma.result.findUnique({
-    where: { id: resultId },
-    include: { answers: true },
-  })) as ResultValues | null
-  if (!resultValues) return
-  const answers = parseAnswers(typebot, [])(resultValues)
+  const answers = parseAnswers(typebot, [])(result)
   return {
     html: render(
       <DefaultBotNotificationEmail

@@ -6,7 +6,6 @@ const generalSettings = z.object({
   isInputPrefillEnabled: z.boolean().optional(),
   isHideQueryParamsEnabled: z.boolean().optional(),
   isNewResultOnRefreshEnabled: z.boolean().optional(),
-  isResultSavingEnabled: z.boolean().optional(),
 })
 
 const typingEmulation = z.object({
@@ -36,7 +35,6 @@ export const defaultSettings: Settings = {
     isNewResultOnRefreshEnabled: true,
     isInputPrefillEnabled: true,
     isHideQueryParamsEnabled: true,
-    isResultSavingEnabled: true,
   },
   typingEmulation: { enabled: true, speed: 300, maxDelay: 1.5 },
   metadata: {

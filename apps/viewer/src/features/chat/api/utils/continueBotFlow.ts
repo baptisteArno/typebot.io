@@ -7,6 +7,7 @@ import { validateUrl } from '@/features/blocks/inputs/url/api'
 import { parseVariables, updateVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
+import { Prisma } from 'db'
 import got from 'got'
 import {
   Block,
@@ -15,6 +16,7 @@ import {
   ChatReply,
   InputBlock,
   InputBlockType,
+  ResultInSession,
   SessionState,
 } from 'models'
 import { isInputBlock, isNotDefined } from 'utils'
@@ -86,17 +88,9 @@ const processAndSaveAnswer =
   (state: SessionState, block: InputBlock) =>
   async (reply: string | null): Promise<SessionState> => {
     if (!reply) return state
-    if (!state.isPreview && state.result) {
-      await saveAnswer(state.result.id, block)(reply)
-      if (!state.result.hasStarted) await setResultAsStarted(state.result.id)
-    }
-    const newState = await saveVariableValueIfAny(state, block)(reply)
-    return {
-      ...newState,
-      result: newState.result
-        ? { ...newState.result, hasStarted: true }
-        : undefined,
-    }
+    let newState = await saveAnswer(state, block)(reply)
+    newState = await saveVariableValueIfAny(newState, block)(reply)
+    return newState
   }
 
 const saveVariableValueIfAny =
@@ -114,13 +108,6 @@ const saveVariableValueIfAny =
 
     return newSessionState
   }
-
-const setResultAsStarted = async (resultId: string) => {
-  await prisma.result.update({
-    where: { id: resultId },
-    data: { hasStarted: true },
-  })
-}
 
 export const setResultAsCompleted = async (resultId: string) => {
   await prisma.result.update({
@@ -152,31 +139,65 @@ const parseRetryMessage = (
 }
 
 const saveAnswer =
-  (resultId: string, block: InputBlock) => async (reply: string) => {
+  (state: SessionState, block: InputBlock) =>
+  async (reply: string): Promise<SessionState> => {
+    const resultId = state.result?.id
     const answer = {
-      resultId: resultId,
+      resultId,
       blockId: block.id,
       groupId: block.groupId,
       content: reply,
       variableId: block.options.variableId,
       storageUsed: 0,
     }
+    if (state.result.answers.length === 0 && state.result.id)
+      await setResultAsStarted(state.result.id)
+
+    const newSessionState = setNewAnswerInState(state)({
+      blockId: block.id,
+      variableId: block.options.variableId ?? null,
+      content: reply,
+    })
 
     if (reply.includes('http') && block.type === InputBlockType.FILE) {
       answer.storageUsed = await computeStorageUsed(reply)
     }
 
-    await prisma.answer.upsert({
-      where: {
-        resultId_blockId_groupId: {
-          resultId,
-          groupId: block.groupId,
-          blockId: block.id,
+    if (resultId)
+      await prisma.answer.upsert({
+        where: {
+          resultId_blockId_groupId: {
+            resultId,
+            groupId: block.groupId,
+            blockId: block.id,
+          },
         },
+        create: answer as Prisma.AnswerUncheckedCreateInput,
+        update: answer,
+      })
+    return newSessionState
+  }
+
+const setResultAsStarted = async (resultId: string) => {
+  await prisma.result.update({
+    where: { id: resultId },
+    data: { hasStarted: true },
+  })
+}
+
+const setNewAnswerInState =
+  (state: SessionState) => (newAnswer: ResultInSession['answers'][number]) => {
+    const newAnswers = state.result.answers
+      .filter((answer) => answer.blockId !== newAnswer.blockId)
+      .concat(newAnswer)
+
+    return {
+      ...state,
+      result: {
+        ...state.result,
+        answers: newAnswers,
       },
-      create: answer,
-      update: answer,
-    })
+    } satisfies SessionState
   }
 
 const computeStorageUsed = async (reply: string) => {
