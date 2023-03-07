@@ -223,7 +223,6 @@ model PublicTypebot {
 model Result {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
   typebotId   String
   variables   Json
   isCompleted Boolean

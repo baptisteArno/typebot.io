@@ -9,7 +9,6 @@ export const resultSchema = schemaForType<ResultPrisma>()(
   z.object({
     id: z.string(),
     createdAt: z.date(),
-    updatedAt: z.date(),
     typebotId: z.string(),
     variables: z.array(variableWithValueSchema),
     isCompleted: z.boolean(),

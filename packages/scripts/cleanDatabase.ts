@@ -10,7 +10,46 @@ export const cleanDatabase = async () => {
   await deleteOldChatSessions()
   await deleteExpiredAppSessions()
   await deleteExpiredVerificationTokens()
+  const isFirstOfMonth = new Date().getDate() === 1
+  if (isFirstOfMonth) {
+    await deleteArchivedTypebots()
+    await deleteArchivedResults()
+  }
   console.log('Done!')
+}
+
+const deleteArchivedTypebots = async () => {
+  const lastDayOfPreviousMonth = new Date()
+  lastDayOfPreviousMonth.setMonth(lastDayOfPreviousMonth.getMonth() - 1)
+  lastDayOfPreviousMonth.setDate(0)
+
+  const { count } = await prisma.typebot.deleteMany({
+    where: {
+      updatedAt: {
+        lte: lastDayOfPreviousMonth,
+      },
+      isArchived: true,
+    },
+  })
+
+  console.log(`Deleted ${count} archived typebots.`)
+}
+
+const deleteArchivedResults = async () => {
+  const lastDayOfPreviousMonth = new Date()
+  lastDayOfPreviousMonth.setMonth(lastDayOfPreviousMonth.getMonth() - 1)
+  lastDayOfPreviousMonth.setDate(0)
+
+  const { count } = await prisma.result.deleteMany({
+    where: {
+      createdAt: {
+        lte: lastDayOfPreviousMonth,
+      },
+      isArchived: true,
+    },
+  })
+
+  console.log(`Deleted ${count} archived results.`)
 }
 
 const deleteOldChatSessions = async () => {

@@ -1133,10 +1133,6 @@
                                 "type": "string",
                                 "format": "date-time"
                               },
-                              "updatedAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
                               "typebotId": {
                                 "type": "string"
                               },
@@ -1188,7 +1184,6 @@
                             "required": [
                               "id",
                               "createdAt",
-                              "updatedAt",
                               "typebotId",
                               "variables",
                               "isCompleted",
