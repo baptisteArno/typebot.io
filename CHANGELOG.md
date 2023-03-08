@@ -1,5 +1,47 @@
 # Changelog
 
+<a name="2.11.3"></a>
+## 2.11.3 (2023-03-08)
+
+### Added
+
+- ✨ Add NPS Survey template [[852cc73](https://github.com/baptisteArno/typebot.io/commit/852cc735119f5885aafd68bd6c7848837090f6ac)]
+- ✨ Add new Jump block [[022c5a5](https://github.com/baptisteArno/typebot.io/commit/022c5a573818275b4934fe19e902242ba8fddb45)]
+
+### Changed
+
+- 💄 (js) Fix spacings related to avatars [[b2fa202](https://github.com/baptisteArno/typebot.io/commit/b2fa2024a7b735fa58559b342569602cdcd44297)]
+- 🗃️ Remove updatedAt field from Result [[2788d58](https://github.com/baptisteArno/typebot.io/commit/2788d58e50f50e2937b59dfbeddedcbf19602bf3)]
+- 🚸 (condition) Improve comparison with lists [[0c19ea2](https://github.com/baptisteArno/typebot.io/commit/0c19ea20f8dec85fa6a7a7c5afd6b2dbfaafa7e2)]
+- 💄 (editor) Fix some overflow issues with long variable names [[f527df8](https://github.com/baptisteArno/typebot.io/commit/f527df82dd14ce3448a2af01714b48ece72b6232)]
+- 🚸 (billing) Add precheckout form [[26e5d9c](https://github.com/baptisteArno/typebot.io/commit/26e5d9c282df0f338401430f590b2571e97b2f55)]
+- ⚡ (webhook) Enable advanced config for Zapier and Make.com [[c1a636b](https://github.com/baptisteArno/typebot.io/commit/c1a636b965ae457e1a2fb89d41fb1459a32f2da5)]
+- ⏪ (editor) Revert block overflow hidden [[79e5aed](https://github.com/baptisteArno/typebot.io/commit/79e5aedf00eace124de12a18cca0c9caba347abb)]
+- 🚸 (js) Improve phone number parsing [[f1a9a1c](https://github.com/baptisteArno/typebot.io/commit/f1a9a1ce8bd87d092b35e25f6cdb9ec47116e227)]
+- 🚸 Add a better select input [[cc7d728](https://github.com/baptisteArno/typebot.io/commit/cc7d7285e57e066fc90b564839627191a269796d)]
+
+### Removed
+
+- 🔥 Remove disable response saving option [[b77e2c8](https://github.com/baptisteArno/typebot.io/commit/b77e2c8d2cf1e131136f98d33b434d90a787d38a)]
+- 🔥 Remove useless stripe env check for usage [[eb3ae8f](https://github.com/baptisteArno/typebot.io/commit/eb3ae8fc35091691222e67d7a2bf652041f1f536)]
+
+### Fixed
+
+- 🐛 (webhook) Fix getResultSample when linked typebot not found [[167d366](https://github.com/baptisteArno/typebot.io/commit/167d366d55f8b05fd720d1450b4cda1e047d5a9f)]
+- 🐛 (billing) Collect tax ID manually before checkout [[767a820](https://github.com/baptisteArno/typebot.io/commit/767a8208a8ac174b881271a1e0f8a834a50e9b8c)]
+- 🐛 (js) Make sure lite badge is displayed [[5bda556](https://github.com/baptisteArno/typebot.io/commit/5bda556200ea9730cfa611f85811701ad60e1b7e)]
+- 🐛 Reset custom domain on typebot archive [[6375a75](https://github.com/baptisteArno/typebot.io/commit/6375a7506555e9a1dc41c3fd8a68287b4a74e322)]
+- 🐛 (results) Make sure all columns are parsed in the export [[5c31048](https://github.com/baptisteArno/typebot.io/commit/5c3104848ef46684a55dd6f52a3a34a780c207c4)]
+- 🐛 (sheets) Correctly parse variables when getting data [[7d56d5b](https://github.com/baptisteArno/typebot.io/commit/7d56d5b39e2f83a73b1c23fd99393eaa4e283e3a)]
+- 🐛 (sheets) Save variable first item if length of 1 [[04028e7](https://github.com/baptisteArno/typebot.io/commit/04028e74d9d6aba90062c7d29c3e06e9b5a61f8a)]
+
+### Miscellaneous
+
+- 📝 (api) Add protection to sendMessage api ref to test with auth token [[83ae81c](https://github.com/baptisteArno/typebot.io/commit/83ae81ccc6659f7436bb821bc4faf4c3c01e20e3)]
+- 📝 (wp) Update wordpress metadata [[67a3f42](https://github.com/baptisteArno/typebot.io/commit/67a3f42edd8172e9db499cb43f5653e879b4c37f)]
+- 📝 (lp) Update testimonials content [[6cd1db7](https://github.com/baptisteArno/typebot.io/commit/6cd1db7ba7653206ec4e098f91e79f9f42d96b47)]
+
+
 <a name="2.11.2"></a>
 ## 2.11.2 (2023-03-02)
 
