@@ -39,6 +39,7 @@ export const sendMessageProcedure = publicProcedure
       summary: 'Send a message',
       description:
         'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.',
+      protect: true,
     },
   })
   .input(sendMessageInputSchema)
@@ -215,7 +216,11 @@ const getTypebot = async (
 ): Promise<StartTypebot> => {
   if (typeof typebot !== 'string') return typebot
   if (isPreview && !userId && env('E2E_TEST') !== 'true')
-    throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message:
+        'You need to authenticate the request to start a bot in preview mode.',
+    })
   const typebotQuery = isPreview
     ? await prisma.typebot.findFirst({
         where: { id: typebot, workspace: { members: { some: { userId } } } },
