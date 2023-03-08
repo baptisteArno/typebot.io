@@ -39,13 +39,16 @@ export const parseResultExample =
 
 const extractLinkedInputBlocks =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
+    typebot:
+      | Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+      | undefined,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async (
     currentGroupId?: string,
     direction: 'backward' | 'forward' = 'backward'
   ): Promise<InputBlock[]> => {
+    if (!typebot) return []
     const previousLinkedTypebotBlocks = walkEdgesAndExtract(
       'linkedBot',
       direction,
@@ -63,7 +66,7 @@ const extractLinkedInputBlocks =
                   'typebotId' in t
                     ? t.typebotId === linkedBot.options.typebotId
                     : t.id === linkedBot.options.typebotId
-                ) as Typebot | PublicTypebot,
+                ),
                 linkedTypebots
               )(linkedBot.options.groupId, 'forward')
             )
