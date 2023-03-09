@@ -18,12 +18,6 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
 
   return (
     <Stack w="full">
-      {block.options.variableId ? (
-        <SetVariableLabel
-          variableId={block.options.variableId}
-          variables={typebot?.variables}
-        />
-      ) : null}
       {block.options.dynamicVariableId ? (
         <Wrap spacing={1}>
           <Text>Display</Text>
@@ -35,6 +29,12 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
       ) : (
         <ItemNodesList block={block} indices={indices} />
       )}
+      {block.options.variableId ? (
+        <SetVariableLabel
+          variableId={block.options.variableId}
+          variables={typebot?.variables}
+        />
+      ) : null}
     </Stack>
   )
 }

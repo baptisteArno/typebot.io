@@ -190,9 +190,7 @@ const NonMemoizedDraggableGroupNode = ({
           p="4"
           rounded="xl"
           bg={bg}
-          borderWidth={
-            isConnecting || isContextMenuOpened || isPreviewing ? '2px' : '1px'
-          }
+          borderWidth="1px"
           borderColor={
             isConnecting || isContextMenuOpened || isPreviewing || isFocused
               ? previewingBorderColor

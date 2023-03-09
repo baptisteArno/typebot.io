@@ -27,4 +27,10 @@ export const templates: TemplateProps[] = [
     emoji: '💬',
     fileName: 'faq.json',
   },
+  {
+    name: 'Movie Recommendation',
+    emoji: '🍿',
+    fileName: 'movie-recommendation.json',
+    isNew: true,
+  },
 ]

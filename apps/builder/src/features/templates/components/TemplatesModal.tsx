@@ -123,13 +123,15 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                         isDisabled={template.isComingSoon}
                       >
                         <HStack justifyContent="space-between" w="full">
-                          <HStack>
+                          <HStack overflow="hidden">
                             <Text>{template.emoji}</Text>
-                            <Text>{template.name}</Text>
+                            <Text noOfLines={0} display="block">
+                              {template.name}
+                            </Text>
                           </HStack>
 
                           {template.isNew && (
-                            <Tag colorScheme="orange" size="sm">
+                            <Tag colorScheme="orange" size="sm" flexShrink={0}>
                               New
                             </Tag>
                           )}

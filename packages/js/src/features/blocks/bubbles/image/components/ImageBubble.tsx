@@ -56,7 +56,7 @@ export const ImageBubble = (props: Props) => {
               ref={image}
               src={props.url}
               class={
-                'text-fade-in w-auto rounded-md max-w-full ' +
+                'text-fade-in w-full rounded-md ' +
                 (isTyping() ? 'opacity-0' : 'opacity-100')
               }
               style={{
