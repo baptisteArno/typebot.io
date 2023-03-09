@@ -80,6 +80,7 @@ class Typebot_Public
     $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js";
     $width = '100%';
     $height = '500px';
+    $api_host = 'https://api.typebot.io';
     if (array_key_exists('width', $attributes)) {
       $width = sanitize_text_field($attributes['width']);
     }
@@ -89,6 +90,9 @@ class Typebot_Public
     if (array_key_exists('typebot', $attributes)) {
       $typebot = sanitize_text_field($attributes['typebot']);
     }
+    if (array_key_exists('apiHost', $attributes)) {
+      $api_host = sanitize_text_field($attributes['apiHost']);
+    }
     if (!$typebot) {
       return;
     }
@@ -97,7 +101,7 @@ class Typebot_Public
 
     $bot_initializer = '<script type="module">
     import Typebot from "' . $lib_url . '"
-    Typebot.initStandard({ id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { typebotWpUser } });</script>';
+    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { typebotWpUser } });</script>';
 
     return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
   }

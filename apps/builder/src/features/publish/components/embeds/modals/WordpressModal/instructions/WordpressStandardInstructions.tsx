@@ -11,6 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
+import { isCloudProdInstance } from '@/utils/helpers'
+import { env, getViewerUrl } from 'utils'
 
 type Props = {
   publicId: string
@@ -73,8 +75,10 @@ const parseWordpressShortcode = ({
   height?: string
   publicId: string
 }) => {
-  return `[typebot typebot="${publicId}"${width ? ` width="${width}"` : ''}${
-    height ? ` height="${height}"` : ''
-  }]
+  return `[typebot typebot="${publicId}"${
+    isCloudProdInstance
+      ? ''
+      : ` apiHost="${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}"`
+  }${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}]
 `
 }

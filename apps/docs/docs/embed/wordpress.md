@@ -28,6 +28,10 @@ You can use these variables anywhere on your typebot. For more informations, che
 
 There is an a box where there is a list of URLs it localises, one of them was ‘https://cdn.jsdelivr.net’. This URL should be removed from it since it is used to import the embed library.
 
+## You have litespeed with cache enabled
+
+Make sure to insert `web.js` and `typebot` in the JS Excludes textbox and JS Deferred Excludes under Tuning Settings.
+
 ### You have a cache plugin
 
 Plugins like WP Rocket prevent Typebot to work.

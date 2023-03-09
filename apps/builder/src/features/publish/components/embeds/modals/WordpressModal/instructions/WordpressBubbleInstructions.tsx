@@ -14,6 +14,8 @@ import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseInitBubbleCode } from '../../../snippetParsers'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
+import { isCloudProdInstance } from '@/utils/helpers'
+import { env, getViewerUrl } from 'utils'
 
 type Props = {
   publicId: string
@@ -29,6 +31,9 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
 
   const initCode = parseInitBubbleCode({
     typebot: publicId,
+    apiHost: isCloudProdInstance
+      ? undefined
+      : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
     theme: {
       ...theme,
       chatWindow: {

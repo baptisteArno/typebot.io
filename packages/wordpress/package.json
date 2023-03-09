@@ -1,6 +1,6 @@
 {
   "name": "wordpress",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/3.1.3",
-    "commit": "svn ci -m 'Update plugin metadata and readme'"
+    "copy": "svn copy ./trunk ./tags/3.1.4",
+    "commit": "svn ci -m 'Support for custom apiHost'"
   }
 }
