@@ -370,6 +370,7 @@ importers:
       google-auth-library: 8.7.0
       google-spreadsheet: 3.3.0
       got: 12.5.3
+      libphonenumber-js: ^1.10.21
       models: workspace:*
       next: 13.1.6
       next-transpile-modules: 10.0.0
@@ -378,7 +379,6 @@ importers:
       nodemailer: 6.9.1
       openai: ^3.2.1
       papaparse: 5.3.2
-      phone: ^3.1.34
       qs: 6.11.0
       react: 18.2.0
       react-dom: 18.2.0
@@ -400,11 +400,11 @@ importers:
       db: link:../../packages/db
       google-spreadsheet: 3.3.0
       got: 12.5.3
+      libphonenumber-js: 1.10.21
       next: 13.1.6_6m24vuloj5ihw4zc5lbsktc4fu
       nextjs-cors: 2.1.2_next@13.1.6
       nodemailer: 6.9.1
       openai: 3.2.1
-      phone: 3.1.34
       qs: 6.11.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -14284,6 +14284,10 @@ packages:
     resolution: {integrity: sha512-MDZ1zLIkfSDZV5xBta3nuvbEOlsnKCPe4z5r3hyup/AXveevkl9A1eSWmLhd2FX4k7pJDe4MrLeQsux0HI/VWg==}
     dev: false
 
+  /libphonenumber-js/1.10.21:
+    resolution: {integrity: sha512-/udZhx49av2r2gZR/+xXSrwcR8smX/sDNrVpOFrvW+CA26TfYTVZfwb3MIDvmwAYMLs7pXuJjZX0VxxGpqPhsA==}
+    dev: false
+
   /lie/3.1.1:
     resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
     dependencies:
@@ -15981,11 +15985,6 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
-    dev: false
-
-  /phone/3.1.34:
-    resolution: {integrity: sha512-h+nJqLyzA4vbPlD9poMS6fqeW4Dz1lRNPK9qHmrM7Pqkac/0RdiFZrbSJTVxE5xj/HFAaggQTZyfj6XmSjootA==}
-    engines: {node: '>=12'}
     dev: false
 
   /php-parser/3.1.3:

@@ -1,4 +1,5 @@
 import { ShortTextInput } from '@/components'
+import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
@@ -75,7 +76,13 @@ export const PhoneInput = (props: PhoneInputProps) => {
   const selectNewCountryCode = (
     event: Event & { currentTarget: { value: string } }
   ) => {
-    setSelectedCountryCode(event.currentTarget.value)
+    const code = event.currentTarget.value
+    setSelectedCountryCode(code)
+    const dial_code = phoneCountries.find(
+      (country) => country.code === code
+    )?.dial_code
+    if (inputValue() === '' && dial_code) setInputValue(dial_code)
+    inputRef?.focus()
   }
 
   onMount(() => {
@@ -91,30 +98,37 @@ export const PhoneInput = (props: PhoneInputProps) => {
       }}
       onKeyDown={submitWhenEnter}
     >
-      <div class="flex flex-1">
-        <select
-          onChange={selectNewCountryCode}
-          class="w-12 pl-2 focus:outline-none rounded-lg typebot-country-select"
-        >
-          <option selected>
-            {
-              phoneCountries.find(
-                (country) => selectedCountryCode() === country.code
-              )?.flag
-            }
-          </option>
-          <For
-            each={phoneCountries.filter(
-              (country) => country.code !== selectedCountryCode()
-            )}
+      <div class="flex">
+        <div class="relative typebot-country-select flex justify-center items-center rounded-md">
+          <div class="pl-2 pr-1 flex items-center gap-2">
+            <span>
+              {
+                phoneCountries.find(
+                  (country) => selectedCountryCode() === country.code
+                )?.flag
+              }
+            </span>
+            <ChevronDownIcon class="w-3" />
+          </div>
+
+          <select
+            onChange={selectNewCountryCode}
+            class="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0"
           >
-            {(country) => (
-              <option value={country.code}>
-                {country.name} ({country.dial_code})
-              </option>
-            )}
-          </For>
-        </select>
+            <For each={phoneCountries}>
+              {(country) => (
+                <option
+                  value={country.code}
+                  selected={country.code === selectedCountryCode()}
+                >
+                  {country.name}{' '}
+                  {country.dial_code ? `(${country.dial_code})` : ''}
+                </option>
+              )}
+            </For>
+          </select>
+        </div>
+
         <ShortTextInput
           type="tel"
           ref={inputRef}

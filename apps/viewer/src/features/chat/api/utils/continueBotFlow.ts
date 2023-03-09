@@ -50,13 +50,13 @@ export const continueBotFlow =
         message: 'Current block is not an input block',
       })
 
+    if (reply && !isReplyValid(reply, block)) return parseRetryMessage(block)
+
     const formattedReply = formatReply(reply, block.type)
 
     if (!formattedReply && !canSkip(block.type)) {
       return parseRetryMessage(block)
     }
-    if (formattedReply && !isReplyValid(formattedReply, block))
-      return parseRetryMessage(block)
 
     const newSessionState = await processAndSaveAnswer(
       state,

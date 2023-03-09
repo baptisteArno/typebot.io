@@ -37,7 +37,7 @@ test.describe('Phone input block', () => {
 
     await page.click('text=Restart')
     await page.locator(`input[placeholder="+33 XX XX XX XX"]`).type('+33 6 73')
-    await expect(page.getByRole('combobox')).toHaveText(/🇫🇷.+/)
+    await expect(page.getByText('🇫🇷')).toBeVisible()
     await page.locator('button >> text="Go"').click()
     await expect(page.locator('text=Try again bro')).toBeVisible()
     await page

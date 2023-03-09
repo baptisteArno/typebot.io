@@ -1,4 +1,4 @@
-import { phone } from 'phone'
+import { isValidPhoneNumber } from 'libphonenumber-js'
 
 export const validatePhoneNumber = (phoneNumber: string) =>
-  phone(phoneNumber).isValid
+  isValidPhoneNumber(phoneNumber)

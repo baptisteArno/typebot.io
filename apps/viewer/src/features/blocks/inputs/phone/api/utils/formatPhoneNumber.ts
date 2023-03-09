@@ -1,4 +1,4 @@
-import phone from 'phone'
+import { parsePhoneNumber } from 'libphonenumber-js'
 
 export const formatPhoneNumber = (phoneNumber: string) =>
-  phone(phoneNumber).phoneNumber
+  parsePhoneNumber(phoneNumber).formatInternational()
