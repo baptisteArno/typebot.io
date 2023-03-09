@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { ComparisonOperators, LogicalOperator } from '../../logic/condition'
 import { IntegrationBlockType } from '../enums'
 import { GoogleSheetsAction } from './enums'
-import { blockBaseSchema } from '../../baseSchemas'
+import { blockBaseSchema, credentialsBaseSchema } from '../../baseSchemas'
 
 const cellSchema = z.object({
   column: z.string().optional(),
@@ -69,6 +69,20 @@ export const googleSheetsBlockSchema = blockBaseSchema.and(
   })
 )
 
+export const googleSheetsCredentialsSchema = z
+  .object({
+    type: z.literal('google sheets'),
+    data: z.object({
+      refresh_token: z.string().nullish(),
+      expiry_date: z.number().nullish(),
+      access_token: z.string().nullish(),
+      token_type: z.string().nullish(),
+      id_token: z.string().nullish(),
+      scope: z.string().optional(),
+    }),
+  })
+  .merge(credentialsBaseSchema)
+
 export const defaultGoogleSheetsOptions: GoogleSheetsOptions = {}
 
 export const defaultGoogleSheetsGetOptions = (
@@ -129,3 +143,6 @@ export type GoogleSheetsUpdateRowOptions = z.infer<
 export type Cell = z.infer<typeof cellSchema>
 export type ExtractingCell = z.infer<typeof extractingCellSchema>
 export type RowsFilterComparison = z.infer<typeof rowsFilterComparisonSchema>
+export type GoogleSheetsCredentials = z.infer<
+  typeof googleSheetsCredentialsSchema
+>

@@ -64,7 +64,7 @@ export const RatingInputSettings = ({
         </FormLabel>
         <DropdownList
           onItemSelect={handleTypeChange}
-          items={['Icons', 'Numbers']}
+          items={['Icons', 'Numbers'] as const}
           currentItem={options.buttonType}
         />
       </Stack>

@@ -44,6 +44,7 @@ import { ScriptSettings } from '@/features/blocks/logic/script/components/Script
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom/components/MakeComSettings'
 import { PabblyConnectSettings } from '@/features/blocks/integrations/pabbly/components/PabblyConnectSettings'
+import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
 
 type Props = {
   block: BlockWithOptions
@@ -97,7 +98,7 @@ export const BlockSettings = ({
   block: BlockWithOptions
   onBlockChange: (block: Partial<Block>) => void
 }): JSX.Element => {
-  const handleOptionsChange = (options: BlockOptions) => {
+  const updateOptions = (options: BlockOptions) => {
     onBlockChange({ options } as Partial<Block>)
   }
 
@@ -106,7 +107,7 @@ export const BlockSettings = ({
       return (
         <TextInputSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -114,7 +115,7 @@ export const BlockSettings = ({
       return (
         <NumberInputSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -122,7 +123,7 @@ export const BlockSettings = ({
       return (
         <EmailInputSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -130,7 +131,7 @@ export const BlockSettings = ({
       return (
         <UrlInputSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -138,7 +139,7 @@ export const BlockSettings = ({
       return (
         <DateInputSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -146,7 +147,7 @@ export const BlockSettings = ({
       return (
         <PhoneNumberSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -154,7 +155,7 @@ export const BlockSettings = ({
       return (
         <ButtonsBlockSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -162,7 +163,7 @@ export const BlockSettings = ({
       return (
         <PaymentSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -170,7 +171,7 @@ export const BlockSettings = ({
       return (
         <RatingInputSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -178,7 +179,7 @@ export const BlockSettings = ({
       return (
         <FileInputSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -186,7 +187,7 @@ export const BlockSettings = ({
       return (
         <SetVariableSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -194,7 +195,7 @@ export const BlockSettings = ({
       return (
         <RedirectSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -202,7 +203,7 @@ export const BlockSettings = ({
       return (
         <ScriptSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -210,16 +211,13 @@ export const BlockSettings = ({
       return (
         <TypebotLinkForm
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
     case LogicBlockType.WAIT: {
       return (
-        <WaitSettings
-          options={block.options}
-          onOptionsChange={handleOptionsChange}
-        />
+        <WaitSettings options={block.options} onOptionsChange={updateOptions} />
       )
     }
     case LogicBlockType.JUMP: {
@@ -227,7 +225,7 @@ export const BlockSettings = ({
         <JumpSettings
           groupId={block.groupId}
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -235,7 +233,7 @@ export const BlockSettings = ({
       return (
         <GoogleSheetsSettingsBody
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
           blockId={block.id}
         />
       )
@@ -244,38 +242,29 @@ export const BlockSettings = ({
       return (
         <GoogleAnalyticsSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
     case IntegrationBlockType.ZAPIER: {
-      return (
-        <ZapierSettings block={block} onOptionsChange={handleOptionsChange} />
-      )
+      return <ZapierSettings block={block} onOptionsChange={updateOptions} />
     }
     case IntegrationBlockType.MAKE_COM: {
-      return (
-        <MakeComSettings block={block} onOptionsChange={handleOptionsChange} />
-      )
+      return <MakeComSettings block={block} onOptionsChange={updateOptions} />
     }
     case IntegrationBlockType.PABBLY_CONNECT: {
       return (
-        <PabblyConnectSettings
-          block={block}
-          onOptionsChange={handleOptionsChange}
-        />
+        <PabblyConnectSettings block={block} onOptionsChange={updateOptions} />
       )
     }
     case IntegrationBlockType.WEBHOOK: {
-      return (
-        <WebhookSettings block={block} onOptionsChange={handleOptionsChange} />
-      )
+      return <WebhookSettings block={block} onOptionsChange={updateOptions} />
     }
     case IntegrationBlockType.EMAIL: {
       return (
         <SendEmailSettings
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
         />
       )
     }
@@ -283,7 +272,15 @@ export const BlockSettings = ({
       return (
         <ChatwootSettingsForm
           options={block.options}
-          onOptionsChange={handleOptionsChange}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case IntegrationBlockType.OPEN_AI: {
+      return (
+        <OpenAISettings
+          options={block.options}
+          onOptionsChange={updateOptions}
         />
       )
     }

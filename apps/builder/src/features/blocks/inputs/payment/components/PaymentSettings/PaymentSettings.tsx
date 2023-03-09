@@ -11,12 +11,13 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { CredentialsType, PaymentInputOptions, PaymentProvider } from 'models'
-import React, { ChangeEvent, useState } from 'react'
+import { PaymentInputOptions, PaymentProvider } from 'models'
+import React, { ChangeEvent } from 'react'
 import { currencies } from './currencies'
 import { StripeConfigModal } from './StripeConfigModal'
 import { CredentialsDropdown } from '@/features/credentials'
 import { TextInput } from '@/components/inputs'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 
 type Props = {
   options: PaymentInputOptions
@@ -24,8 +25,8 @@ type Props = {
 }
 
 export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
+  const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [refreshCredentialsKey, setRefreshCredentialsKey] = useState(0)
 
   const handleProviderChange = (provider: PaymentProvider) => {
     onOptionsChange({
@@ -35,7 +36,6 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   }
 
   const handleCredentialsSelect = (credentialsId?: string) => {
-    setRefreshCredentialsKey(refreshCredentialsKey + 1)
     onOptionsChange({
       ...options,
       credentialsId,
@@ -96,13 +96,15 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       </Stack>
       <Stack>
         <Text>Account:</Text>
-        <CredentialsDropdown
-          type={CredentialsType.STRIPE}
-          currentCredentialsId={options.credentialsId}
-          onCredentialsSelect={handleCredentialsSelect}
-          onCreateNewClick={onOpen}
-          refreshDropdownKey={refreshCredentialsKey}
-        />
+        {workspace && (
+          <CredentialsDropdown
+            type="stripe"
+            workspaceId={workspace.id}
+            currentCredentialsId={options.credentialsId}
+            onCredentialsSelect={handleCredentialsSelect}
+            onCreateNewClick={onOpen}
+          />
+        )}
       </Stack>
       <HStack>
         <TextInput

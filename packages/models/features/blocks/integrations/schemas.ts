@@ -1,24 +1,13 @@
 import { z } from 'zod'
-import { chatwootBlockSchema, chatwootOptionsSchema } from './chatwoot'
-import {
-  googleAnalyticsOptionsSchema,
-  googleAnalyticsBlockSchema,
-} from './googleAnalytics'
-import {
-  googleSheetsOptionsSchema,
-  googleSheetsBlockSchema,
-} from './googleSheets/schemas'
+import { chatwootBlockSchema } from './chatwoot'
+import { googleAnalyticsBlockSchema } from './googleAnalytics'
+import { googleSheetsBlockSchema } from './googleSheets/schemas'
 import { makeComBlockSchema } from './makeCom'
+import { openAIBlockSchema } from './openai'
 import { pabblyConnectBlockSchema } from './pabblyConnect'
-import { sendEmailOptionsSchema, sendEmailBlockSchema } from './sendEmail'
-import { webhookOptionsSchema, webhookBlockSchema } from './webhook'
+import { sendEmailBlockSchema } from './sendEmail'
+import { webhookBlockSchema } from './webhook'
 import { zapierBlockSchema } from './zapier'
-
-const integrationBlockOptionsSchema = googleSheetsOptionsSchema
-  .or(googleAnalyticsOptionsSchema)
-  .or(webhookOptionsSchema)
-  .or(sendEmailOptionsSchema)
-  .or(chatwootOptionsSchema)
 
 export const integrationBlockSchema = googleSheetsBlockSchema
   .or(googleAnalyticsBlockSchema)
@@ -28,8 +17,7 @@ export const integrationBlockSchema = googleSheetsBlockSchema
   .or(makeComBlockSchema)
   .or(pabblyConnectBlockSchema)
   .or(chatwootBlockSchema)
+  .or(openAIBlockSchema)
 
 export type IntegrationBlock = z.infer<typeof integrationBlockSchema>
-export type IntegrationBlockOptions = z.infer<
-  typeof integrationBlockOptionsSchema
->
+export type IntegrationBlockOptions = IntegrationBlock['options']

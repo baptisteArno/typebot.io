@@ -3,6 +3,7 @@ import { injectVariableInText } from '@/features/variables/utils/injectVariableI
 import { focusInput } from '@/utils/focusInput'
 import {
   FormControl,
+  FormHelperText,
   FormLabel,
   HStack,
   Input as ChakraInput,
@@ -26,6 +27,7 @@ export type TextInputProps = {
   onChange: (value: string) => void
   debounceTimeout?: number
   label?: ReactNode
+  helperText?: ReactNode
   moreInfoTooltip?: string
   withVariableButton?: boolean
   isRequired?: boolean
@@ -42,6 +44,7 @@ export const TextInput = forwardRef(function TextInput(
     defaultValue,
     debounceTimeout = 1000,
     label,
+    helperText,
     moreInfoTooltip,
     withVariableButton = true,
     isRequired,
@@ -137,6 +140,7 @@ export const TextInput = forwardRef(function TextInput(
       ) : (
         Input
       )}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   )
 })

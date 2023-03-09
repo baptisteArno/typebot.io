@@ -10,58 +10,73 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { CredentialsType } from 'models'
-import { useWorkspace } from '@/features/workspace'
 import { useToast } from '../../../hooks/useToast'
-import { deleteCredentialsQuery, useCredentials } from '@/features/credentials'
+import { Credentials } from 'models'
+import { trpc } from '@/lib/trpc'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
-  type: CredentialsType
+  type: Credentials['type']
+  workspaceId: string
   currentCredentialsId?: string
   onCredentialsSelect: (credentialId?: string) => void
   onCreateNewClick: () => void
   defaultCredentialLabel?: string
-  refreshDropdownKey?: number
 }
 
 export const CredentialsDropdown = ({
   type,
+  workspaceId,
   currentCredentialsId,
   onCredentialsSelect,
   onCreateNewClick,
   defaultCredentialLabel,
-  refreshDropdownKey,
   ...props
 }: Props) => {
   const router = useRouter()
-  const { workspace } = useWorkspace()
   const { showToast } = useToast()
-  const { credentials, mutate } = useCredentials({
-    workspaceId: workspace?.id,
+  const { data, refetch } = trpc.credentials.listCredentials.useQuery({
+    workspaceId,
+    type,
   })
   const [isDeleting, setIsDeleting] = useState<string>()
+  const { mutate } = trpc.credentials.deleteCredentials.useMutation({
+    onMutate: ({ credentialsId }) => {
+      setIsDeleting(credentialsId)
+    },
+    onError: (error) => {
+      showToast({
+        description: error.message,
+      })
+    },
+    onSuccess: ({ credentialsId }) => {
+      if (credentialsId === currentCredentialsId) onCredentialsSelect(undefined)
+      refetch()
+    },
+    onSettled: () => {
+      setIsDeleting(undefined)
+    },
+  })
 
   const defaultCredentialsLabel = defaultCredentialLabel ?? `Select an account`
 
-  const credentialsList = useMemo(() => {
-    return credentials.filter((credential) => credential.type === type)
-  }, [type, credentials])
-
-  const currentCredential = useMemo(
-    () => credentials.find((c) => c.id === currentCredentialsId),
-    [currentCredentialsId, credentials]
+  const currentCredential = data?.credentials.find(
+    (c) => c.id === currentCredentialsId
   )
 
-  const handleMenuItemClick = (credentialsId: string) => () => {
-    onCredentialsSelect(credentialsId)
-  }
+  const handleMenuItemClick = useCallback(
+    (credentialsId: string) => () => {
+      onCredentialsSelect(credentialsId)
+    },
+    [onCredentialsSelect]
+  )
 
-  useEffect(() => {
-    if ((refreshDropdownKey ?? 0) > 0) mutate({ credentials })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDropdownKey])
+  const clearQueryParams = useCallback(() => {
+    const hasQueryParams = router.asPath.includes('?')
+    if (hasQueryParams)
+      router.push(router.asPath.split('?')[0], undefined, { shallow: true })
+  }, [router])
 
   useEffect(() => {
     if (!router.isReady) return
@@ -69,29 +84,17 @@ export const CredentialsDropdown = ({
       handleMenuItemClick(router.query.credentialsId.toString())()
       clearQueryParams()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady])
+  }, [
+    clearQueryParams,
+    handleMenuItemClick,
+    router.isReady,
+    router.query.credentialsId,
+  ])
 
-  const clearQueryParams = () => {
-    const hasQueryParams = router.asPath.includes('?')
-    if (hasQueryParams)
-      router.push(router.asPath.split('?')[0], undefined, { shallow: true })
-  }
-
-  const handleDeleteDomainClick =
+  const deleteCredentials =
     (credentialsId: string) => async (e: React.MouseEvent) => {
       e.stopPropagation()
-      if (!workspace?.id) return
-      setIsDeleting(credentialsId)
-      const { error } = await deleteCredentialsQuery(
-        workspace.id,
-        credentialsId
-      )
-      setIsDeleting(undefined)
-      if (error)
-        return showToast({ title: error.name, description: error.message })
-      onCredentialsSelect(undefined)
-      mutate({ credentials: credentials.filter((c) => c.id !== credentialsId) })
+      mutate({ workspaceId, credentialsId })
     }
 
   return (
@@ -121,7 +124,7 @@ export const CredentialsDropdown = ({
               {defaultCredentialLabel}
             </MenuItem>
           )}
-          {credentialsList.map((credentials) => (
+          {data?.credentials.map((credentials) => (
             <MenuItem
               role="menuitem"
               minH="40px"
@@ -137,7 +140,7 @@ export const CredentialsDropdown = ({
                 icon={<TrashIcon />}
                 aria-label="Remove credentials"
                 size="xs"
-                onClick={handleDeleteDomainClick(credentials.id)}
+                onClick={deleteCredentials(credentials.id)}
                 isLoading={isDeleting === credentials.id}
               />
             </MenuItem>

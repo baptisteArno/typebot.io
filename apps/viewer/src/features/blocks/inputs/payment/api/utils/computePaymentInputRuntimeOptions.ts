@@ -5,7 +5,7 @@ import {
   PaymentInputOptions,
   PaymentInputRuntimeOptions,
   SessionState,
-  StripeCredentialsData,
+  StripeCredentials,
 } from 'models'
 import Stripe from 'stripe'
 import { decrypt } from 'utils/api/encryption'
@@ -82,12 +82,12 @@ const createStripePaymentIntent =
 
 const getStripeInfo = async (
   credentialsId: string
-): Promise<StripeCredentialsData | undefined> => {
+): Promise<StripeCredentials['data'] | undefined> => {
   const credentials = await prisma.credentials.findUnique({
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as StripeCredentialsData
+  return decrypt(credentials.data, credentials.iv) as StripeCredentials['data']
 }
 
 // https://stripe.com/docs/currencies#zero-decimal

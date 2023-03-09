@@ -426,6 +426,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultSendEmailOptions
     case IntegrationBlockType.CHATWOOT:
       return defaultChatwootOptions
+    case IntegrationBlockType.OPEN_AI:
+      return {}
   }
 }
 

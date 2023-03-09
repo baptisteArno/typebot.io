@@ -29,13 +29,13 @@ export const RowsFilterComparisonItem = ({
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <DropdownList<string>
+      <DropdownList
         currentItem={item.column}
         onItemSelect={handleColumnSelect}
         items={columns}
         placeholder="Select a column"
       />
-      <DropdownList<ComparisonOperators>
+      <DropdownList
         currentItem={item.comparisonOperator}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}

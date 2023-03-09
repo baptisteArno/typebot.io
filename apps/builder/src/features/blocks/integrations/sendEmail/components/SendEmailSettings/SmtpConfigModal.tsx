@@ -9,14 +9,14 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useUser } from '@/features/account'
-import { CredentialsType, SmtpCredentialsData } from 'models'
 import React, { useState } from 'react'
 import { isNotDefined } from 'utils'
 import { SmtpConfigForm } from './SmtpConfigForm'
 import { useWorkspace } from '@/features/workspace'
 import { useToast } from '@/hooks/useToast'
 import { testSmtpConfig } from '../../queries/testSmtpConfigQuery'
-import { createCredentialsQuery } from '@/features/credentials'
+import { SmtpCredentials } from 'models'
+import { trpc } from '@/lib/trpc'
 
 type Props = {
   isOpen: boolean
@@ -33,9 +33,28 @@ export const SmtpConfigModal = ({
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
   const { showToast } = useToast()
-  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentialsData>({
+  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials['data']>({
     from: {},
     port: 25,
+  })
+  const {
+    credentials: {
+      listCredentials: { refetch: refetchCredentials },
+    },
+  } = trpc.useContext()
+  const { mutate } = trpc.credentials.createCredentials.useMutation({
+    onSettled: () => setIsCreating(false),
+    onError: (err) => {
+      showToast({
+        description: err.message,
+        status: 'error',
+      })
+    },
+    onSuccess: (data) => {
+      refetchCredentials()
+      onNewCredentials(data.credentialsId)
+      onClose()
+    },
   })
 
   const handleCreateClick = async () => {
@@ -53,19 +72,14 @@ export const SmtpConfigModal = ({
         description: "We couldn't send the test email with your configuration",
       })
     }
-    const { data, error } = await createCredentialsQuery({
-      data: smtpConfig,
-      name: smtpConfig.from.email as string,
-      type: CredentialsType.SMTP,
-      workspaceId: workspace.id,
+    mutate({
+      credentials: {
+        data: smtpConfig,
+        name: smtpConfig.from.email as string,
+        type: 'smtp',
+        workspaceId: workspace.id,
+      },
     })
-    setIsCreating(false)
-    if (error)
-      return showToast({ title: error.name, description: error.message })
-    if (!data?.credentials)
-      return showToast({ description: "Credentials wasn't created" })
-    onNewCredentials(data.credentials.id)
-    onClose()
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

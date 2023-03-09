@@ -1,5 +1,6 @@
 export enum IntegrationBlockType {
   GOOGLE_SHEETS = 'Google Sheets',
+  OPEN_AI = 'OpenAI',
   GOOGLE_ANALYTICS = 'Google Analytics',
   WEBHOOK = 'Webhook',
   EMAIL = 'Email',

@@ -2,12 +2,12 @@ import { TextInput, NumberInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Stack } from '@chakra-ui/react'
 import { isDefined } from '@udecode/plate-common'
-import { SmtpCredentialsData } from 'models'
+import { SmtpCredentials } from 'models'
 import React from 'react'
 
 type Props = {
-  config: SmtpCredentialsData
-  onConfigChange: (config: SmtpCredentialsData) => void
+  config: SmtpCredentials['data']
+  onConfigChange: (config: SmtpCredentials['data']) => void
 }
 
 export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {

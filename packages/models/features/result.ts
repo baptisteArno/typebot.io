@@ -3,19 +3,16 @@ import { answerInputSchema, answerSchema } from './answer'
 import { InputBlockType } from './blocks'
 import { variableWithValueSchema } from './typebot/variable'
 import { Result as ResultPrisma, Log as LogPrisma } from 'db'
-import { schemaForType } from './utils'
 
-export const resultSchema = schemaForType<ResultPrisma>()(
-  z.object({
-    id: z.string(),
-    createdAt: z.date(),
-    typebotId: z.string(),
-    variables: z.array(variableWithValueSchema),
-    isCompleted: z.boolean(),
-    hasStarted: z.boolean().nullable(),
-    isArchived: z.boolean().nullable(),
-  })
-)
+export const resultSchema = z.object({
+  id: z.string(),
+  createdAt: z.date(),
+  typebotId: z.string(),
+  variables: z.array(variableWithValueSchema),
+  isCompleted: z.boolean(),
+  hasStarted: z.boolean().nullable(),
+  isArchived: z.boolean().nullable(),
+}) satisfies z.ZodType<ResultPrisma>
 
 export const resultWithAnswersSchema = resultSchema.and(
   z.object({
@@ -29,16 +26,14 @@ export const resultWithAnswersInputSchema = resultSchema.and(
   })
 )
 
-export const logSchema = schemaForType<LogPrisma>()(
-  z.object({
-    id: z.string(),
-    createdAt: z.date(),
-    resultId: z.string(),
-    status: z.string(),
-    description: z.string(),
-    details: z.string().nullable(),
-  })
-)
+export const logSchema = z.object({
+  id: z.string(),
+  createdAt: z.date(),
+  resultId: z.string(),
+  status: z.string(),
+  description: z.string(),
+  details: z.string().nullable(),
+}) satisfies z.ZodType<LogPrisma>
 
 export type Result = z.infer<typeof resultSchema>
 export type ResultWithAnswers = z.infer<typeof resultWithAnswersSchema>

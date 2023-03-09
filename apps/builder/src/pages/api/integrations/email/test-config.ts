@@ -1,8 +1,8 @@
-import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { notAuthenticated } from 'utils/api'
+import { SmtpCredentials } from 'models'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { from, port, isTlsEnabled, username, password, host, to } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as SmtpCredentialsData & { to: string }
+    ) as SmtpCredentials['data'] & { to: string }
     const transporter = createTransport({
       host,
       port,

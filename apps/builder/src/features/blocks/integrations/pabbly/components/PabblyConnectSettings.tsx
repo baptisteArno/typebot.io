@@ -2,13 +2,10 @@ import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
 import { PabblyConnectBlock, Webhook, WebhookOptions } from 'models'
-import React, { useEffect, useState } from 'react'
-import { byId, env } from 'utils'
+import React, { useState } from 'react'
+import { byId } from 'utils'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
-import { useDebouncedCallback } from 'use-debounce'
 import { TextInput } from '@/components/inputs'
-
-const debounceWebhookTimeout = 2000
 
 type Props = {
   block: PabblyConnectBlock
@@ -25,24 +22,10 @@ export const PabblyConnectSettings = ({
     webhooks.find(byId(webhookId))
   )
 
-  const updateWebhookDebounced = useDebouncedCallback(
-    async (newLocalWebhook) => {
-      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
-    },
-    env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
-  )
-
-  const setLocalWebhook = (newLocalWebhook: Webhook) => {
+  const setLocalWebhook = async (newLocalWebhook: Webhook) => {
     _setLocalWebhook(newLocalWebhook)
-    updateWebhookDebounced(newLocalWebhook)
+    await updateWebhook(newLocalWebhook.id, newLocalWebhook)
   }
-
-  useEffect(
-    () => () => {
-      updateWebhookDebounced.flush()
-    },
-    [updateWebhookDebounced]
-  )
 
   const handleUrlChange = (url: string) =>
     localWebhook &&

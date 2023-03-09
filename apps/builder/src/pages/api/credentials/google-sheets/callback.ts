@@ -3,7 +3,6 @@ import { Prisma } from 'db'
 import prisma from '@/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
-import { CredentialsType } from 'models'
 import { badRequest, encrypt, notAuthenticated } from 'utils/api'
 import { oauth2Client } from '@/lib/googleSheets'
 import { getAuthenticatedUser } from '@/features/auth/api'
@@ -41,11 +40,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { encryptedData, iv } = encrypt(tokens)
     const credentials = {
       name: email,
-      type: CredentialsType.GOOGLE_SHEETS,
+      type: 'google sheets',
       workspaceId,
       data: encryptedData,
       iv,
-    } as Prisma.CredentialsUncheckedCreateInput
+    } satisfies Prisma.CredentialsUncheckedCreateInput
     const { id: credentialsId } = await prisma.credentials.create({
       data: credentials,
     })

@@ -1,5 +1,4 @@
 import { GraphNavigation, Plan, PrismaClient, WorkspaceRole } from 'db'
-import { CredentialsType } from 'models'
 import { encrypt } from '../api'
 
 const prisma = new PrismaClient()
@@ -134,7 +133,7 @@ const setupCredentials = () => {
     data: [
       {
         name: 'pro-user@email.com',
-        type: CredentialsType.GOOGLE_SHEETS,
+        type: 'google sheets',
         data: encryptedData,
         workspaceId: proWorkspaceId,
         iv,

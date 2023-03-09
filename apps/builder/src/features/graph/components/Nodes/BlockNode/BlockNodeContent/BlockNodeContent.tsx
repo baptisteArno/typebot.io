@@ -40,6 +40,7 @@ import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNod
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
 import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 import { JumpNodeBody } from '@/features/blocks/logic/jump/components/JumpNodeBody'
+import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
 
 type Props = {
   block: Block | StartBlock
@@ -168,6 +169,18 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case IntegrationBlockType.CHATWOOT: {
       return <ChatwootBlockNodeLabel block={block} />
+    }
+    case IntegrationBlockType.OPEN_AI: {
+      return (
+        <OpenAINodeBody
+          task={block.options.task}
+          responseMapping={
+            'responseMapping' in block.options
+              ? block.options.responseMapping
+              : []
+          }
+        />
+      )
     }
     case 'start': {
       return <Text>Start</Text>

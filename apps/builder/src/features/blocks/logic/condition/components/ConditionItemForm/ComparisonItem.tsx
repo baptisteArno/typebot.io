@@ -32,7 +32,7 @@ export const ComparisonItem = ({
         onSelectVariable={handleSelectVariable}
         placeholder="Search for a variable"
       />
-      <DropdownList<ComparisonOperators>
+      <DropdownList
         currentItem={item.comparisonOperator}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}

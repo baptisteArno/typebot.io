@@ -12,21 +12,23 @@ import {
 import { ChevronLeftIcon } from '@/components/icons'
 import React, { ReactNode } from 'react'
 
-type Props<T> = {
-  currentItem?: T
-  onItemSelect: (item: T) => void
-  items: T[]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Props<T extends readonly any[]> = {
+  currentItem: T[number] | undefined
+  onItemSelect: (item: T[number]) => void
+  items: T
   placeholder?: string
 }
 
-export const DropdownList = <T,>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const DropdownList = <T extends readonly any[]>({
   currentItem,
   onItemSelect,
   items,
   placeholder = '',
   ...props
 }: Props<T> & MenuButtonProps) => {
-  const handleMenuItemClick = (operator: T) => () => {
+  const handleMenuItemClick = (operator: T[number]) => () => {
     onItemSelect(operator)
   }
   return (

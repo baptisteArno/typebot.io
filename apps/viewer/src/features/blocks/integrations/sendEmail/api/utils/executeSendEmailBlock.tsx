@@ -10,7 +10,7 @@ import {
   SendEmailBlock,
   SendEmailOptions,
   SessionState,
-  SmtpCredentialsData,
+  SmtpCredentials,
 } from 'models'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
@@ -161,7 +161,7 @@ const sendEmail = async ({
 
 const getEmailInfo = async (
   credentialsId: string
-): Promise<SmtpCredentialsData | undefined> => {
+): Promise<SmtpCredentials['data'] | undefined> => {
   if (credentialsId === 'default')
     return {
       host: defaultTransportOptions.host,
@@ -175,7 +175,7 @@ const getEmailInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+  return decrypt(credentials.data, credentials.iv) as SmtpCredentials['data']
 }
 
 const getEmailBody = async ({

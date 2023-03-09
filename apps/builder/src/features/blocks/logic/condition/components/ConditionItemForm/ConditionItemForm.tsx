@@ -23,7 +23,7 @@ export const ConditionItemForm = ({ itemContent, onItemChange }: Props) => {
       Item={ComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
-          <DropdownList<LogicalOperator>
+          <DropdownList
             currentItem={itemContent.logicalOperator}
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}

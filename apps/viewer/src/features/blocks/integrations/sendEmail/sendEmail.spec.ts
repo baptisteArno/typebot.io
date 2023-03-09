@@ -1,11 +1,11 @@
 import test, { expect } from '@playwright/test'
 import { createSmtpCredentials } from '../../../../test/utils/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
-import { SmtpCredentialsData } from 'models'
 import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
+import { SmtpCredentials } from 'models'
 
-export const mockSmtpCredentials: SmtpCredentialsData = {
+export const mockSmtpCredentials: SmtpCredentials['data'] = {
   from: {
     email: 'sunny.cremin66@ethereal.email',
     name: 'Sunny Cremin',

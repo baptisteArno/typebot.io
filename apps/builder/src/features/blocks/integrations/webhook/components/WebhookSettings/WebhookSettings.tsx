@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Spinner, Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import { WebhookOptions, Webhook, WebhookBlock } from 'models'
-import { byId, env } from 'utils'
+import { byId } from 'utils'
 import { TextInput } from '@/components/inputs'
-import { useDebouncedCallback } from 'use-debounce'
 import { WebhookAdvancedConfigForm } from '../WebhookAdvancedConfigForm'
-
-const debounceWebhookTimeout = 2000
 
 type Props = {
   block: WebhookBlock
@@ -22,26 +19,13 @@ export const WebhookSettings = ({
   const [localWebhook, _setLocalWebhook] = useState(
     webhooks.find(byId(webhookId))
   )
-  const updateWebhookDebounced = useDebouncedCallback(
-    async (newLocalWebhook) => {
-      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
-    },
-    env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
-  )
 
-  const setLocalWebhook = (newLocalWebhook: Webhook) => {
+  const setLocalWebhook = async (newLocalWebhook: Webhook) => {
     _setLocalWebhook(newLocalWebhook)
-    updateWebhookDebounced(newLocalWebhook)
+    await updateWebhook(newLocalWebhook.id, newLocalWebhook)
   }
 
-  useEffect(
-    () => () => {
-      updateWebhookDebounced.flush()
-    },
-    [updateWebhookDebounced]
-  )
-
-  const handleUrlChange = (url?: string) =>
+  const updateUrl = (url?: string) =>
     localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null })
 
   if (!localWebhook) return <Spinner />
@@ -51,8 +35,7 @@ export const WebhookSettings = ({
       <TextInput
         placeholder="Paste webhook URL..."
         defaultValue={localWebhook.url ?? ''}
-        onChange={handleUrlChange}
-        debounceTimeout={0}
+        onChange={updateUrl}
       />
       <WebhookAdvancedConfigForm
         blockId={blockId}

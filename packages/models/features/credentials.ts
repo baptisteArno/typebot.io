@@ -1,58 +1,14 @@
-import { Credentials as CredentialsFromPrisma } from 'db'
+import { z } from 'zod'
+import { stripeCredentialsSchema } from './blocks/inputs/payment/schemas'
+import { googleSheetsCredentialsSchema } from './blocks/integrations/googleSheets/schemas'
+import { openAICredentialsSchema } from './blocks/integrations/openai'
+import { smtpCredentialsSchema } from './blocks/integrations/sendEmail'
 
-export type Credentials =
-  | SmtpCredentials
-  | GoogleSheetsCredentials
-  | StripeCredentials
+export const credentialsSchema = z.discriminatedUnion('type', [
+  smtpCredentialsSchema,
+  googleSheetsCredentialsSchema,
+  stripeCredentialsSchema,
+  openAICredentialsSchema,
+])
 
-export type CredentialsBase = Omit<CredentialsFromPrisma, 'data' | 'type'>
-
-export enum CredentialsType {
-  GOOGLE_SHEETS = 'google sheets',
-  SMTP = 'smtp',
-  STRIPE = 'stripe',
-}
-
-export type SmtpCredentials = CredentialsBase & {
-  type: CredentialsType.SMTP
-  data: SmtpCredentialsData
-}
-
-export type GoogleSheetsCredentials = CredentialsBase & {
-  type: CredentialsType.GOOGLE_SHEETS
-  data: GoogleSheetsCredentialsData
-}
-
-export type StripeCredentials = CredentialsBase & {
-  type: CredentialsType.STRIPE
-  data: StripeCredentialsData
-}
-
-export type GoogleSheetsCredentialsData = {
-  refresh_token?: string | null
-  expiry_date?: number | null
-  access_token?: string | null
-  token_type?: string | null
-  id_token?: string | null
-  scope?: string
-}
-
-export type SmtpCredentialsData = {
-  host?: string
-  username?: string
-  password?: string
-  isTlsEnabled?: boolean
-  port: number
-  from: { email?: string; name?: string }
-}
-
-export type StripeCredentialsData = {
-  live: {
-    secretKey: string
-    publicKey: string
-  }
-  test?: {
-    secretKey?: string
-    publicKey?: string
-  }
-}
+export type Credentials = z.infer<typeof credentialsSchema>

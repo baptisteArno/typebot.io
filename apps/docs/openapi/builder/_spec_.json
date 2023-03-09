@@ -1979,6 +1979,436 @@
           }
         }
       }
+    },
+    "/credentials": {
+      "post": {
+        "operationId": "mutation.credentials.createCredentials",
+        "summary": "Create credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "credentials": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "live": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "secretKey",
+                                  "publicKey"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "test": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "live",
+                              "test"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "stripe"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "host": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "password": {
+                                "type": "string"
+                              },
+                              "isTlsEnabled": {
+                                "type": "boolean"
+                              },
+                              "port": {
+                                "type": "number"
+                              },
+                              "from": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "port",
+                              "from"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "smtp"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "refresh_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "expiry_date": {
+                                "type": "number",
+                                "nullable": true
+                              },
+                              "access_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "token_type": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "id_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "google sheets"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "apiKey"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "openai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "credentials"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentialsId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "credentialsId"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "get": {
+        "operationId": "query.credentials.listCredentials",
+        "summary": "List workspace credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "stripe"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "smtp"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "google sheets"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "openai"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentials": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "credentials"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/credentials/:credentialsId": {
+      "delete": {
+        "operationId": "mutation.credentials.deleteCredentials",
+        "summary": "Delete credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "credentialsId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentialsId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "credentialsId"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
     }
   },
   "components": {

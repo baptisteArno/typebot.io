@@ -118,7 +118,7 @@ export const WebhookAdvancedConfigForm = ({
         <>
           <HStack justify="space-between">
             <Text>Method:</Text>
-            <DropdownList<HttpMethod>
+            <DropdownList
               currentItem={webhook.method as HttpMethod}
               onItemSelect={handleMethodChange}
               items={Object.values(HttpMethod)}
@@ -130,13 +130,12 @@ export const WebhookAdvancedConfigForm = ({
                 Query params
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel py={4} as={Stack} spacing="6">
+              <AccordionPanel>
                 <TableList<KeyValue>
                   initialItems={webhook.queryParams}
                   onItemsChange={handleQueryParamsChange}
                   Item={QueryParamsInputs}
                   addLabel="Add a param"
-                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -145,13 +144,12 @@ export const WebhookAdvancedConfigForm = ({
                 Headers
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel py={4} as={Stack} spacing="6">
+              <AccordionPanel>
                 <TableList<KeyValue>
                   initialItems={webhook.headers}
                   onItemsChange={handleHeadersChange}
                   Item={HeadersInputs}
                   addLabel="Add a value"
-                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -181,7 +179,7 @@ export const WebhookAdvancedConfigForm = ({
                 Variable values for test
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel py={4} as={Stack} spacing="6">
+              <AccordionPanel>
                 <TableList<VariableForTest>
                   initialItems={
                     options?.variablesForTest ?? { byId: {}, allIds: [] }
@@ -189,7 +187,6 @@ export const WebhookAdvancedConfigForm = ({
                   onItemsChange={handleVariablesChange}
                   Item={VariableForTestInputs}
                   addLabel="Add an entry"
-                  debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -215,13 +212,12 @@ export const WebhookAdvancedConfigForm = ({
               Save in variables
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel py={4} as={Stack} spacing="6">
+            <AccordionPanel>
               <TableList<ResponseVariableMapping>
                 initialItems={options.responseVariableMapping}
                 onItemsChange={handleResponseMappingChange}
                 Item={ResponseMappingInputs}
                 addLabel="Add an entry"
-                debounceTimeout={0}
               />
             </AccordionPanel>
           </AccordionItem>

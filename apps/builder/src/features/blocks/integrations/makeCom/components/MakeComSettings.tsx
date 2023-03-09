@@ -3,11 +3,8 @@ import { ExternalLinkIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
 import { MakeComBlock, Webhook, WebhookOptions } from 'models'
 import React, { useCallback, useEffect, useState } from 'react'
-import { byId, env } from 'utils'
+import { byId } from 'utils'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
-import { useDebouncedCallback } from 'use-debounce'
-
-const debounceWebhookTimeout = 2000
 
 type Props = {
   block: MakeComBlock
@@ -22,19 +19,13 @@ export const MakeComSettings = ({
   const webhook = webhooks.find(byId(webhookId))
 
   const [localWebhook, _setLocalWebhook] = useState(webhook)
-  const updateWebhookDebounced = useDebouncedCallback(
-    async (newLocalWebhook) => {
-      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
-    },
-    env('E2E_TEST') === 'true' ? 0 : debounceWebhookTimeout
-  )
 
   const setLocalWebhook = useCallback(
-    (newLocalWebhook: Webhook) => {
+    async (newLocalWebhook: Webhook) => {
       _setLocalWebhook(newLocalWebhook)
-      updateWebhookDebounced(newLocalWebhook)
+      await updateWebhook(newLocalWebhook.id, newLocalWebhook)
     },
-    [updateWebhookDebounced]
+    [updateWebhook]
   )
 
   useEffect(() => {
@@ -50,13 +41,6 @@ export const MakeComSettings = ({
       url: webhook?.url,
     })
   }, [webhook, localWebhook, setLocalWebhook])
-
-  useEffect(
-    () => () => {
-      updateWebhookDebounced.flush()
-    },
-    [updateWebhookDebounced]
-  )
 
   return (
     <Stack spacing={4}>

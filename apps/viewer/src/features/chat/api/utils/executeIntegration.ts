@@ -1,6 +1,7 @@
 import { executeChatwootBlock } from '@/features/blocks/integrations/chatwoot/api'
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/api'
 import { executeGoogleSheetBlock } from '@/features/blocks/integrations/googleSheets/api'
+import { executeOpenAIBlock } from '@/features/blocks/integrations/openai/executeOpenAIBlock'
 import { executeSendEmailBlock } from '@/features/blocks/integrations/sendEmail/api'
 import { executeWebhookBlock } from '@/features/blocks/integrations/webhook/api'
 import { IntegrationBlock, IntegrationBlockType, SessionState } from 'models'
@@ -23,5 +24,7 @@ export const executeIntegration =
       case IntegrationBlockType.MAKE_COM:
       case IntegrationBlockType.PABBLY_CONNECT:
         return executeWebhookBlock(state, block)
+      case IntegrationBlockType.OPEN_AI:
+        return executeOpenAIBlock(state, block)
     }
   }

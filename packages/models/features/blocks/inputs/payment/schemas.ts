@@ -1,5 +1,9 @@
 import { z } from 'zod'
-import { optionBaseSchema, blockBaseSchema } from '../../baseSchemas'
+import {
+  optionBaseSchema,
+  blockBaseSchema,
+  credentialsBaseSchema,
+} from '../../baseSchemas'
 import { InputBlockType } from '../enums'
 import { PaymentProvider } from './enums'
 
@@ -43,6 +47,22 @@ export const paymentInputSchema = blockBaseSchema.and(
   })
 )
 
+export const stripeCredentialsSchema = z
+  .object({
+    type: z.literal('stripe'),
+    data: z.object({
+      live: z.object({
+        secretKey: z.string(),
+        publicKey: z.string(),
+      }),
+      test: z.object({
+        secretKey: z.string().optional(),
+        publicKey: z.string().optional(),
+      }),
+    }),
+  })
+  .merge(credentialsBaseSchema)
+
 export const defaultPaymentInputOptions: PaymentInputOptions = {
   provider: PaymentProvider.STRIPE,
   labels: { button: 'Pay', success: 'Success' },
@@ -54,3 +74,4 @@ export type PaymentInputOptions = z.infer<typeof paymentInputOptionsSchema>
 export type PaymentInputRuntimeOptions = z.infer<
   typeof paymentInputRuntimeOptionsSchema
 >
+export type StripeCredentials = z.infer<typeof stripeCredentialsSchema>

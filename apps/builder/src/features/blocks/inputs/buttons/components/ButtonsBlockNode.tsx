@@ -1,15 +1,9 @@
-import { BlockIndices, ChoiceInputBlock, Variable } from 'models'
+import { BlockIndices, ChoiceInputBlock } from 'models'
 import React from 'react'
 import { ItemNodesList } from '@/features/graph/components/Nodes/ItemNode'
-import {
-  HStack,
-  Stack,
-  Tag,
-  Text,
-  useColorModeValue,
-  Wrap,
-} from '@chakra-ui/react'
+import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
+import { SetVariableLabel } from '@/components/SetVariableLabel'
 
 type Props = {
   block: ChoiceInputBlock
@@ -25,7 +19,7 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
   return (
     <Stack w="full">
       {block.options.variableId ? (
-        <CollectVariableLabel
+        <SetVariableLabel
           variableId={block.options.variableId}
           variables={typebot?.variables}
         />
@@ -42,30 +36,5 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
         <ItemNodesList block={block} indices={indices} />
       )}
     </Stack>
-  )
-}
-
-const CollectVariableLabel = ({
-  variableId,
-  variables,
-}: {
-  variableId: string
-  variables?: Variable[]
-}) => {
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const variableName = variables?.find(
-    (variable) => variable.id === variableId
-  )?.name
-
-  if (!variableName) return null
-  return (
-    <HStack fontStyle="italic" spacing={1}>
-      <Text fontSize="sm" color={textColor}>
-        Collects
-      </Text>
-      <Tag bg="orange.400" color="white" size="sm">
-        {variableName}
-      </Tag>
-    </HStack>
   )
 }

@@ -7,7 +7,6 @@ import { VariableForTest, Variable } from 'models'
 export const VariableForTestInputs = ({
   item,
   onItemChange,
-  debounceTimeout,
 }: TableListItemProps<VariableForTest>) => {
   const handleVariableSelect = (variable?: Variable) =>
     onItemChange({ ...item, variableId: variable?.id })
@@ -29,7 +28,6 @@ export const VariableForTestInputs = ({
         label="Test value:"
         defaultValue={item.value ?? ''}
         onChange={handleValueChange}
-        debounceTimeout={debounceTimeout}
       />
     </Stack>
   )

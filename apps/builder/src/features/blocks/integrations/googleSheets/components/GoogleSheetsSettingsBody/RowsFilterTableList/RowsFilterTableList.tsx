@@ -42,7 +42,7 @@ export const RowsFilterTableList = ({
       Item={createRowsFilterComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
-          <DropdownList<LogicalOperator>
+          <DropdownList
             currentItem={filter?.logicalOperator}
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}

@@ -8,14 +8,15 @@ import {
   FormLabel,
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { CredentialsType, SendEmailOptions, Variable } from 'models'
-import React, { useState } from 'react'
+import { SendEmailOptions, Variable } from 'models'
+import React from 'react'
 import { env, isNotEmpty } from 'utils'
 import { SmtpConfigModal } from './SmtpConfigModal'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { CredentialsDropdown } from '@/features/credentials'
 import { TextInput, Textarea } from '@/components/inputs'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 
 type Props = {
   options: SendEmailOptions
@@ -23,11 +24,10 @@ type Props = {
 }
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
+  const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [refreshCredentialsKey, setRefreshCredentialsKey] = useState(0)
 
   const handleCredentialsSelect = (credentialsId?: string) => {
-    setRefreshCredentialsKey(refreshCredentialsKey + 1)
     onOptionsChange({
       ...options,
       credentialsId: credentialsId === undefined ? 'default' : credentialsId,
@@ -109,16 +109,18 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <Stack>
         <Text>From: </Text>
-        <CredentialsDropdown
-          type={CredentialsType.SMTP}
-          currentCredentialsId={options.credentialsId}
-          onCredentialsSelect={handleCredentialsSelect}
-          onCreateNewClick={onOpen}
-          defaultCredentialLabel={env('SMTP_FROM')
-            ?.match(/<(.*)>/)
-            ?.pop()}
-          refreshDropdownKey={refreshCredentialsKey}
-        />
+        {workspace && (
+          <CredentialsDropdown
+            type="smtp"
+            workspaceId={workspace.id}
+            currentCredentialsId={options.credentialsId}
+            onCredentialsSelect={handleCredentialsSelect}
+            onCreateNewClick={onOpen}
+            defaultCredentialLabel={env('SMTP_FROM')
+              ?.match(/<(.*)>/)
+              ?.pop()}
+          />
+        )}
       </Stack>
       <TextInput
         label="Reply to:"

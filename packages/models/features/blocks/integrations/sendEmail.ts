@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { blockBaseSchema } from '../baseSchemas'
+import { blockBaseSchema, credentialsBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 
 export const sendEmailOptionsSchema = z.object({
@@ -22,6 +22,23 @@ export const sendEmailBlockSchema = blockBaseSchema.and(
   })
 )
 
+export const smtpCredentialsSchema = z
+  .object({
+    type: z.literal('smtp'),
+    data: z.object({
+      host: z.string().optional(),
+      username: z.string().optional(),
+      password: z.string().optional(),
+      isTlsEnabled: z.boolean().optional(),
+      port: z.number(),
+      from: z.object({
+        email: z.string().optional(),
+        name: z.string().optional(),
+      }),
+    }),
+  })
+  .merge(credentialsBaseSchema)
+
 export const defaultSendEmailOptions: SendEmailOptions = {
   credentialsId: 'default',
   isCustomBody: false,
@@ -30,3 +47,4 @@ export const defaultSendEmailOptions: SendEmailOptions = {
 
 export type SendEmailBlock = z.infer<typeof sendEmailBlockSchema>
 export type SendEmailOptions = z.infer<typeof sendEmailOptionsSchema>
+export type SmtpCredentials = z.infer<typeof smtpCredentialsSchema>

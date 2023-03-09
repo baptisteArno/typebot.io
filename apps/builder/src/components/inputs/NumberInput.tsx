@@ -16,12 +16,12 @@ import { useDebouncedCallback } from 'use-debounce'
 import { env } from 'utils'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
-type Value<HasVariable> = HasVariable extends undefined | true
+type Value<HasVariable> = HasVariable extends true | undefined
   ? number | VariableString
   : number
 
 type Props<HasVariable extends boolean> = {
-  defaultValue?: Value<HasVariable>
+  defaultValue: Value<HasVariable> | undefined
   debounceTimeout?: number
   withVariableButton?: HasVariable
   label?: string

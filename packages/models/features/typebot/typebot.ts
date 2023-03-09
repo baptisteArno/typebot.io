@@ -4,7 +4,6 @@ import { blockSchema } from '../blocks'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
 import { Typebot as TypebotPrisma } from 'db'
-import { schemaForType } from '../utils'
 
 export const groupSchema = z.object({
   id: z.string(),
@@ -39,28 +38,26 @@ const resultsTablePreferencesSchema = z.object({
   columnsWidth: z.record(z.string(), z.number()),
 })
 
-export const typebotSchema = schemaForType<TypebotPrisma>()(
-  z.object({
-    version: z.enum(['3']).nullable(),
-    id: z.string(),
-    name: z.string(),
-    groups: z.array(groupSchema),
-    edges: z.array(edgeSchema),
-    variables: z.array(variableSchema),
-    theme: themeSchema,
-    settings: settingsSchema,
-    createdAt: z.date(),
-    updatedAt: z.date(),
-    icon: z.string().nullable(),
-    folderId: z.string().nullable(),
-    publicId: z.string().nullable(),
-    customDomain: z.string().nullable(),
-    workspaceId: z.string(),
-    resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
-    isArchived: z.boolean(),
-    isClosed: z.boolean(),
-  })
-)
+export const typebotSchema = z.object({
+  version: z.enum(['3']).nullable(),
+  id: z.string(),
+  name: z.string(),
+  groups: z.array(groupSchema),
+  edges: z.array(edgeSchema),
+  variables: z.array(variableSchema),
+  theme: themeSchema,
+  settings: settingsSchema,
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  icon: z.string().nullable(),
+  folderId: z.string().nullable(),
+  publicId: z.string().nullable(),
+  customDomain: z.string().nullable(),
+  workspaceId: z.string(),
+  resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
+  isArchived: z.boolean(),
+  isClosed: z.boolean(),
+}) satisfies z.ZodType<TypebotPrisma>
 
 export type Typebot = z.infer<typeof typebotSchema>
 export type Target = z.infer<typeof targetSchema>

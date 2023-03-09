@@ -19,7 +19,7 @@ export const CellWithValueStack = ({
   }
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px" w="full">
-      <DropdownList<string>
+      <DropdownList
         currentItem={item.column}
         onItemSelect={handleColumnSelect}
         items={columns}

@@ -1,35 +1,29 @@
 import { z } from 'zod'
-import { schemaForType } from './utils'
 import { Answer as AnswerPrisma, Prisma } from 'db'
 
-export const answerSchema = schemaForType<AnswerPrisma>()(
-  z.object({
-    createdAt: z.date(),
-    resultId: z.string(),
-    blockId: z.string(),
-    groupId: z.string(),
-    variableId: z.string().nullable(),
-    content: z.string(),
-    storageUsed: z.number().nullable(),
-  })
-)
+export const answerSchema = z.object({
+  createdAt: z.date(),
+  resultId: z.string(),
+  blockId: z.string(),
+  groupId: z.string(),
+  variableId: z.string().nullable(),
+  content: z.string(),
+  storageUsed: z.number().nullable(),
+}) satisfies z.ZodType<AnswerPrisma>
 
-export const answerInputSchema =
-  schemaForType<Prisma.AnswerUncheckedUpdateInput>()(
-    answerSchema
-      .omit({
-        createdAt: true,
-        resultId: true,
-        variableId: true,
-        storageUsed: true,
-      })
-      .and(
-        z.object({
-          variableId: z.string().nullish(),
-          storageUsed: z.number().nullish(),
-        })
-      )
-  )
+export const answerInputSchema = answerSchema
+  .omit({
+    createdAt: true,
+    resultId: true,
+    variableId: true,
+    storageUsed: true,
+  })
+  .and(
+    z.object({
+      variableId: z.string().nullish(),
+      storageUsed: z.number().nullish(),
+    })
+  ) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
 
 export type Stats = {
   totalViews: number

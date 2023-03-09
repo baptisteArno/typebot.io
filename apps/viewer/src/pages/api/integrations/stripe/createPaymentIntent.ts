@@ -9,7 +9,7 @@ import {
 import Stripe from 'stripe'
 
 import Cors from 'cors'
-import { PaymentInputOptions, StripeCredentialsData, Variable } from 'models'
+import { PaymentInputOptions, StripeCredentials, Variable } from 'models'
 import prisma from '@/lib/prisma'
 import { parseVariables } from '@/features/variables'
 
@@ -103,12 +103,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getStripeInfo = async (
   credentialsId: string
-): Promise<StripeCredentialsData | undefined> => {
+): Promise<StripeCredentials['data'] | undefined> => {
   const credentials = await prisma.credentials.findUnique({
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as StripeCredentialsData
+  return decrypt(credentials.data, credentials.iv) as StripeCredentials['data']
 }
 
 // https://stripe.com/docs/currencies#zero-decimal

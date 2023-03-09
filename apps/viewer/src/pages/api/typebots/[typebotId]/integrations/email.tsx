@@ -2,7 +2,7 @@ import {
   PublicTypebot,
   ResultValues,
   SendEmailOptions,
-  SmtpCredentialsData,
+  SmtpCredentials,
 } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
@@ -155,7 +155,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getEmailInfo = async (
   credentialsId: string
-): Promise<SmtpCredentialsData | undefined> => {
+): Promise<SmtpCredentials['data'] | undefined> => {
   if (credentialsId === 'default')
     return {
       host: defaultTransportOptions.host,
@@ -169,7 +169,7 @@ const getEmailInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as SmtpCredentialsData
+  return decrypt(credentials.data, credentials.iv) as SmtpCredentials['data']
 }
 
 const getEmailBody = async ({

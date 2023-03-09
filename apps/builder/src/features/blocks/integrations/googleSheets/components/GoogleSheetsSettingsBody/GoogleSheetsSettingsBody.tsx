@@ -3,7 +3,6 @@ import { DropdownList } from '@/components/DropdownList'
 import { useTypebot } from '@/features/editor'
 import {
   Cell,
-  CredentialsType,
   defaultGoogleSheetsGetOptions,
   defaultGoogleSheetsInsertOptions,
   defaultGoogleSheetsUpdateOptions,
@@ -27,6 +26,7 @@ import { useSheets } from '../../hooks/useSheets'
 import { Sheet } from '../../types'
 import { RowsFilterTableList } from './RowsFilterTableList'
 import { createId } from '@paralleldrive/cuid2'
+import { useWorkspace } from '@/features/workspace'
 
 type Props = {
   options: GoogleSheetsOptions
@@ -39,6 +39,7 @@ export const GoogleSheetsSettingsBody = ({
   onOptionsChange,
   blockId,
 }: Props) => {
+  const { workspace } = useWorkspace()
   const { save } = useTypebot()
   const { sheets, isLoading } = useSheets({
     credentialsId: options?.credentialsId,
@@ -94,12 +95,15 @@ export const GoogleSheetsSettingsBody = ({
 
   return (
     <Stack>
-      <CredentialsDropdown
-        type={CredentialsType.GOOGLE_SHEETS}
-        currentCredentialsId={options?.credentialsId}
-        onCredentialsSelect={handleCredentialsIdChange}
-        onCreateNewClick={handleCreateNewClick}
-      />
+      {workspace && (
+        <CredentialsDropdown
+          type="google sheets"
+          workspaceId={workspace.id}
+          currentCredentialsId={options?.credentialsId}
+          onCredentialsSelect={handleCredentialsIdChange}
+          onCreateNewClick={handleCreateNewClick}
+        />
+      )}
       <GoogleSheetConnectModal
         blockId={blockId}
         isOpen={isOpen}
@@ -125,7 +129,7 @@ export const GoogleSheetsSettingsBody = ({
         isDefined(options.sheetId) && (
           <>
             <Divider />
-            <DropdownList<GoogleSheetsAction>
+            <DropdownList
               currentItem={'action' in options ? options.action : undefined}
               onItemSelect={handleActionChange}
               items={Object.values(GoogleSheetsAction)}

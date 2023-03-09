@@ -38,6 +38,7 @@ import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'
+import { OpenAILogo } from '@/features/blocks/integrations/openai/components/OpenAILogo'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -106,6 +107,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <SendEmailIcon {...props} />
     case IntegrationBlockType.CHATWOOT:
       return <ChatwootLogo {...props} />
+    case IntegrationBlockType.OPEN_AI:
+      return <OpenAILogo {...props} />
     case 'start':
       return <FlagIcon {...props} />
   }

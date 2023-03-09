@@ -14,15 +14,15 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { useUser } from '@/features/account'
-import { CredentialsType, StripeCredentialsData } from 'models'
 import React, { useState } from 'react'
 import { useWorkspace } from '@/features/workspace'
-import { omit } from 'utils'
 import { useToast } from '@/hooks/useToast'
 import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TextLink } from '@/components/TextLink'
-import { createCredentialsQuery } from '@/features/credentials'
+import { StripeCredentials } from 'models'
+import { trpc } from '@/lib/trpc'
+import { isNotEmpty } from 'utils'
 
 type Props = {
   isOpen: boolean
@@ -40,11 +40,31 @@ export const StripeConfigModal = ({
   const [isCreating, setIsCreating] = useState(false)
   const { showToast } = useToast()
   const [stripeConfig, setStripeConfig] = useState<
-    StripeCredentialsData & { name: string }
+    StripeCredentials['data'] & { name: string }
   >({
     name: '',
     live: { publicKey: '', secretKey: '' },
     test: { publicKey: '', secretKey: '' },
+  })
+  const {
+    credentials: {
+      listCredentials: { refetch: refetchCredentials },
+    },
+  } = trpc.useContext()
+  const { mutate } = trpc.credentials.createCredentials.useMutation({
+    onMutate: () => setIsCreating(true),
+    onSettled: () => setIsCreating(false),
+    onError: (err) => {
+      showToast({
+        description: err.message,
+        status: 'error',
+      })
+    },
+    onSuccess: (data) => {
+      refetchCredentials()
+      onNewCredentials(data.credentialsId)
+      onClose()
+    },
   })
 
   const handleNameChange = (name: string) =>
@@ -77,22 +97,26 @@ export const StripeConfigModal = ({
       test: { ...stripeConfig.test, secretKey },
     })
 
-  const handleCreateClick = async () => {
+  const createCredentials = async () => {
     if (!user?.email || !workspace?.id) return
-    setIsCreating(true)
-    const { data, error } = await createCredentialsQuery({
-      data: omit(stripeConfig, 'name'),
-      name: stripeConfig.name,
-      type: CredentialsType.STRIPE,
-      workspaceId: workspace.id,
+    mutate({
+      credentials: {
+        data: {
+          live: stripeConfig.live,
+          test: {
+            publicKey: isNotEmpty(stripeConfig.test.publicKey)
+              ? stripeConfig.test.publicKey
+              : undefined,
+            secretKey: isNotEmpty(stripeConfig.test.secretKey)
+              ? stripeConfig.test.secretKey
+              : undefined,
+          },
+        },
+        name: stripeConfig.name,
+        type: 'stripe',
+        workspaceId: workspace.id,
+      },
     })
-    setIsCreating(false)
-    if (error)
-      return showToast({ title: error.name, description: error.message })
-    if (!data?.credentials)
-      return showToast({ description: "Credentials wasn't created" })
-    onNewCredentials(data.credentials.id)
-    onClose()
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -108,6 +132,7 @@ export const StripeConfigModal = ({
               onChange={handleNameChange}
               placeholder="Typebot"
               withVariableButton={false}
+              debounceTimeout={0}
             />
             <Stack>
               <FormLabel>
@@ -121,11 +146,13 @@ export const StripeConfigModal = ({
                   onChange={handleTestPublicKeyChange}
                   placeholder="pk_test_..."
                   withVariableButton={false}
+                  debounceTimeout={0}
                 />
                 <TextInput
                   onChange={handleTestSecretKeyChange}
                   placeholder="sk_test_..."
                   withVariableButton={false}
+                  debounceTimeout={0}
                 />
               </HStack>
             </Stack>
@@ -137,6 +164,7 @@ export const StripeConfigModal = ({
                     onChange={handlePublicKeyChange}
                     placeholder="pk_live_..."
                     withVariableButton={false}
+                    debounceTimeout={0}
                   />
                 </FormControl>
                 <FormControl>
@@ -144,6 +172,7 @@ export const StripeConfigModal = ({
                     onChange={handleSecretKeyChange}
                     placeholder="sk_live_..."
                     withVariableButton={false}
+                    debounceTimeout={0}
                   />
                 </FormControl>
               </HStack>
@@ -162,7 +191,7 @@ export const StripeConfigModal = ({
         <ModalFooter>
           <Button
             colorScheme="blue"
-            onClick={handleCreateClick}
+            onClick={createCredentials}
             isDisabled={
               stripeConfig.live.publicKey === '' ||
               stripeConfig.name === '' ||
