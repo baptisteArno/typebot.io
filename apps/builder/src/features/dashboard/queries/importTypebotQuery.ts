@@ -7,6 +7,7 @@ import {
   LogicBlockType,
   Typebot,
 } from 'models'
+import { JumpBlock } from 'models/features/blocks/logic/jump'
 import { blockHasItems, isDefined, isWebhookBlock, sendRequest } from 'utils'
 
 export const importTypebotQuery = async (typebot: Typebot, userPlan: Plan) => {
@@ -82,6 +83,14 @@ const duplicateTypebot = (
                 ...s.options,
                 groupId: groupIdsMapping.get(s.options.groupId as string),
               },
+            }
+          if (s.type === LogicBlockType.JUMP)
+            return {
+              ...s,
+              options: {
+                ...s.options,
+                groupId: groupIdsMapping.get(s.options.groupId as string),
+              } satisfies JumpBlock['options'],
             }
           if (blockHasItems(s))
             return {
