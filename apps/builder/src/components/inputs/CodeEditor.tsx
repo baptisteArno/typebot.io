@@ -67,7 +67,12 @@ export const CodeEditor = ({
   const handleChange = (newValue: string) => {
     if (isDefined(props.value)) return
     setValue(newValue)
-    setCarretPosition(codeEditor.current?.state?.selection.main.head ?? 0)
+  }
+
+  const rememberCarretPosition = () => {
+    setCarretPosition(
+      codeEditor.current?.view?.state?.selection.asSingle().main.head ?? 0
+    )
   }
 
   useEffect(
@@ -114,6 +119,7 @@ export const CodeEditor = ({
         ref={codeEditor}
         value={props.value ?? value}
         onChange={handleChange}
+        onBlur={rememberCarretPosition}
         theme={theme}
         extensions={[loadLanguage(lang)].filter(isDefined)}
         editable={!isReadOnly}
