@@ -11,7 +11,6 @@ import {
   Image,
   Flex,
   Box,
-  Portal,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { DefaultAvatar } from '../DefaultAvatar'
@@ -70,15 +69,13 @@ export const AvatarForm = ({
                 />
               )}
             </PopoverTrigger>
-            <Portal>
-              <PopoverContent p="4">
-                <ImageUploadContent
-                  filePath={uploadFilePath}
-                  defaultUrl={avatarProps?.url}
-                  onSubmit={handleImageUrl}
-                />
-              </PopoverContent>
-            </Portal>
+            <PopoverContent p="4">
+              <ImageUploadContent
+                filePath={uploadFilePath}
+                defaultUrl={avatarProps?.url}
+                onSubmit={handleImageUrl}
+              />
+            </PopoverContent>
           </Popover>
         )}
       </Flex>
