@@ -227,3 +227,9 @@ textarea {
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
 }
+
+.typebot-date-input {
+  color-scheme: light;
+  color: var(--typebot-input-color);
+  background-color: var(--typebot-input-bg-color);
+}
