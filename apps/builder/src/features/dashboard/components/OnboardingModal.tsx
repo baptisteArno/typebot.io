@@ -16,6 +16,7 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     '/bots/onboarding.json',
     '/bots/onboarding-dark.json'
   )
+  const backgroundColor = useColorModeValue('white', '#171923')
   const { user, updateUser } = useUser()
   const [typebot, setTypebot] = useState<Typebot>()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
@@ -101,6 +102,9 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
           typebot={typebot}
           prefilledVariables={{
             Name: user?.name?.split(' ')[0] ?? undefined,
+          }}
+          theme={{
+            backgroundColor,
           }}
           defaultOpen={isNewUser}
           onAnswer={handleNewAnswer}

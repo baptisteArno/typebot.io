@@ -122,6 +122,10 @@ export const Popup = (props: PopupProps) => {
           <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
             <div
               class="relative h-[80vh] transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+              style={{
+                'background-color':
+                  props.theme?.backgroundColor ?? 'transparent',
+              }}
               ref={botContainer}
             >
               <Bot {...botProps} prefilledVariables={prefilledVariables()} />
