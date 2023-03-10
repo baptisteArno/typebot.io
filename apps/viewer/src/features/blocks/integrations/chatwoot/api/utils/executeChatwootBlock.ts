@@ -49,13 +49,25 @@ if (window.$chatwoot) {
   })(document, "script");
 }`
 
+const chatwootCloseCode = `
+if (window.$chatwoot) {
+  window.$chatwoot.toggle("close");
+  window.$chatwoot.toggleBubbleVisibility("hide");
+}
+`
+
 export const executeChatwootBlock = (
   { typebot: { variables }, result }: SessionState,
   block: ChatwootBlock,
   lastBubbleBlockId?: string
 ): ExecuteIntegrationResponse => {
   const isPreview = !result.id
-  const chatwootCode = parseChatwootOpenCode(block.options)
+  const chatwootCode =
+    block.options.task === 'Close widget'
+      ? chatwootCloseCode
+      : isPreview
+      ? ''
+      : parseChatwootOpenCode(block.options)
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
@@ -76,14 +88,15 @@ export const executeChatwootBlock = (
         },
       },
     ],
-    logs: isPreview
-      ? [
-          {
-            status: 'info',
-            description: 'Chatwoot block is not supported in preview',
-            details: null,
-          },
-        ]
-      : undefined,
+    logs:
+      chatwootCode === ''
+        ? [
+            {
+              status: 'info',
+              description: 'Chatwoot block is not supported in preview',
+              details: null,
+            },
+          ]
+        : undefined,
   }
 }

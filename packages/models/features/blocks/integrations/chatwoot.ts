@@ -2,7 +2,10 @@ import { z } from 'zod'
 import { blockBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 
+export const chatwootTasks = ['Show widget', 'Close widget'] as const
+
 export const chatwootOptionsSchema = z.object({
+  task: z.enum(chatwootTasks).optional(),
   baseUrl: z.string(),
   websiteToken: z.string(),
   user: z
@@ -24,6 +27,7 @@ export const chatwootBlockSchema = blockBaseSchema.and(
 )
 
 export const defaultChatwootOptions: ChatwootOptions = {
+  task: 'Show widget',
   baseUrl: 'https://app.chatwoot.com',
   websiteToken: '',
 }
