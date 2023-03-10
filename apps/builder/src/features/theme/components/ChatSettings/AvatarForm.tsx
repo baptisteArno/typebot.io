@@ -5,15 +5,18 @@ import {
   HStack,
   Popover,
   PopoverContent,
-  PopoverTrigger,
   Stack,
   Switch,
   Image,
   Flex,
   Box,
+  Portal,
+  PopoverAnchor,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { DefaultAvatar } from '../DefaultAvatar'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 
 type Props = {
   uploadFilePath: string
@@ -30,11 +33,21 @@ export const AvatarForm = ({
   isDefaultCheck = false,
   onAvatarChange,
 }: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const isChecked = avatarProps ? avatarProps.isEnabled : isDefaultCheck
   const handleOnCheck = () =>
     onAvatarChange({ ...avatarProps, isEnabled: !isChecked })
   const handleImageUrl = (url: string) =>
     onAvatarChange({ isEnabled: isChecked, url })
+  const popoverContainerRef = React.useRef<HTMLDivElement>(null)
+
+  useOutsideClick({
+    ref: popoverContainerRef,
+    handler: () => {
+      console.log('close')
+      onClose()
+    },
+  })
 
   const isDefaultAvatar = !avatarProps?.url || avatarProps.url.includes('{{')
   return (
@@ -47,36 +60,45 @@ export const AvatarForm = ({
           <Switch isChecked={isChecked} id={title} onChange={handleOnCheck} />
         </HStack>
         {isChecked && (
-          <Popover isLazy>
-            <PopoverTrigger>
-              {isDefaultAvatar ? (
-                <Box>
-                  <DefaultAvatar
+          <Flex ref={popoverContainerRef}>
+            <Popover isLazy isOpen={isOpen}>
+              <PopoverAnchor>
+                {isDefaultAvatar ? (
+                  <Box onClick={onOpen}>
+                    <DefaultAvatar
+                      cursor="pointer"
+                      _hover={{ filter: 'brightness(.9)' }}
+                    />
+                  </Box>
+                ) : (
+                  <Image
+                    onClick={onOpen}
+                    src={avatarProps.url}
+                    alt="Website image"
                     cursor="pointer"
                     _hover={{ filter: 'brightness(.9)' }}
+                    transition="filter 200ms"
+                    rounded="full"
+                    boxSize="40px"
+                    objectFit="cover"
                   />
-                </Box>
-              ) : (
-                <Image
-                  src={avatarProps.url}
-                  alt="Website image"
-                  cursor="pointer"
-                  _hover={{ filter: 'brightness(.9)' }}
-                  transition="filter 200ms"
-                  rounded="full"
-                  boxSize="40px"
-                  objectFit="cover"
-                />
-              )}
-            </PopoverTrigger>
-            <PopoverContent p="4">
-              <ImageUploadContent
-                filePath={uploadFilePath}
-                defaultUrl={avatarProps?.url}
-                onSubmit={handleImageUrl}
-              />
-            </PopoverContent>
-          </Popover>
+                )}
+              </PopoverAnchor>
+              <Portal>
+                <PopoverContent
+                  p="4"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                >
+                  <ImageUploadContent
+                    filePath={uploadFilePath}
+                    defaultUrl={avatarProps?.url}
+                    onSubmit={handleImageUrl}
+                  />
+                </PopoverContent>
+              </Portal>
+            </Popover>
+          </Flex>
         )}
       </Flex>
     </Stack>

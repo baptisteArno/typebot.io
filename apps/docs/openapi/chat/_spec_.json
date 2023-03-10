@@ -2854,6 +2854,13 @@
                                                           "options": {
                                                             "type": "object",
                                                             "properties": {
+                                                              "task": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "Show widget",
+                                                                  "Close widget"
+                                                                ]
+                                                              },
                                                               "baseUrl": {
                                                                 "type": "string"
                                                               },

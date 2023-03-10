@@ -1,10 +1,18 @@
 import { isMobile } from '@/utils/isMobileSignal'
-import { createSignal, Show } from 'solid-js'
+import { createEffect, createSignal, Show } from 'solid-js'
 import { isNotEmpty } from 'utils'
 import { DefaultAvatar } from './DefaultAvatar'
 
 export const Avatar = (props: { initialAvatarSrc?: string }) => {
-  const [avatarSrc] = createSignal(props.initialAvatarSrc)
+  const [avatarSrc, setAvatarSrc] = createSignal(props.initialAvatarSrc)
+
+  createEffect(() => {
+    if (
+      avatarSrc()?.startsWith('{{') &&
+      props.initialAvatarSrc?.startsWith('http')
+    )
+      setAvatarSrc(props.initialAvatarSrc)
+  })
 
   return (
     <Show
