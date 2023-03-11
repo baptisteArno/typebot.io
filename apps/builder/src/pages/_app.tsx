@@ -14,17 +14,14 @@ import { useRouter } from 'next/router'
 import { SupportBubble } from '@/components/SupportBubble'
 import { WorkspaceProvider } from '@/features/workspace'
 import { toTitleCase } from 'utils'
-import { Session } from 'next-auth'
 import { Plan } from 'db'
 import { trpc } from '@/lib/trpc'
 import { NewVersionPopup } from '@/components/NewVersionPopup'
+import { I18nProvider } from '@/locales'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
-const App = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{ session?: Session }>) => {
+const App = ({ Component, pageProps }: AppProps) => {
   useRouterProgressBar()
   const { query, pathname } = useRouter()
 
@@ -50,19 +47,21 @@ const App = ({
   return (
     <>
       <ToastContainer />
-      <ChakraProvider theme={customTheme}>
-        <SessionProvider session={session}>
-          <UserProvider>
-            <TypebotProvider typebotId={typebotId}>
-              <WorkspaceProvider typebotId={typebotId}>
-                <Component {...pageProps} />
-                <SupportBubble />
-                <NewVersionPopup />
-              </WorkspaceProvider>
-            </TypebotProvider>
-          </UserProvider>
-        </SessionProvider>
-      </ChakraProvider>
+      <I18nProvider locale={pageProps.locale}>
+        <ChakraProvider theme={customTheme}>
+          <SessionProvider session={pageProps.session}>
+            <UserProvider>
+              <TypebotProvider typebotId={typebotId}>
+                <WorkspaceProvider typebotId={typebotId}>
+                  <Component {...pageProps} />
+                  <SupportBubble />
+                  <NewVersionPopup />
+                </WorkspaceProvider>
+              </TypebotProvider>
+            </UserProvider>
+          </SessionProvider>
+        </ChakraProvider>
+      </I18nProvider>
     </>
   )
 }

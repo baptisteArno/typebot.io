@@ -8,6 +8,7 @@ import {
   AlertDialogOverlay,
   Button,
 } from '@chakra-ui/react'
+import { useScopedI18n } from '@/locales'
 
 type ConfirmDeleteModalProps = {
   isOpen: boolean
@@ -28,6 +29,7 @@ export const ConfirmModal = ({
   onConfirm,
   confirmButtonColor = 'red',
 }: ConfirmDeleteModalProps) => {
+  const scopedT = useScopedI18n('confirmModal')
   const [confirmLoading, setConfirmLoading] = useState(false)
   const cancelRef = useRef(null)
 
@@ -52,7 +54,7 @@ export const ConfirmModal = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {title ?? 'Are you sure?'}
+            {title ?? scopedT('defaultTitle')}
           </AlertDialogHeader>
 
           <AlertDialogBody>{message}</AlertDialogBody>

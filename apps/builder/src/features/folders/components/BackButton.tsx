@@ -3,8 +3,10 @@ import { ChevronLeftIcon } from '@/components/icons'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
+import { useI18n } from '@/locales'
 
 export const BackButton = ({ id }: { id: string | null }) => {
+  const t = useI18n()
   const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
     useTypebotDnd()
 
@@ -26,7 +28,7 @@ export const BackButton = ({ id }: { id: string | null }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      Back
+      {t('back')}
     </Button>
   )
 }

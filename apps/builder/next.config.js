@@ -7,6 +7,10 @@ const withTM = require('next-transpile-modules')(['utils', 'models', 'emails'])
 const nextConfig = withTM({
   reactStrictMode: true,
   output: 'standalone',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'fr', 'pr'],
+  },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },

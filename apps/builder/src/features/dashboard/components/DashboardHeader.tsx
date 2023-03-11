@@ -8,8 +8,10 @@ import { isNotDefined } from 'utils'
 import Link from 'next/link'
 import { WorkspaceSettingsModal } from '@/features/workspace'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
+import { useScopedI18n } from '@/locales'
 
 export const DashboardHeader = () => {
+  const scopedT = useScopedI18n('dashboard.header')
   const { user } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
 
@@ -52,7 +54,7 @@ export const DashboardHeader = () => {
             onClick={onOpen}
             isLoading={isNotDefined(workspace)}
           >
-            Settings & Members
+            {scopedT('settingsButton.label')}
           </Button>
           <WorkspaceDropdown
             currentWorkspace={workspace}

@@ -169,6 +169,11 @@ const Alert = createMultiStyleConfigHelpers(
       }
     },
   },
+  baseStyle: {
+    container: {
+      borderRadius: 'md',
+    },
+  },
 })
 
 const Switch = createMultiStyleConfigHelpers(

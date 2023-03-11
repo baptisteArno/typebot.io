@@ -7,6 +7,7 @@ import {
 import { TypebotDndProvider, FolderContent } from '@/features/folders'
 import { ParentModalProvider } from '@/features/graph'
 import { useWorkspace } from '@/features/workspace'
+import { useScopedI18n } from '@/locales'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
 import { Plan } from 'db'
 import { useRouter } from 'next/router'
@@ -15,6 +16,7 @@ import { guessIfUserIsEuropean } from 'utils/pricing'
 import { DashboardHeader } from './DashboardHeader'
 
 export const DashboardPage = () => {
+  const scopedT = useScopedI18n('dashboard')
   const [isLoading, setIsLoading] = useState(false)
   const { query } = useRouter()
   const { user } = useUser()
@@ -42,7 +44,7 @@ export const DashboardPage = () => {
 
   return (
     <Stack minH="100vh">
-      <Seo title={workspace?.name ?? 'My typebots'} />
+      <Seo title={workspace?.name ?? scopedT('title')} />
       <DashboardHeader />
       {!workspace?.stripeId && (
         <ParentModalProvider>
@@ -57,7 +59,7 @@ export const DashboardPage = () => {
       <TypebotDndProvider>
         {isLoading ? (
           <VStack w="full" justifyContent="center" pt="10" spacing={6}>
-            <Text>You are being redirected...</Text>
+            <Text>{scopedT('redirectionMessage')}</Text>
             <Spinner />
           </VStack>
         ) : (

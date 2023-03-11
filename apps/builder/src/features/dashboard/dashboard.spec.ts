@@ -40,7 +40,7 @@ test('folders and typebots should be deletable', async ({ page }) => {
   await page.click('li:has-text("Folder #1") >> button:has-text("Delete")')
   await deleteButtonInConfirmDialog(page).click()
   await expect(page.locator('span >> text="Folder #1"')).not.toBeVisible()
-  await page.click('button[aria-label="Show Typebot #1 menu"]')
+  await page.click('button[aria-label="Show more options"]')
   await page.click('li:has-text("Typebot #1") >> button:has-text("Delete")')
   await deleteButtonInConfirmDialog(page).click()
   await expect(page.locator('span >> text="Typebot #1"')).not.toBeVisible()

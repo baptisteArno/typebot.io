@@ -44,6 +44,7 @@ importers:
       '@trpc/react-query': 10.12.0
       '@trpc/server': 10.12.0
       '@typebot.io/js': workspace:*
+      '@typebot.io/next-international': ^0.3.8
       '@typebot.io/react': workspace:*
       '@types/canvas-confetti': 1.6.0
       '@types/google-spreadsheet': 3.3.1
@@ -148,6 +149,7 @@ importers:
       '@trpc/react-query': 10.12.0_tij422wpfxfl3iixjhzsgwgs2e
       '@trpc/server': 10.12.0
       '@typebot.io/js': link:../../packages/js
+      '@typebot.io/next-international': 0.3.8_next@13.1.6+react@18.2.0
       '@typebot.io/react': link:../../packages/react
       '@udecode/plate-basic-marks': 19.2.0_opnyntabsv5vdkt3p6hmagoxbq
       '@udecode/plate-common': 7.0.2_rjhyybmi5zd2n2kz5mt3q7icvy
@@ -6669,6 +6671,17 @@ packages:
       - webpack-cli
     dev: false
 
+  /@typebot.io/next-international/0.3.8_next@13.1.6+react@18.2.0:
+    resolution: {integrity: sha512-X5Q/r7iNhCBlWGeQho2PESDFjYk5NUW72dUEI/ghG6kE1jactXJRC0yuPRef/eILwlbwF5k+YXSo5ueiJZ4H1Q==}
+    peerDependencies:
+      next: ^12.0.0 || ^11.0.0
+      react: ^18.0.0 || ^17.0.0
+    dependencies:
+      international-types: 0.3.8
+      next: 13.1.6_6m24vuloj5ihw4zc5lbsktc4fu
+      react: 18.2.0
+    dev: false
+
   /@types/aos/3.0.4:
     resolution: {integrity: sha512-mna6Jd6bdK1NpwarLopGvXOgUoCfj0470IwLxuVOFDElTGI0JTd7xSGQ0AjbAEnHErC/b3fA9t2uB3IXVKmckA==}
     dev: true
@@ -13025,6 +13038,10 @@ packages:
       get-intrinsic: 1.2.0
       has: 1.0.3
       side-channel: 1.0.4
+
+  /international-types/0.3.8:
+    resolution: {integrity: sha512-DeAFYOSA2wuUiSkFnAqrIM1UNVSAa8aP6hbXQOK4n74VuP/bCZPlZ7SEnCZ6+JBID/ekH1Ir5xTwsKA2Q++mKw==}
+    dev: false
 
   /interpret/1.4.0:
     resolution: {integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==}

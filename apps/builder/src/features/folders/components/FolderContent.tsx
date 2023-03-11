@@ -24,12 +24,14 @@ import { CreateFolderButton } from './CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderButton'
 import { TypebotButton } from './TypebotButton'
 import { TypebotCardOverlay } from './TypebotButtonOverlay'
+import { useI18n } from '@/locales'
 
 type Props = { folder: DashboardFolder | null }
 
 const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
+  const t = useI18n()
   const { workspace, currentRole } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
@@ -57,7 +59,9 @@ export const FolderContent = ({ folder }: Props) => {
     workspaceId: workspace?.id,
     parentId: folder?.id,
     onError: (error) => {
-      showToast({ title: "Couldn't fetch folders", description: error.message })
+      showToast({
+        description: error.message,
+      })
     },
   })
 
@@ -70,7 +74,6 @@ export const FolderContent = ({ folder }: Props) => {
     folderId: folder === null ? 'root' : folder.id,
     onError: (error) => {
       showToast({
-        title: "Couldn't fetch typebots",
         description: error.message,
       })
     },
@@ -94,7 +97,7 @@ export const FolderContent = ({ folder }: Props) => {
     setIsCreatingFolder(false)
     if (error)
       return showToast({
-        title: 'An error occured',
+        title: t('errorMessage'),
         description: error.message,
       })
     if (newFolder) mutateFolders({ folders: [...folders, newFolder] })

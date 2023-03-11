@@ -9,10 +9,12 @@ import {
 import { useWorkspace } from '@/features/workspace'
 import { Plan } from 'db'
 import React from 'react'
+import { useScopedI18n } from '@/locales'
 
 type Props = { isLoading: boolean; onClick: () => void }
 
 export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
+  const scopedT = useScopedI18n('folders.createFolderButton')
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,7 +29,7 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
       isLoading={isLoading}
     >
       <HStack>
-        <Text>Create a folder</Text>
+        <Text>{scopedT('label')}</Text>
         {isFreePlan(workspace) && <LockTag plan={Plan.STARTER} />}
       </HStack>
       <ChangePlanModal

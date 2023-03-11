@@ -25,6 +25,7 @@ import React, { useMemo } from 'react'
 import { deleteFolderQuery } from '../queries/deleteFolderQuery'
 import { useToast } from '@/hooks/useToast'
 import { updateFolderQuery } from '../queries/updateFolderQuery'
+import { useI18n, useScopedI18n } from '@/locales'
 
 export const FolderButton = ({
   folder,
@@ -35,6 +36,8 @@ export const FolderButton = ({
   onFolderDeleted: () => void
   onFolderRenamed: (newName: string) => void
 }) => {
+  const t = useI18n()
+  const scopedT = useScopedI18n('folders.folderButton')
   const router = useRouter()
   const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
     useTypebotDnd()
@@ -49,7 +52,6 @@ export const FolderButton = ({
     const { error } = await deleteFolderQuery(folder.id)
     return error
       ? showToast({
-          title: "Couldn't delete the folder",
           description: error.message,
         })
       : onFolderDeleted()
@@ -59,7 +61,7 @@ export const FolderButton = ({
     if (newName === '' || newName === folder.name) return
     const { error } = await updateFolderQuery(folder.id, { name: newName })
     return error
-      ? showToast({ title: 'An error occured', description: error.message })
+      ? showToast({ title: t('errorMessage'), description: error.message })
       : onFolderRenamed(newName)
   }
 
@@ -106,7 +108,7 @@ export const FolderButton = ({
               onOpen()
             }}
           >
-            Delete
+            {t('delete')}
           </MenuItem>
         </MenuList>
       </Menu>
@@ -138,8 +140,9 @@ export const FolderButton = ({
         confirmButtonLabel={'Delete'}
         message={
           <Text>
-            Are you sure you want to delete <strong>{folder.name}</strong>{' '}
-            folder? (Everything inside will be move to your dashboard)
+            {scopedT('deleteConfirmationMessage', {
+              folderName: <strong>{folder.name}</strong>,
+            })}
           </Text>
         }
         title={`Delete ${folder.name}?`}

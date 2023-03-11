@@ -3,12 +3,14 @@ import { PlusIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
 import { stringify } from 'qs'
 import React from 'react'
+import { useScopedI18n } from '@/locales'
 
 export const CreateBotButton = ({
   folderId,
   isFirstBot,
   ...props
 }: { folderId?: string; isFirstBot: boolean } & ButtonProps) => {
+  const scopedT = useScopedI18n('folders.createTypebotButton')
   const router = useRouter()
 
   const handleClick = () =>
@@ -39,7 +41,7 @@ export const CreateBotButton = ({
           textAlign="center"
           mt="6"
         >
-          Create a typebot
+          {scopedT('label')}
         </Text>
       </VStack>
     </Button>
