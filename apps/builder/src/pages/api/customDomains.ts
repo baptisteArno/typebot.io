@@ -35,6 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await createDomainOnVercel(data.name)
     } catch (err) {
+      console.log(err)
       if (err instanceof HTTPError && err.response.statusCode !== 409)
         return res.status(err.response.statusCode).send(err.response.body)
     }
