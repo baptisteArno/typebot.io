@@ -33,4 +33,10 @@ export const templates: TemplateProps[] = [
     fileName: 'movie-recommendation.json',
     isNew: true,
   },
+  {
+    name: 'Basic ChatGPT',
+    emoji: '🤖',
+    fileName: 'basic-chat-gpt.json',
+    isNew: true,
+  },
 ]
