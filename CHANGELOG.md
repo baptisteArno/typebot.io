@@ -1,5 +1,44 @@
 # Changelog
 
+<a name="2.11.4"></a>
+## 2.11.4 (2023-03-13)
+
+### Added
+
+- ✨ Add basic ChatGPT template [[86ecd4a](https://github.com/baptisteArno/typebot.io/commit/86ecd4aa8703665b073cb8d5338899cc4de05d73)]
+- ✨ Add movie recommendation template [[53cdb35](https://github.com/baptisteArno/typebot.io/commit/53cdb3598410ac6fa4680d4dfdad71342890ebb9)]
+- ✨ Add OpenAI block [[ff04edf](https://github.com/baptisteArno/typebot.io/commit/ff04edf1395770145a89ce2f8303a00cac357c6e)]
+
+### Changed
+
+- ⚡ (openai) Add Messages sequence type [[c4db2f4](https://github.com/baptisteArno/typebot.io/commit/c4db2f42a62e43dc7d30af5e0d3dc263e47c3e0a)]
+- 🚸 Improve magic link sign in experience [[48db171](https://github.com/baptisteArno/typebot.io/commit/48db171c1b5fb5bdc1837bd2fae06d6ab80f4ca4)]
+- ♿ (editor) Allow empty group titles [[f9aef90](https://github.com/baptisteArno/typebot.io/commit/f9aef907e3e09958eb1f595dcfee71c384101c9b)]
+- 💄 (js) Make sure lite badge can&#x27;t be hidden [[1863281](https://github.com/baptisteArno/typebot.io/commit/186328132f8c200d7548df6e8e97aeea72a25649)]
+- 🚸 (chatwoot) Add close widget task [[9785a0d](https://github.com/baptisteArno/typebot.io/commit/9785a0df5c11dc88ba9534e45419ba41d71a5085)]
+- 💄 Add backgroundColor theme field for Popup [[15c1432](https://github.com/baptisteArno/typebot.io/commit/15c1432c32725da0250ca5d30b2447e8514ef9a4)]
+- ⚡ (wp) Add custom api host for WP plugin [[ddd20f6](https://github.com/baptisteArno/typebot.io/commit/ddd20f62353f86f669643b551bbf615ae912919d)]
+- 🚸 (phone) Improve phone input behavior and validation [[6b08df7](https://github.com/baptisteArno/typebot.io/commit/6b08df71bab3bc2bd23c253bea1a26154713292f)]
+
+### Fixed
+
+- 🐛 Fix form urlencoded content-type webhooks [[bcad99f](https://github.com/baptisteArno/typebot.io/commit/bcad99f555fbbb5850954aa95d78ea0bb17b219d)]
+- 🐛 (js) Fix popup closing on bot click [[4ae9ea3](https://github.com/baptisteArno/typebot.io/commit/4ae9ea32e4b6ae0967e2b1f996a64aef3455478b)]
+- 🐛 (js) Enable prefill for date input [[a66a1e8](https://github.com/baptisteArno/typebot.io/commit/a66a1e822655934881fde62f8b93ec87dc6d45c7)]
+- 💚 More efficient db clean script with chunked operations [[5d8c990](https://github.com/baptisteArno/typebot.io/commit/5d8c990c0545e2d9f92f8b2116988f633ae79e35)]
+- 🐛 (js) Fix dynamic avatar on mount [[883d519](https://github.com/baptisteArno/typebot.io/commit/883d519875b3d16e668f7766fcf46a18b493616a)]
+- 🐛 Incorrect Jump block duplication on typebot import [[26c80f0](https://github.com/baptisteArno/typebot.io/commit/26c80f064f60c497433d98f9da5df0748d8d636e)]
+- 🐛 (editor) Fix code editor variable insertion position [[5bbb539](https://github.com/baptisteArno/typebot.io/commit/5bbb5394ba83aa68424a78058305f6c944d6081b)]
+- 🐛 (date) Fix date picker UI when editor is in dark mode [[e680d13](https://github.com/baptisteArno/typebot.io/commit/e680d133a5533851c84b492595e692111eec6bd5)]
+- 🐛 Fix theme avatar form variable click unfocus bug [[5435452](https://github.com/baptisteArno/typebot.io/commit/5435452ab01a7cb244328102d8a436c05e3941aa)]
+
+### Miscellaneous
+
+- 🌐 Introduce i18n [[138f3f8](https://github.com/baptisteArno/typebot.io/commit/138f3f8b076137604ccec76da16b37ccf3e886d3)]
+- 📝 Improve description for DISABLE_SIGNUP param [[8df8307](https://github.com/baptisteArno/typebot.io/commit/8df830721c1f47bd6e0084ec4fbd2301714c9d0e)]
+- 🩹 Fix crash on bot load when it has no groups [[bf1fbf2](https://github.com/baptisteArno/typebot.io/commit/bf1fbf2c5362fa3f69a0e9fb2f895ac45b5d1f80)]
+
+
 <a name="2.11.3"></a>
 ## 2.11.3 (2023-03-08)
 
