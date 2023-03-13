@@ -7,10 +7,14 @@ import { parseReadableDate } from '../utils/parseReadableDate'
 type Props = {
   onSubmit: (inputValue: InputSubmitContent) => void
   options?: DateInputOptions
+  defaultValue?: string
 }
 
 export const DateForm = (props: Props) => {
-  const [inputValues, setInputValues] = createSignal({ from: '', to: '' })
+  const [inputValues, setInputValues] = createSignal(
+    parseDefaultValue(props.defaultValue ?? '')
+  )
+
   return (
     <div class="flex flex-col">
       <div class="flex items-center">
@@ -50,6 +54,7 @@ export const DateForm = (props: Props) => {
                   'min-width': '100px',
                   'font-size': '16px',
                 }}
+                value={inputValues().from}
                 type={props.options?.hasTime ? 'datetime-local' : 'date'}
                 onChange={(e) =>
                   setInputValues({
@@ -74,6 +79,7 @@ export const DateForm = (props: Props) => {
                     'min-width': '100px',
                     'font-size': '16px',
                   }}
+                  value={inputValues().to}
                   type={props.options.hasTime ? 'datetime-local' : 'date'}
                   onChange={(e) =>
                     setInputValues({
@@ -97,4 +103,10 @@ export const DateForm = (props: Props) => {
       </div>
     </div>
   )
+}
+
+const parseDefaultValue = (defaultValue: string) => {
+  if (!defaultValue.includes('to')) return { from: defaultValue, to: '' }
+  const [from, to] = defaultValue.split(' to ')
+  return { from, to }
 }

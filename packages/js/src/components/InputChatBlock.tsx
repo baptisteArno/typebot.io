@@ -152,6 +152,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.DATE}>
         <DateForm
           options={props.block.options as DateInputOptions}
+          defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
         />
       </Match>
