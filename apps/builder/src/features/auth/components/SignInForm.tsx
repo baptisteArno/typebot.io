@@ -6,7 +6,10 @@ import {
   HStack,
   Text,
   Spinner,
-  Tooltip,
+  Alert,
+  Flex,
+  AlertIcon,
+  SlideFade,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
@@ -78,11 +81,6 @@ export const SignInForm = ({
       })
     } else {
       setIsMagicLinkSent(true)
-      showToast({
-        status: 'success',
-        title: 'Success!',
-        description: 'Check your inbox to sign in',
-      })
     }
     setAuthLoading(false)
   }
@@ -103,40 +101,54 @@ export const SignInForm = ({
     )
   return (
     <Stack spacing="4" w="330px">
-      <SocialLoginButtons providers={providers} />
-      {providers?.email && (
+      {!isMagicLinkSent && (
         <>
-          <DividerWithText mt="6">Or with your email</DividerWithText>
-          <HStack as="form" onSubmit={handleEmailSubmit}>
-            <Input
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="email@company.com"
-              required
-              value={emailValue}
-              onChange={handleEmailChange}
-            />
-            <Tooltip
-              label="A sign in email was sent. Make sure to check your SPAM folder."
-              isDisabled={!isMagicLinkSent}
-            >
-              <Button
-                type="submit"
-                isLoading={
-                  ['loading', 'authenticated'].includes(status) || authLoading
-                }
-                isDisabled={isMagicLinkSent}
-              >
-                Submit
-              </Button>
-            </Tooltip>
-          </HStack>
+          <SocialLoginButtons providers={providers} />
+          {providers?.email && (
+            <>
+              <DividerWithText mt="6">Or with your email</DividerWithText>
+              <HStack as="form" onSubmit={handleEmailSubmit}>
+                <Input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="email@company.com"
+                  required
+                  value={emailValue}
+                  onChange={handleEmailChange}
+                />
+                <Button
+                  type="submit"
+                  isLoading={
+                    ['loading', 'authenticated'].includes(status) || authLoading
+                  }
+                  isDisabled={isMagicLinkSent}
+                >
+                  Submit
+                </Button>
+              </HStack>
+            </>
+          )}
         </>
       )}
       {router.query.error && (
         <SignInError error={router.query.error.toString()} />
       )}
+      <SlideFade offsetY="20px" in={isMagicLinkSent} unmountOnExit>
+        <Flex>
+          <Alert status="success" w="100%">
+            <HStack>
+              <AlertIcon />
+              <Stack spacing={1}>
+                <Text fontWeight="semibold">
+                  A magic link email was sent. 🪄
+                </Text>
+                <Text fontSize="sm">Make sure to check your SPAM folder.</Text>
+              </Stack>
+            </HStack>
+          </Alert>
+        </Flex>
+      </SlideFade>
     </Stack>
   )
 }

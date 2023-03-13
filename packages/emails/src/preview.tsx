@@ -10,6 +10,7 @@ import {
   ReachedStorageLimitEmail,
   WorkspaceMemberInvitation,
 } from './emails'
+import { MagicLinkEmail } from './emails/MagicLinkEmail'
 
 const createDistFolder = () => {
   const dist = path.resolve(__dirname, 'dist')
@@ -90,6 +91,10 @@ const createHtmlFile = () => {
         }}
       />
     ).html
+  )
+  fs.writeFileSync(
+    path.resolve(__dirname, 'dist', 'magicLink.html'),
+    render(<MagicLinkEmail url={'https://app.typebot.io'} />).html
   )
 }
 

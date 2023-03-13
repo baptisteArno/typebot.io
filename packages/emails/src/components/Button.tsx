@@ -1,14 +1,14 @@
 import React from 'react'
-import { MjmlButton } from '@faire/mjml-react'
+import { IMjmlButtonProps, MjmlButton } from '@faire/mjml-react'
 import { blue, grayLight } from '../theme'
 import { leadingTight, textBase, borderBase } from '../theme'
 
 type ButtonProps = {
   link: string
   children: React.ReactNode
-}
+} & IMjmlButtonProps
 
-export const Button = ({ link, children }: ButtonProps) => (
+export const Button = ({ link, children, ...props }: ButtonProps) => (
   <MjmlButton
     lineHeight={leadingTight}
     fontSize={textBase}
@@ -20,6 +20,7 @@ export const Button = ({ link, children }: ButtonProps) => (
     backgroundColor={blue}
     color={grayLight}
     borderRadius={borderBase}
+    {...props}
   >
     {children}
   </MjmlButton>

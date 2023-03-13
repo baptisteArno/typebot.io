@@ -13,6 +13,7 @@ import { User } from 'db'
 import { env, getAtPath, isDefined, isNotEmpty } from 'utils'
 import { mockedUser } from '@/features/auth'
 import { getNewUserInvitations } from '@/features/auth/api'
+import { sendVerificationRequest } from './sendVerificationRequest'
 
 const providers: Provider[] = []
 
@@ -42,6 +43,7 @@ if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
         },
       },
       from: env('SMTP_FROM'),
+      sendVerificationRequest,
     })
   )
 
