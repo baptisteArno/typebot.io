@@ -2,7 +2,7 @@ import { authenticateUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
 import { Group, WebhookBlock } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId, isNotDefined, isWebhookBlock } from 'utils'
+import { byId, isNotDefined, isWebhookBlock, parseGroupTitle } from 'utils'
 import { methodNotAllowed } from 'utils/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...blocks.map((s) => ({
           id: s.id,
           groupId: s.groupId,
-          name: `${group.title} > ${s.id}`,
+          name: `${parseGroupTitle(group.title)} > ${s.id}`,
         })),
       ]
     }, [])

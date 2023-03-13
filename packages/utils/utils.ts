@@ -305,3 +305,6 @@ export const getAtPath = <T>(obj: T, path: string): unknown => {
   }
   return current
 }
+
+export const parseGroupTitle = (title: string) =>
+  isEmpty(title) ? 'Untitled' : title

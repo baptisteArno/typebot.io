@@ -1,6 +1,7 @@
 import { Select } from '@/components/inputs/Select'
 import { Input } from '@chakra-ui/react'
 import { Group } from 'models'
+import { parseGroupTitle } from 'utils'
 
 type Props = {
   groups: Group[]
@@ -22,7 +23,7 @@ export const GroupsDropdown = ({
     <Select
       selectedItem={groupId}
       items={(groups ?? []).map((group) => ({
-        label: group.title,
+        label: parseGroupTitle(group.title),
         value: group.id,
       }))}
       onSelect={onGroupIdSelected}

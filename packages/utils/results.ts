@@ -10,7 +10,13 @@ import {
   InputBlockType,
   ResultInSession,
 } from 'models'
-import { isInputBlock, isDefined, byId, isNotEmpty } from './utils'
+import {
+  isInputBlock,
+  isDefined,
+  byId,
+  isNotEmpty,
+  parseGroupTitle,
+} from './utils'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,
@@ -55,7 +61,7 @@ const parseInputsResultHeader = ({
       .flatMap((group) =>
         group.blocks.map((block) => ({
           ...block,
-          groupTitle: group.title,
+          groupTitle: parseGroupTitle(group.title),
         }))
       )
       .filter((block) => isInputBlock(block)) as (InputBlock & {
@@ -80,7 +86,8 @@ const parseInputsResultHeader = ({
       if (
         existingHeader.blocks?.some(
           (block) => block.groupId === inputBlock.groupId
-        )
+        ) ||
+        existingHeader.label.includes('Untitled')
       ) {
         const totalPrevious = existingHeaders.filter((h) =>
           h.label.includes(label)

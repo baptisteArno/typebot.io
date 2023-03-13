@@ -3,7 +3,7 @@ import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Group, Typebot, Webhook, WebhookBlock } from 'models'
-import { byId, isWebhookBlock } from 'utils'
+import { byId, isWebhookBlock, parseGroupTitle } from 'utils'
 import { z } from 'zod'
 
 export const listWebhookBlocksProcedure = authenticatedProcedure
@@ -55,7 +55,7 @@ export const listWebhookBlocksProcedure = authenticatedProcedure
         ...webhookBlocks,
         ...blocks.map((b) => ({
           id: b.id,
-          label: `${group.title} > ${b.id}`,
+          label: `${parseGroupTitle(group.title)} > ${b.id}`,
           url: typebot?.webhooks.find(byId(b.webhookId))?.url ?? undefined,
         })),
       ]

@@ -9,6 +9,7 @@ import {
   WebhookCallBacks,
 } from './blocks'
 import { Coordinates } from '@/features/graph'
+import { parseGroupTitle } from 'utils'
 
 export type GroupsActions = {
   createGroup: (
@@ -69,7 +70,7 @@ const groupsActions = (
         const id = createId()
         const newGroup: Group = {
           ...group,
-          title: `${group.title} copy`,
+          title: `${parseGroupTitle(group.title)} copy`,
           id,
           blocks: group.blocks.map((block) =>
             duplicateBlockDraft(id)(block, onWebhookBlockDuplicated)

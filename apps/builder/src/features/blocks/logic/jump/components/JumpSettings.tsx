@@ -3,7 +3,7 @@ import { useTypebot } from '@/features/editor'
 import { Stack } from '@chakra-ui/react'
 import { JumpBlock } from 'models/features/blocks/logic/jump'
 import React from 'react'
-import { byId } from 'utils'
+import { byId, parseGroupTitle } from 'utils'
 
 type Props = {
   groupId: string
@@ -32,7 +32,7 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
         items={typebot.groups
           .filter((group) => group.id !== currentGroupId)
           .map((group) => ({
-            label: group.title,
+            label: parseGroupTitle(group.title),
             value: group.id,
           }))}
         selectedItem={selectedGroup?.id}

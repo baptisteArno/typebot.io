@@ -15,7 +15,7 @@ import {
   useBlockDnd,
 } from '../../../providers'
 import { BlockNodesList } from '../BlockNode/BlockNodesList'
-import { isDefined, isNotDefined } from 'utils'
+import { isDefined, isEmpty, isNotDefined } from 'utils'
 import { useTypebot, RightPanel, useEditor } from '@/features/editor'
 import { GroupNodeContextMenu } from './GroupNodeContextMenu'
 import { useDebounce } from 'use-debounce'
@@ -108,6 +108,7 @@ const NonMemoizedDraggableGroupNode = ({
   useEffect(() => {
     setGroupTitle(group.title)
   }, [group.title])
+
   useEffect(() => {
     if (!currentCoordinates || isReadOnly) return
     if (
@@ -127,7 +128,7 @@ const NonMemoizedDraggableGroupNode = ({
   }, [connectingIds, group.id])
 
   const handleTitleSubmit = (title: string) =>
-    title.length > 0 ? updateGroup(groupIndex, { title }) : undefined
+    updateGroup(groupIndex, { title })
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
@@ -226,6 +227,16 @@ const NonMemoizedDraggableGroupNode = ({
               }}
               px="1"
               userSelect={'none'}
+              style={
+                isEmpty(groupTitle)
+                  ? {
+                      display: 'block',
+                      position: 'absolute',
+                      top: '10px',
+                      width: '100px',
+                    }
+                  : undefined
+              }
             />
             <EditableInput minW="0" px="1" className="prevent-group-drag" />
           </Editable>
