@@ -1,11 +1,16 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { PhoneNumberInputOptions } from 'models'
+import { WithVariableContent } from '@/features/graph/components/Nodes/BlockNode/BlockNodeContent/WithVariableContent'
 
 type Props = {
+  variableId?: string
   placeholder: PhoneNumberInputOptions['labels']['placeholder']
 }
 
-export const PhoneNodeContent = ({ placeholder }: Props) => (
-  <Text color={'gray.500'}>{placeholder}</Text>
-)
+export const PhoneNodeContent = ({ variableId, placeholder }: Props) =>
+  variableId ? (
+    <WithVariableContent variableId={variableId} />
+  ) : (
+    <Text color={'gray.500'}>{placeholder}</Text>
+  )

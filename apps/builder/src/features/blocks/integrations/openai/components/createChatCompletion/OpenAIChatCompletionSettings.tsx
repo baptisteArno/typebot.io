@@ -61,11 +61,6 @@ export const OpenAIChatCompletionSettings = ({
         </TextLink>{' '}
         to better understand the available options.
       </Text>
-      <DropdownList
-        currentItem={options.model}
-        items={chatCompletionModels}
-        onItemSelect={updateModel}
-      />
       <Accordion allowToggle allowMultiple>
         <AccordionItem>
           <AccordionButton>
@@ -82,6 +77,21 @@ export const OpenAIChatCompletionSettings = ({
               onItemsChange={updateMessages}
               isOrdered
               addLabel="Add message"
+            />
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+          <AccordionButton>
+            <Text w="full" textAlign="left">
+              Advanced settings
+            </Text>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <DropdownList
+              currentItem={options.model}
+              items={chatCompletionModels}
+              onItemSelect={updateModel}
             />
           </AccordionPanel>
         </AccordionItem>

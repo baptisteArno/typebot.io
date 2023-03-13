@@ -1,11 +1,16 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { NumberInputBlock } from 'models'
+import { WithVariableContent } from '@/features/graph/components/Nodes/BlockNode/BlockNodeContent/WithVariableContent'
 
 type Props = {
+  variableId?: string
   placeholder: NumberInputBlock['options']['labels']['placeholder']
 }
 
-export const NumberNodeContent = ({ placeholder }: Props) => (
-  <Text color={'gray.500'}>{placeholder}</Text>
-)
+export const NumberNodeContent = ({ variableId, placeholder }: Props) =>
+  variableId ? (
+    <WithVariableContent variableId={variableId} />
+  ) : (
+    <Text color={'gray.500'}>{placeholder}</Text>
+  )

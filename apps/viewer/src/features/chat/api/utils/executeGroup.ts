@@ -124,15 +124,12 @@ const computeRuntimeOptions =
 
 const getPrefilledInputValue =
   (variables: SessionState['typebot']['variables']) => (block: InputBlock) => {
-    return (
-      variables
-        .find(
-          (variable) =>
-            variable.id === block.options.variableId &&
-            isDefined(variable.value)
-        )
-        ?.value?.toString() ?? undefined
-    )
+    const variableValue = variables.find(
+      (variable) =>
+        variable.id === block.options.variableId && isDefined(variable.value)
+    )?.value
+    if (!variableValue || Array.isArray(variableValue)) return
+    return variableValue
   }
 
 const parseBubbleBlock =

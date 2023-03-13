@@ -164,6 +164,7 @@ const TextBubbleEditorContent = ({
           zIndex={10}
         >
           <VariableSearchInput
+            initialVariableId={undefined}
             onSelectVariable={handleVariableSelected}
             placeholder="Search for a variable"
             autoFocus

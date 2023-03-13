@@ -15,6 +15,10 @@ export const chatCompletionMessageRoles = [
   'assistant',
 ] as const
 
+export const chatCompletionMessageCustomRoles = [
+  'Messages sequence ✨',
+] as const
+
 export const chatCompletionResponseValues = [
   'Message content',
   'Total tokens',
@@ -36,11 +40,24 @@ const chatCompletionMessageSchema = z.object({
   content: z.string().optional(),
 })
 
+const chatCompletionCustomMessageSchema = z.object({
+  id: z.string(),
+  role: z.enum(chatCompletionMessageCustomRoles),
+  content: z
+    .object({
+      assistantMessagesVariableId: z.string().optional(),
+      userMessagesVariableId: z.string().optional(),
+    })
+    .optional(),
+})
+
 const chatCompletionOptionsSchema = z
   .object({
     task: z.literal(openAITasks[0]),
     model: z.enum(chatCompletionModels),
-    messages: z.array(chatCompletionMessageSchema),
+    messages: z.array(
+      z.union([chatCompletionMessageSchema, chatCompletionCustomMessageSchema])
+    ),
     responseMapping: z.array(
       z.object({
         id: z.string(),

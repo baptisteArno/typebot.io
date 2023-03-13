@@ -1,21 +1,18 @@
-import { InputBlock } from 'models'
-import { chakra, Text } from '@chakra-ui/react'
+import { chakra, Text, TextProps } from '@chakra-ui/react'
 import React from 'react'
 import { useTypebot } from '@/features/editor'
 import { byId } from 'utils'
 
 type Props = {
-  block: InputBlock
-}
+  variableId: string
+} & TextProps
 
-export const WithVariableContent = ({ block }: Props) => {
+export const WithVariableContent = ({ variableId, ...props }: Props) => {
   const { typebot } = useTypebot()
-  const variableName = typebot?.variables.find(
-    byId(block.options.variableId)
-  )?.name
+  const variableName = typebot?.variables.find(byId(variableId))?.name
 
   return (
-    <Text w="calc(100% - 25px)">
+    <Text w="calc(100% - 25px)" {...props}>
       Collect{' '}
       <chakra.span
         bgColor="orange.400"

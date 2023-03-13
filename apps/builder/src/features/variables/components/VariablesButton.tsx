@@ -48,6 +48,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
       <Portal containerRef={parentModalRef}>
         <PopoverContent w="full" ref={popoverRef}>
           <VariableSearchInput
+            initialVariableId={undefined}
             onSelectVariable={(variable) => {
               onClose()
               if (variable) onSelectVariable(variable)

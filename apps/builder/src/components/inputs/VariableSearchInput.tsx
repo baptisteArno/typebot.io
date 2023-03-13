@@ -24,7 +24,7 @@ import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
-  initialVariableId?: string
+  initialVariableId: string | undefined
   autoFocus?: boolean
   onSelectVariable: (
     variable: Pick<Variable, 'id' | 'name'> | undefined

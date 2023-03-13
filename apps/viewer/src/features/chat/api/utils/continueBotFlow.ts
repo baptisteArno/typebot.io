@@ -103,7 +103,12 @@ const saveVariableValueIfAny =
     if (!foundVariable) return state
 
     const newSessionState = await updateVariables(state)([
-      { ...foundVariable, value: reply },
+      {
+        ...foundVariable,
+        value: Array.isArray(foundVariable.value)
+          ? foundVariable.value.concat(reply)
+          : reply,
+      },
     ])
 
     return newSessionState

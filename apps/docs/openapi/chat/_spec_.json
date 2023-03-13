@@ -2957,27 +2957,62 @@
                                                           "messages": {
                                                             "type": "array",
                                                             "items": {
-                                                              "type": "object",
-                                                              "properties": {
-                                                                "id": {
-                                                                  "type": "string"
+                                                              "anyOf": [
+                                                                {
+                                                                  "type": "object",
+                                                                  "properties": {
+                                                                    "id": {
+                                                                      "type": "string"
+                                                                    },
+                                                                    "role": {
+                                                                      "type": "string",
+                                                                      "enum": [
+                                                                        "system",
+                                                                        "user",
+                                                                        "assistant"
+                                                                      ]
+                                                                    },
+                                                                    "content": {
+                                                                      "type": "string"
+                                                                    }
+                                                                  },
+                                                                  "required": [
+                                                                    "id"
+                                                                  ],
+                                                                  "additionalProperties": false
                                                                 },
-                                                                "role": {
-                                                                  "type": "string",
-                                                                  "enum": [
-                                                                    "system",
-                                                                    "user",
-                                                                    "assistant"
-                                                                  ]
-                                                                },
-                                                                "content": {
-                                                                  "type": "string"
+                                                                {
+                                                                  "type": "object",
+                                                                  "properties": {
+                                                                    "id": {
+                                                                      "type": "string"
+                                                                    },
+                                                                    "role": {
+                                                                      "type": "string",
+                                                                      "enum": [
+                                                                        "Messages sequence ✨"
+                                                                      ]
+                                                                    },
+                                                                    "content": {
+                                                                      "type": "object",
+                                                                      "properties": {
+                                                                        "assistantMessagesVariableId": {
+                                                                          "type": "string"
+                                                                        },
+                                                                        "userMessagesVariableId": {
+                                                                          "type": "string"
+                                                                        }
+                                                                      },
+                                                                      "additionalProperties": false
+                                                                    }
+                                                                  },
+                                                                  "required": [
+                                                                    "id",
+                                                                    "role"
+                                                                  ],
+                                                                  "additionalProperties": false
                                                                 }
-                                                              },
-                                                              "required": [
-                                                                "id"
-                                                              ],
-                                                              "additionalProperties": false
+                                                              ]
                                                             }
                                                           },
                                                           "responseMapping": {

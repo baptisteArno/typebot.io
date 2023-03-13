@@ -233,7 +233,7 @@ const NonMemoizedDraggableGroupNode = ({
                       display: 'block',
                       position: 'absolute',
                       top: '10px',
-                      width: '100px',
+                      width: '50px',
                     }
                   : undefined
               }

@@ -24,7 +24,6 @@ import { WebhookContent } from '@/features/blocks/integrations/webhook'
 import { ChatwootBlockNodeLabel } from '@/features/blocks/integrations/chatwoot'
 import { RedirectNodeContent } from '@/features/blocks/logic/redirect'
 import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly'
-import { WithVariableContent } from './WithVariableContent'
 import { PaymentInputContent } from '@/features/blocks/inputs/payment'
 import { RatingInputContent } from '@/features/blocks/inputs/rating'
 import { FileInputContent } from '@/features/blocks/inputs/fileUpload'
@@ -33,7 +32,6 @@ import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSh
 import { GoogleAnalyticsNodeContent } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeContent'
 import { ZapierContent } from '@/features/blocks/integrations/zapier'
 import { SendEmailContent } from '@/features/blocks/integrations/sendEmail'
-import { isInputBlock, isChoiceInput } from 'utils'
 import { MakeComContent } from '@/features/blocks/integrations/makeCom'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
@@ -47,14 +45,6 @@ type Props = {
   indices: BlockIndices
 }
 export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
-  if (
-    isInputBlock(block) &&
-    !isChoiceInput(block) &&
-    block.options.variableId
-  ) {
-    return <WithVariableContent block={block} />
-  }
-
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
@@ -74,6 +64,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     case InputBlockType.TEXT: {
       return (
         <TextInputNodeContent
+          variableId={block.options.variableId}
           placeholder={block.options.labels.placeholder}
           isLong={block.options.isLong}
         />
@@ -81,31 +72,52 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case InputBlockType.NUMBER: {
       return (
-        <NumberNodeContent placeholder={block.options.labels.placeholder} />
+        <NumberNodeContent
+          placeholder={block.options.labels.placeholder}
+          variableId={block.options.variableId}
+        />
       )
     }
     case InputBlockType.EMAIL: {
       return (
-        <EmailInputNodeContent placeholder={block.options.labels.placeholder} />
+        <EmailInputNodeContent
+          placeholder={block.options.labels.placeholder}
+          variableId={block.options.variableId}
+        />
       )
     }
     case InputBlockType.URL: {
-      return <UrlNodeContent placeholder={block.options.labels.placeholder} />
+      return (
+        <UrlNodeContent
+          placeholder={block.options.labels.placeholder}
+          variableId={block.options.variableId}
+        />
+      )
     }
     case InputBlockType.CHOICE: {
       return <ButtonsBlockNode block={block} indices={indices} />
     }
     case InputBlockType.PHONE: {
-      return <PhoneNodeContent placeholder={block.options.labels.placeholder} />
+      return (
+        <PhoneNodeContent
+          placeholder={block.options.labels.placeholder}
+          variableId={block.options.variableId}
+        />
+      )
     }
     case InputBlockType.DATE: {
-      return <DateNodeContent />
+      return <DateNodeContent variableId={block.options.variableId} />
     }
     case InputBlockType.PAYMENT: {
       return <PaymentInputContent block={block} />
     }
     case InputBlockType.RATING: {
-      return <RatingInputContent block={block} />
+      return (
+        <RatingInputContent
+          block={block}
+          variableId={block.options.variableId}
+        />
+      )
     }
     case InputBlockType.FILE: {
       return <FileInputContent options={block.options} />
