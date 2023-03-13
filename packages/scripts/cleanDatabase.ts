@@ -12,21 +12,21 @@ export const cleanDatabase = async () => {
   await deleteExpiredVerificationTokens()
   const isFirstOfMonth = new Date().getDate() === 1
   if (isFirstOfMonth) {
-    await deleteArchivedTypebots()
     await deleteArchivedResults()
+    await deleteArchivedTypebots()
   }
   console.log('Done!')
 }
 
 const deleteArchivedTypebots = async () => {
-  const lastDayOfPreviousMonth = new Date()
-  lastDayOfPreviousMonth.setMonth(lastDayOfPreviousMonth.getMonth() - 1)
-  lastDayOfPreviousMonth.setDate(0)
+  const lastDayTwoMonthsAgo = new Date()
+  lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
+  lastDayTwoMonthsAgo.setDate(0)
 
   const { count } = await prisma.typebot.deleteMany({
     where: {
       updatedAt: {
-        lte: lastDayOfPreviousMonth,
+        lte: lastDayTwoMonthsAgo,
       },
       isArchived: true,
     },
@@ -36,33 +36,60 @@ const deleteArchivedTypebots = async () => {
 }
 
 const deleteArchivedResults = async () => {
-  const lastDayOfPreviousMonth = new Date()
-  lastDayOfPreviousMonth.setMonth(lastDayOfPreviousMonth.getMonth() - 1)
-  lastDayOfPreviousMonth.setDate(0)
+  const lastDayTwoMonthsAgo = new Date()
+  lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
+  lastDayTwoMonthsAgo.setDate(0)
 
-  const { count } = await prisma.result.deleteMany({
+  const results = await prisma.result.findMany({
     where: {
       createdAt: {
-        lte: lastDayOfPreviousMonth,
+        lte: lastDayTwoMonthsAgo,
       },
       isArchived: true,
     },
+    select: { id: true },
   })
 
-  console.log(`Deleted ${count} archived results.`)
+  console.log(`Deleting ${results.length} archived results...`)
+  const chunkSize = 1000
+  for (let i = 0; i < results.length; i += chunkSize) {
+    const chunk = results.slice(i, i + chunkSize)
+    await prisma.result.deleteMany({
+      where: {
+        id: {
+          in: chunk.map((result) => result.id),
+        },
+      },
+    })
+  }
 }
 
 const deleteOldChatSessions = async () => {
-  const threeDaysAgo = new Date()
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
-  const { count } = await prisma.chatSession.deleteMany({
+  const twoDaysAgo = new Date()
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+  const chatSessions = await prisma.chatSession.findMany({
     where: {
       updatedAt: {
-        lte: threeDaysAgo,
+        lte: twoDaysAgo,
       },
     },
+    select: {
+      id: true,
+    },
   })
-  console.log(`Deleted ${count} old chat sessions.`)
+
+  console.log(`Deleting ${chatSessions.length} old chat sessions...`)
+  const chunkSize = 1000
+  for (let i = 0; i < chatSessions.length; i += chunkSize) {
+    const chunk = chatSessions.slice(i, i + chunkSize)
+    await prisma.chatSession.deleteMany({
+      where: {
+        id: {
+          in: chunk.map((chatSession) => chatSession.id),
+        },
+      },
+    })
+  }
 }
 
 const deleteExpiredAppSessions = async () => {
