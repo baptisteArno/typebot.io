@@ -21,8 +21,6 @@ export type PopupProps = BotProps &
   }
 
 export const Popup = (props: PopupProps) => {
-  let botContainer: HTMLDivElement | undefined
-
   const [popupProps, botProps] = splitProps(props, [
     'onOpen',
     'onClose',
@@ -92,7 +90,6 @@ export const Popup = (props: PopupProps) => {
     popupProps.onOpen?.()
     document.body.style.overflow = 'hidden'
     document.addEventListener('pointerdown', closeBot)
-    botContainer?.addEventListener('pointerdown', stopPropagation)
   }
 
   const closeBot = () => {
@@ -100,7 +97,6 @@ export const Popup = (props: PopupProps) => {
     popupProps.onClose?.()
     document.body.style.overflow = 'auto'
     document.removeEventListener('pointerdown', closeBot)
-    botContainer?.removeEventListener('pointerdown', stopPropagation)
   }
 
   const toggleBot = () => {
@@ -126,7 +122,7 @@ export const Popup = (props: PopupProps) => {
                 'background-color':
                   props.theme?.backgroundColor ?? 'transparent',
               }}
-              ref={botContainer}
+              on:pointerdown={stopPropagation}
             >
               <Bot {...botProps} prefilledVariables={prefilledVariables()} />
             </div>
