@@ -192,10 +192,13 @@ export const executeWebhook =
       headers,
       ...basicAuth,
       json:
-        contentType !== 'x-www-form-urlencoded' && body && isJson
+        !contentType?.includes('x-www-form-urlencoded') && body && isJson
           ? body
           : undefined,
-      form: contentType === 'x-www-form-urlencoded' && body ? body : undefined,
+      form:
+        contentType?.includes('x-www-form-urlencoded') && body
+          ? body
+          : undefined,
       body: body && !isJson ? body : undefined,
     }
     try {
