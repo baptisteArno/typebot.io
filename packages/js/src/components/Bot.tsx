@@ -11,6 +11,7 @@ import {
   setResultInSession,
 } from '@/utils/sessionStorage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
+import immutableCss from '../assets/immutable.css'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -100,6 +101,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
   return (
     <>
       <style>{customCss()}</style>
+      <style>{immutableCss}</style>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>

@@ -1,4 +1,5 @@
 import { onCleanup, onMount } from 'solid-js'
+import { TypebotLogo } from './icons/TypebotLogo'
 
 type Props = {
   botContainer: HTMLDivElement | undefined
@@ -11,8 +12,14 @@ export const LiteBadge = (props: Props) => {
   const appendBadgeIfNecessary = (mutations: MutationRecord[]) => {
     mutations.forEach((mutation) => {
       mutation.removedNodes.forEach((removedNode) => {
-        if ('id' in removedNode && liteBadge && removedNode.id == 'lite-badge')
+        if (
+          'id' in removedNode &&
+          liteBadge &&
+          removedNode.id == 'lite-badge'
+        ) {
+          console.log("Sorry, you can't remove the brand 😅")
           props.botContainer?.append(liteBadge)
+        }
       })
     })
   }
@@ -36,11 +43,11 @@ export const LiteBadge = (props: Props) => {
       href={'https://www.typebot.io/?utm_source=litebadge'}
       target="_blank"
       rel="noopener noreferrer"
-      class="absolute py-1 px-2 bg-white z-50 rounded shadow-md lite-badge text-gray-900"
-      style={{ bottom: '20px', display: 'block' }}
+      class="lite-badge"
       id="lite-badge"
     >
-      Made with <span class="text-blue-500">Typebot</span>.
+      <TypebotLogo />
+      <span>Made with Typebot</span>
     </a>
   )
 }
