@@ -6,7 +6,7 @@ export const waitOptionsSchema = z.object({
   secondsToWaitFor: z.string().optional(),
 })
 
-export const waitBlockSchema = blockBaseSchema.and(
+export const waitBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.WAIT]),
     options: waitOptionsSchema,

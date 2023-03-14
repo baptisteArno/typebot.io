@@ -3,7 +3,7 @@ import { optionBaseSchema, blockBaseSchema } from '../baseSchemas'
 import { defaultButtonLabel } from './constants'
 import { InputBlockType } from './enums'
 
-export const dateInputOptionsSchema = optionBaseSchema.and(
+export const dateInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     labels: z.object({
       button: z.string(),
@@ -15,7 +15,7 @@ export const dateInputOptionsSchema = optionBaseSchema.and(
   })
 )
 
-export const dateInputSchema = blockBaseSchema.and(
+export const dateInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.DATE]),
     options: dateInputOptionsSchema,

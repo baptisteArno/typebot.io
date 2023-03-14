@@ -26,7 +26,7 @@ export const listTypebotsProcedure = authenticatedProcedure
             icon: true,
             id: true,
           })
-          .and(z.object({ publishedTypebotId: z.string().optional() }))
+          .merge(z.object({ publishedTypebotId: z.string().optional() }))
       ),
     })
   )

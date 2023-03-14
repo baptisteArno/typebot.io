@@ -6,7 +6,7 @@ export const imageBubbleContentSchema = z.object({
   url: z.string().optional(),
 })
 
-export const imageBubbleBlockSchema = blockBaseSchema.and(
+export const imageBubbleBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([BubbleBlockType.IMAGE]),
     content: imageBubbleContentSchema,

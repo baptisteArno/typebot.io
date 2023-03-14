@@ -19,7 +19,7 @@ export const chatwootOptionsSchema = z.object({
     .optional(),
 })
 
-export const chatwootBlockSchema = blockBaseSchema.and(
+export const chatwootBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.CHATWOOT]),
     options: chatwootOptionsSchema,

@@ -5,15 +5,15 @@ import { InputBlockType } from './enums'
 import { textInputOptionsBaseSchema } from './text'
 
 export const phoneNumberInputOptionsSchema = optionBaseSchema
-  .and(textInputOptionsBaseSchema)
-  .and(
+  .merge(textInputOptionsBaseSchema)
+  .merge(
     z.object({
       retryMessageContent: z.string(),
       defaultCountryCode: z.string().optional(),
     })
   )
 
-export const phoneNumberInputBlockSchema = blockBaseSchema.and(
+export const phoneNumberInputBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.PHONE]),
     options: phoneNumberInputOptionsSchema,

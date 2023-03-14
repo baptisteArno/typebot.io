@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { settingsSchema } from './settings'
-import { blockSchema } from '../blocks'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
 import { Typebot as TypebotPrisma } from 'db'
+import { blockSchema } from '../blocks/schemas'
 
 export const groupSchema = z.object({
   id: z.string(),

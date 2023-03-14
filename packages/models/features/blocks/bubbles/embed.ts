@@ -8,7 +8,7 @@ export const embedBubbleContentSchema = z.object({
   height: z.number().or(variableStringSchema),
 })
 
-export const embedBubbleBlockSchema = blockBaseSchema.and(
+export const embedBubbleBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([BubbleBlockType.EMBED]),
     content: embedBubbleContentSchema,

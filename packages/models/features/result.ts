@@ -14,13 +14,13 @@ export const resultSchema = z.object({
   isArchived: z.boolean().nullable(),
 }) satisfies z.ZodType<ResultPrisma>
 
-export const resultWithAnswersSchema = resultSchema.and(
+export const resultWithAnswersSchema = resultSchema.merge(
   z.object({
     answers: z.array(answerSchema),
   })
 )
 
-export const resultWithAnswersInputSchema = resultSchema.and(
+export const resultWithAnswersInputSchema = resultSchema.merge(
   z.object({
     answers: z.array(answerInputSchema),
   })

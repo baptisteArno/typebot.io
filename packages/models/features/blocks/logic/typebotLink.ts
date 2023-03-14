@@ -7,7 +7,7 @@ export const typebotLinkOptionsSchema = z.object({
   groupId: z.string().optional(),
 })
 
-export const typebotLinkBlockSchema = blockBaseSchema.and(
+export const typebotLinkBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.TYPEBOT_LINK]),
     options: typebotLinkOptionsSchema,

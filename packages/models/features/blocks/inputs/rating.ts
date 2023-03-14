@@ -10,7 +10,7 @@ export const defaultRatingInputOptions: RatingInputOptions = {
   customIcon: { isEnabled: false },
 }
 
-export const ratingInputOptionsSchema = optionBaseSchema.and(
+export const ratingInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     buttonType: z.literal('Icons').or(z.literal('Numbers')),
     length: z.number(),
@@ -27,7 +27,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.and(
   })
 )
 
-export const ratingInputBlockSchema = blockBaseSchema.and(
+export const ratingInputBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.literal(InputBlockType.RATING),
     options: ratingInputOptionsSchema,

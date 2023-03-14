@@ -8,7 +8,7 @@ export const setVariableOptionsSchema = z.object({
   isCode: z.boolean().optional(),
 })
 
-export const setVariableBlockSchema = blockBaseSchema.and(
+export const setVariableBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.SET_VARIABLE]),
     options: setVariableOptionsSchema,

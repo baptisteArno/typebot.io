@@ -9,7 +9,7 @@ export const videoBubbleContentSchema = z.object({
   type: z.nativeEnum(VideoBubbleContentType).optional(),
 })
 
-export const videoBubbleBlockSchema = blockBaseSchema.and(
+export const videoBubbleBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([BubbleBlockType.VIDEO]),
     content: videoBubbleContentSchema,

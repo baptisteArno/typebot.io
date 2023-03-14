@@ -8,7 +8,7 @@ export const scriptOptionsSchema = z.object({
   shouldExecuteInParentContext: z.boolean().optional(),
 })
 
-export const scriptBlockSchema = blockBaseSchema.and(
+export const scriptBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.SCRIPT]),
     options: scriptOptionsSchema,

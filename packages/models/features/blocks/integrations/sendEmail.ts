@@ -15,7 +15,7 @@ export const sendEmailOptionsSchema = z.object({
   attachmentsVariableId: z.string().optional(),
 })
 
-export const sendEmailBlockSchema = blockBaseSchema.and(
+export const sendEmailBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.EMAIL]),
     options: sendEmailOptionsSchema,

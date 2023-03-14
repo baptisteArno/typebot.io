@@ -14,7 +14,7 @@ export type CreditCardDetails = {
   cvc: string
 }
 
-export const paymentInputOptionsSchema = optionBaseSchema.and(
+export const paymentInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     provider: z.nativeEnum(PaymentProvider),
     labels: z.object({
@@ -40,7 +40,7 @@ export const paymentInputRuntimeOptionsSchema = z.object({
   publicKey: z.string(),
 })
 
-export const paymentInputSchema = blockBaseSchema.and(
+export const paymentInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.PAYMENT]),
     options: paymentInputOptionsSchema,

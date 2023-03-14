@@ -21,7 +21,7 @@ export const webhookOptionsSchema = z.object({
   isCustomBody: z.boolean().optional(),
 })
 
-export const webhookBlockSchema = blockBaseSchema.and(
+export const webhookBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.WEBHOOK]),
     options: webhookOptionsSchema,

@@ -16,7 +16,7 @@ export const textBubbleContentSchema = z.object({
 
 export type TextBubbleContent = z.infer<typeof textBubbleContentSchema>
 
-export const textBubbleBlockSchema = blockBaseSchema.and(
+export const textBubbleBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([BubbleBlockType.TEXT]),
     content: textBubbleContentSchema,

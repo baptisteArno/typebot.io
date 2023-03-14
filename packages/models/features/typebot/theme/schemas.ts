@@ -11,7 +11,7 @@ const containerColorsSchema = z.object({
   color: z.string(),
 })
 
-const inputColorsSchema = containerColorsSchema.and(
+const inputColorsSchema = containerColorsSchema.merge(
   z.object({
     placeholderColor: z.string(),
   })

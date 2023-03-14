@@ -1033,38 +1033,28 @@
                     "typebots": {
                       "type": "array",
                       "items": {
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "name": {
-                                "type": "string"
-                              },
-                              "icon": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "name",
-                              "icon",
-                              "id"
-                            ],
-                            "additionalProperties": false
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "publishedTypebotId": {
-                                "type": "string"
-                              }
-                            },
-                            "additionalProperties": false
+                          "icon": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "publishedTypebotId": {
+                            "type": "string"
                           }
-                        ]
+                        },
+                        "required": [
+                          "name",
+                          "icon",
+                          "id"
+                        ],
+                        "additionalProperties": false
                       }
                     }
                   },
@@ -1444,128 +1434,116 @@
                     "results": {
                       "type": "array",
                       "items": {
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "typebotId": {
-                                "type": "string"
-                              },
-                              "variables": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "value": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "string"
-                                          }
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "name",
-                                    "value"
-                                  ],
-                                  "additionalProperties": false
-                                }
-                              },
-                              "isCompleted": {
-                                "type": "boolean"
-                              },
-                              "hasStarted": {
-                                "type": "boolean",
-                                "nullable": true
-                              },
-                              "isArchived": {
-                                "type": "boolean",
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "id",
-                              "createdAt",
-                              "typebotId",
-                              "variables",
-                              "isCompleted",
-                              "hasStarted",
-                              "isArchived"
-                            ],
-                            "additionalProperties": false
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
                           },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "answers": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "createdAt": {
-                                      "type": "string",
-                                      "format": "date-time"
-                                    },
-                                    "resultId": {
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "typebotId": {
+                            "type": "string"
+                          },
+                          "variables": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "anyOf": [
+                                    {
                                       "type": "string"
                                     },
-                                    "blockId": {
-                                      "type": "string"
-                                    },
-                                    "groupId": {
-                                      "type": "string"
-                                    },
-                                    "variableId": {
-                                      "type": "string",
-                                      "nullable": true
-                                    },
-                                    "content": {
-                                      "type": "string"
-                                    },
-                                    "storageUsed": {
-                                      "type": "number",
-                                      "nullable": true
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
                                     }
-                                  },
-                                  "required": [
-                                    "createdAt",
-                                    "resultId",
-                                    "blockId",
-                                    "groupId",
-                                    "variableId",
-                                    "content",
-                                    "storageUsed"
-                                  ],
-                                  "additionalProperties": false
+                                  ]
                                 }
-                              }
-                            },
-                            "required": [
-                              "answers"
-                            ],
-                            "additionalProperties": false
+                              },
+                              "required": [
+                                "id",
+                                "name",
+                                "value"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "isCompleted": {
+                            "type": "boolean"
+                          },
+                          "hasStarted": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "isArchived": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "answers": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "resultId": {
+                                  "type": "string"
+                                },
+                                "blockId": {
+                                  "type": "string"
+                                },
+                                "groupId": {
+                                  "type": "string"
+                                },
+                                "variableId": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "content": {
+                                  "type": "string"
+                                },
+                                "storageUsed": {
+                                  "type": "number",
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "createdAt",
+                                "resultId",
+                                "blockId",
+                                "groupId",
+                                "variableId",
+                                "content",
+                                "storageUsed"
+                              ],
+                              "additionalProperties": false
+                            }
                           }
-                        ]
+                        },
+                        "required": [
+                          "id",
+                          "createdAt",
+                          "typebotId",
+                          "variables",
+                          "isCompleted",
+                          "hasStarted",
+                          "isArchived",
+                          "answers"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "nextCursor": {

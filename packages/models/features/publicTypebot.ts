@@ -22,7 +22,7 @@ export const publicTypebotSchema = z.object({
   settings: settingsSchema,
 }) satisfies z.ZodType<PrismaPublicTypebot>
 
-const publicTypebotWithName = publicTypebotSchema.and(
+const publicTypebotWithName = publicTypebotSchema.merge(
   typebotSchema.pick({ name: true, isArchived: true, isClosed: true })
 )
 

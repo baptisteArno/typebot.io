@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import {
   googleAnalyticsOptionsSchema,
-  inputBlockSchema,
   paymentInputRuntimeOptionsSchema,
   redirectOptionsSchema,
 } from './blocks'
@@ -9,7 +8,6 @@ import { publicTypebotSchema } from './publicTypebot'
 import { logSchema, resultSchema } from './result'
 import { typebotSchema } from './typebot'
 import {
-  BubbleBlockType,
   textBubbleContentSchema,
   imageBubbleContentSchema,
   videoBubbleContentSchema,
@@ -17,6 +15,8 @@ import {
   embedBubbleContentSchema,
 } from './blocks/bubbles'
 import { answerSchema } from './answer'
+import { BubbleBlockType } from './blocks/bubbles/enums'
+import { inputBlockSchema } from './blocks/schemas'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,
@@ -40,7 +40,7 @@ const resultInSessionStateSchema = resultSchema
   .pick({
     variables: true,
   })
-  .and(
+  .merge(
     z.object({
       answers: z.array(answerInSessionStateSchema),
       id: z.string().optional(),
@@ -72,7 +72,7 @@ const chatSessionSchema = z.object({
 })
 
 const textMessageSchema = z.object({
-  type: z.enum([BubbleBlockType.TEXT]),
+  type: z.literal(BubbleBlockType.TEXT),
   content: textBubbleContentSchema.omit({
     richText: true,
   }),
@@ -99,17 +99,19 @@ const embedMessageSchema = z.object({
     .omit({
       height: true,
     })
-    .and(z.object({ height: z.number().optional() })),
+    .merge(z.object({ height: z.number().optional() })),
 })
 
 const chatMessageSchema = z
   .object({ id: z.string() })
   .and(
-    textMessageSchema
-      .or(imageMessageSchema)
-      .or(videoMessageSchema)
-      .or(audioMessageSchema)
-      .or(embedMessageSchema)
+    z.discriminatedUnion('type', [
+      textMessageSchema,
+      imageMessageSchema,
+      videoMessageSchema,
+      audioMessageSchema,
+      embedMessageSchema,
+    ])
   )
 
 const scriptToExecuteSchema = z.object({
@@ -187,7 +189,7 @@ const replyLogSchema = logSchema
     status: true,
     description: true,
   })
-  .and(z.object({ details: z.unknown().optional() }))
+  .merge(z.object({ details: z.unknown().optional() }))
 
 const clientSideActionSchema = z
   .object({

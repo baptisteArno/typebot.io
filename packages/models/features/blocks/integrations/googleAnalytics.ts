@@ -10,7 +10,7 @@ export const googleAnalyticsOptionsSchema = z.object({
   value: z.number().optional(),
 })
 
-export const googleAnalyticsBlockSchema = blockBaseSchema.and(
+export const googleAnalyticsBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.GOOGLE_ANALYTICS]),
     options: googleAnalyticsOptionsSchema,

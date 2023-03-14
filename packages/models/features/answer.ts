@@ -18,7 +18,7 @@ export const answerInputSchema = answerSchema
     variableId: true,
     storageUsed: true,
   })
-  .and(
+  .merge(
     z.object({
       variableId: z.string().nullish(),
       storageUsed: z.number().nullish(),

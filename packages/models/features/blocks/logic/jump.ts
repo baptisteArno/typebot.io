@@ -7,7 +7,7 @@ export const jumpOptionsSchema = z.object({
   blockId: z.string().optional(),
 })
 
-export const jumpBlockSchema = blockBaseSchema.and(
+export const jumpBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.JUMP]),
     options: jumpOptionsSchema,

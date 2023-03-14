@@ -5,8 +5,8 @@ import { InputBlockType } from './enums'
 import { textInputOptionsBaseSchema } from './text'
 
 export const numberInputOptionsSchema = optionBaseSchema
-  .and(textInputOptionsBaseSchema)
-  .and(
+  .merge(textInputOptionsBaseSchema)
+  .merge(
     z.object({
       min: z.number().optional(),
       max: z.number().optional(),
@@ -14,7 +14,7 @@ export const numberInputOptionsSchema = optionBaseSchema
     })
   )
 
-export const numberInputSchema = blockBaseSchema.and(
+export const numberInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.NUMBER]),
     options: numberInputOptionsSchema,

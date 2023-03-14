@@ -5,14 +5,14 @@ import { InputBlockType } from './enums'
 import { textInputOptionsBaseSchema } from './text'
 
 export const urlInputOptionsSchema = optionBaseSchema
-  .and(textInputOptionsBaseSchema)
-  .and(
+  .merge(textInputOptionsBaseSchema)
+  .merge(
     z.object({
       retryMessageContent: z.string(),
     })
   )
 
-export const urlInputSchema = blockBaseSchema.and(
+export const urlInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.URL]),
     options: urlInputOptionsSchema,

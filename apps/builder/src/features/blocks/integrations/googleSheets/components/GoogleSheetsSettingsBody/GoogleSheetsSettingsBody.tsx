@@ -14,7 +14,7 @@ import {
   GoogleSheetsUpdateRowOptions,
 } from 'models'
 import React, { useMemo } from 'react'
-import { isDefined, omit } from 'utils'
+import { isDefined } from 'utils'
 import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
@@ -50,8 +50,11 @@ export const GoogleSheetsSettingsBody = ({
     () => sheets?.find((s) => s.id === options?.sheetId),
     [sheets, options?.sheetId]
   )
-  const handleCredentialsIdChange = (credentialsId?: string) =>
-    onOptionsChange({ ...omit(options, 'credentialsId'), credentialsId })
+  const handleCredentialsIdChange = (credentialsId: string | undefined) =>
+    onOptionsChange({
+      ...options,
+      credentialsId,
+    })
   const handleSpreadsheetIdChange = (spreadsheetId: string | undefined) =>
     onOptionsChange({ ...options, spreadsheetId })
   const handleSheetIdChange = (sheetId: string | undefined) =>
@@ -137,7 +140,7 @@ export const GoogleSheetsSettingsBody = ({
             />
           </>
         )}
-      {'action' in options && (
+      {options.action && (
         <ActionOptions
           options={options}
           sheet={sheet}

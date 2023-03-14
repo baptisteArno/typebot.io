@@ -7,7 +7,7 @@ export const redirectOptionsSchema = z.object({
   isNewTab: z.boolean(),
 })
 
-export const redirectBlockSchema = blockBaseSchema.and(
+export const redirectBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.REDIRECT]),
     options: redirectOptionsSchema,

@@ -29,7 +29,13 @@ const rowsFilterComparisonSchema = z.object({
   value: z.string().optional(),
 })
 
-const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.and(
+const initialGoogleSheetsOptionsSchema = googleSheetsOptionsBaseSchema.merge(
+  z.object({
+    action: z.undefined(),
+  })
+)
+
+const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   z.object({
     action: z.enum([GoogleSheetsAction.GET]),
     // TODO: remove referenceCell once migrated to filtering
@@ -42,14 +48,14 @@ const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.and(
   })
 )
 
-const googleSheetsInsertRowOptionsSchema = googleSheetsOptionsBaseSchema.and(
+const googleSheetsInsertRowOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   z.object({
     action: z.enum([GoogleSheetsAction.INSERT_ROW]),
     cellsToInsert: z.array(cellSchema),
   })
 )
 
-const googleSheetsUpdateRowOptionsSchema = googleSheetsOptionsBaseSchema.and(
+const googleSheetsUpdateRowOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   z.object({
     action: z.enum([GoogleSheetsAction.UPDATE_ROW]),
     cellsToUpsert: z.array(cellSchema),
@@ -57,12 +63,14 @@ const googleSheetsUpdateRowOptionsSchema = googleSheetsOptionsBaseSchema.and(
   })
 )
 
-export const googleSheetsOptionsSchema = googleSheetsGetOptionsSchema
-  .or(googleSheetsInsertRowOptionsSchema)
-  .or(googleSheetsUpdateRowOptionsSchema)
-  .or(googleSheetsOptionsBaseSchema)
+export const googleSheetsOptionsSchema = z.discriminatedUnion('action', [
+  googleSheetsGetOptionsSchema,
+  googleSheetsInsertRowOptionsSchema,
+  googleSheetsUpdateRowOptionsSchema,
+  initialGoogleSheetsOptionsSchema,
+])
 
-export const googleSheetsBlockSchema = blockBaseSchema.and(
+export const googleSheetsBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.GOOGLE_SHEETS]),
     options: googleSheetsOptionsSchema,

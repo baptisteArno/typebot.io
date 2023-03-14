@@ -8,9 +8,9 @@ export const executeGoogleSheetBlock = async (
   state: SessionState,
   block: GoogleSheetsBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  if (!('action' in block.options))
-    return { outgoingEdgeId: block.outgoingEdgeId }
-  switch (block.options.action) {
+  const action = block.options.action
+  if (!action) return { outgoingEdgeId: block.outgoingEdgeId }
+  switch (action) {
     case GoogleSheetsAction.INSERT_ROW:
       return insertRow(state, {
         options: block.options,

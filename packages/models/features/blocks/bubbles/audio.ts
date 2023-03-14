@@ -6,7 +6,7 @@ export const audioBubbleContentSchema = z.object({
   url: z.string().optional(),
 })
 
-export const audioBubbleBlockSchema = blockBaseSchema.and(
+export const audioBubbleBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([BubbleBlockType.AUDIO]),
     content: audioBubbleContentSchema,

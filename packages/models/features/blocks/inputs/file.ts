@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { optionBaseSchema, blockBaseSchema } from '../baseSchemas'
 import { InputBlockType } from './enums'
 
-export const fileInputOptionsSchema = optionBaseSchema.and(
+export const fileInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     isRequired: z.boolean().optional(),
     isMultipleAllowed: z.boolean(),
@@ -16,7 +16,7 @@ export const fileInputOptionsSchema = optionBaseSchema.and(
   })
 )
 
-export const fileInputStepSchema = blockBaseSchema.and(
+export const fileInputStepSchema = blockBaseSchema.merge(
   z.object({
     type: z.literal(InputBlockType.FILE),
     options: fileInputOptionsSchema,

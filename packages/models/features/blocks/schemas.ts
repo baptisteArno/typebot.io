@@ -1,28 +1,49 @@
 import { z } from 'zod'
 import { BubbleBlockType } from './bubbles/enums'
-import { BubbleBlock, bubbleBlockSchema } from './bubbles/schemas'
-import { ChoiceInputBlock } from './inputs/choice'
+import { ChoiceInputBlock, choiceInputSchema } from './inputs/choice'
 import { InputBlockType } from './inputs/enums'
-import {
-  InputBlock,
-  InputBlockOptions,
-  inputBlockSchema,
-} from './inputs/schemas'
 import { IntegrationBlockType } from './integrations/enums'
-import {
-  IntegrationBlock,
-  IntegrationBlockOptions,
-  integrationBlockSchema,
-} from './integrations/schemas'
-import { ConditionBlock } from './logic/condition'
+import { ConditionBlock, conditionBlockSchema } from './logic/condition'
 import { LogicBlockType } from './logic/enums'
-import {
-  LogicBlock,
-  LogicBlockOptions,
-  logicBlockSchema,
-} from './logic/logicBlock'
 import { blockBaseSchema } from './baseSchemas'
 import { startBlockSchema } from './start/schemas'
+import {
+  textBubbleBlockSchema,
+  imageBubbleBlockSchema,
+  videoBubbleBlockSchema,
+  embedBubbleBlockSchema,
+  audioBubbleBlockSchema,
+} from './bubbles'
+import {
+  textInputSchema,
+  emailInputSchema,
+  numberInputSchema,
+  urlInputSchema,
+  phoneNumberInputBlockSchema,
+  dateInputSchema,
+  paymentInputSchema,
+  ratingInputBlockSchema,
+  fileInputStepSchema,
+} from './inputs'
+import {
+  chatwootBlockSchema,
+  googleAnalyticsBlockSchema,
+  googleSheetsBlockSchema,
+  makeComBlockSchema,
+  pabblyConnectBlockSchema,
+  sendEmailBlockSchema,
+  webhookBlockSchema,
+  zapierBlockSchema,
+} from './integrations'
+import { openAIBlockSchema } from './integrations/openai'
+import {
+  scriptBlockSchema,
+  redirectBlockSchema,
+  setVariableBlockSchema,
+  typebotLinkBlockSchema,
+  waitBlockSchema,
+} from './logic'
+import { jumpBlockSchema } from './logic/jump'
 
 export type DraggableBlock =
   | BubbleBlock
@@ -67,10 +88,74 @@ export type BlockIndices = {
   blockIndex: number
 }
 
-export const blockSchema = startBlockSchema
-  .or(bubbleBlockSchema)
-  .or(inputBlockSchema)
-  .or(logicBlockSchema)
-  .or(integrationBlockSchema)
+const bubbleBlockSchema = z.discriminatedUnion('type', [
+  textBubbleBlockSchema,
+  imageBubbleBlockSchema,
+  videoBubbleBlockSchema,
+  embedBubbleBlockSchema,
+  audioBubbleBlockSchema,
+])
+
+export type BubbleBlock = z.infer<typeof bubbleBlockSchema>
+export type BubbleBlockContent = BubbleBlock['content']
+
+export const inputBlockSchema = z.discriminatedUnion('type', [
+  textInputSchema,
+  choiceInputSchema,
+  emailInputSchema,
+  numberInputSchema,
+  urlInputSchema,
+  phoneNumberInputBlockSchema,
+  dateInputSchema,
+  paymentInputSchema,
+  ratingInputBlockSchema,
+  fileInputStepSchema,
+])
+
+export type InputBlock = z.infer<typeof inputBlockSchema>
+export type InputBlockOptions = InputBlock['options']
+
+export const logicBlockSchema = z.discriminatedUnion('type', [
+  scriptBlockSchema,
+  conditionBlockSchema,
+  redirectBlockSchema,
+  setVariableBlockSchema,
+  typebotLinkBlockSchema,
+  waitBlockSchema,
+  jumpBlockSchema,
+])
+
+export type LogicBlock = z.infer<typeof logicBlockSchema>
+
+export type LogicBlockOptions = LogicBlock extends
+  | {
+      options?: infer Options
+    }
+  | {}
+  ? Options
+  : never
+
+export const integrationBlockSchema = z.discriminatedUnion('type', [
+  chatwootBlockSchema,
+  googleAnalyticsBlockSchema,
+  googleSheetsBlockSchema,
+  makeComBlockSchema,
+  openAIBlockSchema,
+  pabblyConnectBlockSchema,
+  sendEmailBlockSchema,
+  webhookBlockSchema,
+  zapierBlockSchema,
+])
+
+export type IntegrationBlock = z.infer<typeof integrationBlockSchema>
+export type IntegrationBlockOptions = IntegrationBlock['options']
+
+export const blockSchema = z.union([
+  startBlockSchema,
+  bubbleBlockSchema,
+  inputBlockSchema,
+  logicBlockSchema,
+  integrationBlockSchema,
+])
 
 export type Block = z.infer<typeof blockSchema>

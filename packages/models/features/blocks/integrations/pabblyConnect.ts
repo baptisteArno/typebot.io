@@ -3,7 +3,7 @@ import { blockBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 import { webhookOptionsSchema } from './webhook'
 
-export const pabblyConnectBlockSchema = blockBaseSchema.and(
+export const pabblyConnectBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
     options: webhookOptionsSchema,

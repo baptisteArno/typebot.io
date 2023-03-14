@@ -5,7 +5,7 @@ import { optionBaseSchema, blockBaseSchema } from '../baseSchemas'
 import { defaultButtonLabel } from './constants'
 import { InputBlockType } from './enums'
 
-export const choiceInputOptionsSchema = optionBaseSchema.and(
+export const choiceInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     isMultipleChoice: z.boolean(),
     buttonLabel: z.string(),
@@ -18,14 +18,14 @@ export const defaultChoiceInputOptions: ChoiceInputOptions = {
   isMultipleChoice: false,
 }
 
-export const buttonItemSchema = itemBaseSchema.and(
+export const buttonItemSchema = itemBaseSchema.merge(
   z.object({
     type: z.literal(ItemType.BUTTON),
     content: z.string().optional(),
   })
 )
 
-export const choiceInputSchema = blockBaseSchema.and(
+export const choiceInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.CHOICE]),
     items: z.array(buttonItemSchema),

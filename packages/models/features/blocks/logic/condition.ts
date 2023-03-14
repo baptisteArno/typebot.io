@@ -30,14 +30,14 @@ const conditionContentSchema = z.object({
   comparisons: z.array(comparisonSchema),
 })
 
-export const conditionItemSchema = itemBaseSchema.and(
+export const conditionItemSchema = itemBaseSchema.merge(
   z.object({
     type: z.literal(ItemType.CONDITION),
     content: conditionContentSchema,
   })
 )
 
-export const conditionBlockSchema = blockBaseSchema.and(
+export const conditionBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([LogicBlockType.CONDITION]),
     items: z.array(conditionItemSchema),

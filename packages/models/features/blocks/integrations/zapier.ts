@@ -3,7 +3,7 @@ import { blockBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 import { webhookOptionsSchema } from './webhook'
 
-export const zapierBlockSchema = blockBaseSchema.and(
+export const zapierBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.ZAPIER]),
     options: webhookOptionsSchema,

@@ -11,8 +11,8 @@ export const textInputOptionsBaseSchema = z.object({
 })
 
 export const textInputOptionsSchema = textInputOptionsBaseSchema
-  .and(optionBaseSchema)
-  .and(
+  .merge(optionBaseSchema)
+  .merge(
     z.object({
       isLong: z.boolean(),
     })
@@ -23,7 +23,7 @@ export const defaultTextInputOptions: TextInputOptions = {
   labels: { button: defaultButtonLabel, placeholder: 'Type your answer...' },
 }
 
-export const textInputSchema = blockBaseSchema.and(
+export const textInputSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([InputBlockType.TEXT]),
     options: textInputOptionsSchema,
