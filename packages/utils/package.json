@@ -7,13 +7,13 @@
   "types": "./index.ts",
   "devDependencies": {
     "@paralleldrive/cuid2": "2.2.0",
-    "@playwright/test": "1.31.1",
+    "@playwright/test": "1.31.2",
     "@types/nodemailer": "6.4.7",
-    "aws-sdk": "2.1321.0",
+    "aws-sdk": "2.1334.0",
     "db": "workspace:*",
     "dotenv": "16.0.3",
     "models": "workspace:*",
-    "next": "13.1.6",
+    "next": "13.2.4",
     "nodemailer": "6.9.1",
     "tsconfig": "workspace:*",
     "typescript": "4.9.5"
@@ -24,6 +24,6 @@
     "nodemailer": "6.7.8"
   },
   "dependencies": {
-    "got": "12.5.3"
+    "got": "12.6.0"
   }
 }

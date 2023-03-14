@@ -43,11 +43,11 @@
     ]
   },
   "devDependencies": {
-    "@algolia/client-search": "4.14.3",
-    "@docusaurus/types": "^2.3.0",
-    "@types/react": "18.0.27",
-    "tsx": "3.12.2",
-    "typescript": "4.9.4",
-    "webpack": "5.75.0"
+    "@algolia/client-search": "4.15.0",
+    "@docusaurus/types": "^2.3.1",
+    "@types/react": "18.0.28",
+    "tsx": "3.12.5",
+    "typescript": "4.9.5",
+    "webpack": "5.76.1"
   }
 }

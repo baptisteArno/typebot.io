@@ -10,6 +10,328 @@
     }
   ],
   "paths": {
+    "/t/process": {
+      "post": {
+        "operationId": "query.processTelemetryEvent",
+        "description": "Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Workspace created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "plan": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FREE",
+                                    "STARTER",
+                                    "PRO",
+                                    "LIFETIME",
+                                    "OFFERED",
+                                    "CUSTOM",
+                                    "UNLIMITED"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "plan"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "User created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "email": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "email"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Typebot created"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "template": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Typebot published"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "isFirstPublish": {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Subscription updated"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "plan": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FREE",
+                                    "STARTER",
+                                    "PRO",
+                                    "LIFETIME",
+                                    "OFFERED",
+                                    "CUSTOM",
+                                    "UNLIMITED"
+                                  ]
+                                },
+                                "additionalChatsIndex": {
+                                  "type": "number"
+                                },
+                                "additionalStorageIndex": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "plan",
+                                "additionalChatsIndex",
+                                "additionalStorageIndex"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "typebotId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "New results collected"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "total": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "total"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "typebotId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "events"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "Events injected"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
     "/workspaces": {
       "get": {
         "operationId": "query.workspace.listWorkspaces",

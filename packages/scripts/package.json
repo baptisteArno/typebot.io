@@ -15,18 +15,18 @@
     "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts"
   },
   "devDependencies": {
-    "@types/node": "18.14.0",
-    "@types/prompts": "2.4.2",
+    "@types/node": "18.15.3",
+    "@types/prompts": "2.4.3",
     "db": "workspace:*",
     "deep-object-diff": "1.1.9",
     "emails": "workspace:*",
-    "got": "12.5.3",
+    "got": "12.6.0",
     "models": "workspace:*",
     "prompts": "2.4.2",
-    "stripe": "11.11.0",
-    "tsx": "3.12.3",
+    "stripe": "11.14.0",
+    "tsx": "3.12.5",
     "typescript": "4.9.5",
     "utils": "workspace:*",
-    "zod": "3.20.6"
+    "zod": "3.21.4"
   }
 }

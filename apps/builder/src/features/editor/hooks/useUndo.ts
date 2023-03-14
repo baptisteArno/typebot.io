@@ -1,6 +1,6 @@
-import { isDefined } from '@udecode/plate-core'
 import { dequal } from 'dequal'
 import { useCallback, useRef, useState } from 'react'
+import { isDefined } from 'utils'
 
 export interface Actions<T extends { updatedAt: Date }> {
   set: (newPresent: T | ((current: T) => T) | undefined) => void
@@ -80,7 +80,6 @@ export const useUndo = <T extends { updatedAt: Date }>(
       ) {
         return
       }
-
       if (newPresent === undefined) {
         presentRef.current = null
         setHistory(initialState)

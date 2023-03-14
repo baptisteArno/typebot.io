@@ -5,13 +5,7 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  Plate,
-  PlateProvider,
-  selectEditor,
-  TElement,
-  usePlateEditorRef,
-} from '@udecode/plate-core'
+import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from '@/lib/plate'
 import { BaseEditor, BaseSelection, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
@@ -22,6 +16,7 @@ import { parseHtmlStringToPlainText } from '../../utils'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { colors } from '@/lib/theme'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { selectEditor, TElement } from '@udecode/plate-common'
 
 type TextBubbleEditorContentProps = {
   id: string
