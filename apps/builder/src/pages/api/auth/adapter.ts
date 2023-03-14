@@ -2,7 +2,6 @@
 import { PrismaClient, Prisma, WorkspaceRole, Session } from 'db'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import { createId } from '@paralleldrive/cuid2'
-import { got } from 'got'
 import { generateId } from 'utils'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace'
 import {
@@ -10,6 +9,8 @@ import {
   convertInvitationsToCollaborations,
   joinWorkspaces,
 } from '@/features/auth/api'
+import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { TelemetryEvent } from 'models/features/telemetry'
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {
@@ -28,6 +29,11 @@ export function CustomAdapter(p: PrismaClient): Adapter {
         workspaceInvitations.length === 0
       )
         throw Error('New users are forbidden')
+
+      const newWorkspaceData = {
+        name: data.name ? `${data.name}'s workspace` : `My workspace`,
+        plan: parseWorkspaceDefaultPlan(data.email),
+      }
       const createdUser = await p.user.create({
         data: {
           ...data,
@@ -42,25 +48,35 @@ export function CustomAdapter(p: PrismaClient): Adapter {
                   create: {
                     role: WorkspaceRole.ADMIN,
                     workspace: {
-                      create: {
-                        name: data.name
-                          ? `${data.name}'s workspace`
-                          : `My workspace`,
-                        plan: parseWorkspaceDefaultPlan(data.email),
-                      },
+                      create: newWorkspaceData,
                     },
                   },
                 },
           onboardingCategories: [],
         },
+        include: {
+          workspaces: { select: { workspaceId: true } },
+        },
       })
-      if (process.env.USER_CREATED_WEBHOOK_URL)
-        await got.post(process.env.USER_CREATED_WEBHOOK_URL, {
-          json: {
-            email: data.email,
-            name: data.name ? (data.name as string).split(' ')[0] : undefined,
-          },
+      const newWorkspaceId = createdUser.workspaces.pop()?.workspaceId
+      const events: TelemetryEvent[] = []
+      if (newWorkspaceId) {
+        events.push({
+          name: 'Workspace created',
+          workspaceId: newWorkspaceId,
+          userId: createdUser.id,
+          data: newWorkspaceData,
         })
+      }
+      events.push({
+        name: 'User created',
+        userId: createdUser.id,
+        data: {
+          email: data.email,
+          name: data.name ? (data.name as string).split(' ')[0] : undefined,
+        },
+      })
+      await sendTelemetryEvents(events)
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
       if (workspaceInvitations.length > 0)

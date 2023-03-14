@@ -235,12 +235,23 @@ These can also be added to the `viewer` environment
 
 </p></details>
 
-<details><summary><h4>Internal Webhooks</h4></summary>
+<details><summary><h4>Telemetry</h4></summary>
 <p>
 
-| Parameter                | Default | Description                                                                                   |
-| ------------------------ | ------- | --------------------------------------------------------------------------------------------- |
-| USER_CREATED_WEBHOOK_URL |         | Webhook URL called whenever a new user is created (used for importing a new SendGrid contact) |
+| Parameter                      | Default | Description                                                                                                     |
+| ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| TELEMETRY_WEBHOOK_URL          |         | Webhook URL called whenever a new telemetry event is captured. See this file that lists all the possible events |
+| TELEMETRY_WEBHOOK_BEARER_TOKEN |         | Bearer token to add if the request needs to be authenticated                                                    |
+
+</p></details>
+
+<details><summary><h4>PostHog</h4></summary>
+<p>
+
+| Parameter        | Default | Description      |
+| ---------------- | ------- | ---------------- |
+| POSTHOG_API_KEY  |         | PostHog API Key  |
+| POSTHOG_API_HOST |         | PostHog API Host |
 
 </p></details>
 

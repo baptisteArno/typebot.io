@@ -39,6 +39,10 @@
     "db:cleanDatabase": {
       "dependsOn": ["db#db:generate"],
       "cache": false
+    },
+    "telemetry:sendTotalResultsDigest": {
+      "dependsOn": ["db#db:generate"],
+      "cache": false
     }
   }
 }

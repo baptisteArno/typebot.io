@@ -164,11 +164,10 @@ const saveAnswer =
       content: reply,
     })
 
-    if (reply.includes('http') && block.type === InputBlockType.FILE) {
-      answer.storageUsed = await computeStorageUsed(reply)
-    }
-
-    if (resultId)
+    if (resultId) {
+      if (reply.includes('http') && block.type === InputBlockType.FILE) {
+        answer.storageUsed = await computeStorageUsed(reply)
+      }
       await prisma.answer.upsert({
         where: {
           resultId_blockId_groupId: {
@@ -180,6 +179,8 @@ const saveAnswer =
         create: answer as Prisma.AnswerUncheckedCreateInput,
         update: answer,
       })
+    }
+
     return newSessionState
   }
 

@@ -1,3 +1,4 @@
+import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
@@ -140,6 +141,19 @@ export const updateSubscription = authenticatedProcedure
           storageLimitSecondEmailSentAt: null,
         },
       })
+
+      await sendTelemetryEvents([
+        {
+          name: 'Subscription updated',
+          workspaceId,
+          userId: user.id,
+          data: {
+            plan,
+            additionalChatsIndex: additionalChats,
+            additionalStorageIndex: additionalStorage,
+          },
+        },
+      ])
 
       return { workspace: updatedWorkspace }
     }

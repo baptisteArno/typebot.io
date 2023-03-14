@@ -11,7 +11,8 @@
     "db:restore": "tsx restoreDatabase.ts",
     "db:setCustomPlan": "tsx setCustomPlan.ts",
     "db:bulkUpdate": "tsx bulkUpdate.ts",
-    "db:fixTypebots": "tsx fixTypebots.ts"
+    "db:fixTypebots": "tsx fixTypebots.ts",
+    "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts"
   },
   "devDependencies": {
     "@types/node": "18.14.0",

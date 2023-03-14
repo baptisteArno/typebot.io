@@ -6,6 +6,7 @@ import { buffer } from 'micro'
 import prisma from '@/lib/prisma'
 import { Plan } from 'db'
 import { RequestHandler } from 'next/dist/server/next'
+import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -46,11 +47,17 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 additionalChats: string
                 additionalStorage: string
                 workspaceId: string
+                userId: string
               }
-            | { claimableCustomPlanId: string }
+            | { claimableCustomPlanId: string; userId: string }
           if ('plan' in metadata) {
-            const { workspaceId, plan, additionalChats, additionalStorage } =
-              metadata
+            const {
+              workspaceId,
+              plan,
+              additionalChats,
+              additionalStorage,
+              userId,
+            } = metadata
             if (!workspaceId || !plan || !additionalChats || !additionalStorage)
               return res
                 .status(500)
@@ -58,7 +65,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             await prisma.workspace.update({
               where: { id: workspaceId },
               data: {
-                plan: plan,
+                plan,
                 stripeId: session.customer as string,
                 additionalChatsIndex: parseInt(additionalChats),
                 additionalStorageIndex: parseInt(additionalStorage),
@@ -68,8 +75,21 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 storageLimitSecondEmailSentAt: null,
               },
             })
+
+            await sendTelemetryEvents([
+              {
+                name: 'Subscription updated',
+                workspaceId,
+                userId,
+                data: {
+                  plan,
+                  additionalChatsIndex: parseInt(additionalChats),
+                  additionalStorageIndex: parseInt(additionalStorage),
+                },
+              },
+            ])
           } else {
-            const { claimableCustomPlanId } = metadata
+            const { claimableCustomPlanId, userId } = metadata
             if (!claimableCustomPlanId)
               return res
                 .status(500)
@@ -90,6 +110,19 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 customSeatsLimit: seatsLimit,
               },
             })
+
+            await sendTelemetryEvents([
+              {
+                name: 'Subscription updated',
+                workspaceId,
+                userId,
+                data: {
+                  plan: Plan.CUSTOM,
+                  additionalChatsIndex: 0,
+                  additionalStorageIndex: 0,
+                },
+              },
+            ])
           }
 
           return res.status(200).send({ message: 'workspace upgraded in DB' })

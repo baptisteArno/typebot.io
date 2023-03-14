@@ -1,0 +1,21 @@
+name: Send total results daily digest
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/scripts
+    env:
+      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
+      TELEMETRY_WEBHOOK_URL: '${{ secrets.TELEMETRY_WEBHOOK_URL }}'
+      TELEMETRY_WEBHOOK_BEARER_TOKEN: '${{ secrets.TELEMETRY_WEBHOOK_BEARER_TOKEN }}'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm turbo run telemetry:sendTotalResultsDigest

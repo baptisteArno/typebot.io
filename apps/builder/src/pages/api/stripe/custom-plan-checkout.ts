@@ -36,6 +36,7 @@ const createCheckoutSession = async (userId: string) => {
     mode: 'subscription',
     metadata: {
       claimableCustomPlanId: claimableCustomPlan.id,
+      userId,
     },
     currency: claimableCustomPlan.currency,
     automatic_tax: { enabled: true },

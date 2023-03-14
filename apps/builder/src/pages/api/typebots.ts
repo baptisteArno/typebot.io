@@ -11,6 +11,7 @@ import { getAuthenticatedUser } from '@/features/auth/api'
 import { parseNewTypebot } from '@/features/dashboard'
 import { NewTypebotProps } from '@/features/dashboard/api/parseNewTypebot'
 import { omit } from 'utils'
+import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)
@@ -65,6 +66,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 ...data,
               }),
       })
+      await sendTelemetryEvents([
+        {
+          name: 'Typebot created',
+          userId: user.id,
+          workspaceId: typebot.workspaceId,
+          typebotId: typebot.id,
+          data: {
+            name: typebot.name,
+          },
+        },
+      ])
       return res.send(typebot)
     }
     return methodNotAllowed(res)

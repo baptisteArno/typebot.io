@@ -1,3 +1,4 @@
+import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
@@ -48,6 +49,18 @@ export const createWorkspaceProcedure = authenticatedProcedure
         plan,
       },
     })) as Workspace
+
+    await sendTelemetryEvents([
+      {
+        name: 'Workspace created',
+        workspaceId: newWorkspace.id,
+        userId: user.id,
+        data: {
+          name,
+          plan,
+        },
+      },
+    ])
 
     return {
       workspace: newWorkspace,
