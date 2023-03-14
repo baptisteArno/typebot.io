@@ -22,19 +22,13 @@ jobs:
         if: ${{ contains(steps.main.outputs.tagname, 'v') }}
         uses: EndBug/latest-tag@latest
 
-      - name: 'Create typebot-js tag'
-        uses: Klemensas/action-autotag@stable
-        with:
-          package_root: '/packages/typebot-js'
-          tag_prefix: 'js-lib-v'
-
-      - name: 'Create typebot-js tag'
+      - name: 'Create js tag'
         uses: Klemensas/action-autotag@stable
         with:
           package_root: '/packages/js'
           tag_prefix: 'js-v'
 
-      - name: 'Create typebot-js tag'
+      - name: 'Create react tag'
         uses: Klemensas/action-autotag@stable
         with:
           package_root: '/packages/react'
