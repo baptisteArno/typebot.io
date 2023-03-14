@@ -52,31 +52,39 @@ export const sendTotalResultsDigest = async () => {
   })
 
   const resultsWithWorkspaces = results
-    .flatMap((result) => {
+    .flatMap((result, resultIndex) => {
       const workspace = workspaces.find((workspace) =>
         workspace.typebots.some((typebot) => typebot.id === result.typebotId)
       )
       if (!workspace) return
       return workspace.members
         .filter((member) => member.role !== WorkspaceRole.GUEST)
-        .map((member) => ({
+        .map((member, memberIndex) => ({
           userId: member.userId,
           workspaceId: workspace.id,
           typebotId: result.typebotId,
           totalResultsYesterday: result._count._all,
+          isFirstOfKind:
+            resultIndex === 0 && memberIndex === 0
+              ? (true as const)
+              : undefined,
         }))
     })
     .filter(isDefined)
 
-  const events = resultsWithWorkspaces.map((result) => ({
-    name: 'New results collected',
-    userId: result.userId,
-    workspaceId: result.workspaceId,
-    typebotId: result.typebotId,
-    data: {
-      total: result.totalResultsYesterday,
-    },
-  })) satisfies TelemetryEvent[]
+  const events = resultsWithWorkspaces.map(
+    (result) =>
+      ({
+        name: 'New results collected',
+        userId: result.userId,
+        workspaceId: result.workspaceId,
+        typebotId: result.typebotId,
+        data: {
+          total: result.totalResultsYesterday,
+          isFirstOfKind: result.isFirstOfKind,
+        },
+      } satisfies TelemetryEvent)
+  )
 
   await sendTelemetryEvents(events)
   console.log(`Sent ${events.length} events.`)

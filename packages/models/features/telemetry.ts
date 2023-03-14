@@ -73,6 +73,7 @@ const newResultsCollectedEventSchema = typebotEvent.merge(
     name: z.literal('New results collected'),
     data: z.object({
       total: z.number(),
+      isFirstOfKind: z.literal(true).optional(),
     }),
   })
 )
