@@ -1,9 +1,7 @@
-import { ExecuteLogicResponse } from '@/features/chat'
-import {
-  parseVariables,
-  parseCorrectValueType,
-  extractVariablesFromText,
-} from '@/features/variables'
+import { ExecuteLogicResponse } from '@/features/chat/types'
+import { extractVariablesFromText } from '@/features/variables/extractVariablesFromText'
+import { parseGuessedValueType } from '@/features/variables/parseGuessedValueType'
+import { parseVariables } from '@/features/variables/parseVariables'
 import { ScriptBlock, SessionState } from '@typebot.io/schemas'
 
 export const executeScript = (
@@ -19,7 +17,7 @@ export const executeScript = (
   const args = extractVariablesFromText(variables)(block.options.content).map(
     (variable) => ({
       id: variable.id,
-      value: parseCorrectValueType(variable.value),
+      value: parseGuessedValueType(variable.value),
     })
   )
 

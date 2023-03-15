@@ -17,7 +17,8 @@ import {
 } from '@typebot.io/schemas'
 import Cors from 'cors'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
-import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
+import { saveErrorLog } from '@/features/logs/saveErrorLog'
+import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
 const cors = initMiddleware(Cors())
 

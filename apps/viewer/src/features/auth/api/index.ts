@@ -1,1 +1,0 @@
-export { authenticateUser } from './authenticateUser'

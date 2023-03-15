@@ -1,7 +1,5 @@
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
-import { saveErrorLog } from '@/features/logs/api'
 import { transformStringVariablesToList } from '@/features/variables/transformVariablesToList'
-import { parseVariables, updateVariables } from '@/features/variables/utils'
 import prisma from '@/lib/prisma'
 import {
   SessionState,
@@ -16,6 +14,9 @@ import {
 import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai'
 import { isDefined, byId, isNotEmpty } from '@typebot.io/lib'
 import { decrypt } from '@typebot.io/lib/api/encryption'
+import { saveErrorLog } from '@/features/logs/saveErrorLog'
+import { updateVariables } from '@/features/variables/updateVariables'
+import { parseVariables } from 'bot-engine'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,

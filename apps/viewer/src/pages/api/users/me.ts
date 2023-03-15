@@ -1,4 +1,4 @@
-import { authenticateUser } from '@/features/auth/api'
+import { authenticateUser } from '@/helpers/authenticateUser'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { isNotDefined } from '@typebot.io/lib'
 import { methodNotAllowed } from '@typebot.io/lib/api'

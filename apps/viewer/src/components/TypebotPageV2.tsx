@@ -15,13 +15,14 @@ import {
 } from '@typebot.io/lib'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
-import { createResultQuery, updateResultQuery } from '@/features/results'
-import { upsertAnswerQuery } from '@/features/answers'
 import { gtmBodyElement } from '@/lib/google-tag-manager'
 import {
   getExistingResultFromSession,
   setResultInSession,
-} from '@/utils/sessionStorage'
+} from '@/helpers/sessionStorage'
+import { upsertAnswerQuery } from '@/features/answers/queries/upsertAnswerQuery'
+import { createResultQuery } from '@/features/results/queries/createResultQuery'
+import { updateResultQuery } from '@/features/results/queries/updateResultQuery'
 
 export type TypebotPageProps = {
   publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {

@@ -1,9 +1,9 @@
-import { authenticateUser } from '@/features/auth/api'
-import { checkChatsUsage } from '@/features/usage'
+import { authenticateUser } from '@/helpers/authenticateUser'
 import prisma from '@/lib/prisma'
 import { ResultWithAnswers } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from '@typebot.io/lib/api'
+import { checkChatsUsage } from '@/features/usage/checkChatsUsage'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {

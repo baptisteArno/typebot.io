@@ -15,7 +15,7 @@ import {
   Variable,
 } from '@typebot.io/schemas'
 import prisma from '@/lib/prisma'
-import { parseVariables } from '@/features/variables'
+import { parseVariables } from '@/features/variables/parseVariables'
 
 const cors = initMiddleware(Cors())
 

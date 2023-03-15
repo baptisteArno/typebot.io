@@ -9,14 +9,15 @@ import { createTransport, getTestMessageUrl } from 'nodemailer'
 import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
 import { parseAnswers } from '@typebot.io/lib/results'
 import { methodNotAllowed, initMiddleware, decrypt } from '@typebot.io/lib/api'
-import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 
 import Cors from 'cors'
 import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import { render } from '@faire/mjml-react/utils/render'
 import prisma from '@/lib/prisma'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'
+import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import { saveErrorLog } from '@/features/logs/saveErrorLog'
+import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
 const cors = initMiddleware(Cors())
 

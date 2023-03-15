@@ -1,9 +1,9 @@
-import { appRouter } from '@/utils/server/routers/v1/_app'
+import { appRouter } from '@/helpers/server/routers/v1/_app'
 import { captureException } from '@sentry/nextjs'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createContext } from '@/utils/server/context'
+import { createContext } from '@/helpers/server/context'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)

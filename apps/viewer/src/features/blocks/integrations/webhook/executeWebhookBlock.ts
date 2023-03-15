@@ -1,71 +1,120 @@
+import prisma from '@/lib/prisma'
 import {
-  defaultWebhookAttributes,
-  KeyValue,
-  PublicTypebot,
-  ResultValues,
+  WebhookBlock,
+  ZapierBlock,
+  MakeComBlock,
+  PabblyConnectBlock,
+  VariableWithUnknowValue,
+  SessionState,
+  Webhook,
   Typebot,
   Variable,
-  Webhook,
-  WebhookOptions,
   WebhookResponse,
-  WebhookBlock,
+  WebhookOptions,
+  defaultWebhookAttributes,
   HttpMethod,
+  PublicTypebot,
+  KeyValue,
+  ReplyLog,
+  ResultInSession,
 } from '@typebot.io/schemas'
-import { NextApiRequest, NextApiResponse } from 'next'
-import got, { Method, Headers, HTTPError } from 'got'
+import { stringify } from 'qs'
 import { byId, omit } from '@typebot.io/lib'
 import { parseAnswers } from '@typebot.io/lib/results'
-import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
-import { stringify } from 'qs'
-import Cors from 'cors'
-import prisma from '@/lib/prisma'
-import { parseVariables } from '@/features/variables/parseVariables'
-import { parseSampleResult } from '@/features/blocks/integrations/webhook/parseSampleResult'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/getLinkedTypebots'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import got, { Method, Headers, HTTPError } from 'got'
+import { parseSampleResult } from './parseSampleResult'
+import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
+import { updateVariables } from '@/features/variables/updateVariables'
+import { parseVariables } from 'bot-engine'
 
-const cors = initMiddleware(Cors())
-
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await cors(req, res)
-  if (req.method === 'POST') {
-    const typebotId = req.query.typebotId as string
-    const blockId = req.query.blockId as string
-    const resultId = req.query.resultId as string | undefined
-    const { resultValues, variables, parentTypebotIds } = (
-      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as {
-      resultValues: ResultValues | undefined
-      variables: Variable[]
-      parentTypebotIds: string[]
+export const executeWebhookBlock = async (
+  state: SessionState,
+  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
+): Promise<ExecuteIntegrationResponse> => {
+  const { typebot, result } = state
+  let log: ReplyLog | undefined
+  const webhook = (await prisma.webhook.findUnique({
+    where: { id: block.webhookId },
+  })) as Webhook | null
+  if (!webhook) {
+    log = {
+      status: 'error',
+      description: `Couldn't find webhook with id ${block.webhookId}`,
     }
-    const typebot = (await prisma.typebot.findUnique({
-      where: { id: typebotId },
-      include: { webhooks: true },
-    })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
-    if (!typebot) return notFound(res)
-    const block = typebot.groups
-      .flatMap((g) => g.blocks)
-      .find(byId(blockId)) as WebhookBlock
-    const webhook = typebot.webhooks.find(byId(block.webhookId))
-    if (!webhook)
-      return res
-        .status(404)
-        .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
-    const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
-    const result = await executeWebhook(typebot)({
-      webhook: preparedWebhook,
-      variables,
-      groupId: block.groupId,
-      resultValues,
-      resultId,
-      parentTypebotIds,
-    })
-    return res.status(200).send(result)
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: log.description,
+      }))
+    return { outgoingEdgeId: block.outgoingEdgeId, logs: [log] }
   }
-  return methodNotAllowed(res)
+  const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
+  const webhookResponse = await executeWebhook({ typebot })(
+    preparedWebhook,
+    typebot.variables,
+    block.groupId,
+    result
+  )
+  const status = webhookResponse.statusCode.toString()
+  const isError = status.startsWith('4') || status.startsWith('5')
+
+  if (isError) {
+    log = {
+      status: 'error',
+      description: `Webhook returned error: ${webhookResponse.data}`,
+      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
+    }
+    result &&
+      (await saveErrorLog({
+        resultId: result.id,
+        message: log.description,
+        details: log.details,
+      }))
+  } else {
+    log = {
+      status: 'success',
+      description: `Webhook executed successfully!`,
+      details: JSON.stringify(webhookResponse.data, null, 2).substring(0, 1000),
+    }
+    result &&
+      (await saveSuccessLog({
+        resultId: result.id,
+        message: log.description,
+        details: JSON.stringify(webhookResponse.data, null, 2).substring(
+          0,
+          1000
+        ),
+      }))
+  }
+
+  const newVariables = block.options.responseVariableMapping.reduce<
+    VariableWithUnknowValue[]
+  >((newVariables, varMapping) => {
+    if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
+    const existingVariable = typebot.variables.find(byId(varMapping.variableId))
+    if (!existingVariable) return newVariables
+    const func = Function(
+      'data',
+      `return data.${parseVariables(typebot.variables)(varMapping?.bodyPath)}`
+    )
+    try {
+      const value: unknown = func(webhookResponse)
+      return [...newVariables, { ...existingVariable, value }]
+    } catch (err) {
+      return newVariables
+    }
+  }, [])
+  if (newVariables.length > 0) {
+    const newSessionState = await updateVariables(state)(newVariables)
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+      newSessionState,
+    }
+  }
+
+  return { outgoingEdgeId: block.outgoingEdgeId, logs: log ? [log] : undefined }
 }
 
 const prepareWebhookAttributes = (
@@ -83,22 +132,13 @@ const prepareWebhookAttributes = (
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 export const executeWebhook =
-  (typebot: Typebot) =>
-  async ({
-    webhook,
-    variables,
-    groupId,
-    resultValues,
-    resultId,
-    parentTypebotIds = [],
-  }: {
-    webhook: Webhook
-    variables: Variable[]
-    groupId: string
-    resultValues?: ResultValues
-    resultId?: string
-    parentTypebotIds: string[]
-  }): Promise<WebhookResponse> => {
+  ({ typebot }: Pick<SessionState, 'typebot'>) =>
+  async (
+    webhook: Webhook,
+    variables: Variable[],
+    groupId: string,
+    result: ResultInSession
+  ): Promise<WebhookResponse> => {
     if (!webhook.url || !webhook.method)
       return {
         statusCode: 400,
@@ -127,20 +167,13 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebotsParents = await getLinkedTypebots({
-      isPreview: !('typebotId' in typebot),
-      typebotIds: parentTypebotIds,
-    })
-    const linkedTypebotsChildren = await getLinkedTypebotsChildren({
-      isPreview: !('typebotId' in typebot),
-      typebots: [typebot],
-    })([])
-    const bodyContent = await getBodyContent(typebot, [
-      ...linkedTypebotsParents,
-      ...linkedTypebotsChildren,
-    ])({
+
+    const bodyContent = await getBodyContent(
+      typebot,
+      []
+    )({
       body: webhook.body,
-      resultValues,
+      result,
       groupId,
       variables,
     })
@@ -173,7 +206,7 @@ export const executeWebhook =
     try {
       const response = await got(request.url, omit(request, 'url'))
       await saveSuccessLog({
-        resultId,
+        resultId: result.id,
         message: 'Webhook successfuly executed.',
         details: {
           statusCode: response.statusCode,
@@ -192,7 +225,7 @@ export const executeWebhook =
           data: safeJsonParse(error.response.body as string).data,
         }
         await saveErrorLog({
-          resultId,
+          resultId: result.id,
           message: 'Webhook returned an error',
           details: {
             request,
@@ -207,7 +240,7 @@ export const executeWebhook =
       }
       console.error(error)
       await saveErrorLog({
-        resultId,
+        resultId: result.id,
         message: 'Webhook failed to execute',
         details: {
           request,
@@ -225,20 +258,20 @@ const getBodyContent =
   ) =>
   async ({
     body,
-    resultValues,
+    result,
     groupId,
     variables,
   }: {
     body?: string | null
-    resultValues?: ResultValues
+    result?: ResultInSession
     groupId: string
     variables: Variable[]
   }): Promise<string | undefined> => {
     if (!body) return
     return body === '{{state}}'
       ? JSON.stringify(
-          resultValues
-            ? parseAnswers(typebot, linkedTypebots)(resultValues)
+          result
+            ? parseAnswers(typebot, linkedTypebots)(result)
             : await parseSampleResult(typebot, linkedTypebots)(
                 groupId,
                 variables
@@ -269,5 +302,3 @@ const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
     return { data: json, isJson: false }
   }
 }
-
-export default handler

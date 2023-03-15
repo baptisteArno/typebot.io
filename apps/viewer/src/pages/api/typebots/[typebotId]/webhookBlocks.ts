@@ -1,4 +1,4 @@
-import { authenticateUser } from '@/features/auth/api'
+import { authenticateUser } from '@/helpers/authenticateUser'
 import prisma from '@/lib/prisma'
 import { Group, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'

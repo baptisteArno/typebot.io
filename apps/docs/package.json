@@ -13,7 +13,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "update-search": "docker run -it --rm --env-file=.env -e \"CONFIG=$(cat docsearch-scrapper-config.json | jq -r tostring)\" algolia/docsearch-scraper",
-    "api:generate": "tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/utils/server/generateOpenApi.ts"
+    "api:generate": "tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/helpers/server/generateOpenApi.ts"
   },
   "dependencies": {
     "@docusaurus/core": "2.3.1",

@@ -2,8 +2,8 @@ import { Typebot, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from '@typebot.io/lib/api'
 import { byId } from '@typebot.io/lib'
-import { authenticateUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
+import { authenticateUser } from '@/helpers/authenticateUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await authenticateUser(req)
