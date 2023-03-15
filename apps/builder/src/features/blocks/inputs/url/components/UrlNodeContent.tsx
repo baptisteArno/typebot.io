@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { UrlInputOptions } from '@typebot.io/schemas'
-import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
+import { WithVariableContent } from '@/features/graph/components/nodes-tmp/block/WithVariableContent'
 
 type Props = {
   variableId?: string

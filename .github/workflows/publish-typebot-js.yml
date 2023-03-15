@@ -15,4 +15,4 @@ jobs:
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
       - run: pnpm turbo build --filter=@typebot.io/js...
-      - run: cd packages/js && pnpm publish --no-git-checks --access public
+      - run: cd packages/embeds/js && pnpm publish --no-git-checks --access public

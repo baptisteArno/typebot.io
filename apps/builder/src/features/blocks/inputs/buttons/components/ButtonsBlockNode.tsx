@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
-import { ItemNodesList } from '@/features/graph/components/nodes/item/ItemNodesList'
+import { ItemNodesList } from '@/features/graph/components/nodes-tmp/item/ItemNodesList'
 
 type Props = {
   block: ChoiceInputBlock

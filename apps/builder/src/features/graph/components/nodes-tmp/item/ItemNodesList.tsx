@@ -23,7 +23,7 @@ import {
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { Coordinates } from '@dnd-kit/utilities'
-import { SourceEndpoint } from '../../endpoints/SourceEndpoint'
+import { SourceEndpoint } from '../../endpoints-tmp/SourceEndpoint'
 
 type Props = {
   block: BlockWithItems

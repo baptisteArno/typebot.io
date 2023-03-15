@@ -25,11 +25,11 @@ jobs:
       - name: 'Create js tag'
         uses: Klemensas/action-autotag@stable
         with:
-          package_root: '/packages/js'
+          package_root: '/packages/embeds/js'
           tag_prefix: 'js-v'
 
       - name: 'Create react tag'
         uses: Klemensas/action-autotag@stable
         with:
-          package_root: '/packages/react'
+          package_root: '/packages/embeds/react'
           tag_prefix: 'react-v'
