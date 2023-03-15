@@ -1,4 +1,4 @@
-import { WithVariableContent } from '@/features/graph/components/nodes-tmp/block/WithVariableContent'
+import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
 import { Text } from '@chakra-ui/react'
 import { RatingInputBlock } from '@typebot.io/schemas'
 
