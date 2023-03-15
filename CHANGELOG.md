@@ -1,6 +1,32 @@
 # Changelog
 
+<a name="2.11.5"></a>
+
+## 2.11.5 (2023-03-15)
+
+### Added
+
+- 📈 Add convenient isFirstOfKind field in total results digest [[25c3679](https://github.com/baptisteArno/typebot.io/commit/25c367901f99413ce886db1bf2b83dc1087f5b27)]
+- 📈 Add telemetry webhook [[9ca17e4](https://github.com/baptisteArno/typebot.io/commit/9ca17e4e0b9bfa18c0cba6efdb01d78d0cd88084)]
+
+### Changed
+
+- ♻️ Fix folder case issue [[3a6c096](https://github.com/baptisteArno/typebot.io/commit/3a6c09646194f3899bbaa7ed9c38a4501eec269f)]
+- ♻️ (viewer) Remove barrel exports and flatten folder arch [[f3af07b](https://github.com/baptisteArno/typebot.io/commit/f3af07b7ffb660bd9040e1f08839ab3809a5683d)]
+- ♻️ (builder) Remove barrel export and flatten folder arch [[44d7a0b](https://github.com/baptisteArno/typebot.io/commit/44d7a0bcb87494cb51a422350ea75a4df0c9a966)]
+- ♻️ Re-organize workspace folders [[cbc8194](https://github.com/baptisteArno/typebot.io/commit/cbc8194f19396ed8f8b3ea05d75223beeab42c3c)]
+- ♻️ Replace schemas with merge and discriminated unions [[d154c4e](https://github.com/baptisteArno/typebot.io/commit/d154c4e2f2ed0548130344ede257e19fb43f6be7)]
+- ⬆️ Upgrade dependencies [[ff09814](https://github.com/baptisteArno/typebot.io/commit/ff09814eadca527c0118a537279d961adf55ac0f)]
+
+### Fixed
+
+- 🐛 (openai) Fix assistant sequence was not correctly saved [[5aec8b6](https://github.com/baptisteArno/typebot.io/commit/5aec8b6c6682aa2da4034230a894f02add2faef2)]
+- 💚 Fix docs build failing [[76a8064](https://github.com/baptisteArno/typebot.io/commit/76a8064e7cf76650f85889bc5866e9b14b39f992)]
+- 🐛 (lp) Fix real time airtable bot [[67cb4b4](https://github.com/baptisteArno/typebot.io/commit/67cb4b4878ed80e60a88d6a260a1b4b79016de55)]
+- 🐛 (js) Fix preview message without avatar [[e713211](https://github.com/baptisteArno/typebot.io/commit/e7132116f43896ad1e73eae5af123d53e6320cde)]
+
 <a name="2.11.4"></a>
+
 ## 2.11.4 (2023-03-13)
 
 ### Added
@@ -38,8 +64,8 @@
 - 📝 Improve description for DISABLE_SIGNUP param [[8df8307](https://github.com/baptisteArno/typebot.io/commit/8df830721c1f47bd6e0084ec4fbd2301714c9d0e)]
 - 🩹 Fix crash on bot load when it has no groups [[bf1fbf2](https://github.com/baptisteArno/typebot.io/commit/bf1fbf2c5362fa3f69a0e9fb2f895ac45b5d1f80)]
 
-
 <a name="2.11.3"></a>
+
 ## 2.11.3 (2023-03-08)
 
 ### Added
@@ -80,8 +106,8 @@
 - 📝 (wp) Update wordpress metadata [[67a3f42](https://github.com/baptisteArno/typebot.io/commit/67a3f42edd8172e9db499cb43f5653e879b4c37f)]
 - 📝 (lp) Update testimonials content [[6cd1db7](https://github.com/baptisteArno/typebot.io/commit/6cd1db7ba7653206ec4e098f91e79f9f42d96b47)]
 
-
 <a name="2.11.2"></a>
+
 ## 2.11.2 (2023-03-02)
 
 ### Changed
@@ -100,8 +126,8 @@
 
 - 📝 Add change password faq [[b2ad91c](https://github.com/baptisteArno/typebot.io/commit/b2ad91c11fff7cc9595eb5e109ebbf1e3e7b87a4)]
 
-
 <a name="2.11.1"></a>
+
 ## 2.11.1 (2023-03-02)
 
 ### Changed
@@ -114,8 +140,8 @@
 - 🐛 (editor) Graph connectors still displayed when switching to dynamic buttons [[c172a44](https://github.com/baptisteArno/typebot.io/commit/c172a44566ae6f27710c38286b0b60ea4a7f7e0a)]
 - 🐛 (share) Fix publicId null when publishing [[eebcbb1](https://github.com/baptisteArno/typebot.io/commit/eebcbb10b820a0a5ac8705a28a965d8fcb2243e8)]
 
-
 <a name="2.11.0"></a>
+
 ## 2.11.0 (2023-03-01)
 
 ### Added
@@ -155,8 +181,8 @@
 - 🛂 (billing) Enable tax id and billing address collection [[2e8f2d8](https://github.com/baptisteArno/typebot.io/commit/2e8f2d81c6f34b1ec32bebb28edbc993a755d734)]
 - 🩹 (sendEmail) Save error first in logs [[761e1c7](https://github.com/baptisteArno/typebot.io/commit/761e1c71844f4cc4a70147984d6155105b24c68b)]
 
-
 <a name="2.10.5"></a>
+
 ## 2.10.5 (2023-02-23)
 
 ### Added
@@ -201,8 +227,8 @@
 - 📝 Add appropriate docs for new @typebot.io libs [[a4e3f4b](https://github.com/baptisteArno/typebot.io/commit/a4e3f4bf9c072ba0af1be1d32b1f818c21f7c2c4)]
 - 🧑‍💻 Better Typebot import in vanilla JS sites [[ab43d80](https://github.com/baptisteArno/typebot.io/commit/ab43d809c36a2879d440eba5b3e318beb5f6b864)]
 
-
 <a name="2.10.4"></a>
+
 ## 2.10.4 (2023-02-19)
 
 ### Changed
@@ -235,8 +261,8 @@
 
 - 📝 Add a &quot;Publish&quot; doc [[fde14a8](https://github.com/baptisteArno/typebot.io/commit/fde14a800dba9f11cfd6589e44916758c98d3687)]
 
-
 <a name="2.10.3"></a>
+
 ## 2.10.3 (2023-02-14)
 
 ### Changed
@@ -281,8 +307,8 @@
 - 📝 Remove advanced section in Condition docs [[c879c6f](https://github.com/baptisteArno/typebot.io/commit/c879c6f83a719aae50912b15f935003d9b3a4269)]
 - 📝 Fix landing page typo ([#301](https://github.com/baptisteArno/typebot.io/issues/301)) [[c50c2b8](https://github.com/baptisteArno/typebot.io/commit/c50c2b84b6eef085dec77c27a745ea458e70861e)]
 
-
 <a name="2.10.2"></a>
+
 ## 2.10.2 (2023-02-07)
 
 ### Added
@@ -293,8 +319,8 @@
 
 - 🐛 (chatwoot) Fix setUser with variables [[f936d4f](https://github.com/baptisteArno/typebot.io/commit/f936d4fae319ff7ed35438b07f74f4aad902421d)]
 
-
 <a name="2.10.1"></a>
+
 ## 2.10.1 (2023-02-06)
 
 ### Changed
@@ -317,8 +343,8 @@
 
 - 🩹 Clean up typebot before updating [[f42d144](https://github.com/baptisteArno/typebot.io/commit/f42d1445c6f0518e7466401df3988e458a055d1c)]
 
-
 <a name="2.10.0"></a>
+
 ## 2.10.0 (2023-02-02)
 
 ### Added
@@ -347,8 +373,8 @@
 - 🩹 Better fix for ENOENT schema.prisma [[3851b2d](https://github.com/baptisteArno/typebot.io/commit/3851b2d70b58af87beb6e652e0ea32b6a892c3c5)]
 - 🩹 Still accept old bot property when importing [[42d4bc3](https://github.com/baptisteArno/typebot.io/commit/42d4bc3882fa767b6c4df2f0d7d327e277997256)]
 
-
 <a name="2.9.4"></a>
+
 ## 2.9.4 (2023-01-28)
 
 ### Added
@@ -390,8 +416,8 @@
 - 📝 Write a guide about UTM params forwarding [[01c9691](https://github.com/baptisteArno/typebot.io/commit/01c969117517a90c52e8a8770aee6041fb5a721e)]
 - 📝 Improve the description of NEXTAUTH_URL_INTERNAL [[3d2d401](https://github.com/baptisteArno/typebot.io/commit/3d2d4017b203169b755894e35ff93c9d4e710a1c)]
 
-
 <a name="2.9.3"></a>
+
 ## 2.9.3 (2023-01-20)
 
 ### Added
@@ -423,8 +449,8 @@
 - 📝 Add extract first name example [[4435fb0](https://github.com/baptisteArno/typebot.io/commit/4435fb0d7ef9ac12f73da3ad5d9464f0b7370021)]
 - 📝 Self-hosting manual docs ([#260](https://github.com/baptisteArno/typebot.io/issues/260)) [[930fef2](https://github.com/baptisteArno/typebot.io/commit/930fef2c34f9ea986a15f1a526d464aa547dc18a)]
 
-
 <a name="2.9.2"></a>
+
 ## 2.9.2 (2023-01-14)
 
 ### Added
@@ -455,8 +481,8 @@
 - 📝 Update FAQ [[f1fa535](https://github.com/baptisteArno/typebot.io/commit/f1fa5358e98e9f31ad772b65883f33bf25354502)]
 - 🧑‍💻 (auth) Improve Custom OAuth set up [[3bc0240](https://github.com/baptisteArno/typebot.io/commit/3bc02406f382852d2a5f6f58fbef1d60e35432cc)]
 
-
 <a name="2.9.1"></a>
+
 ## 2.9.1 (2023-01-06)
 
 ### Added
@@ -487,8 +513,8 @@
 
 - 📝 Add custom body with variable example [[40d230a](https://github.com/baptisteArno/typebot.io/commit/40d230a73a489dda5f2a344669fe97c465af7b5d)]
 
-
 <a name="2.9.0"></a>
+
 ## 2.9.0 (2023-01-02)
 
 ### Added
@@ -510,7 +536,6 @@
 - 🧑‍💻 Parse line breaks for plainText attributes [[bea1a6a](https://github.com/baptisteArno/typebot.io/commit/bea1a6a3f802d69d57321dc7d42345384f5f7b3e)]
 - 📝 Add Make.com instructions [[b9ed50b](https://github.com/baptisteArno/typebot.io/commit/b9ed50b016f340ec50beb573c7f7ce8561937b9d)]
 - 📝 Improve License section in README [[60ed0b2](https://github.com/baptisteArno/typebot.io/commit/60ed0b2d4a92a5fc1d61ef221b58f8eb70f66820)]
-
 
 <a name="2.8.12"></a>
 
