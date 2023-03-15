@@ -1,5 +1,5 @@
 import { Seo } from '@/components/Seo'
-import { DashboardHeader } from '@/features/dashboard'
+import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader'
 import { VStack } from '@chakra-ui/react'
 import { CreateNewTypebotButtons } from './CreateNewTypebotButtons'
 

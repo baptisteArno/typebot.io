@@ -16,12 +16,12 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import { useUser } from '@/features/account'
+import { useUser } from '@/features/account/hooks/useUser'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { EditorSettingsModal } from './EditorSettingsModal'
-import { parseDefaultPublicId } from '@/features/publish'
+import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 
 export const BoardMenuButton = (props: FlexProps) => {
   const { query } = useRouter()

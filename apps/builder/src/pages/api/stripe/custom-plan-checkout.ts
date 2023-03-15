@@ -1,7 +1,7 @@
 import { Plan } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import Stripe from 'stripe'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 

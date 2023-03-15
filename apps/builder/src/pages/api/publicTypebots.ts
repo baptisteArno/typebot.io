@@ -1,13 +1,13 @@
 import prisma from '@/lib/prisma'
 import { InputBlockType, PublicTypebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canPublishFileInput } from '@/utils/api/dbRules'
+import { canPublishFileInput } from '@/helpers/databaseRules'
 import {
   badRequest,
   methodNotAllowed,
   notAuthenticated,
 } from '@typebot.io/lib/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useEditor } from '../../editor/providers/EditorProvider'
-import { useGraph } from '@/features/graph'
+import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useTypebot } from '../../editor/providers/TypebotProvider'
 import React, { useState } from 'react'
 import { headerHeight } from '../../editor/constants'

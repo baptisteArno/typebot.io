@@ -5,17 +5,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stats } from '@typebot.io/schemas'
 import React from 'react'
 import { useAnswersCount } from '../hooks/useAnswersCount'
-import {
-  Graph,
-  GraphProvider,
-  GroupsCoordinatesProvider,
-} from '@/features/graph'
-import { ChangePlanModal, LimitReached } from '@/features/billing'
 import { StatsCards } from './StatsCards'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LimitReached } from '@/features/billing/types'
+import { Graph } from '@/features/graph/components/Graph'
+import { GraphProvider } from '@/features/graph/providers/GraphProvider'
+import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
 
 export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()

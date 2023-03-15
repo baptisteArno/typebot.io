@@ -1,14 +1,12 @@
-import { router } from '@/utils/server/trpc'
-import {
-  listWebhookBlocksProcedure,
-  subscribeWebhookProcedure,
-  unsubscribeWebhookProcedure,
-  getResultExampleProcedure,
-} from './procedures'
+import { router } from '@/helpers/server/trpc'
+import { getResultExample } from './getResultExample'
+import { listWebhookBlocks } from './listWebhookBlocks'
+import { subscribeWebhook } from './subscribeWebhook'
+import { unsubscribeWebhook } from './unsubscribeWebhook'
 
 export const webhookRouter = router({
-  listWebhookBlocks: listWebhookBlocksProcedure,
-  getResultExample: getResultExampleProcedure,
-  subscribeWebhook: subscribeWebhookProcedure,
-  unsubscribeWebhook: unsubscribeWebhookProcedure,
+  listWebhookBlocks,
+  getResultExample,
+  subscribeWebhook,
+  unsubscribeWebhook,
 })

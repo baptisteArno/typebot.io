@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
   badRequest,
   generatePresignedUrl,

@@ -1,7 +1,7 @@
 import { TypebotLinkBlock } from '@typebot.io/schemas'
 import React from 'react'
 import { Tag, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { byId } from '@typebot.io/lib'
 
 type Props = {

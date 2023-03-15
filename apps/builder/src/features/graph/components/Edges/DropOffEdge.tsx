@@ -6,15 +6,16 @@ import {
   useColorModeValue,
   theme,
 } from '@chakra-ui/react'
-import { useGroupsCoordinates } from '../../providers'
-import { useTypebot } from '@/features/editor'
-import { useWorkspace } from '@/features/workspace'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
 import { byId, isDefined } from '@typebot.io/lib'
-import { isProPlan } from '@/features/billing'
-import { AnswersCount } from '@/features/analytics'
-import { computeSourceCoordinates, computeDropOffPath } from '../../utils'
 import { useEndpoints } from '../../providers/EndpointsProvider'
+import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
+import { AnswersCount } from '@/features/analytics/types'
+import { isProPlan } from '@/features/billing/helpers/isProPlan'
+import { computeDropOffPath } from '../../helpers/computeDropOffPath'
+import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
 
 type Props = {
   groupId: string

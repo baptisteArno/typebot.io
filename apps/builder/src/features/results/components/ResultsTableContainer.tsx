@@ -1,10 +1,10 @@
 import { Stack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { LogsModal } from './LogsModal'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useResults } from '../ResultsProvider'
 import { ResultModal } from './ResultModal'
-import { ResultsTable } from './ResultsTable'
+import { ResultsTable } from './table/ResultsTable'
 
 export const ResultsTableContainer = () => {
   const {

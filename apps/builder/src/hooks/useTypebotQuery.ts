@@ -1,4 +1,4 @@
-import { fetcher } from '@/utils/helpers'
+import { fetcher } from '@/helpers/fetcher'
 import { PublicTypebot, Typebot, Webhook } from '@typebot.io/schemas'
 import useSWR from 'swr'
 import { env } from '@typebot.io/lib'

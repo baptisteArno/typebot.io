@@ -1,11 +1,11 @@
-import { router } from '@/utils/server/trpc'
-import { getBillingPortalUrl } from './procedures/getBillingPortalUrl'
-import { listInvoices } from './procedures/listInvoices'
-import { cancelSubscription } from './procedures/cancelSubscription'
-import { createCheckoutSession } from './procedures/createCheckoutSession'
-import { updateSubscription } from './procedures/updateSubscription'
-import { getSubscription } from './procedures/getSubscription'
-import { getUsage } from './procedures/getUsage'
+import { router } from '@/helpers/server/trpc'
+import { cancelSubscription } from './cancelSubscription'
+import { createCheckoutSession } from './createCheckoutSession'
+import { getBillingPortalUrl } from './getBillingPortalUrl'
+import { getSubscription } from './getSubscription'
+import { getUsage } from './getUsage'
+import { listInvoices } from './listInvoices'
+import { updateSubscription } from './updateSubscription'
 
 export const billingRouter = router({
   getBillingPortalUrl,

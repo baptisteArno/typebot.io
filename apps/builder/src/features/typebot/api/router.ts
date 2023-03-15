@@ -1,6 +1,6 @@
-import { router } from '@/utils/server/trpc'
-import { listTypebotsProcedure } from './procedures'
+import { router } from '@/helpers/server/trpc'
+import { listTypebots } from './listTypebots'
 
 export const typebotRouter = router({
-  listTypebots: listTypebotsProcedure,
+  listTypebots,
 })

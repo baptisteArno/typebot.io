@@ -7,7 +7,7 @@ import {
   createContext,
   useCallback,
 } from 'react'
-import { GroupsCoordinates, Coordinates } from './GraphProvider'
+import { Coordinates, GroupsCoordinates } from '../types'
 
 const groupsCoordinatesContext = createContext<{
   groupsCoordinates: GroupsCoordinates

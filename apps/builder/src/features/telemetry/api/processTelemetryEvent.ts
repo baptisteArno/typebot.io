@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { PostHog } from 'posthog-node'
 import { TRPCError } from '@trpc/server'
 import got from 'got'
-import { authenticatedProcedure } from '@/utils/server/trpc'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
 
 // Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.
 export const processTelemetryEvent = authenticatedProcedure

@@ -11,10 +11,11 @@ import {
 import { ChatIcon, CodeIcon, PencilIcon } from '@/components/icons'
 import { ChatTheme, GeneralTheme } from '@typebot.io/schemas'
 import React from 'react'
-import { ChatThemeSettings } from './ChatSettings'
-import { CustomCssSettings } from './CustomCssSettings/CustomCssSettings'
-import { GeneralSettings } from './GeneralSettings'
-import { headerHeight, useTypebot } from '@/features/editor'
+import { CustomCssSettings } from './CustomCssSettings'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { headerHeight } from '@/features/editor/constants'
+import { ChatThemeSettings } from './chat/ChatThemeSettings'
+import { GeneralSettings } from './general/GeneralSettings'
 
 export const ThemeSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot()

@@ -1,4 +1,4 @@
-import { router } from '@/utils/server/trpc'
+import { router } from '@/helpers/server/trpc'
 import { createCredentials } from './createCredentials'
 import { deleteCredentials } from './deleteCredentials'
 import { listCredentials } from './listCredentials'

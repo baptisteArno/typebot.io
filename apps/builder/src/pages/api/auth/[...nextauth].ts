@@ -11,9 +11,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { CustomAdapter } from './adapter'
 import { User } from '@typebot.io/prisma'
 import { env, getAtPath, isDefined, isNotEmpty } from '@typebot.io/lib'
-import { mockedUser } from '@/features/auth'
-import { getNewUserInvitations } from '@/features/auth/api'
 import { sendVerificationRequest } from './sendVerificationRequest'
+import { mockedUser } from '@/features/auth/mockedUser'
+import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 
 const providers: Provider[] = []
 

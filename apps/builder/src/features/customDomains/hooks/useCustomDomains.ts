@@ -1,6 +1,6 @@
 import { CustomDomain } from '@typebot.io/prisma'
 import { stringify } from 'qs'
-import { fetcher } from '@/utils/helpers'
+import { fetcher } from '@/helpers/fetcher'
 import useSWR from 'swr'
 
 export const useCustomDomains = ({

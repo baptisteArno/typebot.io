@@ -1,5 +1,5 @@
-import { createContext } from '@/utils/server/context'
-import { trpcRouter } from '@/utils/server/routers/v1/trpcRouter'
+import { createContext } from '@/helpers/server/context'
+import { trpcRouter } from '@/helpers/server/routers/v1/trpcRouter'
 import { captureException } from '@sentry/nextjs'
 import { createNextApiHandler } from '@trpc/server/adapters/next'
 

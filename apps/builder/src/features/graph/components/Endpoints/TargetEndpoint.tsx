@@ -6,8 +6,8 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { useGraph } from '../../providers'
 import { useEndpoints } from '../../providers/EndpointsProvider'
+import { useGraph } from '../../providers/GraphProvider'
 
 const endpointHeight = 20
 

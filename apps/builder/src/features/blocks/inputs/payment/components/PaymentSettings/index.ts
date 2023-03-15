@@ -1,1 +1,0 @@
-export { PaymentSettings } from './PaymentSettings'

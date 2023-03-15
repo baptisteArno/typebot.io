@@ -4,7 +4,6 @@ import {
   useColorModeValue,
   useEventListener,
 } from '@chakra-ui/react'
-import { useGraph, useGroupsCoordinates } from '../../providers'
 import { Source } from '@typebot.io/schemas'
 import React, {
   useEffect,
@@ -14,6 +13,8 @@ import React, {
   useState,
 } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
+import { useGraph } from '../../providers/GraphProvider'
+import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 
 const endpointHeight = 32
 

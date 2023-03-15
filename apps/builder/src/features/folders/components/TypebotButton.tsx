@@ -19,19 +19,17 @@ import { GripIcon } from '@/components/icons'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import { useDebounce } from 'use-debounce'
 import { Plan } from '@typebot.io/prisma'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
-import { isMobile } from '@/utils/helpers'
-import {
-  getTypebotQuery,
-  deleteTypebotQuery,
-  importTypebotQuery,
-  TypebotInDashboard,
-} from '@/features/dashboard'
 import { MoreButton } from './MoreButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { deletePublishedTypebotQuery } from '@/features/publish/queries/deletePublishedTypebotQuery'
 import { useScopedI18n } from '@/locales'
+import { deleteTypebotQuery } from '@/features/dashboard/queries/deleteTypebotQuery'
+import { getTypebotQuery } from '@/features/dashboard/queries/getTypebotQuery'
+import { importTypebotQuery } from '@/features/dashboard/queries/importTypebotQuery'
+import { TypebotInDashboard } from '@/features/dashboard/types'
+import { isMobile } from '@/helpers/isMobile'
 
 type Props = {
   typebot: TypebotInDashboard

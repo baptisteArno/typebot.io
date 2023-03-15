@@ -1,4 +1,4 @@
-import { SignInPage } from '@/features/auth'
+import { SignInPage } from '@/features/auth/components/SignInPage'
 
 export default function Page() {
   return <SignInPage type="signin" />

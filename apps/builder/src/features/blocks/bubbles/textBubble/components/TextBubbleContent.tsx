@@ -1,9 +1,9 @@
 import { Flex } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { TextBubbleBlock } from '@typebot.io/schemas'
 import React from 'react'
-import { parseVariableHighlight } from '@/utils/helpers'
 import { isEmpty } from '@typebot.io/lib'
+import { parseVariableHtmlTags } from '@/features/variables/helpers/parseVariableHtmlTags'
 
 type Props = {
   block: TextBubbleBlock
@@ -11,7 +11,6 @@ type Props = {
 
 export const TextBubbleContent = ({ block }: Props) => {
   const { typebot } = useTypebot()
-  if (!typebot) return <></>
   return (
     <Flex
       w="90%"
@@ -22,7 +21,7 @@ export const TextBubbleContent = ({ block }: Props) => {
       dangerouslySetInnerHTML={{
         __html: isEmpty(block.content.plainText)
           ? `<p>Click to edit...</p>`
-          : parseVariableHighlight(block.content.html, typebot),
+          : parseVariableHtmlTags(block.content.html, typebot?.variables ?? []),
       }}
     />
   )

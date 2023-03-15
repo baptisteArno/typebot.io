@@ -1,5 +1,5 @@
 import { Stats } from '@typebot.io/schemas'
-import { fetcher } from '@/utils/helpers'
+import { fetcher } from '@/helpers/fetcher'
 import useSWR from 'swr'
 
 export const useStats = ({

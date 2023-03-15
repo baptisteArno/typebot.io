@@ -1,15 +1,13 @@
 import { Button, HStack, useDisclosure, Text } from '@chakra-ui/react'
 import { FolderPlusIcon } from '@/components/icons'
-import {
-  LimitReached,
-  ChangePlanModal,
-  LockTag,
-  isFreePlan,
-} from '@/features/billing'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { Plan } from '@typebot.io/prisma'
 import React from 'react'
 import { useScopedI18n } from '@/locales'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
+import { LimitReached } from '@/features/billing/types'
 
 type Props = { isLoading: boolean; onClick: () => void }
 

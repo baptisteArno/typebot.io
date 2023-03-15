@@ -1,4 +1,4 @@
-import { VariablesButton } from '@/features/variables'
+import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import {
   NumberInputProps,
   NumberInput as ChakraNumberInput,

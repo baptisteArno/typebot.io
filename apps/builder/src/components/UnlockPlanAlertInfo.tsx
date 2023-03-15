@@ -8,7 +8,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
-import { ChangePlanModal, LimitReached } from '@/features/billing'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LimitReached } from '@/features/billing/types'
 
 export const UnlockPlanAlertInfo = ({
   contentLabel,

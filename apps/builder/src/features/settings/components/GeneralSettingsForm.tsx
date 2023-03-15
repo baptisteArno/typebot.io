@@ -1,12 +1,14 @@
 import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { Plan } from '@typebot.io/prisma'
 import { GeneralSettings } from '@typebot.io/schemas'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
-import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { LockTag } from '@/features/billing'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
+import { LimitReached } from '@/features/billing/types'
 
 type Props = {
   generalSettings: GeneralSettings

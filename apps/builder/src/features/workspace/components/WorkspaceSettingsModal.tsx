@@ -20,9 +20,10 @@ import { useState } from 'react'
 import { MembersList } from './MembersList'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
 import { useWorkspace } from '../WorkspaceProvider'
-import { MyAccountForm, UserPreferencesForm } from '@/features/account'
-import { BillingContent } from '@/features/billing'
 import packageJson from '../../../../../../package.json'
+import { UserPreferencesForm } from '@/features/account/components/UserPreferencesForm'
+import { MyAccountForm } from '@/features/account/components/MyAccountForm'
+import { BillingSettingsLayout } from '@/features/billing/components/BillingSettingsLayout'
 
 type Props = {
   isOpen: boolean
@@ -175,7 +176,7 @@ const SettingsContent = ({
     case 'members':
       return <MembersList />
     case 'billing':
-      return <BillingContent />
+      return <BillingSettingsLayout />
     default:
       return null
   }

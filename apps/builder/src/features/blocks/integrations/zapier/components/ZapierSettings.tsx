@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Webhook, WebhookOptions, ZapierBlock } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useState } from 'react'
 import { byId } from '@typebot.io/lib'

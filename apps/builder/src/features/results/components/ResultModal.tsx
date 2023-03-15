@@ -12,7 +12,7 @@ import {
 import { useResults } from '../ResultsProvider'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
-import { HeaderIcon } from '../utils'
+import { HeaderIcon } from './HeaderIcon'
 
 type Props = {
   resultIdx: number | null

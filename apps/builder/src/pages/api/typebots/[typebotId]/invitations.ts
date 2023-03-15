@@ -1,14 +1,14 @@
 import { CollaborationType, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebots, canWriteTypebots } from '@/utils/api/dbRules'
+import { canReadTypebots, canWriteTypebots } from '@/helpers/databaseRules'
 import {
   badRequest,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
 } from '@typebot.io/lib/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { env } from '@typebot.io/lib'
 import { sendGuestInvitationEmail } from '@typebot.io/emails'
 

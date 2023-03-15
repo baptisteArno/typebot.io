@@ -1,8 +1,8 @@
 import prisma from '@/lib/prisma'
 import { InputBlockType, PublicTypebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { canPublishFileInput, canWriteTypebots } from '@/utils/api/dbRules'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { canPublishFileInput, canWriteTypebots } from '@/helpers/databaseRules'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
   badRequest,
   methodNotAllowed,

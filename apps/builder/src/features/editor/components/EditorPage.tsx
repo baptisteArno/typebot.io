@@ -1,10 +1,4 @@
 import { Seo } from '@/components/Seo'
-import {
-  Graph,
-  GraphDndProvider,
-  GraphProvider,
-  GroupsCoordinatesProvider,
-} from '@/features/graph'
 import { Flex, Spinner, useColorModeValue } from '@chakra-ui/react'
 import {
   EditorProvider,
@@ -17,6 +11,10 @@ import { BoardMenuButton } from './BoardMenuButton'
 import { GettingStartedModal } from './GettingStartedModal'
 import { PreviewDrawer } from '@/features/preview/components/PreviewDrawer'
 import { TypebotHeader } from './TypebotHeader'
+import { Graph } from '@/features/graph/components/Graph'
+import { GraphDndProvider } from '@/features/graph/providers/GraphDndProvider'
+import { GraphProvider } from '@/features/graph/providers/GraphProvider'
+import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
 
 export const EditorPage = () => {
   const { typebot, isReadOnly } = useTypebot()

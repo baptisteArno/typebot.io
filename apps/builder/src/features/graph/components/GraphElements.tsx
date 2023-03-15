@@ -1,9 +1,9 @@
-import { AnswersCount } from '@/features/analytics'
+import { AnswersCount } from '@/features/analytics/types'
 import { Edge, Group } from '@typebot.io/schemas'
 import React, { memo } from 'react'
 import { EndpointsProvider } from '../providers/EndpointsProvider'
-import { Edges } from './Edges'
-import { GroupNode } from './Nodes/GroupNode'
+import { Edges } from './edges/Edges'
+import { GroupNode } from './nodes/group'
 
 type Props = {
   edges: Edge[]

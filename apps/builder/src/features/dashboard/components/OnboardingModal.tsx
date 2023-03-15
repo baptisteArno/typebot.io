@@ -1,6 +1,6 @@
 import { chakra, useColorModeValue } from '@chakra-ui/react'
 import { Popup } from '@typebot.io/react'
-import { useUser } from '@/features/account'
+import { useUser } from '@/features/account/hooks/useUser'
 import { Typebot } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { sendRequest } from '@typebot.io/lib'

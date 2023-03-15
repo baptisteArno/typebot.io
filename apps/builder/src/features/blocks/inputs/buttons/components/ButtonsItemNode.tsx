@@ -7,7 +7,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { PlusIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ButtonItem, ItemIndices, ItemType } from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'

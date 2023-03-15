@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { VariablesButton } from '@/features/variables'
+import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import { Variable } from '@typebot.io/schemas'
 import { env } from '@typebot.io/lib'
 import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'

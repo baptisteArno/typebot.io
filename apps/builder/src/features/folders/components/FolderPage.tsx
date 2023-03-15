@@ -1,5 +1,5 @@
 import { Seo } from '@/components/Seo'
-import { DashboardHeader } from '@/features/dashboard'
+import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader'
 import { useToast } from '@/hooks/useToast'
 import { useI18n } from '@/locales'
 import { Stack, Flex, Spinner } from '@chakra-ui/react'

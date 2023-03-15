@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { WebhookBlock } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { SetVariableLabel } from '@/components/SetVariableLabel'

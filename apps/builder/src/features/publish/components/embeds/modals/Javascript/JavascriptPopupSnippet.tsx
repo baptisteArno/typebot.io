@@ -1,11 +1,11 @@
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
 import { parseInitPopupCode, typebotImportCode } from '../../snippetParsers'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { PopupProps } from '@typebot.io/js'
-import { isCloudProdInstance } from '@/utils/helpers'
 import { env, getViewerUrl } from '@typebot.io/lib'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 type Props = Pick<PopupProps, 'autoShowDelay'>
 

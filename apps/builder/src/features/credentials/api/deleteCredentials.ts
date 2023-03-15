@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { authenticatedProcedure } from '@/utils/server/trpc'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

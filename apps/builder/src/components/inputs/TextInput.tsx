@@ -1,6 +1,6 @@
-import { VariablesButton } from '@/features/variables'
-import { injectVariableInText } from '@/features/variables/utils/injectVariableInTextInput'
-import { focusInput } from '@/utils/focusInput'
+import { VariablesButton } from '@/features/variables/components/VariablesButton'
+import { injectVariableInText } from '@/features/variables/helpers/injectVariableInTextInput'
+import { focusInput } from '@/helpers/focusInput'
 import {
   FormControl,
   FormHelperText,

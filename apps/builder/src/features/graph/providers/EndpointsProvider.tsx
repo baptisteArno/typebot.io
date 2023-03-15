@@ -5,11 +5,7 @@ import {
   useContext,
   useState,
 } from 'react'
-
-export type Endpoint = {
-  id: string
-  y: number
-}
+import { Endpoint } from '../types'
 
 export const endpointsContext = createContext<{
   sourceEndpointYOffsets: Map<string, Endpoint>

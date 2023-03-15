@@ -2,7 +2,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TableList, TableListItemProps } from '@/components/TableList'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useToast } from '@/hooks/useToast'
 import {
   Stack,
@@ -25,14 +25,11 @@ import {
 } from '@typebot.io/schemas'
 import { useState, useMemo } from 'react'
 import { executeWebhook } from '../queries/executeWebhookQuery'
-import { convertVariablesForTestToVariables } from '../utils/convertVariablesForTestToVariables'
-import { getDeepKeys } from '../utils/getDeepKeys'
-import {
-  QueryParamsInputs,
-  HeadersInputs,
-} from './WebhookSettings/KeyValueInputs'
-import { DataVariableInputs } from './WebhookSettings/ResponseMappingInputs'
-import { VariableForTestInputs } from './WebhookSettings/VariableForTestInputs'
+import { convertVariablesForTestToVariables } from '../helpers/convertVariablesForTestToVariables'
+import { getDeepKeys } from '../helpers/getDeepKeys'
+import { QueryParamsInputs, HeadersInputs } from './KeyValueInputs'
+import { DataVariableInputs } from './ResponseMappingInputs'
+import { VariableForTestInputs } from './VariableForTestInputs'
 
 type Props = {
   blockId: string

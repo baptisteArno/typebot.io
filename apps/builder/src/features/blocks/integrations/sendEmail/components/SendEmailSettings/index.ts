@@ -1,1 +1,0 @@
-export { SendEmailSettings } from './SendEmailSettings'

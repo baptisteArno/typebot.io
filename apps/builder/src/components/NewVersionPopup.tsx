@@ -1,4 +1,4 @@
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { trpc } from '@/lib/trpc'
 import {
   Button,

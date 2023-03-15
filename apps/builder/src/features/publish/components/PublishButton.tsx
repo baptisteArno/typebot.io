@@ -19,13 +19,15 @@ import {
   LockedIcon,
   UnlockedIcon,
 } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
-import { useWorkspace } from '@/features/workspace'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { InputBlockType } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import { isNotDefined } from '@typebot.io/lib'
-import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
-import { timeSince } from '@/utils/helpers'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
+import { LimitReached } from '@/features/billing/types'
+import { parseTimeSince } from '@/helpers/parseTimeSince'
 
 export const PublishButton = (props: ButtonProps) => {
   const warningTextColor = useColorModeValue('red.300', 'red.600')
@@ -87,7 +89,7 @@ export const PublishButton = (props: ButtonProps) => {
             <Text fontStyle="italic">
               Published version from{' '}
               {publishedTypebot &&
-                timeSince(publishedTypebot.updatedAt.toString())}{' '}
+                parseTimeSince(publishedTypebot.updatedAt.toString())}{' '}
               ago
             </Text>
           </Stack>

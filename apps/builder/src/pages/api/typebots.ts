@@ -7,9 +7,11 @@ import {
   notAuthenticated,
   notFound,
 } from '@typebot.io/lib/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { parseNewTypebot } from '@/features/dashboard'
-import { NewTypebotProps } from '@/features/dashboard/api/parseNewTypebot'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import {
+  NewTypebotProps,
+  parseNewTypebot,
+} from '@/features/dashboard/api/parseNewTypebot'
 import { omit } from '@typebot.io/lib'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 

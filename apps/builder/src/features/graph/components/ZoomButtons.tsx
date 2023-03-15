@@ -1,6 +1,6 @@
 import { Stack, IconButton, useColorModeValue } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@/components/icons'
-import { headerHeight } from '@/features/editor'
+import { headerHeight } from '@/features/editor/constants'
 
 type Props = {
   onZoomInClick: () => void

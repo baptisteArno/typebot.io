@@ -1,4 +1,4 @@
-import { FolderPage } from '@/features/folders'
+import { FolderPage } from '@/features/folders/components/FolderPage'
 
 export default function Page() {
   return <FolderPage />

@@ -1,4 +1,5 @@
-import { Group, Edge, IdMap, Source, Block, Target } from '@typebot.io/schemas'
+import { Coordinates } from '@dnd-kit/utilities'
+import { Edge } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,
@@ -7,52 +8,10 @@ import {
   useContext,
   useState,
 } from 'react'
-
-export const stubLength = 20
-export const blockWidth = 300
-export const blockAnchorsOffset = {
-  left: {
-    x: 0,
-    y: 20,
-  },
-  top: {
-    x: blockWidth / 2,
-    y: 0,
-  },
-  right: {
-    x: blockWidth,
-    y: 20,
-  },
-}
-
-export type Coordinates = { x: number; y: number }
+import { graphPositionDefaultValue } from '../constants'
+import { ConnectingIds } from '../types'
 
 type Position = Coordinates & { scale: number }
-
-export type Anchor = {
-  coordinates: Coordinates
-}
-
-export type Node = Omit<Group, 'blocks'> & {
-  blocks: (Block & {
-    sourceAnchorsPosition: { left: Coordinates; right: Coordinates }
-  })[]
-}
-
-export const graphPositionDefaultValue = (
-  firstGroupCoordinates: Coordinates
-) => ({
-  x: 400 - firstGroupCoordinates.x,
-  y: 100 - firstGroupCoordinates.y,
-  scale: 1,
-})
-
-export type ConnectingIds = {
-  source: Source
-  target?: Target
-}
-
-export type GroupsCoordinates = IdMap<Coordinates>
 
 type PreviewingBlock = {
   id: string

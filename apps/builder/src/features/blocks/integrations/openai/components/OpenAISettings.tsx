@@ -1,6 +1,6 @@
 import { Stack, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
-import { CredentialsDropdown } from '@/features/credentials'
+import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
 import {
   ChatCompletionOpenAIOptions,
   CreateImageOpenAIOptions,

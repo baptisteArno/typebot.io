@@ -1,16 +1,8 @@
 import { TrashIcon } from '@/components/icons'
 import { Seo } from '@/components/Seo'
-import {
-  isProPlan,
-  LimitReached,
-  LockTag,
-  UpgradeButton,
-} from '@/features/billing'
-import { CustomDomainsDropdown } from '@/features/customDomains'
-import { TypebotHeader, useTypebot } from '@/features/editor'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import {
   Flex,
   Heading,
@@ -23,9 +15,16 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { isDefined, getViewerUrl, isNotDefined, env } from '@typebot.io/lib'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
-import { parseDefaultPublicId } from '../utils'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './embeds/EmbedButton'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { UpgradeButton } from '@/features/billing/components/UpgradeButton'
+import { isProPlan } from '@/features/billing/helpers/isProPlan'
+import { LimitReached } from '@/features/billing/types'
+import { CustomDomainsDropdown } from '@/features/customDomains/components/CustomDomainsDropdown'
+import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
+import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 
 export const SharePage = () => {
   const { workspace } = useWorkspace()

@@ -6,8 +6,8 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
-import { TypebotInDashboard } from '@/features/dashboard'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
+import { TypebotInDashboard } from '@/features/dashboard/types'
 
 type Props = {
   typebot: TypebotInDashboard

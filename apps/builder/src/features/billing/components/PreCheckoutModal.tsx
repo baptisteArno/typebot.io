@@ -1,6 +1,6 @@
 import { TextInput } from '@/components/inputs'
 import { Select } from '@/components/inputs/Select'
-import { useParentModal } from '@/features/graph'
+import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import {

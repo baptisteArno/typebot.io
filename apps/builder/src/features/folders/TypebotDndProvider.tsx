@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { TypebotInDashboard } from '@/features/dashboard'
+import { TypebotInDashboard } from '../dashboard/types'
 
 const typebotDndContext = createContext<{
   draggedTypebot?: TypebotInDashboard

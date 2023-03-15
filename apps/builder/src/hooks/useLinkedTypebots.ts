@@ -1,4 +1,4 @@
-import { fetcher } from '@/utils/helpers'
+import { fetcher } from '@/helpers/fetcher'
 import { Typebot } from '@typebot.io/schemas'
 import { stringify } from 'qs'
 import useSWR from 'swr'

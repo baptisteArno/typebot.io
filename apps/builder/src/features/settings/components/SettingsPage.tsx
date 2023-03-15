@@ -1,9 +1,10 @@
 import { Seo } from '@/components/Seo'
-import { TypebotHeader, useTypebot } from '@/features/editor'
 import { Flex } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/react'
 import { getViewerUrl } from '@typebot.io/lib'
 import { SettingsSideMenu } from './SettingsSideMenu'
+import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 
 export const SettingsPage = () => {
   const { typebot } = useTypebot()

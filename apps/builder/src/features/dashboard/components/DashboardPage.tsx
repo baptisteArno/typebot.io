@@ -1,12 +1,10 @@
 import { Seo } from '@/components/Seo'
-import { useUser } from '@/features/account'
+import { useUser } from '@/features/account/hooks/useUser'
 import {
   PreCheckoutModal,
   PreCheckoutModalProps,
 } from '@/features/billing/components/PreCheckoutModal'
-import { TypebotDndProvider, FolderContent } from '@/features/folders'
-import { ParentModalProvider } from '@/features/graph'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useScopedI18n } from '@/locales'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
@@ -14,6 +12,9 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { guessIfUserIsEuropean } from '@typebot.io/lib/pricing'
 import { DashboardHeader } from './DashboardHeader'
+import { FolderContent } from '@/features/folders/components/FolderContent'
+import { TypebotDndProvider } from '@/features/folders/TypebotDndProvider'
+import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 
 export const DashboardPage = () => {
   const scopedT = useScopedI18n('dashboard')

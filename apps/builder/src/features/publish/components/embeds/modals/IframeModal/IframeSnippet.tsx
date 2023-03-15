@@ -1,5 +1,5 @@
 import { FlexProps } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { env, getViewerUrl } from '@typebot.io/lib'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import prettier from 'prettier/standalone'

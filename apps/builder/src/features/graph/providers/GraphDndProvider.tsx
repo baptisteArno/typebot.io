@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Coordinates } from './GraphProvider'
+import { Coordinates } from '../types'
 
 type NodeElement = {
   id: string

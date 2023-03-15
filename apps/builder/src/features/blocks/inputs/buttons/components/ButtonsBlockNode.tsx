@@ -1,9 +1,9 @@
 import { BlockIndices, ChoiceInputBlock } from '@typebot.io/schemas'
 import React from 'react'
-import { ItemNodesList } from '@/features/graph/components/Nodes/ItemNode'
 import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
+import { ItemNodesList } from '@/features/graph/components/nodes/item/ItemNodesList'
 
 type Props = {
   block: ChoiceInputBlock

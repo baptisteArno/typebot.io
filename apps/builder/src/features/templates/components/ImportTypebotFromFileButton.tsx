@@ -1,5 +1,4 @@
 import { useToast } from '@/hooks/useToast'
-import { readFile } from '@/utils/helpers'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import { groupSchema, Typebot } from '@typebot.io/schemas'
 import React, { ChangeEvent } from 'react'
@@ -45,4 +44,15 @@ export const ImportTypebotFromFileButton = ({
       </Button>
     </>
   )
+}
+
+const readFile = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader()
+    fr.onload = () => {
+      fr.result && resolve(fr.result.toString())
+    }
+    fr.onerror = reject
+    fr.readAsText(file)
+  })
 }

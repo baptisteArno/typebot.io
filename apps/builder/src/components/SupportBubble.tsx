@@ -1,10 +1,10 @@
-import { useTypebot } from '@/features/editor'
-import { useUser } from '@/features/account'
-import { useWorkspace } from '@/features/workspace'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useUser } from '@/features/account/hooks/useUser'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React from 'react'
 import { Bubble } from '@typebot.io/react'
-import { planToReadable } from '@/features/billing'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
+import { planToReadable } from '@/features/billing/helpers/planToReadable'
 
 export const SupportBubble = () => {
   const { typebot } = useTypebot()

@@ -1,5 +1,5 @@
 import { SetVariableLabel } from '@/components/SetVariableLabel'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack, Text } from '@chakra-ui/react'
 import {
   ChatCompletionOpenAIOptions,

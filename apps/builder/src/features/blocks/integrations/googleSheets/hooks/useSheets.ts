@@ -1,5 +1,5 @@
 import { stringify } from 'qs'
-import { fetcher } from '@/utils/helpers'
+import { fetcher } from '@/helpers/fetcher'
 import useSWR from 'swr'
 import { Sheet } from '../types'
 

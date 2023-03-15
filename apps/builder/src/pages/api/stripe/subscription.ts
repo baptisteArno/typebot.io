@@ -7,7 +7,7 @@ import {
   notAuthenticated,
 } from '@typebot.io/lib/api'
 import Stripe from 'stripe'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import prisma from '@/lib/prisma'
 import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 

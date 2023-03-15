@@ -31,10 +31,10 @@ import {
   WixModal,
 } from './modals'
 import { OtherModal } from './modals/OtherModal'
-import { ScriptIcon } from '@/features/blocks/logic/script'
 import { ScriptModal } from './modals/Script/ScriptModal'
 import { CodeIcon } from '@/components/icons'
 import { ApiModal } from './modals/ApiModal'
+import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 
 export type ModalProps = {
   publicId: string

@@ -1,19 +1,14 @@
-import { Coordinates, useGraph, useGroupsCoordinates } from '../../providers'
 import React, { useMemo, useState } from 'react'
 import { Edge as EdgeProps } from '@typebot.io/schemas'
 import { Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor'
-import { EdgeMenu } from './EdgeMenu'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { colors } from '@/lib/theme'
-import { getAnchorsPosition, computeEdgePath } from '../../utils'
 import { useEndpoints } from '../../providers/EndpointsProvider'
-
-export type AnchorsPositionProps = {
-  sourcePosition: Coordinates
-  targetPosition: Coordinates
-  sourceType: 'right' | 'left'
-  totalSegments: number
-}
+import { computeEdgePath } from '../../helpers/computeEdgePath'
+import { getAnchorsPosition } from '../../helpers/getAnchorsPosition'
+import { useGraph } from '../../providers/GraphProvider'
+import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
+import { EdgeMenu } from './EdgeMenu'
 
 type Props = {
   edge: EdgeProps

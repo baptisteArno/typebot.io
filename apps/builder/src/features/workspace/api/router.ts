@@ -1,18 +1,16 @@
-import { router } from '@/utils/server/trpc'
-import {
-  createWorkspaceProcedure,
-  deleteWorkspaceProcedure,
-  getWorkspaceProcedure,
-  listMembersInWorkspaceProcedure,
-  listWorkspacesProcedure,
-  updateWorkspaceProcedure,
-} from './procedures'
+import { router } from '@/helpers/server/trpc'
+import { createWorkspace } from './createWorkspace'
+import { deleteWorkspace } from './deleteWorkspace'
+import { getWorkspace } from './getWorkspace'
+import { listMembersInWorkspace } from './listMembersInWorkspace'
+import { listWorkspaces } from './listWorkspaces'
+import { updateWorkspace } from './updateWorkspace'
 
 export const workspaceRouter = router({
-  listWorkspaces: listWorkspacesProcedure,
-  getWorkspace: getWorkspaceProcedure,
-  listMembersInWorkspace: listMembersInWorkspaceProcedure,
-  createWorkspace: createWorkspaceProcedure,
-  updateWorkspace: updateWorkspaceProcedure,
-  deleteWorkspace: deleteWorkspaceProcedure,
+  listWorkspaces,
+  getWorkspace,
+  listMembersInWorkspace,
+  createWorkspace,
+  updateWorkspace,
+  deleteWorkspace,
 })

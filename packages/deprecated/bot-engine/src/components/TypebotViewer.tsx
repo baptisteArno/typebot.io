@@ -20,7 +20,6 @@ export type TypebotViewerProps = {
   typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
   isPreview?: boolean
   apiHost?: string
-  style?: CSSProperties
   predefinedVariables?: { [key: string]: string | undefined }
   resultId?: string
   startGroupId?: string
@@ -39,7 +38,6 @@ export const TypebotViewer = ({
   apiHost = getViewerUrl(),
   isPreview = false,
   isLoading = false,
-  style,
   resultId,
   startGroupId,
   predefinedVariables,

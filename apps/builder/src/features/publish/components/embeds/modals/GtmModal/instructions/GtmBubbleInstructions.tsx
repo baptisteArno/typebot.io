@@ -1,4 +1,4 @@
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { OrderedList, ListItem, Stack, Text, Code } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
 import { useState } from 'react'

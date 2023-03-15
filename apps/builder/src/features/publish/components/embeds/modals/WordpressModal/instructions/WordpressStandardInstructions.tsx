@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {

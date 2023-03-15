@@ -1,7 +1,8 @@
 import { Seo } from '@/components/Seo'
-import { AnalyticsGraphContainer } from '@/features/analytics'
-import { useTypebot, TypebotHeader } from '@/features/editor'
-import { useWorkspace } from '@/features/workspace'
+import { AnalyticsGraphContainer } from '@/features/analytics/components/AnalyticsGraphContainer'
+import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import {
   Flex,

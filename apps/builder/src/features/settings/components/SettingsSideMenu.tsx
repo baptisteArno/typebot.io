@@ -14,7 +14,8 @@ import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'
 import { TypingEmulationForm } from './TypingEmulationForm'
-import { headerHeight, useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { headerHeight } from '@/features/editor/constants'
 
 export const SettingsSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot()

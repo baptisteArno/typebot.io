@@ -1,5 +1,5 @@
 import { AlertInfo } from '@/components/AlertInfo'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import {
   Modal,
   ModalBody,
@@ -10,15 +10,8 @@ import {
   Button,
   HStack,
 } from '@chakra-ui/react'
+import { LimitReached } from '../types'
 import { ChangePlanForm } from './ChangePlanForm'
-
-export enum LimitReached {
-  BRAND = 'remove branding',
-  CUSTOM_DOMAIN = 'add custom domains',
-  FOLDER = 'create folders',
-  FILE_INPUT = 'use file input blocks',
-  ANALYTICS = 'unlock in-depth analytics',
-}
 
 type ChangePlanModalProps = {
   type?: LimitReached

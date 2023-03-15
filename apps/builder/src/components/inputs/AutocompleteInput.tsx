@@ -16,10 +16,10 @@ import { useDebouncedCallback } from 'use-debounce'
 import { env, isDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
-import { VariablesButton } from '@/features/variables'
+import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import { Variable } from '@typebot.io/schemas'
-import { injectVariableInText } from '@/features/variables/utils/injectVariableInTextInput'
-import { focusInput } from '@/utils/focusInput'
+import { injectVariableInText } from '@/features/variables/helpers/injectVariableInTextInput'
+import { focusInput } from '@/helpers/focusInput'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {

@@ -1,6 +1,6 @@
 import { TextInput } from '@/components/inputs/TextInput'
 import { TextLink } from '@/components/TextLink'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import {

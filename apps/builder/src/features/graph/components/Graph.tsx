@@ -1,24 +1,21 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
-import {
-  blockWidth,
-  Coordinates,
-  graphPositionDefaultValue,
-  useGraph,
-  useGroupsCoordinates,
-  useBlockDnd,
-} from '../providers'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { DraggableBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
-import { useUser } from '@/features/account'
+import { useUser } from '@/features/account/hooks/useUser'
 import { ZoomButtons } from './ZoomButtons'
-import { AnswersCount } from '@/features/analytics'
-import { headerHeight } from '@/features/editor'
 import { useGesture } from '@use-gesture/react'
 import { GraphNavigation } from '@typebot.io/prisma'
+import { AnswersCount } from '@/features/analytics/types'
+import { headerHeight } from '@/features/editor/constants'
+import { graphPositionDefaultValue, blockWidth } from '../constants'
+import { useBlockDnd } from '../providers/GraphDndProvider'
+import { useGraph } from '../providers/GraphProvider'
+import { useGroupsCoordinates } from '../providers/GroupsCoordinateProvider'
+import { Coordinates } from '../types'
 
 const maxScale = 2
 const minScale = 0.3

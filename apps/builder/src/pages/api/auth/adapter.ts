@@ -8,14 +8,12 @@ import {
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import { createId } from '@paralleldrive/cuid2'
 import { generateId } from '@typebot.io/lib'
-import { parseWorkspaceDefaultPlan } from '@/features/workspace'
-import {
-  getNewUserInvitations,
-  convertInvitationsToCollaborations,
-  joinWorkspaces,
-} from '@/features/auth/api'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
+import { convertInvitationsToCollaborations } from '@/features/auth/helpers/convertInvitationsToCollaborations'
+import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
+import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
+import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {

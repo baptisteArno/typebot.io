@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ExternalLinkIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   OrderedList,
   ListItem,
@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseInitBubbleCode } from '../../../snippetParsers'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {

@@ -2,13 +2,13 @@ import { CollaborationType, Prisma } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
-import { getAuthenticatedUser } from '@/features/auth/api'
-import { archiveResults } from '@/features/results/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { Typebot } from '@typebot.io/schemas'
 import { omit } from '@typebot.io/lib'
-import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
-import { isReadTypebotForbidden } from '@/features/typebot/api/utils/isReadTypebotForbidden'
-import { removeTypebotOldProperties } from '@/features/typebot/api/utils/removeTypebotOldProperties'
+import { getTypebot } from '@/features/typebot/helpers/getTypebot'
+import { archiveResults } from '@/features/results/helpers/archiveResults'
+import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

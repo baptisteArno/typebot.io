@@ -13,7 +13,7 @@ import {
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import React, { useState } from 'react'
 import { CustomDomainModal } from './CustomDomainModal'
-import { useWorkspace } from '@/features/workspace'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { useCustomDomains } from '../hooks/useCustomDomains'
 import { deleteCustomDomainQuery } from '../queries/deleteCustomDomainQuery'

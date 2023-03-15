@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { notAuthenticated } from '@typebot.io/lib/api'
 import { SmtpCredentials } from '@typebot.io/schemas'
 

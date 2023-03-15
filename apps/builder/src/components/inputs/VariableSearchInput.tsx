@@ -15,7 +15,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider/TypebotProvider'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { createId } from '@paralleldrive/cuid2'
 import { Variable } from '@typebot.io/schemas'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'

@@ -5,7 +5,7 @@ import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
 import { badRequest, encrypt, notAuthenticated } from '@typebot.io/lib/api'
 import { oauth2Client } from '@/lib/googleSheets'
-import { getAuthenticatedUser } from '@/features/auth/api'
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

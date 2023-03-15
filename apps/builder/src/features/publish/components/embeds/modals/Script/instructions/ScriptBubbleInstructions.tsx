@@ -1,6 +1,5 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor'
-import { isCloudProdInstance } from '@/utils/helpers'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack, Text } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
 import { Typebot } from '@typebot.io/schemas'
@@ -12,6 +11,7 @@ import {
   parseInitBubbleCode,
   typebotImportCode,
 } from '../../../snippetParsers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {

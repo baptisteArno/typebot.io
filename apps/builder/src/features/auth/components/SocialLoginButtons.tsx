@@ -11,8 +11,10 @@ import React, { useState } from 'react'
 import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'
-import { AzureAdLogo, FacebookLogo, GitlabLogo } from './logos'
 import { omit } from '@typebot.io/lib'
+import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
+import { FacebookLogo } from '@/components/logos/FacebookLogo'
+import { GitlabLogo } from '@/components/logos/GitlabLogo'
 
 type Props = {
   providers:

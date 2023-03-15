@@ -1,4 +1,4 @@
-import { DashboardPage } from '@/features/dashboard'
+import { DashboardPage } from '@/features/dashboard/components/DashboardPage'
 import { getLocaleProps } from '@/locales'
 import { GetServerSidePropsContext } from 'next'
 

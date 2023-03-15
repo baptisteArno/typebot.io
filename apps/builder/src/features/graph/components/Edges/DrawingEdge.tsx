@@ -1,16 +1,15 @@
 import { useEventListener } from '@chakra-ui/react'
 import assert from 'assert'
-import {
-  useGraph,
-  ConnectingIds,
-  Coordinates,
-  useGroupsCoordinates,
-} from '../../providers'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { colors } from '@/lib/theme'
 import React, { useMemo, useState } from 'react'
-import { computeConnectingEdgePath, computeEdgePathToMouse } from '../../utils'
 import { useEndpoints } from '../../providers/EndpointsProvider'
+import { Coordinates } from '@dnd-kit/utilities'
+import { computeConnectingEdgePath } from '../../helpers/computeConnectingEdgePath'
+import { computeEdgePathToMouse } from '../../helpers/computeEdgePathToMouth'
+import { useGraph } from '../../providers/GraphProvider'
+import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
+import { ConnectingIds } from '../../types'
 
 export const DrawingEdge = () => {
   const { graphPosition, setConnectingIds, connectingIds } = useGraph()

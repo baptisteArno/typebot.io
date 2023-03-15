@@ -1,10 +1,10 @@
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
 import { parseInitStandardCode, typebotImportCode } from '../../snippetParsers'
-import { useTypebot } from '@/features/editor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { isCloudProdInstance } from '@/utils/helpers'
 import { env, getViewerUrl } from '@typebot.io/lib'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 type Props = {
   widthLabel?: string

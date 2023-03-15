@@ -5,7 +5,7 @@ import {
   PlusIcon,
   LogOutIcon,
 } from '@/components/icons'
-import { PlanTag } from '@/features/billing'
+import { PlanTag } from '@/features/billing/components/PlanTag'
 import { trpc } from '@/lib/trpc'
 import {
   Menu,

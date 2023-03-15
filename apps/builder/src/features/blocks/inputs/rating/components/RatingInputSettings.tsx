@@ -6,15 +6,12 @@ import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
-type RatingInputSettingsProps = {
+type Props = {
   options: RatingInputOptions
   onOptionsChange: (options: RatingInputOptions) => void
 }
 
-export const RatingInputSettings = ({
-  options,
-  onOptionsChange,
-}: RatingInputSettingsProps) => {
+export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleLengthChange = (length: number) =>
     onOptionsChange({ ...options, length })
 
