@@ -9,7 +9,7 @@ import {
   useBlockDnd,
 } from '../providers'
 import { useTypebot } from '@/features/editor'
-import { DraggableBlockType, PublicTypebot, Typebot } from 'models'
+import { DraggableBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
@@ -18,7 +18,7 @@ import { ZoomButtons } from './ZoomButtons'
 import { AnswersCount } from '@/features/analytics'
 import { headerHeight } from '@/features/editor'
 import { useGesture } from '@use-gesture/react'
-import { GraphNavigation } from 'db'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3

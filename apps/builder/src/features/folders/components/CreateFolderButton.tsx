@@ -7,7 +7,7 @@ import {
   isFreePlan,
 } from '@/features/billing'
 import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import React from 'react'
 import { useScopedI18n } from '@/locales'
 

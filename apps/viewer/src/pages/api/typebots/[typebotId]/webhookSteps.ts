@@ -1,9 +1,14 @@
 import { authenticateUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
-import { Group, WebhookBlock } from 'models'
+import { Group, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId, isNotDefined, isWebhookBlock, parseGroupTitle } from 'utils'
-import { methodNotAllowed } from 'utils/api'
+import {
+  byId,
+  isNotDefined,
+  isWebhookBlock,
+  parseGroupTitle,
+} from '@typebot.io/lib'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {

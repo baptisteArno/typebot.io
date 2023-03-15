@@ -1,6 +1,6 @@
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
-import { SessionState } from 'models'
-import { OpenAIBlock } from 'models/features/blocks/integrations/openai'
+import { SessionState } from '@typebot.io/schemas'
+import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { createChatCompletionOpenAI } from './createChatCompletionOpenAI'
 
 export const executeOpenAIBlock = async (

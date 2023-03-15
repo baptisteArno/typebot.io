@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { stripeCredentialsSchema } from 'models/features/blocks/inputs/payment/schemas'
-import { googleSheetsCredentialsSchema } from 'models/features/blocks/integrations/googleSheets/schemas'
-import { openAICredentialsSchema } from 'models/features/blocks/integrations/openai'
-import { smtpCredentialsSchema } from 'models/features/blocks/integrations/sendEmail'
-import { encrypt } from 'utils/api/encryption'
+import { stripeCredentialsSchema } from '@typebot.io/schemas/features/blocks/inputs/payment/schemas'
+import { googleSheetsCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/schemas'
+import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
+import { encrypt } from '@typebot.io/lib/api/encryption'
 import { z } from 'zod'
 
 const inputShape = {

@@ -9,7 +9,7 @@ import {
   Input as ChakraInput,
   InputProps,
 } from '@chakra-ui/react'
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 import React, {
   forwardRef,
   ReactNode,
@@ -19,7 +19,7 @@ import React, {
   useState,
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextInputProps = {

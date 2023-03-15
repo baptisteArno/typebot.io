@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Spinner, Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { WebhookOptions, Webhook, WebhookBlock } from 'models'
-import { byId } from 'utils'
+import { WebhookOptions, Webhook, WebhookBlock } from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 import { TextInput } from '@/components/inputs'
 import { WebhookAdvancedConfigForm } from '../WebhookAdvancedConfigForm'
 

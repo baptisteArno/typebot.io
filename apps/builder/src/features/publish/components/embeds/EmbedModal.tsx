@@ -13,7 +13,7 @@ import {
   Stack,
   ModalFooter,
 } from '@chakra-ui/react'
-import { capitalize } from 'utils'
+import { capitalize } from '@typebot.io/lib'
 import { EmbedTypeMenu } from './EmbedTypeMenu/EmbedTypeMenu'
 
 type Props = {

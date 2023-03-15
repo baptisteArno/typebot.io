@@ -13,12 +13,17 @@ import {
   useGraph,
 } from '../../../providers'
 import { useTypebot } from '@/features/editor'
-import { BlockIndices, BlockWithItems, LogicBlockType, Item } from 'models'
+import {
+  BlockIndices,
+  BlockWithItems,
+  LogicBlockType,
+  Item,
+} from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { SourceEndpoint } from '../../Endpoints'
 import { PlaceholderNode } from '../PlaceholderNode'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   block: BlockWithItems

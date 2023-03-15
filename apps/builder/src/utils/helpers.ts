@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression'
-import { Block, Typebot } from 'models'
+import { Block, Typebot } from '@typebot.io/schemas'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const res = await fetch(input, init)

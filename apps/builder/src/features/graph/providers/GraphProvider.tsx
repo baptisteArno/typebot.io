@@ -1,4 +1,4 @@
-import { Group, Edge, IdMap, Source, Block, Target } from 'models'
+import { Group, Edge, IdMap, Source, Block, Target } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,

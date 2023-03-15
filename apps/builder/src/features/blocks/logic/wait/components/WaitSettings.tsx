@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { WaitOptions } from 'models'
+import { WaitOptions } from '@typebot.io/schemas'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
 

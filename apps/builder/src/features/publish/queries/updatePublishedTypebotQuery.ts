@@ -1,5 +1,5 @@
-import { PublicTypebot } from 'models'
-import { sendRequest } from 'utils'
+import { PublicTypebot } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updatePublishedTypebotQuery = async (
   id: string,

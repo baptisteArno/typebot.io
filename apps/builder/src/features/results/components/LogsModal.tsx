@@ -17,8 +17,8 @@ import {
   Text,
   Tag,
 } from '@chakra-ui/react'
-import { Log } from 'db'
-import { isDefined } from 'utils'
+import { Log } from '@typebot.io/prisma'
+import { isDefined } from '@typebot.io/lib'
 import { useLogs } from '../hooks/useLogs'
 
 type Props = {

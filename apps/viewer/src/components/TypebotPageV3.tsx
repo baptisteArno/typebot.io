@@ -1,5 +1,5 @@
 import { Standard } from '@typebot.io/react'
-import { BackgroundType, Typebot } from 'models'
+import { BackgroundType, Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
 

@@ -1,4 +1,4 @@
-import { Plan, PrismaClient } from 'db'
+import { Plan, PrismaClient } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { promptAndSetEnvironment } from './utils'
 

@@ -1,9 +1,9 @@
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { trpc } from '@/lib/trpc'
 import { Flex } from '@chakra-ui/react'
-import { Workspace } from 'models'
+import { Workspace } from '@typebot.io/schemas'
 import { useMemo } from 'react'
-import { getChatsLimit, getStorageLimit } from 'utils/pricing'
+import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
 
 const ALERT_CHATS_PERCENT_THRESHOLD = 80
 const ALERT_STORAGE_PERCENT_THRESHOLD = 80

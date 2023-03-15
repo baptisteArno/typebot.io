@@ -10,7 +10,7 @@ import {
   StackProps,
   Text,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot()

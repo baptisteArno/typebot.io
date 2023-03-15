@@ -36,7 +36,7 @@ import {
   LogicBlockType,
   defaultWaitOptions,
   defaultScriptOptions,
-} from 'models'
+} from '@typebot.io/schemas'
 import {
   stubLength,
   blockWidth,
@@ -54,7 +54,7 @@ import {
   isChoiceInput,
   isConditionBlock,
   isDefined,
-} from 'utils'
+} from '@typebot.io/lib'
 
 const roundSize = 20
 

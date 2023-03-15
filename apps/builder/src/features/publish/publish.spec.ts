@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions, InputBlockType } from 'models'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 
 test('should not be able to submit taken url ID', async ({ page }) => {
   const takenTypebotId = createId()

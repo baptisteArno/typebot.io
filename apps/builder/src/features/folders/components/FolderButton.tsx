@@ -1,4 +1,4 @@
-import { DashboardFolder } from 'db'
+import { DashboardFolder } from '@typebot.io/prisma'
 import {
   Button,
   Editable,

@@ -19,7 +19,7 @@ import { useTypebot } from '../providers/TypebotProvider'
 import { useUser } from '@/features/account'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { isNotDefined } from 'utils'
+import { isNotDefined } from '@typebot.io/lib'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish'
 

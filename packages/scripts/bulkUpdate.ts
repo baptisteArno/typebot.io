@@ -1,7 +1,7 @@
-import { PrismaClient } from 'db'
+import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { Result } from 'models'
-import { isDefined, isNotDefined } from 'utils'
+import { Result } from '@typebot.io/schemas'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
 
 let progress = 0
 

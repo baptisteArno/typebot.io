@@ -5,7 +5,7 @@ import {
   IntegrationBlockType,
   LogicBlockType,
   BlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import React from 'react'
 import { TextBubbleIcon } from '@/features/blocks/bubbles/textBubble'
 import { ImageBubbleIcon } from '@/features/blocks/bubbles/image'

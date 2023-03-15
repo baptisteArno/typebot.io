@@ -1,7 +1,7 @@
-import { Typebot, WebhookBlock } from 'models'
+import { Typebot, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils/api'
-import { byId } from 'utils'
+import { methodNotAllowed } from '@typebot.io/lib/api'
+import { byId } from '@typebot.io/lib'
 import { authenticateUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
 

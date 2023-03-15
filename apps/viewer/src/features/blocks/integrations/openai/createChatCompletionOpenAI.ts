@@ -8,14 +8,14 @@ import {
   Variable,
   VariableWithUnknowValue,
   VariableWithValue,
-} from 'models'
+} from '@typebot.io/schemas'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
-} from 'models/features/blocks/integrations/openai'
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai'
-import { isDefined, byId, isNotEmpty } from 'utils'
-import { decrypt } from 'utils/api/encryption'
+import { isDefined, byId, isNotEmpty } from '@typebot.io/lib'
+import { decrypt } from '@typebot.io/lib/api/encryption'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,

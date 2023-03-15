@@ -1,7 +1,11 @@
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/api'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -273,6 +273,12 @@
                               "properties": {
                                 "total": {
                                   "type": "number"
+                                },
+                                "isFirstOfKind": {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
                                 }
                               },
                               "required": [

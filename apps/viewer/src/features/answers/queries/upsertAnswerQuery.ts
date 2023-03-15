@@ -1,5 +1,5 @@
-import { Answer, AnswerInput } from 'models'
-import { sendRequest } from 'utils'
+import { Answer, AnswerInput } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 
 export const upsertAnswerQuery = async (
   answer: AnswerInput & { resultId: string } & { uploadedFiles?: boolean }

@@ -1,4 +1,4 @@
-import { PrismaClient, WorkspaceInvitation } from 'db'
+import { PrismaClient, WorkspaceInvitation } from '@typebot.io/prisma'
 
 export const joinWorkspaces = async (
   p: PrismaClient,

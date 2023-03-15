@@ -2,7 +2,7 @@ import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
 import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { Variable, ResponseVariableMapping } from 'models'
+import { Variable, ResponseVariableMapping } from '@typebot.io/schemas'
 
 export const DataVariableInputs = ({
   item,

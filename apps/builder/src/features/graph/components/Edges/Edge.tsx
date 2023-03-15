@@ -1,6 +1,6 @@
 import { Coordinates, useGraph, useGroupsCoordinates } from '../../providers'
 import React, { useMemo, useState } from 'react'
-import { Edge as EdgeProps } from 'models'
+import { Edge as EdgeProps } from '@typebot.io/schemas'
 import { Portal, useColorMode, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
 import { EdgeMenu } from './EdgeMenu'

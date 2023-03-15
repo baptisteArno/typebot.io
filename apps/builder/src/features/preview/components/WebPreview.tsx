@@ -4,7 +4,7 @@ import { useGraph } from '@/features/graph'
 import { useToast } from '@/hooks/useToast'
 import { UseToastOptions } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/react'
-import { ChatReply } from 'models'
+import { ChatReply } from '@typebot.io/schemas'
 
 export const WebPreview = () => {
   const { typebot } = useTypebot()

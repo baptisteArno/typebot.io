@@ -1,5 +1,5 @@
 import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
-import { AudioBubbleContent } from 'models'
+import { AudioBubbleContent } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
 import { useState } from 'react'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'

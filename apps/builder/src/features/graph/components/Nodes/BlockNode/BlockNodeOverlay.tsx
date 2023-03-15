@@ -1,6 +1,6 @@
 import { BlockIcon } from '@/features/editor'
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
-import { StartBlock, Block, BlockIndices } from 'models'
+import { StartBlock, Block, BlockIndices } from '@typebot.io/schemas'
 import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
 
 export const BlockNodeOverlay = ({

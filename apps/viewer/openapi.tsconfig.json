@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@typebot.io/tsconfig/nextjs.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": ".",

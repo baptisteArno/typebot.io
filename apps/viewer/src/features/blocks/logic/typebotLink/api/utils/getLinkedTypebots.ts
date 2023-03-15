@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { PublicTypebot, Typebot } from 'models'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 
 type Props = {
   isPreview: boolean

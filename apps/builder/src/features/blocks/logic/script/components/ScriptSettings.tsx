@@ -2,7 +2,7 @@ import { Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
-import { ScriptOptions } from 'models'
+import { ScriptOptions } from '@typebot.io/schemas'
 
 type Props = {
   options: ScriptOptions

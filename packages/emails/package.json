@@ -1,7 +1,8 @@
 {
-  "name": "emails",
+  "name": "@typebot.io/emails",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
@@ -23,10 +24,10 @@
     "nodemailer": "6.9.1",
     "react": "18.2.0",
     "tsx": "3.12.5",
-    "utils": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "eslint": "8.36.0",
     "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*"
   },
   "peerDependencies": {
     "@faire/mjml-react": "2.1.4",

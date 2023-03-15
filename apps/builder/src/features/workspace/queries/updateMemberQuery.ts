@@ -1,5 +1,5 @@
-import { MemberInWorkspace } from 'db'
-import { sendRequest } from 'utils'
+import { MemberInWorkspace } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updateMemberQuery = (
   workspaceId: string,

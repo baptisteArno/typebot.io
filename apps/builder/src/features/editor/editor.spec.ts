@@ -1,16 +1,16 @@
 import test, { expect } from '@playwright/test'
-import { defaultTextInputOptions, InputBlockType } from 'models'
+import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import {
   createTypebots,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 import {
   waitForSuccessfulDeleteRequest,
   waitForSuccessfulPostRequest,
   waitForSuccessfulPutRequest,
-} from 'utils/playwright/testHelpers'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+} from '@typebot.io/lib/playwright/testHelpers'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.configure({ mode: 'parallel' })

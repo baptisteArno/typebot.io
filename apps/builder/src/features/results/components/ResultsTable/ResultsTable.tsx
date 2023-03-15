@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from '@/components/icons'
-import { ResultHeaderCell, ResultsTablePreferences } from 'models'
+import { ResultHeaderCell, ResultsTablePreferences } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {

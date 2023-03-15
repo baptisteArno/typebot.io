@@ -1,5 +1,5 @@
-import { byId } from 'utils'
-import { Group, SessionState } from 'models'
+import { byId } from '@typebot.io/lib'
+import { Group, SessionState } from '@typebot.io/schemas'
 
 export type NextGroup = {
   group: Group

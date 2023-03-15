@@ -18,7 +18,7 @@ import {
 import { TRPCError } from '@trpc/server'
 import { unparse } from 'papaparse'
 import { useState } from 'react'
-import { parseResultHeader } from 'utils/results'
+import { parseResultHeader } from '@typebot.io/lib/results'
 import { useResults } from '../../ResultsProvider'
 import { convertResultsToTableData, parseAccessor } from '../../utils'
 import { parseColumnOrder } from '../../utils/parseColumnsOrder'

@@ -13,7 +13,7 @@ import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useToast } from '../../../hooks/useToast'
-import { Credentials } from 'models'
+import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
 
 type Props = Omit<MenuButtonProps, 'type'> & {

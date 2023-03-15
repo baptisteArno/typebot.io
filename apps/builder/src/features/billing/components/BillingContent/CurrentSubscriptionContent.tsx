@@ -1,11 +1,11 @@
 import { Text, HStack, Link, Spinner, Stack, Heading } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import React from 'react'
 import { PlanTag } from '../PlanTag'
 import { BillingPortalButton } from './BillingPortalButton'
 import { trpc } from '@/lib/trpc'
-import { Workspace } from 'models'
+import { Workspace } from '@typebot.io/schemas'
 
 type CurrentSubscriptionContentProps = {
   workspace: Pick<Workspace, 'id' | 'plan' | 'stripeId'>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { GoogleSheetsAction } from 'models'
+import { GoogleSheetsAction } from '@typebot.io/schemas'
 
 type Props = {
   action?: GoogleSheetsAction

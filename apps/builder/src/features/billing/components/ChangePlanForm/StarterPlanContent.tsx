@@ -12,9 +12,9 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
 import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import { useEffect, useState } from 'react'
-import { parseNumberWithCommas } from 'utils'
+import { parseNumberWithCommas } from '@typebot.io/lib'
 import {
   chatsLimit,
   computePrice,
@@ -22,7 +22,7 @@ import {
   getChatsLimit,
   getStorageLimit,
   storageLimit,
-} from 'utils/pricing'
+} from '@typebot.io/lib/pricing'
 import { FeaturesList } from './components/FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 

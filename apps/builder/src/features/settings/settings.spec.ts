@@ -1,9 +1,9 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions } from 'models'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
-import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
+import { defaultTextInputOptions } from '@typebot.io/schemas'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {

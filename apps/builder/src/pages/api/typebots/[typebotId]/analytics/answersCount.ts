@@ -1,7 +1,7 @@
-import { PublicTypebot } from 'models'
+import { PublicTypebot } from '@typebot.io/schemas'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notAuthenticated } from 'utils/api'
+import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { canReadTypebots } from '@/utils/api/dbRules'
 

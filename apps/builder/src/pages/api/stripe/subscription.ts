@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import {
   badRequest,
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 import Stripe from 'stripe'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
-import { Plan, WorkspaceRole } from 'db'
+import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 
 // TODO: Delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

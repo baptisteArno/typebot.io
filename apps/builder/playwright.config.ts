@@ -1,6 +1,6 @@
 import { PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
-import { playwrightBaseConfig } from 'utils/playwright/baseConfig'
+import { playwrightBaseConfig } from '@typebot.io/lib/playwright/baseConfig'
 
 const config: PlaywrightTestConfig = {
   ...playwrightBaseConfig,

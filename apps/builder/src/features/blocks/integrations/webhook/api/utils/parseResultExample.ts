@@ -7,9 +7,9 @@ import {
   Block,
   Typebot,
   TypebotLinkBlock,
-} from 'models'
-import { isInputBlock, byId, isNotDefined } from 'utils'
-import { parseResultHeader } from 'utils/results'
+} from '@typebot.io/schemas'
+import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
+import { parseResultHeader } from '@typebot.io/lib/results'
 
 export const parseResultExample =
   (

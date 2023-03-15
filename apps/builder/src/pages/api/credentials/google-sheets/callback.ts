@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Prisma } from 'db'
+import { Prisma } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
-import { badRequest, encrypt, notAuthenticated } from 'utils/api'
+import { badRequest, encrypt, notAuthenticated } from '@typebot.io/lib/api'
 import { oauth2Client } from '@/lib/googleSheets'
 import { getAuthenticatedUser } from '@/features/auth/api'
 

@@ -2,11 +2,11 @@ import test, { expect, Page } from '@playwright/test'
 import {
   createWebhook,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
-import { HttpMethod } from 'models'
+} from '@typebot.io/lib/playwright/databaseActions'
+import { HttpMethod } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { apiToken } from 'utils/playwright/databaseSetup'
+import { apiToken } from '@typebot.io/lib/playwright/databaseSetup'
 
 test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {

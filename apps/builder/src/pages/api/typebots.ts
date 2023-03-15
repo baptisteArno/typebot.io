@@ -1,4 +1,4 @@
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
@@ -6,12 +6,12 @@ import {
   methodNotAllowed,
   notAuthenticated,
   notFound,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import { parseNewTypebot } from '@/features/dashboard'
 import { NewTypebotProps } from '@/features/dashboard/api/parseNewTypebot'
-import { omit } from 'utils'
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { omit } from '@typebot.io/lib'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

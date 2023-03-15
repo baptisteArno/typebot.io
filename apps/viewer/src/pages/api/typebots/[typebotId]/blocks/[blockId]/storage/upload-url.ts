@@ -1,14 +1,18 @@
 import prisma from '@/lib/prisma'
-import { InputBlockType, PublicTypebot } from 'models'
+import { InputBlockType, PublicTypebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, generatePresignedUrl, methodNotAllowed } from 'utils/api'
-import { byId, env, isDefined } from 'utils'
-import { getStorageLimit } from 'utils/pricing'
+import {
+  badRequest,
+  generatePresignedUrl,
+  methodNotAllowed,
+} from '@typebot.io/lib/api'
+import { byId, env, isDefined } from '@typebot.io/lib'
+import { getStorageLimit } from '@typebot.io/lib/pricing'
 import {
   sendAlmostReachedStorageLimitEmail,
   sendReachedStorageLimitEmail,
-} from 'emails'
-import { WorkspaceRole } from 'db'
+} from '@typebot.io/emails'
+import { WorkspaceRole } from '@typebot.io/prisma'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 

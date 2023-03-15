@@ -1,5 +1,5 @@
-import { Typebot } from 'models'
-import { sendRequest } from 'utils'
+import { Typebot } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updateTypebotQuery = async (id: string, typebot: Typebot) =>
   sendRequest<{ typebot: Typebot }>({

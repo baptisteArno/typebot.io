@@ -1,5 +1,5 @@
-import { Plan, Workspace } from 'db'
-import { isDefined, isNotDefined } from 'utils'
+import { Plan, Workspace } from '@typebot.io/prisma'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
 
 export const planToReadable = (plan?: Plan) => {
   if (!plan) return

@@ -1,4 +1,4 @@
-import { ResultHeaderCell } from 'models'
+import { ResultHeaderCell } from '@typebot.io/schemas'
 
 export const parseColumnOrder = (
   existingOrder: string[] | undefined,

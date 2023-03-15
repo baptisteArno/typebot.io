@@ -2,7 +2,7 @@ import { Seo } from '@/components/Seo'
 import { TypebotHeader, useTypebot } from '@/features/editor'
 import { Flex } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/react'
-import { getViewerUrl } from 'utils'
+import { getViewerUrl } from '@typebot.io/lib'
 import { SettingsSideMenu } from './SettingsSideMenu'
 
 export const SettingsPage = () => {

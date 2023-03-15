@@ -10,12 +10,12 @@ import {
   WebhookResponse,
   WebhookBlock,
   HttpMethod,
-} from 'models'
+} from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import { byId, omit } from 'utils'
-import { parseAnswers } from 'utils/results'
-import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
+import { byId, omit } from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results'
+import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'
 import prisma from '@/lib/prisma'

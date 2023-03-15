@@ -10,7 +10,7 @@ import {
   Stack,
   Tag,
 } from '@chakra-ui/react'
-import { GoogleAnalyticsOptions } from 'models'
+import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {

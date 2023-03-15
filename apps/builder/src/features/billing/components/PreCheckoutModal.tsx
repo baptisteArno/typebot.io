@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { taxIdTypes } from '../taxIdTypes'
 
 export type PreCheckoutModalProps = {

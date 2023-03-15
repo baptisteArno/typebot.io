@@ -15,7 +15,7 @@ import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseInitBubbleCode } from '../../../snippetParsers'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
 import { isCloudProdInstance } from '@/utils/helpers'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {
   publicId: string

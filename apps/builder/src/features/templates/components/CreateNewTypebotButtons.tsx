@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'

@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
+import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 
 const cors = initMiddleware(Cors())
 

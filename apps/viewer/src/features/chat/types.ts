@@ -1,4 +1,4 @@
-import { ChatReply, SessionState } from 'models'
+import { ChatReply, SessionState } from '@typebot.io/schemas'
 
 export type EdgeId = string
 

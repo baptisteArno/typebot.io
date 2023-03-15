@@ -8,14 +8,14 @@ import {
   InputBlockType,
   RuntimeOptions,
   SessionState,
-} from 'models'
+} from '@typebot.io/schemas'
 import {
   isBubbleBlock,
   isDefined,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
-} from 'utils'
+} from '@typebot.io/lib'
 import { executeLogic } from './executeLogic'
 import { getNextGroup } from './getNextGroup'
 import { executeIntegration } from './executeIntegration'

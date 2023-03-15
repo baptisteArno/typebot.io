@@ -1,5 +1,5 @@
-import { Invitation } from 'db'
-import { sendRequest } from 'utils'
+import { Invitation } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updateInvitationQuery = (
   typebotId: string,

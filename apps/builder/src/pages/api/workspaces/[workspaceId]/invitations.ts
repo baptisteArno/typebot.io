@@ -1,11 +1,15 @@
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { forbidden, methodNotAllowed, notAuthenticated } from 'utils/api'
+import {
+  forbidden,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
-import { sendWorkspaceMemberInvitationEmail } from 'emails'
-import { env } from 'utils'
-import { isSeatsLimitReached } from 'utils/pricing'
+import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
+import { env } from '@typebot.io/lib'
+import { isSeatsLimitReached } from '@typebot.io/lib/pricing'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

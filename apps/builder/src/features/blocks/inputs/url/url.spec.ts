@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultUrlInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultUrlInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Url input block', () => {

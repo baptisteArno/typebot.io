@@ -1,7 +1,7 @@
 import { fetcher } from '@/utils/helpers'
-import { Invitation } from 'db'
+import { Invitation } from '@typebot.io/prisma'
 import useSWR from 'swr'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 
 export const useInvitations = ({
   typebotId,

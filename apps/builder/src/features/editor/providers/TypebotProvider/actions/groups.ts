@@ -1,6 +1,11 @@
 import { createId } from '@paralleldrive/cuid2'
 import { produce } from 'immer'
-import { Group, DraggableBlock, DraggableBlockType, BlockIndices } from 'models'
+import {
+  Group,
+  DraggableBlock,
+  DraggableBlockType,
+  BlockIndices,
+} from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import {
   deleteGroupDraft,
@@ -9,7 +14,7 @@ import {
   WebhookCallBacks,
 } from './blocks'
 import { Coordinates } from '@/features/graph'
-import { parseGroupTitle } from 'utils'
+import { parseGroupTitle } from '@typebot.io/lib'
 
 export type GroupsActions = {
   createGroup: (

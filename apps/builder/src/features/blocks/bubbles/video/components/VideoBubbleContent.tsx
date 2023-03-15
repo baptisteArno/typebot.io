@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
-import { VideoBubbleBlock, VideoBubbleContentType } from 'models'
+import { VideoBubbleBlock, VideoBubbleContentType } from '@typebot.io/schemas'
 
 export const VideoBubbleContent = ({ block }: { block: VideoBubbleBlock }) => {
   if (!block.content?.url || !block.content.type)

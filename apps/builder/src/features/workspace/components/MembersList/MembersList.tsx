@@ -6,9 +6,9 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
 import React from 'react'
-import { getSeatsLimit, isSeatsLimitReached } from 'utils/pricing'
+import { getSeatsLimit, isSeatsLimitReached } from '@typebot.io/lib/pricing'
 import { AddMemberForm } from './AddMemberForm'
 import { MemberItem } from './MemberItem'
 import { useUser } from '@/features/account'
@@ -19,7 +19,7 @@ import { updateMemberQuery } from '../../queries/updateMemberQuery'
 import { deleteInvitationQuery } from '../../queries/deleteInvitationQuery'
 import { updateInvitationQuery } from '../../queries/updateInvitationQuery'
 import { Member } from '../../types'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 export const MembersList = () => {
   const { user } = useUser()

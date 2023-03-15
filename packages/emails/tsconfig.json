@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/react-library.json",
+  "extends": "@typebot.io/tsconfig/react-library.json",
   "include": ["src/**/*"],
   "exclude": ["dist", "node_modules"]
 }

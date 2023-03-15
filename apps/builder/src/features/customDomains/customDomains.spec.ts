@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { InputBlockType, defaultTextInputOptions } from 'models'
+import { InputBlockType, defaultTextInputOptions } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { starterWorkspaceId } from 'utils/playwright/databaseSetup'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { starterWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 test('should be able to connect custom domain', async ({ page }) => {
   const typebotId = createId()

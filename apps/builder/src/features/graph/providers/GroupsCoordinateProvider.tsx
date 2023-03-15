@@ -1,4 +1,4 @@
-import { Group } from 'models'
+import { Group } from '@typebot.io/schemas'
 import {
   ReactNode,
   useState,

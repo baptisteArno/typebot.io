@@ -1,4 +1,4 @@
-import { eventSchema } from 'models/features/telemetry'
+import { eventSchema } from '@typebot.io/schemas/features/telemetry'
 import { z } from 'zod'
 import { PostHog } from 'posthog-node'
 import { TRPCError } from '@trpc/server'

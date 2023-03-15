@@ -2,7 +2,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { ComparisonOperators, RowsFilterComparison } from 'models'
+import { ComparisonOperators, RowsFilterComparison } from '@typebot.io/schemas'
 import React from 'react'
 
 export const RowsFilterComparisonItem = ({

@@ -5,7 +5,7 @@ import {
   generatePresignedUrl,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 
 const handler = async (
   req: NextApiRequest,

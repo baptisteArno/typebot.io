@@ -7,11 +7,11 @@ import {
   Block,
   LogicBlockType,
   InputBlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
 import { cleanUpEdgeDraft } from './edges'
-import { byId, blockHasItems } from 'utils'
+import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
 import { WritableDraft } from 'immer/dist/types/types-external'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { ScriptOptions } from 'models'
+import { ScriptOptions } from '@typebot.io/schemas'
 
 type Props = ScriptOptions
 

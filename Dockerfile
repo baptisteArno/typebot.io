@@ -32,14 +32,14 @@ RUN apt-get -qy update \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY ./packages/db ./packages/db
+COPY ./packages/prisma ./packages/prisma
 COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.production
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 
-COPY env.sh ${SCOPE}-entrypoint.sh ./
+COPY scripts/env.sh scripts/${SCOPE}-entrypoint.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh \
     && chmod +x ./env.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh

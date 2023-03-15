@@ -1,9 +1,9 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { VideoBubbleContent, VideoBubbleContentType } from 'models'
+import { VideoBubbleContent, VideoBubbleContentType } from '@typebot.io/schemas'
 import urlParser from 'js-video-url-parser/lib/base'
 import 'js-video-url-parser/lib/provider/vimeo'
 import 'js-video-url-parser/lib/provider/youtube'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { TextInput } from '@/components/inputs'
 
 type Props = {

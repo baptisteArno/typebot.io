@@ -1,7 +1,7 @@
 import { ExecuteLogicResponse } from '@/features/chat'
 import { parseVariables } from '@/features/variables'
-import { RedirectBlock, SessionState } from 'models'
-import { sanitizeUrl } from 'utils'
+import { RedirectBlock, SessionState } from '@typebot.io/schemas'
+import { sanitizeUrl } from '@typebot.io/lib'
 
 export const executeRedirect = (
   { typebot: { variables } }: SessionState,

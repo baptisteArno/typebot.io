@@ -1,5 +1,5 @@
-import { User } from 'db'
-import { sendRequest } from 'utils'
+import { User } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updateUserQuery = async (id: string, user: User) =>
   sendRequest({

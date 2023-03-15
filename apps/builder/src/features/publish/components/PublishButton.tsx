@@ -21,9 +21,9 @@ import {
 } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
 import { useWorkspace } from '@/features/workspace'
-import { InputBlockType } from 'models'
+import { InputBlockType } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
-import { isNotDefined } from 'utils'
+import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal, isFreePlan, LimitReached } from '@/features/billing'
 import { timeSince } from '@/utils/helpers'
 

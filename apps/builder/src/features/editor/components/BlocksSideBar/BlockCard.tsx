@@ -5,12 +5,12 @@ import {
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import { useBlockDnd } from '@/features/graph'
 import React, { useEffect, useState } from 'react'
 import { BlockIcon } from './BlockIcon'
 import { isFreePlan, LockTag } from '@/features/billing'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import { useWorkspace } from '@/features/workspace'
 import { BlockLabel } from './BlockLabel'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Tag, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { byId, isDefined, parseGroupTitle } from 'utils'
-import { JumpBlock } from 'models/features/blocks/logic/jump'
+import { byId, isDefined, parseGroupTitle } from '@typebot.io/lib'
+import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
 
 type Props = {
   options: JumpBlock['options']

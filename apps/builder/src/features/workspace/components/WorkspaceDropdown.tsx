@@ -16,7 +16,7 @@ import {
   MenuItem,
   Text,
 } from '@chakra-ui/react'
-import { Workspace } from 'models'
+import { Workspace } from '@typebot.io/schemas'
 
 type Props = {
   currentWorkspace?: Workspace

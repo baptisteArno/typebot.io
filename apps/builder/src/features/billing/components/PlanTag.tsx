@@ -1,5 +1,5 @@
 import { Tag, TagProps, ThemeTypings } from '@chakra-ui/react'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 
 export const planColorSchemes: Record<Plan, ThemeTypings['colorSchemes']> = {
   [Plan.LIFETIME]: 'purple',

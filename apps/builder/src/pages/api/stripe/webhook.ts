@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils/api'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 import Stripe from 'stripe'
 import Cors from 'micro-cors'
 import { buffer } from 'micro'
 import prisma from '@/lib/prisma'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')

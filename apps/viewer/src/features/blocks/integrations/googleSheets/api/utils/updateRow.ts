@@ -1,4 +1,8 @@
-import { SessionState, GoogleSheetsUpdateRowOptions, ReplyLog } from 'models'
+import {
+  SessionState,
+  GoogleSheetsUpdateRowOptions,
+  ReplyLog,
+} from '@typebot.io/schemas'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc, parseCellValues } from './helpers'
 import { TRPCError } from '@trpc/server'

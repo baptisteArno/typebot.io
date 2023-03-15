@@ -1,5 +1,5 @@
 import { Parser } from 'htmlparser2'
-import { isNotEmpty } from 'utils'
+import { isNotEmpty } from '@typebot.io/lib'
 
 export const parseHtmlStringToPlainText = (html: string): string => {
   let plainText = ''

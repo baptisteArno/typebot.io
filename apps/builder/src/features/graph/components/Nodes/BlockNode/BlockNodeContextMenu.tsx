@@ -1,7 +1,7 @@
 import { MenuList, MenuItem } from '@chakra-ui/react'
 import { CopyIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
-import { BlockIndices } from 'models'
+import { BlockIndices } from '@typebot.io/schemas'
 
 type Props = { indices: BlockIndices }
 export const BlockNodeContextMenu = ({ indices }: Props) => {

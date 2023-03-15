@@ -20,8 +20,8 @@ import {
   Wrap,
   Text,
 } from '@chakra-ui/react'
-import { Plan } from 'db'
-import { isDefined, getViewerUrl, isNotDefined, env } from 'utils'
+import { Plan } from '@typebot.io/prisma'
+import { isDefined, getViewerUrl, isNotDefined, env } from '@typebot.io/lib'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
 import { parseDefaultPublicId } from '../utils'
 import { EditableUrl } from './EditableUrl'

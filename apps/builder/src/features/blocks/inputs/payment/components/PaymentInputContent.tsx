@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { PaymentInputBlock } from 'models'
+import { PaymentInputBlock } from '@typebot.io/schemas'
 
 type Props = {
   block: PaymentInputBlock

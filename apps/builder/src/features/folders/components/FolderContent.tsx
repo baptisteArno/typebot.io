@@ -1,4 +1,4 @@
-import { DashboardFolder, WorkspaceRole } from 'db'
+import { DashboardFolder, WorkspaceRole } from '@typebot.io/prisma'
 import {
   Flex,
   Heading,

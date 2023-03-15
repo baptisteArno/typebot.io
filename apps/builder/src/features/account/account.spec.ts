@@ -1,6 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import { userId } from 'utils/playwright/databaseSetup'
+import { userId } from '@typebot.io/lib/playwright/databaseSetup'
 
 test.describe.configure({ mode: 'parallel' })
 

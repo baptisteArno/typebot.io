@@ -1,5 +1,5 @@
 import { useEventListener, Stack, Portal } from '@chakra-ui/react'
-import { DraggableBlock, DraggableBlockType, Block } from 'models'
+import { DraggableBlock, DraggableBlockType, Block } from '@typebot.io/schemas'
 import {
   computeNearestPlaceholderIndex,
   useBlockDnd,
@@ -11,7 +11,7 @@ import { useTypebot } from '@/features/editor'
 import { BlockNode } from './BlockNode'
 import { BlockNodeOverlay } from './BlockNodeOverlay'
 import { PlaceholderNode } from '../PlaceholderNode'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   groupId: string

@@ -1,4 +1,4 @@
-import { PrismaClient } from 'db'
+import { PrismaClient } from '@typebot.io/prisma'
 import { writeFileSync } from 'fs'
 import {
   Block,
@@ -11,8 +11,8 @@ import {
   publicTypebotSchema,
   Theme,
   Typebot,
-} from 'models'
-import { isDefined, isNotDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { promptAndSetEnvironment } from './utils'
 import { detailedDiff } from 'deep-object-diff'
 

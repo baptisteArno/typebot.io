@@ -1,6 +1,6 @@
 import { dequal } from 'dequal'
 import { useCallback, useRef, useState } from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 export interface Actions<T extends { updatedAt: Date }> {
   set: (newPresent: T | ((current: T) => T) | undefined) => void

@@ -1,5 +1,5 @@
 import { Box, Text, Image } from '@chakra-ui/react'
-import { ImageBubbleBlock } from 'models'
+import { ImageBubbleBlock } from '@typebot.io/schemas'
 
 export const ImageBubbleContent = ({ block }: { block: ImageBubbleBlock }) => {
   const containsVariables =

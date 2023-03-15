@@ -6,7 +6,7 @@ import {
   Theme,
   Typebot,
   Webhook,
-} from 'models'
+} from '@typebot.io/schemas'
 import { Router, useRouter } from 'next/router'
 import {
   createContext,
@@ -17,7 +17,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined, omit } from 'utils'
+import { isDefined, omit } from '@typebot.io/lib'
 import { edgesAction, EdgesActions } from './actions/edges'
 import { itemsAction, ItemsActions } from './actions/items'
 import { GroupsActions, groupsActions } from './actions/groups'

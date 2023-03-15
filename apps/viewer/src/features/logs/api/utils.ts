@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { isNotDefined } from 'utils'
+import { isNotDefined } from '@typebot.io/lib'
 
 export const saveLog = (
   status: 'error' | 'success',

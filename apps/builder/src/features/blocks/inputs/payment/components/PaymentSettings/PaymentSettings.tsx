@@ -11,7 +11,7 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { PaymentInputOptions, PaymentProvider } from 'models'
+import { PaymentInputOptions, PaymentProvider } from '@typebot.io/schemas'
 import React, { ChangeEvent } from 'react'
 import { currencies } from './currencies'
 import { StripeConfigModal } from './StripeConfigModal'

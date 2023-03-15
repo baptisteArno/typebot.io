@@ -1,7 +1,7 @@
 import { chakra, Text, TextProps } from '@chakra-ui/react'
 import React from 'react'
 import { useTypebot } from '@/features/editor'
-import { byId } from 'utils'
+import { byId } from '@typebot.io/lib'
 
 type Props = {
   variableId: string

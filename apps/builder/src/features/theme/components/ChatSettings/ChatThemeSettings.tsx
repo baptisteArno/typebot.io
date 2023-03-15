@@ -1,5 +1,10 @@
 import { Heading, Stack } from '@chakra-ui/react'
-import { AvatarProps, ChatTheme, ContainerColors, InputColors } from 'models'
+import {
+  AvatarProps,
+  ChatTheme,
+  ContainerColors,
+  InputColors,
+} from '@typebot.io/schemas'
 import React from 'react'
 import { AvatarForm } from './AvatarForm'
 import { ButtonsTheme } from './ButtonsTheme'

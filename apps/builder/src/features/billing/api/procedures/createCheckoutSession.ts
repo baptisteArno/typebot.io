@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from 'db'
+import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { z } from 'zod'
 import { parseSubscriptionItems } from '../utils/parseSubscriptionItems'

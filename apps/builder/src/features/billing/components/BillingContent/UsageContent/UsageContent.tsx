@@ -9,10 +9,10 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import { AlertIcon } from '@/components/icons'
-import { Plan, Workspace } from 'db'
+import { Plan, Workspace } from '@typebot.io/prisma'
 import React from 'react'
-import { parseNumberWithCommas } from 'utils'
-import { getChatsLimit, getStorageLimit } from 'utils/pricing'
+import { parseNumberWithCommas } from '@typebot.io/lib'
+import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
 import { storageToReadable } from './helpers'
 import { trpc } from '@/lib/trpc'
 

@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { ChatReply, SessionState } from 'models'
+import { ChatReply, SessionState } from '@typebot.io/schemas'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 

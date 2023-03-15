@@ -7,7 +7,7 @@ import { parse } from 'papaparse'
 import {
   importTypebotInDatabase,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 
 const typebotId = createId()
 

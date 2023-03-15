@@ -1,7 +1,7 @@
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { archiveResults } from '../archiveResults'
 

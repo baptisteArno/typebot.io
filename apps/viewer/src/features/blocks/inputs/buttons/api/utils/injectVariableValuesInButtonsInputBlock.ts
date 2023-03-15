@@ -4,8 +4,8 @@ import {
   VariableWithValue,
   ChoiceInputBlock,
   ItemType,
-} from 'models'
-import { isDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isDefined } from '@typebot.io/lib'
 
 export const injectVariableValuesInButtonsInputBlock =
   (variables: SessionState['typebot']['variables']) =>

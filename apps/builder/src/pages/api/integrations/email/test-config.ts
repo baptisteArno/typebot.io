@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
 import { getAuthenticatedUser } from '@/features/auth/api'
-import { notAuthenticated } from 'utils/api'
-import { SmtpCredentials } from 'models'
+import { notAuthenticated } from '@typebot.io/lib/api'
+import { SmtpCredentials } from '@typebot.io/schemas'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

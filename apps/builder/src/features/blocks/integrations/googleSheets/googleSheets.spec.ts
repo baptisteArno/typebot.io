@@ -1,5 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 

@@ -11,8 +11,8 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { PublicTypebot } from 'models'
-import { sendRequest } from 'utils'
+import { PublicTypebot } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 import { DontIcon } from 'assets/icons/DontIcon'
 import { DoIcon } from 'assets/icons/DoIcon'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'

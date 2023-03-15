@@ -1,4 +1,4 @@
-import { PrismaClient } from 'db'
+import { PrismaClient } from '@typebot.io/prisma'
 
 declare const global: { prisma: PrismaClient }
 let prisma: PrismaClient

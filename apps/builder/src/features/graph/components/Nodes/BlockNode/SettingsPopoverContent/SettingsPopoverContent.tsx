@@ -17,7 +17,7 @@ import {
   Block,
   BlockOptions,
   BlockWithOptions,
-} from 'models'
+} from '@typebot.io/schemas'
 import { useRef } from 'react'
 import { DateInputSettingsBody } from '@/features/blocks/inputs/date'
 import { EmailInputSettingsBody } from '@/features/blocks/inputs/emailInput'

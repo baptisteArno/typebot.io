@@ -1,5 +1,5 @@
 import { fetcher } from '@/utils/helpers'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { stringify } from 'qs'
 import useSWR from 'swr'
 

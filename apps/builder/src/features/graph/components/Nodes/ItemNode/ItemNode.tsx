@@ -6,14 +6,14 @@ import {
   useDragDistance,
 } from '../../../providers'
 import { useTypebot } from '@/features/editor'
-import { ChoiceInputBlock, Item, ItemIndices } from 'models'
+import { ChoiceInputBlock, Item, ItemIndices } from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
 import { SourceEndpoint } from '../../Endpoints/SourceEndpoint'
 import { ItemNodeContent } from './ItemNodeContent'
 import { ItemNodeContextMenu } from './ItemNodeContextMenu'
 import { ContextMenu } from '@/components/ContextMenu'
 import { setMultipleRefs } from '@/utils/helpers'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   item: Item

@@ -7,7 +7,7 @@ import {
   defaultChatCompletionOptions,
   OpenAIBlock,
   openAITasks,
-} from 'models/features/blocks/integrations/openai'
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAICredentialsModal } from './OpenAICredentialsModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { DropdownList } from '@/components/DropdownList'

@@ -7,8 +7,8 @@ import {
   LogicalOperator,
   SessionState,
   Variable,
-} from 'models'
-import { isNotDefined, isDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isNotDefined, isDefined } from '@typebot.io/lib'
 
 export const executeCondition = (
   { typebot: { variables } }: SessionState,

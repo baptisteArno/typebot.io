@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { Comparison, Variable, ComparisonOperators } from 'models'
+import { Comparison, Variable, ComparisonOperators } from '@typebot.io/schemas'
 import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TextInput } from '@/components/inputs'

@@ -4,8 +4,8 @@ import {
   initMiddleware,
   methodNotAllowed,
   notFound,
-} from 'utils/api'
-import { hasValue, isDefined } from 'utils'
+} from '@typebot.io/lib/api'
+import { hasValue, isDefined } from '@typebot.io/lib'
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet'
 import {
   ComparisonOperators,
@@ -14,7 +14,7 @@ import {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
   LogicalOperator,
-} from 'models'
+} from '@typebot.io/schemas'
 import Cors from 'cors'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'

@@ -12,9 +12,9 @@ import {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsOptions,
   GoogleSheetsUpdateRowOptions,
-} from 'models'
+} from '@typebot.io/schemas'
 import React, { useMemo } from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { SheetsDropdown } from './SheetsDropdown'
 import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'

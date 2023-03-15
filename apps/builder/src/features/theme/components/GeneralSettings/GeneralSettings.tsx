@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { Background, GeneralTheme } from 'models'
+import { Background, GeneralTheme } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { FontSelector } from './FontSelector'

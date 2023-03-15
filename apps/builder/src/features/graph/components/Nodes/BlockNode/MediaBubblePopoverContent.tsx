@@ -13,7 +13,7 @@ import {
   BubbleBlockContent,
   BubbleBlockType,
   TextBubbleBlock,
-} from 'models'
+} from '@typebot.io/schemas'
 import { useRef } from 'react'
 
 type Props = {

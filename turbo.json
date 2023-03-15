@@ -5,16 +5,20 @@
       "outputs": []
     },
     "dev": {
-      "dependsOn": ["^dev", "db#db:generate", "db#db:push"],
+      "dependsOn": [
+        "^dev",
+        "@typebot.io/prisma#db:generate",
+        "@typebot.io/prisma#db:push"
+      ],
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build", "db#db:generate"],
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
     "build:docker": {
-      "dependsOn": ["^build", "db#db:generate"],
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [".next/**", "dist/**", "build/**"],
       "outputMode": "new-only"
     },
@@ -27,7 +31,7 @@
       "cache": false
     },
     "api:generate": {
-      "dependsOn": ["db#db:generate"],
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "db:generate": {
@@ -37,11 +41,11 @@
       "cache": false
     },
     "db:cleanDatabase": {
-      "dependsOn": ["db#db:generate"],
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "telemetry:sendTotalResultsDigest": {
-      "dependsOn": ["db#db:generate"],
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     }
   }

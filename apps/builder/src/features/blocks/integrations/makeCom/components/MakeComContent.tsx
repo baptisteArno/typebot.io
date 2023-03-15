@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { MakeComBlock } from 'models'
-import { byId, isNotDefined } from 'utils'
+import { MakeComBlock } from '@typebot.io/schemas'
+import { byId, isNotDefined } from '@typebot.io/lib'
 
 type Props = {
   block: MakeComBlock

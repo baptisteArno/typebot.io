@@ -3,7 +3,7 @@ import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 import { parseVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { render } from '@faire/mjml-react/utils/render'
-import { DefaultBotNotificationEmail } from 'emails'
+import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import {
   PublicTypebot,
   ResultInSession,
@@ -11,12 +11,12 @@ import {
   SendEmailOptions,
   SessionState,
   SmtpCredentials,
-} from 'models'
+} from '@typebot.io/schemas'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
-import { byId, isEmpty, isNotDefined, omit } from 'utils'
-import { parseAnswers } from 'utils/results'
-import { decrypt } from 'utils/api'
+import { byId, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results'
+import { decrypt } from '@typebot.io/lib/api'
 import { defaultFrom, defaultTransportOptions } from '../constants'
 
 export const executeSendEmailBlock = async (

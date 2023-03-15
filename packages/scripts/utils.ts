@@ -1,6 +1,6 @@
 import { join } from 'path'
 import prompts from 'prompts'
-import { isEmpty } from 'utils'
+import { isEmpty } from '@typebot.io/lib'
 
 export const promptAndSetEnvironment = async (
   skipPrompt?: 'local' | 'staging' | 'production'

@@ -4,7 +4,11 @@ import {
   parseCorrectValueType,
   extractVariablesFromText,
 } from '@/features/variables'
-import { ChatwootBlock, ChatwootOptions, SessionState } from 'models'
+import {
+  ChatwootBlock,
+  ChatwootOptions,
+  SessionState,
+} from '@typebot.io/schemas'
 
 const parseSetUserCode = (user: ChatwootOptions['user']) => `
 window.$chatwoot.setUser("${user?.id ?? ''}", {

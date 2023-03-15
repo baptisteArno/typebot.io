@@ -1,0 +1,25 @@
+{
+  "name": "typebot-js",
+  "version": "2.2.17",
+  "main": "dist/index.js",
+  "unpkg": "dist/index.global.js",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "pnpm jest"
+  },
+  "devDependencies": {
+    "@types/jest": "29.4.0",
+    "tsup": "6.5.0",
+    "eslint": "8.32.0",
+    "eslint-config-custom": "workspace:*",
+    "jest": "29.4.1",
+    "jest-environment-jsdom": "29.4.1",
+    "prettier": "2.8.3",
+    "ts-jest": "29.0.5",
+    "typescript": "4.9.4",
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

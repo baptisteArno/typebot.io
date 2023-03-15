@@ -15,12 +15,12 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { Standard } from '@typebot.io/react'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useState } from 'react'
 import { templates } from '../data'
 import { TemplateProps } from '../types'
 import { useToast } from '@/hooks/useToast'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 type Props = {
   isOpen: boolean

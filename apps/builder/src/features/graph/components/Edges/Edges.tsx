@@ -1,6 +1,6 @@
 import { chakra, useColorMode } from '@chakra-ui/react'
 import { colors } from '@/lib/theme'
-import { Edge as EdgeProps } from 'models'
+import { Edge as EdgeProps } from '@typebot.io/schemas'
 import React from 'react'
 import { DrawingEdge } from './DrawingEdge'
 import { DropOffEdge } from './DropOffEdge'

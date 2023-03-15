@@ -2,7 +2,7 @@ import { IncomingMessage } from 'http'
 import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { isDefined, isNotDefined, omit } from 'utils'
+import { isDefined, isNotDefined, omit } from '@typebot.io/lib'
 import prisma from '../../lib/prisma'
 import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
 

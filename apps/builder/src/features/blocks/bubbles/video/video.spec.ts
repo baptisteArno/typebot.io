@@ -1,11 +1,11 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import {
   BubbleBlockType,
   defaultVideoBubbleContent,
   VideoBubbleContentType,
-} from 'models'
+} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 const videoSrc =

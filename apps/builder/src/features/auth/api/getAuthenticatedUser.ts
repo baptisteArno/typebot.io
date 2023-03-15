@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 import { setUser } from '@sentry/nextjs'
-import { User } from 'db'
+import { User } from '@typebot.io/prisma'
 import { NextApiRequest } from 'next'
 import { getSession } from 'next-auth/react'
 

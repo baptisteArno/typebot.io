@@ -1,4 +1,4 @@
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 export const deleteCollaboratorQuery = (typebotId: string, userId: string) =>
   sendRequest({

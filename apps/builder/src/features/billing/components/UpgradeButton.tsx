@@ -1,7 +1,7 @@
 import { Button, ButtonProps, useDisclosure } from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace'
 import React from 'react'
-import { isNotDefined } from 'utils'
+import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from './ChangePlanModal'
 import { LimitReached } from './ChangePlanModal'
 

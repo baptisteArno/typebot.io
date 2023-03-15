@@ -1,8 +1,11 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultChatwootOptions, IntegrationBlockType } from 'models'
+import {
+  defaultChatwootOptions,
+  IntegrationBlockType,
+} from '@typebot.io/schemas'
 
 const typebotId = createId()
 

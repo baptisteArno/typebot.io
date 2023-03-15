@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { WorkspaceRole } from 'db'
-import { PublicTypebot, Typebot, typebotSchema } from 'models'
-import { omit } from 'utils'
+import { WorkspaceRole } from '@typebot.io/prisma'
+import { PublicTypebot, Typebot, typebotSchema } from '@typebot.io/schemas'
+import { omit } from '@typebot.io/lib'
 import { z } from 'zod'
 
 export const listTypebotsProcedure = authenticatedProcedure

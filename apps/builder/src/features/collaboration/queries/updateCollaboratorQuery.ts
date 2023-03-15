@@ -1,5 +1,5 @@
-import { CollaboratorsOnTypebots } from 'db'
-import { sendRequest } from 'utils'
+import { CollaboratorsOnTypebots } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const updateCollaboratorQuery = (
   typebotId: string,

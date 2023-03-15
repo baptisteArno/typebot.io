@@ -20,9 +20,9 @@ import { useToast } from '@/hooks/useToast'
 import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TextLink } from '@/components/TextLink'
-import { StripeCredentials } from 'models'
+import { StripeCredentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
-import { isNotEmpty } from 'utils'
+import { isNotEmpty } from '@typebot.io/lib'
 
 type Props = {
   isOpen: boolean

@@ -1,4 +1,4 @@
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 
 export const parseSubscriptionItems = (
   plan: Plan,

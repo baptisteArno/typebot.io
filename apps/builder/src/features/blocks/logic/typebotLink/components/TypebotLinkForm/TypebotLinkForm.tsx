@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { TypebotLinkOptions } from 'models'
-import { byId } from 'utils'
+import { TypebotLinkOptions } from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 import { GroupsDropdown } from './GroupsDropdown'
 import { TypebotsDropdown } from './TypebotsDropdown'
 

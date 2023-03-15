@@ -1,8 +1,8 @@
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Workspace, workspaceSchema } from 'models'
+import { Workspace, workspaceSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { parseWorkspaceDefaultPlan } from '../../utils'
 

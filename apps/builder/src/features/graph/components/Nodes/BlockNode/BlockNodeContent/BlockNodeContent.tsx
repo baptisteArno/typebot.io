@@ -7,7 +7,7 @@ import {
   LogicBlockType,
   IntegrationBlockType,
   BlockIndices,
-} from 'models'
+} from '@typebot.io/schemas'
 import { ItemNodesList } from '../../ItemNode'
 import { TextBubbleContent } from '@/features/blocks/bubbles/textBubble'
 import { ImageBubbleContent } from '@/features/blocks/bubbles/image'

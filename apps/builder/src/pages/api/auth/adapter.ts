@@ -1,16 +1,21 @@
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
-import { PrismaClient, Prisma, WorkspaceRole, Session } from 'db'
+import {
+  PrismaClient,
+  Prisma,
+  WorkspaceRole,
+  Session,
+} from '@typebot.io/prisma'
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import { createId } from '@paralleldrive/cuid2'
-import { generateId } from 'utils'
+import { generateId } from '@typebot.io/lib'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace'
 import {
   getNewUserInvitations,
   convertInvitationsToCollaborations,
   joinWorkspaces,
 } from '@/features/auth/api'
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
-import { TelemetryEvent } from 'models/features/telemetry'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
+import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 
 export function CustomAdapter(p: PrismaClient): Adapter {
   return {

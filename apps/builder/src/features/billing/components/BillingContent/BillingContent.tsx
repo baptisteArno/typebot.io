@@ -1,6 +1,6 @@
 import { HStack, Stack, Text } from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import React from 'react'
 import { CurrentSubscriptionContent } from './CurrentSubscriptionContent'
 import { InvoicesList } from './InvoicesList'

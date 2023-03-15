@@ -1,6 +1,6 @@
 import { fetcher } from '@/utils/helpers'
 import useSWR from 'swr'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 import { ApiTokenFromServer } from '../types'
 
 type ServerResponse = {

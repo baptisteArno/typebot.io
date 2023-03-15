@@ -7,7 +7,7 @@ import { validateUrl } from '@/features/blocks/inputs/url/api'
 import { parseVariables, updateVariables } from '@/features/variables'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
-import { Prisma } from 'db'
+import { Prisma } from '@typebot.io/prisma'
 import got from 'got'
 import {
   Block,
@@ -18,8 +18,8 @@ import {
   InputBlockType,
   ResultInSession,
   SessionState,
-} from 'models'
-import { isInputBlock, isNotDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isInputBlock, isNotDefined } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 

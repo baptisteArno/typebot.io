@@ -1,7 +1,7 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { WebhookBlock } from 'models'
-import { byId } from 'utils'
+import { WebhookBlock } from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 
 type Props = {

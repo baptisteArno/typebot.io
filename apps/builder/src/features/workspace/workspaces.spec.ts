@@ -1,13 +1,13 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions, InputBlockType } from 'models'
-import { createTypebots } from 'utils/playwright/databaseActions'
+import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import {
   proWorkspaceId,
   starterWorkspaceId,
-} from 'utils/playwright/databaseSetup'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { mockSessionResponsesToOtherUser } from 'utils/playwright/testHelpers'
+} from '@typebot.io/lib/playwright/databaseSetup'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { mockSessionResponsesToOtherUser } from '@typebot.io/lib/playwright/testHelpers'
 
 const proTypebotId = createId()
 const starterTypebotId = createId()

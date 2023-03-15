@@ -5,11 +5,11 @@ import {
   ComparisonOperators,
   LogicalOperator,
   ReplyLog,
-} from 'models'
+} from '@typebot.io/schemas'
 import { saveErrorLog } from '@/features/logs/api'
 import { getAuthenticatedGoogleDoc } from './helpers'
 import { deepParseVariable, updateVariables } from '@/features/variables'
-import { isNotEmpty, byId, isDefined } from 'utils'
+import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
 import { ExecuteIntegrationResponse } from '@/features/chat'
 import type { GoogleSpreadsheetRow } from 'google-spreadsheet'
 

@@ -1,6 +1,6 @@
-import { PrismaClient } from 'db'
+import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { groupSchema } from 'models'
+import { groupSchema } from '@typebot.io/schemas'
 import { readFileSync, writeFileSync } from 'fs'
 import { exit } from 'process'
 

@@ -3,9 +3,9 @@ import { useTypebot } from '@/features/editor'
 import { isCloudProdInstance } from '@/utils/helpers'
 import { Stack, Text } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { useState } from 'react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import {
   parseInlineScript,

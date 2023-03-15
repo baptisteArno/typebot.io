@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 import { NextPageContext } from 'next'
-import { User } from 'db'
-import { isNotDefined } from 'utils'
+import { User } from '@typebot.io/prisma'
+import { isNotDefined } from '@typebot.io/lib'
 import { sign } from 'jsonwebtoken'
 
 export default function Page() {

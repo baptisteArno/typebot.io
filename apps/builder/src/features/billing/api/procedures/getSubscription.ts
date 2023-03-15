@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { WorkspaceRole } from 'db'
+import { WorkspaceRole } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { z } from 'zod'
-import { subscriptionSchema } from 'models/features/billing/subscription'
+import { subscriptionSchema } from '@typebot.io/schemas/features/billing/subscription'
 
 export const getSubscription = authenticatedProcedure
   .meta({

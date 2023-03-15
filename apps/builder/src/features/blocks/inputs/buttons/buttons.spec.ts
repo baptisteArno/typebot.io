@@ -2,9 +2,13 @@ import test, { expect } from '@playwright/test'
 import {
   createTypebots,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultChoiceInputOptions, InputBlockType, ItemType } from 'models'
+} from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import {
+  defaultChoiceInputOptions,
+  InputBlockType,
+  ItemType,
+} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 

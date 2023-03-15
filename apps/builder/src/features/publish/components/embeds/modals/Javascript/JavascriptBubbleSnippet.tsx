@@ -5,7 +5,7 @@ import { useTypebot } from '@/features/editor'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { BubbleProps } from '@typebot.io/js'
 import { isCloudProdInstance } from '@/utils/helpers'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = Pick<BubbleProps, 'theme' | 'previewMessage'>
 

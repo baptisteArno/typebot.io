@@ -4,11 +4,11 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 import Stripe from 'stripe'
 import { getAuthenticatedUser } from '@/features/auth/api'
 import prisma from '@/lib/prisma'
-import { WorkspaceRole } from 'db'
+import { WorkspaceRole } from '@typebot.io/prisma'
 
 // TODO: Delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

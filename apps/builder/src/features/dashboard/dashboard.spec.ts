@@ -2,7 +2,7 @@ import { createFolders } from '@/test/utils/databaseActions'
 import { deleteButtonInConfirmDialog } from '@/test/utils/selectorUtils'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from 'utils/playwright/databaseActions'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 
 test('folders navigation should work', async ({ page }) => {
   await page.goto('/typebots')

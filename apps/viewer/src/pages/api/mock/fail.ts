@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils/api'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {

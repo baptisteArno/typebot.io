@@ -1,4 +1,4 @@
-import { Invitation, PrismaClient, WorkspaceRole } from 'db'
+import { Invitation, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
 
 export type InvitationWithWorkspaceId = Invitation & {
   typebot: {

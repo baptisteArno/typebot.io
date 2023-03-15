@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { deleteFiles } from '@/utils/api/storage'
-import { Prisma } from 'db'
-import { InputBlockType, Typebot } from 'models'
+import { Prisma } from '@typebot.io/prisma'
+import { InputBlockType, Typebot } from '@typebot.io/schemas'
 
 const batchSize = 100
 

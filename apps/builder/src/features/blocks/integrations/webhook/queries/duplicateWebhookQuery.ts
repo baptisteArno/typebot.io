@@ -1,5 +1,5 @@
-import { Webhook } from 'models'
-import { sendRequest } from 'utils'
+import { Webhook } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 import { createWebhookQuery } from './createWebhookQuery'
 
 type Props = {

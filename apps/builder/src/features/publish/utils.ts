@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
-import { PublicTypebot, Typebot } from 'models'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 import { dequal } from 'dequal'
-import { omit } from 'utils'
+import { omit } from '@typebot.io/lib'
 import { diff } from 'deep-object-diff'
 import { toKebabCase } from '@/utils/helpers'
 

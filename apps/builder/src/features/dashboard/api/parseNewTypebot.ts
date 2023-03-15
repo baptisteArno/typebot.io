@@ -5,7 +5,7 @@ import {
   Group,
   StartBlock,
   Typebot,
-} from 'models'
+} from '@typebot.io/schemas'
 
 export type NewTypebotProps = Omit<
   Typebot,

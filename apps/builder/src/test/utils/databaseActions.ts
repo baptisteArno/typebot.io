@@ -4,9 +4,9 @@ import {
   Prisma,
   PrismaClient,
   Workspace,
-} from 'db'
+} from '@typebot.io/prisma'
 import Stripe from 'stripe'
-import { proWorkspaceId } from 'utils/playwright/databaseSetup'
+import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 

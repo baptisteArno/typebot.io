@@ -5,7 +5,7 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import { useGraph, useGroupsCoordinates } from '../../providers'
-import { Source } from 'models'
+import { Source } from '@typebot.io/schemas'
 import React, {
   useEffect,
   useLayoutEffect,

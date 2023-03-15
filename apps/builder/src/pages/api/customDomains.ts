@@ -1,4 +1,4 @@
-import { CustomDomain } from 'db'
+import { CustomDomain } from '@typebot.io/prisma'
 import { got, HTTPError } from 'got'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -8,7 +8,7 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req)

@@ -1,9 +1,9 @@
 import { Select } from '@/components/inputs/Select'
 import { useTypebot } from '@/features/editor'
 import { Stack } from '@chakra-ui/react'
-import { JumpBlock } from 'models/features/blocks/logic/jump'
+import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
 import React from 'react'
-import { byId, parseGroupTitle } from 'utils'
+import { byId, parseGroupTitle } from '@typebot.io/lib'
 
 type Props = {
   groupId: string

@@ -1,5 +1,10 @@
-import { CollaborationType, Prisma, User, WorkspaceRole } from 'db'
-import { env } from 'utils'
+import {
+  CollaborationType,
+  Prisma,
+  User,
+  WorkspaceRole,
+} from '@typebot.io/prisma'
+import { env } from '@typebot.io/lib'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,

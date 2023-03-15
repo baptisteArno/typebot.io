@@ -1,4 +1,4 @@
-import { BlockIndices, ChoiceInputBlock } from 'models'
+import { BlockIndices, ChoiceInputBlock } from '@typebot.io/schemas'
 import React from 'react'
 import { ItemNodesList } from '@/features/graph/components/Nodes/ItemNode'
 import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'

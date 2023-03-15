@@ -1,5 +1,5 @@
 import React from 'react'
-import { AvatarProps } from 'models'
+import { AvatarProps } from '@typebot.io/schemas'
 import {
   Heading,
   HStack,

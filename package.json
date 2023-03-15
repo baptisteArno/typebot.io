@@ -3,10 +3,6 @@
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
   "scripts": {
     "prepare": "husky install",
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && sleep 5",

@@ -2,14 +2,14 @@ import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { parse } from 'papaparse'
 import { readFileSync } from 'fs'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import {
   createWorkspaces,
   importTypebotInDatabase,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 
 const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 

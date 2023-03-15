@@ -1,7 +1,7 @@
 import { getTypebot } from '@/features/typebot/api/utils/getTypebot'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
-import { logSchema } from 'models'
+import { logSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 
 export const getResultLogsProcedure = authenticatedProcedure

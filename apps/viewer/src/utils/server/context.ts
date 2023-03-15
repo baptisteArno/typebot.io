@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
-import { User } from 'db'
+import { User } from '@typebot.io/prisma'
 import { NextApiRequest } from 'next'
 
 export async function createContext(opts: trpcNext.CreateNextContextOptions) {

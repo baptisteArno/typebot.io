@@ -5,7 +5,7 @@ import {
   IntegrationBlockType,
   LogicBlockType,
   BlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = { type: BlockType }

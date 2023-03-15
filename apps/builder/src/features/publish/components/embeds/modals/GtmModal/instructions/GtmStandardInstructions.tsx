@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import {

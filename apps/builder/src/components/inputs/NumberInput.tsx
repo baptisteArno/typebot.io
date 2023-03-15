@@ -10,10 +10,10 @@ import {
   FormControl,
   FormLabel,
 } from '@chakra-ui/react'
-import { Variable, VariableString } from 'models'
+import { Variable, VariableString } from '@typebot.io/schemas'
 import { useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Value<HasVariable> = HasVariable extends true | undefined

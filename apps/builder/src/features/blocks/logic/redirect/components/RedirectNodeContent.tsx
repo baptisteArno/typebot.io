@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { RedirectOptions } from 'models'
+import { RedirectOptions } from '@typebot.io/schemas'
 
 type Props = { url: RedirectOptions['url'] }
 

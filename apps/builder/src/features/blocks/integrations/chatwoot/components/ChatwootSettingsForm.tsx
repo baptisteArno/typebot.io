@@ -8,7 +8,7 @@ import {
   AccordionPanel,
   Stack,
 } from '@chakra-ui/react'
-import { ChatwootOptions, chatwootTasks } from 'models'
+import { ChatwootOptions, chatwootTasks } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {

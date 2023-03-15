@@ -9,10 +9,10 @@ import { ParentModalProvider } from '@/features/graph'
 import { useWorkspace } from '@/features/workspace'
 import { useScopedI18n } from '@/locales'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { guessIfUserIsEuropean } from 'utils/pricing'
+import { guessIfUserIsEuropean } from '@typebot.io/lib/pricing'
 import { DashboardHeader } from './DashboardHeader'
 
 export const DashboardPage = () => {

@@ -1,4 +1,4 @@
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 export const deleteMemberQuery = (workspaceId: string, userId: string) =>
   sendRequest({

@@ -1,4 +1,4 @@
-import { omit } from 'utils'
+import { omit } from '@typebot.io/lib'
 
 export const removeTypebotOldProperties = (data: unknown) => {
   if (!data || typeof data !== 'object') return data

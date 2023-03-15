@@ -1,13 +1,13 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { Plan } from 'db'
-import { defaultSettings } from 'models'
+import { Plan } from '@typebot.io/prisma'
+import { defaultSettings } from '@typebot.io/schemas'
 import {
   createWorkspaces,
   importTypebotInDatabase,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 
 test('should not start if chat limit is reached', async ({ page, context }) => {
   await test.step('Free plan', async () => {

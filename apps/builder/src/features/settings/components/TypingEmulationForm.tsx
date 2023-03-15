@@ -1,7 +1,7 @@
 import { Flex, FormLabel, Stack, Switch } from '@chakra-ui/react'
-import { TypingEmulation } from 'models'
+import { TypingEmulation } from '@typebot.io/schemas'
 import React from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { NumberInput } from '@/components/inputs'
 
 type Props = {

@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { ExtractingCell, Variable } from 'models'
+import { ExtractingCell, Variable } from '@typebot.io/schemas'
 import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 

@@ -1,4 +1,4 @@
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 import { ApiTokenFromServer } from '../types'
 
 export const createApiTokenQuery = (

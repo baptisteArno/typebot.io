@@ -6,12 +6,12 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { byId } from 'utils'
-import { WorkspaceRole } from 'db'
+import { byId } from '@typebot.io/lib'
+import { WorkspaceRole } from '@typebot.io/prisma'
 import { useUser } from '../account/UserProvider'
 import { useRouter } from 'next/router'
 import { trpc } from '@/lib/trpc'
-import { Workspace } from 'models'
+import { Workspace } from '@typebot.io/schemas'
 import { useToast } from '@/hooks/useToast'
 import { parseNewName, setWorkspaceIdInLocalStorage } from './utils'
 import { useTypebot } from '../editor'

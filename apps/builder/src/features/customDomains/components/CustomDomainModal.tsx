@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { useEffect, useRef, useState } from 'react'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 import { createCustomDomainQuery } from '../queries/createCustomDomainQuery'
 
 const hostnameRegex =

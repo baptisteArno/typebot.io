@@ -1,4 +1,4 @@
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { ModalProps } from '../../EmbedButton'
 import { useState } from 'react'
 import { EmbedModal } from '../../EmbedModal'

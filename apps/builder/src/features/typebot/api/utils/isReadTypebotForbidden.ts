@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
-import { CollaboratorsOnTypebots, User } from 'db'
-import { Typebot } from 'models'
+import { CollaboratorsOnTypebots, User } from '@typebot.io/prisma'
+import { Typebot } from '@typebot.io/schemas'
 
 export const isReadTypebotForbidden = async (
   typebot: Pick<Typebot, 'workspaceId'> & {

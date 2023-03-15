@@ -6,9 +6,9 @@ import {
   PaymentInputRuntimeOptions,
   SessionState,
   StripeCredentials,
-} from 'models'
+} from '@typebot.io/schemas'
 import Stripe from 'stripe'
-import { decrypt } from 'utils/api/encryption'
+import { decrypt } from '@typebot.io/lib/api/encryption'
 
 export const computePaymentInputRuntimeOptions =
   (state: Pick<SessionState, 'result' | 'typebot'>) =>

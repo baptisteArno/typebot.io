@@ -10,7 +10,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { CollaborationType } from 'db'
+import { CollaborationType } from '@typebot.io/prisma'
 import React from 'react'
 import { convertCollaborationTypeEnumToReadable } from './CollaborationList'
 

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { PopupProps } from '@typebot.io/js'
 import { useState, useEffect } from 'react'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   onUpdateSettings: (windowSettings: Pick<PopupProps, 'autoShowDelay'>) => void

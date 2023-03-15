@@ -7,8 +7,8 @@ import {
   Variable,
   VariableWithUnknowValue,
   VariableWithValue,
-} from 'models'
-import { isDefined, isNotDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
 
 export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)

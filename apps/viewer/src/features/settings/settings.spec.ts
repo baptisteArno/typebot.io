@@ -5,9 +5,12 @@ import {
   defaultTextInputOptions,
   InputBlockType,
   Metadata,
-} from 'models'
-import { createTypebots, updateTypebot } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
+} from '@typebot.io/schemas'
+import {
+  createTypebots,
+  updateTypebot,
+} from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 
 test('Result should be overwritten on page refresh', async ({ page }) => {
   const typebotId = createId()

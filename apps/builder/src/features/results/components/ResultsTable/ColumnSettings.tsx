@@ -19,7 +19,7 @@ import {
   arrayMove,
 } from '@dnd-kit/sortable'
 import { Text } from '@chakra-ui/react'
-import { ResultHeaderCell } from 'models'
+import { ResultHeaderCell } from '@typebot.io/schemas'
 import { HeaderIcon } from '../../utils'
 import { useState } from 'react'
 import { CSS } from '@dnd-kit/utilities'

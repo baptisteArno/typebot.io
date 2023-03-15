@@ -2,7 +2,7 @@ import { TextInput, NumberInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { removeUndefinedFields } from '@/utils/helpers'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { NumberInputOptions, Variable } from 'models'
+import { NumberInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 
 type NumberInputSettingsBodyProps = {

@@ -1,11 +1,11 @@
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from 'db'
-import { workspaceSchema } from 'models'
+import { Plan, WorkspaceRole } from '@typebot.io/prisma'
+import { workspaceSchema } from '@typebot.io/schemas'
 import Stripe from 'stripe'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
 
 export const updateSubscription = authenticatedProcedure

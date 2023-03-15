@@ -1,5 +1,5 @@
 import { createId } from '@paralleldrive/cuid2'
-import { SessionState, Edge } from 'models'
+import { SessionState, Edge } from '@typebot.io/schemas'
 
 export const addEdgeToTypebot = (
   state: SessionState,

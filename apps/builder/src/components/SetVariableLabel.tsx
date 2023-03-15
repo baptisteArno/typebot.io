@@ -1,5 +1,5 @@
 import { useColorModeValue, HStack, Tag, Text } from '@chakra-ui/react'
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 
 export const SetVariableLabel = ({
   variableId,

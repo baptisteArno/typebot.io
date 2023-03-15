@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot, Webhook } from 'models'
+import { Typebot, Webhook } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { parseResultExample } from '../utils'
 

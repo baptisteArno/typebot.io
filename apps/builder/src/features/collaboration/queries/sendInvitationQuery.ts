@@ -1,5 +1,5 @@
-import { CollaborationType } from 'db'
-import { sendRequest } from 'utils'
+import { CollaborationType } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const sendInvitationQuery = (
   typebotId: string,

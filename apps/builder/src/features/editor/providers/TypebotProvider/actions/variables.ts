@@ -1,4 +1,4 @@
-import { Typebot, Variable } from 'models'
+import { Typebot, Variable } from '@typebot.io/schemas'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import { produce } from 'immer'

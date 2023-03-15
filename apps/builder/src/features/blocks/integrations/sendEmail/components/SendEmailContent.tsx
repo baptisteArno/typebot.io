@@ -1,5 +1,5 @@
 import { Tag, Text, Wrap, WrapItem } from '@chakra-ui/react'
-import { SendEmailBlock } from 'models'
+import { SendEmailBlock } from '@typebot.io/schemas'
 
 type Props = {
   block: SendEmailBlock

@@ -1,4 +1,4 @@
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 
 export const parseWorkspaceDefaultPlan = (userEmail: string) => {
   if (process.env.ADMIN_EMAIL === userEmail) return Plan.UNLIMITED

@@ -1,6 +1,6 @@
 import { WithVariableContent } from '@/features/graph/components/Nodes/BlockNode/BlockNodeContent/WithVariableContent'
 import { Text } from '@chakra-ui/react'
-import { RatingInputBlock } from 'models'
+import { RatingInputBlock } from '@typebot.io/schemas'
 
 type Props = {
   variableId?: string

@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { ZapierBlock } from 'models'
-import { byId, isNotDefined } from 'utils'
+import { ZapierBlock } from '@typebot.io/schemas'
+import { byId, isNotDefined } from '@typebot.io/lib'
 
 type Props = {
   block: ZapierBlock

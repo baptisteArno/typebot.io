@@ -5,7 +5,7 @@ import {
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import React from 'react'
 
 type HelpDocButtonProps = {

@@ -1,6 +1,6 @@
 import { ButtonsItemNode } from '@/features/blocks/inputs/buttons'
 import { ConditionItemNode } from '@/features/blocks/logic/condition'
-import { Item, ItemIndices, ItemType } from 'models'
+import { Item, ItemIndices, ItemType } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {

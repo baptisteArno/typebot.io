@@ -1,5 +1,5 @@
 import { AnswersCount } from '@/features/analytics'
-import { Edge, Group } from 'models'
+import { Edge, Group } from '@typebot.io/schemas'
 import React, { memo } from 'react'
 import { EndpointsProvider } from '../providers/EndpointsProvider'
 import { Edges } from './Edges'

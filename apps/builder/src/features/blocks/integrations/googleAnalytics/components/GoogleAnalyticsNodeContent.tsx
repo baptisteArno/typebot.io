@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { GoogleAnalyticsOptions } from 'models'
+import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
 
 type Props = {
   action: GoogleAnalyticsOptions['action']

@@ -4,7 +4,7 @@ import { parseInitStandardCode, typebotImportCode } from '../../snippetParsers'
 import { useTypebot } from '@/features/editor'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { isCloudProdInstance } from '@/utils/helpers'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {
   widthLabel?: string

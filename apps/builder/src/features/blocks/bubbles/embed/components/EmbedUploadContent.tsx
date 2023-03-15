@@ -1,7 +1,7 @@
 import { TextInput, NumberInput } from '@/components/inputs'
 import { HStack, Stack, Text } from '@chakra-ui/react'
-import { EmbedBubbleContent } from 'models'
-import { sanitizeUrl } from 'utils'
+import { EmbedBubbleContent } from '@typebot.io/schemas'
+import { sanitizeUrl } from '@typebot.io/lib'
 
 type Props = {
   content: EmbedBubbleContent

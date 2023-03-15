@@ -9,7 +9,11 @@ import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from '@/lib/plate'
 import { BaseEditor, BaseSelection, Transforms } from 'slate'
 import { ToolBar } from './ToolBar'
-import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
+import {
+  defaultTextBubbleContent,
+  TextBubbleContent,
+  Variable,
+} from '@typebot.io/schemas'
 import { ReactEditor } from 'slate-react'
 import { serializeHtml } from '@udecode/plate-serializer-html'
 import { parseHtmlStringToPlainText } from '../../utils'

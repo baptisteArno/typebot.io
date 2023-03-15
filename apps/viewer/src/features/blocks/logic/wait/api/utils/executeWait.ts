@@ -1,6 +1,6 @@
 import { ExecuteLogicResponse } from '@/features/chat'
 import { parseVariables } from '@/features/variables'
-import { SessionState, WaitBlock } from 'models'
+import { SessionState, WaitBlock } from '@typebot.io/schemas'
 
 export const executeWait = async (
   { typebot: { variables } }: SessionState,

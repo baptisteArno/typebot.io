@@ -10,8 +10,8 @@ import {
   SessionState,
   TypebotInSession,
   Variable,
-} from 'models'
-import { byId } from 'utils'
+} from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 
 export const executeTypebotLink = async (
   state: SessionState,

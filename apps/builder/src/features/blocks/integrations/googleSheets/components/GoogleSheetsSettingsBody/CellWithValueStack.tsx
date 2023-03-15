@@ -1,6 +1,6 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { Cell } from 'models'
+import { Cell } from '@typebot.io/schemas'
 import { TableListItemProps } from '@/components/TableList'
 import { TextInput } from '@/components/inputs'
 

@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultFileInputOptions, InputBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultFileInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
-import { freeWorkspaceId } from 'utils/playwright/databaseSetup'
+import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.configure({ mode: 'parallel' })

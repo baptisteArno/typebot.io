@@ -3,7 +3,7 @@ import { TableList } from '@/components/TableList'
 import {
   chatCompletionModels,
   ChatCompletionOpenAIOptions,
-} from 'models/features/blocks/integrations/openai'
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { ChatCompletionMessageItem } from './ChatCompletionMessageItem'
 import {
   Accordion,

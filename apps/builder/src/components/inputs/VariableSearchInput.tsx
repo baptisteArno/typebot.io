@@ -17,9 +17,9 @@ import {
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider/TypebotProvider'
 import { createId } from '@paralleldrive/cuid2'
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { byId, isDefined, isNotDefined } from 'utils'
+import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 

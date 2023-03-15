@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { useTypebot } from '@/features/editor'
-import { Stats } from 'models'
+import { Stats } from '@typebot.io/schemas'
 import React from 'react'
 import { useAnswersCount } from '../hooks/useAnswersCount'
 import {

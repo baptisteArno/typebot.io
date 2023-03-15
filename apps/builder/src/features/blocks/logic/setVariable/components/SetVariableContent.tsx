@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { SetVariableBlock } from 'models'
-import { byId } from 'utils'
+import { SetVariableBlock } from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 
 export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   const { typebot } = useTypebot()

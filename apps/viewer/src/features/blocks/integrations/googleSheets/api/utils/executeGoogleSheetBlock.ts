@@ -1,5 +1,9 @@
 import { ExecuteIntegrationResponse } from '@/features/chat'
-import { GoogleSheetsBlock, GoogleSheetsAction, SessionState } from 'models'
+import {
+  GoogleSheetsBlock,
+  GoogleSheetsAction,
+  SessionState,
+} from '@typebot.io/schemas'
 import { getRow } from './getRow'
 import { insertRow } from './insertRow'
 import { updateRow } from './updateRow'

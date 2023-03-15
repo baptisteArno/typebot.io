@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Group } from 'models'
+import { Group } from '@typebot.io/schemas'
 import {
   Coordinates,
   useGraph,
@@ -15,7 +15,7 @@ import {
   useBlockDnd,
 } from '../../../providers'
 import { BlockNodesList } from '../BlockNode/BlockNodesList'
-import { isDefined, isEmpty, isNotDefined } from 'utils'
+import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
 import { useTypebot, RightPanel, useEditor } from '@/features/editor'
 import { GroupNodeContextMenu } from './GroupNodeContextMenu'
 import { useDebounce } from 'use-debounce'

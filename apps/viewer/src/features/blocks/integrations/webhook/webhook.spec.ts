@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { HttpMethod } from 'models'
+import { HttpMethod } from '@typebot.io/schemas'
 import {
   createWebhook,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 
 const typebotId = createId()

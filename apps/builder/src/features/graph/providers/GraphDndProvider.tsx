@@ -1,5 +1,5 @@
 import { useEventListener } from '@chakra-ui/react'
-import { DraggableBlock, DraggableBlockType, Item } from 'models'
+import { DraggableBlock, DraggableBlockType, Item } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,

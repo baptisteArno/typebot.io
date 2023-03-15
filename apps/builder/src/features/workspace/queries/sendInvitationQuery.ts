@@ -1,5 +1,5 @@
-import { WorkspaceInvitation } from 'db'
-import { sendRequest } from 'utils'
+import { WorkspaceInvitation } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 import { Member } from '../types'
 
 export const sendInvitationQuery = (

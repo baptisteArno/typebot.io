@@ -4,13 +4,13 @@ import {
 } from '@/test/utils/databaseActions'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import {
   createTypebots,
   createWorkspaces,
   deleteWorkspaces,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 
 const usageWorkspaceId = createId()
 const usageTypebotId = createId()

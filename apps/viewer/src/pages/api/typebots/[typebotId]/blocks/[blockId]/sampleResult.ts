@@ -2,9 +2,9 @@ import { authenticateUser } from '@/features/auth/api'
 import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'
 import { parseSampleResult } from '@/features/blocks/integrations/webhook/api'
 import prisma from '@/lib/prisma'
-import { Typebot } from 'models'
+import { Typebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils/api'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await authenticateUser(req)

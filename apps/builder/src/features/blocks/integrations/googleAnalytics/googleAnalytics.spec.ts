@@ -1,7 +1,10 @@
 import test from '@playwright/test'
-import { createTypebots } from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { defaultGoogleAnalyticsOptions, IntegrationBlockType } from 'models'
+import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import {
+  defaultGoogleAnalyticsOptions,
+  IntegrationBlockType,
+} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 
 test.describe('Google Analytics block', () => {

@@ -2,10 +2,10 @@
   "name": "landing-page",
   "version": "1.0.0",
   "scripts": {
-    "dev": "cross-env ENVSH_ENV=.env.local bash ../../env.sh next dev -p 3002",
+    "dev": "cross-env ENVSH_ENV=.env.local bash ../../scripts/env.sh next dev -p 3002",
     "start": "next start",
     "build": "next build",
-    "build:env": "cd ../.. && cross-env ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash env.sh",
+    "build:env": "cd ../.. && cross-env ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash scripts/env.sh",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"
   },
@@ -18,14 +18,14 @@
     "@typebot.io/react": "workspace:*",
     "@typebot.io/js": "workspace:*",
     "aos": "2.3.4",
-    "db": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
     "focus-visible": "5.2.0",
     "framer-motion": "10.3.0",
-    "models": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "utils": "workspace:*"
+    "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "7.21.0",
@@ -41,7 +41,7 @@
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.21",
     "prettier": "2.8.4",
-    "tsconfig": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
     "typescript": "4.9.5"
   }
 }

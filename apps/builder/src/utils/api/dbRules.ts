@@ -1,8 +1,14 @@
-import { CollaborationType, Plan, Prisma, User, WorkspaceRole } from 'db'
+import {
+  CollaborationType,
+  Plan,
+  Prisma,
+  User,
+  WorkspaceRole,
+} from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiResponse } from 'next'
-import { env, isNotEmpty } from 'utils'
-import { forbidden } from 'utils/api'
+import { env, isNotEmpty } from '@typebot.io/lib'
+import { forbidden } from '@typebot.io/lib/api'
 
 export const canWriteTypebots = (
   typebotIds: string[] | string,

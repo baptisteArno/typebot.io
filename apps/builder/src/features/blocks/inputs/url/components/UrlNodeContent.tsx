@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { UrlInputOptions } from 'models'
+import { UrlInputOptions } from '@typebot.io/schemas'
 import { WithVariableContent } from '@/features/graph/components/Nodes/BlockNode/BlockNodeContent/WithVariableContent'
 
 type Props = {

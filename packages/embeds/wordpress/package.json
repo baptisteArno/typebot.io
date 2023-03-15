@@ -1,0 +1,17 @@
+{
+  "name": "@typebot.io/wordpress",
+  "version": "3.1.4",
+  "main": "index.js",
+  "repository": "https://github.com/baptisteArno/typebot.io",
+  "author": "baptisteArno",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@prettier/plugin-php": "0.19.4",
+    "prettier": "2.8.4"
+  },
+  "scripts": {
+    "deploy": "pnpm copy && pnpm commit",
+    "copy": "svn copy ./trunk ./tags/3.1.4",
+    "commit": "svn ci -m 'Support for custom apiHost'"
+  }
+}

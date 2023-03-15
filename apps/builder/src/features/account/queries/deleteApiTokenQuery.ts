@@ -1,5 +1,5 @@
-import { ApiToken } from 'db'
-import { sendRequest } from 'utils'
+import { ApiToken } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const deleteApiTokenQuery = ({
   userId,

@@ -4,7 +4,7 @@ import {
   parseCorrectValueType,
   extractVariablesFromText,
 } from '@/features/variables'
-import { ScriptBlock, SessionState } from 'models'
+import { ScriptBlock, SessionState } from '@typebot.io/schemas'
 
 export const executeScript = (
   { typebot: { variables } }: SessionState,

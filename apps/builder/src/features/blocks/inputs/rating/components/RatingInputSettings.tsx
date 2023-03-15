@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { RatingInputOptions, Variable } from 'models'
+import { RatingInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TextInput } from '@/components/inputs'

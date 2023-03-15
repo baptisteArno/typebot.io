@@ -16,7 +16,7 @@ import {
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
-} from 'models'
+} from '@typebot.io/schemas'
 import { useBlockDnd } from '@/features/graph'
 import React, { useState } from 'react'
 import { BlockCard } from './BlockCard'

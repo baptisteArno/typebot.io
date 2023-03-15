@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { Prisma, User } from 'db'
+import { Prisma, User } from '@typebot.io/prisma'
 import { isReadTypebotForbidden } from './isReadTypebotForbidden'
 import { isWriteTypebotForbidden } from './isWriteTypebotForbidden'
 

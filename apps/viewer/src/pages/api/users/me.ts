@@ -1,7 +1,7 @@
 import { authenticateUser } from '@/features/auth/api'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isNotDefined } from 'utils'
-import { methodNotAllowed } from 'utils/api'
+import { isNotDefined } from '@typebot.io/lib'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {

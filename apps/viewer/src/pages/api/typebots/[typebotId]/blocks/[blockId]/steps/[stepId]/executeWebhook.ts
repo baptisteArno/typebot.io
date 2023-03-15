@@ -7,10 +7,10 @@ import {
   Webhook,
   WebhookOptions,
   WebhookBlock,
-} from 'models'
+} from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { initMiddleware, methodNotAllowed, notFound } from 'utils/api'
-import { byId } from 'utils'
+import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
+import { byId } from '@typebot.io/lib'
 import Cors from 'cors'
 import { executeWebhook } from '../../executeWebhook'
 

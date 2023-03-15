@@ -20,10 +20,10 @@ import {
   KeyValue,
   ReplyLog,
   ResultInSession,
-} from 'models'
+} from '@typebot.io/schemas'
 import { stringify } from 'qs'
-import { byId, omit } from 'utils'
-import { parseAnswers } from 'utils/results'
+import { byId, omit } from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, Headers, HTTPError } from 'got'
 import { parseSampleResult } from './parseSampleResult'
 

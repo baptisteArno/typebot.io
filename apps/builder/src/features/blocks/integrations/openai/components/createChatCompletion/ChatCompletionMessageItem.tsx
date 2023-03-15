@@ -3,12 +3,12 @@ import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 import {
   chatCompletionMessageCustomRoles,
   chatCompletionMessageRoles,
   ChatCompletionOpenAIOptions,
-} from 'models/features/blocks/integrations/openai'
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 
 type Props = TableListItemProps<ChatCompletionOpenAIOptions['messages'][number]>
 

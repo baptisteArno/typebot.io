@@ -5,11 +5,11 @@ import {
   BlockIndices,
   ItemIndices,
   Block,
-} from 'models'
+} from '@typebot.io/schemas'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import { produce } from 'immer'
-import { byId, isDefined, blockHasItems } from 'utils'
+import { byId, isDefined, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
 
 export type EdgesActions = {

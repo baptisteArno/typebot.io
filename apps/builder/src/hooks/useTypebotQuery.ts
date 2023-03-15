@@ -1,7 +1,7 @@
 import { fetcher } from '@/utils/helpers'
-import { PublicTypebot, Typebot, Webhook } from 'models'
+import { PublicTypebot, Typebot, Webhook } from '@typebot.io/schemas'
 import useSWR from 'swr'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 
 export const useTypebotQuery = ({
   typebotId,

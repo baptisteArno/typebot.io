@@ -4,7 +4,11 @@ import { executeGoogleSheetBlock } from '@/features/blocks/integrations/googleSh
 import { executeOpenAIBlock } from '@/features/blocks/integrations/openai/executeOpenAIBlock'
 import { executeSendEmailBlock } from '@/features/blocks/integrations/sendEmail/api'
 import { executeWebhookBlock } from '@/features/blocks/integrations/webhook/api'
-import { IntegrationBlock, IntegrationBlockType, SessionState } from 'models'
+import {
+  IntegrationBlock,
+  IntegrationBlockType,
+  SessionState,
+} from '@typebot.io/schemas'
 import { ExecuteIntegrationResponse } from '../../types'
 
 export const executeIntegration =

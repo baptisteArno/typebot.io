@@ -1,5 +1,5 @@
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
-import { BlockType } from 'models'
+import { BlockType } from '@typebot.io/schemas'
 import { BlockIcon } from './BlockIcon'
 import { BlockLabel } from './BlockLabel'
 

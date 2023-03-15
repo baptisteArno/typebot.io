@@ -1,5 +1,5 @@
-import { SmtpCredentials } from 'models'
-import { sendRequest } from 'utils'
+import { SmtpCredentials } from '@typebot.io/schemas'
+import { sendRequest } from '@typebot.io/lib'
 
 export const testSmtpConfig = (smtpData: SmtpCredentials['data'], to: string) =>
   sendRequest({

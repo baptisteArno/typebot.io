@@ -1,12 +1,12 @@
 import prisma from '@/lib/prisma'
-import { WorkspaceRole } from 'db'
+import { WorkspaceRole } from '@typebot.io/prisma'
 import {
   sendAlmostReachedChatsLimitEmail,
   sendReachedChatsLimitEmail,
-} from 'emails'
-import { Workspace } from 'models'
-import { env, isDefined } from 'utils'
-import { getChatsLimit } from 'utils/pricing'
+} from '@typebot.io/emails'
+import { Workspace } from '@typebot.io/schemas'
+import { env, isDefined } from '@typebot.io/lib'
+import { getChatsLimit } from '@typebot.io/lib/pricing'
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 

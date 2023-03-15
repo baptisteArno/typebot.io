@@ -22,9 +22,9 @@ import {
   ComparisonOperators,
   ItemType,
   ItemIndices,
-} from 'models'
+} from '@typebot.io/schemas'
 import React, { useRef } from 'react'
-import { byId, isNotDefined } from 'utils'
+import { byId, isNotDefined } from '@typebot.io/lib'
 import { PlusIcon } from '@/components/icons'
 import { ConditionItemForm } from './ConditionItemForm'
 import { useGraph } from '@/features/graph'

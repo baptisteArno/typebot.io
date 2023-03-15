@@ -10,7 +10,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { WorkspaceRole } from 'db'
+import { WorkspaceRole } from '@typebot.io/prisma'
 import React from 'react'
 import { convertWorkspaceRoleToReadable } from './AddMemberForm'
 

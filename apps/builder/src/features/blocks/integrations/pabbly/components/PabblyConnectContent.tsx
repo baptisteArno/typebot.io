@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { PabblyConnectBlock } from 'models'
-import { byId, isNotDefined } from 'utils'
+import { PabblyConnectBlock } from '@typebot.io/schemas'
+import { byId, isNotDefined } from '@typebot.io/lib'
 
 type Props = {
   block: PabblyConnectBlock

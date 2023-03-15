@@ -3,7 +3,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import { ChoiceInputOptions, Variable } from 'models'
+import { ChoiceInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {

@@ -8,10 +8,10 @@ import {
   Textarea as ChakraTextarea,
   TextareaProps,
 } from '@chakra-ui/react'
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from 'utils'
+import { env } from '@typebot.io/lib'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {

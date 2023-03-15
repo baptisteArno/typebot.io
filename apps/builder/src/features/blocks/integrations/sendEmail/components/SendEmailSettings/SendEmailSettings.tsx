@@ -8,9 +8,9 @@ import {
   FormLabel,
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SendEmailOptions, Variable } from 'models'
+import { SendEmailOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
-import { env, isNotEmpty } from 'utils'
+import { env, isNotEmpty } from '@typebot.io/lib'
 import { SmtpConfigModal } from './SmtpConfigModal'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'

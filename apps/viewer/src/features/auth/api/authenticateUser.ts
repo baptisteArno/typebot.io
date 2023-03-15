@@ -1,4 +1,4 @@
-import { User } from 'db'
+import { User } from '@typebot.io/prisma'
 import { NextApiRequest } from 'next'
 import prisma from '@/lib/prisma'
 

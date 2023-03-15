@@ -1,5 +1,5 @@
 {
-  "name": "scripts",
+  "name": "@typebot.io/scripts",
   "version": "1.0.0",
   "main": "index.js",
   "license": "AGPL-3.0-or-later",
@@ -17,16 +17,16 @@
   "devDependencies": {
     "@types/node": "18.15.3",
     "@types/prompts": "2.4.3",
-    "db": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
     "deep-object-diff": "1.1.9",
-    "emails": "workspace:*",
+    "@typebot.io/emails": "workspace:*",
     "got": "12.6.0",
-    "models": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
     "prompts": "2.4.2",
     "stripe": "11.14.0",
     "tsx": "3.12.5",
     "typescript": "4.9.5",
-    "utils": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "zod": "3.21.4"
   }
 }

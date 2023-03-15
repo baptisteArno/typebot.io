@@ -2,8 +2,8 @@ import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/utils/api/dbRules'
 import { authenticatedProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Group, Typebot, Webhook, WebhookBlock } from 'models'
-import { byId, isWebhookBlock, parseGroupTitle } from 'utils'
+import { Group, Typebot, Webhook, WebhookBlock } from '@typebot.io/schemas'
+import { byId, isWebhookBlock, parseGroupTitle } from '@typebot.io/lib'
 import { z } from 'zod'
 
 export const listWebhookBlocksProcedure = authenticatedProcedure

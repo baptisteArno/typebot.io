@@ -1,7 +1,7 @@
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Stack } from '@chakra-ui/react'
-import { RedirectOptions } from 'models'
+import { RedirectOptions } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {

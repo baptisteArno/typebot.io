@@ -2,13 +2,13 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import prisma from '@/lib/prisma'
-import { HttpMethod, SendMessageInput } from 'models'
+import { HttpMethod, SendMessageInput } from '@typebot.io/schemas'
 import {
   createWebhook,
   deleteTypebots,
   deleteWebhooks,
   importTypebotInDatabase,
-} from 'utils/playwright/databaseActions'
+} from '@typebot.io/lib/playwright/databaseActions'
 
 test.afterEach(async () => {
   await deleteWebhooks(['chat-webhook-id'])

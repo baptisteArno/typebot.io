@@ -1,5 +1,5 @@
-import { Typebot } from 'db'
-import { sendRequest } from 'utils'
+import { Typebot } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const patchTypebotQuery = async (
   id: string,

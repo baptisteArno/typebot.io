@@ -1,5 +1,5 @@
-import { DashboardFolder } from 'db'
-import { sendRequest } from 'utils'
+import { DashboardFolder } from '@typebot.io/prisma'
+import { sendRequest } from '@typebot.io/lib'
 
 export const createFolderQuery = async (
   workspaceId: string,

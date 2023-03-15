@@ -1,6 +1,6 @@
-import { Credentials } from 'db'
+import { Credentials } from '@typebot.io/prisma'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 export const deleteCustomDomainQuery = async (
   workspaceId: string,

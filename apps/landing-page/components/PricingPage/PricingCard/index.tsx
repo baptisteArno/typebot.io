@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { formatPrice } from 'utils/pricing'
+import { formatPrice } from '@typebot.io/lib/pricing'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
 

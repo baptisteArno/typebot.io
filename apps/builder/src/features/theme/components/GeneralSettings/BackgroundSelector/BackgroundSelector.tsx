@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { Background, BackgroundType } from 'models'
+import { Background, BackgroundType } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import { BackgroundTypeRadioButtons } from './BackgroundTypeRadioButtons'

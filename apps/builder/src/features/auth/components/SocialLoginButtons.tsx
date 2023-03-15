@@ -12,7 +12,7 @@ import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'
 import { AzureAdLogo, FacebookLogo, GitlabLogo } from './logos'
-import { omit } from 'utils'
+import { omit } from '@typebot.io/lib'
 
 type Props = {
   providers:

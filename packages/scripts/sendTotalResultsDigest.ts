@@ -1,8 +1,8 @@
-import { PrismaClient, WorkspaceRole } from 'db'
-import { isDefined } from 'utils'
+import { PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
+import { isDefined } from '@typebot.io/lib'
 import { promptAndSetEnvironment } from './utils'
-import { TelemetryEvent } from 'models/features/telemetry'
-import { sendTelemetryEvents } from 'utils/telemetry/sendTelemetryEvent'
+import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const prisma = new PrismaClient()
 

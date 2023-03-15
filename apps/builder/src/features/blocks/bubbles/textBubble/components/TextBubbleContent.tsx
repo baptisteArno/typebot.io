@@ -1,9 +1,9 @@
 import { Flex } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor'
-import { TextBubbleBlock } from 'models'
+import { TextBubbleBlock } from '@typebot.io/schemas'
 import React from 'react'
 import { parseVariableHighlight } from '@/utils/helpers'
-import { isEmpty } from 'utils'
+import { isEmpty } from '@typebot.io/lib'
 
 type Props = {
   block: TextBubbleBlock

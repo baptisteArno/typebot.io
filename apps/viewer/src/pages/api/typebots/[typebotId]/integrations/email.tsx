@@ -3,17 +3,17 @@ import {
   ResultValues,
   SendEmailOptions,
   SmtpCredentials,
-} from 'models'
+} from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { isDefined, isEmpty, isNotDefined, omit } from 'utils'
-import { parseAnswers } from 'utils/results'
-import { methodNotAllowed, initMiddleware, decrypt } from 'utils/api'
+import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
+import { parseAnswers } from '@typebot.io/lib/results'
+import { methodNotAllowed, initMiddleware, decrypt } from '@typebot.io/lib/api'
 import { saveErrorLog, saveSuccessLog } from '@/features/logs/api'
 
 import Cors from 'cors'
 import Mail from 'nodemailer/lib/mailer'
-import { DefaultBotNotificationEmail } from 'emails'
+import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import { render } from '@faire/mjml-react/utils/render'
 import prisma from '@/lib/prisma'
 import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/api'

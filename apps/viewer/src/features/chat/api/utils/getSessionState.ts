@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { ChatSession } from 'models'
+import { ChatSession } from '@typebot.io/schemas'
 
 export const getSession = async (
   sessionId: string

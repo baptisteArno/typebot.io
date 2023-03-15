@@ -16,8 +16,8 @@ import {
   TextBubbleContent,
   TextBubbleBlock,
   LogicBlockType,
-} from 'models'
-import { isBubbleBlock, isDefined, isTextBubbleBlock } from 'utils'
+} from '@typebot.io/schemas'
+import { isBubbleBlock, isDefined, isTextBubbleBlock } from '@typebot.io/lib'
 import { BlockNodeContent } from './BlockNodeContent/BlockNodeContent'
 import { BlockIcon, useTypebot } from '@/features/editor'
 import { SettingsPopoverContent } from './SettingsPopoverContent'

@@ -1,5 +1,5 @@
 import { Stack, Flex, Text } from '@chakra-ui/react'
-import { ContainerColors } from 'models'
+import { ContainerColors } from '@typebot.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 

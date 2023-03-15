@@ -1,5 +1,5 @@
-import { SessionState, SetVariableBlock, Variable } from 'models'
-import { byId } from 'utils'
+import { SessionState, SetVariableBlock, Variable } from '@typebot.io/schemas'
+import { byId } from '@typebot.io/lib'
 import {
   parseVariables,
   parseCorrectValueType,

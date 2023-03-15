@@ -1,6 +1,6 @@
-import { CustomDomain, Credentials } from 'db'
+import { CustomDomain, Credentials } from '@typebot.io/prisma'
 import { stringify } from 'qs'
-import { sendRequest } from 'utils'
+import { sendRequest } from '@typebot.io/lib'
 
 export const createCustomDomainQuery = async (
   workspaceId: string,

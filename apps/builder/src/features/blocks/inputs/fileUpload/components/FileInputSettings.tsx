@@ -1,6 +1,6 @@
 import { FormLabel, HStack, Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { FileInputOptions, Variable } from 'models'
+import { FileInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { TextInput, NumberInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'

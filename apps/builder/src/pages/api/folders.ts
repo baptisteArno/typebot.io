@@ -1,7 +1,11 @@
-import { DashboardFolder, WorkspaceRole } from 'db'
+import { DashboardFolder, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,7 +1,7 @@
 import { BotProps } from '@typebot.io/js'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 
 export const parseStringParam = (fieldName: string, fieldValue?: string) =>
   fieldValue ? `${fieldName}: "${fieldValue}",` : ``

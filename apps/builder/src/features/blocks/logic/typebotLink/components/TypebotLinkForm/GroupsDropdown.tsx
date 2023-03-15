@@ -1,7 +1,7 @@
 import { Select } from '@/components/inputs/Select'
 import { Input } from '@chakra-ui/react'
-import { Group } from 'models'
-import { parseGroupTitle } from 'utils'
+import { Group } from '@typebot.io/schemas'
+import { parseGroupTitle } from '@typebot.io/lib'
 
 type Props = {
   groups: Group[]

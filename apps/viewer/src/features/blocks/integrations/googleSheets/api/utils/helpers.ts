@@ -2,7 +2,7 @@ import { parseVariables } from '@/features/variables'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
 import { TRPCError } from '@trpc/server'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
-import { Variable, Cell } from 'models'
+import { Variable, Cell } from '@typebot.io/schemas'
 
 export const parseCellValues =
   (variables: Variable[]) =>

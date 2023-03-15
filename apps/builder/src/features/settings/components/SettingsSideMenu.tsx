@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, MoreVerticalIcon } from '@/components/icons'
-import { GeneralSettings, Metadata, TypingEmulation } from 'models'
+import { GeneralSettings, Metadata, TypingEmulation } from '@typebot.io/schemas'
 import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'

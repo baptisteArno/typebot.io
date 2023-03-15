@@ -1,6 +1,6 @@
 import { Stack, Heading, HStack, Flex, Text, Image } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
-import { isDefined } from 'utils'
+import { isDefined } from '@typebot.io/lib'
 import { PreviewMessageSettings } from './PreviewMessageSettings'
 import { ThemeSettings } from './ThemeSettings'
 

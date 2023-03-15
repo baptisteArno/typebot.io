@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
 import { createSmtpCredentials } from '../../../../test/utils/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from 'utils/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
-import { SmtpCredentials } from 'models'
+import { SmtpCredentials } from '@typebot.io/schemas'
 
 export const mockSmtpCredentials: SmtpCredentials['data'] = {
   from: {

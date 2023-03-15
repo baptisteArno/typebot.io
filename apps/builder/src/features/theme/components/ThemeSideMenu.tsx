@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, PencilIcon } from '@/components/icons'
-import { ChatTheme, GeneralTheme } from 'models'
+import { ChatTheme, GeneralTheme } from '@typebot.io/schemas'
 import React from 'react'
 import { ChatThemeSettings } from './ChatSettings'
 import { CustomCssSettings } from './CustomCssSettings/CustomCssSettings'

@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
-import { WorkspaceInvitation, WorkspaceRole } from 'db'
+import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
 import { FormEvent, useState } from 'react'
 import { Member } from '../../types'
 import { sendInvitationQuery } from '../../queries/sendInvitationQuery'

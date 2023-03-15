@@ -3,9 +3,9 @@ import {
   VariableWithValue,
   ResultHeaderCell,
   InputBlockType,
-} from 'models'
-import { Answer } from 'db'
-import { isDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { Answer } from '@typebot.io/prisma'
+import { isDefined } from '@typebot.io/lib'
 import { HStack, Wrap, WrapItem, Text } from '@chakra-ui/react'
 import { BlockIcon } from '@/features/editor'
 import { HeaderCell, TableData } from './types'

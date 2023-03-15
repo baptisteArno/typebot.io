@@ -1,5 +1,5 @@
 import { EmailConfig } from 'next-auth/providers/email'
-import { sendMagicLinkEmail } from 'emails'
+import { sendMagicLinkEmail } from '@typebot.io/emails'
 
 type Props = {
   identifier: string

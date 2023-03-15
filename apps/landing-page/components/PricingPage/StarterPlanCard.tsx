@@ -11,11 +11,11 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from 'assets/icons/ChevronDownIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { parseNumberWithCommas } from 'utils'
-import { chatsLimit, computePrice, storageLimit } from 'utils/pricing'
+import { parseNumberWithCommas } from '@typebot.io/lib'
+import { chatsLimit, computePrice, storageLimit } from '@typebot.io/lib/pricing'
 import { PricingCard } from './PricingCard'
 
 export const StarterPlanCard = () => {

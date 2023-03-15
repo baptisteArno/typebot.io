@@ -1,9 +1,9 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor'
-import { MakeComBlock, Webhook, WebhookOptions } from 'models'
+import { MakeComBlock, Webhook, WebhookOptions } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useState } from 'react'
-import { byId } from 'utils'
+import { byId } from '@typebot.io/lib'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
 
 type Props = {

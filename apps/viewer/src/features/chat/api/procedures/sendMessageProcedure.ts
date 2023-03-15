@@ -8,7 +8,7 @@ import {
 import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/utils/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Prisma } from 'db'
+import { Prisma } from '@typebot.io/prisma'
 import {
   ChatReply,
   chatReplySchema,
@@ -22,14 +22,14 @@ import {
   Typebot,
   Variable,
   VariableWithValue,
-} from 'models'
+} from '@typebot.io/schemas'
 import {
   continueBotFlow,
   getSession,
   setResultAsCompleted,
   startBotFlow,
 } from '../utils'
-import { env, isDefined, omit } from 'utils'
+import { env, isDefined, omit } from '@typebot.io/lib'
 
 export const sendMessageProcedure = publicProcedure
   .meta({

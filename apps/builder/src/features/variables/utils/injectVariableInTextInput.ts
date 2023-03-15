@@ -1,4 +1,4 @@
-import { Variable } from 'models'
+import { Variable } from '@typebot.io/schemas'
 
 type Props = {
   variable: Variable

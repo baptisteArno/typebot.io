@@ -22,7 +22,7 @@ import {
   ResponseVariableMapping,
   WebhookOptions,
   Webhook,
-} from 'models'
+} from '@typebot.io/schemas'
 import { useState, useMemo } from 'react'
 import { executeWebhook } from '../queries/executeWebhookQuery'
 import { convertVariablesForTestToVariables } from '../utils/convertVariablesForTestToVariables'

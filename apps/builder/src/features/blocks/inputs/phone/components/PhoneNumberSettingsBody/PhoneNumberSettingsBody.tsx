@@ -1,7 +1,7 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { PhoneNumberInputOptions, Variable } from 'models'
+import { PhoneNumberInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { CountryCodeSelect } from './CountryCodeSelect'
 

@@ -1,4 +1,4 @@
-import { CollaboratorsOnTypebots } from 'db'
+import { CollaboratorsOnTypebots } from '@typebot.io/prisma'
 
 export type Collaborator = CollaboratorsOnTypebots & {
   user: {

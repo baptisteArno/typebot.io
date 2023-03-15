@@ -7,7 +7,7 @@ import {
   VStack,
   Text,
 } from '@chakra-ui/react'
-import { GraphNavigation } from 'db'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const graphNavigationData = [
   {

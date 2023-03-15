@@ -2,7 +2,7 @@ import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { TextInputOptions, Variable } from 'models'
+import { TextInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 
 type TextInputSettingsBodyProps = {

@@ -1,13 +1,13 @@
 import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/utils/api/dbRules'
-import { User } from 'db'
+import { User } from '@typebot.io/prisma'
 import {
   LogicBlockType,
   PublicTypebot,
   Typebot,
   TypebotLinkBlock,
-} from 'models'
-import { isDefined } from 'utils'
+} from '@typebot.io/schemas'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   typebots: Pick<PublicTypebot, 'groups'>[]

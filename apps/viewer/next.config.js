@@ -1,20 +1,20 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
-const withTM = require('next-transpile-modules')([
-  'utils',
-  'models',
-  'emails',
-  'bot-engine',
-])
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withTM({
+const nextConfig = {
   reactStrictMode: true,
+  transpilePackages: [
+    '@typebot.io/lib',
+    '@typebot.io/schemas',
+    '@typebot.io/emails',
+    'bot-engine',
+  ],
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-})
+}
 
 const sentryWebpackPluginOptions = {
   silent: true,

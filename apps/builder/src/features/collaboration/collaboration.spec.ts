@@ -1,14 +1,14 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { CollaborationType, Plan, WorkspaceRole } from 'db'
+import { CollaborationType, Plan, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@/lib/prisma'
-import { InputBlockType, defaultTextInputOptions } from 'models'
+import { InputBlockType, defaultTextInputOptions } from '@typebot.io/schemas'
 import {
   createTypebots,
   injectFakeResults,
-} from 'utils/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from 'utils/playwright/databaseHelpers'
-import { userId } from 'utils/playwright/databaseSetup'
+} from '@typebot.io/lib/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { userId } from '@typebot.io/lib/playwright/databaseSetup'
 import { createFolder } from '@/test/utils/databaseActions'
 
 test.describe('Typebot owner', () => {

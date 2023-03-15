@@ -1,4 +1,4 @@
-import { PrismaClient } from 'db'
+import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 
 const prisma = new PrismaClient()

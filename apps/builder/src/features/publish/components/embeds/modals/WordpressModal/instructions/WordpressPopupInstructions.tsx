@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers/popup'
 import { isCloudProdInstance } from '@/utils/helpers'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = {
   publicId: string

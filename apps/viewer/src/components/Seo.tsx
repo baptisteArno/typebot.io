@@ -1,9 +1,9 @@
 import { gtmHeadSnippet } from '@/lib/google-tag-manager'
-import { Metadata } from 'models'
+import { Metadata } from '@typebot.io/schemas'
 import Head from 'next/head'
 import Script from 'next/script'
 import React from 'react'
-import { isNotEmpty } from 'utils'
+import { isNotEmpty } from '@typebot.io/lib'
 
 type SEOProps = {
   url: string

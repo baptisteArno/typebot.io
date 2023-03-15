@@ -1,0 +1,53 @@
+{
+  "name": "bot-engine",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "pnpm tsc --noEmit && tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint --fix \"src/**/*.ts*\""
+  },
+  "dependencies": {
+    "@stripe/react-stripe-js": "1.16.4",
+    "@stripe/stripe-js": "1.46.0",
+    "prop-types": "15.8.1",
+    "qs": "6.11.0",
+    "react-phone-number-input": "3.2.16",
+    "react-scroll": "1.8.9",
+    "react-transition-group": "4.4.5",
+    "resize-observer": "1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/qs": "6.9.7",
+    "@types/react": "18.0.27",
+    "@types/react-phone-number-input": "3.0.14",
+    "@types/react-scroll": "1.8.6",
+    "@types/react-transition-group": "4.4.5",
+    "autoprefixer": "10.4.13",
+    "@typebot.io/prisma": "workspace:*",
+    "esbuild": "^0.17.5",
+    "eslint": "8.32.0",
+    "eslint-config-custom": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "postcss": "8.4.21",
+    "prettier": "2.8.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.2.4",
+    "@typebot.io/tsconfig": "workspace:*",
+    "tsup": "6.5.0",
+    "typebot-js": "workspace:*",
+    "typescript": "4.9.4",
+    "@typebot.io/lib": "workspace:*"
+  },
+  "peerDependencies": {
+    "@typebot.io/prisma": "workspace:*",
+    "react": "18.0.0",
+    "react-dom": "18.0.0"
+  }
+}

@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
-import { Result } from 'models'
+import { Result } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from 'utils/api'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PATCH') {

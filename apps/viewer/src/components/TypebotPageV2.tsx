@@ -1,5 +1,10 @@
 import { TypebotViewer } from 'bot-engine'
-import { AnswerInput, PublicTypebot, Typebot, VariableWithValue } from 'models'
+import {
+  AnswerInput,
+  PublicTypebot,
+  Typebot,
+  VariableWithValue,
+} from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import {
@@ -7,7 +12,7 @@ import {
   isDefined,
   isNotDefined,
   isNotEmpty,
-} from 'utils'
+} from '@typebot.io/lib'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
 import { createResultQuery, updateResultQuery } from '@/features/results'

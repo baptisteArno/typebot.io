@@ -5,7 +5,7 @@ import { parseInitPopupCode, typebotImportCode } from '../../snippetParsers'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { PopupProps } from '@typebot.io/js'
 import { isCloudProdInstance } from '@/utils/helpers'
-import { env, getViewerUrl } from 'utils'
+import { env, getViewerUrl } from '@typebot.io/lib'
 
 type Props = Pick<PopupProps, 'autoShowDelay'>
 

@@ -1,4 +1,4 @@
-import { Stats } from 'models'
+import { Stats } from '@typebot.io/schemas'
 import { fetcher } from '@/utils/helpers'
 import useSWR from 'swr'
 

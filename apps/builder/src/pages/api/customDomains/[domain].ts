@@ -1,6 +1,10 @@
 import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { badRequest, methodNotAllowed, notAuthenticated } from 'utils/api'
+import {
+  badRequest,
+  methodNotAllowed,
+  notAuthenticated,
+} from '@typebot.io/lib/api'
 import { got } from 'got'
 import { getAuthenticatedUser } from '@/features/auth/api'
 

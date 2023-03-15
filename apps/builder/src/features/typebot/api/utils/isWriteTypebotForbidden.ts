@@ -1,7 +1,11 @@
 import prisma from '@/lib/prisma'
-import { CollaborationType, CollaboratorsOnTypebots, User } from 'db'
-import { Typebot } from 'models'
-import { isNotDefined } from 'utils'
+import {
+  CollaborationType,
+  CollaboratorsOnTypebots,
+  User,
+} from '@typebot.io/prisma'
+import { Typebot } from '@typebot.io/schemas'
+import { isNotDefined } from '@typebot.io/lib'
 
 export const isWriteTypebotForbidden = async (
   typebot: Pick<Typebot, 'workspaceId'> & {

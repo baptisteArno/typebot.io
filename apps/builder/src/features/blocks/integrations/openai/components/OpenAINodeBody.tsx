@@ -5,7 +5,7 @@ import {
   ChatCompletionOpenAIOptions,
   CreateImageOpenAIOptions,
   OpenAIBlock,
-} from 'models/features/blocks/integrations/openai'
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 
 type Props = {
   task: OpenAIBlock['options']['task']

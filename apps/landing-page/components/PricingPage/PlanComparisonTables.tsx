@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from 'assets/icons/CheckIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { Plan } from 'db'
+import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { chatsLimit, formatPrice, storageLimit } from 'utils/pricing'
+import { chatsLimit, formatPrice, storageLimit } from '@typebot.io/lib/pricing'
 
 type Props = {
   starterPrice: string

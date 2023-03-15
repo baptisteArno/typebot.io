@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
-import { env, isEmpty } from 'utils'
+import { env, isEmpty } from '@typebot.io/lib'
 import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
 
 type FontSelectorProps = {

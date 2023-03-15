@@ -5,11 +5,15 @@ import {
   forbidden,
   initMiddleware,
   methodNotAllowed,
-} from 'utils/api'
+} from '@typebot.io/lib/api'
 import Stripe from 'stripe'
 
 import Cors from 'cors'
-import { PaymentInputOptions, StripeCredentials, Variable } from 'models'
+import {
+  PaymentInputOptions,
+  StripeCredentials,
+  Variable,
+} from '@typebot.io/schemas'
 import prisma from '@/lib/prisma'
 import { parseVariables } from '@/features/variables'
 

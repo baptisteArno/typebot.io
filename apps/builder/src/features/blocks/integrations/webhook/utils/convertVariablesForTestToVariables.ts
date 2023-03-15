@@ -1,4 +1,4 @@
-import { Variable, VariableForTest } from 'models'
+import { Variable, VariableForTest } from '@typebot.io/schemas'
 
 export const convertVariablesForTestToVariables = (
   variablesForTest: VariableForTest[],

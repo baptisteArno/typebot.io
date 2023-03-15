@@ -1,0 +1,10 @@
+{
+  "extends": "@typebot.io/tsconfig/react-library.json",
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}

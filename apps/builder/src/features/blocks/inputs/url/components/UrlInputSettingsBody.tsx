@@ -1,7 +1,7 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { UrlInputOptions, Variable } from 'models'
+import { UrlInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 
 type UrlInputSettingsBodyProps = {

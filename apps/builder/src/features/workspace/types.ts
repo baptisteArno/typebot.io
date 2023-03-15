@@ -1,4 +1,4 @@
-import { MemberInWorkspace } from 'db'
+import { MemberInWorkspace } from '@typebot.io/prisma'
 
 export type Member = MemberInWorkspace & {
   name: string | null

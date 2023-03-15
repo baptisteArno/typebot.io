@@ -1,5 +1,5 @@
 import React from 'react'
-import { Metadata } from 'models'
+import { Metadata } from '@typebot.io/schemas'
 import {
   FormLabel,
   Popover,

@@ -7,8 +7,8 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { env, isDefined, isNotDefined } from 'utils'
-import { User } from 'db'
+import { env, isDefined, isNotDefined } from '@typebot.io/lib'
+import { User } from '@typebot.io/prisma'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'

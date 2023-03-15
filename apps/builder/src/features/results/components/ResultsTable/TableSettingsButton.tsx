@@ -17,7 +17,7 @@ import {
   ListIcon,
   MoreHorizontalIcon,
 } from '@/components/icons'
-import { ResultHeaderCell } from 'models'
+import { ResultHeaderCell } from '@typebot.io/schemas'
 import React, { useState } from 'react'
 import { ColumnSettings } from './ColumnSettings'
 import { ExportAllResultsModal } from './ExportAllResultsModal'

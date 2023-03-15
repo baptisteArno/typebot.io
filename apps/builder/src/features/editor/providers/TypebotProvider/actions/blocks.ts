@@ -5,13 +5,13 @@ import {
   DraggableBlockType,
   BlockIndices,
   Webhook,
-} from 'models'
+} from '@typebot.io/schemas'
 import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import { createId } from '@paralleldrive/cuid2'
-import { byId, isWebhookBlock, blockHasItems } from 'utils'
+import { byId, isWebhookBlock, blockHasItems } from '@typebot.io/lib'
 import { duplicateItemDraft } from './items'
 import { parseNewBlock } from '@/features/graph/utils'
 
