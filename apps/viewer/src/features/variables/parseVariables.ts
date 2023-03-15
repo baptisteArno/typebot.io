@@ -2,13 +2,22 @@ import { isDefined } from '@typebot.io/lib'
 import { Variable, VariableWithValue } from '@typebot.io/schemas'
 import { safeStringify } from './safeStringify'
 
+export type ParseVariablesOptions = {
+  fieldToParse?: 'value' | 'id'
+  escapeForJson?: boolean
+  takeLatestIfList?: boolean
+}
+
+export const defaultParseVariablesOptions: ParseVariablesOptions = {
+  fieldToParse: 'value',
+  escapeForJson: false,
+  takeLatestIfList: false,
+}
+
 export const parseVariables =
   (
     variables: Variable[],
-    options: { fieldToParse?: 'value' | 'id'; escapeForJson?: boolean } = {
-      fieldToParse: 'value',
-      escapeForJson: false,
-    }
+    options: ParseVariablesOptions = defaultParseVariablesOptions
   ) =>
   (text: string | undefined): string => {
     if (!text || text === '') return ''
@@ -27,7 +36,11 @@ export const parseVariables =
         return jsonParse(
           typeof value !== 'string' ? JSON.stringify(value) : value
         )
-      const parsedValue = safeStringify(value)
+      const parsedValue = safeStringify(
+        options.takeLatestIfList && Array.isArray(value)
+          ? value[value.length - 1]
+          : value
+      )
       if (!parsedValue) return ''
       return parsedValue
     })

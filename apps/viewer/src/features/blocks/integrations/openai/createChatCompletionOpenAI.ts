@@ -12,7 +12,7 @@ import {
   OpenAICredentials,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai'
-import { isDefined, byId, isNotEmpty } from '@typebot.io/lib'
+import { isDefined, byId, isNotEmpty, isEmpty } from '@typebot.io/lib'
 import { decrypt } from '@typebot.io/lib/api/encryption'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
@@ -25,17 +25,20 @@ export const createChatCompletionOpenAI = async (
     options,
   }: { outgoingEdgeId?: string; options: ChatCompletionOpenAIOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  const {
-    typebot: { variables },
-  } = state
   let newSessionState = state
-  if (!options.credentialsId) return { outgoingEdgeId }
+  if (!options.credentialsId) {
+    console.error('OpenAI block has no credentials')
+    return { outgoingEdgeId }
+  }
   const credentials = await prisma.credentials.findUnique({
     where: {
       id: options.credentialsId,
     },
   })
-  if (!credentials) return { outgoingEdgeId }
+  if (!credentials) {
+    console.error('Could not find credentials in database')
+    return { outgoingEdgeId }
+  }
   const { apiKey } = decrypt(
     credentials.data,
     credentials.iv
@@ -43,28 +46,30 @@ export const createChatCompletionOpenAI = async (
   const configuration = new Configuration({
     apiKey,
   })
-  const { variablesTransformedToList, messages } = parseMessages(variables)(
-    options.messages
-  )
+  const { variablesTransformedToList, messages } = parseMessages(
+    newSessionState.typebot.variables
+  )(options.messages)
   if (variablesTransformedToList.length > 0)
     newSessionState = await updateVariables(state)(variablesTransformedToList)
-  const openai = new OpenAIApi(configuration)
+
   try {
-    const {
-      data: { choices, usage },
-    } = await openai.createChatCompletion({
+    const openai = new OpenAIApi(configuration)
+    const response = await openai.createChatCompletion({
       model: options.model,
       messages,
     })
-    const messageContent = choices[0].message?.content
-    const totalTokens = usage?.total_tokens
-    if (!messageContent) {
+    const messageContent = response.data.choices.at(0)?.message?.content
+    const totalTokens = response.data.usage?.total_tokens
+    if (isEmpty(messageContent)) {
+      console.error('OpenAI block returned empty message', response)
       return { outgoingEdgeId, newSessionState }
     }
     const newVariables = options.responseMapping.reduce<
       VariableWithUnknowValue[]
     >((newVariables, mapping) => {
-      const existingVariable = variables.find(byId(mapping.variableId))
+      const existingVariable = newSessionState.typebot.variables.find(
+        byId(mapping.variableId)
+      )
       if (!existingVariable) return newVariables
       if (mapping.valueToExtract === 'Message content') {
         newVariables.push({
@@ -82,18 +87,14 @@ export const createChatCompletionOpenAI = async (
       }
       return newVariables
     }, [])
-    if (newVariables.length > 0) {
+    if (newVariables.length > 0)
       newSessionState = await updateVariables(newSessionState)(newVariables)
-      return {
-        outgoingEdgeId,
-        newSessionState,
-      }
-    }
     return {
       outgoingEdgeId,
       newSessionState,
     }
   } catch (err) {
+    console.error(err)
     const log = {
       status: 'error',
       description: 'OpenAI block returned error',

@@ -136,6 +136,8 @@ const parseBubbleBlock =
   (variables: SessionState['typebot']['variables']) =>
   (block: BubbleBlock): ChatReply['messages'][0] => {
     switch (block.type) {
+      case BubbleBlockType.TEXT:
+        return deepParseVariables(variables, { takeLatestIfList: true })(block)
       case BubbleBlockType.EMBED: {
         const message = deepParseVariables(variables)(block)
         return {
