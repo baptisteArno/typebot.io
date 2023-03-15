@@ -8,7 +8,6 @@ const nextConfig = {
     '@typebot.io/lib',
     '@typebot.io/schemas',
     '@typebot.io/emails',
-    'bot-engine',
   ],
   output: 'standalone',
   experimental: {

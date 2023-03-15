@@ -16,7 +16,7 @@ import { isDefined, byId, isNotEmpty } from '@typebot.io/lib'
 import { decrypt } from '@typebot.io/lib/api/encryption'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
-import { parseVariables } from 'bot-engine'
+import { parseVariables } from '@/features/variables/parseVariables'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,

@@ -9,7 +9,7 @@ import {
 import { isNotDefined, isDefined } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '@/features/chat/types'
 import { findUniqueVariableValue } from '@/features/variables/findUniqueVariableValue'
-import { parseVariables } from 'bot-engine'
+import { parseVariables } from '@/features/variables/parseVariables'
 
 export const executeCondition = (
   { typebot: { variables } }: SessionState,

@@ -27,7 +27,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { updateVariables } from '@/features/variables/updateVariables'
-import { parseVariables } from 'bot-engine'
+import { parseVariables } from '@/features/variables/parseVariables'
 
 export const executeWebhookBlock = async (
   state: SessionState,
