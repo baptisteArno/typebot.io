@@ -17,6 +17,7 @@ import { decrypt } from '@typebot.io/lib/api/encryption'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
+import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -89,6 +90,11 @@ export const createChatCompletionOpenAI = async (
     }, [])
     if (newVariables.length > 0)
       newSessionState = await updateVariables(newSessionState)(newVariables)
+    state.result &&
+      (await saveSuccessLog({
+        resultId: state.result.id,
+        message: 'OpenAI block successfully executed',
+      }))
     return {
       outgoingEdgeId,
       newSessionState,

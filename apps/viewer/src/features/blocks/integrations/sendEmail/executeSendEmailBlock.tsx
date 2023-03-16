@@ -37,23 +37,35 @@ export const executeSendEmailBlock = async (
         },
       ],
     }
-  await sendEmail({
-    typebotId: typebot.id,
-    result,
-    credentialsId: options.credentialsId,
-    recipients: options.recipients.map(parseVariables(variables)),
-    subject: parseVariables(variables)(options.subject ?? ''),
-    body: parseVariables(variables)(options.body ?? ''),
-    cc: (options.cc ?? []).map(parseVariables(variables)),
-    bcc: (options.bcc ?? []).map(parseVariables(variables)),
-    replyTo: options.replyTo
-      ? parseVariables(variables)(options.replyTo)
-      : undefined,
-    fileUrls:
-      variables.find(byId(options.attachmentsVariableId))?.value ?? undefined,
-    isCustomBody: options.isCustomBody,
-    isBodyCode: options.isBodyCode,
-  })
+
+  try {
+    await sendEmail({
+      typebotId: typebot.id,
+      result,
+      credentialsId: options.credentialsId,
+      recipients: options.recipients.map(parseVariables(variables)),
+      subject: parseVariables(variables)(options.subject ?? ''),
+      body: parseVariables(variables)(options.body ?? ''),
+      cc: (options.cc ?? []).map(parseVariables(variables)),
+      bcc: (options.bcc ?? []).map(parseVariables(variables)),
+      replyTo: options.replyTo
+        ? parseVariables(variables)(options.replyTo)
+        : undefined,
+      fileUrls:
+        variables.find(byId(options.attachmentsVariableId))?.value ?? undefined,
+      isCustomBody: options.isCustomBody,
+      isBodyCode: options.isBodyCode,
+    })
+  } catch (err) {
+    await saveErrorLog({
+      resultId: result.id,
+      message: 'Email not sent',
+      details: {
+        error: err,
+      },
+    })
+  }
+
   return { outgoingEdgeId: block.outgoingEdgeId }
 }
 
