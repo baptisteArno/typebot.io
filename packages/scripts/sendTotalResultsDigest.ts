@@ -52,7 +52,7 @@ export const sendTotalResultsDigest = async () => {
   })
 
   const resultsWithWorkspaces = results
-    .flatMap((result, resultIndex) => {
+    .flatMap((result) => {
       const workspace = workspaces.find((workspace) =>
         workspace.typebots.some((typebot) => typebot.id === result.typebotId)
       )
@@ -64,10 +64,7 @@ export const sendTotalResultsDigest = async () => {
           workspaceId: workspace.id,
           typebotId: result.typebotId,
           totalResultsYesterday: result._count._all,
-          isFirstOfKind:
-            resultIndex === 0 && memberIndex === 0
-              ? (true as const)
-              : undefined,
+          isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
         }))
     })
     .filter(isDefined)
