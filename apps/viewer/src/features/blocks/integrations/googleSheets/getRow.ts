@@ -43,7 +43,7 @@ export const getRow = async (
     const filteredRows = rows.filter((row) =>
       referenceCell
         ? row[referenceCell.column as string] === referenceCell.value
-        : matchFilter(row, filter)
+        : matchFilter(row, filter as NonNullable<typeof filter>)
     )
     if (filteredRows.length === 0) {
       log = {
@@ -104,7 +104,7 @@ export const getRow = async (
 
 const matchFilter = (
   row: GoogleSpreadsheetRow,
-  filter: GoogleSheetsGetOptions['filter']
+  filter: NonNullable<GoogleSheetsGetOptions['filter']>
 ) => {
   return filter.logicalOperator === LogicalOperator.AND
     ? filter.comparisons.every(

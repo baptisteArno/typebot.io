@@ -40,10 +40,12 @@ const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.merge(
     action: z.enum([GoogleSheetsAction.GET]),
     // TODO: remove referenceCell once migrated to filtering
     referenceCell: cellSchema.optional(),
-    filter: z.object({
-      comparisons: z.array(rowsFilterComparisonSchema),
-      logicalOperator: z.nativeEnum(LogicalOperator),
-    }),
+    filter: z
+      .object({
+        comparisons: z.array(rowsFilterComparisonSchema),
+        logicalOperator: z.nativeEnum(LogicalOperator),
+      })
+      .optional(),
     cellsToExtract: z.array(extractingCellSchema),
   })
 )

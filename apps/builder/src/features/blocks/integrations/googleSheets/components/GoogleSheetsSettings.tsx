@@ -228,7 +228,7 @@ const ActionOptions = ({
     case GoogleSheetsAction.GET:
       return (
         <Stack>
-          {options.referenceCell ? (
+          {options.referenceCell && (
             <>
               <Text>Row to select</Text>
               <CellWithValueStack
@@ -237,12 +237,13 @@ const ActionOptions = ({
                 onItemChange={handleReferenceCellChange}
               />
             </>
-          ) : (
+          )}
+          {options.filter && (
             <>
               <Text>Filter</Text>
               <RowsFilterTableList
                 columns={sheet?.columns ?? []}
-                filter={options.filter}
+                filter={options.filter ?? {}}
                 onFilterChange={handleFilterChange}
               />
             </>
