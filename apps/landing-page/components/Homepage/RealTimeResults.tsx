@@ -114,7 +114,7 @@ export const RealTimeResults = () => {
             top="-60px"
             right="-30px"
             pos="absolute"
-            display={{ sm: 'none', xl: 'flex' }}
+            display={{ base: 'none', xl: 'flex' }}
           >
             <Text fontFamily="'Indie Flower'" fontSize="2xl">
               It&apos;s a real Airtable view!
