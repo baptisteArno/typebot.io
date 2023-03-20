@@ -63,7 +63,7 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
    Copy `apps/viewer/.env.local.example` to `apps/viewer/.env.local`
 
-   Copy `packages/db/.env.example` to `packages/db/.env`
+   Copy `packages/prisma/.env.example` to `packages/prisma/.env`
 
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
 

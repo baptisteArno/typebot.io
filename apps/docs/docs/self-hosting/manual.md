@@ -29,9 +29,9 @@ git clone git@github.com:<username>/typebot.io.git
 ```sh
 cd typebot.io
 # check out the latest stable version or the one you want to use
-git checkout v2.9.1
+git checkout latest
 # copy the example env file
-cp packages/db/.env.example packages/db/.env
+cp packages/prisma/.env.example packages/prisma/.env
 cp apps/builder/.env.local.example apps/builder/.env.local
 cp apps/viewer/.env.local.example apps/viewer/.env.local
 ```
