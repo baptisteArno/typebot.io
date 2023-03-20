@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { TextLink } from '@/components/TextLink'
 import { ChatCompletionResponseItem } from './ChatCompletionResponseItem'
+import { NumberInput } from '@/components/inputs'
 
 const apiReferenceUrl =
   'https://platform.openai.com/docs/api-reference/chat/create'
@@ -43,6 +44,18 @@ export const OpenAIChatCompletionSettings = ({
     })
   }
 
+  const updateTemperature = (
+    temperature: number | `{{${string}}}` | undefined
+  ) => {
+    onOptionsChange({
+      ...options,
+      advancedSettings: {
+        ...options.advancedSettings,
+        temperature,
+      },
+    })
+  }
+
   const updateResponseMapping = (
     responseMapping: typeof options.responseMapping
   ) => {
@@ -61,6 +74,11 @@ export const OpenAIChatCompletionSettings = ({
         </TextLink>{' '}
         to better understand the available options.
       </Text>
+      <DropdownList
+        currentItem={options.model}
+        items={chatCompletionModels}
+        onItemSelect={updateModel}
+      />
       <Accordion allowToggle allowMultiple>
         <AccordionItem>
           <AccordionButton>
@@ -88,10 +106,14 @@ export const OpenAIChatCompletionSettings = ({
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel>
-            <DropdownList
-              currentItem={options.model}
-              items={chatCompletionModels}
-              onItemSelect={updateModel}
+            <NumberInput
+              label="Temperature"
+              placeholder="1"
+              max={2}
+              min={0}
+              step={0.1}
+              defaultValue={options.advancedSettings?.temperature}
+              onValueChange={updateTemperature}
             />
           </AccordionPanel>
         </AccordionItem>

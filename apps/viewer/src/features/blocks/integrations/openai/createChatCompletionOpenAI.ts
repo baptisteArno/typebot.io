@@ -18,6 +18,8 @@ import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
+import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
+import { HTTPError } from 'got'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -53,11 +55,16 @@ export const createChatCompletionOpenAI = async (
   if (variablesTransformedToList.length > 0)
     newSessionState = await updateVariables(state)(variablesTransformedToList)
 
+  const temperature = parseVariableNumber(newSessionState.typebot.variables)(
+    options.advancedSettings?.temperature
+  )
+
   try {
     const openai = new OpenAIApi(configuration)
     const response = await openai.createChatCompletion({
       model: options.model,
       messages,
+      temperature,
     })
     const messageContent = response.data.choices.at(0)?.message?.content
     const totalTokens = response.data.usage?.total_tokens
@@ -100,7 +107,12 @@ export const createChatCompletionOpenAI = async (
       newSessionState,
     }
   } catch (err) {
-    console.error(err)
+    if (err instanceof HTTPError) {
+      console.error(err.response.body)
+    } else {
+      console.error(err)
+    }
+
     const log = {
       status: 'error',
       description: 'OpenAI block returned error',
