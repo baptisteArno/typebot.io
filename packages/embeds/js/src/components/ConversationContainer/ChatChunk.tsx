@@ -45,7 +45,7 @@ export const ChatChunk = (props: Props) => {
 
   return (
     <div class="flex w-full">
-      <div class="flex flex-col w-full min-w-0">
+      <div class="flex flex-col w-full min-w-0" data-blockid={props.input?.id}>
         <div class="flex">
           <Show
             when={
