@@ -13,13 +13,12 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  async redirects() {
+  async rewrites() {
     return [
       {
         source: '/api/typebots/:typebotId/blocks/:blockId/storage/upload-url',
         destination:
           '/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url',
-        permanent: true,
       },
     ]
   },
