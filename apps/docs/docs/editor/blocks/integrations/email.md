@@ -1,5 +1,3 @@
-import { YoutubeEmbed } from '../../../../src/js/YoutubeEmbed.jsx'
-
 # Send email
 
 If you want to receive an email notification each time a user completes the bot or if you want to send a recap to the user, the Email block is made for you:
