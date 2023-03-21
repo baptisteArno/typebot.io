@@ -118,13 +118,20 @@ Typebot is open-source under the GNU Affero General Public License Version 3 (AG
 The goal of the AGPL license is to:
 
 - Maximize user freedom and to encourage companies to contribute to open source.
-- Prevent corporations from taking our code and using it as part of their closed-source proprietary products
+- Prevent corporations from taking the code and using it as part of their closed-source proprietary products
 - Prevent corporations from offering Typebot as a service without contributing to the open source project
 - Prevent corporations from confusing people and making them think that the service they sell is in any shape or form approved by the original team
 
-In a few words, to use Typebot in your company, you need to:
+Here are the 3 different possible use cases:
 
-- Open source and publish your modifications
-- If you commercialize your version of Typebot, be clear and provide a prominent mention and link to the original project so people that are considering using their version of the software can be aware of the original project.
+> You'd like to self-host Typebot as-is without modifying the source code and you don't have the intention on commercializing your version of Typebot.
 
-If you'd like to use Typebot without open-sourcing your modified code, you can purchase a commercial license to remove the copyleft restrictions and in that way support the original project. Contact me at baptiste@typebot.io.
+You can host and use Typebot without restrictions. Your contributions to improve Typebot and fix bugs are welcome. 💙
+
+> You'd like to fork the project to build your own features on top of Typebot and you don't have the intention on commercializing your version of Typebot.
+
+You need to open-source your modifications
+
+> You'd like to commercialize your own version of Typebot
+
+You need to open-source your modifications and after your users registration, they should see a prominent mention and link to the original project (https://typebot.io). You should clearly mention that you provide a modified version. It's a good place to explain your version advantages comparing to the original project.
