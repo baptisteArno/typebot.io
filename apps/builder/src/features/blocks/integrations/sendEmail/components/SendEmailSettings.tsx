@@ -17,6 +17,7 @@ import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
 import { TextInput, Textarea } from '@/components/inputs'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 
 type Props = {
   options: SendEmailOptions
@@ -188,9 +189,16 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
       )}
       <Stack>
-        <FormLabel mb="0" htmlFor="variable">
-          Attachments:
-        </FormLabel>
+        <HStack>
+          <FormLabel m="0" htmlFor="variable">
+            Attach files:
+          </FormLabel>
+          <MoreInfoTooltip>
+            The selected variable should have previously collected files from
+            the File upload input block.
+          </MoreInfoTooltip>
+        </HStack>
+
         <VariableSearchInput
           initialVariableId={options.attachmentsVariableId}
           onSelectVariable={handleChangeAttachmentVariable}
