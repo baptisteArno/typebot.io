@@ -1,4 +1,4 @@
-.lite-badge {
+#lite-badge {
   position: absolute !important;
   padding: 4px 8px !important;
   background-color: white !important;
@@ -21,6 +21,6 @@
   transition: background-color 0.2s ease-in-out !important;
 }
 
-.lite-badge:hover {
+#lite-badge:hover {
   background-color: #f7f8ff !important;
 }
