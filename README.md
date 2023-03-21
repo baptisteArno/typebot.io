@@ -124,14 +124,34 @@ The goal of the AGPL license is to:
 
 Here are the 3 different possible use cases:
 
-> You'd like to self-host Typebot as-is without modifying the source code and you don't have the intention on commercializing your version of Typebot.
+<details>
+  <summary>You'd like to self-host Typebot as-is without modifying the source code and you don't have the intention on commercializing your version of Typebot.</summary>
 
-You can host and use Typebot without restrictions. Your contributions to improve Typebot and fix bugs are welcome. 💙
+<p>
 
-> You'd like to fork the project to build your own features on top of Typebot and you don't have the intention on commercializing your version of Typebot.
+**You can host and use Typebot without restrictions. Your contributions to improve Typebot and fix bugs are welcome. 💙**
 
-You need to open-source your modifications
+</p>
 
-> You'd like to commercialize your own version of Typebot
+</details>
 
-You need to open-source your modifications and after your users registration, they should see a prominent mention and link to the original project (https://typebot.io). You should clearly mention that you provide a modified version. It's a good place to explain your version advantages comparing to the original project.
+<details>
+  <summary>You'd like to fork the project to build your own features on top of Typebot and you don't have the intention on commercializing your version of Typebot.</summary>
+<p>
+
+**You need to open-source your modifications**
+
+</p>
+
+</details>
+
+<details>
+  <summary>You'd like to commercialize your own version of Typebot</summary>
+
+<p>
+
+**You need to open-source your modifications and after your users registration, they should see a prominent mention and link to the original project (https://typebot.io). You should clearly mention that you provide a modified version. It's a good place to explain your version advantages comparing to the original project.**
+
+</p>
+
+</details>
