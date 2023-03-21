@@ -6,7 +6,7 @@ import {
 } from './blocks'
 import { publicTypebotSchema } from './publicTypebot'
 import { logSchema, resultSchema } from './result'
-import { typebotSchema } from './typebot'
+import { listVariableValue, typebotSchema } from './typebot'
 import {
   textBubbleContentSchema,
   imageBubbleContentSchema,
@@ -123,7 +123,7 @@ const scriptToExecuteSchema = z.object({
         .string()
         .or(z.number())
         .or(z.boolean())
-        .or(z.array(z.string()))
+        .or(listVariableValue)
         .nullish(),
     })
   ),

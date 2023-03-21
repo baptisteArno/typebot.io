@@ -83,7 +83,7 @@ const parseResultSample = (
   headerCells: ResultHeaderCell[],
   variables: Variable[]
 ) =>
-  headerCells.reduce<Record<string, string | string[] | undefined>>(
+  headerCells.reduce<Record<string, string | (string | null)[] | undefined>>(
     (resultSample, cell) => {
       const inputBlock = inputBlocks.find((inputBlock) =>
         cell.blocks?.some((block) => block.id === inputBlock.id)

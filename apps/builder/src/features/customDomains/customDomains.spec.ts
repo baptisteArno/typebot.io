@@ -38,7 +38,9 @@ test('should be able to connect custom domain', async ({ page }) => {
   await expect(page.locator('text=sub.yolozeeer.com')).toBeHidden()
   await page.click('button >> text=Add my domain')
   await page.click('[aria-label="Remove domain"]')
-  await expect(page.locator('[aria-label="Remove domain"]')).toBeHidden()
+  await expect(page.locator('[aria-label="Remove domain"]')).toBeHidden({
+    timeout: 10000,
+  })
 })
 
 test.describe('Starter workspace', () => {

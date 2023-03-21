@@ -30,7 +30,7 @@ const updateResultVariables =
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: Array.isArray(variable.value)
-        ? variable.value.map(safeStringify).filter(isDefined)
+        ? variable.value.map(safeStringify)
         : safeStringify(variable.value),
     }))
 
@@ -62,7 +62,7 @@ const updateTypebotVariables =
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: Array.isArray(variable.value)
-        ? variable.value.map(safeStringify).filter(isDefined)
+        ? variable.value.map(safeStringify)
         : safeStringify(variable.value),
     }))
 

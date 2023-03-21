@@ -48,7 +48,7 @@ export const safeStringify = (val: unknown): string | null => {
 
 export const parseCorrectValueType = (
   value: Variable['value']
-): string | string[] | boolean | number | null | undefined => {
+): string | (string | null)[] | boolean | number | null | undefined => {
   if (value === null) return null
   if (value === undefined) return undefined
   if (Array.isArray(value)) return value

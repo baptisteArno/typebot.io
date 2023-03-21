@@ -34,7 +34,11 @@ test('folders navigation should work', async ({ page }) => {
 
 test('folders and typebots should be deletable', async ({ page }) => {
   await createFolders([{ name: 'Folder #1' }, { name: 'Folder #2' }])
-  await createTypebots([{ id: 'deletable-typebot', name: 'Typebot #1' }])
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  await createTypebots([
+    { id: 'deletable-typebot', name: 'Typebot #1', createdAt: tomorrow },
+  ])
   await page.goto('/typebots')
   await page.click('button[aria-label="Show Folder #1 menu"]')
   await page.click('li:has-text("Folder #1") >> button:has-text("Delete")')

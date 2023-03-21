@@ -2,7 +2,7 @@ import { Variable } from '@typebot.io/schemas'
 
 export const parseGuessedValueType = (
   value: Variable['value']
-): string | string[] | boolean | number | null | undefined => {
+): string | (string | null)[] | boolean | number | null | undefined => {
   if (value === null) return null
   if (value === undefined) return undefined
   if (typeof value !== 'string') return value

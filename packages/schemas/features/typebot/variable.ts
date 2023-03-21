@@ -1,9 +1,11 @@
 import { z } from 'zod'
 
+export const listVariableValue = z.array(z.string().nullable())
+
 export const variableSchema = z.object({
   id: z.string(),
   name: z.string(),
-  value: z.string().or(z.array(z.string())).nullish(),
+  value: z.string().or(listVariableValue).nullish(),
 })
 
 /**
@@ -12,7 +14,7 @@ export const variableSchema = z.object({
 export const variableWithValueSchema = z.object({
   id: z.string(),
   name: z.string(),
-  value: z.string().or(z.array(z.string())),
+  value: z.string().or(listVariableValue),
 })
 
 /**

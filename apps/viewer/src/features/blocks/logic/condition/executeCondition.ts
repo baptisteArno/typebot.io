@@ -41,8 +41,8 @@ const executeComparison =
     if (isNotDefined(value)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
-        const contains = (a: string, b: string) => {
-          if (b === '') return false
+        const contains = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
           return a.toLowerCase().trim().includes(b.toLowerCase().trim())
         }
         return compare(contains, inputValue, value)
@@ -55,14 +55,20 @@ const executeComparison =
       }
       case ComparisonOperators.GREATER: {
         return compare(
-          (a, b) => parseFloat(a) > parseFloat(b),
+          (a, b) =>
+            isDefined(a) && isDefined(b)
+              ? parseFloat(a) > parseFloat(b)
+              : false,
           inputValue,
           value
         )
       }
       case ComparisonOperators.LESS: {
         return compare(
-          (a, b) => parseFloat(a) < parseFloat(b),
+          (a, b) =>
+            isDefined(a) && isDefined(b)
+              ? parseFloat(a) < parseFloat(b)
+              : false,
           inputValue,
           value
         )
@@ -74,10 +80,11 @@ const executeComparison =
   }
 
 const compare = (
-  func: (a: string, b: string) => boolean,
-  a: string | string[],
-  b: string | string[]
+  func: (a: string | null, b: string | null) => boolean,
+  a: Variable['value'],
+  b: Variable['value']
 ): boolean => {
+  if (!a || !b) return false
   if (typeof a === 'string') {
     if (typeof b === 'string') return func(a, b)
     return b.some((b) => func(a, b))

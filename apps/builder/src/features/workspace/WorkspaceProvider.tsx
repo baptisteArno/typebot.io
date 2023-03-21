@@ -92,6 +92,7 @@ export const WorkspaceProvider = ({
     onError: (error) => showToast({ description: error.message }),
     onSuccess: async () => {
       trpcContext.workspace.listWorkspaces.invalidate()
+      setWorkspaceId(undefined)
     },
   })
 
@@ -154,7 +155,6 @@ export const WorkspaceProvider = ({
   const deleteCurrentWorkspace = async () => {
     if (!workspaceId || !workspaces || workspaces.length < 2) return
     await deleteWorkspaceMutation.mutateAsync({ workspaceId })
-    setWorkspaceId(workspaces[0].id)
   }
 
   const refreshWorkspace = () => {

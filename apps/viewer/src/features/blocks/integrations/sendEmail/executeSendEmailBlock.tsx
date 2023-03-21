@@ -9,10 +9,11 @@ import {
   SendEmailOptions,
   SessionState,
   SmtpCredentials,
+  Variable,
 } from '@typebot.io/schemas'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
-import { byId, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
+import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
 import { parseAnswers } from '@typebot.io/lib/results'
 import { decrypt } from '@typebot.io/lib/api'
 import { defaultFrom, defaultTransportOptions } from './constants'
@@ -51,8 +52,7 @@ export const executeSendEmailBlock = async (
       replyTo: options.replyTo
         ? parseVariables(variables)(options.replyTo)
         : undefined,
-      fileUrls:
-        variables.find(byId(options.attachmentsVariableId))?.value ?? undefined,
+      fileUrls: getFileUrls(variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
     })
@@ -238,3 +238,12 @@ const parseEmailRecipient = (
     email: recipient,
   }
 }
+
+const getFileUrls =
+  (variables: Variable[]) =>
+  (variableId: string | undefined): string | string[] | undefined => {
+    const fileUrls = variables.find(byId(variableId))?.value
+    if (!fileUrls) return
+    if (typeof fileUrls === 'string') return fileUrls
+    return fileUrls.filter(isDefined)
+  }

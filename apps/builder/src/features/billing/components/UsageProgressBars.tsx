@@ -13,7 +13,7 @@ import { Plan, Workspace } from '@typebot.io/prisma'
 import React from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
-import { trpc } from '@/lib/trpc'
+import { defaultQueryOptions, trpc } from '@/lib/trpc'
 import { storageToReadable } from '../helpers/storageToReadable'
 
 type Props = {
@@ -21,9 +21,12 @@ type Props = {
 }
 
 export const UsageProgressBars = ({ workspace }: Props) => {
-  const { data, isLoading } = trpc.billing.getUsage.useQuery({
-    workspaceId: workspace.id,
-  })
+  const { data, isLoading } = trpc.billing.getUsage.useQuery(
+    {
+      workspaceId: workspace.id,
+    },
+    defaultQueryOptions
+  )
   const totalChatsUsed = data?.totalChatsUsed ?? 0
   const totalStorageUsed = data?.totalStorageUsed ?? 0
 

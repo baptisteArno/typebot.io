@@ -19,7 +19,7 @@ export const injectVariableValuesInButtonsInputBlock =
       if (!variable || typeof variable.value === 'string') return block
       return {
         ...block,
-        items: variable.value.map((item, idx) => ({
+        items: variable.value.filter(isDefined).map((item, idx) => ({
           id: idx.toString(),
           type: ItemType.BUTTON,
           blockId: block.id,
