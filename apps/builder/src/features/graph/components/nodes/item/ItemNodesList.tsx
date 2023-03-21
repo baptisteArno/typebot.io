@@ -41,7 +41,7 @@ export const ItemNodesList = ({
   const isDraggingOnCurrentBlock =
     (draggedItem && mouseOverBlock?.id === block.id) ?? false
   const showPlaceholders =
-    draggedItem !== undefined && block.items[0].type === draggedItem.type
+    draggedItem !== undefined && block.items.at(0)?.type === draggedItem.type
 
   const isLastBlock =
     isDefined(typebot) &&

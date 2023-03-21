@@ -38,6 +38,7 @@ const TextBubbleEditorContent = ({
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+  const [isFirstFocus, setIsFirstFocus] = useState(true)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
 
@@ -139,14 +140,16 @@ const TextBubbleEditorContent = ({
           style: editorStyle(useColorModeValue('white', colors.gray[850])),
           autoFocus: true,
           onFocus: () => {
+            if (!isFirstFocus) return
             if (editor.children.length === 0) return
             selectEditor(editor, {
               edge: 'end',
             })
+            setIsFirstFocus(false)
           },
           'aria-label': 'Text editor',
           onBlur: () => {
-            rememberedSelection.current = editor.selection
+            rememberedSelection.current = editor?.selection
           },
           onKeyDown: handleKeyDown,
           onClick: () => {

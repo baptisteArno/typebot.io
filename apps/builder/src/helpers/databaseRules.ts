@@ -81,3 +81,9 @@ export const canPublishFileInput = async ({
   }
   return true
 }
+
+export const isUniqueConstraintError = (error: unknown) =>
+  typeof error === 'object' &&
+  error &&
+  'code' in error &&
+  error.code === 'P2002'
