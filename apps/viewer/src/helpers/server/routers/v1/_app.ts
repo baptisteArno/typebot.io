@@ -1,8 +1,10 @@
-import { chatRouter } from '@/features/chat/api/router'
+import { getUploadUrl } from '@/features/blocks/inputs/fileUpload/api/getUploadUrl'
+import { sendMessage } from '@/features/chat/api/sendMessage'
 import { router } from '../../trpc'
 
 export const appRouter = router({
-  chat: chatRouter,
+  sendMessage,
+  getUploadUrl,
 })
 
 export type AppRouter = typeof appRouter
