@@ -12,7 +12,7 @@
   "paths": {
     "/sendMessage": {
       "post": {
-        "operationId": "query.chat.sendMessage",
+        "operationId": "query.sendMessage",
         "summary": "Send a message",
         "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
         "security": [
@@ -1637,7 +1637,6 @@
                                                         },
                                                         "required": [
                                                           "action",
-                                                          "filter",
                                                           "cellsToExtract"
                                                         ],
                                                         "additionalProperties": false
@@ -1914,6 +1913,10 @@
                                                           "model": {
                                                             "type": "string",
                                                             "enum": [
+                                                              "gpt-4",
+                                                              "gpt-4-0314",
+                                                              "gpt-4-32k",
+                                                              "gpt-4-32k-0314",
                                                               "gpt-3.5-turbo",
                                                               "gpt-3.5-turbo-0301"
                                                             ]
@@ -1978,6 +1981,20 @@
                                                                 }
                                                               ]
                                                             }
+                                                          },
+                                                          "advancedSettings": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "temperature": {
+                                                                "anyOf": [
+                                                                  {
+                                                                    "type": "number"
+                                                                  },
+                                                                  {}
+                                                                ]
+                                                              }
+                                                            },
+                                                            "additionalProperties": false
                                                           },
                                                           "responseMapping": {
                                                             "type": "array",
@@ -4270,6 +4287,85 @@
                   },
                   "required": [
                     "messages"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/blocks/{blockId}/storage/upload-url": {
+      "get": {
+        "operationId": "query.getUploadUrl",
+        "summary": "Get upload URL for a file",
+        "description": "Used for the web client to get the bucket upload file.",
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filePath",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presignedUrl": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "fields": {}
+                      },
+                      "required": [
+                        "url"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "hasReachedStorageLimit": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "presignedUrl",
+                    "hasReachedStorageLimit"
                   ],
                   "additionalProperties": false
                 }
