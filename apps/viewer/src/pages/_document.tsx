@@ -2,7 +2,7 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 const Document = () => (
-  <Html>
+  <Html translate="no">
     <Head>
       <script src="/__env.js" />
     </Head>

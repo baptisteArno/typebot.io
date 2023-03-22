@@ -3,7 +3,7 @@ import { ColorModeScript } from '@chakra-ui/react'
 import { Html, Head, Main, NextScript } from 'next/document'
 
 const Document = () => (
-  <Html>
+  <Html translate="no">
     <Head>
       <link rel="icon" type="image/png" href="/favicon.png" />
       <link

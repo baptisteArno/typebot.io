@@ -124,7 +124,7 @@ const checkIfStorageLimitReached = async (
 ): Promise<boolean> => {
   const typebot = await prisma.typebot.findUnique({
     where: { id: typebotId },
-    include: {
+    select: {
       workspace: {
         select: {
           id: true,
@@ -146,7 +146,7 @@ const checkIfStorageLimitReached = async (
       storageUsed: { gt: 0 },
       result: {
         typebot: {
-          workspaceId: typebot.workspaceId,
+          workspaceId: typebot.workspace.id,
         },
       },
     },
