@@ -1,5 +1,42 @@
 # Changelog
 
+<a name="2.11.6"></a>
+## 2.11.6 (2023-03-22)
+
+### Added
+
+- 🔊 Add more error logs for sendEmail block [[3d8cb40](https://github.com/baptisteArno/typebot.io/commit/3d8cb40f06f3219ed0d7e86b4f7601e6c1bab240)]
+
+### Changed
+
+- ⚡ (theme) Add corner roundness customization [[65d33e0](https://github.com/baptisteArno/typebot.io/commit/65d33e04bc6b993d2c9e3d42ee7509cd90a88aed)]
+- ⚡ (theme) Support for image background [[3992227](https://github.com/baptisteArno/typebot.io/commit/3992227afc050e5adb23d7644b0b1df338728e2a)]
+- ♿ Attempt to disable translation to avoid app crashes [[1cf2195](https://github.com/baptisteArno/typebot.io/commit/1cf2195b4a1812e28e9dfb4a82a09d00863b1f5a)]
+- 🚸 (sendEmail) Improve file attachments label [[925cf68](https://github.com/baptisteArno/typebot.io/commit/925cf681194846d6ab551ffd8719bbafe3c228e8)]
+- 🚸 (variables) Allow null values in variable list [[0c39ae4](https://github.com/baptisteArno/typebot.io/commit/0c39ae41b6e8b191be496f8d9ff74c6f15090c9c)]
+- ⚡ (openai) Add gpt-4 models and temperature setting [[4109a84](https://github.com/baptisteArno/typebot.io/commit/4109a8489ccc21c22506ea89cd48ac38052e6f33)]
+- ♿ (phone) Remove spaces from format [[3d6d643](https://github.com/baptisteArno/typebot.io/commit/3d6d643a7e828fbe0b101c46aedcfe61a25d6634)]
+- 💄 (lp) Fix overflow issue on mobile [[b3e5887](https://github.com/baptisteArno/typebot.io/commit/b3e5887420bacc475f29f2b33727ac1a35b332c6)]
+
+### Fixed
+
+- 🐛 Fix focus after selecting mark in text editor [[02d25d0](https://github.com/baptisteArno/typebot.io/commit/02d25d0fc78a1d5266d64eadcc8aee2062e4627a)]
+- 🐛 Transform upload file redirect to a rewrite [[c52a284](https://github.com/baptisteArno/typebot.io/commit/c52a284013b81a7cc0b1c7a9cd8bc7df0f3aa57a)]
+- 💚 Fix Sentry sourcemap upload [[90cb075](https://github.com/baptisteArno/typebot.io/commit/90cb0750b848937d2d591c19ebf0f3e32f3c1085)]
+- 🐛 (js) Fix upload file in linked typebot [[b4536ab](https://github.com/baptisteArno/typebot.io/commit/b4536abc2f72c2d770d6d8c67566bd4188a6c665)]
+- ✏️ Fix old packages/db paths in documentation [[16c261a](https://github.com/baptisteArno/typebot.io/commit/16c261a8a539a7b3fc2962d68655e3da5b4aea26)]
+- 🐛 (sheets) Fix can&#x27;t start bot when filter is undefined [[be7c0fc](https://github.com/baptisteArno/typebot.io/commit/be7c0fc0d07ad4d5c007a609142923cc9e87302f)]
+- 💚 Fix isFirstOfKind filter [[f9964e3](https://github.com/baptisteArno/typebot.io/commit/f9964e3f60f3343cb7d40ed715e03a732b794077)]
+
+### Miscellaneous
+
+- 📝 Improve license scenarios with collapsibles [[9147c8c](https://github.com/baptisteArno/typebot.io/commit/9147c8cd14a766a2e0609439cfe5c0ec57f8e545)]
+- 🛂 Improve lite-badge style forcing [[a41c65f](https://github.com/baptisteArno/typebot.io/commit/a41c65f528b5d2a795efac8ea37d5541b66bc8b3)]
+- 📝 (openai) Add youtube video about the basic chatgpt template [[7340ec1](https://github.com/baptisteArno/typebot.io/commit/7340ec139c5627c4257bda9a398764a440fcb0ef)]
+- 📝 Improve License explanations [[1e67fd7](https://github.com/baptisteArno/typebot.io/commit/1e67fd7c3f78754637b4d6138e5c49c433e98339)]
+- 🧑‍💻 (js) Add data-blockid on input elements [[efdcec1](https://github.com/baptisteArno/typebot.io/commit/efdcec1c0c8e969d9478f3ac1cb867f371afb5b8)]
+
+
 <a name="2.11.5"></a>
 
 ## 2.11.5 (2023-03-15)
