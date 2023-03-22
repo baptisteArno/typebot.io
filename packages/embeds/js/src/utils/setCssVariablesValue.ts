@@ -137,8 +137,17 @@ const setTypebotBackground = (
     background?.type === BackgroundType.IMAGE
       ? cssVariableNames.general.bgImage
       : cssVariableNames.general.bgColor,
-    background.type === BackgroundType.NONE
-      ? 'transparent'
-      : background.content ?? '#ffffff'
+    parseBackgroundValue(background)
   )
+}
+
+const parseBackgroundValue = ({ type, content }: Background) => {
+  switch (type) {
+    case BackgroundType.NONE:
+      return 'transparent'
+    case BackgroundType.COLOR:
+      return content ?? '#ffffff'
+    case BackgroundType.IMAGE:
+      return `url(${content})`
+  }
 }

@@ -7,6 +7,8 @@ const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
 const guestAvatarUrl =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
+const backgroundImageUrl =
+  'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
 
 test.describe.parallel('Theme page', () => {
   test.describe('General', () => {
@@ -37,6 +39,20 @@ test.describe.parallel('Theme page', () => {
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'background-color',
         'rgb(42, 157, 143)'
+      )
+      await page.click('text=Color')
+
+      await page.click('text="Image"')
+      await page.getByRole('button', { name: 'Select an image' }).click()
+      await page
+        .getByPlaceholder('Paste the image link...')
+        .fill(backgroundImageUrl)
+      await expect(
+        page.getByRole('img', { name: 'Background image' })
+      ).toHaveAttribute('src', backgroundImageUrl)
+      await expect(page.locator('.typebot-container')).toHaveCSS(
+        'background-image',
+        `url("${backgroundImageUrl}")`
       )
     })
   })

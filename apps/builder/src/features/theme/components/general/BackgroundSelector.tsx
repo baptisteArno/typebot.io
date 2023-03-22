@@ -16,7 +16,8 @@ export const BackgroundSelector = ({
   onBackgroundChange,
 }: Props) => {
   const handleBackgroundTypeChange = (type: BackgroundType) =>
-    background && onBackgroundChange({ ...background, type })
+    background &&
+    onBackgroundChange({ ...background, type, content: undefined })
 
   const handleBackgroundContentChange = (content: string) =>
     background && onBackgroundChange({ ...background, content })

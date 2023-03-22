@@ -18,7 +18,7 @@ export const BackgroundTypeRadioButtons = ({
   backgroundType,
   onBackgroundTypeChange,
 }: Props) => {
-  const options = ['Color', 'None']
+  const options = ['Color', 'Image', 'None']
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'background-type',
@@ -55,10 +55,9 @@ export const RadioCard = (props: UseRadioProps & { children: ReactNode }) => {
       <Flex
         {...checkbox}
         cursor="pointer"
-        borderWidth="1px"
+        borderWidth="2px"
         borderRadius="md"
         _checked={{
-          borderWidth: '2px',
           borderColor: 'blue.400',
         }}
         _hover={{

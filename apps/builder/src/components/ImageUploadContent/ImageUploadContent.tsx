@@ -26,7 +26,7 @@ export const ImageUploadContent = ({
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<
     'link' | 'upload' | 'giphy' | 'emoji'
-  >(isEmojiEnabled ? 'emoji' : 'upload')
+  >(isEmojiEnabled ? 'emoji' : 'link')
 
   const handleSubmit = (url: string) => {
     onSubmit(url)
@@ -46,18 +46,18 @@ export const ImageUploadContent = ({
           </Button>
         )}
         <Button
-          variant={currentTab === 'upload' ? 'solid' : 'ghost'}
-          onClick={() => setCurrentTab('upload')}
-          size="sm"
-        >
-          Upload
-        </Button>
-        <Button
           variant={currentTab === 'link' ? 'solid' : 'ghost'}
           onClick={() => setCurrentTab('link')}
           size="sm"
         >
           Embed link
+        </Button>
+        <Button
+          variant={currentTab === 'upload' ? 'solid' : 'ghost'}
+          onClick={() => setCurrentTab('upload')}
+          size="sm"
+        >
+          Upload
         </Button>
         {isGiphyEnabled && (
           <Button
