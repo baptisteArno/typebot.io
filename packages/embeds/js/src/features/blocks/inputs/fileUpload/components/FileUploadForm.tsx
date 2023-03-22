@@ -116,7 +116,7 @@ export const FileUploadForm = (props: Props) => {
       <label
         for="dropzone-file"
         class={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
+          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
           (isDraggingOver() ? 'dragging-over' : '')
         }
         onDragOver={handleDragOver}
@@ -181,7 +181,7 @@ export const FileUploadForm = (props: Props) => {
         <div class="flex justify-end">
           <button
             class={
-              'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
+              'py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
             }
             on:click={() =>
               props.onSkip(
@@ -207,7 +207,7 @@ export const FileUploadForm = (props: Props) => {
             <Show when={selectedFiles().length}>
               <button
                 class={
-                  'secondary-button py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 mr-2'
+                  'secondary-button py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 mr-2'
                 }
                 on:click={clearFiles}
               >

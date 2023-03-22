@@ -1,8 +1,8 @@
+import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { Stack, Text } from '@chakra-ui/react'
 import { Background, BackgroundType } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
-import { BackgroundTypeRadioButtons } from './BackgroundTypeRadioButtons'
 
 type Props = {
   background?: Background
@@ -25,9 +25,14 @@ export const BackgroundSelector = ({
   return (
     <Stack spacing={4}>
       <Text>Background</Text>
-      <BackgroundTypeRadioButtons
-        backgroundType={background?.type ?? defaultBackgroundType}
-        onBackgroundTypeChange={handleBackgroundTypeChange}
+      <RadioButtons
+        options={[
+          BackgroundType.COLOR,
+          BackgroundType.IMAGE,
+          BackgroundType.NONE,
+        ]}
+        defaultValue={background?.type ?? defaultBackgroundType}
+        onSelect={handleBackgroundTypeChange}
       />
       <BackgroundContent
         background={background}

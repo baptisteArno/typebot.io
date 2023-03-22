@@ -13,7 +13,7 @@ export const GuestBubble = (props: Props) => (
     style={{ 'margin-left': '50px' }}
   >
     <span
-      class="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble"
+      class="px-4 py-2 mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble"
       data-testid="guest-bubble"
     >
       {props.message}

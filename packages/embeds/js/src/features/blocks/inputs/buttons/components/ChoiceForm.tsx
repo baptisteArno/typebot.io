@@ -49,7 +49,7 @@ export const ChoiceForm = (props: Props) => {
                 type="button"
                 on:click={() => handleClick(index())}
                 class={
-                  'py-2 px-4 text-left font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
+                  'py-2 px-4 text-left font-semibold transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
                   (selectedIndices().some(
                     (selectedIndex) => selectedIndex === index()
                   ) || !props.block.options?.isMultipleChoice

@@ -49,9 +49,9 @@ export const TextBubble = (props: Props) => {
   return (
     <div class="flex flex-col animate-fade-in">
       <div class="flex mb-2 w-full items-center">
-        <div class={'flex relative items-start typebot-host-bubble'}>
+        <div class="flex relative items-start typebot-host-bubble">
           <div
-            class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing "
+            class="flex items-center absolute px-4 py-2 bubble-typing "
             style={{
               width: isTyping() ? '64px' : '100%',
               height: isTyping() ? '32px' : '100%',

@@ -23,6 +23,8 @@
   --typebot-header-bg-color: #ffffff;
   --typebot-header-color: #303235;
 
+  --typebot-border-radius: 6px;
+
   /* Phone input */
   --PhoneInputCountryFlag-borderColor: transparent;
   --PhoneInput-color--focus: transparent;
@@ -127,15 +129,11 @@ textarea {
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
-.custom-header {
-  color: var(--typebot-header-color);
-  background-color: var(--typebot-header-bg-color);
-}
-
 .typebot-button {
   color: var(--typebot-button-color);
   background-color: var(--typebot-button-bg-color);
   border: 1px solid var(--typebot-button-bg-color);
+  border-radius: var(--typebot-border-radius);
 }
 
 .typebot-button.selectable {
@@ -151,17 +149,26 @@ textarea {
 .typebot-host-bubble > .bubble-typing {
   background-color: var(--typebot-host-bubble-bg-color);
   border: var(--typebot-host-bubble-border);
+  border-radius: 6px;
+}
+
+.typebot-host-bubble img,
+.typebot-host-bubble iframe,
+.typebot-host-bubble video {
+  border-radius: var(--typebot-border-radius);
 }
 
 .typebot-guest-bubble {
   color: var(--typebot-guest-bubble-color);
   background-color: var(--typebot-guest-bubble-bg-color);
+  border-radius: 6px;
 }
 
 .typebot-input {
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
   box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: var(--typebot-border-radius);
 }
 
 .typebot-input-error-message {
@@ -202,6 +209,7 @@ textarea {
 
 .upload-progress-bar {
   background-color: var(--typebot-button-bg-color);
+  border-radius: var(--typebot-border-radius);
 }
 
 .total-files-indicator {
@@ -221,15 +229,22 @@ textarea {
 .secondary-button {
   background-color: var(--typebot-host-bubble-bg-color);
   color: var(--typebot-host-bubble-color);
+  border-radius: var(--typebot-border-radius);
 }
 
 .typebot-country-select {
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
+  border-radius: var(--typebot-border-radius);
 }
 
 .typebot-date-input {
   color-scheme: light;
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
+  border-radius: var(--typebot-border-radius);
+}
+
+.typebot-popup-blocked-toast {
+  border-radius: var(--typebot-border-radius);
 }

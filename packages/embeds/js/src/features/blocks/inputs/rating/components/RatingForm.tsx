@@ -89,7 +89,7 @@ const RatingButton = (props: RatingButtonProps) => {
             props.onClick(props.idx)
           }}
           class={
-            'py-2 px-4 mr-2 mb-2 text-left font-semibold rounded-md transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
+            'py-2 px-4 mr-2 mb-2 text-left font-semibold transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
             (props.isOneClickSubmitEnabled ||
             (isDefined(props.rating) && props.idx <= props.rating)
               ? ''

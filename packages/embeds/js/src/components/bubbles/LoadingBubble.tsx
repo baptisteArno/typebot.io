@@ -5,7 +5,7 @@ export const LoadingBubble = () => (
     <div class="flex mb-2 w-full items-center">
       <div class={'flex relative items-start typebot-host-bubble'}>
         <div
-          class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing "
+          class="flex items-center absolute px-4 py-2 bubble-typing "
           style={{
             width: '64px',
             height: '32px',

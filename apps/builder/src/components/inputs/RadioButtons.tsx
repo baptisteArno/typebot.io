@@ -7,35 +7,32 @@ import {
   useRadioGroup,
   UseRadioProps,
 } from '@chakra-ui/react'
-import { BackgroundType } from '@typebot.io/schemas'
 import { ReactNode } from 'react'
 
-type Props = {
-  backgroundType: BackgroundType
-  onBackgroundTypeChange: (type: BackgroundType) => void
+type Props<T extends string> = {
+  options: (T | { value: T; label: ReactNode })[]
+  defaultValue: T
+  onSelect: (newValue: T) => void
 }
-export const BackgroundTypeRadioButtons = ({
-  backgroundType,
-  onBackgroundTypeChange,
-}: Props) => {
-  const options = ['Color', 'Image', 'None']
-
+export const RadioButtons = <T extends string>({
+  options,
+  defaultValue,
+  onSelect,
+}: Props<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'background-type',
-    defaultValue: backgroundType,
-    onChange: (nextVal: string) =>
-      onBackgroundTypeChange(nextVal as BackgroundType),
+    defaultValue,
+    onChange: onSelect,
   })
 
   const group = getRootProps()
 
   return (
     <HStack {...group}>
-      {options.map((value) => {
-        const radio = getRadioProps({ value })
+      {options.map((item) => {
+        const radio = getRadioProps({ value: parseValue(item) })
         return (
-          <RadioCard key={value} {...radio}>
-            {value}
+          <RadioCard key={parseValue(item)} {...radio}>
+            {parseLabel(item)}
           </RadioCard>
         )
       })}
@@ -76,3 +73,9 @@ export const RadioCard = (props: UseRadioProps & { children: ReactNode }) => {
     </Box>
   )
 }
+
+const parseValue = (item: string | { value: string; label: ReactNode }) =>
+  typeof item === 'string' ? item : item.value
+
+const parseLabel = (item: string | { value: string; label: ReactNode }) =>
+  typeof item === 'string' ? item : item.label

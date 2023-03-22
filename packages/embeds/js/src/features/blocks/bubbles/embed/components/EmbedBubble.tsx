@@ -34,7 +34,7 @@ export const EmbedBubble = (props: Props) => {
           class={'flex relative z-10 items-start typebot-host-bubble w-full'}
         >
           <div
-            class="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
+            class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{
               width: isTyping() ? '64px' : '100%',
               height: isTyping() ? '32px' : '100%',
@@ -46,7 +46,7 @@ export const EmbedBubble = (props: Props) => {
             id="embed-bubble-content"
             src={props.content.url}
             class={
-              'w-full z-20 p-4 text-fade-in rounded-2xl ' +
+              'w-full z-20 p-4 text-fade-in ' +
               (isTyping() ? 'opacity-0' : 'opacity-100')
             }
             style={{

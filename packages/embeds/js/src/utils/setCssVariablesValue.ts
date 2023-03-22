@@ -59,11 +59,12 @@ const setChatTheme = (
   chatTheme: ChatTheme,
   documentStyle: CSSStyleDeclaration
 ) => {
-  const { hostBubbles, guestBubbles, buttons, inputs } = chatTheme
+  const { hostBubbles, guestBubbles, buttons, inputs, roundness } = chatTheme
   if (hostBubbles) setHostBubbles(hostBubbles, documentStyle)
   if (guestBubbles) setGuestBubbles(guestBubbles, documentStyle)
   if (buttons) setButtons(buttons, documentStyle)
   if (inputs) setInputs(inputs, documentStyle)
+  if (roundness) setRoundness(roundness, documentStyle)
 }
 
 const setHostBubbles = (
@@ -149,5 +150,22 @@ const parseBackgroundValue = ({ type, content }: Background) => {
       return content ?? '#ffffff'
     case BackgroundType.IMAGE:
       return `url(${content})`
+  }
+}
+
+const setRoundness = (
+  roundness: NonNullable<ChatTheme['roundness']>,
+  documentStyle: CSSStyleDeclaration
+) => {
+  switch (roundness) {
+    case 'none':
+      documentStyle.setProperty('--typebot-border-radius', '0')
+      break
+    case 'medium':
+      documentStyle.setProperty('--typebot-border-radius', '6px')
+      break
+    case 'large':
+      documentStyle.setProperty('--typebot-border-radius', '20px')
+      break
   }
 }

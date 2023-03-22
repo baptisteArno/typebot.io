@@ -34,9 +34,7 @@ export const EmailInput = (props: Props) => {
 
   return (
     <div
-      class={
-        'flex items-end justify-between rounded-lg pr-2 typebot-input w-full'
-      }
+      class={'flex items-end justify-between pr-2 typebot-input w-full'}
       data-testid="input"
       style={{
         'max-width': '350px',

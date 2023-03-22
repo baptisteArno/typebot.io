@@ -90,6 +90,32 @@ test.describe.parallel('Theme page', () => {
 
       await expect(page.locator('.typebot-container img')).toBeHidden()
 
+      // Roundness
+      await expect(page.getByRole('button', { name: 'Go' })).toHaveCSS(
+        'border-radius',
+        '6px'
+      )
+      await page
+        .getByRole('region', { name: 'Chat' })
+        .getByRole('radiogroup')
+        .locator('div')
+        .first()
+        .click()
+      await expect(page.getByRole('button', { name: 'Go' })).toHaveCSS(
+        'border-radius',
+        '0px'
+      )
+      await page
+        .getByRole('region', { name: 'Chat' })
+        .getByRole('radiogroup')
+        .locator('div')
+        .nth(2)
+        .click()
+      await expect(page.getByRole('button', { name: 'Go' })).toHaveCSS(
+        'border-radius',
+        '20px'
+      )
+
       // Host bubbles
       await page.click(
         '[data-testid="host-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=0'

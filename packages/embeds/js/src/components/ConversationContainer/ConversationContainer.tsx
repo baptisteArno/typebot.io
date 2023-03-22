@@ -157,7 +157,7 @@ export const ConversationContainer = (props: Props) => {
   return (
     <div
       ref={chatContainer}
-      class="overflow-y-scroll w-full min-h-full rounded px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth"
+      class="overflow-y-scroll w-full min-h-full px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth"
     >
       <For each={chatChunks()}>
         {(chatChunk, index) => (
