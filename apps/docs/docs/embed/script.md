@@ -1,4 +1,4 @@
-# Script
+# Script embed snippet
 
 The script embed option is useful only if you don't have access to the HTML tree of your application or if your website builder only allows you to inline script snippets.
 

@@ -83,32 +83,8 @@ Or a random ID:
 Math.round(Math.random() * 1000000)
 ```
 
-## Current URL
-
-A popular request also is to set a variable to the current URL. Here is the value that should be inserted:
-
-```js
-window.location.href
-```
-
-:::caution
-It will not give you the parent URL if you embed the bot on your site.
-A more bulletproof option is to pass the URL as a prefilled variable in the embed code options. You can find an example [here](/embed/html-javascript#additional-configuration).
+:::note
+Keep in mind that the code is executed on the server. So you don't have access to browser variables such as `window` or `document`.
 :::
 
-## Extract a cookie
-
-This code allows you to extract the value of a cookie called "my_cookie":
-
-```js
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop().split(';').shift()
-  return 'not found'
-}
-
-return getCookie('my_cookie')
-```
-
-As you can see the code can also be multi-line. The Set variable block will get the value following the `return` statement.
+The code can also be multi-line. The Set variable block will get the value following the `return` statement.
