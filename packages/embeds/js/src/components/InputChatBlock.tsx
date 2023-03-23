@@ -66,7 +66,10 @@ export const InputChatBlock = (props: Props) => {
         )}
       </Match>
       <Match when={isNotDefined(answer())}>
-        <div class="flex justify-end animate-fade-in">
+        <div
+          class="flex justify-end animate-fade-in"
+          data-blockid={props.block.id}
+        >
           {props.hasHostAvatar && (
             <div
               class={
