@@ -21,29 +21,34 @@ export const parseVariables =
   ) =>
   (text: string | undefined): string => {
     if (!text || text === '') return ''
-    return text.replace(/\{\{(.*?)\}\}/g, (_, fullVariableString) => {
-      const matchedVarName = fullVariableString.replace(/{{|}}/g, '')
-      const variable = variables.find((variable) => {
-        return (
-          matchedVarName === variable.name &&
-          (options.fieldToParse === 'id' || isDefined(variable.value))
+    // Capture {{variable}} and ${{{variable}}} (variables in template litterals)
+    const pattern = /\{\{([^{}]+)\}\}|\$\{\{([^{}]+)\}\}/g
+    return text.replace(
+      pattern,
+      (_, nameInCurlyBraces, nameInTemplateLitteral) => {
+        const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral
+        const variable = variables.find((variable) => {
+          return (
+            matchedVarName === variable.name &&
+            (options.fieldToParse === 'id' || isDefined(variable.value))
+          )
+        }) as VariableWithValue | undefined
+        if (!variable) return ''
+        if (options.fieldToParse === 'id') return variable.id
+        const { value } = variable
+        if (options.escapeForJson)
+          return jsonParse(
+            typeof value !== 'string' ? JSON.stringify(value) : value
+          )
+        const parsedValue = safeStringify(
+          options.takeLatestIfList && Array.isArray(value)
+            ? value[value.length - 1]
+            : value
         )
-      }) as VariableWithValue | undefined
-      if (!variable) return ''
-      if (options.fieldToParse === 'id') return variable.id
-      const { value } = variable
-      if (options.escapeForJson)
-        return jsonParse(
-          typeof value !== 'string' ? JSON.stringify(value) : value
-        )
-      const parsedValue = safeStringify(
-        options.takeLatestIfList && Array.isArray(value)
-          ? value[value.length - 1]
-          : value
-      )
-      if (!parsedValue) return ''
-      return parsedValue
-    })
+        if (!parsedValue) return ''
+        return parsedValue
+      }
+    )
   }
 
 const jsonParse = (str: string) =>

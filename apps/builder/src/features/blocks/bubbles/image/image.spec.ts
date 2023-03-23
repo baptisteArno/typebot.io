@@ -25,6 +25,7 @@ test.describe.parallel('Image bubble block', () => {
       await page.goto(`/typebots/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
+      await page.getByRole('button', { name: 'Upload' }).click()
       await page.setInputFiles('input[type="file"]', getTestAsset('avatar.jpg'))
       await expect(page.locator('img')).toHaveAttribute(
         'src',
