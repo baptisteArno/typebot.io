@@ -3,21 +3,24 @@ title: Builder
 ---
 
 import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
+import { Asterix } from '../../../src/js/Asterix.jsx'
 
 # Builder configuration
 
+Parameters marked with <Asterix/> are required.
+
 ## General
 
-| Parameter              | Default | Description                                                                                                                                                                                                                                 |
-| ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DATABASE_URL           |         | The database URL                                                                                                                                                                                                                            |
-| ENCRYPTION_SECRET      |         | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
-| ADMIN_EMAIL            |         | The email that will get a "Pro" plan on user creation                                                                                                                                                                                       |
-| NEXTAUTH_URL           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
-| NEXT_PUBLIC_VIEWER_URL |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
-| NEXTAUTH_URL_INTERNAL  |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.                                      |
-| DEFAULT_WORKSPACE_PLAN | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`                                       |
-| DISABLE_SIGNUP         | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                                                         |
+| Parameter                         | Default | Description                                                                                                                                                                                                                                 |
+| --------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DATABASE_URL <Asterix/>           |         | The database URL                                                                                                                                                                                                                            |
+| ENCRYPTION_SECRET <Asterix/>      |         | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
+| NEXTAUTH_URL <Asterix/>           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
+| NEXT_PUBLIC_VIEWER_URL <Asterix/> |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
+| ADMIN_EMAIL                       |         | The email that will get a "Pro" plan on user creation. The associated user will be able to bypass database rules.                                                                                                                           |
+| NEXTAUTH_URL_INTERNAL             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.                                      |
+| DEFAULT_WORKSPACE_PLAN            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`                                       |
+| DISABLE_SIGNUP                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                                                         |
 
 ## Email (Auth, notifications)
 
