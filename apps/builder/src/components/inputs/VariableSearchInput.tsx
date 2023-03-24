@@ -179,6 +179,7 @@ export const VariableSearchInput = ({
             onFocus={onOpen}
             onKeyDown={handleKeyUp}
             placeholder={inputProps.placeholder ?? 'Select a variable'}
+            autoComplete="off"
             {...inputProps}
           />
         </PopoverAnchor>

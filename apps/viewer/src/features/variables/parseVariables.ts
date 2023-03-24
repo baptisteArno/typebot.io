@@ -22,10 +22,11 @@ export const parseVariables =
   (text: string | undefined): string => {
     if (!text || text === '') return ''
     // Capture {{variable}} and ${{{variable}}} (variables in template litterals)
-    const pattern = /\{\{([^{}]+)\}\}|\$\{\{([^{}]+)\}\}/g
+    const pattern = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
     return text.replace(
       pattern,
-      (_, nameInCurlyBraces, nameInTemplateLitteral) => {
+      (_full, nameInCurlyBraces, _dollarSign, nameInTemplateLitteral) => {
+        const dollarSign = _dollarSign ?? ''
         const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral
         const variable = variables.find((variable) => {
           return (
@@ -33,19 +34,22 @@ export const parseVariables =
             (options.fieldToParse === 'id' || isDefined(variable.value))
           )
         }) as VariableWithValue | undefined
-        if (!variable) return ''
-        if (options.fieldToParse === 'id') return variable.id
+        if (!variable) return dollarSign + ''
+        if (options.fieldToParse === 'id') return dollarSign + variable.id
         const { value } = variable
         if (options.escapeForJson)
-          return jsonParse(
-            typeof value !== 'string' ? JSON.stringify(value) : value
+          return (
+            dollarSign +
+            jsonParse(typeof value !== 'string' ? JSON.stringify(value) : value)
           )
-        const parsedValue = safeStringify(
-          options.takeLatestIfList && Array.isArray(value)
-            ? value[value.length - 1]
-            : value
-        )
-        if (!parsedValue) return ''
+        const parsedValue =
+          dollarSign +
+          safeStringify(
+            options.takeLatestIfList && Array.isArray(value)
+              ? value[value.length - 1]
+              : value
+          )
+        if (!parsedValue) return dollarSign + ''
         return parsedValue
       }
     )
