@@ -1,9 +1,4 @@
-import {
-  Flex,
-  Stack,
-  useColorModeValue,
-  useEventListener,
-} from '@chakra-ui/react'
+import { Flex, Stack, useColorModeValue } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from '@/lib/plate'
@@ -84,14 +79,6 @@ const TextBubbleEditorContent = ({
     }
   }
 
-  useEventListener(
-    'pointerdown',
-    (e) => {
-      e.stopPropagation()
-    },
-    textEditorRef.current
-  )
-
   const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
@@ -115,6 +102,7 @@ const TextBubbleEditorContent = ({
       pos="relative"
       spacing={0}
       cursor="text"
+      className="prevent-group-drag"
       sx={{
         '.slate-ToolbarButton-active': {
           color: useColorModeValue('blue.500', 'blue.300') + ' !important',

@@ -28,6 +28,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
   useOutsideClick({
     ref: popoverRef,
     handler: onClose,
+    isEnabled: isOpen,
   })
 
   return (

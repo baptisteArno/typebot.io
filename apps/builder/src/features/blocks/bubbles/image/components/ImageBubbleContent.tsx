@@ -9,6 +9,7 @@ export const ImageBubbleContent = ({ block }: { block: ImageBubbleBlock }) => {
   ) : (
     <Box w="full">
       <Image
+        pointerEvents="none"
         src={
           containsVariables ? '/images/dynamic-image.png' : block.content?.url
         }

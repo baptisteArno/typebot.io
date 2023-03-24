@@ -204,6 +204,7 @@ export const BlockNode = ({
               onClick={handleClick}
               data-testid={`block`}
               w="full"
+              className="prevent-group-drag"
             >
               <HStack
                 flex="1"

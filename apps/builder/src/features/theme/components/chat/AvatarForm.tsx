@@ -44,6 +44,7 @@ export const AvatarForm = ({
   useOutsideClick({
     ref: popoverContainerRef,
     handler: onClose,
+    isEnabled: isOpen,
   })
 
   const isDefaultAvatar = !avatarProps?.url || avatarProps.url.includes('{{')

@@ -96,6 +96,7 @@ const NonMemoizedDraggableGroupNode = ({
     handler: () => setIsFocused(false),
     ref: groupRef,
     capture: true,
+    isEnabled: isFocused,
   })
 
   // When the group is moved from external action (e.g. undo/redo), update the current coordinates
@@ -154,8 +155,13 @@ const NonMemoizedDraggableGroupNode = ({
   useDrag(
     ({ first, last, offset: [offsetX, offsetY], event, target }) => {
       event.stopPropagation()
-      if ((target as HTMLElement).classList.contains('prevent-group-drag'))
+      if (
+        (target as HTMLElement)
+          .closest('.prevent-group-drag')
+          ?.classList.contains('prevent-group-drag')
+      )
         return
+
       if (first) {
         setIsFocused(true)
         setIsMouseDown(true)

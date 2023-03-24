@@ -60,6 +60,7 @@ export const VariableSearchInput = ({
   useOutsideClick({
     ref: dropdownRef,
     handler: onClose,
+    isEnabled: isOpen,
   })
 
   useEffect(() => {

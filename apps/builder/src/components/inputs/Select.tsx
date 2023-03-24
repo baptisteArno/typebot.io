@@ -61,10 +61,6 @@ export const Select = <T extends Item>({
     )
   )
 
-  const closeDropwdown = () => {
-    onClose()
-  }
-
   const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
     number | undefined
   >()
@@ -85,12 +81,20 @@ export const Select = <T extends Item>({
       : items
   ).slice(0, 50)
 
+  const closeDropdown = () => {
+    onClose()
+    setTimeout(() => {
+      setIsTouched(false)
+    }, dropdownCloseAnimationDuration)
+  }
+
   useOutsideClick({
     ref: dropdownRef,
-    handler: closeDropwdown,
+    handler: closeDropdown,
+    isEnabled: isOpen,
   })
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const updateInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isOpen) onOpen()
     if (!isTouched) setIsTouched(true)
     setInputValue(e.target.value)
@@ -101,10 +105,12 @@ export const Select = <T extends Item>({
     setInputValue(getItemLabel(item))
     onSelect?.(getItemValue(item), item)
     setKeyboardFocusIndex(undefined)
-    closeDropwdown()
+    closeDropdown()
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const updateFocusedDropdownItem = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
       e.preventDefault()
       handleItemClick(filteredItems[keyboardFocusIndex])()
@@ -138,13 +144,7 @@ export const Select = <T extends Item>({
     setInputValue('')
     onSelect?.(undefined)
     setKeyboardFocusIndex(undefined)
-    closeDropwdown()
-  }
-
-  const resetIsTouched = () => {
-    setTimeout(() => {
-      setIsTouched(false)
-    }, dropdownCloseAnimationDuration)
+    closeDropdown()
   }
 
   return (
@@ -183,10 +183,9 @@ export const Select = <T extends Item>({
               placeholder={
                 !isTouched && inputValue !== '' ? undefined : placeholder
               }
-              onBlur={resetIsTouched}
-              onChange={handleInputChange}
+              onChange={updateInputValue}
               onFocus={onOpen}
-              onKeyDown={handleKeyDown}
+              onKeyDown={updateFocusedDropdownItem}
               pr={selectedItem ? 16 : undefined}
             />
 
