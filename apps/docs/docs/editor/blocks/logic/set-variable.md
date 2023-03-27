@@ -65,6 +65,19 @@ is the same as
 return 'John' + 'Smith'
 ```
 
+:::note
+Variables in script are not parsed, they are evaluated. So it should be treated as if it were real Javascript variables.
+
+So, if you write `"{{My variable}}"`, it will parse the variable ID (something like `vclfqgqkdf000008mh3r6xakty`). You need to remove the double quotes to properly get the variable content value.
+
+For example,
+
+- ❌ `"{{URL base}}/path"` => `vclfqgqkdf000008mh3r6xakty/path`
+- ✅ `{{URL base}} + '/path'` => `https://domain.com/path`
+- ✅ `` `${{{URL base}}}/path` `` => `https://domain.com/path`
+
+:::
+
 ## Current Date
 
 You can create a `Submitted at` (or any other name) variable using this code:
