@@ -65,6 +65,7 @@ export const MetadataForm = ({
               defaultUrl={metadata.favIconUrl ?? ''}
               onSubmit={handleFavIconSubmit}
               isGiphyEnabled={false}
+              imageSize="thumb"
             />
           </PopoverContent>
         </Popover>

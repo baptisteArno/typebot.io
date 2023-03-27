@@ -91,6 +91,7 @@ export const AvatarForm = ({
                   <ImageUploadContent
                     filePath={uploadFilePath}
                     defaultUrl={avatarProps?.url}
+                    imageSize="thumb"
                     onSubmit={handleImageUrl}
                   />
                 </PopoverContent>

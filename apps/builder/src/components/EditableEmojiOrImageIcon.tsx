@@ -58,6 +58,7 @@ export const EditableEmojiOrImageIcon = ({
               defaultUrl={icon ?? ''}
               onSubmit={onChangeIcon}
               isGiphyEnabled={false}
+              isUnsplashEnabled={false}
               isEmojiEnabled={true}
               onClose={onClose}
             />
