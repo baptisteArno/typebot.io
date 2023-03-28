@@ -24,7 +24,7 @@ export const ThemeTemplates = ({
   const [selectedTab, setSelectedTab] = useState<Tab>('my-templates')
 
   return (
-    <Stack spacing={4} pb={12}>
+    <Stack spacing={4}>
       <HStack>
         <Button
           flex="1"

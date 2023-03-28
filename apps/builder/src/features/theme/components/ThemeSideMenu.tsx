@@ -57,7 +57,7 @@ export const ThemeSideMenu = () => {
       <Heading fontSize="xl" textAlign="center">
         Customize the theme
       </Heading>
-      <Accordion allowMultiple defaultIndex={[0]}>
+      <Accordion allowMultiple>
         <AccordionItem>
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
@@ -70,7 +70,7 @@ export const ThemeSideMenu = () => {
             </HStack>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4}>
+          <AccordionPanel pb={12}>
             {typebot && (
               <ThemeTemplates
                 selectedTemplateId={
