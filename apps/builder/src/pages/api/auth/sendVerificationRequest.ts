@@ -12,6 +12,7 @@ export const sendVerificationRequest = async ({ identifier, token }: Props) => {
     }/api/auth/callback/email?${new URLSearchParams({
       email: identifier,
       token,
+      callbackUrl: `${process.env.NEXTAUTH_URL}/signin`,
     }).toString()}`
     await sendMagicLinkEmail({ url, to: identifier })
   } catch (err) {
