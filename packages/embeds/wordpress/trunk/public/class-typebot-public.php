@@ -10,19 +10,19 @@ class Typebot_Public
       echo '<script>
       if(typeof window.typebotWpUser === "undefined"){
       window.typebotWpUser = {
-          wp_id:"' .
+          "WP ID":"' .
         $wp_user->ID .
         '",
-          wp_username:"' .
+          "WP Username":"' .
         $wp_user->user_login .
         '",
-          wp_email:"' .
+          "WP Email":"' .
         $wp_user->user_email .
         '",
-          wp_first_name:"' .
+          "WP First name":"' .
         $wp_user->user_firstname .
         '",
-          wp_last_name:"' .
+          "WP Last name":"' .
         $wp_user->user_lastname .
         '",
         }
@@ -65,7 +65,7 @@ class Typebot_Public
 					return windowPath !== excludePath;
 				})) {
           ' . get_option('init_snippet') . '
-          Typebot.setPrefilledVariables({ typebotWpUser });
+          Typebot.setPrefilledVariables({ ...typebotWpUser });
           
         }';
       }
@@ -101,7 +101,7 @@ class Typebot_Public
 
     $bot_initializer = '<script type="module">
     import Typebot from "' . $lib_url . '"
-    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { typebotWpUser } });</script>';
+    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...typebotWpUser } });</script>';
 
     return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
   }
