@@ -37,14 +37,14 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
         <HStack justify="space-between">
           <Text>Background color</Text>
           <ColorPicker
-            initialColor={buttonTheme?.backgroundColor}
+            defaultValue={buttonTheme?.backgroundColor}
             onColorChange={updateBackgroundColor}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Icon color</Text>
           <ColorPicker
-            initialColor={buttonTheme?.iconColor}
+            defaultValue={buttonTheme?.iconColor}
             onColorChange={updateIconColor}
           />
         </HStack>

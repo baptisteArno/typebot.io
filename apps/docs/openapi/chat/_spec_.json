@@ -2765,6 +2765,14 @@
                                           "placeholderColor"
                                         ],
                                         "additionalProperties": false
+                                      },
+                                      "roundness": {
+                                        "type": "string",
+                                        "enum": [
+                                          "none",
+                                          "medium",
+                                          "large"
+                                        ]
                                       }
                                     },
                                     "required": [
@@ -4145,6 +4153,14 @@
                                     "placeholderColor"
                                   ],
                                   "additionalProperties": false
+                                },
+                                "roundness": {
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "medium",
+                                    "large"
+                                  ]
                                 }
                               },
                               "required": [

@@ -24,7 +24,7 @@ import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextInputProps = {
   defaultValue?: string
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
   debounceTimeout?: number
   label?: ReactNode
   helperText?: ReactNode
@@ -66,7 +66,8 @@ export const TextInput = forwardRef(function TextInput(
     localValue.length ?? 0
   )
   const onChange = useDebouncedCallback(
-    _onChange,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    _onChange ?? (() => {}),
     env('E2E_TEST') === 'true' ? 0 : debounceTimeout
   )
 

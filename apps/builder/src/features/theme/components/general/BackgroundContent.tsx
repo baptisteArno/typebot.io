@@ -35,7 +35,7 @@ export const BackgroundContent = ({
         <Flex justify="space-between" align="center">
           <Text>Background color:</Text>
           <ColorPicker
-            initialColor={background.content ?? defaultBackgroundColor}
+            value={background.content ?? defaultBackgroundColor}
             onColorChange={handleContentChange}
           />
         </Flex>

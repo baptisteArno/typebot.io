@@ -49,28 +49,28 @@ export const PreviewMessageThemeSettings = ({
         <HStack justify="space-between">
           <Text>Background color</Text>
           <ColorPicker
-            initialColor={previewMessageTheme?.backgroundColor}
+            defaultValue={previewMessageTheme?.backgroundColor}
             onColorChange={updateBackgroundColor}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Text color</Text>
           <ColorPicker
-            initialColor={previewMessageTheme?.textColor}
+            defaultValue={previewMessageTheme?.textColor}
             onColorChange={updateTextColor}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Close button background</Text>
           <ColorPicker
-            initialColor={previewMessageTheme?.closeButtonBackgroundColor}
+            defaultValue={previewMessageTheme?.closeButtonBackgroundColor}
             onColorChange={updateCloseButtonBackgroundColor}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Close icon color</Text>
           <ColorPicker
-            initialColor={previewMessageTheme?.closeButtonIconColor}
+            defaultValue={previewMessageTheme?.closeButtonIconColor}
             onColorChange={updateCloseButtonIconColor}
           />
         </HStack>

@@ -41,7 +41,7 @@ export const FontSelector = ({
     <HStack justify="space-between" align="center">
       <Text>Font</Text>
       <AutocompleteInput
-        defaultValue={activeFont}
+        value={activeFont}
         items={googleFonts}
         onChange={handleFontSelected}
         withVariableButton={false}

@@ -19,14 +19,14 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={guestBubbles.backgroundColor}
+          value={guestBubbles.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
         <ColorPicker
-          initialColor={guestBubbles.color}
+          value={guestBubbles.color}
           onColorChange={handleTextChange}
         />
       </Flex>

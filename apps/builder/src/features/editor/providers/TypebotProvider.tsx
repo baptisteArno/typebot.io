@@ -1,9 +1,6 @@
 import {
   LogicBlockType,
   PublicTypebot,
-  ResultsTablePreferences,
-  Settings,
-  Theme,
   Typebot,
   Webhook,
 } from '@typebot.io/schemas'
@@ -45,16 +42,20 @@ import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/conver
 
 const autoSaveTimeout = 10000
 
-type UpdateTypebotPayload = Partial<{
-  theme: Theme
-  settings: Settings
-  publicId: string
-  name: string
-  icon: string
-  customDomain: string | null
-  resultsTablePreferences: ResultsTablePreferences
-  isClosed: boolean
-}>
+type UpdateTypebotPayload = Partial<
+  Pick<
+    Typebot,
+    | 'theme'
+    | 'selectedThemeTemplateId'
+    | 'settings'
+    | 'publicId'
+    | 'name'
+    | 'icon'
+    | 'customDomain'
+    | 'resultsTablePreferences'
+    | 'isClosed'
+  >
+>
 
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)

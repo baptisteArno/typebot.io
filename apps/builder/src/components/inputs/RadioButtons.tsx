@@ -11,15 +11,18 @@ import { ReactNode } from 'react'
 
 type Props<T extends string> = {
   options: (T | { value: T; label: ReactNode })[]
-  defaultValue: T
+  value?: T
+  defaultValue?: T
   onSelect: (newValue: T) => void
 }
 export const RadioButtons = <T extends string>({
   options,
+  value,
   defaultValue,
   onSelect,
 }: Props<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
+    value,
     defaultValue,
     onChange: onSelect,
   })

@@ -27,6 +27,7 @@ export const parseTestTypebot = (
   createdAt: new Date(),
   customDomain: null,
   icon: null,
+  selectedThemeTemplateId: null,
   isArchived: false,
   isClosed: false,
   resultsTablePreferences: null,

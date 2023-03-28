@@ -21,21 +21,18 @@ export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={inputs.backgroundColor}
+          value={inputs.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
-        <ColorPicker
-          initialColor={inputs.color}
-          onColorChange={handleTextChange}
-        />
+        <ColorPicker value={inputs.color} onColorChange={handleTextChange} />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Placeholder text:</Text>
         <ColorPicker
-          initialColor={inputs.placeholderColor}
+          value={inputs.placeholderColor}
           onColorChange={handlePlaceholderChange}
         />
       </Flex>

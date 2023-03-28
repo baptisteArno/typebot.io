@@ -1,3 +1,4 @@
+import { ThemeTemplate as ThemeTemplatePrisma } from '@typebot.io/prisma'
 import { z } from 'zod'
 import { BackgroundType } from './enums'
 
@@ -43,6 +44,15 @@ export const themeSchema = z.object({
   customCss: z.string().optional(),
 })
 
+export const themeTemplateSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  theme: themeSchema,
+  workspaceId: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+}) satisfies z.ZodType<ThemeTemplatePrisma>
+
 export const defaultTheme: Theme = {
   chat: {
     hostBubbles: { backgroundColor: '#F7F8FF', color: '#303235' },
@@ -67,3 +77,4 @@ export type GeneralTheme = z.infer<typeof generalThemeSchema>
 export type Background = z.infer<typeof backgroundSchema>
 export type ContainerColors = z.infer<typeof containerColorsSchema>
 export type InputColors = z.infer<typeof inputColorsSchema>
+export type ThemeTemplate = z.infer<typeof themeTemplateSchema>

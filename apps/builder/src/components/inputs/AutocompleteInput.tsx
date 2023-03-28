@@ -24,6 +24,7 @@ import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {
   items: string[]
+  value?: string
   defaultValue?: string
   debounceTimeout?: number
   placeholder?: string
@@ -40,6 +41,7 @@ export const AutocompleteInput = ({
   debounceTimeout,
   placeholder,
   withVariableButton = true,
+  value,
   defaultValue,
   label,
   moreInfoTooltip,
@@ -178,7 +180,7 @@ export const AutocompleteInput = ({
             <Input
               autoComplete="off"
               ref={inputRef}
-              value={inputValue}
+              value={value ?? inputValue}
               onChange={(e) => changeValue(e.target.value)}
               onFocus={onOpen}
               onBlur={updateCarretPosition}

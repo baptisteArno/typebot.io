@@ -19,14 +19,14 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={hostBubbles.backgroundColor}
+          value={hostBubbles.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
         <ColorPicker
-          initialColor={hostBubbles.color}
+          value={hostBubbles.color}
           onColorChange={handleTextChange}
         />
       </Flex>

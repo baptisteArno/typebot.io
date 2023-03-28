@@ -55,6 +55,7 @@ export const parseNewTypebot = ({
     groups: [startGroup],
     edges: [],
     variables: [],
+    selectedThemeTemplateId: null,
     theme: {
       ...defaultTheme,
       chat: {

@@ -65,7 +65,6 @@ export const CodeEditor = ({
   }
 
   const handleChange = (newValue: string) => {
-    if (isDefined(props.value)) return
     setValue(newValue)
   }
 

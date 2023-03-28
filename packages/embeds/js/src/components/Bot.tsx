@@ -159,21 +159,31 @@ const BotContent = (props: BotContentProps) => {
   })
 
   const injectCustomFont = () => {
+    const existingFont = document.getElementById('bot-font')
+    if (
+      existingFont
+        ?.getAttribute('href')
+        ?.includes(
+          props.initialChatReply.typebot?.theme?.general?.font ?? 'Open Sans'
+        )
+    )
+      return
     const font = document.createElement('link')
     font.href = `https://fonts.googleapis.com/css2?family=${
       props.initialChatReply.typebot?.theme?.general?.font ?? 'Open Sans'
     }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');')`
     font.rel = 'stylesheet'
+    font.id = 'bot-font'
     document.head.appendChild(font)
   }
 
   onMount(() => {
-    injectCustomFont()
     if (!botContainer) return
     resizeObserver.observe(botContainer)
   })
 
   createEffect(() => {
+    injectCustomFont()
     if (!botContainer) return
     setCssVariablesValue(props.initialChatReply.typebot.theme, botContainer)
   })
@@ -187,7 +197,7 @@ const BotContent = (props: BotContentProps) => {
     <div
       ref={botContainer}
       class={
-        'relative flex w-full h-full text-base overflow-hidden bg-cover flex-col items-center typebot-container ' +
+        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container ' +
         props.class
       }
     >

@@ -31,7 +31,7 @@ export const BackgroundSelector = ({
           BackgroundType.IMAGE,
           BackgroundType.NONE,
         ]}
-        defaultValue={background?.type ?? defaultBackgroundType}
+        value={background?.type ?? defaultBackgroundType}
         onSelect={handleBackgroundTypeChange}
       />
       <BackgroundContent

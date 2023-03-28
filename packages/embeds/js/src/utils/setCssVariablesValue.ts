@@ -134,6 +134,8 @@ const setTypebotBackground = (
   background: Background,
   documentStyle: CSSStyleDeclaration
 ) => {
+  documentStyle.setProperty(cssVariableNames.general.bgImage, null)
+  documentStyle.setProperty(cssVariableNames.general.bgColor, null)
   documentStyle.setProperty(
     background?.type === BackgroundType.IMAGE
       ? cssVariableNames.general.bgImage

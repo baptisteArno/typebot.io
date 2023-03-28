@@ -46,6 +46,7 @@ export const typebotSchema = z.object({
   edges: z.array(edgeSchema),
   variables: z.array(variableSchema),
   theme: themeSchema,
+  selectedThemeTemplateId: z.string().nullable(),
   settings: settingsSchema,
   createdAt: z.date(),
   updatedAt: z.date(),

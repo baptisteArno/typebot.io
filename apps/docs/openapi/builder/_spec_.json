@@ -2716,6 +2716,912 @@
           }
         }
       }
+    },
+    "/themeTemplates": {
+      "get": {
+        "operationId": "query.theme.listThemeTemplates",
+        "summary": "List theme templates",
+        "tags": [
+          "Workspace",
+          "Theme"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "themeTemplates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "object",
+                            "properties": {
+                              "general": {
+                                "type": "object",
+                                "properties": {
+                                  "font": {
+                                    "type": "string"
+                                  },
+                                  "background": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "Color",
+                                          "Image",
+                                          "None"
+                                        ]
+                                      },
+                                      "content": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "font",
+                                  "background"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "chat": {
+                                "type": "object",
+                                "properties": {
+                                  "hostAvatar": {
+                                    "type": "object",
+                                    "properties": {
+                                      "isEnabled": {
+                                        "type": "boolean"
+                                      },
+                                      "url": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "isEnabled"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "guestAvatar": {
+                                    "type": "object",
+                                    "properties": {
+                                      "isEnabled": {
+                                        "type": "boolean"
+                                      },
+                                      "url": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "isEnabled"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "hostBubbles": {
+                                    "type": "object",
+                                    "properties": {
+                                      "backgroundColor": {
+                                        "type": "string"
+                                      },
+                                      "color": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "backgroundColor",
+                                      "color"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "guestBubbles": {
+                                    "type": "object",
+                                    "properties": {
+                                      "backgroundColor": {
+                                        "type": "string"
+                                      },
+                                      "color": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "backgroundColor",
+                                      "color"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "buttons": {
+                                    "type": "object",
+                                    "properties": {
+                                      "backgroundColor": {
+                                        "type": "string"
+                                      },
+                                      "color": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "backgroundColor",
+                                      "color"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "inputs": {
+                                    "type": "object",
+                                    "properties": {
+                                      "backgroundColor": {
+                                        "type": "string"
+                                      },
+                                      "color": {
+                                        "type": "string"
+                                      },
+                                      "placeholderColor": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "backgroundColor",
+                                      "color",
+                                      "placeholderColor"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "roundness": {
+                                    "type": "string",
+                                    "enum": [
+                                      "none",
+                                      "medium",
+                                      "large"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "hostBubbles",
+                                  "guestBubbles",
+                                  "buttons",
+                                  "inputs"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "customCss": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "general",
+                              "chat"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "theme"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "themeTemplates"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/themeTemplates/{themeTemplateId}": {
+      "put": {
+        "operationId": "mutation.theme.saveThemeTemplate",
+        "summary": "Save theme template",
+        "tags": [
+          "Workspace",
+          "Theme"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "workspaceId": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "theme": {
+                    "type": "object",
+                    "properties": {
+                      "general": {
+                        "type": "object",
+                        "properties": {
+                          "font": {
+                            "type": "string"
+                          },
+                          "background": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "Color",
+                                  "Image",
+                                  "None"
+                                ]
+                              },
+                              "content": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "font",
+                          "background"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "chat": {
+                        "type": "object",
+                        "properties": {
+                          "hostAvatar": {
+                            "type": "object",
+                            "properties": {
+                              "isEnabled": {
+                                "type": "boolean"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "isEnabled"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "guestAvatar": {
+                            "type": "object",
+                            "properties": {
+                              "isEnabled": {
+                                "type": "boolean"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "isEnabled"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "hostBubbles": {
+                            "type": "object",
+                            "properties": {
+                              "backgroundColor": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "backgroundColor",
+                              "color"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "guestBubbles": {
+                            "type": "object",
+                            "properties": {
+                              "backgroundColor": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "backgroundColor",
+                              "color"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "buttons": {
+                            "type": "object",
+                            "properties": {
+                              "backgroundColor": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "backgroundColor",
+                              "color"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "inputs": {
+                            "type": "object",
+                            "properties": {
+                              "backgroundColor": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "placeholderColor": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "backgroundColor",
+                              "color",
+                              "placeholderColor"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "roundness": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "medium",
+                              "large"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "hostBubbles",
+                          "guestBubbles",
+                          "buttons",
+                          "inputs"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "customCss": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "general",
+                      "chat"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "workspaceId",
+                  "name",
+                  "theme"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "themeTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "themeTemplate": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "theme": {
+                          "type": "object",
+                          "properties": {
+                            "general": {
+                              "type": "object",
+                              "properties": {
+                                "font": {
+                                  "type": "string"
+                                },
+                                "background": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "Color",
+                                        "Image",
+                                        "None"
+                                      ]
+                                    },
+                                    "content": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "font",
+                                "background"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "chat": {
+                              "type": "object",
+                              "properties": {
+                                "hostAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "hostBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "buttons": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "inputs": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    },
+                                    "placeholderColor": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color",
+                                    "placeholderColor"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "roundness": {
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "medium",
+                                    "large"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "hostBubbles",
+                                "guestBubbles",
+                                "buttons",
+                                "inputs"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "customCss": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "general",
+                            "chat"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "workspaceId": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "theme",
+                        "workspaceId",
+                        "createdAt",
+                        "updatedAt"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "themeTemplate"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "mutation.theme.deleteThemeTemplate",
+        "summary": "Delete a theme template",
+        "tags": [
+          "Workspace",
+          "Theme"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "themeTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "themeTemplate": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "theme": {
+                          "type": "object",
+                          "properties": {
+                            "general": {
+                              "type": "object",
+                              "properties": {
+                                "font": {
+                                  "type": "string"
+                                },
+                                "background": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "Color",
+                                        "Image",
+                                        "None"
+                                      ]
+                                    },
+                                    "content": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "font",
+                                "background"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "chat": {
+                              "type": "object",
+                              "properties": {
+                                "hostAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestAvatar": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "isEnabled"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "hostBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guestBubbles": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "buttons": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "inputs": {
+                                  "type": "object",
+                                  "properties": {
+                                    "backgroundColor": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    },
+                                    "placeholderColor": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "backgroundColor",
+                                    "color",
+                                    "placeholderColor"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "roundness": {
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "medium",
+                                    "large"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "hostBubbles",
+                                "guestBubbles",
+                                "buttons",
+                                "inputs"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "customCss": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "general",
+                            "chat"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "workspaceId": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "theme",
+                        "workspaceId",
+                        "createdAt",
+                        "updatedAt"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "themeTemplate"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
     }
   },
   "components": {

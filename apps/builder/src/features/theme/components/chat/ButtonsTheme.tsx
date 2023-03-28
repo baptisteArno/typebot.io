@@ -19,16 +19,13 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          initialColor={buttons.backgroundColor}
+          value={buttons.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
-        <ColorPicker
-          initialColor={buttons.color}
-          onColorChange={handleTextChange}
-        />
+        <ColorPicker value={buttons.color} onColorChange={handleTextChange} />
       </Flex>
     </Stack>
   )

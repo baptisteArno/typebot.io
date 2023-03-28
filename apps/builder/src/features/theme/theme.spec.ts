@@ -21,6 +21,7 @@ test.describe.parallel('Theme page', () => {
       await expect(page.locator('button >> text="Go"')).toBeVisible()
 
       // Font
+      await page.getByRole('button', { name: 'Font & Background' }).click()
       await page.getByRole('textbox').fill('Roboto Slab')
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'font-family',
@@ -210,6 +211,42 @@ test.describe.parallel('Theme page', () => {
       await expect(page.getByRole('button', { name: 'Go' })).toHaveCSS(
         'background-color',
         'rgb(0, 128, 0)'
+      )
+    })
+  })
+
+  test.describe('Theme templates', () => {
+    test('should reflect change in real-time', async ({ page }) => {
+      const typebotId = createId()
+      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
+        id: typebotId,
+      })
+      await page.goto(`/typebots/${typebotId}/theme`)
+      await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await page.getByRole('button', { name: 'Save current theme' }).click()
+      await page.getByPlaceholder('My template').fill('My awesome theme')
+      await page.getByRole('button', { name: 'Save' }).click()
+      await page.getByRole('button', { name: 'Open template menu' }).click()
+      await page.getByRole('menuitem', { name: 'Rename' }).click()
+      await expect(page.getByPlaceholder('My template')).toHaveValue(
+        'My awesome theme'
+      )
+      await page.getByPlaceholder('My template').fill('My awesome theme 2')
+      await page.getByRole('button', { name: 'Save as new template' }).click()
+      await expect(
+        page.getByRole('button', { name: 'Open template menu' })
+      ).toHaveCount(2)
+      await page
+        .getByRole('button', { name: 'Open template menu' })
+        .first()
+        .click()
+      await page.getByRole('menuitem', { name: 'Delete' }).click()
+      await expect(page.getByText('My awesome theme 2')).toBeHidden()
+      await page.getByRole('button', { name: 'Gallery' }).click()
+      await page.getByText('Typebot Dark').click()
+      await expect(page.getByTestId('host-bubble')).toHaveCSS(
+        'background-color',
+        'rgb(30, 41, 59)'
       )
     })
   })

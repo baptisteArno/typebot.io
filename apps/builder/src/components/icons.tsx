@@ -202,15 +202,6 @@ export const CodeIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const PencilIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-    <path d="M2 2l7.586 7.586"></path>
-    <circle cx="11" cy="11" r="2"></circle>
-  </Icon>
-)
-
 export const EditIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
@@ -589,5 +580,17 @@ export const LargeRadiusIcon = (props: IconProps) => (
       fill="black"
       mask="url(#path-1-inside-1_1009_5)"
     />
+  </Icon>
+)
+
+export const DropletIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+  </Icon>
+)
+
+export const TableIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path>
   </Icon>
 )
