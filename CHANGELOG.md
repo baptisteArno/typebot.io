@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="2.11.7"></a>
+## 2.11.7 (2023-03-28)
+
+### Changed
+
+- 🚸 (editor) Improve block dragging behavior [[92b92ed](https://github.com/baptisteArno/typebot.io/commit/92b92ed26806ac35f75e060fa6d53ef1e1ca597b)]
+
+### Fixed
+
+- 🐛 (auth) Fix email magic link pointing to internal auth URL [[5e91f4d](https://github.com/baptisteArno/typebot.io/commit/5e91f4d0efc3f681f34201b5da30ce645f1db1dd)]
+- 🐛 Fix parseVariables when preceding with a dollar sign [[5fb5176](https://github.com/baptisteArno/typebot.io/commit/5fb51766415bc69792a711848105b8f2c40df912)]
+- 🐛 (variables) Correctly parse variables in template literals [[fa31984](https://github.com/baptisteArno/typebot.io/commit/fa31984456898c4d3dd66c472a2b9423095f9f6f)]
+
+### Miscellaneous
+
+- 📝 Add better examples about variables evaluation on Set variable block [[787ac50](https://github.com/baptisteArno/typebot.io/commit/787ac50f90f9fcf9de3cade64e7ee01b60e68609)]
+- 📝 Add required asterix in apps config [[e1de63a](https://github.com/baptisteArno/typebot.io/commit/e1de63a405b8824561aa3d06bc242e71cc121345)]
+- 📝 Add explanations about how variables are evaluated in code [[69ee590](https://github.com/baptisteArno/typebot.io/commit/69ee5900b4ec5cd52045ce753ce88033cd17752d)]
+- 🩹 (js) Move data-blockid to the right element [[5090bad](https://github.com/baptisteArno/typebot.io/commit/5090badfa985c681c172484a7fd4514c097e077f)]
+
+
 <a name="2.11.6"></a>
 ## 2.11.6 (2023-03-22)
 
