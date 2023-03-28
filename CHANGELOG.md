@@ -1,5 +1,14 @@
 # Changelog
 
+<a name="2.11.8"></a>
+## 2.11.8 (2023-03-28)
+
+### Fixed
+
+- 🐛 (auth) Fix magic link callback url pointing to internal url [[2946f3e](https://github.com/baptisteArno/typebot.io/commit/2946f3ee3b0dd763c93234f3adb671c8de2bdd6a)]
+- 🐛 (wp) Fix wordpress user parsing [[cbeb275](https://github.com/baptisteArno/typebot.io/commit/cbeb2751640b195466f2073b311b32bd45b5d48e)]
+
+
 <a name="2.11.7"></a>
 ## 2.11.7 (2023-03-28)
 
