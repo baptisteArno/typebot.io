@@ -13,7 +13,7 @@ export const saveThemeTemplate = authenticatedProcedure
       path: '/themeTemplates/{themeTemplateId}',
       protect: true,
       summary: 'Save theme template',
-      tags: ['Workspace', 'Theme'],
+      tags: ['Theme template'],
     },
   })
   .input(

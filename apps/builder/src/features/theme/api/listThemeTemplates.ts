@@ -13,7 +13,7 @@ export const listThemeTemplates = authenticatedProcedure
       path: '/themeTemplates',
       protect: true,
       summary: 'List theme templates',
-      tags: ['Workspace', 'Theme'],
+      tags: ['Theme template'],
     },
   })
   .input(z.object({ workspaceId: z.string() }))

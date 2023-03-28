@@ -13,7 +13,7 @@ export const deleteThemeTemplate = authenticatedProcedure
       path: '/themeTemplates/{themeTemplateId}',
       protect: true,
       summary: 'Delete a theme template',
-      tags: ['Workspace', 'Theme'],
+      tags: ['Theme template'],
     },
   })
   .input(
