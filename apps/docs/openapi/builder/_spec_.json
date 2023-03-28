@@ -2722,8 +2722,7 @@
         "operationId": "query.theme.listThemeTemplates",
         "summary": "List theme templates",
         "tags": [
-          "Workspace",
-          "Theme"
+          "Theme template"
         ],
         "security": [
           {
@@ -2952,8 +2951,7 @@
         "operationId": "mutation.theme.saveThemeTemplate",
         "summary": "Save theme template",
         "tags": [
-          "Workspace",
-          "Theme"
+          "Theme template"
         ],
         "security": [
           {
@@ -3379,8 +3377,7 @@
         "operationId": "mutation.theme.deleteThemeTemplate",
         "summary": "Delete a theme template",
         "tags": [
-          "Workspace",
-          "Theme"
+          "Theme template"
         ],
         "security": [
           {

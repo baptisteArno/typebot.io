@@ -13,6 +13,7 @@ import {
   Box,
   Text,
   Image,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { BackgroundType, ThemeTemplate } from '@typebot.io/schemas'
 import { useState } from 'react'
@@ -33,6 +34,7 @@ export const ThemeTemplateCard = ({
   onClick: () => void
   onDeleteSuccess?: () => void
 }) => {
+  const borderWidth = useColorModeValue(undefined, '1px')
   const [isDeleting, setIsDeleting] = useState(false)
 
   const {
@@ -62,6 +64,7 @@ export const ThemeTemplateCard = ({
 
   return (
     <Stack
+      borderWidth={borderWidth}
       cursor="pointer"
       onClick={onClick}
       spacing={0}

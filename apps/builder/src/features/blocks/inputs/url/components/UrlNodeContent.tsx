@@ -12,5 +12,7 @@ export const UrlNodeContent = ({ placeholder, variableId }: Props) =>
   variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>{placeholder}</Text>
+    <Text color={'gray.500'} w="90%">
+      {placeholder}
+    </Text>
   )
