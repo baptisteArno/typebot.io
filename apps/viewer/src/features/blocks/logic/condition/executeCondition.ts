@@ -31,7 +31,8 @@ export const executeCondition = (
 }
 
 const executeComparison =
-  (variables: Variable[]) => (comparison: Comparison) => {
+  (variables: Variable[]) =>
+  (comparison: Comparison): boolean => {
     if (!comparison?.variableId) return false
     const inputValue =
       variables.find((v) => v.id === comparison.variableId)?.value ?? ''
@@ -39,6 +40,7 @@ const executeComparison =
       findUniqueVariableValue(variables)(comparison.value) ??
       parseVariables(variables)(comparison.value)
     if (isNotDefined(value)) return false
+    if (isNotDefined(comparison.comparisonOperator)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
         const contains = (a: string | null, b: string | null) => {
@@ -46,6 +48,13 @@ const executeComparison =
           return a.toLowerCase().trim().includes(b.toLowerCase().trim())
         }
         return compare(contains, inputValue, value)
+      }
+      case ComparisonOperators.NOT_CONTAINS: {
+        const notContains = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
+          return !a.toLowerCase().trim().includes(b.toLowerCase().trim())
+        }
+        return compare(notContains, inputValue, value)
       }
       case ComparisonOperators.EQUAL: {
         return compare((a, b) => a === b, inputValue, value)
@@ -75,6 +84,23 @@ const executeComparison =
       }
       case ComparisonOperators.IS_SET: {
         return isDefined(inputValue) && inputValue.length > 0
+      }
+      case ComparisonOperators.IS_EMPTY: {
+        return isNotDefined(inputValue) || inputValue.length === 0
+      }
+      case ComparisonOperators.STARTS_WITH: {
+        const startsWith = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
+          return a.toLowerCase().trim().startsWith(b.toLowerCase().trim())
+        }
+        return compare(startsWith, inputValue, value)
+      }
+      case ComparisonOperators.ENDS_WITH: {
+        const endsWith = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
+          return a.toLowerCase().trim().endsWith(b.toLowerCase().trim())
+        }
+        return compare(endsWith, inputValue, value)
       }
     }
   }

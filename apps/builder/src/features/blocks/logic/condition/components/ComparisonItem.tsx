@@ -38,13 +38,14 @@ export const ComparisonItem = ({
         items={Object.values(ComparisonOperators)}
         placeholder="Select an operator"
       />
-      {item.comparisonOperator !== ComparisonOperators.IS_SET && (
-        <TextInput
-          defaultValue={item.value ?? ''}
-          onChange={handleChangeValue}
-          placeholder="Type a value..."
-        />
-      )}
+      {item.comparisonOperator !== ComparisonOperators.IS_SET &&
+        item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
+          <TextInput
+            defaultValue={item.value ?? ''}
+            onChange={handleChangeValue}
+            placeholder="Type a value..."
+          />
+        )}
     </Stack>
   )
 }
