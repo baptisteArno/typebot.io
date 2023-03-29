@@ -13,6 +13,7 @@ export const TextLink = ({
   scroll,
   prefetch,
   isExternal,
+  noOfLines,
   ...textProps
 }: TextLinkProps) => (
   <Link
@@ -26,7 +27,9 @@ export const TextLink = ({
     <chakra.span textDecor="underline" display="inline-block" {...textProps}>
       {isExternal ? (
         <HStack spacing={1}>
-          <chakra.span>{children}</chakra.span>
+          <chakra.span noOfLines={noOfLines} maxW="100%">
+            {children}
+          </chakra.span>
           <ExternalLinkIcon />
         </HStack>
       ) : (

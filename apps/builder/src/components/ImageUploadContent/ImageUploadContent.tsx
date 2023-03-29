@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Button, Flex, HStack, Stack } from '@chakra-ui/react'
 import { UploadButton } from './UploadButton'
-import { GiphySearchForm } from './GiphySearchForm'
+import { GiphyPicker } from './GiphyPicker'
 import { TextInput } from '../inputs/TextInput'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
+import { UnsplashPicker } from './UnsplashPicker'
+
+type Tabs = 'link' | 'upload' | 'giphy' | 'emoji' | 'unsplash'
 
 type Props = {
   filePath: string
@@ -11,6 +14,8 @@ type Props = {
   defaultUrl?: string
   isEmojiEnabled?: boolean
   isGiphyEnabled?: boolean
+  isUnsplashEnabled?: boolean
+  imageSize?: 'small' | 'regular' | 'thumb'
   onSubmit: (url: string) => void
   onClose?: () => void
 }
@@ -22,11 +27,13 @@ export const ImageUploadContent = ({
   onSubmit,
   isEmojiEnabled = false,
   isGiphyEnabled = true,
+  isUnsplashEnabled = true,
+  imageSize = 'regular',
   onClose,
 }: Props) => {
-  const [currentTab, setCurrentTab] = useState<
-    'link' | 'upload' | 'giphy' | 'emoji'
-  >(isEmojiEnabled ? 'emoji' : 'link')
+  const [currentTab, setCurrentTab] = useState<Tabs>(
+    isEmojiEnabled ? 'emoji' : 'upload'
+  )
 
   const handleSubmit = (url: string) => {
     onSubmit(url)
@@ -68,12 +75,22 @@ export const ImageUploadContent = ({
             Giphy
           </Button>
         )}
+        {isUnsplashEnabled && (
+          <Button
+            variant={currentTab === 'unsplash' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('unsplash')}
+            size="sm"
+          >
+            Unsplash
+          </Button>
+        )}
       </HStack>
 
       <BodyContent
         filePath={filePath}
         includeFileName={includeFileName}
         tab={currentTab}
+        imageSize={imageSize}
         onSubmit={handleSubmit}
         defaultUrl={defaultUrl}
       />
@@ -86,12 +103,14 @@ const BodyContent = ({
   filePath,
   tab,
   defaultUrl,
+  imageSize,
   onSubmit,
 }: {
   includeFileName?: boolean
   filePath: string
-  tab: 'upload' | 'link' | 'giphy' | 'emoji'
+  tab: Tabs
   defaultUrl?: string
+  imageSize: 'small' | 'regular' | 'thumb'
   onSubmit: (url: string) => void
 }) => {
   switch (tab) {
@@ -109,6 +128,8 @@ const BodyContent = ({
       return <GiphyContent onNewUrl={onSubmit} />
     case 'emoji':
       return <EmojiSearchableList onEmojiSelected={onSubmit} />
+    case 'unsplash':
+      return <UnsplashPicker imageSize={imageSize} onImageSelect={onSubmit} />
   }
 }
 
@@ -146,5 +167,5 @@ const EmbedLinkContent = ({
 )
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => (
-  <GiphySearchForm onSubmit={onNewUrl} />
+  <GiphyPicker onSubmit={onNewUrl} />
 )
