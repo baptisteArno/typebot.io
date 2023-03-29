@@ -28,60 +28,66 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const handleProviderChange = (provider: PaymentProvider) => {
+  const updateProvider = (provider: PaymentProvider) => {
     onOptionsChange({
       ...options,
       provider,
     })
   }
 
-  const handleCredentialsSelect = (credentialsId?: string) => {
+  const updateCredentials = (credentialsId?: string) => {
     onOptionsChange({
       ...options,
       credentialsId,
     })
   }
 
-  const handleAmountChange = (amount?: string) =>
+  const updateAmount = (amount?: string) =>
     onOptionsChange({
       ...options,
       amount,
     })
 
-  const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) =>
+  const updateCurrency = (e: ChangeEvent<HTMLSelectElement>) =>
     onOptionsChange({
       ...options,
       currency: e.target.value,
     })
 
-  const handleNameChange = (name: string) =>
+  const updateName = (name: string) =>
     onOptionsChange({
       ...options,
       additionalInformation: { ...options.additionalInformation, name },
     })
 
-  const handleEmailChange = (email: string) =>
+  const updateEmail = (email: string) =>
     onOptionsChange({
       ...options,
       additionalInformation: { ...options.additionalInformation, email },
     })
 
-  const handlePhoneNumberChange = (phoneNumber: string) =>
+  const updatePhoneNumber = (phoneNumber: string) =>
     onOptionsChange({
       ...options,
       additionalInformation: { ...options.additionalInformation, phoneNumber },
     })
 
-  const handleButtonLabelChange = (button: string) =>
+  const updateButtonLabel = (button: string) =>
     onOptionsChange({
       ...options,
       labels: { ...options.labels, button },
     })
 
-  const handleSuccessLabelChange = (success: string) =>
+  const updateSuccessLabel = (success: string) =>
     onOptionsChange({
       ...options,
       labels: { ...options.labels, success },
+    })
+
+  const updateDescription = (description: string) =>
+    onOptionsChange({
+      ...options,
+      additionalInformation: { ...options.additionalInformation, description },
     })
 
   return (
@@ -89,7 +95,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       <Stack>
         <Text>Provider:</Text>
         <DropdownList
-          onItemSelect={handleProviderChange}
+          onItemSelect={updateProvider}
           items={Object.values(PaymentProvider)}
           currentItem={options.provider}
         />
@@ -101,7 +107,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             type="stripe"
             workspaceId={workspace.id}
             currentCredentialsId={options.credentialsId}
-            onCredentialsSelect={handleCredentialsSelect}
+            onCredentialsSelect={updateCredentials}
             onCreateNewClick={onOpen}
           />
         )}
@@ -109,7 +115,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       <HStack>
         <TextInput
           label="Price amount:"
-          onChange={handleAmountChange}
+          onChange={updateAmount}
           defaultValue={options.amount ?? ''}
           placeholder="30.00"
         />
@@ -118,7 +124,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           <Select
             placeholder="Select option"
             value={options.currency}
-            onChange={handleCurrencyChange}
+            onChange={updateCurrency}
           >
             {currencies.map((currency) => (
               <option value={currency.code} key={currency.code}>
@@ -130,13 +136,13 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       </HStack>
       <TextInput
         label="Button label:"
-        onChange={handleButtonLabelChange}
+        onChange={updateButtonLabel}
         defaultValue={options.labels.button}
         placeholder="Pay"
       />
       <TextInput
         label="Success message:"
-        onChange={handleSuccessLabelChange}
+        onChange={updateSuccessLabel}
         defaultValue={options.labels.success ?? 'Success'}
         placeholder="Success"
       />
@@ -148,21 +154,27 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           </AccordionButton>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TextInput
+              label="Description:"
+              defaultValue={options.additionalInformation?.description ?? ''}
+              onChange={updateDescription}
+              placeholder="A digital product"
+            />
+            <TextInput
               label="Name:"
               defaultValue={options.additionalInformation?.name ?? ''}
-              onChange={handleNameChange}
+              onChange={updateName}
               placeholder="John Smith"
             />
             <TextInput
               label="Email:"
               defaultValue={options.additionalInformation?.email ?? ''}
-              onChange={handleEmailChange}
+              onChange={updateEmail}
               placeholder="john@gmail.com"
             />
             <TextInput
               label="Phone number:"
               defaultValue={options.additionalInformation?.phoneNumber ?? ''}
-              onChange={handlePhoneNumberChange}
+              onChange={updatePhoneNumber}
               placeholder="+33XXXXXXXXX"
             />
           </AccordionPanel>
@@ -172,7 +184,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       <StripeConfigModal
         isOpen={isOpen}
         onClose={onClose}
-        onNewCredentials={handleCredentialsSelect}
+        onNewCredentials={updateCredentials}
       />
     </Stack>
   )

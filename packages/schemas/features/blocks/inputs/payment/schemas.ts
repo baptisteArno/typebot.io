@@ -23,6 +23,7 @@ export const paymentInputOptionsSchema = optionBaseSchema.merge(
     }),
     additionalInformation: z
       .object({
+        description: z.string().optional(),
         name: z.string().optional(),
         email: z.string().optional(),
         phoneNumber: z.string().optional(),
