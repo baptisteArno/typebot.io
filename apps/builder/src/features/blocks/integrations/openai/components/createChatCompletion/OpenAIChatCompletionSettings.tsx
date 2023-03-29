@@ -79,7 +79,7 @@ export const OpenAIChatCompletionSettings = ({
         items={chatCompletionModels}
         onItemSelect={updateModel}
       />
-      <Accordion allowToggle allowMultiple>
+      <Accordion allowMultiple>
         <AccordionItem>
           <AccordionButton>
             <Text w="full" textAlign="left">

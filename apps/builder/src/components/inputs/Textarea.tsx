@@ -22,6 +22,7 @@ type Props = {
   moreInfoTooltip?: string
   withVariableButton?: boolean
   isRequired?: boolean
+  placeholder?: string
   onChange: (value: string) => void
 } & Pick<TextareaProps, 'minH'>
 
@@ -32,8 +33,10 @@ export const Textarea = ({
   debounceTimeout = 1000,
   label,
   moreInfoTooltip,
+  placeholder,
   withVariableButton = true,
   isRequired,
+  minH,
 }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
   const [isTouched, setIsTouched] = useState(false)
@@ -89,6 +92,8 @@ export const Textarea = ({
       value={localValue}
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
+      placeholder={placeholder}
+      minH={minH}
     />
   )
 
