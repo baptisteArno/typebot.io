@@ -24,24 +24,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!workspaceId) return badRequest(res)
       const typebotIds = req.query.typebotIds as string[]
       const typebots = await prisma.typebot.findMany({
-        where: {
-          OR: [
-            {
-              workspace: { members: { some: { userId: user.id } } },
-              id: { in: typebotIds },
-              isArchived: { not: true },
-            },
-            {
-              id: { in: typebotIds },
-              collaborators: {
-                some: {
-                  userId: user.id,
-                },
+        where:
+          process.env.ADMIN_EMAIL === user.email
+            ? undefined
+            : {
+                OR: [
+                  {
+                    workspace: { members: { some: { userId: user.id } } },
+                    id: { in: typebotIds },
+                    isArchived: { not: true },
+                  },
+                  {
+                    id: { in: typebotIds },
+                    collaborators: {
+                      some: {
+                        userId: user.id,
+                      },
+                    },
+                    isArchived: { not: true },
+                  },
+                ],
               },
-              isArchived: { not: true },
-            },
-          ],
-        },
         orderBy: { createdAt: 'desc' },
         select: { name: true, id: true, groups: true, variables: true },
       })

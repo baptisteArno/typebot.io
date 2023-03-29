@@ -826,6 +826,9 @@
                                                       "additionalInformation": {
                                                         "type": "object",
                                                         "properties": {
+                                                          "description": {
+                                                            "type": "string"
+                                                          },
                                                           "name": {
                                                             "type": "string"
                                                           },
@@ -1146,9 +1149,13 @@
                                                                       "Equal to",
                                                                       "Not equal",
                                                                       "Contains",
+                                                                      "Does not contain",
                                                                       "Greater than",
                                                                       "Less than",
-                                                                      "Is set"
+                                                                      "Is set",
+                                                                      "Is empty",
+                                                                      "Starts with",
+                                                                      "Ends with"
                                                                     ]
                                                                   },
                                                                   "value": {
@@ -1584,9 +1591,13 @@
                                                                         "Equal to",
                                                                         "Not equal",
                                                                         "Contains",
+                                                                        "Does not contain",
                                                                         "Greater than",
                                                                         "Less than",
-                                                                        "Is set"
+                                                                        "Is set",
+                                                                        "Is empty",
+                                                                        "Starts with",
+                                                                        "Ends with"
                                                                       ]
                                                                     },
                                                                     "value": {
@@ -3521,6 +3532,9 @@
                                     "additionalInformation": {
                                       "type": "object",
                                       "properties": {
+                                        "description": {
+                                          "type": "string"
+                                        },
                                         "name": {
                                           "type": "string"
                                         },

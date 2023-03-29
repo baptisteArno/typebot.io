@@ -340,7 +340,14 @@ export const taxIdTypes = [
     code: 'HU TIN',
     name: 'Hungary',
     emoji: '🇭🇺',
-    placeholder: '12345678',
+    placeholder: '13804079-2-13',
+  },
+  {
+    type: 'hu_vat',
+    code: 'HU VAT',
+    name: 'Hungary',
+    emoji: '🇭🇺',
+    placeholder: 'HU12345678',
   },
   {
     type: 'id_npwp',
