@@ -99,7 +99,7 @@ importers:
       micro-cors: 0.1.1
       minio: 7.0.32
       next: 13.2.4
-      next-auth: 4.20.1
+      next-auth: 4.19.2
       nextjs-cors: ^2.1.2
       nodemailer: 6.9.1
       nprogress: 0.2.0
@@ -184,7 +184,7 @@ importers:
       micro-cors: 0.1.1
       minio: 7.0.32
       next: 13.2.4_6m24vuloj5ihw4zc5lbsktc4fu
-      next-auth: 4.20.1_3tbpwx46tlrk4rci3doelizria
+      next-auth: 4.19.2_3tbpwx46tlrk4rci3doelizria
       nextjs-cors: 2.1.2_next@13.2.4
       nodemailer: 6.9.1
       nprogress: 0.2.0
@@ -15281,8 +15281,8 @@ packages:
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  /next-auth/4.20.1_3tbpwx46tlrk4rci3doelizria:
-    resolution: {integrity: sha512-ZcTUN4qzzZ/zJYgOW0hMXccpheWtAol8QOMdMts+LYRcsPGsqf2hEityyaKyECQVw1cWInb9dF3wYwI5GZdEmQ==}
+  /next-auth/4.19.2_3tbpwx46tlrk4rci3doelizria:
+    resolution: {integrity: sha512-6V2YG3IJQVhgCAH7mvT3yopTW92gMdUrcwGX7NQ0dCreT/+axGua/JmVdarjec0C/oJukKpIYRgjMlV+L5ZQOQ==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5

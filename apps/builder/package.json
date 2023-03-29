@@ -72,7 +72,7 @@
     "micro-cors": "0.1.1",
     "minio": "7.0.32",
     "next": "13.2.4",
-    "next-auth": "4.20.1",
+    "next-auth": "4.19.2",
     "@typebot.io/next-international": "0.3.8",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "6.9.1",
