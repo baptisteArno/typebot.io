@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="2.11.9"></a>
+## 2.11.9 (2023-03-29)
+
+### Added
+
+- ✨ (theme) Add theme templates [[38ed575](https://github.com/baptisteArno/typebot.io/commit/38ed5758fe9e50804f75e15bc389a0cb89b248f1)]
+
+### Changed
+
+- 💄 Fix misc UI issues [[f13d7a1](https://github.com/baptisteArno/typebot.io/commit/f13d7a1a5ae1e5df1e11fc6d37b94948e5c655cf)]
+
+### Fixed
+
+- 🐛 (auth) Fix invalid redirects to internal url [[4986ec7](https://github.com/baptisteArno/typebot.io/commit/4986ec79f5f9714fc89f753779f17396a719334a)]
+
+### Miscellaneous
+
+- 🩹 (theme) Remove default opened accordion in Theme [[14d7ebd](https://github.com/baptisteArno/typebot.io/commit/14d7ebd58c3772da4706e02a73f5235b66fb6cd4)]
+- 📝 (api) Better theme template api section title [[94aadc8](https://github.com/baptisteArno/typebot.io/commit/94aadc83619499334f0e7124b23e93ff08be1e03)]
+
+
 <a name="2.11.8"></a>
 ## 2.11.8 (2023-03-28)
 
