@@ -59,10 +59,10 @@ export const FormFieldRowMin = styled.div`
   height: 50px;
 `;
 
-export const FormFieldRow = styled.div`
+export const FormFieldCol = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 export const ButtonOption = styled(OctaButton)`

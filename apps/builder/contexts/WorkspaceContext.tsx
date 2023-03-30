@@ -230,7 +230,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if(loaded) {
+    if(loaded && createVariable) {
       variables.map((variable) => deleteVariable(variable.id))
       octaPersonItems.map(personItem => {
         createVariable(personItem)
