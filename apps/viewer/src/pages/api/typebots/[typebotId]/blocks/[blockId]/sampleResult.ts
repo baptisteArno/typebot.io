@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 import { Typebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from '@typebot.io/lib/api'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { parseSampleResult } from '@/features/blocks/integrations/webhook/parseSampleResult'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .flatMap((g) => g.blocks)
       .find((s) => s.id === blockId)
     if (!block) return res.status(404).send({ message: 'Group not found' })
-    const linkedTypebots = await getLinkedTypebotsChildren({
+    const linkedTypebots = await getPreviouslyLinkedTypebots({
       isPreview: true,
       typebots: [typebot],
       user,

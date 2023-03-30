@@ -32,7 +32,7 @@ export const ImageUploadContent = ({
   onClose,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<Tabs>(
-    isEmojiEnabled ? 'emoji' : 'upload'
+    isEmojiEnabled ? 'emoji' : 'link'
   )
 
   const handleSubmit = (url: string) => {

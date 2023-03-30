@@ -4,7 +4,7 @@ import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Typebot, Webhook } from '@typebot.io/schemas'
 import { z } from 'zod'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/helpers/getLinkedTypebots'
+import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots'
 import { parseResultExample } from '../helpers/parseResultExample'
 
 export const getResultExample = authenticatedProcedure
@@ -63,7 +63,7 @@ export const getResultExample = authenticatedProcedure
     if (!block)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Block not found' })
 
-    const linkedTypebots = await getLinkedTypebots(typebot, user)
+    const linkedTypebots = await fetchLinkedTypebots(typebot, user)
 
     return {
       resultExample: await parseResultExample(

@@ -5,6 +5,7 @@ import { WorkspaceRole } from '@typebot.io/prisma'
 import { PublicTypebot, Typebot, typebotSchema } from '@typebot.io/schemas'
 import { omit } from '@typebot.io/lib'
 import { z } from 'zod'
+import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 
 export const listTypebots = authenticatedProcedure
   .meta({
@@ -31,33 +32,27 @@ export const listTypebots = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId, folderId }, ctx: { user } }) => {
+    const workspace = await prisma.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { members: true },
+    })
+    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    if (userRole === undefined)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
     const typebots = (await prisma.typebot.findMany({
       where: {
-        OR: [
-          {
-            isArchived: { not: true },
-            folderId: folderId === 'root' ? null : folderId,
-            workspace: {
-              id: workspaceId,
-              members: {
-                some: {
-                  userId: user.id,
-                  role: { not: WorkspaceRole.GUEST },
-                },
-              },
-            },
-          },
-          {
-            isArchived: { not: true },
-            workspace: {
-              id: workspaceId,
-              members: {
-                some: { userId: user.id, role: WorkspaceRole.GUEST },
-              },
-            },
-            collaborators: { some: { userId: user.id } },
-          },
-        ],
+        isArchived: { not: true },
+        folderId:
+          userRole === WorkspaceRole.GUEST
+            ? undefined
+            : folderId === 'root'
+            ? null
+            : folderId,
+        workspaceId,
+        collaborators:
+          userRole === WorkspaceRole.GUEST
+            ? { some: { userId: user.id } }
+            : undefined,
       },
       orderBy: { createdAt: 'desc' },
       select: {

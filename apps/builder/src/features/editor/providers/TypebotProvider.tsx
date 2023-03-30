@@ -24,7 +24,6 @@ import { dequal } from 'dequal'
 import { useToast } from '@/hooks/useToast'
 import { useTypebotQuery } from '@/hooks/useTypebotQuery'
 import { useUndo } from '../hooks/useUndo'
-import { useLinkedTypebots } from '@/hooks/useLinkedTypebots'
 import { updateTypebotQuery } from '../queries/updateTypebotQuery'
 import { updateWebhookQuery } from '@/features/blocks/integrations/webhook/queries/updateWebhookQuery'
 import { useAutoSave } from '@/hooks/useAutoSave'
@@ -39,6 +38,7 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertTypebotToPublicTypebot } from '@/features/publish/helpers/convertTypebotToPublicTypebot'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
+import { trpc } from '@/lib/trpc'
 
 const autoSaveTimeout = 10000
 
@@ -65,7 +65,7 @@ const typebotContext = createContext<
   {
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
-    linkedTypebots?: Typebot[]
+    linkedTypebots?: Pick<Typebot, 'id' | 'groups' | 'variables' | 'name'>[]
     webhooks: Webhook[]
     isReadOnly?: boolean
     isPublished: boolean
@@ -132,16 +132,21 @@ export const TypebotProvider = ({
         []
       ) ?? []
 
-  const { typebots: linkedTypebots } = useLinkedTypebots({
-    workspaceId: localTypebot?.workspaceId ?? undefined,
-    typebotId,
-    typebotIds: linkedTypebotIds,
-    onError: (error) =>
-      showToast({
-        title: 'Error while fetching linkedTypebots',
-        description: error.message,
-      }),
-  })
+  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
+    {
+      workspaceId: localTypebot?.workspaceId as string,
+      typebotIds: linkedTypebotIds.join(','),
+    },
+    {
+      enabled:
+        isDefined(localTypebot?.workspaceId) && linkedTypebotIds.length > 0,
+      onError: (error) =>
+        showToast({
+          title: 'Error while fetching linkedTypebots',
+          description: error.message,
+        }),
+    }
+  )
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) setLocalTypebot(undefined)
@@ -385,7 +390,7 @@ export const TypebotProvider = ({
       value={{
         typebot: localTypebot,
         publishedTypebot,
-        linkedTypebots,
+        linkedTypebots: linkedTypebotsData?.typebots ?? [],
         webhooks: webhooks ?? [],
         isReadOnly,
         isSavingLoading,

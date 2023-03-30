@@ -3,7 +3,7 @@ import { Typebot } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from '@typebot.io/lib/api'
 import { parseSampleResult } from '@/features/blocks/integrations/webhook/parseSampleResult'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { authenticateUser } from '@/helpers/authenticateUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })) as unknown as Typebot | undefined
     if (!typebot) return res.status(400).send({ message: 'Typebot not found' })
-    const linkedTypebots = await getLinkedTypebotsChildren({
+    const linkedTypebots = await getPreviouslyLinkedTypebots({
       isPreview: true,
       typebots: [typebot],
       user,

@@ -21,8 +21,8 @@ import Cors from 'cors'
 import prisma from '@/lib/prisma'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { parseSampleResult } from '@/features/blocks/integrations/webhook/parseSampleResult'
-import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/getLinkedTypebots'
-import { getLinkedTypebotsChildren } from '@/features/blocks/logic/typebotLink/getLinkedTypebotsChildren'
+import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/fetchLinkedTypebots'
+import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
@@ -127,11 +127,11 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebotsParents = await getLinkedTypebots({
+    const linkedTypebotsParents = await fetchLinkedTypebots({
       isPreview: !('typebotId' in typebot),
       typebotIds: parentTypebotIds,
     })
-    const linkedTypebotsChildren = await getLinkedTypebotsChildren({
+    const linkedTypebotsChildren = await getPreviouslyLinkedTypebots({
       isPreview: !('typebotId' in typebot),
       typebots: [typebot],
     })([])

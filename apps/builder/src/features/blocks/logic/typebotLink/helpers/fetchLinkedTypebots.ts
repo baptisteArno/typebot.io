@@ -1,27 +1,22 @@
 import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { User } from '@typebot.io/prisma'
-import {
-  LogicBlockType,
-  PublicTypebot,
-  Typebot,
-  TypebotLinkBlock,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
+import { LogicBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'
 
-export const getLinkedTypebots = async (
+export const fetchLinkedTypebots = async (
   typebot: Pick<PublicTypebot, 'groups'>,
   user?: User
 ): Promise<(Typebot | PublicTypebot)[]> => {
-  const linkedTypebotIds = (
-    typebot.groups
-      .flatMap((g) => g.blocks)
-      .filter(
-        (s) =>
-          s.type === LogicBlockType.TYPEBOT_LINK &&
-          isDefined(s.options.typebotId)
-      ) as TypebotLinkBlock[]
-  ).map((s) => s.options.typebotId as string)
+  const linkedTypebotIds = typebot.groups
+    .flatMap((group) => group.blocks)
+    .reduce<string[]>((typebotIds, block) => {
+      if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds
+      const typebotId = block.options.typebotId
+      if (!typebotId) return typebotIds
+      return typebotIds.includes(typebotId)
+        ? typebotIds
+        : [...typebotIds, typebotId]
+    }, [])
   if (linkedTypebotIds.length === 0) return []
   const typebots = (await ('typebotId' in typebot
     ? prisma.publicTypebot.findMany({
@@ -36,6 +31,6 @@ export const getLinkedTypebots = async (
               ],
             }
           : { id: { in: linkedTypebotIds } },
-      }))) as unknown as (Typebot | PublicTypebot)[]
+      }))) as (Typebot | PublicTypebot)[]
   return typebots
 }

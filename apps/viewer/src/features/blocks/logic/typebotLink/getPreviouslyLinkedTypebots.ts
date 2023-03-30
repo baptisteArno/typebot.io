@@ -1,5 +1,3 @@
-import prisma from '@/lib/prisma'
-import { canReadTypebots } from '@/helpers/api/dbRules'
 import { User } from '@typebot.io/prisma'
 import {
   LogicBlockType,
@@ -8,6 +6,7 @@ import {
   TypebotLinkBlock,
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
+import { fetchLinkedTypebots } from './fetchLinkedTypebots'
 
 type Props = {
   typebots: Pick<PublicTypebot, 'groups'>[]
@@ -15,7 +14,7 @@ type Props = {
   isPreview?: boolean
 }
 
-export const getLinkedTypebotsChildren =
+export const getPreviouslyLinkedTypebots =
   ({ typebots, user, isPreview }: Props) =>
   async (
     capturedLinkedBots: (Typebot | PublicTypebot)[]
@@ -39,23 +38,12 @@ export const getLinkedTypebotsChildren =
       )
       .filter(isDefined)
     if (linkedTypebotIds.length === 0) return capturedLinkedBots
-    const linkedTypebots = (
-      isPreview
-        ? await prisma.typebot.findMany({
-            where: user
-              ? {
-                  AND: [
-                    { id: { in: linkedTypebotIds } },
-                    canReadTypebots(linkedTypebotIds, user as User),
-                  ],
-                }
-              : { id: { in: linkedTypebotIds } },
-          })
-        : await prisma.publicTypebot.findMany({
-            where: { id: { in: linkedTypebotIds } },
-          })
-    ) as (Typebot | PublicTypebot)[]
-    return getLinkedTypebotsChildren({
+    const linkedTypebots = (await fetchLinkedTypebots({
+      user,
+      typebotIds: linkedTypebotIds,
+      isPreview,
+    })) as (Typebot | PublicTypebot)[]
+    return getPreviouslyLinkedTypebots({
       typebots: linkedTypebots,
       user,
       isPreview,

@@ -223,6 +223,7 @@ test.describe.parallel('Theme page', () => {
       })
       await page.goto(`/typebots/${typebotId}/theme`)
       await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await page.getByRole('button', { name: 'Templates New!' }).click()
       await page.getByRole('button', { name: 'Save current theme' }).click()
       await page.getByPlaceholder('My template').fill('My awesome theme')
       await page.getByRole('button', { name: 'Save' }).click()
