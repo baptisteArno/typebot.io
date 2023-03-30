@@ -48,19 +48,24 @@ export const getLinkedTypebots = authenticatedProcedure
         id: { in: typebotIdsArray },
         workspaceId,
       },
-      orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         groups: true,
         variables: true,
         name: true,
+        createdAt: true,
       },
-    })) as Pick<Typebot, 'id' | 'groups' | 'variables' | 'name'>[]
+    })) as Pick<Typebot, 'id' | 'groups' | 'variables' | 'name' | 'createdAt'>[]
+
+    // To avoid the Out of sort memory error, we sort the typebots manually
+    const sortedTypebots = typebots.sort((a, b) => {
+      return b.createdAt.getTime() - a.createdAt.getTime()
+    })
 
     if (!typebots)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebots found' })
 
     return {
-      typebots,
+      typebots: sortedTypebots,
     }
   })
