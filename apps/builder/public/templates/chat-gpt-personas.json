@@ -1,0 +1,836 @@
+{
+  "id": "qcueq3ttys1ddagic7jsimp4",
+  "version": "3",
+  "createdAt": "2023-03-30T15:45:12.464Z",
+  "updatedAt": "2023-03-30T15:45:12.464Z",
+  "icon": "🎭",
+  "name": "ChatGPT personas",
+  "folderId": null,
+  "groups": [
+    {
+      "id": "w99qhdr20tw02sfrfwkfc1tg",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "igbipfi63m6p9sl2f77uicuv",
+          "type": "start",
+          "label": "Start",
+          "groupId": "w99qhdr20tw02sfrfwkfc1tg",
+          "outgoingEdgeId": "x91dpk80zw2b4co4xra33cwg"
+        }
+      ],
+      "graphCoordinates": { "x": -61.95703125, "y": -242.94140625 }
+    },
+    {
+      "id": "bofjp88arodr4k0btv2esyqy",
+      "title": "",
+      "blocks": [
+        {
+          "id": "s6eky7dd3md9hto9y4wsuj7h",
+          "type": "text",
+          "content": {
+            "html": "<div>You need to add your OpenAI credentials to make this bot work. 🪄</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ],
+            "plainText": "You need to add your OpenAI credentials to make this bot work. 🪄"
+          },
+          "groupId": "bofjp88arodr4k0btv2esyqy"
+        },
+        {
+          "id": "nqsu9f13q5j8tt56bcbuto62",
+          "type": "text",
+          "content": {
+            "html": "<div>Once it&apos;s done, delete this group and connect the <span class=\"slate-bold\">Start</span> block with <span class=\"slate-bold\">Intro</span> 🚀</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Start" },
+                  { "text": " block with " },
+                  { "bold": true, "text": "Intro" },
+                  { "text": " 🚀" }
+                ]
+              }
+            ],
+            "plainText": "Once it's done, delete this group and connect the Start block with Intro 🚀"
+          },
+          "groupId": "bofjp88arodr4k0btv2esyqy"
+        }
+      ],
+      "graphCoordinates": { "x": 303.5859375, "y": -278.4921875 }
+    },
+    {
+      "id": "dmg57mgick51p8l5pnyqtyf9",
+      "title": "Explainer AI reply",
+      "blocks": [
+        {
+          "id": "xikptnw1lp1qxdqo10qhmwy1",
+          "type": "OpenAI",
+          "groupId": "dmg57mgick51p8l5pnyqtyf9",
+          "options": {
+            "task": "Create chat completion",
+            "model": "gpt-3.5-turbo",
+            "messages": [
+              {
+                "id": "mcc3hr1us468btys3moj20m9",
+                "role": "user",
+                "content": "Starting from now, I want you to explain things with simple words, as if I'm 11 years old."
+              },
+              {
+                "id": "i8i226uylkh84ovtpguaqc83",
+                "role": "Messages sequence ✨",
+                "content": {
+                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
+                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
+                }
+              }
+            ],
+            "responseMapping": [
+              {
+                "id": "brb5ccisi1tjiqf3ng0asaiq",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr",
+                "valueToExtract": "Message content"
+              }
+            ]
+          }
+        },
+        {
+          "id": "myldn1l1nfdwwm8qvza71rwv",
+          "type": "text",
+          "content": {
+            "html": "<div>{{Assistant Messages}}</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{Assistant Messages}}" }]
+              }
+            ],
+            "plainText": "{{Assistant Messages}}"
+          },
+          "groupId": "dmg57mgick51p8l5pnyqtyf9"
+        },
+        {
+          "id": "jz9mklagfikyukzs7n3kmlcf",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "x18iwzwmbzi9jjpnwij1861i",
+              "type": 0,
+              "blockId": "jz9mklagfikyukzs7n3kmlcf",
+              "content": "Continue",
+              "outgoingEdgeId": "mxl8lftsj3pbmj4g24ymxajo"
+            },
+            {
+              "id": "imx7otsonvm0takr02b4ulyo",
+              "type": 0,
+              "blockId": "jz9mklagfikyukzs7n3kmlcf",
+              "content": "Menu",
+              "outgoingEdgeId": "ny44r5sp69gne7obgshidhph"
+            }
+          ],
+          "groupId": "dmg57mgick51p8l5pnyqtyf9",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        }
+      ],
+      "graphCoordinates": { "x": 1053.2978106848623, "y": 919.9658659364646 }
+    },
+    {
+      "id": "fj5z2nx488htv0843kq6qeyk",
+      "title": "Professor AI reply",
+      "blocks": [
+        {
+          "id": "f2r11ibqq2ufrahfcl3gf6qi",
+          "type": "OpenAI",
+          "groupId": "fj5z2nx488htv0843kq6qeyk",
+          "options": {
+            "task": "Create chat completion",
+            "model": "gpt-3.5-turbo",
+            "messages": [
+              {
+                "id": "fxg16pnlnwuhfpz1r51xslbd",
+                "role": "user",
+                "content": "I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations."
+              },
+              {
+                "id": "biqljpsbqfkgno4m80s4j5p0",
+                "role": "Messages sequence ✨",
+                "content": {
+                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
+                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
+                }
+              }
+            ],
+            "responseMapping": [
+              {
+                "id": "brb5ccisi1tjiqf3ng0asaiq",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr",
+                "valueToExtract": "Message content"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sei88rrjcmpgm3vhxjvkofyt",
+          "type": "text",
+          "content": {
+            "html": "<div>{{Assistant Messages}}</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{Assistant Messages}}" }]
+              }
+            ],
+            "plainText": "{{Assistant Messages}}"
+          },
+          "groupId": "fj5z2nx488htv0843kq6qeyk"
+        },
+        {
+          "id": "h3qetbhcpxhawnqoymo0v3hw",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "zaylo8bstqx0wp6bpdbd1rak",
+              "type": 0,
+              "blockId": "h3qetbhcpxhawnqoymo0v3hw",
+              "content": "Continue",
+              "outgoingEdgeId": "q6o0cbyzxtvgls3jtz7rpdgw"
+            },
+            {
+              "id": "d5jv3sjpzobsrnhcp055mxkv",
+              "type": 0,
+              "blockId": "h3qetbhcpxhawnqoymo0v3hw",
+              "content": "Back to menu",
+              "outgoingEdgeId": "xjv7pkpgpwh169448t8pepg4"
+            }
+          ],
+          "groupId": "fj5z2nx488htv0843kq6qeyk",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        }
+      ],
+      "graphCoordinates": { "x": 1047.7979125005486, "y": 4.6530793670072885 }
+    },
+    {
+      "id": "csbysu8dr08zxr4i6hzvzjdf",
+      "title": "Copywriter AI reply",
+      "blocks": [
+        {
+          "id": "h2t5vbir3zh8eku55ozwb1du",
+          "type": "OpenAI",
+          "groupId": "csbysu8dr08zxr4i6hzvzjdf",
+          "options": {
+            "task": "Create chat completion",
+            "model": "gpt-3.5-turbo",
+            "messages": [
+              {
+                "id": "fxg16pnlnwuhfpz1r51xslbd",
+                "role": "user",
+                "content": "I want you to act as a copywriter. You will come up with copywriting advices that are engaging, imaginative, and captivating for the audience."
+              },
+              {
+                "id": "ynbhlcbsmy24pobiay9zezli",
+                "role": "Messages sequence ✨",
+                "content": {
+                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
+                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
+                }
+              }
+            ],
+            "responseMapping": [
+              {
+                "id": "brb5ccisi1tjiqf3ng0asaiq",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr",
+                "valueToExtract": "Message content"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h96lile0evtqa0jx24gmfo25",
+          "type": "text",
+          "content": {
+            "html": "<div>{{Assistant Messages}}</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{Assistant Messages}}" }]
+              }
+            ],
+            "plainText": "{{Assistant Messages}}"
+          },
+          "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+        },
+        {
+          "id": "u4jdl0gwv8965o2etxjk12w0",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "b6zif4xxe2cuiddc2oqayaxi",
+              "type": 0,
+              "blockId": "u4jdl0gwv8965o2etxjk12w0",
+              "content": "Continue",
+              "outgoingEdgeId": "jwydpoxngp2gvwanaruphe6s"
+            },
+            {
+              "id": "ooib3mqlfkazta6iol1ocloe",
+              "type": 0,
+              "blockId": "u4jdl0gwv8965o2etxjk12w0",
+              "content": "Back to menu",
+              "outgoingEdgeId": "gfrpgowch879p1qaj9jzsh01"
+            }
+          ],
+          "groupId": "csbysu8dr08zxr4i6hzvzjdf",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+        }
+      ],
+      "graphCoordinates": { "x": 1049.2780591838002, "y": 458.6633630669161 }
+    },
+    {
+      "id": "u6nm47oyneidmsebszp60t0m",
+      "title": "Menu",
+      "blocks": [
+        {
+          "id": "gphm5wy1md9cunwkdtbzg6nq",
+          "type": "text",
+          "content": {
+            "html": "<div>Who would you want to talk to?</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Who would you want to talk to?" }]
+              }
+            ],
+            "plainText": "Who would you want to talk to?"
+          },
+          "groupId": "u6nm47oyneidmsebszp60t0m"
+        },
+        {
+          "id": "yodc4upemgfx55m919mdz694",
+          "type": "Set variable",
+          "groupId": "u6nm47oyneidmsebszp60t0m",
+          "options": { "variableId": "vevnx5f5bojz0sv648x6ppcmv" }
+        },
+        {
+          "id": "rzlhl61q6dmh8n93usvqgyij",
+          "type": "Set variable",
+          "groupId": "u6nm47oyneidmsebszp60t0m",
+          "options": { "variableId": "vni6kwbch8zlq92dclgcivzyr" }
+        },
+        {
+          "id": "ohh19koa7up0nbke3146hnjp",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "rn0lqz1wvsg9lmc0jcl6ps8j",
+              "type": 0,
+              "blockId": "ohh19koa7up0nbke3146hnjp",
+              "content": "English professor",
+              "outgoingEdgeId": "ry7l8wcaidxw5izm7zoy83kj"
+            },
+            {
+              "id": "le84cls9vkmrxquvqw8bhp7h",
+              "type": 0,
+              "blockId": "ohh19koa7up0nbke3146hnjp",
+              "content": "Copywriter",
+              "outgoingEdgeId": "iy2htkuup0l908fsosg6d2qz"
+            },
+            {
+              "id": "mx4kgfgena53mxf87piwu1j2",
+              "type": 0,
+              "blockId": "ohh19koa7up0nbke3146hnjp",
+              "content": "Concept explainer",
+              "outgoingEdgeId": "kmex71jzzzekni4louuy3xbf"
+            }
+          ],
+          "groupId": "u6nm47oyneidmsebszp60t0m",
+          "options": {
+            "variableId": "vs7wwz29yyd21pfl4syeptdgi",
+            "buttonLabel": "Send",
+            "isMultipleChoice": false
+          }
+        }
+      ],
+      "graphCoordinates": { "x": -6.082566623728974, "y": 37.78518756228981 }
+    },
+    {
+      "id": "oemwa82xy3yt74gzilrojogl",
+      "title": "Jumps",
+      "blocks": [
+        {
+          "id": "nnzp5mle206cl3nnqlkqjau1",
+          "type": "Jump",
+          "groupId": "py4fhjf59krp2ahz7fpdtj6h",
+          "options": { "groupId": "irnu2zu8m2i4fu6485hxtra5" }
+        },
+        {
+          "id": "nm6vp6ifbjq7mttohwhibjvj",
+          "type": "Jump",
+          "groupId": "py4fhjf59krp2ahz7fpdtj6h",
+          "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
+        }
+      ],
+      "graphCoordinates": { "x": 1431.381871940994, "y": 1083.6262618288476 }
+    },
+    {
+      "id": "p1fh0e2y8sq4lhrskc4rb5z2",
+      "title": "Jumps",
+      "blocks": [
+        {
+          "id": "kyuvkruakbxjvxwgtjqti3gc",
+          "type": "Jump",
+          "groupId": "wjgoxgdh5dxvulkn013oad81",
+          "options": { "groupId": "h4mcrr5x6lvy1mz96k0ey3do" }
+        },
+        {
+          "id": "vywm4h8yz87ew4gjy4l6nmm3",
+          "type": "Jump",
+          "groupId": "wjgoxgdh5dxvulkn013oad81",
+          "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
+        }
+      ],
+      "graphCoordinates": { "x": 1436.5459311932382, "y": 679.7247165284323 }
+    },
+    {
+      "id": "ow2g8fv93xxrgpcabnx8uod8",
+      "title": "Jumps",
+      "blocks": [
+        {
+          "id": "qxgl1cscs38pfwzaj4pqsd46",
+          "type": "Jump",
+          "groupId": "uz4isdxf2lha8y98f5umzeb7",
+          "options": { "groupId": "m84gejzvl08ky6ynruiuszpc" }
+        },
+        {
+          "id": "m94q879l9yr1vx5xrbxlsj6q",
+          "type": "Jump",
+          "groupId": "uz4isdxf2lha8y98f5umzeb7",
+          "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
+        }
+      ],
+      "graphCoordinates": { "x": 1419.5687217931309, "y": 169.5335644029076 }
+    },
+    {
+      "id": "py719ungczkgz5f40zkw3tr2",
+      "title": "EN professor intro",
+      "blocks": [
+        {
+          "id": "qm3v36qb93ijnghdjgy9mcwf",
+          "type": "text",
+          "content": {
+            "html": "<div>Hi 👋</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
+            "plainText": "Hi 👋"
+          },
+          "groupId": "py719ungczkgz5f40zkw3tr2"
+        },
+        {
+          "id": "ln8d3vdq4shclzrxcy9rmxfg",
+          "type": "text",
+          "content": {
+            "html": "<div>I can help you translate things and perfect your English.</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "I can help you translate things and perfect your English."
+                  }
+                ]
+              }
+            ],
+            "plainText": "I can help you translate things and perfect your English."
+          },
+          "groupId": "py719ungczkgz5f40zkw3tr2"
+        },
+        {
+          "id": "r7yu488ugfif8hxy3e4sospb",
+          "type": "text",
+          "content": {
+            "html": "<div>How can I help?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "How can I help?" }] }
+            ],
+            "plainText": "How can I help?"
+          },
+          "groupId": "py719ungczkgz5f40zkw3tr2",
+          "outgoingEdgeId": "ripf74t9yicdze8xr2yrklyx"
+        }
+      ],
+      "graphCoordinates": { "x": 339.81492617236904, "y": 9.945652574763692 }
+    },
+    {
+      "id": "uyry49c9bm1pvk6t8i471l2d",
+      "title": "Copywriter intro",
+      "blocks": [
+        {
+          "id": "bbeedootn9m8eass0mqu3w4t",
+          "type": "text",
+          "content": {
+            "html": "<div>Hi 👋</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
+            "plainText": "Hi 👋"
+          },
+          "groupId": "uyry49c9bm1pvk6t8i471l2d"
+        },
+        {
+          "id": "chdghb0k27c4okwu9yky4ox4",
+          "type": "text",
+          "content": {
+            "html": "<div>I&apos;m an expert in copywriting.</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "I'm an expert in copywriting." }]
+              }
+            ],
+            "plainText": "I'm an expert in copywriting."
+          },
+          "groupId": "uyry49c9bm1pvk6t8i471l2d"
+        },
+        {
+          "id": "idp7w8c8zbkvl95oa1vquiml",
+          "type": "text",
+          "content": {
+            "html": "<div>How can I help?</div>",
+            "richText": [
+              { "type": "p", "children": [{ "text": "How can I help?" }] }
+            ],
+            "plainText": "How can I help?"
+          },
+          "groupId": "uyry49c9bm1pvk6t8i471l2d",
+          "outgoingEdgeId": "v0tfmbt8tpwwrieftvzg8lti"
+        }
+      ],
+      "graphCoordinates": { "x": 335.3081238025464, "y": 468.3681191076254 }
+    },
+    {
+      "id": "zfa8oj0a0tnlho9a67llulst",
+      "title": "Explainer intro",
+      "blocks": [
+        {
+          "id": "n96j3pf3m87aufcapx2ulr2n",
+          "type": "text",
+          "content": {
+            "html": "<div>Hi 👋</div>",
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
+            "plainText": "Hi 👋"
+          },
+          "groupId": "zfa8oj0a0tnlho9a67llulst"
+        },
+        {
+          "id": "wxk5z9yyiojkk9u3b5m6shax",
+          "type": "text",
+          "content": {
+            "html": "<div>I can explain concept with very simple terms.</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "I can explain concept with very simple terms." }
+                ]
+              }
+            ],
+            "plainText": "I can explain concept with very simple terms."
+          },
+          "groupId": "zfa8oj0a0tnlho9a67llulst"
+        },
+        {
+          "id": "ileqgg2r2kyh2zovpivr775s",
+          "type": "text",
+          "content": {
+            "html": "<div>What concept would you like me to explain?</div>",
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "What concept would you like me to explain?" }
+                ]
+              }
+            ],
+            "plainText": "What concept would you like me to explain?"
+          },
+          "groupId": "zfa8oj0a0tnlho9a67llulst",
+          "outgoingEdgeId": "v5bki4h7m1lnryhgzudnvvpx"
+        }
+      ],
+      "graphCoordinates": { "x": 326.98499608846544, "y": 928.6632806049557 }
+    },
+    {
+      "id": "m84gejzvl08ky6ynruiuszpc",
+      "title": "EN professor question",
+      "blocks": [
+        {
+          "id": "ovgk70u0kfxrbtz9dy4e040o",
+          "type": "text input",
+          "groupId": "m84gejzvl08ky6ynruiuszpc",
+          "options": {
+            "isLong": true,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vevnx5f5bojz0sv648x6ppcmv",
+            "isPrefillDisabled": true
+          },
+          "outgoingEdgeId": "vapajzlffxq1lgudxgm14g05"
+        }
+      ],
+      "graphCoordinates": { "x": 692.8604882239152, "y": 11.63391545939837 }
+    },
+    {
+      "id": "h4mcrr5x6lvy1mz96k0ey3do",
+      "title": "Copywriter question",
+      "blocks": [
+        {
+          "id": "emii43mtihiuy35gpp6b91d8",
+          "type": "text input",
+          "groupId": "h4mcrr5x6lvy1mz96k0ey3do",
+          "options": {
+            "isLong": true,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vevnx5f5bojz0sv648x6ppcmv",
+            "isPrefillDisabled": true
+          },
+          "outgoingEdgeId": "vtffpz6eh4n95kwlb8zpu7cz"
+        }
+      ],
+      "graphCoordinates": { "x": 692.3449852228088, "y": 462.38589908223906 }
+    },
+    {
+      "id": "irnu2zu8m2i4fu6485hxtra5",
+      "title": "Explainer question",
+      "blocks": [
+        {
+          "id": "e6rovxwxlizr54iy8nyi84pi",
+          "type": "text input",
+          "groupId": "irnu2zu8m2i4fu6485hxtra5",
+          "options": {
+            "isLong": false,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vevnx5f5bojz0sv648x6ppcmv",
+            "isPrefillDisabled": true
+          },
+          "outgoingEdgeId": "wv3t43ccf35mewn52liqtjg1"
+        }
+      ],
+      "graphCoordinates": { "x": 686.3012488543691, "y": 924.2085365228105 }
+    }
+  ],
+  "variables": [
+    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Messages" },
+    { "id": "vevnx5f5bojz0sv648x6ppcmv", "name": "User Messages" },
+    { "id": "vldefdrythqxfh9p9p38jvmb2", "name": "Prompt" },
+    { "id": "vs7wwz29yyd21pfl4syeptdgi", "name": "Persona" }
+  ],
+  "edges": [
+    {
+      "id": "ny44r5sp69gne7obgshidhph",
+      "to": {
+        "blockId": "nm6vp6ifbjq7mttohwhibjvj",
+        "groupId": "oemwa82xy3yt74gzilrojogl"
+      },
+      "from": {
+        "itemId": "imx7otsonvm0takr02b4ulyo",
+        "blockId": "jz9mklagfikyukzs7n3kmlcf",
+        "groupId": "dmg57mgick51p8l5pnyqtyf9"
+      }
+    },
+    {
+      "id": "mxl8lftsj3pbmj4g24ymxajo",
+      "to": {
+        "blockId": "nnzp5mle206cl3nnqlkqjau1",
+        "groupId": "oemwa82xy3yt74gzilrojogl"
+      },
+      "from": {
+        "itemId": "x18iwzwmbzi9jjpnwij1861i",
+        "blockId": "jz9mklagfikyukzs7n3kmlcf",
+        "groupId": "dmg57mgick51p8l5pnyqtyf9"
+      }
+    },
+    {
+      "id": "ry7l8wcaidxw5izm7zoy83kj",
+      "to": { "groupId": "py719ungczkgz5f40zkw3tr2" },
+      "from": {
+        "itemId": "rn0lqz1wvsg9lmc0jcl6ps8j",
+        "blockId": "ohh19koa7up0nbke3146hnjp",
+        "groupId": "u6nm47oyneidmsebszp60t0m"
+      }
+    },
+    {
+      "id": "ripf74t9yicdze8xr2yrklyx",
+      "to": { "groupId": "m84gejzvl08ky6ynruiuszpc" },
+      "from": {
+        "blockId": "r7yu488ugfif8hxy3e4sospb",
+        "groupId": "py719ungczkgz5f40zkw3tr2"
+      }
+    },
+    {
+      "id": "vapajzlffxq1lgudxgm14g05",
+      "to": { "groupId": "fj5z2nx488htv0843kq6qeyk" },
+      "from": {
+        "blockId": "ovgk70u0kfxrbtz9dy4e040o",
+        "groupId": "m84gejzvl08ky6ynruiuszpc"
+      }
+    },
+    {
+      "id": "q6o0cbyzxtvgls3jtz7rpdgw",
+      "to": {
+        "blockId": "qxgl1cscs38pfwzaj4pqsd46",
+        "groupId": "ow2g8fv93xxrgpcabnx8uod8"
+      },
+      "from": {
+        "itemId": "zaylo8bstqx0wp6bpdbd1rak",
+        "blockId": "h3qetbhcpxhawnqoymo0v3hw",
+        "groupId": "fj5z2nx488htv0843kq6qeyk"
+      }
+    },
+    {
+      "id": "xjv7pkpgpwh169448t8pepg4",
+      "to": {
+        "blockId": "m94q879l9yr1vx5xrbxlsj6q",
+        "groupId": "ow2g8fv93xxrgpcabnx8uod8"
+      },
+      "from": {
+        "itemId": "d5jv3sjpzobsrnhcp055mxkv",
+        "blockId": "h3qetbhcpxhawnqoymo0v3hw",
+        "groupId": "fj5z2nx488htv0843kq6qeyk"
+      }
+    },
+    {
+      "id": "v0tfmbt8tpwwrieftvzg8lti",
+      "to": { "groupId": "h4mcrr5x6lvy1mz96k0ey3do" },
+      "from": {
+        "blockId": "idp7w8c8zbkvl95oa1vquiml",
+        "groupId": "uyry49c9bm1pvk6t8i471l2d"
+      }
+    },
+    {
+      "id": "vtffpz6eh4n95kwlb8zpu7cz",
+      "to": { "groupId": "csbysu8dr08zxr4i6hzvzjdf" },
+      "from": {
+        "blockId": "emii43mtihiuy35gpp6b91d8",
+        "groupId": "h4mcrr5x6lvy1mz96k0ey3do"
+      }
+    },
+    {
+      "id": "iy2htkuup0l908fsosg6d2qz",
+      "to": { "groupId": "uyry49c9bm1pvk6t8i471l2d" },
+      "from": {
+        "itemId": "le84cls9vkmrxquvqw8bhp7h",
+        "blockId": "ohh19koa7up0nbke3146hnjp",
+        "groupId": "u6nm47oyneidmsebszp60t0m"
+      }
+    },
+    {
+      "id": "kmex71jzzzekni4louuy3xbf",
+      "to": { "groupId": "zfa8oj0a0tnlho9a67llulst" },
+      "from": {
+        "itemId": "mx4kgfgena53mxf87piwu1j2",
+        "blockId": "ohh19koa7up0nbke3146hnjp",
+        "groupId": "u6nm47oyneidmsebszp60t0m"
+      }
+    },
+    {
+      "id": "v5bki4h7m1lnryhgzudnvvpx",
+      "to": { "groupId": "irnu2zu8m2i4fu6485hxtra5" },
+      "from": {
+        "blockId": "ileqgg2r2kyh2zovpivr775s",
+        "groupId": "zfa8oj0a0tnlho9a67llulst"
+      }
+    },
+    {
+      "id": "wv3t43ccf35mewn52liqtjg1",
+      "to": { "groupId": "dmg57mgick51p8l5pnyqtyf9" },
+      "from": {
+        "blockId": "e6rovxwxlizr54iy8nyi84pi",
+        "groupId": "irnu2zu8m2i4fu6485hxtra5"
+      }
+    },
+    {
+      "id": "gfrpgowch879p1qaj9jzsh01",
+      "to": {
+        "blockId": "vywm4h8yz87ew4gjy4l6nmm3",
+        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2"
+      },
+      "from": {
+        "itemId": "ooib3mqlfkazta6iol1ocloe",
+        "blockId": "u4jdl0gwv8965o2etxjk12w0",
+        "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+      }
+    },
+    {
+      "id": "jwydpoxngp2gvwanaruphe6s",
+      "to": {
+        "blockId": "kyuvkruakbxjvxwgtjqti3gc",
+        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2"
+      },
+      "from": {
+        "itemId": "b6zif4xxe2cuiddc2oqayaxi",
+        "blockId": "u4jdl0gwv8965o2etxjk12w0",
+        "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+      }
+    },
+    {
+      "from": {
+        "groupId": "w99qhdr20tw02sfrfwkfc1tg",
+        "blockId": "igbipfi63m6p9sl2f77uicuv"
+      },
+      "to": { "groupId": "bofjp88arodr4k0btv2esyqy" },
+      "id": "x91dpk80zw2b4co4xra33cwg"
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": true,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": true
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}

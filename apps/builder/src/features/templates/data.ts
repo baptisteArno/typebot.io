@@ -9,13 +9,11 @@ export const templates: TemplateProps[] = [
     name: 'NPS Survey',
     emoji: '⭐',
     fileName: 'nps.json',
-    isNew: true,
   },
   {
     name: 'User Onboarding',
     emoji: '🧑‍🚀',
     fileName: 'onboarding.json',
-    isNew: true,
   },
   {
     name: 'Digital Product Payment',
@@ -31,12 +29,16 @@ export const templates: TemplateProps[] = [
     name: 'Movie Recommendation',
     emoji: '🍿',
     fileName: 'movie-recommendation.json',
-    isNew: true,
   },
   {
     name: 'Basic ChatGPT',
     emoji: '🤖',
     fileName: 'basic-chat-gpt.json',
+  },
+  {
+    name: 'ChatGPT personas',
+    emoji: '🎭',
+    fileName: 'chat-gpt-personas.json',
     isNew: true,
   },
 ]
