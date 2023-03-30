@@ -20,7 +20,7 @@ import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, isEmpty, isNotDefined } from 'utils'
-import { ButtonOption, CancelButton, Container, FormField, FormFieldRow, FormFieldRowMin, LabelField, OrText } from './VariableSearchInput.style'
+import { ButtonOption, CancelButton, Container, FormField, FormFieldCol, FormFieldRowMin, LabelField, OrText } from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
@@ -270,14 +270,14 @@ export const VariableSearchInput = ({
                         Pedido
                       </ButtonOption>
                     </FormFieldRowMin>
-                    <FormFieldRow>
+                    <FormFieldCol>
                       <OctaButton onClick={handleCreateVariable}>
                         Criar variável
                       </OctaButton>
                       <CancelButton onClick={handleToggleScreen}>
                         Cancelar
                       </CancelButton>
-                    </FormFieldRow>
+                    </FormFieldCol>
                   </FormField>
                 </Container>
               )

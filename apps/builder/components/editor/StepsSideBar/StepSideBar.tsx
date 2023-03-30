@@ -100,8 +100,8 @@ export const StepsSideBar = () => {
       // type === InputStepType.PHONE ||
       (type === OctaStepType.OFFICE_HOURS && verifyFeatureToggle('whatsapp-api'))||
       type === WabaStepType.BUTTONS && verifyFeatureToggle('whatsapp-api') ||
-      type === WabaStepType.OPTIONS && verifyFeatureToggle('whatsapp-api') ||
-      type === LogicStepType.CONDITION && verifyFeatureToggle('botconditional')
+      type === WabaStepType.OPTIONS && verifyFeatureToggle('whatsapp-api') 
+      // || type === LogicStepType.CONDITION && verifyFeatureToggle('botconditional')
     )
   }
 

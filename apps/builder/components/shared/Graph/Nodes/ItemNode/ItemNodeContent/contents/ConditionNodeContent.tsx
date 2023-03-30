@@ -24,9 +24,9 @@ export const ConditionNodeContent = ({ item }: Props) => {
             return (
               <Wrap key={comparison.id} spacing={1} noOfLines={0}>
                 {idx > 0 && <Text>{item.content.logicalOperator ?? ''}</Text>}
-                {variable?.name && (
+                {variable?.token && (
                   <Tag bgColor="orange.400" color="white">
-                    {variable.name}
+                    {variable.token}
                   </Tag>
                 )}
                 {comparison.comparisonOperator && (
