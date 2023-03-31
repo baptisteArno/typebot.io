@@ -3,11 +3,12 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from './ChangePlanModal'
-import { LimitReached } from '../types'
+import { useI18n } from '@/locales'
 
-type Props = { limitReachedType?: LimitReached } & ButtonProps
+type Props = { limitReachedType?: string } & ButtonProps
 
 export const UpgradeButton = ({ limitReachedType, ...props }: Props) => {
+  const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
   return (
@@ -17,7 +18,7 @@ export const UpgradeButton = ({ limitReachedType, ...props }: Props) => {
       isLoading={isNotDefined(workspace)}
       onClick={onOpen}
     >
-      {props.children ?? 'Upgrade'}
+      {props.children ?? t('upgrade')}
       <ChangePlanModal
         isOpen={isOpen}
         onClose={onClose}

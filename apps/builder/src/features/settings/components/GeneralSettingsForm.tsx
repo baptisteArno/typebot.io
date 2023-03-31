@@ -8,7 +8,7 @@ import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
-import { LimitReached } from '@/features/billing/types'
+import { useI18n } from '@/locales'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -19,6 +19,7 @@ export const GeneralSettingsForm = ({
   generalSettings,
   onGeneralSettingsChange,
 }: Props) => {
+  const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
   const isWorkspaceFreePlan = isFreePlan(workspace)
@@ -53,7 +54,7 @@ export const GeneralSettingsForm = ({
       <ChangePlanModal
         isOpen={isOpen}
         onClose={onClose}
-        type={LimitReached.BRAND}
+        type={t('billing.limitMessage.brand')}
       />
       <Flex
         justifyContent="space-between"

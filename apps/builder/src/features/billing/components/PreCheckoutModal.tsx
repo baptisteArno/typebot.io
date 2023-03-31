@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { taxIdTypes } from '../taxIdTypes'
+import { useScopedI18n } from '@/locales'
 
 export type PreCheckoutModalProps = {
   selectedSubscription:
@@ -48,6 +49,7 @@ export const PreCheckoutModal = ({
   existingEmail,
   onClose,
 }: PreCheckoutModalProps) => {
+  const scopedT = useScopedI18n('billing.preCheckoutModal')
   const { ref } = useParentModal()
   const vatValueInputRef = React.useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -131,7 +133,7 @@ export const PreCheckoutModal = ({
           <Stack as="form" spacing="4" onSubmit={goToCheckout}>
             <TextInput
               isRequired
-              label="Company name"
+              label={scopedT('companyInput.label')}
               defaultValue={customer.company}
               onChange={updateCustomerCompany}
               withVariableButton={false}
@@ -140,17 +142,17 @@ export const PreCheckoutModal = ({
             <TextInput
               isRequired
               type="email"
-              label="Email"
+              label={scopedT('emailInput.label')}
               defaultValue={customer.email}
               onChange={updateCustomerEmail}
               withVariableButton={false}
               debounceTimeout={0}
             />
             <FormControl>
-              <FormLabel>Tax ID</FormLabel>
+              <FormLabel>{scopedT('taxId.label')}</FormLabel>
               <HStack>
                 <Select
-                  placeholder="ID type"
+                  placeholder={scopedT('taxId.placeholder')}
                   items={vatCodeLabels}
                   isPopoverMatchingInputWidth={false}
                   onSelect={updateVatType}
@@ -171,7 +173,7 @@ export const PreCheckoutModal = ({
               colorScheme="blue"
               isDisabled={customer.company === '' || customer.email === ''}
             >
-              Go to checkout
+              {scopedT('submitButton.label')}
             </Button>
           </Stack>
         </ModalBody>

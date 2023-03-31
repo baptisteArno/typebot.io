@@ -8,6 +8,10 @@ export default defineLocale({
   'dashboard.title': 'Mes typebots',
   delete: 'Supprimer',
   errorMessage: "Une erreur s'est produite",
+  cancel: 'Annuler',
+  update: 'Mettre à jour',
+  upgrade: 'Upgrade',
+  downgrade: 'Downgrade',
   'folders.createFolderButton.label': 'Créer un dossier',
   'folders.createTypebotButton.label': 'Créer un typebot',
   'folders.folderButton.deleteConfirmationMessage':
@@ -36,8 +40,8 @@ export default defineLocale({
     'Entrez un nom unique pour votre token afin de le différencier des autres tokens.',
   'account.apiTokens.createModal.nameInput.placeholder':
     'Ex. Zapier, Github, Make.com',
-  'account.apiTokens.createModal.createButtonLabel': 'Créer un token',
-  'account.apiTokens.createModal.doneButtonLabel': 'Terminé',
+  'account.apiTokens.createModal.createButton.label': 'Créer un token',
+  'account.apiTokens.createModal.doneButton.label': 'Terminé',
   'account.apiTokens.createModal.copyInstruction':
     'Veuillez copier votre token et le stocker dans un endroit sûr.',
   'account.apiTokens.createModal.securityWarning':
@@ -80,15 +84,82 @@ export default defineLocale({
   'auth.noProvider.link':
     "configurer au moins un fournisseur d'authentification (E-mail, Google, GitHub, Facebook ou Azure AD).",
   'auth.orEmailLabel': 'Ou avec votre email',
-  'auth.emailSubmitButtonLabel': 'Se connecter',
+  'auth.emailSubmitButton.label': 'Se connecter',
   'auth.magicLink.title':
     "Un email avec un lien d'authentification a été envoyé. 🪄",
   'auth.magicLink.description':
     'Assurez-vous de vérifier votre dossier de spam.',
-  'auth.socialLogin.githubButtonLabel': 'Continuer avec GitHub',
-  'auth.socialLogin.googleButtonLabel': 'Continuer avec Google',
-  'auth.socialLogin.facebookButtonLabel': 'Continuer avec Facebook',
-  'auth.socialLogin.azureButtonLabel': 'Continuer avec {azureProviderName}',
-  'auth.socialLogin.gitlabButtonLabel': 'Continuer avec {gitlabProviderName}',
-  'auth.socialLogin.customButtonLabel': 'Continuer avec {customProviderName}',
+  'auth.socialLogin.githubButton.label': 'Continuer avec GitHub',
+  'auth.socialLogin.googleButton.label': 'Continuer avec Google',
+  'auth.socialLogin.facebookButton.label': 'Continuer avec Facebook',
+  'auth.socialLogin.azureButton.label': 'Continuer avec {azureProviderName}',
+  'auth.socialLogin.gitlabButton.label': 'Continuer avec {gitlabProviderName}',
+  'auth.socialLogin.customButton.label': 'Continuer avec {customProviderName}',
+  'billing.billingPortalButton.label': 'Portail de facturation',
+  'billing.contribution.preLink':
+    "Typebot contribue à hauteur de 1% de votre abonnement pour éliminer le CO₂ de l'atmosphère.",
+  'billing.contribution.link': 'En savoir plus.',
+  'billing.updateSuccessToast.description':
+    'Votre abonnement {plan} a été mis à jour avec succès 🎉',
+  'billing.customLimit.preLink':
+    'Vous avez besoin de limites personnalisées ? De fonctionnalités spécifiques ?',
+  'billing.customLimit.link': 'Discutons-en!',
+  'billing.upgradeLimitLabel':
+    'Vous devez mettre à niveau votre abonnement pour {type}',
+  'billing.currentSubscription.heading': 'Abonnement',
+  'billing.currentSubscription.subheading': 'Abonnement actuel du workspace :',
+  'billing.currentSubscription.cancelLink': "Annuler l'abonnement",
+  'billing.currentSubscription.billingPortalDescription':
+    'Besoin de changer votre mode de paiement ou vos informations de facturation ? Rendez-vous sur votre portail de facturation :',
+  'billing.invoices.heading': 'Factures',
+  'billing.invoices.empty': 'Aucune facture trouvée pour ce workspace.',
+  'billing.invoices.paidAt': 'Payé le',
+  'billing.invoices.subtotal': 'Sous-total',
+  'billing.preCheckoutModal.companyInput.label': "Nom de l'entreprise :",
+  'billing.preCheckoutModal.emailInput.label': 'E-mail :',
+  'billing.preCheckoutModal.taxId.label': 'Numéro de TVA :',
+  'billing.preCheckoutModal.taxId.placeholder': 'Type',
+  'billing.preCheckoutModal.submitButton.label': 'Continuer',
+  'billing.pricingCard.heading': 'Passer à {plan}',
+  'billing.pricingCard.perMonth': '/ mois',
+  'billing.pricingCard.plus': ', plus :',
+  'billing.pricingCard.upgradeButton.current': 'Abonnement actuel',
+  'billing.pricingCard.chatsPerMonth': 'chats/mois',
+  'billing.pricingCard.chatsTooltip':
+    "Un chat est comptabilisé chaque fois qu'un utilisateur démarre une discussion. Il est indépendant du nombre de messages qu'il envoie et reçoit.",
+  'billing.pricingCard.storageLimit': 'Go de stockage',
+  'billing.pricingCard.storageLimitTooltip':
+    "Vous accumulez du stockage pour chaque fichier que votre utilisateur télécharge dans votre bot. Si vous supprimez le résultat, cela libérera de l'espace.",
+  'billing.pricingCard.starter.description':
+    'Pour les particuliers et les petites entreprises.',
+  'billing.pricingCard.starter.includedSeats': '2 collègues inclus',
+  'billing.pricingCard.starter.brandingRemoved': 'Marque enlevée',
+  'billing.pricingCard.starter.fileUploadBlock': "Bloc d'upload de fichier",
+  'billing.pricingCard.starter.createFolders': 'Créer des dossiers',
+  'billing.pricingCard.pro.mostPopularLabel': 'Le plus populaire',
+  'billing.pricingCard.pro.description':
+    'Pour les agences et les startups en croissance.',
+  'billing.pricingCard.pro.everythingFromStarter':
+    "Tout ce qu'il y a dans Starter",
+  'billing.pricingCard.pro.includedSeats': '5 collègues inclus',
+  'billing.pricingCard.pro.customDomains': 'Domaines personnalisés',
+  'billing.pricingCard.pro.analytics': 'Analyses approfondies',
+  'billing.usage.heading': 'Utilisation',
+  'billing.usage.chats.heading': 'Chats',
+  'billing.usage.chats.alert.soonReach':
+    'Vos typebots sont populaires ! Vous atteindrez bientôt la limite de chats de votre abonnement. 🚀',
+  'billing.usage.chats.alert.updatePlan':
+    'Assurez-vous de mettre à jour votre abonnement pour augmenter cette limite et continuer à discuter avec vos utilisateurs.',
+  'billing.usage.chats.resetInfo': '(réinitialisé le 1er de chaque mois)',
+  'billing.usage.storage.heading': 'Stockage',
+  'billing.usage.storage.alert.soonReach':
+    'Vos typebots sont populaires ! Vous atteindrez bientôt la limite de stockage de votre abonnement. 🚀',
+  'billing.usage.storage.alert.updatePlan':
+    "Assurez-vous de mettre à jour votre abonnement pour continuer à collecter des fichiers téléchargés. Vous pouvez également supprimer des fichiers pour libérer de l'espace.",
+  'billing.limitMessage.brand': 'supprimer la marque',
+  'billing.limitMessage.customDomain': 'ajouter des domaines personnalisés',
+  'billing.limitMessage.analytics': 'débloquer des analyses approfondies',
+  'billing.limitMessage.fileInput': 'utiliser des blocs de saisie de fichiers',
+  'billing.limitMessage.folder': 'créer des dossiers',
+  'billing.upgradeAlert.buttonDefaultLabel': "Plus d'informations",
 })

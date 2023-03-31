@@ -11,12 +11,13 @@ import React from 'react'
 import { useAnswersCount } from '../hooks/useAnswersCount'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
-import { LimitReached } from '@/features/billing/types'
 import { Graph } from '@/features/graph/components/Graph'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
+import { useI18n } from '@/locales'
 
 export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
+  const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
   const { showToast } = useToast()
@@ -69,7 +70,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
       <ChangePlanModal
         onClose={onClose}
         isOpen={isOpen}
-        type={LimitReached.ANALYTICS}
+        type={t('billing.limitMessage.analytics')}
       />
       <StatsCards stats={stats} pos="absolute" top={10} />
     </Flex>

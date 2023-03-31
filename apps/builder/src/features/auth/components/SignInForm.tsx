@@ -127,7 +127,7 @@ export const SignInForm = ({
                   }
                   isDisabled={isMagicLinkSent}
                 >
-                  {scopedT('emailSubmitButtonLabel')}
+                  {scopedT('emailSubmitButton.label')}
                 </Button>
               </HStack>
             </>

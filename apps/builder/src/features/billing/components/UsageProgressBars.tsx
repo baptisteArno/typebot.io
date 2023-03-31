@@ -15,12 +15,14 @@ import { parseNumberWithCommas } from '@typebot.io/lib'
 import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
 import { storageToReadable } from '../helpers/storageToReadable'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   workspace: Workspace
 }
 
 export const UsageProgressBars = ({ workspace }: Props) => {
+  const scopedT = useScopedI18n('billing.usage')
   const { data, isLoading } = trpc.billing.getUsage.useQuery(
     {
       workspaceId: workspace.id,
@@ -44,12 +46,12 @@ export const UsageProgressBars = ({ workspace }: Props) => {
 
   return (
     <Stack spacing={6}>
-      <Heading fontSize="3xl">Usage</Heading>
+      <Heading fontSize="3xl">{scopedT('heading')}</Heading>
       <Stack spacing={3}>
         <Flex justifyContent="space-between">
           <HStack>
             <Heading fontSize="xl" as="h3">
-              Chats
+              {scopedT('chats.heading')}
             </Heading>
             {chatsPercentage >= 80 && (
               <Tooltip
@@ -58,12 +60,10 @@ export const UsageProgressBars = ({ workspace }: Props) => {
                 p="3"
                 label={
                   <Text>
-                    Your typebots are popular! You will soon reach your
-                    plan&apos;s chats limit. 🚀
+                    {scopedT('chats.alert.soonReach')}
                     <br />
                     <br />
-                    Make sure to <strong>update your plan</strong> to increase
-                    this limit and continue chatting with your users.
+                    {scopedT('chats.alert.updatePlan')}
                   </Text>
                 }
               >
@@ -73,7 +73,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
               </Tooltip>
             )}
             <Text fontSize="sm" fontStyle="italic" color="gray.500">
-              (resets on 1st of every month)
+              {scopedT('chats.resetInfo')}
             </Text>
           </HStack>
 
@@ -108,7 +108,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
           <Flex justifyContent="space-between">
             <HStack>
               <Heading fontSize="xl" as="h3">
-                Storage
+                {scopedT('storage.heading')}
               </Heading>
               {storagePercentage >= 80 && (
                 <Tooltip
@@ -117,13 +117,10 @@ export const UsageProgressBars = ({ workspace }: Props) => {
                   p="3"
                   label={
                     <Text>
-                      Your typebots are popular! You will soon reach your
-                      plan&apos;s storage limit. 🚀
+                      {scopedT('storage.alert.soonReach')}
                       <br />
                       <br />
-                      Make sure to <strong>update your plan</strong> in order to
-                      continue collecting uploaded files. You can also{' '}
-                      <strong>delete files</strong> to free up space.
+                      {scopedT('storage.alert.updatePlan')}
                     </Text>
                   }
                 >

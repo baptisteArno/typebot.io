@@ -65,7 +65,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('githubButtonLabel')}
+          {scopedT('githubButton.label')}
         </Button>
       )}
       {providers?.google && (
@@ -79,7 +79,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('googleButtonLabel')}
+          {scopedT('googleButton.label')}
         </Button>
       )}
       {providers?.facebook && (
@@ -93,7 +93,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('facebookButtonLabel')}
+          {scopedT('facebookButton.label')}
         </Button>
       )}
       {providers?.gitlab && (
@@ -107,7 +107,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('gitlabButtonLabel', {
+          {scopedT('gitlabButton.label', {
             gitlabProviderName: providers.gitlab.name,
           })}
         </Button>
@@ -123,7 +123,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('azureButtonLabel', {
+          {scopedT('azureButton.label', {
             azureProviderName: providers['azure-ad'].name,
           })}
         </Button>
@@ -137,7 +137,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('customButtonLabel', {
+          {scopedT('customButton.label', {
             customProviderName: providers['custom-oauth'].name,
           })}
         </Button>
