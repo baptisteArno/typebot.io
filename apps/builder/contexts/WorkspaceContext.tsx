@@ -21,7 +21,6 @@ import { useRouter } from 'next/router'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 import CustomFields from 'services/octadesk/customFields/customFields'
 import { DomainType } from 'enums/customFieldsEnum'
-import cuid from 'cuid'
 import {
   fixedChatProperties,
   fixedOrganizationProperties,
@@ -74,10 +73,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
-          w.members.some(
-            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
-          )
+        w.members.some(
+          (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
         )
+      )
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspaces?.length])
@@ -106,7 +105,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const [octaChatItems, setOctaChatItems] = useState<Array<any>>([])
   const [octaOrganizationFields, setOctaOrganizationFields] = useState<
     Array<any>
-    >([])
+  >([])
   const [octaOrganizationItems, setOctaOrganizationItems] = useState<
     Array<any>
   >([])
@@ -149,7 +148,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const mountProperties = (properties: any, domainType: string) => {
     const customProperties = properties.map(
-      (h: { fieldType: number; fieldId: string }) => {
+      (h: { id: string, fieldType: number; fieldId: string }) => {
         const fieldType: string = fieldTypes(h.fieldType)
         let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
 
@@ -160,12 +159,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         } else if (domainType === 'ORGANIZATION') {
         }
 
-        const id = 'v' + cuid()
-
         return {
           type: fieldType,
-          id,
-          variableId: id,
+          id: h.id,
+          variableId: h.id,
           token: tokenValue,
           domain: domainType,
           name: `customField.${h.fieldId}`,
@@ -179,27 +176,21 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const variables = typebot?.variables ?? []
   const fixedChatPropertiesWithId = fixedChatProperties.map(chatProperty => {
-    const variableId = cuid()
     return {
       ...chatProperty,
-      id: variableId,
-      variableId
+      variableId: chatProperty.id
     }
   })
   const fixedPersonPropertiesWithId = fixedPersonProperties.map(personProperty => {
-    const variableId = cuid()
     return {
       ...personProperty,
-      id: variableId,
-      variableId
+      variableId: personProperty.id
     }
   })
   const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(organizationProperty => {
-    const variableId = cuid()
     return {
       ...organizationProperty,
-      id: variableId,
-      variableId
+      variableId: organizationProperty.id
     }
   })
 
@@ -230,7 +221,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if(loaded && createVariable) {
+    if (loaded && createVariable) {
       variables.map((variable) => deleteVariable(variable.id))
       octaPersonItems.map(personItem => {
         createVariable(personItem)
@@ -243,10 +234,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       })
     }
   }, [loaded, octaChatItems, octaOrganizationItems, octaPersonItems])
-  
+
 
   useEffect(() => {
-    if(octaPersonFields) {
+    if (octaPersonFields) {
       const octaPersonProperties = mountPropertiesOptions(
         'PERSON',
         mountProperties(octaPersonFields, 'PERSON')
@@ -256,11 +247,11 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         setOctaPersonItems([...octaPersonProperties.items, ...fixedPersonPropertiesWithId])
       }
     }
-  
+
   }, [octaPersonFields])
 
   useEffect(() => {
-    if(octaChatFields) {
+    if (octaChatFields) {
       const octaChatProperties = mountPropertiesOptions(
         'CHAT',
         mountProperties(octaChatFields, 'CHAT')
@@ -270,11 +261,11 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         setOctaChatItems([...octaChatProperties.items, ...fixedChatPropertiesWithId])
       }
     }
-  
+
   }, [octaChatFields])
 
   useEffect(() => {
-    if(octaOrganizationFields) {
+    if (octaOrganizationFields) {
       const octaOrganizationProperties = mountPropertiesOptions(
         'ORGANIZATION',
         mountProperties(octaOrganizationFields, 'ORGANIZATION')
@@ -284,9 +275,9 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         setOctaOrganizationItems([...octaOrganizationProperties.items, ...fixedOrganizationPropertiesWithId])
       }
     }
-  
+
   }, [octaOrganizationFields])
-  
+
   const switchWorkspace = (workspaceId: string) =>
     setCurrentWorkspace(workspaces?.find(byId(workspaceId)))
 

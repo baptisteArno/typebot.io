@@ -257,9 +257,6 @@ export const StepsSideBar = () => {
             Validações
           </Text>
           <Spacer/>
-          <Badge variant='solid' colorScheme='purple' borderRadius="6px" textAlign="center"> 
-            PLANO SEA
-          </Badge>
           </Flex>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map(
@@ -281,9 +278,6 @@ export const StepsSideBar = () => {
             Superintegrações
           </Text>
           <Spacer/>
-          <Badge variant='solid' colorScheme='purple' borderRadius="6px" textAlign="center"> 
-            PLANO SEA
-          </Badge>
         </Flex>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationStepType).map(
