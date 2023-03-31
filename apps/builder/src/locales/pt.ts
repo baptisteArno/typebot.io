@@ -60,4 +60,7 @@ export default defineLocale({
     'A atualização do e-mail não está disponível. Entre em contato com o suporte se quiser alterá-lo.',
   'account.myAccount.emailInput.label': 'Endereço de e-mail:',
   'account.myAccount.nameInput.label': 'Nome:',
+  'analytics.viewsLabel': 'Visualizações',
+  'analytics.startsLabel': 'Inícios',
+  'analytics.completionRateLabel': 'Taxa de conclusão',
 })

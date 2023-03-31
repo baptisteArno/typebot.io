@@ -57,4 +57,7 @@ export default {
     'Updating email is not available. Contact the support if you want to change it.',
   'account.myAccount.emailInput.label': 'Email address:',
   'account.myAccount.nameInput.label': 'Name:',
+  'analytics.viewsLabel': 'Views',
+  'analytics.startsLabel': 'Starts',
+  'analytics.completionRateLabel': 'Completion rate',
 } as const

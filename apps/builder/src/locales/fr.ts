@@ -59,4 +59,7 @@ export default defineLocale({
     "La mise à jour de l'adresse e-mail n'est pas disponible. Contactez le service d'assistance si vous souhaitez la modifier.",
   'account.myAccount.emailInput.label': 'Adresse e-mail:',
   'account.myAccount.nameInput.label': 'Nom:',
+  'analytics.viewsLabel': 'Vues',
+  'analytics.startsLabel': 'Démarrés',
+  'analytics.completionRateLabel': 'Taux de complétion',
 })
