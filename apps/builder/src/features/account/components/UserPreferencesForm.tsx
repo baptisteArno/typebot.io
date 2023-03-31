@@ -4,8 +4,10 @@ import React, { useEffect } from 'react'
 import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 import { useUser } from '../hooks/useUser'
+import { useScopedI18n } from '@/locales'
 
 export const UserPreferencesForm = () => {
+  const scopedT = useScopedI18n('account.preferences')
   const { colorMode, setColorMode } = useColorMode()
   const { user, updateUser } = useUser()
 
@@ -26,14 +28,14 @@ export const UserPreferencesForm = () => {
   return (
     <Stack spacing={12}>
       <Stack spacing={6}>
-        <Heading size="md">Editor Navigation</Heading>
+        <Heading size="md">{scopedT('graphNavigation.heading')}</Heading>
         <GraphNavigationRadioGroup
           defaultValue={user?.graphNavigation ?? GraphNavigation.TRACKPAD}
           onChange={changeGraphNavigation}
         />
       </Stack>
       <Stack spacing={6}>
-        <Heading size="md">Appearance</Heading>
+        <Heading size="md">{scopedT('appearance.heading')}</Heading>
         <AppearanceRadioGroup
           defaultValue={
             user?.preferredAppAppearance
