@@ -62,4 +62,33 @@ export default defineLocale({
   'analytics.viewsLabel': 'Vues',
   'analytics.startsLabel': 'Démarrés',
   'analytics.completionRateLabel': 'Taux de complétion',
+  'auth.signin.heading': 'Se connecter',
+  'auth.signin.noAccountLabel.preLink': "Vous n'avez pas de compte?",
+  'auth.signin.noAccountLabel.link': 'Inscrivez-vous gratuitement',
+  'auth.register.heading': 'Créer un compte',
+  'auth.register.alreadyHaveAccountLabel.preLink': 'Vous avez déjà un compte?',
+  'auth.register.alreadyHaveAccountLabel.link': 'Se connecter',
+  'auth.error.default': 'Essayez de vous connecter avec un compte différent.',
+  'auth.error.email':
+    'Email non trouvé. Essayez de vous connecter avec un fournisseur différent.',
+  'auth.error.oauthNotLinked':
+    'Pour confirmer votre identité, connectez-vous avec le même compte que vous avez utilisé à lorigine.',
+  'auth.error.unknown': 'Une erreur est survenue. Veuillez réessayer.',
+  'auth.signinErrorToast.title': 'Non autorisé',
+  'auth.signinErrorToast.description': 'Les inscriptions sont désactivées.',
+  'auth.noProvider.preLink': 'Vous avez besoin de',
+  'auth.noProvider.link':
+    "configurer au moins un fournisseur d'authentification (E-mail, Google, GitHub, Facebook ou Azure AD).",
+  'auth.orEmailLabel': 'Ou avec votre email',
+  'auth.emailSubmitButtonLabel': 'Se connecter',
+  'auth.magicLink.title':
+    "Un email avec un lien d'authentification a été envoyé. 🪄",
+  'auth.magicLink.description':
+    'Assurez-vous de vérifier votre dossier de spam.',
+  'auth.socialLogin.githubButtonLabel': 'Continuer avec GitHub',
+  'auth.socialLogin.googleButtonLabel': 'Continuer avec Google',
+  'auth.socialLogin.facebookButtonLabel': 'Continuer avec Facebook',
+  'auth.socialLogin.azureButtonLabel': 'Continuer avec {azureProviderName}',
+  'auth.socialLogin.gitlabButtonLabel': 'Continuer avec {gitlabProviderName}',
+  'auth.socialLogin.customButtonLabel': 'Continuer avec {customProviderName}',
 })
