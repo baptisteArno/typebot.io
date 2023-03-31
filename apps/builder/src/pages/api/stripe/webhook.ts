@@ -141,6 +141,9 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               chatsLimitSecondEmailSentAt: null,
               storageLimitFirstEmailSentAt: null,
               storageLimitSecondEmailSentAt: null,
+              customChatsLimit: null,
+              customStorageLimit: null,
+              customSeatsLimit: null,
             },
           })
           return res.send({ message: 'workspace downgraded in DB' })
