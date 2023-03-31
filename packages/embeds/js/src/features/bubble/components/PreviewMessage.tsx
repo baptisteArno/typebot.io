@@ -1,10 +1,15 @@
 import { createSignal, Show } from 'solid-js'
-import { PreviewMessageParams, PreviewMessageTheme } from '../types'
+import {
+  ButtonTheme,
+  PreviewMessageParams,
+  PreviewMessageTheme,
+} from '../types'
 
 export type PreviewMessageProps = Pick<
   PreviewMessageParams,
   'avatarUrl' | 'message'
 > & {
+  buttonSize: ButtonTheme['size']
   previewMessageTheme?: PreviewMessageTheme
   onClick: () => void
   onCloseClick: () => void
@@ -19,8 +24,12 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
 
   return (
     <div
+      part="preview-message"
       onClick={() => props.onClick()}
-      class="fixed bottom-20 right-4 max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4"
+      class={
+        'fixed right-5 max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4' +
+        (props.buttonSize === 'large' ? ' bottom-24' : ' bottom-20')
+      }
       style={{
         'background-color':
           props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,

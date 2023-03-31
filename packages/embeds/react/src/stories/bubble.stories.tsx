@@ -9,6 +9,7 @@ import {
 } from '@typebot.io/js'
 import { useState } from 'react'
 import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
+import './assets/index.css'
 
 export const Default = () => {
   const [name, setName] = useState('John')
@@ -47,6 +48,7 @@ export const Default = () => {
           button: {
             backgroundColor: '#FF7537',
             iconColor: 'white',
+            size: 'large',
           },
         }}
         isPreview

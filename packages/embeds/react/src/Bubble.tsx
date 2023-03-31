@@ -9,7 +9,7 @@ declare global {
       'typebot-bubble': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      > & { class?: string }
+      >
     }
   }
 }

@@ -14,6 +14,7 @@ export type ChatWindowTheme = {
 }
 
 export type ButtonTheme = {
+  size?: 'medium' | 'large'
   backgroundColor?: string
   iconColor?: string
   customIconSrc?: string
