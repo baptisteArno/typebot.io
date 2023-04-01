@@ -7,13 +7,13 @@ import { SmtpCredentials } from '@typebot.io/schemas'
 
 export const mockSmtpCredentials: SmtpCredentials['data'] = {
   from: {
-    email: 'sunny.cremin66@ethereal.email',
-    name: 'Sunny Cremin',
+    email: 'pedro.morissette@ethereal.email',
+    name: 'Pedro Morissette',
   },
   host: 'smtp.ethereal.email',
   port: 587,
-  username: 'sunny.cremin66@ethereal.email',
-  password: 'yJDHkf2bYbNydaRvTq',
+  username: 'pedro.morissette@ethereal.email',
+  password: 'ctDZ8SyeFyTT5MReJM',
 }
 
 test.beforeAll(async () => {

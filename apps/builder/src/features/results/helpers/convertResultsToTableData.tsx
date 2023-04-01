@@ -1,10 +1,11 @@
+import { Stack, Text } from '@chakra-ui/react'
 import { isDefined } from '@typebot.io/lib'
-import { Answer } from '@typebot.io/prisma'
 import {
   ResultWithAnswers,
   ResultHeaderCell,
   VariableWithValue,
   InputBlockType,
+  Answer,
 } from '@typebot.io/schemas'
 import { FileLinks } from '../components/FileLinks'
 import { TableData } from '../types'
@@ -22,9 +23,9 @@ export const convertResultsToTableData = (
     },
     ...[...result.answers, ...result.variables].reduce<{
       [key: string]: { element?: JSX.Element; plainText: string }
-    }>((o, answerOrVariable) => {
+    }>((tableData, answerOrVariable) => {
       if ('groupId' in answerOrVariable) {
-        const answer = answerOrVariable as Answer
+        const answer = answerOrVariable satisfies Answer
         const header = answer.variableId
           ? headerCells.find((headerCell) =>
               headerCell.variableIds?.includes(answer.variableId as string)
@@ -32,33 +33,52 @@ export const convertResultsToTableData = (
           : headerCells.find((headerCell) =>
               headerCell.blocks?.some((block) => block.id === answer.blockId)
             )
-        if (!header || !header.blocks || !header.blockType) return o
+        if (!header || !header.blocks || !header.blockType) return tableData
+        const variableValue = result.variables.find(
+          (variable) => variable.id === answer.variableId
+        )?.value
+        const content = variableValue ?? answer.content
         return {
-          ...o,
-          [parseAccessor(header.label)]: {
-            element: parseContent(answer.content, header.blockType),
-            plainText: answer.content,
-          },
+          ...tableData,
+          [parseAccessor(header.label)]: parseCellContent(
+            content,
+            header.blockType
+          ),
         }
       }
-      const variable = answerOrVariable as VariableWithValue
-      if (variable.value === null) return o
+      const variable = answerOrVariable satisfies VariableWithValue
+      if (variable.value === null) return tableData
       const key = headerCells.find((headerCell) =>
         headerCell.variableIds?.includes(variable.id)
       )?.label
-      if (!key) return o
-      if (isDefined(o[key])) return o
+      if (!key) return tableData
+      if (isDefined(tableData[key])) return tableData
       return {
-        ...o,
-        [parseAccessor(key)]: { plainText: variable.value?.toString() },
+        ...tableData,
+        [parseAccessor(key)]: parseCellContent(variable.value),
       }
     }, {}),
   }))
 
-const parseContent = (
-  str: string,
-  blockType: InputBlockType
-): JSX.Element | undefined =>
-  blockType === InputBlockType.FILE ? (
-    <FileLinks fileNamesStr={str} />
-  ) : undefined
+const parseCellContent = (
+  content: VariableWithValue['value'],
+  blockType?: InputBlockType
+): { element?: JSX.Element; plainText: string } => {
+  if (!content) return { element: undefined, plainText: '' }
+  if (Array.isArray(content))
+    return {
+      element: (
+        <Stack spacing={2}>
+          {content.map((item, idx) => (
+            <Text key={idx}>
+              {idx + 1}. {item}
+            </Text>
+          ))}
+        </Stack>
+      ),
+      plainText: content.join(', '),
+    }
+  return blockType === InputBlockType.FILE
+    ? { element: <FileLinks fileNamesStr={content} />, plainText: content }
+    : { plainText: content.toString() }
+}
