@@ -5,7 +5,7 @@ import { generateId } from '@typebot.io/lib'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   if (req.method === 'GET') {
     const apiTokens = await prisma.apiToken.findMany({

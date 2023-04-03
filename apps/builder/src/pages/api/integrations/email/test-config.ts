@@ -5,7 +5,7 @@ import { notAuthenticated } from '@typebot.io/lib/api'
 import { SmtpCredentials } from '@typebot.io/schemas'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   if (req.method === 'POST') {
     const { from, port, isTlsEnabled, username, password, host, to } = (

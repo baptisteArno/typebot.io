@@ -10,7 +10,7 @@ import {
 import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string

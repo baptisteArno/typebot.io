@@ -17,7 +17,7 @@ import { env } from '@typebot.io/lib'
 import { sendGuestInvitationEmail } from '@typebot.io/emails'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   const typebotId = req.query.typebotId as string | undefined
   if (!typebotId) return badRequest(res)

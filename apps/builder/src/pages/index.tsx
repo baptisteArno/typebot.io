@@ -1,6 +1,7 @@
 import { getLocaleProps } from '@/locales'
 import { GetServerSidePropsContext } from 'next'
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]'
 
 export default function Page() {
   return null
@@ -8,7 +9,11 @@ export default function Page() {
 
 export const getServerSideProps = getLocaleProps(
   async (context: GetServerSidePropsContext) => {
-    const session = await getSession(context)
+    const session = await getServerSession(
+      context.req,
+      context.res,
+      authOptions
+    )
     if (!session?.user) {
       return {
         redirect: {

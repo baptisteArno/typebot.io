@@ -9,7 +9,7 @@ import {
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
 
   const parentFolderId = req.query.parentId

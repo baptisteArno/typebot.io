@@ -5,7 +5,7 @@ import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { User } from '@typebot.io/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
 
   const id = req.query.userId as string

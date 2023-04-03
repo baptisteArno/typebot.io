@@ -11,7 +11,7 @@ import {
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
 
   const id = req.query.id as string

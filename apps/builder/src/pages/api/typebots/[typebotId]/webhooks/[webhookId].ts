@@ -13,7 +13,7 @@ import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import { omit } from '@typebot.io/lib'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   const typebotId = req.query.typebotId as string
   const webhookId = req.query.webhookId as string
   if (!user) return notAuthenticated(res)

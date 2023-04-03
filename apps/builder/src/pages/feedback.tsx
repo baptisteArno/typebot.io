@@ -1,15 +1,16 @@
-import { getSession } from 'next-auth/react'
-import { NextPageContext } from 'next'
+import { GetServerSidePropsContext } from 'next'
 import { User } from '@typebot.io/prisma'
 import { isNotDefined } from '@typebot.io/lib'
 import { sign } from 'jsonwebtoken'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]'
 
 export default function Page() {
   return null
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context)
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions)
   if (isNotDefined(session?.user))
     return {
       redirect: {

@@ -13,7 +13,7 @@ const handler = async (
 ): Promise<void> => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   if (req.method === 'GET') {
-    const user = await getAuthenticatedUser(req)
+    const user = await getAuthenticatedUser(req, res)
     if (!user) return notAuthenticated(res)
 
     if (

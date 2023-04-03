@@ -9,7 +9,7 @@ import { got } from 'got'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   const workspaceId = req.query.workspaceId as string | undefined
   if (!workspaceId) return badRequest(res)

@@ -1,4 +1,4 @@
-import NextAuth, { Account } from 'next-auth'
+import NextAuth, { Account, AuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
@@ -128,47 +128,53 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
   })
 }
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.url === '/api/auth/session' && env('E2E_TEST') === 'true')
-    return res.send({ user: mockedUser })
-  if (req.method === 'HEAD') return res.status(200)
-  return NextAuth(req, res, {
-    adapter: CustomAdapter(prisma),
-    secret: process.env.ENCRYPTION_SECRET,
-    providers,
-    session: {
-      strategy: 'database',
+export const authOptions: AuthOptions = {
+  adapter: CustomAdapter(prisma),
+  secret: process.env.ENCRYPTION_SECRET,
+  providers,
+  session: {
+    strategy: 'database',
+  },
+  pages: {
+    signIn: '/signin',
+  },
+  callbacks: {
+    session: async ({ session, user }) => {
+      const userFromDb = user as User
+      await updateLastActivityDate(userFromDb)
+      return {
+        ...session,
+        user: userFromDb,
+      }
     },
-    pages: {
-      signIn: '/signin',
+    signIn: async ({ account, user }) => {
+      if (!account) return false
+      const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
+      if (process.env.DISABLE_SIGNUP === 'true' && isNewUser && user.email) {
+        const { invitations, workspaceInvitations } =
+          await getNewUserInvitations(prisma, user.email)
+        if (invitations.length === 0 && workspaceInvitations.length === 0)
+          return false
+      }
+      const requiredGroups = getRequiredGroups(account.provider)
+      if (requiredGroups.length > 0) {
+        const userGroups = await getUserGroups(account)
+        return checkHasGroups(userGroups, requiredGroups)
+      }
+      return true
     },
-    callbacks: {
-      session: async ({ session, user }) => {
-        const userFromDb = user as User
-        await updateLastActivityDate(userFromDb)
-        return {
-          ...session,
-          user: userFromDb,
-        }
-      },
-      signIn: async ({ account, user }) => {
-        if (!account) return false
-        const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
-        if (process.env.DISABLE_SIGNUP === 'true' && isNewUser && user.email) {
-          const { invitations, workspaceInvitations } =
-            await getNewUserInvitations(prisma, user.email)
-          if (invitations.length === 0 && workspaceInvitations.length === 0)
-            return false
-        }
-        const requiredGroups = getRequiredGroups(account.provider)
-        if (requiredGroups.length > 0) {
-          const userGroups = await getUserGroups(account)
-          return checkHasGroups(userGroups, requiredGroups)
-        }
-        return true
-      },
-    },
-  })
+  },
+}
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const isMockingSession =
+    req.method === 'GET' &&
+    req.url === '/api/auth/session' &&
+    env('E2E_TEST') === 'true'
+  if (isMockingSession) return res.send({ user: mockedUser })
+  const requestIsFromCompanyFirewall = req.method === 'HEAD'
+  if (requestIsFromCompanyFirewall) return res.status(200).end()
+  return await NextAuth(req, res, authOptions)
 }
 
 const updateLastActivityDate = async (user: User) => {

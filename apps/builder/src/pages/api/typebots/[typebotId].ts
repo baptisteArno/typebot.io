@@ -11,7 +11,7 @@ import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebot
 import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req)
+  const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
 
   const typebotId = req.query.typebotId as string
