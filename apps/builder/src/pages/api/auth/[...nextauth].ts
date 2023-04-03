@@ -129,19 +129,10 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  if (
-    req.method === 'GET' &&
-    req.url === '/api/auth/session' &&
-    env('E2E_TEST') === 'true'
-  ) {
-    res.send({ user: mockedUser })
-    return
-  }
-  if (req.method === 'HEAD') {
-    res.status(200)
-    return
-  }
-  NextAuth(req, res, {
+  if (req.url === '/api/auth/session' && env('E2E_TEST') === 'true')
+    return res.send({ user: mockedUser })
+  if (req.method === 'HEAD') return res.status(200)
+  return NextAuth(req, res, {
     adapter: CustomAdapter(prisma),
     secret: process.env.ENCRYPTION_SECRET,
     providers,

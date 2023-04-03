@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@chakra-ui/icon": "3.0.15",
-    "@chakra-ui/react": "2.5.1",
+    "@chakra-ui/react": "2.5.5",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
     "@vercel/analytics": "0.1.11",
@@ -20,7 +20,7 @@
     "aos": "2.3.4",
     "@typebot.io/prisma": "workspace:*",
     "focus-visible": "5.2.0",
-    "framer-motion": "10.3.0",
+    "framer-motion": "10.10.0",
     "@typebot.io/schemas": "workspace:*",
     "next": "13.2.4",
     "react": "18.2.0",
@@ -28,20 +28,20 @@
     "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "7.21.0",
-    "@chakra-ui/styled-system": "2.6.1",
+    "@babel/core": "7.21.4",
+    "@chakra-ui/styled-system": "2.8.0",
     "@next/bundle-analyzer": "13.2.4",
     "@types/aos": "3.0.4",
-    "@types/node": "18.15.3",
-    "@types/react": "18.0.28",
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.32",
     "autoprefixer": "10.4.14",
     "cross-env": "7.0.3",
-    "eslint": "8.36.0",
+    "eslint": "8.37.0",
     "eslint-config-custom": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.21",
-    "prettier": "2.8.4",
+    "prettier": "2.8.7",
     "@typebot.io/tsconfig": "workspace:*",
-    "typescript": "4.9.5"
+    "typescript": "5.0.3"
   }
 }

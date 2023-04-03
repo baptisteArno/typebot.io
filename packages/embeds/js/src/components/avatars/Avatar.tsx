@@ -15,11 +15,7 @@ export const Avatar = (props: { initialAvatarSrc?: string }) => {
   })
 
   return (
-    <Show
-      when={isNotEmpty(avatarSrc())}
-      keyed
-      fallback={() => <DefaultAvatar />}
-    >
+    <Show when={isNotEmpty(avatarSrc())} keyed fallback={<DefaultAvatar />}>
       <figure
         class={
           'flex justify-center items-center rounded-full text-white relative animate-fade-in flex-shrink-0 ' +
