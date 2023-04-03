@@ -107,17 +107,23 @@ export const createChatCompletionOpenAI = async (
       newSessionState,
     }
   } catch (err) {
-    if (err instanceof HTTPError) {
-      console.error(err.response.body)
-    } else {
-      console.error(err)
-    }
-
     const log = {
       status: 'error',
       description: 'OpenAI block returned error',
-      details: JSON.stringify(err, null, 2).substring(0, 1000),
+      details: '',
     }
+
+    if (err instanceof HTTPError) {
+      console.error(err.response.body)
+      log.details = JSON.stringify(err.response.body, null, 2).substring(
+        0,
+        1000
+      )
+    } else {
+      console.error(err)
+      log.details = JSON.stringify(err, null, 2).substring(0, 1000)
+    }
+
     state.result &&
       (await saveErrorLog({
         resultId: state.result.id,

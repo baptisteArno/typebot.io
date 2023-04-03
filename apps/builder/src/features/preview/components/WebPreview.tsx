@@ -14,7 +14,10 @@ export const WebPreview = () => {
   const { showToast } = useToast()
 
   const handleNewLogs = (logs: ChatReply['logs']) => {
-    logs?.forEach((log) => showToast(log as UseToastOptions))
+    logs?.forEach((log) => {
+      showToast(log as UseToastOptions)
+      console.error(log)
+    })
   }
 
   if (!typebot) return null
