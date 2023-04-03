@@ -95,6 +95,7 @@ export const blocksAction = (
 const removeBlockFromGroup =
   ({ groupIndex, blockIndex }: BlockIndices) =>
   (typebot: WritableDraft<Typebot>) => {
+    if (typebot.groups[groupIndex].blocks[blockIndex].type === 'start') return
     typebot.groups[groupIndex].blocks.splice(blockIndex, 1)
   }
 
@@ -205,6 +206,7 @@ export const duplicateBlockDraft =
 
 export const deleteGroupDraft =
   (typebot: WritableDraft<Typebot>) => (groupIndex: number) => {
+    if (typebot.groups[groupIndex].blocks.at(0)?.type === 'start') return
     cleanUpEdgeDraft(typebot, typebot.groups[groupIndex].id)
     typebot.groups.splice(groupIndex, 1)
   }
