@@ -44,6 +44,16 @@ Extract the first name from a full name:
 {{Full name}}.split(' ')[0]
 ```
 
+Transform existing variable to upper case or lower case:
+
+```
+{{Name}}.toUpperCase()
+```
+
+```
+{{Name}}.toLowerCase()
+```
+
 ## Code
 
 The code value should be written Javascript. It will read the returned value of the code and set it to your variable.
