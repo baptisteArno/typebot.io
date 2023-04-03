@@ -12,6 +12,7 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   inputIndex: number
   context: BotContext
   isLoadingBubbleDisplayed: boolean
+  hasError: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: () => void
   onSubmit: (input: string) => void
@@ -90,6 +91,7 @@ export const ChatChunk = (props: Props) => {
             isInputPrefillEnabled={
               props.settings.general.isInputPrefillEnabled ?? true
             }
+            hasError={props.hasError}
           />
         )}
       </div>

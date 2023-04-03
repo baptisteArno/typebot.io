@@ -37,6 +37,7 @@ type Props = {
   inputIndex: number
   context: BotContext
   isInputPrefillEnabled: boolean
+  hasError: boolean
   onSubmit: (answer: string) => void
   onSkip: () => void
 }
@@ -56,16 +57,14 @@ export const InputChatBlock = (props: Props) => {
 
   return (
     <Switch>
-      <Match when={answer()} keyed>
-        {(answer) => (
-          <GuestBubble
-            message={answer}
-            showAvatar={props.guestAvatar?.isEnabled ?? false}
-            avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
-          />
-        )}
+      <Match when={answer() && !props.hasError}>
+        <GuestBubble
+          message={answer() as string}
+          showAvatar={props.guestAvatar?.isEnabled ?? false}
+          avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
+        />
       </Match>
-      <Match when={isNotDefined(answer())}>
+      <Match when={isNotDefined(answer()) || props.hasError}>
         <div
           class="flex justify-end animate-fade-in"
           data-blockid={props.block.id}

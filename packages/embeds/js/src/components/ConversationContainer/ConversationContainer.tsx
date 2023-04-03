@@ -59,6 +59,7 @@ export const ConversationContainer = (props: Props) => {
   const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme)
   const [isSending, setIsSending] = createSignal(false)
   const [blockedPopupUrl, setBlockedPopupUrl] = createSignal<string>()
+  const [hasError, setHasError] = createSignal(false)
 
   onMount(() => {
     ;(async () => {
@@ -82,19 +83,30 @@ export const ConversationContainer = (props: Props) => {
   })
 
   const sendMessage = async (message: string | undefined) => {
+    setHasError(false)
     const currentBlockId = [...chatChunks()].pop()?.input?.id
     if (currentBlockId && props.onAnswer && message)
       props.onAnswer({ message, blockId: currentBlockId })
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
-    const data = await sendMessageQuery({
+    const { data, error } = await sendMessageQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
       message,
     })
     clearTimeout(longRequest)
     setIsSending(false)
+    if (error) {
+      setHasError(true)
+      props.onNewLogs?.([
+        {
+          description: 'Error while sending message',
+          details: error,
+          status: 'error',
+        },
+      ])
+    }
     if (!data) return
     if (data.logs) props.onNewLogs?.(data.logs)
     if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme)
@@ -174,6 +186,7 @@ export const ConversationContainer = (props: Props) => {
             onScrollToBottom={autoScrollToBottom}
             onSkip={handleSkip}
             context={props.context}
+            hasError={hasError() && index() === chatChunks().length - 1}
           />
         )}
       </For>

@@ -60,11 +60,17 @@ export const Bot = (props: BotProps & { class?: string }) => {
       },
     })
     if (error && 'code' in error && typeof error.code === 'string') {
+      if (typeof props.typebot !== 'string' || (props.isPreview ?? false)) {
+        setError(
+          new Error('An error occurred while loading the bot.', {
+            cause: error.message,
+          })
+        )
+      }
       if (['BAD_REQUEST', 'FORBIDDEN'].includes(error.code))
         setError(new Error('This bot is now closed.'))
       if (error.code === 'NOT_FOUND')
         setError(new Error("The bot you're looking for doesn't exist."))
-      return
     }
 
     if (!data) return setError(new Error("Error! Couldn't initiate the chat."))
