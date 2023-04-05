@@ -3,6 +3,7 @@ import OctaButton from 'components/octaComponents/OctaButton/OctaButton';
 
 export const Container = styled.div`
   width: 100%;
+  height: ${(props) => props['data-screen'] === 'CREATE' ? '300px' : '180px'};
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans', sans-serif;

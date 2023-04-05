@@ -71,6 +71,9 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case WabaStepType.COMMERCE:
         width = 450;
         break;
+      case LogicStepType.CONDITION:
+        width = 450;
+        break;
       default:
         width = undefined
         break;

@@ -53,8 +53,8 @@ export type TypebotLinkStep = StepBase & {
 }
 
 export enum LogicalOperator {
-  OR = 'OR',
-  AND = 'AND',
+  OR = 'OU',
+  AND = 'E',
 }
 
 export enum ComparisonOperators {

@@ -37,6 +37,7 @@ export const ConditionSettingsBody = ({
             currentItem={itemContent.logicalOperator}
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
+            mb="4"
           />
         </Flex>
       )}
