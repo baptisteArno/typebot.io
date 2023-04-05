@@ -25,7 +25,7 @@
     "@codemirror/lang-json": "^0.20.0",
     "@codemirror/text": "^0.19.6",
     "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/styled": "^11.10.6",
     "@giphy/js-fetch-api": "^4.1.2",
     "@giphy/js-types": "^4.1.0",
     "@giphy/react-components": "^5.7.0",
