@@ -1,4 +1,10 @@
-import React, { useState, useRef, ChangeEvent, useEffect, MouseEvent } from 'react'
+import React, {
+  useState,
+  useRef,
+  ChangeEvent,
+  useEffect,
+  WheelEventHandler,
+} from 'react'
 import {
   useDisclosure,
   useOutsideClick,
@@ -20,7 +26,16 @@ import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, isEmpty, isNotDefined } from 'utils'
-import { ButtonOption, CancelButton, Container, FormField, FormFieldCol, FormFieldRowMin, LabelField, OrText } from './VariableSearchInput.style'
+import {
+  ButtonOption,
+  CancelButton,
+  Container,
+  FormField,
+  FormFieldCol,
+  FormFieldRowMin,
+  LabelField,
+  OrText,
+} from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
@@ -52,29 +67,25 @@ export const VariableSearchInput = ({
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const {
-    typebot,
-    createVariable,
-    deleteVariable
-  } = useTypebot()
+  const { typebot, createVariable, deleteVariable } = useTypebot()
 
   const variables = typebot?.variables ?? []
 
   const makeTitle = (propertiesType: string): any => {
-    let title;
+    let title
     switch (propertiesType) {
       case 'PERSON':
         title = CustomFieldTitle.PERSON
-        break;
+        break
       case 'CHAT':
         title = CustomFieldTitle.CHAT
-        break;
+        break
       case 'ORGANIZATION':
         title = CustomFieldTitle.ORGANIZATION
-        break;
+        break
       default:
-        title = '';
-        break;
+        title = ''
+        break
     }
     return {
       id: '',
@@ -82,28 +93,29 @@ export const VariableSearchInput = ({
       name: title,
       isTitle: true,
       disabled: true,
-    };
+    }
   }
 
   const grouped = typebot?.variables.reduce((acc, current) => {
     acc[current.domain] = acc[current.domain] || []
-    acc[current.domain].push(current);
+    acc[current.domain].push(current)
 
-    return acc;
+    return acc
   }, Object.create(null))
 
-  const options = Object.values(grouped).map((group: any, id: number): any => {
-    if (Object.keys(grouped)[id] !== 'undefined') {
-      return [makeTitle(Object.keys(grouped)[id]), ...group]
-    }
-  }).filter(item => item != undefined);
+  const options = Object.values(grouped)
+    .map((group: any, id: number): any => {
+      if (Object.keys(grouped)[id] !== 'undefined') {
+        return [makeTitle(Object.keys(grouped)[id]), ...group]
+      }
+    })
+    .filter((item) => item != undefined)
 
   //todo:
   /**
    * - criar um array novo com as variáveis
    * - adiciionar titles antes dos items
    */
-
 
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.token ?? ''
@@ -122,8 +134,8 @@ export const VariableSearchInput = ({
   const inputRef = useRef(null)
   const popoverRef = useRef(null)
 
-  const [screen, setScreen] = useState<"VIEWER" | "CREATE">("VIEWER");
-  const [customVariable, setCustomVariable] = useState<Variable>();
+  const [screen, setScreen] = useState<'VIEWER' | 'CREATE'>('VIEWER')
+  const [customVariable, setCustomVariable] = useState<Variable>()
 
   useOutsideClick({
     ref: dropdownRef,
@@ -154,7 +166,9 @@ export const VariableSearchInput = ({
     setFilteredItems([
       ...variables
         .filter((item) =>
-          item.token.toLowerCase().includes((e.target.value ?? '').toLowerCase())
+          item.token
+            .toLowerCase()
+            .includes((e.target.value ?? '').toLowerCase())
         )
         .slice(0, 50),
     ])
@@ -168,35 +182,43 @@ export const VariableSearchInput = ({
 
   const handleToggleScreen = (): void => {
     setScreen((e) => {
-      if (e === "VIEWER") {
-        return "CREATE"
+      if (e === 'VIEWER') {
+        return 'CREATE'
       } else {
-        return "VIEWER"
+        return 'VIEWER'
       }
-    });
+    })
   }
 
-  const handleCreateVariableChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleCreateVariableChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ): void => {
     // setInputValue(e.target.value);
-    const { value, name } = e.target;
-    setCustomVariable((state): Variable => ({
-      ...state,
-      token: value,
-      fieldId: value.replace("#", ""),
-      name: value.replace("#", "")
-    } as Variable))
+    const { value, name } = e.target
+    setCustomVariable(
+      (state): Variable =>
+        ({
+          ...state,
+          token: value,
+          fieldId: value.replace('#', ''),
+          name: value.replace('#', ''),
+        } as Variable)
+    )
   }
 
   const handleSelectTypeVariable = (type: string) => {
-    setCustomVariable((state): Variable => ({
-      ...state,
-      type,
-    } as Variable))
+    setCustomVariable(
+      (state): Variable =>
+        ({
+          ...state,
+          type,
+        } as Variable)
+    )
   }
 
   const formatChars = {
-    '*': '[a-zA-Z0-9\-]'
-  };
+    '*': '[a-zA-Z0-9-]',
+  }
 
   const handleCreateVariable = (): void => {
     const id = 'v' + cuid()
@@ -207,16 +229,20 @@ export const VariableSearchInput = ({
         domain: 'CHAT',
         token: customVariable.token,
         variableId: id,
-        example: "",
+        example: '',
         fieldId: customVariable.fieldId,
         type: customVariable.type,
       }
       createVariable(customVariableDraft)
       setInputValue(customVariableDraft.token)
       onSelectVariable(customVariableDraft)
-      setScreen("VIEWER")
+      setScreen('VIEWER')
       onClose()
     }
+  }
+
+  const handlePopoverContentWheel: WheelEventHandler = (event) => {
+    event.stopPropagation()
   }
 
   return (
@@ -227,75 +253,98 @@ export const VariableSearchInput = ({
         matchWidth
         isLazy
         offset={[0, 2]}
-        placement='top-start'
+        placement="top-start"
         autoFocus
       >
         <PopoverTrigger>
           <>
-            {
-              screen === "VIEWER" && (
-                <Container data-screen={screen}>
-                  Selecione uma variável para salvar a resposta:
-                  <Input
-                    data-testid="variables-input"
-                    ref={inputRef}
-                    value={inputValue}
-                    onChange={onInputChange}
-                    onClick={onOpen}
-                    placeholder={inputProps.placeholder ?? 'Selecione a variável'}
-                    {...inputProps}
+            {screen === 'VIEWER' && (
+              <Container data-screen={screen}>
+                Selecione uma variável para salvar a resposta:
+                <Input
+                  data-testid="variables-input"
+                  ref={inputRef}
+                  value={inputValue}
+                  onChange={onInputChange}
+                  onClick={onOpen}
+                  placeholder={inputProps.placeholder ?? 'Selecione a variável'}
+                  {...inputProps}
+                />
+                <OrText>Ou</OrText>
+                <OctaButton onClick={handleToggleScreen}>
+                  Criar variável
+                </OctaButton>
+              </Container>
+            )}
+            {screen === 'CREATE' && (
+              <Container data-screen={screen}>
+                <FormField>
+                  <OctaInput
+                    placeholder="#nome-do-campo"
+                    label="Nome do campo"
+                    mask="#****************************************"
+                    maskChar={null}
+                    formatChars={formatChars}
+                    onChange={handleCreateVariableChange}
                   />
-                  <OrText>Ou</OrText>
-                  <OctaButton onClick={handleToggleScreen}>
-                    Criar variável
-                  </OctaButton>
-                </Container>
-              )
-            }
-            {
-              screen === "CREATE" && (
-                <Container data-screen={screen}>
-                  <FormField>
-                    <OctaInput placeholder="#nome-do-campo" label="Nome do campo" mask="#****************************************" maskChar={null} formatChars={formatChars} onChange={handleCreateVariableChange} />
-                  </FormField>
-                  <FormField style={{ height: "150px" }}>
-                    <LabelField>
-                      Selecione o formato deste campo:
-                    </LabelField>
-                    <FormFieldRowMin>
-                      <ButtonOption className={customVariable?.type === "string" ? "active" : ""} onClick={() => handleSelectTypeVariable("string")}>
-                        Texto
-                      </ButtonOption>
-                      <ButtonOption className={customVariable?.type === "date" ? "active" : ""} onClick={() => handleSelectTypeVariable("date")}>
-                        dd/mm/aaaa
-                      </ButtonOption>
-                      <ButtonOption className={customVariable?.type === "float" ? "active" : ""} onClick={() => handleSelectTypeVariable("float")}>
-                        123
-                      </ButtonOption>
-                      <ButtonOption className={customVariable?.type === "pedido" ? "active" : ""} onClick={() => handleSelectTypeVariable("order")}>
-                        Pedido
-                      </ButtonOption>
-                    </FormFieldRowMin>
-                    <FormFieldCol>
-                      <OctaButton onClick={handleCreateVariable}>
-                        Criar variável
-                      </OctaButton>
-                      <CancelButton onClick={handleToggleScreen}>
-                        Cancelar
-                      </CancelButton>
-                    </FormFieldCol>
-                  </FormField>
-                </Container>
-              )
-            }
+                </FormField>
+                <FormField style={{ height: '150px' }}>
+                  <LabelField>Selecione o formato deste campo:</LabelField>
+                  <FormFieldRowMin>
+                    <ButtonOption
+                      className={
+                        customVariable?.type === 'string' ? 'active' : ''
+                      }
+                      onClick={() => handleSelectTypeVariable('string')}
+                    >
+                      Texto
+                    </ButtonOption>
+                    <ButtonOption
+                      className={
+                        customVariable?.type === 'date' ? 'active' : ''
+                      }
+                      onClick={() => handleSelectTypeVariable('date')}
+                    >
+                      dd/mm/aaaa
+                    </ButtonOption>
+                    <ButtonOption
+                      className={
+                        customVariable?.type === 'float' ? 'active' : ''
+                      }
+                      onClick={() => handleSelectTypeVariable('float')}
+                    >
+                      123
+                    </ButtonOption>
+                    <ButtonOption
+                      className={
+                        customVariable?.type === 'pedido' ? 'active' : ''
+                      }
+                      onClick={() => handleSelectTypeVariable('order')}
+                    >
+                      Pedido
+                    </ButtonOption>
+                  </FormFieldRowMin>
+                  <FormFieldCol>
+                    <OctaButton onClick={handleCreateVariable}>
+                      Criar variável
+                    </OctaButton>
+                    <CancelButton onClick={handleToggleScreen}>
+                      Cancelar
+                    </CancelButton>
+                  </FormFieldCol>
+                </FormField>
+              </Container>
+            )}
           </>
         </PopoverTrigger>
+
         <PopoverContent
           maxH="35vh"
           overflowY="scroll"
           role="menu"
           w="inherit"
           shadow="lg"
+          onWheelCapture={handlePopoverContentWheel}
         >
           {variables.length > 0 && (
             <>
