@@ -11,7 +11,7 @@ const OctaInput = (props: Props) => {
           {props.label}
         </div>
       )}
-      {props.mask && <InputMasked {...props} mask={props.mask}  style={{ margin: 0 }} ref={refs} maskChar="" />}
+      {props.mask && <InputMasked {...props} mask={props.mask}  style={{ margin: 0 }} ref={refs} />}
       {!props.mask && <input {...props} style={{ margin: 0 }} />}
       {props.error && (
         <Error>

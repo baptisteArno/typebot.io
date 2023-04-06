@@ -1,9 +1,10 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
+import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import cuid from 'cuid'
 import React, { useState } from 'react'
 
-type ItemWithId<T> = T & { id: string, type: string}
+type ItemWithId<T> = T & { id: string, type: string }
 
 export type TableListItemProps<T> = {
   item: T
@@ -29,8 +30,8 @@ export const TableList = <T,>({
   debounceTimeout,
   Item,
   ComponentBetweenItems = () => <></>,
-}: Props<T>) => {  
-  
+}: Props<T>) => {
+
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
@@ -73,7 +74,7 @@ export const TableList = <T,>({
             pos="relative"
             onMouseEnter={handleMouseEnter(itemIndex)}
             onMouseLeave={handleMouseLeave}
-            // mt={itemIndex !== 0 && ComponentBetweenItems() ? 4 : 0}
+          // mt={itemIndex !== 0 && ComponentBetweenItems() ? 4 : 0}
           >
             <Item
               item={item}
@@ -95,14 +96,11 @@ export const TableList = <T,>({
           </Flex>
         </Box>
       ))}
-      <Button
-        leftIcon={<PlusIcon />}
+      <OctaButton
         onClick={createItem}
-        flexShrink={0}
-        colorScheme="blue"
       >
         {addLabel}
-      </Button>
+      </OctaButton>
     </Stack>
   )
 }

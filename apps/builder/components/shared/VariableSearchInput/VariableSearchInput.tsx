@@ -57,7 +57,7 @@ export const VariableSearchInput = ({
     createVariable,
     deleteVariable
   } = useTypebot()
-  
+
   const variables = typebot?.variables ?? []
   console.log('')
 
@@ -89,15 +89,15 @@ export const VariableSearchInput = ({
   const grouped = typebot?.variables.reduce((acc, current) => {
     acc[current.domain] = acc[current.domain] || []
     acc[current.domain].push(current);
-        
+
     return acc;
   }, Object.create(null))
 
-  const options = Object.values(grouped).map((group: any, id: number): any => {    
-    if(Object.keys(grouped)[id] !== 'undefined'){
-      return [makeTitle(Object.keys(grouped)[id]),...group]
+  const options = Object.values(grouped).map((group: any, id: number): any => {
+    if (Object.keys(grouped)[id] !== 'undefined') {
+      return [makeTitle(Object.keys(grouped)[id]), ...group]
     }
-  }).filter(item => item != undefined);  
+  }).filter(item => item != undefined);
 
   //todo:
   /**
@@ -105,7 +105,7 @@ export const VariableSearchInput = ({
    * - adiciionar titles antes dos items
    */
 
-  
+
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.token ?? ''
   )
@@ -121,6 +121,7 @@ export const VariableSearchInput = ({
   )
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
+  const popoverRef = useRef(null)
 
   const [screen, setScreen] = useState<"VIEWER" | "CREATE">("VIEWER");
   const [customVariable, setCustomVariable] = useState<Variable>();
@@ -194,6 +195,10 @@ export const VariableSearchInput = ({
     } as Variable))
   }
 
+  const formatChars = {
+    '*': '[a-zA-Z0-9\-]'
+  };
+
   const handleCreateVariable = (): void => {
     const id = 'v' + cuid()
     if (customVariable) {
@@ -219,16 +224,18 @@ export const VariableSearchInput = ({
     <Flex ref={dropdownRef} w="full">
       <Popover
         isOpen={isOpen}
-        initialFocusRef={inputRef}
+        initialFocusRef={popoverRef}
         matchWidth
         isLazy
         offset={[0, 2]}
+        placement='top-start'
+        autoFocus
       >
         <PopoverTrigger>
           <>
             {
               screen === "VIEWER" && (
-                <Container>
+                <Container data-screen={screen}>
                   Selecione uma variável para salvar a resposta:
                   <Input
                     data-testid="variables-input"
@@ -248,9 +255,9 @@ export const VariableSearchInput = ({
             }
             {
               screen === "CREATE" && (
-                <Container>
+                <Container data-screen={screen}>
                   <FormField>
-                    <OctaInput placeholder="#nome-do-campo" label="Nome do campo" mask="#****************" onChange={handleCreateVariableChange} />
+                    <OctaInput placeholder="#nome-do-campo" label="Nome do campo" mask="#****************************************" maskChar={null} formatChars={formatChars} onChange={handleCreateVariableChange} />
                   </FormField>
                   <FormField style={{ height: "150px" }}>
                     <LabelField>
