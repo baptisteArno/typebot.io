@@ -12,6 +12,14 @@ export const getDeepKeys = (obj: any): string[] => {
     } else if (Array.isArray(obj[key])) {
       if (obj[key].length === 0) continue
 
+      if (typeof obj[key][0] !== 'object') {
+        keys.push(key)
+        keys = keys.concat(
+          obj[key].map((_: string, index: number) => `${key}[${index}]`)
+        )
+        continue
+      }
+
       const subkeys = getDeepKeys(obj[key][0])
       if (obj[key].length > 1) {
         keys = keys.concat(
