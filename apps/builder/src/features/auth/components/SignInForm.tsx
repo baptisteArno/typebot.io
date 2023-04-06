@@ -27,6 +27,7 @@ import { BuiltInProviderType } from 'next-auth/providers'
 import { useToast } from '@/hooks/useToast'
 import { TextLink } from '@/components/TextLink'
 import { SignInError } from './SignInError'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   defaultEmail?: string
@@ -34,6 +35,7 @@ type Props = {
 export const SignInForm = ({
   defaultEmail,
 }: Props & HTMLChakraProps<'form'>) => {
+  const scopedT = useScopedI18n('auth')
   const router = useRouter()
   const { status } = useSession()
   const [authLoading, setAuthLoading] = useState(false)
@@ -76,8 +78,8 @@ export const SignInForm = ({
     })
     if (response?.error) {
       showToast({
-        title: 'Unauthorized',
-        description: 'Sign ups are disabled.',
+        title: scopedT('signinErrorToast.title'),
+        description: scopedT('signinErrorToast.description'),
       })
     } else {
       setIsMagicLinkSent(true)
@@ -89,14 +91,13 @@ export const SignInForm = ({
   if (hasNoAuthProvider)
     return (
       <Text>
-        You need to{' '}
+        {scopedT('noProvider.preLink')}{' '}
         <TextLink
           href="https://docs.typebot.io/self-hosting/configuration"
           isExternal
         >
-          configure at least one auth provider
-        </TextLink>{' '}
-        (Email, Google, GitHub, Facebook or Azure AD).
+          {scopedT('noProvider.link')}
+        </TextLink>
       </Text>
     )
   return (
@@ -106,7 +107,9 @@ export const SignInForm = ({
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
             <>
-              <DividerWithText mt="6">Or with your email</DividerWithText>
+              <DividerWithText mt="6">
+                {scopedT('orEmailLabel')}
+              </DividerWithText>
               <HStack as="form" onSubmit={handleEmailSubmit}>
                 <Input
                   name="email"
@@ -124,7 +127,7 @@ export const SignInForm = ({
                   }
                   isDisabled={isMagicLinkSent}
                 >
-                  Submit
+                  {scopedT('emailSubmitButton.label')}
                 </Button>
               </HStack>
             </>
@@ -140,10 +143,8 @@ export const SignInForm = ({
             <HStack>
               <AlertIcon />
               <Stack spacing={1}>
-                <Text fontWeight="semibold">
-                  A magic link email was sent. 🪄
-                </Text>
-                <Text fontSize="sm">Make sure to check your SPAM folder.</Text>
+                <Text fontWeight="semibold">{scopedT('magicLink.title')}</Text>
+                <Text fontSize="sm">{scopedT('magicLink.description')}</Text>
               </Stack>
             </HStack>
           </Alert>

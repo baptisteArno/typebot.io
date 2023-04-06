@@ -15,7 +15,7 @@ import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitat
 import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
 
-export function CustomAdapter(p: PrismaClient): Adapter {
+export function customAdapter(p: PrismaClient): Adapter {
   return {
     createUser: async (data: Omit<AdapterUser, 'id'>) => {
       if (!data.email)

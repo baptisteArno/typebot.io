@@ -193,7 +193,7 @@ test('plan changes should work', async ({ page }) => {
   // Go to customer portal
   await Promise.all([
     page.waitForNavigation(),
-    page.click('text="Billing Portal"'),
+    page.click('text="Billing portal"'),
   ])
   await expect(page.locator('text="Add payment method"')).toBeVisible()
 

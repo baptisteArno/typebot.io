@@ -1,4 +1,5 @@
 import { CopyButton } from '@/components/CopyButton'
+import { useScopedI18n } from '@/locales'
 import {
   Modal,
   ModalOverlay,
@@ -31,6 +32,7 @@ export const CreateTokenModal = ({
   onClose,
   onNewToken,
 }: Props) => {
+  const scopedT = useScopedI18n('account.apiTokens.createModal')
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [newTokenValue, setNewTokenValue] = useState<string>()
@@ -50,14 +52,14 @@ export const CreateTokenModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {newTokenValue ? 'Token Created' : 'Create Token'}
+          {newTokenValue ? scopedT('createdHeading') : scopedT('createHeading')}
         </ModalHeader>
         <ModalCloseButton />
         {newTokenValue ? (
           <ModalBody as={Stack} spacing="4">
             <Text>
-              Please copy your token and store it in a safe place.{' '}
-              <strong>For security reasons we cannot show it again.</strong>
+              {scopedT('copyInstruction')}
+              <strong>{scopedT('securityWarning')}</strong>
             </Text>
             <InputGroup size="md">
               <Input readOnly pr="4.5rem" value={newTokenValue} />
@@ -68,12 +70,9 @@ export const CreateTokenModal = ({
           </ModalBody>
         ) : (
           <ModalBody as="form" onSubmit={createToken}>
-            <Text mb="4">
-              Enter a unique name for your token to differentiate it from other
-              tokens.
-            </Text>
+            <Text mb="4">{scopedT('nameInput.label')}</Text>
             <Input
-              placeholder="I.e. Zapier, Github, Make.com"
+              placeholder={scopedT('nameInput.placeholder')}
               onChange={(e) => setName(e.target.value)}
             />
           </ModalBody>
@@ -82,7 +81,7 @@ export const CreateTokenModal = ({
         <ModalFooter>
           {newTokenValue ? (
             <Button onClick={onClose} colorScheme="blue">
-              Done
+              {scopedT('doneButton.label')}
             </Button>
           ) : (
             <Button
@@ -91,7 +90,7 @@ export const CreateTokenModal = ({
               isLoading={isSubmitting}
               onClick={createToken}
             >
-              Create token
+              {scopedT('createButton.label')}
             </Button>
           )}
         </ModalFooter>

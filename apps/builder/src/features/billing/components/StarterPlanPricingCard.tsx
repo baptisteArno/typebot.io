@@ -25,6 +25,7 @@ import {
 } from '@typebot.io/lib/pricing'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
+import { useI18n, useScopedI18n } from '@/locales'
 
 type Props = {
   initialChatsLimitIndex?: number
@@ -44,6 +45,8 @@ export const StarterPlanPricingCard = ({
   currency,
   onPayClick,
 }: Props) => {
+  const t = useI18n()
+  const scopedT = useScopedI18n('billing.pricingCard')
   const { workspace } = useWorkspace()
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>()
@@ -89,17 +92,17 @@ export const StarterPlanPricingCard = ({
       selectedStorageLimitIndex === undefined
     )
       return ''
-    if (workspace?.plan === Plan.PRO) return 'Downgrade'
+    if (workspace?.plan === Plan.PRO) return t('downgrade')
     if (workspace?.plan === Plan.STARTER) {
-      if (isCurrentPlan) return 'Your current plan'
+      if (isCurrentPlan) return scopedT('upgradeButton.current')
 
       if (
         selectedChatsLimitIndex !== initialChatsLimitIndex ||
         selectedStorageLimitIndex !== initialStorageLimitIndex
       )
-        return 'Update'
+        return t('update')
     }
-    return 'Upgrade'
+    return t('upgrade')
   }
 
   const handlePayClick = async () => {
@@ -118,9 +121,11 @@ export const StarterPlanPricingCard = ({
     <Stack spacing={6} p="6" rounded="lg" borderWidth="1px" flex="1" h="full">
       <Stack spacing="4">
         <Heading fontSize="2xl">
-          Upgrade to <chakra.span color="orange.400">Starter</chakra.span>
+          {scopedT('heading', {
+            plan: <chakra.span color="orange.400">Starter</chakra.span>,
+          })}
         </Heading>
-        <Text>For individuals & small businesses.</Text>
+        <Text>{scopedT('starter.description')}</Text>
         <Heading>
           {formatPrice(
             computePrice(
@@ -130,11 +135,11 @@ export const StarterPlanPricingCard = ({
             ) ?? NaN,
             currency
           )}
-          <chakra.span fontSize="md">/ month</chakra.span>
+          <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
         </Heading>
         <FeaturesList
           features={[
-            '2 seats included',
+            scopedT('starter.includedSeats'),
             <HStack key="test">
               <Text>
                 <Menu>
@@ -194,12 +199,9 @@ export const StarterPlanPricingCard = ({
                     )}
                   </MenuList>
                 </Menu>{' '}
-                chats/mo
+                {scopedT('chatsPerMonth')}
               </Text>
-              <MoreInfoTooltip>
-                A chat is counted whenever a user starts a discussion. It is
-                independant of the number of messages he sends and receives.
-              </MoreInfoTooltip>
+              <MoreInfoTooltip>{scopedT('chatsTooltip')}</MoreInfoTooltip>
             </HStack>,
             <HStack key="test">
               <Text>
@@ -260,16 +262,15 @@ export const StarterPlanPricingCard = ({
                     )}
                   </MenuList>
                 </Menu>{' '}
-                GB of storage
+                {scopedT('storageLimit')}
               </Text>
               <MoreInfoTooltip>
-                You accumulate storage for every file that your user upload into
-                your bot. If you delete the result, it will free up the space.
+                {scopedT('storageLimitTooltip')}
               </MoreInfoTooltip>
             </HStack>,
-            'Branding removed',
-            'File upload input block',
-            'Create folders',
+            scopedT('starter.brandingRemoved'),
+            scopedT('starter.fileUploadBlock'),
+            scopedT('starter.createFolders'),
           ]}
         />
       </Stack>

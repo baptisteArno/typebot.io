@@ -11,6 +11,7 @@ import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvi
 import { useUser } from '@/features/account/hooks/useUser'
 import { StarterPlanPricingCard } from './StarterPlanPricingCard'
 import { ProPlanPricingCard } from './ProPlanPricingCard'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'stripeId' | 'plan'>
@@ -18,6 +19,7 @@ type Props = {
 }
 
 export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
+  const scopedT = useScopedI18n('billing')
   const { user } = useUser()
   const { showToast } = useToast()
   const [preCheckoutPlan, setPreCheckoutPlan] =
@@ -38,7 +40,7 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
         onUpgradeSuccess()
         showToast({
           status: 'success',
-          description: `Workspace ${plan} plan successfully updated 🎉`,
+          description: scopedT('updateSuccessToast.description', { plan }),
         })
       },
     })
@@ -123,9 +125,9 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
         />
       </HStack>
       <Text color="gray.500">
-        Need custom limits? Specific features?{' '}
+        {scopedT('customLimit.preLink')}{' '}
         <TextLink href={'https://typebot.io/enterprise-lead-form'} isExternal>
-          Let&apos;s chat!
+          {scopedT('customLimit.link')}
         </TextLink>
       </Text>
     </Stack>

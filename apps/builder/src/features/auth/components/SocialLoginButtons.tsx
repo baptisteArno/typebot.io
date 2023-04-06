@@ -15,6 +15,7 @@ import { omit } from '@typebot.io/lib'
 import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
 import { FacebookLogo } from '@/components/logos/FacebookLogo'
 import { GitlabLogo } from '@/components/logos/GitlabLogo'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   providers:
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export const SocialLoginButtons = ({ providers }: Props) => {
+  const scopedT = useScopedI18n('auth.socialLogin')
   const { query } = useRouter()
   const { status } = useSession()
   const [authLoading, setAuthLoading] =
@@ -63,7 +65,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with GitHub
+          {scopedT('githubButton.label')}
         </Button>
       )}
       {providers?.google && (
@@ -77,7 +79,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with Google
+          {scopedT('googleButton.label')}
         </Button>
       )}
       {providers?.facebook && (
@@ -91,7 +93,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with Facebook
+          {scopedT('facebookButton.label')}
         </Button>
       )}
       {providers?.gitlab && (
@@ -105,7 +107,9 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with {providers.gitlab.name}
+          {scopedT('gitlabButton.label', {
+            gitlabProviderName: providers.gitlab.name,
+          })}
         </Button>
       )}
       {providers?.['azure-ad'] && (
@@ -119,7 +123,9 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with {providers['azure-ad'].name}
+          {scopedT('azureButton.label', {
+            azureProviderName: providers['azure-ad'].name,
+          })}
         </Button>
       )}
       {providers?.['custom-oauth'] && (
@@ -131,7 +137,9 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          Continue with {providers['custom-oauth'].name}
+          {scopedT('customButton.label', {
+            customProviderName: providers['custom-oauth'].name,
+          })}
         </Button>
       )}
     </Stack>

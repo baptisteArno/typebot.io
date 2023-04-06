@@ -6,6 +6,7 @@ import { PlanTag } from './PlanTag'
 import { BillingPortalButton } from './BillingPortalButton'
 import { trpc } from '@/lib/trpc'
 import { Workspace } from '@typebot.io/schemas'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'plan' | 'stripeId'>
@@ -16,6 +17,7 @@ export const CurrentSubscriptionSummary = ({
   workspace,
   onCancelSuccess,
 }: Props) => {
+  const scopedT = useScopedI18n('billing.currentSubscription')
   const { showToast } = useToast()
 
   const { mutate: cancelSubscription, isLoading: isCancelling } =
@@ -34,9 +36,9 @@ export const CurrentSubscriptionSummary = ({
 
   return (
     <Stack spacing="4">
-      <Heading fontSize="3xl">Subscription</Heading>
+      <Heading fontSize="3xl">{scopedT('heading')}</Heading>
       <HStack data-testid="current-subscription">
-        <Text>Current workspace subscription: </Text>
+        <Text>{scopedT('subheading')} </Text>
         {isCancelling ? (
           <Spinner color="gray.500" size="xs" />
         ) : (
@@ -52,7 +54,7 @@ export const CurrentSubscriptionSummary = ({
                   cancelSubscription({ workspaceId: workspace.id })
                 }
               >
-                Cancel my subscription
+                {scopedT('cancelLink')}
               </Link>
             )}
           </>
@@ -62,10 +64,7 @@ export const CurrentSubscriptionSummary = ({
       {isSubscribed && !isCancelling && (
         <>
           <Stack spacing="4">
-            <Text fontSize="sm">
-              Need to change payment method or billing information? Head over to
-              your billing portal:
-            </Text>
+            <Text fontSize="sm">{scopedT('billingPortalDescription')}</Text>
             <BillingPortalButton workspaceId={workspace.id} />
           </Stack>
         </>

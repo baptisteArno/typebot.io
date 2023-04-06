@@ -8,12 +8,12 @@ import AzureADProvider from 'next-auth/providers/azure-ad'
 import prisma from '@/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { CustomAdapter } from './adapter'
+import { customAdapter } from '../../../features/auth/api/customAdapter'
 import { User } from '@typebot.io/prisma'
 import { env, getAtPath, isDefined, isNotEmpty } from '@typebot.io/lib'
-import { sendVerificationRequest } from './sendVerificationRequest'
 import { mockedUser } from '@/features/auth/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
+import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 
 const providers: Provider[] = []
 
@@ -129,7 +129,7 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
 }
 
 export const authOptions: AuthOptions = {
-  adapter: CustomAdapter(prisma),
+  adapter: customAdapter(prisma),
   secret: process.env.ENCRYPTION_SECRET,
   providers,
   session: {

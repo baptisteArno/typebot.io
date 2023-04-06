@@ -29,6 +29,7 @@ import {
 } from '@typebot.io/lib/pricing'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
+import { useI18n, useScopedI18n } from '@/locales'
 
 type Props = {
   initialChatsLimitIndex?: number
@@ -48,6 +49,8 @@ export const ProPlanPricingCard = ({
   isLoading,
   onPayClick,
 }: Props) => {
+  const t = useI18n()
+  const scopedT = useScopedI18n('billing.pricingCard')
   const { workspace } = useWorkspace()
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>()
@@ -94,15 +97,15 @@ export const ProPlanPricingCard = ({
     )
       return ''
     if (workspace?.plan === Plan.PRO) {
-      if (isCurrentPlan) return 'Your current plan'
+      if (isCurrentPlan) return scopedT('upgradeButton.current')
 
       if (
         selectedChatsLimitIndex !== initialChatsLimitIndex ||
         selectedStorageLimitIndex !== initialStorageLimitIndex
       )
-        return 'Update'
+        return t('update')
     }
-    return 'Upgrade'
+    return t('upgrade')
   }
 
   const handlePayClick = async () => {
@@ -139,15 +142,17 @@ export const ProPlanPricingCard = ({
           fontWeight="semibold"
           style={{ marginTop: 0 }}
         >
-          Most popular
+          {scopedT('pro.mostPopularLabel')}
         </Tag>
       </Flex>
       <Stack justifyContent="space-between" h="full">
         <Stack spacing="4" mt={2}>
           <Heading fontSize="2xl">
-            Upgrade to <chakra.span color="blue.400">Pro</chakra.span>
+            {scopedT('heading', {
+              plan: <chakra.span color="blue.400">Pro</chakra.span>,
+            })}
           </Heading>
-          <Text>For agencies & growing startups.</Text>
+          <Text>{scopedT('pro.description')}</Text>
         </Stack>
         <Stack spacing="4">
           <Heading>
@@ -159,16 +164,16 @@ export const ProPlanPricingCard = ({
               ) ?? NaN,
               currency
             )}
-            <chakra.span fontSize="md">/ month</chakra.span>
+            <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
           </Heading>
           <Text fontWeight="bold">
             <Tooltip
               label={
                 <FeaturesList
                   features={[
-                    'Branding removed',
-                    'File upload input block',
-                    'Create folders',
+                    scopedT('starter.brandingRemoved'),
+                    scopedT('starter.fileUploadBlock'),
+                    scopedT('starter.createFolders'),
                   ]}
                   spacing="0"
                 />
@@ -177,14 +182,14 @@ export const ProPlanPricingCard = ({
               placement="top"
             >
               <chakra.span textDecoration="underline" cursor="pointer">
-                Everything in Starter
+                {scopedT('pro.everythingFromStarter')}
               </chakra.span>
             </Tooltip>
-            , plus:
+            {scopedT('plus')}
           </Text>
           <FeaturesList
             features={[
-              '5 seats included',
+              scopedT('pro.includedSeats'),
               <HStack key="test">
                 <Text>
                   <Menu>
@@ -242,12 +247,9 @@ export const ProPlanPricingCard = ({
                       )}
                     </MenuList>
                   </Menu>{' '}
-                  chats/mo
+                  {scopedT('chatsPerMonth')}
                 </Text>
-                <MoreInfoTooltip>
-                  A chat is counted whenever a user starts a discussion. It is
-                  independant of the number of messages he sends and receives.
-                </MoreInfoTooltip>
+                <MoreInfoTooltip>{scopedT('chatsTooltip')}</MoreInfoTooltip>
               </HStack>,
               <HStack key="test">
                 <Text>
@@ -318,16 +320,14 @@ export const ProPlanPricingCard = ({
                       )}
                     </MenuList>
                   </Menu>{' '}
-                  GB of storage
+                  {scopedT('storageLimit')}
                 </Text>
                 <MoreInfoTooltip>
-                  You accumulate storage for every file that your user upload
-                  into your bot. If you delete the result, it will free up the
-                  space.
+                  {scopedT('storageLimitTooltip')}
                 </MoreInfoTooltip>
               </HStack>,
-              'Custom domains',
-              'In-depth analytics',
+              scopedT('pro.customDomains'),
+              scopedT('pro.analytics'),
             ]}
           />
           <Button

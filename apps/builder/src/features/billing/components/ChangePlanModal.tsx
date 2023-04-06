@@ -1,5 +1,6 @@
 import { AlertInfo } from '@/components/AlertInfo'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { useI18n, useScopedI18n } from '@/locales'
 import {
   Modal,
   ModalBody,
@@ -10,11 +11,10 @@ import {
   Button,
   HStack,
 } from '@chakra-ui/react'
-import { LimitReached } from '../types'
 import { ChangePlanForm } from './ChangePlanForm'
 
 type ChangePlanModalProps = {
-  type?: LimitReached
+  type?: string
   isOpen: boolean
   onClose: () => void
 }
@@ -24,6 +24,7 @@ export const ChangePlanModal = ({
   isOpen,
   type,
 }: ChangePlanModalProps) => {
+  const t = useI18n()
   const { workspace, refreshWorkspace } = useWorkspace()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
@@ -32,7 +33,7 @@ export const ChangePlanModal = ({
         <ModalBody as={Stack} spacing="6" pt="10">
           {type && (
             <AlertInfo>
-              You need to upgrade your plan in order to {type}
+              {t('billing.upgradeLimitLabel', { type: type })}
             </AlertInfo>
           )}
           {workspace && (
@@ -46,7 +47,7 @@ export const ChangePlanModal = ({
         <ModalFooter>
           <HStack>
             <Button colorScheme="gray" onClick={onClose}>
-              Cancel
+              {t('cancel')}
             </Button>
           </HStack>
         </ModalFooter>

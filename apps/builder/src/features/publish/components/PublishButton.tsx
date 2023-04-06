@@ -26,10 +26,11 @@ import { useRouter } from 'next/router'
 import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
-import { LimitReached } from '@/features/billing/types'
 import { parseTimeSince } from '@/helpers/parseTimeSince'
+import { useI18n } from '@/locales'
 
 export const PublishButton = (props: ButtonProps) => {
+  const t = useI18n()
   const warningTextColor = useColorModeValue('red.300', 'red.600')
   const { workspace } = useWorkspace()
   const { push, query } = useRouter()
@@ -72,7 +73,7 @@ export const PublishButton = (props: ButtonProps) => {
       <ChangePlanModal
         isOpen={isOpen}
         onClose={onClose}
-        type={LimitReached.FILE_INPUT}
+        type={t('billing.limitMessage.fileInput')}
       />
       <Tooltip
         placement="bottom-end"

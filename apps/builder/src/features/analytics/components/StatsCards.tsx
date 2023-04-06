@@ -1,3 +1,4 @@
+import { useScopedI18n } from '@/locales'
 import {
   GridProps,
   SimpleGrid,
@@ -22,12 +23,13 @@ export const StatsCards = ({
   stats,
   ...props
 }: { stats?: Stats } & GridProps) => {
+  const scopedT = useScopedI18n('analytics')
   const bg = useColorModeValue('white', 'gray.900')
 
   return (
     <SimpleGrid columns={{ base: 1, md: 3 }} spacing="6" {...props}>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>Views</StatLabel>
+        <StatLabel>{scopedT('viewsLabel')}</StatLabel>
         {stats ? (
           <StatNumber>{stats.totalViews}</StatNumber>
         ) : (
@@ -35,7 +37,7 @@ export const StatsCards = ({
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>Starts</StatLabel>
+        <StatLabel>{scopedT('startsLabel')}</StatLabel>
         {stats ? (
           <StatNumber>{stats.totalStarts}</StatNumber>
         ) : (
@@ -43,7 +45,7 @@ export const StatsCards = ({
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>Completion rate</StatLabel>
+        <StatLabel>{scopedT('completionRateLabel')}</StatLabel>
         {stats ? (
           <StatNumber>
             {computeCompletionRate(stats.totalCompleted, stats.totalStarts)}

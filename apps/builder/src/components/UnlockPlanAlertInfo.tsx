@@ -9,18 +9,21 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
-import { LimitReached } from '@/features/billing/types'
+import { useI18n } from '@/locales'
+
+type Props = {
+  contentLabel: React.ReactNode
+  buttonLabel?: string
+  type?: string
+} & AlertProps
 
 export const UnlockPlanAlertInfo = ({
   contentLabel,
-  buttonLabel = 'More info',
+  buttonLabel,
   type,
   ...props
-}: {
-  contentLabel: React.ReactNode
-  buttonLabel?: string
-  type?: LimitReached
-} & AlertProps) => {
+}: Props) => {
+  const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Alert
@@ -40,7 +43,7 @@ export const UnlockPlanAlertInfo = ({
         flexShrink={0}
         ml="2"
       >
-        {buttonLabel}
+        {buttonLabel ?? t('billing.upgradeAlert.buttonDefaultLabel')}
       </Button>
       <ChangePlanModal isOpen={isOpen} onClose={onClose} type={type} />
     </Alert>

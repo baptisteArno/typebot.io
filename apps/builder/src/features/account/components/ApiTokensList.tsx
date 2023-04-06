@@ -25,10 +25,12 @@ import { useApiTokens } from '../hooks/useApiTokens'
 import { ApiTokenFromServer } from '../types'
 import { parseTimeSince } from '@/helpers/parseTimeSince'
 import { deleteApiTokenQuery } from '../queries/deleteApiTokenQuery'
+import { useScopedI18n } from '@/locales'
 
 type Props = { user: User }
 
 export const ApiTokensList = ({ user }: Props) => {
+  const scopedT = useScopedI18n('account.apiTokens')
   const { showToast } = useToast()
   const { apiTokens, isLoading, mutate } = useApiTokens({
     userId: user.id,
@@ -55,13 +57,10 @@ export const ApiTokensList = ({ user }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Heading fontSize="2xl">API tokens</Heading>
-      <Text>
-        These tokens allow other apps to control your whole account and
-        typebots. Be careful!
-      </Text>
+      <Heading fontSize="2xl">{scopedT('heading')}</Heading>
+      <Text>{scopedT('description')}</Text>
       <Flex justifyContent="flex-end">
-        <Button onClick={onCreateOpen}>Create</Button>
+        <Button onClick={onCreateOpen}>{scopedT('createButton.label')}</Button>
         <CreateTokenModal
           userId={user.id}
           isOpen={isCreateOpen}
@@ -74,8 +73,8 @@ export const ApiTokensList = ({ user }: Props) => {
         <Table>
           <Thead>
             <Tr>
-              <Th>Name</Th>
-              <Th w="130px">Created</Th>
+              <Th>{scopedT('table.nameHeader')}</Th>
+              <Th w="130px">{scopedT('table.createdHeader')}</Th>
               <Th w="0" />
             </Tr>
           </Thead>
@@ -91,7 +90,7 @@ export const ApiTokensList = ({ user }: Props) => {
                     variant="outline"
                     onClick={() => setDeletingId(token.id)}
                   >
-                    Delete
+                    {scopedT('deleteButton.label')}
                   </Button>
                 </Td>
               </Tr>
@@ -119,11 +118,14 @@ export const ApiTokensList = ({ user }: Props) => {
         onClose={() => setDeletingId(undefined)}
         message={
           <Text>
-            The token <strong>{apiTokens?.find(byId(deletingId))?.name}</strong>{' '}
-            will be permanently deleted, are you sure you want to continue?
+            {scopedT('deleteConfirmationMessage', {
+              tokenName: (
+                <strong>{apiTokens?.find(byId(deletingId))?.name}</strong>
+              ),
+            })}
           </Text>
         }
-        confirmButtonLabel="Delete"
+        confirmButtonLabel={scopedT('deleteButton.label')}
       />
     </Stack>
   )
