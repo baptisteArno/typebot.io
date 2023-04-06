@@ -1,5 +1,43 @@
 # Changelog
 
+<a name="2.12.0"></a>
+## 2.12.0 (2023-04-05)
+
+### Added
+
+- 🔊 (openai) Add error log details in web console [[a5d3f83](https://github.com/baptisteArno/typebot.io/commit/a5d3f83c7fa0924b9a9f48e841e848681f54bbd5)]
+- ✨ Add ChatGPT personas template [[f895c6d](https://github.com/baptisteArno/typebot.io/commit/f895c6d72d276c726e8254e1e8b69792a0cbce71)]
+- ✨ Add Unsplash picker [[3ef4efa](https://github.com/baptisteArno/typebot.io/commit/3ef4efab4e0d85839f07de94456e8a2762ffa416)]
+
+### Changed
+
+- 🚸 (js) Display last input if send message errored [[9f8398b](https://github.com/baptisteArno/typebot.io/commit/9f8398b9aecbfe2b42e658e2afa4ada084fd9b8c)]
+- 🚸 (webhook) Always show save response accordion [[b96a3a6](https://github.com/baptisteArno/typebot.io/commit/b96a3a6a8e38a919a7365faaa3430afd22a5ae97)]
+- ⬆️ Upgrade dependencies [[21b1d74](https://github.com/baptisteArno/typebot.io/commit/21b1d74b7e99b15a0d4cb8aff0edc75602161c9b)]
+- 🚸 (results) Improve list variables display in results table [[411cf31](https://github.com/baptisteArno/typebot.io/commit/411cf31b397fba2b810b33e0b57bfa4a4eb9b159)]
+- ♿ (js) Add &quot;large&quot; bubble button size and part attr [[3cfdb81](https://github.com/baptisteArno/typebot.io/commit/3cfdb8179e3503b67665a3338356bd6bbf6edb92)]
+- ♿ (billing) Add HU VAT option [[70416c0](https://github.com/baptisteArno/typebot.io/commit/70416c0d144eabaeef03ab98c7f554fa7479b07b)]
+- ⚡ (condition) Add more comparison operators [[80b7dbd](https://github.com/baptisteArno/typebot.io/commit/80b7dbd19e94435733ae0e5057de9045ec9412af)]
+- ⚡ (payment) Add description option on Stripe input [[bb45b33](https://github.com/baptisteArno/typebot.io/commit/bb45b33928d48a3d376fdbc19122646447b54a93)]
+- ♿ (openai) Show textarea instead of text input for message content [[50db998](https://github.com/baptisteArno/typebot.io/commit/50db9985c44bf25fc1cd555eee6e606f23c942c3)]
+
+### Fixed
+
+- 🐛 Fix error display on preview start [[3196fe3](https://github.com/baptisteArno/typebot.io/commit/3196fe375985e90d6246010eca00b5e08694eed4)]
+- 🚑 (auth) Fix bad requests with getSession on server side [[49071b7](https://github.com/baptisteArno/typebot.io/commit/49071b73b6424490af8aeb38e207b8b80ae2446c)]
+- 🐛 (editor) Make sure you can&#x27;t remove the Start group [[d32afd8](https://github.com/baptisteArno/typebot.io/commit/d32afd8ba69b1b68860b9ceeceda52147f70cf76)]
+- 🐛 (embedBubble) Fix sanitize url adding https to variable [[b9ae314](https://github.com/baptisteArno/typebot.io/commit/b9ae314ef9bee4f027eb61be644210c4b0a15e2e)]
+- 🐛 (typebotLink) Fix Out of sort memory with mySQL DB [[79c1b16](https://github.com/baptisteArno/typebot.io/commit/79c1b16ec4d2a915a3f9aad23ea32a80b55fb45e)]
+- 🐛 (typebotLink) Fix linked typebot fetching error [[684e633](https://github.com/baptisteArno/typebot.io/commit/684e6338e2374cd30603a24ca20fb993e757fd73)]
+
+### Miscellaneous
+
+- 📝 (openai) Add a troobleshooting section [[f18889a](https://github.com/baptisteArno/typebot.io/commit/f18889a0468661a0f6b1cfc685283a4f83317e42)]
+- 📝 Add set variable upper and lower case examples [[14abe76](https://github.com/baptisteArno/typebot.io/commit/14abe76691036dc3618571b6357d80c71e27e5cc)]
+- 🩹 (billing) Also reset custom limits when plan is cancelled [[2dae416](https://github.com/baptisteArno/typebot.io/commit/2dae4160bd334ae7b9462aba094cba1621b3bc58)]
+- 📝 (sheets) Add instructions on how to format spreadsheet [[61981f9](https://github.com/baptisteArno/typebot.io/commit/61981f9e9255633c92559eba279c26d3fe8769a4)]
+
+
 <a name="2.11.9"></a>
 ## 2.11.9 (2023-03-29)
 
