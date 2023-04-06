@@ -69,13 +69,13 @@ export default defineLocale({
   'analytics.completionRateLabel': 'Taxa de conclusão',
   'auth.signin.heading': 'Entrar',
   'auth.signin.noAccountLabel.preLink': 'Não tem uma conta?',
-  'auth.signin.noAccountLabel.link': 'Registe-se gratuitamente',
+  'auth.signin.noAccountLabel.link': 'Registre-se gratuitamente',
   'auth.register.heading': 'Criar uma conta',
   'auth.register.alreadyHaveAccountLabel.preLink': 'Já tem uma conta?',
   'auth.register.alreadyHaveAccountLabel.link': 'Entrar',
   'auth.error.default': 'Tente entrar com uma conta diferente.',
   'auth.error.email':
-    'E-mail não encontrado. Tente entrar com um fornecedor diferente.',
+    'E-mail não encontrado. Tente entrar com um provedor diferente.',
   'auth.error.oauthNotLinked':
     'Para confirmar sua identidade, entre com a mesma conta que você usou originalmente.',
   'auth.error.unknown': 'Ocorreu um erro. Tente novamente.',
@@ -83,7 +83,7 @@ export default defineLocale({
   'auth.signinErrorToast.description': 'As inscrições estão desativadas.',
   'auth.noProvider.preLink': 'Você precisa',
   'auth.noProvider.link':
-    'configurar pelo menos um fornecedor de autenticação (E-mail, Google, GitHub, Facebook ou Azure AD).',
+    'configurar pelo menos um provedor de autenticação (E-mail, Google, GitHub, Facebook ou Azure AD).',
   'auth.orEmailLabel': 'Ou com seu email',
   'auth.emailSubmitButton.label': 'Enviar',
   'auth.magicLink.title': 'Um email de link mágico foi enviado. 🪄',
@@ -94,7 +94,7 @@ export default defineLocale({
   'auth.socialLogin.azureButton.label': 'Continuar com {azureProviderName}',
   'auth.socialLogin.gitlabButton.label': 'Continuar com {gitlabProviderName}',
   'auth.socialLogin.customButton.label': 'Continuar com {customProviderName}',
-  'billing.billingPortalButton.label': 'Portal de faturação',
+  'billing.billingPortalButton.label': 'Portal de cobrança',
   'billing.contribution.preLink':
     'A Typebot está contribuindo com 1% da sua assinatura para remover o CO₂ da atmosfera.',
   'billing.contribution.link': 'Saiba mais.',
@@ -110,7 +110,7 @@ export default defineLocale({
     'Assinatura atual do espaço de trabalho:',
   'billing.currentSubscription.cancelLink': 'Cancelar minha assinatura',
   'billing.currentSubscription.billingPortalDescription':
-    'Precisa alterar o método de pagamento ou as informações de faturação? Acesse seu portal de faturação:',
+    'Precisa alterar o método de pagamento ou as informações de cobrança? Acesse seu portal de cobrança:',
   'billing.invoices.heading': 'Faturas',
   'billing.invoices.empty':
     'Nenhuma fatura encontrada para este espaço de trabalho.',
@@ -136,7 +136,7 @@ export default defineLocale({
     'Para indivíduos e pequenas empresas.',
   'billing.pricingCard.starter.includedSeats': '2 assentos incluídos',
   'billing.pricingCard.starter.brandingRemoved': 'Marca removida',
-  'billing.pricingCard.starter.fileUploadBlock': 'Bloco de entrada de arquivo',
+  'billing.pricingCard.starter.fileUploadBlock': 'Bloco de envio de arquivo',
   'billing.pricingCard.starter.createFolders': 'Criar pastas',
   'billing.pricingCard.pro.mostPopularLabel': 'Mais popular',
   'billing.pricingCard.pro.description':
@@ -160,7 +160,7 @@ export default defineLocale({
   'billing.limitMessage.brand': 'remover a marca',
   'billing.limitMessage.customDomain': 'adicionar domínios personalizados',
   'billing.limitMessage.analytics': 'desbloquear análises aprofundadas',
-  'billing.limitMessage.fileInput': 'usar blocos de entrada de arquivo',
+  'billing.limitMessage.fileInput': 'usar blocos de envio de arquivo',
   'billing.limitMessage.folder': 'criar pastas',
   'billing.upgradeAlert.buttonDefaultLabel': 'Mais informações',
 })
