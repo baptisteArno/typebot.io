@@ -37,7 +37,7 @@ export const HostBubble = (props: Props) => {
       </Match>
       <Match when={props.message.type === BubbleBlockType.IMAGE}>
         <ImageBubble
-          url={(props.message.content as ImageBubbleContent).url}
+          content={props.message.content as ImageBubbleContent}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>

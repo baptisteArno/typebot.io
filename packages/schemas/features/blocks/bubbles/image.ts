@@ -4,6 +4,12 @@ import { BubbleBlockType } from './enums'
 
 export const imageBubbleContentSchema = z.object({
   url: z.string().optional(),
+  clickLink: z
+    .object({
+      url: z.string().optional(),
+      alt: z.string().optional(),
+    })
+    .optional(),
 })
 
 export const imageBubbleBlockSchema = blockBaseSchema.merge(

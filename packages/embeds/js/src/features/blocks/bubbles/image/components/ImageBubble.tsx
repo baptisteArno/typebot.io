@@ -3,7 +3,7 @@ import type { ImageBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
-  url: ImageBubbleContent['url']
+  content: ImageBubbleContent
   onTransitionEnd: () => void
 }
 
@@ -38,6 +38,21 @@ export const ImageBubble = (props: Props) => {
     if (typingTimeout) clearTimeout(typingTimeout)
   })
 
+  const Image = (
+    <img
+      ref={image}
+      src={props.content.url}
+      alt={props.content.clickLink?.alt ?? 'Bubble image'}
+      class={
+        'text-fade-in w-full ' + (isTyping() ? 'opacity-0' : 'opacity-100')
+      }
+      style={{
+        'max-height': '512px',
+        height: isTyping() ? '32px' : 'auto',
+      }}
+    />
+  )
+
   return (
     <div class="flex flex-col animate-fade-in">
       <div class="flex mb-2 w-full items-center">
@@ -51,21 +66,17 @@ export const ImageBubble = (props: Props) => {
           >
             {isTyping() ? <TypingBubble /> : null}
           </div>
-          <figure class="p-4 z-10">
-            <img
-              ref={image}
-              src={props.url}
-              class={
-                'text-fade-in w-full ' +
-                (isTyping() ? 'opacity-0' : 'opacity-100')
-              }
-              style={{
-                'max-height': '512px',
-                height: isTyping() ? '32px' : 'auto',
-              }}
-              alt="Bubble image"
-            />
-          </figure>
+          {props.content.clickLink ? (
+            <a
+              href={props.content.clickLink.url}
+              target="_blank"
+              class="p-4 z-10"
+            >
+              {Image}
+            </a>
+          ) : (
+            <figure class="p-4 z-10">{Image}</figure>
+          )}
         </div>
       </div>
     </div>
