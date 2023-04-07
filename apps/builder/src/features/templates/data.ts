@@ -6,6 +6,12 @@ export const templates: TemplateProps[] = [
   { name: 'Quiz', emoji: '🕹️', fileName: 'quiz.json' },
   { name: 'Lead Scoring', emoji: '🏆', fileName: 'lead-scoring.json' },
   {
+    name: 'Lead magnet',
+    emoji: '🧲',
+    fileName: 'lead-magnet.json',
+    isNew: true,
+  },
+  {
     name: 'NPS Survey',
     emoji: '⭐',
     fileName: 'nps.json',
