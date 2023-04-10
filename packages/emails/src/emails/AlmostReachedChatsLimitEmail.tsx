@@ -49,12 +49,8 @@ export const AlmostReachedChatsLimitEmail = ({
             </Text>
             <Text>This limit will be reset on {readableResetDate}.</Text>
             <Text fontWeight="800">
-              Your bots won&apos;t start the chat if you reach the limit before
-              this date❗
-            </Text>
-            <Text>
-              If you need more monthly responses, you will need to upgrade your
-              plan.
+              Upon this limit your bots will still continue to chat, but we ask
+              you kindly to upgrade your monthly chats limit.
             </Text>
 
             <MjmlSpacer height="24px" />

@@ -37,9 +37,6 @@ export const ReachedStorageLimitEmail = ({
               It just happened, you&apos;ve reached your {readableStorageLimit}{' '}
               storage limit 😮
             </Text>
-            <Text fontWeight="800">
-              It means your bots won&apos;t collect new files from your users❗
-            </Text>
             <Text>
               If you&apos;d like to continue collecting files, then you need to
               upgrade your plan or remove existing results to free up space. 🚀

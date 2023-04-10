@@ -40,11 +40,9 @@ export const AlmostReachedStorageLimitEmail = ({
               limit.
             </Text>
             <Text fontWeight="800">
-              Your bots won&apos;t collect new files once you reach the limit❗
-            </Text>
-            <Text>
-              To make sure it won&apos;t happen, you need to upgrade your plan
-              or delete existing results to free up space.
+              Upon this limit your bots will still continue to collect new
+              files, but we ask you kindly to upgrade your storage limit or
+              delete existing results to free up space.
             </Text>
             <MjmlSpacer height="24px" />
             <Button link={url}>Upgrade workspace</Button>

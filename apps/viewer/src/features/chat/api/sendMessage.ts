@@ -284,19 +284,12 @@ const getTypebot = async (
       message: 'Typebot is closed',
     })
 
-  const hasReachedLimit =
-    typebotQuery && 'typebot' in typebotQuery
-      ? await checkChatsUsage({
-          typebotId: parsedTypebot.id,
-          workspace: typebotQuery.typebot.workspace,
-        })
-      : false
-
-  if (hasReachedLimit)
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'You have reached your chats limit',
-    })
+  typebotQuery && 'typebot' in typebotQuery
+    ? await checkChatsUsage({
+        typebotId: parsedTypebot.id,
+        workspace: typebotQuery.typebot.workspace,
+      })
+    : false
 
   return parsedTypebot
 }

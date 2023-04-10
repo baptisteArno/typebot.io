@@ -58,7 +58,7 @@ export const getUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    const hasReachedStorageLimit = await checkIfStorageLimitReached(typebotId)
+    await checkIfStorageLimitReached(typebotId)
     const publicTypebot = (await prisma.publicTypebot.findFirst({
       where: { typebotId },
       select: {
@@ -87,7 +87,7 @@ export const getUploadUrl = publicProcedure
 
     return {
       presignedUrl,
-      hasReachedStorageLimit,
+      hasReachedStorageLimit: false,
     }
   })
 
