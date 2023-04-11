@@ -35,6 +35,8 @@ import {
   FormFieldRowMin,
   LabelField,
   OrText,
+  CreateButton,
+  SearchInput
 } from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
@@ -262,7 +264,7 @@ export const VariableSearchInput = ({
             {screen === 'VIEWER' && (
               <Container data-screen={screen}>
                 Selecione uma variável para salvar a resposta:
-                <Input
+                <SearchInput
                   data-testid="variables-input"
                   ref={inputRef}
                   value={inputValue}
@@ -272,9 +274,9 @@ export const VariableSearchInput = ({
                   {...inputProps}
                 />
                 <OrText>Ou</OrText>
-                <OctaButton onClick={handleToggleScreen}>
+                <CreateButton onClick={handleToggleScreen}>
                   Criar variável
-                </OctaButton>
+                </CreateButton>
               </Container>
             )}
             {screen === 'CREATE' && (

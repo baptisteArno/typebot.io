@@ -167,13 +167,12 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
           shadow="lg"
           rounded="md"
           bgColor="white"
-          w="250px"
+          w="320px"
           zIndex={10}
         >
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
-            isDefaultOpen
           />
         </Flex>
       )}

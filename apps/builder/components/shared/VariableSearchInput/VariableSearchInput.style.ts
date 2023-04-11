@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton';
+import { Input } from '@chakra-ui/react';
 
 export const Container = styled.div`
   width: 100%;
-  height: ${(props) => props['data-screen'] === 'CREATE' ? '300px' : '180px'};
+  height: ${(props) => props['data-screen'] === 'CREATE' ? '320px' : '200px'};
+  padding: ${(props) => props['data-screen'] === 'VIEWER' ? '15px' : '15px'};
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans', sans-serif;
@@ -84,4 +86,12 @@ export const ButtonOption = styled(OctaButton)`
 export const CancelButton = styled(OctaButton)`
   background: #fff;
   color: rgb(19, 102, 201);
+`;
+
+export const CreateButton = styled(OctaButton)`
+  margin: 10px 0;
+`;
+
+export const SearchInput = styled(Input)`
+  height: 54px;
 `;
