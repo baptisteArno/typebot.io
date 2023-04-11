@@ -38,7 +38,6 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           onSelectVariable={onSelectVariable}
           placeholder="Pesquise sua variável"
           shadow="lg"
-          isDefaultOpen
         />
       </PopoverContent>
     </Popover>
