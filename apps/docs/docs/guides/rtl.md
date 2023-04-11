@@ -4,7 +4,7 @@
 - Paste the following Custom CSS:
 
 ```css
-body {
+.typebot-container {
   direction: rtl;
 }
 
@@ -13,15 +13,9 @@ body {
   margin-left: 0.5rem;
 }
 
-.typebot-guest-bubble {
-  margin-right: 0;
-  margin-left: 0.5rem;
-}
-
-.bubble1,
-.bubble2 {
-  margin-right: 0;
-  margin-left: 0.25rem;
+.guest-container {
+  margin-left: 0;
+  margin-right: 50px;
 }
 ```
 

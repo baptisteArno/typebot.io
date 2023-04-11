@@ -104,14 +104,6 @@ export const defaultGoogleSheetsGetOptions = (
       id: createId(),
     },
   ],
-  filter: {
-    comparisons: [
-      {
-        id: createId(),
-      },
-    ],
-    logicalOperator: LogicalOperator.AND,
-  },
 })
 
 export const defaultGoogleSheetsInsertOptions = (

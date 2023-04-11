@@ -78,7 +78,7 @@ export const TableList = <T,>({
   const handleMouseLeave = () => setShowDeleteIndex(null)
 
   return (
-    <Stack spacing={0} pt="2">
+    <Stack spacing={0}>
       {items.map((item, itemIndex) => (
         <Box key={item.id}>
           {itemIndex !== 0 && ComponentBetweenItems && (

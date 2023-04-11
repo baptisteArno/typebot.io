@@ -10,11 +10,9 @@ import React, { useCallback } from 'react'
 import { RowsFilterComparisonItem } from './RowsFilterComparisonItem'
 
 type Props = {
-  filter: NonNullable<GoogleSheetsGetOptions['filter']>
+  filter: GoogleSheetsGetOptions['filter']
   columns: string[]
-  onFilterChange: (
-    filter: NonNullable<GoogleSheetsGetOptions['filter']>
-  ) => void
+  onFilterChange: (filter: GoogleSheetsGetOptions['filter']) => void
 }
 
 export const RowsFilterTableList = ({
@@ -22,11 +20,15 @@ export const RowsFilterTableList = ({
   columns,
   onFilterChange,
 }: Props) => {
-  const handleComparisonsChange = (comparisons: RowsFilterComparison[]) =>
-    onFilterChange({ ...filter, comparisons })
+  const updateComparisons = (comparisons: RowsFilterComparison[]) =>
+    onFilterChange({
+      ...filter,
+      logicalOperator: filter?.logicalOperator ?? LogicalOperator.AND,
+      comparisons,
+    })
 
-  const handleLogicalOperatorChange = (logicalOperator: LogicalOperator) =>
-    onFilterChange({ ...filter, logicalOperator })
+  const updateLogicalOperator = (logicalOperator: LogicalOperator) =>
+    filter && onFilterChange({ ...filter, logicalOperator })
 
   const createRowsFilterComparisonItem = useCallback(
     (props: TableListItemProps<RowsFilterComparison>) => (
@@ -37,14 +39,14 @@ export const RowsFilterTableList = ({
 
   return (
     <TableList<RowsFilterComparison>
-      initialItems={filter?.comparisons}
-      onItemsChange={handleComparisonsChange}
+      initialItems={filter?.comparisons ?? []}
+      onItemsChange={updateComparisons}
       Item={createRowsFilterComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
           <DropdownList
             currentItem={filter?.logicalOperator}
-            onItemSelect={handleLogicalOperatorChange}
+            onItemSelect={updateLogicalOperator}
             items={Object.values(LogicalOperator)}
           />
         </Flex>

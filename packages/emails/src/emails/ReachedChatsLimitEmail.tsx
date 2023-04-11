@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 import {
   Mjml,
   MjmlBody,
@@ -16,14 +16,6 @@ type ReachedChatsLimitEmailProps = {
   chatsLimit: number
   url: string
 }
-
-const now = new Date()
-const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-const readableResetDate = firstDayOfNextMonth
-  .toDateString()
-  .split(' ')
-  .slice(1, 4)
-  .join(' ')
 
 export const ReachedChatsLimitEmail = ({
   chatsLimit,

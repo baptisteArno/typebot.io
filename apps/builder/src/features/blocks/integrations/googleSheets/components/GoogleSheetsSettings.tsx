@@ -1,4 +1,13 @@
-import { Divider, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
@@ -97,7 +106,7 @@ export const GoogleSheetsSettings = ({
   }
 
   return (
-    <Stack>
+    <Stack spacing={4}>
       {workspace && (
         <CredentialsDropdown
           type="google sheets"
@@ -130,15 +139,12 @@ export const GoogleSheetsSettings = ({
       {options?.spreadsheetId &&
         options.credentialsId &&
         isDefined(options.sheetId) && (
-          <>
-            <Divider />
-            <DropdownList
-              currentItem={'action' in options ? options.action : undefined}
-              onItemSelect={handleActionChange}
-              items={Object.values(GoogleSheetsAction)}
-              placeholder="Select an operation"
-            />
-          </>
+          <DropdownList
+            currentItem={'action' in options ? options.action : undefined}
+            onItemSelect={handleActionChange}
+            items={Object.values(GoogleSheetsAction)}
+            placeholder="Select an operation"
+          />
         )}
       {options.action && (
         <ActionOptions
@@ -175,9 +181,8 @@ const ActionOptions = ({
   const handleExtractingCellsChange = (cellsToExtract: ExtractingCell[]) =>
     onOptionsChange({ ...options, cellsToExtract } as GoogleSheetsOptions)
 
-  const handleFilterChange = (
-    filter: NonNullable<GoogleSheetsGetOptions['filter']>
-  ) => onOptionsChange({ ...options, filter } as GoogleSheetsOptions)
+  const handleFilterChange = (filter: GoogleSheetsGetOptions['filter']) =>
+    onOptionsChange({ ...options, filter } as GoogleSheetsOptions)
 
   const UpdatingCellItem = useMemo(
     () =>
@@ -227,36 +232,61 @@ const ActionOptions = ({
       )
     case GoogleSheetsAction.GET:
       return (
-        <Stack>
+        <Accordion allowMultiple>
           {options.referenceCell && (
-            <>
-              <Text>Row to select</Text>
-              <CellWithValueStack
-                columns={sheet?.columns ?? []}
-                item={options.referenceCell ?? { id: 'reference' }}
-                onItemChange={handleReferenceCellChange}
-              />
-            </>
-          )}
-          {options.filter && (
-            <>
-              <Text>Filter</Text>
-              <RowsFilterTableList
-                columns={sheet?.columns ?? []}
-                filter={options.filter ?? {}}
-                onFilterChange={handleFilterChange}
-              />
-            </>
-          )}
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Rows to select
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
 
-          <Text>Cells to extract</Text>
-          <TableList<ExtractingCell>
-            initialItems={options.cellsToExtract}
-            onItemsChange={handleExtractingCellsChange}
-            Item={ExtractingCellItem}
-            addLabel="Add a value"
-          />
-        </Stack>
+              <AccordionPanel pt="4">
+                <CellWithValueStack
+                  columns={sheet?.columns ?? []}
+                  item={options.referenceCell ?? { id: 'reference' }}
+                  onItemChange={handleReferenceCellChange}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          )}
+          {!options.referenceCell && (
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Rows to filter
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pt="4">
+                <RowsFilterTableList
+                  columns={sheet?.columns ?? []}
+                  filter={options.filter}
+                  onFilterChange={handleFilterChange}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          )}
+          <AccordionItem>
+            <AccordionButton>
+              <Text w="full" textAlign="left">
+                Columns to extract
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+
+            <AccordionPanel pt="4">
+              <TableList<ExtractingCell>
+                initialItems={options.cellsToExtract}
+                onItemsChange={handleExtractingCellsChange}
+                Item={ExtractingCellItem}
+                addLabel="Add a value"
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       )
     default:
       return <></>

@@ -99,6 +99,8 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Select an operation')
     await page.click('text=Get data from sheet')
 
+    await page.getByRole('button', { name: 'Rows to filter' }).click()
+    await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.click('text=Select a column')
     await page.click('button >> text="Email"')
     await page.getByRole('button', { name: 'Select an operator' }).click()
@@ -110,6 +112,7 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByRole('button', { name: 'AND', exact: true }).click()
     await page.getByRole('menuitem', { name: 'OR' }).click()
 
+    await page.getByRole('button', { name: 'Columns to extract' }).click()
     await page.click('text=Select a column')
     await page.getByRole('menuitem', { name: 'Email' }).click()
     await page.getByRole('button', { name: 'Select an operator' }).click()

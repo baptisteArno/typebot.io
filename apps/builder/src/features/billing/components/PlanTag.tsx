@@ -1,4 +1,3 @@
-import { useI18n, useScopedI18n } from '@/locales'
 import { Tag, TagProps, ThemeTypings } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
 

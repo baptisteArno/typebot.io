@@ -26,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }).files.list({
       q: "mimeType='application/vnd.google-apps.spreadsheet'",
       fields: 'nextPageToken, files(id, name)',
+      pageSize: 300,
     })
     return res.send(response.data)
   }

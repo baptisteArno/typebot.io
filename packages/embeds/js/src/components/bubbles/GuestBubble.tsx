@@ -9,7 +9,7 @@ type Props = {
 
 export const GuestBubble = (props: Props) => (
   <div
-    class="flex justify-end mb-2 items-end animate-fade-in"
+    class="flex justify-end mb-2 items-end animate-fade-in guest-container"
     style={{ 'margin-left': '50px' }}
   >
     <span

@@ -518,6 +518,18 @@
                                                 "properties": {
                                                   "url": {
                                                     "type": "string"
+                                                  },
+                                                  "clickLink": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "url": {
+                                                        "type": "string"
+                                                      },
+                                                      "alt": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "additionalProperties": false
                                                   }
                                                 },
                                                 "additionalProperties": false

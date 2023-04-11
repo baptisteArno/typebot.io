@@ -1,6 +1,6 @@
 import { AlertInfo } from '@/components/AlertInfo'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useI18n, useScopedI18n } from '@/locales'
+import { useI18n } from '@/locales'
 import {
   Modal,
   ModalBody,
