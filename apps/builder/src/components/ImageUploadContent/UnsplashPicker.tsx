@@ -11,6 +11,7 @@ import {
   Spinner,
   Stack,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { env, isDefined, isEmpty } from '@typebot.io/lib'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -30,6 +31,7 @@ type Props = {
 }
 
 export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
+  const unsplashLogoFillColor = useColorModeValue('black', 'white')
   const [isFetching, setIsFetching] = useState(false)
   const [images, setImages] = useState<UnsplashImage[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -146,7 +148,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
             'UNSPLASH_APP_NAME'
           )}&utm_medium=referral`}
         >
-          <UnsplashLogo width="80px" />
+          <UnsplashLogo width="80px" fill={unsplashLogoFillColor} />
         </Link>
       </HStack>
       {isDefined(error) && (
@@ -190,6 +192,7 @@ type UnsplashImageProps = {
 }
 
 const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
+  const linkColor = useColorModeValue('gray.500', 'gray.400')
   const { user, urls, alt_description } = image
 
   return (
@@ -210,7 +213,7 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
           'UNSPLASH_APP_NAME'
         )}&utm_medium=referral`}
         noOfLines={1}
-        color="gray.500"
+        color={linkColor}
       >
         {user.name}
       </TextLink>
