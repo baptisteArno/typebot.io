@@ -1,6 +1,6 @@
-import { Variable } from "./variable"
+import { VariableLight } from "./variable"
 
 export type Session = {
   properties: any
-  propertySpecs: Array<Variable>
+  propertySpecs: Array<VariableLight>
 }
