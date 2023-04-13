@@ -209,19 +209,6 @@
           "groupId": "cszciavjonb2qp0ga0pladoj"
         },
         {
-          "id": "xxujz94e696scfz0jjw5zyvw",
-          "type": "text",
-          "content": {
-            "richText": [
-              {
-                "type": "p",
-                "children": [{ "text": "What's your goal with the community?" }]
-              }
-            ]
-          },
-          "groupId": "cszciavjonb2qp0ga0pladoj"
-        },
-        {
           "id": "yxuk1bhfas07i4bxq64hi0vj",
           "type": "Condition",
           "items": [
