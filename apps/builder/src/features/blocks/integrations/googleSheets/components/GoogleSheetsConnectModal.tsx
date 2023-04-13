@@ -50,6 +50,7 @@ export const GoogleSheetConnectModal = ({
           <Image
             src="/images/google-spreadsheets-scopes.jpeg"
             alt="Google Spreadsheets checkboxes"
+            rounded="md"
           />
           <Flex>
             <Button

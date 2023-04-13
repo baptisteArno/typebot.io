@@ -152,7 +152,6 @@ export const getChatsLimit = ({
     plan === Plan.STARTER || plan === Plan.PRO
       ? chatsLimit[plan].graduatedPrice[additionalChatsIndex].totalIncluded
       : chatsLimit[plan].totalIncluded
-  if (totalIncluded === infinity) return infinity
   return totalIncluded
 }
 

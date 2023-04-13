@@ -44,6 +44,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
   const blue = useColorModeValue('blue.500', 'blue.300')
   const orange = useColorModeValue('orange.500', 'orange.300')
   const purple = useColorModeValue('purple.500', 'purple.300')
+  const openAIColor = useColorModeValue('black', 'white')
+
   switch (type) {
     case BubbleBlockType.TEXT:
       return <TextBubbleIcon color={blue} {...props} />
@@ -106,7 +108,7 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
     case IntegrationBlockType.CHATWOOT:
       return <ChatwootLogo {...props} />
     case IntegrationBlockType.OPEN_AI:
-      return <OpenAILogo {...props} />
+      return <OpenAILogo fill={openAIColor} {...props} />
     case 'start':
       return <FlagIcon {...props} />
   }
