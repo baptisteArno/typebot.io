@@ -13,3 +13,10 @@ export type Variable = {
 export type VariableWithValue = Omit<Variable, 'value'> & {
   value: string
 }
+
+export type VariableLight = {
+  domain: "PERSON" | "ORGANIZATION" | "CHAT"
+  name: string
+  token: string
+  type: string | undefined
+}

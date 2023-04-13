@@ -27,7 +27,9 @@ import {
   Webhook,
   StepIndices,
   QueryParameters,
-  Variable
+  Variable,
+  Session,
+  VariableLight
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -72,21 +74,21 @@ export const WebhookSettings = ({
     status: 'error',
   })
 
-  const handleUrlChange = (url?: string) =>{
+  const handleUrlChange = (url?: string) => {
     // validateUrl
     // && url.length > 5 && validateUrl(url)
-    if(step.options.url != url) clearOptions()
+    if (step.options.url != url) clearOptions()
     if (url && url.length > 5) {
       const newUrl = new URL(url.replace(/ /g, '').trim())
       url = newUrl.origin
-      
+
       if (newUrl.search) handleParams(newUrl.search)
-      
+
       addParams('path', '', newUrl.pathname, newUrl.pathname)
-      
+
       onOptionsChange({
         ...step.options,
-        url: url ? url: ""
+        url: url ? url : ""
       })
     }
   }
@@ -104,14 +106,14 @@ export const WebhookSettings = ({
   const handleParams = (url: string) => {
     const params = url.substring(1).split('&')
     params.forEach(p => {
-			const keyValue = p.split('=')
-			if (keyValue.length === 2) {
-				addParams('query', keyValue[0], keyValue[1], keyValue[1])
-			}
-	})
+      const keyValue = p.split('=')
+      if (keyValue.length === 2) {
+        addParams('query', keyValue[0], keyValue[1], keyValue[1])
+      }
+    })
   }
 
-  const addParams = (type: string, key: string, value:string, displayValue: string, properties?: Variable | undefined) => {
+  const addParams = (type: string, key: string, value: string, displayValue: string, properties?: Variable | undefined) => {
     step.options.path.push({
       key: key || '',
       value: value || '',
@@ -135,10 +137,10 @@ export const WebhookSettings = ({
       parameters
     })
   }
-//     onOptionsChange({
-//       ...step.options,
-//       parameters: [...step.options.parameters, ...parameters] as QueryParameters[]
-//     })
+  //     onOptionsChange({
+  //       ...step.options,
+  //       parameters: [...step.options.parameters, ...parameters] as QueryParameters[]
+  //     })
 
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
@@ -155,12 +157,12 @@ export const WebhookSettings = ({
     })
   }
 
-  // const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
-  //   onOptionsChange({ ...options, variablesForTest })
+  const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
+    onOptionsChange({ ...step.options, variablesForTest })
 
-  // const handleResponseMappingChange = (
-  //   responseVariableMapping: ResponseVariableMapping[]
-  // ) => onOptionsChange({ ...options, responseVariableMapping })
+  const handleResponseMappingChange = (
+    responseVariableMapping: ResponseVariableMapping[]
+  ) => onOptionsChange({ ...step.options, responseVariableMapping })
 
   const handleAdvancedConfigChange = (isAdvancedConfig: boolean) =>
     onOptionsChange({ ...step.options, isAdvancedConfig })
@@ -168,10 +170,39 @@ export const WebhookSettings = ({
   const handleBodyFormStateChange = (isCustomBody: boolean) =>
     onOptionsChange({ ...step.options, isCustomBody })
 
+  const resolveSession = (variablesForTest: VariableForTest[], variables: Variable[]) => {
+    if (!variablesForTest?.length || !variables?.length) return {}
+
+    let session : Session = {
+      propertySpecs: [],
+      properties: {}
+    }
+
+    variablesForTest.forEach(testVariable => {
+      const variable = variables.find(v => v.id === testVariable.variableId)
+      if (!variable) return
+
+      const light: VariableLight = {
+        domain: variable.domain,
+        name: variable.name,
+        token: variable.token,
+        type: variable.type
+      }
+
+      session.propertySpecs.push(light)
+      if (!session.properties[light.domain])
+        session.properties[light.domain] = {}
+
+      session.properties[light.domain][light.name] = { spec: light, value: testVariable.value }
+    })
+
+    return session
+  }
+
   const handleTestRequestClick = async () => {
     if (!typebot || !step.options) return
     setIsTestResponseLoading(true)
-    
+
     const options = step.options as WebhookOptions
     const parameters = options.parameters.concat(options.path, options.headers)
 
@@ -182,19 +213,25 @@ export const WebhookSettings = ({
       url: options.url
     }
 
-    const { data }  = await sendOctaRequest({
+    const session = resolveSession(options.variablesForTest, typebot.variables)
+
+    console.log('test', session, { test: options.variablesForTest, variables: typebot.variables })
+
+    const { data } = await sendOctaRequest({
       url: `validate/webhook`,
       method: 'POST',
-      body: { 
-        session: {}, 
+      body: {
+        session,
         webhook: localWebhook
       }
     })
 
+
+
     const { response, status, success } = data
-    
+
     setIsTestResponseLoading(false)
-    
+
     if (!success) return toast({ title: 'Error', description: `Não foi possivel realizar a sua integração 😢` })
 
     if (typeof response === 'object') {
@@ -266,9 +303,9 @@ export const WebhookSettings = ({
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <Text color="gray.500" fontSize="sm">
-                  Sua informação no cabeçalho da integração 
+                  Sua informação no cabeçalho da integração
                   <strong> (ex.: Authorization: Basic 1234)</strong>
-                </Text> 
+                </Text>
                 <TableList<QueryParameters>
                   initialItems={step.options.headers}
                   onItemsChange={handleHeadersChange}
@@ -280,38 +317,38 @@ export const WebhookSettings = ({
               </AccordionPanel>
             </AccordionItem>
             {(step.options?.method === 'POST') && (
-            <AccordionItem>
-              <AccordionButton justifyContent="space-between">
-                Body
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="6">
-                <SwitchWithLabel
-                  id={'custom-body'}
-                  label="Customizar body"
-                  initialValue={step.options.isCustomBody ?? true}
-                  onCheckChange={handleBodyFormStateChange}
-                />
-                {(step.options.isCustomBody ?? true) && (
-                  <CodeEditor
-                    value={step.options.body ?? ''}
-                    lang="json"
-                    onChange={handleBodyChange}
-                    debounceTimeout={0}
-                  >
-                    <text color="gray.500" fontSize="sm">
-                      Envie sua informação na corpo da integração  Request Body (apenas JSON)
-                    <text>
-                      Digite # para inserir campos personalizados
-                    </text>
-                    </text>
-							      {/* "Request Body (apenas JSON)",
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Body
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4} as={Stack} spacing="6">
+                  <SwitchWithLabel
+                    id={'custom-body'}
+                    label="Customizar body"
+                    initialValue={step.options.isCustomBody ?? true}
+                    onCheckChange={handleBodyFormStateChange}
+                  />
+                  {(step.options.isCustomBody ?? true) && (
+                    <CodeEditor
+                      value={step.options.body ?? ''}
+                      lang="json"
+                      onChange={handleBodyChange}
+                      debounceTimeout={0}
+                    >
+                      <text color="gray.500" fontSize="sm">
+                        Envie sua informação na corpo da integração  Request Body (apenas JSON)
+                        <text>
+                          Digite # para inserir campos personalizados
+                        </text>
+                      </text>
+                      {/* "Request Body (apenas JSON)",
 							      "Digite # para inserir campos personalizados" */}
-                  </CodeEditor>
-                )}
-                
-              </AccordionPanel>
-            </AccordionItem>
+                    </CodeEditor>
+                  )}
+
+                </AccordionPanel>
+              </AccordionItem>
             )}
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
@@ -323,7 +360,7 @@ export const WebhookSettings = ({
                   initialItems={
                     step.options?.variablesForTest ?? { byId: {}, allIds: [] }
                   }
-                  onItemsChange={handlerDefault}
+                  onItemsChange={handleVariablesChange}
                   Item={VariableForTestInputs}
                   addLabel="Adicionar variável"
                   debounceTimeout={0}
@@ -356,7 +393,7 @@ export const WebhookSettings = ({
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <TableList<ResponseVariableMapping>
                   initialItems={step.options.responseVariableMapping}
-                  onItemsChange={handlerDefault}
+                  onItemsChange={handleResponseMappingChange}
                   Item={ResponseMappingInputs}
                   addLabel="Adicionar variável"
                   debounceTimeout={0}
