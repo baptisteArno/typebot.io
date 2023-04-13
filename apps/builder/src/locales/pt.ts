@@ -6,7 +6,7 @@ export default defineLocale({
   'dashboard.header.settingsButton.label': 'Configurações & Membros',
   'dashboard.redirectionMessage': 'Você está sendo redirecionado...',
   'dashboard.title': 'Meus typebots',
-  delete: 'Deletar',
+  delete: 'Apagar',
   errorMessage: 'Ocorreu um erro',
   cancel: 'Cancelar',
   update: 'Atualizar',
@@ -20,7 +20,7 @@ export default defineLocale({
   'folders.typebotButton.showMoreOptions': 'Mostrar mais opções',
   'folders.typebotButton.unpublish': 'Despublicar',
   'folders.typebotButton.duplicate': 'Duplicar',
-  'folders.typebotButton.delete': 'Deletar',
+  'folders.typebotButton.delete': 'Apagar',
   'folders.typebotButton.deleteConfirmationMessage':
     'Tem certeza de que deseja excluir seu typebot {typebotName}?',
   'folders.typebotButton.deleteConfirmationMessageWarning':
@@ -86,7 +86,7 @@ export default defineLocale({
     'configurar pelo menos um provedor de autenticação (E-mail, Google, GitHub, Facebook ou Azure AD).',
   'auth.orEmailLabel': 'Ou com seu email',
   'auth.emailSubmitButton.label': 'Enviar',
-  'auth.magicLink.title': 'Um email de link mágico foi enviado. 🪄',
+  'auth.magicLink.title': 'Um email com o link mágico foi enviado. 🪄',
   'auth.magicLink.description': 'Certifique-se de verificar sua pasta de spam.',
   'auth.socialLogin.githubButton.label': 'Continuar com GitHub',
   'auth.socialLogin.googleButton.label': 'Continuar com Google',
@@ -116,7 +116,7 @@ export default defineLocale({
   'billing.invoices.subtotal': 'Subtotal',
   'billing.preCheckoutModal.companyInput.label': 'Nome da empresa:',
   'billing.preCheckoutModal.emailInput.label': 'E-mail:',
-  'billing.preCheckoutModal.taxId.label': 'Identificação fiscal:',
+  'billing.preCheckoutModal.taxId.label': 'Identificação fiscal (CPF):',
   'billing.preCheckoutModal.taxId.placeholder': 'Tipo de ID',
   'billing.preCheckoutModal.submitButton.label':
     'Ir para a finalização da compra',
