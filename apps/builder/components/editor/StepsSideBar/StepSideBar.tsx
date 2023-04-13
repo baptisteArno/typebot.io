@@ -8,7 +8,8 @@ import {
   Tooltip,
   Fade,
   Badge,
-  Spacer
+  Spacer,
+  Portal
 } from '@chakra-ui/react'
 import {
   BubbleStepType,
@@ -23,7 +24,7 @@ import {
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
-import { StepCard } from './StepCard'
+import { StepCard, StepCardOverlay } from './StepCard'
 import { LockedIcon, UnlockedIcon, InformationIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useUser } from 'contexts/UserContext'
@@ -293,6 +294,21 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
       </Stack>
+
+      {draggedStepType && (
+          <Portal>
+            <StepCardOverlay
+              type={draggedStepType}
+              onMouseUp={handleMouseUp}
+              pos="fixed"
+              top="0"
+              left="0"
+              style={{
+                transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
+              }}
+            />
+          </Portal>
+        )}
 
       <Fade in={!isLocked} unmountOnExit>
         <Flex
