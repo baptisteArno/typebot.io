@@ -73,9 +73,7 @@ const chatSessionSchema = z.object({
 
 const textMessageSchema = z.object({
   type: z.literal(BubbleBlockType.TEXT),
-  content: textBubbleContentSchema.omit({
-    richText: true,
-  }),
+  content: textBubbleContentSchema,
 })
 
 const imageMessageSchema = z.object({

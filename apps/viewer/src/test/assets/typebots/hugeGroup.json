@@ -27,11 +27,9 @@
           "type": "text",
           "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
-            "html": "<div>Hi what&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi what's your name?" }] }
-            ],
-            "plainText": "Hi what's your name?"
+            ]
           }
         },
         {
@@ -52,11 +50,9 @@
           "type": "text",
           "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
-            "html": "<div>How old are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
-            ],
-            "plainText": "How old are you?"
+            ]
           }
         },
         {
@@ -72,9 +68,7 @@
           "type": "text",
           "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
-            "html": "<div>Cool!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cool!" }] }],
-            "plainText": "Cool!"
+            "richText": [{ "type": "p", "children": [{ "text": "Cool!" }] }]
           }
         },
         {
@@ -82,11 +76,9 @@
           "type": "text",
           "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
-            "html": "<div>Do you eat pizza?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Do you eat pizza?" }] }
-            ],
-            "plainText": "Do you eat pizza?"
+            ]
           }
         },
         {

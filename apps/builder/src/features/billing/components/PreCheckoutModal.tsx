@@ -28,6 +28,7 @@ export type PreCheckoutModalProps = {
         additionalChats: number
         additionalStorage: number
         currency: 'eur' | 'usd'
+        isYearly: boolean
       }
     | undefined
   existingCompany?: string

@@ -44,11 +44,9 @@
           "type": "text",
           "groupId": "uhqCZSNbsYVFxop7Gc8xvn",
           "content": {
-            "html": "<div>Second block</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Second block" }] }
-            ],
-            "plainText": "Second block"
+            ]
           }
         }
       ],

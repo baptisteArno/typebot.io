@@ -46,11 +46,9 @@
           "groupId": "4H8ucvLjTiQ7sAyB23Huka",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {

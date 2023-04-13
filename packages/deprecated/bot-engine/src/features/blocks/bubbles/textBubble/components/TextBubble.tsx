@@ -38,7 +38,7 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
     if (!isTyping || isLoading) return
 
     const typingTimeout = computeTypingDuration(
-      block.content.plainText,
+      block.content.plainText ?? '',
       typebot.settings?.typingEmulation ?? defaultTypingEmulation
     )
     const timeout = setTimeout(() => {

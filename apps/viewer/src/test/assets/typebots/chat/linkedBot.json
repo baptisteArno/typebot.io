@@ -28,7 +28,6 @@
           "id": "clauupd6q00193b6qhegmlnxj",
           "type": "text",
           "content": {
-            "html": "<div>How would you rate the experience so far?</div>",
             "richText": [
               {
                 "type": "p",
@@ -36,8 +35,7 @@
                   { "text": "How would you rate the experience so far?" }
                 ]
               }
-            ],
-            "plainText": "How would you rate the experience so far?"
+            ]
           },
           "groupId": "clauupd6q00183b6qcm8qbz62"
         },

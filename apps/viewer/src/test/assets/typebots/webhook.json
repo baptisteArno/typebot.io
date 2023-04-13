@@ -108,7 +108,6 @@
           "groupId": "cl9ipbcjy000j3b6oqngo7luv",
           "type": "text",
           "content": {
-            "html": "<div>Data of first request:</div><div></div><div>{{Data}}</div>",
             "richText": [
               {
                 "type": "p",
@@ -116,8 +115,7 @@
               },
               { "type": "p", "children": [{ "text": "" }] },
               { "type": "p", "children": [{ "text": "{{Data}}" }] }
-            ],
-            "plainText": "Data of first request:{{Data}}"
+            ]
           },
           "outgoingEdgeId": "cl9ipet83000z3b6of6zfqota"
         }
@@ -151,7 +149,6 @@
           "groupId": "cl9ipej6b000u3b6oeaz305l6",
           "type": "text",
           "content": {
-            "html": "<div>Data of second request:</div><div></div><div>{{Data}}</div>",
             "richText": [
               {
                 "type": "p",
@@ -159,8 +156,7 @@
               },
               { "type": "p", "children": [{ "text": "" }] },
               { "type": "p", "children": [{ "text": "{{Data}}" }] }
-            ],
-            "plainText": "Data of second request:{{Data}}"
+            ]
           }
         }
       ]

@@ -50,11 +50,9 @@
           "id": "cl1267q2c000e2e6dynjeg83n",
           "type": "text",
           "content": {
-            "html": "<div>Welcome 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome 👋" }] }
-            ],
-            "plainText": "Welcome 👋"
+            ]
           },
           "groupId": "clcueadzi00063b6sch7b1f32"
         },
@@ -62,11 +60,9 @@
           "id": "cl1267y1u000f2e6d4rlglv6g",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           },
           "groupId": "clcueadzi00063b6sch7b1f32"
         },
@@ -95,11 +91,9 @@
           "id": "cl1266v6f000a2e6db7wj3ux7",
           "type": "text",
           "content": {
-            "html": "<div>Welcome {{Name}} 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome {{Name}} 👋" }] }
-            ],
-            "plainText": "Welcome {{Name}} 👋"
+            ]
           },
           "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
@@ -107,7 +101,6 @@
           "id": "cl126hb9m000l2e6d5qk3mohn",
           "type": "text",
           "content": {
-            "html": "<div>I&#x27;m super pumped that you&#x27;ve decided to try out Typebot 😍</div>",
             "richText": [
               {
                 "type": "p",
@@ -117,8 +110,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "I'm super pumped that you've decided to try out Typebot 😍"
+            ]
           },
           "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
@@ -126,7 +118,6 @@
           "id": "cl126hpw1000m2e6dneousygl",
           "type": "text",
           "content": {
-            "html": "<div>You are small steps away from meaningful, hyper-personalized experience for your users</div>",
             "richText": [
               {
                 "type": "p",
@@ -136,8 +127,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You are small steps away from meaningful, hyper-personalized experience for your users"
+            ]
           },
           "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
@@ -145,7 +135,6 @@
           "id": "cl126guhd000k2e6d6ypkex9z",
           "type": "text",
           "content": {
-            "html": "<div>Let&#x27;s get you set up for your Typebot journey.</div>",
             "richText": [
               {
                 "type": "p",
@@ -153,8 +142,7 @@
                   { "text": "Let's get you set up for your Typebot journey." }
                 ]
               }
-            ],
-            "plainText": "Let's get you set up for your Typebot journey."
+            ]
           },
           "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
@@ -162,14 +150,12 @@
           "id": "cl126ixp9000q2e6dslh0zypi",
           "type": "text",
           "content": {
-            "html": "<div>Do you work for a specific company?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Do you work for a specific company?" }]
               }
-            ],
-            "plainText": "Do you work for a specific company?"
+            ]
           },
           "groupId": "clcueadzi00073b6sqz8n5vxp"
         },
@@ -219,7 +205,6 @@
           "id": "cl126krck00112e6d1m6ctxpn",
           "type": "text",
           "content": {
-            "html": "<div>What type of bots are you planning to build with Typebot?</div>",
             "richText": [
               {
                 "type": "p",
@@ -229,8 +214,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "What type of bots are you planning to build with Typebot?"
+            ]
           },
           "groupId": "clcueadzi00093b6s82ivles8"
         },
@@ -330,7 +314,6 @@
           "id": "cl126p76d001k2e6dbhnf2ysq",
           "type": "text",
           "content": {
-            "html": "<div>Thank you for answering those questions!</div>",
             "richText": [
               {
                 "type": "p",
@@ -338,8 +321,7 @@
                   { "text": "Thank you for answering those questions!" }
                 ]
               }
-            ],
-            "plainText": "Thank you for answering those questions!"
+            ]
           },
           "groupId": "clcueadzi000a3b6spk404zpz"
         },
@@ -355,7 +337,6 @@
           "id": "cl126txta001y2e6dtxrbsnek",
           "type": "text",
           "content": {
-            "html": "<div>You can reach out to me using the contact bubble on the bottom right corner 🤓</div>",
             "richText": [
               {
                 "type": "p",
@@ -365,8 +346,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You can reach out to me using the contact bubble on the bottom right corner 🤓"
+            ]
           },
           "groupId": "clcueadzi000a3b6spk404zpz"
         },
@@ -374,14 +354,12 @@
           "id": "cl12buyly00172e6991bz38ch",
           "type": "text",
           "content": {
-            "html": "<div>Let&#x27;s create your first typebot...</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Let's create your first typebot..." }]
               }
-            ],
-            "plainText": "Let's create your first typebot..."
+            ]
           },
           "groupId": "clcueadzi000a3b6spk404zpz"
         }
@@ -396,11 +374,9 @@
           "id": "cl127yxym000b2e6d9hksxo6h",
           "type": "text",
           "content": {
-            "html": "<div>What else?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What else?" }] }
-            ],
-            "plainText": "What else?"
+            ]
           },
           "groupId": "clcueadzi000b3b6sv6936vs4"
         },

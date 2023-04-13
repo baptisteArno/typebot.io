@@ -1,39 +1,30 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   DarkMode,
   Flex,
   Stack,
-  Box,
   Heading,
   VStack,
   Text,
   HStack,
+  Switch,
+  Tag,
 } from '@chakra-ui/react'
 import { Footer } from 'components/common/Footer'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import { BackgroundPolygons } from 'components/Homepage/Hero/BackgroundPolygons'
 import { PlanComparisonTables } from 'components/PricingPage/PlanComparisonTables'
-import { useEffect, useState } from 'react'
-import { formatPrice, prices } from '@typebot.io/lib/pricing'
+import { useState } from 'react'
 import { StripeClimateLogo } from 'assets/logos/StripeClimateLogo'
 import { FreePlanCard } from 'components/PricingPage/FreePlanCard'
 import { StarterPlanCard } from 'components/PricingPage/StarterPlanCard'
 import { ProPlanCard } from 'components/PricingPage/ProPlanCard'
 import { TextLink } from 'components/common/TextLink'
+import { EnterprisePlanCard } from 'components/PricingPage/EnterprisePlanCard'
+import { Faq } from 'components/PricingPage/Faq'
 
 const Pricing = () => {
-  const [starterPrice, setStarterPrice] = useState('$39')
-  const [proPrice, setProPrice] = useState('$89')
-
-  useEffect(() => {
-    setStarterPrice(formatPrice(prices.STARTER))
-    setProPrice(formatPrice(prices.PRO))
-  }, [])
+  const [isYearly, setIsYearly] = useState(true)
 
   return (
     <Stack overflowX="hidden" bgColor="gray.900">
@@ -52,20 +43,31 @@ const Pricing = () => {
         </DarkMode>
 
         <VStack spacing={'24'} mt={[20, 32]} w="full">
-          <Stack align="center" spacing="12" w="full">
+          <Stack align="center" spacing="12" w="full" px={4}>
             <VStack>
-              <Heading fontSize="6xl">Plans fit for you</Heading>
-              <Text maxW="900px" fontSize="xl" textAlign="center">
+              <Heading fontSize={{ base: '4xl', xl: '6xl' }}>
+                Plans fit for you
+              </Heading>
+              <Text
+                maxW="900px"
+                textAlign="center"
+                fontSize={{ base: 'lg', xl: 'xl' }}
+              >
                 Whether you&apos;re a{' '}
                 <Text as="span" color="orange.200" fontWeight="bold">
                   solo business owner
-                </Text>{' '}
-                or a{' '}
+                </Text>
+                , a{' '}
                 <Text as="span" color="blue.200" fontWeight="bold">
                   growing startup
+                </Text>{' '}
+                or a{' '}
+                <Text as="span" fontWeight="bold">
+                  large company
                 </Text>
-                , Typebot is here to help you build high-performing bots for the
-                right price. Pay for as little or as much usage as you need.
+                , Typebot is here to help you build high-performing chat forms
+                for the right price. Pay for as little or as much usage as you
+                need.
               </Text>
             </VStack>
 
@@ -85,114 +87,46 @@ const Pricing = () => {
                 </TextLink>
               </Text>
             </HStack>
-            <Stack
-              direction={['column', 'row']}
-              alignItems={['stretch']}
-              spacing={10}
-              px={[4, 0]}
-              w="full"
-              maxW="1200px"
-            >
-              <FreePlanCard />
-              <StarterPlanCard />
-              <ProPlanCard />
+            <Stack align="flex-end" maxW="1200px" w="full" spacing={4}>
+              <HStack>
+                <Text>Monthly</Text>
+                <Switch
+                  isChecked={isYearly}
+                  onChange={() => setIsYearly(!isYearly)}
+                />
+                <HStack>
+                  <Text>Yearly</Text>
+                  <Tag colorScheme="blue">16% off</Tag>
+                </HStack>
+              </HStack>
+
+              <Stack
+                direction={['column', 'row']}
+                alignItems={['stretch']}
+                spacing={10}
+                w="full"
+                maxW="1200px"
+              >
+                <FreePlanCard />
+                <StarterPlanCard isYearly={isYearly} />
+                <ProPlanCard isYearly={isYearly} />
+              </Stack>
             </Stack>
-            <Text fontSize="lg">
-              Need custom limits? Specific features?{' '}
-              <TextLink href={'https://typebot.io/enterprise-lead-form'}>
-                Let&apos;s chat!
-              </TextLink>
-            </Text>
+
+            <EnterprisePlanCard />
           </Stack>
 
           <VStack maxW="1200px" w="full" spacing={[12, 20]} px="4">
             <Stack w="full" spacing={10} display={['none', 'flex']}>
               <Heading>Compare plans & features</Heading>
-              <PlanComparisonTables
-                starterPrice={starterPrice}
-                proPrice={proPrice}
-              />
+              <PlanComparisonTables />
             </Stack>
-            <VStack w="full" spacing="10">
-              <Heading textAlign="center">Frequently asked questions</Heading>
-              <Faq />
-            </VStack>
+            <Faq />
           </VStack>
         </VStack>
       </Flex>
       <Footer />
     </Stack>
-  )
-}
-
-const Faq = () => {
-  return (
-    <Accordion w="full" allowToggle defaultIndex={0}>
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              What happens once I reach the monthly chats limit?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          You will receive an email notification once you reached 80% of this
-          limit. Then, once you reach 100%, the bot will be closed to new users.
-          Upgrading your limit will automatically reopen the bot.
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              What happens once I reach the storage limit?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          You will receive an email notification once you reached 80% of this
-          limit. Then, once you reach 100%, your users will still be able to
-          chat with your bot but their uploads won&apos;t be stored anymore. You
-          will need to upgrade the limit or free up some space to continue
-          collecting your users&apos; files.
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              Why is there no trial?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          For now, Typebot offers a Freemium based business model. My goal is to
-          make sure you have time to create awesome bots and collect valuable
-          results. If you need advanced features then you can upgrade any time.
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem>
-        <Heading as="h2">
-          <AccordionButton py="6">
-            <Box flex="1" textAlign="left" fontSize="2xl">
-              If I change my mind, can I get a refund?
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Heading>
-        <AccordionPanel pb={4}>
-          Sure! Just{' '}
-          <TextLink href="mailto:baptiste@typebot.io">
-            shoot me an email
-          </TextLink>{' '}
-          and we&apos;ll figure things out 😀
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
   )
 }
 

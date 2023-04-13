@@ -37,14 +37,12 @@
           "type": "text",
           "groupId": "cl1r09bc6000h2e6dqml18p4p",
           "content": {
-            "html": "<div>What does SEO stand for?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "What does SEO stand for?" }]
               }
-            ],
-            "plainText": "What does SEO stand for?"
+            ]
           }
         },
         {
@@ -102,11 +100,9 @@
           "type": "text",
           "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "content": {
-            "html": "<div>Well done!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Well done!" }] }
-            ],
-            "plainText": "Well done!"
+            ]
           }
         },
         {
@@ -114,11 +110,9 @@
           "type": "text",
           "groupId": "cl1r0b3ww000q2e6d4aihat41",
           "content": {
-            "html": "<div>What is anchor text?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What is anchor text?" }] }
-            ],
-            "plainText": "What is anchor text?"
+            ]
           }
         },
         {
@@ -176,11 +170,9 @@
           "type": "text",
           "groupId": "cl1r0erik00182e6dfzezujj0",
           "content": {
-            "html": "<div>Well done!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Well done!" }] }
-            ],
-            "plainText": "Well done!"
+            ]
           }
         },
         {
@@ -188,11 +180,9 @@
           "type": "text",
           "groupId": "cl1r0erik00182e6dfzezujj0",
           "content": {
-            "html": "<div>What is a persona ?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What is a persona ?" }] }
-            ],
-            "plainText": "What is a persona ?"
+            ]
           }
         },
         {
@@ -250,11 +240,9 @@
           "type": "text",
           "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "content": {
-            "html": "<div>Well done!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Well done!" }] }
-            ],
-            "plainText": "Well done!"
+            ]
           }
         },
         {
@@ -262,14 +250,12 @@
           "type": "text",
           "groupId": "cl1r0j8u1001t2e6d42mjfcqo",
           "content": {
-            "html": "<div>What does CTA stand for?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "What does CTA stand for?" }]
               }
-            ],
-            "plainText": "What does CTA stand for?"
+            ]
           }
         },
         {
@@ -318,9 +304,7 @@
           "type": "text",
           "groupId": "cl1r0c85100102e6d7uohf0cu",
           "content": {
-            "html": "<div>WRONG!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
-            "plainText": "WRONG!"
+            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }]
           }
         },
         {
@@ -328,7 +312,6 @@
           "type": "text",
           "groupId": "cl1r0c85100102e6d7uohf0cu",
           "content": {
-            "html": "<div>SEO stands for Search Engine Optimization</div>",
             "richText": [
               {
                 "type": "p",
@@ -336,8 +319,7 @@
                   { "text": "SEO stands for Search Engine Optimization" }
                 ]
               }
-            ],
-            "plainText": "SEO stands for Search Engine Optimization"
+            ]
           },
           "outgoingEdgeId": "cl1r0dibf00162e6dwuvli71j"
         }
@@ -353,9 +335,7 @@
           "type": "text",
           "groupId": "cl1r0exdi001l2e6drdwj3u96",
           "content": {
-            "html": "<div>WRONG!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
-            "plainText": "WRONG!"
+            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }]
           }
         },
         {
@@ -363,7 +343,6 @@
           "type": "text",
           "groupId": "cl1r0exdi001l2e6drdwj3u96",
           "content": {
-            "html": "<div>Anchor text is the visible text that is hyperlinked to another page</div>",
             "richText": [
               {
                 "type": "p",
@@ -373,8 +352,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Anchor text is the visible text that is hyperlinked to another page"
+            ]
           },
           "outgoingEdgeId": "cl1r0ic5f001s2e6dw777scrq"
         }
@@ -390,9 +368,7 @@
           "type": "text",
           "groupId": "cl1r0k3tq00272e6d1fwyajjx",
           "content": {
-            "html": "<div>WRONG!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
-            "plainText": "WRONG!"
+            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }]
           }
         },
         {
@@ -400,7 +376,6 @@
           "type": "text",
           "groupId": "cl1r0k3tq00272e6d1fwyajjx",
           "content": {
-            "html": "<div>A persona is a fictional representation of a group of customers</div>",
             "richText": [
               {
                 "type": "p",
@@ -410,8 +385,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "A persona is a fictional representation of a group of customers"
+            ]
           },
           "outgoingEdgeId": "cl1r0l7oa002j2e6dgtx0y1gh"
         }
@@ -427,9 +401,7 @@
           "type": "text",
           "groupId": "cl1r0kqof002d2e6doqhpnuqy",
           "content": {
-            "html": "<div>WRONG!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }],
-            "plainText": "WRONG!"
+            "richText": [{ "type": "p", "children": [{ "text": "WRONG!" }] }]
           }
         },
         {
@@ -437,7 +409,6 @@
           "type": "text",
           "groupId": "cl1r0kqof002d2e6doqhpnuqy",
           "content": {
-            "html": "<div>Anchor text is the visible text that is hyperlinked to another page</div>",
             "richText": [
               {
                 "type": "p",
@@ -447,8 +418,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Anchor text is the visible text that is hyperlinked to another page"
+            ]
           },
           "outgoingEdgeId": "cl1r0p4my00312e6d1wsgwohi"
         }
@@ -529,14 +499,12 @@
           "type": "text",
           "groupId": "cl1r0mn2p002p2e6dijqbjzlh",
           "content": {
-            "html": "<div>Your score is {{Score}}/20.</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Your score is {{Score}}/20." }]
               }
-            ],
-            "plainText": "Your score is {{Score}}/20."
+            ]
           }
         },
         {
@@ -544,11 +512,9 @@
           "type": "text",
           "groupId": "cl1r0mn2p002p2e6dijqbjzlh",
           "content": {
-            "html": "<div>Try again?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Try again?" }] }
-            ],
-            "plainText": "Try again?"
+            ]
           }
         },
         {
@@ -584,11 +550,9 @@
           "type": "text",
           "groupId": "cl1r0rgex00382e6dkayjbys6",
           "content": {
-            "html": "<div>Well done 👏</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Well done 👏" }] }
-            ],
-            "plainText": "Well done 👏"
+            ]
           },
           "outgoingEdgeId": "cl1r0s9g8003e2e6d5if2ywz9"
         }
@@ -604,7 +568,6 @@
           "type": "text",
           "groupId": "cl1r0rvak003b2e6dejcdrooq",
           "content": {
-            "html": "<div>You could do better but that&#x27;s alright!</div>",
             "richText": [
               {
                 "type": "p",
@@ -612,8 +575,7 @@
                   { "text": "You could do better but that's alright!" }
                 ]
               }
-            ],
-            "plainText": "You could do better but that's alright!"
+            ]
           },
           "outgoingEdgeId": "cl1r0sarx003f2e6dbzmed9te"
         }
@@ -629,7 +591,6 @@
           "type": "text",
           "groupId": "cl1r0seuj003h2e6dandwc43r",
           "content": {
-            "html": "<div>Aouch, you need to improve your Digital Marketing game.</div>",
             "richText": [
               {
                 "type": "p",
@@ -639,8 +600,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Aouch, you need to improve your Digital Marketing game."
+            ]
           },
           "outgoingEdgeId": "cl1r0sbzh003g2e6dsqs48aoz"
         }
@@ -672,11 +632,7 @@
           "type": "text",
           "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
-            "html": "<div>Hi there!</div>",
-            "richText": [
-              { "type": "p", "children": [{ "text": "Hi there!" }] }
-            ],
-            "plainText": "Hi there!"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi there!" }] }]
           }
         },
         {
@@ -684,7 +640,6 @@
           "type": "text",
           "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
-            "html": "<div>You&#x27;re about to answer a Quiz about Digital Marketing</div>",
             "richText": [
               {
                 "type": "p",
@@ -694,8 +649,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You're about to answer a Quiz about Digital Marketing"
+            ]
           }
         },
         {
@@ -703,14 +657,12 @@
           "type": "text",
           "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
-            "html": "<div>It is composed of only 4 questions.</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "It is composed of only 4 questions." }]
               }
-            ],
-            "plainText": "It is composed of only 4 questions."
+            ]
           }
         },
         {
@@ -718,11 +670,9 @@
           "type": "text",
           "groupId": "cl1r15w3o005s2e6dr5l7csao",
           "content": {
-            "html": "<div><span class=\"slate-bold\">Ready?</span></div>",
             "richText": [
               { "type": "p", "children": [{ "bold": true, "text": "Ready?" }] }
-            ],
-            "plainText": "Ready?"
+            ]
           }
         },
         {

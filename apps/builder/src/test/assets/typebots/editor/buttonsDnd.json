@@ -28,9 +28,7 @@
           "id": "sqUp2x8SXx8JBC8a9XuKGL9",
           "type": "text",
           "content": {
-            "html": "<div>Hello!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hello!" }] }],
-            "plainText": "Hello!"
+            "richText": [{ "type": "p", "children": [{ "text": "Hello!" }] }]
           },
           "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
         },
@@ -38,11 +36,9 @@
           "id": "suRXuWyuJ7kpsdLUYKA6VqM",
           "type": "text",
           "content": {
-            "html": "<div>How are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How are you?" }] }
-            ],
-            "plainText": "How are you?"
+            ]
           },
           "groupId": "clc0ad9ah000n3b6sw5w6h1mp"
         },

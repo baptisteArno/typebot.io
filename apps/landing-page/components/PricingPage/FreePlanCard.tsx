@@ -3,6 +3,7 @@ import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import Link from 'next/link'
 import React from 'react'
 import { PricingCard } from './PricingCard'
+import { chatsLimit } from '@typebot.io/lib/pricing'
 
 export const FreePlanCard = () => (
   <PricingCard
@@ -13,7 +14,10 @@ export const FreePlanCard = () => (
         'Unlimited typebots',
         <>
           <Text>
-            <chakra.span fontWeight="bold">300 chats</chakra.span> included
+            <chakra.span fontWeight="bold">
+              {chatsLimit.FREE.totalIncluded}
+            </chakra.span>{' '}
+            chats/month
           </Text>
           &nbsp;
           <Tooltip
@@ -37,7 +41,7 @@ export const FreePlanCard = () => (
         as={Link}
         href="https://app.typebot.io/register"
         variant="outline"
-        colorScheme="blue"
+        colorScheme="gray"
         size="lg"
         w="full"
         fontWeight="extrabold"

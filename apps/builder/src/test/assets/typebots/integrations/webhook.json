@@ -29,9 +29,7 @@
           "groupId": "kBneEpKdMYrF65XxUQ5GS7",
           "type": "text",
           "content": {
-            "html": "<div>Ready?</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }],
-            "plainText": "Ready?"
+            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
           }
         },
         {

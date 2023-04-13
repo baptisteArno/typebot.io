@@ -1,5 +1,4 @@
-import { Text, HStack, Link, Spinner, Stack, Heading } from '@chakra-ui/react'
-import { useToast } from '@/hooks/useToast'
+import { Text, HStack, Stack, Heading } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
 import React from 'react'
 import { PlanTag } from './PlanTag'
@@ -10,25 +9,14 @@ import { useScopedI18n } from '@/locales'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'plan' | 'stripeId'>
-  onCancelSuccess: () => void
 }
 
-export const CurrentSubscriptionSummary = ({
-  workspace,
-  onCancelSuccess,
-}: Props) => {
+export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
   const scopedT = useScopedI18n('billing.currentSubscription')
-  const { showToast } = useToast()
 
-  const { mutate: cancelSubscription, isLoading: isCancelling } =
-    trpc.billing.cancelSubscription.useMutation({
-      onError: (error) => {
-        showToast({
-          description: error.message,
-        })
-      },
-      onSuccess: onCancelSuccess,
-    })
+  const { data } = trpc.billing.getSubscription.useQuery({
+    workspaceId: workspace.id,
+  })
 
   const isSubscribed =
     (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&
@@ -39,36 +27,15 @@ export const CurrentSubscriptionSummary = ({
       <Heading fontSize="3xl">{scopedT('heading')}</Heading>
       <HStack data-testid="current-subscription">
         <Text>{scopedT('subheading')} </Text>
-        {isCancelling ? (
-          <Spinner color="gray.500" size="xs" />
-        ) : (
-          <>
-            <PlanTag plan={workspace.plan} />
-            {isSubscribed && (
-              <Link
-                as="button"
-                color="gray.500"
-                textDecor="underline"
-                fontSize="sm"
-                onClick={() =>
-                  cancelSubscription({ workspaceId: workspace.id })
-                }
-              >
-                {scopedT('cancelLink')}
-              </Link>
-            )}
-          </>
+        <PlanTag plan={workspace.plan} />
+        {data?.subscription?.cancelDate && (
+          <Text fontSize="sm">
+            (Will be cancelled on {data.subscription.cancelDate.toDateString()})
+          </Text>
         )}
       </HStack>
 
-      {isSubscribed && !isCancelling && (
-        <>
-          <Stack spacing="4">
-            <Text fontSize="sm">{scopedT('billingPortalDescription')}</Text>
-            <BillingPortalButton workspaceId={workspace.id} />
-          </Stack>
-        </>
-      )}
+      {isSubscribed && <BillingPortalButton workspaceId={workspace.id} />}
     </Stack>
   )
 }

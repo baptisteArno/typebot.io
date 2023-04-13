@@ -30,11 +30,9 @@
           "groupId": "cl3wo7ucc000g2e6gdus80qeb",
           "type": "text",
           "content": {
-            "html": "<div>Hello this is group 1</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hello this is group 1" }] }
-            ],
-            "plainText": "Hello this is group 1"
+            ]
           }
         },
         {
@@ -42,11 +40,9 @@
           "groupId": "cl3wo7ucc000g2e6gdus80qeb",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {
@@ -70,11 +66,9 @@
           "groupId": "cl3wo87et000l2e6ga64ipat6",
           "type": "text",
           "content": {
-            "html": "<div>Hello this is group 2</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hello this is group 2" }] }
-            ],
-            "plainText": "Hello this is group 2"
+            ]
           }
         },
         {
@@ -82,11 +76,9 @@
           "groupId": "cl3wo87et000l2e6ga64ipat6",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {
@@ -110,11 +102,9 @@
           "groupId": "cl3wo8kfl000p2e6gszlvkub0",
           "type": "text",
           "content": {
-            "html": "<div>Hello this is group 3</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hello this is group 3" }] }
-            ],
-            "plainText": "Hello this is group 3"
+            ]
           }
         },
         {
@@ -122,11 +112,9 @@
           "groupId": "cl3wo8kfl000p2e6gszlvkub0",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {

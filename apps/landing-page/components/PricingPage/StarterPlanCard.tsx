@@ -13,28 +13,32 @@ import { ChevronDownIcon } from 'assets/icons/ChevronDownIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
-import { chatsLimit, computePrice, storageLimit } from '@typebot.io/lib/pricing'
+import {
+  chatsLimit,
+  computePrice,
+  seatsLimit,
+  storageLimit,
+} from '@typebot.io/lib/pricing'
 import { PricingCard } from './PricingCard'
 
-export const StarterPlanCard = () => {
-  const [price, setPrice] = useState(39)
-
+type Props = {
+  isYearly: boolean
+}
+export const StarterPlanCard = ({ isYearly }: Props) => {
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>(0)
   const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
     useState<number>(0)
 
-  useEffect(() => {
-    setPrice(
-      computePrice(
-        Plan.STARTER,
-        selectedChatsLimitIndex ?? 0,
-        selectedStorageLimitIndex ?? 0
-      ) ?? NaN
-    )
-  }, [selectedChatsLimitIndex, selectedStorageLimitIndex])
+  const price =
+    computePrice(
+      Plan.STARTER,
+      selectedChatsLimitIndex ?? 0,
+      selectedStorageLimitIndex ?? 0,
+      isYearly ? 'yearly' : 'monthly'
+    ) ?? NaN
 
   return (
     <PricingCard
@@ -44,7 +48,10 @@ export const StarterPlanCard = () => {
         featureLabel: 'Everything in Personal, plus:',
         features: [
           <Text key="seats">
-            <chakra.span fontWeight="bold">2 seats</chakra.span> included
+            <chakra.span fontWeight="bold">
+              {seatsLimit.STARTER.totalIncluded} seats
+            </chakra.span>{' '}
+            included
           </Text>,
           <HStack key="chats" spacing={1.5}>
             <Menu>
@@ -56,49 +63,19 @@ export const StarterPlanCard = () => {
                 colorScheme="orange"
               >
                 {parseNumberWithCommas(
-                  chatsLimit.STARTER.totalIncluded +
-                    chatsLimit.STARTER.increaseStep.amount *
-                      selectedChatsLimitIndex
+                  chatsLimit.STARTER.graduatedPrice[selectedChatsLimitIndex]
+                    .totalIncluded
                 )}
               </MenuButton>
               <MenuList>
-                {selectedChatsLimitIndex !== 0 && (
-                  <MenuItem onClick={() => setSelectedChatsLimitIndex(0)}>
-                    {parseNumberWithCommas(chatsLimit.STARTER.totalIncluded)}
+                {chatsLimit.STARTER.graduatedPrice.map((price, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={() => setSelectedChatsLimitIndex(index)}
+                  >
+                    {parseNumberWithCommas(price.totalIncluded)}
                   </MenuItem>
-                )}
-                {selectedChatsLimitIndex !== 1 && (
-                  <MenuItem onClick={() => setSelectedChatsLimitIndex(1)}>
-                    {parseNumberWithCommas(
-                      chatsLimit.STARTER.totalIncluded +
-                        chatsLimit.STARTER.increaseStep.amount
-                    )}
-                  </MenuItem>
-                )}
-                {selectedChatsLimitIndex !== 2 && (
-                  <MenuItem onClick={() => setSelectedChatsLimitIndex(2)}>
-                    {parseNumberWithCommas(
-                      chatsLimit.STARTER.totalIncluded +
-                        chatsLimit.STARTER.increaseStep.amount * 2
-                    )}
-                  </MenuItem>
-                )}
-                {selectedChatsLimitIndex !== 3 && (
-                  <MenuItem onClick={() => setSelectedChatsLimitIndex(3)}>
-                    {parseNumberWithCommas(
-                      chatsLimit.STARTER.totalIncluded +
-                        chatsLimit.STARTER.increaseStep.amount * 3
-                    )}
-                  </MenuItem>
-                )}
-                {selectedChatsLimitIndex !== 4 && (
-                  <MenuItem onClick={() => setSelectedChatsLimitIndex(4)}>
-                    {parseNumberWithCommas(
-                      chatsLimit.STARTER.totalIncluded +
-                        chatsLimit.STARTER.increaseStep.amount * 4
-                    )}
-                  </MenuItem>
-                )}
+                ))}
               </MenuList>
             </Menu>{' '}
             <Text>chats/mo</Text>
@@ -125,50 +102,21 @@ export const StarterPlanCard = () => {
               >
                 {selectedStorageLimitIndex !== undefined
                   ? parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount *
-                          selectedStorageLimitIndex
+                      storageLimit.STARTER.graduatedPrice[
+                        selectedStorageLimitIndex
+                      ].totalIncluded
                     )
                   : undefined}
               </MenuButton>
               <MenuList>
-                {selectedStorageLimitIndex !== 0 && (
-                  <MenuItem onClick={() => setSelectedStorageLimitIndex(0)}>
-                    {parseNumberWithCommas(storageLimit.STARTER.totalIncluded)}
+                {storageLimit.STARTER.graduatedPrice.map((price, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={() => setSelectedStorageLimitIndex(index)}
+                  >
+                    {parseNumberWithCommas(price.totalIncluded)}
                   </MenuItem>
-                )}
-                {selectedStorageLimitIndex !== 1 && (
-                  <MenuItem onClick={() => setSelectedStorageLimitIndex(1)}>
-                    {parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount
-                    )}
-                  </MenuItem>
-                )}
-                {selectedStorageLimitIndex !== 2 && (
-                  <MenuItem onClick={() => setSelectedStorageLimitIndex(2)}>
-                    {parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount * 2
-                    )}
-                  </MenuItem>
-                )}
-                {selectedStorageLimitIndex !== 3 && (
-                  <MenuItem onClick={() => setSelectedStorageLimitIndex(3)}>
-                    {parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount * 3
-                    )}
-                  </MenuItem>
-                )}
-                {selectedStorageLimitIndex !== 4 && (
-                  <MenuItem onClick={() => setSelectedStorageLimitIndex(4)}>
-                    {parseNumberWithCommas(
-                      storageLimit.STARTER.totalIncluded +
-                        storageLimit.STARTER.increaseStep.amount * 4
-                    )}
-                  </MenuItem>
-                )}
+                ))}
               </MenuList>
             </Menu>{' '}
             <Text>GB of storage</Text>
@@ -194,12 +142,13 @@ export const StarterPlanCard = () => {
       button={
         <Button
           as={Link}
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}`}
-          colorScheme="blue"
+          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}&isYearly=${isYearly}`}
+          colorScheme="orange"
           size="lg"
           w="full"
           fontWeight="extrabold"
           py={{ md: '8' }}
+          variant="outline"
         >
           Subscribe now
         </Button>

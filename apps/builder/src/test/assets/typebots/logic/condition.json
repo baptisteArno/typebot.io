@@ -27,11 +27,9 @@
           "type": "text",
           "groupId": "eh2ohNATnGg6RTdjG9h5kb",
           "content": {
-            "html": "<div>How old are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
-            ],
-            "plainText": "How old are you?"
+            ]
           }
         },
         {
@@ -99,14 +97,12 @@
           "type": "text",
           "groupId": "fGrzjahWecA8hoNMRrLSwn",
           "content": {
-            "html": "<div>You are older than 80</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "You are older than 80" }]
               }
-            ],
-            "plainText": "You are older than 80"
+            ]
           }
         }
       ],
@@ -121,14 +117,12 @@
           "type": "text",
           "groupId": "49Jv45UJi9R3U4FuWS8R2c",
           "content": {
-            "html": "<div>You are older than 20</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "You are older than 20" }]
               }
-            ],
-            "plainText": "You are older than 20"
+            ]
           }
         }
       ],
@@ -143,14 +137,12 @@
           "type": "text",
           "groupId": "fD28kefdySKK7XA7SyTozC",
           "content": {
-            "html": "<div>You are younger than 20</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "You are younger than 20" }]
               }
-            ],
-            "plainText": "You are younger than 20"
+            ]
           }
         }
       ],

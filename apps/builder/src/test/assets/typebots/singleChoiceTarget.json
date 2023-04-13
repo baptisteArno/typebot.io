@@ -64,11 +64,9 @@
           "groupId": "ih574JsgYCSSt3t77DH9gp",
           "type": "text",
           "content": {
-            "html": "<div>I love burgers!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "I love burgers!" }] }
-            ],
-            "plainText": "I love burgers!"
+            ]
           }
         }
       ]
@@ -83,9 +81,7 @@
           "groupId": "5bMwu6Wv79avgdz3TKjVXr",
           "type": "text",
           "content": {
-            "html": "<div>Cool!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cool!" }] }],
-            "plainText": "Cool!"
+            "richText": [{ "type": "p", "children": [{ "text": "Cool!" }] }]
           }
         }
       ]

@@ -103,8 +103,6 @@ export default {
   'billing.currentSubscription.heading': 'Subscription',
   'billing.currentSubscription.subheading': 'Current workspace subscription:',
   'billing.currentSubscription.cancelLink': 'Cancel my subscription',
-  'billing.currentSubscription.billingPortalDescription':
-    'Need to change payment method or billing information? Head over to your billing portal:',
   'billing.invoices.heading': 'Invoices',
   'billing.invoices.empty': 'No invoices found for this workspace.',
   'billing.invoices.paidAt': 'Paid at',

@@ -29,7 +29,6 @@
           "id": "s6eky7dd3md9hto9y4wsuj7h",
           "type": "text",
           "content": {
-            "html": "<div>You need to add your OpenAI credentials to make this bot work. 🪄</div>",
             "richText": [
               {
                 "type": "p",
@@ -39,8 +38,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You need to add your OpenAI credentials to make this bot work. 🪄"
+            ]
           },
           "groupId": "bofjp88arodr4k0btv2esyqy"
         },
@@ -48,7 +46,6 @@
           "id": "nqsu9f13q5j8tt56bcbuto62",
           "type": "text",
           "content": {
-            "html": "<div>Once it&apos;s done, delete this group and connect the <span class=\"slate-bold\">Start</span> block with <span class=\"slate-bold\">Intro</span> 🚀</div>",
             "richText": [
               {
                 "type": "p",
@@ -62,8 +59,7 @@
                   { "text": " 🚀" }
                 ]
               }
-            ],
-            "plainText": "Once it's done, delete this group and connect the Start block with Intro 🚀"
+            ]
           },
           "groupId": "bofjp88arodr4k0btv2esyqy"
         }
@@ -109,14 +105,12 @@
           "id": "myldn1l1nfdwwm8qvza71rwv",
           "type": "text",
           "content": {
-            "html": "<div>{{Assistant Messages}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "{{Assistant Messages}}" }]
               }
-            ],
-            "plainText": "{{Assistant Messages}}"
+            ]
           },
           "groupId": "dmg57mgick51p8l5pnyqtyf9"
         },
@@ -184,14 +178,12 @@
           "id": "sei88rrjcmpgm3vhxjvkofyt",
           "type": "text",
           "content": {
-            "html": "<div>{{Assistant Messages}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "{{Assistant Messages}}" }]
               }
-            ],
-            "plainText": "{{Assistant Messages}}"
+            ]
           },
           "groupId": "fj5z2nx488htv0843kq6qeyk"
         },
@@ -259,14 +251,12 @@
           "id": "h96lile0evtqa0jx24gmfo25",
           "type": "text",
           "content": {
-            "html": "<div>{{Assistant Messages}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "{{Assistant Messages}}" }]
               }
-            ],
-            "plainText": "{{Assistant Messages}}"
+            ]
           },
           "groupId": "csbysu8dr08zxr4i6hzvzjdf"
         },
@@ -303,14 +293,12 @@
           "id": "gphm5wy1md9cunwkdtbzg6nq",
           "type": "text",
           "content": {
-            "html": "<div>Who would you want to talk to?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Who would you want to talk to?" }]
               }
-            ],
-            "plainText": "Who would you want to talk to?"
+            ]
           },
           "groupId": "u6nm47oyneidmsebszp60t0m"
         },
@@ -427,9 +415,7 @@
           "id": "qm3v36qb93ijnghdjgy9mcwf",
           "type": "text",
           "content": {
-            "html": "<div>Hi 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
-            "plainText": "Hi 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
           },
           "groupId": "py719ungczkgz5f40zkw3tr2"
         },
@@ -437,7 +423,6 @@
           "id": "ln8d3vdq4shclzrxcy9rmxfg",
           "type": "text",
           "content": {
-            "html": "<div>I can help you translate things and perfect your English.</div>",
             "richText": [
               {
                 "type": "p",
@@ -447,8 +432,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "I can help you translate things and perfect your English."
+            ]
           },
           "groupId": "py719ungczkgz5f40zkw3tr2"
         },
@@ -456,11 +440,9 @@
           "id": "r7yu488ugfif8hxy3e4sospb",
           "type": "text",
           "content": {
-            "html": "<div>How can I help?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How can I help?" }] }
-            ],
-            "plainText": "How can I help?"
+            ]
           },
           "groupId": "py719ungczkgz5f40zkw3tr2",
           "outgoingEdgeId": "ripf74t9yicdze8xr2yrklyx"
@@ -476,9 +458,7 @@
           "id": "bbeedootn9m8eass0mqu3w4t",
           "type": "text",
           "content": {
-            "html": "<div>Hi 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
-            "plainText": "Hi 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
           },
           "groupId": "uyry49c9bm1pvk6t8i471l2d"
         },
@@ -486,14 +466,12 @@
           "id": "chdghb0k27c4okwu9yky4ox4",
           "type": "text",
           "content": {
-            "html": "<div>I&apos;m an expert in copywriting.</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "I'm an expert in copywriting." }]
               }
-            ],
-            "plainText": "I'm an expert in copywriting."
+            ]
           },
           "groupId": "uyry49c9bm1pvk6t8i471l2d"
         },
@@ -501,11 +479,9 @@
           "id": "idp7w8c8zbkvl95oa1vquiml",
           "type": "text",
           "content": {
-            "html": "<div>How can I help?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How can I help?" }] }
-            ],
-            "plainText": "How can I help?"
+            ]
           },
           "groupId": "uyry49c9bm1pvk6t8i471l2d",
           "outgoingEdgeId": "v0tfmbt8tpwwrieftvzg8lti"
@@ -521,9 +497,7 @@
           "id": "n96j3pf3m87aufcapx2ulr2n",
           "type": "text",
           "content": {
-            "html": "<div>Hi 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }],
-            "plainText": "Hi 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
           },
           "groupId": "zfa8oj0a0tnlho9a67llulst"
         },
@@ -531,7 +505,6 @@
           "id": "wxk5z9yyiojkk9u3b5m6shax",
           "type": "text",
           "content": {
-            "html": "<div>I can explain concept with very simple terms.</div>",
             "richText": [
               {
                 "type": "p",
@@ -539,8 +512,7 @@
                   { "text": "I can explain concept with very simple terms." }
                 ]
               }
-            ],
-            "plainText": "I can explain concept with very simple terms."
+            ]
           },
           "groupId": "zfa8oj0a0tnlho9a67llulst"
         },
@@ -548,7 +520,6 @@
           "id": "ileqgg2r2kyh2zovpivr775s",
           "type": "text",
           "content": {
-            "html": "<div>What concept would you like me to explain?</div>",
             "richText": [
               {
                 "type": "p",
@@ -556,8 +527,7 @@
                   { "text": "What concept would you like me to explain?" }
                 ]
               }
-            ],
-            "plainText": "What concept would you like me to explain?"
+            ]
           },
           "groupId": "zfa8oj0a0tnlho9a67llulst",
           "outgoingEdgeId": "v5bki4h7m1lnryhgzudnvvpx"

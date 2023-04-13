@@ -52,6 +52,19 @@ export const addSubscriptionToWorkspace = async (
       ...metadata,
     },
   })
+  return stripeId
+}
+
+export const cancelSubscription = async (stripeId: string) => {
+  const currentSubscriptionId = (
+    await stripe.subscriptions.list({
+      customer: stripeId,
+    })
+  ).data.shift()?.id
+  if (currentSubscriptionId)
+    await stripe.subscriptions.update(currentSubscriptionId, {
+      cancel_at_period_end: true,
+    })
 }
 
 export const createCollaboration = (

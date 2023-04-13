@@ -30,11 +30,9 @@
           "groupId": "cl3u4431400042e6go5nd0euq",
           "type": "text",
           "content": {
-            "html": "<div>Hi there 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there 👋" }] }
-            ],
-            "plainText": "Hi there 👋"
+            ]
           }
         },
         {
@@ -42,11 +40,9 @@
           "groupId": "cl3u4431400042e6go5nd0euq",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {
@@ -75,14 +71,12 @@
           "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
-            "html": "<div>Cool, nice to meet you {{Name}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Cool, nice to meet you {{Name}}" }]
               }
-            ],
-            "plainText": "Cool, nice to meet you {{Name}}"
+            ]
           }
         },
         {
@@ -90,7 +84,6 @@
           "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
-            "html": "<div>I&#x27;ve been working on a Notion template for the last 3 months to help you Grow your business.</div>",
             "richText": [
               {
                 "type": "p",
@@ -100,8 +93,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "I've been working on a Notion template for the last 3 months to help you Grow your business."
+            ]
           }
         },
         {
@@ -109,7 +101,6 @@
           "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
-            "html": "<div>It is based on the Bullseye Growth Framework</div>",
             "richText": [
               {
                 "type": "p",
@@ -117,8 +108,7 @@
                   { "text": "It is based on the Bullseye Growth Framework" }
                 ]
               }
-            ],
-            "plainText": "It is based on the Bullseye Growth Framework"
+            ]
           }
         },
         {
@@ -135,7 +125,6 @@
           "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
-            "html": "<div>It's yours for $9</div>",
             "richText": [
               {
                 "type": "p",
@@ -145,8 +134,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "It's yours for $9"
+            ]
           }
         },
         {
@@ -154,7 +142,6 @@
           "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
-            "html": "<div>Are you interested in receiving a copy of this template?</div>",
             "richText": [
               {
                 "type": "p",
@@ -164,8 +151,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Are you interested in receive a copy of this template?"
+            ]
           }
         },
         {
@@ -202,7 +188,6 @@
           "groupId": "cl3u4iw28000s2e6gdmukl6qb",
           "type": "text",
           "content": {
-            "html": "<div>Oh ok, feel free to come back when you feel ready {{Name}}!</div>",
             "richText": [
               {
                 "type": "p",
@@ -212,8 +197,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Oh ok, feel free to come back when you feel ready {{Name}}!"
+            ]
           }
         },
         {
@@ -236,11 +220,9 @@
           "groupId": "cl3u4kblb000w2e6gfflsq56p",
           "type": "text",
           "content": {
-            "html": "<div>That&#x27;s awesome!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "That's awesome!" }] }
-            ],
-            "plainText": "That's awesome!"
+            ]
           }
         },
         {
@@ -248,7 +230,6 @@
           "groupId": "cl3u4kblb000w2e6gfflsq56p",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s the email address where you want to receive the link?</div>",
             "richText": [
               {
                 "type": "p",
@@ -258,8 +239,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "What's the email address where you want to receive the link?"
+            ]
           }
         },
         {
@@ -285,11 +265,9 @@
           "groupId": "cl3u4leig00112e6gxbk65r7y",
           "type": "text",
           "content": {
-            "html": "<div>Sounds good.</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Sounds good." }] }
-            ],
-            "plainText": "Sounds good."
+            ]
           }
         },
         {
@@ -297,7 +275,6 @@
           "groupId": "cl3u4leig00112e6gxbk65r7y",
           "type": "text",
           "content": {
-            "html": "<div>You&#x27;re a step away from implementing proven growth systems to your business 🚀</div>",
             "richText": [
               {
                 "type": "p",
@@ -307,8 +284,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You're a step away from implementing proven growth systems to your business 🚀"
+            ]
           }
         },
         {
@@ -358,7 +334,6 @@
           "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
-            "html": "<div>It&#x27;s all good, you should have received the email!</div>",
             "richText": [
               {
                 "type": "p",
@@ -368,8 +343,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "It's all good, you should have received the email!"
+            ]
           }
         },
         {
@@ -377,14 +351,12 @@
           "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
-            "html": "<div>Thanks again for your visit.</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Thanks again for your visit." }]
               }
-            ],
-            "plainText": "Thanks again for your visit."
+            ]
           }
         },
         {
@@ -392,9 +364,7 @@
           "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
-            "html": "<div>Bye 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Bye 👋" }] }],
-            "plainText": "Bye 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Bye 👋" }] }]
           }
         }
       ]

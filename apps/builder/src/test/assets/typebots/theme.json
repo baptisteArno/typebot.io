@@ -28,9 +28,7 @@
           "id": "swUB2pSmvcv3NC7ySzskRpL",
           "type": "text",
           "content": {
-            "html": "<div>Ready?</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }],
-            "plainText": "Ready?"
+            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
           },
           "groupId": "6Dj1i7LeM3qXg5SKMhMyo1"
         },
@@ -60,9 +58,7 @@
           "id": "cl4vdo1fz0008396nolxr0yln",
           "type": "text",
           "content": {
-            "html": "<div>Cool go</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cool go" }] }],
-            "plainText": "Cool go"
+            "richText": [{ "type": "p", "children": [{ "text": "Cool go" }] }]
           },
           "groupId": "2TR5xAQobKAg8hbArfh5br"
         },
@@ -94,9 +90,7 @@
           "groupId": "cl4vdu8nn00023f6l6ptvimhw",
           "type": "text",
           "content": {
-            "html": "<div>Cool go</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cool go" }] }],
-            "plainText": "Cool go"
+            "richText": [{ "type": "p", "children": [{ "text": "Cool go" }] }]
           }
         },
         {

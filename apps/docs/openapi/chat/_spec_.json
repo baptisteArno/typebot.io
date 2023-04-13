@@ -141,9 +141,7 @@
                                                       }
                                                     },
                                                     "required": [
-                                                      "html",
-                                                      "richText",
-                                                      "plainText"
+                                                      "richText"
                                                     ],
                                                     "additionalProperties": false
                                                   }
@@ -2904,13 +2902,15 @@
                                       "html": {
                                         "type": "string"
                                       },
+                                      "richText": {
+                                        "type": "array"
+                                      },
                                       "plainText": {
                                         "type": "string"
                                       }
                                     },
                                     "required": [
-                                      "html",
-                                      "plainText"
+                                      "richText"
                                     ],
                                     "additionalProperties": false
                                   }

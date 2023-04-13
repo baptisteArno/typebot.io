@@ -109,8 +109,6 @@ export default defineLocale({
   'billing.currentSubscription.subheading':
     'Assinatura atual do espaço de trabalho:',
   'billing.currentSubscription.cancelLink': 'Cancelar minha assinatura',
-  'billing.currentSubscription.billingPortalDescription':
-    'Precisa alterar o método de pagamento ou as informações de cobrança? Acesse seu portal de cobrança:',
   'billing.invoices.heading': 'Faturas',
   'billing.invoices.empty':
     'Nenhuma fatura encontrada para este espaço de trabalho.',

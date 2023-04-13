@@ -29,11 +29,9 @@
           "id": "uaks8b01ec3fln8g5iq9gnv7",
           "type": "text",
           "content": {
-            "html": "<div>Hi there! 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there! 👋" }] }
-            ],
-            "plainText": "Hi there! 👋"
+            ]
           },
           "groupId": "gr9wedxcqxie11ki9yss1h5o"
         },
@@ -41,7 +39,6 @@
           "id": "iy9brewiabfhv7ctsvdd5fg6",
           "type": "text",
           "content": {
-            "html": "<div>Sign up for the newsletter and <span class=\"slate-bold\">get free access to our exclusive &apos;Community Bundle&apos;.</span></div>",
             "richText": [
               {
                 "type": "p",
@@ -53,8 +50,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Sign up for the newsletter and get free access to our exclusive 'Community Bundle'."
+            ]
           },
           "groupId": "gr9wedxcqxie11ki9yss1h5o"
         },
@@ -62,7 +58,6 @@
           "id": "immlrmjc0tnvc0rd1552c0ey",
           "type": "text",
           "content": {
-            "html": "<div>This bundle helps you create the best Community possible for your project.</div>",
             "richText": [
               {
                 "type": "p",
@@ -72,8 +67,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "This bundle helps you create the best Community possible for your project."
+            ]
           },
           "groupId": "gr9wedxcqxie11ki9yss1h5o"
         },
@@ -81,11 +75,9 @@
           "id": "i1pv6t8sj9wdzoheplwj1cnr",
           "type": "text",
           "content": {
-            "html": "<div>What&apos;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           },
           "groupId": "gr9wedxcqxie11ki9yss1h5o"
         },
@@ -111,7 +103,6 @@
           "id": "pcx0bo7egsq3il16707mkuzc",
           "type": "text",
           "content": {
-            "html": "<div>Ok, {{Name}}. What email would you like to sign up with?</div>",
             "richText": [
               {
                 "type": "p",
@@ -121,8 +112,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Ok, {{Name}}. What email would you like to sign up with?"
+            ]
           },
           "groupId": "xaloto3qrrbtcdcrob013xcx"
         },
@@ -148,14 +138,12 @@
           "id": "o6helbp9c682dur5e8bt9yov",
           "type": "text",
           "content": {
-            "html": "<div>What&apos;s your goal with the community?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "What's your goal with the community?" }]
               }
-            ],
-            "plainText": "What's your goal with the community?"
+            ]
           },
           "groupId": "tp9r95ay5vm9zlgzw8twtxn3"
         },
@@ -207,7 +195,6 @@
           "id": "tfqqveo72xt7i7ii9imztcd4",
           "type": "text",
           "content": {
-            "html": "<div>Perfect, your bundle will be emailed to you right away 🚀</div>",
             "richText": [
               {
                 "type": "p",
@@ -217,8 +204,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Perfect, your bundle will be emailed to you right away 🚀"
+            ]
           },
           "groupId": "cszciavjonb2qp0ga0pladoj"
         },
@@ -226,14 +212,12 @@
           "id": "xxujz94e696scfz0jjw5zyvw",
           "type": "text",
           "content": {
-            "html": "<div>What&apos;s your goal with the community?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "What's your goal with the community?" }]
               }
-            ],
-            "plainText": "What's your goal with the community?"
+            ]
           },
           "groupId": "cszciavjonb2qp0ga0pladoj"
         },
@@ -344,14 +328,12 @@
           "id": "dzcw0vwo23vhp2nwyxl99va8",
           "type": "text",
           "content": {
-            "html": "<div>Want to know how to win loyal fans?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Want to know how to win loyal fans?" }]
               }
-            ],
-            "plainText": "Want to know how to win loyal fans?"
+            ]
           },
           "groupId": "k2sbuizycrpuyf44v9eebebr"
         },
@@ -359,11 +341,9 @@
           "id": "yh8ueuio717ceybrcsqa1ekq",
           "type": "text",
           "content": {
-            "html": "<div>Check out this video:</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
-            ],
-            "plainText": "Check out this video:"
+            ]
           },
           "groupId": "k2sbuizycrpuyf44v9eebebr"
         },
@@ -388,7 +368,6 @@
           "id": "anu87wo53n3ihq4xl8smprwg",
           "type": "text",
           "content": {
-            "html": "<div>Want to know how to have a great competitive advantage with your community?</div>",
             "richText": [
               {
                 "type": "p",
@@ -398,8 +377,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Want to know how to have a great competitive advantage with your community?"
+            ]
           },
           "groupId": "v6s5yza7kgretdmbke7lg5u7"
         },
@@ -407,11 +385,9 @@
           "id": "ku2scubf21eqnip3ig3rc7n9",
           "type": "text",
           "content": {
-            "html": "<div>Check out this video:</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
-            ],
-            "plainText": "Check out this video:"
+            ]
           },
           "groupId": "v6s5yza7kgretdmbke7lg5u7"
         },
@@ -436,7 +412,6 @@
           "id": "ysedrtj5q17usk5ezpa5g88e",
           "type": "text",
           "content": {
-            "html": "<div>Want to know how to improve your product by leveraging a community?</div>",
             "richText": [
               {
                 "type": "p",
@@ -446,8 +421,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Want to know how to improve your product by leveraging a community?"
+            ]
           },
           "groupId": "l3pc0992zp0hw8ea83b7aky3"
         },
@@ -455,11 +429,9 @@
           "id": "xy08sticb76u82sgcfaeqpe2",
           "type": "text",
           "content": {
-            "html": "<div>Check out this video:</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
-            ],
-            "plainText": "Check out this video:"
+            ]
           },
           "groupId": "l3pc0992zp0hw8ea83b7aky3"
         },
@@ -484,7 +456,6 @@
           "id": "lu0bevnjfkor1ugbnbkev7t3",
           "type": "text",
           "content": {
-            "html": "<div>Want to offer better support with a community?</div>",
             "richText": [
               {
                 "type": "p",
@@ -492,8 +463,7 @@
                   { "text": "Want to offer better support with a community?" }
                 ]
               }
-            ],
-            "plainText": "Want to offer better support with a community?"
+            ]
           },
           "groupId": "f4hlh2oq8viwxrpl9ppq5d42"
         },
@@ -501,11 +471,9 @@
           "id": "jrhdfrdn4gdstpktq1q0gk1q",
           "type": "text",
           "content": {
-            "html": "<div>Check out this video:</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
-            ],
-            "plainText": "Check out this video:"
+            ]
           },
           "groupId": "f4hlh2oq8viwxrpl9ppq5d42"
         },
