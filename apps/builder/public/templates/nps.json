@@ -29,9 +29,7 @@
           "id": "vep990mmfbe64nqczp66xebw",
           "type": "text",
           "content": {
-            "html": "<div>Hey! 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hey! 👋" }] }],
-            "plainText": "Hey! 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Hey! 👋" }] }]
           },
           "groupId": "g7l1tc86ty1r6x0yn0r2g1xo"
         },
@@ -39,7 +37,6 @@
           "id": "u1oeokc5j8bzwi4lwqyf7c8q",
           "type": "text",
           "content": {
-            "html": "<div>Since you are part of our daily users, can I ask you <span class=\"slate-bold\">2 questions</span>?</div>",
             "richText": [
               {
                 "type": "p",
@@ -51,8 +48,7 @@
                   { "text": "?" }
                 ]
               }
-            ],
-            "plainText": "Since you are part of our daily users, can I ask you 2 questions?"
+            ]
           },
           "groupId": "g7l1tc86ty1r6x0yn0r2g1xo"
         },
@@ -82,7 +78,6 @@
           "id": "jcp3qhpb4wf95g0ylrp4e8zb",
           "type": "text",
           "content": {
-            "html": "<div>How likely will you recommend our product<span class=\"slate-bold\"> </span>to a friend or colleague?</div>",
             "richText": [
               {
                 "type": "p",
@@ -92,8 +87,7 @@
                   { "text": "to a friend or colleague?" }
                 ]
               }
-            ],
-            "plainText": "How likely will you recommend our product to a friend or colleague?"
+            ]
           },
           "groupId": "xgqei015z6d58gefpviz8053"
         },
@@ -167,14 +161,12 @@
           "id": "izehojk23xug74tylpm0wbib",
           "type": "text",
           "content": {
-            "html": "<div>I&apos;m glad to hear that 😍</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "I'm glad to hear that 😍" }]
               }
-            ],
-            "plainText": "I'm glad to hear that 😍"
+            ]
           },
           "groupId": "rp2r31gn1w5t1aeej96bhjj3"
         },
@@ -182,14 +174,12 @@
           "id": "qj3e1cxwjub800r6g3lfa4ei",
           "type": "text",
           "content": {
-            "html": "<div>Could you tell us why?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Could you tell us why?" }]
               }
-            ],
-            "plainText": "Could you tell us why?"
+            ]
           },
           "groupId": "rp2r31gn1w5t1aeej96bhjj3",
           "outgoingEdgeId": "hycn6wx0j9ug4wf5vzz9aytx"
@@ -222,14 +212,12 @@
           "id": "ou7airondk1mxm4inzzyyr1x",
           "type": "text",
           "content": {
-            "html": "<div>Could you tell us what went wrong?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Could you tell us what went wrong?" }]
               }
-            ],
-            "plainText": "Could you tell us what went wrong?"
+            ]
           },
           "groupId": "qj9qgsbfv6u1f5oe1bjnwnu9",
           "outgoingEdgeId": "glj5ishgke8i6s6eyjnmbel1"
@@ -361,11 +349,9 @@
           "id": "eixinwxcgsng6v8blw6jdgwy",
           "type": "text",
           "content": {
-            "html": "<div>Thank you! 🙏</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Thank you! 🙏" }] }
-            ],
-            "plainText": "Thank you! 🙏"
+            ]
           },
           "groupId": "pp1ncsdaki07pfq5pjl53v6r"
         },
@@ -373,7 +359,6 @@
           "id": "cjqu4wje2zr8i5ehivxv5567",
           "type": "text",
           "content": {
-            "html": "<div>Would you be ok to leave a review on Capterra?</div>",
             "richText": [
               {
                 "type": "p",
@@ -381,8 +366,7 @@
                   { "text": "Would you be ok to leave a review on Capterra?" }
                 ]
               }
-            ],
-            "plainText": "Would you be ok to leave a review on Capterra?"
+            ]
           },
           "groupId": "pp1ncsdaki07pfq5pjl53v6r"
         },
@@ -419,7 +403,6 @@
           "id": "m1my2b6gqq2hgfecw1vs2vcm",
           "type": "text",
           "content": {
-            "html": "<div>Thank you for taking the time to answer!</div>",
             "richText": [
               {
                 "type": "p",
@@ -427,8 +410,7 @@
                   { "text": "Thank you for taking the time to answer!" }
                 ]
               }
-            ],
-            "plainText": "Thank you for taking the time to answer!"
+            ]
           },
           "groupId": "znljx8q0q2ggih0ipu28ryby"
         },
@@ -436,11 +418,9 @@
           "id": "fyl3k7qc6jdmc8t38b9wkcrh",
           "type": "text",
           "content": {
-            "html": "<div>Have a beautiful day!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Have a beautiful day!" }] }
-            ],
-            "plainText": "Have a beautiful day!"
+            ]
           },
           "groupId": "znljx8q0q2ggih0ipu28ryby"
         },
@@ -463,7 +443,6 @@
           "id": "dfisk4xq8csn0t2aute6hbsd",
           "type": "text",
           "content": {
-            "html": "<div>Sorry that your experience hasn&apos;t been amazing 🙁</div>",
             "richText": [
               {
                 "type": "p",
@@ -473,8 +452,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Sorry that your experience hasn't been amazing 🙁"
+            ]
           },
           "groupId": "vvbtgh5ptk49shyjn3zn6d71"
         },
@@ -482,7 +460,6 @@
           "id": "u6vs0akagfjg63zq8z1rcc14",
           "type": "text",
           "content": {
-            "html": "<div>Here is a promo code if you&apos;d like to give our product another chance: <span class=\"slate-bold\">PROMO123</span></div>",
             "richText": [
               {
                 "type": "p",
@@ -493,8 +470,7 @@
                   { "bold": true, "text": "PROMO123" }
                 ]
               }
-            ],
-            "plainText": "Here is a promo code if you'd like to give our product another chance: PROMO123"
+            ]
           },
           "groupId": "vvbtgh5ptk49shyjn3zn6d71"
         },
@@ -517,11 +493,9 @@
           "id": "cd8ftyg6tkjggncxuo242u3j",
           "type": "text",
           "content": {
-            "html": "<div>Amazing 🤩</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Amazing 🤩" }] }
-            ],
-            "plainText": "Amazing 🤩"
+            ]
           },
           "groupId": "mwfu8ot0z37zfq2fbo5rcyrl"
         },
@@ -529,14 +503,12 @@
           "id": "nigypz7fhnt07440o0829o81",
           "type": "text",
           "content": {
-            "html": "<div>Let me take you there...</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Let me take you there..." }]
               }
-            ],
-            "plainText": "Let me take you there..."
+            ]
           },
           "groupId": "mwfu8ot0z37zfq2fbo5rcyrl"
         },

@@ -38,7 +38,6 @@
           "id": "pd22jxxptmw66xhwddj8toos",
           "type": "text",
           "content": {
-            "html": "<div>Welcome to our film recommendation bot 👋</div>",
             "richText": [
               {
                 "type": "p",
@@ -46,8 +45,7 @@
                   { "text": "Welcome to our film recommendation bot 👋" }
                 ]
               }
-            ],
-            "plainText": "Welcome to our film recommendation bot 👋"
+            ]
           },
           "groupId": "vpsi7kfd4hiu38fd0txt3ndn"
         },
@@ -63,14 +61,12 @@
           "id": "gr8qlv926y817febq85zl0y0",
           "type": "text",
           "content": {
-            "html": "<div>It is powered by The Movie DB API 🚀</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "It is powered by The Movie DB API 🚀" }]
               }
-            ],
-            "plainText": "It is powered by The Movie DB API 🚀"
+            ]
           },
           "groupId": "vpsi7kfd4hiu38fd0txt3ndn"
         },
@@ -86,11 +82,9 @@
           "id": "qllnzuo1zxr5ef8bq9kjdjel",
           "type": "text",
           "content": {
-            "html": "<div>How can I we help?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How can I we help?" }] }
-            ],
-            "plainText": "How can I we help?"
+            ]
           },
           "groupId": "vpsi7kfd4hiu38fd0txt3ndn"
         },
@@ -127,9 +121,7 @@
           "id": "vqrsszjis5qtbalo8d0fwb1j",
           "type": "text",
           "content": {
-            "html": "<div>Sure!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }],
-            "plainText": "Sure!"
+            "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }]
           },
           "groupId": "xjwiuplgl79ezx460xfuplgr"
         },
@@ -166,14 +158,12 @@
           "id": "v2516de17eigf6mbccy2t6dr",
           "type": "text",
           "content": {
-            "html": "<div>Select your desired genre 👇</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Select your desired genre 👇" }]
               }
-            ],
-            "plainText": "Select your desired genre 👇"
+            ]
           },
           "groupId": "xjwiuplgl79ezx460xfuplgr"
         },
@@ -218,9 +208,7 @@
           "id": "yqci070mkxfjjdok5yztj1nx",
           "type": "text",
           "content": {
-            "html": "<div>Sure!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }],
-            "plainText": "Sure!"
+            "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }]
           },
           "groupId": "dewz832l9kse7xx1vhkihbk6"
         },
@@ -257,14 +245,12 @@
           "id": "u6q1nvxowaszfdu4g42nqz38",
           "type": "text",
           "content": {
-            "html": "<div>Here are popular movies this week 👇</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Here are popular movies this week 👇" }]
               }
-            ],
-            "plainText": "Here are popular movies this week 👇"
+            ]
           },
           "groupId": "dewz832l9kse7xx1vhkihbk6"
         },
@@ -309,7 +295,6 @@
           "id": "dbp1cdzqy7txabinmm5osi1a",
           "type": "text",
           "content": {
-            "html": "<div>Here are trending movies for the {{Selected genre}} genre</div>",
             "richText": [
               {
                 "type": "p",
@@ -319,8 +304,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Here are trending movies for the {{Selected genre}} genre"
+            ]
           },
           "groupId": "a1c99wep8eqambqjw8g8yeo8"
         },
@@ -399,11 +383,9 @@
           "id": "tsferop3f80u2jq9p8ip964h",
           "type": "text",
           "content": {
-            "html": "<div>Excellent choice 🔥</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Excellent choice 🔥" }] }
-            ],
-            "plainText": "Excellent choice 🔥"
+            ]
           },
           "groupId": "xutzzlxo0f5hs9q8ga1e8tl9"
         },
@@ -466,11 +448,9 @@
           "id": "t21xt4nr48hyu2qk2ij0d2oe",
           "type": "text",
           "content": {
-            "html": "<div>{{Movie Overview}}</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "{{Movie Overview}}" }] }
-            ],
-            "plainText": "{{Movie Overview}}"
+            ]
           },
           "groupId": "xutzzlxo0f5hs9q8ga1e8tl9"
         },

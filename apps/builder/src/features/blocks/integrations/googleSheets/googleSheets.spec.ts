@@ -120,12 +120,12 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByPlaceholder('Type a value...').nth(-1).fill('test@test.com')
 
     await page.click('text=Select a column')
-    await page.click('text="First name"')
+    await page.getByRole('menuitem', { name: 'First name' }).click()
     await createNewVar(page, 'First name')
 
     await page.click('text=Add a value')
     await page.click('text=Select a column')
-    await page.click('text="Last name"')
+    await page.getByRole('menuitem', { name: 'Last name' }).click()
     await createNewVar(page, 'Last name')
 
     await page.click('text=Preview')

@@ -30,7 +30,7 @@ export const HostBubble = (props: Props) => {
     <Switch>
       <Match when={props.message.type === BubbleBlockType.TEXT}>
         <TextBubble
-          content={props.message.content as Omit<TextBubbleContent, 'richText'>}
+          content={props.message.content as TextBubbleContent}
           typingEmulation={props.typingEmulation}
           onTransitionEnd={onTransitionEnd}
         />

@@ -13,7 +13,6 @@ import {
   DraggableBlock,
   Block,
   BlockWithOptions,
-  TextBubbleContent,
   TextBubbleBlock,
   LogicBlockType,
 } from '@typebot.io/schemas'
@@ -39,6 +38,7 @@ import { hasDefaultConnector } from '@/features/typebot/helpers/hasDefaultConnec
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
+import { TElement } from '@udecode/plate-common'
 
 export const BlockNode = ({
   block,
@@ -72,7 +72,7 @@ export const BlockNode = ({
     openedBlockId === block.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleBlock(block) && block.content.plainText === ''
+    isTextBubbleBlock(block) && block.content.richText.length === 0
   )
   const blockRef = useRef<HTMLDivElement | null>(null)
 
@@ -134,8 +134,8 @@ export const BlockNode = ({
       })
   }
 
-  const handleCloseEditor = (content: TextBubbleContent) => {
-    const updatedBlock = { ...block, content } as Block
+  const handleCloseEditor = (content: TElement[]) => {
+    const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
     setIsEditing(false)
   }

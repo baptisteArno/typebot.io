@@ -30,9 +30,7 @@
           "groupId": "cl1sep1c5001w2e6e77bb1uwb",
           "type": "text",
           "content": {
-            "html": "<div>Hi! 👋</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Hi! 👋" }] }],
-            "plainText": "Hi! 👋"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi! 👋" }] }]
           }
         },
         {
@@ -40,7 +38,6 @@
           "groupId": "cl1sep1c5001w2e6e77bb1uwb",
           "type": "text",
           "content": {
-            "html": "<div>I&#x27;m glad you are intersted in our services.</div>",
             "richText": [
               {
                 "type": "p",
@@ -48,8 +45,7 @@
                   { "text": "I'm glad you are intersted in our services." }
                 ]
               }
-            ],
-            "plainText": "I'm glad you are intersted in our services."
+            ]
           }
         },
         {
@@ -57,7 +53,6 @@
           "groupId": "cl1sep1c5001w2e6e77bb1uwb",
           "type": "text",
           "content": {
-            "html": "<div>I&#x27;ll need to know a little more about you</div>",
             "richText": [
               {
                 "type": "p",
@@ -65,8 +60,7 @@
                   { "text": "I'll need to know a little more about you" }
                 ]
               }
-            ],
-            "plainText": "I'll need to know a little more about you"
+            ]
           }
         },
         {
@@ -91,14 +85,12 @@
           "groupId": "cl1sern8w00202e6ez69l190j",
           "type": "text",
           "content": {
-            "html": "<div>Do you work with a specific company?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Do you work with a specific company?" }]
               }
-            ],
-            "plainText": "Do you work with a specific company?"
+            ]
           }
         },
         {
@@ -144,11 +136,9 @@
           "groupId": "cl1sez6zd00262e6ebh59k1bs",
           "type": "text",
           "content": {
-            "html": "<div>Which company?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Which company?" }] }
-            ],
-            "plainText": "Which company?"
+            ]
           }
         },
         {
@@ -177,7 +167,6 @@
           "groupId": "cl1sf0ogu002d2e6edyhcuu6f",
           "type": "text",
           "content": {
-            "html": "<div>How many employees is your team composed of?</div>",
             "richText": [
               {
                 "type": "p",
@@ -185,8 +174,7 @@
                   { "text": "How many employees is your team composed of?" }
                 ]
               }
-            ],
-            "plainText": "How many employees is your team composed of?"
+            ]
           }
         },
         {
@@ -292,11 +280,9 @@
           "groupId": "cl1sf4qk500332e6e8gs5mn3t",
           "type": "text",
           "content": {
-            "html": "<div>Where are you based?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Where are you based?" }] }
-            ],
-            "plainText": "Where are you based?"
+            ]
           }
         },
         {
@@ -366,7 +352,6 @@
           "groupId": "cl1sf85am003i2e6e1yq8eoa7",
           "type": "text",
           "content": {
-            "html": "<div>Thank you for answering these questions</div>",
             "richText": [
               {
                 "type": "p",
@@ -374,8 +359,7 @@
                   { "text": "Thank you for answering these questions" }
                 ]
               }
-            ],
-            "plainText": "Thank you for answering these questions"
+            ]
           }
         },
         {
@@ -415,11 +399,9 @@
           "groupId": "cl1sfbbv0003s2e6eheyhv7ke",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your job role?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your job role?" }] }
-            ],
-            "plainText": "What's your job role?"
+            ]
           }
         },
         {
@@ -506,7 +488,6 @@
           "groupId": "cl1sffxet004j2e6ec6gfbffh",
           "type": "text",
           "content": {
-            "html": "<div>Our service is specifically designed for your situation.</div>",
             "richText": [
               {
                 "type": "p",
@@ -516,8 +497,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Our service is specifically designed for your situation."
+            ]
           }
         },
         {
@@ -525,14 +505,12 @@
           "groupId": "cl1sffxet004j2e6ec6gfbffh",
           "type": "text",
           "content": {
-            "html": "<div>We&#x27;ll get back to you ASAP. 👋</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "We'll get back to you ASAP. 👋" }]
               }
-            ],
-            "plainText": "We'll get back to you ASAP. 👋"
+            ]
           }
         }
       ]
@@ -547,7 +525,6 @@
           "groupId": "cl1sfgjlr004l2e6erykli1ud",
           "type": "text",
           "content": {
-            "html": "<div>Our service doesn&#x27;t seem to suit your need.</div>",
             "richText": [
               {
                 "type": "p",
@@ -555,8 +532,7 @@
                   { "text": "Our service doesn't seem to suit your need." }
                 ]
               }
-            ],
-            "plainText": "Our service doesn't seem to suit your need."
+            ]
           }
         },
         {
@@ -564,7 +540,6 @@
           "groupId": "cl1sfgjlr004l2e6erykli1ud",
           "type": "text",
           "content": {
-            "html": "<div>We&#x27;ll still send you valuable content by email.</div>",
             "richText": [
               {
                 "type": "p",
@@ -572,8 +547,7 @@
                   { "text": "We'll still send you valuable content by email." }
                 ]
               }
-            ],
-            "plainText": "We'll still send you valuable content by email."
+            ]
           }
         },
         {
@@ -581,11 +555,9 @@
           "groupId": "cl1sfgjlr004l2e6erykli1ud",
           "type": "text",
           "content": {
-            "html": "<div>Bye bye 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Bye bye 👋" }] }
-            ],
-            "plainText": "Bye bye 👋"
+            ]
           }
         }
       ]

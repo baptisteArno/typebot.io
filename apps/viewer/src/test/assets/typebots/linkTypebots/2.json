@@ -47,9 +47,7 @@
           "groupId": "clbovb3vu00103b6o1pjjuagi",
           "type": "text",
           "content": {
-            "html": "<div>Cheers!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }],
-            "plainText": "Cheers!"
+            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }]
           }
         }
       ]

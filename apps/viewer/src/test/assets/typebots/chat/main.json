@@ -28,11 +28,9 @@
           "id": "clauujxdd00073b6qpejnkzcy",
           "type": "text",
           "content": {
-            "html": "<div>Hi there! 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there! 👋" }] }
-            ],
-            "plainText": "Hi there! 👋"
+            ]
           },
           "groupId": "clauujxdc00063b6q42ca20gj"
         },
@@ -40,14 +38,12 @@
           "id": "clauukaad00093b6q07av51yc",
           "type": "text",
           "content": {
-            "html": "<div>Welcome. What&apos;s your name?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Welcome. What's your name?" }]
               }
-            ],
-            "plainText": "Welcome. What's your name?"
+            ]
           },
           "groupId": "clauujxdc00063b6q42ca20gj"
         },
@@ -76,14 +72,12 @@
           "id": "clauukoka000d3b6qxqi38cmk",
           "type": "text",
           "content": {
-            "html": "<div>Nice to meet you {{Name}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Nice to meet you {{Name}}" }]
               }
-            ],
-            "plainText": "Nice to meet you {{Name}}"
+            ]
           },
           "groupId": "clauukoka000c3b6qe6chawis"
         },
@@ -99,11 +93,9 @@
           "id": "clauul4vg000g3b6qr0q2h0uy",
           "type": "text",
           "content": {
-            "html": "<div>How old are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
-            ],
-            "plainText": "How old are you?"
+            ]
           },
           "groupId": "clauukoka000c3b6qe6chawis"
         },
@@ -160,14 +152,12 @@
           "id": "clauum8x7000p3b6qxjud5hdc",
           "type": "text",
           "content": {
-            "html": "<div>Ok, you are an adult then 😁</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Ok, you are an adult then 😁" }]
               }
-            ],
-            "plainText": "Ok, you are an adult then 😁"
+            ]
           },
           "groupId": "clauum8x7000o3b6qx8hqduf8",
           "outgoingEdgeId": "clauuom2y000y3b6qkcjy2ri7"
@@ -183,11 +173,9 @@
           "id": "clauumjq5000s3b6qqjhrklv4",
           "type": "text",
           "content": {
-            "html": "<div>Oh, you are a kid 😁</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Oh, you are a kid 😁" }] }
-            ],
-            "plainText": "Oh, you are a kid 😁"
+            ]
           },
           "groupId": "clauumjq4000r3b6q8l6bi9ra",
           "outgoingEdgeId": "clauuol8t000x3b6qcw1few70"
@@ -212,14 +200,12 @@
           "id": "clauuontu000z3b6q3ydx6ao1",
           "type": "text",
           "content": {
-            "html": "<div>My magic number is {{Magic number}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "My magic number is {{Magic number}}" }]
               }
-            ],
-            "plainText": "My magic number is {{Magic number}}"
+            ]
           },
           "groupId": "clauuoekh000u3b6q6zmlx7f9",
           "outgoingEdgeId": "clauuq8je001e3b6qksm4j11g"
@@ -254,7 +240,6 @@
           "groupId": "clauur7od001f3b6qq140oe55",
           "type": "text",
           "content": {
-            "html": "<div>I&apos;m gonna shoot multiple inputs now...</div>",
             "richText": [
               {
                 "type": "p",
@@ -262,8 +247,7 @@
                   { "text": "I'm gonna shoot multiple inputs now..." }
                 ]
               }
-            ],
-            "plainText": "I'm gonna shoot multiple inputs now..."
+            ]
           }
         },
         {
@@ -317,11 +301,9 @@
           "groupId": "clauusa9z001n3b6qys3xvz1l",
           "type": "text",
           "content": {
-            "html": "<div>Ok, you are solid 👏</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Ok, you are solid 👏" }] }
-            ],
-            "plainText": "Ok, you are solid 👏"
+            ]
           }
         },
         {
@@ -329,14 +311,12 @@
           "groupId": "clauusa9z001n3b6qys3xvz1l",
           "type": "text",
           "content": {
-            "html": "<div>Let&apos;s trigger a webhook...</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Let's trigger a webhook..." }]
               }
-            ],
-            "plainText": "Let's trigger a webhook..."
+            ]
           }
         },
         {
@@ -370,9 +350,7 @@
           "groupId": "clauuwhyl001v3b6qarbpiqbv",
           "type": "text",
           "content": {
-            "html": "<div>{{Joke}}</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "{{Joke}}" }] }],
-            "plainText": "{{Joke}}"
+            "richText": [{ "type": "p", "children": [{ "text": "{{Joke}}" }] }]
           }
         }
       ]

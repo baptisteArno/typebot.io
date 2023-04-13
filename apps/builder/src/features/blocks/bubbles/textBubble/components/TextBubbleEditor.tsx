@@ -3,14 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from '@/lib/plate'
 import { BaseEditor, BaseSelection, Transforms } from 'slate'
-import {
-  defaultTextBubbleContent,
-  TextBubbleContent,
-  Variable,
-} from '@typebot.io/schemas'
+import { Variable } from '@typebot.io/schemas'
 import { ReactEditor } from 'slate-react'
-import { serializeHtml } from '@udecode/plate-serializer-html'
-import { parseHtmlStringToPlainText } from '../utils'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { colors } from '@/lib/theme'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
@@ -20,7 +14,7 @@ import { TextEditorToolBar } from './TextEditorToolBar'
 type TextBubbleEditorContentProps = {
   id: string
   textEditorValue: TElement[]
-  onClose: (newContent: TextBubbleContent) => void
+  onClose: (newContent: TElement[]) => void
 }
 
 const TextBubbleEditorContent = ({
@@ -37,7 +31,7 @@ const TextBubbleEditorContent = ({
 
   const textEditorRef = useRef<HTMLDivElement>(null)
 
-  const closeEditor = () => onClose(convertValueToBlockContent(textEditorValue))
+  const closeEditor = () => onClose(textEditorValue)
 
   useOutsideClick({
     ref: textEditorRef,
@@ -64,18 +58,6 @@ const TextBubbleEditorContent = ({
     return {
       top: selectionBoundingRect.bottom - relativeRect.top,
       left: selectionBoundingRect.left - relativeRect.left,
-    }
-  }
-
-  const convertValueToBlockContent = (value: TElement[]): TextBubbleContent => {
-    if (value.length === 0) defaultTextBubbleContent
-    const html = serializeHtml(editor, {
-      nodes: value,
-    })
-    return {
-      html,
-      richText: value,
-      plainText: parseHtmlStringToPlainText(html),
     }
   }
 
@@ -170,7 +152,7 @@ const TextBubbleEditorContent = ({
 type TextBubbleEditorProps = {
   id: string
   initialValue: TElement[]
-  onClose: (newContent: TextBubbleContent) => void
+  onClose: (newContent: TElement[]) => void
 }
 
 export const TextBubbleEditor = ({

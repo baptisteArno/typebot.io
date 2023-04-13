@@ -42,11 +42,9 @@
           "groupId": "jMbvgRQfXUaXg37LRNqRaJ",
           "type": "text",
           "content": {
-            "html": "<div>Hello world</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hello world" }] }
-            ],
-            "plainText": "Hello world"
+            ]
           }
         },
         {

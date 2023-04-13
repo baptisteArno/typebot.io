@@ -56,11 +56,7 @@
           "id": "clddbpwh9000j3b6srnzdpbcx",
           "type": "text",
           "content": {
-            "html": "<div>Hi there!</div>",
-            "richText": [
-              { "type": "p", "children": [{ "text": "Hi there!" }] }
-            ],
-            "plainText": "Hi there!"
+            "richText": [{ "type": "p", "children": [{ "text": "Hi there!" }] }]
           },
           "groupId": "clddbpwh9000i3b6s9e1vdjrd"
         }

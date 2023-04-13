@@ -28,7 +28,6 @@
           "type": "text",
           "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
-            "html": "<div>As you answer this chat, you&#x27;ll see your result in the real Airtable spreadsheet</div>",
             "richText": [
               {
                 "type": "p",
@@ -38,8 +37,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "As you answer this chat, you'll see your result in the real Airtable spreadsheet"
+            ]
           }
         },
         {
@@ -47,7 +45,6 @@
           "type": "text",
           "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
-            "html": "<div>You can think of it as a guestbook 😂</div>",
             "richText": [
               {
                 "type": "p",
@@ -55,8 +52,7 @@
                   { "text": "You can think of it as a guestbook 😂" }
                 ]
               }
-            ],
-            "plainText": "You can think of it as a guestbook 😂"
+            ]
           }
         },
         {
@@ -64,9 +60,7 @@
           "type": "text",
           "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
-            "html": "<div>Ready?</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }],
-            "plainText": "Ready?"
+            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
           }
         },
         {
@@ -96,14 +90,12 @@
           "type": "text",
           "groupId": "9mz6QbFyQB1uMggt9YbweU",
           "content": {
-            "html": "<div>If you have anything to say...</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "If you have anything to say..." }]
               }
-            ],
-            "plainText": "If you have anything to say..."
+            ]
           }
         },
         {
@@ -172,9 +164,7 @@
           "type": "text",
           "groupId": "dypuPQjb1q55tQavVzZv4e",
           "content": {
-            "html": "<div>Cheers!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }],
-            "plainText": "Cheers!"
+            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }]
           }
         }
       ],
@@ -189,11 +179,9 @@
           "type": "text",
           "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {

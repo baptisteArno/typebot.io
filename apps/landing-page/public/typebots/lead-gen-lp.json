@@ -27,7 +27,6 @@
           "type": "text",
           "groupId": "kinRXxYop2X4d7F9qt8WNB",
           "content": {
-            "html": "<div>Welcome to <span class=\"slate-bold\">AA</span> (Awesome Agency)</div>",
             "richText": [
               {
                 "type": "p",
@@ -37,8 +36,7 @@
                   { "text": " (Awesome Agency)" }
                 ]
               }
-            ],
-            "plainText": "Welcome to AA (Awesome Agency)"
+            ]
           }
         },
         {
@@ -76,14 +74,12 @@
           "type": "text",
           "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "content": {
-            "html": "<div>Great! Nice to meet you {{Name}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Great! Nice to meet you {{Name}}" }]
               }
-            ],
-            "plainText": "Great! Nice to meet you {{Name}}"
+            ]
           }
         },
         {
@@ -91,7 +87,6 @@
           "type": "text",
           "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "content": {
-            "html": "<div>What&#x27;s the best email we can reach you at?</div>",
             "richText": [
               {
                 "type": "p",
@@ -99,8 +94,7 @@
                   { "text": "What's the best email we can reach you at?" }
                 ]
               }
-            ],
-            "plainText": "What's the best email we can reach you at?"
+            ]
           }
         },
         {
@@ -126,11 +120,9 @@
           "type": "text",
           "groupId": "q5dAhqSTCaNdiGSJm9B9Rw",
           "content": {
-            "html": "<div>What&#x27;s your name?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
-            ],
-            "plainText": "What's your name?"
+            ]
           }
         },
         {
@@ -159,14 +151,12 @@
           "type": "text",
           "groupId": "fKqRz7iswk7ULaj5PJocZL",
           "content": {
-            "html": "<div>What services are you interested in?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "What services are you interested in?" }]
               }
-            ],
-            "plainText": "What services are you interested in?"
+            ]
           }
         },
         {
@@ -214,7 +204,6 @@
           "type": "text",
           "groupId": "7qHBEyCMvKEJryBHzPmHjV",
           "content": {
-            "html": "<div>Can you tell me a bit more about your needs?</div>",
             "richText": [
               {
                 "type": "p",
@@ -222,8 +211,7 @@
                   { "text": "Can you tell me a bit more about your needs?" }
                 ]
               }
-            ],
-            "plainText": "Can you tell me a bit more about your needs?"
+            ]
           }
         },
         {
@@ -248,9 +236,7 @@
           "type": "text",
           "groupId": "vF7AD7zSAj7SNvN3gr9N94",
           "content": {
-            "html": "<div>Perfect!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }],
-            "plainText": "Perfect!"
+            "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }]
           }
         },
         {
@@ -258,14 +244,12 @@
           "type": "text",
           "groupId": "vF7AD7zSAj7SNvN3gr9N94",
           "content": {
-            "html": "<div>We&#x27;ll get back to you at {{Email}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "We'll get back to you at {{Email}}" }]
               }
-            ],
-            "plainText": "We'll get back to you at {{Email}}"
+            ]
           }
         }
       ],

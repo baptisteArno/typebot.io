@@ -133,8 +133,7 @@ const parseRetryMessage = (
         id: block.id,
         type: BubbleBlockType.TEXT,
         content: {
-          plainText: retryMessage,
-          html: `<div>${retryMessage}</div>`,
+          richText: [{ type: 'p', children: [{ text: retryMessage }] }],
         },
       },
     ],

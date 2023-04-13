@@ -1,3 +1,10 @@
+.slate-variable {
+  background-color: #ff8b1a;
+  color: #ffffff;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.35rem;
+}
+
 .slate-bold {
   font-weight: bold;
 }

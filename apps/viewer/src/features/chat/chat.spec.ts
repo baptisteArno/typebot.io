@@ -45,8 +45,12 @@ test('API chat execution should work on preview bot', async ({ request }) => {
     ).json()
     expect(resultId).toBeUndefined()
     expect(sessionId).toBeDefined()
-    expect(messages[0].content.plainText).toBe('Hi there! 👋')
-    expect(messages[1].content.plainText).toBe("Welcome. What's your name?")
+    expect(messages[0].content.richText).toStrictEqual([
+      { children: [{ text: 'Hi there! 👋' }], type: 'p' },
+    ])
+    expect(messages[1].content.richText).toStrictEqual([
+      { children: [{ text: "Welcome. What's your name?" }], type: 'p' },
+    ])
     expect(input.type).toBe('text input')
   })
 })
@@ -88,8 +92,12 @@ test('API chat execution should work on published bot', async ({ request }) => {
     })
     expect(result).toBeDefined()
     expect(sessionId).toBeDefined()
-    expect(messages[0].content.plainText).toBe('Hi there! 👋')
-    expect(messages[1].content.plainText).toBe("Welcome. What's your name?")
+    expect(messages[0].content.richText).toStrictEqual([
+      { children: [{ text: 'Hi there! 👋' }], type: 'p' },
+    ])
+    expect(messages[1].content.richText).toStrictEqual([
+      { children: [{ text: "Welcome. What's your name?" }], type: 'p' },
+    ])
     expect(input.type).toBe('text input')
   })
 
@@ -99,7 +107,9 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: 'John', sessionId: chatSessionId },
       })
     ).json()
-    expect(messages[0].content.plainText).toBe('Nice to meet you John')
+    expect(messages[0].content.richText).toStrictEqual([
+      { children: [{ text: 'Nice to meet you John' }], type: 'p' },
+    ])
     expect(messages[1].content.url).toMatch(new RegExp('giphy.com', 'gm'))
     expect(input.type).toBe('number input')
   })
@@ -110,11 +120,18 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: '24', sessionId: chatSessionId },
       })
     ).json()
-    expect(messages[0].content.plainText).toBe('Ok, you are an adult then 😁')
-    expect(messages[1].content.plainText).toBe('My magic number is 42')
-    expect(messages[2].content.plainText).toBe(
-      'How would you rate the experience so far?'
-    )
+    expect(messages[0].content.richText).toStrictEqual([
+      { children: [{ text: 'Ok, you are an adult then 😁' }], type: 'p' },
+    ])
+    expect(messages[1].content.richText).toStrictEqual([
+      { children: [{ text: 'My magic number is 42' }], type: 'p' },
+    ])
+    expect(messages[2].content.richText).toStrictEqual([
+      {
+        children: [{ text: 'How would you rate the experience so far?' }],
+        type: 'p',
+      },
+    ])
     expect(input.type).toBe('rating input')
   })
 
@@ -124,9 +141,12 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: '8', sessionId: chatSessionId },
       })
     ).json()
-    expect(messages[0].content.plainText).toBe(
-      "I'm gonna shoot multiple inputs now..."
-    )
+    expect(messages[0].content.richText).toStrictEqual([
+      {
+        children: [{ text: "I'm gonna shoot multiple inputs now..." }],
+        type: 'p',
+      },
+    ])
     expect(input.type).toBe('email input')
   })
 
@@ -136,9 +156,16 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: 'invalid email', sessionId: chatSessionId },
       })
     ).json()
-    expect(messages[0].content.plainText).toBe(
-      "This email doesn't seem to be valid. Can you type it again?"
-    )
+    expect(messages[0].content.richText).toStrictEqual([
+      {
+        children: [
+          {
+            text: "This email doesn't seem to be valid. Can you type it again?",
+          },
+        ],
+        type: 'p',
+      },
+    ])
     expect(input.type).toBe('email input')
   })
 
@@ -168,8 +195,26 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: 'Yes', sessionId: chatSessionId },
       })
     ).json()
-    expect(messages[0].content.plainText).toBe('Ok, you are solid 👏')
-    expect(messages[1].content.plainText).toBe("Let's trigger a webhook...")
-    expect(messages[2].content.plainText.length).toBeGreaterThan(0)
+    expect(messages[0].content.richText).toStrictEqual([
+      {
+        children: [
+          {
+            text: 'Ok, you are solid 👏',
+          },
+        ],
+        type: 'p',
+      },
+    ])
+    expect(messages[1].content.richText).toStrictEqual([
+      {
+        children: [
+          {
+            text: "Let's trigger a webhook...",
+          },
+        ],
+        type: 'p',
+      },
+    ])
+    expect(messages[2].content.richText.length).toBeGreaterThan(0)
   })
 })

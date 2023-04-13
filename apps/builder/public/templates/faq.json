@@ -30,7 +30,6 @@
           "groupId": "cl96ns9qr00043b6ii07bo25o",
           "type": "text",
           "content": {
-            "html": "<div>If you have a question about our product, you&apos;re in the right place 😊</div>",
             "richText": [
               {
                 "type": "p",
@@ -40,8 +39,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "If you have a question about our product, you're in the right place 😊"
+            ]
           }
         },
         {
@@ -92,11 +90,9 @@
           "groupId": "cl96nt9ob00063b6ii2pktlxq",
           "type": "text",
           "content": {
-            "html": "<div>Hey there 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hey there 👋" }] }
-            ],
-            "plainText": "Hey there 👋"
+            ]
           }
         },
         {
@@ -104,7 +100,6 @@
           "groupId": "cl96nt9ob00063b6ii2pktlxq",
           "type": "text",
           "content": {
-            "html": "<div>I&apos;m John, head of the customer success Team at Analyzr</div>",
             "richText": [
               {
                 "type": "p",
@@ -114,8 +109,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "I'm John, head of the customer success Team at Analyzr"
+            ]
           },
           "outgoingEdgeId": "cl96nv51s000a3b6i3wmlcmdt"
         }
@@ -131,7 +125,6 @@
           "groupId": "cl96o2cgi000r3b6iljr1iwdl",
           "type": "text",
           "content": {
-            "html": "<div>Analyzr is a simple and privacy-friendly analytics tool for your website</div>",
             "richText": [
               {
                 "type": "p",
@@ -141,8 +134,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Analyzr is a simple and privacy-friendly analytics tool for your website"
+            ]
           }
         },
         {
@@ -150,7 +142,6 @@
           "groupId": "cl96o2cgi000r3b6iljr1iwdl",
           "type": "text",
           "content": {
-            "html": "<div>It is:</div><div>✅ Lightweight</div><div>✅ Open-source</div><div>✅ Fully compliant with GDPR</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "It is:" }] },
               { "type": "p", "children": [{ "text": "✅ Lightweight" }] },
@@ -159,8 +150,7 @@
                 "type": "p",
                 "children": [{ "text": "✅ Fully compliant with GDPR" }]
               }
-            ],
-            "plainText": "It is:✅ Lightweight✅ Open-source✅ Fully compliant with GDPR"
+            ]
           }
         },
         {
@@ -190,9 +180,7 @@
           "groupId": "cl96o6a2700123b6ie4efb6bb",
           "type": "text",
           "content": {
-            "html": "<div>You can!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "You can!" }] }],
-            "plainText": "You can!"
+            "richText": [{ "type": "p", "children": [{ "text": "You can!" }] }]
           }
         },
         {
@@ -200,7 +188,6 @@
           "groupId": "cl96o6a2700123b6ie4efb6bb",
           "type": "text",
           "content": {
-            "html": "<div>Analyzr has a generous free plan that allows you to store 1,000,000 events/mo 🚀</div>",
             "richText": [
               {
                 "type": "p",
@@ -210,8 +197,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Analyzr has a generous free plan that allows you to store 1,000,000 events/mo 🚀"
+            ]
           }
         },
         {
@@ -248,7 +234,6 @@
           "groupId": "cl96o8eym001a3b6i3lxh7kw0",
           "type": "text",
           "content": {
-            "html": "<div>An event is a user event on your website.</div>",
             "richText": [
               {
                 "type": "p",
@@ -256,8 +241,7 @@
                   { "text": "An event is a user event on your website." }
                 ]
               }
-            ],
-            "plainText": "An event is a user event on your website."
+            ]
           }
         },
         {
@@ -265,7 +249,6 @@
           "groupId": "cl96o8eym001a3b6i3lxh7kw0",
           "type": "text",
           "content": {
-            "html": "<div>It can be &quot;User visited this URL&quot; or &quot;User clicked on this button&quot;</div>",
             "richText": [
               {
                 "type": "p",
@@ -275,8 +258,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "It can be \"User visited this URL\" or \"User clicked on this button\""
+            ]
           }
         },
         {
@@ -314,7 +296,6 @@
           "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
-            "html": "<div>The company was founded in 2020 by Josh Corn</div>",
             "richText": [
               {
                 "type": "p",
@@ -322,8 +303,7 @@
                   { "text": "The company was founded in 2020 by Josh Corn" }
                 ]
               }
-            ],
-            "plainText": "The company was founded in 2020 by Josh Corn"
+            ]
           }
         },
         {
@@ -331,14 +311,12 @@
           "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
-            "html": "<div>We are now a team of 15</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "We are now a team of 15" }]
               }
-            ],
-            "plainText": "We are now a team of 15"
+            ]
           }
         },
         {
@@ -346,7 +324,6 @@
           "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
-            "html": "<div>Our core values are:</div><div></div><div>🔍 Transparency</div><div>⚡ Ship fast</div><div>💙 Awesome customer support</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Our core values are:" }] },
               { "type": "p", "children": [{ "text": "" }] },
@@ -356,8 +333,7 @@
                 "type": "p",
                 "children": [{ "text": "💙 Awesome customer support" }]
               }
-            ],
-            "plainText": "Our core values are:🔍 Transparency⚡ Ship fast💙 Awesome customer support"
+            ]
           }
         },
         {
@@ -387,11 +363,9 @@
           "groupId": "cl96og2yr001v3b6ivhzb1x34",
           "type": "text",
           "content": {
-            "html": "<div>Sure, no problem!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Sure, no problem!" }] }
-            ],
-            "plainText": "Sure, no problem!"
+            ]
           }
         },
         {
@@ -419,7 +393,6 @@
           "groupId": "cl96oh3mn001z3b6i2b0no81w",
           "type": "text",
           "content": {
-            "html": "<div>Alright, we&apos;ll reach out to you very soon. Thank you so much 💙</div>",
             "richText": [
               {
                 "type": "p",
@@ -429,8 +402,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Alright, we'll reach out to you very soon. Thank you so much 💙"
+            ]
           }
         }
       ]

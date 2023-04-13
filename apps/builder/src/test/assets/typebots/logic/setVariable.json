@@ -28,11 +28,9 @@
           "id": "souEkLukHsYU9jrN2rAP7YT",
           "type": "text",
           "content": {
-            "html": "<div>How old are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
-            ],
-            "plainText": "How old are you?"
+            ]
           },
           "groupId": "cl9d7ruqe00033b6oe5nzpeub"
         },
@@ -82,7 +80,6 @@
           "id": "svpmd4uNoAXpoKyfYuuXTQe",
           "type": "text",
           "content": {
-            "html": "<div>Multiplication: {{Total}}</div><div>Custom var: {{Custom var}}</div><div>Addition: {{Addition}}</div>",
             "richText": [
               {
                 "type": "p",
@@ -96,8 +93,7 @@
                 "type": "p",
                 "children": [{ "text": "Addition: {{Addition}}" }]
               }
-            ],
-            "plainText": "Multiplication: {{Total}}Custom var: {{Custom var}}Addition: {{Addition}}"
+            ]
           },
           "groupId": "cl9d7ruqe00053b6o8l0h608t"
         }

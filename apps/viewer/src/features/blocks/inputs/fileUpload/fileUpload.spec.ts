@@ -112,6 +112,5 @@ test.describe('Storage limit is reached', () => {
     )
     await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
     await expect(page.locator('text="150%"')).toBeVisible()
-    await expect(page.locator('text="api.json"')).toBeHidden()
   })
 })

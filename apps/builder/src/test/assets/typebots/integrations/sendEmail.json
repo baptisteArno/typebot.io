@@ -29,11 +29,9 @@
           "groupId": "b5r2MMyftV1nv9vyr6VkZh",
           "type": "text",
           "content": {
-            "html": "<div>Send email</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Send email" }] }
-            ],
-            "plainText": "Send email"
+            ]
           }
         },
         {

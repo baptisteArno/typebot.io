@@ -74,11 +74,9 @@
           "groupId": "clbnrp1kt000o3b6o2bh5ny0r",
           "type": "text",
           "content": {
-            "html": "<div>Email sent!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Email sent!" }] }
-            ],
-            "plainText": "Email sent!"
+            ]
           }
         }
       ]

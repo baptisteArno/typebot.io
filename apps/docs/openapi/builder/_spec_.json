@@ -480,9 +480,7 @@
                                                   }
                                                 },
                                                 "required": [
-                                                  "html",
-                                                  "richText",
-                                                  "plainText"
+                                                  "richText"
                                                 ],
                                                 "additionalProperties": false
                                               }

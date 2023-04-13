@@ -28,12 +28,10 @@
           "type": "text",
           "groupId": "vLUAPaxKwPF49iZhg4XZYa",
           "content": {
-            "html": "<div>Hey friend 👋</div><div>How can I help you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hey friend 👋" }] },
               { "type": "p", "children": [{ "text": "How can I help you?" }] }
-            ],
-            "plainText": "Hey friend 👋How can I help you?"
+            ]
           }
         },
         {
@@ -77,11 +75,7 @@
           "type": "text",
           "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
-            "html": "<div>Shoot! 🤪</div>",
-            "richText": [
-              { "type": "p", "children": [{ "text": "Shoot! 🤪" }] }
-            ],
-            "plainText": "Shoot! 🤪"
+            "richText": [{ "type": "p", "children": [{ "text": "Shoot! 🤪" }] }]
           }
         },
         {
@@ -89,7 +83,6 @@
           "type": "text",
           "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
-            "html": "<div>Can you describe the bug with as many details as possible?</div>",
             "richText": [
               {
                 "type": "p",
@@ -99,8 +92,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Can you describe the bug with as many details as possible?"
+            ]
           }
         },
         {
@@ -129,9 +121,7 @@
           "type": "text",
           "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
-            "html": "<div>Awesome!</div>",
-            "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }],
-            "plainText": "Awesome!"
+            "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }]
           }
         },
         {
@@ -139,7 +129,6 @@
           "type": "text",
           "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
-            "html": "<div>Head up to the feedback board.</div><div></div><div>👉 <a href=\"https://app.typebot.io/feedback\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">https://app.typebot.io/feedback</a></div><div></div><div>There, you&#x27;ll be able to check existing feature requests and submit yours if it&#x27;s missing 💪</div>",
             "richText": [
               {
                 "type": "p",
@@ -167,8 +156,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "Head up to the feedback board.👉 https://app.typebot.io/feedbackThere, you'll be able to check existing feature requests and submit yours if it's missing 💪"
+            ]
           }
         },
         {
@@ -206,7 +194,6 @@
           "type": "text",
           "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
-            "html": "<div>First, don&#x27;t forget to check out the <a href=\"https://docs.typebot.io/\" target=\"_blank\" rel=\"noreferrer\" class=\"slate-a\">Documentation 🙏</a></div>",
             "richText": [
               {
                 "type": "p",
@@ -220,8 +207,7 @@
                   { "text": "" }
                 ]
               }
-            ],
-            "plainText": "First, don't forget to check out the Documentation 🙏"
+            ]
           }
         },
         {
@@ -229,14 +215,12 @@
           "type": "text",
           "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
-            "html": "<div>Otherwise, I&#x27;m all ears!</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Otherwise, I'm all ears!" }]
               }
-            ],
-            "plainText": "Otherwise, I'm all ears!"
+            ]
           }
         },
         {
@@ -273,7 +257,6 @@
           "type": "text",
           "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
-            "html": "<div>Thank you so much for your submission 💙</div>",
             "richText": [
               {
                 "type": "p",
@@ -281,8 +264,7 @@
                   { "text": "Thank you so much for your submission 💙" }
                 ]
               }
-            ],
-            "plainText": "Thank you so much for your submission 💙"
+            ]
           }
         },
         {
@@ -290,7 +272,6 @@
           "type": "text",
           "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
-            "html": "<div>I&#x27;ll get back to you ASAP (usually within 24 hours)</div>",
             "richText": [
               {
                 "type": "p",
@@ -300,8 +281,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "I'll get back to you ASAP (usually within 24 hours)"
+            ]
           }
         },
         {
@@ -339,14 +319,12 @@
           "type": "text",
           "groupId": "wncvzVDFJDvhh1M3CXJ6aL",
           "content": {
-            "html": "<div>On which email can I contact you?</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "On which email can I contact you?" }]
               }
-            ],
-            "plainText": "On which email can I contact you?"
+            ]
           }
         },
         {

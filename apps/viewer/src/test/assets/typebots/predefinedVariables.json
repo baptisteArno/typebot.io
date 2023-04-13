@@ -29,11 +29,9 @@
           "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
-            "html": "<div>Hey I know you!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hey I know you!" }] }
-            ],
-            "plainText": "Hey I know you!"
+            ]
           }
         },
         {
@@ -41,11 +39,9 @@
           "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
-            "html": "<div>Your name is {{Name}}</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Your name is {{Name}}" }] }
-            ],
-            "plainText": "Your name is {{Name}}"
+            ]
           }
         },
         {
@@ -53,11 +49,9 @@
           "groupId": "cl13bgy1s00042e6dao1wyobm",
           "type": "text",
           "content": {
-            "html": "<div>What&#x27;s your email?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "What's your email?" }] }
-            ],
-            "plainText": "What's your email?"
+            ]
           }
         },
         {

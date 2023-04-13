@@ -71,11 +71,7 @@
           "id": "cl4fr7wsv0008396mf9oi9lvi",
           "type": "text",
           "content": {
-            "html": "<div>Ok great!</div>",
-            "richText": [
-              { "type": "p", "children": [{ "text": "Ok great!" }] }
-            ],
-            "plainText": "Ok great!"
+            "richText": [{ "type": "p", "children": [{ "text": "Ok great!" }] }]
           },
           "groupId": "cl4fr7wsv0007396m7xgbeymx"
         }

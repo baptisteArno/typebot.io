@@ -82,14 +82,12 @@
           "id": "myldn1l1nfdwwm8qvza71rwv",
           "type": "text",
           "content": {
-            "html": "<div>{{Assistant Messages}}</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "{{Assistant Messages}}" }]
               }
-            ],
-            "plainText": "{{Assistant Messages}}"
+            ]
           },
           "groupId": "a6ymhjwtkqwp8t127plz8qmk",
           "outgoingEdgeId": "y8ml9ljnsydol9b42fd9zdve"
@@ -105,11 +103,9 @@
           "id": "vzcrfk4vl9gy8igu0ysja5nc",
           "type": "text",
           "content": {
-            "html": "<div>Hi there 👋</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there 👋" }] }
-            ],
-            "plainText": "Hi there 👋"
+            ]
           },
           "groupId": "c5f00f3oclwi1srcz10jjt9u"
         },
@@ -117,11 +113,9 @@
           "id": "gphm5wy1md9cunwkdtbzg6nq",
           "type": "text",
           "content": {
-            "html": "<div>How can I help?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How can I help?" }] }
-            ],
-            "plainText": "How can I help?"
+            ]
           },
           "groupId": "c5f00f3oclwi1srcz10jjt9u",
           "outgoingEdgeId": "h5sk58j0ryrxmfv4gmw7r4dw"
@@ -137,7 +131,6 @@
           "id": "s6eky7dd3md9hto9y4wsuj7h",
           "type": "text",
           "content": {
-            "html": "<div>You need to add your OpenAI credentials to make this bot work. 🪄</div>",
             "richText": [
               {
                 "type": "p",
@@ -147,8 +140,7 @@
                   }
                 ]
               }
-            ],
-            "plainText": "You need to add your OpenAI credentials to make this bot work. 🪄"
+            ]
           },
           "groupId": "t3tv4dm3khwmiotjle5jb65g"
         },
@@ -156,7 +148,6 @@
           "id": "nqsu9f13q5j8tt56bcbuto62",
           "type": "text",
           "content": {
-            "html": "<div>Once it&apos;s done, delete this group and connect the <span class=\"slate-bold\">Start</span> block with <span class=\"slate-bold\">Intro</span> 🚀</div>",
             "richText": [
               {
                 "type": "p",
@@ -170,8 +161,7 @@
                   { "text": " 🚀" }
                 ]
               }
-            ],
-            "plainText": "Once it's done, delete this group and connect the Start block with Intro 🚀"
+            ]
           },
           "groupId": "t3tv4dm3khwmiotjle5jb65g"
         }

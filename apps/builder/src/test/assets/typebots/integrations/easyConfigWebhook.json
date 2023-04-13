@@ -29,11 +29,9 @@
           "groupId": "cl10u68pw00032e6depze2oiy",
           "type": "text",
           "content": {
-            "html": "<div>Hi how are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Hi how are you?" }] }
-            ],
-            "plainText": "Hi how are you?"
+            ]
           }
         },
         {
@@ -58,11 +56,9 @@
           "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
-            "html": "<div>How old are you?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
-            ],
-            "plainText": "How old are you?"
+            ]
           }
         },
         {
@@ -78,11 +74,9 @@
           "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
-            "html": "<div>Do you like cookies?</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Do you like cookies?" }] }
-            ],
-            "plainText": "Do you like cookies?"
+            ]
           }
         },
         {
@@ -110,11 +104,9 @@
           "groupId": "cl10u6jzd00072e6dvo0zwy0s",
           "type": "text",
           "content": {
-            "html": "<div>Alright, cheers!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Alright, cheers!" }] }
-            ],
-            "plainText": "Alright, cheers!"
+            ]
           }
         },
         {

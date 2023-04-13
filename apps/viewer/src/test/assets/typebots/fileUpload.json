@@ -28,14 +28,12 @@
           "type": "text",
           "groupId": "cl45ojrrd00062e6g17tuu9t0",
           "content": {
-            "html": "<div>Hey there, upload please</div>",
             "richText": [
               {
                 "type": "p",
                 "children": [{ "text": "Hey there, upload please" }]
               }
-            ],
-            "plainText": "Hey there, upload please"
+            ]
           }
         },
         {
@@ -64,11 +62,9 @@
           "type": "text",
           "groupId": "cl45ok963000b2e6g2ky0wkvx",
           "content": {
-            "html": "<div>Thank you!</div>",
             "richText": [
               { "type": "p", "children": [{ "text": "Thank you!" }] }
-            ],
-            "plainText": "Thank you!"
+            ]
           }
         }
       ],
