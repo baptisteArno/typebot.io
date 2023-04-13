@@ -26,10 +26,11 @@ export const DashboardPage = () => {
     useState<PreCheckoutModalProps['selectedSubscription']>()
 
   useEffect(() => {
-    const { subscribePlan, chats, storage } = query as {
+    const { subscribePlan, chats, storage, isYearly } = query as {
       subscribePlan: Plan | undefined
       chats: string | undefined
       storage: string | undefined
+      isYearly: string | undefined
     }
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
       setIsLoading(true)
@@ -39,6 +40,7 @@ export const DashboardPage = () => {
         additionalChats: chats ? parseInt(chats) : 0,
         additionalStorage: storage ? parseInt(storage) : 0,
         currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
+        isYearly: isYearly === 'false' ? false : true,
       })
     }
   }, [query, user, workspace])

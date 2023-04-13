@@ -33,7 +33,7 @@ export const Hero = () => {
               bgClip="text"
               data-aos="fade-up"
             >
-              Open-source conversational forms builder
+              Build advanced chatbots visually
             </Heading>
             <Text
               fontSize={['lg', 'xl']}

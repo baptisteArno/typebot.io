@@ -11,10 +11,9 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { Plan } from '@typebot.io/prisma'
 import { useEffect, useState } from 'react'
-import { parseNumberWithCommas } from '@typebot.io/lib'
+import { isDefined, parseNumberWithCommas } from '@typebot.io/lib'
 import {
   chatsLimit,
   computePrice,
@@ -26,12 +25,23 @@ import {
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { useI18n, useScopedI18n } from '@/locales'
+import { Workspace } from '@typebot.io/schemas'
 
 type Props = {
-  initialChatsLimitIndex?: number
-  initialStorageLimitIndex?: number
+  workspace: Pick<
+    Workspace,
+    | 'additionalChatsIndex'
+    | 'additionalStorageIndex'
+    | 'plan'
+    | 'customChatsLimit'
+    | 'customStorageLimit'
+  >
+  currentSubscription: {
+    isYearly?: boolean
+  }
   currency?: 'eur' | 'usd'
   isLoading?: boolean
+  isYearly: boolean
   onPayClick: (props: {
     selectedChatsLimitIndex: number
     selectedStorageLimitIndex: number
@@ -39,15 +49,15 @@ type Props = {
 }
 
 export const StarterPlanPricingCard = ({
-  initialChatsLimitIndex,
-  initialStorageLimitIndex,
+  workspace,
+  currentSubscription,
   isLoading,
   currency,
+  isYearly,
   onPayClick,
 }: Props) => {
   const t = useI18n()
   const scopedT = useScopedI18n('billing.pricingCard')
-  const { workspace } = useWorkspace()
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>()
   const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
@@ -55,20 +65,23 @@ export const StarterPlanPricingCard = ({
 
   useEffect(() => {
     if (
-      selectedChatsLimitIndex === undefined &&
-      initialChatsLimitIndex !== undefined
+      isDefined(selectedChatsLimitIndex) ||
+      isDefined(selectedStorageLimitIndex)
     )
-      setSelectedChatsLimitIndex(initialChatsLimitIndex)
-    if (
-      selectedStorageLimitIndex === undefined &&
-      initialStorageLimitIndex !== undefined
-    )
-      setSelectedStorageLimitIndex(initialStorageLimitIndex)
+      return
+    if (workspace.plan !== Plan.STARTER) {
+      setSelectedChatsLimitIndex(0)
+      setSelectedStorageLimitIndex(0)
+      return
+    }
+    setSelectedChatsLimitIndex(workspace.additionalChatsIndex ?? 0)
+    setSelectedStorageLimitIndex(workspace.additionalStorageIndex ?? 0)
   }, [
-    initialChatsLimitIndex,
-    initialStorageLimitIndex,
     selectedChatsLimitIndex,
     selectedStorageLimitIndex,
+    workspace.additionalChatsIndex,
+    workspace.additionalStorageIndex,
+    workspace?.plan,
   ])
 
   const workspaceChatsLimit = workspace ? getChatsLimit(workspace) : undefined
@@ -77,14 +90,11 @@ export const StarterPlanPricingCard = ({
     : undefined
 
   const isCurrentPlan =
-    chatsLimit[Plan.STARTER].totalIncluded +
-      chatsLimit[Plan.STARTER].increaseStep.amount *
-        (selectedChatsLimitIndex ?? 0) ===
-      workspaceChatsLimit &&
-    storageLimit[Plan.STARTER].totalIncluded +
-      storageLimit[Plan.STARTER].increaseStep.amount *
-        (selectedStorageLimitIndex ?? 0) ===
-      workspaceStorageLimit
+    chatsLimit[Plan.STARTER].graduatedPrice[selectedChatsLimitIndex ?? 0]
+      .totalIncluded === workspaceChatsLimit &&
+    storageLimit[Plan.STARTER].graduatedPrice[selectedStorageLimitIndex ?? 0]
+      .totalIncluded === workspaceStorageLimit &&
+    isYearly === currentSubscription?.isYearly
 
   const getButtonLabel = () => {
     if (
@@ -97,8 +107,9 @@ export const StarterPlanPricingCard = ({
       if (isCurrentPlan) return scopedT('upgradeButton.current')
 
       if (
-        selectedChatsLimitIndex !== initialChatsLimitIndex ||
-        selectedStorageLimitIndex !== initialStorageLimitIndex
+        selectedChatsLimitIndex !== workspace.additionalChatsIndex ||
+        selectedStorageLimitIndex !== workspace.additionalStorageIndex ||
+        isYearly !== currentSubscription?.isYearly
       )
         return t('update')
     }
@@ -131,7 +142,8 @@ export const StarterPlanPricingCard = ({
             computePrice(
               Plan.STARTER,
               selectedChatsLimitIndex ?? 0,
-              selectedStorageLimitIndex ?? 0
+              selectedStorageLimitIndex ?? 0,
+              isYearly ? 'yearly' : 'monthly'
             ) ?? NaN,
             currency
           )}
@@ -151,52 +163,21 @@ export const StarterPlanPricingCard = ({
                   >
                     {selectedChatsLimitIndex !== undefined
                       ? parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded +
-                            chatsLimit.STARTER.increaseStep.amount *
-                              selectedChatsLimitIndex
+                          chatsLimit.STARTER.graduatedPrice[
+                            selectedChatsLimitIndex
+                          ].totalIncluded
                         )
                       : undefined}
                   </MenuButton>
                   <MenuList>
-                    {selectedChatsLimitIndex !== 0 && (
-                      <MenuItem onClick={() => setSelectedChatsLimitIndex(0)}>
-                        {parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded
-                        )}
+                    {chatsLimit.STARTER.graduatedPrice.map((price, index) => (
+                      <MenuItem
+                        key={index}
+                        onClick={() => setSelectedChatsLimitIndex(index)}
+                      >
+                        {parseNumberWithCommas(price.totalIncluded)}
                       </MenuItem>
-                    )}
-                    {selectedChatsLimitIndex !== 1 && (
-                      <MenuItem onClick={() => setSelectedChatsLimitIndex(1)}>
-                        {parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded +
-                            chatsLimit.STARTER.increaseStep.amount
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedChatsLimitIndex !== 2 && (
-                      <MenuItem onClick={() => setSelectedChatsLimitIndex(2)}>
-                        {parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded +
-                            chatsLimit.STARTER.increaseStep.amount * 2
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedChatsLimitIndex !== 3 && (
-                      <MenuItem onClick={() => setSelectedChatsLimitIndex(3)}>
-                        {parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded +
-                            chatsLimit.STARTER.increaseStep.amount * 3
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedChatsLimitIndex !== 4 && (
-                      <MenuItem onClick={() => setSelectedChatsLimitIndex(4)}>
-                        {parseNumberWithCommas(
-                          chatsLimit.STARTER.totalIncluded +
-                            chatsLimit.STARTER.increaseStep.amount * 4
-                        )}
-                      </MenuItem>
-                    )}
+                    ))}
                   </MenuList>
                 </Menu>{' '}
                 {scopedT('chatsPerMonth')}
@@ -214,52 +195,21 @@ export const StarterPlanPricingCard = ({
                   >
                     {selectedStorageLimitIndex !== undefined
                       ? parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded +
-                            storageLimit.STARTER.increaseStep.amount *
-                              selectedStorageLimitIndex
+                          storageLimit.STARTER.graduatedPrice[
+                            selectedStorageLimitIndex
+                          ].totalIncluded
                         )
                       : undefined}
                   </MenuButton>
                   <MenuList>
-                    {selectedStorageLimitIndex !== 0 && (
-                      <MenuItem onClick={() => setSelectedStorageLimitIndex(0)}>
-                        {parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded
-                        )}
+                    {storageLimit.STARTER.graduatedPrice.map((price, index) => (
+                      <MenuItem
+                        key={index}
+                        onClick={() => setSelectedStorageLimitIndex(index)}
+                      >
+                        {parseNumberWithCommas(price.totalIncluded)}
                       </MenuItem>
-                    )}
-                    {selectedStorageLimitIndex !== 1 && (
-                      <MenuItem onClick={() => setSelectedStorageLimitIndex(1)}>
-                        {parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded +
-                            storageLimit.STARTER.increaseStep.amount
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedStorageLimitIndex !== 2 && (
-                      <MenuItem onClick={() => setSelectedStorageLimitIndex(2)}>
-                        {parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded +
-                            storageLimit.STARTER.increaseStep.amount * 2
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedStorageLimitIndex !== 3 && (
-                      <MenuItem onClick={() => setSelectedStorageLimitIndex(3)}>
-                        {parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded +
-                            storageLimit.STARTER.increaseStep.amount * 3
-                        )}
-                      </MenuItem>
-                    )}
-                    {selectedStorageLimitIndex !== 4 && (
-                      <MenuItem onClick={() => setSelectedStorageLimitIndex(4)}>
-                        {parseNumberWithCommas(
-                          storageLimit.STARTER.totalIncluded +
-                            storageLimit.STARTER.increaseStep.amount * 4
-                        )}
-                      </MenuItem>
-                    )}
+                    ))}
                   </MenuList>
                 </Menu>{' '}
                 {scopedT('storageLimit')}

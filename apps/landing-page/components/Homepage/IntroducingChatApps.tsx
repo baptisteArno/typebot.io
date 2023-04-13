@@ -49,7 +49,7 @@ export const IntroducingChatApps = () => {
             textAlign="center"
             data-aos="fade"
           >
-            Introducing Conversational Apps
+            Replace your old school forms with chatbots
           </Heading>
           <Text
             textAlign="center"

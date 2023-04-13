@@ -109,8 +109,6 @@ export default defineLocale({
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Abonnement actuel du workspace :',
   'billing.currentSubscription.cancelLink': "Annuler l'abonnement",
-  'billing.currentSubscription.billingPortalDescription':
-    'Besoin de changer votre mode de paiement ou vos informations de facturation ? Rendez-vous sur votre portail de facturation :',
   'billing.invoices.heading': 'Factures',
   'billing.invoices.empty': 'Aucune facture trouvée pour ce workspace.',
   'billing.invoices.paidAt': 'Payé le',

@@ -1,5 +1,6 @@
 import {
   addSubscriptionToWorkspace,
+  cancelSubscription,
   createClaimableCustomPlan,
 } from '@/test/utils/databaseActions'
 import test, { expect } from '@playwright/test'
@@ -75,7 +76,7 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text="Free workspace"')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(page.locator('text="/ 300"')).toBeVisible()
+  await expect(page.locator('text="/ 200"')).toBeVisible()
   await expect(page.locator('text="Storage"')).toBeHidden()
   await page.getByText('Members', { exact: true }).click()
   await expect(
@@ -132,6 +133,7 @@ test('plan changes should work', async ({ page }) => {
   await page.click('button >> text="3,500"')
   await page.click('button >> text="2"')
   await page.click('button >> text="4"')
+  await page.locator('label span').first().click()
   await expect(page.locator('text="$73"')).toBeVisible()
   await page.click('button >> text=Upgrade >> nth=0')
   await page.getByLabel('Company name').fill('Company LLC')
@@ -141,11 +143,11 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('text=$73.00 >> nth=0')).toBeVisible()
   await expect(page.locator('text=$30.00 >> nth=0')).toBeVisible()
   await expect(page.locator('text=$4.00 >> nth=0')).toBeVisible()
-  await addSubscriptionToWorkspace(
+  const stripeId = await addSubscriptionToWorkspace(
     planChangeWorkspaceId,
     [
       {
-        price: process.env.STRIPE_STARTER_PRICE_ID,
+        price: process.env.STRIPE_STARTER_MONTHLY_PRICE_ID,
         quantity: 1,
       },
     ],
@@ -158,8 +160,8 @@ test('plan changes should work', async ({ page }) => {
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
   await expect(page.locator('text="/ 2 GB"')).toBeVisible()
-  await expect(page.locator('button >> text="2,000"')).toBeVisible()
-  await expect(page.locator('button >> text="2"')).toBeVisible()
+  await expect(page.getByText('/ 2,000')).toBeVisible()
+  await expect(page.getByText('/ 2 GB')).toBeVisible()
   await page.click('button >> text="2,000"')
   await page.click('button >> text="3,500"')
   await page.click('button >> text="2"')
@@ -176,15 +178,15 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('text="$73"')).toBeVisible()
   await expect(page.locator('text="/ 3,500"')).toBeVisible()
   await expect(page.locator('text="/ 4 GB"')).toBeVisible()
-  await expect(page.locator('button >> text="3,500"')).toBeVisible()
-  await expect(page.locator('button >> text="4"')).toBeVisible()
+  await expect(page.getByRole('button', { name: '3,500' })).toBeVisible()
+  await expect(page.getByRole('button', { name: '4' })).toBeVisible()
 
   // Upgrade to PRO
   await page.click('button >> text="10,000"')
-  await page.click('button >> text="14,000"')
+  await page.click('button >> text="25,000"')
   await page.click('button >> text="10"')
-  await page.click('button >> text="12"')
-  await expect(page.locator('text="$133"')).toBeVisible()
+  await page.click('button >> text="15"')
+  await expect(page.locator('text="$247"')).toBeVisible()
   await page.click('button >> text=Upgrade')
   await expect(
     page.locator('text="Workspace PRO plan successfully updated 🎉" >> nth=0')
@@ -195,25 +197,20 @@ test('plan changes should work', async ({ page }) => {
     page.waitForNavigation(),
     page.click('text="Billing portal"'),
   ])
+  await expect(page.getByText('$247.00 per month')).toBeVisible()
+  await expect(page.getByText('(×25000)')).toBeVisible()
+  await expect(page.getByText('(×15)')).toBeVisible()
   await expect(page.locator('text="Add payment method"')).toBeVisible()
+  await cancelSubscription(stripeId)
 
   // Cancel subscription
   await page.goto('/typebots')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await expect(page.locator('[data-testid="current-subscription"]')).toHaveText(
-    'Current workspace subscription: ProCancel my subscription'
-  )
-  await page.click('button >> text="Cancel my subscription"')
-  await expect(page.locator('[data-testid="current-subscription"]')).toHaveText(
-    'Current workspace subscription: Free'
-  )
-
-  // Upgrade again to PRO
-  await page.getByRole('button', { name: 'Upgrade' }).nth(1).click()
   await expect(
-    page.locator('text="Workspace PRO plan successfully updated 🎉" >> nth=0')
-  ).toBeVisible({ timeout: 20 * 1000 })
+    page.getByTestId('current-subscription').getByTestId('pro-plan-tag')
+  ).toBeVisible()
+  await expect(page.getByText('Will be cancelled on')).toBeVisible()
 })
 
 test('should display invoices', async ({ page }) => {
@@ -228,7 +225,7 @@ test('should display invoices', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="Invoices"')).toBeVisible()
-  await expect(page.locator('tr')).toHaveCount(3)
+  await expect(page.locator('tr')).toHaveCount(2)
   await expect(page.locator('text="$39.00"')).toBeVisible()
 })
 

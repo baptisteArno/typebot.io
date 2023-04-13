@@ -9,7 +9,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
 import { formatPrice } from '@typebot.io/lib/pricing'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
@@ -34,12 +33,8 @@ export const PricingCard = ({
   ...rest
 }: PricingCardProps) => {
   const { features, price, name } = data
-  const [formattedPrice, setFormattedPrice] = useState(price)
   const accentColor = useColorModeValue('blue.500', 'white')
-
-  useEffect(() => {
-    setFormattedPrice(typeof price === 'number' ? formatPrice(price) : price)
-  }, [price])
+  const formattedPrice = typeof price === 'number' ? formatPrice(price) : price
 
   return (
     <Card rounded="xl" bgColor="gray.800" {...rest}>

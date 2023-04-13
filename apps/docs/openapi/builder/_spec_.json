@@ -4382,10 +4382,10 @@
         }
       }
     },
-    "/billing/subscription": {
-      "delete": {
-        "operationId": "mutation.billing.cancelSubscription",
-        "summary": "Cancel current subscription",
+    "/billing/subscription/checkout": {
+      "post": {
+        "operationId": "mutation.billing.createCheckoutSession",
+        "summary": "Create checkout session to create a new subscription",
         "tags": [
           "Billing"
         ],
@@ -4394,16 +4394,85 @@
             "Authorization": []
           }
         ],
-        "parameters": [
-          {
-            "name": "workspaceId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "workspaceId": {
+                    "type": "string"
+                  },
+                  "prefilledEmail": {
+                    "type": "string"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "usd",
+                      "eur"
+                    ]
+                  },
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "STARTER",
+                      "PRO"
+                    ]
+                  },
+                  "returnUrl": {
+                    "type": "string"
+                  },
+                  "additionalChats": {
+                    "type": "number"
+                  },
+                  "additionalStorage": {
+                    "type": "number"
+                  },
+                  "vat": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "isYearly": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "email",
+                  "company",
+                  "workspaceId",
+                  "currency",
+                  "plan",
+                  "returnUrl",
+                  "additionalChats",
+                  "additionalStorage",
+                  "isYearly"
+                ],
+                "additionalProperties": false
+              }
             }
           }
-        ],
+        },
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -4412,15 +4481,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string",
-                      "enum": [
-                        "success"
-                      ]
+                    "checkoutUrl": {
+                      "type": "string"
                     }
                   },
                   "required": [
-                    "message"
+                    "checkoutUrl"
                   ],
                   "additionalProperties": false
                 }
@@ -4431,7 +4497,9 @@
             "$ref": "#/components/responses/error"
           }
         }
-      },
+      }
+    },
+    "/billing/subscription": {
       "patch": {
         "operationId": "mutation.billing.updateSubscription",
         "summary": "Update subscription",
@@ -4472,6 +4540,9 @@
                       "usd",
                       "eur"
                     ]
+                  },
+                  "isYearly": {
+                    "type": "boolean"
                   }
                 },
                 "required": [
@@ -4479,7 +4550,8 @@
                   "plan",
                   "additionalChats",
                   "additionalStorage",
-                  "currency"
+                  "currency",
+                  "isYearly"
                 ],
                 "additionalProperties": false
               }
@@ -4635,145 +4707,42 @@
                   "type": "object",
                   "properties": {
                     "subscription": {
-                      "type": "object",
-                      "properties": {
-                        "additionalChatsIndex": {
-                          "type": "number"
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "isYearly": {
+                              "type": "boolean"
+                            },
+                            "currency": {
+                              "type": "string",
+                              "enum": [
+                                "eur",
+                                "usd"
+                              ]
+                            },
+                            "cancelDate": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          },
+                          "required": [
+                            "isYearly",
+                            "currency"
+                          ],
+                          "additionalProperties": false
                         },
-                        "additionalStorageIndex": {
-                          "type": "number"
-                        },
-                        "currency": {
-                          "type": "string",
+                        {
                           "enum": [
-                            "eur",
-                            "usd"
-                          ]
+                            "null"
+                          ],
+                          "nullable": true
                         }
-                      },
-                      "required": [
-                        "additionalChatsIndex",
-                        "additionalStorageIndex",
-                        "currency"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "required": [
                     "subscription"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/billing/subscription/checkout": {
-      "post": {
-        "operationId": "mutation.billing.createCheckoutSession",
-        "summary": "Create checkout session to create a new subscription",
-        "tags": [
-          "Billing"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "company": {
-                    "type": "string"
-                  },
-                  "workspaceId": {
-                    "type": "string"
-                  },
-                  "prefilledEmail": {
-                    "type": "string"
-                  },
-                  "currency": {
-                    "type": "string",
-                    "enum": [
-                      "usd",
-                      "eur"
-                    ]
-                  },
-                  "plan": {
-                    "type": "string",
-                    "enum": [
-                      "STARTER",
-                      "PRO"
-                    ]
-                  },
-                  "returnUrl": {
-                    "type": "string"
-                  },
-                  "additionalChats": {
-                    "type": "number"
-                  },
-                  "additionalStorage": {
-                    "type": "number"
-                  },
-                  "vat": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string"
-                      },
-                      "value": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "value"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "required": [
-                  "email",
-                  "company",
-                  "workspaceId",
-                  "currency",
-                  "plan",
-                  "returnUrl",
-                  "additionalChats",
-                  "additionalStorage"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "checkoutUrl": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "checkoutUrl"
                   ],
                   "additionalProperties": false
                 }

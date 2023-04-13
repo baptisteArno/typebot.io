@@ -1,16 +1,19 @@
-import { Plan } from '@typebot.io/prisma'
+import {
+  getChatsLimit,
+  getStorageLimit,
+  priceIds,
+} from '@typebot.io/lib/pricing'
 
 export const parseSubscriptionItems = (
-  plan: Plan,
+  plan: 'STARTER' | 'PRO',
   additionalChats: number,
-  additionalStorage: number
-) =>
-  [
+  additionalStorage: number,
+  isYearly: boolean
+) => {
+  const frequency = isYearly ? 'yearly' : 'monthly'
+  return [
     {
-      price:
-        plan === Plan.STARTER
-          ? process.env.STRIPE_STARTER_PRICE_ID
-          : process.env.STRIPE_PRO_PRICE_ID,
+      price: priceIds[plan].base[frequency],
       quantity: 1,
     },
   ]
@@ -18,8 +21,12 @@ export const parseSubscriptionItems = (
       additionalChats > 0
         ? [
             {
-              price: process.env.STRIPE_ADDITIONAL_CHATS_PRICE_ID,
-              quantity: additionalChats,
+              price: priceIds[plan].chats[frequency],
+              quantity: getChatsLimit({
+                plan,
+                additionalChatsIndex: additionalChats,
+                customChatsLimit: null,
+              }),
             },
           ]
         : []
@@ -28,9 +35,14 @@ export const parseSubscriptionItems = (
       additionalStorage > 0
         ? [
             {
-              price: process.env.STRIPE_ADDITIONAL_STORAGE_PRICE_ID,
-              quantity: additionalStorage,
+              price: priceIds[plan].storage[frequency],
+              quantity: getStorageLimit({
+                plan,
+                additionalStorageIndex: additionalStorage,
+                customStorageLimit: null,
+              }),
             },
           ]
         : []
     )
+}
