@@ -1,15 +1,15 @@
 version: '3.6'
 services:
-  postgres:
-    image: postgres:13
-    ports:
-      - '5432:5432'
-    restart: always
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: 'typebot'
-      POSTGRES_PASSWORD: 'typebot'
+  # postgres:
+  #   image: postgres:13
+  #   ports:
+  #     - '5432:5432'
+  #   restart: always
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_DB: 'typebot'
+  #     POSTGRES_PASSWORD: 'typebot'
   minio:
     image: minio/minio
     command: server /data
