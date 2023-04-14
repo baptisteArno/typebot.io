@@ -75,8 +75,6 @@ export const WebhookSettings = ({
   })
 
   const handleUrlChange = (url?: string) => {
-    // validateUrl
-    // && url.length > 5 && validateUrl(url)
     if (step.options.url != url) clearOptions()
     if (url && url.length > 5) {
       const newUrl = new URL(url.replace(/ /g, '').trim())
@@ -137,11 +135,6 @@ export const WebhookSettings = ({
       parameters
     })
   }
-  //     onOptionsChange({
-  //       ...step.options,
-  //       parameters: [...step.options.parameters, ...parameters] as QueryParameters[]
-  //     })
-
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
     onOptionsChange({
@@ -162,7 +155,9 @@ export const WebhookSettings = ({
 
   const handleResponseMappingChange = (
     responseVariableMapping: ResponseVariableMapping[]
-  ) => onOptionsChange({ ...step.options, responseVariableMapping })
+  ) => {
+    onOptionsChange({ ...step.options, responseVariableMapping })
+  }
 
   const handleAdvancedConfigChange = (isAdvancedConfig: boolean) =>
     onOptionsChange({ ...step.options, isAdvancedConfig })
@@ -215,8 +210,6 @@ export const WebhookSettings = ({
 
     const session = resolveSession(options.variablesForTest, typebot.variables)
 
-    console.log('test', session, { test: options.variablesForTest, variables: typebot.variables })
-
     const { data } = await sendOctaRequest({
       url: `validate/webhook`,
       method: 'POST',
@@ -226,9 +219,7 @@ export const WebhookSettings = ({
       }
     })
 
-
-
-    const { response, status, success } = data
+    const { response, success } = data
 
     setIsTestResponseLoading(false)
 
