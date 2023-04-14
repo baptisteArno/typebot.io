@@ -32,11 +32,10 @@ Lots of new features are being implemented on a day-to-day basis. Make sure to h
 
 ## Getting started with Typebot
 
-The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io).
+The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
 
-It takes 1 minute to try out the builder for free. You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
-
-That's also the best way to support my work, open-source software, and you'll get great service!
+The cloud version can save a substantial amount of developer time and resources. For most sites this ends up being the best value option and the revenue goes to funding the maintenance and further development of Typebot.
+So you’ll be supporting open source software and getting a great service!
 
 ## Self-hosting
 

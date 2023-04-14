@@ -8,11 +8,11 @@ If you need more information about our Privacy and Security Policies, check out 
 
 ## Where is my data stored?
 
-Typebot relies on an AWS-managed database located in London (eu-west-2). More specifically it uses [Supabase](https://supabase.com/) as an overlay that handles many performance improvements and backups every day.
+Typebot relies on an AWS-managed database located in London (eu-west-2).
 
 ## Who can access my data
 
-Users are the exclusive owner of the data, only the Users and their Teammates can access the data.
+Only the typebot's creator, his workspace teammates and collaborators he explicitely invited can access the data.
 
 ## For how long is my data kept?
 
