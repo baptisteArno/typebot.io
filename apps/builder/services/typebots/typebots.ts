@@ -359,7 +359,7 @@ const parseDefaultItems = (
             referenceValue: null,
             source: "CURRENT_SESSION",
             subType: null,
-            values: ["@CONDITIONAL_TRUE"]
+            values: ["@HTTP_STATUS_CODE_SUCCESS"]
           }
         },
         {
@@ -372,7 +372,12 @@ const parseDefaultItems = (
             referenceValue: null,
             source: "CURRENT_SESSION",
             subType: null,
-            values: ["@CONDITIONAL_FALSE"]
+            values: [
+              "@HTTP_STATUS_CODE_CLIENT_ERROR",
+              "@HTTP_STATUS_CODE_SERVER_ERROR",
+              "@HTTP_STATUS_CODE_REDIRECT",
+              "@HTTP_STATUS_CODE_INFORMATION"
+            ]
           }
         }
       ]
