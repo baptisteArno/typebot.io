@@ -13,7 +13,7 @@ export const executeLogic =
   async (block: LogicBlock): Promise<ExecuteLogicResponse> => {
     switch (block.type) {
       case LogicBlockType.SET_VARIABLE:
-        return executeSetVariable(state, block)
+        return executeSetVariable(state, block, lastBubbleBlockId)
       case LogicBlockType.CONDITION:
         return executeCondition(state, block)
       case LogicBlockType.REDIRECT:

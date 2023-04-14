@@ -4,16 +4,35 @@ import { ExecuteLogicResponse } from '@/features/chat/types'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { parseGuessedValueType } from '@/features/variables/parseGuessedValueType'
+import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 
 export const executeSetVariable = async (
   state: SessionState,
-  block: SetVariableBlock
+  block: SetVariableBlock,
+  lastBubbleBlockId?: string
 ): Promise<ExecuteLogicResponse> => {
   const { variables } = state.typebot
   if (!block.options?.variableId)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
     }
+  if (block.options.isExecutedOnClient && block.options.expressionToEvaluate) {
+    const scriptToExecute = parseScriptToExecuteClientSideAction(
+      state.typebot.variables,
+      block.options.expressionToEvaluate
+    )
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+      clientSideActions: [
+        {
+          setVariable: {
+            scriptToExecute,
+          },
+          lastBubbleBlockId,
+        },
+      ],
+    }
+  }
   const evaluatedExpression = block.options.expressionToEvaluate
     ? evaluateSetVariableExpression(variables)(
         block.options.expressionToEvaluate

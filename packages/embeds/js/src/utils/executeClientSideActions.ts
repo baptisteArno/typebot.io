@@ -2,12 +2,15 @@ import { executeChatwoot } from '@/features/blocks/integrations/chatwoot'
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics'
 import { executeRedirect } from '@/features/blocks/logic/redirect'
 import { executeScript } from '@/features/blocks/logic/script/executeScript'
+import { executeSetVariable } from '@/features/blocks/logic/setVariable/executeSetVariable'
 import { executeWait } from '@/features/blocks/logic/wait/utils/executeWait'
 import type { ChatReply } from '@typebot.io/schemas'
 
 export const executeClientSideAction = async (
   clientSideAction: NonNullable<ChatReply['clientSideActions']>[0]
-): Promise<{ blockedPopupUrl: string } | void> => {
+): Promise<
+  { blockedPopupUrl: string } | { replyToSend: string | undefined } | void
+> => {
   if ('chatwoot' in clientSideAction) {
     return executeChatwoot(clientSideAction.chatwoot)
   }
@@ -22,5 +25,8 @@ export const executeClientSideAction = async (
   }
   if ('wait' in clientSideAction) {
     return executeWait(clientSideAction.wait)
+  }
+  if ('setVariable' in clientSideAction) {
+    return executeSetVariable(clientSideAction.setVariable.scriptToExecute)
   }
 }

@@ -13,6 +13,7 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   context: BotContext
   isLoadingBubbleDisplayed: boolean
   hasError: boolean
+  hideAvatar: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: () => void
   onSubmit: (input: string) => void
@@ -56,6 +57,7 @@ export const ChatChunk = (props: Props) => {
           >
             <AvatarSideContainer
               hostAvatarSrc={props.theme.chat.hostAvatar?.url}
+              hideAvatar={props.hideAvatar}
             />
           </Show>
           <div

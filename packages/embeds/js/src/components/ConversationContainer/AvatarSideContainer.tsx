@@ -2,7 +2,7 @@ import { createSignal, onCleanup, onMount } from 'solid-js'
 import { isMobile } from '@/utils/isMobileSignal'
 import { Avatar } from '../avatars/Avatar'
 
-type Props = { hostAvatarSrc?: string }
+type Props = { hostAvatarSrc?: string; hideAvatar?: boolean }
 
 export const AvatarSideContainer = (props: Props) => {
   let avatarContainer: HTMLDivElement | undefined
@@ -34,12 +34,13 @@ export const AvatarSideContainer = (props: Props) => {
     >
       <div
         class={
-          'absolute mb-2 flex items-center top-0 ' +
-          (isMobile() ? 'w-6 h-6' : 'w-10 h-10')
+          'absolute mb-2 flex items-center top-0' +
+          (isMobile() ? ' w-6 h-6' : ' w-10 h-10') +
+          (props.hideAvatar ? ' opacity-0' : ' opacity-100')
         }
         style={{
           top: `${top()}px`,
-          transition: 'top 350ms ease-out',
+          transition: 'top 350ms ease-out, opacity 250ms ease-out',
         }}
       >
         <Avatar initialAvatarSrc={props.hostAvatarSrc} />

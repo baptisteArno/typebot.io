@@ -9,10 +9,12 @@ import {
   ChatReply,
   InputBlock,
   InputBlockType,
+  LogicBlockType,
   ResultInSession,
   SessionState,
+  SetVariableBlock,
 } from '@typebot.io/schemas'
-import { isInputBlock, isNotDefined } from '@typebot.io/lib'
+import { isInputBlock, isNotDefined, byId, isDefined } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
@@ -27,6 +29,7 @@ export const continueBotFlow =
   async (
     reply?: string
   ): Promise<ChatReply & { newSessionState?: SessionState }> => {
+    let newSessionState = { ...state }
     const group = state.typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
     )
@@ -43,24 +46,36 @@ export const continueBotFlow =
         message: 'Current block not found',
       })
 
-    if (!isInputBlock(block))
+    if (block.type === LogicBlockType.SET_VARIABLE && isDefined(reply)) {
+      const existingVariable = state.typebot.variables.find(
+        byId(block.options.variableId)
+      )
+      if (existingVariable) {
+        const newVariable = {
+          ...existingVariable,
+          value: reply,
+        }
+        newSessionState = await updateVariables(state)([newVariable])
+      }
+    } else if (!isInputBlock(block))
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Current block is not an input block',
       })
 
-    if (reply && !isReplyValid(reply, block)) return parseRetryMessage(block)
+    let formattedReply = null
 
-    const formattedReply = formatReply(reply, block.type)
+    if (isInputBlock(block)) {
+      if (reply && !isReplyValid(reply, block)) return parseRetryMessage(block)
 
-    if (!formattedReply && !canSkip(block.type)) {
-      return parseRetryMessage(block)
+      formattedReply = formatReply(reply, block.type)
+
+      if (!formattedReply && !canSkip(block.type)) {
+        return parseRetryMessage(block)
+      }
+
+      newSessionState = await processAndSaveAnswer(state, block)(formattedReply)
     }
-
-    const newSessionState = await processAndSaveAnswer(
-      state,
-      block
-    )(formattedReply)
 
     const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
 
@@ -221,7 +236,7 @@ const computeStorageUsed = async (reply: string) => {
 
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
-  (block: InputBlock, reply: string | null) => {
+  (block: InputBlock | SetVariableBlock, reply: string | null) => {
     if (
       block.type === InputBlockType.CHOICE &&
       !block.options.isMultipleChoice &&

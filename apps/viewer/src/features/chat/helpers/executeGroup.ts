@@ -75,11 +75,31 @@ export const executeGroup =
       if (
         'clientSideActions' in executionResponse &&
         executionResponse.clientSideActions
-      )
+      ) {
         clientSideActions = [
           ...(clientSideActions ?? []),
           ...executionResponse.clientSideActions,
         ]
+        if (
+          executionResponse.clientSideActions?.find(
+            (action) => 'setVariable' in action
+          )
+        ) {
+          return {
+            messages,
+            newSessionState: {
+              ...newSessionState,
+              currentBlock: {
+                groupId: group.id,
+                blockId: block.id,
+              },
+            },
+            clientSideActions,
+            logs,
+          }
+        }
+      }
+
       if (executionResponse.logs)
         logs = [...(logs ?? []), ...executionResponse.logs]
       if (executionResponse.newSessionState)

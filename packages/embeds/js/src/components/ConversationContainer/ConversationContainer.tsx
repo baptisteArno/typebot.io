@@ -70,7 +70,12 @@ export const ConversationContainer = (props: Props) => {
         )
         for (const action of actionsBeforeFirstBubble) {
           const response = await executeClientSideAction(action)
-          if (response) setBlockedPopupUrl(response.blockedPopupUrl)
+          if (response && 'replyToSend' in response) {
+            sendMessage(response.replyToSend)
+            return
+          }
+          if (response && 'blockedPopupUrl' in response)
+            setBlockedPopupUrl(response.blockedPopupUrl)
         }
       }
     })()
@@ -122,7 +127,12 @@ export const ConversationContainer = (props: Props) => {
       )
       for (const action of actionsBeforeFirstBubble) {
         const response = await executeClientSideAction(action)
-        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
+        if (response && 'replyToSend' in response) {
+          sendMessage(response.replyToSend)
+          return
+        }
+        if (response && 'blockedPopupUrl' in response)
+          setBlockedPopupUrl(response.blockedPopupUrl)
       }
     }
     setChatChunks((displayedChunks) => [
@@ -159,7 +169,12 @@ export const ConversationContainer = (props: Props) => {
       )
       for (const action of actionsToExecute) {
         const response = await executeClientSideAction(action)
-        if (response) setBlockedPopupUrl(response.blockedPopupUrl)
+        if (response && 'replyToSend' in response) {
+          sendMessage(response.replyToSend)
+          return
+        }
+        if (response && 'blockedPopupUrl' in response)
+          setBlockedPopupUrl(response.blockedPopupUrl)
       }
     }
   }
@@ -187,6 +202,7 @@ export const ConversationContainer = (props: Props) => {
             onSkip={handleSkip}
             context={props.context}
             hasError={hasError() && index() === chatChunks().length - 1}
+            hideAvatar={!chatChunk.input && index() < chatChunks().length - 1}
           />
         )}
       </For>

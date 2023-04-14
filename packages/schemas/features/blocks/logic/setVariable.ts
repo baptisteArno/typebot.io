@@ -6,6 +6,7 @@ export const setVariableOptionsSchema = z.object({
   variableId: z.string().optional(),
   expressionToEvaluate: z.string().optional(),
   isCode: z.boolean().optional(),
+  isExecutedOnClient: z.boolean().optional(),
 })
 
 export const setVariableBlockSchema = blockBaseSchema.merge(

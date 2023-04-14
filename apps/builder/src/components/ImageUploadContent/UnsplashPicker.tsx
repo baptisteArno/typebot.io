@@ -42,7 +42,6 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
   const [nextPage, setNextPage] = useState(0)
 
   const fetchNewImages = useCallback(async (query: string, page: number) => {
-    console.log('Fetch images', query, page)
     if (query === '') return searchRandomImages()
     if (query.length <= 2) return
     setError(null)
@@ -76,7 +75,6 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
     if (!bottomAnchor.current) return
     const observer = new IntersectionObserver(
       (entities: IntersectionObserverEntry[]) => {
-        console.log('Intersection observer', entities)
         const target = entities[0]
         if (target.isIntersecting) fetchNewImages(searchQuery, nextPage + 1)
       },

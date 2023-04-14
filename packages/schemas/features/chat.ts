@@ -220,6 +220,11 @@ const clientSideActionSchema = z
           }),
         })
       )
+      .or(
+        z.object({
+          setVariable: z.object({ scriptToExecute: scriptToExecuteSchema }),
+        })
+      )
   )
 
 export const chatReplySchema = z.object({

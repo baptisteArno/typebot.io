@@ -84,8 +84,13 @@ export const sendMessage = publicProcedure
           },
         })
 
+        const containsSetVariableClientSideAction = clientSideActions?.some(
+          (action) => 'setVariable' in action
+        )
+
         if (
           !input &&
+          !containsSetVariableClientSideAction &&
           session.state.result.answers.length > 0 &&
           session.state.result.id
         )
@@ -149,42 +154,33 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
   }
 
-  const {
-    messages,
-    input,
-    clientSideActions,
-    newSessionState: newInitialState,
-    logs,
-  } = await startBotFlow(initialState, startParams.startGroupId)
+  const { messages, input, clientSideActions, newSessionState, logs } =
+    await startBotFlow(initialState, startParams.startGroupId)
 
-  if (!input)
+  const containsSetVariableClientSideAction = clientSideActions?.some(
+    (action) => 'setVariable' in action
+  )
+
+  if (!input && !containsSetVariableClientSideAction)
     return {
       messages,
       clientSideActions,
       typebot: {
         id: typebot.id,
-        settings: deepParseVariables(newInitialState.typebot.variables)(
+        settings: deepParseVariables(newSessionState.typebot.variables)(
           typebot.settings
         ),
-        theme: deepParseVariables(newInitialState.typebot.variables)(
+        theme: deepParseVariables(newSessionState.typebot.variables)(
           typebot.theme
         ),
       },
-      dynamicTheme: parseDynamicThemeReply(newInitialState),
+      dynamicTheme: parseDynamicThemeReply(newSessionState),
       logs,
     }
 
-  const sessionState: ChatSession['state'] = {
-    ...newInitialState,
-    currentBlock: {
-      groupId: input.groupId,
-      blockId: input.id,
-    },
-  }
-
   const session = (await prisma.chatSession.create({
     data: {
-      state: sessionState,
+      state: newSessionState,
     },
   })) as ChatSession
 
@@ -193,17 +189,17 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     sessionId: session.id,
     typebot: {
       id: typebot.id,
-      settings: deepParseVariables(newInitialState.typebot.variables)(
+      settings: deepParseVariables(newSessionState.typebot.variables)(
         typebot.settings
       ),
-      theme: deepParseVariables(newInitialState.typebot.variables)(
+      theme: deepParseVariables(newSessionState.typebot.variables)(
         typebot.theme
       ),
     },
     messages,
     input,
     clientSideActions,
-    dynamicTheme: parseDynamicThemeReply(newInitialState),
+    dynamicTheme: parseDynamicThemeReply(newSessionState),
     logs,
   } satisfies ChatReply
 }

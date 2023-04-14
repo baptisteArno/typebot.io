@@ -4,6 +4,7 @@ import { SetVariableOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Textarea } from '@/components/inputs'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   options: SetVariableOptions
@@ -11,14 +12,22 @@ type Props = {
 }
 
 export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
-  const handleVariableChange = (variable?: Variable) =>
+  const updateVariableId = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
-  const handleExpressionChange = (expressionToEvaluate: string) =>
+
+  const updateExpression = (expressionToEvaluate: string) =>
     onOptionsChange({ ...options, expressionToEvaluate })
-  const handleValueTypeChange = () =>
+
+  const updateExpressionType = () =>
     onOptionsChange({
       ...options,
       isCode: options.isCode ? !options.isCode : true,
+    })
+
+  const updateClientExecution = (isExecutedOnClient: boolean) =>
+    onOptionsChange({
+      ...options,
+      isExecutedOnClient,
     })
 
   return (
@@ -28,7 +37,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           Search or create variable:
         </FormLabel>
         <VariableSearchInput
-          onSelectVariable={handleVariableChange}
+          onSelectVariable={updateVariableId}
           initialVariableId={options.variableId}
           id="variable-search"
         />
@@ -43,7 +52,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
             <Switch
               size="sm"
               isChecked={options.isCode ?? false}
-              onChange={handleValueTypeChange}
+              onChange={updateExpressionType}
             />
             <Text fontSize="sm">Code</Text>
           </HStack>
@@ -52,17 +61,23 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         {options.isCode ?? false ? (
           <CodeEditor
             defaultValue={options.expressionToEvaluate ?? ''}
-            onChange={handleExpressionChange}
+            onChange={updateExpression}
             lang="javascript"
           />
         ) : (
           <Textarea
             id="expression"
             defaultValue={options.expressionToEvaluate ?? ''}
-            onChange={handleExpressionChange}
+            onChange={updateExpression}
           />
         )}
       </Stack>
+      <SwitchWithLabel
+        label="Execute on client?"
+        moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
+        initialValue={options.isExecutedOnClient ?? false}
+        onCheckChange={updateClientExecution}
+      />
     </Stack>
   )
 }
