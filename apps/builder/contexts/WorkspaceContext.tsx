@@ -145,7 +145,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const mountProperties = (properties: any, domainType: string) => {
     const customProperties = properties.map(
-      (h: { id: string, fieldType: number; fieldId: string }) => {
+      (h: { id: string, fieldType: number; fieldId: string, fixed: boolean }) => {
         const fieldType: string = fieldTypes(h.fieldType)
         let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
 
@@ -164,6 +164,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
           domain: domainType,
           name: `customField.${h.fieldId}`,
           example: resolveExample(fieldType),
+          fixed: h.fixed
         }
       }
     )
@@ -171,23 +172,25 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     return [...customProperties]
   }
 
-  const variables = typebot?.variables ?? []
   const fixedChatPropertiesWithId = fixedChatProperties.map(chatProperty => {
     return {
       ...chatProperty,
-      variableId: chatProperty.id
+      variableId: chatProperty.id,
+      fixed: true
     }
   })
   const fixedPersonPropertiesWithId = fixedPersonProperties.map(personProperty => {
     return {
       ...personProperty,
-      variableId: personProperty.id
+      variableId: personProperty.id,
+      fixed: true
     }
   })
   const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(organizationProperty => {
     return {
       ...organizationProperty,
-      variableId: organizationProperty.id
+      variableId: organizationProperty.id,
+      fixed: true
     }
   })
 
@@ -219,14 +222,16 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (loaded && createVariable) {
-      variables.map((variable) => deleteVariable(variable.id))
       octaPersonItems.map(personItem => {
+        deleteVariable(personItem.id)
         createVariable(personItem)
       })
       octaChatItems.map(chatItem => {
+        deleteVariable(chatItem.id)
         createVariable(chatItem)
       })
       octaOrganizationItems.map(organizationItem => {
+        deleteVariable(organizationItem.id)
         createVariable(organizationItem)
       })
     }
@@ -241,7 +246,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaPersonProperties) {
-        setOctaPersonItems([...octaPersonProperties.items, ...fixedPersonPropertiesWithId])
+        setOctaPersonItems([...fixedPersonPropertiesWithId, ...octaPersonProperties.items])
       }
     }
 
@@ -255,7 +260,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaChatProperties) {
-        setOctaChatItems([...octaChatProperties.items, ...fixedChatPropertiesWithId])
+        setOctaChatItems([...fixedChatPropertiesWithId, ...octaChatProperties.items])
       }
     }
 
@@ -269,7 +274,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaOrganizationProperties) {
-        setOctaOrganizationItems([...octaOrganizationProperties.items, ...fixedOrganizationPropertiesWithId])
+        setOctaOrganizationItems([...fixedOrganizationPropertiesWithId, ...octaOrganizationProperties.items])
       }
     }
 

@@ -8,6 +8,7 @@ export type Variable = {
   value?: string | number
   fieldId: string
   example: string | undefined
+  fixed: boolean
 }
 
 export type VariableWithValue = Omit<Variable, 'value'> & {

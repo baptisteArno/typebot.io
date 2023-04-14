@@ -72,8 +72,6 @@ export const VariableSearchInput = ({
   const { typebot, createVariable, deleteVariable } = useTypebot()
 
   const variables = typebot?.variables ?? []
-  console.log('')
-
   const makeTitle = (propertiesType: string): any => {
     let title
     switch (propertiesType) {
@@ -109,7 +107,7 @@ export const VariableSearchInput = ({
   const options = Object.values(grouped)
     .map((group: any, id: number): any => {
       if (Object.keys(grouped)[id] !== 'undefined') {
-        return [makeTitle(Object.keys(grouped)[id]), ...group]
+        return [makeTitle(Object.keys(grouped)[id]), ...group.sort((a: any, b: any) => b.fixed || 0 - a.fixed || 0)]
       }
     })
     .filter((item) => item != undefined)
@@ -200,22 +198,22 @@ export const VariableSearchInput = ({
     const { value, name } = e.target
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          token: value,
-          fieldId: value.replace('#', ''),
-          name: value.replace('#', ''),
-        } as Variable)
+      ({
+        ...state,
+        token: value,
+        fieldId: value.replace('#', ''),
+        name: value.replace('#', ''),
+      } as Variable)
     )
   }
 
   const handleSelectTypeVariable = (type: string) => {
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          type,
-        } as Variable)
+      ({
+        ...state,
+        type,
+      } as Variable)
     )
   }
 
