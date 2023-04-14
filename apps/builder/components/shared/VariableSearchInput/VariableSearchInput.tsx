@@ -112,7 +112,6 @@ export const VariableSearchInput = ({
     })
     .filter((item) => item != undefined)
 
-  console.log('options', options)
   //todo:
   /**
    * - criar um array novo com as variáveis
