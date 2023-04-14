@@ -1,13 +1,13 @@
 import { Stack, useDisclosure, Text } from '@chakra-ui/react'
 import { CredentialsDropdown } from 'components/shared/CredentialsDropdown'
 import { Input, Textarea } from 'components/shared/Textbox'
-import { CredentialsType, SendEmailOptions } from 'models'
+import { CredentialsType } from 'models'
 import React, { useState } from 'react'
 import { SmtpConfigModal } from './SmtpConfigModal'
 
 type Props = {
-  options: SendEmailOptions
-  onOptionsChange: (options: SendEmailOptions) => void
+  options: any
+  onOptionsChange: (options: any) => void
 }
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {

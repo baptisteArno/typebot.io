@@ -3,12 +3,6 @@ import {
   IntegrationStep,
   IntegrationStepType,
   // GoogleSheetsStep,
-  GoogleSheetsAction,
-  GoogleSheetsInsertRowOptions,
-  Variable,
-  GoogleSheetsUpdateRowOptions,
-  Cell,
-  GoogleSheetsGetOptions,
   // GoogleAnalyticsStep,
   WebhookStep,
   // SendEmailStep,
@@ -30,7 +24,7 @@ type IntegrationContext = {
   blockId: string
   stepId: string
   isPreview: boolean
-  variables: Variable[]
+  variables: any
   resultValues: ResultValues
   blocks: Block[]
   resultId?: string
@@ -92,7 +86,7 @@ type IntegrationContext = {
 // }
 
 const insertRowInGoogleSheets = async (
-  options: GoogleSheetsInsertRowOptions,
+  options: any,
   { variables, apiHost, onNewLog, resultId }: IntegrationContext
 ) => {
   if (!options.cellsToInsert) {
@@ -122,7 +116,7 @@ const insertRowInGoogleSheets = async (
 }
 
 const updateRowInGoogleSheets = async (
-  options: GoogleSheetsUpdateRowOptions,
+  options: any,
   { variables, apiHost, onNewLog, resultId }: IntegrationContext
 ) => {
   if (!options.cellsToUpsert || !options.referenceCell) return
@@ -149,7 +143,7 @@ const updateRowInGoogleSheets = async (
 }
 
 const getRowFromGoogleSheets = async (
-  options: GoogleSheetsGetOptions,
+  options: any,
   {
     variables,
     updateVariableValue,
@@ -184,27 +178,12 @@ const getRowFromGoogleSheets = async (
     )
   )
   if (!data) return
-  const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
-    (newVariables, cell) => {
-      const existingVariable = variables.find(byId(cell.variableId))
-      const value = data[cell.column ?? '']
-      if (!existingVariable || !value) return newVariables
-      updateVariableValue(existingVariable.id, value)
-      return [
-        ...newVariables,
-        {
-          ...existingVariable,
-          value,
-        },
-      ]
-    },
-    []
-  )
+  const newVariables = {} as any;
   updateVariables(newVariables)
 }
 const parseCellValues = (
-  cells: Cell[],
-  variables: Variable[]
+  cells: any,
+  variables: any
 ): { [key: string]: string } =>
   cells.reduce((row, cell) => {
     return !cell.column || !cell.value

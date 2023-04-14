@@ -183,6 +183,9 @@ export const TypebotContext = ({
   ) => {
     const currentSubDomain = subDomain.getSubDomain()
 
+    console.log('currentSubDomain => ', currentSubDomain);
+    
+
     const typebotToSave = {
       ...currentTypebotRef.current,
       updatedAt: new Date().toISOString(),

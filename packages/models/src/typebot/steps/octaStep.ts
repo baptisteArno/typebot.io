@@ -45,11 +45,6 @@ export type AssignToTeamStep = StepBase & {
   options: AssignToTeamOptions
 }
 
-export type OctaCommerceOptions = BaseOctaOptions & {
-  catalogId: string;
-  prodducts: Array<String>;
-}
-
 export type OfficeHourStep = StepBase & {
   type: OctaStepType.OFFICE_HOURS
   items: [OfficeHoursItem]

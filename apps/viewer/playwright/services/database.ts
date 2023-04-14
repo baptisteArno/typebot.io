@@ -134,7 +134,7 @@ const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => ({
   deletedBy: '',
   updatedBy: '',
   customDomain: null,
-  variables: [{ id: 'var1', name: 'var1' }],
+  variables: [],
   ...partialTypebot,
   edges: [
     {

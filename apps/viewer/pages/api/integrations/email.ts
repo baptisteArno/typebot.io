@@ -1,5 +1,5 @@
 //import prisma from 'libs/prisma'
-import { SendEmailOptions, SmtpCredentialsData } from 'models'
+import { SmtpCredentialsData } from 'models'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
 import { decrypt, initMiddleware, methodNotAllowed } from 'utils'
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resultId = req.query.resultId as string | undefined
     const { credentialsId, recipients, body, subject, cc, bcc, replyTo } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as SendEmailOptions
+    ) as any
 
     const { host, port, isTlsEnabled, username, password, from } =
       (await getEmailInfo(credentialsId)) ?? {}
