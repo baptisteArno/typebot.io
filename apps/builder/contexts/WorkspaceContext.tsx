@@ -25,9 +25,7 @@ import {
   fixedChatProperties,
   fixedOrganizationProperties,
   fixedPersonProperties,
-} from 'helpers/presets/variables-presets'
-import { Variable } from 'models/dist/types/typebot/variable'
-import { Nullable } from 'util/types'
+} from 'helpers/presets/variables-presets';
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 
@@ -78,8 +76,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         )
       )
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [workspaces?.length])
+  }, [workspaces])
 
   useEffect(() => {
     if (!currentWorkspace?.id) return
@@ -336,15 +333,14 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   return (
     <workspaceContext.Provider
       value={{
-        workspaces,
-        workspace: currentWorkspace,
-        isLoading,
         canEdit,
-        currentRole,
-        switchWorkspace,
         createWorkspace,
-        updateWorkspace,
         deleteCurrentWorkspace,
+        isLoading,
+        switchWorkspace,
+        updateWorkspace,
+        currentRole,
+        workspaces
       }}
     >
       {children}

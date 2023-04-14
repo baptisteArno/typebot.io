@@ -25,7 +25,7 @@ import {
 const userContext = createContext<{
   user?: User
   featureFlags: FeatureFlags | undefined
-  companyFeatures: {[key: string]: boolean}
+  companyFeatures?: {[key: string]: boolean}
   verifyFeatureToggle: (featureFlag: string) => boolean
   //   isLoading: boolean
   //   isSaving: boolean
@@ -45,7 +45,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     data: { session },
     status,
   } = { data: { session: { user: mockUser } }, status: 'authenticated' } //useSession()
-  const [user, setUser] = useState<User | undefined>()
+  const [user, setUser] = useState<User>()
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>()
   const [companyFeatureFlags, setCompanyFeatureFlags] = useState<{[key: string]: boolean}>()
 
@@ -102,7 +102,9 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   }
 
   const getFeatures = async (): Promise<void> => {
-    const featuresToggle = await getCompanyFeatures()
+    const featuresToggle = await getCompanyFeatures();
+    console.log('featuresToggle => ', featuresToggle);
+    
 
     const features = Object.keys(featuresToggle)
       .map((code) => ({
@@ -185,6 +187,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
         user,
         featureFlags,
         verifyFeatureToggle,
+        companyFeatures: companyFeatureFlags,
         // isSaving: false,
         // isLoading: status === 'loading',
         // hasUnsavedChanges,

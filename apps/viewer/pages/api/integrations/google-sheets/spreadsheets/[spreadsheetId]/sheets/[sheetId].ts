@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { badRequest, initMiddleware, methodNotAllowed } from 'utils'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { getAuthenticatedGoogleClient } from 'libs/google-sheets'
-import { Cell } from 'models'
 import Cors from 'cors'
 import { withSentry } from '@sentry/nextjs'
 import { saveErrorLog, saveSuccessLog } from 'services/api/utils'
@@ -19,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const referenceCell = {
       column: req.query['referenceCell[column]'],
       value: req.query['referenceCell[value]'],
-    } as Cell
+    } as any
 
     const extractingColumns = getExtractingColumns(
       req.query.columns as string[] | string | undefined
@@ -87,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
       credentialsId?: string
-      referenceCell: Cell
+      referenceCell: any
       values: { [key: string]: string }
     }
     if (!credentialsId) return badRequest(res)
