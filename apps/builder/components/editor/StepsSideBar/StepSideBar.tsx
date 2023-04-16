@@ -83,7 +83,7 @@ export const StepsSideBar = () => {
 
   const shouldHideComponents = (type: StepType) => {
     return (
-      type !== BubbleStepType.IMAGE &&
+      // type !== BubbleStepType.IMAGE &&
       type !== BubbleStepType.VIDEO &&
       type !== InputStepType.URL &&
       type !== InputStepType.PAYMENT &&

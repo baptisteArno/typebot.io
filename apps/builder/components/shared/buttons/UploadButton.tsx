@@ -20,6 +20,7 @@ export const UploadButton = ({
     if (!e.target?.files) return
     setIsUploading(true)
     const file = e.target.files[0]
+    console.log(file)
     const { url } = await uploadFile(
       await compressFile(file),
       filePath + (includeFileName ? `/${file.name}` : '')
@@ -36,7 +37,7 @@ export const UploadButton = ({
         id="file-input"
         display="none"
         onChange={handleInputChange}
-        accept=".jpg, .jpeg, .png, .svg"
+        accept=".jpg, .jpeg, .png, image/*, audio/*, video/*, .xlsx, .xls, image/*, .doc, .docx, .ppt, .pptx, .txt, .pdf"
       />
       <Button
         as="label"
