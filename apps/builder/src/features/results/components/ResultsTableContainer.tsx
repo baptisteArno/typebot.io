@@ -18,21 +18,21 @@ export const ResultsTableContainer = () => {
   const [inspectingLogsResultId, setInspectingLogsResultId] = useState<
     string | null
   >(null)
-  const [expandedResultIndex, setExpandedResultIndex] = useState<number | null>(
-    null
-  )
+  const [expandedResultId, setExpandedResultId] = useState<string | null>(null)
 
   const handleLogsModalClose = () => setInspectingLogsResultId(null)
 
-  const handleResultModalClose = () => setExpandedResultIndex(null)
+  const handleResultModalClose = () => setExpandedResultId(null)
 
   const handleLogOpenIndex = (index: number) => () => {
     if (!results[index]) return
     setInspectingLogsResultId(results[index].id)
   }
 
-  const handleResultExpandIndex = (index: number) => () =>
-    setExpandedResultIndex(index)
+  const handleResultExpandIndex = (index: number) => () => {
+    if (!results[index]) return
+    setExpandedResultId(results[index].id)
+  }
 
   return (
     <Stack pb="28" px={['4', '0']} spacing="4" maxW="1600px" w="full">
@@ -44,7 +44,7 @@ export const ResultsTableContainer = () => {
         />
       )}
       <ResultModal
-        resultIdx={expandedResultIndex}
+        resultId={expandedResultId}
         onClose={handleResultModalClose}
       />
 

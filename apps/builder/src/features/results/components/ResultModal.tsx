@@ -15,13 +15,15 @@ import { isDefined } from '@typebot.io/lib'
 import { HeaderIcon } from './HeaderIcon'
 
 type Props = {
-  resultIdx: number | null
+  resultId: string | null
   onClose: () => void
 }
 
-export const ResultModal = ({ resultIdx, onClose }: Props) => {
+export const ResultModal = ({ resultId, onClose }: Props) => {
   const { tableData, resultHeader } = useResults()
-  const result = isDefined(resultIdx) ? tableData[resultIdx] : undefined
+  const result = isDefined(resultId)
+    ? tableData.find((data) => data.id.plainText === resultId)
+    : undefined
 
   const getHeaderValue = (
     val: string | { plainText: string; element?: JSX.Element | undefined }
