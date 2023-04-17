@@ -1,3 +1,3 @@
 export type FileUploaderService = {
-  upload: (file: File) => void
+  upload: (file: File) => Promise<any>
 }
