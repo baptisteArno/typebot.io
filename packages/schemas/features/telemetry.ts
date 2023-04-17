@@ -78,6 +78,18 @@ const newResultsCollectedEventSchema = typebotEvent.merge(
   })
 )
 
+const workspaceLimitReachedEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Workspace limit reached'),
+    data: z.object({
+      chatsLimit: z.number(),
+      storageLimit: z.number(),
+      totalChatsUsed: z.number(),
+      totalStorageUsed: z.number(),
+    }),
+  })
+)
+
 export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
@@ -85,6 +97,7 @@ export const eventSchema = z.discriminatedUnion('name', [
   publishedTypebotEventSchema,
   subscriptionUpdatedEventSchema,
   newResultsCollectedEventSchema,
+  workspaceLimitReachedEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

@@ -1,8 +1,14 @@
-import { PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
+import {
+  MemberInWorkspace,
+  PrismaClient,
+  WorkspaceRole,
+} from '@typebot.io/prisma'
 import { isDefined } from '@typebot.io/lib'
+import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
 import { promptAndSetEnvironment } from './utils'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
+import { Workspace } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
 
@@ -48,6 +54,11 @@ export const sendTotalResultsDigest = async () => {
       id: true,
       typebots: { select: { id: true } },
       members: { select: { userId: true, role: true } },
+      additionalChatsIndex: true,
+      additionalStorageIndex: true,
+      customChatsLimit: true,
+      customStorageLimit: true,
+      plan: true,
     },
   })
 
@@ -61,7 +72,7 @@ export const sendTotalResultsDigest = async () => {
         .filter((member) => member.role !== WorkspaceRole.GUEST)
         .map((member, memberIndex) => ({
           userId: member.userId,
-          workspaceId: workspace.id,
+          workspace: workspace,
           typebotId: result.typebotId,
           totalResultsYesterday: result._count._all,
           isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
@@ -69,12 +80,20 @@ export const sendTotalResultsDigest = async () => {
     })
     .filter(isDefined)
 
-  const events = resultsWithWorkspaces.map(
+  console.log('Computing workspaces limits...')
+
+  const workspaceLimitReachedEvents = await sendAlertIfLimitReached(
+    resultsWithWorkspaces
+      .filter((result) => result.isFirstOfKind)
+      .map((result) => result.workspace)
+  )
+
+  const newResultsCollectedEvents = resultsWithWorkspaces.map(
     (result) =>
       ({
         name: 'New results collected',
         userId: result.userId,
-        workspaceId: result.workspaceId,
+        workspaceId: result.workspace.id,
         typebotId: result.typebotId,
         data: {
           total: result.totalResultsYesterday,
@@ -83,8 +102,103 @@ export const sendTotalResultsDigest = async () => {
       } satisfies TelemetryEvent)
   )
 
-  await sendTelemetryEvents(events)
-  console.log(`Sent ${events.length} events.`)
+  await sendTelemetryEvents(
+    workspaceLimitReachedEvents.concat(newResultsCollectedEvents)
+  )
+
+  console.log(
+    `Sent ${workspaceLimitReachedEvents.length} workspace limit reached events.`
+  )
+  console.log(
+    `Sent ${newResultsCollectedEvents.length} new results collected events.`
+  )
+}
+
+const sendAlertIfLimitReached = async (
+  workspaces: (Pick<
+    Workspace,
+    | 'id'
+    | 'plan'
+    | 'customChatsLimit'
+    | 'customStorageLimit'
+    | 'additionalChatsIndex'
+    | 'additionalStorageIndex'
+  > & { members: Pick<MemberInWorkspace, 'userId' | 'role'>[] })[]
+): Promise<TelemetryEvent[]> => {
+  const events: TelemetryEvent[] = []
+  for (const workspace of workspaces) {
+    const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
+    const chatsLimit = getChatsLimit(workspace)
+    const storageLimit = getStorageLimit(workspace)
+    if (totalChatsUsed >= chatsLimit || totalStorageUsed >= storageLimit) {
+      events.push(
+        ...workspace.members
+          .filter((member) => member.role !== WorkspaceRole.GUEST)
+          .map(
+            (member) =>
+              ({
+                name: 'Workspace limit reached',
+                userId: member.userId,
+                workspaceId: workspace.id,
+                data: {
+                  totalChatsUsed,
+                  totalStorageUsed,
+                  chatsLimit,
+                  storageLimit,
+                },
+              } satisfies TelemetryEvent)
+          )
+      )
+    }
+  }
+  return events
+}
+
+const getUsage = async (workspaceId: string) => {
+  const now = new Date()
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  const [
+    totalChatsUsed,
+    {
+      _sum: { storageUsed: totalStorageUsed },
+    },
+  ] = await prisma.$transaction(async (tx) => {
+    const typebots = await tx.typebot.findMany({
+      where: {
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    })
+
+    return Promise.all([
+      prisma.result.count({
+        where: {
+          typebotId: { in: typebots.map((typebot) => typebot.id) },
+          hasStarted: true,
+          createdAt: {
+            gte: firstDayOfMonth,
+            lt: firstDayOfNextMonth,
+          },
+        },
+      }),
+      prisma.answer.aggregate({
+        where: {
+          storageUsed: { gt: 0 },
+          result: {
+            typebotId: { in: typebots.map((typebot) => typebot.id) },
+          },
+        },
+        _sum: { storageUsed: true },
+      }),
+    ])
+  })
+
+  return {
+    totalChatsUsed,
+    totalStorageUsed: totalStorageUsed ?? 0,
+  }
 }
 
 sendTotalResultsDigest().then()
