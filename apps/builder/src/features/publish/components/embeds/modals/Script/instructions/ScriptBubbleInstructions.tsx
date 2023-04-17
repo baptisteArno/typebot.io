@@ -4,14 +4,13 @@ import { Stack, Text } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
 import { Typebot } from '@typebot.io/schemas'
 import { useState } from 'react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import {
   parseInlineScript,
   parseInitBubbleCode,
   typebotImportCode,
+  parseApiHost,
 } from '../../../snippetParsers'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
@@ -37,9 +36,7 @@ export const ScriptBubbleInstructions = () => {
 
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: isCloudProdInstance
-    ? undefined
-    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  apiHost: parseApiHost(typebot?.customDomain),
   theme,
   previewMessage,
 })}`

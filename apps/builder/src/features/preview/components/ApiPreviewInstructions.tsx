@@ -2,6 +2,7 @@ import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { TextLink } from '@/components/TextLink'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { parseApiHost } from '@/features/publish/components/embeds/snippetParsers'
 import {
   Code,
   ListItem,
@@ -10,7 +11,6 @@ import {
   StackProps,
   Text,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 
 export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot()
@@ -60,9 +60,9 @@ export const ApiPreviewInstructions = (props: StackProps) => {
             <CodeEditor
               isReadOnly
               lang={'shell'}
-              value={`${
-                env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-              }/api/v1/sendMessage`}
+              value={`${parseApiHost(
+                typebot?.customDomain
+              )}/api/v1/sendMessage`}
             />
             <Text>with the following JSON body:</Text>
             <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
@@ -80,9 +80,9 @@ export const ApiPreviewInstructions = (props: StackProps) => {
             <CodeEditor
               isReadOnly
               lang={'shell'}
-              value={`${
-                env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-              }/api/v1/sendMessage`}
+              value={`${parseApiHost(
+                typebot?.customDomain
+              )}/api/v1/sendMessage`}
             />
             <Text>With the following JSON body:</Text>
             <CodeEditor isReadOnly lang={'json'} value={replyBody} />

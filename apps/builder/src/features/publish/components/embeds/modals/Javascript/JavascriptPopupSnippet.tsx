@@ -1,11 +1,13 @@
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
-import { parseInitPopupCode, typebotImportCode } from '../../snippetParsers'
+import {
+  parseApiHost,
+  parseInitPopupCode,
+  typebotImportCode,
+} from '../../snippetParsers'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { PopupProps } from '@typebot.io/js'
-import { env, getViewerUrl } from '@typebot.io/lib'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 type Props = Pick<PopupProps, 'autoShowDelay'>
 
@@ -14,9 +16,7 @@ export const JavascriptPopupSnippet = ({ autoShowDelay }: Props) => {
   const snippet = prettier.format(
     createSnippet({
       typebot: typebot?.publicId ?? '',
-      apiHost: isCloudProdInstance
-        ? undefined
-        : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+      apiHost: parseApiHost(typebot?.customDomain),
       autoShowDelay,
     }),
     {

@@ -1614,6 +1614,9 @@
                                                   },
                                                   "isCode": {
                                                     "type": "boolean"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "additionalProperties": false

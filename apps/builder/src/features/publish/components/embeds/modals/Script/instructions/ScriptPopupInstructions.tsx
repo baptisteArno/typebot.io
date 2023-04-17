@@ -1,12 +1,11 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers'
 import {
+  parseApiHost,
   parseInlineScript,
   typebotImportCode,
 } from '../../../snippetParsers/shared'
@@ -20,9 +19,7 @@ export const ScriptPopupInstructions = () => {
 
 ${parseInitPopupCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: isCloudProdInstance
-    ? undefined
-    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  apiHost: parseApiHost(typebot?.customDomain),
   autoShowDelay: inputValue,
 })}`
   )

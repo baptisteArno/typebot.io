@@ -1,10 +1,12 @@
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
-import { parseInitStandardCode, typebotImportCode } from '../../snippetParsers'
+import {
+  parseApiHost,
+  parseInitStandardCode,
+  typebotImportCode,
+} from '../../snippetParsers'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { env, getViewerUrl } from '@typebot.io/lib'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 type Props = {
   widthLabel?: string
@@ -18,7 +20,7 @@ export const JavascriptStandardSnippet = ({
   const { typebot } = useTypebot()
 
   const snippet = prettier.format(
-    `${parseStandardHeadCode(typebot?.publicId)}
+    `${parseStandardHeadCode(typebot?.publicId, typebot?.customDomain)}
       ${parseStandardElementCode(widthLabel, heightLabel)}`,
     {
       parser: 'html',
@@ -29,15 +31,16 @@ export const JavascriptStandardSnippet = ({
   return <CodeEditor value={snippet} lang="html" isReadOnly />
 }
 
-export const parseStandardHeadCode = (publicId?: string | null) =>
+export const parseStandardHeadCode = (
+  publicId?: string | null,
+  customDomain?: string | null
+) =>
   prettier.format(
     `<script type="module">${typebotImportCode};
 
 ${parseInitStandardCode({
   typebot: publicId ?? '',
-  apiHost: isCloudProdInstance
-    ? undefined
-    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  apiHost: parseApiHost(customDomain),
 })}</script>`,
     { parser: 'html', plugins: [parserHtml] }
   )

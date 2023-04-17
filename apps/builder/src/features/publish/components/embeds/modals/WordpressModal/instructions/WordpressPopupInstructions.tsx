@@ -11,20 +11,21 @@ import {
 import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers/popup'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { env, getViewerUrl } from '@typebot.io/lib'
+import { parseApiHost } from '../../../snippetParsers'
 
 type Props = {
   publicId: string
+  customDomain?: string
 }
-export const WordpressPopupInstructions = ({ publicId }: Props) => {
+export const WordpressPopupInstructions = ({
+  publicId,
+  customDomain,
+}: Props) => {
   const [autoShowDelay, setAutoShowDelay] = useState<number>()
 
   const initCode = parseInitPopupCode({
     typebot: publicId,
-    apiHost: isCloudProdInstance
-      ? undefined
-      : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+    apiHost: parseApiHost(customDomain),
     autoShowDelay,
   })
 

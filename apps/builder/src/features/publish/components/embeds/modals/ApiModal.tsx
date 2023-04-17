@@ -16,8 +16,9 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 import { ModalProps } from '../EmbedButton'
+import { parseApiHost } from '../snippetParsers/shared'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 
 export const ApiModal = ({
   isPublished,
@@ -25,6 +26,7 @@ export const ApiModal = ({
   isOpen,
   onClose,
 }: ModalProps): JSX.Element => {
+  const { typebot } = useTypebot()
   const startParamsBody = `{
   "startParams": {
     "typebot": "${publicId}",
@@ -57,9 +59,9 @@ export const ApiModal = ({
                 <CodeEditor
                   isReadOnly
                   lang={'shell'}
-                  value={`${
-                    env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-                  }/api/v1/sendMessage`}
+                  value={`${parseApiHost(
+                    typebot?.customDomain
+                  )}/api/v1/sendMessage`}
                 />
                 <Text>with the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
@@ -77,9 +79,9 @@ export const ApiModal = ({
                 <CodeEditor
                   isReadOnly
                   lang={'shell'}
-                  value={`${
-                    env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-                  }/api/v1/sendMessage`}
+                  value={`${parseApiHost(
+                    typebot?.customDomain
+                  )}/api/v1/sendMessage`}
                 />
                 <Text>With the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={'json'} value={replyBody} />

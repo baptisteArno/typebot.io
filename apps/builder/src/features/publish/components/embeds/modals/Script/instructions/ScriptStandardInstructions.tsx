@@ -1,13 +1,12 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Stack, Code, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import { parseInitStandardCode } from '../../../snippetParsers/standard'
 import { parseStandardElementCode } from '../../Javascript/JavascriptStandardSnippet'
 import {
+  parseApiHost,
   parseInlineScript,
   typebotImportCode,
 } from '../../../snippetParsers/shared'
@@ -31,9 +30,7 @@ export const ScriptStandardInstructions = () => {
   
 ${parseInitStandardCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: isCloudProdInstance
-    ? undefined
-    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl(),
+  apiHost: parseApiHost(typebot?.customDomain),
 })}`)
 
   return (
