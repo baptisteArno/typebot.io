@@ -1,5 +1,4 @@
-html,
-body {
+.disable-scroll-x-behavior {
   overscroll-behavior-x: none;
 }
 
