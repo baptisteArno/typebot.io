@@ -42,6 +42,8 @@ import {
   setVariableBlockSchema,
   typebotLinkBlockSchema,
   waitBlockSchema,
+  abTestBlockSchema,
+  AbTestBlock,
 } from './logic'
 import { jumpBlockSchema } from './logic/jump'
 
@@ -79,7 +81,7 @@ export type BlockOptions =
   | LogicBlockOptions
   | IntegrationBlockOptions
 
-export type BlockWithItems = ConditionBlock | ChoiceInputBlock
+export type BlockWithItems = ConditionBlock | ChoiceInputBlock | AbTestBlock
 
 export type BlockBase = z.infer<typeof blockBaseSchema>
 
@@ -123,6 +125,7 @@ export const logicBlockSchema = z.discriminatedUnion('type', [
   typebotLinkBlockSchema,
   waitBlockSchema,
   jumpBlockSchema,
+  abTestBlockSchema,
 ])
 
 export type LogicBlock = z.infer<typeof logicBlockSchema>

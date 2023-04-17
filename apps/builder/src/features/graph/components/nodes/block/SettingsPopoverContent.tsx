@@ -45,6 +45,7 @@ import { DateInputSettings } from '@/features/blocks/inputs/date/components/Date
 import { PhoneInputSettings } from '@/features/blocks/inputs/phone/components/PhoneInputSettings'
 import { GoogleSheetsSettings } from '@/features/blocks/integrations/googleSheets/components/GoogleSheetsSettings'
 import { ChatwootSettings } from '@/features/blocks/integrations/chatwoot/components/ChatwootSettings'
+import { AbTestSettings } from '@/features/blocks/logic/abTest/components/AbTestSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -224,6 +225,14 @@ export const BlockSettings = ({
       return (
         <JumpSettings
           groupId={block.groupId}
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case LogicBlockType.AB_TEST: {
+      return (
+        <AbTestSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

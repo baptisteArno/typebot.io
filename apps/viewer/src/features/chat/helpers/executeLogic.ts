@@ -7,6 +7,7 @@ import { executeRedirect } from '@/features/blocks/logic/redirect/executeRedirec
 import { executeCondition } from '@/features/blocks/logic/condition/executeCondition'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable/executeSetVariable'
 import { executeTypebotLink } from '@/features/blocks/logic/typebotLink/executeTypebotLink'
+import { executeAbTest } from '@/features/blocks/logic/abTest/executeAbTest'
 
 export const executeLogic =
   (state: SessionState, lastBubbleBlockId?: string) =>
@@ -26,5 +27,7 @@ export const executeLogic =
         return executeWait(state, block, lastBubbleBlockId)
       case LogicBlockType.JUMP:
         return executeJumpBlock(state, block.options)
+      case LogicBlockType.AB_TEST:
+        return executeAbTest(state, block)
     }
   }

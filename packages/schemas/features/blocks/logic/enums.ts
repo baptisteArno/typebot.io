@@ -6,4 +6,5 @@ export enum LogicBlockType {
   TYPEBOT_LINK = 'Typebot link',
   WAIT = 'Wait',
   JUMP = 'Jump',
+  AB_TEST = 'AB test',
 }

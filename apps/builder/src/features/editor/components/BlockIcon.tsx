@@ -37,6 +37,7 @@ import { ConditionIcon } from '@/features/blocks/logic/condition/components/Cond
 import { RedirectIcon } from '@/features/blocks/logic/redirect/components/RedirectIcon'
 import { SetVariableIcon } from '@/features/blocks/logic/setVariable/components/SetVariableIcon'
 import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/TypebotLinkIcon'
+import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -91,6 +92,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <JumpIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkIcon color={purple} {...props} />
+    case LogicBlockType.AB_TEST:
+      return <AbTestIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:

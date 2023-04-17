@@ -132,8 +132,13 @@ export const blockTypeHasWebhook = (
 
 export const blockTypeHasItems = (
   type: BlockType
-): type is LogicBlockType.CONDITION | InputBlockType.CHOICE =>
-  type === LogicBlockType.CONDITION || type === InputBlockType.CHOICE
+): type is
+  | LogicBlockType.CONDITION
+  | InputBlockType.CHOICE
+  | LogicBlockType.AB_TEST =>
+  type === LogicBlockType.CONDITION ||
+  type === InputBlockType.CHOICE ||
+  type === LogicBlockType.AB_TEST
 
 export const blockHasItems = (
   block: Block

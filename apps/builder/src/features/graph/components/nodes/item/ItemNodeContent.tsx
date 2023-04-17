@@ -28,5 +28,7 @@ export const ItemNodeContent = ({ item, indices, isMouseOver }: Props) => {
           indices={indices}
         />
       )
+    case ItemType.AB_TEST:
+      return <></>
   }
 }

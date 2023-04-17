@@ -1,5 +1,10 @@
 import { useEventListener } from '@chakra-ui/react'
-import { DraggableBlock, DraggableBlockType, Item } from '@typebot.io/schemas'
+import {
+  AbTestBlock,
+  DraggableBlock,
+  DraggableBlockType,
+  Item,
+} from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,
@@ -18,13 +23,15 @@ type NodeElement = {
   element: HTMLDivElement
 }
 
+export type DraggabbleItem = Exclude<Item, AbTestBlock['items'][number]>
+
 const graphDndContext = createContext<{
   draggedBlockType?: DraggableBlockType
   setDraggedBlockType: Dispatch<SetStateAction<DraggableBlockType | undefined>>
   draggedBlock?: DraggableBlock
   setDraggedBlock: Dispatch<SetStateAction<DraggableBlock | undefined>>
-  draggedItem?: Item
-  setDraggedItem: Dispatch<SetStateAction<Item | undefined>>
+  draggedItem?: DraggabbleItem
+  setDraggedItem: Dispatch<SetStateAction<DraggabbleItem | undefined>>
   mouseOverGroup?: NodeElement
   setMouseOverGroup: (node: NodeElement | undefined) => void
   mouseOverBlock?: NodeElement
@@ -40,7 +47,7 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
   const [draggedBlockType, setDraggedBlockType] = useState<
     DraggableBlockType | undefined
   >()
-  const [draggedItem, setDraggedItem] = useState<Item | undefined>()
+  const [draggedItem, setDraggedItem] = useState<DraggabbleItem | undefined>()
   const [mouseOverGroup, _setMouseOverGroup] = useState<NodeElement>()
   const [mouseOverBlock, _setMouseOverBlock] = useState<NodeElement>()
 

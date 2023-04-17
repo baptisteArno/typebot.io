@@ -42,10 +42,14 @@ import {
   Item,
   ItemType,
   LogicBlockType,
+  defaultAbTestOptions,
 } from '@typebot.io/schemas'
 
 const parseDefaultItems = (
-  type: LogicBlockType.CONDITION | InputBlockType.CHOICE,
+  type:
+    | LogicBlockType.CONDITION
+    | InputBlockType.CHOICE
+    | LogicBlockType.AB_TEST,
   blockId: string
 ): Item[] => {
   switch (type) {
@@ -59,6 +63,11 @@ const parseDefaultItems = (
           type: ItemType.CONDITION,
           content: defaultConditionContent,
         },
+      ]
+    case LogicBlockType.AB_TEST:
+      return [
+        { id: createId(), blockId, type: ItemType.AB_TEST, path: 'a' },
+        { id: createId(), blockId, type: ItemType.AB_TEST, path: 'b' },
       ]
   }
 }
@@ -112,6 +121,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return {}
     case LogicBlockType.TYPEBOT_LINK:
       return {}
+    case LogicBlockType.AB_TEST:
+      return defaultAbTestOptions
     case IntegrationBlockType.GOOGLE_SHEETS:
       return defaultGoogleSheetsOptions
     case IntegrationBlockType.GOOGLE_ANALYTICS:

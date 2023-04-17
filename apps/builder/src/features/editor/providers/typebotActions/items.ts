@@ -7,6 +7,8 @@ import {
   Block,
   LogicBlockType,
   InputBlockType,
+  ConditionItem,
+  ButtonItem,
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import produce from 'immer'
@@ -15,7 +17,11 @@ import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
 import { WritableDraft } from 'immer/dist/types/types-external'
 
-type NewItem = Pick<Item, 'blockId' | 'outgoingEdgeId' | 'type'> & Partial<Item>
+type NewItem = Pick<
+  ConditionItem | ButtonItem,
+  'blockId' | 'outgoingEdgeId' | 'type'
+> &
+  Partial<ConditionItem | ButtonItem>
 
 export type ItemsActions = {
   createItem: (item: NewItem, indices: ItemIndices) => void

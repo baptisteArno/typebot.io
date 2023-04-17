@@ -1,0 +1,164 @@
+{
+  "id": "clgkx6u4n00021ait8o4c1nvs",
+  "version": "3",
+  "createdAt": "2023-04-17T14:17:13.223Z",
+  "updatedAt": "2023-04-17T14:17:13.223Z",
+  "icon": null,
+  "name": "My typebot",
+  "folderId": null,
+  "groups": [
+    {
+      "id": "bb5ad8yx3j52fecxdnztlap5",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "q20ww00q5nnv4icmi3rhbtda",
+          "type": "start",
+          "label": "Start",
+          "groupId": "bb5ad8yx3j52fecxdnztlap5",
+          "outgoingEdgeId": "qr2ebzm62bcz21jh2wmv1odd"
+        }
+      ],
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "wv63xqdlwj6ub5vb3ulbmzd3",
+      "graphCoordinates": { "x": 310, "y": 206 },
+      "title": "Group #1",
+      "blocks": [
+        {
+          "id": "ice9jqqw4glrx5kblisez4lp",
+          "groupId": "wv63xqdlwj6ub5vb3ulbmzd3",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hey" }] }]
+          }
+        },
+        {
+          "id": "rorajfbwc2evvumo837ulwmy",
+          "groupId": "wv63xqdlwj6ub5vb3ulbmzd3",
+          "type": "AB test",
+          "options": { "aPercent": 50 },
+          "items": [
+            {
+              "id": "rcw6vr8xfcb5dmfx2ts04rb0",
+              "blockId": "rorajfbwc2evvumo837ulwmy",
+              "type": 2,
+              "path": "a",
+              "outgoingEdgeId": "lmof3n7qyjo5bkw9kaksgrzh"
+            },
+            {
+              "id": "i9shyze7fyd5wfxfq0svg2lg",
+              "blockId": "rorajfbwc2evvumo837ulwmy",
+              "type": 2,
+              "path": "b",
+              "outgoingEdgeId": "kvaqhcb1df8cmvekwtpd1irr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ybebe0sxg6zu307a4ruwhmb6",
+      "graphCoordinates": { "x": 705.96875, "y": 166.57421875 },
+      "title": "Group #2",
+      "blocks": [
+        {
+          "id": "jqqjruceaqwqvm74isgoxbez",
+          "groupId": "ybebe0sxg6zu307a4ruwhmb6",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How are you?" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "d66ppqavqy5mac7fy9jo5lib",
+      "graphCoordinates": { "x": 702.44921875, "y": 350.9921875 },
+      "title": "Group #2 copy",
+      "blocks": [
+        {
+          "id": "x74mxf3hby8hw7zo3k8b5vc1",
+          "groupId": "d66ppqavqy5mac7fy9jo5lib",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's up?" }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variables": [],
+  "edges": [
+    {
+      "from": {
+        "groupId": "wv63xqdlwj6ub5vb3ulbmzd3",
+        "blockId": "rorajfbwc2evvumo837ulwmy",
+        "itemId": "rcw6vr8xfcb5dmfx2ts04rb0"
+      },
+      "to": { "groupId": "ybebe0sxg6zu307a4ruwhmb6" },
+      "id": "lmof3n7qyjo5bkw9kaksgrzh"
+    },
+    {
+      "from": {
+        "groupId": "wv63xqdlwj6ub5vb3ulbmzd3",
+        "blockId": "rorajfbwc2evvumo837ulwmy",
+        "itemId": "i9shyze7fyd5wfxfq0svg2lg"
+      },
+      "to": { "groupId": "d66ppqavqy5mac7fy9jo5lib" },
+      "id": "kvaqhcb1df8cmvekwtpd1irr"
+    },
+    {
+      "from": {
+        "groupId": "bb5ad8yx3j52fecxdnztlap5",
+        "blockId": "q20ww00q5nnv4icmi3rhbtda"
+      },
+      "to": { "groupId": "wv63xqdlwj6ub5vb3ulbmzd3" },
+      "id": "qr2ebzm62bcz21jh2wmv1odd"
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": true
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}

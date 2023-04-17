@@ -9,6 +9,7 @@ import {
   HStack,
   FormControl,
   FormLabel,
+  Stack,
 } from '@chakra-ui/react'
 import { Variable, VariableString } from '@typebot.io/schemas'
 import { useEffect, useState } from 'react'
@@ -27,6 +28,7 @@ type Props<HasVariable extends boolean> = {
   label?: string
   moreInfoTooltip?: string
   isRequired?: boolean
+  direction?: 'row' | 'column'
   onValueChange: (value?: Value<HasVariable>) => void
 } & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
 
@@ -38,6 +40,7 @@ export const NumberInput = <HasVariable extends boolean>({
   label,
   moreInfoTooltip,
   isRequired,
+  direction,
   ...props
 }: Props<HasVariable>) => {
   const [value, setValue] = useState(defaultValue?.toString() ?? '')
@@ -90,7 +93,7 @@ export const NumberInput = <HasVariable extends boolean>({
 
   return (
     <FormControl
-      as={HStack}
+      as={direction === 'column' ? Stack : HStack}
       isRequired={isRequired}
       justifyContent="space-between"
       width={label ? 'full' : 'auto'}

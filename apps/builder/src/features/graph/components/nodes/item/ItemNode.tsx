@@ -1,6 +1,11 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ChoiceInputBlock, Item, ItemIndices } from '@typebot.io/schemas'
+import {
+  ChoiceInputBlock,
+  Item,
+  ItemIndices,
+  ItemType,
+} from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
 import { SourceEndpoint } from '../../endpoints/SourceEndpoint'
 import { ItemNodeContent } from './ItemNodeContent'
@@ -9,6 +14,7 @@ import { ContextMenu } from '@/components/ContextMenu'
 import { isDefined } from '@typebot.io/lib'
 import { Coordinates } from '@/features/graph/types'
 import {
+  DraggabbleItem,
   NodePosition,
   useDragDistance,
 } from '@/features/graph/providers/GraphDndProvider'
@@ -20,7 +26,7 @@ type Props = {
   indices: ItemIndices
   onMouseDown?: (
     blockNodePosition: { absolute: Coordinates; relative: Coordinates },
-    item: Item
+    item: DraggabbleItem
   ) => void
   connectionDisabled?: boolean
 }
@@ -33,7 +39,7 @@ export const ItemNode = ({
 }: Props) => {
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const bg = useColorModeValue('white', undefined)
+  const bg = useColorModeValue('white', 'gray.850')
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -48,7 +54,7 @@ export const ItemNode = ({
         | undefined
     )?.options?.isMultipleChoice
   const onDrag = (position: NodePosition) => {
-    if (!onMouseDown) return
+    if (!onMouseDown || item.type === ItemType.AB_TEST) return
     onMouseDown(position, item)
   }
   useDragDistance({

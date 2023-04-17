@@ -39,6 +39,7 @@ import { TypebotLinkNode } from '@/features/blocks/logic/typebotLink/components/
 import { ItemNodesList } from '../item/ItemNodesList'
 import { GoogleAnalyticsNodeBody } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeBody'
 import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody'
+import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 
 type Props = {
   block: Block | StartBlock
@@ -141,6 +142,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
+    }
+    case LogicBlockType.AB_TEST: {
+      return <AbTestNodeBody block={block} />
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />

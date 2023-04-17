@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { PlusIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ButtonItem, ItemIndices, ItemType } from '@typebot.io/schemas'
+import { ButtonItem, Item, ItemIndices, ItemType } from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 
@@ -26,7 +26,9 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const handleInputSubmit = () => {
     if (itemValue === '') deleteItem(indices)
     else
-      updateItem(indices, { content: itemValue === '' ? undefined : itemValue })
+      updateItem(indices, {
+        content: itemValue === '' ? undefined : itemValue,
+      } as Item)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {

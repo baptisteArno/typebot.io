@@ -57,6 +57,8 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       return <Text>Wait</Text>
     case LogicBlockType.JUMP:
       return <Text>Jump</Text>
+    case LogicBlockType.AB_TEST:
+      return <Text>AB Test</Text>
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <Text>Sheets</Text>
     case IntegrationBlockType.GOOGLE_ANALYTICS:
