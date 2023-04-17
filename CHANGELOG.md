@@ -1,5 +1,20 @@
 # Changelog
 
+<a name="2.12.2"></a>
+## 2.12.2 (2023-04-17)
+
+### Changed
+
+- 🚸 (share) Use custom domain host when possible in embed instruction [[cd0916d](https://github.com/baptisteArno/typebot.io/commit/cd0916df675511466aa9b48302ea9ffd7a1756f0)]
+
+### Fixed
+
+- 🐛 (sendEmail) Escape html from variables in custom body [[f7d94de](https://github.com/baptisteArno/typebot.io/commit/f7d94de66ed383bed12db3771c6ff916008e657a)]
+- 🐛 Auto scroll X behavior outside of editor [[928afd5](https://github.com/baptisteArno/typebot.io/commit/928afd5a6cc49900279e45f4cf42a168213abf6d)]
+- 🐛 (results) Keep focus on current expanded result when new ones arrive [[f8a76f9](https://github.com/baptisteArno/typebot.io/commit/f8a76f98b94ac4ae780b11ffae54104bbf4da69b)]
+- 🐛 Await support in set variable and script code [[918dffb](https://github.com/baptisteArno/typebot.io/commit/918dffb4bc7a18da41862b90288bda8fe59246ae)]
+
+
 <a name="2.12.1"></a>
 ## 2.12.1 (2023-04-14)
 
