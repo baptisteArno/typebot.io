@@ -1,4 +1,4 @@
-import { services } from '@octadesk-tech/services'
+import { services, url } from '@octadesk-tech/services'
 
 const API_CLIENTS = new Map()
 
@@ -10,4 +10,8 @@ export const getBaseClient = async (api: any, options = {}) => {
   const client = await services.createClient(api, options)
   API_CLIENTS.set(api, client)
   return client
+}
+
+export const getAPIURL = async (apiKey: string) => {
+  return await url.getAPIURL(apiKey)
 }

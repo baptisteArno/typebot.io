@@ -4,6 +4,7 @@ import { config } from 'config/octadesk.config'
 import { Parser } from 'htmlparser2'
 import { Step, Typebot } from 'models'
 import { sendRequest } from 'utils'
+import { getBaseClient } from '../octadesk/http'
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   const url = input.toString().replace(config.basePath.toString() || '', '')
@@ -63,22 +64,28 @@ export const toKebabCase = (value: string) => {
 }
 
 export const uploadFile = async (file: File, filePath: string) => {
-  const { data } = await sendRequest<{ presignedUrl: string }>(
-    `/api/storage/upload-url?filePath=${encodeURIComponent(filePath)}`
+
+  const teste = await getBaseClient('chatUrl').then(client =>{
+    console.log(client)
+    client.post('/upload', file)
+  }
   )
+  // const { data } = await sendRequest<{ presignedUrl: string }>(
+  //   `/api/storage/upload-url?filePath=${encodeURIComponent(filePath)}`
+  // )
+console.log(teste)
+  // if (!data?.presignedUrl)
+  //   return {
+  //     url: null,
+  //   }
 
-  if (!data?.presignedUrl)
-    return {
-      url: null,
-    }
-
-  await fetch(data.presignedUrl, {
-    method: 'PUT',
-    body: file,
-  })
+  // await fetch(data.presignedUrl, {
+  //   method: 'PUT',
+  //   body: file,
+  // })
 
   return {
-    url: data.presignedUrl.split('?')[0],
+    url: teste,
   }
 }
 

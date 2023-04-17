@@ -44,42 +44,7 @@ export const ImageUploadContent = ({
 
   return (
     <Stack>
-      <HStack>
-        {isEmojiEnabled && (
-          <Button
-            variant={currentTab === 'emoji' ? 'solid' : 'ghost'}
-            onClick={() => setCurrentTab('emoji')}
-            size="sm"
-          >
-            Emoji
-          </Button>
-        )}
-        <Button
-          variant={currentTab === 'upload' ? 'solid' : 'ghost'}
-          onClick={() => setCurrentTab('upload')}
-          size="sm"
-        >
-          Upload
-        </Button>
-        <Button
-          variant={currentTab === 'link' ? 'solid' : 'ghost'}
-          onClick={() => setCurrentTab('link')}
-          size="sm"
-        >
-          Link do arquivo
-        </Button>
-        {isGiphyEnabled && (
-          <Button
-            variant={currentTab === 'giphy' ? 'solid' : 'ghost'}
-            onClick={() => setCurrentTab('giphy')}
-            size="sm"
-          >
-            Giphy
-          </Button>
-        )}
-      </HStack>
-
-      <BodyContent tab={currentTab} onSubmit={handleSubmit} url={url} />
+      <UploadFileContent onNewUrl={onSubmit} />
     </Stack>
   )
 }
@@ -117,7 +82,7 @@ const UploadFileContent = ({ onNewUrl }: ContentProps) => {
         includeFileName
         colorScheme="blue"
       >
-        Selecione uma imagem
+        Selecione um arquivo
       </UploadButton>
     </Flex>
   )
