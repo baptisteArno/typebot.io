@@ -35,6 +35,7 @@ type Props = {
     | 'plan'
     | 'customChatsLimit'
     | 'customStorageLimit'
+    | 'stripeId'
   >
   currentSubscription: {
     isYearly?: boolean
@@ -128,6 +129,14 @@ export const StarterPlanPricingCard = ({
     })
   }
 
+  const price =
+    computePrice(
+      Plan.STARTER,
+      selectedChatsLimitIndex ?? 0,
+      selectedStorageLimitIndex ?? 0,
+      isYearly ? 'yearly' : 'monthly'
+    ) ?? NaN
+
   return (
     <Stack spacing={6} p="6" rounded="lg" borderWidth="1px" flex="1" h="full">
       <Stack spacing="4">
@@ -138,15 +147,7 @@ export const StarterPlanPricingCard = ({
         </Heading>
         <Text>{scopedT('starter.description')}</Text>
         <Heading>
-          {formatPrice(
-            computePrice(
-              Plan.STARTER,
-              selectedChatsLimitIndex ?? 0,
-              selectedStorageLimitIndex ?? 0,
-              isYearly ? 'yearly' : 'monthly'
-            ) ?? NaN,
-            currency
-          )}
+          {formatPrice(price, currency)}
           <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
         </Heading>
         <FeaturesList
@@ -224,15 +225,22 @@ export const StarterPlanPricingCard = ({
           ]}
         />
       </Stack>
-      <Button
-        colorScheme="orange"
-        variant="outline"
-        onClick={handlePayClick}
-        isLoading={isLoading}
-        isDisabled={isCurrentPlan}
-      >
-        {getButtonLabel()}
-      </Button>
+      <Stack>
+        {isYearly && workspace.stripeId && !isCurrentPlan && (
+          <Heading mt="0" fontSize="md">
+            You pay: {formatPrice(price * 12, currency)} / year
+          </Heading>
+        )}
+        <Button
+          colorScheme="orange"
+          variant="outline"
+          onClick={handlePayClick}
+          isLoading={isLoading}
+          isDisabled={isCurrentPlan}
+        >
+          {getButtonLabel()}
+        </Button>
+      </Stack>
     </Stack>
   )
 }

@@ -39,6 +39,7 @@ type Props = {
     | 'plan'
     | 'customChatsLimit'
     | 'customStorageLimit'
+    | 'stripeId'
   >
   currentSubscription: {
     isYearly?: boolean
@@ -130,6 +131,14 @@ export const ProPlanPricingCard = ({
     })
   }
 
+  const price =
+    computePrice(
+      Plan.PRO,
+      selectedChatsLimitIndex ?? 0,
+      selectedStorageLimitIndex ?? 0,
+      isYearly ? 'yearly' : 'monthly'
+    ) ?? NaN
+
   return (
     <Flex
       p="6"
@@ -170,15 +179,7 @@ export const ProPlanPricingCard = ({
         </Stack>
         <Stack spacing="4">
           <Heading>
-            {formatPrice(
-              computePrice(
-                Plan.PRO,
-                selectedChatsLimitIndex ?? 0,
-                selectedStorageLimitIndex ?? 0,
-                isYearly ? 'yearly' : 'monthly'
-              ) ?? NaN,
-              currency
-            )}
+            {formatPrice(price, currency)}
             <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
           </Heading>
           <Text fontWeight="bold">
@@ -275,15 +276,22 @@ export const ProPlanPricingCard = ({
               scopedT('pro.analytics'),
             ]}
           />
-          <Button
-            colorScheme="blue"
-            variant="outline"
-            onClick={handlePayClick}
-            isLoading={isLoading}
-            isDisabled={isCurrentPlan}
-          >
-            {getButtonLabel()}
-          </Button>
+          <Stack spacing={3}>
+            {isYearly && workspace.stripeId && !isCurrentPlan && (
+              <Heading mt="0" fontSize="md">
+                You pay {formatPrice(price * 12, currency)} / year
+              </Heading>
+            )}
+            <Button
+              colorScheme="blue"
+              variant="outline"
+              onClick={handlePayClick}
+              isLoading={isLoading}
+              isDisabled={isCurrentPlan}
+            >
+              {getButtonLabel()}
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
     </Flex>
