@@ -6,12 +6,14 @@ export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
   escapeForJson?: boolean
   takeLatestIfList?: boolean
+  escapeHtml?: boolean
 }
 
 export const defaultParseVariablesOptions: ParseVariablesOptions = {
   fieldToParse: 'value',
   escapeForJson: false,
   takeLatestIfList: false,
+  escapeHtml: false,
 }
 
 export const parseVariables =
@@ -50,6 +52,8 @@ export const parseVariables =
               : value
           )
         if (!parsedValue) return dollarSign + ''
+        if (options.escapeHtml)
+          return parsedValue.replace(/</g, '&lt;').replace(/>/g, '&gt;')
         return parsedValue
       }
     )

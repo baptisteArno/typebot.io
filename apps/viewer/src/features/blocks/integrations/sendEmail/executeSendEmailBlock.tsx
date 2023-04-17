@@ -46,7 +46,7 @@ export const executeSendEmailBlock = async (
       credentialsId: options.credentialsId,
       recipients: options.recipients.map(parseVariables(variables)),
       subject: parseVariables(variables)(options.subject ?? ''),
-      body: parseVariables(variables)(options.body ?? ''),
+      body: parseVariables(variables, { escapeHtml: true })(options.body ?? ''),
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
       replyTo: options.replyTo
