@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -13,7 +13,7 @@ import {
   Text,
   Alert,
   AlertIcon,
-  Link,
+  Link
 } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
 import { useTypebot } from 'contexts/TypebotContext'
@@ -47,6 +47,7 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { ExternalLinkIcon } from 'assets/icons'
 import { sendOctaRequest } from 'util/octaRequest'
 import { debug } from 'console'
+import { Textarea } from 'components/shared/Textbox'
 // import { validateUrl } from 'utils'
 
 enum HttpMethodsWebhook {
@@ -64,10 +65,16 @@ export const WebhookSettings = ({
   step,
   onOptionsChange
 }: Props) => {
-  const { typebot, } = useTypebot()
+  const { typebot } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
+
+  if (step.options.path?.length)
+  {
+    step.options.url += step.options.path?.length ? step.options.path[0].value : ''
+    step.options.path = []
+  }
 
   const toast = useToast({
     position: 'top-right',
@@ -82,11 +89,11 @@ export const WebhookSettings = ({
 
       if (newUrl.search) handleParams(newUrl.search)
 
-      addParams('path', '', newUrl.pathname, newUrl.pathname)
+      //addParams('path', '', newUrl.pathname, newUrl.pathname)
 
       onOptionsChange({
         ...step.options,
-        url: url ? url : ""
+        url: (url ? url : "") + newUrl.pathname
       })
     }
   }
@@ -129,6 +136,8 @@ export const WebhookSettings = ({
     })
   }
 
+
+
   const handleQueryParamsChange = (parameters: QueryParameters[]) => {
     onOptionsChange({
       ...step.options,
@@ -168,7 +177,7 @@ export const WebhookSettings = ({
   const resolveSession = (variablesForTest: VariableForTest[], variables: Variable[]) => {
     if (!variablesForTest?.length || !variables?.length) return {}
 
-    let session : Session = {
+    let session: Session = {
       propertySpecs: [],
       properties: {}
     }
@@ -244,19 +253,7 @@ export const WebhookSettings = ({
 
   return (
     <Stack spacing={4}>
-      <Input
-        placeholder="Digite o endereço da API ou do sistema"
-        defaultValue={step.options.url}
-        onChange={handleUrlChange}
-        debounceTimeout={0}
-      />
-      <SwitchWithLabel
-        id={'easy-config'}
-        label="Selecionar o método da integração"
-        initialValue={step.options.isAdvancedConfig ?? true}
-        onCheckChange={handleAdvancedConfigChange}
-      />
-      {(step.options.isAdvancedConfig ?? true) && (
+      (
         <Stack>
           <HStack justify="space-between">
             <Text>O que você quer fazer</Text>
@@ -267,6 +264,24 @@ export const WebhookSettings = ({
             />
           </HStack>
           <Accordion allowToggle allowMultiple>
+            <AccordionItem>
+              <AccordionButton justifyContent="space-between">
+                URL com path
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing="6">
+                <Text color="gray.500" fontSize="sm">
+                  Edite os parâmetros da sua URL inserindo campos
+                  na sua composição (ex.: https://apiurl.com/<strong>#valor</strong>/valid)
+                </Text>
+                <Textarea
+                  placeholder="Digite o endereço da API ou do sistema"
+                  defaultValue={step.options.url}
+                  onChange={handleUrlChange}
+                  debounceTimeout={0}
+                />
+              </AccordionPanel>
+            </AccordionItem>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Params
@@ -360,7 +375,7 @@ export const WebhookSettings = ({
             </AccordionItem>
           </Accordion>
         </Stack>
-      )}
+      )
       <Stack>
         {step.options.url && (
           <Button
