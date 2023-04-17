@@ -6,7 +6,7 @@ import { StandardSettings } from '../../../settings/StandardSettings'
 import { parseInitStandardCode } from '../../../snippetParsers/standard'
 import { parseStandardElementCode } from '../../Javascript/JavascriptStandardSnippet'
 import {
-  parseApiHost,
+  parseApiHostValue,
   parseInlineScript,
   typebotImportCode,
 } from '../../../snippetParsers/shared'
@@ -30,7 +30,7 @@ export const ScriptStandardInstructions = () => {
   
 ${parseInitStandardCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHost(typebot?.customDomain),
+  apiHost: parseApiHostValue(typebot?.customDomain),
 })}`)
 
   return (

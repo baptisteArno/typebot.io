@@ -11,7 +11,7 @@ import {
 import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers/popup'
-import { parseApiHost } from '../../../snippetParsers'
+import { parseApiHostValue } from '../../../snippetParsers'
 
 type Props = {
   publicId: string
@@ -25,7 +25,7 @@ export const WordpressPopupInstructions = ({
 
   const initCode = parseInitPopupCode({
     typebot: publicId,
-    apiHost: parseApiHost(customDomain),
+    apiHost: parseApiHostValue(customDomain),
     autoShowDelay,
   })
 

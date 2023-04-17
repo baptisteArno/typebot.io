@@ -1,7 +1,7 @@
 import prettier from 'prettier/standalone'
 import parserHtml from 'prettier/parser-html'
 import {
-  parseApiHost,
+  parseApiHostValue,
   parseInitBubbleCode,
   typebotImportCode,
 } from '../../snippetParsers'
@@ -19,7 +19,7 @@ export const JavascriptBubbleSnippet = ({ theme, previewMessage }: Props) => {
     
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHost(typebot?.customDomain),
+  apiHost: parseApiHostValue(typebot?.customDomain),
   theme: {
     ...theme,
     chatWindow: {

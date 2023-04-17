@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers'
 import {
-  parseApiHost,
+  parseApiHostValue,
   parseInlineScript,
   typebotImportCode,
 } from '../../../snippetParsers/shared'
@@ -19,7 +19,7 @@ export const ScriptPopupInstructions = () => {
 
 ${parseInitPopupCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHost(typebot?.customDomain),
+  apiHost: parseApiHostValue(typebot?.customDomain),
   autoShowDelay: inputValue,
 })}`
   )

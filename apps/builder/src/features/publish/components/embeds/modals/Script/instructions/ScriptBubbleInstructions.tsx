@@ -9,7 +9,7 @@ import {
   parseInlineScript,
   parseInitBubbleCode,
   typebotImportCode,
-  parseApiHost,
+  parseApiHostValue,
 } from '../../../snippetParsers'
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
@@ -36,7 +36,7 @@ export const ScriptBubbleInstructions = () => {
 
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHost(typebot?.customDomain),
+  apiHost: parseApiHostValue(typebot?.customDomain),
   theme,
   previewMessage,
 })}`

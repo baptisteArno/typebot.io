@@ -1,7 +1,7 @@
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
 import {
-  parseApiHost,
+  parseApiHostValue,
   parseInitStandardCode,
   typebotImportCode,
 } from '../../snippetParsers'
@@ -40,7 +40,7 @@ export const parseStandardHeadCode = (
 
 ${parseInitStandardCode({
   typebot: publicId ?? '',
-  apiHost: parseApiHost(customDomain),
+  apiHost: parseApiHostValue(customDomain),
 })}</script>`,
     { parser: 'html', plugins: [parserHtml] }
   )

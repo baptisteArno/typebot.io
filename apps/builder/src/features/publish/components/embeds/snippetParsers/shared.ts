@@ -51,7 +51,12 @@ export const parseApiHost = (
   customDomain: Typebot['customDomain'] | undefined
 ) => {
   if (customDomain) return new URL(`https://${customDomain}`).origin
-  return isCloudProdInstance
-    ? undefined
-    : env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
+  return env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
+}
+
+export const parseApiHostValue = (
+  customDomain: Typebot['customDomain'] | undefined
+) => {
+  if (isCloudProdInstance) return
+  return parseApiHost(customDomain)
 }

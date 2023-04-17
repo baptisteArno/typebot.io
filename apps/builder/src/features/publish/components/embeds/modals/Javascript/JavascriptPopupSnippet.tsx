@@ -2,7 +2,7 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import parserHtml from 'prettier/parser-html'
 import prettier from 'prettier/standalone'
 import {
-  parseApiHost,
+  parseApiHostValue,
   parseInitPopupCode,
   typebotImportCode,
 } from '../../snippetParsers'
@@ -16,7 +16,7 @@ export const JavascriptPopupSnippet = ({ autoShowDelay }: Props) => {
   const snippet = prettier.format(
     createSnippet({
       typebot: typebot?.publicId ?? '',
-      apiHost: parseApiHost(typebot?.customDomain),
+      apiHost: parseApiHostValue(typebot?.customDomain),
       autoShowDelay,
     }),
     {
