@@ -1,5 +1,37 @@
 # Changelog
 
+<a name="2.12.1"></a>
+## 2.12.1 (2023-04-14)
+
+### Added
+
+- ✨ Add lead magnet template [[ee14228](https://github.com/baptisteArno/typebot.io/commit/ee14228ee32894460f11350a4d096d7cf5b082ab)]
+
+### Changed
+
+- ⚡ (setVariable) Add client-side set variable execution [[03cc067](https://github.com/baptisteArno/typebot.io/commit/03cc067418bff04054c6aabe4f2615a119a02e9e)]
+- 💄 Adapt openAI logo to dark mode [[868b5b8](https://github.com/baptisteArno/typebot.io/commit/868b5b83706d174a2fa9b51375726aaa1f003857)]
+- ♻️ Simplify text bubble content shape [[e0a9824](https://github.com/baptisteArno/typebot.io/commit/e0a9824913237cb5340d262770e9e8290fbc4002)]
+- 💄 Improve Unsplash picker dark mode UI [[0033108](https://github.com/baptisteArno/typebot.io/commit/00331089a3b3c0644539153745af10d7d193c382)]
+- 🚸 (sheets) Better Get data settings UI [[6921cc2](https://github.com/baptisteArno/typebot.io/commit/6921cc23a5423f9485b62c54963324fa4dd54998)]
+- ⚡ (imageBubble) Add redirect on image click option [[e06f818](https://github.com/baptisteArno/typebot.io/commit/e06f8186f61bcc4abc5cec8984de00c623088d8b)]
+
+### Fixed
+
+- 🐛 Remove lead magnet duplicated block [[0900fb0](https://github.com/baptisteArno/typebot.io/commit/0900fb04079388bc47b18975b6653f1f3a4a9209)]
+- 🐛 (auth) Fix signup page text [[39d0dba](https://github.com/baptisteArno/typebot.io/commit/39d0dba18c251134259b2f99f8d0263dc1a51349)]
+- 🐛 (webhook) Correctly parse array of strings in data dropdown [[a7dbe93](https://github.com/baptisteArno/typebot.io/commit/a7dbe93eddb41f2be2defc51104eb1c7291d736f)]
+- 🐛 (setVariable) Properly parse phone number variables [[44975f9](https://github.com/baptisteArno/typebot.io/commit/44975f9742a63eb82543c0287cf68b91f70295c3)]
+
+### Miscellaneous
+
+- 📝 Improve writing on self-hosting introduction [[397a33a](https://github.com/baptisteArno/typebot.io/commit/397a33afc662a873759769907a7bae05b4a53117)]
+-  Improve translation PT ([#456](https://github.com/baptisteArno/typebot.io/issues/456)) [[27f1015](https://github.com/baptisteArno/typebot.io/commit/27f10159ef0fbd30b70fea48deef318d7c93b82f)]
+- 🛂 Add new yearly plans and graduated pricing [[2cbf834](https://github.com/baptisteArno/typebot.io/commit/2cbf8348c34c81b89efb963fa754986729232748)]
+- 🛂 Prevent blocking everything once limit is reached [[846dac0](https://github.com/baptisteArno/typebot.io/commit/846dac0bf40bdc27a4df12fe16779525aeece12a)]
+-  More translation in FR &amp; PT ([#436](https://github.com/baptisteArno/typebot.io/issues/436)) [[75d2a95](https://github.com/baptisteArno/typebot.io/commit/75d2a95d0897ff7d1942f2fc66e8426beaad6e64)]
+
+
 <a name="2.12.0"></a>
 ## 2.12.0 (2023-04-05)
 
