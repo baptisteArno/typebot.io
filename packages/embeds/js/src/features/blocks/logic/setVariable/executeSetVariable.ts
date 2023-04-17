@@ -1,12 +1,15 @@
 import { isNotDefined } from '@typebot.io/lib'
 import type { ScriptToExecute } from '@typebot.io/schemas'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
+
 export const executeSetVariable = async ({
   content,
   args,
 }: ScriptToExecute): Promise<{ replyToSend: string | undefined }> => {
   try {
-    const func = Function(
+    const func = AsyncFunction(
       ...args.map((arg) => arg.id),
       content.includes('return ') ? content : `return ${content}`
     )
@@ -15,6 +18,7 @@ export const executeSetVariable = async ({
       replyToSend: safeStringify(replyToSend),
     }
   } catch (err) {
+    console.error(err)
     return {
       replyToSend: safeStringify(content),
     }
