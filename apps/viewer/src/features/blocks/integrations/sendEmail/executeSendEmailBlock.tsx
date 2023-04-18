@@ -20,6 +20,7 @@ import { defaultFrom, defaultTransportOptions } from './constants'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
+import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
 
 export const executeSendEmailBlock = async (
   { result, typebot }: SessionState,
@@ -39,6 +40,10 @@ export const executeSendEmailBlock = async (
       ],
     }
 
+  const body =
+    findUniqueVariableValue(variables)(options.body)?.toString() ??
+    parseVariables(variables, { escapeHtml: true })(options.body ?? '')
+
   try {
     await sendEmail({
       typebotId: typebot.id,
@@ -46,7 +51,7 @@ export const executeSendEmailBlock = async (
       credentialsId: options.credentialsId,
       recipients: options.recipients.map(parseVariables(variables)),
       subject: parseVariables(variables)(options.subject ?? ''),
-      body: parseVariables(variables, { escapeHtml: true })(options.body ?? ''),
+      body,
       cc: (options.cc ?? []).map(parseVariables(variables)),
       bcc: (options.bcc ?? []).map(parseVariables(variables)),
       replyTo: options.replyTo

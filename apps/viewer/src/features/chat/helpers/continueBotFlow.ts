@@ -14,7 +14,7 @@ import {
   SessionState,
   SetVariableBlock,
 } from '@typebot.io/schemas'
-import { isInputBlock, isNotDefined, byId, isDefined } from '@typebot.io/lib'
+import { isInputBlock, isNotDefined, byId } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
@@ -46,7 +46,7 @@ export const continueBotFlow =
         message: 'Current block not found',
       })
 
-    if (block.type === LogicBlockType.SET_VARIABLE && isDefined(reply)) {
+    if (block.type === LogicBlockType.SET_VARIABLE) {
       const existingVariable = state.typebot.variables.find(
         byId(block.options.variableId)
       )

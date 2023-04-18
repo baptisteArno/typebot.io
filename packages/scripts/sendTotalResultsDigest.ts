@@ -130,7 +130,10 @@ const sendAlertIfLimitReached = async (
     const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
     const chatsLimit = getChatsLimit(workspace)
     const storageLimit = getStorageLimit(workspace)
-    if (totalChatsUsed >= chatsLimit || totalStorageUsed >= storageLimit) {
+    if (
+      (chatsLimit > 0 && totalChatsUsed >= chatsLimit) ||
+      (storageLimit > 0 && totalStorageUsed >= storageLimit)
+    ) {
       events.push(
         ...workspace.members
           .filter((member) => member.role !== WorkspaceRole.GUEST)
