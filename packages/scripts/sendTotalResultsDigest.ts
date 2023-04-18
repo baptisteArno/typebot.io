@@ -128,11 +128,12 @@ const sendAlertIfLimitReached = async (
   const events: TelemetryEvent[] = []
   for (const workspace of workspaces) {
     const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
+    const totalStorageUsedInGb = totalStorageUsed / 1024 / 1024 / 1024
     const chatsLimit = getChatsLimit(workspace)
     const storageLimit = getStorageLimit(workspace)
     if (
       (chatsLimit > 0 && totalChatsUsed >= chatsLimit) ||
-      (storageLimit > 0 && totalStorageUsed >= storageLimit)
+      (storageLimit > 0 && totalStorageUsedInGb >= storageLimit)
     ) {
       events.push(
         ...workspace.members
@@ -145,7 +146,7 @@ const sendAlertIfLimitReached = async (
                 workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
-                  totalStorageUsed,
+                  totalStorageUsed: totalStorageUsedInGb,
                   chatsLimit,
                   storageLimit,
                 },
