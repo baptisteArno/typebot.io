@@ -126,7 +126,10 @@ const sendAlertIfLimitReached = async (
   > & { members: Pick<MemberInWorkspace, 'userId' | 'role'>[] })[]
 ): Promise<TelemetryEvent[]> => {
   const events: TelemetryEvent[] = []
+  const taggedWorkspaces: string[] = []
   for (const workspace of workspaces) {
+    if (taggedWorkspaces.includes(workspace.id)) continue
+    taggedWorkspaces.push(workspace.id)
     const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
     const totalStorageUsedInGb = totalStorageUsed / 1024 / 1024 / 1024
     const chatsLimit = getChatsLimit(workspace)
@@ -137,7 +140,7 @@ const sendAlertIfLimitReached = async (
     ) {
       events.push(
         ...workspace.members
-          .filter((member) => member.role !== WorkspaceRole.GUEST)
+          .filter((member) => member.role === WorkspaceRole.ADMIN)
           .map(
             (member) =>
               ({
