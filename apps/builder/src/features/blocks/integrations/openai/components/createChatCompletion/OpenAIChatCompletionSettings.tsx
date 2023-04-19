@@ -88,7 +88,7 @@ export const OpenAIChatCompletionSettings = ({
             <AccordionIcon />
           </AccordionButton>
 
-          <AccordionPanel>
+          <AccordionPanel pt="4">
             <TableList
               initialItems={options.messages}
               Item={ChatCompletionMessageItem}
@@ -125,7 +125,7 @@ export const OpenAIChatCompletionSettings = ({
             <AccordionIcon />
           </AccordionButton>
 
-          <AccordionPanel>
+          <AccordionPanel pt="4">
             <TableList
               initialItems={options.responseMapping}
               Item={ChatCompletionResponseItem}

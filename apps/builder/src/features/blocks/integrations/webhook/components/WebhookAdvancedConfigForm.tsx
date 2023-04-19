@@ -127,7 +127,7 @@ export const WebhookAdvancedConfigForm = ({
                 Query params
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel pt="4">
                 <TableList<KeyValue>
                   initialItems={webhook.queryParams}
                   onItemsChange={handleQueryParamsChange}
@@ -141,7 +141,7 @@ export const WebhookAdvancedConfigForm = ({
                 Headers
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel pt="4">
                 <TableList<KeyValue>
                   initialItems={webhook.headers}
                   onItemsChange={handleHeadersChange}
@@ -176,7 +176,7 @@ export const WebhookAdvancedConfigForm = ({
                 Variable values for test
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel pt="4">
                 <TableList<VariableForTest>
                   initialItems={
                     options?.variablesForTest ?? { byId: {}, allIds: [] }
@@ -208,7 +208,7 @@ export const WebhookAdvancedConfigForm = ({
             Save in variables
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel>
+          <AccordionPanel pt="4">
             <TableList<ResponseVariableMapping>
               initialItems={options.responseVariableMapping}
               onItemsChange={handleResponseMappingChange}

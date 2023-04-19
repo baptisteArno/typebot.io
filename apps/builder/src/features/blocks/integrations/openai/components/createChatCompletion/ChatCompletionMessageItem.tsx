@@ -66,14 +66,14 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
       {item.role === 'Messages sequence ✨' ? (
         <>
           <VariableSearchInput
-            initialVariableId={item.content?.assistantMessagesVariableId}
-            onSelectVariable={changeAssistantVariableId}
-            placeholder="Assistant messages variable"
-          />
-          <VariableSearchInput
             initialVariableId={item.content?.userMessagesVariableId}
             onSelectVariable={changeUserVariableId}
             placeholder="User messages variable"
+          />
+          <VariableSearchInput
+            initialVariableId={item.content?.assistantMessagesVariableId}
+            onSelectVariable={changeAssistantVariableId}
+            placeholder="Assistant messages variable"
           />
         </>
       ) : (

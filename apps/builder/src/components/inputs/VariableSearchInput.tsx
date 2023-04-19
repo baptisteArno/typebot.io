@@ -162,6 +162,11 @@ export const VariableSearchInput = ({
     return setKeyboardFocusIndex(undefined)
   }
 
+  const openDropdown = () => {
+    if (inputValue === '') setFilteredItems(variables)
+    onOpen()
+  }
+
   return (
     <Flex ref={dropdownRef} w="full">
       <Popover
@@ -177,7 +182,7 @@ export const VariableSearchInput = ({
             ref={inputRef}
             value={inputValue}
             onChange={onInputChange}
-            onFocus={onOpen}
+            onFocus={openDropdown}
             onKeyDown={handleKeyUp}
             placeholder={inputProps.placeholder ?? 'Select a variable'}
             autoComplete="off"
