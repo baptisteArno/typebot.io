@@ -31,7 +31,9 @@ export const TypebotPageV3 = ({ url, typebot }: TypebotPageProps) => {
         backgroundColor:
           background?.type === BackgroundType.COLOR
             ? background?.content
-            : 'white',
+            : background?.type === BackgroundType.NONE
+            ? undefined
+            : '#fff',
       }}
     >
       {typebot && (
