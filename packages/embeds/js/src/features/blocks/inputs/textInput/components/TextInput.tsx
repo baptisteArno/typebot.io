@@ -29,6 +29,11 @@ export const TextInput = (props: Props) => {
     if (e.key === 'Enter') submit()
   }
 
+  const submitIfCtrlEnter = (e: KeyboardEvent) => {
+    if (!props.block.options.isLong) return
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit()
+  }
+
   onMount(() => {
     if (!isMobile() && inputRef) inputRef.focus()
   })
@@ -46,6 +51,7 @@ export const TextInput = (props: Props) => {
         <Textarea
           ref={inputRef as HTMLTextAreaElement}
           onInput={handleInput}
+          onKeyDown={submitIfCtrlEnter}
           value={inputValue()}
           placeholder={
             props.block.options?.labels?.placeholder ?? 'Type your answer...'

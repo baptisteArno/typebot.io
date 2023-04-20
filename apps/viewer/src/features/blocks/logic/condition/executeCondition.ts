@@ -63,24 +63,24 @@ const executeComparison =
         return compare((a, b) => a !== b, inputValue, value)
       }
       case ComparisonOperators.GREATER: {
-        return compare(
-          (a, b) =>
-            isDefined(a) && isDefined(b)
-              ? parseFloat(a) > parseFloat(b)
-              : false,
-          inputValue,
-          value
-        )
+        if (typeof inputValue === 'string') {
+          if (typeof value === 'string')
+            return parseFloat(inputValue) > parseFloat(value)
+          return parseFloat(inputValue) > value.length
+        }
+        if (typeof value === 'string')
+          return inputValue.length > parseFloat(value)
+        return inputValue.length > value.length
       }
       case ComparisonOperators.LESS: {
-        return compare(
-          (a, b) =>
-            isDefined(a) && isDefined(b)
-              ? parseFloat(a) < parseFloat(b)
-              : false,
-          inputValue,
-          value
-        )
+        if (typeof inputValue === 'string') {
+          if (typeof value === 'string')
+            return parseFloat(inputValue) < parseFloat(value)
+          return parseFloat(inputValue) < value.length
+        }
+        if (typeof value === 'string')
+          return inputValue.length < parseFloat(value)
+        return inputValue.length < value.length
       }
       case ComparisonOperators.IS_SET: {
         return isDefined(inputValue) && inputValue.length > 0
