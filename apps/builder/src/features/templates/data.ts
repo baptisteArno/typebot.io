@@ -90,8 +90,16 @@ export const templates: TemplateProps[] = [
     name: 'ChatGPT personas',
     emoji: '🎭',
     fileName: 'chat-gpt-personas.json',
-    isNew: true,
     description:
       'A bot that uses the ChatGPT model to generate responses based on the user input and the selected persona',
+  },
+  {
+    name: 'Lead Gen with AI',
+    emoji: '🦾',
+    fileName: 'lead-gen-ai.json',
+    category: 'marketing',
+    isNew: true,
+    description:
+      'You are a marketing agency and this bot allows you generate new leads interested in your services. An AI block is used to dig deeper into the user needs.',
   },
 ]

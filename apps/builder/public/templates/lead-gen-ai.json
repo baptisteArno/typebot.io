@@ -1,0 +1,514 @@
+{
+  "id": "pjkxzxkujkbk2oml3d35w6zz",
+  "version": "3",
+  "createdAt": "2023-04-20T12:29:18.633Z",
+  "updatedAt": "2023-04-20T12:50:12.385Z",
+  "icon": "🦾",
+  "name": "Lead Gen with AI",
+  "folderId": null,
+  "groups": [
+    {
+      "id": "i6xofskq0vdlnfyvf28hzcle",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "22HP69iipkLjJDTUcc1AWW",
+          "type": "start",
+          "label": "Start",
+          "groupId": "i6xofskq0vdlnfyvf28hzcle",
+          "outgoingEdgeId": "dkgy7qanybx0d9zl2ke2aa03"
+        }
+      ],
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "nmlij3lrk42cymsu1tj6b9nv",
+      "title": "Welcome",
+      "blocks": [
+        {
+          "id": "sc1y8VwDabNJgiVTBi4qtif",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hey 👋" }] }]
+          },
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+        },
+        {
+          "id": "s7YqZTBeyCa4Hp3wN2j922c",
+          "type": "image",
+          "content": {
+            "url": "https://media0.giphy.com/media/2f7RQiiWMJc40/giphy.gif?cid=fe3852a34jqk83z51tbm8a1jxmqpuckxxwef79p5myafdlw5&rid=giphy.gif&ct=g"
+          },
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+        },
+        {
+          "id": "z5tydv4qcam6xnh1ehm8hask",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Thank you for your interest in our marketing services."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+        },
+        {
+          "id": "ygo5cubnk50m5jt6ull3bn0i",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Let's have a quick chat about your current situation 🙏"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+        },
+        {
+          "id": "vw9s76hgwu749gw15bqk4vd3",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
+          },
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+        },
+        {
+          "id": "sbjZWLJGVkHAkDqS4JQeGow",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "hQw2zbp7FDX7XYK9cFpbgC",
+              "type": 0,
+              "blockId": "sbjZWLJGVkHAkDqS4JQeGow",
+              "content": "Yes!"
+            }
+          ],
+          "groupId": "nmlij3lrk42cymsu1tj6b9nv",
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
+          "outgoingEdgeId": "vgi4r3yjle17balwlhpas25t"
+        }
+      ],
+      "graphCoordinates": { "x": 1, "y": 148 }
+    },
+    {
+      "id": "vrv6xoriyl74wcz34gqlvc0q",
+      "title": "Email",
+      "blocks": [
+        {
+          "id": "scQ5kduafAtfP9T8SHUJnGi",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "What's the best email we can reach you at?" }
+                ]
+              }
+            ]
+          },
+          "groupId": "vrv6xoriyl74wcz34gqlvc0q"
+        },
+        {
+          "id": "snbsad18Bgry8yZ8DZCfdFD",
+          "type": "email input",
+          "groupId": "vrv6xoriyl74wcz34gqlvc0q",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "variableId": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
+          },
+          "outgoingEdgeId": "piew4sf9dpafiweghqvucmax"
+        }
+      ],
+      "graphCoordinates": { "x": 666.07421875, "y": 141 }
+    },
+    {
+      "id": "wlcaalj5zej2sl1t9kkq55se",
+      "title": "Company",
+      "blocks": [
+        {
+          "id": "sgtE2Sy7cKykac9B223Kq9R",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What company do you work for?" }]
+              }
+            ]
+          },
+          "groupId": "wlcaalj5zej2sl1t9kkq55se"
+        },
+        {
+          "id": "sqEsMo747LTDnY9FjQcEwUv",
+          "type": "text input",
+          "groupId": "wlcaalj5zej2sl1t9kkq55se",
+          "options": {
+            "isLong": false,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "giiLFGw5xXBCHzvp1qAbdX"
+          },
+          "outgoingEdgeId": "wlzesf38jzeyf65i1aj6j517"
+        }
+      ],
+      "graphCoordinates": { "x": 325.22265625, "y": 144.37890625 }
+    },
+    {
+      "id": "trcslng32mdxkjmrw8zxpnpj",
+      "title": "Services",
+      "blocks": [
+        {
+          "id": "su7HceVXWyTCzi2vv3m4QbK",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What services are you interested in?" }]
+              }
+            ]
+          },
+          "groupId": "trcslng32mdxkjmrw8zxpnpj"
+        },
+        {
+          "id": "s5VQGsVF4hQgziQsXVdwPDW",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "fnLCBF4NdraSwcubnBhk8H",
+              "type": 0,
+              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
+              "content": "Website dev"
+            },
+            {
+              "id": "a782h8ynMouY84QjH7XSnR",
+              "type": 0,
+              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
+              "content": "Content Marketing"
+            },
+            {
+              "id": "jGvh94zBByvVFpSS3w97zY",
+              "type": 0,
+              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
+              "content": "Social Media"
+            },
+            {
+              "id": "6PRLbKUezuFmwWtLVbvAQ7",
+              "type": 0,
+              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
+              "content": "UI / UX Design"
+            }
+          ],
+          "groupId": "trcslng32mdxkjmrw8zxpnpj",
+          "options": {
+            "variableId": "vi0mmx9o2m4s8z9cccsjcvpj5",
+            "buttonLabel": "Send",
+            "isMultipleChoice": true
+          },
+          "outgoingEdgeId": "gcbys1rzwi0dscvjodyygfme"
+        }
+      ],
+      "graphCoordinates": { "x": 999.90625, "y": 143.7578125 }
+    },
+    {
+      "id": "m4oxxhg9wfv3wc6n8rhzy6ga",
+      "title": "[AI] Additional information",
+      "blocks": [
+        {
+          "id": "px8ciz2nu2frvdqjporqpg95",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "w1cg5txczy2qmn4kbh1eybkk",
+              "type": 1,
+              "blockId": "px8ciz2nu2frvdqjporqpg95",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "r9ju98p1i6tevti45tt6jwk8",
+                    "value": "3",
+                    "variableId": "vpvkbogoj3rmogz0ssh5odmnn",
+                    "comparisonOperator": "Greater than"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "tfixdvay6mxj4g7z7bfmjthc"
+            }
+          ],
+          "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga"
+        },
+        {
+          "id": "dc58mxvcstc2rdwnlg4yd2aa",
+          "type": "OpenAI",
+          "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga",
+          "options": {
+            "task": "Create chat completion",
+            "model": "gpt-3.5-turbo",
+            "messages": [
+              {
+                "id": "i522qy1dzn42qy7rkw79uk9n",
+                "role": "user",
+                "content": "You are a marketing agency, and I am a prospect.\n\nAsk simple questions to understand my needs."
+              },
+              {
+                "id": "d6a2qfsdo251q0iopi77gtpd",
+                "role": "assistant",
+                "content": "What company do you work for?"
+              },
+              {
+                "id": "ba3objkk8jp8piyxlbe9diu6",
+                "role": "user",
+                "content": "{{Company}}"
+              },
+              {
+                "id": "bqqgavh96n76l9ma987km87y",
+                "role": "assistant",
+                "content": "What services are you interested in?"
+              },
+              {
+                "id": "zdsbh8wrmhqop24kg3t9b08f",
+                "role": "user",
+                "content": "{{Services}}"
+              },
+              {
+                "id": "j1pgsjm0snn3pz034h8y91vg",
+                "role": "Messages sequence ✨",
+                "content": {
+                  "userMessagesVariableId": "vhp0ymgwq4id82l97g0kliglf",
+                  "assistantMessagesVariableId": "vpvkbogoj3rmogz0ssh5odmnn"
+                }
+              }
+            ],
+            "credentialsId": "clgp3rhio00011a0b1ai2dfne",
+            "responseMapping": [
+              {
+                "id": "krixyhr7qw5ow52yf3i11y3a",
+                "variableId": "vpvkbogoj3rmogz0ssh5odmnn",
+                "valueToExtract": "Message content"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ieopf79666ug1tmld46ac1rw",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{AI replies}}" }] }
+            ]
+          },
+          "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga"
+        },
+        {
+          "id": "sqFy2G3C1mh9p6s3QBdSS5x",
+          "type": "text input",
+          "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga",
+          "options": {
+            "isLong": true,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vhp0ymgwq4id82l97g0kliglf"
+          },
+          "outgoingEdgeId": "tc9irw81xlw9ghv68fp8p8xl"
+        }
+      ],
+      "graphCoordinates": { "x": 1339.1953125, "y": 146.37890625 }
+    },
+    {
+      "id": "gjahzyusg4mlpvpaeov0awtm",
+      "title": "Bye",
+      "blocks": [
+        {
+          "id": "seLegenCgUwMopRFeAefqZ7",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }]
+          },
+          "groupId": "gjahzyusg4mlpvpaeov0awtm"
+        },
+        {
+          "id": "s779Q1y51aVaDUJVrFb16vv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "We'll get back to you at {{Email}}" }]
+              }
+            ]
+          },
+          "groupId": "gjahzyusg4mlpvpaeov0awtm"
+        }
+      ],
+      "graphCoordinates": { "x": 1676.6171875, "y": 142.7109375 }
+    },
+    {
+      "id": "l0223zmqvndj1irhk68yh10v",
+      "title": "",
+      "blocks": [
+        {
+          "id": "l7r996nrnqb937nzyrprcvs0",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "l0223zmqvndj1irhk68yh10v"
+        },
+        {
+          "id": "jxrp7xdzmnqnfmzfvid2u4s1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Services" },
+                  { "text": " group with " },
+                  { "bold": true, "text": "[AI] Additional Information" },
+                  { "text": " 🚀" }
+                ]
+              }
+            ]
+          },
+          "groupId": "l0223zmqvndj1irhk68yh10v"
+        }
+      ],
+      "graphCoordinates": { "x": 1342.1015625, "y": 627.70703125 }
+    }
+  ],
+  "variables": [
+    { "id": "giiLFGw5xXBCHzvp1qAbdX", "name": "Company" },
+    { "id": "v3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" },
+    { "id": "vi0mmx9o2m4s8z9cccsjcvpj5", "name": "Services" },
+    { "id": "vpvkbogoj3rmogz0ssh5odmnn", "name": "AI replies" },
+    { "id": "vhp0ymgwq4id82l97g0kliglf", "name": "Additional informations" }
+  ],
+  "edges": [
+    {
+      "id": "dkgy7qanybx0d9zl2ke2aa03",
+      "to": { "groupId": "nmlij3lrk42cymsu1tj6b9nv" },
+      "from": {
+        "blockId": "22HP69iipkLjJDTUcc1AWW",
+        "groupId": "i6xofskq0vdlnfyvf28hzcle"
+      }
+    },
+    {
+      "id": "vgi4r3yjle17balwlhpas25t",
+      "to": { "groupId": "wlcaalj5zej2sl1t9kkq55se" },
+      "from": {
+        "blockId": "sbjZWLJGVkHAkDqS4JQeGow",
+        "groupId": "nmlij3lrk42cymsu1tj6b9nv"
+      }
+    },
+    {
+      "id": "wlzesf38jzeyf65i1aj6j517",
+      "to": { "groupId": "vrv6xoriyl74wcz34gqlvc0q" },
+      "from": {
+        "blockId": "sqEsMo747LTDnY9FjQcEwUv",
+        "groupId": "wlcaalj5zej2sl1t9kkq55se"
+      }
+    },
+    {
+      "id": "piew4sf9dpafiweghqvucmax",
+      "to": { "groupId": "trcslng32mdxkjmrw8zxpnpj" },
+      "from": {
+        "blockId": "snbsad18Bgry8yZ8DZCfdFD",
+        "groupId": "vrv6xoriyl74wcz34gqlvc0q"
+      }
+    },
+    {
+      "id": "tfixdvay6mxj4g7z7bfmjthc",
+      "to": { "groupId": "gjahzyusg4mlpvpaeov0awtm" },
+      "from": {
+        "itemId": "w1cg5txczy2qmn4kbh1eybkk",
+        "blockId": "px8ciz2nu2frvdqjporqpg95",
+        "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga"
+      }
+    },
+    {
+      "id": "tc9irw81xlw9ghv68fp8p8xl",
+      "to": { "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga" },
+      "from": {
+        "blockId": "sqFy2G3C1mh9p6s3QBdSS5x",
+        "groupId": "m4oxxhg9wfv3wc6n8rhzy6ga"
+      }
+    },
+    {
+      "id": "gcbys1rzwi0dscvjodyygfme",
+      "to": { "groupId": "l0223zmqvndj1irhk68yh10v" },
+      "from": {
+        "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
+        "groupId": "trcslng32mdxkjmrw8zxpnpj"
+      }
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isResultSavingEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": true
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}
