@@ -1,9 +1,7 @@
 import {
   Button,
-  chakra,
-  Divider,
-  Heading,
   HStack,
+  Heading,
   Modal,
   ModalBody,
   ModalContent,
@@ -11,9 +9,9 @@ import {
   Stack,
   Tag,
   Text,
-  Tooltip,
+  chakra,
+  useColorModeValue,
 } from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@/components/icons'
 import { Standard } from '@typebot.io/react'
 import { Typebot } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -29,6 +27,7 @@ type Props = {
 }
 
 export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
+  const templateCardBackgroundColor = useColorModeValue(undefined, 'gray.800')
   const [typebot, setTypebot] = useState<Typebot>()
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0]
@@ -64,17 +63,140 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      size="6xl"
       blockScrollOnMount={false}
+      size="6xl"
     >
       <ModalOverlay />
       <ModalContent h="85vh">
         <ModalBody h="full" as={HStack} p="0" spacing="0">
-          <Stack w="full" h="full" spacing="4">
-            <Heading pl="10" pt="4" fontSize="2xl">
-              {selectedTemplate.emoji}{' '}
-              <chakra.span ml="2">{selectedTemplate.name}</chakra.span>
-            </Heading>
+          <Stack
+            h="full"
+            w="300px"
+            py="4"
+            px="2"
+            borderRightWidth={1}
+            justify="space-between"
+            flexShrink={0}
+          >
+            <Stack spacing={5}>
+              <Stack spacing={2}>
+                <Text
+                  fontSize="xs"
+                  fontWeight="semibold"
+                  pl="1"
+                  color="gray.500"
+                >
+                  Marketing
+                </Text>
+                {templates
+                  .filter((template) => template.category === 'marketing')
+                  .map((template) => (
+                    <Button
+                      size="sm"
+                      key={template.name}
+                      onClick={() => fetchTemplate(template)}
+                      w="full"
+                      variant={
+                        selectedTemplate.name === template.name
+                          ? 'solid'
+                          : 'ghost'
+                      }
+                      isDisabled={template.isComingSoon}
+                    >
+                      <HStack overflow="hidden" fontSize="sm" w="full">
+                        <Text>{template.emoji}</Text>
+                        <Text>{template.name}</Text>
+                        {template.isNew && (
+                          <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                            New
+                          </Tag>
+                        )}
+                      </HStack>
+                    </Button>
+                  ))}
+              </Stack>
+              <Stack spacing={2}>
+                <Text
+                  fontSize="xs"
+                  fontWeight="semibold"
+                  pl="1"
+                  color="gray.500"
+                >
+                  Product
+                </Text>
+                {templates
+                  .filter((template) => template.category === 'product')
+                  .map((template) => (
+                    <Button
+                      size="sm"
+                      key={template.name}
+                      onClick={() => fetchTemplate(template)}
+                      w="full"
+                      variant={
+                        selectedTemplate.name === template.name
+                          ? 'solid'
+                          : 'ghost'
+                      }
+                      isDisabled={template.isComingSoon}
+                    >
+                      <HStack overflow="hidden" fontSize="sm" w="full">
+                        <Text>{template.emoji}</Text>
+                        <Text>{template.name}</Text>
+                        {template.isNew && (
+                          <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                            New
+                          </Tag>
+                        )}
+                      </HStack>
+                    </Button>
+                  ))}
+              </Stack>
+              <Stack spacing={2}>
+                <Text
+                  fontSize="xs"
+                  fontWeight="semibold"
+                  pl="1"
+                  color="gray.500"
+                >
+                  Other
+                </Text>
+                {templates
+                  .filter((template) => template.category === undefined)
+                  .map((template) => (
+                    <Button
+                      size="sm"
+                      key={template.name}
+                      onClick={() => fetchTemplate(template)}
+                      w="full"
+                      variant={
+                        selectedTemplate.name === template.name
+                          ? 'solid'
+                          : 'ghost'
+                      }
+                      isDisabled={template.isComingSoon}
+                    >
+                      <HStack overflow="hidden" fontSize="sm" w="full">
+                        <Text>{template.emoji}</Text>
+                        <Text>{template.name}</Text>
+                        {template.isNew && (
+                          <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                            New
+                          </Tag>
+                        )}
+                      </HStack>
+                    </Button>
+                  ))}
+              </Stack>
+            </Stack>
+          </Stack>
+          <Stack
+            w="full"
+            h="full"
+            spacing="4"
+            align="center"
+            pb="4"
+            bgColor="white"
+          >
             {typebot && (
               <Standard
                 key={typebot.id}
@@ -85,17 +207,21 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                 }}
               />
             )}
-          </Stack>
-
-          <Stack
-            h="full"
-            py="6"
-            w="300px"
-            px="4"
-            borderLeftWidth={1}
-            justify="space-between"
-          >
-            <Stack spacing={4}>
+            <HStack
+              p="6"
+              borderWidth={1}
+              rounded="md"
+              w="95%"
+              spacing={4}
+              bgColor={templateCardBackgroundColor}
+            >
+              <Stack flex="1" spacing={4}>
+                <Heading fontSize="2xl">
+                  {selectedTemplate.emoji}{' '}
+                  <chakra.span ml="2">{selectedTemplate.name}</chakra.span>
+                </Heading>
+                <Text>{selectedTemplate.description}</Text>
+              </Stack>
               <Button
                 colorScheme="blue"
                 onClick={onUseThisTemplateClick}
@@ -103,61 +229,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
               >
                 Use this template
               </Button>
-              <Divider />
-              <Stack>
-                {templates.map((template) => (
-                  <Tooltip
-                    key={template.name}
-                    isDisabled={!template.isComingSoon}
-                    label="Coming soon!"
-                  >
-                    <span>
-                      <Button
-                        onClick={() => fetchTemplate(template)}
-                        w="full"
-                        variant={
-                          selectedTemplate.name === template.name
-                            ? 'solid'
-                            : 'ghost'
-                        }
-                        isDisabled={template.isComingSoon}
-                      >
-                        <HStack justifyContent="space-between" w="full">
-                          <HStack overflow="hidden">
-                            <Text>{template.emoji}</Text>
-                            <Text noOfLines={0} display="block">
-                              {template.name}
-                            </Text>
-                          </HStack>
-
-                          {template.isNew && (
-                            <Tag colorScheme="orange" size="sm" flexShrink={0}>
-                              New
-                            </Tag>
-                          )}
-                        </HStack>
-                      </Button>
-                    </span>
-                  </Tooltip>
-                ))}
-              </Stack>
-            </Stack>
-
-            <Stack>
-              <Divider />
-              <Tooltip label="Coming soon!" placement="top">
-                <span>
-                  <Button
-                    w="full"
-                    variant="ghost"
-                    isDisabled
-                    leftIcon={<ExternalLinkIcon />}
-                  >
-                    Community templates
-                  </Button>
-                </span>
-              </Tooltip>
-            </Stack>
+            </HStack>
           </Stack>
         </ModalBody>
       </ModalContent>

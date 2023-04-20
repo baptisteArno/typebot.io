@@ -787,7 +787,7 @@
   "selectedThemeTemplateId": null,
   "settings": {
     "general": {
-      "isBrandingEnabled": true,
+      "isBrandingEnabled": false,
       "isInputPrefillEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": true
