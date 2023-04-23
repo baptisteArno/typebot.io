@@ -3,7 +3,6 @@ import prisma from '@/lib/prisma'
 import { ResultWithAnswers } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed } from '@typebot.io/lib/api'
-import { checkChatsUsage } from '@/features/usage/checkChatsUsage'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -26,8 +25,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const typebotId = req.query.typebotId as string
-    const hasReachedLimit = await checkChatsUsage({ typebotId })
-    if (hasReachedLimit) return res.send({ result: null, hasReachedLimit })
+    const typebot = await prisma.typebot.findFirst({
+      where: { id: typebotId },
+      select: { workspace: { select: { isQuarantined: true } } },
+    })
+    if (typebot?.workspace.isQuarantined)
+      return res.send({ result: null, hasReachedLimit: true })
     const result = await prisma.result.create({
       data: {
         typebotId,

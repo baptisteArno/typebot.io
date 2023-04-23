@@ -69,10 +69,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 stripeId: session.customer as string,
                 additionalChatsIndex: parseInt(additionalChats),
                 additionalStorageIndex: parseInt(additionalStorage),
-                chatsLimitFirstEmailSentAt: null,
-                chatsLimitSecondEmailSentAt: null,
-                storageLimitFirstEmailSentAt: null,
-                storageLimitSecondEmailSentAt: null,
+                isQuarantined: false,
               },
             })
 
@@ -137,10 +134,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               plan: Plan.FREE,
               additionalChatsIndex: 0,
               additionalStorageIndex: 0,
-              chatsLimitFirstEmailSentAt: null,
-              chatsLimitSecondEmailSentAt: null,
-              storageLimitFirstEmailSentAt: null,
-              storageLimitSecondEmailSentAt: null,
               customChatsLimit: null,
               customStorageLimit: null,
               customSeatsLimit: null,
