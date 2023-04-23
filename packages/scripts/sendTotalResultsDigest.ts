@@ -11,6 +11,22 @@ import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEven
 import { Workspace } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
+const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
+
+type WorkspaceForDigest = Pick<
+  Workspace,
+  | 'id'
+  | 'plan'
+  | 'customChatsLimit'
+  | 'customStorageLimit'
+  | 'additionalChatsIndex'
+  | 'additionalStorageIndex'
+  | 'isQuarantined'
+> & {
+  members: (Pick<MemberInWorkspace, 'role'> & {
+    user: { id: string; email: string | null }
+  })[]
+}
 
 export const sendTotalResultsDigest = async () => {
   await promptAndSetEnvironment('production')
@@ -53,12 +69,15 @@ export const sendTotalResultsDigest = async () => {
     select: {
       id: true,
       typebots: { select: { id: true } },
-      members: { select: { userId: true, role: true } },
+      members: {
+        select: { user: { select: { id: true, email: true } }, role: true },
+      },
       additionalChatsIndex: true,
       additionalStorageIndex: true,
       customChatsLimit: true,
       customStorageLimit: true,
       plan: true,
+      isQuarantined: true,
     },
   })
 
@@ -71,7 +90,7 @@ export const sendTotalResultsDigest = async () => {
       return workspace.members
         .filter((member) => member.role !== WorkspaceRole.GUEST)
         .map((member, memberIndex) => ({
-          userId: member.userId,
+          userId: member.user.id,
           workspace: workspace,
           typebotId: result.typebotId,
           totalResultsYesterday: result._count._all,
@@ -115,20 +134,13 @@ export const sendTotalResultsDigest = async () => {
 }
 
 const sendAlertIfLimitReached = async (
-  workspaces: (Pick<
-    Workspace,
-    | 'id'
-    | 'plan'
-    | 'customChatsLimit'
-    | 'customStorageLimit'
-    | 'additionalChatsIndex'
-    | 'additionalStorageIndex'
-  > & { members: Pick<MemberInWorkspace, 'userId' | 'role'>[] })[]
+  workspaces: WorkspaceForDigest[]
 ): Promise<TelemetryEvent[]> => {
   const events: TelemetryEvent[] = []
   const taggedWorkspaces: string[] = []
   for (const workspace of workspaces) {
-    if (taggedWorkspaces.includes(workspace.id)) continue
+    if (taggedWorkspaces.includes(workspace.id) || workspace.isQuarantined)
+      continue
     taggedWorkspaces.push(workspace.id)
     const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
     const totalStorageUsedInGb = totalStorageUsed / 1024 / 1024 / 1024
@@ -145,7 +157,7 @@ const sendAlertIfLimitReached = async (
             (member) =>
               ({
                 name: 'Workspace limit reached',
-                userId: member.userId,
+                userId: member.user.id,
                 workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
@@ -156,7 +168,20 @@ const sendAlertIfLimitReached = async (
               } satisfies TelemetryEvent)
           )
       )
+      continue
     }
+    // if (
+    //   chatsLimit > 0 &&
+    //   totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT
+    // )
+    // await sendAlmostReachedChatsLimitEmail({
+    //   to: workspace.members
+    //     .map((member) => member.user.email)
+    //     .filter(isDefined),
+    //   usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
+    //   chatsLimit,
+    //   url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+    // })
   }
   return events
 }

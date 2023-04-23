@@ -14,6 +14,7 @@ export const cleanDatabase = async () => {
   if (isFirstOfMonth) {
     await deleteArchivedResults()
     await deleteArchivedTypebots()
+    await resetQuarantinedWorkspaces()
   }
   console.log('Done!')
 }
@@ -117,5 +118,15 @@ const deleteExpiredVerificationTokens = async () => {
   })
   console.log(`Deleted ${count} expired verifiations tokens.`)
 }
+
+const resetQuarantinedWorkspaces = async () =>
+  prisma.workspace.updateMany({
+    where: {
+      isQuarantined: true,
+    },
+    data: {
+      isQuarantined: false,
+    },
+  })
 
 cleanDatabase().then()
