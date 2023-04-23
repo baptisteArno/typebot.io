@@ -95,6 +95,7 @@ model Workspace {
   customChatsLimit              Int?
   customStorageLimit            Int?
   customSeatsLimit              Int?
+  isQuarantined                 Boolean               @default(false)
   themeTemplates                ThemeTemplate[]
 }
 
