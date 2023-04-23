@@ -3,11 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import {
   AlmostReachedChatsLimitEmail,
-  AlmostReachedStorageLimitEmail,
   DefaultBotNotificationEmail,
   GuestInvitationEmail,
-  ReachedChatsLimitEmail,
-  ReachedStorageLimitEmail,
   WorkspaceMemberInvitation,
 } from './emails'
 import { MagicLinkEmail } from './emails/MagicLinkEmail'
@@ -47,35 +44,9 @@ const createHtmlFile = () => {
     path.resolve(__dirname, 'dist', 'almostReachedChatsLimit.html'),
     render(
       <AlmostReachedChatsLimitEmail
+        usagePercent={86}
         url={'https://app.typebot.io'}
         chatsLimit={2000}
-      />
-    ).html
-  )
-  fs.writeFileSync(
-    path.resolve(__dirname, 'dist', 'almostReachedStorageLimit.html'),
-    render(
-      <AlmostReachedStorageLimitEmail
-        url={'https://app.typebot.io'}
-        storageLimit={4}
-      />
-    ).html
-  )
-  fs.writeFileSync(
-    path.resolve(__dirname, 'dist', 'reachedChatsLimit.html'),
-    render(
-      <ReachedChatsLimitEmail
-        url={'https://app.typebot.io'}
-        chatsLimit={10000}
-      />
-    ).html
-  )
-  fs.writeFileSync(
-    path.resolve(__dirname, 'dist', 'reachedStorageLimit.html'),
-    render(
-      <ReachedStorageLimitEmail
-        url={'https://app.typebot.io'}
-        storageLimit={8}
       />
     ).html
   )

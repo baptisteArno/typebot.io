@@ -1,7 +1,6 @@
 import { publicProcedure } from '@/helpers/server/trpc'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
-import { getStorageLimit } from '@typebot.io/lib/pricing'
 import {
   FileInputBlock,
   InputBlockType,
@@ -9,16 +8,9 @@ import {
   PublicTypebot,
   TypebotLinkBlock,
 } from '@typebot.io/schemas'
-import { byId, env, isDefined } from '@typebot.io/lib'
+import { byId, isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
 import { generatePresignedUrl } from '@typebot.io/lib/api/storage'
-import {
-  sendAlmostReachedStorageLimitEmail,
-  sendReachedStorageLimitEmail,
-} from '@typebot.io/emails'
-import { WorkspaceRole } from '@typebot.io/prisma'
-
-const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
 export const getUploadUrl = publicProcedure
   .meta({
@@ -58,7 +50,6 @@ export const getUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    await checkIfStorageLimitReached(typebotId)
     const publicTypebot = (await prisma.publicTypebot.findFirst({
       where: { typebotId },
       select: {
@@ -117,112 +108,4 @@ const getFileUploadBlock = async (
   if (fileUploadBlockFromLinkedTypebots?.type === InputBlockType.FILE)
     return fileUploadBlockFromLinkedTypebots
   return null
-}
-
-const checkIfStorageLimitReached = async (
-  typebotId: string
-): Promise<boolean> => {
-  const typebot = await prisma.typebot.findUnique({
-    where: { id: typebotId },
-    select: {
-      workspace: {
-        select: {
-          id: true,
-          additionalStorageIndex: true,
-          plan: true,
-          storageLimitFirstEmailSentAt: true,
-          storageLimitSecondEmailSentAt: true,
-          customStorageLimit: true,
-        },
-      },
-    },
-  })
-  if (!typebot?.workspace) throw new Error('Workspace not found')
-  const { workspace } = typebot
-  const {
-    _sum: { storageUsed: totalStorageUsed },
-  } = await prisma.answer.aggregate({
-    where: {
-      storageUsed: { gt: 0 },
-      result: {
-        typebot: {
-          workspaceId: typebot.workspace.id,
-        },
-      },
-    },
-    _sum: { storageUsed: true },
-  })
-  if (!totalStorageUsed) return false
-  const hasSentFirstEmail = workspace.storageLimitFirstEmailSentAt !== null
-  const hasSentSecondEmail = workspace.storageLimitSecondEmailSentAt !== null
-  const storageLimit = getStorageLimit(typebot.workspace)
-  if (storageLimit === -1) return false
-  const storageLimitBytes = storageLimit * 1024 * 1024 * 1024
-  if (
-    totalStorageUsed >= storageLimitBytes * LIMIT_EMAIL_TRIGGER_PERCENT &&
-    !hasSentFirstEmail &&
-    env('E2E_TEST') !== 'true'
-  )
-    await sendAlmostReachStorageLimitNotification({
-      workspaceId: workspace.id,
-      storageLimit,
-    })
-  if (
-    totalStorageUsed >= storageLimitBytes &&
-    !hasSentSecondEmail &&
-    env('E2E_TEST') !== 'true'
-  )
-    await sendReachStorageLimitNotification({
-      workspaceId: workspace.id,
-      storageLimit,
-    })
-  return totalStorageUsed >= storageLimitBytes
-}
-
-const sendAlmostReachStorageLimitNotification = async ({
-  workspaceId,
-  storageLimit,
-}: {
-  workspaceId: string
-  storageLimit: number
-}) => {
-  const members = await prisma.memberInWorkspace.findMany({
-    where: { role: WorkspaceRole.ADMIN, workspaceId },
-    include: { user: { select: { email: true } } },
-  })
-
-  await sendAlmostReachedStorageLimitEmail({
-    to: members.map((member) => member.user.email).filter(isDefined),
-    storageLimit,
-    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-  })
-
-  await prisma.workspace.update({
-    where: { id: workspaceId },
-    data: { storageLimitFirstEmailSentAt: new Date() },
-  })
-}
-
-const sendReachStorageLimitNotification = async ({
-  workspaceId,
-  storageLimit,
-}: {
-  workspaceId: string
-  storageLimit: number
-}) => {
-  const members = await prisma.memberInWorkspace.findMany({
-    where: { role: WorkspaceRole.ADMIN, workspaceId },
-    include: { user: { select: { email: true } } },
-  })
-
-  await sendReachedStorageLimitEmail({
-    to: members.map((member) => member.user.email).filter(isDefined),
-    storageLimit,
-    url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`,
-  })
-
-  await prisma.workspace.update({
-    where: { id: workspaceId },
-    data: { storageLimitSecondEmailSentAt: new Date() },
-  })
 }

@@ -148,10 +148,7 @@ export const updateSubscription = authenticatedProcedure
           plan,
           additionalChatsIndex: additionalChats,
           additionalStorageIndex: additionalStorage,
-          chatsLimitFirstEmailSentAt: null,
-          chatsLimitSecondEmailSentAt: null,
-          storageLimitFirstEmailSentAt: null,
-          storageLimitSecondEmailSentAt: null,
+          isQuarantined: false,
         },
       })
 

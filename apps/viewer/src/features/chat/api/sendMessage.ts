@@ -24,7 +24,6 @@ import {
 } from '../helpers'
 import { env, isDefined, omit } from '@typebot.io/lib'
 import { prefillVariables } from '@/features/variables/prefillVariables'
-import { checkChatsUsage } from '@/features/usage/checkChatsUsage'
 import { injectVariablesFromExistingResult } from '@/features/variables/injectVariablesFromExistingResult'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { parseVariables } from '@/features/variables/parseVariables'
@@ -246,9 +245,8 @@ const getTypebot = async (
                   id: true,
                   plan: true,
                   additionalChatsIndex: true,
-                  chatsLimitFirstEmailSentAt: true,
-                  chatsLimitSecondEmailSentAt: true,
                   customChatsLimit: true,
+                  isQuarantined: true,
                 },
               },
             },
@@ -274,18 +272,16 @@ const getTypebot = async (
       message: 'Typebot not found',
     })
 
-  if ('isClosed' in parsedTypebot && parsedTypebot.isClosed)
+  const isQuarantined =
+    typebotQuery &&
+    'typebot' in typebotQuery &&
+    typebotQuery.typebot.workspace.isQuarantined
+
+  if (('isClosed' in parsedTypebot && parsedTypebot.isClosed) || isQuarantined)
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: 'Typebot is closed',
     })
-
-  typebotQuery && 'typebot' in typebotQuery
-    ? await checkChatsUsage({
-        typebotId: parsedTypebot.id,
-        workspace: typebotQuery.typebot.workspace,
-      })
-    : false
 
   return parsedTypebot
 }
