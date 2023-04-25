@@ -240,7 +240,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     Array<any>
   >([])
   const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] = useState<Array<BotSpecificationOption>>([])
-  const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<Array<string>>()
+  const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<Array<string>>([''])
   const translatedKeys = {
     "bold": "Negrito",
     "italic": "Itálico",
