@@ -102,9 +102,7 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   }
 
   const getFeatures = async (): Promise<void> => {
-    const featuresToggle = await getCompanyFeatures();
-    console.log('featuresToggle => ', featuresToggle);
-    
+    const featuresToggle = await getStatus()
 
     const features = Object.keys(featuresToggle)
       .map((code) => ({

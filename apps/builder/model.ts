@@ -61,6 +61,7 @@
     createdAt: Date
     plan: Plan
     stripeId: string | null
+    channel?: string
   }
   
   /**
