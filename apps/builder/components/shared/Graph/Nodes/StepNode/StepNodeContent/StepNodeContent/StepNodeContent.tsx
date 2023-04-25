@@ -47,12 +47,6 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case BubbleStepType.IMAGE: {
       return <ImageBubbleContent step={step} />
     }
-    case BubbleStepType.VIDEO: {
-      return <VideoBubbleContent step={step} />
-    }
-    case BubbleStepType.EMBED: {
-      return <EmbedBubbleContent step={step} />
-    }
     case InputStepType.TEXT: {
       return (
         <PlaceholderContent

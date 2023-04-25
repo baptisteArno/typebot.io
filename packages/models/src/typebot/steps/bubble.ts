@@ -48,6 +48,9 @@ export type TextBubbleContent = {
 
 export type ImageBubbleContent = {
   url?: string
+  name: string
+  size: number
+  type: string
 }
 
 export type EmbedBubbleContent = {
@@ -73,7 +76,11 @@ export const defaultTextBubbleContent: TextBubbleContent = {
   plainText: '',
 }
 
-export const defaultImageBubbleContent: ImageBubbleContent = {}
+export const defaultImageBubbleContent: ImageBubbleContent = {
+  name: '',
+  size: 1,
+  type: ''
+}
 
 export const defaultVideoBubbleContent: VideoBubbleContent = {}
 
