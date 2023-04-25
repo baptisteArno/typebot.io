@@ -63,32 +63,6 @@ export const toKebabCase = (value: string) => {
   return matched.map((x) => x.toLowerCase()).join('-')
 }
 
-export const uploadFile = async (file: File, filePath: string) => {
-
-  const teste = await getBaseClient('chatUrl').then(client =>{
-    console.log(client)
-    client.post('/upload', file)
-  }
-  )
-  // const { data } = await sendRequest<{ presignedUrl: string }>(
-  //   `/api/storage/upload-url?filePath=${encodeURIComponent(filePath)}`
-  // )
-console.log(teste)
-  // if (!data?.presignedUrl)
-  //   return {
-  //     url: null,
-  //   }
-
-  // await fetch(data.presignedUrl, {
-  //   method: 'PUT',
-  //   body: file,
-  // })
-
-  return {
-    url: teste,
-  }
-}
-
 export const compressFile = async (file: File) => {
   const options = {
     maxSizeMB: 0.5,

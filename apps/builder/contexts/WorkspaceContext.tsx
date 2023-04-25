@@ -20,6 +20,7 @@ import { useTypebot } from './TypebotContext'
 import { useRouter } from 'next/router'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 import CustomFields from 'services/octadesk/customFields/customFields'
+import { BotsService } from 'services/octadesk/bots/bots'
 import { DomainType } from 'enums/customFieldsEnum'
 import {
   fixedChatProperties,
@@ -27,16 +28,149 @@ import {
   fixedPersonProperties,
 } from 'helpers/presets/variables-presets'
 import { Variable } from 'models/dist/types/typebot/variable'
-import { Nullable } from 'util/types'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
+export type ChannelType = {
+  name: string,
+  displayName: string,
+  proactive: {
+    isEnabled: boolean,
+    needTemplate: boolean
+  },
+  hoursToAnswer: number,
+  template: {
+    isMediaEnabled: boolean,
+    isButtonsEnabled: boolean,
+    isIndexedListEnabled: boolean,
+    interactionTypes: Array<string>,
+    categories: Array<string>,
+    components: {
+      body: {
+        textStyles: {
+          bold: boolean,
+          italic: boolean,
+          strikethrough: boolean,
+          underline: boolean,
+          emoji: boolean
+        }
+      },
+      footer: {
+        textStyles: {
+          bold: boolean,
+          italic: boolean,
+          strikethrough: boolean,
+          underline: boolean,
+          emoji: boolean,
+          link: boolean,
+          richText: boolean
+        }
+      },
+      header: {
+        textStyles: {
+          bold: boolean,
+          italic: boolean,
+          strikethrough: boolean,
+          underline: boolean,
+          emoji: boolean,
+          link: boolean,
+          richText: boolean
+        }
+      },
+      buttons: {
+        textStyles: {
+          bold: boolean,
+          italic: boolean,
+          strikethrough: boolean,
+          underline: boolean,
+          emoji: boolean,
+          link: boolean,
+          richText: boolean
+        }
+      },
+      list: {
+        section: {
+          maxQuantity: number,
+          rows: {
+            description: {
+              maxLength: number,
+              textStyles: {
+                bold: boolean,
+                italic: boolean,
+                strikethrough: boolean,
+                underline: boolean,
+                emoji: boolean,
+                link: boolean,
+                richText: boolean
+              }
+            },
+            title: {
+              maxLength: number,
+              textStyles: {
+                bold: boolean,
+                italic: boolean,
+                strikethrough: boolean,
+                underline: boolean,
+                emoji: boolean,
+                link: boolean,
+                richText: boolean
+              }
+            }
+          },
+          title: {
+            maxLength: number,
+            textStyles: {
+              bold: boolean,
+              italic: boolean,
+              strikethrough: boolean,
+              underline: boolean,
+              emoji: boolean,
+              link: boolean,
+              richText: boolean
+            }
+          }
+        }
+      }
+    },
+    allowOnlyApproveds: boolean
+  },
+  supportedExtensions: Array<string>,
+  bots: {
+    exclusiveComponents: Array<string>
+  },
+  attachmentMaxSize: number
+}
+export type BotSpecification = {
+  id: string,
+  _id: string,
+  name: string,
+  supportedExtensions: Array<string>,
+  hoursToAnswer: number,
+  channels: Array<ChannelType>,
+  active: boolean
+}
+
+export type BotSpecificationOption = {
+  id: string,
+  resources: string,
+  WABA:
+  { name: string, value: number },
+  web:
+  { name: string, value: number },
+  whatsapp:
+  { name: string, value: number },
+  instagram:
+  { name: string, value: number },
+  [`facebook-messenger`]:
+  { name: string, value: number },
+}
 
 const workspaceContext = createContext<{
   workspaces?: WorkspaceWithMembers[]
+  botSpecificationsChannelsInfo: Array<BotSpecificationOption>,
+  botChannelsSpecifications: Array<string>,
   isLoading: boolean
   workspace?: WorkspaceWithMembers
   canEdit: boolean
-  currentRole?: WorkspaceRole
   switchWorkspace: (workspaceId: string) => void
   createWorkspace: (name?: string) => Promise<void>
   updateWorkspace: (
@@ -61,10 +195,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     workspaces
       ?.find(byId(currentWorkspace?.id))
       ?.members.find((m) => m.userId === userId)?.role === WorkspaceRole.ADMIN
-
-  const currentRole = currentWorkspace?.members.find(
-    (m) => m.userId === userId
-  )?.role
 
   useEffect(() => {
     if (!workspaces || workspaces.length === 0 || currentWorkspace) return
@@ -109,6 +239,104 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const [octaOrganizationItems, setOctaOrganizationItems] = useState<
     Array<any>
   >([])
+  const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] = useState<Array<BotSpecificationOption>>([])
+  const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<Array<string>>()
+  const translatedKeys = {
+    "bold": "Negrito",
+    "italic": "Itálico",
+    "lineThrough": "Tachado",
+    "underline": "Sublinhado",
+    "emoji": "Emoji",
+    "hoursToAnswer": "Definir horário de atendimento do bot",
+    "attachmentMaxSize": "Tamanho do anexo",
+    "supportedExtensions": "Arquivos permitidos",
+    "exclusiveComponents": "Arquivos e interações"
+  }
+
+  const fetchBotSpecifications = useCallback(async (): Promise<void> => {
+    const botSpecifications = await BotsService().getBotSpecifications()
+
+    setChannelsSpecifications(botSpecifications)
+  }, []);
+
+  useEffect(() => {
+    fetchBotSpecifications()
+  }, [fetchBotSpecifications])
+
+  const setChannelsInfoSpecifications = (channels: Array<string>, channelsSpecifications: Array<ChannelType>) => {
+    const resources = [
+      'template.components.body.textStyles.bold',
+      'template.components.body.textStyles.italic',
+      'template.components.body.textStyles.lineThrough',
+      'template.components.body.textStyles.underline',
+      'template.components.body.textStyles.emoji',
+      'hoursToAnswer',
+      'attachmentMaxSize',
+      'supportedExtensions',
+      'bots.exclusiveComponents'
+    ]
+
+    const getMultiLevelProp = (obj: any, keys: any) => {
+      return keys.split('.').reduce((cur: any, key: any) => {
+        return cur[key]
+      }, obj)
+    }
+
+    const getValue = (channelName: any, key: any) => {
+      let value = ''
+      channelsSpecifications.map(channel => {
+        if (channel.displayName === channelName) {
+          value = getMultiLevelProp(channel, key)
+        }
+      })
+
+      return value
+    }
+
+    const options: Array<BotSpecificationOption> = resources.map(resource => {
+      const key = resource.split('.').pop() || ''
+
+      return {
+        id: key,
+        resources: (translatedKeys as any)[key],
+        ...channels.reduce(
+          (acc: any, channelName: any) => (
+            (acc[channelName] = {
+              name: channelName,
+              value: getValue(channelName, resource)
+            }),
+            acc
+          ),
+          {}
+        )
+      }
+    })
+
+    setBotSpecificationsChannelsInfo(options)
+  }
+
+  const setChannelsSpecifications = (specifications: Array<BotSpecification>) => {
+    const channels: Array<string> = []
+
+    const channelsSpecifications: Array<ChannelType> = []
+
+    if (specifications) {
+      specifications.forEach(integrators => {
+        integrators.channels.forEach(channel => {
+          channels.push(channel.displayName)
+
+          channelsSpecifications.push({ ...channel })
+        })
+      })
+    }
+
+    setBotChannelsSpecifications(channels)
+
+    setChannelsInfoSpecifications(
+      channels,
+      channelsSpecifications
+    )
+  }
 
   const mountPropertiesOptions = useCallback((propertiesType: any, properties: any) => {
     return { items: properties }
@@ -283,6 +511,13 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   }, [octaOrganizationFields])
 
+  useEffect(() => {
+    const fluxChannel = document.referrer.split('/')
+    setCurrentWorkspace((current): any => (
+      { ...current, channel: fluxChannel[5] } as any
+    ))
+  }, [])
+
   const switchWorkspace = (workspaceId: string) =>
     setCurrentWorkspace(workspaces?.find(byId(workspaceId)))
 
@@ -342,10 +577,11 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     <workspaceContext.Provider
       value={{
         workspaces,
+        botSpecificationsChannelsInfo,
+        botChannelsSpecifications,
         workspace: currentWorkspace,
         isLoading,
         canEdit,
-        currentRole,
         switchWorkspace,
         createWorkspace,
         updateWorkspace,

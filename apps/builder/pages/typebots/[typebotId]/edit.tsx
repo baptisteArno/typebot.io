@@ -37,8 +37,14 @@ function TypebotEditPage() {
   useEffect(() => {
     window.addEventListener('message', handleEventListeners)
 
-    return () => window.removeEventListener('message', handleEventListeners)
+    // return () => window.removeEventListener('message', handleEventListeners)
   }, [])
+
+  useEffect(() => {
+    window.parent.postMessage({ name: 'iFrameHasLoaded' }, '*')
+  
+  }, [])
+  
 
   useEffect(() => {
     if (updatedTypebot.current) return

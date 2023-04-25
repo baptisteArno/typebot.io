@@ -57,7 +57,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case BubbleStepType.TEXT:
       return <ChatIcon color="#AA561C" {...props} />
     case BubbleStepType.IMAGE:
-      return <ImageIcon color="#AA561C" {...props} />
+      return <LayoutIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:
       return <FilmIcon color="#AA561C" {...props} />
     case BubbleStepType.EMBED:

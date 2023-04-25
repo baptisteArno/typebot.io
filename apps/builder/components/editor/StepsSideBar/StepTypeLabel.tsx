@@ -19,7 +19,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.TEXT:
       return <Text>Texto</Text>
     case BubbleStepType.IMAGE:
-      return <Text>Imagem</Text>
+      return <Text>Arquivo</Text>
     case BubbleStepType.VIDEO:
       return <Text>Vídeo</Text>
     case BubbleStepType.EMBED:

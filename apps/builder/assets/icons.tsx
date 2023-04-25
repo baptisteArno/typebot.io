@@ -96,6 +96,36 @@ export const ImageIcon = (props: any) => (
   </IconContext.Provider>
 )
 
+export const CheckCircleOutlineIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdCheckCircleOutline />
+    </div>
+  </IconContext.Provider>
+)
+
+export const BlockIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdBlock />
+    </div>
+  </IconContext.Provider>
+)
+
+export const UploadFileIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdUploadFile />
+    </div>
+  </IconContext.Provider>
+)
+
 export const CalendarIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}
