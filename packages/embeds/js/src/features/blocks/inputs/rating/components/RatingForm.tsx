@@ -3,6 +3,7 @@ import { InputSubmitContent } from '@/types'
 import type { RatingInputBlock, RatingInputOptions } from '@typebot.io/schemas'
 import { createSignal, For, Match, Switch } from 'solid-js'
 import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
+import { Button } from '@/components/Button'
 
 type Props = {
   block: RatingInputBlock
@@ -29,13 +30,13 @@ export const RatingForm = (props: Props) => {
   }
 
   return (
-    <form class="flex flex-col" onSubmit={handleSubmit}>
+    <form class="flex flex-col gap-2" onSubmit={handleSubmit}>
       {props.block.options.labels.left && (
-        <span class="text-sm w-full mb-2 rating-label">
+        <span class="text-sm w-full rating-label">
           {props.block.options.labels.left}
         </span>
       )}
-      <div class="flex flex-wrap justify-center">
+      <div class="flex flex-wrap justify-center gap-2">
         <For
           each={Array.from(
             Array(
@@ -57,12 +58,12 @@ export const RatingForm = (props: Props) => {
         </For>
       </div>
       {props.block.options.labels.right && (
-        <span class="text-sm w-full text-right mb-2 pr-2 rating-label">
+        <span class="text-sm w-full text-right pr-2 rating-label">
           {props.block.options.labels.right}
         </span>
       )}
 
-      <div class="flex justify-end mr-2">
+      <div class="flex justify-end">
         {isDefined(rating()) && (
           <SendButton disableIcon>
             {props.block.options?.labels?.button ?? 'Send'}
@@ -80,29 +81,29 @@ type RatingButtonProps = {
 } & RatingInputOptions
 
 const RatingButton = (props: RatingButtonProps) => {
+  const handleClick = (e: MouseEvent) => {
+    e.preventDefault()
+    props.onClick(props.idx)
+  }
   return (
     <Switch>
       <Match when={props.buttonType === 'Numbers'}>
-        <button
-          on:click={(e) => {
-            e.preventDefault()
-            props.onClick(props.idx)
-          }}
+        <Button
+          on:click={handleClick}
           class={
-            'py-2 px-4 mr-2 mb-2 text-left font-semibold transition-all filter hover:brightness-90 active:brightness-75 duration-100 focus:outline-none typebot-button ' +
-            (props.isOneClickSubmitEnabled ||
+            props.isOneClickSubmitEnabled ||
             (isDefined(props.rating) && props.idx <= props.rating)
               ? ''
-              : 'selectable')
+              : 'selectable'
           }
         >
           {props.idx}
-        </button>
+        </Button>
       </Match>
       <Match when={props.buttonType !== 'Numbers'}>
         <div
           class={
-            'flex justify-center items-center rating-icon-container cursor-pointer mr-2 mb-2 ' +
+            'flex justify-center items-center rating-icon-container cursor-pointer ' +
             (isDefined(props.rating) && props.idx <= props.rating
               ? 'selected'
               : '')

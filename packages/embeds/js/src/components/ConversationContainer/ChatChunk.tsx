@@ -46,57 +46,54 @@ export const ChatChunk = (props: Props) => {
   }
 
   return (
-    <div class="flex w-full">
-      <div class="flex flex-col w-full min-w-0">
-        <div class="flex">
-          <Show
-            when={
-              props.theme.chat.hostAvatar?.isEnabled &&
-              props.messages.length > 0
-            }
-          >
-            <AvatarSideContainer
-              hostAvatarSrc={props.theme.chat.hostAvatar?.url}
-              hideAvatar={props.hideAvatar}
-            />
-          </Show>
-          <div
-            class="flex-1"
-            style={{
-              'margin-right': props.theme.chat.guestAvatar?.isEnabled
-                ? isMobile()
-                  ? '32px'
-                  : '48px'
-                : undefined,
-            }}
-          >
-            <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
-              {(message) => (
-                <HostBubble
-                  message={message}
-                  typingEmulation={props.settings.typingEmulation}
-                  onTransitionEnd={displayNextMessage}
-                />
-              )}
-            </For>
-          </div>
-        </div>
-        {props.input && displayedMessageIndex() === props.messages.length && (
-          <InputChatBlock
-            block={props.input}
-            inputIndex={props.inputIndex}
-            onSubmit={props.onSubmit}
-            onSkip={props.onSkip}
-            hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
-            guestAvatar={props.theme.chat.guestAvatar}
-            context={props.context}
-            isInputPrefillEnabled={
-              props.settings.general.isInputPrefillEnabled ?? true
-            }
-            hasError={props.hasError}
+    <div class="flex flex-col w-full min-w-0 gap-2">
+      <div class={'flex' + (isMobile() ? ' gap-1' : ' gap-2')}>
+        <Show
+          when={
+            props.theme.chat.hostAvatar?.isEnabled && props.messages.length > 0
+          }
+        >
+          <AvatarSideContainer
+            hostAvatarSrc={props.theme.chat.hostAvatar?.url}
+            hideAvatar={props.hideAvatar}
           />
-        )}
+        </Show>
+        <div
+          class="flex flex-col flex-1 gap-2"
+          style={{
+            'margin-right': props.theme.chat.guestAvatar?.isEnabled
+              ? isMobile()
+                ? '32px'
+                : '48px'
+              : undefined,
+          }}
+        >
+          <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
+            {(message) => (
+              <HostBubble
+                message={message}
+                typingEmulation={props.settings.typingEmulation}
+                onTransitionEnd={displayNextMessage}
+              />
+            )}
+          </For>
+        </div>
       </div>
+      {props.input && displayedMessageIndex() === props.messages.length && (
+        <InputChatBlock
+          block={props.input}
+          inputIndex={props.inputIndex}
+          onSubmit={props.onSubmit}
+          onSkip={props.onSkip}
+          hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
+          guestAvatar={props.theme.chat.guestAvatar}
+          context={props.context}
+          isInputPrefillEnabled={
+            props.settings.general.isInputPrefillEnabled ?? true
+          }
+          hasError={props.hasError}
+        />
+      )}
     </div>
   )
 }

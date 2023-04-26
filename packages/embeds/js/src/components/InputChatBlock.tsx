@@ -22,13 +22,14 @@ import { EmailInput } from '@/features/blocks/inputs/email'
 import { UrlInput } from '@/features/blocks/inputs/url'
 import { PhoneInput } from '@/features/blocks/inputs/phone'
 import { DateForm } from '@/features/blocks/inputs/date'
-import { ChoiceForm } from '@/features/blocks/inputs/buttons'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
 import { createSignal, Switch, Match } from 'solid-js'
 import { isNotDefined } from '@typebot.io/lib'
 import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
+import { MultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/MultipleChoicesForm'
+import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
 
 type Props = {
   block: NonNullable<ChatReply['input']>
@@ -66,13 +67,13 @@ export const InputChatBlock = (props: Props) => {
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>
         <div
-          class="flex justify-end animate-fade-in"
+          class="flex justify-end animate-fade-in gap-2"
           data-blockid={props.block.id}
         >
           {props.hasHostAvatar && (
             <div
               class={
-                'flex mr-2 mb-2 mt-1 flex-shrink-0 items-center ' +
+                'flex flex-shrink-0 items-center ' +
                 (isMobile() ? 'w-6 h-6' : 'w-10 h-10')
               }
             />
@@ -158,10 +159,28 @@ const Input = (props: {
           onSubmit={onSubmit}
         />
       </Match>
-      <Match when={props.block.type === InputBlockType.CHOICE}>
-        <ChoiceForm
+      <Match
+        when={
+          props.block.type === InputBlockType.CHOICE &&
+          props.block.options.isMultipleChoice
+        }
+      >
+        <MultipleChoicesForm
           inputIndex={props.inputIndex}
-          block={props.block as ChoiceInputBlock}
+          items={(props.block as ChoiceInputBlock).items}
+          options={props.block.options as ChoiceInputBlock['options']}
+          onSubmit={onSubmit}
+        />
+      </Match>
+      <Match
+        when={
+          props.block.type === InputBlockType.CHOICE &&
+          !props.block.options.isMultipleChoice
+        }
+      >
+        <Buttons
+          inputIndex={props.inputIndex}
+          items={(props.block as ChoiceInputBlock).items}
           onSubmit={onSubmit}
         />
       </Match>
