@@ -30,6 +30,8 @@ import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
 import { MultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/MultipleChoicesForm'
 import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
+import { SearchableButtons } from '@/features/blocks/inputs/buttons/components/SearchableButtons'
+import { SearchableMultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/SearchableMultipleChoicesForm'
 
 type Props = {
   block: NonNullable<ChatReply['input']>
@@ -159,30 +161,49 @@ const Input = (props: {
           onSubmit={onSubmit}
         />
       </Match>
-      <Match
-        when={
-          props.block.type === InputBlockType.CHOICE &&
-          props.block.options.isMultipleChoice
-        }
-      >
-        <MultipleChoicesForm
-          inputIndex={props.inputIndex}
-          items={(props.block as ChoiceInputBlock).items}
-          options={props.block.options as ChoiceInputBlock['options']}
-          onSubmit={onSubmit}
-        />
-      </Match>
-      <Match
-        when={
-          props.block.type === InputBlockType.CHOICE &&
-          !props.block.options.isMultipleChoice
-        }
-      >
-        <Buttons
-          inputIndex={props.inputIndex}
-          items={(props.block as ChoiceInputBlock).items}
-          onSubmit={onSubmit}
-        />
+      <Match when={isButtonsBlock(props.block)} keyed>
+        {(block) => (
+          <Switch>
+            <Match when={!block.options.isMultipleChoice}>
+              <Switch>
+                <Match when={block.options.isSearchable}>
+                  <SearchableButtons
+                    inputIndex={props.inputIndex}
+                    defaultItems={block.items}
+                    onSubmit={onSubmit}
+                  />
+                </Match>
+                <Match when={!block.options.isSearchable}>
+                  <Buttons
+                    inputIndex={props.inputIndex}
+                    items={block.items}
+                    onSubmit={onSubmit}
+                  />
+                </Match>
+              </Switch>
+            </Match>
+            <Match when={block.options.isMultipleChoice}>
+              <Switch>
+                <Match when={block.options.isSearchable}>
+                  <SearchableMultipleChoicesForm
+                    inputIndex={props.inputIndex}
+                    defaultItems={block.items}
+                    options={block.options}
+                    onSubmit={onSubmit}
+                  />
+                </Match>
+                <Match when={!block.options.isSearchable}>
+                  <MultipleChoicesForm
+                    inputIndex={props.inputIndex}
+                    items={block.items}
+                    options={block.options}
+                    onSubmit={onSubmit}
+                  />
+                </Match>
+              </Switch>
+            </Match>
+          </Switch>
+        )}
       </Match>
       <Match when={props.block.type === InputBlockType.RATING}>
         <RatingForm
@@ -214,3 +235,8 @@ const Input = (props: {
     </Switch>
   )
 }
+
+const isButtonsBlock = (
+  block: ChatReply['input']
+): ChoiceInputBlock | undefined =>
+  block?.type === InputBlockType.CHOICE ? block : undefined

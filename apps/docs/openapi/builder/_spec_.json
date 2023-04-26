@@ -295,6 +295,54 @@
                             "data"
                           ],
                           "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Workspace limit reached"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "chatsLimit": {
+                                  "type": "number"
+                                },
+                                "storageLimit": {
+                                  "type": "number"
+                                },
+                                "totalChatsUsed": {
+                                  "type": "number"
+                                },
+                                "totalStorageUsed": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "chatsLimit",
+                                "storageLimit",
+                                "totalChatsUsed",
+                                "totalStorageUsed"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
                         }
                       ]
                     }
@@ -798,6 +846,9 @@
                                                   },
                                                   "dynamicVariableId": {
                                                     "type": "string"
+                                                  },
+                                                  "isSearchable": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "required": [
@@ -1740,6 +1791,121 @@
                                               "id",
                                               "groupId",
                                               "type",
+                                              "options"
+                                            ],
+                                            "additionalProperties": false
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "groupId": {
+                                                "type": "string"
+                                              },
+                                              "outgoingEdgeId": {
+                                                "type": "string"
+                                              },
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "AB test"
+                                                ]
+                                              },
+                                              "items": {
+                                                "type": "array",
+                                                "minItems": 2,
+                                                "maxItems": 2,
+                                                "items": [
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string"
+                                                      },
+                                                      "blockId": {
+                                                        "type": "string"
+                                                      },
+                                                      "outgoingEdgeId": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": {
+                                                        "type": "number",
+                                                        "enum": [
+                                                          2
+                                                        ]
+                                                      },
+                                                      "path": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "a"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "id",
+                                                      "blockId",
+                                                      "type",
+                                                      "path"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string"
+                                                      },
+                                                      "blockId": {
+                                                        "type": "string"
+                                                      },
+                                                      "outgoingEdgeId": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": {
+                                                        "type": "number",
+                                                        "enum": [
+                                                          2
+                                                        ]
+                                                      },
+                                                      "path": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "b"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "id",
+                                                      "blockId",
+                                                      "type",
+                                                      "path"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  }
+                                                ]
+                                              },
+                                              "options": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "aPercent": {
+                                                    "type": "number",
+                                                    "minimum": 0,
+                                                    "maximum": 100
+                                                  }
+                                                },
+                                                "required": [
+                                                  "aPercent"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "required": [
+                                              "id",
+                                              "groupId",
+                                              "type",
+                                              "items",
                                               "options"
                                             ],
                                             "additionalProperties": false
@@ -3075,6 +3241,9 @@
                         "customSeatsLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "isQuarantined": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -3093,7 +3262,8 @@
                         "storageLimitSecondEmailSentAt",
                         "customChatsLimit",
                         "customStorageLimit",
-                        "customSeatsLimit"
+                        "customSeatsLimit",
+                        "isQuarantined"
                       ],
                       "additionalProperties": false
                     }
@@ -3216,6 +3386,9 @@
                         "customSeatsLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "isQuarantined": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -3234,7 +3407,8 @@
                         "storageLimitSecondEmailSentAt",
                         "customChatsLimit",
                         "customStorageLimit",
-                        "customSeatsLimit"
+                        "customSeatsLimit",
+                        "isQuarantined"
                       ],
                       "additionalProperties": false
                     }
@@ -3374,6 +3548,9 @@
                         "customSeatsLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "isQuarantined": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -3392,7 +3569,8 @@
                         "storageLimitSecondEmailSentAt",
                         "customChatsLimit",
                         "customStorageLimit",
-                        "customSeatsLimit"
+                        "customSeatsLimit",
+                        "isQuarantined"
                       ],
                       "additionalProperties": false
                     }
@@ -4642,6 +4820,9 @@
                         "customSeatsLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "isQuarantined": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -4660,7 +4841,8 @@
                         "storageLimitSecondEmailSentAt",
                         "customChatsLimit",
                         "customStorageLimit",
-                        "customSeatsLimit"
+                        "customSeatsLimit",
+                        "isQuarantined"
                       ],
                       "additionalProperties": false
                     }

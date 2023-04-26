@@ -72,13 +72,11 @@ export const MultipleChoicesForm = (props: Props) => {
           )}
         </For>
       </div>
-      <div class="flex">
-        {selectedIndices().length > 0 && (
-          <SendButton disableIcon>
-            {props.options?.buttonLabel ?? 'Send'}
-          </SendButton>
-        )}
-      </div>
+      {selectedIndices().length > 0 && (
+        <SendButton disableIcon>
+          {props.options?.buttonLabel ?? 'Send'}
+        </SendButton>
+      )}
     </form>
   )
 }

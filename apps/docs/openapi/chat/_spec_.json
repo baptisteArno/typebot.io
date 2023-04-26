@@ -459,6 +459,9 @@
                                                       },
                                                       "dynamicVariableId": {
                                                         "type": "string"
+                                                      },
+                                                      "isSearchable": {
+                                                        "type": "boolean"
                                                       }
                                                     },
                                                     "required": [
@@ -1401,6 +1404,121 @@
                                                   "id",
                                                   "groupId",
                                                   "type",
+                                                  "options"
+                                                ],
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "groupId": {
+                                                    "type": "string"
+                                                  },
+                                                  "outgoingEdgeId": {
+                                                    "type": "string"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "AB test"
+                                                    ]
+                                                  },
+                                                  "items": {
+                                                    "type": "array",
+                                                    "minItems": 2,
+                                                    "maxItems": 2,
+                                                    "items": [
+                                                      {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "id": {
+                                                            "type": "string"
+                                                          },
+                                                          "blockId": {
+                                                            "type": "string"
+                                                          },
+                                                          "outgoingEdgeId": {
+                                                            "type": "string"
+                                                          },
+                                                          "type": {
+                                                            "type": "number",
+                                                            "enum": [
+                                                              2
+                                                            ]
+                                                          },
+                                                          "path": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                              "a"
+                                                            ]
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "id",
+                                                          "blockId",
+                                                          "type",
+                                                          "path"
+                                                        ],
+                                                        "additionalProperties": false
+                                                      },
+                                                      {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "id": {
+                                                            "type": "string"
+                                                          },
+                                                          "blockId": {
+                                                            "type": "string"
+                                                          },
+                                                          "outgoingEdgeId": {
+                                                            "type": "string"
+                                                          },
+                                                          "type": {
+                                                            "type": "number",
+                                                            "enum": [
+                                                              2
+                                                            ]
+                                                          },
+                                                          "path": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                              "b"
+                                                            ]
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "id",
+                                                          "blockId",
+                                                          "type",
+                                                          "path"
+                                                        ],
+                                                        "additionalProperties": false
+                                                      }
+                                                    ]
+                                                  },
+                                                  "options": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "aPercent": {
+                                                        "type": "number",
+                                                        "minimum": 0,
+                                                        "maximum": 100
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "aPercent"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "groupId",
+                                                  "type",
+                                                  "items",
                                                   "options"
                                                 ],
                                                 "additionalProperties": false
@@ -3182,6 +3300,9 @@
                                     },
                                     "dynamicVariableId": {
                                       "type": "string"
+                                    },
+                                    "isSearchable": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "required": [
