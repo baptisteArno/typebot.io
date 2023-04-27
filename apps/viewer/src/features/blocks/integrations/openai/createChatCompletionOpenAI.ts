@@ -2,6 +2,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { transformStringVariablesToList } from '@/features/variables/transformVariablesToList'
 import prisma from '@/lib/prisma'
 import {
+  ChatReply,
   SessionState,
   Variable,
   VariableWithUnknowValue,
@@ -19,7 +20,6 @@ import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
-import { HTTPError } from 'got'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -29,9 +29,15 @@ export const createChatCompletionOpenAI = async (
   }: { outgoingEdgeId?: string; options: ChatCompletionOpenAIOptions }
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state
+  const noCredentialsError = {
+    status: 'error',
+    description: 'Make sure to select an OpenAI account',
+  }
   if (!options.credentialsId) {
-    console.error('OpenAI block has no credentials')
-    return { outgoingEdgeId }
+    return {
+      outgoingEdgeId,
+      logs: [noCredentialsError],
+    }
   }
   const credentials = await prisma.credentials.findUnique({
     where: {
@@ -40,7 +46,7 @@ export const createChatCompletionOpenAI = async (
   })
   if (!credentials) {
     console.error('Could not find credentials in database')
-    return { outgoingEdgeId }
+    return { outgoingEdgeId, logs: [noCredentialsError] }
   }
   const { apiKey } = decrypt(
     credentials.data,
@@ -107,21 +113,24 @@ export const createChatCompletionOpenAI = async (
       newSessionState,
     }
   } catch (err) {
-    const log = {
+    const log: NonNullable<ChatReply['logs']>[number] = {
       status: 'error',
       description: 'OpenAI block returned error',
-      details: '',
     }
 
-    if (err instanceof HTTPError) {
-      console.error(err.response.body)
-      log.details = JSON.stringify(err.response.body, null, 2).substring(
-        0,
-        1000
-      )
-    } else {
-      console.error(err)
-      log.details = JSON.stringify(err, null, 2).substring(0, 1000)
+    if (err && typeof err === 'object') {
+      if ('response' in err) {
+        const { status, data } = err.response as {
+          status: string
+          data: string
+        }
+        log.details = {
+          status,
+          data,
+        }
+      } else if ('message' in err) {
+        log.details = err.message
+      }
     }
 
     state.result &&

@@ -604,3 +604,20 @@ export const ShuffleIcon = (props: IconProps) => (
     <line x1="4" y1="4" x2="9" y2="9"></line>
   </Icon>
 )
+
+export const InfoIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </Icon>
+)
+
+export const SmileIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+  </Icon>
+)
