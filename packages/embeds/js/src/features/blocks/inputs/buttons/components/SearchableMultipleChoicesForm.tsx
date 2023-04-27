@@ -37,6 +37,7 @@ export const SearchableMultipleChoicesForm = (props: Props) => {
     props.onSubmit({
       value: props.defaultItems
         .filter((item) => selectedItemIds().includes(item.id))
+        .map((item) => item.content)
         .join(', '),
     })
 
