@@ -6,9 +6,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  FormLabel,
   Stack,
-  Tag,
 } from '@chakra-ui/react'
 import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
 import React from 'react'
@@ -22,22 +20,27 @@ export const GoogleAnalyticsSettings = ({
   options,
   onOptionsChange,
 }: Props) => {
-  const handleTrackingIdChange = (trackingId: string) =>
+  const updateTrackingId = (trackingId: string) =>
     onOptionsChange({ ...options, trackingId })
 
-  const handleCategoryChange = (category: string) =>
+  const updateCategory = (category: string) =>
     onOptionsChange({ ...options, category })
 
-  const handleActionChange = (action: string) =>
+  const updateAction = (action: string) =>
     onOptionsChange({ ...options, action })
 
-  const handleLabelChange = (label: string) =>
-    onOptionsChange({ ...options, label })
+  const updateLabel = (label: string) => onOptionsChange({ ...options, label })
 
-  const handleValueChange = (value?: string) =>
+  const updateValue = (value?: string) =>
     onOptionsChange({
       ...options,
       value: value ? parseFloat(value) : undefined,
+    })
+
+  const updateSendTo = (sendTo?: string) =>
+    onOptionsChange({
+      ...options,
+      sendTo,
     })
 
   return (
@@ -46,19 +49,19 @@ export const GoogleAnalyticsSettings = ({
         label="Tracking ID:"
         defaultValue={options?.trackingId ?? ''}
         placeholder="G-123456..."
-        onChange={handleTrackingIdChange}
+        onChange={updateTrackingId}
       />
       <TextInput
         label="Event category:"
         defaultValue={options?.category ?? ''}
         placeholder="Example: Typebot"
-        onChange={handleCategoryChange}
+        onChange={updateCategory}
       />
       <TextInput
         label="Event action:"
         defaultValue={options?.action ?? ''}
         placeholder="Example: Submit email"
-        onChange={handleActionChange}
+        onChange={updateAction}
       />
       <Accordion allowToggle>
         <AccordionItem>
@@ -72,26 +75,23 @@ export const GoogleAnalyticsSettings = ({
           </h2>
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TextInput
-              label={
-                <>
-                  Event label <Tag>Optional</Tag>:
-                </>
-              }
+              label="Event label:"
               defaultValue={options?.label ?? ''}
               placeholder="Example: Campaign Z"
-              onChange={handleLabelChange}
+              onChange={updateLabel}
             />
             <TextInput
-              label={
-                <>
-                  <FormLabel mb="0" htmlFor="value">
-                    Event value <Tag>Optional</Tag>:
-                  </FormLabel>
-                </>
-              }
+              label="Event value:"
               defaultValue={options?.value?.toString() ?? ''}
               placeholder="Example: 0"
-              onChange={handleValueChange}
+              onChange={updateValue}
+            />
+            <TextInput
+              label="Send to:"
+              moreInfoTooltip="Useful to send a conversion event to Google Ads"
+              defaultValue={options?.value?.toString() ?? ''}
+              placeholder="Example: AW-123456789"
+              onChange={updateSendTo}
             />
           </AccordionPanel>
         </AccordionItem>
