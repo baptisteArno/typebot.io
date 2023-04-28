@@ -10,7 +10,7 @@ type Props = {
 export const LoadingChunk = (props: Props) => (
   <div class="flex w-full">
     <div class="flex flex-col w-full min-w-0">
-      <div class="flex">
+      <div class="flex gap-2">
         <Show when={props.theme.chat.hostAvatar?.isEnabled}>
           <AvatarSideContainer
             hostAvatarSrc={props.theme.chat.hostAvatar?.url}
