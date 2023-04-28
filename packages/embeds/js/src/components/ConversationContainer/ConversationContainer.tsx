@@ -106,7 +106,7 @@ export const ConversationContainer = (props: Props) => {
       setHasError(true)
       props.onNewLogs?.([
         {
-          description: 'Error while sending message',
+          description: 'Failed to send the reply',
           details: error,
           status: 'error',
         },
