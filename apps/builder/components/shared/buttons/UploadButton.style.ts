@@ -24,3 +24,11 @@ export const ModalTitle = styled.div`
   font-weight: 700;
   color: rgba(48, 50, 67, 1);
 `
+
+export const ChannelSection = styled.div`
+  font-weight: 700;
+  color: rgba(196,199,207, 1);
+  font-size: .875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0 0 1rem;
+`
