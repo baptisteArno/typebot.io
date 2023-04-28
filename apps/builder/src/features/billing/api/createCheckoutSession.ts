@@ -21,7 +21,6 @@ export const createCheckoutSession = authenticatedProcedure
       email: z.string(),
       company: z.string(),
       workspaceId: z.string(),
-      prefilledEmail: z.string().optional(),
       currency: z.enum(['usd', 'eur']),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       returnUrl: z.string(),
