@@ -45,9 +45,8 @@ test.describe.parallel('Buttons input block', () => {
     await expect(page.locator('text=Item 2')).toBeHidden()
 
     await page.click('text=Preview')
-    const item3Button = page.locator('button >> text=Item 3')
-    await item3Button.click()
-    await expect(item3Button).toBeHidden()
+    await page.getByRole('button', { name: 'Item 3' }).click()
+    await expect(page.getByRole('button', { name: 'Item 3' })).toBeHidden()
     await expect(page.getByTestId('guest-bubble')).toHaveText('Item 3')
     await page.click('button[aria-label="Close"]')
 
@@ -67,8 +66,8 @@ test.describe.parallel('Buttons input block', () => {
 
     await page.click('text=Preview')
 
-    await page.locator('button >> text="Item 3"').click()
-    await page.locator('button >> text="Item 1"').click()
+    await page.getByRole('checkbox', { name: 'Item 3' }).click()
+    await page.getByRole('checkbox', { name: 'Item 1' }).click()
     await page.locator('text=Go').click()
 
     await expect(page.locator('text="Item 3, Item 1"')).toBeVisible()

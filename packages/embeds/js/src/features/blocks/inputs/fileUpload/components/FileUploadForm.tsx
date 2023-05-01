@@ -1,10 +1,12 @@
-import { SendButton, Spinner } from '@/components/SendButton'
+import { SendButton } from '@/components/SendButton'
 import { BotContext, InputSubmitContent } from '@/types'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { FileInputBlock } from '@typebot.io/schemas'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file'
 import { createSignal, Match, Show, Switch } from 'solid-js'
 import { uploadFiles } from '@typebot.io/lib'
+import { Button } from '@/components/Button'
+import { Spinner } from '@/components/Spinner'
 
 type Props = {
   context: BotContext
@@ -111,12 +113,17 @@ export const FileUploadForm = (props: Props) => {
 
   const clearFiles = () => setSelectedFiles([])
 
+  const skip = () =>
+    props.onSkip(
+      props.block.options.labels.skip ?? defaultFileInputOptions.labels.skip
+    )
+
   return (
-    <form class="flex flex-col w-full" onSubmit={handleSubmit}>
+    <form class="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <label
         for="dropzone-file"
         class={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
+          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 ' +
           (isDraggingOver() ? 'dragging-over' : '')
         }
         onDragOver={handleDragOver}
@@ -179,20 +186,10 @@ export const FileUploadForm = (props: Props) => {
         }
       >
         <div class="flex justify-end">
-          <button
-            class={
-              'py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
-            }
-            on:click={() =>
-              props.onSkip(
-                props.block.options.labels.skip ??
-                  defaultFileInputOptions.labels.skip
-              )
-            }
-          >
+          <Button on:click={skip}>
             {props.block.options.labels.skip ??
               defaultFileInputOptions.labels.skip}
-          </button>
+          </Button>
         </div>
       </Show>
       <Show
@@ -203,17 +200,12 @@ export const FileUploadForm = (props: Props) => {
         }
       >
         <div class="flex justify-end">
-          <div class="flex">
+          <div class="flex gap-2">
             <Show when={selectedFiles().length}>
-              <button
-                class={
-                  'secondary-button py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 mr-2'
-                }
-                on:click={clearFiles}
-              >
+              <Button variant="secondary" on:click={clearFiles}>
                 {props.block.options.labels.clear ??
                   defaultFileInputOptions.labels.clear}
-              </button>
+              </Button>
             </Show>
             <SendButton type="submit" disableIcon>
               {props.block.options.labels.button ===

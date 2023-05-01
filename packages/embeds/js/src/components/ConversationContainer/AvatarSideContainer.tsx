@@ -28,13 +28,13 @@ export const AvatarSideContainer = (props: Props) => {
     <div
       ref={avatarContainer}
       class={
-        'flex mr-2 mb-2 flex-shrink-0 items-center relative typebot-avatar-container ' +
+        'flex flex-shrink-0 items-center relative typebot-avatar-container ' +
         (isMobile() ? 'w-6' : 'w-10')
       }
     >
       <div
         class={
-          'absolute mb-2 flex items-center top-0' +
+          'absolute flex items-center top-0' +
           (isMobile() ? ' w-6 h-6' : ' w-10 h-10') +
           (props.hideAvatar ? ' opacity-0' : ' opacity-100')
         }

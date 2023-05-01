@@ -298,6 +298,10 @@ model ClaimableCustomPlan {
   chatsLimit   Int
   storageLimit Int
   seatsLimit   Int
+  isYearly     Boolean   @default(false)
+  companyName  String?
+  vatType      String?
+  vatValue     String?
 }
 
 model ChatSession {

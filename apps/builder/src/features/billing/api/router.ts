@@ -5,6 +5,7 @@ import { getSubscription } from './getSubscription'
 import { getUsage } from './getUsage'
 import { listInvoices } from './listInvoices'
 import { updateSubscription } from './updateSubscription'
+import { createCustomCheckoutSession } from './createCustomCheckoutSession'
 
 export const billingRouter = router({
   getBillingPortalUrl,
@@ -13,4 +14,5 @@ export const billingRouter = router({
   updateSubscription,
   getSubscription,
   getUsage,
+  createCustomCheckoutSession,
 })

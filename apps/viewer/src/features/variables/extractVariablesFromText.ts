@@ -9,7 +9,11 @@ export const extractVariablesFromText =
       const variable = variables.find(
         (variable) => variable.name === variableName
       )
-      if (!variable) return acc
+      if (
+        !variable ||
+        acc.find((accVariable) => accVariable.id === variable.id)
+      )
+        return acc
       return [...acc, variable]
     }, [])
   }

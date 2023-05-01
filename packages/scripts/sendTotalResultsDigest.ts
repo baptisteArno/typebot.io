@@ -33,7 +33,7 @@ export const sendTotalResultsDigest = async () => {
 
   console.log("Generating total results yesterday's digest...")
   const todayMidnight = new Date()
-  todayMidnight.setHours(0, 0, 0, 0)
+  todayMidnight.setUTCHours(0, 0, 0, 0)
   const yesterday = new Date(todayMidnight)
   yesterday.setDate(yesterday.getDate() - 1)
 
@@ -190,42 +190,41 @@ const getUsage = async (workspaceId: string) => {
   const now = new Date()
   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
   const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  const typebots = await prisma.typebot.findMany({
+    where: {
+      workspace: {
+        id: workspaceId,
+      },
+    },
+    select: { id: true },
+  })
+
   const [
     totalChatsUsed,
     {
       _sum: { storageUsed: totalStorageUsed },
     },
-  ] = await prisma.$transaction(async (tx) => {
-    const typebots = await tx.typebot.findMany({
+  ] = await Promise.all([
+    prisma.result.count({
       where: {
-        workspace: {
-          id: workspaceId,
+        typebotId: { in: typebots.map((typebot) => typebot.id) },
+        hasStarted: true,
+        createdAt: {
+          gte: firstDayOfMonth,
+          lt: firstDayOfNextMonth,
         },
       },
-    })
-
-    return Promise.all([
-      prisma.result.count({
-        where: {
+    }),
+    prisma.answer.aggregate({
+      where: {
+        storageUsed: { gt: 0 },
+        result: {
           typebotId: { in: typebots.map((typebot) => typebot.id) },
-          hasStarted: true,
-          createdAt: {
-            gte: firstDayOfMonth,
-            lt: firstDayOfNextMonth,
-          },
         },
-      }),
-      prisma.answer.aggregate({
-        where: {
-          storageUsed: { gt: 0 },
-          result: {
-            typebotId: { in: typebots.map((typebot) => typebot.id) },
-          },
-        },
-        _sum: { storageUsed: true },
-      }),
-    ])
-  })
+      },
+      _sum: { storageUsed: true },
+    }),
+  ])
 
   return {
     totalChatsUsed,

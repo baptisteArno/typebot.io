@@ -46,9 +46,9 @@ export const ChatChunk = (props: Props) => {
   }
 
   return (
-    <div class="flex w-full">
-      <div class="flex flex-col w-full min-w-0">
-        <div class="flex">
+    <div class="flex flex-col w-full min-w-0 gap-2">
+      <Show when={props.messages.length > 0}>
+        <div class={'flex' + (isMobile() ? ' gap-1' : ' gap-2')}>
           <Show
             when={
               props.theme.chat.hostAvatar?.isEnabled &&
@@ -60,8 +60,9 @@ export const ChatChunk = (props: Props) => {
               hideAvatar={props.hideAvatar}
             />
           </Show>
+
           <div
-            class="flex-1"
+            class="flex flex-col flex-1 gap-2"
             style={{
               'margin-right': props.theme.chat.guestAvatar?.isEnabled
                 ? isMobile()
@@ -81,22 +82,22 @@ export const ChatChunk = (props: Props) => {
             </For>
           </div>
         </div>
-        {props.input && displayedMessageIndex() === props.messages.length && (
-          <InputChatBlock
-            block={props.input}
-            inputIndex={props.inputIndex}
-            onSubmit={props.onSubmit}
-            onSkip={props.onSkip}
-            hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
-            guestAvatar={props.theme.chat.guestAvatar}
-            context={props.context}
-            isInputPrefillEnabled={
-              props.settings.general.isInputPrefillEnabled ?? true
-            }
-            hasError={props.hasError}
-          />
-        )}
-      </div>
+      </Show>
+      {props.input && displayedMessageIndex() === props.messages.length && (
+        <InputChatBlock
+          block={props.input}
+          inputIndex={props.inputIndex}
+          onSubmit={props.onSubmit}
+          onSkip={props.onSkip}
+          hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
+          guestAvatar={props.theme.chat.guestAvatar}
+          context={props.context}
+          isInputPrefillEnabled={
+            props.settings.general.isInputPrefillEnabled ?? true
+          }
+          hasError={props.hasError}
+        />
+      )}
     </div>
   )
 }

@@ -9,11 +9,11 @@ type Props = {
 
 export const GuestBubble = (props: Props) => (
   <div
-    class="flex justify-end mb-2 items-end animate-fade-in guest-container"
+    class="flex justify-end items-end animate-fade-in gap-2 guest-container"
     style={{ 'margin-left': '50px' }}
   >
     <span
-      class="px-4 py-2 mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble"
+      class="px-4 py-2 whitespace-pre-wrap max-w-full typebot-guest-bubble"
       data-testid="guest-bubble"
     >
       {props.message}

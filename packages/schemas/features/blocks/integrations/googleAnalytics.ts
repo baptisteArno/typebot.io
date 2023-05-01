@@ -8,6 +8,7 @@ export const googleAnalyticsOptionsSchema = z.object({
   action: z.string().optional(),
   label: z.string().optional(),
   value: z.number().optional(),
+  sendTo: z.string().optional(),
 })
 
 export const googleAnalyticsBlockSchema = blockBaseSchema.merge(

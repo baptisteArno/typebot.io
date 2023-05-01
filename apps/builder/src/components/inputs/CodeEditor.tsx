@@ -25,6 +25,7 @@ type Props = {
   debounceTimeout?: number
   withVariableButton?: boolean
   height?: string
+  maxHeight?: string
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
@@ -32,6 +33,7 @@ export const CodeEditor = ({
   lang,
   onChange,
   height = '250px',
+  maxHeight = '70vh',
   withVariableButton = true,
   isReadOnly = false,
   debounceTimeout = 1000,
@@ -93,9 +95,10 @@ export const CodeEditor = ({
       pos="relative"
       onMouseEnter={onOpen}
       onMouseLeave={onClose}
+      maxWidth={props.maxWidth}
       sx={{
         '& .cm-editor': {
-          maxH: '70vh',
+          maxH: maxHeight,
           outline: '0px solid transparent !important',
           rounded: 'md',
         },

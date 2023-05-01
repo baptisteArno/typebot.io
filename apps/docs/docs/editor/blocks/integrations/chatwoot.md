@@ -31,3 +31,16 @@ To find your website token, head over to Chatwoot in your Inbox settings:
 You can prefill user information by adding collected variables to the "Set user details" inputs.
 
 For example, if you set the "Email" input to "john@gmail.com" then Chatwoot will automatically associate this email to the current user.
+
+## Custom attributes
+
+You can add these custom attributes that Typebot will automatically fill in for you:
+
+### Result URL
+
+You can link the current result URL to the Chatwoot conversation by creating this custom attribute:
+
+<img
+    src="/img/blocks/integrations/chatwoot/custom-attribute.png"
+    alt="Chatwoot custom attribute"
+  />

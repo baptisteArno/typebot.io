@@ -1,5 +1,45 @@
 # Changelog
 
+<a name="2.12.3"></a>
+## 2.12.3 (2023-04-27)
+
+### Added
+
+- ✨ (buttons) Add searchable choices [[5b4a6c5](https://github.com/baptisteArno/typebot.io/commit/5b4a6c523d0608098ce0204f0416dbfbf060bb18)]
+- ✨ Add lead gen with AI template [[3b69b18](https://github.com/baptisteArno/typebot.io/commit/3b69b18601bc3b77b8b1f8780e4e147a01967cd0)]
+- 📈 Track workspace limit reached event [[c203a4e](https://github.com/baptisteArno/typebot.io/commit/c203a4e792dfa2e38c7b098d7afc1fca4a853a33)]
+- ✨ Add AB test block [[7e937e1](https://github.com/baptisteArno/typebot.io/commit/7e937e1c7cae380c3083c95b207ea9126739b1dc)]
+
+### Changed
+
+- 💄 (buttons) Improve multiple choice form UI [[124f350](https://github.com/baptisteArno/typebot.io/commit/124f350aa27fdf33063d98266169b75e8065c4c4)]
+- ♿ (sheets) Add duplicate header notice [[a03d124](https://github.com/baptisteArno/typebot.io/commit/a03d1240468dad82bd4f253995ceecf9823b025b)]
+- ⚡ (chatwoot) Add result URL custom attribute [[c09a840](https://github.com/baptisteArno/typebot.io/commit/c09a84034e462138d2bd2c95be102ffabc809438)]
+- 🚸 (date) Improve date format storage [[3529da2](https://github.com/baptisteArno/typebot.io/commit/3529da210c2415e20cd35c1861fa6d1aad684d02)]
+- 🚸 (templates) Add category and description in templates modal [[4d1fe4c](https://github.com/baptisteArno/typebot.io/commit/4d1fe4c1dee7fb79b9e47ed756100e1b1e42c81b)]
+- 🚸 (sendEmail) Allow html parsing for body with a single variable [[de432ec](https://github.com/baptisteArno/typebot.io/commit/de432ecaf7f78b7ad44b814cdcf50addb25c0b42)]
+- 🚸 (billing) Make yearly plan clearer for subscription updates [[9345b33](https://github.com/baptisteArno/typebot.io/commit/9345b33e740c7190b66404226bf82e5a84d745db)]
+
+### Fixed
+
+- 🚑 (buttons) Fix content mapping on searchable multiple items [[7896e3d](https://github.com/baptisteArno/typebot.io/commit/7896e3d732b6543fa4511f5c791429dce39705d3)]
+- 🐛 (viewer) Remove default white background when it is set to none [[bda34e3](https://github.com/baptisteArno/typebot.io/commit/bda34e38276351911fc22f5ecb340f9c5a47230f)]
+- 🐛 (condition) Greater and Less should compare list length when possible [[c77b8e7](https://github.com/baptisteArno/typebot.io/commit/c77b8e7548c515857b86968a0a7c13cc3bd7180d)]
+- 🐛 Refresh variable list on focus [[b614544](https://github.com/baptisteArno/typebot.io/commit/b61454490964a90d6c092e133aac88d9acf29405)]
+
+### Miscellaneous
+
+- 📝 Fix GTM instructions [[f51d619](https://github.com/baptisteArno/typebot.io/commit/f51d619c79f82a114ffa5d592ccc9443171584c2)]
+- 📝 Add Jump and AB test block docs [[7385e3b](https://github.com/baptisteArno/typebot.io/commit/7385e3bbbf88a3d193ff586927f0a777e6374422)]
+- 🛂 Reset isQuarantined on the first of month [[3fbd044](https://github.com/baptisteArno/typebot.io/commit/3fbd044d9284fe2d7dc01f2808a9ee2801dfd9c1)]
+- 🛂 Reset isQuarantined when upgrading workspace [[c6983c9](https://github.com/baptisteArno/typebot.io/commit/c6983c952c451eeb026302068afd8a0862673a9d)]
+- 🛂 Add isQuarantined field in workspace [[69e1c4f](https://github.com/baptisteArno/typebot.io/commit/69e1c4f20d5c878fb1a58dc4f6c048f8bc6084d0)]
+- 🩹 (telemetry) Better limit reached workspace filter [[fc56143](https://github.com/baptisteArno/typebot.io/commit/fc561430a04a6d2acf9fd9e0979b6a7f89d3468a)]
+- 📝 Add upgrade plan doc [[a4ca413](https://github.com/baptisteArno/typebot.io/commit/a4ca413c602198a1547f6c227a9329cbb0e20683)]
+- 🩹 Correctly convert totalStorageUsed for limit telemetry [[30f93e8](https://github.com/baptisteArno/typebot.io/commit/30f93e8a6f14b73d9a0ab433a0a2df1d471a27f4)]
+- 🩹 (share) Fix undefined apiHost under API instructions [[7c2ce2f](https://github.com/baptisteArno/typebot.io/commit/7c2ce2fc41f52ef96f3b1473671600f1d81fa7b6)]
+
+
 <a name="2.12.2"></a>
 ## 2.12.2 (2023-04-17)
 

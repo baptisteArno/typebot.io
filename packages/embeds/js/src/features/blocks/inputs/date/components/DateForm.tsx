@@ -24,10 +24,7 @@ export const DateForm = (props: Props) => {
             if (inputValues().from === '' && inputValues().to === '') return
             e.preventDefault()
             props.onSubmit({
-              value: `${inputValues().from}${
-                props.options?.isRange ? ` to ${inputValues().to}` : ''
-              }`,
-              label: parseReadableDate({
+              value: parseReadableDate({
                 ...inputValues(),
                 hasTime: props.options?.hasTime,
                 isRange: props.options?.isRange,
@@ -39,11 +36,11 @@ export const DateForm = (props: Props) => {
             <div
               class={
                 'flex items-center p-4 ' +
-                (props.options?.isRange ? 'pb-0' : '')
+                (props.options?.isRange ? 'pb-0 gap-2' : '')
               }
             >
               {props.options?.isRange && (
-                <p class="font-semibold mr-2">
+                <p class="font-semibold">
                   {props.options.labels?.from ?? 'From:'}
                 </p>
               )}

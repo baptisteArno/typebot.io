@@ -12,13 +12,15 @@ type Props = {
 }
 
 export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
-  const handleIsMultipleChange = (isMultipleChoice: boolean) =>
+  const updateIsMultiple = (isMultipleChoice: boolean) =>
     options && onOptionsChange({ ...options, isMultipleChoice })
-  const handleButtonLabelChange = (buttonLabel: string) =>
+  const updateIsSearchable = (isSearchable: boolean) =>
+    options && onOptionsChange({ ...options, isSearchable })
+  const updateButtonLabel = (buttonLabel: string) =>
     options && onOptionsChange({ ...options, buttonLabel })
-  const handleVariableChange = (variable?: Variable) =>
+  const updateSaveVariable = (variable?: Variable) =>
     options && onOptionsChange({ ...options, variableId: variable?.id })
-  const handleDynamicVariableChange = (variable?: Variable) =>
+  const updateDynamicDataVariable = (variable?: Variable) =>
     options && onOptionsChange({ ...options, dynamicVariableId: variable?.id })
 
   return (
@@ -26,18 +28,23 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
       <SwitchWithLabel
         label="Multiple choice?"
         initialValue={options?.isMultipleChoice ?? false}
-        onCheckChange={handleIsMultipleChange}
+        onCheckChange={updateIsMultiple}
+      />
+      <SwitchWithLabel
+        label="Is searchable?"
+        initialValue={options?.isSearchable ?? false}
+        onCheckChange={updateIsSearchable}
       />
       {options?.isMultipleChoice && (
         <TextInput
           label="Button label:"
           defaultValue={options?.buttonLabel ?? 'Send'}
-          onChange={handleButtonLabelChange}
+          onChange={updateButtonLabel}
         />
       )}
       <FormControl>
         <FormLabel>
-          Dynamic items from variable:{' '}
+          Dynamic data:{' '}
           <MoreInfoTooltip>
             If defined, buttons will be dynamically displayed based on what the
             variable contains.
@@ -45,7 +52,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.dynamicVariableId}
-          onSelectVariable={handleDynamicVariableChange}
+          onSelectVariable={updateDynamicDataVariable}
         />
       </FormControl>
       <Stack>
@@ -54,7 +61,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
-          onSelectVariable={handleVariableChange}
+          onSelectVariable={updateSaveVariable}
         />
       </Stack>
     </Stack>

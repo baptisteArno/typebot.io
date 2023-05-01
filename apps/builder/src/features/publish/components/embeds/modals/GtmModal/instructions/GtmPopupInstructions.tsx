@@ -12,7 +12,10 @@ export const GtmPopupInstructions = () => {
         On your GTM account dashboard, click on <Code>Add a new tag</Code>
       </ListItem>
       <ListItem>
-        Choose Custom <Code>HTML tag</Code> type
+        Choose <Code>Custom HTML</Code> tag type
+      </ListItem>
+      <ListItem>
+        Check <Code>Support document.write</Code>
       </ListItem>
       <ListItem>
         <Stack spacing={4}>

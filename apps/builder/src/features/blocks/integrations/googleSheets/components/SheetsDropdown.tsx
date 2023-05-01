@@ -23,7 +23,7 @@ export const SheetsDropdown = ({
         <Input value="No sheets found" isDisabled />
         <MoreInfoTooltip>
           Make sure your spreadsheet contains at least a sheet with a header
-          row.
+          row. Also make sure your header row does not contain duplicates.
         </MoreInfoTooltip>
       </HStack>
     )

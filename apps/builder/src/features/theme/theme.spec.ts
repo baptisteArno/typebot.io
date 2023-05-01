@@ -18,7 +18,7 @@ test.describe.parallel('Theme page', () => {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
-      await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
 
       // Font
       await page.getByRole('button', { name: 'Font & Background' }).click()
@@ -70,7 +70,7 @@ test.describe.parallel('Theme page', () => {
       }
 
       await page.goto(`/typebots/${typebotId}/theme`)
-      await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.click('button:has-text("Chat")')
 
       // Host avatar
@@ -81,7 +81,7 @@ test.describe.parallel('Theme page', () => {
         'input[placeholder="Paste the image link..."]',
         hostAvatarUrl
       )
-      await page.locator('button >> text="Go"').click()
+      await page.getByRole('button', { name: 'Go' }).click()
 
       await expect(page.locator('.typebot-container img')).toHaveAttribute(
         'src',
@@ -155,7 +155,7 @@ test.describe.parallel('Theme page', () => {
         '[data-testid="guest-bubbles-theme"] >> [aria-label="Pick a color"] >> nth=1'
       )
       await page.fill('input[value="#FFFFFF"]', '#264653')
-      await page.locator('button >> text="Go"').click()
+      await page.getByRole('button', { name: 'Go' }).click()
       const guestBubble = page.locator('[data-testid="guest-bubble"] >> nth=-1')
       await expect(guestBubble).toHaveCSS(
         'background-color',
@@ -173,7 +173,7 @@ test.describe.parallel('Theme page', () => {
       await page
         .locator('input[placeholder="Paste the image link..."]')
         .fill(guestAvatarUrl)
-      await page.locator('button >> text="Go"').click()
+      await page.getByRole('button', { name: 'Go' }).click()
       await expect(page.locator('.typebot-container img')).toHaveAttribute(
         'src',
         guestAvatarUrl
@@ -202,7 +202,7 @@ test.describe.parallel('Theme page', () => {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
-      await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.click('button:has-text("Custom CSS")')
       await page.fill(
         'div[role="textbox"]',
@@ -222,7 +222,7 @@ test.describe.parallel('Theme page', () => {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
-      await expect(page.locator('button >> text="Go"')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.getByRole('button', { name: 'Templates New!' }).click()
       await page.getByRole('button', { name: 'Save current theme' }).click()
       await page.getByPlaceholder('My template').fill('My awesome theme')

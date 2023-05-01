@@ -7,6 +7,7 @@ declare const gtag: (
     event_category: string | undefined
     event_label: string | undefined
     value: number | undefined
+    send_to: string | undefined
   }
 ) => void
 
@@ -39,6 +40,7 @@ export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
     event_category: options.category,
     event_label: options.label,
     value: options.value,
+    send_to: options.sendTo,
   })
 }
 
