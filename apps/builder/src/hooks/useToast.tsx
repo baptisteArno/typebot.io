@@ -17,7 +17,7 @@ export const useToast = () => {
     }: Omit<ToastProps, 'onClose'>) => {
       toast({
         position: 'top-right',
-        duration: details ? null : undefined,
+        duration: details && status === 'error' ? null : undefined,
         render: ({ onClose }) => (
           <Toast
             title={title}

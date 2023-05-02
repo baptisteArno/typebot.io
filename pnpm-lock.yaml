@@ -502,6 +502,9 @@ importers:
 
   apps/viewer:
     dependencies:
+      '@dqbd/tiktoken':
+        specifier: ^1.0.7
+        version: 1.0.7
       '@sentry/nextjs':
         specifier: 7.46.0
         version: 7.46.0(next@13.2.4)(react@18.2.0)
@@ -5226,6 +5229,10 @@ packages:
       - supports-color
       - uglify-js
       - webpack-cli
+    dev: false
+
+  /@dqbd/tiktoken@1.0.7:
+    resolution: {integrity: sha512-bhR5k5W+8GLzysjk8zTMVygQZsgvf7W1F0IlL4ZQ5ugjo5rCyiwGM5d8DYriXspytfu98tv59niang3/T+FoDw==}
     dev: false
 
   /@emotion/babel-plugin@11.10.6:
