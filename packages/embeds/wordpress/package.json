@@ -7,7 +7,7 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@prettier/plugin-php": "0.19.4",
-    "prettier": "2.8.7"
+    "prettier": "2.8.8"
   },
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",

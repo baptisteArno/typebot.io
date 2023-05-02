@@ -2019,7 +2019,15 @@
                                                     "type": "string"
                                                   },
                                                   "value": {
-                                                    "type": "number"
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "number"
+                                                      },
+                                                      {}
+                                                    ]
+                                                  },
+                                                  "sendTo": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -4589,9 +4597,6 @@
                   "workspaceId": {
                     "type": "string"
                   },
-                  "prefilledEmail": {
-                    "type": "string"
-                  },
                   "currency": {
                     "type": "string",
                     "enum": [
@@ -4978,6 +4983,72 @@
                   "required": [
                     "totalChatsUsed",
                     "totalStorageUsed"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/billing/subscription/custom-checkout": {
+      "post": {
+        "operationId": "mutation.billing.createCustomCheckoutSession",
+        "summary": "Create custom checkout session to make a workspace pay for a custom plan",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "workspaceId": {
+                    "type": "string"
+                  },
+                  "returnUrl": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "workspaceId",
+                  "returnUrl"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "checkoutUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "checkoutUrl"
                   ],
                   "additionalProperties": false
                 }

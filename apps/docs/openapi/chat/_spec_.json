@@ -1632,7 +1632,15 @@
                                                         "type": "string"
                                                       },
                                                       "value": {
-                                                        "type": "number"
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "number"
+                                                          },
+                                                          {}
+                                                        ]
+                                                      },
+                                                      "sendTo": {
+                                                        "type": "string"
                                                       }
                                                     },
                                                     "additionalProperties": false
@@ -4133,7 +4141,15 @@
                                                 "type": "string"
                                               },
                                               "value": {
-                                                "type": "number"
+                                                "anyOf": [
+                                                  {
+                                                    "type": "number"
+                                                  },
+                                                  {}
+                                                ]
+                                              },
+                                              "sendTo": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false

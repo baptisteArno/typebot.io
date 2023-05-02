@@ -15,7 +15,7 @@
     "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts"
   },
   "devDependencies": {
-    "@types/node": "18.15.11",
+    "@types/node": "18.16.3",
     "@types/prompts": "2.4.4",
     "@typebot.io/prisma": "workspace:*",
     "deep-object-diff": "1.1.9",
@@ -23,9 +23,9 @@
     "got": "12.6.0",
     "@typebot.io/schemas": "workspace:*",
     "prompts": "2.4.2",
-    "stripe": "11.17.0",
-    "tsx": "3.12.6",
-    "typescript": "5.0.3",
+    "stripe": "12.3.0",
+    "tsx": "3.12.7",
+    "typescript": "5.0.4",
     "@typebot.io/lib": "workspace:*",
     "zod": "3.21.4"
   }

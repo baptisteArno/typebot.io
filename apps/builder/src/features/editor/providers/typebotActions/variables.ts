@@ -1,7 +1,6 @@
 import { Typebot, Variable } from '@typebot.io/schemas'
-import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
-import { produce } from 'immer'
+import { Draft, produce } from 'immer'
 
 export type VariablesActions = {
   createVariable: (variable: Variable) => void
@@ -39,7 +38,7 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
 })
 
 export const deleteVariableDraft = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   variableId: string
 ) => {
   const index = typebot.variables.findIndex((v) => v.id === variableId)

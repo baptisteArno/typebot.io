@@ -249,9 +249,8 @@ test('custom plans should work', async ({ page }) => {
     description: 'Description of the deal',
   })
 
-  await page.goto('/api/stripe/custom-plan-checkout')
+  await page.goto('/typebots?claimCustomPlan=true')
 
   await expect(page.getByRole('list').getByText('$239.00')).toBeVisible()
   await expect(page.getByText('Subscribe to Acme custom plan')).toBeVisible()
-  await expect(page.getByText('Description of the deal')).toBeVisible()
 })

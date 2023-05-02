@@ -11,11 +11,10 @@ import {
   ButtonItem,
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
-import produce from 'immer'
+import { Draft, produce } from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
-import { WritableDraft } from 'immer/dist/types/types-external'
 
 type NewItem = Pick<
   ConditionItem | ButtonItem,
@@ -30,11 +29,7 @@ export type ItemsActions = {
   deleteItem: (indices: ItemIndices) => void
 }
 
-const createItem = (
-  block: WritableDraft<Block>,
-  item: NewItem,
-  itemIndex: number
-) => {
+const createItem = (block: Draft<Block>, item: NewItem, itemIndex: number) => {
   switch (block.type) {
     case LogicBlockType.CONDITION: {
       if (item.type === ItemType.CONDITION) {

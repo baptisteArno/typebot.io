@@ -6,12 +6,12 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "@udecode/plate-common": "^20.4.0",
+    "@udecode/plate-common": "^21.0.0",
     "zod": "3.21.4"
   },
   "devDependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "typescript": "5.0.3"
+    "typescript": "5.0.4"
   }
 }
