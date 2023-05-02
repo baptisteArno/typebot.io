@@ -1,4 +1,4 @@
-import { TextInput } from '@/components/inputs'
+import { NumberInput, TextInput } from '@/components/inputs'
 import {
   Accordion,
   AccordionButton,
@@ -31,10 +31,10 @@ export const GoogleAnalyticsSettings = ({
 
   const updateLabel = (label: string) => onOptionsChange({ ...options, label })
 
-  const updateValue = (value?: string) =>
+  const updateValue = (value: number | `{{${string}}}` | undefined) =>
     onOptionsChange({
       ...options,
-      value: value ? parseFloat(value) : undefined,
+      value,
     })
 
   const updateSendTo = (sendTo?: string) =>
@@ -80,16 +80,17 @@ export const GoogleAnalyticsSettings = ({
               placeholder="Example: Campaign Z"
               onChange={updateLabel}
             />
-            <TextInput
+            <NumberInput
+              direction="column"
               label="Event value:"
-              defaultValue={options?.value?.toString() ?? ''}
+              defaultValue={options?.value}
               placeholder="Example: 0"
-              onChange={updateValue}
+              onValueChange={updateValue}
             />
             <TextInput
               label="Send to:"
               moreInfoTooltip="Useful to send a conversion event to Google Ads"
-              defaultValue={options?.value?.toString() ?? ''}
+              defaultValue={options?.sendTo?.toString() ?? ''}
               placeholder="Example: AW-123456789"
               onChange={updateSendTo}
             />

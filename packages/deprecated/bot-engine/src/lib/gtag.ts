@@ -38,7 +38,7 @@ export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
   gtag('event', options.action, {
     event_category: options.category,
     event_label: options.label,
-    value: options.value,
+    value: options.value as number,
   })
 }
 
