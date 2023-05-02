@@ -1,4 +1,11 @@
-import { Flex, HStack, IconButton, Stack, Text } from '@chakra-ui/react'
+import {
+  Flex,
+  HStack,
+  IconButton,
+  Stack,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { AlertIcon, CloseIcon, InfoIcon, SmileIcon } from './icons'
 import { CodeEditor } from './inputs/CodeEditor'
 import { LanguageName } from '@uiw/codemirror-extensions-langs'
@@ -27,11 +34,13 @@ export const Toast = ({
   secondaryButton,
   onClose,
 }: ToastProps) => {
+  const bgColor = useColorModeValue('white', 'gray.800')
+
   return (
     <Flex
       p={3}
       rounded="md"
-      bgColor="white"
+      bgColor={bgColor}
       borderWidth="1px"
       shadow="sm"
       fontSize="sm"
@@ -51,6 +60,7 @@ export const Toast = ({
               isReadOnly
               value={details.content}
               lang={details.lang}
+              minWidth="300px"
               maxHeight="200px"
               maxWidth="calc(450px - 100px)"
             />
@@ -85,11 +95,12 @@ const Icon = ({
   customIcon?: React.ReactNode
   status: ToastProps['status']
 }) => {
+  const accentColor = useColorModeValue('50', '0')
   const color = parseColor(status)
   const icon = parseIcon(status, customIcon)
   return (
     <Flex
-      bgColor={`${color}.50`}
+      bgColor={`${color}.${accentColor}`}
       boxSize="40px"
       justifyContent="center"
       alignItems="center"
