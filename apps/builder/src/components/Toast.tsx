@@ -49,7 +49,7 @@ export const Toast = ({
     >
       <HStack alignItems="flex-start" pr="7" spacing="3" w="full">
         <Icon customIcon={icon} status={status} />{' '}
-        <Stack spacing={3} flex="1">
+        <Stack spacing={3} flex="1" justify="center" h="full">
           <Stack spacing={1}>
             {title && <Text fontWeight="semibold">{title}</Text>}
             {description && <Text>{description}</Text>}
