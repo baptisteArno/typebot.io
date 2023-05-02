@@ -1,4 +1,12 @@
-import { Flex, Stack, useColorModeValue } from '@chakra-ui/react'
+import {
+  Flex,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  Portal,
+  Stack,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from '@/lib/plate'
@@ -22,7 +30,6 @@ const TextBubbleEditorContent = ({
   textEditorValue,
   onClose,
 }: TextBubbleEditorContentProps) => {
-  const variableInputBg = useColorModeValue('white', 'gray.900')
   const editor = usePlateEditorRef()
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
@@ -129,24 +136,21 @@ const TextBubbleEditorContent = ({
           },
         }}
       />
-      {isVariableDropdownOpen && (
-        <Flex
-          pos="absolute"
-          ref={varDropdownRef}
-          shadow="lg"
-          rounded="md"
-          bg={variableInputBg}
-          w="250px"
-          zIndex={10}
-        >
-          <VariableSearchInput
-            initialVariableId={undefined}
-            onSelectVariable={handleVariableSelected}
-            placeholder="Search for a variable"
-            autoFocus
-          />
-        </Flex>
-      )}
+      <Popover isOpen={isVariableDropdownOpen} isLazy>
+        <PopoverAnchor>
+          <Flex pos="absolute" ref={varDropdownRef} />
+        </PopoverAnchor>
+        <Portal>
+          <PopoverContent>
+            <VariableSearchInput
+              initialVariableId={undefined}
+              onSelectVariable={handleVariableSelected}
+              placeholder="Search for a variable"
+              autoFocus
+            />
+          </PopoverContent>
+        </Portal>
+      </Popover>
     </Stack>
   )
 }
