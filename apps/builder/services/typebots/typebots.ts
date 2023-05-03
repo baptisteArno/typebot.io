@@ -388,7 +388,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
-    case BubbleStepType.IMAGE:
+    case BubbleStepType.MEDIA:
       return defaultImageBubbleContent
     case BubbleStepType.VIDEO:
       return defaultVideoBubbleContent

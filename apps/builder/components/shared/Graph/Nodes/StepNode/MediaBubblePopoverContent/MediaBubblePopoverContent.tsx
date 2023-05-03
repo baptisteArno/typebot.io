@@ -28,7 +28,7 @@ export const MediaBubblePopoverContent = (props: Props) => {
     <Portal>
       <PopoverContent
         onMouseDown={handleMouseDown}
-        w={props.step.type === BubbleStepType.IMAGE ? '500px' : '400px'}
+        w={props.step.type === BubbleStepType.MEDIA ? '500px' : '400px'}
       >
         <PopoverArrow />
         <PopoverBody ref={ref} shadow="lg">
@@ -43,7 +43,7 @@ export const MediaBubbleContent = ({ step, onContentChange }: Props) => {
   const handleImageUrlChange = (url: string, type: string, name: string, size: number) => onContentChange({ url, type, name, size })
 
   switch (step.type) {
-    case BubbleStepType.IMAGE: {
+    case BubbleStepType.MEDIA: {
       return (
         <ImageUploadContent
           url={step.content?.url}

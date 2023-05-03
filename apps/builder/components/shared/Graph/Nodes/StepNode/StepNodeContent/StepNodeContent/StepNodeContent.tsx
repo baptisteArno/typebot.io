@@ -44,7 +44,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case BubbleStepType.TEXT: {
       return <TextBubbleContent step={step} />
     }
-    case BubbleStepType.IMAGE: {
+    case BubbleStepType.MEDIA: {
       return <ImageBubbleContent step={step} />
     }
     case InputStepType.TEXT: {

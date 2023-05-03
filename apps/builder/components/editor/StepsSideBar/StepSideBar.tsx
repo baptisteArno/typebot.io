@@ -85,6 +85,7 @@ export const StepsSideBar = () => {
     return (
       type !== BubbleStepType.EMBED &&
       type !== BubbleStepType.VIDEO &&
+      type !== BubbleStepType.IMAGE &&
       type !== InputStepType.URL &&
       type !== InputStepType.PAYMENT &&
       type !== InputStepType.ASK_NAME &&
