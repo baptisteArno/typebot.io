@@ -33,7 +33,7 @@
     "eslint-config-custom": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "react": "18.2.0",
-    "rollup": "3.21.3",
+    "rollup": "3.20.2",
     "rollup-plugin-typescript-paths": "1.4.0",
     "@typebot.io/tsconfig": "workspace:*",
     "tslib": "2.5.0",

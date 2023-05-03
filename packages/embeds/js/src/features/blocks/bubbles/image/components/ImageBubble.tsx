@@ -50,6 +50,8 @@ export const ImageBubble = (props: Props) => {
         'max-height': '512px',
         height: isTyping() ? '32px' : 'auto',
       }}
+      elementtiming={'Bubble image'}
+      fetchpriority={'high'}
     />
   )
 

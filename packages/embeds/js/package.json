@@ -33,7 +33,7 @@
     "eslint-plugin-solid": "0.12.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
-    "rollup": "3.21.3",
+    "rollup": "3.20.2",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-typescript-paths": "1.4.0",
     "tailwindcss": "3.3.2",
