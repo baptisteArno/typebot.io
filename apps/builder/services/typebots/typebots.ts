@@ -46,6 +46,7 @@ import {
   defaultRequestButtons,
   OfficeHourStep,
   defaultOfficeHoursOptions,
+  defaultMediaBubbleContent,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -389,7 +390,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
     case BubbleStepType.MEDIA:
-      return defaultImageBubbleContent
+      return defaultMediaBubbleContent
     case BubbleStepType.VIDEO:
       return defaultVideoBubbleContent
     case BubbleStepType.EMBED:

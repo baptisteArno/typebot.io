@@ -100,7 +100,7 @@ export const defaultImageBubbleContent: ImageBubbleContent = {
 export const defaultMediaBubbleContent: MediaBubbleContent = {
   name: '',
   size: 1,
-  type: ''
+  type: 'media'
 }
 
 export const defaultVideoBubbleContent: VideoBubbleContent = {}
