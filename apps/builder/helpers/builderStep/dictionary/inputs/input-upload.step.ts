@@ -24,7 +24,7 @@ const templateUploadBot = (
         plainText: `${message}`,
       },
     } as DraggableStep,
-    parseNewStep(BubbleStepType.IMAGE, blockId),
+    parseNewStep(BubbleStepType.MEDIA, blockId),
   ]
   return UploadStep.reverse()
 }

@@ -343,6 +343,7 @@
     "inbox-bot-disabled": FeatureFlagsProps,
     "commerce-enabled": FeatureFlagsProps,
     "use-new-bot-builder": FeatureFlagsProps,
+    "responsible-contact-enabled": FeatureFlagsProps
 }
 
   export type CollaborationType = (typeof CollaborationType)[keyof typeof CollaborationType]

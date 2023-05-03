@@ -45,7 +45,8 @@ import {
   OctaBubbleStepContent,
   defaultPaymentInputOptions,
   defaultRequestOptions,
-  defaultRequestButtons
+  defaultRequestButtons,
+  defaultMediaBubbleContent
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -328,8 +329,8 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
-    case BubbleStepType.IMAGE:
-      return defaultImageBubbleContent
+    case BubbleStepType.MEDIA:
+      return defaultMediaBubbleContent
     case BubbleStepType.VIDEO:
       return defaultVideoBubbleContent
     case BubbleStepType.EMBED:

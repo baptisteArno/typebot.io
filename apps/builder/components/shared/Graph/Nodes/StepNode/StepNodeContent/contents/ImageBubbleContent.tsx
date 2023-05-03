@@ -1,6 +1,6 @@
 import { Box, Text, Image } from '@chakra-ui/react'
 import { UploadFileIcon } from 'assets/icons';
-import { ImageBubbleStep } from 'models'
+import { MediaBubbleStep } from 'models'
 
 type RenderProps = {
   url: string;
@@ -35,7 +35,7 @@ const RenderContent = ({ url, containsVariables }: RenderProps) => {
   )
 }
 
-export const ImageBubbleContent = ({ step }: { step: ImageBubbleStep }) => {
+export const ImageBubbleContent = ({ step }: { step: MediaBubbleStep }) => {
   const containsVariables =
     step.content?.url?.includes('{{') && step.content.url.includes('}}')
   return !step.content?.url ? (
