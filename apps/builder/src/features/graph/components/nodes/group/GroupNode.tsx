@@ -257,7 +257,7 @@ const NonMemoizedDraggableGroupNode = ({
               isStartGroup={isStartGroup}
             />
           )}
-          {!isReadOnly && (
+          {!isReadOnly && !isStartGroup && (
             <SlideFade
               in={isFocused}
               style={{
