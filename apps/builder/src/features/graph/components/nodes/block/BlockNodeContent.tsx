@@ -158,15 +158,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       )
     }
     case IntegrationBlockType.GOOGLE_ANALYTICS: {
-      return (
-        <GoogleAnalyticsNodeBody
-          action={
-            block.options?.action
-              ? `Track "${block.options?.action}" `
-              : undefined
-          }
-        />
-      )
+      return <GoogleAnalyticsNodeBody action={block.options?.action} />
     }
     case IntegrationBlockType.WEBHOOK: {
       return <WebhookContent block={block} />
