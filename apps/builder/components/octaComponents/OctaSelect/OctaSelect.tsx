@@ -10,15 +10,15 @@ import {
 } from './OctaSelect.style'
 import { OctaSelectProps, OptionProps } from './OctaSelect.type';
 
-const Option = ({ value, children, key, isTitle, disabled, onClick, selected }: OptionProps) => {
+const Option = ({ value, children, optionKey, isTitle, disabled, onClick, selected }: OptionProps) => {
   const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
     if ((!isTitle && !disabled) && onClick) {
       onClick(e)
-    };
+    }
   }
   return (
     <OptionItem
-      key={key}
+      key={optionKey}
       data-value={value}
       data-istitle={isTitle}
       data-disabled={!!isTitle || disabled}
@@ -94,7 +94,7 @@ const OctaSelect = (props: OctaSelectProps) => {
           <>
             {getOptions().map((option, id) => (
               <Option
-                key={id}
+                key={option.key}
                 value={option.value}
                 selected={selected}
                 onClick={() => handleChangeFind(option)}
