@@ -12,6 +12,7 @@ import type {
   TextInputBlock,
   Theme,
   UrlInputBlock,
+  PictureChoiceBlock,
 } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
 import { GuestBubble } from './bubbles/GuestBubble'
@@ -30,8 +31,8 @@ import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
 import { MultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/MultipleChoicesForm'
 import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
-import { SearchableButtons } from '@/features/blocks/inputs/buttons/components/SearchableButtons'
-import { SearchableMultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/SearchableMultipleChoicesForm'
+import { SinglePictureChoice } from '@/features/blocks/inputs/pictureChoice/SinglePictureChoice'
+import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/MultiplePictureChoice'
 
 type Props = {
   block: NonNullable<ChatReply['input']>
@@ -165,42 +166,40 @@ const Input = (props: {
         {(block) => (
           <Switch>
             <Match when={!block.options.isMultipleChoice}>
-              <Switch>
-                <Match when={block.options.isSearchable}>
-                  <SearchableButtons
-                    inputIndex={props.inputIndex}
-                    defaultItems={block.items}
-                    onSubmit={onSubmit}
-                  />
-                </Match>
-                <Match when={!block.options.isSearchable}>
-                  <Buttons
-                    inputIndex={props.inputIndex}
-                    items={block.items}
-                    onSubmit={onSubmit}
-                  />
-                </Match>
-              </Switch>
+              <Buttons
+                inputIndex={props.inputIndex}
+                defaultItems={block.items}
+                options={block.options}
+                onSubmit={onSubmit}
+              />
             </Match>
             <Match when={block.options.isMultipleChoice}>
-              <Switch>
-                <Match when={block.options.isSearchable}>
-                  <SearchableMultipleChoicesForm
-                    inputIndex={props.inputIndex}
-                    defaultItems={block.items}
-                    options={block.options}
-                    onSubmit={onSubmit}
-                  />
-                </Match>
-                <Match when={!block.options.isSearchable}>
-                  <MultipleChoicesForm
-                    inputIndex={props.inputIndex}
-                    items={block.items}
-                    options={block.options}
-                    onSubmit={onSubmit}
-                  />
-                </Match>
-              </Switch>
+              <MultipleChoicesForm
+                inputIndex={props.inputIndex}
+                defaultItems={block.items}
+                options={block.options}
+                onSubmit={onSubmit}
+              />
+            </Match>
+          </Switch>
+        )}
+      </Match>
+      <Match when={isPictureChoiceBlock(props.block)} keyed>
+        {(block) => (
+          <Switch>
+            <Match when={!block.options.isMultipleChoice}>
+              <SinglePictureChoice
+                defaultItems={block.items}
+                options={block.options}
+                onSubmit={onSubmit}
+              />
+            </Match>
+            <Match when={block.options.isMultipleChoice}>
+              <MultiplePictureChoice
+                defaultItems={block.items}
+                options={block.options}
+                onSubmit={onSubmit}
+              />
             </Match>
           </Switch>
         )}
@@ -240,3 +239,8 @@ const isButtonsBlock = (
   block: ChatReply['input']
 ): ChoiceInputBlock | undefined =>
   block?.type === InputBlockType.CHOICE ? block : undefined
+
+const isPictureChoiceBlock = (
+  block: ChatReply['input']
+): PictureChoiceBlock | undefined =>
+  block?.type === InputBlockType.PICTURE_CHOICE ? block : undefined

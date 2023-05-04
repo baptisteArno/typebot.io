@@ -30,7 +30,7 @@ export const HelpDocButton = ({ blockType }: HelpDocButtonProps) => {
   )
 }
 
-const getHelpDocUrl = (blockType: BlockWithOptions['type']): string | null => {
+const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
   switch (blockType) {
     case LogicBlockType.TYPEBOT_LINK:
       return 'https://docs.typebot.io/editor/blocks/logic/typebot-link'
@@ -76,7 +76,15 @@ const getHelpDocUrl = (blockType: BlockWithOptions['type']): string | null => {
       return 'https://docs.typebot.io/editor/blocks/integrations/pabbly'
     case IntegrationBlockType.WEBHOOK:
       return 'https://docs.typebot.io/editor/blocks/integrations/webhook'
-    default:
-      return null
+    case InputBlockType.PICTURE_CHOICE:
+      return 'https://docs.typebot.io/editor/blocks/inputs/picture-choice'
+    case IntegrationBlockType.OPEN_AI:
+      return 'https://docs.typebot.io/editor/blocks/integrations/openai'
+    case IntegrationBlockType.MAKE_COM:
+      return 'https://docs.typebot.io/editor/blocks/integrations/make-com'
+    case LogicBlockType.AB_TEST:
+      return 'https://docs.typebot.io/editor/blocks/logic/abTest'
+    case LogicBlockType.JUMP:
+      return 'https://docs.typebot.io/editor/blocks/logic/jump'
   }
 }

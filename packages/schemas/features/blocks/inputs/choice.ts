@@ -11,14 +11,16 @@ export const choiceInputOptionsSchema = optionBaseSchema.merge(
     buttonLabel: z.string(),
     dynamicVariableId: z.string().optional(),
     isSearchable: z.boolean().optional(),
+    searchInputPlaceholder: z.string().optional(),
   })
 )
 
-export const defaultChoiceInputOptions: ChoiceInputOptions = {
+export const defaultChoiceInputOptions = {
   buttonLabel: defaultButtonLabel,
+  searchInputPlaceholder: 'Filter the options...',
   isMultipleChoice: false,
   isSearchable: false,
-}
+} as const
 
 export const buttonItemSchema = itemBaseSchema.merge(
   z.object({

@@ -76,7 +76,7 @@ test.describe.parallel('Theme page', () => {
       // Host avatar
       await expect(page.locator('[data-testid="default-avatar"]')).toBeVisible()
       await page.click('[data-testid="default-avatar"]')
-      await page.click('button:has-text("Embed link")')
+      await page.click('button:has-text("Link")')
       await page.fill(
         'input[placeholder="Paste the image link..."]',
         hostAvatarUrl
@@ -169,7 +169,7 @@ test.describe.parallel('Theme page', () => {
         page.locator('[data-testid="default-avatar"] >> nth=-1')
       ).toBeVisible()
       await page.click('[data-testid="default-avatar"]')
-      await page.click('button:has-text("Embed link")')
+      await page.click('button:has-text("Link")')
       await page
         .locator('input[placeholder="Paste the image link..."]')
         .fill(guestAvatarUrl)

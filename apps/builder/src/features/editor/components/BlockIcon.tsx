@@ -38,6 +38,7 @@ import { RedirectIcon } from '@/features/blocks/logic/redirect/components/Redire
 import { SetVariableIcon } from '@/features/blocks/logic/setVariable/components/SetVariableIcon'
 import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/TypebotLinkIcon'
 import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
+import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -72,6 +73,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <PhoneInputIcon color={orange} {...props} />
     case InputBlockType.CHOICE:
       return <ButtonsInputIcon color={orange} {...props} />
+    case InputBlockType.PICTURE_CHOICE:
+      return <PictureChoiceIcon color={orange} {...props} />
     case InputBlockType.PAYMENT:
       return <PaymentInputIcon color={orange} {...props} />
     case InputBlockType.RATING:

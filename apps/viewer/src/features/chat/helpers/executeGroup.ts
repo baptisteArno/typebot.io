@@ -21,6 +21,7 @@ import { executeIntegration } from './executeIntegration'
 import { injectVariableValuesInButtonsInputBlock } from '@/features/blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { computePaymentInputRuntimeOptions } from '@/features/blocks/inputs/payment/computePaymentInputRuntimeOptions'
+import { injectVariableValuesInPictureChoiceBlock } from '@/features/blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
 
 export const executeGroup =
   (
@@ -184,6 +185,11 @@ const injectVariablesValueInBlock =
         return injectVariableValuesInButtonsInputBlock(state.typebot.variables)(
           block
         )
+      }
+      case InputBlockType.PICTURE_CHOICE: {
+        return injectVariableValuesInPictureChoiceBlock(
+          state.typebot.variables
+        )(block)
       }
       default: {
         return deepParseVariables(state.typebot.variables)({

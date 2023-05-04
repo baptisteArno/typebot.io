@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
-type SwitchWithLabelProps = {
+export type SwitchWithLabelProps = {
   label: string
   initialValue: boolean
   moreInfoContent?: string

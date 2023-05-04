@@ -43,18 +43,19 @@ import {
   ItemType,
   LogicBlockType,
   defaultAbTestOptions,
+  BlockWithItems,
 } from '@typebot.io/schemas'
+import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 
 const parseDefaultItems = (
-  type:
-    | LogicBlockType.CONDITION
-    | InputBlockType.CHOICE
-    | LogicBlockType.AB_TEST,
+  type: BlockWithItems['type'],
   blockId: string
 ): Item[] => {
   switch (type) {
     case InputBlockType.CHOICE:
       return [{ id: createId(), blockId, type: ItemType.BUTTON }]
+    case InputBlockType.PICTURE_CHOICE:
+      return [{ id: createId(), blockId, type: ItemType.PICTURE_CHOICE }]
     case LogicBlockType.CONDITION:
       return [
         {
@@ -103,6 +104,8 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
       return defaultUrlInputOptions
     case InputBlockType.CHOICE:
       return defaultChoiceInputOptions
+    case InputBlockType.PICTURE_CHOICE:
+      return defaultPictureChoiceOptions
     case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions
     case InputBlockType.RATING:

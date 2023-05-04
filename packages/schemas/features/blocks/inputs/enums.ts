@@ -6,6 +6,7 @@ export enum InputBlockType {
   DATE = 'date input',
   PHONE = 'phone number input',
   CHOICE = 'choice input',
+  PICTURE_CHOICE = 'picture choice input',
   PAYMENT = 'payment input',
   RATING = 'rating input',
   FILE = 'file input',

@@ -109,6 +109,7 @@ export const ItemNode = ({
                 }}
                 pos="absolute"
                 right="-49px"
+                bottom="9px"
                 pointerEvents="all"
               />
             )}

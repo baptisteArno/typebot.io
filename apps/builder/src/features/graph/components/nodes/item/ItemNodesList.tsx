@@ -75,7 +75,7 @@ export const ItemNodesList = ({
   }, [block.id, mouseOverBlock?.id, showPlaceholders])
 
   const handleMouseMoveOnBlock = (event: MouseEvent) => {
-    if (!isDraggingOnCurrentBlock) return
+    if (!isDraggingOnCurrentBlock || !showPlaceholders) return
     const index = computeNearestPlaceholderIndex(event.pageY, placeholderRefs)
     setExpandedPlaceholderIndex(index)
   }

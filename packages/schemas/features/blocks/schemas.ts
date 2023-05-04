@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { ZodDiscriminatedUnionOption, z } from 'zod'
 import { BubbleBlockType } from './bubbles/enums'
-import { ChoiceInputBlock, choiceInputSchema } from './inputs/choice'
+import { choiceInputSchema } from './inputs/choice'
 import { InputBlockType } from './inputs/enums'
 import { IntegrationBlockType } from './integrations/enums'
 import { ConditionBlock, conditionBlockSchema } from './logic/condition'
@@ -43,9 +43,10 @@ import {
   typebotLinkBlockSchema,
   waitBlockSchema,
   abTestBlockSchema,
-  AbTestBlock,
 } from './logic'
 import { jumpBlockSchema } from './logic/jump'
+import { pictureChoiceBlockSchema } from './inputs/pictureChoice'
+import { Item } from '../items'
 
 export type DraggableBlock =
   | BubbleBlock
@@ -66,10 +67,7 @@ export type DraggableBlockType =
   | LogicBlockType
   | IntegrationBlockType
 
-export type BlockWithOptions =
-  | InputBlock
-  | Exclude<LogicBlock, ConditionBlock>
-  | IntegrationBlock
+export type BlockWithOptions = Extract<Block, { options: any }>
 
 export type BlockWithOptionsType =
   | InputBlockType
@@ -81,8 +79,6 @@ export type BlockOptions =
   | LogicBlockOptions
   | IntegrationBlockOptions
 
-export type BlockWithItems = ConditionBlock | ChoiceInputBlock | AbTestBlock
-
 export type BlockBase = z.infer<typeof blockBaseSchema>
 
 export type BlockIndices = {
@@ -90,18 +86,7 @@ export type BlockIndices = {
   blockIndex: number
 }
 
-const bubbleBlockSchema = z.discriminatedUnion('type', [
-  textBubbleBlockSchema,
-  imageBubbleBlockSchema,
-  videoBubbleBlockSchema,
-  embedBubbleBlockSchema,
-  audioBubbleBlockSchema,
-])
-
-export type BubbleBlock = z.infer<typeof bubbleBlockSchema>
-export type BubbleBlockContent = BubbleBlock['content']
-
-export const inputBlockSchema = z.discriminatedUnion('type', [
+export const inputBlockSchemas = [
   textInputSchema,
   choiceInputSchema,
   emailInputSchema,
@@ -112,12 +97,17 @@ export const inputBlockSchema = z.discriminatedUnion('type', [
   paymentInputSchema,
   ratingInputBlockSchema,
   fileInputStepSchema,
-])
+  pictureChoiceBlockSchema,
+] as const
 
-export type InputBlock = z.infer<typeof inputBlockSchema>
-export type InputBlockOptions = InputBlock['options']
-
-export const logicBlockSchema = z.discriminatedUnion('type', [
+export const blockSchema = z.discriminatedUnion('type', [
+  startBlockSchema,
+  textBubbleBlockSchema,
+  imageBubbleBlockSchema,
+  videoBubbleBlockSchema,
+  embedBubbleBlockSchema,
+  audioBubbleBlockSchema,
+  ...inputBlockSchemas,
   scriptBlockSchema,
   conditionBlockSchema,
   redirectBlockSchema,
@@ -126,19 +116,6 @@ export const logicBlockSchema = z.discriminatedUnion('type', [
   waitBlockSchema,
   jumpBlockSchema,
   abTestBlockSchema,
-])
-
-export type LogicBlock = z.infer<typeof logicBlockSchema>
-
-export type LogicBlockOptions = LogicBlock extends
-  | {
-      options?: infer Options
-    }
-  | {}
-  ? Options
-  : never
-
-export const integrationBlockSchema = z.discriminatedUnion('type', [
   chatwootBlockSchema,
   googleAnalyticsBlockSchema,
   googleSheetsBlockSchema,
@@ -150,15 +127,24 @@ export const integrationBlockSchema = z.discriminatedUnion('type', [
   zapierBlockSchema,
 ])
 
-export type IntegrationBlock = z.infer<typeof integrationBlockSchema>
+export type Block = z.infer<typeof blockSchema>
+
+export type BubbleBlock = Extract<Block, { type: BubbleBlockType }>
+export type BubbleBlockContent = BubbleBlock['content']
+
+export type InputBlock = Extract<Block, { type: InputBlockType }>
+export type InputBlockOptions = InputBlock['options']
+
+export type LogicBlock = Extract<Block, { type: LogicBlockType }>
+export type LogicBlockOptions = LogicBlock extends
+  | {
+      options?: infer Options
+    }
+  | {}
+  ? Options
+  : never
+
+export type IntegrationBlock = Extract<Block, { type: IntegrationBlockType }>
 export type IntegrationBlockOptions = IntegrationBlock['options']
 
-export const blockSchema = z.union([
-  startBlockSchema,
-  bubbleBlockSchema,
-  inputBlockSchema,
-  logicBlockSchema,
-  integrationBlockSchema,
-])
-
-export type Block = z.infer<typeof blockSchema>
+export type BlockWithItems = Extract<Block, { items: Item[] }>

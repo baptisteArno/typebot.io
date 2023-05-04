@@ -48,7 +48,6 @@ test.describe.parallel('Image bubble block', () => {
       await page.goto(`/typebots/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
-      await page.click('text=Embed link')
       await page.fill(
         'input[placeholder="Paste the image link..."]',
         unsplashImageSrc

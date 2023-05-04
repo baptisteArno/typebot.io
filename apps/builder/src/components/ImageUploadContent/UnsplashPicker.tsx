@@ -2,6 +2,7 @@
 import {
   Alert,
   AlertIcon,
+  Box,
   Flex,
   Grid,
   GridItem,
@@ -157,7 +158,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
       )}
       <Stack overflowY="scroll" maxH="400px" ref={scrollContainer}>
         {images.length > 0 && (
-          <Grid templateColumns="repeat(4, 1fr)" columnGap={2} rowGap={3}>
+          <Grid templateColumns="repeat(3, 1fr)" columnGap={2} rowGap={3}>
             {images.map((image, index) => (
               <GridItem
                 as={Stack}
@@ -190,11 +191,17 @@ type UnsplashImageProps = {
 }
 
 const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
-  const linkColor = useColorModeValue('gray.500', 'gray.400')
+  const [isImageHovered, setIsImageHovered] = useState(false)
+
   const { user, urls, alt_description } = image
 
   return (
-    <>
+    <Box
+      pos="relative"
+      onMouseEnter={() => setIsImageHovered(true)}
+      onMouseLeave={() => setIsImageHovered(false)}
+      h="full"
+    >
       <Image
         objectFit="cover"
         src={urls.thumb}
@@ -204,17 +211,28 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         h="100%"
         cursor="pointer"
       />
-      <TextLink
-        fontSize="xs"
-        isExternal
-        href={`https://unsplash.com/@${user.username}?utm_source=${env(
-          'UNSPLASH_APP_NAME'
-        )}&utm_medium=referral`}
-        noOfLines={1}
-        color={linkColor}
+      <Box
+        pos="absolute"
+        bottom={0}
+        left={0}
+        bgColor="rgba(0,0,0,.5)"
+        px="2"
+        rounded="md"
+        opacity={isImageHovered ? 1 : 0}
+        transition="opacity .2s ease-in-out"
       >
-        {user.name}
-      </TextLink>
-    </>
+        <TextLink
+          fontSize="xs"
+          isExternal
+          href={`https://unsplash.com/@${user.username}?utm_source=${env(
+            'UNSPLASH_APP_NAME'
+          )}&utm_medium=referral`}
+          noOfLines={1}
+          color="white"
+        >
+          {user.name}
+        </TextLink>
+      </Box>
+    </Box>
   )
 }
