@@ -3,24 +3,24 @@ import {
   Item,
   BlockWithItems,
   defaultConditionContent,
-  ItemType,
   Block,
   LogicBlockType,
   InputBlockType,
   ConditionItem,
   ButtonItem,
+  PictureChoiceItem,
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import { Draft, produce } from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
+import { DraggabbleItem } from '@/features/graph/providers/GraphDndProvider'
 
-type NewItem = Pick<
-  ConditionItem | ButtonItem,
-  'blockId' | 'outgoingEdgeId' | 'type'
-> &
-  Partial<ConditionItem | ButtonItem>
+type NewItem = Pick<DraggabbleItem, 'blockId' | 'outgoingEdgeId' | 'type'> &
+  Partial<DraggabbleItem>
+
+type BlockWithCreatableItems = Extract<Block, { items: DraggabbleItem[] }>
 
 export type ItemsActions = {
   createItem: (item: NewItem, indices: ItemIndices) => void
@@ -29,31 +29,40 @@ export type ItemsActions = {
   deleteItem: (indices: ItemIndices) => void
 }
 
-const createItem = (block: Draft<Block>, item: NewItem, itemIndex: number) => {
+const createItem = (
+  block: Draft<BlockWithCreatableItems>,
+  item: NewItem,
+  itemIndex: number
+): Item => {
   switch (block.type) {
     case LogicBlockType.CONDITION: {
-      if (item.type === ItemType.CONDITION) {
-        const newItem = {
-          ...item,
-          id: 'id' in item && item.id ? item.id : createId(),
-          content: item.content ?? defaultConditionContent,
-        }
-        block.items.splice(itemIndex, 0, newItem)
-        return newItem
+      const baseItem = item as ConditionItem
+      const newItem = {
+        ...baseItem,
+        id: 'id' in item && item.id ? item.id : createId(),
+        content: baseItem.content ?? defaultConditionContent,
       }
-      break
+      block.items.splice(itemIndex, 0, newItem)
+      return newItem
     }
     case InputBlockType.CHOICE: {
-      if (item.type === ItemType.BUTTON) {
-        const newItem = {
-          ...item,
-          id: 'id' in item && item.id ? item.id : createId(),
-          content: item.content,
-        }
-        block.items.splice(itemIndex, 0, newItem)
-        return newItem
+      const baseItem = item as ButtonItem
+      const newItem = {
+        ...baseItem,
+        id: 'id' in item && item.id ? item.id : createId(),
+        content: baseItem.content,
       }
-      break
+      block.items.splice(itemIndex, 0, newItem)
+      return newItem
+    }
+    case InputBlockType.PICTURE_CHOICE: {
+      const baseItem = item as PictureChoiceItem
+      const newItem = {
+        ...baseItem,
+        id: 'id' in baseItem && item.id ? item.id : createId(),
+      }
+      block.items.splice(itemIndex, 0, newItem)
+      return newItem
     }
   }
 }
@@ -65,7 +74,9 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[blockIndex]
+        const block = typebot.groups[groupIndex].blocks[
+          blockIndex
+        ] as BlockWithCreatableItems
 
         const newItem = createItem(block, item, itemIndex)
 

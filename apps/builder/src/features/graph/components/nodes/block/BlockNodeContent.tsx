@@ -40,6 +40,7 @@ import { ItemNodesList } from '../item/ItemNodesList'
 import { GoogleAnalyticsNodeBody } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeBody'
 import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody'
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
+import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 
 type Props = {
   block: Block | StartBlock
@@ -97,6 +98,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case InputBlockType.CHOICE: {
       return <ButtonsBlockNode block={block} indices={indices} />
+    }
+    case InputBlockType.PICTURE_CHOICE: {
+      return <PictureChoiceNode block={block} indices={indices} />
     }
     case InputBlockType.PHONE: {
       return (

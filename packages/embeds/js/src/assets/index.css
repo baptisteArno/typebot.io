@@ -297,3 +297,40 @@ textarea {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.typebot-picture-button {
+  color: var(--typebot-button-color);
+  background-color: var(--typebot-button-bg-color);
+  border-radius: var(--typebot-border-radius);
+  transition: all 0.3s ease;
+  width: 236px;
+}
+
+.typebot-picture-button > img,
+.typebot-selectable-picture > img {
+  border-radius: var(--typebot-border-radius) var(--typebot-border-radius) 0 0;
+  min-width: 200px;
+  width: 100%;
+  max-height: 200px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.typebot-selectable-picture {
+  border: 1px solid rgba(var(--typebot-button-bg-color-rgb), 0.25);
+  border-radius: var(--typebot-border-radius);
+  color: var(--typebot-container-color);
+  background-color: rgba(var(--typebot-button-bg-color-rgb), 0.08);
+  transition: all 0.3s ease;
+  width: 236px;
+}
+
+.typebot-selectable-picture:hover {
+  background-color: rgba(var(--typebot-button-bg-color-rgb), 0.12);
+  border-color: rgba(var(--typebot-button-bg-color-rgb), 0.3);
+}
+
+.typebot-selectable-picture.selected {
+  background-color: rgba(var(--typebot-button-bg-color-rgb), 0.18);
+  border-color: rgba(var(--typebot-button-bg-color-rgb), 0.35);
+}

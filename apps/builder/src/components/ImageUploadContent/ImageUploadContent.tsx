@@ -57,7 +57,7 @@ export const ImageUploadContent = ({
           onClick={() => setCurrentTab('link')}
           size="sm"
         >
-          Embed link
+          Link
         </Button>
         <Button
           variant={currentTab === 'upload' ? 'solid' : 'ghost'}

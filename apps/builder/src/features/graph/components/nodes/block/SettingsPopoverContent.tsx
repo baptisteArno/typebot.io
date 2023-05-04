@@ -46,6 +46,7 @@ import { PhoneInputSettings } from '@/features/blocks/inputs/phone/components/Ph
 import { GoogleSheetsSettings } from '@/features/blocks/integrations/googleSheets/components/GoogleSheetsSettings'
 import { ChatwootSettings } from '@/features/blocks/integrations/chatwoot/components/ChatwootSettings'
 import { AbTestSettings } from '@/features/blocks/logic/abTest/components/AbTestSettings'
+import { PictureChoiceSettings } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -155,6 +156,14 @@ export const BlockSettings = ({
     case InputBlockType.CHOICE: {
       return (
         <ButtonsBlockSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case InputBlockType.PICTURE_CHOICE: {
+      return (
+        <PictureChoiceSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

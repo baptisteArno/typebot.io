@@ -3,6 +3,7 @@ import {
   BubbleBlockType,
   ComparisonOperators,
   InputBlockType,
+  ItemType,
   LogicalOperator,
   LogicBlockType,
   StartTypebot,
@@ -292,7 +293,7 @@ export const leadGenerationTypebot: StartTypebot = {
             {
               id: 'clckrlksq00113b6sz8naxdwx',
               blockId: 'clckrlksq00103b6s3exi90al',
-              type: 1,
+              type: ItemType.CONDITION,
               content: {
                 comparisons: [
                   {
@@ -323,7 +324,7 @@ export const leadGenerationTypebot: StartTypebot = {
             {
               id: 'clckrm1zr001a3b6s1hlfm2jh',
               blockId: 'clckrm1zr00193b6szpz37plc',
-              type: 1,
+              type: ItemType.CONDITION,
               content: {
                 comparisons: [
                   {
