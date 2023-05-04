@@ -58,12 +58,16 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Select an operation')
     await page.click('text=Update a row')
 
-    await page.click('text=Add a value')
+    await page.getByRole('button', { name: 'Row(s) to update' }).click()
+    await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.click('text=Select a column')
     await page.click('button >> text="Email"')
+    await page.getByRole('button', { name: 'Select an operator' }).click()
+    await page.getByRole('menuitem', { name: 'Equal to' }).click()
     await page.click('[aria-label="Insert a variable"]')
     await page.click('button >> text="Email" >> nth=1')
 
+    await page.getByRole('button', { name: 'Cells to update' }).click()
     await page.click('text=Add a value')
     await page.click('text=Select a column')
     await page.click('text=Last name')
@@ -82,7 +86,7 @@ test.describe.parallel('Google sheets integration', () => {
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
     await expect(
-      page.getByText('Succesfully updated row in CRM > Sheet1').nth(0)
+      page.getByText('Succesfully updated matching rows').nth(0)
     ).toBeVisible()
   })
 

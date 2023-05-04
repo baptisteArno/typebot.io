@@ -10,6 +10,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { TRPCError } from '@trpc/server'
+import { matchFilter } from './helpers/matchFilter'
 
 export const updateRow = async (
   { result, typebot: { variables } }: SessionState,
@@ -18,8 +19,9 @@ export const updateRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsUpdateRowOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  const { sheetId, referenceCell } = deepParseVariables(variables)(options)
-  if (!options.cellsToUpsert || !sheetId || !referenceCell)
+  const { sheetId, referenceCell, filter } =
+    deepParseVariables(variables)(options)
+  if (!options.cellsToUpsert || !sheetId || (!referenceCell && !filter))
     return { outgoingEdgeId }
 
   let log: ReplyLog | undefined
@@ -34,14 +36,16 @@ export const updateRow = async (
   await doc.loadInfo()
   const sheet = doc.sheetsById[sheetId]
   const rows = await sheet.getRows()
-  const updatingRowIndex = rows.findIndex(
-    (row) => row[referenceCell.column as string] === referenceCell.value
+  const filteredRows = rows.filter((row) =>
+    referenceCell
+      ? row[referenceCell.column as string] === referenceCell.value
+      : matchFilter(row, filter as NonNullable<typeof filter>)
   )
-  if (updatingRowIndex === -1) {
+  if (filteredRows.length === 0) {
     log = {
       status: 'error',
-      description: `Could not find row to update`,
-      details: `Looked for row with ${referenceCell.column} equals to "${referenceCell.value}"`,
+      description: `Could not find any row that matches the filter`,
+      details: JSON.stringify(filter, null, 2),
     }
     result &&
       (await saveErrorLog({
@@ -51,19 +55,22 @@ export const updateRow = async (
       }))
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: `Couldn't find row with ${referenceCell.column} that equals to "${referenceCell.value}"`,
+      message: `Could not find any row that matches the filter`,
     })
   }
 
-  for (const key in parsedValues) {
-    rows[updatingRowIndex][key] = parsedValues[key]
-  }
-
   try {
-    await rows[updatingRowIndex].save()
+    for (const filteredRow of filteredRows) {
+      const rowIndex = rows.findIndex((row) => row.id === filteredRow.id)
+      for (const key in parsedValues) {
+        rows[rowIndex][key] = parsedValues[key]
+      }
+      await rows[rowIndex].save()
+    }
+
     log = log = {
       status: 'success',
-      description: `Succesfully updated row in ${doc.title} > ${sheet.title}`,
+      description: `Succesfully updated matching rows`,
     }
     result &&
       (await saveSuccessLog({

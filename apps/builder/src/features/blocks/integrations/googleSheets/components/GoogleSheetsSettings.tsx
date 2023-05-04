@@ -214,21 +214,61 @@ const ActionOptions = ({
       )
     case GoogleSheetsAction.UPDATE_ROW:
       return (
-        <Stack>
-          <Text>Row to select</Text>
-          <CellWithValueStack
-            columns={sheet?.columns ?? []}
-            item={options.referenceCell ?? { id: 'reference' }}
-            onItemChange={handleReferenceCellChange}
-          />
-          <Text>Cells to update</Text>
-          <TableList<Cell>
-            initialItems={options.cellsToUpsert}
-            onItemsChange={handleUpsertColumnsChange}
-            Item={UpdatingCellItem}
-            addLabel="Add a value"
-          />
-        </Stack>
+        <Accordion allowMultiple>
+          {options.referenceCell && (
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Row to update
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pt="4">
+                <CellWithValueStack
+                  columns={sheet?.columns ?? []}
+                  item={options.referenceCell ?? { id: 'reference' }}
+                  onItemChange={handleReferenceCellChange}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          )}
+          {!options.referenceCell && (
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Row(s) to update
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pt="4">
+                <RowsFilterTableList
+                  columns={sheet?.columns ?? []}
+                  filter={options.filter}
+                  onFilterChange={handleFilterChange}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          )}
+          <AccordionItem>
+            <AccordionButton>
+              <Text w="full" textAlign="left">
+                Cells to update
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+
+            <AccordionPanel pt="4">
+              <TableList<Cell>
+                initialItems={options.cellsToUpsert}
+                onItemsChange={handleUpsertColumnsChange}
+                Item={UpdatingCellItem}
+                addLabel="Add a value"
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       )
     case GoogleSheetsAction.GET:
       return (
