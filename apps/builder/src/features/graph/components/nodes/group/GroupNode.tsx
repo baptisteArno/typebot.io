@@ -220,6 +220,7 @@ const NonMemoizedDraggableGroupNode = ({
           shadow="md"
           _hover={{ shadow: 'lg' }}
           zIndex={isFocused ? 10 : 1}
+          spacing={isEmpty(group.title) ? '0' : '2'}
         >
           <Editable
             value={groupTitle}
