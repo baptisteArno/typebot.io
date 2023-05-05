@@ -1,4 +1,6 @@
-export default {
+import { defineLocale } from './index'
+
+export default defineLocale({
   back: 'Zurück',
   'confirmModal.defaultTitle': 'Bist du sicher?',
   'dashboard.header.settingsButton.label': 'Einstellungen & Mitglieder',
@@ -152,4 +154,4 @@ export default {
 'billing.limitMessage.fileInput': 'Datei-Eingabefelder verwenden',
 'billing.limitMessage.folder': 'Ordner erstellen',
 'billing.upgradeAlert.buttonDefaultLabel': 'Mehr Informationen',
-} as const
+})
