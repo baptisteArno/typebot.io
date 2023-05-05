@@ -1,5 +1,6 @@
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
+import { isNotEmpty } from '@typebot.io/lib'
 import { GoogleAnalyticsBlock, SessionState } from '@typebot.io/schemas'
 
 export const executeGoogleAnalyticsBlock = (
@@ -14,7 +15,9 @@ export const executeGoogleAnalyticsBlock = (
       {
         googleAnalytics: {
           ...googleAnalytics,
-          value: Number(googleAnalytics.value),
+          value: isNotEmpty(googleAnalytics.value as string)
+            ? Number(googleAnalytics.value)
+            : undefined,
         },
         lastBubbleBlockId,
       },
