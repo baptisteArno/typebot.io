@@ -9,7 +9,6 @@ import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
-import { TRPCError } from '@trpc/server'
 import { matchFilter } from './helpers/matchFilter'
 
 export const updateRow = async (
@@ -53,15 +52,12 @@ export const updateRow = async (
         message: log.description,
         details: log.details,
       }))
-    throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: `Could not find any row that matches the filter`,
-    })
+    return { outgoingEdgeId, logs: log ? [log] : undefined }
   }
 
   try {
     for (const filteredRow of filteredRows) {
-      const rowIndex = rows.findIndex((row) => row.id === filteredRow.id)
+      const rowIndex = filteredRow.rowIndex - 2 // -1 for 0-indexing, -1 for header row
       for (const key in parsedValues) {
         rows[rowIndex][key] = parsedValues[key]
       }
@@ -78,6 +74,7 @@ export const updateRow = async (
         message: log.description,
       }))
   } catch (err) {
+    console.log(err)
     log = {
       status: 'error',
       description: `An error occured while updating the row`,
