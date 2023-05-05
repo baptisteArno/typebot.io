@@ -2,17 +2,15 @@ import {
   SessionState,
   GoogleSheetsGetOptions,
   VariableWithValue,
-  ComparisonOperators,
-  LogicalOperator,
   ReplyLog,
 } from '@typebot.io/schemas'
-import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
-import type { GoogleSpreadsheetRow } from 'google-spreadsheet'
+import { isNotEmpty, byId } from '@typebot.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
+import { matchFilter } from './helpers/matchFilter'
 
 export const getRow = async (
   state: SessionState,
@@ -100,57 +98,4 @@ export const getRow = async (
     })
   }
   return { outgoingEdgeId, logs: log ? [log] : undefined }
-}
-
-const matchFilter = (
-  row: GoogleSpreadsheetRow,
-  filter: NonNullable<GoogleSheetsGetOptions['filter']>
-) => {
-  return filter.logicalOperator === LogicalOperator.AND
-    ? filter.comparisons.every(
-        (comparison) =>
-          comparison.column &&
-          matchComparison(
-            row[comparison.column],
-            comparison.comparisonOperator,
-            comparison.value
-          )
-      )
-    : filter.comparisons.some(
-        (comparison) =>
-          comparison.column &&
-          matchComparison(
-            row[comparison.column],
-            comparison.comparisonOperator,
-            comparison.value
-          )
-      )
-}
-
-const matchComparison = (
-  inputValue?: string,
-  comparisonOperator?: ComparisonOperators,
-  value?: string
-) => {
-  if (!inputValue || !comparisonOperator || !value) return false
-  switch (comparisonOperator) {
-    case ComparisonOperators.CONTAINS: {
-      return inputValue.toLowerCase().includes(value.toLowerCase())
-    }
-    case ComparisonOperators.EQUAL: {
-      return inputValue === value
-    }
-    case ComparisonOperators.NOT_EQUAL: {
-      return inputValue !== value
-    }
-    case ComparisonOperators.GREATER: {
-      return parseFloat(inputValue) > parseFloat(value)
-    }
-    case ComparisonOperators.LESS: {
-      return parseFloat(inputValue) < parseFloat(value)
-    }
-    case ComparisonOperators.IS_SET: {
-      return isDefined(inputValue) && inputValue.length > 0
-    }
-  }
 }

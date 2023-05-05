@@ -7,16 +7,16 @@
   "types": "./index.ts",
   "devDependencies": {
     "@paralleldrive/cuid2": "2.2.0",
-    "@playwright/test": "1.32.1",
+    "@playwright/test": "1.33.0",
     "@types/nodemailer": "6.4.7",
-    "aws-sdk": "2.1348.0",
+    "aws-sdk": "2.1369.0",
     "@typebot.io/prisma": "workspace:*",
     "dotenv": "16.0.3",
     "@typebot.io/schemas": "workspace:*",
-    "next": "13.2.4",
+    "next": "13.3.4",
     "nodemailer": "6.9.1",
     "@typebot.io/tsconfig": "workspace:*",
-    "typescript": "5.0.3"
+    "typescript": "5.0.4"
   },
   "peerDependencies": {
     "aws-sdk": "2.1152.0",

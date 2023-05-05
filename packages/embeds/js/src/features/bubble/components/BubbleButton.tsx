@@ -49,6 +49,8 @@ export const BubbleButton = (props: Props) => {
             (props.size === 'large' ? ' w-9 h-9' : ' w-7 h-7')
           }
           alt="Bubble button icon"
+          elementtiming={'Bubble button icon'}
+          fetchpriority={'high'}
         />
       </Show>
 

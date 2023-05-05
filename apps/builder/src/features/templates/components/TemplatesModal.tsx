@@ -77,6 +77,8 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             borderRightWidth={1}
             justify="space-between"
             flexShrink={0}
+            overflowY="scroll"
+            className="hide-scrollbar"
           >
             <Stack spacing={5}>
               <Stack spacing={2}>

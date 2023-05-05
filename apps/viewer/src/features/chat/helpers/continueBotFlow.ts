@@ -247,6 +247,16 @@ const getOutgoingEdgeId =
       )
       if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
     }
+    if (
+      block.type === InputBlockType.PICTURE_CHOICE &&
+      !block.options.isMultipleChoice &&
+      reply
+    ) {
+      const matchedItem = block.items.find(
+        (item) => parseVariables(variables)(item.title) === reply
+      )
+      if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
+    }
     return block.outgoingEdgeId
   }
 

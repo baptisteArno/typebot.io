@@ -101,7 +101,8 @@ class Typebot_Public
 
     $bot_initializer = '<script type="module">
     import Typebot from "' . $lib_url . '"
-    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...typebotWpUser } });</script>';
+
+    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...window.typebotWpUser } });</script>';
 
     return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
   }

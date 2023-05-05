@@ -18,6 +18,7 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/enums'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/enums'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/enums'
+import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -90,6 +91,10 @@ export const isTextInputBlock = (block: Block): block is TextInputBlock =>
 export const isChoiceInput = (block: Block): block is ChoiceInputBlock =>
   block.type === InputBlockType.CHOICE
 
+export const isPictureChoiceInput = (
+  block: Block
+): block is PictureChoiceBlock => block.type === InputBlockType.PICTURE_CHOICE
+
 export const isSingleChoiceInput = (block: Block): block is ChoiceInputBlock =>
   block.type === InputBlockType.CHOICE &&
   'options' in block &&
@@ -138,7 +143,8 @@ export const blockTypeHasItems = (
   | LogicBlockType.AB_TEST =>
   type === LogicBlockType.CONDITION ||
   type === InputBlockType.CHOICE ||
-  type === LogicBlockType.AB_TEST
+  type === LogicBlockType.AB_TEST ||
+  type === InputBlockType.PICTURE_CHOICE
 
 export const blockHasItems = (
   block: Block
@@ -158,7 +164,7 @@ interface Omit {
 
 export const omit: Omit = (obj, ...keys) => {
   const ret = {} as {
-    [K in keyof typeof obj]: typeof obj[K]
+    [K in keyof typeof obj]: (typeof obj)[K]
   }
   let key: keyof typeof obj
   for (key in obj) {

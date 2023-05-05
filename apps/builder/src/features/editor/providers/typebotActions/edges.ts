@@ -6,9 +6,8 @@ import {
   ItemIndices,
   Block,
 } from '@typebot.io/schemas'
-import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
-import { produce } from 'immer'
+import { Draft, produce } from 'immer'
 import { byId, isDefined, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
 
@@ -71,7 +70,7 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
 })
 
 const addEdgeIdToBlock = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   edgeId: string,
   { groupIndex, blockIndex }: BlockIndices
 ) => {
@@ -79,7 +78,7 @@ const addEdgeIdToBlock = (
 }
 
 const addEdgeIdToItem = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex }: ItemIndices
 ) =>
@@ -87,20 +86,14 @@ const addEdgeIdToItem = (
     itemIndex
   ].outgoingEdgeId = edgeId)
 
-export const deleteEdgeDraft = (
-  typebot: WritableDraft<Typebot>,
-  edgeId: string
-) => {
+export const deleteEdgeDraft = (typebot: Draft<Typebot>, edgeId: string) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId))
   if (edgeIndex === -1) return
   deleteOutgoingEdgeIdProps(typebot, edgeId)
   typebot.edges.splice(edgeIndex, 1)
 }
 
-const deleteOutgoingEdgeIdProps = (
-  typebot: WritableDraft<Typebot>,
-  edgeId: string
-) => {
+const deleteOutgoingEdgeIdProps = (typebot: Draft<Typebot>, edgeId: string) => {
   const edge = typebot.edges.find(byId(edgeId))
   if (!edge) return
   const fromGroupIndex = typebot.groups.findIndex(byId(edge.from.groupId))
@@ -125,7 +118,7 @@ const deleteOutgoingEdgeIdProps = (
 }
 
 export const cleanUpEdgeDraft = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   deletedNodeId: string
 ) => {
   const edgesToDelete = typebot.edges.filter((edge) =>
@@ -141,7 +134,7 @@ export const cleanUpEdgeDraft = (
 }
 
 const removeExistingEdge = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   edge: Omit<Edge, 'id'>
 ) => {
   typebot.edges = typebot.edges.filter((e) =>

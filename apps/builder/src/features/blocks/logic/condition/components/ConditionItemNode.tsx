@@ -6,7 +6,6 @@ import {
   Wrap,
   Fade,
   IconButton,
-  PopoverTrigger,
   Popover,
   Portal,
   PopoverContent,
@@ -14,6 +13,7 @@ import {
   PopoverBody,
   useEventListener,
   useColorModeValue,
+  PopoverAnchor,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
@@ -79,7 +79,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
       isOpen={openedItemId === item.id}
       closeOnBlur={false}
     >
-      <PopoverTrigger>
+      <PopoverAnchor>
         <Flex p={3} pos="relative" w="full" onClick={openPopover}>
           {item.content.comparisons.length === 0 ||
           comparisonIsEmpty(item.content.comparisons[0]) ? (
@@ -101,7 +101,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
                       </Tag>
                     )}
                     {comparison.comparisonOperator && (
-                      <Text>
+                      <Text fontSize="sm">
                         {parseComparisonOperatorSymbol(
                           comparison.comparisonOperator
                         )}
@@ -137,7 +137,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
             />
           </Fade>
         </Flex>
-      </PopoverTrigger>
+      </PopoverAnchor>
       <Portal>
         <PopoverContent pos="relative" onMouseDown={handleMouseDown}>
           <PopoverArrow />
@@ -164,7 +164,9 @@ const comparisonIsEmpty = (comparison: Comparison) =>
   isNotDefined(comparison.value) &&
   isNotDefined(comparison.variableId)
 
-const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
+const parseComparisonOperatorSymbol = (
+  operator: ComparisonOperators
+): string => {
   switch (operator) {
     case ComparisonOperators.CONTAINS:
       return 'contains'
@@ -178,5 +180,13 @@ const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
       return '<'
     case ComparisonOperators.NOT_EQUAL:
       return '!='
+    case ComparisonOperators.ENDS_WITH:
+      return 'ends with'
+    case ComparisonOperators.STARTS_WITH:
+      return 'starts with'
+    case ComparisonOperators.IS_EMPTY:
+      return 'is empty'
+    case ComparisonOperators.NOT_CONTAINS:
+      return 'not contains'
   }
 }

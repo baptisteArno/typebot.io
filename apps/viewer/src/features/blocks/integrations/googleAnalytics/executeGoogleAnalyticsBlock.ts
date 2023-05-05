@@ -10,7 +10,9 @@ export const executeGoogleAnalyticsBlock = (
   outgoingEdgeId: block.outgoingEdgeId,
   clientSideActions: [
     {
-      googleAnalytics: deepParseVariables(variables)(block.options),
+      googleAnalytics: deepParseVariables(variables, {
+        guessCorrectType: true,
+      })(block.options),
       lastBubbleBlockId,
     },
   ],

@@ -6,9 +6,8 @@ import {
   BlockIndices,
   Webhook,
 } from '@typebot.io/schemas'
-import { WritableDraft } from 'immer/dist/types/types-external'
 import { SetTypebot } from '../TypebotProvider'
-import produce from 'immer'
+import { produce, Draft } from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import { createId } from '@paralleldrive/cuid2'
 import { byId, isWebhookBlock, blockHasItems } from '@typebot.io/lib'
@@ -94,13 +93,13 @@ export const blocksAction = (
 
 const removeBlockFromGroup =
   ({ groupIndex, blockIndex }: BlockIndices) =>
-  (typebot: WritableDraft<Typebot>) => {
+  (typebot: Draft<Typebot>) => {
     if (typebot.groups[groupIndex].blocks[blockIndex].type === 'start') return
     typebot.groups[groupIndex].blocks.splice(blockIndex, 1)
   }
 
 export const createBlockDraft = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   block: DraggableBlock | DraggableBlockType,
   groupId: string,
   { groupIndex, blockIndex }: BlockIndices,
@@ -126,7 +125,7 @@ export const createBlockDraft = (
 }
 
 const createNewBlock = async (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   type: DraggableBlockType,
   groupId: string,
   { groupIndex, blockIndex }: BlockIndices,
@@ -139,7 +138,7 @@ const createNewBlock = async (
 }
 
 const moveBlockToGroup = (
-  typebot: WritableDraft<Typebot>,
+  typebot: Draft<Typebot>,
   block: DraggableBlock,
   groupId: string,
   { groupIndex, blockIndex }: BlockIndices
@@ -205,13 +204,13 @@ export const duplicateBlockDraft =
   }
 
 export const deleteGroupDraft =
-  (typebot: WritableDraft<Typebot>) => (groupIndex: number) => {
+  (typebot: Draft<Typebot>) => (groupIndex: number) => {
     if (typebot.groups[groupIndex].blocks.at(0)?.type === 'start') return
     cleanUpEdgeDraft(typebot, typebot.groups[groupIndex].id)
     typebot.groups.splice(groupIndex, 1)
   }
 
-export const removeEmptyGroups = (typebot: WritableDraft<Typebot>) => {
+export const removeEmptyGroups = (typebot: Draft<Typebot>) => {
   const emptyGroupsIndices = typebot.groups.reduce<number[]>(
     (arr, group, idx) => {
       group.blocks.length === 0 && arr.push(idx)

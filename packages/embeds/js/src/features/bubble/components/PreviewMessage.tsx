@@ -50,6 +50,8 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
             src={avatarUrl}
             class="rounded-full w-8 h-8 object-cover"
             alt="Bot avatar"
+            elementtiming={'Bot avatar'}
+            fetchpriority={'high'}
           />
         )}
       </Show>

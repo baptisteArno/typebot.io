@@ -11,6 +11,7 @@ import {
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
+  modelLimit,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai'
 import { isDefined, byId, isNotEmpty, isEmpty } from '@typebot.io/lib'
@@ -20,6 +21,9 @@ import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
+import { encoding_for_model } from '@dqbd/tiktoken'
+
+const minTokenCompletion = 200
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -56,7 +60,8 @@ export const createChatCompletionOpenAI = async (
     apiKey,
   })
   const { variablesTransformedToList, messages } = parseMessages(
-    newSessionState.typebot.variables
+    newSessionState.typebot.variables,
+    options.model
   )(options.messages)
   if (variablesTransformedToList.length > 0)
     newSessionState = await updateVariables(state)(variablesTransformedToList)
@@ -148,7 +153,7 @@ export const createChatCompletionOpenAI = async (
 }
 
 const parseMessages =
-  (variables: Variable[]) =>
+  (variables: Variable[], model: ChatCompletionOpenAIOptions['model']) =>
   (
     messages: ChatCompletionOpenAIOptions['messages']
   ): {
@@ -156,8 +161,11 @@ const parseMessages =
     messages: ChatCompletionRequestMessage[]
   } => {
     const variablesTransformedToList: VariableWithValue[] = []
+    const firstMessagesSequenceIndex = messages.findIndex(
+      (message) => message.role === 'Messages sequence ✨'
+    )
     const parsedMessages = messages
-      .flatMap((message) => {
+      .flatMap((message, index) => {
         if (!message.role) return
         if (message.role === 'Messages sequence ✨') {
           if (
@@ -189,23 +197,51 @@ const parseMessages =
               variable.id === message.content?.assistantMessagesVariableId
           )?.value ?? []) as string[]
 
+          let allMessages: ChatCompletionRequestMessage[] = []
+
           if (userMessages.length > assistantMessages.length)
-            return userMessages.flatMap((userMessage, index) => [
+            allMessages = userMessages.flatMap((userMessage, index) => [
               {
                 role: 'user',
                 content: userMessage,
               },
-              { role: 'assistant', content: assistantMessages[index] },
+              { role: 'assistant', content: assistantMessages.at(index) ?? '' },
             ]) satisfies ChatCompletionRequestMessage[]
           else {
-            return assistantMessages.flatMap((assistantMessage, index) => [
-              { role: 'assistant', content: assistantMessage },
-              {
-                role: 'user',
-                content: userMessages[index],
-              },
-            ]) satisfies ChatCompletionRequestMessage[]
+            allMessages = assistantMessages.flatMap(
+              (assistantMessage, index) => [
+                { role: 'assistant', content: assistantMessage },
+                {
+                  role: 'user',
+                  content: userMessages.at(index) ?? '',
+                },
+              ]
+            ) satisfies ChatCompletionRequestMessage[]
           }
+
+          if (index !== firstMessagesSequenceIndex) return allMessages
+
+          const encoder = encoding_for_model(model)
+          let messagesToSend: ChatCompletionRequestMessage[] = []
+          let tokenCount = 0
+
+          for (let i = allMessages.length - 1; i >= 0; i--) {
+            const message = allMessages[i]
+            const tokens = encoder.encode(message.content)
+
+            if (
+              tokenCount + tokens.length - minTokenCompletion >
+              modelLimit[model]
+            ) {
+              break
+            }
+            tokenCount += tokens.length
+            messagesToSend = [message, ...messagesToSend]
+          }
+
+          encoder.free()
+
+          return messagesToSend
         }
         return {
           role: message.role,

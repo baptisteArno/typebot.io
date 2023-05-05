@@ -1,5 +1,36 @@
 # Changelog
 
+<a name="2.13.0"></a>
+## 2.13.0 (2023-05-02)
+
+### Added
+
+- 🔊 (sheets) Improve update row error log when not found [[fd0fd51](https://github.com/baptisteArno/typebot.io/commit/fd0fd51c1dd13764f5cdccfd10ea18edc0d4e1bc)]
+
+### Changed
+
+- ⬆️ Upgrade dependencies [[37e0153](https://github.com/baptisteArno/typebot.io/commit/37e0153842525b8ef81d9120cdae7d8d45021c33)]
+- 💄 Improve toast UI when containing only description [[d50e280](https://github.com/baptisteArno/typebot.io/commit/d50e280ab37a6cb8ec420653ac9ab4bd6f6a2d1f)]
+- ⚡ (openai) Truncate messages sequence automatically if reaching token limit [[e58016e](https://github.com/baptisteArno/typebot.io/commit/e58016e43a4dd58c809bcce604ab5af0ab91a41c)]
+- 💄 Fix toast UI in dark mode [[ddb5287](https://github.com/baptisteArno/typebot.io/commit/ddb528774bb280f2c3979f8a711074c173918cef)]
+- 💄 (js) Fix gap on loading chunk [[ce2565c](https://github.com/baptisteArno/typebot.io/commit/ce2565c4293be28f4fc570cb8174632fe3f82973)]
+- ⚡ (scripts) Improve result digest db queries [[5845e1c](https://github.com/baptisteArno/typebot.io/commit/5845e1cb8c448a2a7d8c5832694e18a7a51822c8)]
+- 💄 Better toast UI when it doesn&#x27;t contain details [[e827da7](https://github.com/baptisteArno/typebot.io/commit/e827da7b6bd6da2b22d3b6a92ce8446519f6fdb6)]
+- ⚡ (ga) Add send_to option [[9e8acd9](https://github.com/baptisteArno/typebot.io/commit/9e8acd97aa4ffe2790d555dbed50323229605160)]
+- ⚡ Better error toast when previewing bot [[d448e64](https://github.com/baptisteArno/typebot.io/commit/d448e64dc9e4693966c335fa453029490e2b650b)]
+
+### Fixed
+
+- 🐛 Fix variable dropdown size in text bubble editor when z… [[2b0e2b0](https://github.com/baptisteArno/typebot.io/commit/2b0e2b09f517358653d7a47b93e4fc7f66950e0b)]
+- 🐛 (googleAnalytics) Fix sendTo initial value in settings [[e2836f3](https://github.com/baptisteArno/typebot.io/commit/e2836f305c1d0ca0743b120c9b0a54d657e6b949)]
+- 🐛 Properly display success message toast for web preview [[9473563](https://github.com/baptisteArno/typebot.io/commit/94735638a608b57501672ed0d113e548cf84dcfe)]
+
+### Miscellaneous
+
+- 🩹 (wp) Fix typebotWpUser not defined issue [[c1f3534](https://github.com/baptisteArno/typebot.io/commit/c1f3534374d5f5ad8d492763b538179faec27ac9)]
+- 🛂 (billing) Update claimable custom plan options [[458d715](https://github.com/baptisteArno/typebot.io/commit/458d71564866ee9c6a350d69e488f8cc3a3faf12)]
+
+
 <a name="2.12.3"></a>
 ## 2.12.3 (2023-04-27)
 

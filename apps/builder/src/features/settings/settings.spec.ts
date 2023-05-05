@@ -77,7 +77,7 @@ test.describe.parallel('Settings page', () => {
       await expect(favIconImg).toHaveAttribute('src', '/favicon.png')
       await favIconImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
-      await page.click('button:has-text("Embed link")')
+      await page.click('button:has-text("Link")')
       await page.fill(
         'input[placeholder="Paste the image link..."]',
         favIconUrl
@@ -92,7 +92,7 @@ test.describe.parallel('Settings page', () => {
       await expect(websiteImg).toHaveAttribute('src', '/viewer-preview.png')
       await websiteImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
-      await page.click('button >> text="Embed link"')
+      await page.click('button >> text="Link"')
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)
       await expect(websiteImg).toHaveAttribute('src', imageUrl)
 

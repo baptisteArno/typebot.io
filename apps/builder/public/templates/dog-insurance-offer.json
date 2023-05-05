@@ -1,0 +1,808 @@
+{
+  "id": "clh9fzu4b00031aotzr1ik4ba",
+  "version": "3",
+  "createdAt": "2023-05-04T18:10:07.548Z",
+  "updatedAt": "2023-05-04T19:13:45.356Z",
+  "icon": "🐶",
+  "name": "Insurance offer",
+  "folderId": null,
+  "groups": [
+    {
+      "id": "f4ef28wxteh0wdjgubtojnkr",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "wj0uw1i63j4j4xe1q8xxmda0",
+          "type": "start",
+          "label": "Start",
+          "groupId": "f4ef28wxteh0wdjgubtojnkr",
+          "outgoingEdgeId": "u0009iy3sakdgh3k1x41i5yr"
+        }
+      ],
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "av0jzkh3qhgdyjrouvl2zywe",
+      "title": "Welcome",
+      "blocks": [
+        {
+          "id": "y0iukpry1i6h8sv22gz4ffsg",
+          "type": "Set variable",
+          "groupId": "av0jzkh3qhgdyjrouvl2zywe",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "0"
+          }
+        },
+        {
+          "id": "wza92in5v03w0oiaa1y3k68x",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hey 👋" }] }]
+          },
+          "groupId": "av0jzkh3qhgdyjrouvl2zywe"
+        },
+        {
+          "id": "rhp6p4obkdehddhm6j7tqxe0",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "I'm John from Dogz" }] }
+            ]
+          },
+          "groupId": "av0jzkh3qhgdyjrouvl2zywe"
+        },
+        {
+          "id": "tizd6f2qo70g59lz1rnnvho7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Let's determine what would be the best insurance offer you can have for your dog 🐶"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "av0jzkh3qhgdyjrouvl2zywe"
+        },
+        {
+          "id": "dtvbio4qytr3iojc7tq2quvy",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "m7l8u4y5vmwozvdtsmhq3q49",
+              "type": 0,
+              "blockId": "dtvbio4qytr3iojc7tq2quvy",
+              "content": "Let's go!",
+              "outgoingEdgeId": "vl23l0ak8w2qxj9wrgxhznz3"
+            }
+          ],
+          "groupId": "av0jzkh3qhgdyjrouvl2zywe",
+          "options": {
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          }
+        }
+      ],
+      "graphCoordinates": { "x": 68.4296875, "y": 176.178531769944 }
+    },
+    {
+      "id": "dh3wz001jaclg8ifc1vhovlq",
+      "title": "Breed",
+      "blocks": [
+        {
+          "id": "mvdogpw4qucgot4yzabpxtcl",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What breed is your dog?" }]
+              }
+            ]
+          },
+          "groupId": "dh3wz001jaclg8ifc1vhovlq"
+        },
+        {
+          "id": "f2902yy6o00fwe5h4xihrntj",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "q7ydcwda7rsfn1w5ep9ur4y3",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Crossbreed"
+            },
+            {
+              "id": "q33qu26t8uhtp63rl7th4p0u",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Labrador"
+            },
+            {
+              "id": "c9fy5o23cuanywze536ie071",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Golden Retriever"
+            },
+            {
+              "id": "xmozt619ao4pn3lcovs6e1wp",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Jack Russel"
+            },
+            {
+              "id": "qhc245vs9s3vhq8oz9sur4jy",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Husky"
+            },
+            {
+              "id": "bqt7o8aotn5wwye98vw2u8is",
+              "type": 0,
+              "blockId": "f2902yy6o00fwe5h4xihrntj",
+              "content": "Other"
+            }
+          ],
+          "groupId": "dh3wz001jaclg8ifc1vhovlq",
+          "options": {
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "moj9ezfl6bvpr4aj76cztkiu"
+        }
+      ],
+      "graphCoordinates": { "x": 431.756656769944, "y": 177.60546875 }
+    },
+    {
+      "id": "ynt0ya95bvuqj8mf39e938k4",
+      "title": "Sex",
+      "blocks": [
+        {
+          "id": "u4voz45sk9gh4khul8c519df",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Is it a male or a female?" }]
+              }
+            ]
+          },
+          "groupId": "ynt0ya95bvuqj8mf39e938k4"
+        },
+        {
+          "id": "zuza6om08ubafgqhbadwv60i",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "mrca2ini7z81ik4k1o9g3a1s",
+              "type": 0,
+              "blockId": "zuza6om08ubafgqhbadwv60i",
+              "content": "♂️ Male",
+              "outgoingEdgeId": "wciafstvwt3m4lhrejlgl0s0"
+            },
+            {
+              "id": "ymxxgoxxbfcmnhudwmerfgbx",
+              "type": 0,
+              "blockId": "zuza6om08ubafgqhbadwv60i",
+              "content": "♀️ Female",
+              "outgoingEdgeId": "f60ldz2g58kfkvsfmnf39fjb"
+            }
+          ],
+          "groupId": "ynt0ya95bvuqj8mf39e938k4",
+          "options": {
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          }
+        }
+      ],
+      "graphCoordinates": { "x": 786.06640625, "y": 173.03102029763343 }
+    },
+    {
+      "id": "c59xwfc18i4xjpaeu9dzrjcu",
+      "title": "",
+      "blocks": [
+        {
+          "id": "meoptkjq8tupr3qkyqkpaxqq",
+          "type": "Set variable",
+          "groupId": "c59xwfc18i4xjpaeu9dzrjcu",
+          "options": {
+            "variableId": "vhl1s7qoksnw7r8b1soocxwsd",
+            "expressionToEvaluate": "he"
+          }
+        },
+        {
+          "id": "kqbiaq87al2uq07vuno69syo",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's his name?" }] }
+            ]
+          },
+          "groupId": "c59xwfc18i4xjpaeu9dzrjcu",
+          "outgoingEdgeId": "to4im28nzrg3yk0ama07l2oz"
+        }
+      ],
+      "graphCoordinates": { "x": 1142.2202317002457, "y": 145.31632896241197 }
+    },
+    {
+      "id": "qzge99trjqvp7vjmjo6rk56o",
+      "title": "",
+      "blocks": [
+        {
+          "id": "jyi9t11totyrw2jeohfhvfw1",
+          "type": "Set variable",
+          "groupId": "qzge99trjqvp7vjmjo6rk56o",
+          "options": {
+            "variableId": "vhl1s7qoksnw7r8b1soocxwsd",
+            "expressionToEvaluate": "she"
+          }
+        },
+        {
+          "id": "f9qyzjo67x7zen5q4xih3xv2",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's her name?" }] }
+            ]
+          },
+          "groupId": "qzge99trjqvp7vjmjo6rk56o",
+          "outgoingEdgeId": "c6x6fubn2qu5vvgfc6d14krl"
+        }
+      ],
+      "graphCoordinates": { "x": 1140.34375, "y": 328.5390625 }
+    },
+    {
+      "id": "eq1tnkdfxxf8q08vxckl3md6",
+      "title": "Name",
+      "blocks": [
+        {
+          "id": "kxzi32ioxwqpdy9yy0ktoavu",
+          "type": "text input",
+          "groupId": "eq1tnkdfxxf8q08vxckl3md6",
+          "options": {
+            "isLong": false,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vgl2m65vej3cjwqvkawnpih2l"
+          },
+          "outgoingEdgeId": "g4do01p1scej1trqlbidbrw1"
+        }
+      ],
+      "graphCoordinates": { "x": 1501.890625, "y": 169.65234375 }
+    },
+    {
+      "id": "xgulc4hfxlmjmr288ghillwz",
+      "title": "Age",
+      "blocks": [
+        {
+          "id": "e61e41j7wdisp1yxlr78gjxs",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How cute 😊" }] }
+            ]
+          },
+          "groupId": "xgulc4hfxlmjmr288ghillwz"
+        },
+        {
+          "id": "ep4iqxpgalslj0blt71rglbv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How old is {{Name}}?" }] }
+            ]
+          },
+          "groupId": "xgulc4hfxlmjmr288ghillwz"
+        },
+        {
+          "id": "y2fcko12ha5n9zjxickaakxt",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "vliolql8p4vo58pvsz7olf5w",
+              "type": 3,
+              "title": "Less than 1 year",
+              "blockId": "y2fcko12ha5n9zjxickaakxt",
+              "pictureSrc": "https://images.unsplash.com/photo-1592924728350-f7d4fd5d1655?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MjU2MDR8MHwxfHNlYXJjaHwxNXx8cHVwcHl8ZW58MHwwfHx8MTY4MzIyNDMxOA&ixlib=rb-4.0.3&q=80&w=1080",
+              "outgoingEdgeId": "pehpu3fo38ofsgh6b9dli0i4"
+            },
+            {
+              "id": "b3ci3fpppgsu312gsl4hs6au",
+              "type": 3,
+              "title": "1-5 years",
+              "blockId": "y2fcko12ha5n9zjxickaakxt",
+              "pictureSrc": "https://images.unsplash.com/photo-1672363340663-37526fffa24d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MjU2MDR8MHwxfHNlYXJjaHwxMHx8eW91bmclMjBkb2d8ZW58MHwwfHx8MTY4MzIyNDM0OA&ixlib=rb-4.0.3&q=80&w=1080",
+              "outgoingEdgeId": "ilvu55d6cmembesg0askzgzh"
+            },
+            {
+              "id": "asi8dmhlwnysvm4tmvoipglz",
+              "type": 3,
+              "title": "5-10 years",
+              "blockId": "y2fcko12ha5n9zjxickaakxt",
+              "pictureSrc": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MjU2MDR8MHwxfHNlYXJjaHwzfHxkb2d8ZW58MHwwfHx8MTY4MzIyNDEwNg&ixlib=rb-4.0.3&q=80&w=1080",
+              "outgoingEdgeId": "kvlz0ly8o4h99997ijiejwe8"
+            },
+            {
+              "id": "w9eeiclycv7nm0ennaxbxo1d",
+              "type": 3,
+              "title": "Above 10 years",
+              "blockId": "y2fcko12ha5n9zjxickaakxt",
+              "pictureSrc": "https://images.unsplash.com/photo-1553531009-7e4b807a0673?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw0MjU2MDR8MHwxfHNlYXJjaHw4fHxvbGQlMjBkb2d8ZW58MHwwfHx8MTY4MzIyNDQxNw&ixlib=rb-4.0.3&q=80&w=1080",
+              "outgoingEdgeId": "y8v7vkh236e4o4f2latpb7mr"
+            }
+          ],
+          "groupId": "xgulc4hfxlmjmr288ghillwz",
+          "options": {
+            "buttonLabel": "Send",
+            "searchInputPlaceholder": "Filter the options..."
+          }
+        }
+      ],
+      "graphCoordinates": { "x": 1846.4193745273237, "y": 168.05609327732364 }
+    },
+    {
+      "id": "s4cccw69brg5ipyakvsoaioo",
+      "title": "Spayed",
+      "blocks": [
+        {
+          "id": "zw0mfpqem8eib75qs5brnfnu",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Is {{Pronoun}} spayed or neutered" }]
+              }
+            ]
+          },
+          "groupId": "s4cccw69brg5ipyakvsoaioo"
+        },
+        {
+          "id": "w8l8qekmkjwdct0f73f64yke",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "njc0kol8iicj5xo06gezhl52",
+              "type": 0,
+              "blockId": "w8l8qekmkjwdct0f73f64yke",
+              "content": "❌ No",
+              "outgoingEdgeId": "bindxs5p6lbkszkuw7rhpvh1"
+            },
+            {
+              "id": "jp5k0mx1drijt7k1v4a2z6t8",
+              "type": 0,
+              "blockId": "w8l8qekmkjwdct0f73f64yke",
+              "content": "✅ Yes",
+              "outgoingEdgeId": "igwjs895n7q48h47xhpc90wc"
+            }
+          ],
+          "groupId": "s4cccw69brg5ipyakvsoaioo",
+          "options": {
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          }
+        }
+      ],
+      "graphCoordinates": { "x": 2535.5860580934814, "y": 164.20605048767763 }
+    },
+    {
+      "id": "j19dlmdh2ojntwk1lzqemo7a",
+      "title": "Email",
+      "blocks": [
+        {
+          "id": "os3ecqb05r4todaekg0206t4",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Thank you for all this information." }]
+              }
+            ]
+          },
+          "groupId": "j19dlmdh2ojntwk1lzqemo7a"
+        },
+        {
+          "id": "v5sxfs35u83hqfsh9970flj7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "We can provide the best insurance for {{Name}} 👍"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "j19dlmdh2ojntwk1lzqemo7a"
+        },
+        {
+          "id": "sutyhv073mi6p80115jyu8s4",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "On what email should we send the offer?" }
+                ]
+              }
+            ]
+          },
+          "groupId": "j19dlmdh2ojntwk1lzqemo7a"
+        },
+        {
+          "id": "ouu081yxvf9raf522k08vr6g",
+          "type": "email input",
+          "groupId": "j19dlmdh2ojntwk1lzqemo7a",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "variableId": "vzhkagzjqqa0amfc78jekl2gz",
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
+          },
+          "outgoingEdgeId": "bw2ddpla0a4qggv8b7et3m12"
+        }
+      ],
+      "graphCoordinates": { "x": 2989.53096827949, "y": 367.6582890794456 }
+    },
+    {
+      "id": "rly6ojrxf1oo4augnflhj0kj",
+      "title": "",
+      "blocks": [
+        {
+          "id": "cubvtqhhgvf6k9597von95bt",
+          "type": "Set variable",
+          "groupId": "rly6ojrxf1oo4augnflhj0kj",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "{{Estimated price}} + 5"
+          },
+          "outgoingEdgeId": "wtbthu0nu61a6qijaranccfw"
+        }
+      ],
+      "graphCoordinates": { "x": 2186.904241629908, "y": 387.2160670995469 }
+    },
+    {
+      "id": "ggiqdlnnh0urjn8r5d0wip5u",
+      "title": "",
+      "blocks": [
+        {
+          "id": "ww4zmawu2jbvrykqwqq7fnh5",
+          "type": "Set variable",
+          "groupId": "ggiqdlnnh0urjn8r5d0wip5u",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "{{Estimated price}} + 20"
+          },
+          "outgoingEdgeId": "kuh8vfaq0nazrtpkif9pzrpu"
+        }
+      ],
+      "graphCoordinates": { "x": 2892.8843315088734, "y": 193.35835881074462 }
+    },
+    {
+      "id": "trjrsr2xpg0idmldl9pwcqry",
+      "title": "",
+      "blocks": [
+        {
+          "id": "gdujudl5bf90oayj6z96ghv8",
+          "type": "Set variable",
+          "groupId": "trjrsr2xpg0idmldl9pwcqry",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "{{Estimated price}} + 10"
+          },
+          "outgoingEdgeId": "dvaakgyx7rteqs23qxz8uqx8"
+        }
+      ],
+      "graphCoordinates": { "x": 2187.7657006210675, "y": 522.8303147750385 }
+    },
+    {
+      "id": "ykjr48s18zp8a0tiwik18mum",
+      "title": "",
+      "blocks": [
+        {
+          "id": "sevhy7y6pkbss80rph5blunn",
+          "type": "Set variable",
+          "groupId": "ykjr48s18zp8a0tiwik18mum",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "{{Estimated price}} + 25"
+          },
+          "outgoingEdgeId": "opipj5xi262umvn98kkga4tx"
+        }
+      ],
+      "graphCoordinates": { "x": 2187.927544552159, "y": 661.0263366270658 }
+    },
+    {
+      "id": "c1x4umwx2g4j39peylr9rfor",
+      "title": "",
+      "blocks": [
+        {
+          "id": "bw9d73ypbvc83ltqme9kwwzc",
+          "type": "Set variable",
+          "groupId": "c1x4umwx2g4j39peylr9rfor",
+          "options": {
+            "isCode": true,
+            "variableId": "vq61f8ykwadq1pj8389qf9h91",
+            "expressionToEvaluate": "{{Estimated price}} + 55"
+          },
+          "outgoingEdgeId": "ozsoiu70hbqp5pqucstlnh3b"
+        }
+      ],
+      "graphCoordinates": { "x": 2189.6799542739104, "y": 796.4435670811636 }
+    },
+    {
+      "id": "lmrd5falh8nkdizqy9obpeqi",
+      "title": "Bye",
+      "blocks": [
+        {
+          "id": "ddpum0cjrd2bredvakte914k",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Perfect 👌" }] }
+            ]
+          },
+          "groupId": "lmrd5falh8nkdizqy9obpeqi"
+        },
+        {
+          "id": "qabtk59h81p0fv14au584ay8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "In the mean time feel free to check out what other services we are offering at Dogz"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "lmrd5falh8nkdizqy9obpeqi"
+        }
+      ],
+      "graphCoordinates": { "x": 3340.474508360785, "y": 365.6627012838016 }
+    }
+  ],
+  "variables": [
+    { "id": "vgl2m65vej3cjwqvkawnpih2l", "name": "Name" },
+    { "id": "vhl1s7qoksnw7r8b1soocxwsd", "name": "Pronoun" },
+    { "id": "vq61f8ykwadq1pj8389qf9h91", "name": "Estimated price" },
+    { "id": "vzhkagzjqqa0amfc78jekl2gz", "name": "Email" }
+  ],
+  "edges": [
+    {
+      "id": "u0009iy3sakdgh3k1x41i5yr",
+      "to": { "groupId": "av0jzkh3qhgdyjrouvl2zywe" },
+      "from": {
+        "blockId": "wj0uw1i63j4j4xe1q8xxmda0",
+        "groupId": "f4ef28wxteh0wdjgubtojnkr"
+      }
+    },
+    {
+      "id": "vl23l0ak8w2qxj9wrgxhznz3",
+      "to": { "groupId": "dh3wz001jaclg8ifc1vhovlq" },
+      "from": {
+        "itemId": "m7l8u4y5vmwozvdtsmhq3q49",
+        "blockId": "dtvbio4qytr3iojc7tq2quvy",
+        "groupId": "av0jzkh3qhgdyjrouvl2zywe"
+      }
+    },
+    {
+      "id": "moj9ezfl6bvpr4aj76cztkiu",
+      "to": { "groupId": "ynt0ya95bvuqj8mf39e938k4" },
+      "from": {
+        "blockId": "f2902yy6o00fwe5h4xihrntj",
+        "groupId": "dh3wz001jaclg8ifc1vhovlq"
+      }
+    },
+    {
+      "id": "wciafstvwt3m4lhrejlgl0s0",
+      "to": { "groupId": "c59xwfc18i4xjpaeu9dzrjcu" },
+      "from": {
+        "itemId": "mrca2ini7z81ik4k1o9g3a1s",
+        "blockId": "zuza6om08ubafgqhbadwv60i",
+        "groupId": "ynt0ya95bvuqj8mf39e938k4"
+      }
+    },
+    {
+      "id": "f60ldz2g58kfkvsfmnf39fjb",
+      "to": { "groupId": "qzge99trjqvp7vjmjo6rk56o" },
+      "from": {
+        "itemId": "ymxxgoxxbfcmnhudwmerfgbx",
+        "blockId": "zuza6om08ubafgqhbadwv60i",
+        "groupId": "ynt0ya95bvuqj8mf39e938k4"
+      }
+    },
+    {
+      "id": "to4im28nzrg3yk0ama07l2oz",
+      "to": { "groupId": "eq1tnkdfxxf8q08vxckl3md6" },
+      "from": {
+        "blockId": "kqbiaq87al2uq07vuno69syo",
+        "groupId": "c59xwfc18i4xjpaeu9dzrjcu"
+      }
+    },
+    {
+      "id": "c6x6fubn2qu5vvgfc6d14krl",
+      "to": { "groupId": "eq1tnkdfxxf8q08vxckl3md6" },
+      "from": {
+        "blockId": "f9qyzjo67x7zen5q4xih3xv2",
+        "groupId": "qzge99trjqvp7vjmjo6rk56o"
+      }
+    },
+    {
+      "id": "g4do01p1scej1trqlbidbrw1",
+      "to": { "groupId": "xgulc4hfxlmjmr288ghillwz" },
+      "from": {
+        "blockId": "kxzi32ioxwqpdy9yy0ktoavu",
+        "groupId": "eq1tnkdfxxf8q08vxckl3md6"
+      }
+    },
+    {
+      "id": "pehpu3fo38ofsgh6b9dli0i4",
+      "to": { "groupId": "rly6ojrxf1oo4augnflhj0kj" },
+      "from": {
+        "itemId": "vliolql8p4vo58pvsz7olf5w",
+        "blockId": "y2fcko12ha5n9zjxickaakxt",
+        "groupId": "xgulc4hfxlmjmr288ghillwz"
+      }
+    },
+    {
+      "id": "ilvu55d6cmembesg0askzgzh",
+      "to": { "groupId": "trjrsr2xpg0idmldl9pwcqry" },
+      "from": {
+        "itemId": "b3ci3fpppgsu312gsl4hs6au",
+        "blockId": "y2fcko12ha5n9zjxickaakxt",
+        "groupId": "xgulc4hfxlmjmr288ghillwz"
+      }
+    },
+    {
+      "id": "kvlz0ly8o4h99997ijiejwe8",
+      "to": { "groupId": "ykjr48s18zp8a0tiwik18mum" },
+      "from": {
+        "itemId": "asi8dmhlwnysvm4tmvoipglz",
+        "blockId": "y2fcko12ha5n9zjxickaakxt",
+        "groupId": "xgulc4hfxlmjmr288ghillwz"
+      }
+    },
+    {
+      "id": "y8v7vkh236e4o4f2latpb7mr",
+      "to": { "groupId": "c1x4umwx2g4j39peylr9rfor" },
+      "from": {
+        "itemId": "w9eeiclycv7nm0ennaxbxo1d",
+        "blockId": "y2fcko12ha5n9zjxickaakxt",
+        "groupId": "xgulc4hfxlmjmr288ghillwz"
+      }
+    },
+    {
+      "id": "wtbthu0nu61a6qijaranccfw",
+      "to": { "groupId": "s4cccw69brg5ipyakvsoaioo" },
+      "from": {
+        "blockId": "cubvtqhhgvf6k9597von95bt",
+        "groupId": "rly6ojrxf1oo4augnflhj0kj"
+      }
+    },
+    {
+      "id": "dvaakgyx7rteqs23qxz8uqx8",
+      "to": { "groupId": "s4cccw69brg5ipyakvsoaioo" },
+      "from": {
+        "blockId": "gdujudl5bf90oayj6z96ghv8",
+        "groupId": "trjrsr2xpg0idmldl9pwcqry"
+      }
+    },
+    {
+      "id": "opipj5xi262umvn98kkga4tx",
+      "to": { "groupId": "s4cccw69brg5ipyakvsoaioo" },
+      "from": {
+        "blockId": "sevhy7y6pkbss80rph5blunn",
+        "groupId": "ykjr48s18zp8a0tiwik18mum"
+      }
+    },
+    {
+      "id": "ozsoiu70hbqp5pqucstlnh3b",
+      "to": { "groupId": "s4cccw69brg5ipyakvsoaioo" },
+      "from": {
+        "blockId": "bw9d73ypbvc83ltqme9kwwzc",
+        "groupId": "c1x4umwx2g4j39peylr9rfor"
+      }
+    },
+    {
+      "id": "bindxs5p6lbkszkuw7rhpvh1",
+      "to": { "groupId": "ggiqdlnnh0urjn8r5d0wip5u" },
+      "from": {
+        "itemId": "njc0kol8iicj5xo06gezhl52",
+        "blockId": "w8l8qekmkjwdct0f73f64yke",
+        "groupId": "s4cccw69brg5ipyakvsoaioo"
+      }
+    },
+    {
+      "id": "igwjs895n7q48h47xhpc90wc",
+      "to": { "groupId": "j19dlmdh2ojntwk1lzqemo7a" },
+      "from": {
+        "itemId": "jp5k0mx1drijt7k1v4a2z6t8",
+        "blockId": "w8l8qekmkjwdct0f73f64yke",
+        "groupId": "s4cccw69brg5ipyakvsoaioo"
+      }
+    },
+    {
+      "id": "kuh8vfaq0nazrtpkif9pzrpu",
+      "to": { "groupId": "j19dlmdh2ojntwk1lzqemo7a" },
+      "from": {
+        "blockId": "ww4zmawu2jbvrykqwqq7fnh5",
+        "groupId": "ggiqdlnnh0urjn8r5d0wip5u"
+      }
+    },
+    {
+      "id": "bw2ddpla0a4qggv8b7et3m12",
+      "to": { "groupId": "lmrd5falh8nkdizqy9obpeqi" },
+      "from": {
+        "blockId": "ouu081yxvf9raf522k08vr6g",
+        "groupId": "j19dlmdh2ojntwk1lzqemo7a"
+      }
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#303235",
+        "backgroundColor": "#FFFFFF",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
+      "hostAvatar": {
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+    },
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#ffffff" }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": true,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": true
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "freeWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}

@@ -1,10 +1,14 @@
 import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import { ChoiceInputOptions, Variable } from '@typebot.io/schemas'
+import {
+  ChoiceInputOptions,
+  Variable,
+  defaultChoiceInputOptions,
+} from '@typebot.io/schemas'
 import React from 'react'
+import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 
 type Props = {
   options?: ChoiceInputOptions
@@ -18,6 +22,8 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     options && onOptionsChange({ ...options, isSearchable })
   const updateButtonLabel = (buttonLabel: string) =>
     options && onOptionsChange({ ...options, buttonLabel })
+  const updateSearchInputPlaceholder = (searchInputPlaceholder: string) =>
+    options && onOptionsChange({ ...options, searchInputPlaceholder })
   const updateSaveVariable = (variable?: Variable) =>
     options && onOptionsChange({ ...options, variableId: variable?.id })
   const updateDynamicDataVariable = (variable?: Variable) =>
@@ -25,23 +31,31 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <SwitchWithLabel
+      <SwitchWithRelatedSettings
         label="Multiple choice?"
         initialValue={options?.isMultipleChoice ?? false}
         onCheckChange={updateIsMultiple}
-      />
-      <SwitchWithLabel
-        label="Is searchable?"
-        initialValue={options?.isSearchable ?? false}
-        onCheckChange={updateIsSearchable}
-      />
-      {options?.isMultipleChoice && (
+      >
         <TextInput
-          label="Button label:"
+          label="Submit button label:"
           defaultValue={options?.buttonLabel ?? 'Send'}
           onChange={updateButtonLabel}
         />
-      )}
+      </SwitchWithRelatedSettings>
+      <SwitchWithRelatedSettings
+        label="Is searchable?"
+        initialValue={options?.isSearchable ?? false}
+        onCheckChange={updateIsSearchable}
+      >
+        <TextInput
+          label="Input placeholder:"
+          defaultValue={
+            options?.searchInputPlaceholder ??
+            defaultChoiceInputOptions.searchInputPlaceholder
+          }
+          onChange={updateSearchInputPlaceholder}
+        />
+      </SwitchWithRelatedSettings>
       <FormControl>
         <FormLabel>
           Dynamic data:{' '}

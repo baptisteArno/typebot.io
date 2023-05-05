@@ -14,6 +14,15 @@ export const chatCompletionModels = [
   'gpt-3.5-turbo-0301',
 ] as const
 
+export const modelLimit = {
+  'gpt-3.5-turbo': 4096,
+  'gpt-3.5-turbo-0301': 4096,
+  'gpt-4': 8192,
+  'gpt-4-0314': 8192,
+  'gpt-4-32k': 32768,
+  'gpt-4-32k-0314': 32768,
+} as const
+
 export const chatCompletionMessageRoles = [
   'system',
   'user',

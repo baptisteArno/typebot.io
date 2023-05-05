@@ -26,6 +26,8 @@ export const Avatar = (props: { initialAvatarSrc?: string }) => {
           src={avatarSrc()}
           alt="Bot avatar"
           class="rounded-full object-cover w-full h-full"
+          elementtiming={'Bot avatar'}
+          fetchpriority={'high'}
         />
       </figure>
     </Show>

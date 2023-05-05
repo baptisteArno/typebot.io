@@ -13,69 +13,71 @@ type Props = { type: BlockType }
 export const BlockLabel = ({ type }: Props): JSX.Element => {
   switch (type) {
     case 'start':
-      return <Text>Start</Text>
+      return <Text fontSize="sm">Start</Text>
     case BubbleBlockType.TEXT:
     case InputBlockType.TEXT:
-      return <Text>Text</Text>
+      return <Text fontSize="sm">Text</Text>
     case BubbleBlockType.IMAGE:
-      return <Text>Image</Text>
+      return <Text fontSize="sm">Image</Text>
     case BubbleBlockType.VIDEO:
-      return <Text>Video</Text>
+      return <Text fontSize="sm">Video</Text>
     case BubbleBlockType.EMBED:
-      return <Text>Embed</Text>
+      return <Text fontSize="sm">Embed</Text>
     case BubbleBlockType.AUDIO:
-      return <Text>Audio</Text>
+      return <Text fontSize="sm">Audio</Text>
     case InputBlockType.NUMBER:
-      return <Text>Number</Text>
+      return <Text fontSize="sm">Number</Text>
     case InputBlockType.EMAIL:
-      return <Text>Email</Text>
+      return <Text fontSize="sm">Email</Text>
     case InputBlockType.URL:
-      return <Text>Website</Text>
+      return <Text fontSize="sm">Website</Text>
     case InputBlockType.DATE:
-      return <Text>Date</Text>
+      return <Text fontSize="sm">Date</Text>
     case InputBlockType.PHONE:
-      return <Text>Phone</Text>
+      return <Text fontSize="sm">Phone</Text>
     case InputBlockType.CHOICE:
-      return <Text>Button</Text>
+      return <Text fontSize="sm">Button</Text>
+    case InputBlockType.PICTURE_CHOICE:
+      return <Text fontSize="sm">Pic choice</Text>
     case InputBlockType.PAYMENT:
-      return <Text>Payment</Text>
+      return <Text fontSize="sm">Payment</Text>
     case InputBlockType.RATING:
-      return <Text>Rating</Text>
+      return <Text fontSize="sm">Rating</Text>
     case InputBlockType.FILE:
-      return <Text>File</Text>
+      return <Text fontSize="sm">File</Text>
     case LogicBlockType.SET_VARIABLE:
-      return <Text>Set variable</Text>
+      return <Text fontSize="sm">Set variable</Text>
     case LogicBlockType.CONDITION:
-      return <Text>Condition</Text>
+      return <Text fontSize="sm">Condition</Text>
     case LogicBlockType.REDIRECT:
-      return <Text>Redirect</Text>
+      return <Text fontSize="sm">Redirect</Text>
     case LogicBlockType.SCRIPT:
-      return <Text>Script</Text>
+      return <Text fontSize="sm">Script</Text>
     case LogicBlockType.TYPEBOT_LINK:
-      return <Text>Typebot</Text>
+      return <Text fontSize="sm">Typebot</Text>
     case LogicBlockType.WAIT:
-      return <Text>Wait</Text>
+      return <Text fontSize="sm">Wait</Text>
     case LogicBlockType.JUMP:
-      return <Text>Jump</Text>
+      return <Text fontSize="sm">Jump</Text>
     case LogicBlockType.AB_TEST:
-      return <Text>AB Test</Text>
+      return <Text fontSize="sm">AB Test</Text>
     case IntegrationBlockType.GOOGLE_SHEETS:
-      return <Text>Sheets</Text>
+      return <Text fontSize="sm">Sheets</Text>
     case IntegrationBlockType.GOOGLE_ANALYTICS:
-      return <Text>Analytics</Text>
+      return <Text fontSize="sm">Analytics</Text>
     case IntegrationBlockType.WEBHOOK:
-      return <Text>Webhook</Text>
+      return <Text fontSize="sm">Webhook</Text>
     case IntegrationBlockType.ZAPIER:
-      return <Text>Zapier</Text>
+      return <Text fontSize="sm">Zapier</Text>
     case IntegrationBlockType.MAKE_COM:
-      return <Text>Make.com</Text>
+      return <Text fontSize="sm">Make.com</Text>
     case IntegrationBlockType.PABBLY_CONNECT:
-      return <Text>Pabbly</Text>
+      return <Text fontSize="sm">Pabbly</Text>
     case IntegrationBlockType.EMAIL:
-      return <Text>Email</Text>
+      return <Text fontSize="sm">Email</Text>
     case IntegrationBlockType.CHATWOOT:
-      return <Text>Chatwoot</Text>
+      return <Text fontSize="sm">Chatwoot</Text>
     case IntegrationBlockType.OPEN_AI:
-      return <Text>OpenAI</Text>
+      return <Text fontSize="sm">OpenAI</Text>
   }
 }

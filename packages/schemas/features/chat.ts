@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { ZodDiscriminatedUnion, z } from 'zod'
 import {
   googleAnalyticsOptionsSchema,
   paymentInputRuntimeOptionsSchema,
@@ -16,7 +16,7 @@ import {
 } from './blocks/bubbles'
 import { answerSchema } from './answer'
 import { BubbleBlockType } from './blocks/bubbles/enums'
-import { inputBlockSchema } from './blocks/schemas'
+import { inputBlockSchemas } from './blocks/schemas'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,
@@ -229,7 +229,8 @@ const clientSideActionSchema = z
 
 export const chatReplySchema = z.object({
   messages: z.array(chatMessageSchema),
-  input: inputBlockSchema
+  input: z
+    .discriminatedUnion('type', [...inputBlockSchemas])
     .and(
       z.object({
         prefilledValue: z.string().optional(),

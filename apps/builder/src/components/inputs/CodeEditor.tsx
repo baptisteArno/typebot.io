@@ -26,6 +26,7 @@ type Props = {
   withVariableButton?: boolean
   height?: string
   maxHeight?: string
+  minWidth?: string
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
@@ -34,6 +35,7 @@ export const CodeEditor = ({
   onChange,
   height = '250px',
   maxHeight = '70vh',
+  minWidth,
   withVariableButton = true,
   isReadOnly = false,
   debounceTimeout = 1000,
@@ -93,6 +95,7 @@ export const CodeEditor = ({
       width="full"
       h="full"
       pos="relative"
+      minW={minWidth}
       onMouseEnter={onOpen}
       onMouseLeave={onClose}
       maxWidth={props.maxWidth}

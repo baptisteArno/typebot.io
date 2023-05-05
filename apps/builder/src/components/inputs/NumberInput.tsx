@@ -57,22 +57,24 @@ export const NumberInput = <HasVariable extends boolean>({
     [onValueChangeDebounced]
   )
 
-  const handleValueChange = (value: string) => {
-    setValue(value)
-    if (value.endsWith('.') || value.endsWith(',')) return
-    if (value === '') return onValueChangeDebounced(undefined)
+  const handleValueChange = (newValue: string) => {
+    if (value.startsWith('{{') && value.endsWith('}}') && newValue !== '')
+      return
+    setValue(newValue)
+    if (newValue.endsWith('.') || newValue.endsWith(',')) return
+    if (newValue === '') return onValueChangeDebounced(undefined)
     if (
-      value.startsWith('{{') &&
-      value.endsWith('}}') &&
-      value.length > 4 &&
+      newValue.startsWith('{{') &&
+      newValue.endsWith('}}') &&
+      newValue.length > 4 &&
       (withVariableButton ?? true)
     ) {
-      onValueChangeDebounced(value as Value<HasVariable>)
+      onValueChangeDebounced(newValue as Value<HasVariable>)
       return
     }
-    const newValue = parseFloat(value)
-    if (isNaN(newValue)) return
-    onValueChangeDebounced(newValue)
+    const numberedValue = parseFloat(newValue)
+    if (isNaN(numberedValue)) return
+    onValueChangeDebounced(numberedValue)
   }
 
   const handleVariableSelected = (variable?: Variable) => {

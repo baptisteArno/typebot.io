@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.0
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 3.1.7
+Stable Tag: 3.1.9
 
 == Description ==
 Collect 4x more responses with conversational apps using Typebot.
@@ -24,6 +24,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 3.1.8 =
+* Fix forward wp user variable when not initialized
+
 = 3.1.7 =
 * Fix forwarded user prefilled variables 
 

@@ -13,7 +13,7 @@ import {
   duplicateBlockDraft,
   WebhookCallBacks,
 } from './blocks'
-import { parseGroupTitle } from '@typebot.io/lib'
+import { isEmpty, parseGroupTitle } from '@typebot.io/lib'
 import { Coordinates } from '@/features/graph/types'
 
 export type GroupsActions = {
@@ -75,7 +75,9 @@ const groupsActions = (
         const id = createId()
         const newGroup: Group = {
           ...group,
-          title: `${parseGroupTitle(group.title)} copy`,
+          title: isEmpty(group.title)
+            ? ''
+            : `${parseGroupTitle(group.title)} copy`,
           id,
           blocks: group.blocks.map((block) =>
             duplicateBlockDraft(id)(block, onWebhookBlockDuplicated)
