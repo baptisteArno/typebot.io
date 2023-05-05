@@ -72,6 +72,8 @@ export const updateSubscription = authenticatedProcedure
       })
       const { data } = await stripe.subscriptions.list({
         customer: workspace.stripeId,
+        limit: 1,
+        status: 'active',
       })
       const subscription = data[0] as Stripe.Subscription | undefined
       const currentPlanItemId = subscription?.items.data.find((item) =>

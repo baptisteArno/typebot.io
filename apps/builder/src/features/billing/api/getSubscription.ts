@@ -49,6 +49,7 @@ export const getSubscription = authenticatedProcedure
     const subscriptions = await stripe.subscriptions.list({
       customer: workspace.stripeId,
       limit: 1,
+      status: 'active',
     })
 
     const subscription = subscriptions?.data.shift()
