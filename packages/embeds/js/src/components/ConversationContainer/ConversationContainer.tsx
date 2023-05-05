@@ -1,4 +1,5 @@
-import type { ChatReply, Theme } from '@typebot.io/schemas'
+import { ChatReply, Theme } from '@typebot.io/schemas'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
 import { createEffect, createSignal, For, onMount, Show } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
@@ -89,9 +90,16 @@ export const ConversationContainer = (props: Props) => {
 
   const sendMessage = async (message: string | undefined) => {
     setHasError(false)
-    const currentBlockId = [...chatChunks()].pop()?.input?.id
-    if (currentBlockId && props.onAnswer && message)
-      props.onAnswer({ message, blockId: currentBlockId })
+    const currentInputBlock = [...chatChunks()].pop()?.input
+    if (currentInputBlock?.id && props.onAnswer && message)
+      props.onAnswer({ message, blockId: currentInputBlock.id })
+    if (currentInputBlock?.type === InputBlockType.FILE)
+      props.onNewLogs?.([
+        {
+          description: 'Files are not uploaded in preview mode',
+          status: 'info',
+        },
+      ])
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
