@@ -6,14 +6,18 @@ export const executeGoogleAnalyticsBlock = (
   { typebot: { variables } }: SessionState,
   block: GoogleAnalyticsBlock,
   lastBubbleBlockId?: string
-): ExecuteIntegrationResponse => ({
-  outgoingEdgeId: block.outgoingEdgeId,
-  clientSideActions: [
-    {
-      googleAnalytics: deepParseVariables(variables, {
-        guessCorrectType: true,
-      })(block.options),
-      lastBubbleBlockId,
-    },
-  ],
-})
+): ExecuteIntegrationResponse => {
+  const googleAnalytics = deepParseVariables(variables)(block.options)
+  return {
+    outgoingEdgeId: block.outgoingEdgeId,
+    clientSideActions: [
+      {
+        googleAnalytics: {
+          ...googleAnalytics,
+          value: Number(googleAnalytics.value),
+        },
+        lastBubbleBlockId,
+      },
+    ],
+  }
+}
