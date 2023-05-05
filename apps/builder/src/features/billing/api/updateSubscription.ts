@@ -13,6 +13,7 @@ import {
   priceIds,
 } from '@typebot.io/lib/pricing'
 import { chatPriceIds, storagePriceIds } from './getSubscription'
+import { createCheckoutSessionUrl } from './createCheckoutSession'
 
 export const updateSubscription = authenticatedProcedure
   .meta({
@@ -26,6 +27,7 @@ export const updateSubscription = authenticatedProcedure
   })
   .input(
     z.object({
+      returnUrl: z.string(),
       workspaceId: z.string(),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       additionalChats: z.number(),
@@ -36,7 +38,8 @@ export const updateSubscription = authenticatedProcedure
   )
   .output(
     z.object({
-      workspace: workspaceSchema,
+      workspace: workspaceSchema.nullish(),
+      checkoutUrl: z.string().nullish(),
     })
   )
   .mutation(
@@ -48,6 +51,7 @@ export const updateSubscription = authenticatedProcedure
         additionalStorage,
         currency,
         isYearly,
+        returnUrl,
       },
       ctx: { user },
     }) => {
@@ -127,21 +131,19 @@ export const updateSubscription = authenticatedProcedure
           items,
         })
       } else {
-        const { data: paymentMethods } = await stripe.paymentMethods.list({
-          customer: workspace.stripeId,
-        })
-        if (paymentMethods.length === 0) {
-          throw Error('No payment method found')
-        }
-        await stripe.subscriptions.create({
-          customer: workspace.stripeId,
-          items,
+        const checkoutUrl = await createCheckoutSessionUrl(stripe)({
+          customerId: workspace.stripeId,
+          userId: user.id,
+          workspaceId,
           currency,
-          default_payment_method: paymentMethods[0].id,
-          automatic_tax: {
-            enabled: true,
-          },
+          plan,
+          returnUrl,
+          additionalChats,
+          additionalStorage,
+          isYearly,
         })
+
+        return { checkoutUrl }
       }
 
       const updatedWorkspace = await prisma.workspace.update({

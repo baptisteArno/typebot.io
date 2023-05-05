@@ -94,42 +94,82 @@ export const createCheckoutSession = authenticatedProcedure
           : undefined,
       })
 
-      const session = await stripe.checkout.sessions.create({
-        success_url: `${returnUrl}?stripe=${plan}&success=true`,
-        cancel_url: `${returnUrl}?stripe=cancel`,
-        allow_promotion_codes: true,
-        customer: customer.id,
-        customer_update: {
-          address: 'auto',
-          name: 'never',
-        },
-        mode: 'subscription',
-        metadata: {
-          workspaceId,
-          plan,
-          additionalChats,
-          additionalStorage,
-          userId: user.id,
-        },
+      const checkoutUrl = await createCheckoutSessionUrl(stripe)({
+        customerId: customer.id,
+        userId: user.id,
+        workspaceId,
         currency,
-        billing_address_collection: 'required',
-        automatic_tax: { enabled: true },
-        line_items: parseSubscriptionItems(
-          plan,
-          additionalChats,
-          additionalStorage,
-          isYearly
-        ),
+        plan,
+        returnUrl,
+        additionalChats,
+        additionalStorage,
+        isYearly,
       })
 
-      if (!session.url)
+      if (!checkoutUrl)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Stripe checkout session creation failed',
         })
 
       return {
-        checkoutUrl: session.url,
+        checkoutUrl,
       }
     }
   )
+
+type Props = {
+  customerId: string
+  workspaceId: string
+  currency: 'usd' | 'eur'
+  plan: 'STARTER' | 'PRO'
+  returnUrl: string
+  additionalChats: number
+  additionalStorage: number
+  isYearly: boolean
+  userId: string
+}
+
+export const createCheckoutSessionUrl =
+  (stripe: Stripe) =>
+  async ({
+    customerId,
+    userId,
+    workspaceId,
+    currency,
+    plan,
+    returnUrl,
+    additionalChats,
+    additionalStorage,
+    isYearly,
+  }: Props) => {
+    const session = await stripe.checkout.sessions.create({
+      success_url: `${returnUrl}?stripe=${plan}&success=true`,
+      cancel_url: `${returnUrl}?stripe=cancel`,
+      allow_promotion_codes: true,
+      customer: customerId,
+      customer_update: {
+        address: 'auto',
+        name: 'never',
+      },
+      mode: 'subscription',
+      metadata: {
+        workspaceId,
+        plan,
+        additionalChats,
+        additionalStorage,
+        userId,
+      },
+      currency,
+      billing_address_collection: 'required',
+      automatic_tax: { enabled: true },
+      line_items: parseSubscriptionItems(
+        plan,
+        additionalChats,
+        additionalStorage,
+        isYearly
+      ),
+    })
+
+    return session.url
+  }
