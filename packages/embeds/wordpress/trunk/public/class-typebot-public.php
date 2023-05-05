@@ -90,8 +90,8 @@ class Typebot_Public
     if (array_key_exists('typebot', $attributes)) {
       $typebot = sanitize_text_field($attributes['typebot']);
     }
-    if (array_key_exists('apiHost', $attributes)) {
-      $api_host = sanitize_text_field($attributes['apiHost']);
+    if (array_key_exists('host', $attributes)) {
+      $api_host = sanitize_text_field($attributes['host']);
     }
     if (!$typebot) {
       return;
