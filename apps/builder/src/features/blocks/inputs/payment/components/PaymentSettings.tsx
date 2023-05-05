@@ -11,13 +11,18 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { PaymentInputOptions, PaymentProvider } from '@typebot.io/schemas'
+import {
+  PaymentAddress,
+  PaymentInputOptions,
+  PaymentProvider,
+} from '@typebot.io/schemas'
 import React, { ChangeEvent } from 'react'
 import { currencies } from '../currencies'
 import { StripeConfigModal } from './StripeConfigModal'
 import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
 import { TextInput } from '@/components/inputs'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { PaymentAddressSettings } from './PaymentAddressSettings'
 
 type Props = {
   options: PaymentInputOptions
@@ -90,6 +95,12 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       additionalInformation: { ...options.additionalInformation, description },
     })
 
+  const updateAddress = (address: PaymentAddress) =>
+    onOptionsChange({
+      ...options,
+      additionalInformation: { ...options.additionalInformation, address },
+    })
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -152,7 +163,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             Additional information
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
+          <AccordionPanel py={4} as={Stack} spacing="6">
             <TextInput
               label="Description:"
               defaultValue={options.additionalInformation?.description ?? ''}
@@ -176,6 +187,10 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
               defaultValue={options.additionalInformation?.phoneNumber ?? ''}
               onChange={updatePhoneNumber}
               placeholder="+33XXXXXXXXX"
+            />
+            <PaymentAddressSettings
+              address={options.additionalInformation?.address}
+              onAddressChange={updateAddress}
             />
           </AccordionPanel>
         </AccordionItem>

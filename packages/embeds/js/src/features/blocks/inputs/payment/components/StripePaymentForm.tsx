@@ -61,6 +61,11 @@ export const StripePaymentForm = (props: Props) => {
             name: props.options.additionalInformation?.name,
             email: props.options.additionalInformation?.email,
             phone: props.options.additionalInformation?.phoneNumber,
+            address: {
+              ...props.options.additionalInformation?.address,
+              postal_code:
+                props.options.additionalInformation?.address?.postalCode,
+            },
           },
         },
       },

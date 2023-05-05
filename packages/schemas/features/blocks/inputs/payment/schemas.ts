@@ -14,6 +14,15 @@ export type CreditCardDetails = {
   cvc: string
 }
 
+const addressSchema = z.object({
+  country: z.string().optional(),
+  line1: z.string().optional(),
+  line2: z.string().optional(),
+  state: z.string().optional(),
+  city: z.string().optional(),
+  postalCode: z.string().optional(),
+})
+
 export const paymentInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     provider: z.nativeEnum(PaymentProvider),
@@ -27,6 +36,7 @@ export const paymentInputOptionsSchema = optionBaseSchema.merge(
         name: z.string().optional(),
         email: z.string().optional(),
         phoneNumber: z.string().optional(),
+        address: addressSchema.optional(),
       })
       .optional(),
     credentialsId: z.string().optional(),
@@ -76,3 +86,6 @@ export type PaymentInputRuntimeOptions = z.infer<
   typeof paymentInputRuntimeOptionsSchema
 >
 export type StripeCredentials = z.infer<typeof stripeCredentialsSchema>
+export type PaymentAddress = NonNullable<
+  PaymentInputOptions['additionalInformation']
+>['address']
