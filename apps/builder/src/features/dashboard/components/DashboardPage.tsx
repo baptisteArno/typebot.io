@@ -15,16 +15,16 @@ import { DashboardHeader } from './DashboardHeader'
 import { FolderContent } from '@/features/folders/components/FolderContent'
 import { TypebotDndProvider } from '@/features/folders/TypebotDndProvider'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
-import { trpc } from '@/lib/trpc'
 
 export const DashboardPage = () => {
   const scopedT = useScopedI18n('dashboard')
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const { query } = useRouter()
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps['selectedSubscription']>()
+
   // useEffect(() => {
   //   const { subscribePlan, chats, storage, isYearly } = query as {
   //     subscribePlan: Plan | undefined
@@ -44,23 +44,6 @@ export const DashboardPage = () => {
   //     })
   //   }
   // }, [query, user, workspace])
-        email: user.email,
-        workspaceId: workspace.id,
-        returnUrl: `${window.location.origin}/typebots`,
-      })
-    }
-    if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
-      setIsLoading(true)
-      setPreCheckoutPlan({
-        plan: subscribePlan as 'PRO' | 'STARTER',
-        workspaceId: workspace.id,
-        additionalChats: chats ? parseInt(chats) : 0,
-        additionalStorage: storage ? parseInt(storage) : 0,
-        currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
-        isYearly: isYearly === 'false' ? false : true,
-      })
-    }
-  }, [createCustomCheckoutSession, router.query, user, workspace])
 
   return (
     <Stack minH="100vh">
