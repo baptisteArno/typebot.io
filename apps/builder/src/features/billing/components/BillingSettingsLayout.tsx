@@ -24,7 +24,7 @@ export const BillingSettingsLayout = () => {
               workspace={workspace}
               onUpgradeSuccess={refreshWorkspace}
             />
-          )}
+          )} */}
       </Stack>
 
       {workspace.stripeId && <InvoicesList workspaceId={workspace.id} />}
