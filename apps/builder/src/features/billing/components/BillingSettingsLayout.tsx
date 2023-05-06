@@ -16,7 +16,7 @@ export const BillingSettingsLayout = () => {
       <UsageProgressBars workspace={workspace} />
       <Stack spacing="4">
         <CurrentSubscriptionSummary workspace={workspace} />
-        {workspace.plan !== Plan.CUSTOM &&
+        {/* {workspace.plan !== Plan.CUSTOM &&
           workspace.plan !== Plan.LIFETIME &&
           workspace.plan !== Plan.UNLIMITED &&
           workspace.plan !== Plan.OFFERED && (
