@@ -25,25 +25,25 @@ export const DashboardPage = () => {
   const { workspace } = useWorkspace()
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps['selectedSubscription']>()
-  const { mutate: createCustomCheckoutSession } =
-    trpc.billing.createCustomCheckoutSession.useMutation({
-      onSuccess: (data) => {
-        router.push(data.checkoutUrl)
-      },
-    })
-
-  useEffect(() => {
-    const { subscribePlan, chats, storage, isYearly, claimCustomPlan } =
-      router.query as {
-        subscribePlan: Plan | undefined
-        chats: string | undefined
-        storage: string | undefined
-        isYearly: string | undefined
-        claimCustomPlan: string | undefined
-      }
-    if (claimCustomPlan && user?.email && workspace) {
-      setIsLoading(true)
-      createCustomCheckoutSession({
+  // useEffect(() => {
+  //   const { subscribePlan, chats, storage, isYearly } = query as {
+  //     subscribePlan: Plan | undefined
+  //     chats: string | undefined
+  //     storage: string | undefined
+  //     isYearly: string | undefined
+  //   }
+  //   if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
+  //     setIsLoading(true)
+  //     setPreCheckoutPlan({
+  //       plan: subscribePlan as 'PRO' | 'STARTER',
+  //       workspaceId: workspace.id,
+  //       additionalChats: chats ? parseInt(chats) : 0,
+  //       additionalStorage: storage ? parseInt(storage) : 0,
+  //       currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
+  //       isYearly: isYearly === 'false' ? false : true,
+  //     })
+  //   }
+  // }, [query, user, workspace])
         email: user.email,
         workspaceId: workspace.id,
         returnUrl: `${window.location.origin}/typebots`,
