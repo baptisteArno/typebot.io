@@ -21,15 +21,20 @@ export function customAdapter(p: PrismaClient): Adapter {
       if (!data.email)
         throw Error('Provider did not forward email but it is required')
       const user = { id: createId(), email: data.email as string }
-      const { invitations, workspaceInvitations } = await getNewUserInvitations(
-        p,
-        user.email
-      )
+      // const { invitations, workspaceInvitations } = await getNewUserInvitations(
+      //   p,
+      //   user.email
+      // )
+
+      console.log('process.env.DISABLE_SIGNUP', process.env.DISABLE_SIGNUP)
+
+      console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL)
+
       if (
         process.env.DISABLE_SIGNUP === 'true' &&
-        process.env.ADMIN_EMAIL !== user.email &&
-        invitations.length === 0 &&
-        workspaceInvitations.length === 0
+        process.env.ADMIN_EMAIL !== user.email
+        // invitations.length === 0 &&
+        // workspaceInvitations.length === 0
       )
         throw Error('New users are forbidden')
 
@@ -45,45 +50,46 @@ export function customAdapter(p: PrismaClient): Adapter {
             create: { name: 'Default', token: generateId(24) },
           },
           workspaces:
-            workspaceInvitations.length > 0
-              ? undefined
-              : {
-                  create: {
-                    role: WorkspaceRole.ADMIN,
-                    workspace: {
-                      create: newWorkspaceData,
-                    },
-                  },
+            // workspaceInvitations.length > 0
+            //   ? undefined
+            //   :
+            {
+              create: {
+                role: WorkspaceRole.ADMIN,
+                workspace: {
+                  create: newWorkspaceData,
                 },
+              },
+            },
           onboardingCategories: [],
         },
         include: {
           workspaces: { select: { workspaceId: true } },
         },
       })
-      const newWorkspaceId = createdUser.workspaces.pop()?.workspaceId
-      const events: TelemetryEvent[] = []
-      if (newWorkspaceId) {
-        events.push({
-          name: 'Workspace created',
-          workspaceId: newWorkspaceId,
-          userId: createdUser.id,
-          data: newWorkspaceData,
-        })
-      }
-      events.push({
-        name: 'User created',
-        userId: createdUser.id,
-        data: {
-          email: data.email,
-          name: data.name ? (data.name as string).split(' ')[0] : undefined,
-        },
-      })
-      await sendTelemetryEvents(events)
-      if (invitations.length > 0)
-        await convertInvitationsToCollaborations(p, user, invitations)
-      if (workspaceInvitations.length > 0)
-        await joinWorkspaces(p, user, workspaceInvitations)
+      // const newWorkspaceId = createdUser.workspaces.pop()?.workspaceId
+      // const events: TelemetryEvent[] = []
+      // if (newWorkspaceId) {
+      //   events.push({
+      //     name: 'Workspace created',
+      //     workspaceId: newWorkspaceId,
+      //     userId: createdUser.id,
+      //     data: newWorkspaceData,
+      //   })
+      // }
+      // events.push({
+      //   name: 'User created',
+      //   userId: createdUser.id,
+      //   data: {
+      //     email: data.email,
+      //     name: data.name ? (data.name as string).split(' ')[0] : undefined,
+      //   },
+      // })
+      // await sendTelemetryEvents(events)
+      // if (invitations.length > 0)
+      //   await convertInvitationsToCollaborations(p, user, invitations)
+      // if (workspaceInvitations.length > 0)
+      //   await joinWorkspaces(p, user, workspaceInvitations)
       return createdUser as AdapterUser
     },
     getUser: async (id) =>
@@ -102,6 +108,7 @@ export function customAdapter(p: PrismaClient): Adapter {
     deleteUser: async (id) =>
       (await p.user.delete({ where: { id } })) as AdapterUser,
     linkAccount: async (data) => {
+      console.log('Here in the link account section', data)
       await p.account.create({
         data: {
           userId: data.userId,
@@ -120,6 +127,7 @@ export function customAdapter(p: PrismaClient): Adapter {
           refresh_token_expires_in: data.refresh_token_expires_in as number,
         },
       })
+      console.log('Account created!')
     },
     unlinkAccount: async (provider_providerAccountId) => {
       await p.account.delete({ where: { provider_providerAccountId } })
