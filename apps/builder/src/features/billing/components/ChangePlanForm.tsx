@@ -47,11 +47,17 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
           description: error.message,
         })
       },
-      onSuccess: ({ workspace: { plan } }) => {
+      onSuccess: ({ workspace, checkoutUrl }) => {
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl
+          return
+        }
         onUpgradeSuccess()
         showToast({
           status: 'success',
-          description: scopedT('updateSuccessToast.description', { plan }),
+          description: scopedT('updateSuccessToast.description', {
+            plan: workspace?.plan,
+          }),
         })
       },
     })
@@ -83,7 +89,10 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
       isYearly,
     } as const
     if (workspace.stripeId) {
-      updateSubscription(newSubscription)
+      updateSubscription({
+        ...newSubscription,
+        returnUrl: window.location.href,
+      })
     } else {
       setPreCheckoutPlan(newSubscription)
     }

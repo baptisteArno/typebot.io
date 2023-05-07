@@ -59,6 +59,8 @@ export const cancelSubscription = async (stripeId: string) => {
   const currentSubscriptionId = (
     await stripe.subscriptions.list({
       customer: stripeId,
+      limit: 1,
+      status: 'active',
     })
   ).data.shift()?.id
   if (currentSubscriptionId)

@@ -4,14 +4,11 @@ import {
   parseVariables,
   ParseVariablesOptions,
 } from './parseVariables'
-import { parseGuessedValueType } from './parseGuessedValueType'
 
 export const deepParseVariables =
   (
     variables: Variable[],
-    options: ParseVariablesOptions & {
-      guessCorrectType?: boolean
-    } = defaultParseVariablesOptions
+    options: ParseVariablesOptions = defaultParseVariablesOptions
   ) =>
   <T extends Record<string, unknown>>(object: T): T =>
     Object.keys(object).reduce<T>((newObj, key) => {
@@ -21,9 +18,7 @@ export const deepParseVariables =
         const parsedVariable = parseVariables(variables, options)(currentValue)
         return {
           ...newObj,
-          [key]: options.guessCorrectType
-            ? parseGuessedValueType(parsedVariable)
-            : parsedVariable,
+          [key]: parsedVariable,
         }
       }
 

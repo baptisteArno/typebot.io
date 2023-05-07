@@ -128,6 +128,32 @@ You can bind these commands on a button element, for example:
 <button onclick="Typebot.open()">Contact us</button>
 ```
 
+### Custom button position
+
+You can move the button with some custom CSS on your website. For example, you can place the bubble button higher with the following CSS:
+
+```css
+typebot-bubble::part(button) {
+  bottom: 60px;
+}
+
+typebot-bubble::part(bot) {
+  bottom: 140px;
+}
+
+typebot-bubble::part(bot) {
+  bottom: 140px;  height: calc(100% - 140px)
+}
+```
+
+If you have a preview message, you'll also have to manually position it:
+
+```css
+typebot-bubble::part(preview-message) {
+  bottom: 140px;
+}
+```
+
 ## Additional configuration
 
 You can prefill the bot variable values in your embed code by adding the `prefilledVariables` option. Here is an example:
