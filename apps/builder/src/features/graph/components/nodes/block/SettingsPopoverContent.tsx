@@ -4,12 +4,11 @@ import {
   PopoverBody,
   useEventListener,
   Portal,
-  IconButton,
-  HStack,
   Stack,
   useColorModeValue,
+  SlideFade,
+  Flex,
 } from '@chakra-ui/react'
-import { ExpandIcon } from '@/components/icons'
 import {
   InputBlockType,
   IntegrationBlockType,
@@ -18,8 +17,7 @@ import {
   BlockOptions,
   BlockWithOptions,
 } from '@typebot.io/schemas'
-import { useRef } from 'react'
-import { HelpDocButton } from './HelpDocButton'
+import { useRef, useState } from 'react'
 import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
 import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
@@ -47,6 +45,7 @@ import { GoogleSheetsSettings } from '@/features/blocks/integrations/googleSheet
 import { ChatwootSettings } from '@/features/blocks/integrations/chatwoot/components/ChatwootSettings'
 import { AbTestSettings } from '@/features/blocks/logic/abTest/components/AbTestSettings'
 import { PictureChoiceSettings } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings'
+import { SettingsHoverBar } from './SettingsHoverBar'
 
 type Props = {
   block: BlockWithOptions
@@ -55,6 +54,7 @@ type Props = {
 }
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
+  const [isHovering, setIsHovering] = useState(false)
   const arrowColor = useColorModeValue('white', 'gray.800')
   const ref = useRef<HTMLDivElement | null>(null)
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
@@ -74,17 +74,26 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
           maxH="400px"
           ref={ref}
           shadow="lg"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
           <Stack spacing={3}>
-            <HStack justifyContent="flex-end">
-              <HelpDocButton blockType={props.block.type} />
-              <IconButton
-                aria-label="expand"
-                icon={<ExpandIcon />}
-                size="xs"
-                onClick={onExpandClick}
-              />
-            </HStack>
+            <Flex
+              w="full"
+              pos="absolute"
+              top="-56px"
+              height="64px"
+              right={0}
+              justifyContent="flex-end"
+              align="center"
+            >
+              <SlideFade in={isHovering} unmountOnExit>
+                <SettingsHoverBar
+                  onExpandClick={onExpandClick}
+                  blockType={props.block.type}
+                />
+              </SlideFade>
+            </Flex>
             <BlockSettings {...props} />
           </Stack>
         </PopoverBody>

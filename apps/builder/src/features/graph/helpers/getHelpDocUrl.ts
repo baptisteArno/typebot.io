@@ -1,36 +1,11 @@
-import { BuoyIcon } from '@/components/icons'
-import { Button, Link } from '@chakra-ui/react'
 import {
   BlockWithOptions,
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
 } from '@typebot.io/schemas'
-import React from 'react'
 
-type HelpDocButtonProps = {
-  blockType: BlockWithOptions['type']
-}
-
-export const HelpDocButton = ({ blockType }: HelpDocButtonProps) => {
-  const helpDocUrl = getHelpDocUrl(blockType)
-
-  if (helpDocUrl === null) return null
-
-  return (
-    <Button
-      as={Link}
-      leftIcon={<BuoyIcon />}
-      size="xs"
-      href={helpDocUrl}
-      isExternal
-    >
-      Help
-    </Button>
-  )
-}
-
-const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
+export const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
   switch (blockType) {
     case LogicBlockType.TYPEBOT_LINK:
       return 'https://docs.typebot.io/editor/blocks/logic/typebot-link'
