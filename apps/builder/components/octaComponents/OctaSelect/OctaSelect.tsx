@@ -50,6 +50,7 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   const handleToggle = (): void => {
     setToggle((e) => !e)
+    setSearch('')
   }
 
   const handleChangeFind = (value: any): void => {
