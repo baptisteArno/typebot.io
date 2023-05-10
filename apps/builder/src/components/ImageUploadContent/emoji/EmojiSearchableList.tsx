@@ -48,8 +48,7 @@ export const EmojiSearchableList = ({
     return () => {
       observer.disconnect()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bottomElement.current])
+  }, [])
 
   const handleObserver = (entities: IntersectionObserverEntry[]) => {
     const target = entities[0]

@@ -12,20 +12,22 @@ import {
   Button,
   Stack,
   ButtonProps,
+  Box,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, useState } from 'react'
 import tinyColor from 'tinycolor2'
 
 const colorsSelection: `#${string}`[] = [
-  '#264653',
-  '#e9c46a',
-  '#2a9d8f',
-  '#7209b7',
-  '#023e8a',
-  '#ffe8d6',
-  '#d8f3dc',
-  '#4ea8de',
-  '#ffb4a2',
+  '#666460',
+  '#AFABA3',
+  '#A87964',
+  '#D09C46',
+  '#DE8031',
+  '#598E71',
+  '#4A8BB2',
+  '#9B74B7',
+  '#C75F96',
+  '#C75F96',
 ]
 
 type Props = {
@@ -53,19 +55,14 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
       <PopoverTrigger>
         <Button
           aria-label={'Pick a color'}
-          bgColor={displayedValue}
-          _hover={{
-            bgColor: `#${tinyColor(displayedValue).darken(10).toHex()}`,
-          }}
-          _active={{
-            bgColor: `#${tinyColor(displayedValue).darken(30).toHex()}`,
-          }}
           height="22px"
           width="22px"
           padding={0}
           borderRadius={3}
           borderWidth={1}
-        />
+        >
+          <Box rounded="full" boxSize="14px" bgColor={displayedValue} />
+        </Button>
       </PopoverTrigger>
       <PopoverContent width="170px">
         <PopoverArrow bg={displayedValue} />
