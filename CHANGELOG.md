@@ -1,5 +1,40 @@
 # Changelog
 
+<a name="2.13.1"></a>
+## 2.13.1 (2023-05-09)
+
+### Added
+
+- ✨ Add dog insurance offer template [[8347e5b](https://github.com/baptisteArno/typebot.io/commit/8347e5b2a89b70957a6a04f7cceac83a4c1a57c6)]
+- ✨ Add picture choice block [[035dded](https://github.com/baptisteArno/typebot.io/commit/035dded654fb425c2f1e857b2f328baadc44d799)]
+
+### Changed
+
+- 🚸 Add floating menu for block settings [[825ed2f](https://github.com/baptisteArno/typebot.io/commit/825ed2f1ecab3a5cad7659172df38791a6cf2a24)]
+- 🚸 Show toast for non-uploaded file in preview mode [[be009a2](https://github.com/baptisteArno/typebot.io/commit/be009a216d8c63864c9b71ebc62647c17494f0e5)]
+- ⚡ (payment) Add address in payment input [[c469912](https://github.com/baptisteArno/typebot.io/commit/c46991297961f080f77dbce400849af2e80627a9)]
+- 🚸 (billing) Use Stripe checkout page for new subscription with existing customer [[b9f94cd](https://github.com/baptisteArno/typebot.io/commit/b9f94cdf19df3ba69166760d028500650e79a355)]
+- ⚡ (sheets) Add rows filtering to update multiple rows at the same time [[55db360](https://github.com/baptisteArno/typebot.io/commit/55db360200612171ac0159296145b21efe5bc59c)]
+- 🚸 (editor) Do not show focus toolbar for the Start group [[5f0a99e](https://github.com/baptisteArno/typebot.io/commit/5f0a99ee66fc719f1d3ca9371dba4af3018f66ac)]
+
+### Fixed
+
+- 🐛 (webhook) Fix picture choice sample value not sent [[33adc29](https://github.com/baptisteArno/typebot.io/commit/33adc29a57609f6a9a44113886113d94eb642393)]
+- 🐛 (ga) Fix value field parsing [[e15e27f](https://github.com/baptisteArno/typebot.io/commit/e15e27f0b47deca2d5d99021642ce770a4df0268)]
+- 🐛 (ga) Fix invalid variable parsing [[d99af7e](https://github.com/baptisteArno/typebot.io/commit/d99af7e6c5d6d833c98e99c9ff255cb75a16ee9f)]
+- 🐛 (billing) Only fetch active subscriptions [[98a21f3](https://github.com/baptisteArno/typebot.io/commit/98a21f3a9e7cd348b1ea196260633228378ce1be)]
+- 🐛 (sheets) Fix update filter invalid indexes [[8b3a690](https://github.com/baptisteArno/typebot.io/commit/8b3a6908098b0bfc49f6aea4506c22ac54d933bb)]
+- 🐛 (wp) Fix custom api host variable name on shortcode [[c0fae18](https://github.com/baptisteArno/typebot.io/commit/c0fae185013f0f62effe1eab9455cb7e5bc392c0)]
+- 🐛 (googleAnalytics) Fix output validation when using variable as event value [[65c6f66](https://github.com/baptisteArno/typebot.io/commit/65c6f66a5cdd72ad1384a89df5810e800b2cbd06)]
+- 💚 Revert rollup upgrade to make it work with turbo dev [[f2d3174](https://github.com/baptisteArno/typebot.io/commit/f2d31745caddf2ab57dd4db2ec2c0264cfafe833)]
+
+### Miscellaneous
+
+-  Add German Translation ([#485](https://github.com/baptisteArno/typebot.io/issues/485)) [[dd079c3](https://github.com/baptisteArno/typebot.io/commit/dd079c352503bf01fb61061466964a6129ad4bc9)]
+- 📝 Custom bubble button position instructions [[ecc3b5f](https://github.com/baptisteArno/typebot.io/commit/ecc3b5fd874aed22a84ba958f722e9424b170430)]
+- 📝 Doc about the more options menu from the results tab [[c31642d](https://github.com/baptisteArno/typebot.io/commit/c31642db04f7b197f09646ab9b4e96333326a998)]
+
+
 <a name="2.13.0"></a>
 ## 2.13.0 (2023-05-02)
 
