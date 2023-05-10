@@ -25,7 +25,7 @@ import {
 const userContext = createContext<{
   user?: User
   featureFlags: FeatureFlags | undefined
-  companyFeatures: {[key: string]: boolean}
+  // companyFeatures: {[key: string]: boolean}
   verifyFeatureToggle: (featureFlag: string) => boolean
   //   isLoading: boolean
   //   isSaving: boolean

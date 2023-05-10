@@ -46,6 +46,7 @@ type Props = {
   initialVariableId?: string
   debounceTimeout?: number
   isDefaultOpen?: boolean
+  handleOutsideClick: () => void
   onSelectVariable: (
     variable: Pick<
       Variable,
@@ -56,6 +57,7 @@ type Props = {
       | 'token'
       | 'variableId'
       | 'fieldId'
+      | 'fixed'
       | 'example'
     >
   ) => void
@@ -65,6 +67,7 @@ export const VariableSearchInput = ({
   initialVariableId,
   onSelectVariable,
   isDefaultOpen,
+  handleOutsideClick,
   debounceTimeout = 1000,
   ...inputProps
 }: Props) => {
@@ -140,7 +143,8 @@ export const VariableSearchInput = ({
 
   useOutsideClick({
     ref: dropdownRef,
-    handler: onClose,
+    // handler: onClose,
+    handler: () => handleOutsideClick(),
   })
 
   useEffect(() => {
@@ -233,6 +237,7 @@ export const VariableSearchInput = ({
         example: '',
         fieldId: customVariable.fieldId,
         type: customVariable.type,
+        fixed: true
       }
       createVariable(customVariableDraft)
       setInputValue(customVariableDraft.token)
