@@ -1,16 +1,47 @@
-import { Button, ButtonProps, Flex, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, chakra } from '@chakra-ui/react'
+import {
+  Button,
+  ButtonProps,
+  Center,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  chakra,
+} from '@chakra-ui/react'
 import { BotSpecificationOption, useWorkspace } from 'contexts/WorkspaceContext'
+import { useUser } from 'contexts/UserContext'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import fileUploader from 'services/octadesk/fileUploader/fileUploader'
-import { ErrorMessage, FooterMessage, ModalTitle, MoreDetailsButton } from './UploadButton.style'
 import {
-  CheckCircleOutlineIcon,
-  BlockIcon,
-} from 'assets/icons'
+  ChannelSection,
+  ErrorMessage,
+  FooterMessage,
+  ModalTitle,
+  MoreDetailsButton,
+} from './UploadButton.style'
+import { CheckCircleOutlineIcon, BlockIcon } from 'assets/icons'
+
 type UploadButtonProps = {
   filePath: string
   includeFileName?: boolean
-  onFileUploaded: (url: string, type: string, name: string, size: number) => void
+  onFileUploaded: (
+    url: string,
+    type: string,
+    name: string,
+    size: number
+  ) => void
 } & ButtonProps
 export const UploadButton = ({
   filePath,
@@ -19,28 +50,32 @@ export const UploadButton = ({
   ...props
 }: UploadButtonProps) => {
   const [isUploading, setIsUploading] = useState(false)
-  const { workspace, botSpecificationsChannelsInfo, botChannelsSpecifications } = useWorkspace()
+  const {
+    workspace,
+    botSpecificationsChannelsInfo,
+    botChannelsSpecifications,
+  } = useWorkspace()
+
   const [maxFilesize, setMaxFilesize] = useState<number>(30)
-  const [supportedExtensions, setSupportedExtensions] = useState<Array<string>>()
+  const [supportedExtensions, setSupportedExtensions] =
+    useState<Array<string>>()
   const [errorMessage, setErrorMessage] = useState<string>()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const alertFileSizeExtension = {
-    "text": `Use arquivos com até ${maxFilesize}MB e extensão ${supportedExtensions}`,
-    "and": "e",
-    "infoBtn": "Mais detalhes aqui."
+    text: `Use arquivos com até ${maxFilesize}MB e extensão ${supportedExtensions}`,
+    and: 'e',
+    infoBtn: 'Mais detalhes aqui.',
   }
 
   const handleMaxFilesize = (channel: string) => {
     const getAttachmentMaxSize = botSpecificationsChannelsInfo.find(
-      item => item.id === 'attachmentMaxSize'
+      (item) => item.id === 'attachmentMaxSize'
     )
 
     if (getAttachmentMaxSize && channel) {
       const convertToMb =
-        (getAttachmentMaxSize as any)[channel].value /
-        1000 /
-        1000
+        (getAttachmentMaxSize as any)[channel].value / 1000 / 1000
 
       setMaxFilesize(convertToMb)
     }
@@ -48,12 +83,11 @@ export const UploadButton = ({
 
   const handleSupportedExtensions = (channel: string) => {
     const getSupportedExtensions = botSpecificationsChannelsInfo.find(
-      item => item.id === 'supportedExtensions'
+      (item) => item.id === 'supportedExtensions'
     )
 
     if (getSupportedExtensions && channel) {
-      const extensions =
-        (getSupportedExtensions as any)[channel]
+      const extensions = (getSupportedExtensions as any)[channel]
       if (extensions.length) {
         const andI18n = (alertFileSizeExtension as any)['e']
 
@@ -80,52 +114,111 @@ export const UploadButton = ({
   }, [workspace])
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setIsUploading(true);
-    const uploader = await fileUploader();
+    setIsUploading(true)
+    const uploader = await fileUploader()
     if (!e.target?.files) return
 
     const file = e.target.files[0]
 
-    if (file.size > (maxFilesize * 1000 * 1000)) {
+    if (file.size > maxFilesize * 1000 * 1000) {
       setIsUploading(false)
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }
     uploader.upload(file).then((resp): any => {
-      const url = resp.data.url;
-      const convertedToMb = file.size / 1000 / 1000;
+      const url = resp.data.url
+      const convertedToMb = file.size / 1000 / 1000
       if (url) onFileUploaded(url, file.type, file.name, convertedToMb)
       setIsUploading(false)
-    });
+    })
   }
 
   const channelTranslations = {
-    "resources": "Recursos",
-    "whatsapp": "WhatsApp",
-    "WABA": "WhatsApp Oficial",
-    "instagram": "Instagram",
-    "facebook-messenger": "Messenger",
-    "web": "Widget"
+    resources: 'Recursos',
+    whatsapp: 'WhatsApp',
+    WABA: 'WhatsApp Oficial',
+    instagram: 'Instagram',
+    'facebook-messenger': 'Messenger',
+    web: 'Widget',
   }
 
   const channelsWidth = (100 - 30) / botChannelsSpecifications.length
 
-  const uniqueBotChannelsSpecifications = [...new Set(botChannelsSpecifications)]
+  const uniqueBotChannelsSpecifications = [
+    ...new Set(botChannelsSpecifications),
+  ]
 
   const headers = [
     {
-      text: 'Recursos',
-      value: 'resources',
-      width: '30%'
+      text: '',
+      value: '',
+      width: '30%',
     },
-    ...uniqueBotChannelsSpecifications.map(channel => ({
+    ...uniqueBotChannelsSpecifications.map((channel) => ({
       text: (channelTranslations as any)[channel],
       value: channel,
-      width: `${channelsWidth}%`
-    }))
+      width: `${channelsWidth}%`,
+    })),
   ]
 
+  const textBotChannelsSpecifications = () => {
+    const text = ['Negrito', 'Itálico', 'Tachado', 'Sublinhado', 'Emoji']
+
+    const specifications = botSpecificationsChannelsInfo.filter((spec) =>
+      text.includes(spec.resources)
+    )
+
+    return specifications
+  }
+
+  const fileBotChannelsSpecifications = () => {
+    const infos = ['supportedExtensions', 'attachmentMaxSize']
+
+    const specifications = botSpecificationsChannelsInfo.filter((spec) =>
+      infos.includes(spec.id)
+    )
+
+    return specifications
+  }
+
+  const specificationsItems = [
+    'office-hours',
+    'quick-reply:interactive-list',
+    'quick-reply:interactive-buttons',
+  ]
+
+  const specificationsItemsTranslations = {
+    'office-hours': 'Horário de atendimento',
+    'quick-reply:interactive-list': 'Pergunta com lista de opções',
+    'quick-reply:interactive-buttons': 'Pergunta com botões interativos',
+  }
+  const listSpecifications = () => {
+    return botSpecificationsChannelsInfo.find(
+      (elem) => elem.id === 'exclusiveComponents'
+    )
+  }
+
+  const exclusiveComponentsChannelsSpecifications = () => {
+    const result: any = []
+    specificationsItems.map((spec) => {
+      const list = {
+        id: spec,
+        resources: (specificationsItemsTranslations as any)[spec],
+      }
+
+      uniqueBotChannelsSpecifications.forEach((elem) => {
+        const channel: any = (listSpecifications() as any)[elem].value
+
+        ;(list as any)[elem] = (channel && channel.includes(spec)) || false
+      })
+
+      result.push(list)
+    })
+
+    return result
+  }
   const handleMoreDetailsClick = () => {
+    exclusiveComponentsChannelsSpecifications()
     setIsModalOpen(true)
   }
 
@@ -138,24 +231,39 @@ export const UploadButton = ({
   }
 
   const renderItem = (item: BotSpecificationOption, channel: string): any => {
-
     switch (item.id) {
       case 'lineThrough':
-        return 'lineThrough'
+        return <BlockIcon fontSize={24} color="red" />
       case 'supportedExtensions':
-        return (item as any)[channel].value?.length ? 'Arquivos *.jpg, *.gif,*.png, *.ico, *.bmp' : 'Áudios, imagens,vídeos e documentos'
+        return (item as any)[channel].value?.length
+          ? 'Arquivos *.jpg, *.gif,*.png, *.ico, *.bmp'
+          : 'Áudios, imagens, vídeos e documentos'
       case 'attachmentMaxSize':
         return `Até ${convertToMb((item as any)[channel].value)}mB`
       case 'exclusiveComponents':
-        return (item as any)[channel].value?.length ? (item as any)[channel].value.toString().replaceAll(',', ', ') : ''
+        return (item as any)[channel].value?.length
+          ? (item as any)[channel].value.toString().replaceAll(',', ', ')
+          : ''
+      case 'quick-reply:interactive-buttons':
+      case 'quick-reply:interactive-list':
+      case 'office-hours':
+        return (item as any)[channel] ? (
+          <CheckCircleOutlineIcon fontSize={24} color="green" />
+        ) : (
+          <BlockIcon fontSize={24} color="red" />
+        )
       default:
-        return (item as any)[channel].value ? <CheckCircleOutlineIcon fontSize={24} /> : <BlockIcon fontSize={24} />
+        return (item as any)[channel].value ? (
+          <CheckCircleOutlineIcon fontSize={24} color="green" />
+        ) : (
+          <BlockIcon fontSize={24} color="red" />
+        )
     }
   }
 
   return (
     <>
-      <Flex justify="center" direction='column'>
+      <Flex justify="center" direction="column">
         <chakra.input
           data-testid="file-upload-input"
           type="file"
@@ -174,59 +282,148 @@ export const UploadButton = ({
         >
           {props.children}
         </Button>
-        <ErrorMessage>
-          {errorMessage && errorMessage}
-        </ErrorMessage>
+        <ErrorMessage>{errorMessage && errorMessage}</ErrorMessage>
 
         <FooterMessage>
-          Use arquivos com até {maxFilesize}MB e extensão de áudios, imagens, vídeos e documentos
+          Use arquivos com até {maxFilesize}MB e extensão de áudios, imagens,
+          vídeos e documentos
           <br />
-          <MoreDetailsButton onClick={handleMoreDetailsClick}>Mais detalhes aqui.</MoreDetailsButton>
+          <MoreDetailsButton onClick={handleMoreDetailsClick}>
+            Mais detalhes aqui.
+          </MoreDetailsButton>
         </FooterMessage>
       </Flex>
-      <Modal isOpen={isModalOpen} onClose={handleCloseDetailsModal} isCentered size='xl'>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseDetailsModal}
+        isCentered
+        size="full-size"
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader><ModalTitle>Especificações para mensagens em cada canal</ModalTitle></ModalHeader>
+          <ModalHeader>
+            <ModalTitle>Especificações para mensagens em cada canal</ModalTitle>
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <TableContainer>
-              <Table size='sm'>
+              <Table size="sm">
                 <Thead>
                   <Tr>
-                    {headers && headers.map((header, idx: number) => <Th key={idx}>{header.text}</Th>)}
+                    {headers &&
+                      headers.map((header, idx: number) => (
+                        <Th key={idx} style={{ textAlign: 'center' }}>
+                          {header.text}
+                        </Th>
+                      ))}
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {botSpecificationsChannelsInfo && botSpecificationsChannelsInfo.map(
-                    (channel, idx) =>
-                      <Tr key={idx}>
-                        <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{channel.resources}</Flex></Td>
-                        {uniqueBotChannelsSpecifications && uniqueBotChannelsSpecifications.map(uniqueChannel => <Td key={uniqueChannel} style={{ whiteSpace: 'break-spaces' }}>{renderItem(channel, uniqueChannel)}</Td>)}
-                        {/* <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{renderItem(channel)}</Flex></Td>
-                        <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{channel[`facebook-messenger`].value}</Flex></Td>
-                        <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{channel.web.value}</Flex></Td>
-                        <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{channel.instagram.value}</Flex></Td>
-                        <Td><Flex dir='row' width={100} style={{ whiteSpace: 'break-spaces' }}>{channel.WABA.value}</Flex></Td> */}
-                      </Tr>
-                  )}
-                  {/* <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                    <Td isNumeric>30.48</Td>
-                  </Tr>
                   <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td isNumeric>0.91444</Td>
-                  </Tr> */}
+                    <ChannelSection>Texto</ChannelSection>
+                  </Tr>
+                  {textBotChannelsSpecifications() &&
+                    textBotChannelsSpecifications().map((channel, idx) => (
+                      <Tr key={idx}>
+                        <Td
+                          style={{
+                            whiteSpace: 'break-spaces',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <Flex dir="row" width={100}>
+                            {channel.resources}
+                          </Flex>
+                        </Td>
+                        {uniqueBotChannelsSpecifications &&
+                          uniqueBotChannelsSpecifications.map(
+                            (uniqueChannel) => (
+                              <Td
+                                key={uniqueChannel}
+                                style={{
+                                  whiteSpace: 'break-spaces',
+                                  textAlign: 'center',
+                                }}
+                              >
+                                <Center>
+                                  {renderItem(channel, uniqueChannel)}
+                                </Center>
+                              </Td>
+                            )
+                          )}
+                      </Tr>
+                    ))}
+                </Tbody>
+                <Tbody>
+                  <Tr>
+                    <ChannelSection>Arquivos e interações</ChannelSection>
+                  </Tr>
+                  {fileBotChannelsSpecifications() &&
+                    fileBotChannelsSpecifications().map((channel, idx) => (
+                      <Tr key={idx}>
+                        <Td>
+                          <Flex dir="row" width={100}>
+                            {channel.resources}
+                          </Flex>
+                        </Td>
+                        {uniqueBotChannelsSpecifications &&
+                          uniqueBotChannelsSpecifications.map(
+                            (uniqueChannel) => (
+                              <Td
+                                key={uniqueChannel}
+                                style={{
+                                  whiteSpace: 'break-spaces',
+                                  textAlign: 'center',
+                                }}
+                              >
+                                {renderItem(channel, uniqueChannel)}
+                              </Td>
+                            )
+                          )}
+                      </Tr>
+                    ))}
+                </Tbody>
+                <Tbody>
+                  <Tr>
+                    <ChannelSection>
+                      Etapas de conversas exclusivas
+                    </ChannelSection>
+                  </Tr>
+                  {exclusiveComponentsChannelsSpecifications() &&
+                    exclusiveComponentsChannelsSpecifications().map(
+                      (channel: any, idx: number) => (
+                        <Tr key={idx}>
+                          <Td>
+                            <Flex dir="row" width={100}>
+                              {channel.resources}
+                            </Flex>
+                          </Td>
+                          {uniqueBotChannelsSpecifications &&
+                            uniqueBotChannelsSpecifications.map(
+                              (uniqueChannel) => (
+                                <Td
+                                  key={uniqueChannel}
+                                  style={{
+                                    whiteSpace: 'break-spaces',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  <Center>
+                                    {renderItem(channel, uniqueChannel)}
+                                  </Center>
+                                </Td>
+                              )
+                            )}
+                        </Tr>
+                      )
+                    )}
                 </Tbody>
               </Table>
             </TableContainer>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={handleCloseDetailsModal}>
+            <Button colorScheme="blue" mr={3} onClick={handleCloseDetailsModal}>
               Fechar
             </Button>
           </ModalFooter>

@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dx": "yarn dev",
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 8082",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

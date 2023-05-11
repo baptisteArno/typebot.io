@@ -18,7 +18,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     case BubbleStepType.TEXT:
     case InputStepType.TEXT:
       return <Text>Texto</Text>
-    case BubbleStepType.IMAGE:
+    case BubbleStepType.MEDIA:
       return <Text>Arquivo</Text>
     case BubbleStepType.VIDEO:
       return <Text>Vídeo</Text>

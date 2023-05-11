@@ -56,7 +56,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT:
       return <ChatIcon color="#AA561C" {...props} />
-    case BubbleStepType.IMAGE:
+    case BubbleStepType.MEDIA:
       return <LayoutIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:
       return <FilmIcon color="#AA561C" {...props} />

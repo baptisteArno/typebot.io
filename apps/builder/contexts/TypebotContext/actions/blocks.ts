@@ -95,7 +95,7 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
   switch (step) {
     case BubbleStepType.TEXT:
       return 'Envie uma mensagem de texto'
-    case BubbleStepType.IMAGE:
+    case BubbleStepType.MEDIA:
       return 'Envie um arquivo'
     case BubbleStepType.EMBED:
       return 'Envie um arquivo'

@@ -64,7 +64,7 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
           'Este é o catálogo que selecionamos para você:'
         )
         break
-      case BubbleStepType.IMAGE:
+      case BubbleStepType.MEDIA:
         step = templateUploadBot(
           bot,
           blockId,

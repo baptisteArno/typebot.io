@@ -117,6 +117,7 @@ export type OfficeHoursOptions = BaseOctaOptions & {
 export type AssignToTeamOptions = BaseOctaOptions & {
   assignTo: string
   assignType: string
+  subType: string
   messages: {
     firstMessage?: {
       content?: TextBubbleContent
@@ -211,7 +212,8 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   subject: '',
   assignTo: '',
   assignType: '',
-  isAvailable: false,
+  subType: '',
+  isAvailable: true,
 }
 
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =

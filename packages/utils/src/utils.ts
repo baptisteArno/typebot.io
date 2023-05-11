@@ -21,7 +21,8 @@ import {
   OctaBubbleStepType,
   OctaBubbleStep,
   OctaStepWithOptionsType,
-  OfficeHourStep
+  OfficeHourStep,
+  MediaBubbleStep
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -89,8 +90,8 @@ export const isTextBubbleStep = (step: Step): step is TextBubbleStep =>
 
 export const isMediaBubbleStep = (
   step: Step
-): step is ImageBubbleStep | VideoBubbleStep =>
-  step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.VIDEO
+): step is ImageBubbleStep | MediaBubbleStep | VideoBubbleStep =>
+  step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.MEDIA || step.type === BubbleStepType.VIDEO
 
 export const isTextInputStep = (step: Step): step is TextInputStep =>
   step.type === InputStepType.TEXT

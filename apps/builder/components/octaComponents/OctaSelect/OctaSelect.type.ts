@@ -11,7 +11,7 @@ export type OctaSelectProps = {
 export type OptionProps = {
   value: any;
   children?: string;
-  key: string | number;
+  optionKey?: string | number;
   isTitle?: boolean;
   disabled?: boolean;
   selected: any;
@@ -22,4 +22,7 @@ export type OptionType = {
   label: string;
   isTitle?: boolean;
   disabled?: boolean;
+  key: string | number;
+  optionKey?: string | number;
+  subType?: string;
 }

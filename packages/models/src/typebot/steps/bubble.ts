@@ -4,12 +4,14 @@ import { TElement } from '@udecode/plate-core'
 export type BubbleStep =
   | TextBubbleStep
   | ImageBubbleStep
+  | MediaBubbleStep
   | VideoBubbleStep
   | EmbedBubbleStep
 
 export enum BubbleStepType {
   TEXT = 'text',
   IMAGE = 'image',
+  MEDIA = 'media',
   VIDEO = 'video',
   EMBED = 'embed',
 }
@@ -17,6 +19,7 @@ export enum BubbleStepType {
 export type BubbleStepContent =
   | TextBubbleContent
   | ImageBubbleContent
+  | MediaBubbleContent
   | VideoBubbleContent
   | EmbedBubbleContent
 
@@ -28,6 +31,11 @@ export type TextBubbleStep = StepBase & {
 export type ImageBubbleStep = StepBase & {
   type: BubbleStepType.IMAGE
   content: ImageBubbleContent
+}
+
+export type MediaBubbleStep = StepBase & {
+  type: BubbleStepType.MEDIA
+  content: MediaBubbleContent
 }
 
 export type VideoBubbleStep = StepBase & {
@@ -47,6 +55,13 @@ export type TextBubbleContent = {
 }
 
 export type ImageBubbleContent = {
+  url?: string
+  name: string
+  size: number
+  type: string
+}
+
+export type MediaBubbleContent = {
   url?: string
   name: string
   size: number
@@ -80,6 +95,12 @@ export const defaultImageBubbleContent: ImageBubbleContent = {
   name: '',
   size: 1,
   type: ''
+}
+
+export const defaultMediaBubbleContent: MediaBubbleContent = {
+  name: '',
+  size: 1,
+  type: 'media'
 }
 
 export const defaultVideoBubbleContent: VideoBubbleContent = {}
