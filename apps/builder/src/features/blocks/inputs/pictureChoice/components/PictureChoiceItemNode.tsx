@@ -19,6 +19,7 @@ import React, { useRef } from 'react'
 import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { PictureChoiceItemSettings } from './PictureChoiceItemSettings'
+import { isSvgSrc } from '@typebot.io/lib'
 
 type Props = {
   item: PictureChoiceItem
@@ -83,9 +84,10 @@ export const PictureChoiceItemNode = ({
               src={item.pictureSrc}
               alt="Picture choice image"
               rounded="md"
-              maxH="128px"
+              maxH={isSvgSrc(item.pictureSrc) ? '64px' : '128px'}
               w="full"
-              objectFit="cover"
+              objectFit={isSvgSrc(item.pictureSrc) ? 'contain' : 'cover'}
+              p={isSvgSrc(item.pictureSrc) ? '2' : undefined}
               userSelect="none"
               draggable={false}
             />

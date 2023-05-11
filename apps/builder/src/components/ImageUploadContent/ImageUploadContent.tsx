@@ -5,8 +5,9 @@ import { GiphyPicker } from './GiphyPicker'
 import { TextInput } from '../inputs/TextInput'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 import { UnsplashPicker } from './UnsplashPicker'
+import { IconPicker } from './IconPicker'
 
-type Tabs = 'link' | 'upload' | 'giphy' | 'emoji' | 'unsplash'
+type Tabs = 'link' | 'upload' | 'giphy' | 'emoji' | 'unsplash' | 'icon'
 
 type Props = {
   filePath: string
@@ -84,6 +85,13 @@ export const ImageUploadContent = ({
             Unsplash
           </Button>
         )}
+        <Button
+          variant={currentTab === 'icon' ? 'solid' : 'ghost'}
+          onClick={() => setCurrentTab('icon')}
+          size="sm"
+        >
+          Icon
+        </Button>
       </HStack>
 
       <BodyContent
@@ -130,6 +138,8 @@ const BodyContent = ({
       return <EmojiSearchableList onEmojiSelected={onSubmit} />
     case 'unsplash':
       return <UnsplashPicker imageSize={imageSize} onImageSelect={onSubmit} />
+    case 'icon':
+      return <IconPicker onIconSelected={onSubmit} />
   }
 }
 

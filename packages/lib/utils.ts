@@ -322,3 +322,6 @@ export const getAtPath = <T>(obj: T, path: string): unknown => {
 
 export const parseGroupTitle = (title: string) =>
   isEmpty(title) ? 'Untitled' : title
+
+export const isSvgSrc = (src: string | undefined) =>
+  src?.startsWith('data:image/svg') || src?.endsWith('.svg')

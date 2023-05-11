@@ -6,7 +6,7 @@ import {
 import { For, Show, createSignal, onMount } from 'solid-js'
 import { Checkbox } from '../buttons/components/Checkbox'
 import { SendButton } from '@/components'
-import { isDefined, isEmpty } from '@typebot.io/lib'
+import { isDefined, isEmpty, isSvgSrc } from '@typebot.io/lib'
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { isMobile } from '@/utils/isMobileSignal'
 
@@ -103,7 +103,8 @@ export const MultiplePictureChoice = (props: Props) => {
                   (selectedItemId) => selectedItemId === item.id
                 )
                   ? ' selected'
-                  : '')
+                  : '') +
+                (isSvgSrc(item.pictureSrc) ? ' has-svg' : '')
               }
               data-itemid={item.id}
             >
@@ -112,6 +113,7 @@ export const MultiplePictureChoice = (props: Props) => {
                 alt={item.title ?? `Picture ${index() + 1}`}
                 elementtiming={`Picture choice ${index() + 1}`}
                 fetchpriority={'high'}
+                class="m-auto"
               />
               <div
                 class={
