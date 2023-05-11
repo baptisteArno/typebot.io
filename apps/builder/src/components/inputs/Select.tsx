@@ -35,7 +35,7 @@ type Item =
 type Props<T extends Item> = {
   isPopoverMatchingInputWidth?: boolean
   selectedItem?: string
-  items: T[]
+  items: readonly T[]
   placeholder?: string
   onSelect?: (value: string | undefined, item?: T) => void
 }
@@ -190,11 +190,11 @@ export const Select = <T extends Item>({
             />
 
             <InputRightElement
-              width={selectedItem ? '5rem' : undefined}
+              width={selectedItem && isOpen ? '5rem' : undefined}
               pointerEvents="none"
             >
               <HStack>
-                {selectedItem && (
+                {selectedItem && isOpen && (
                   <IconButton
                     onClick={clearSelection}
                     icon={<CloseIcon />}

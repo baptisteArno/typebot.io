@@ -8,9 +8,11 @@ The "Set variable" block allows you to set a particular value to a variable.
 
 <img src="/img/blocks/logic/set-variable.png" width="600" alt="Set variable"/>
 
-This value can be any kind of plain text but also **Javascript code**.
+## Custom
 
-## Expressions with existing variables
+You can set your variable with any value with `Custom`. It can be any kind of plain text but also **Javascript code**.
+
+### Expressions with existing variables
 
 It means you can apply operations on existing variables.
 
@@ -54,9 +56,7 @@ Transform existing variable to upper case or lower case:
 {{Name}}.toLowerCase()
 ```
 
-## Code
-
-The code value should be written Javascript. It will read the returned value of the code and set it to your variable.
+This can also be Javascript code. It will read the returned value of the code and set it to your variable.
 
 ```js
 const name = 'John' + 'Smith'
@@ -88,26 +88,12 @@ For example,
 
 :::
 
-## Current Date
+## Map
 
-You can create a `Submitted at` (or any other name) variable using this code:
+This is a convenient value block that allows you to easily get an item from a list that has the same index as an item from another list.
 
-```js
-new Date().toISOString()
-```
+When you are pulling data from another service, sometimes, you will have 2 lists: `Labels` and `Ids`. Labels are the data displayed to the user and Ids are the data used for other requests to that external service.
 
-It will set the variable to the current date and time.
+This value block allows you to find the `Id` from `Ids` with the same index as `Label` in `Labels`
 
-## Random ID
-
-Or a random ID:
-
-```js
-Math.round(Math.random() * 1000000)
-```
-
-:::note
-Keep in mind that the code is executed on the server. So you don't have access to browser variables such as `window` or `document`.
-:::
-
-The code can also be multi-line. The Set variable block will get the value following the `return` statement.
+<img src="/img/blocks/logic/set-variable-map-item.png" width="600" alt="Set variable map item with same index"/>
