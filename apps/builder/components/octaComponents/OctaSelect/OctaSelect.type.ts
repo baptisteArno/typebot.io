@@ -24,4 +24,5 @@ export type OptionType = {
   disabled?: boolean;
   key: string | number;
   optionKey?: string | number;
+  subType?: string;
 }

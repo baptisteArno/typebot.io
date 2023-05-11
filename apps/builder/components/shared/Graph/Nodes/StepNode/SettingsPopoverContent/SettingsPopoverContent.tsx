@@ -20,6 +20,7 @@ import {
   TextBubbleStep,
   Webhook,
   WabaStepType,
+  BubbleStepType,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -72,6 +73,9 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         width = 450;
         break;
       case LogicStepType.CONDITION:
+        width = 450;
+        break;
+      case OctaStepType.ASSIGN_TO_TEAM:
         width = 450;
         break;
       default:

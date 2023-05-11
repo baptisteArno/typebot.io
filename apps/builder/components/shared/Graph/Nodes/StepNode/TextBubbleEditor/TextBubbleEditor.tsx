@@ -21,14 +21,15 @@ type Props = {
   initialValue: TElement[]
   onClose: (newContent: TextBubbleContent) => void
   onKeyUp?: (newContent: TextBubbleContent) => void
+  increment?: number
 }
 
-export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
+export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: Props) => {
   const randomEditorId = useMemo(() => Math.random().toString(), [])
   const editor = useMemo(
     () =>
       withPlate(createEditor() as TEditor<Value>, {
-        id: randomEditorId,
+        id: `${randomEditorId}${increment ? `-${increment}` : ''}`,
         plugins: platePlugins,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,6 +174,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp }: Props) => {
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
+            handleOutsideClick={() => setIsVariableDropdownOpen(false)}
           />
         </Flex>
       )}

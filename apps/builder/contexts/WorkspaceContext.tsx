@@ -513,7 +513,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fluxChannel = document.referrer.split('/')
     setCurrentWorkspace((current): any => (
-      { ...current, channel: fluxChannel[5] } as any
+      { ...current, channel: fluxChannel[5] || 'web' } as any
     ))
   }, [])
 

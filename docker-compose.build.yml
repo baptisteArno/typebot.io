@@ -24,7 +24,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
       - NEXTAUTH_URL=http://localhost:8080
-      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
+      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8082
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
       - ADMIN_EMAIL=me@email.com
       - NEXTAUTH_URL_INTERNAL=http://host.docker.internal:8080
@@ -36,11 +36,11 @@ services:
         - SCOPE=viewer
     restart: always
     ports:
-      - '8081:3000'
+      - '8082:3000'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8081
+      - NEXT_PUBLIC_VIEWER_URL=http://localhost:8082
       - ENCRYPTION_SECRET=SgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6
 volumes:
   db_data:
