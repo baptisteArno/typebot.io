@@ -77,11 +77,9 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleAssignToResponsibleChange = (e: any) => {
-    const option = e
-
     onOptionsChange({
       ...options,
-      ...option,
+      subType: e.value.subType
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>

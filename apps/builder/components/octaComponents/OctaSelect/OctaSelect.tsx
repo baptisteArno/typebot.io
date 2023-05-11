@@ -42,8 +42,9 @@ const OctaSelect = (props: OctaSelectProps) => {
     setIsComponentVisible(toggle)
   }, [toggle, setIsComponentVisible])
 
-  useCallback(() => {
+  useEffect(() => {
     if (props.defaultSelected) {
+      console.log('octaSelect', props.defaultSelected)
       setSelected(props.defaultSelected);
     }
   }, [props.defaultSelected])
@@ -55,6 +56,7 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   const handleChangeFind = (value: any): void => {
     setSearch(value.label);
+    console.log('value', value)
     setSelected(value);
     props.onChange(value.value);
   }
