@@ -48,28 +48,27 @@ const status = {
 }
 
 const miniClusterStatus = {
-	access_token:
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZfaWQiOiIzZTYxNmI1ZS0zOWQ4LTQ5YTEtODMzZi00MmE0Yzg3ZGY5YmIiLCJ0bnRfaWQiOiI4NWY0MzgyMi1hYzE0LTQxZGUtYmRjZi01MWQ4NGExYmE1MTciLCJuYW1laWQiOiIxZjgxZDcyZC05MTA1LTRiNmItYTNjNy0wZGNlNTk1YzM3NWQiLCJzdWJkb21haW4iOiJxYXMzMTkxMDAtYTMyIiwiZ2l2ZW5fbmFtZSI6IlJvZHJpZ28iLCJlbWFpbCI6InJvZHJpZ28ub2tpeWFtYUBvY3RhZGVzay5jb20iLCJsYW5nIjoicHQtQlIiLCJhZG0iOiJ0cnVlIiwibmJmIjoxNjc1OTgyNjQ1LCJleHAiOjE3MDc1MTg2NDUsImlhdCI6MTY3NTk4MjY0NX0.EC7oytnpiQqm1aN88EgmVnjXMyeal8g4YYy7DE5RIR8',
-	octaAuthenticated: {
-		environmentId: '3e616b5e-39d8-49a1-833f-42a4c87df9bb',
-		tenantId: '8bffaf71-fbac-4fef-8a72-411299b0b22a',
-		userId: '3d7f81ad-12bc-4878-8ce6-4c14b49bf288',
-		subDomain: 'qas319100-a32',
-		firstName: 'Nti',
-		lastName: 'Dandara',
-		email: 'nti.dandara@octadesk.com',
-		languageCode: 'pt-BR',
-		timezoneCode: null,
-		admin: true,
-		profile: null,
-		newOcta: true,
-	},
+  access_token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnZfaWQiOiIzZTYxNmI1ZS0zOWQ4LTQ5YTEtODMzZi00MmE0Yzg3ZGY5YmIiLCJ0bnRfaWQiOiI4NWY0MzgyMi1hYzE0LTQxZGUtYmRjZi01MWQ4NGExYmE1MTciLCJuYW1laWQiOiIxZjgxZDcyZC05MTA1LTRiNmItYTNjNy0wZGNlNTk1YzM3NWQiLCJzdWJkb21haW4iOiJxYXMzMTkxMDAtYTMyIiwiZ2l2ZW5fbmFtZSI6IlJvZHJpZ28iLCJlbWFpbCI6InJvZHJpZ28ub2tpeWFtYUBvY3RhZGVzay5jb20iLCJsYW5nIjoicHQtQlIiLCJhZG0iOiJ0cnVlIiwibmJmIjoxNjc1OTgyNjQ1LCJleHAiOjE3MDc1MTg2NDUsImlhdCI6MTY3NTk4MjY0NX0.EC7oytnpiQqm1aN88EgmVnjXMyeal8g4YYy7DE5RIR8',
+  octaAuthenticated: {
+    environmentId: '3e616b5e-39d8-49a1-833f-42a4c87df9bb',
+    tenantId: '85f43822-ac14-41de-bdcf-51d84a1ba517',
+    userId: '1f81d72d-9105-4b6b-a3c7-0dce595c375d',
+    subDomain: 'qas319100-a32',
+    firstName: 'Rodrigo',
+    lastName: null,
+    email: 'rodrigo.okiyama@octadesk.com',
+    languageCode: 'pt-BR',
+    timezoneCode: null,
+    admin: true,
+    profile: null,
+    newOcta: true,
+  },
 }
-
 
 export const mock = {
   user,
   userToken,
   status,
-  miniClusterStatus
+  miniClusterStatus,
 }
