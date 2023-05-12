@@ -8,7 +8,7 @@ import { computePlainText } from '../helpers/convertRichTextToPlainText'
 type Props = {
   content: TextBubbleContent
   typingEmulation: TypingEmulation
-  onTransitionEnd: () => void
+  onTransitionEnd: (offsetTop?: number) => void
 }
 
 export const showAnimationDuration = 400
@@ -22,13 +22,14 @@ const defaultTypingEmulation = {
 let typingTimeout: NodeJS.Timeout
 
 export const TextBubble = (props: Props) => {
+  let ref: HTMLDivElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd()
+      props.onTransitionEnd(ref?.offsetTop)
     }, showAnimationDuration)
   }
 
@@ -50,7 +51,7 @@ export const TextBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in" ref={ref}>
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble">
           <div

@@ -4,7 +4,7 @@ import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   content: ImageBubbleContent
-  onTransitionEnd: () => void
+  onTransitionEnd: (offsetTop?: number) => void
 }
 
 export const showAnimationDuration = 400
@@ -14,6 +14,7 @@ export const mediaLoadingFallbackTimeout = 5000
 let typingTimeout: NodeJS.Timeout
 
 export const ImageBubble = (props: Props) => {
+  let ref: HTMLDivElement | undefined
   let image: HTMLImageElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
@@ -21,7 +22,7 @@ export const ImageBubble = (props: Props) => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd()
+      props.onTransitionEnd(ref?.offsetTop)
     }, showAnimationDuration)
   }
 
@@ -56,7 +57,7 @@ export const ImageBubble = (props: Props) => {
   )
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in" ref={ref}>
       <div class="flex w-full items-center">
         <div class={'flex relative z-10 items-start typebot-host-bubble'}>
           <div

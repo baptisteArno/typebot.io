@@ -44,7 +44,6 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  let bottomSpacer: HTMLDivElement | undefined
   const [chatChunks, setChatChunks] = createSignal<
     Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>[]
   >([
@@ -153,10 +152,9 @@ export const ConversationContainer = (props: Props) => {
     ])
   }
 
-  const autoScrollToBottom = () => {
-    if (!bottomSpacer) return
+  const autoScrollToBottom = (offsetTop?: number) => {
     setTimeout(() => {
-      chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+      chatContainer?.scrollTo(0, offsetTop ?? chatContainer.scrollHeight)
     }, 50)
   }
 
@@ -227,14 +225,11 @@ export const ConversationContainer = (props: Props) => {
           </div>
         )}
       </Show>
-      <BottomSpacer ref={bottomSpacer} />
+      <BottomSpacer />
     </div>
   )
 }
 
-type BottomSpacerProps = {
-  ref: HTMLDivElement | undefined
-}
-const BottomSpacer = (props: BottomSpacerProps) => {
-  return <div ref={props.ref} class="w-full h-32 flex-shrink-0" />
+const BottomSpacer = () => {
+  return <div class="w-full h-32 flex-shrink-0" />
 }

@@ -5,7 +5,7 @@ import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
 
 type Props = {
   content: VideoBubbleContent
-  onTransitionEnd: () => void
+  onTransitionEnd: (offsetTop?: number) => void
 }
 
 export const showAnimationDuration = 400
@@ -13,13 +13,14 @@ export const showAnimationDuration = 400
 let typingTimeout: NodeJS.Timeout
 
 export const VideoBubble = (props: Props) => {
+  let ref: HTMLDivElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd()
+      props.onTransitionEnd(ref?.offsetTop)
     }, showAnimationDuration)
   }
 
@@ -32,7 +33,7 @@ export const VideoBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in" ref={ref}>
       <div class="flex w-full items-center">
         <div class={'flex relative z-10 items-start typebot-host-bubble'}>
           <div
