@@ -39,10 +39,9 @@ export const getStatus = async () => {
       const { data } = await services.nucleus
         .getClient()
         .get(`Tenants/${tenantId}/status`, { 
-          ...loadParameterHeader(),
-          ...(authStorage?.access_token
-            ? { Authorization: `Bearer ${authStorage.access_token}` }
-            : {})
+          headers: {
+            authorization: `Bearer ${authStorage.access_token}`
+          }
         })
 
       return data
