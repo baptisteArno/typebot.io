@@ -40,7 +40,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   const [officeHour, setOfficeHour] = useState<Array<OfficeHour> | undefined>();
   const [optionsTimezone, setOptionsTimezone] = useState<Array<{ label: string; value: string, isTitle?: boolean }>>();
   const [optionsOfficeHour, setOptionsOfficeHours] = useState<Array<{ label: string; value: any, isTitle?: boolean }>>([]);
-  const [screen, setScreen] = useState<"SETTINGS" | "CREATE-OFFICE-OURS">("SETTINGS");
+  const [screen, setScreen] = useState<"SETTINGS" | "CREATE-OFFICE-HOURS">("SETTINGS");
 
   const [is24hours, setIs24Hours] = useState<boolean>(true);
 
@@ -111,7 +111,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   }, [officeHoursMemo])
 
   const createOfficeHour = (): void => {
-    setScreen("CREATE-OFFICE-OURS");
+    setScreen("CREATE-OFFICE-HOURS");
   }
 
   const cancelCreate = (): void => {
@@ -216,7 +216,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
         </Container>
       }
       {
-        screen === "CREATE-OFFICE-OURS" &&
+        screen === "CREATE-OFFICE-HOURS" &&
         <ContainerCreate>
           <Title>
             Novo horário de expediente
