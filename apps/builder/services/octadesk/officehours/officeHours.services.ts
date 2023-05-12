@@ -16,7 +16,8 @@ export class OfficeHoursServices implements IOfficeHoursServices {
         return _client
       }
       _client = await getCalendarClient()
-      _client.defaults.baseURL += '/api/v1/office-calendar/'
+      if (!_client.defaults.baseURL?.includes('/api/v1/office-calendar/'))
+        _client.defaults.baseURL += '/api/v1/office-calendar/'
 
       return _client
     }
