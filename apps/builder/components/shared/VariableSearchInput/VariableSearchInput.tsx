@@ -46,7 +46,7 @@ type Props = {
   initialVariableId?: string
   debounceTimeout?: number
   isDefaultOpen?: boolean
-  handleOutsideClick: () => void
+  handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
       Variable,
@@ -137,14 +137,19 @@ export const VariableSearchInput = ({
   const dropdownRef = useRef(null)
   const inputRef = useRef(null)
   const popoverRef = useRef(null)
+  const boxRef = useRef(null)
 
   const [screen, setScreen] = useState<'VIEWER' | 'CREATE'>('VIEWER')
   const [customVariable, setCustomVariable] = useState<Variable>()
 
   useOutsideClick({
     ref: dropdownRef,
-    // handler: onClose,
-    handler: () => handleOutsideClick(),
+    handler: onClose,
+  })
+
+  useOutsideClick({
+    ref: boxRef,
+    handler: handleOutsideClick,
   })
 
   useEffect(() => {
@@ -252,7 +257,7 @@ export const VariableSearchInput = ({
   }
 
   return (
-    <Flex ref={dropdownRef} w="full">
+    <Flex ref={boxRef} w="full">
       <Popover
         isOpen={isOpen}
         initialFocusRef={popoverRef}
@@ -345,6 +350,7 @@ export const VariableSearchInput = ({
         </PopoverTrigger>
 
         <PopoverContent
+          ref={dropdownRef}
           maxH="35vh"
           overflowY="scroll"
           role="menu"
@@ -377,27 +383,5 @@ export const VariableSearchInput = ({
         </PopoverContent>
       </Popover>
     </Flex>
-    // <>
-    //   <div style={{ width: '100%' }}>
-    //     <OctaSelect
-    //       options={octaItems.map((item) => ({
-    //         label: item.token,
-    //         value: item,
-    //       }))}
-    //       findable
-    //       onChange={(item) => handleVariableNameClick(item)}
-    //     />
-    //   </div>
-    // </>
-    // <OctaSelect
-    //   options={octaItems.map((item) => ({
-    //     label: item.token,
-    //     value: item,
-    //   }))}
-    //   findable
-    //   onChange={(e) => handleVariableNameClick(e)}
-    //   placeholder="Selecione um expediente"
-    //   label="Qual horário de expediente este bot irá atender?"
-    // ></OctaSelect>
   )
 }
