@@ -92,7 +92,6 @@ export const StepsSideBar = () => {
       type !== BubbleStepType.IMAGE &&
       type !== InputStepType.URL &&
       type !== InputStepType.PAYMENT &&
-      type !== InputStepType.ASK_NAME &&
       type !== LogicStepType.SET_VARIABLE &&
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&

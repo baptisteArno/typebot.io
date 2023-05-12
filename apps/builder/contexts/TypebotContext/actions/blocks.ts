@@ -112,7 +112,9 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
     case InputStepType.PHONE:
       return 'Pergunte o número de celular'
     case InputStepType.CHOICE:
-      return 'Botão??'
+      return 'Qual sua escolha?'
+    case InputStepType.ASK_NAME:
+      return 'Pergunte o nome'
     case OctaStepType.ASSIGN_TO_TEAM:
       return 'Direcione a conversa para um agente/time'
     case OctaBubbleStepType.END_CONVERSATION:
@@ -120,7 +122,7 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
     case IntegrationStepType.WEBHOOK:
       return 'Conecte a outro sistema'
     case OctaStepType.OFFICE_HOURS:
-        return 'Horário de atendimento'
+      return 'Horário de atendimento'
     case WabaStepType.COMMERCE:
       return 'Commerce'
     default:

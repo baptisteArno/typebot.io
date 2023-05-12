@@ -73,14 +73,14 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     // case InputStepType.PAYMENT: {
     //   return <PaymentInputContent step={step} />
     // }
-    // case InputStepType.ASK_NAME: {
-    //   return (
-    //     <PlaceholderContent
-    //       placeholder={step.options.labels.placeholder}
-    //       isLong={step.options.isLong}
-    //     />
-    //   )
-    // }
+    case InputStepType.ASK_NAME: {
+      return (
+        <PlaceholderContent
+          placeholder={step.options.labels.placeholder}
+          isLong={step.options.isLong}
+        />
+      )
+    }
     // case LogicStepType.SET_VARIABLE: {
     //   return <SetVariableContent step={step} />
     // }

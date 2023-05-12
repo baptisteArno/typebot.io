@@ -6,6 +6,7 @@ import {
   InputStepType,
   UrlInputStep,
   PhoneNumberInputStep,
+  AskNameInputStep,
 } from 'models'
 import React, {
   ChangeEvent,
@@ -24,6 +25,7 @@ type TextInputProps = {
     | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep
+    | AskNameInputStep
   value: string
   onChange: (value: string) => void
 }
@@ -106,6 +108,18 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
           min={step.options?.min}
           max={step.options?.max}
           step={step.options?.step ?? 'any'}
+        />
+      )
+    }
+    case InputStepType.ASK_NAME: {
+      return (
+        <ShortTextInput
+        ref={inputRef}
+        value={value}
+        placeholder={
+          step.options?.labels?.placeholder ?? 'Digite o seu email...'
+        }
+        onChange={handleInputChange}
         />
       )
     }
