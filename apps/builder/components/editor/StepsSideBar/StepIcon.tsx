@@ -26,6 +26,7 @@ import {
   ListIcon,
   RadioIcon,
   ContactCardIcon,
+  AskNameIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -81,7 +82,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case InputStepType.PAYMENT:
       return <CreditCardIcon color="orange.500" {...props} />
     case InputStepType.ASK_NAME:
-      return <TextIcon color="orange.500" {...props} />
+      return <AskNameIcon color="#256F42" {...props} />
     case LogicStepType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:

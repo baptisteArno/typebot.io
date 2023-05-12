@@ -86,6 +86,16 @@ export const TextIcon = (props: any) => (
   </IconContext.Provider>
 )
 
+export const AskNameIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdOutlineBadge />
+    </div>
+  </IconContext.Provider>
+)
+
 export const ImageIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}

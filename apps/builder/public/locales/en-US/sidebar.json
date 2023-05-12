@@ -14,7 +14,8 @@
     "button": "Botão",
     "number": "Número",
     "identify ": "CPF",
-    "phone": "Telefone"
+    "phone": "Telefone",
+    "name": "Nome"
 
   },
   "whatsapp": {

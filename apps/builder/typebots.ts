@@ -373,8 +373,8 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null 
       return defaultChoiceInputOptions
     // case InputStepType.PAYMENT:
     //   return defaultPaymentInputOptions
-    // case InputStepType.ASK_NAME:
-    //   return defaultAskNameOptions
+    case InputStepType.ASK_NAME:
+      return defaultAskNameOptions
     // case LogicStepType.SET_VARIABLE:
     //   return defaultSetVariablesOptions
     // case LogicStepType.REDIRECT:
