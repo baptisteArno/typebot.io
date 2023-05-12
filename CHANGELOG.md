@@ -1,5 +1,27 @@
 # Changelog
 
+<a name="2.13.2"></a>
+## 2.13.2 (2023-05-12)
+
+### Added
+
+- ✨ Add icon picker ([#496](https://github.com/baptisteArno/typebot.io/issues/496)) [[9abc50d](https://github.com/baptisteArno/typebot.io/commit/9abc50dce518ff7e0cc2d09196a4171104fa9902)]
+
+### Changed
+
+- 🚸 Improve chat auto scroll [[a3fb098](https://github.com/baptisteArno/typebot.io/commit/a3fb098dfa010a29af8fd0e5a7145430d10ccc92)]
+- ⚡ (sheets) Add option to select single row when matching multiple [[55dbb1a](https://github.com/baptisteArno/typebot.io/commit/55dbb1abc714462e3479ad42e8eb82d315e32f0e)]
+- ⚡ Add predefined set variable values ([#497](https://github.com/baptisteArno/typebot.io/issues/497)) [[bde9416](https://github.com/baptisteArno/typebot.io/commit/bde941613cedaddd3c4fabe466e84ffe09ec670b)]
+
+### Fixed
+
+- 🐛 Fix webhook deep keys parsing invalid index [[df8a406](https://github.com/baptisteArno/typebot.io/commit/df8a4065139fb34222efabc8ae4139fa1fe201dd)]
+
+### Miscellaneous
+
+- 🧑‍💻 Check required env var before starting the server [[45224f9](https://github.com/baptisteArno/typebot.io/commit/45224f9fb36f97a169ac729def4dd50c6506a2ae)]
+
+
 <a name="2.13.1"></a>
 ## 2.13.1 (2023-05-09)
 
