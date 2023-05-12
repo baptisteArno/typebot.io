@@ -35,6 +35,13 @@ const initialGoogleSheetsOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   })
 )
 
+export const totalRowsToExtractOptions = [
+  'All',
+  'First',
+  'Last',
+  'Random',
+] as const
+
 const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   z.object({
     action: z.enum([GoogleSheetsAction.GET]),
@@ -48,6 +55,7 @@ const googleSheetsGetOptionsSchema = googleSheetsOptionsBaseSchema.merge(
       })
       .optional(),
     cellsToExtract: z.array(extractingCellSchema),
+    totalRowsToExtract: z.enum(totalRowsToExtractOptions).optional(),
   })
 )
 

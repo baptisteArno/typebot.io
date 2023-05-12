@@ -21,6 +21,7 @@ import {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsOptions,
   GoogleSheetsUpdateRowOptions,
+  totalRowsToExtractOptions,
 } from '@typebot.io/schemas'
 import React, { useMemo } from 'react'
 import { isDefined } from '@typebot.io/lib'
@@ -184,6 +185,11 @@ const ActionOptions = ({
   const handleFilterChange = (filter: GoogleSheetsGetOptions['filter']) =>
     onOptionsChange({ ...options, filter } as GoogleSheetsOptions)
 
+  const updateTotalRowsToExtract = (
+    totalRowsToExtract: GoogleSheetsGetOptions['totalRowsToExtract']
+  ) =>
+    onOptionsChange({ ...options, totalRowsToExtract } as GoogleSheetsOptions)
+
   const UpdatingCellItem = useMemo(
     () =>
       function Component(props: TableListItemProps<Cell>) {
@@ -273,59 +279,69 @@ const ActionOptions = ({
     case GoogleSheetsAction.GET:
       return (
         <Accordion allowMultiple>
-          {options.referenceCell && (
+          <Stack>
+            {options.referenceCell && (
+              <AccordionItem>
+                <AccordionButton>
+                  <Text w="full" textAlign="left">
+                    Rows to select
+                  </Text>
+                  <AccordionIcon />
+                </AccordionButton>
+
+                <AccordionPanel pt="4">
+                  <CellWithValueStack
+                    columns={sheet?.columns ?? []}
+                    item={options.referenceCell ?? { id: 'reference' }}
+                    onItemChange={handleReferenceCellChange}
+                  />
+                </AccordionPanel>
+              </AccordionItem>
+            )}
+            {!options.referenceCell && (
+              <>
+                <AccordionItem>
+                  <AccordionButton>
+                    <Text w="full" textAlign="left">
+                      Rows to filter
+                    </Text>
+                    <AccordionIcon />
+                  </AccordionButton>
+
+                  <AccordionPanel pt="4">
+                    <RowsFilterTableList
+                      columns={sheet?.columns ?? []}
+                      filter={options.filter}
+                      onFilterChange={handleFilterChange}
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+                <DropdownList
+                  items={totalRowsToExtractOptions}
+                  currentItem={options.totalRowsToExtract ?? 'All'}
+                  onItemSelect={updateTotalRowsToExtract}
+                />
+              </>
+            )}
+
             <AccordionItem>
               <AccordionButton>
                 <Text w="full" textAlign="left">
-                  Rows to select
+                  Columns to extract
                 </Text>
                 <AccordionIcon />
               </AccordionButton>
 
               <AccordionPanel pt="4">
-                <CellWithValueStack
-                  columns={sheet?.columns ?? []}
-                  item={options.referenceCell ?? { id: 'reference' }}
-                  onItemChange={handleReferenceCellChange}
+                <TableList<ExtractingCell>
+                  initialItems={options.cellsToExtract}
+                  onItemsChange={handleExtractingCellsChange}
+                  Item={ExtractingCellItem}
+                  addLabel="Add a value"
                 />
               </AccordionPanel>
             </AccordionItem>
-          )}
-          {!options.referenceCell && (
-            <AccordionItem>
-              <AccordionButton>
-                <Text w="full" textAlign="left">
-                  Rows to filter
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-
-              <AccordionPanel pt="4">
-                <RowsFilterTableList
-                  columns={sheet?.columns ?? []}
-                  filter={options.filter}
-                  onFilterChange={handleFilterChange}
-                />
-              </AccordionPanel>
-            </AccordionItem>
-          )}
-          <AccordionItem>
-            <AccordionButton>
-              <Text w="full" textAlign="left">
-                Columns to extract
-              </Text>
-              <AccordionIcon />
-            </AccordionButton>
-
-            <AccordionPanel pt="4">
-              <TableList<ExtractingCell>
-                initialItems={options.cellsToExtract}
-                onItemsChange={handleExtractingCellsChange}
-                Item={ExtractingCellItem}
-                addLabel="Add a value"
-              />
-            </AccordionPanel>
-          </AccordionItem>
+          </Stack>
         </Accordion>
       )
     default:

@@ -38,10 +38,13 @@ export const getRow = async (
     await doc.loadInfo()
     const sheet = doc.sheetsById[sheetId]
     const rows = await sheet.getRows()
-    const filteredRows = rows.filter((row) =>
-      referenceCell
-        ? row[referenceCell.column as string] === referenceCell.value
-        : matchFilter(row, filter as NonNullable<typeof filter>)
+    const filteredRows = getTotalRows(
+      options.totalRowsToExtract,
+      rows.filter((row) =>
+        referenceCell
+          ? row[referenceCell.column as string] === referenceCell.value
+          : matchFilter(row, filter as NonNullable<typeof filter>)
+      )
     )
     if (filteredRows.length === 0) {
       log = {
@@ -98,4 +101,21 @@ export const getRow = async (
     })
   }
   return { outgoingEdgeId, logs: log ? [log] : undefined }
+}
+
+const getTotalRows = <T>(
+  totalRowsToExtract: GoogleSheetsGetOptions['totalRowsToExtract'],
+  rows: T[]
+): T[] => {
+  switch (totalRowsToExtract) {
+    case 'All':
+    case undefined:
+      return rows
+    case 'First':
+      return rows.slice(0, 1)
+    case 'Last':
+      return rows.slice(-1)
+    case 'Random':
+      return [rows[Math.floor(Math.random() * rows.length)]]
+  }
 }
