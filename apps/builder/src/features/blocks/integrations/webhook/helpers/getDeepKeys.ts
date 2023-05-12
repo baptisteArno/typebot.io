@@ -29,8 +29,8 @@ export const getDeepKeys = (obj: any): string[] => {
         )
       }
       keys = keys.concat(
-        subkeys.map(function (subkey, idx) {
-          return `${key}[${idx}]${parseKey(subkey)}`
+        subkeys.map(function (subkey) {
+          return `${key}[0]${parseKey(subkey)}`
         })
       )
     } else {
