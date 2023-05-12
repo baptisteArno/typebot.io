@@ -60,7 +60,8 @@ export const AssignToResponsibleSelect = ({
   return (
       <OctaSelect
         name="responsible"
-        defaultSelected={defaultSelected}
+        placeholder="Responsável pelo contato"
+        defaultSelected={defaultSelected || ''}
         findable
         options={itemsToResponsibleAssign}
         onChange={handleOnChange}

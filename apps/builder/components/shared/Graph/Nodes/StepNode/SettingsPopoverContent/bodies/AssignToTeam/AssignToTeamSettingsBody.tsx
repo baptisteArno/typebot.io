@@ -29,7 +29,7 @@ export const AssignToTeamSettingsBody = ({
       'responsible-contact-enabled'
     )
     setHasResponsibleContact(responsibleContactEnabled)
-    if (true)
+    if (responsibleContactEnabled)
       setAutoAssignToTitle(
         'Se não houver um responsável pelo contato, atribuir para:'
       )
@@ -77,11 +77,9 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleAssignToResponsibleChange = (e: any) => {
-    const option = e
-
     onOptionsChange({
       ...options,
-      ...option,
+      subType: e.value.subType
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
@@ -111,7 +109,7 @@ export const AssignToTeamSettingsBody = ({
         />
         )
       </Stack>
-      {true && (
+      {hasResponsibleContact && (
         <Stack>
           <FormLabel mb="0" htmlFor="button">
             Atribuir conversa para:
