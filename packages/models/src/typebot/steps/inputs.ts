@@ -15,6 +15,7 @@ export type InputStep =
 
 export enum InputStepType {
   TEXT = 'text input',
+  ASK_NAME = 'name input',
   NUMBER = 'number input',
   EMAIL = 'email input',
   CPF = 'cpf input',
@@ -22,8 +23,7 @@ export enum InputStepType {
   DATE = 'date input',
   PHONE = 'phone number input',
   CHOICE = 'choice input',
-  PAYMENT = 'payment input',
-  ASK_NAME = 'name input'
+  PAYMENT = 'payment input'
 }
 
 export type InputStepOptions =
@@ -183,7 +183,7 @@ const defaultButtonLabel = 'Enviar'
 
 export const defaultTextInputOptions: TextInputOptions = {
   isLong: false,
-  labels: { button: defaultButtonLabel, placeholder: 'Digite um texto...' },
+  labels: { button: defaultButtonLabel, placeholder: 'Salvar resposta em ...' },
 }
 
 export const defaultAskNameOptions: AskNameOptions = {
