@@ -36,15 +36,9 @@ export const getStatus = async () => {
 
   if (tenantId) {
     try {
-      const accessToken = authStorage.access_token
-
       const { data } = await services.nucleus
         .getClient()
-        .get(`Tenants/${tenantId}/status`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
+        .get(`Tenants/${tenantId}/status`, loadParameterHeader())
 
       return data
     } catch (ex) {
