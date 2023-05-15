@@ -32,12 +32,22 @@ Lots of new features are being implemented on a day-to-day basis. Make sure to h
 
 ## Getting started with Typebot
 
-The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, Baptiste, Typebot's founder.
+The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno).
 
 The cloud version can save a substantial amount of developer time and resources. For most sites this ends up being the best value option and the revenue goes to funding the maintenance and further development of Typebot.
-So you’ll be supporting open source software and getting a great service!
+So you’ll be supporting open source software and getting a great service! 💙
 
 ## Self-hosting
+
+Typebot is fully open source and we allow you to self-host your own version as long as you respect the [License](#license). Your version would be the same product as Typebot Cloud. There is no limitations in terms of availble features.
+
+The main difference between the two is that with the self-hosted version you have to install, host and manage yourself on your own infrastructure while the cloud version we manage everything for your ease and convenience. Here's the overview of all the differences:
+
+|         | [Typebot Cloud](https://app.typebot.io)                                                                                                                                                                                                                                                                                                                         | Self-Hosting                                                                                                                                                                                                                                         |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hosting | Easy and convenient. It takes 1 minute to start building your bots and share them with a worldwide high availability, backups, security and maintenance all done for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno). I manage everything so you don’t have to worry about anything and can focus on creating great bot experiences. | You do it all yourself. You need to get a server and you need to manage your infrastructure. You are responsible for installation, maintenance, upgrades, server capacity, uptime, backup, security, stability, consistency, loading time and so on. |
+| Storage | All visitor data is exclusively processed on EU-owned cloud infrastructure. This ensures that your bots data processing complies with GDPR.                                                                                                                                                                                                                     | You have full control and can host your instance on any server in any country that you wish. Host it on a server in your basement or host it with any cloud provider wherever you want.                                                              |
+| Costs   | I charge a subscription fee. Whether you're a solo business owner, a growing startup or a large company, Typebot is here to help you build high-performing chat forms for the right price. Pay for as little or as much usage as you need.                                                                                                                      | You need to pay for your server, your database, your S3 storage, backups and whatever other cost there is associated with running the infrastructure. You never have to pay any fees to us.                                                          |
 
 Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.typebot.io/self-hosting).
 
