@@ -64,7 +64,7 @@ export const MetadataForm = ({
               filePath={`typebots/${typebotId}/favIcon`}
               defaultUrl={metadata.favIconUrl ?? ''}
               onSubmit={handleFavIconSubmit}
-              isGiphyEnabled={false}
+              excludedTabs={['giphy', 'unsplash', 'emoji']}
               imageSize="thumb"
             />
           </PopoverContent>
@@ -90,7 +90,7 @@ export const MetadataForm = ({
               filePath={`typebots/${typebotId}/ogImage`}
               defaultUrl={metadata.imageUrl}
               onSubmit={handleImageSubmit}
-              isGiphyEnabled={false}
+              excludedTabs={['giphy', 'icon', 'emoji']}
             />
           </PopoverContent>
         </Popover>

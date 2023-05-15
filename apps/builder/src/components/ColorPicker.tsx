@@ -19,7 +19,7 @@ import tinyColor from 'tinycolor2'
 
 const colorsSelection: `#${string}`[] = [
   '#666460',
-  '#AFABA3',
+  '#FFFFFF',
   '#A87964',
   '#D09C46',
   '#DE8031',
@@ -27,7 +27,7 @@ const colorsSelection: `#${string}`[] = [
   '#4A8BB2',
   '#9B74B7',
   '#C75F96',
-  '#C75F96',
+  '#0042DA',
 ]
 
 type Props = {
@@ -78,18 +78,19 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
         </PopoverHeader>
         <PopoverBody as={Stack}>
           <SimpleGrid columns={5} spacing={2}>
-            {colorsSelection.map((c) => (
+            {colorsSelection.map((color) => (
               <Button
-                key={c}
-                aria-label={c}
-                background={c}
+                key={color}
+                aria-label={color}
+                background={color}
                 height="22px"
                 width="22px"
                 padding={0}
                 minWidth="unset"
                 borderRadius={3}
-                _hover={{ background: c }}
-                onClick={handleClick(c)}
+                borderWidth={color === '#FFFFFF' ? 1 : undefined}
+                _hover={{ background: color }}
+                onClick={handleClick(color)}
               />
             ))}
           </SimpleGrid>

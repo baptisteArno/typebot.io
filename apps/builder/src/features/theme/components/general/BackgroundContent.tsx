@@ -62,7 +62,7 @@ export const BackgroundContent = ({
               filePath={`typebots/${typebot?.id}/background`}
               defaultUrl={background.content}
               onSubmit={handleContentChange}
-              isGiphyEnabled={false}
+              excludedTabs={['giphy', 'icon']}
             />
           </PopoverContent>
         </Popover>

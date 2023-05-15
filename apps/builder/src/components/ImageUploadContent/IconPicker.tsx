@@ -26,6 +26,13 @@ export const IconPicker = ({ onIconSelected }: Props) => {
   )
   const searchQuery = useRef<string>('')
   const [selectedColor, setSelectedColor] = useState(initialIconColor)
+  const isWhite = useMemo(
+    () =>
+      selectedColor.toLowerCase() === '#ffffff' ||
+      selectedColor.toLowerCase() === '#fff' ||
+      selectedColor === 'white',
+    [selectedColor]
+  )
 
   useEffect(() => {
     if (!bottomElement.current) return
@@ -68,10 +75,9 @@ export const IconPicker = ({ onIconSelected }: Props) => {
 
   const selectIcon = async (iconName: string) => {
     const svg = await (await fetch(`/icons/${iconName}.svg`)).text()
-    const dataUri = `data:image/svg+xml;utf8,${svg.replace(
-      '<svg',
-      `<svg fill='${encodeURIComponent(selectedColor)}'`
-    )}`
+    const dataUri = `data:image/svg+xml;utf8,${svg
+      .replace('<svg', `<svg fill='${encodeURIComponent(selectedColor)}'`)
+      .replace(/"/g, "'")}`
     onIconSelected(dataUri)
   }
 
@@ -96,8 +102,9 @@ export const IconPicker = ({ onIconSelected }: Props) => {
       >
         {displayedIconNames.map((iconName) => (
           <Button
-            variant="ghost"
             size="sm"
+            variant={isWhite ? 'solid' : 'ghost'}
+            colorScheme={isWhite ? 'blackAlpha' : undefined}
             fontSize="xl"
             w="38px"
             h="38px"

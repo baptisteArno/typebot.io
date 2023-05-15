@@ -9,11 +9,6 @@ import { JavascriptBubbleSnippet } from '../JavascriptBubbleSnippet'
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
     backgroundColor: typebot?.theme.chat.buttons.backgroundColor,
-    iconColor: typebot?.theme.chat.buttons.color,
-  },
-  previewMessage: {
-    backgroundColor: typebot?.theme.general.background.content ?? 'white',
-    textColor: 'black',
   },
 })
 
