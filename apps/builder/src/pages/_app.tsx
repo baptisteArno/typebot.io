@@ -18,6 +18,7 @@ import { NewVersionPopup } from '@/components/NewVersionPopup'
 import { I18nProvider } from '@/locales'
 import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
@@ -58,7 +59,9 @@ const App = ({ Component, pageProps }: AppProps) => {
               <TypebotProvider typebotId={typebotId}>
                 <WorkspaceProvider typebotId={typebotId}>
                   <Component {...pageProps} />
-                  <SupportBubble />
+                  {!pathname.endsWith('edit') && !isCloudProdInstance && (
+                    <SupportBubble />
+                  )}
                   <NewVersionPopup />
                 </WorkspaceProvider>
               </TypebotProvider>

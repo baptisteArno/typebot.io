@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import assert from 'assert'
 import {
+  BookIcon,
   DownloadIcon,
   MoreVerticalIcon,
   SettingsIcon,
@@ -31,14 +32,9 @@ export const BoardMenuButton = (props: FlexProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    if (
-      user &&
-      isNotDefined(user.graphNavigation) &&
-      isNotDefined(query.isFirstBot)
-    )
+    if (isNotDefined(user?.graphNavigation) && isNotDefined(query.isFirstBot))
       onOpen()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [onOpen, query.isFirstBot, user?.graphNavigation])
 
   const downloadFlow = () => {
     assert(typebot)
@@ -56,6 +52,10 @@ export const BoardMenuButton = (props: FlexProps) => {
     linkElement.click()
     setIsDownloading(false)
   }
+
+  const redirectToDocumentation = () =>
+    window.open('https://docs.typebot.io/get-started/overview', '_blank')
+
   return (
     <Flex
       bgColor={useColorModeValue('white', 'gray.900')}
@@ -72,6 +72,9 @@ export const BoardMenuButton = (props: FlexProps) => {
           bgColor={useColorModeValue('white', undefined)}
         />
         <MenuList>
+          <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
+            Documentation
+          </MenuItem>
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
             Editor settings
           </MenuItem>

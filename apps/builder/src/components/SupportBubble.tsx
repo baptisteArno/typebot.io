@@ -3,15 +3,13 @@ import { useUser } from '@/features/account/hooks/useUser'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React from 'react'
 import { Bubble } from '@typebot.io/react'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { planToReadable } from '@/features/billing/helpers/planToReadable'
+import { BubbleProps } from '@typebot.io/js'
 
-export const SupportBubble = () => {
+export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
   const { typebot } = useTypebot()
   const { user } = useUser()
   const { workspace } = useWorkspace()
-
-  if (!isCloudProdInstance) return null
 
   return (
     <Bubble
@@ -30,6 +28,7 @@ export const SupportBubble = () => {
           backgroundColor: '#fff',
         },
       }}
+      {...props}
     />
   )
 }
