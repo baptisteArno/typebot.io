@@ -110,7 +110,7 @@ export const TypebotHeader = () => {
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
           size="sm"
         >
-          Theme
+          Design
         </Button>
         <Button
           as={Link}
