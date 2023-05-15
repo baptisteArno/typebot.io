@@ -1,6 +1,7 @@
 import { Show } from 'solid-js'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined, isSvgSrc } from '@typebot.io/lib'
 import { ButtonTheme } from '../types'
+import { isLight } from '@typebot.io/lib/hexToRgb'
 
 type Props = ButtonTheme & {
   isBotOpened: boolean
@@ -8,7 +9,9 @@ type Props = ButtonTheme & {
 }
 
 const defaultButtonColor = '#0042DA'
-const defaultIconColor = 'white'
+
+const isImageSrc = (src: string) =>
+  src.startsWith('http') || src.startsWith('data:image/svg+xml')
 
 export const BubbleButton = (props: Props) => {
   return (
@@ -28,7 +31,11 @@ export const BubbleButton = (props: Props) => {
         <svg
           viewBox="0 0 24 24"
           style={{
-            stroke: props.iconColor ?? defaultIconColor,
+            stroke:
+              props.iconColor ??
+              isLight(props.backgroundColor ?? defaultButtonColor)
+                ? '#27272A'
+                : '#fff',
           }}
           class={
             `stroke-2 fill-transparent absolute duration-200 transition ` +
@@ -41,17 +48,41 @@ export const BubbleButton = (props: Props) => {
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
         </svg>
       </Show>
-      <Show when={props.customIconSrc}>
+      <Show when={props.customIconSrc && isImageSrc(props.customIconSrc)}>
         <img
           src={props.customIconSrc}
           class={
-            'rounded-full object-cover' +
-            (props.size === 'large' ? ' w-9 h-9' : ' w-7 h-7')
+            'duration-200 transition' +
+            (props.isBotOpened
+              ? ' scale-0 opacity-0'
+              : ' scale-100 opacity-100') +
+            (isSvgSrc(props.customIconSrc)
+              ? props.size === 'large'
+                ? ' w-9 h-9'
+                : ' w-7 h-7'
+              : ' w-[90%] h-[90%]') +
+            (isSvgSrc(props.customIconSrc) ? '' : ' object-cover rounded-full')
           }
           alt="Bubble button icon"
           elementtiming={'Bubble button icon'}
           fetchpriority={'high'}
         />
+      </Show>
+      <Show when={props.customIconSrc && !isImageSrc(props.customIconSrc)}>
+        <span
+          class={
+            'text-4xl duration-200 transition' +
+            (props.isBotOpened
+              ? ' scale-0 opacity-0'
+              : ' scale-100 opacity-100')
+          }
+          style={{
+            'font-family':
+              "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+          }}
+        >
+          {props.customIconSrc}
+        </span>
       </Show>
 
       <svg

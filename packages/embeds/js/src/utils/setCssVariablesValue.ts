@@ -7,8 +7,7 @@ import {
   Theme,
 } from '@typebot.io/schemas'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/enums'
-import { hexToRgb } from './hexToRgb'
-import { isLight } from './hexToRgb'
+import { isLight, hexToRgb } from '@typebot.io/lib/hexToRgb'
 
 const cssVariableNames = {
   general: {

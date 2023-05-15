@@ -1,8 +1,17 @@
-import { Stack, Heading, HStack, Flex, Text, Image } from '@chakra-ui/react'
+import {
+  Stack,
+  Heading,
+  HStack,
+  Flex,
+  Text,
+  Image,
+  chakra,
+} from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined, isSvgSrc } from '@typebot.io/lib'
 import { PreviewMessageSettings } from './PreviewMessageSettings'
 import { ThemeSettings } from './ThemeSettings'
+import { isLight } from '@typebot.io/lib/hexToRgb'
 
 type Props = {
   defaultPreviewMessageAvatar: string
@@ -79,24 +88,72 @@ export const BubbleSettings = ({
           <Flex
             align="center"
             justifyContent="center"
-            boxSize="3rem"
+            transition="all 0.2s ease-in-out"
+            boxSize={theme?.button?.size === 'large' ? '64px' : '48px'}
             bgColor={theme?.button?.backgroundColor}
             rounded="full"
+            boxShadow="0 0 #0000,0 0 #0000,0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)"
           >
-            <svg
-              viewBox="0 0 24 24"
-              style={{
-                stroke: theme?.button?.iconColor,
-              }}
-              width="30px"
-              strokeWidth="2px"
-              fill="transparent"
-            >
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-            </svg>
+            <BubbleIcon buttonTheme={theme?.button} />
           </Flex>
         </Stack>
       </Stack>
     </Stack>
+  )
+}
+
+const BubbleIcon = ({
+  buttonTheme,
+}: {
+  buttonTheme: NonNullable<BubbleProps['theme']>['button']
+}) => {
+  if (!buttonTheme?.customIconSrc)
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        style={{
+          stroke: buttonTheme?.backgroundColor
+            ? isLight(buttonTheme?.backgroundColor)
+              ? '#000'
+              : '#fff'
+            : '#fff',
+          transition: 'all 0.2s ease-in-out',
+        }}
+        width={buttonTheme?.size === 'large' ? '36px' : '28px'}
+        strokeWidth="2px"
+        fill="transparent"
+      >
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+      </svg>
+    )
+
+  if (
+    buttonTheme.customIconSrc.startsWith('http') ||
+    buttonTheme.customIconSrc.startsWith('data:image/svg+xml')
+  )
+    return (
+      <Image
+        src={buttonTheme.customIconSrc}
+        transition="all 0.2s ease-in-out"
+        boxSize={
+          isSvgSrc(buttonTheme.customIconSrc)
+            ? buttonTheme?.size === 'large'
+              ? '36px'
+              : '28px'
+            : '90%'
+        }
+        rounded={isSvgSrc(buttonTheme.customIconSrc) ? undefined : 'full'}
+        alt="Bubble button icon"
+        objectFit={isSvgSrc(buttonTheme.customIconSrc) ? undefined : 'cover'}
+      />
+    )
+  return (
+    <chakra.span
+      transition="all 0.2s ease-in-out"
+      fontSize={buttonTheme.size === 'large' ? '36px' : '24px'}
+      lineHeight={buttonTheme.size === 'large' ? '40px' : '32px'}
+    >
+      {buttonTheme.customIconSrc}
+    </chakra.span>
   )
 }
