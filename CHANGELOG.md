@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="2.13.3"></a>
+## 2.13.3 (2023-05-16)
+
+### Added
+
+- 🔊 Add DEBUG mode with valuable logs in viewer [[72058fd](https://github.com/baptisteArno/typebot.io/commit/72058fd624c2068d366d560b0ee81697b03daed8)]
+
+### Changed
+
+- ⚡ (embed) Add size and icon picker in bubble settings ([#508](https://github.com/baptisteArno/typebot.io/issues/508)) [[0f91b34](https://github.com/baptisteArno/typebot.io/commit/0f91b34497659da34edafa23b80e81782925eda7)]
+- 🚸 Improve support accessibility [[123926f](https://github.com/baptisteArno/typebot.io/commit/123926f2735787c15ca22abc55ea1cb73a4631b8)]
+
+### Fixed
+
+- 🐛 Restore support bubble in cloud prod [[f8ea2e1](https://github.com/baptisteArno/typebot.io/commit/f8ea2e133786100893fe53504e6549fa5d56d178)]
+
+### Miscellaneous
+
+- 📝 Add a self-hosting comparison table in README [[2b54518](https://github.com/baptisteArno/typebot.io/commit/2b54518d04ab26d4489de2b7e42d82796d2aede6)]
+
+
 <a name="2.13.2"></a>
 ## 2.13.2 (2023-05-12)
 
