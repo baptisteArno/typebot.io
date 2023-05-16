@@ -29,6 +29,11 @@ const incompatibleBrowsers = [
   },
 ]
 
+const log = (message: string) => {
+  if (process.env.DEBUG !== 'true') return
+  console.log(`[DEBUG] ${message}`)
+}
+
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
@@ -38,9 +43,12 @@ export const getServerSideProps: GetServerSideProps = async (
     )?.name ?? null
   const pathname = context.resolvedUrl.split('?')[0]
   const { host, forwardedHost } = getHost(context.req)
+  log(`host: ${host}`)
+  log(`forwardedHost: ${forwardedHost}`)
   try {
     if (!host) return { props: {} }
     const viewerUrls = (getViewerUrl({ returnAll: true }) ?? '').split(',')
+    log(`viewerUrls: ${viewerUrls}`)
     const isMatchingViewerUrl =
       env('E2E_TEST') === 'true'
         ? true
@@ -52,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (
                   .split(':')[0]
                   .includes(url.split('//')[1].split(':')[0]))
           )
+    log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`)
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname
     }`
