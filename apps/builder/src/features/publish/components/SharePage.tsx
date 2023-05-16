@@ -54,7 +54,7 @@ export const SharePage = () => {
 
   const checkIfPathnameIsValid = (pathname: string) => {
     const isCorrectlyFormatted =
-      /^([a-z0-9]+-[a-z0-9]+)*$/.test(pathname) || /^[a-z0-9]*$/.test(pathname)
+      /^([a-z0-9]+-[a-z0-9]*)*$/.test(pathname) || /^[a-z0-9]*$/.test(pathname)
 
     if (!isCorrectlyFormatted) {
       showToast({
