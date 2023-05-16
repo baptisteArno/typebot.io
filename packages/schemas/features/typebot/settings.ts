@@ -1,11 +1,19 @@
 import { z } from 'zod'
 
+export const rememberUserStorages = ['session', 'local'] as const
+
 const generalSettings = z.object({
   isBrandingEnabled: z.boolean(),
   isTypingEmulationEnabled: z.boolean().optional(),
   isInputPrefillEnabled: z.boolean().optional(),
   isHideQueryParamsEnabled: z.boolean().optional(),
   isNewResultOnRefreshEnabled: z.boolean().optional(),
+  rememberUser: z
+    .object({
+      isEnabled: z.boolean().optional(),
+      storage: z.enum(rememberUserStorages).optional(),
+    })
+    .optional(),
 })
 
 const typingEmulation = z.object({
@@ -32,7 +40,9 @@ export const settingsSchema = z.object({
 export const defaultSettings: Settings = {
   general: {
     isBrandingEnabled: true,
-    isNewResultOnRefreshEnabled: true,
+    rememberUser: {
+      isEnabled: false,
+    },
     isInputPrefillEnabled: true,
     isHideQueryParamsEnabled: true,
   },

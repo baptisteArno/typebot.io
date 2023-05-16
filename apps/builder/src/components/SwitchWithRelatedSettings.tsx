@@ -8,7 +8,7 @@ export const SwitchWithRelatedSettings = ({ children, ...props }: Props) => (
   <Stack
     borderWidth={props.initialValue ? 1 : undefined}
     rounded="md"
-    p={props.initialValue ? '4' : undefined}
+    p={props.initialValue ? '3' : undefined}
     spacing={4}
   >
     <SwitchWithLabel {...props} />
