@@ -21,7 +21,10 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
         ...defaultSettings,
         general: {
           ...defaultSettings.general,
-          isNewResultOnRefreshEnabled: false,
+          rememberUser: {
+            isEnabled: true,
+            storage: 'session',
+          },
         },
       },
       ...parseDefaultGroupWithBlock({
