@@ -1,5 +1,23 @@
 # Changelog
 
+<a name="2.13.4"></a>
+## 2.13.4 (2023-05-17)
+
+### Changed
+
+- ⚡ Remember result in either local or session storage ([#514](https://github.com/baptisteArno/typebot.io/issues/514)) [[27b009d](https://github.com/baptisteArno/typebot.io/commit/27b009dd7693c59f75c9df8ff0d3b27dcae47680)]
+
+### Fixed
+
+- 🐛 Disable invite button when email is empty [[8b84a7d](https://github.com/baptisteArno/typebot.io/commit/8b84a7d8b983d4dc36ad4ab89d92b052fcfeb9b9)]
+- 🐛 Fix public id validation [[853451b](https://github.com/baptisteArno/typebot.io/commit/853451b4fabf2f2c5e7d001f8d806ea51dd3c80e)]
+
+### Miscellaneous
+
+- 🐳 Fix encryption length check script [[0fc6bfa](https://github.com/baptisteArno/typebot.io/commit/0fc6bfa7cefc866d39f464a9efb080c4eff5669b)]
+- 📝 (webflow) Add bind commands to button instructions [[c451ba7](https://github.com/baptisteArno/typebot.io/commit/c451ba77846218764d8916d7d22c421fdf97d1cb)]
+
+
 <a name="2.13.3"></a>
 ## 2.13.3 (2023-05-16)
 
