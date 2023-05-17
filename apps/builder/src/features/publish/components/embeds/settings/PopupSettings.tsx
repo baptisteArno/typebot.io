@@ -30,15 +30,15 @@ export const PopupSettings = ({ onUpdateSettings, ...props }: Props) => {
       <Heading size="sm">Popup settings</Heading>
 
       <HStack pl={4}>
-        <p>Auto show</p>
+        <Text flexShrink={0}>Auto show</Text>
         <Switch
           isChecked={isEnabled}
           onChange={(e) => setIsEnabled(e.target.checked)}
         />
         {isEnabled && (
           <>
+            <Text>after</Text>
             <NumberInput
-              label="After"
               size="sm"
               w="70px"
               defaultValue={inputValue}

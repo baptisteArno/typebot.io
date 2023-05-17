@@ -9,7 +9,7 @@ export const WebflowStandardInstructions = () => (
     <ListItem>
       <Stack spacing={4}>
         <Text>
-          Add an <Code>embed</Code> element from the <Code>components</Code>{' '}
+          Add an <Code>Embed</Code> element from the <Code>components</Code>{' '}
           section and paste this code:
         </Text>
         <JavascriptStandardSnippet />
