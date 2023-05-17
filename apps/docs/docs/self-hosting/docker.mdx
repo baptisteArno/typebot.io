@@ -261,8 +261,6 @@ services:
     restart: always
     depends_on:
       - typebot-db
-    ports:
-      - '8080:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
@@ -270,7 +268,7 @@ services:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
       - NEXTAUTH_URL=https://typebot.domain.com
       - NEXT_PUBLIC_VIEWER_URL=https://bot.domain.com
-      - ENCRYPTION_SECRET=Tz9sL3FBc+XnO86KS9ScPuYj79Y4rII/Ie+FkaNNUrk=
+      - ENCRYPTION_SECRET=K+Bar660Ofaec7v1jHC25tAn3l2b7c81
       - ADMIN_EMAIL=baptiste.arnaud95@gmail.com
       - SMTP_HOST=mail
       - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
@@ -285,13 +283,11 @@ services:
       virtual.tls-email: 'admin@example.com' # change to your email
     image: baptistearno/typebot-viewer:latest
     restart: always
-    ports:
-      - '8081:3000'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
       - NEXT_PUBLIC_VIEWER_URL=https://bot.domain.com
-      - ENCRYPTION_SECRET=Tz9sL3FBc+XnO86KS9ScPuYj79Y4rII/Ie+FkaNNUrk=
+      - ENCRYPTION_SECRET=K+Bar660Ofaec7v1jHC25tAn3l2b7c81
       - SMTP_HOST=mail
       - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
       - S3_ACCESS_KEY=minio

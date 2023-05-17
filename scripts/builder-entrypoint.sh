@@ -9,7 +9,7 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
-if [ ${#ENCRYPTION_SECRET} -ne 32 ]; then
+if [ ${#ENCRYPTION_SECRET} -ne 32 ] && [ ${#ENCRYPTION_SECRET} -ne 80 ]; then
   echo "ENCRYPTION_SECRET is not 32 characters long. Exiting... (To generate a valid secret: https://docs.typebot.io/self-hosting/docker#2-add-the-required-configuration)"
   exit 1
 fi
