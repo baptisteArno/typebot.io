@@ -56,7 +56,7 @@ const OctaSelect = (props: OctaSelectProps) => {
   const handleChangeFind = (value: any): void => {
     setSearch(value.label);
     setSelected(value);
-    props.onChange(value.value);
+    props.onChange(value.value, value);
   }
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>): void => {

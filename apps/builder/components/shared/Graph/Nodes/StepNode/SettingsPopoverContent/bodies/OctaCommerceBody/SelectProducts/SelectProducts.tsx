@@ -4,6 +4,7 @@ import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md'
 import { ProductType, VariationWithSelection } from 'services/octadesk/commerce/commerce.type'
 import { ButtonCreate, Title } from '../OctaCommerceBody.style'
 import { Container, ListProducts, ProductVariationItem, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
+import { Badge } from '@chakra-ui/react'
 
 type Props = {
   products: Array<ProductType>;
@@ -35,19 +36,24 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
     onSelect(product);
   }
 
-  const handleSelectVariation = (variation: any, value: any): void => {
+  const handleSelectVariation = (variation: any, item: any): void => {
     let index = selectedVariations.findIndex(v => v.variationId === variation.id)
     if (index < 0)
       index = selectedVariations.push({ variationId: variation.id }) - 1
-      
-    selectedVariations[index].valueId = value
-    
+
+    selectedVariations[index].value = item.label
+
     setSelectedVariations(selectedVariations)
   }
 
   const addVariations = () => {
-    console.log(selectedVariations)
-  } 
+    let selectedVariants = [...variationProduct.variants]
+    selectedVariations.forEach(s => {
+      selectedVariants = selectedVariants.filter(v => v.attributeValuesHash.includes(s.value))
+    })
+
+    selectedVariants.forEach(v => onSelect(v))
+  }
 
   return (
     <>
@@ -77,7 +83,15 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
                         {!product.attributes.length && <input type="checkbox" checked={selectedProducts.includes(product.id)} name="select-product" value={product.id} onChange={(e) => handleSelectProduct(product)} />}
                         {(product.attributes.length > 0) && <CustomVariation onClick={() => handleSelectVariations(product)}><MdOutlineChevronRight size={40} /></CustomVariation>}
                       </Destination>
+                      {product.variants?.filter((v: any) => selectedProducts.includes(v.id)).map((v: any) => (
+                        <>
+                        <Badge variant='solid' colorScheme='blue' borderRadius="6px" textAlign="center"> 
+                          {v.attributeValuesHash}
+                        </Badge>
+                        </>
+                      ))}
                     </ProductItem>
+
                   </>
                 ))
               }
@@ -110,7 +124,7 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
                     <VariationControl>
                       <VariationLabel>{variation.name}</VariationLabel>
                       <VariationOption>
-                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ key: value.id, label: value.value, value: value.id }))} onChange={(value) => handleSelectVariation(variation, value)} />
+                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ key: value.id, label: value.value, value: value.id }))} onChange={(value, item) => handleSelectVariation(variation, item)} />
                       </VariationOption>
                     </VariationControl>
                   ))}
