@@ -57,7 +57,8 @@ export type ProductType = {
       id: string;
       value: string;
     }>
-  }>
+  }>,
+  variants: Array<any>
 }
 
 export type ProductIntegration = {
@@ -76,5 +77,5 @@ export type ProductIntegration = {
 
 export type VariationWithSelection = {
   variationId: string, 
-  valueId?: string
+  value?: string
 }

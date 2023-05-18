@@ -1,7 +1,7 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 
 export type OctaSelectProps = {
-  onChange: (e: any) => void
+  onChange: (value: any, itemFull?: any) => void
   defaultSelected?: any
   label?: string;
   findable?: boolean;
