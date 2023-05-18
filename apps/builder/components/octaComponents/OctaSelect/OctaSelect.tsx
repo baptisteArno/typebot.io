@@ -44,7 +44,6 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   useEffect(() => {
     if (props.defaultSelected) {
-      console.log('octaSelect', props.defaultSelected)
       setSelected(props.defaultSelected);
     }
   }, [props.defaultSelected])
@@ -56,7 +55,6 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   const handleChangeFind = (value: any): void => {
     setSearch(value.label);
-    console.log('value', value)
     setSelected(value);
     props.onChange(value.value);
   }

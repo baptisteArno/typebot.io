@@ -264,7 +264,7 @@ export const StepSettings = ({
     }
     case WabaStepType.COMMERCE: {
       return (
-        <OctaCommerceBody step={step} onOptionsChange={handleOptionsChange} />
+        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
       )
     }
     case IntegrationStepType.WEBHOOK: {

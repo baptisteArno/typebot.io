@@ -8,7 +8,7 @@ export type OctaStep = AssignToTeamStep | OfficeHourStep
 export type OctaBubbleStep = EndConversationStep
 
 // Step options (modal options) usa no OctaStep
-export type OctaStepOptions = AssignToTeamOptions | OfficeHoursOptions
+export type OctaStepOptions = AssignToTeamOptions | OfficeHoursOptions | CommerceOptions
 
 // Steps that has variables on the popup modal
 export type OctaStepWithOptions = AssignToTeamStep | OfficeHourStep
@@ -65,26 +65,6 @@ export type OfficeHoursContent = {
   subType: null;
 }
 
-// export type OfficeHoursContent = {
-//   source: "CURRENT_SESSION";
-//   matchType: "$eq";
-//   values: Array<string>,
-//   referenceProperty: string;
-//   referenceValue: null;
-//   subType: null;
-// }
-
-// export type OfficeHoursItem = ItemBase & {
-//   type: ItemType.OFFICE_HOURS;
-//   content: Array<OfficeHoursContent>;
-// }
-
-// export type OfficeHourStep = StepBase & {
-//   type: OctaStepType.OFFICE_HOURS;
-//   options: OfficeHoursOptions;
-//   items: [OfficeHoursItem]
-// }
-
 export type OfficeHoursOptions = BaseOctaOptions & {
   id: string;
   presetName: string;
@@ -112,6 +92,11 @@ export type OfficeHoursOptions = BaseOctaOptions & {
   _isFallback: boolean;
   _isDirty: boolean;
   isNew: boolean;
+}
+
+export type CommerceOptions = BaseOctaOptions & {
+  catalogId: string;
+  products: Array<string>
 }
 
 export type AssignToTeamOptions = BaseOctaOptions & {
@@ -146,6 +131,13 @@ export type Assign = {
 export type BaseOctaOptions = {
   name: string | 'default'
   subject: string
+}
+
+export const defaultCommerceOptions: CommerceOptions = {
+  catalogId: '',
+  products: [],
+  name: '',
+  subject: ''
 }
 
 export const defaultOfficeHoursOptions: OfficeHoursOptions = {

@@ -1,18 +1,20 @@
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import React, { MouseEventHandler, useState } from 'react'
-import { MdOutlineChevronRight } from 'react-icons/md'
-import { ProductType } from 'services/octadesk/commerce/commerce.type'
-import { Title } from '../OctaCommerceBody.style'
-import { Container, ListProducts, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
+import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md'
+import { ProductType, VariationWithSelection } from 'services/octadesk/commerce/commerce.type'
+import { ButtonCreate, Title } from '../OctaCommerceBody.style'
+import { Container, ListProducts, ProductVariationItem, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
 
 type Props = {
   products: Array<ProductType>;
+  selectedProducts: Array<string>;
   onSelect: (product: ProductType) => void;
 }
 
-const SelectProducts = ({ products, onSelect }: Props) => {
+const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
   const [screen, setScreen] = useState<"LIST" | "VARIATION">("LIST");
   const [variationProduct, setVariationProduct] = useState<ProductType>();
+  const [selectedVariations, setSelectedVariations] = useState<Array<VariationWithSelection>>([]);
   const convertToBRLCurrency = (value: number, currency: string): string => {
     if (!value) {
       return "";
@@ -25,9 +27,27 @@ const SelectProducts = ({ products, onSelect }: Props) => {
     setVariationProduct(product);
   };
 
+  const handleBackToProducts = (): void => {
+    setScreen("LIST");
+  };
+
   const handleSelectProduct = (product: ProductType): void => {
     onSelect(product);
   }
+
+  const handleSelectVariation = (variation: any, value: any): void => {
+    let index = selectedVariations.findIndex(v => v.variationId === variation.id)
+    if (index < 0)
+      index = selectedVariations.push({ variationId: variation.id }) - 1
+      
+    selectedVariations[index].valueId = value
+    
+    setSelectedVariations(selectedVariations)
+  }
+
+  const addVariations = () => {
+    console.log(selectedVariations)
+  } 
 
   return (
     <>
@@ -54,7 +74,7 @@ const SelectProducts = ({ products, onSelect }: Props) => {
                         </Price>
                       </ProductContainer>
                       <Destination>
-                        {!product.attributes.length && <input type="checkbox" name="select-product" value={product.id} onChange={() => handleSelectProduct(product)} />}
+                        {!product.attributes.length && <input type="checkbox" checked={selectedProducts.includes(product.id)} name="select-product" value={product.id} onChange={(e) => handleSelectProduct(product)} />}
                         {(product.attributes.length > 0) && <CustomVariation onClick={() => handleSelectVariations(product)}><MdOutlineChevronRight size={40} /></CustomVariation>}
                       </Destination>
                     </ProductItem>
@@ -67,6 +87,7 @@ const SelectProducts = ({ products, onSelect }: Props) => {
         {
           (screen === "VARIATION" && variationProduct) &&
           <ContainerVariation>
+            <CustomVariation ><MdOutlineChevronLeft size={40} onClick={() => handleBackToProducts()} /></CustomVariation>
             <TitleVariation>
               Selecione a variação
             </TitleVariation>
@@ -89,16 +110,19 @@ const SelectProducts = ({ products, onSelect }: Props) => {
                     <VariationControl>
                       <VariationLabel>{variation.name}</VariationLabel>
                       <VariationOption>
-                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ label: value.value, value: value.id }))}  />
+                        <OctaSelect placeholder={`Selecione um(a) ${variation.name.toLocaleLowerCase()}`} options={variation.values.map(value => ({ key: value.id, label: value.value, value: value.id }))} onChange={(value) => handleSelectVariation(variation, value)} />
                       </VariationOption>
                     </VariationControl>
                   ))}
                 </VariationArea>
+                <ButtonCreate onClick={addVariations}>
+                  Adicionar
+                </ButtonCreate>
               </>
             }
           </ContainerVariation>
         }
-      </Container>
+      </Container >
     </>
   )
 }

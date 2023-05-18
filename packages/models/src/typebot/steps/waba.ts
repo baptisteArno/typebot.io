@@ -1,4 +1,4 @@
-import { StepBase } from '.'
+import { CommerceOptions, StepBase } from '.'
 import { TElement } from '@udecode/plate-core'
 
 export type WabaStep =
@@ -29,13 +29,13 @@ export type ButtonsWabaStep = StepBase & {
 
 export type OctaCommerceStep = StepBase & {
   type: WabaStepType.COMMERCE
-  content: OctaCommerceContent
+  options: CommerceOptions
 }
 
-export type OctaCommerceContent = StepBase & {
-  catalogId: string;
-  products: Array<String>;
-}
+// export type OctaCommerceContent = StepBase & {
+//   catalogId: string;
+//   products: Array<String>;
+// }
 
 export type OptionsWabaContent = {
   labels: { placeholder: string; button: string }
