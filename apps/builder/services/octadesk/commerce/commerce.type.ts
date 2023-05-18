@@ -74,3 +74,7 @@ export type ProductIntegration = {
   response: string;
 }
 
+export type VariationWithSelection = {
+  variationId: string, 
+  valueId?: string
+}

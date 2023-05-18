@@ -1,6 +1,6 @@
 import OctaLoading from 'components/octaComponents/OctaLoading/OctaLoading';
 import { useTypebot } from 'contexts/TypebotContext';
-import { Step, StepOptions } from 'models'
+import { CommerceOptions, Step } from 'models'
 import React, { useEffect, useState } from 'react'
 import { CommerceService } from 'services/octadesk/commerce/commerce';
 import { ListCatalogType, ProductType } from 'services/octadesk/commerce/commerce.type';
@@ -14,25 +14,24 @@ import {
 import SelectProducts from './SelectProducts/SelectProducts';
 
 type Props = {
-  step: StepOptions;
-  onOptionsChange: (options: any) => void;
-  onExpand?: () => void;
+  options: CommerceOptions
+  onOptionsChange: (options: CommerceOptions) => void
 }
 
-export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => {
+export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
   const [catalog, setCatalog] = useState<Array<ListCatalogType>>();
   const [products, setProducts] = useState<Array<ProductType>>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedProducts, setSelectedProducts] = useState<Array<string>>(step.options);
 
   useEffect(() => {
     const getCatalogs = async (): Promise<void> => {
       CommerceService.getList().then(data => {
+        options.catalogId = data[0].id
         setCatalog(data);
         setLoading(false);
       })
     }
-    if(!catalog || !catalog.length){
+    if (!catalog || !catalog.length) {
       getCatalogs();
     }
     return () => {
@@ -47,21 +46,27 @@ export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => 
         setLoading(false);
       })
     }
-    if(catalog && catalog.length > 0){
+    if (catalog && catalog.length > 0) {
       getProducts(catalog[0].id);
     }
     return () => {
-      setCatalog(undefined)
+      setProducts(undefined)
     }
   }, [catalog])
 
   const handleSelectProducts = (product: ProductType) => {
-    if(!step.options){
-      return [product.id];
+    let newProducts = [...options.products]
+    const index = newProducts.findIndex(p => p === product.id)
+    if (index >= 0) {
+      newProducts.splice(index, 1)
+    } else {
+      newProducts.push(product.id)
     }
-    const products = [];
-    products.push(product.id)
-    onOptionsChange(products);
+
+    onOptionsChange({
+      ...options,
+      ...{ products: newProducts },
+    });
   }
 
   return (
@@ -71,7 +76,7 @@ export const OctaCommerceBody = ({ step, onExpand, onOptionsChange }: Props) => 
           Enviar catálogo
         </Title>
         {loading && <OctaLoading />}
-        {products && <SelectProducts products={products} onSelect={handleSelectProducts}/>}
+        {products && <SelectProducts key={catalog?.id} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
 
       </Container>
     </>

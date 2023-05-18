@@ -66,6 +66,21 @@ export const ProductItem = styled.div`
     }
 `;
 
+export const ProductVariationItem = styled.div`
+    width: 100%;
+    padding: 10px;
+    height: 50px;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &:hover{
+      background-color: #f9f9f9;
+    }
+`;
+
 
 export const ProductContainer = styled.div`
     width: 80%;

@@ -46,6 +46,7 @@ import {
   defaultRequestButtons,
   OfficeHourStep,
   defaultOfficeHoursOptions,
+  defaultCommerceOptions,
   defaultMediaBubbleContent,
 } from 'models'
 import { Typebot } from 'models'
@@ -404,12 +405,14 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | WabaStepType): OctaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
     case OctaStepType.OFFICE_HOURS:
       return defaultOfficeHoursOptions
+    case WabaStepType.COMMERCE:
+      return defaultCommerceOptions
     default:
       return null
   }

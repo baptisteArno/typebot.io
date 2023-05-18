@@ -28,6 +28,7 @@ import { StepCard, StepCardOverlay } from './StepCard'
 import { LockedIcon, UnlockedIcon, InformationIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 export const StepsSideBar = () => {
   const { setDraggedStepType, draggedStepType } = useStepDnd()
@@ -35,6 +36,9 @@ export const StepsSideBar = () => {
     x: 0,
     y: 0,
   })
+  const {
+    workspace
+  } = useWorkspace()
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
@@ -97,13 +101,10 @@ export const StepsSideBar = () => {
   }
 
   const shouldDisableComponent = (type: StepType) => {
-    return (
-      // type === InputStepType.DATE ||
-      // type === InputStepType.PHONE ||
-      (type === OctaStepType.OFFICE_HOURS && verifyFeatureToggle('whatsapp-api'))||
-      type === WabaStepType.BUTTONS && verifyFeatureToggle('whatsapp-api') ||
-      type === WabaStepType.OPTIONS && verifyFeatureToggle('whatsapp-api') 
-      // || type === LogicStepType.CONDITION && verifyFeatureToggle('botconditional')
+    return workspace?.channel === 'whatsapp' && (
+      type === WabaStepType.BUTTONS && !verifyFeatureToggle('whatsapp-api') ||
+      type === WabaStepType.OPTIONS && !verifyFeatureToggle('whatsapp-api') || 
+      type === WabaStepType.COMMERCE && !verifyFeatureToggle('whatsapp-api') 
     )
   }
 
