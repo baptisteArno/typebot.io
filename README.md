@@ -39,7 +39,7 @@ So you’ll be supporting open source software and getting a great service! 💙
 
 ## Self-hosting
 
-Typebot is fully open source and we allow you to self-host your own version as long as you respect the [License](#license). Your version would be the same product as Typebot Cloud. There is no limitations in terms of availble features.
+Typebot is fully open source and we allow you to self-host your own version as long as you respect the [License](#license). Your version would be the same product as Typebot Cloud. There is no limitations in terms of available features.
 
 The main difference between the two is that with the self-hosted version you have to install, host and manage yourself on your own infrastructure while the cloud version we manage everything for your ease and convenience. Here's the overview of all the differences:
 
