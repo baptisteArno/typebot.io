@@ -12,9 +12,6 @@ export const getCompanyFeatures = async () => {
     subdomain: subDomain.getSubDomain(),
   }
 
-  console.log('headers => ', headers);
-  
-
   const response = await client.get(
     '/api/tenant/get-feature-toggle?source=chat-settings',
     { headers }

@@ -26,6 +26,7 @@ import {
   ListIcon,
   RadioIcon,
   ContactCardIcon,
+  AskNameIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -81,7 +82,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case InputStepType.PAYMENT:
       return <CreditCardIcon color="orange.500" {...props} />
     case InputStepType.ASK_NAME:
-      return <TextIcon color="orange.500" {...props} />
+      return <AskNameIcon color="#256F42" {...props} />
     case LogicStepType.SET_VARIABLE:
       return <EditIcon color="purple.500" {...props} />
     case LogicStepType.CONDITION:
@@ -90,9 +91,6 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ExternalLinkIcon color="purple.500" {...props} />
     case LogicStepType.CODE:
       return <CodeIcon color="purple.500" {...props} />
-    case LogicStepType.TYPEBOT_LINK:
-      return <BoxIcon color="purple.500" {...props} />
-      return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
       return <SendEmailIcon {...props} />
@@ -100,6 +98,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <WavingHandIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <AssignToIcon color="#373A86" {...props} />
+    case OctaStepType.CALL_OTHER_BOT:
+      return <BoxIcon color="#373A86" {...props} />
     case WabaStepType.BUTTONS:
       return <RadioIcon color="#7B15C1" {...props} />
     case WabaStepType.OPTIONS:

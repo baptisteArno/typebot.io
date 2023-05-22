@@ -40,6 +40,7 @@ import {
   OctaStepOptions,
   OctaStepType,
   defaultAssignToTeamOptions,
+  defaultCallOtherBotOptions,
   defaultEndConversationBubbleContent,
   OctaBubbleStepType,
   defaultRequestOptions,
@@ -125,124 +126,124 @@ export const createTypebot = async ({
   })
 }
 
-// export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
-//   const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
-//     typebot,
-//     userPlan
-//   )
-//   const { data, error } = await sendRequest<Typebot>({
-//     url: `/api/typebots`,
-//     method: 'POST',
-//     body: newTypebot,
-//   })
-//   if (!data) return { data, error }
-//   const webhookSteps = typebot.blocks
-//     .flatMap((b) => b.steps)
-//     .filter(isWebhookStep)
-//   await Promise.all(
-//     webhookSteps.map((s) =>
-//       duplicateWebhook(
-//         newTypebot.id,
-//         s.webhookId,
-//         webhookIdsMapping.get(s.webhookId) as string
-//       )
-//     )
-//   )
-//   return { data, error }
-// }
+export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
+  const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
+    typebot,
+    userPlan
+  )
+  const { data, error } = await sendRequest<Typebot>({
+    url: `/api/typebots`,
+    method: 'POST',
+    body: newTypebot,
+  })
+  if (!data) return { data, error }
+  const webhookSteps = typebot.blocks
+    .flatMap((b) => b.steps)
+    .filter(isWebhookStep)
+  await Promise.all(
+    webhookSteps.map((s) =>
+      duplicateWebhook(
+        newTypebot.id,
+        s.webhookId,
+        webhookIdsMapping.get(s.webhookId) as string
+      )
+    )
+  )
+  return { data, error }
+}
 
-// const duplicateTypebot = (
-//   typebot: Typebot,
-//   userPlan: Plan
-// ): { typebot: Typebot; webhookIdsMapping: Map<string, string> } => {
-//   const blockIdsMapping = generateOldNewIdsMapping(typebot.blocks)
-//   const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
-//   const webhookIdsMapping = generateOldNewIdsMapping(
-//     typebot.blocks
-//       .flatMap((b) => b.steps)
-//       .filter(isWebhookStep)
-//       .map((s) => ({ id: s.id }))
-//   )
-//   const id = cuid()
-//   return {
-//     typebot: {
-//       ...typebot,
-//       id,
-//       name: `${typebot.name} copy`,
-//       publishedTypebotId: null,
-//       publicId: null,
-//       customDomain: null,
-//       blocks: typebot.blocks.map((b) => ({
-//         ...b,
-//         id: blockIdsMapping.get(b.id) as string,
-//         steps: b.steps.map((s) => {
-//           const newIds = {
-//             blockId: blockIdsMapping.get(s.blockId) as string,
-//             outgoingEdgeId: s.outgoingEdgeId
-//               ? edgeIdsMapping.get(s.outgoingEdgeId)
-//               : undefined,
-//           }
-//           // if (
-//           //   s.type === LogicStepType.TYPEBOT_LINK &&
-//           //   s.options.typebotId === 'current' &&
-//           //   isDefined(s.options.blockId)
-//           // )
-//           //   return {
-//           //     ...s,
-//           //     options: {
-//           //       ...s.options,
-//           //       blockId: blockIdsMapping.get(s.options.blockId as string),
-//           //     },
-//           //   }
-//           if (stepHasItems(s)) {
-//             return ({
-//               ...s,
-//               items: s.items.map((item) => ({
-//                 ...item,
-//                 outgoingEdgeId: item.outgoingEdgeId
-//                   ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
-//                   : undefined,
-//               })),
-//               ...newIds,
-//             } as ChoiceInputStep | ConditionStep | OfficeHourStep)
-//           }
+const duplicateTypebot = (
+  typebot: Typebot,
+  userPlan: Plan
+): { typebot: Typebot; webhookIdsMapping: Map<string, string> } => {
+  const blockIdsMapping = generateOldNewIdsMapping(typebot.blocks)
+  const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
+  const webhookIdsMapping = generateOldNewIdsMapping(
+    typebot.blocks
+      .flatMap((b) => b.steps)
+      .filter(isWebhookStep)
+      .map((s) => ({ id: s.id }))
+  )
+  const id = cuid()
+  return {
+    typebot: {
+      ...typebot,
+      id,
+      name: `${typebot.name} copy`,
+      publishedTypebotId: null,
+      publicId: null,
+      customDomain: null,
+      blocks: typebot.blocks.map((b) => ({
+        ...b,
+        id: blockIdsMapping.get(b.id) as string,
+        steps: b.steps.map((s) => {
+          const newIds = {
+            blockId: blockIdsMapping.get(s.blockId) as string,
+            outgoingEdgeId: s.outgoingEdgeId
+              ? edgeIdsMapping.get(s.outgoingEdgeId)
+              : undefined,
+          }
+          if (
+            s.type === LogicStepType.TYPEBOT_LINK &&
+            s.options.typebotId === 'current' &&
+            isDefined(s.options.blockId)
+          )
+            return {
+              ...s,
+              options: {
+                ...s.options,
+                blockId: blockIdsMapping.get(s.options.blockId as string),
+              },
+            }
+          if (stepHasItems(s)) {
+            return ({
+              ...s,
+              items: s.items.map((item) => ({
+                ...item,
+                outgoingEdgeId: item.outgoingEdgeId
+                  ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
+                  : undefined,
+              })),
+              ...newIds,
+            } as ChoiceInputStep | ConditionStep | OfficeHourStep)
+          }
 
-//           if (isWebhookStep(s)) {
-//             return {
-//               ...s,
-//               webhookId: webhookIdsMapping.get(s.webhookId) as string,
-//               ...newIds,
-//             }
-//           }
-//           return {
-//             ...s,
-//             ...newIds,
-//           }
-//         }),
-//       })),
-//       edges: typebot.edges.map((e) => ({
-//         ...e,
-//         id: edgeIdsMapping.get(e.id) as string,
-//         from: {
-//           ...e.from,
-//           blockId: blockIdsMapping.get(e.from.blockId) as string,
-//         },
-//         to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
-//       })),
-//       settings:
-//         typebot.settings.general.isBrandingEnabled === false &&
-//           userPlan === Plan.FREE
-//           ? {
-//             ...typebot.settings,
-//             general: { ...typebot.settings.general, isBrandingEnabled: true },
-//           }
-//           : typebot.settings,
-//       createdAt: new Date().toISOString(),
-//       updatedAt: new Date().toISOString(),
-//     },
-//     webhookIdsMapping,
-//   }
-// }
+          if (isWebhookStep(s)) {
+            return {
+              ...s,
+              webhookId: webhookIdsMapping.get(s.webhookId) as string,
+              ...newIds,
+            }
+          }
+          return {
+            ...s,
+            ...newIds,
+          }
+        }),
+      })),
+      edges: typebot.edges.map((e) => ({
+        ...e,
+        id: edgeIdsMapping.get(e.id) as string,
+        from: {
+          ...e.from,
+          blockId: blockIdsMapping.get(e.from.blockId) as string,
+        },
+        to: { ...e.to, blockId: blockIdsMapping.get(e.to.blockId) as string },
+      })),
+      settings:
+        typebot.settings.general.isBrandingEnabled === false &&
+          userPlan === Plan.FREE
+          ? {
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
+          : typebot.settings,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    webhookIdsMapping,
+  }
+}
 
 const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
   const idsMapping: Map<string, string> = new Map()
@@ -409,6 +410,8 @@ const parseOctaStepOptions = (type: OctaStepType | WabaStepType): OctaStepOption
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
+    case OctaStepType.CALL_OTHER_BOT:
+      return defaultCallOtherBotOptions
     case OctaStepType.OFFICE_HOURS:
       return defaultOfficeHoursOptions
     case WabaStepType.COMMERCE:
@@ -438,16 +441,16 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null 
       return defaultChoiceInputOptions
     // case InputStepType.PAYMENT:
     //   return defaultPaymentInputOptions
-    // case InputStepType.ASK_NAME:
-    //   return defaultAskNameOptions
+    case InputStepType.ASK_NAME:
+      return defaultAskNameOptions
     // case LogicStepType.SET_VARIABLE:
     //   return defaultSetVariablesOptions
     // case LogicStepType.REDIRECT:
     //   return defaultRedirectOptions
     // case LogicStepType.CODE:
     //   return defaultCodeOptions
-    // case LogicStepType.TYPEBOT_LINK:
-    //   return {}
+    case LogicStepType.TYPEBOT_LINK:
+      return {}
     // case IntegrationStepType.GOOGLE_SHEETS:
     //   return defaultGoogleSheetsOptions
     // case IntegrationStepType.GOOGLE_ANALYTICS:

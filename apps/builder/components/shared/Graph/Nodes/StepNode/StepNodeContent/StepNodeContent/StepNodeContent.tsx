@@ -23,13 +23,14 @@ import {
   WithVariableContent,
 } from '../contents'
 import { AssignToTeamContent } from '../contents/AssignToTeam/AssignToTeamContent'
+import { CallOtherBotContent } from '../contents/CallOtherBot/CallOtherBotContent'
 // import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from '../contents/ImageBubbleContent'
 import { OctaCommerceContent } from '../contents/OctaCommerceContent'
 // import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
-// import { TypebotLinkContent } from './contents/TypebotLinkContent'
+import { TypebotLinkContent } from '../contents/TypebotLinkContent'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -73,14 +74,14 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     // case InputStepType.PAYMENT: {
     //   return <PaymentInputContent step={step} />
     // }
-    // case InputStepType.ASK_NAME: {
-    //   return (
-    //     <PlaceholderContent
-    //       placeholder={step.options.labels.placeholder}
-    //       isLong={step.options.isLong}
-    //     />
-    //   )
-    // }
+    case InputStepType.ASK_NAME: {
+      return (
+        <PlaceholderContent
+          placeholder={step.options.labels.placeholder}
+          isLong={step.options.isLong}
+        />
+      )
+    }
     // case LogicStepType.SET_VARIABLE: {
     //   return <SetVariableContent step={step} />
     // }
@@ -105,8 +106,6 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     //     />
     //   )
     // }
-    // case LogicStepType.TYPEBOT_LINK:
-    //   return <TypebotLinkContent step={step} />
 
     // case IntegrationStepType.GOOGLE_SHEETS: {
     //   return (
@@ -156,6 +155,11 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case OctaStepType.ASSIGN_TO_TEAM: {
       return (
         <AssignToTeamContent step={step} options={step.options.labels} />
+      )
+    }
+    case OctaStepType.CALL_OTHER_BOT: {
+      return (
+        <CallOtherBotContent step={step} options={step.options.botToCall} />
       )
     }
     case OctaStepType.OFFICE_HOURS: {     

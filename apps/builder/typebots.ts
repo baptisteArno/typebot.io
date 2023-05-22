@@ -46,7 +46,8 @@ import {
   defaultPaymentInputOptions,
   defaultRequestOptions,
   defaultRequestButtons,
-  defaultMediaBubbleContent
+  defaultMediaBubbleContent,
+  defaultCallOtherBotOptions
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -186,18 +187,18 @@ const duplicateTypebot = (
               ? edgeIdsMapping.get(s.outgoingEdgeId)
               : undefined,
           }
-          // if (
-          //   s.type === LogicStepType.TYPEBOT_LINK &&
-          //   s.options.typebotId === 'current' &&
-          //   isDefined(s.options.blockId)
-          // )
-          //   return {
-          //     ...s,
-          //     options: {
-          //       ...s.options,
-          //       blockId: blockIdsMapping.get(s.options.blockId as string),
-          //     },
-          //   }
+          if (
+            s.type === LogicStepType.TYPEBOT_LINK &&
+            s.options.typebotId === 'current' &&
+            isDefined(s.options.blockId)
+          )
+            return {
+              ...s,
+              options: {
+                ...s.options,
+                blockId: blockIdsMapping.get(s.options.blockId as string),
+              },
+            }
           if (stepHasItems(s))
             return {
               ...s,
@@ -348,6 +349,8 @@ const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
+    case OctaStepType.CALL_OTHER_BOT:
+      return defaultCallOtherBotOptions
     default:
       return null
   }
@@ -373,16 +376,16 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null 
       return defaultChoiceInputOptions
     // case InputStepType.PAYMENT:
     //   return defaultPaymentInputOptions
-    // case InputStepType.ASK_NAME:
-    //   return defaultAskNameOptions
+    case InputStepType.ASK_NAME:
+      return defaultAskNameOptions
     // case LogicStepType.SET_VARIABLE:
     //   return defaultSetVariablesOptions
     // case LogicStepType.REDIRECT:
     //   return defaultRedirectOptions
     // case LogicStepType.CODE:
     //   return defaultCodeOptions
-    // case LogicStepType.TYPEBOT_LINK:
-    //   return {}
+    case LogicStepType.TYPEBOT_LINK:
+      return {}
     // case IntegrationStepType.GOOGLE_SHEETS:
     //   return defaultGoogleSheetsOptions
     // case IntegrationStepType.GOOGLE_ANALYTICS:

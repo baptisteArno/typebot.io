@@ -23,7 +23,7 @@ export const OptionGroup = styled.ul`
   left: 0;
   &.opened {
     top: 44px;
-    min-height: 150px;
+    min-height: 250px;
     max-height: 300px;
   }
   &::-webkit-scrollbar-track {

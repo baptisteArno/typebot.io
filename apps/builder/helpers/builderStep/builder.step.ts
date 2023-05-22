@@ -47,6 +47,9 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
         step = templateDateBot(bot, blockId, 'Informe uma data, por favor')
         break
       }
+      case InputStepType.ASK_NAME:
+        step = templateTextBot(bot, blockId, 'Pode me dizer o seu nome?')
+        break
       case InputStepType.PHONE:
         step = templateTextBot(
           bot,
