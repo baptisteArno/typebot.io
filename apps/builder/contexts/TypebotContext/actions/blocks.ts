@@ -125,6 +125,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Horário de atendimento'
     case WabaStepType.COMMERCE:
       return 'Commerce'
+    case OctaStepType.CALL_OTHER_BOT:
+      return 'Direcione a conversa para outro bot'
     default:
       return 'Outro'
   }

@@ -2,16 +2,16 @@ import { StepBase, StepWithItems, ItemBase, Step, ItemType } from '.'
 import { TextBubbleContent } from './bubble'
 
 // Regular steps
-export type OctaStep = AssignToTeamStep | OfficeHourStep
+export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
 
 // Bubble steps (editado na árvore)
 export type OctaBubbleStep = EndConversationStep
 
 // Step options (modal options) usa no OctaStep
-export type OctaStepOptions = AssignToTeamOptions | OfficeHoursOptions | CommerceOptions
+export type OctaStepOptions = AssignToTeamOptions | OfficeHoursOptions | CallOtherBotOptions
 
 // Steps that has variables on the popup modal
-export type OctaStepWithOptions = AssignToTeamStep | OfficeHourStep
+export type OctaStepWithOptions = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
 
 // Steps that has variables on its body
 export type OctaBubbleStepContent = EndConversationBubbleContent
@@ -27,7 +27,8 @@ export enum OctaBubbleStepType {
 // Regular step types
 export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
-  ASSIGN_TO_TEAM = 'assign to team'
+  ASSIGN_TO_TEAM = 'assign to team',
+  CALL_OTHER_BOT = 'call other bot'
 }
 
 // Regular steps types that have options
@@ -43,6 +44,11 @@ export type EndConversationStep = StepBase & {
 export type AssignToTeamStep = StepBase & {
   type: OctaStepType.ASSIGN_TO_TEAM
   options: AssignToTeamOptions
+}
+
+export type CallOtherBotStep = StepBase & {
+  type: OctaStepType.CALL_OTHER_BOT
+  options: CallOtherBotOptions
 }
 
 export type OfficeHourStep = StepBase & {
@@ -123,9 +129,19 @@ export type AssignToTeamOptions = BaseOctaOptions & {
   }
 }
 
+export type CallOtherBotOptions = {
+  id: string
+  botToCall: string
+}
+
 export type Assign = {
   id: string
   variableId?: string
+}
+
+export type CallOtherBot = {
+  id: string
+  botToCall?: string
 }
 
 export type BaseOctaOptions = {
@@ -206,6 +222,11 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   assignType: '',
   subType: '',
   isAvailable: true,
+}
+
+export const defaultCallOtherBotOptions: CallOtherBotOptions = {
+  id: '',
+  botToCall: ''
 }
 
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
