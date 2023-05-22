@@ -31,6 +31,7 @@ import {
   UrlInputSettingsBody,
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
+  CallOtherBotSettingsBody,
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -78,11 +79,27 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case OctaStepType.ASSIGN_TO_TEAM:
         width = 450;
         break;
+      case OctaStepType.CALL_OTHER_BOT:
+        width = 450;
+        break;
       default:
         width = undefined
         break;
     }
     return width;
+  }
+
+  const handleHeightPerComponent = (step: Step): number|undefined => {
+    let height;
+    switch (step.type) {
+      case OctaStepType.CALL_OTHER_BOT:
+        height = 400;
+        break;
+      default:
+        height = undefined
+        break;
+    }
+    return height;
   }
   
   return (
@@ -96,6 +113,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
           maxH="400px"
           ref={ref}
           shadow="lg"
+          h={handleHeightPerComponent(props.step)}
         >
           <StepSettings {...props} />
         </PopoverBody>
@@ -252,6 +270,16 @@ export const StepSettings = ({
         <AssignToTeamSettingsBody
           options={
             step.options || { labels: { placeholder: 'sou um placeholder' } }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case OctaStepType.CALL_OTHER_BOT: {
+      return (
+        <CallOtherBotSettingsBody
+          options={
+            step.options || { botToCall: '1' }
           }
           onOptionsChange={handleOptionsChange}
         />

@@ -29,7 +29,6 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
         isTitle: agentGroup.isTitle,
       }))
       setItemsToAutoAssign(items);
-      console.log(octaAgents)
     }
     return () => {
       setItemsToAutoAssign([])
@@ -37,7 +36,6 @@ export const AutoAssignToSelect = ({ onSelect, selectedUserGroup }: Props) => {
   }, [octaAgents]);
 
   const handleOnChange = (selected: any): void => {
-    console.log('selected', selected)
     onSelect(selected)
   }
 

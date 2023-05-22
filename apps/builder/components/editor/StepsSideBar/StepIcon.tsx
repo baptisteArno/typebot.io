@@ -91,9 +91,6 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <ExternalLinkIcon color="purple.500" {...props} />
     case LogicStepType.CODE:
       return <CodeIcon color="purple.500" {...props} />
-    case LogicStepType.TYPEBOT_LINK:
-      return <BoxIcon color="purple.500" {...props} />
-      return <GoogleAnalyticsLogo {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
       return <SendEmailIcon {...props} />
@@ -101,6 +98,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <WavingHandIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
       return <AssignToIcon color="#373A86" {...props} />
+    case OctaStepType.CALL_OTHER_BOT:
+      return <BoxIcon color="#373A86" {...props} />
     case WabaStepType.BUTTONS:
       return <RadioIcon color="#7B15C1" {...props} />
     case WabaStepType.OPTIONS:
