@@ -17,6 +17,7 @@ import {
   TextBubbleStep,
   OctaStep,
   AssignToTeamStep,
+  CallOtherBotStep,
   OfficeHourStep,
   OctaStepType,
   WebhookStep,
@@ -155,7 +156,7 @@ export const StepNode = ({
   }, [openedStepId])
 
   const checkisConnectable = (step: Step): boolean  => {
-    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step);
+    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step);
   }
 
   return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
@@ -307,6 +308,12 @@ const isAssignToTeamStep = (
   step: Step
 ): step is AssignToTeamStep => {
   return step.type === OctaStepType.ASSIGN_TO_TEAM
+}
+
+const isCallOtherBotStep = (
+  step: Step
+): step is CallOtherBotStep => {
+  return step.type === OctaStepType.CALL_OTHER_BOT
 }
 
 const isOfficeHoursStep = (

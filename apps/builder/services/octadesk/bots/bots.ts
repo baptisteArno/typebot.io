@@ -18,8 +18,18 @@ export const BotsService = (): BotsServicesInterface => {
     return data
   }
 
+  const getBots = async (channel: string, version: number) => {
+    const { data } = await getChatClient().then(client => client.get(
+      `flux/slim/bot?channel=${channel}&version=${version}`,
+      headers.getAuthorizedHeaders()
+    ))
+
+    return data
+  }
+
   return {
-    getBotSpecifications
+    getBotSpecifications,
+    getBots
   }
 } 
 

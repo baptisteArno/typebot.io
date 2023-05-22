@@ -47,6 +47,7 @@ import { config } from 'config/octadesk.config'
 
 import Agents from 'services/octadesk/agents/agents'
 import Groups from 'services/octadesk/groups/groups'
+import { BotsService } from 'services/octadesk/bots/bots'
 import { ASSIGN_TO } from 'enums/assign-to'
 
 type UpdateTypebotPayload = Partial<{
@@ -96,6 +97,7 @@ const typebotContext = createContext<
     publishTypebot: () => void
     restorePublishedTypebot: () => void
     octaAgents: Array<any>
+    botFluxesList: Array<any>
   } & BlocksActions &
   StepsActions &
   ItemsActions &
@@ -181,10 +183,7 @@ export const TypebotContext = ({
     personaThumbUrl?: string,
     options?: { disableMutation: boolean }
   ) => {
-    const currentSubDomain = subDomain.getSubDomain()
-
-    console.log('currentSubDomain => ', currentSubDomain);
-    
+    const currentSubDomain = subDomain.getSubDomain() 
 
     const typebotToSave = {
       ...currentTypebotRef.current,
@@ -456,6 +455,78 @@ export const TypebotContext = ({
     }
   }, [])
 
+  const [botFluxesList, setBotFluxesList] = useState<Array<any>>([])
+  useEffect(() => {
+    const fluxChannel = document.referrer.split('/')
+    const channel = fluxChannel[5] || 'web'
+    const fetchBots = async (): Promise<void> => {
+      const v1V2BotsList: Array<any> = []
+      Promise.all([
+        BotsService()
+          .getBots(channel, 1)
+          .then((res) => {
+            let v1FluxList = res.fluxes
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((flux: any, idx: number) => ({
+                ...flux,
+                label: flux.name,
+                value: { botId: flux.botId },
+                key: `v1 - ${idx}`,
+                isTitle: false,
+              }))
+
+            v1FluxList = [
+              {
+                name: 'Bots V1',
+                label: 'Bots V1',
+                disabled: true,
+                id: 'v1-title',
+                isTitle: true,
+                key: 'v1-title',
+              },
+              ...v1FluxList,
+            ]
+
+            v1V2BotsList.push(...v1FluxList)
+          }),
+        BotsService()
+          .getBots(channel, 2)
+          .then((res) => {
+            let v2FluxList = res.fluxes
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((flux: any, idx: number) => ({
+                ...flux,
+                label: flux.name,
+                value: { botId: flux.botId },
+                key: `v2 - ${idx}`,
+                isTitle: false,
+              }))
+
+            v2FluxList = [
+              {
+                name: 'Bots V2',
+                label: 'Bots V2',
+                disabled: true,
+                id: 'v2-title',
+                isTitle: true,
+                key: 'v2-title',
+              },
+              ...v2FluxList,
+            ]
+
+            v1V2BotsList.push(...v2FluxList)
+          }),
+      ])
+
+      setBotFluxesList(v1V2BotsList)
+    }
+    fetchBots()
+
+    return () => {
+      setBotFluxesList(() => [])
+    }
+  }, [])
+
   return (
     <typebotContext.Provider
       value={{
@@ -482,6 +553,7 @@ export const TypebotContext = ({
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
         octaAgents,
+        botFluxesList
       }}
     >
       {children}

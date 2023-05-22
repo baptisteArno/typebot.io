@@ -121,6 +121,7 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
+
     const linkedTypebots = await getLinkedTypebots(typebot)
     const body =
       webhook.method !== HttpMethod.GET
