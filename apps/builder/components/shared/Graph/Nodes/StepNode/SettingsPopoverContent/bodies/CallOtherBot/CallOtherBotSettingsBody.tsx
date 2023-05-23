@@ -20,7 +20,7 @@ export const CallOtherBotSettingsBody = ({
   const handleCallOtherBotChange = (e: any) => {
     onOptionsChange({
       ...options,
-      botToCall: e.botId,
+      botToCall: e.fluxId,
     })
   }
 

@@ -470,7 +470,7 @@ export const TypebotContext = ({
               .map((flux: any, idx: number) => ({
                 ...flux,
                 label: flux.name,
-                value: { botId: flux.botId },
+                value: { fluxId: flux.id },
                 key: `v1 - ${idx}`,
                 isTitle: false,
               }))
@@ -497,7 +497,7 @@ export const TypebotContext = ({
               .map((flux: any, idx: number) => ({
                 ...flux,
                 label: flux.name,
-                value: { botId: flux.botId },
+                value: { fluxId: flux.id },
                 key: `v2 - ${idx}`,
                 isTitle: false,
               }))

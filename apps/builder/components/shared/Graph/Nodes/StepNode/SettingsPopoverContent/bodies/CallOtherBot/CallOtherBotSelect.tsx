@@ -19,12 +19,12 @@ export const CallOtherBotSelect = ({ onSelect, selectedBot }: Props) => {
 
   useLayoutEffect(() => {
     if (botFluxesList && selectedBot) {
-      const defaultSelectedBot = botFluxesList.filter((item) => item.botId === selectedBot)[0];
+      const defaultSelectedBot = botFluxesList.filter((item) => item.id === selectedBot)[0];
       if(defaultSelectedBot){
         setDefaultSelected({
           label: defaultSelectedBot.name,
           value: {
-            botToCall: defaultSelectedBot.botToCall
+            botToCall: defaultSelectedBot.id
           },
           key: ''
         })
