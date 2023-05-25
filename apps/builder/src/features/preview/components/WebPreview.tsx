@@ -17,7 +17,7 @@ export const WebPreview = () => {
     logs?.forEach((log) => {
       showToast({
         icon: <WebhookIcon />,
-        status: log.status === 'error' ? 'error' : 'success',
+        status: log.status as 'success' | 'error' | 'info',
         title: log.status === 'error' ? 'An error occured' : undefined,
         description: log.description,
         details: log.details

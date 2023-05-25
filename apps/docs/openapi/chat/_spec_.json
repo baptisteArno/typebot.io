@@ -12,7 +12,7 @@
   "paths": {
     "/sendMessage": {
       "post": {
-        "operationId": "query.sendMessage",
+        "operationId": "sendMessage",
         "summary": "Send a message",
         "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
         "security": [
@@ -847,6 +847,30 @@
                                                       },
                                                       "phoneNumber": {
                                                         "type": "string"
+                                                      },
+                                                      "address": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "country": {
+                                                            "type": "string"
+                                                          },
+                                                          "line1": {
+                                                            "type": "string"
+                                                          },
+                                                          "line2": {
+                                                            "type": "string"
+                                                          },
+                                                          "state": {
+                                                            "type": "string"
+                                                          },
+                                                          "city": {
+                                                            "type": "string"
+                                                          },
+                                                          "postalCode": {
+                                                            "type": "string"
+                                                          }
+                                                        },
+                                                        "additionalProperties": false
                                                       }
                                                     },
                                                     "additionalProperties": false
@@ -1381,6 +1405,34 @@
                                                   "isCode": {
                                                     "type": "boolean"
                                                   },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Custom",
+                                                      "Empty",
+                                                      "User ID",
+                                                      "Today",
+                                                      "Yesterday",
+                                                      "Tomorrow",
+                                                      "Random ID",
+                                                      "Map item with same index"
+                                                    ]
+                                                  },
+                                                  "mapListItemParams": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "baseItemVariableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "baseListVariableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "targetListVariableId": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "additionalProperties": false
+                                                  },
                                                   "isExecutedOnClient": {
                                                     "type": "boolean"
                                                   }
@@ -1806,7 +1858,8 @@
                                                         "required": [
                                                           "id"
                                                         ],
-                                                        "additionalProperties": false
+                                                        "additionalProperties": false,
+                                                        "description": "Deprecated. Use `filter` instead."
                                                       },
                                                       "filter": {
                                                         "type": "object",
@@ -1881,6 +1934,15 @@
                                                           ],
                                                           "additionalProperties": false
                                                         }
+                                                      },
+                                                      "totalRowsToExtract": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "All",
+                                                          "First",
+                                                          "Last",
+                                                          "Random"
+                                                        ]
                                                       }
                                                     },
                                                     "required": [
@@ -1925,7 +1987,8 @@
                                                           "required": [
                                                             "id"
                                                           ],
-                                                          "additionalProperties": false
+                                                          "additionalProperties": false,
+                                                          "description": "Deprecated. Use `filter` instead."
                                                         }
                                                       }
                                                     },
@@ -1971,7 +2034,8 @@
                                                           "required": [
                                                             "id"
                                                           ],
-                                                          "additionalProperties": false
+                                                          "additionalProperties": false,
+                                                          "description": "Deprecated. Use `filter` instead."
                                                         }
                                                       },
                                                       "referenceCell": {
@@ -1989,6 +2053,60 @@
                                                         },
                                                         "required": [
                                                           "id"
+                                                        ],
+                                                        "additionalProperties": false,
+                                                        "description": "Deprecated. Use `filter` instead."
+                                                      },
+                                                      "filter": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "comparisons": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "object",
+                                                              "properties": {
+                                                                "id": {
+                                                                  "type": "string"
+                                                                },
+                                                                "column": {
+                                                                  "type": "string"
+                                                                },
+                                                                "comparisonOperator": {
+                                                                  "type": "string",
+                                                                  "enum": [
+                                                                    "Equal to",
+                                                                    "Not equal",
+                                                                    "Contains",
+                                                                    "Does not contain",
+                                                                    "Greater than",
+                                                                    "Less than",
+                                                                    "Is set",
+                                                                    "Is empty",
+                                                                    "Starts with",
+                                                                    "Ends with"
+                                                                  ]
+                                                                },
+                                                                "value": {
+                                                                  "type": "string"
+                                                                }
+                                                              },
+                                                              "required": [
+                                                                "id"
+                                                              ],
+                                                              "additionalProperties": false
+                                                            }
+                                                          },
+                                                          "logicalOperator": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                              "OR",
+                                                              "AND"
+                                                            ]
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "comparisons",
+                                                          "logicalOperator"
                                                         ],
                                                         "additionalProperties": false
                                                       }
@@ -2816,6 +2934,22 @@
                                       },
                                       "isNewResultOnRefreshEnabled": {
                                         "type": "boolean"
+                                      },
+                                      "rememberUser": {
+                                        "type": "object",
+                                        "properties": {
+                                          "isEnabled": {
+                                            "type": "boolean"
+                                          },
+                                          "storage": {
+                                            "type": "string",
+                                            "enum": [
+                                              "session",
+                                              "local"
+                                            ]
+                                          }
+                                        },
+                                        "additionalProperties": false
                                       }
                                     },
                                     "required": [
@@ -3072,6 +3206,9 @@
                         "type": "object",
                         "additionalProperties": {},
                         "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                      },
+                      "isStreamEnabled": {
+                        "type": "boolean"
                       }
                     },
                     "required": [
@@ -3107,8 +3244,7 @@
                             },
                             "required": [
                               "id"
-                            ],
-                            "additionalProperties": false
+                            ]
                           },
                           {
                             "anyOf": [
@@ -3798,6 +3934,30 @@
                                         },
                                         "phoneNumber": {
                                           "type": "string"
+                                        },
+                                        "address": {
+                                          "type": "object",
+                                          "properties": {
+                                            "country": {
+                                              "type": "string"
+                                            },
+                                            "line1": {
+                                              "type": "string"
+                                            },
+                                            "line2": {
+                                              "type": "string"
+                                            },
+                                            "state": {
+                                              "type": "string"
+                                            },
+                                            "city": {
+                                              "type": "string"
+                                            },
+                                            "postalCode": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "additionalProperties": false
                                         }
                                       },
                                       "additionalProperties": false
@@ -4133,8 +4293,7 @@
                               ],
                               "additionalProperties": false
                             }
-                          },
-                          "additionalProperties": false
+                          }
                         }
                       ]
                     },
@@ -4148,8 +4307,7 @@
                               "lastBubbleBlockId": {
                                 "type": "string"
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           },
                           {
                             "anyOf": [
@@ -4162,92 +4320,171 @@
                                           {
                                             "anyOf": [
                                               {
-                                                "type": "object",
-                                                "properties": {
-                                                  "scriptToExecute": {
+                                                "anyOf": [
+                                                  {
                                                     "type": "object",
                                                     "properties": {
-                                                      "content": {
-                                                        "type": "string"
-                                                      },
-                                                      "args": {
-                                                        "type": "array",
-                                                        "items": {
-                                                          "type": "object",
-                                                          "properties": {
-                                                            "id": {
-                                                              "type": "string"
-                                                            },
-                                                            "value": {
-                                                              "anyOf": [
-                                                                {
+                                                      "scriptToExecute": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "content": {
+                                                            "type": "string"
+                                                          },
+                                                          "args": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "object",
+                                                              "properties": {
+                                                                "id": {
+                                                                  "type": "string"
+                                                                },
+                                                                "value": {
                                                                   "anyOf": [
                                                                     {
                                                                       "anyOf": [
                                                                         {
-                                                                          "type": "string"
+                                                                          "anyOf": [
+                                                                            {
+                                                                              "type": "string"
+                                                                            },
+                                                                            {
+                                                                              "type": "number"
+                                                                            }
+                                                                          ]
                                                                         },
                                                                         {
-                                                                          "type": "number"
+                                                                          "type": "boolean"
                                                                         }
                                                                       ]
                                                                     },
                                                                     {
-                                                                      "type": "boolean"
+                                                                      "type": "array",
+                                                                      "items": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                      }
                                                                     }
-                                                                  ]
-                                                                },
-                                                                {
-                                                                  "type": "array",
-                                                                  "items": {
-                                                                    "type": "string",
-                                                                    "nullable": true
-                                                                  }
+                                                                  ],
+                                                                  "nullable": true
                                                                 }
+                                                              },
+                                                              "required": [
+                                                                "id"
                                                               ],
-                                                              "nullable": true
+                                                              "additionalProperties": false
                                                             }
-                                                          },
-                                                          "required": [
-                                                            "id"
-                                                          ],
-                                                          "additionalProperties": false
-                                                        }
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "content",
+                                                          "args"
+                                                        ],
+                                                        "additionalProperties": false
                                                       }
                                                     },
                                                     "required": [
-                                                      "content",
-                                                      "args"
+                                                      "scriptToExecute"
+                                                    ],
+                                                    "additionalProperties": false
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "redirect": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "url": {
+                                                            "type": "string"
+                                                          },
+                                                          "isNewTab": {
+                                                            "type": "boolean"
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "isNewTab"
+                                                        ],
+                                                        "additionalProperties": false
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "redirect"
                                                     ],
                                                     "additionalProperties": false
                                                   }
-                                                },
-                                                "required": [
-                                                  "scriptToExecute"
-                                                ],
-                                                "additionalProperties": false
+                                                ]
                                               },
                                               {
                                                 "type": "object",
                                                 "properties": {
-                                                  "redirect": {
+                                                  "chatwoot": {
                                                     "type": "object",
                                                     "properties": {
-                                                      "url": {
-                                                        "type": "string"
-                                                      },
-                                                      "isNewTab": {
-                                                        "type": "boolean"
+                                                      "scriptToExecute": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "content": {
+                                                            "type": "string"
+                                                          },
+                                                          "args": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "object",
+                                                              "properties": {
+                                                                "id": {
+                                                                  "type": "string"
+                                                                },
+                                                                "value": {
+                                                                  "anyOf": [
+                                                                    {
+                                                                      "anyOf": [
+                                                                        {
+                                                                          "anyOf": [
+                                                                            {
+                                                                              "type": "string"
+                                                                            },
+                                                                            {
+                                                                              "type": "number"
+                                                                            }
+                                                                          ]
+                                                                        },
+                                                                        {
+                                                                          "type": "boolean"
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    {
+                                                                      "type": "array",
+                                                                      "items": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "nullable": true
+                                                                }
+                                                              },
+                                                              "required": [
+                                                                "id"
+                                                              ],
+                                                              "additionalProperties": false
+                                                            }
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "content",
+                                                          "args"
+                                                        ],
+                                                        "additionalProperties": false
                                                       }
                                                     },
                                                     "required": [
-                                                      "isNewTab"
+                                                      "scriptToExecute"
                                                     ],
                                                     "additionalProperties": false
                                                   }
                                                 },
                                                 "required": [
-                                                  "redirect"
+                                                  "chatwoot"
                                                 ],
                                                 "additionalProperties": false
                                               }
@@ -4256,75 +4493,38 @@
                                           {
                                             "type": "object",
                                             "properties": {
-                                              "chatwoot": {
+                                              "googleAnalytics": {
                                                 "type": "object",
                                                 "properties": {
-                                                  "scriptToExecute": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                      "content": {
-                                                        "type": "string"
+                                                  "trackingId": {
+                                                    "type": "string"
+                                                  },
+                                                  "category": {
+                                                    "type": "string"
+                                                  },
+                                                  "action": {
+                                                    "type": "string"
+                                                  },
+                                                  "label": {
+                                                    "type": "string"
+                                                  },
+                                                  "value": {
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "number"
                                                       },
-                                                      "args": {
-                                                        "type": "array",
-                                                        "items": {
-                                                          "type": "object",
-                                                          "properties": {
-                                                            "id": {
-                                                              "type": "string"
-                                                            },
-                                                            "value": {
-                                                              "anyOf": [
-                                                                {
-                                                                  "anyOf": [
-                                                                    {
-                                                                      "anyOf": [
-                                                                        {
-                                                                          "type": "string"
-                                                                        },
-                                                                        {
-                                                                          "type": "number"
-                                                                        }
-                                                                      ]
-                                                                    },
-                                                                    {
-                                                                      "type": "boolean"
-                                                                    }
-                                                                  ]
-                                                                },
-                                                                {
-                                                                  "type": "array",
-                                                                  "items": {
-                                                                    "type": "string",
-                                                                    "nullable": true
-                                                                  }
-                                                                }
-                                                              ],
-                                                              "nullable": true
-                                                            }
-                                                          },
-                                                          "required": [
-                                                            "id"
-                                                          ],
-                                                          "additionalProperties": false
-                                                        }
-                                                      }
-                                                    },
-                                                    "required": [
-                                                      "content",
-                                                      "args"
-                                                    ],
-                                                    "additionalProperties": false
+                                                      {}
+                                                    ]
+                                                  },
+                                                  "sendTo": {
+                                                    "type": "string"
                                                   }
                                                 },
-                                                "required": [
-                                                  "scriptToExecute"
-                                                ],
                                                 "additionalProperties": false
                                               }
                                             },
                                             "required": [
-                                              "chatwoot"
+                                              "googleAnalytics"
                                             ],
                                             "additionalProperties": false
                                           }
@@ -4333,38 +4533,21 @@
                                       {
                                         "type": "object",
                                         "properties": {
-                                          "googleAnalytics": {
+                                          "wait": {
                                             "type": "object",
                                             "properties": {
-                                              "trackingId": {
-                                                "type": "string"
-                                              },
-                                              "category": {
-                                                "type": "string"
-                                              },
-                                              "action": {
-                                                "type": "string"
-                                              },
-                                              "label": {
-                                                "type": "string"
-                                              },
-                                              "value": {
-                                                "anyOf": [
-                                                  {
-                                                    "type": "number"
-                                                  },
-                                                  {}
-                                                ]
-                                              },
-                                              "sendTo": {
-                                                "type": "string"
+                                              "secondsToWaitFor": {
+                                                "type": "number"
                                               }
                                             },
+                                            "required": [
+                                              "secondsToWaitFor"
+                                            ],
                                             "additionalProperties": false
                                           }
                                         },
                                         "required": [
-                                          "googleAnalytics"
+                                          "wait"
                                         ],
                                         "additionalProperties": false
                                       }
@@ -4373,21 +4556,75 @@
                                   {
                                     "type": "object",
                                     "properties": {
-                                      "wait": {
+                                      "setVariable": {
                                         "type": "object",
                                         "properties": {
-                                          "secondsToWaitFor": {
-                                            "type": "number"
+                                          "scriptToExecute": {
+                                            "type": "object",
+                                            "properties": {
+                                              "content": {
+                                                "type": "string"
+                                              },
+                                              "args": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "id": {
+                                                      "type": "string"
+                                                    },
+                                                    "value": {
+                                                      "anyOf": [
+                                                        {
+                                                          "anyOf": [
+                                                            {
+                                                              "anyOf": [
+                                                                {
+                                                                  "type": "string"
+                                                                },
+                                                                {
+                                                                  "type": "number"
+                                                                }
+                                                              ]
+                                                            },
+                                                            {
+                                                              "type": "boolean"
+                                                            }
+                                                          ]
+                                                        },
+                                                        {
+                                                          "type": "array",
+                                                          "items": {
+                                                            "type": "string",
+                                                            "nullable": true
+                                                          }
+                                                        }
+                                                      ],
+                                                      "nullable": true
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "id"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              }
+                                            },
+                                            "required": [
+                                              "content",
+                                              "args"
+                                            ],
+                                            "additionalProperties": false
                                           }
                                         },
                                         "required": [
-                                          "secondsToWaitFor"
+                                          "scriptToExecute"
                                         ],
                                         "additionalProperties": false
                                       }
                                     },
                                     "required": [
-                                      "wait"
+                                      "setVariable"
                                     ],
                                     "additionalProperties": false
                                   }
@@ -4396,75 +4633,38 @@
                               {
                                 "type": "object",
                                 "properties": {
-                                  "setVariable": {
+                                  "streamOpenAiChatCompletion": {
                                     "type": "object",
                                     "properties": {
-                                      "scriptToExecute": {
-                                        "type": "object",
-                                        "properties": {
-                                          "content": {
-                                            "type": "string"
-                                          },
-                                          "args": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                },
-                                                "value": {
-                                                  "anyOf": [
-                                                    {
-                                                      "anyOf": [
-                                                        {
-                                                          "anyOf": [
-                                                            {
-                                                              "type": "string"
-                                                            },
-                                                            {
-                                                              "type": "number"
-                                                            }
-                                                          ]
-                                                        },
-                                                        {
-                                                          "type": "boolean"
-                                                        }
-                                                      ]
-                                                    },
-                                                    {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "type": "string",
-                                                        "nullable": true
-                                                      }
-                                                    }
-                                                  ],
-                                                  "nullable": true
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ],
-                                              "additionalProperties": false
+                                      "messages": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "content": {
+                                              "type": "string"
+                                            },
+                                            "role": {
+                                              "type": "string",
+                                              "enum": [
+                                                "system",
+                                                "user",
+                                                "assistant"
+                                              ]
                                             }
-                                          }
-                                        },
-                                        "required": [
-                                          "content",
-                                          "args"
-                                        ],
-                                        "additionalProperties": false
+                                          },
+                                          "additionalProperties": false
+                                        }
                                       }
                                     },
                                     "required": [
-                                      "scriptToExecute"
+                                      "messages"
                                     ],
                                     "additionalProperties": false
                                   }
                                 },
                                 "required": [
-                                  "setVariable"
+                                  "streamOpenAiChatCompletion"
                                 ],
                                 "additionalProperties": false
                               }
@@ -4666,6 +4866,22 @@
                                 },
                                 "isNewResultOnRefreshEnabled": {
                                   "type": "boolean"
+                                },
+                                "rememberUser": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "storage": {
+                                      "type": "string",
+                                      "enum": [
+                                        "session",
+                                        "local"
+                                      ]
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "required": [
@@ -4785,7 +5001,7 @@
     },
     "/typebots/{typebotId}/blocks/{blockId}/storage/upload-url": {
       "get": {
-        "operationId": "query.getUploadUrl",
+        "operationId": "getUploadUrl",
         "summary": "Get upload URL for a file",
         "description": "Used for the web client to get the bucket upload file.",
         "parameters": [

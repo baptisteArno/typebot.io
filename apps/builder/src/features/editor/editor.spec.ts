@@ -174,8 +174,8 @@ test('Rename and icon change should work', async ({ page }) => {
   ])
 
   await page.goto(`/typebots/${typebotId}/edit`)
-
   await page.click('[data-testid="editable-icon"]')
+  await page.getByRole('button', { name: 'Emoji' }).click()
   await expect(page.locator('text="My awesome typebot"')).toBeVisible()
   await page.fill('input[placeholder="Search..."]', 'love')
   await page.click('text="😍"')

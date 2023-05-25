@@ -33,10 +33,11 @@ export const executeSetVariable = async (
       ],
     }
   }
-  const evaluatedExpression = block.options.expressionToEvaluate
-    ? evaluateSetVariableExpression(variables)(
-        block.options.expressionToEvaluate
-      )
+  const expressionToEvaluate = getExpressionToEvaluate(state.result.id)(
+    block.options
+  )
+  const evaluatedExpression = expressionToEvaluate
+    ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
     : undefined
   const existingVariable = variables.find(byId(block.options.variableId))
   if (!existingVariable) return { outgoingEdgeId: block.outgoingEdgeId }
@@ -65,5 +66,37 @@ const evaluateSetVariableExpression =
       return func(...variables.map((v) => parseGuessedValueType(v.value)))
     } catch (err) {
       return parseVariables(variables)(str)
+    }
+  }
+
+const getExpressionToEvaluate =
+  (resultId: string | undefined) =>
+  (options: SetVariableBlock['options']): string | null => {
+    switch (options.type) {
+      case 'Today':
+        return 'new Date().toISOString()'
+      case 'Tomorrow': {
+        return 'new Date(Date.now() + 86400000).toISOString()'
+      }
+      case 'Yesterday': {
+        return 'new Date(Date.now() - 86400000).toISOString()'
+      }
+      case 'Random ID': {
+        return 'Math.random().toString(36).substring(2, 15)'
+      }
+      case 'User ID': {
+        return resultId ?? 'Math.random().toString(36).substring(2, 15)'
+      }
+      case 'Map item with same index': {
+        return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
+      return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
+      }
+      case 'Empty': {
+        return null
+      }
+      case 'Custom':
+      case undefined: {
+        return options.expressionToEvaluate ?? null
+      }
     }
   }

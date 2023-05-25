@@ -40,9 +40,10 @@ const createStripePaymentIntent =
         : stripeKeys.live.secretKey,
       { apiVersion: '2022-11-15' }
     )
-    const amount =
+    const amount = Math.round(
       Number(parseVariables(variables)(options.amount)) *
-      (isZeroDecimalCurrency(options.currency) ? 1 : 100)
+        (isZeroDecimalCurrency(options.currency) ? 1 : 100)
+    )
     if (isNaN(amount))
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -88,7 +89,10 @@ const getStripeInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as StripeCredentials['data']
+  return (await decrypt(
+    credentials.data,
+    credentials.iv
+  )) as StripeCredentials['data']
 }
 
 // https://stripe.com/docs/currencies#zero-decimal

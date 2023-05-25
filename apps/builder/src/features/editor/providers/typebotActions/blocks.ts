@@ -71,6 +71,9 @@ export const blocksAction = (
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = { ...typebot.groups[groupIndex].blocks[blockIndex] }
+        const blocks = typebot.groups[groupIndex].blocks
+        if (blockIndex === blocks.length - 1 && block.outgoingEdgeId)
+          deleteEdgeDraft(typebot, block.outgoingEdgeId as string)
         const newBlock = duplicateBlockDraft(block.groupId)(
           block,
           onWebhookBlockDuplicated

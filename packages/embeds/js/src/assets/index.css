@@ -316,6 +316,13 @@ textarea {
   object-fit: cover;
 }
 
+.typebot-picture-button.has-svg > img,
+.typebot-selectable-picture.has-svg > img {
+  max-height: 128px;
+  object-fit: contain;
+  padding: 1rem;
+}
+
 .typebot-selectable-picture {
   border: 1px solid rgba(var(--typebot-button-bg-color-rgb), 0.25);
   border-radius: var(--typebot-border-radius);

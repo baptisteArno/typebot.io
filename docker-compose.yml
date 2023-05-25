@@ -17,7 +17,7 @@ services:
       - '8080:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.typebot.io/self-hosting/configuration/builder for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
       - NEXTAUTH_URL=<your-builder-url>
@@ -29,10 +29,11 @@ services:
     restart: always
     ports:
       - '8081:3000'
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.typebot.io/self-hosting/configuration/viewer for more configuration options
     environment:
       - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
       - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
       - ENCRYPTION_SECRET=<your-encryption-secret>
+      - NEXTAUTH_URL=<your-builder-url>
 volumes:
   db_data:

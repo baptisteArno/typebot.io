@@ -71,7 +71,7 @@ export const AddMemberForm = ({
         isLoading={isSendingInvitation}
         flexShrink={0}
         type="submit"
-        isDisabled={isLoading || isLocked}
+        isDisabled={isLoading || isLocked || invitationEmail === ''}
       >
         Invite
       </Button>

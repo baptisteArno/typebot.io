@@ -12,10 +12,10 @@ export const getAuthenticatedGoogleClient = async (
     where: { id: credentialsId },
   })) as CredentialsFromDb | undefined
   if (!credentials) return
-  const data = decrypt(
+  const data = (await decrypt(
     credentials.data,
     credentials.iv
-  ) as GoogleSheetsCredentials['data']
+  )) as GoogleSheetsCredentials['data']
 
   const oauth2Client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
@@ -43,7 +43,7 @@ const updateTokens =
       expiry_date: credentials.expiry_date,
       access_token: credentials.access_token,
     }
-    const { encryptedData, iv } = encrypt(newCredentials)
+    const { encryptedData, iv } = await encrypt(newCredentials)
     await prisma.credentials.update({
       where: { id: credentialsId },
       data: { data: encryptedData, iv },

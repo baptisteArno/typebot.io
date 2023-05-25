@@ -32,7 +32,7 @@ export const WebflowBubbleInstructions = () => {
             onThemeChange={setTheme}
           />
           <Text>
-            Add an <Code>embed</Code> element from the <Code>components</Code>{' '}
+            Add an <Code>Embed</Code> element from the <Code>components</Code>{' '}
             section and paste this code:
           </Text>
           <JavascriptBubbleSnippet

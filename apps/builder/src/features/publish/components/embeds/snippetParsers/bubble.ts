@@ -19,7 +19,8 @@ const parseButtonTheme = (
   )
   const iconColorLine = parseStringParam('iconColor', iconColor)
   const customIconLine = parseStringParam('customIconSrc', customIconSrc)
-  const line = `button: {${backgroundColorLine}${iconColorLine}${customIconLine}},`
+  const sizeLine = parseStringParam('size', button.size)
+  const line = `button: {${backgroundColorLine}${iconColorLine}${customIconLine}${sizeLine}},`
   if (line === 'button: {},') return ''
   return line
 }

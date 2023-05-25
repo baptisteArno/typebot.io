@@ -114,11 +114,11 @@ const parseResultSample = (
     {}
   )
 
-const getSampleValue = (block: InputBlock) => {
+const getSampleValue = (block: InputBlock): string => {
   switch (block.type) {
     case InputBlockType.CHOICE:
       return block.options.isMultipleChoice
-        ? block.items.map((i) => i.content).join(', ')
+        ? block.items.map((item) => item.content).join(', ')
         : block.items[0]?.content ?? 'Item'
     case InputBlockType.DATE:
       return new Date().toUTCString()
@@ -132,6 +132,16 @@ const getSampleValue = (block: InputBlock) => {
       return 'answer value'
     case InputBlockType.URL:
       return 'https://test.com'
+    case InputBlockType.FILE:
+      return 'https://domain.com/fake-file.png'
+    case InputBlockType.RATING:
+      return '8'
+    case InputBlockType.PAYMENT:
+      return 'Success'
+    case InputBlockType.PICTURE_CHOICE:
+      return block.options.isMultipleChoice
+        ? block.items.map((item) => item.title ?? item.pictureSrc).join(', ')
+        : block.items[0]?.title ?? block.items[0]?.pictureSrc ?? 'Item'
   }
 }
 

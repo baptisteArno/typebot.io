@@ -18,12 +18,12 @@ import { Match, Switch } from 'solid-js'
 type Props = {
   message: ChatMessage
   typingEmulation: TypingEmulation
-  onTransitionEnd: () => void
+  onTransitionEnd: (offsetTop?: number) => void
 }
 
 export const HostBubble = (props: Props) => {
-  const onTransitionEnd = () => {
-    props.onTransitionEnd()
+  const onTransitionEnd = (offsetTop?: number) => {
+    props.onTransitionEnd(offsetTop)
   }
 
   return (

@@ -51,7 +51,7 @@ export const createCredentials = authenticatedProcedure
     if (!workspace)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
-    const { encryptedData, iv } = encrypt(credentials.data)
+    const { encryptedData, iv } = await encrypt(credentials.data)
     const createdCredentials = await prisma.credentials.create({
       data: {
         ...credentials,

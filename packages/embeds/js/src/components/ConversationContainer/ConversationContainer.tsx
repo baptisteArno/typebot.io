@@ -1,4 +1,5 @@
-import type { ChatReply, Theme } from '@typebot.io/schemas'
+import { ChatReply, Theme } from '@typebot.io/schemas'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
 import { createEffect, createSignal, For, onMount, Show } from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
@@ -43,7 +44,6 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  let bottomSpacer: HTMLDivElement | undefined
   const [chatChunks, setChatChunks] = createSignal<
     Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>[]
   >([
@@ -69,7 +69,11 @@ export const ConversationContainer = (props: Props) => {
           (action) => isNotDefined(action.lastBubbleBlockId)
         )
         for (const action of actionsBeforeFirstBubble) {
-          const response = await executeClientSideAction(action)
+          if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+          const response = await executeClientSideAction(action, {
+            apiHost: props.context.apiHost,
+            sessionId: props.initialChatReply.sessionId,
+          })
           if (response && 'replyToSend' in response) {
             sendMessage(response.replyToSend)
             return
@@ -89,9 +93,16 @@ export const ConversationContainer = (props: Props) => {
 
   const sendMessage = async (message: string | undefined) => {
     setHasError(false)
-    const currentBlockId = [...chatChunks()].pop()?.input?.id
-    if (currentBlockId && props.onAnswer && message)
-      props.onAnswer({ message, blockId: currentBlockId })
+    const currentInputBlock = [...chatChunks()].pop()?.input
+    if (currentInputBlock?.id && props.onAnswer && message)
+      props.onAnswer({ message, blockId: currentInputBlock.id })
+    if (currentInputBlock?.type === InputBlockType.FILE)
+      props.onNewLogs?.([
+        {
+          description: 'Files are not uploaded in preview mode',
+          status: 'info',
+        },
+      ])
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
@@ -126,7 +137,11 @@ export const ConversationContainer = (props: Props) => {
         isNotDefined(action.lastBubbleBlockId)
       )
       for (const action of actionsBeforeFirstBubble) {
-        const response = await executeClientSideAction(action)
+        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        const response = await executeClientSideAction(action, {
+          apiHost: props.context.apiHost,
+          sessionId: props.initialChatReply.sessionId,
+        })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend)
           return
@@ -145,10 +160,9 @@ export const ConversationContainer = (props: Props) => {
     ])
   }
 
-  const autoScrollToBottom = () => {
-    if (!bottomSpacer) return
+  const autoScrollToBottom = (offsetTop?: number) => {
     setTimeout(() => {
-      chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+      chatContainer?.scrollTo(0, offsetTop ?? chatContainer.scrollHeight)
     }, 50)
   }
 
@@ -168,7 +182,11 @@ export const ConversationContainer = (props: Props) => {
         (action) => action.lastBubbleBlockId === blockId
       )
       for (const action of actionsToExecute) {
-        const response = await executeClientSideAction(action)
+        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        const response = await executeClientSideAction(action, {
+          apiHost: props.context.apiHost,
+          sessionId: props.initialChatReply.sessionId,
+        })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend)
           return
@@ -194,7 +212,6 @@ export const ConversationContainer = (props: Props) => {
             input={chatChunk.input}
             theme={theme()}
             settings={props.initialChatReply.typebot.settings}
-            isLoadingBubbleDisplayed={isSending()}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
@@ -219,14 +236,11 @@ export const ConversationContainer = (props: Props) => {
           </div>
         )}
       </Show>
-      <BottomSpacer ref={bottomSpacer} />
+      <BottomSpacer />
     </div>
   )
 }
 
-type BottomSpacerProps = {
-  ref: HTMLDivElement | undefined
-}
-const BottomSpacer = (props: BottomSpacerProps) => {
-  return <div ref={props.ref} class="w-full h-32 flex-shrink-0" />
+const BottomSpacer = () => {
+  return <div class="w-full h-32 flex-shrink-0" />
 }

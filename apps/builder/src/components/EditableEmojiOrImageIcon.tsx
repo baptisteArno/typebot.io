@@ -57,10 +57,9 @@ export const EditableEmojiOrImageIcon = ({
               filePath={uploadFilePath}
               defaultUrl={icon ?? ''}
               onSubmit={onChangeIcon}
-              isGiphyEnabled={false}
-              isUnsplashEnabled={false}
-              isEmojiEnabled={true}
+              excludedTabs={['giphy', 'unsplash']}
               onClose={onClose}
+              initialTab="icon"
             />
           </PopoverContent>
         </>

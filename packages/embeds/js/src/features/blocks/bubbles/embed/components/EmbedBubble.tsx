@@ -4,7 +4,7 @@ import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   content: EmbedBubbleContent
-  onTransitionEnd: () => void
+  onTransitionEnd: (offsetTop?: number) => void
 }
 
 let typingTimeout: NodeJS.Timeout
@@ -12,13 +12,14 @@ let typingTimeout: NodeJS.Timeout
 export const showAnimationDuration = 400
 
 export const EmbedBubble = (props: Props) => {
+  let ref: HTMLDivElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
   onMount(() => {
     typingTimeout = setTimeout(() => {
       setIsTyping(false)
       setTimeout(() => {
-        props.onTransitionEnd()
+        props.onTransitionEnd(ref?.offsetTop)
       }, showAnimationDuration)
     }, 2000)
   })
@@ -28,7 +29,7 @@ export const EmbedBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col w-full animate-fade-in">
+    <div class="flex flex-col w-full animate-fade-in" ref={ref}>
       <div class="flex w-full items-center">
         <div
           class={'flex relative z-10 items-start typebot-host-bubble w-full'}

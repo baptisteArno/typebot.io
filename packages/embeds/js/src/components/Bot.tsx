@@ -7,9 +7,9 @@ import { setIsMobile } from '@/utils/isMobileSignal'
 import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
 import { ErrorMessage } from './ErrorMessage'
 import {
-  getExistingResultIdFromSession,
-  setResultInSession,
-} from '@/utils/sessionStorage'
+  getExistingResultIdFromStorage,
+  setResultInStorage,
+} from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
 
@@ -52,7 +52,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
       isPreview: props.isPreview ?? false,
       resultId: isNotEmpty(props.resultId)
         ? props.resultId
-        : getExistingResultIdFromSession(typebotIdFromProps),
+        : getExistingResultIdFromStorage(typebotIdFromProps),
       startGroupId: props.startGroupId,
       prefilledVariables: {
         ...prefilledVariables,
@@ -76,7 +76,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (!data) return setError(new Error("Error! Couldn't initiate the chat."))
 
     if (data.resultId && typebotIdFromProps)
-      setResultInSession(typebotIdFromProps, data.resultId)
+      setResultInStorage(data.typebot.settings.general.rememberUser?.storage)(
+        typebotIdFromProps,
+        data.resultId
+      )
     setInitialChatReply(data)
     setCustomCss(data.typebot.theme.customCss ?? '')
 

@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as Credentials
-    const { encryptedData, iv } = encrypt(data.data)
+    const { encryptedData, iv } = await encrypt(data.data)
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId, members: { some: { userId: user.id } } },
       select: { id: true },

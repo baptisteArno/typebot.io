@@ -1,6 +1,7 @@
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
+import { isSvgSrc } from '@typebot.io/lib/utils'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createSignal, onMount } from 'solid-js'
 
@@ -67,13 +68,17 @@ export const SinglePictureChoice = (props: Props) => {
               // eslint-disable-next-line solid/reactivity
               on:click={handleClick(index())}
               data-itemid={item.id}
-              class="flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75"
+              class={
+                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between ' +
+                (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
+              }
             >
               <img
                 src={item.pictureSrc}
                 alt={item.title ?? `Picture ${index() + 1}`}
                 elementtiming={`Picture choice ${index() + 1}`}
                 fetchpriority={'high'}
+                class="m-auto"
               />
               <div
                 class={

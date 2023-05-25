@@ -1,5 +1,101 @@
 # Changelog
 
+<a name="2.13.4"></a>
+## 2.13.4 (2023-05-17)
+
+### Changed
+
+- ⚡ Remember result in either local or session storage ([#514](https://github.com/baptisteArno/typebot.io/issues/514)) [[27b009d](https://github.com/baptisteArno/typebot.io/commit/27b009dd7693c59f75c9df8ff0d3b27dcae47680)]
+
+### Fixed
+
+- 🐛 Disable invite button when email is empty [[8b84a7d](https://github.com/baptisteArno/typebot.io/commit/8b84a7d8b983d4dc36ad4ab89d92b052fcfeb9b9)]
+- 🐛 Fix public id validation [[853451b](https://github.com/baptisteArno/typebot.io/commit/853451b4fabf2f2c5e7d001f8d806ea51dd3c80e)]
+
+### Miscellaneous
+
+- 🐳 Fix encryption length check script [[0fc6bfa](https://github.com/baptisteArno/typebot.io/commit/0fc6bfa7cefc866d39f464a9efb080c4eff5669b)]
+- 📝 (webflow) Add bind commands to button instructions [[c451ba7](https://github.com/baptisteArno/typebot.io/commit/c451ba77846218764d8916d7d22c421fdf97d1cb)]
+
+
+<a name="2.13.3"></a>
+## 2.13.3 (2023-05-16)
+
+### Added
+
+- 🔊 Add DEBUG mode with valuable logs in viewer [[72058fd](https://github.com/baptisteArno/typebot.io/commit/72058fd624c2068d366d560b0ee81697b03daed8)]
+
+### Changed
+
+- ⚡ (embed) Add size and icon picker in bubble settings ([#508](https://github.com/baptisteArno/typebot.io/issues/508)) [[0f91b34](https://github.com/baptisteArno/typebot.io/commit/0f91b34497659da34edafa23b80e81782925eda7)]
+- 🚸 Improve support accessibility [[123926f](https://github.com/baptisteArno/typebot.io/commit/123926f2735787c15ca22abc55ea1cb73a4631b8)]
+
+### Fixed
+
+- 🐛 Restore support bubble in cloud prod [[f8ea2e1](https://github.com/baptisteArno/typebot.io/commit/f8ea2e133786100893fe53504e6549fa5d56d178)]
+
+### Miscellaneous
+
+- 📝 Add a self-hosting comparison table in README [[2b54518](https://github.com/baptisteArno/typebot.io/commit/2b54518d04ab26d4489de2b7e42d82796d2aede6)]
+
+
+<a name="2.13.2"></a>
+## 2.13.2 (2023-05-12)
+
+### Added
+
+- ✨ Add icon picker ([#496](https://github.com/baptisteArno/typebot.io/issues/496)) [[9abc50d](https://github.com/baptisteArno/typebot.io/commit/9abc50dce518ff7e0cc2d09196a4171104fa9902)]
+
+### Changed
+
+- 🚸 Improve chat auto scroll [[a3fb098](https://github.com/baptisteArno/typebot.io/commit/a3fb098dfa010a29af8fd0e5a7145430d10ccc92)]
+- ⚡ (sheets) Add option to select single row when matching multiple [[55dbb1a](https://github.com/baptisteArno/typebot.io/commit/55dbb1abc714462e3479ad42e8eb82d315e32f0e)]
+- ⚡ Add predefined set variable values ([#497](https://github.com/baptisteArno/typebot.io/issues/497)) [[bde9416](https://github.com/baptisteArno/typebot.io/commit/bde941613cedaddd3c4fabe466e84ffe09ec670b)]
+
+### Fixed
+
+- 🐛 Fix webhook deep keys parsing invalid index [[df8a406](https://github.com/baptisteArno/typebot.io/commit/df8a4065139fb34222efabc8ae4139fa1fe201dd)]
+
+### Miscellaneous
+
+- 🧑‍💻 Check required env var before starting the server [[45224f9](https://github.com/baptisteArno/typebot.io/commit/45224f9fb36f97a169ac729def4dd50c6506a2ae)]
+
+
+<a name="2.13.1"></a>
+## 2.13.1 (2023-05-09)
+
+### Added
+
+- ✨ Add dog insurance offer template [[8347e5b](https://github.com/baptisteArno/typebot.io/commit/8347e5b2a89b70957a6a04f7cceac83a4c1a57c6)]
+- ✨ Add picture choice block [[035dded](https://github.com/baptisteArno/typebot.io/commit/035dded654fb425c2f1e857b2f328baadc44d799)]
+
+### Changed
+
+- 🚸 Add floating menu for block settings [[825ed2f](https://github.com/baptisteArno/typebot.io/commit/825ed2f1ecab3a5cad7659172df38791a6cf2a24)]
+- 🚸 Show toast for non-uploaded file in preview mode [[be009a2](https://github.com/baptisteArno/typebot.io/commit/be009a216d8c63864c9b71ebc62647c17494f0e5)]
+- ⚡ (payment) Add address in payment input [[c469912](https://github.com/baptisteArno/typebot.io/commit/c46991297961f080f77dbce400849af2e80627a9)]
+- 🚸 (billing) Use Stripe checkout page for new subscription with existing customer [[b9f94cd](https://github.com/baptisteArno/typebot.io/commit/b9f94cdf19df3ba69166760d028500650e79a355)]
+- ⚡ (sheets) Add rows filtering to update multiple rows at the same time [[55db360](https://github.com/baptisteArno/typebot.io/commit/55db360200612171ac0159296145b21efe5bc59c)]
+- 🚸 (editor) Do not show focus toolbar for the Start group [[5f0a99e](https://github.com/baptisteArno/typebot.io/commit/5f0a99ee66fc719f1d3ca9371dba4af3018f66ac)]
+
+### Fixed
+
+- 🐛 (webhook) Fix picture choice sample value not sent [[33adc29](https://github.com/baptisteArno/typebot.io/commit/33adc29a57609f6a9a44113886113d94eb642393)]
+- 🐛 (ga) Fix value field parsing [[e15e27f](https://github.com/baptisteArno/typebot.io/commit/e15e27f0b47deca2d5d99021642ce770a4df0268)]
+- 🐛 (ga) Fix invalid variable parsing [[d99af7e](https://github.com/baptisteArno/typebot.io/commit/d99af7e6c5d6d833c98e99c9ff255cb75a16ee9f)]
+- 🐛 (billing) Only fetch active subscriptions [[98a21f3](https://github.com/baptisteArno/typebot.io/commit/98a21f3a9e7cd348b1ea196260633228378ce1be)]
+- 🐛 (sheets) Fix update filter invalid indexes [[8b3a690](https://github.com/baptisteArno/typebot.io/commit/8b3a6908098b0bfc49f6aea4506c22ac54d933bb)]
+- 🐛 (wp) Fix custom api host variable name on shortcode [[c0fae18](https://github.com/baptisteArno/typebot.io/commit/c0fae185013f0f62effe1eab9455cb7e5bc392c0)]
+- 🐛 (googleAnalytics) Fix output validation when using variable as event value [[65c6f66](https://github.com/baptisteArno/typebot.io/commit/65c6f66a5cdd72ad1384a89df5810e800b2cbd06)]
+- 💚 Revert rollup upgrade to make it work with turbo dev [[f2d3174](https://github.com/baptisteArno/typebot.io/commit/f2d31745caddf2ab57dd4db2ec2c0264cfafe833)]
+
+### Miscellaneous
+
+-  Add German Translation ([#485](https://github.com/baptisteArno/typebot.io/issues/485)) [[dd079c3](https://github.com/baptisteArno/typebot.io/commit/dd079c352503bf01fb61061466964a6129ad4bc9)]
+- 📝 Custom bubble button position instructions [[ecc3b5f](https://github.com/baptisteArno/typebot.io/commit/ecc3b5fd874aed22a84ba958f722e9424b170430)]
+- 📝 Doc about the more options menu from the results tab [[c31642d](https://github.com/baptisteArno/typebot.io/commit/c31642db04f7b197f09646ab9b4e96333326a998)]
+
+
 <a name="2.13.0"></a>
 ## 2.13.0 (2023-05-02)
 

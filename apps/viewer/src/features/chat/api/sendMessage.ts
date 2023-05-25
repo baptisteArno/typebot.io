@@ -124,8 +124,11 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     isPreview: startParams.isPreview || typeof startParams.typebot !== 'string',
     typebotId: typebot.id,
     prefilledVariables,
-    isNewResultOnRefreshEnabled:
-      typebot.settings.general.isNewResultOnRefreshEnabled ?? false,
+    isRememberUserEnabled:
+      typebot.settings.general.rememberUser?.isEnabled ??
+      (isDefined(typebot.settings.general.isNewResultOnRefreshEnabled)
+        ? !typebot.settings.general.isNewResultOnRefreshEnabled
+        : false),
   })
 
   const startVariables =
@@ -151,6 +154,7 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     },
     currentTypebotId: typebot.id,
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
+    isStreamEnabled: startParams.isStreamEnabled,
   }
 
   const { messages, input, clientSideActions, newSessionState, logs } =
@@ -291,11 +295,11 @@ const getResult = async ({
   isPreview,
   resultId,
   prefilledVariables,
-  isNewResultOnRefreshEnabled,
+  isRememberUserEnabled,
 }: Pick<StartParams, 'isPreview' | 'resultId'> & {
   typebotId: string
   prefilledVariables: Variable[]
-  isNewResultOnRefreshEnabled: boolean
+  isRememberUserEnabled: boolean
 }) => {
   if (isPreview) return
   const select = {
@@ -305,7 +309,7 @@ const getResult = async ({
   } satisfies Prisma.ResultSelect
 
   const existingResult =
-    resultId && !isNewResultOnRefreshEnabled
+    resultId && isRememberUserEnabled
       ? ((await prisma.result.findFirst({
           where: { id: resultId },
           select,

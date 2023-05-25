@@ -28,6 +28,7 @@ export const Bubble = (props: BubbleProps) => {
     'previewMessage',
     'onPreviewMessageClick',
     'theme',
+    'autoShowDelay',
   ])
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     // eslint-disable-next-line solid/reactivity
@@ -47,11 +48,18 @@ export const Bubble = (props: BubbleProps) => {
 
   onMount(() => {
     window.addEventListener('message', processIncomingEvent)
-    const autoShowDelay = bubbleProps.previewMessage?.autoShowDelay
+    const autoShowDelay = bubbleProps.autoShowDelay
+    const previewMessageAutoShowDelay =
+      bubbleProps.previewMessage?.autoShowDelay
     if (isDefined(autoShowDelay)) {
       setTimeout(() => {
-        showMessage()
+        openBot()
       }, autoShowDelay)
+    }
+    if (isDefined(previewMessageAutoShowDelay)) {
+      setTimeout(() => {
+        showMessage()
+      }, previewMessageAutoShowDelay)
     }
   })
 

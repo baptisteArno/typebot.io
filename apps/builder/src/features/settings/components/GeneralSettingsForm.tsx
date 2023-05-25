@@ -1,7 +1,17 @@
-import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Stack,
+  Switch,
+  Tag,
+  useDisclosure,
+  Text,
+} from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { Plan } from '@typebot.io/prisma'
-import { GeneralSettings } from '@typebot.io/schemas'
+import { GeneralSettings, rememberUserStorages } from '@typebot.io/schemas'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
@@ -9,6 +19,9 @@ import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { useI18n } from '@/locales'
+import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { DropdownList } from '@/components/DropdownList'
+import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 
 type Props = {
   generalSettings: GeneralSettings
@@ -31,10 +44,13 @@ export const GeneralSettingsForm = ({
     })
   }
 
-  const handleNewResultOnRefreshChange = (isRememberSessionChecked: boolean) =>
+  const toggleRememberUser = (isEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
-      isNewResultOnRefreshEnabled: !isRememberSessionChecked,
+      rememberUser: {
+        ...generalSettings.rememberUser,
+        isEnabled,
+      },
     })
 
   const handleInputPrefillChange = (isInputPrefillEnabled: boolean) =>
@@ -47,6 +63,17 @@ export const GeneralSettingsForm = ({
     onGeneralSettingsChange({
       ...generalSettings,
       isHideQueryParamsEnabled,
+    })
+
+  const updateRememberUserStorage = (
+    storage: NonNullable<GeneralSettings['rememberUser']>['storage']
+  ) =>
+    onGeneralSettingsChange({
+      ...generalSettings,
+      rememberUser: {
+        ...generalSettings.rememberUser,
+        storage,
+      },
     })
 
   return (
@@ -78,21 +105,45 @@ export const GeneralSettingsForm = ({
         moreInfoContent="Inputs are automatically pre-filled whenever their associated variable has a value"
       />
       <SwitchWithLabel
-        label="Remember session"
-        initialValue={
-          isDefined(generalSettings.isNewResultOnRefreshEnabled)
-            ? !generalSettings.isNewResultOnRefreshEnabled
-            : true
-        }
-        onCheckChange={handleNewResultOnRefreshChange}
-        moreInfoContent="If the user refreshes the page or opens the typebot again during the same session, his previous variables will be prefilled and his new answers will override the previous ones."
-      />
-      <SwitchWithLabel
         label="Hide query params on bot start"
         initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
         onCheckChange={handleHideQueryParamsChange}
         moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
       />
+      <SwitchWithRelatedSettings
+        label={'Remember user'}
+        moreInfoContent="If enabled, user previous variables will be prefilled and his new answers will override the previous ones."
+        initialValue={
+          generalSettings.rememberUser?.isEnabled ??
+          (isDefined(generalSettings.isNewResultOnRefreshEnabled)
+            ? !generalSettings.isNewResultOnRefreshEnabled
+            : false)
+        }
+        onCheckChange={toggleRememberUser}
+      >
+        <FormControl as={HStack} justifyContent="space-between">
+          <FormLabel mb="0">
+            Storage:&nbsp;
+            <MoreInfoTooltip>
+              <Stack>
+                <Text>
+                  Choose <Tag size="sm">session</Tag> to remember the user as
+                  long as he does not closes the tab or the browser.
+                </Text>
+                <Text>
+                  Choose <Tag size="sm">local</Tag> to remember the user
+                  forever.
+                </Text>
+              </Stack>
+            </MoreInfoTooltip>
+          </FormLabel>
+          <DropdownList
+            currentItem={generalSettings.rememberUser?.storage ?? 'session'}
+            onItemSelect={updateRememberUserStorage}
+            items={rememberUserStorages}
+          ></DropdownList>
+        </FormControl>
+      </SwitchWithRelatedSettings>
     </Stack>
   )
 }

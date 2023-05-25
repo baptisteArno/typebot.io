@@ -8,8 +8,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "pnpm tsc --noEmit && tsup",
-    "dev": "tsup --watch",
-    "lint": "eslint --fix \"src/**/*.ts*\""
+    "dev": "tsup --watch"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "1.16.4",

@@ -1,6 +1,7 @@
 export type BubbleParams = {
   theme?: BubbleTheme
   previewMessage?: PreviewMessageParams
+  autoShowDelay?: number
 }
 
 export type BubbleTheme = {
