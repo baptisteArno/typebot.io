@@ -35,6 +35,8 @@ import { ScriptModal } from './modals/Script/ScriptModal'
 import { CodeIcon } from '@/components/icons'
 import { ApiModal } from './modals/ApiModal'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
+import { FlutterFlowLogo } from './logos/FlutterFlowLogo'
+import { FlutterFlowModal } from './modals/FlutterFlowModal'
 
 export type ModalProps = {
   publicId: string
@@ -144,6 +146,14 @@ export const integrationsList = [
       logo={<WebflowLogo height={100} width="70px" />}
       label="Webflow"
       Modal={WebflowModal}
+      {...props}
+    />
+  ),
+  (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
+    <EmbedButton
+      logo={<FlutterFlowLogo height={100} width="60px" />}
+      label="FlutterFlow"
+      Modal={FlutterFlowModal}
       {...props}
     />
   ),
