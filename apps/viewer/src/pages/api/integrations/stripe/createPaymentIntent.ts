@@ -56,9 +56,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : stripeKeys.live.secretKey,
       { apiVersion: '2022-11-15' }
     )
-    const amount =
+    const amount = Math.round(
       Number(parseVariables(variables)(inputOptions.amount)) *
-      (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
+        (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
+    )
     if (isNaN(amount)) return badRequest(res)
     // Create a PaymentIntent with the order amount and currency
     const receiptEmail = parseVariables(variables)(
