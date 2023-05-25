@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.7",
+    "@planetscale/database": "^1.7.0",
     "@sentry/nextjs": "7.50.0",
     "@trpc/server": "10.23.0",
     "@typebot.io/js": "workspace:*",
@@ -22,6 +23,7 @@
     "aws-sdk": "2.1369.0",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
+    "eventsource-parser": "^1.0.0",
     "google-spreadsheet": "3.3.0",
     "got": "12.6.0",
     "libphonenumber-js": "1.10.28",

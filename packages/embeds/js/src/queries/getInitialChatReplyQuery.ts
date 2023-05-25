@@ -26,6 +26,7 @@ export async function getInitialChatReplyQuery({
         prefilledVariables,
         startGroupId,
         resultId,
+        isStreamEnabled: true,
       },
     } satisfies SendMessageInput,
   })

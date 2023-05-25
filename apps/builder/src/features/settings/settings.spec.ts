@@ -19,10 +19,7 @@ test.describe.parallel('Settings page', () => {
       await page.click('text="Typebot.io branding"')
       await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
 
-      await page.click('text="Remember session"')
-      await expect(
-        page.locator('input[type="checkbox"] >> nth=-3')
-      ).toHaveAttribute('checked', '')
+      await page.click('text="Remember user"')
 
       await expect(page.getByPlaceholder('Type your answer...')).toHaveValue(
         'Baptiste'

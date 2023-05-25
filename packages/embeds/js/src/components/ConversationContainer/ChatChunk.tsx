@@ -11,7 +11,6 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   settings: Settings
   inputIndex: number
   context: BotContext
-  isLoadingBubbleDisplayed: boolean
   hasError: boolean
   hideAvatar: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>

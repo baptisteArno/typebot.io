@@ -502,6 +502,9 @@ importers:
       '@dqbd/tiktoken':
         specifier: ^1.0.7
         version: 1.0.7
+      '@planetscale/database':
+        specifier: ^1.7.0
+        version: 1.7.0
       '@sentry/nextjs':
         specifier: 7.50.0
         version: 7.50.0(next@13.3.4)(react@18.2.0)
@@ -526,6 +529,9 @@ importers:
       cors:
         specifier: 2.8.5
         version: 2.8.5
+      eventsource-parser:
+        specifier: ^1.0.0
+        version: 1.0.0
       google-spreadsheet:
         specifier: 3.3.0
         version: 3.3.0
@@ -7569,6 +7575,11 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@planetscale/database@1.7.0:
+    resolution: {integrity: sha512-lWR6biXChUyQnxsT4RT1CIeR3ZJvwTQXiQ+158MnY3VjLwjHEGakDzdH9kwUGPk6CHvu6UeqRXp1DgUOVHJFTw==}
+    engines: {node: '>=16'}
+    dev: false
+
   /@playwright/test@1.33.0:
     resolution: {integrity: sha512-YunBa2mE7Hq4CfPkGzQRK916a4tuZoVx/EpLjeWlTVOnD4S2+fdaQZE0LJkbfhN5FTSKNLdcl7MoT5XB37bTkg==}
     engines: {node: '>=14'}
@@ -13626,6 +13637,11 @@ packages:
   /events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
+
+  /eventsource-parser@1.0.0:
+    resolution: {integrity: sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==}
+    engines: {node: '>=14.18'}
+    dev: false
 
   /evp_bytestokey@1.0.3:
     resolution: {integrity: sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==}

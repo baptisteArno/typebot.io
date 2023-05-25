@@ -73,6 +73,10 @@ export const executeGroup =
         : null
 
       if (!executionResponse) continue
+      if (executionResponse.logs)
+        logs = [...(logs ?? []), ...executionResponse.logs]
+      if (executionResponse.newSessionState)
+        newSessionState = executionResponse.newSessionState
       if (
         'clientSideActions' in executionResponse &&
         executionResponse.clientSideActions
@@ -83,7 +87,8 @@ export const executeGroup =
         ]
         if (
           executionResponse.clientSideActions?.find(
-            (action) => 'setVariable' in action
+            (action) =>
+              'setVariable' in action || 'streamOpenAiChatCompletion' in action
           )
         ) {
           return {
@@ -101,10 +106,6 @@ export const executeGroup =
         }
       }
 
-      if (executionResponse.logs)
-        logs = [...(logs ?? []), ...executionResponse.logs]
-      if (executionResponse.newSessionState)
-        newSessionState = executionResponse.newSessionState
       if (executionResponse.outgoingEdgeId) {
         nextEdgeId = executionResponse.outgoingEdgeId
         break

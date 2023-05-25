@@ -88,7 +88,10 @@ const getStripeInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as StripeCredentials['data']
+  return (await decrypt(
+    credentials.data,
+    credentials.iv
+  )) as StripeCredentials['data']
 }
 
 // https://stripe.com/docs/currencies#zero-decimal

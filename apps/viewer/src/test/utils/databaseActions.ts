@@ -5,11 +5,11 @@ import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 
-export const createSmtpCredentials = (
+export const createSmtpCredentials = async (
   id: string,
   smtpData: SmtpCredentials['data']
 ) => {
-  const { encryptedData, iv } = encrypt(smtpData)
+  const { encryptedData, iv } = await encrypt(smtpData)
   return prisma.credentials.create({
     data: {
       id,

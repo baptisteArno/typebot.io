@@ -48,7 +48,7 @@ const initialOptionsSchema = z
   })
   .merge(openAIBaseOptionsSchema)
 
-const chatCompletionMessageSchema = z.object({
+export const chatCompletionMessageSchema = z.object({
   id: z.string(),
   role: z.enum(chatCompletionMessageRoles).optional(),
   content: z.string().optional(),

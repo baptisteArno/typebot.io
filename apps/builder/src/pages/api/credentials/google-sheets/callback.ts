@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res
         .status(400)
         .send({ message: "User didn't accepted required scopes" })
-    const { encryptedData, iv } = encrypt(tokens)
+    const { encryptedData, iv } = await encrypt(tokens)
     const credentials = {
       name: email,
       type: 'google sheets',

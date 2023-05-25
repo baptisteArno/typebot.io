@@ -1,4 +1,4 @@
-import { ZodDiscriminatedUnion, z } from 'zod'
+import { z } from 'zod'
 import {
   googleAnalyticsOptionsSchema,
   paymentInputRuntimeOptionsSchema,
@@ -17,6 +17,7 @@ import {
 import { answerSchema } from './answer'
 import { BubbleBlockType } from './blocks/bubbles/enums'
 import { inputBlockSchemas } from './blocks/schemas'
+import { chatCompletionMessageSchema } from './blocks/integrations/openai'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,
@@ -62,6 +63,7 @@ export const sessionStateSchema = z.object({
       groupId: z.string(),
     })
     .optional(),
+  isStreamEnabled: z.boolean().optional(),
 })
 
 const chatSessionSchema = z.object({
@@ -162,6 +164,7 @@ const startParamsSchema = z.object({
     .describe(
       '[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)'
     ),
+  isStreamEnabled: z.boolean().optional(),
 })
 
 export const sendMessageInputSchema = z.object({
@@ -223,6 +226,15 @@ const clientSideActionSchema = z
       .or(
         z.object({
           setVariable: z.object({ scriptToExecute: scriptToExecuteSchema }),
+        })
+      )
+      .or(
+        z.object({
+          streamOpenAiChatCompletion: z.object({
+            messages: z.array(
+              chatCompletionMessageSchema.pick({ content: true, role: true })
+            ),
+          }),
         })
       )
   )

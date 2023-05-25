@@ -5,7 +5,6 @@ import {
   ChatReply,
   SessionState,
   Variable,
-  VariableWithUnknowValue,
   VariableWithValue,
 } from '@typebot.io/schemas'
 import {
@@ -13,17 +12,25 @@ import {
   OpenAICredentials,
   modelLimit,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai'
-import { isDefined, byId, isNotEmpty, isEmpty } from '@typebot.io/lib'
-import { decrypt } from '@typebot.io/lib/api/encryption'
+import type {
+  ChatCompletionRequestMessage,
+  CreateChatCompletionRequest,
+  CreateChatCompletionResponse,
+} from 'openai'
+import { byId, isNotEmpty, isEmpty } from '@typebot.io/lib'
+import { decrypt, isCredentialsV2 } from '@typebot.io/lib/api/encryption'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
-import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
 import { encoding_for_model } from '@dqbd/tiktoken'
+import got from 'got'
+import { resumeChatCompletion } from './resumeChatCompletion'
+import { isPlaneteScale } from '@/helpers/api/isPlanetScale'
+import { isVercel } from '@/helpers/api/isVercel'
 
 const minTokenCompletion = 200
+const createChatEndpoint = 'https://api.openai.com/v1/chat/completions'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -52,13 +59,10 @@ export const createChatCompletionOpenAI = async (
     console.error('Could not find credentials in database')
     return { outgoingEdgeId, logs: [noCredentialsError] }
   }
-  const { apiKey } = decrypt(
+  const { apiKey } = (await decrypt(
     credentials.data,
     credentials.iv
-  ) as OpenAICredentials['data']
-  const configuration = new Configuration({
-    apiKey,
-  })
+  )) as OpenAICredentials['data']
   const { variablesTransformedToList, messages } = parseMessages(
     newSessionState.typebot.variables,
     options.model
@@ -71,52 +75,39 @@ export const createChatCompletionOpenAI = async (
   )
 
   try {
-    const openai = new OpenAIApi(configuration)
-    const response = await openai.createChatCompletion({
-      model: options.model,
-      messages,
-      temperature,
-    })
-    const messageContent = response.data.choices.at(0)?.message?.content
-    const totalTokens = response.data.usage?.total_tokens
+    if (
+      isPlaneteScale() &&
+      isVercel() &&
+      isCredentialsV2(credentials) &&
+      newSessionState.isStreamEnabled
+    )
+      return {
+        clientSideActions: [{ streamOpenAiChatCompletion: { messages } }],
+        outgoingEdgeId,
+        newSessionState,
+      }
+    const response = await got
+      .post(createChatEndpoint, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+        json: {
+          model: options.model,
+          messages,
+          temperature,
+        } satisfies CreateChatCompletionRequest,
+      })
+      .json<CreateChatCompletionResponse>()
+    const messageContent = response.choices.at(0)?.message?.content
+    const totalTokens = response.usage?.total_tokens
     if (isEmpty(messageContent)) {
       console.error('OpenAI block returned empty message', response)
       return { outgoingEdgeId, newSessionState }
     }
-    const newVariables = options.responseMapping.reduce<
-      VariableWithUnknowValue[]
-    >((newVariables, mapping) => {
-      const existingVariable = newSessionState.typebot.variables.find(
-        byId(mapping.variableId)
-      )
-      if (!existingVariable) return newVariables
-      if (mapping.valueToExtract === 'Message content') {
-        newVariables.push({
-          ...existingVariable,
-          value: Array.isArray(existingVariable.value)
-            ? existingVariable.value.concat(messageContent)
-            : messageContent,
-        })
-      }
-      if (mapping.valueToExtract === 'Total tokens' && isDefined(totalTokens)) {
-        newVariables.push({
-          ...existingVariable,
-          value: totalTokens,
-        })
-      }
-      return newVariables
-    }, [])
-    if (newVariables.length > 0)
-      newSessionState = await updateVariables(newSessionState)(newVariables)
-    state.result &&
-      (await saveSuccessLog({
-        resultId: state.result.id,
-        message: 'OpenAI block successfully executed',
-      }))
-    return {
+    return resumeChatCompletion(newSessionState, {
+      options,
       outgoingEdgeId,
-      newSessionState,
-    }
+    })(messageContent, totalTokens)
   } catch (err) {
     const log: NonNullable<ChatReply['logs']>[number] = {
       status: 'error',
