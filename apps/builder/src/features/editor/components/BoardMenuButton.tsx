@@ -20,7 +20,6 @@ import { useTypebot } from '../providers/TypebotProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 
@@ -32,9 +31,8 @@ export const BoardMenuButton = (props: FlexProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    if (isNotDefined(user?.graphNavigation) && isNotDefined(query.isFirstBot))
-      onOpen()
-  }, [onOpen, query.isFirstBot, user?.graphNavigation])
+    if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
+  }, [onOpen, query.isFirstBot, user, user?.graphNavigation])
 
   const downloadFlow = () => {
     assert(typebot)

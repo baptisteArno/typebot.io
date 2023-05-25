@@ -61,11 +61,6 @@ const evaluateSetVariableExpression =
     const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
       str.includes('return ') ? str : `return ${str}`
     )
-    console.log(
-      variables.map((v) => v.id),
-      ...variables.map((v) => parseGuessedValueType(v.value)),
-      evaluating
-    )
     try {
       const func = Function(...variables.map((v) => v.id), evaluating)
       return func(...variables.map((v) => parseGuessedValueType(v.value)))

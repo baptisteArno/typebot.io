@@ -6,7 +6,7 @@
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
-    "@prettier/plugin-php": "0.19.4",
+    "@prettier/plugin-php": "0.19.5",
     "prettier": "2.8.8"
   },
   "scripts": {

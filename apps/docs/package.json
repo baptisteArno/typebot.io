@@ -16,10 +16,10 @@
     "api:generate": "tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/helpers/server/generateOpenApi.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "2.4.0",
-    "@docusaurus/preset-classic": "2.4.0",
-    "@docusaurus/theme-common": "2.4.0",
-    "@docusaurus/theme-search-algolia": "2.4.0",
+    "@docusaurus/core": "2.4.1",
+    "@docusaurus/preset-classic": "2.4.1",
+    "@docusaurus/theme-common": "2.4.1",
+    "@docusaurus/theme-search-algolia": "2.4.1",
     "@mdx-js/react": "1.6.22",
     "@svgr/webpack": "6.5.1",
     "@typebot.io/docusaurus-preset-openapi": "0.6.5",
