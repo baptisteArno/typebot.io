@@ -7,6 +7,7 @@ import {
 } from '@/components/icons'
 import { PlanTag } from '@/features/billing/components/PlanTag'
 import { trpc } from '@/lib/trpc'
+import { useScopedI18n } from '@/locales'
 import {
   Menu,
   MenuButton,
@@ -31,6 +32,7 @@ export const WorkspaceDropdown = ({
   onLogoutClick,
   onCreateNewWorkspaceClick,
 }: Props) => {
+  const scopedT = useScopedI18n('workspace.dropdown')
   const { data } = trpc.workspace.listWorkspaces.useQuery()
 
   const workspaces = data?.workspaces ?? []
@@ -70,14 +72,14 @@ export const WorkspaceDropdown = ({
             </MenuItem>
           ))}
         <MenuItem onClick={onCreateNewWorkspaceClick} icon={<PlusIcon />}>
-          New workspace
+          {scopedT('newButton.label')}
         </MenuItem>
         <MenuItem
           onClick={onLogoutClick}
           icon={<LogOutIcon />}
           color="orange.500"
         >
-          Log out
+          {scopedT('logoutButton.label')}
         </MenuItem>
       </MenuList>
     </Menu>

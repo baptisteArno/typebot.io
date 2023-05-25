@@ -19,6 +19,7 @@ import { I18nProvider } from '@/locales'
 import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
+import en from '@/locales/en'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 

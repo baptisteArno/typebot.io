@@ -10,6 +10,8 @@ export default {
   update: 'Update',
   upgrade: 'Upgrade',
   downgrade: 'Downgrade',
+  remove: 'Remove',
+  pending: 'Pending',
   'folders.createFolderButton.label': 'Create a folder',
   'folders.createTypebotButton.label': 'Create a typebot',
   'folders.folderButton.deleteConfirmationMessage':
@@ -44,6 +46,9 @@ export default {
     'Please copy your token and store it in a safe place.',
   'account.apiTokens.createModal.securityWarning':
     'For security reasons we cannot show it again.',
+  'account.preferences.language.heading': 'Language',
+  'account.preferences.language.tooltip':
+    'The translations are not complete yet. It is a work in progress. 🤓',
   'account.preferences.graphNavigation.heading': 'Editor Navigation',
   'account.preferences.graphNavigation.mouse.label': 'Mouse',
   'account.preferences.graphNavigation.mouse.description':
@@ -152,4 +157,23 @@ export default {
   'billing.limitMessage.fileInput': 'use file input blocks',
   'billing.limitMessage.folder': 'create folders',
   'billing.upgradeAlert.buttonDefaultLabel': 'More info',
+  'workspace.membersList.inviteInput.placeholder': 'colleague@company.com',
+  'workspace.membersList.inviteButton.label': 'Invite',
+  'workspace.membersList.unlockBanner.label':
+    'Upgrade your plan to work with more team members, and unlock awesome power features 🚀',
+  'workspace.membersList.title': 'Members',
+  'workspace.settings.icon.title': 'Icon',
+  'workspace.settings.name.label': 'Name:',
+  'workspace.settings.deleteButton.label': 'Delete workspace',
+  'workspace.settings.deleteButton.confirmMessage':
+    'Are you sure you want to delete {workspaceName} workspace? All its folders, typebots and results will be deleted forever.',
+  'workspace.settings.modal.menu.myAccount.label': 'My account',
+  'workspace.settings.modal.menu.preferences.label': 'Preferences',
+  'workspace.settings.modal.menu.workspace.label': 'Workspace',
+  'workspace.settings.modal.menu.settings.label': 'Settings',
+  'workspace.settings.modal.menu.members.label': 'Members',
+  'workspace.settings.modal.menu.billingAndUsage.label': 'Billing & Usage',
+  'workspace.settings.modal.menu.version.label': 'Version: {version}',
+  'workspace.dropdown.newButton.label': 'New workspace',
+  'workspace.dropdown.logoutButton.label': 'Log out',
 } as const

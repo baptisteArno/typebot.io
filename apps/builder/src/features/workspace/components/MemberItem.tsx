@@ -13,6 +13,7 @@ import {
 import { WorkspaceRole } from '@typebot.io/prisma'
 import React from 'react'
 import { convertWorkspaceRoleToReadable } from './AddMemberForm'
+import { useI18n } from '@/locales'
 
 type Props = {
   image?: string
@@ -37,6 +38,7 @@ export const MemberItem = ({
   onDeleteClick,
   onSelectNewRole,
 }: Props) => {
+  const t = useI18n()
   const handleAdminClick = () => onSelectNewRole(WorkspaceRole.ADMIN)
   const handleMemberClick = () => onSelectNewRole(WorkspaceRole.MEMBER)
 
@@ -65,7 +67,7 @@ export const MemberItem = ({
             {convertWorkspaceRoleToReadable(WorkspaceRole.MEMBER)}
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
-            Remove
+            {t('remove')}
           </MenuItem>
         </MenuList>
       )}
@@ -85,32 +87,36 @@ export const MemberIdentityContent = ({
   image?: string
   isGuest?: boolean
   email: string
-}) => (
-  <HStack justifyContent="space-between" maxW="full" p="2">
-    <HStack minW={0} spacing="4">
-      <Avatar name={name} src={image} size="sm" />
-      <Stack spacing={0} minW="0">
-        {name && (
-          <Text textAlign="left" fontSize="15px">
-            {name}
+}) => {
+  const t = useI18n()
+
+  return (
+    <HStack justifyContent="space-between" maxW="full" p="2">
+      <HStack minW={0} spacing="4">
+        <Avatar name={name} src={image} size="sm" />
+        <Stack spacing={0} minW="0">
+          {name && (
+            <Text textAlign="left" fontSize="15px">
+              {name}
+            </Text>
+          )}
+          <Text
+            color="gray.500"
+            fontSize={name ? '14px' : 'inherit'}
+            noOfLines={1}
+          >
+            {email}
           </Text>
+        </Stack>
+      </HStack>
+      <HStack flexShrink={0}>
+        {isGuest && (
+          <Tag color="gray.400" data-testid="tag">
+            {t('pending')}
+          </Tag>
         )}
-        <Text
-          color="gray.500"
-          fontSize={name ? '14px' : 'inherit'}
-          noOfLines={1}
-        >
-          {email}
-        </Text>
-      </Stack>
+        <Tag data-testid="tag">{tag}</Tag>
+      </HStack>
     </HStack>
-    <HStack flexShrink={0}>
-      {isGuest && (
-        <Tag color="gray.400" data-testid="tag">
-          Pending
-        </Tag>
-      )}
-      <Tag data-testid="tag">{tag}</Tag>
-    </HStack>
-  </HStack>
-)
+  )
+}

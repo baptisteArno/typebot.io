@@ -24,6 +24,7 @@ import packageJson from '../../../../../../package.json'
 import { UserPreferencesForm } from '@/features/account/components/UserPreferencesForm'
 import { MyAccountForm } from '@/features/account/components/MyAccountForm'
 import { BillingSettingsLayout } from '@/features/billing/components/BillingSettingsLayout'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   isOpen: boolean
@@ -45,6 +46,7 @@ export const WorkspaceSettingsModal = ({
   workspace,
   onClose,
 }: Props) => {
+  const scopedT = useScopedI18n('workspace.settings.modal')
   const { currentRole } = useWorkspace()
   const [selectedTab, setSelectedTab] = useState<SettingsTab>('my-account')
 
@@ -56,7 +58,7 @@ export const WorkspaceSettingsModal = ({
       <ModalContent minH="600px" flexDir="row">
         <Stack
           spacing={8}
-          w="200px"
+          w="180px"
           py="6"
           borderRightWidth={1}
           justifyContent="space-between"
@@ -80,7 +82,7 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                My account
+                {scopedT('menu.myAccount.label')}
               </Button>
               <Button
                 variant={selectedTab === 'user-settings' ? 'solid' : 'ghost'}
@@ -90,12 +92,12 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                Preferences
+                {scopedT('menu.preferences.label')}
               </Button>
             </Stack>
             <Stack>
               <Text pl="4" color="gray.500">
-                Workspace
+                {scopedT('menu.workspace.label')}
               </Text>
               {canEditWorkspace && (
                 <Button
@@ -114,7 +116,7 @@ export const WorkspaceSettingsModal = ({
                   justifyContent="flex-start"
                   pl="4"
                 >
-                  Settings
+                  {scopedT('menu.settings.label')}
                 </Button>
               )}
               <Button
@@ -125,7 +127,7 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                Members
+                {scopedT('menu.members.label')}
               </Button>
               {canEditWorkspace && (
                 <Button
@@ -135,8 +137,10 @@ export const WorkspaceSettingsModal = ({
                   size="sm"
                   justifyContent="flex-start"
                   pl="4"
+                  overflow="scroll"
+                  className="hide-scrollbar"
                 >
-                  Billing & Usage
+                  {scopedT('menu.billingAndUsage.label')}
                 </Button>
               )}
             </Stack>
@@ -144,7 +148,7 @@ export const WorkspaceSettingsModal = ({
 
           <Flex justify="center" pt="10">
             <Text color="gray.500" fontSize="xs">
-              Version: {packageJson.version}
+              {scopedT('menu.version.label', { version: packageJson.version })}
             </Text>
           </Flex>
         </Stack>
