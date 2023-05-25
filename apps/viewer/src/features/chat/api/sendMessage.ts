@@ -154,6 +154,7 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     },
     currentTypebotId: typebot.id,
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
+    isStreamEnabled: startParams.isStreamEnabled,
   }
 
   const { messages, input, clientSideActions, newSessionState, logs } =

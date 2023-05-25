@@ -69,7 +69,11 @@ export const ConversationContainer = (props: Props) => {
           (action) => isNotDefined(action.lastBubbleBlockId)
         )
         for (const action of actionsBeforeFirstBubble) {
-          const response = await executeClientSideAction(action)
+          if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+          const response = await executeClientSideAction(action, {
+            apiHost: props.context.apiHost,
+            sessionId: props.initialChatReply.sessionId,
+          })
           if (response && 'replyToSend' in response) {
             sendMessage(response.replyToSend)
             return
@@ -133,7 +137,11 @@ export const ConversationContainer = (props: Props) => {
         isNotDefined(action.lastBubbleBlockId)
       )
       for (const action of actionsBeforeFirstBubble) {
-        const response = await executeClientSideAction(action)
+        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        const response = await executeClientSideAction(action, {
+          apiHost: props.context.apiHost,
+          sessionId: props.initialChatReply.sessionId,
+        })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend)
           return
@@ -174,7 +182,11 @@ export const ConversationContainer = (props: Props) => {
         (action) => action.lastBubbleBlockId === blockId
       )
       for (const action of actionsToExecute) {
-        const response = await executeClientSideAction(action)
+        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        const response = await executeClientSideAction(action, {
+          apiHost: props.context.apiHost,
+          sessionId: props.initialChatReply.sessionId,
+        })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend)
           return
@@ -200,7 +212,6 @@ export const ConversationContainer = (props: Props) => {
             input={chatChunk.input}
             theme={theme()}
             settings={props.initialChatReply.typebot.settings}
-            isLoadingBubbleDisplayed={isSending()}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}

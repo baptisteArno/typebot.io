@@ -125,8 +125,8 @@ export const setupUsers = async () => {
   })
 }
 
-const setupCredentials = () => {
-  const { encryptedData, iv } = encrypt({
+const setupCredentials = async () => {
+  const { encryptedData, iv } = await encrypt({
     expiry_date: 1642441058842,
     access_token:
       'ya29.A0ARrdaM--PV_87ebjywDJpXKb77NBFJl16meVUapYdfNv6W6ZzqqC47fNaPaRjbDbOIIcp6f49cMaX5ndK9TAFnKwlVqz3nrK9nLKqgyDIhYsIq47smcAIZkK56SWPx3X3DwAFqRu2UPojpd2upWwo-3uJrod',

@@ -9,12 +9,13 @@ import {
   ChatReply,
   InputBlock,
   InputBlockType,
+  IntegrationBlockType,
   LogicBlockType,
   ResultInSession,
   SessionState,
   SetVariableBlock,
 } from '@typebot.io/schemas'
-import { isInputBlock, isNotDefined, byId } from '@typebot.io/lib'
+import { isInputBlock, isNotDefined, byId, isDefined } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
@@ -23,6 +24,8 @@ import { validatePhoneNumber } from '@/features/blocks/inputs/phone/validatePhon
 import { validateUrl } from '@/features/blocks/inputs/url/validateUrl'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
+import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { resumeChatCompletion } from '@/features/blocks/integrations/openai/resumeChatCompletion'
 
 export const continueBotFlow =
   (state: SessionState) =>
@@ -57,6 +60,16 @@ export const continueBotFlow =
         }
         newSessionState = await updateVariables(state)([newVariable])
       }
+    } else if (
+      isDefined(reply) &&
+      block.type === IntegrationBlockType.OPEN_AI &&
+      block.options.task === 'Create chat completion'
+    ) {
+      const result = await resumeChatCompletion(state, {
+        options: block.options,
+        outgoingEdgeId: block.outgoingEdgeId,
+      })(reply)
+      newSessionState = result.newSessionState
     } else if (!isInputBlock(block))
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -236,7 +249,10 @@ const computeStorageUsed = async (reply: string) => {
 
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
-  (block: InputBlock | SetVariableBlock, reply: string | null) => {
+  (
+    block: InputBlock | SetVariableBlock | OpenAIBlock,
+    reply: string | null
+  ) => {
     if (
       block.type === InputBlockType.CHOICE &&
       !block.options.isMultipleChoice &&

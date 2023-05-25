@@ -193,7 +193,10 @@ const getEmailInfo = async (
     where: { id: credentialsId },
   })
   if (!credentials) return
-  return decrypt(credentials.data, credentials.iv) as SmtpCredentials['data']
+  return (await decrypt(
+    credentials.data,
+    credentials.iv
+  )) as SmtpCredentials['data']
 }
 
 const getEmailBody = async ({
