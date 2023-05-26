@@ -184,13 +184,11 @@ const parseBubbleBlock =
   }
 
 const injectVariablesValueInBlock =
-  (state: Pick<SessionState, 'result' | 'typebot'>) =>
+  (state: SessionState) =>
   async (block: InputBlock): Promise<ChatReply['input']> => {
     switch (block.type) {
       case InputBlockType.CHOICE: {
-        return injectVariableValuesInButtonsInputBlock(state.typebot.variables)(
-          block
-        )
+        return injectVariableValuesInButtonsInputBlock(state)(block)
       }
       case InputBlockType.PICTURE_CHOICE: {
         return injectVariableValuesInPictureChoiceBlock(
