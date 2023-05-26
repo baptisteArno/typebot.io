@@ -35,6 +35,7 @@ import { SinglePictureChoice } from '@/features/blocks/inputs/pictureChoice/Sing
 import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/MultiplePictureChoice'
 
 type Props = {
+  ref: HTMLDivElement | undefined
   block: NonNullable<ChatReply['input']>
   hasHostAvatar: boolean
   guestAvatar?: Theme['chat']['guestAvatar']
@@ -72,6 +73,7 @@ export const InputChatBlock = (props: Props) => {
         <div
           class="flex justify-end animate-fade-in gap-2"
           data-blockid={props.block.id}
+          ref={props.ref}
         >
           {props.hasHostAvatar && (
             <div
