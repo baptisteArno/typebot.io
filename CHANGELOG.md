@@ -1,5 +1,34 @@
 # Changelog
 
+<a name="2.13.5"></a>
+## 2.13.5 (2023-05-26)
+
+### Changed
+
+- ♿ (js) Improve auto scroll when no host bubble [[0ca48e4](https://github.com/baptisteArno/typebot.io/commit/0ca48e4c0842ce6d0a2681dfa5325c2e5fec5493)]
+- 💄 (js) Fix select background color on Windows [[68f0202](https://github.com/baptisteArno/typebot.io/commit/68f02026017e9ffb3f2a0138c8edfaf115ae9447)]
+- ⚡ (webhook) Add client execution option [[75f9da0](https://github.com/baptisteArno/typebot.io/commit/75f9da0a4fe7937e07823ac46a8b449c89bf6eac)]
+- ⬆️ Upgrade dependencies [[55bbf0e](https://github.com/baptisteArno/typebot.io/commit/55bbf0e5938ae8ffe2a0e4c7bd7944b6e12d465f)]
+- ⚡ (openai) Stream chat completion to avoid serverless timeout ([#526](https://github.com/baptisteArno/typebot.io/issues/526)) [[56364fd](https://github.com/baptisteArno/typebot.io/commit/56364fd86335607cbe6c17bdba7f7caf5397cc1e)]
+- 💄 (js) Improve popup ui consistency [[c950406](https://github.com/baptisteArno/typebot.io/commit/c950406997c28dc9aefecbad2aeb58d9b66ccffe)]
+
+### Fixed
+
+- 🐛 Fix outside click on picture choice [[4230f47](https://github.com/baptisteArno/typebot.io/commit/4230f47be911c7be21d7055b01f7548b6bf2436e)]
+- 🐛 (webhook) Add loading bubble when executing webhook on client [[4dec06f](https://github.com/baptisteArno/typebot.io/commit/4dec06fc7502037282e654eb58c4bb93fc0e75c6)]
+- 🐛 (sheets) Fix empty and unique filter [[154271c](https://github.com/baptisteArno/typebot.io/commit/154271c7f22a9d2f7553532a7d16530c2dfe9aae)]
+- 🐛 (payment) Round the amount to avoid weird Js long decimals [[16f3ad3](https://github.com/baptisteArno/typebot.io/commit/16f3ad3a19d36b57f9adef22726aedb60745b80a)]
+- 🐛 (editor) Remove edge if duplicating last block of group [[6bb6a2b](https://github.com/baptisteArno/typebot.io/commit/6bb6a2b0e36a00d3b296acab4fa2e3f90e4641d4)]
+- 🐛 Fix readme typo ([#518](https://github.com/baptisteArno/typebot.io/issues/518)) [[423aca6](https://github.com/baptisteArno/typebot.io/commit/423aca6133ce24f0f0033789eeb0f7f40aba8108)]
+- 🐛 Fix embed bubble icon color [[49a8427](https://github.com/baptisteArno/typebot.io/commit/49a8427776ba43417699029e87ee41d85193a05d)]
+- 💚 Improve auto create tag workflow [[683ba90](https://github.com/baptisteArno/typebot.io/commit/683ba90403676e8baf1eb27c3488163cbb9e5da1)]
+
+### Miscellaneous
+
+- 📝 (lp) Add oss friends page [[084a17f](https://github.com/baptisteArno/typebot.io/commit/084a17ffc8ef587f3f70a46c43a7d35331868d4d)]
+- 📝 (embed) Add FlutterFlow embed instructions [[fdfed16](https://github.com/baptisteArno/typebot.io/commit/fdfed160a657475f50af2a7635923b9d747a12c8)]
+
+
 <a name="2.13.4"></a>
 ## 2.13.4 (2023-05-17)
 
