@@ -10,21 +10,21 @@ import { executeTypebotLink } from '@/features/blocks/logic/typebotLink/executeT
 import { executeAbTest } from '@/features/blocks/logic/abTest/executeAbTest'
 
 export const executeLogic =
-  (state: SessionState, lastBubbleBlockId?: string) =>
+  (state: SessionState) =>
   async (block: LogicBlock): Promise<ExecuteLogicResponse> => {
     switch (block.type) {
       case LogicBlockType.SET_VARIABLE:
-        return executeSetVariable(state, block, lastBubbleBlockId)
+        return executeSetVariable(state, block)
       case LogicBlockType.CONDITION:
         return executeCondition(state, block)
       case LogicBlockType.REDIRECT:
-        return executeRedirect(state, block, lastBubbleBlockId)
+        return executeRedirect(state, block)
       case LogicBlockType.SCRIPT:
-        return executeScript(state, block, lastBubbleBlockId)
+        return executeScript(state, block)
       case LogicBlockType.TYPEBOT_LINK:
         return executeTypebotLink(state, block)
       case LogicBlockType.WAIT:
-        return executeWait(state, block, lastBubbleBlockId)
+        return executeWait(state, block)
       case LogicBlockType.JUMP:
         return executeJumpBlock(state, block.options)
       case LogicBlockType.AB_TEST:

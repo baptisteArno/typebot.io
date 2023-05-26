@@ -19,6 +19,7 @@ export const webhookOptionsSchema = z.object({
   responseVariableMapping: z.array(responseVariableMappingSchema),
   isAdvancedConfig: z.boolean().optional(),
   isCustomBody: z.boolean().optional(),
+  isExecutedOnClient: z.boolean().optional(),
 })
 
 export const webhookBlockSchema = blockBaseSchema.merge(

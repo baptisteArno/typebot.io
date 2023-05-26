@@ -8,8 +8,7 @@ import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 
 export const executeSetVariable = async (
   state: SessionState,
-  block: SetVariableBlock,
-  lastBubbleBlockId?: string
+  block: SetVariableBlock
 ): Promise<ExecuteLogicResponse> => {
   const { variables } = state.typebot
   if (!block.options?.variableId)
@@ -28,7 +27,6 @@ export const executeSetVariable = async (
           setVariable: {
             scriptToExecute,
           },
-          lastBubbleBlockId,
         },
       ],
     }

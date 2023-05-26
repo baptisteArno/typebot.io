@@ -1,4 +1,5 @@
 import { Webhook as WebhookFromPrisma } from '@typebot.io/prisma'
+import { z } from 'zod'
 
 export enum HttpMethod {
   POST = 'POST',
@@ -36,3 +37,12 @@ export const defaultWebhookAttributes: Omit<
   headers: [],
   queryParams: [],
 }
+
+export const executableWebhookSchema = z.object({
+  url: z.string(),
+  headers: z.record(z.string()).optional(),
+  body: z.unknown().optional(),
+  method: z.nativeEnum(HttpMethod).optional(),
+})
+
+export type ExecutableWebhook = z.infer<typeof executableWebhookSchema>

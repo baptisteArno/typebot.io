@@ -4,8 +4,7 @@ import { SessionState, WaitBlock } from '@typebot.io/schemas'
 
 export const executeWait = async (
   { typebot: { variables } }: SessionState,
-  block: WaitBlock,
-  lastBubbleBlockId?: string
+  block: WaitBlock
 ): Promise<ExecuteLogicResponse> => {
   if (!block.options.secondsToWaitFor)
     return { outgoingEdgeId: block.outgoingEdgeId }
@@ -19,7 +18,6 @@ export const executeWait = async (
       ? [
           {
             wait: { secondsToWaitFor: parsedSecondsToWaitFor },
-            lastBubbleBlockId,
           },
         ]
       : undefined,

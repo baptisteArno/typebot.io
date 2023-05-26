@@ -6,8 +6,7 @@ import { ScriptBlock, SessionState, Variable } from '@typebot.io/schemas'
 
 export const executeScript = (
   { typebot: { variables } }: SessionState,
-  block: ScriptBlock,
-  lastBubbleBlockId?: string
+  block: ScriptBlock
 ): ExecuteLogicResponse => {
   if (!block.options.content) return { outgoingEdgeId: block.outgoingEdgeId }
 
@@ -21,7 +20,6 @@ export const executeScript = (
     clientSideActions: [
       {
         scriptToExecute: scriptToExecute,
-        lastBubbleBlockId,
       },
     ],
   }

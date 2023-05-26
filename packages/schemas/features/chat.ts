@@ -18,6 +18,7 @@ import { answerSchema } from './answer'
 import { BubbleBlockType } from './blocks/bubbles/enums'
 import { inputBlockSchemas } from './blocks/schemas'
 import { chatCompletionMessageSchema } from './blocks/integrations/openai'
+import { executableWebhookSchema } from './webhooks'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,
@@ -235,6 +236,11 @@ const clientSideActionSchema = z
               chatCompletionMessageSchema.pick({ content: true, role: true })
             ),
           }),
+        })
+      )
+      .or(
+        z.object({
+          webhookToExecute: executableWebhookSchema,
         })
       )
   )

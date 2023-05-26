@@ -14,6 +14,7 @@ import {
   ResultInSession,
   SessionState,
   SetVariableBlock,
+  WebhookBlock,
 } from '@typebot.io/schemas'
 import { isInputBlock, isNotDefined, byId, isDefined } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
@@ -26,6 +27,7 @@ import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { resumeChatCompletion } from '@/features/blocks/integrations/openai/resumeChatCompletion'
+import { resumeWebhookExecution } from '@/features/blocks/integrations/webhook/resumeWebhookExecution'
 
 export const continueBotFlow =
   (state: SessionState) =>
@@ -60,6 +62,12 @@ export const continueBotFlow =
         }
         newSessionState = await updateVariables(state)([newVariable])
       }
+    } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
+      const result = await resumeWebhookExecution(
+        state,
+        block
+      )(JSON.parse(reply))
+      if (result.newSessionState) newSessionState = result.newSessionState
     } else if (
       isDefined(reply) &&
       block.type === IntegrationBlockType.OPEN_AI &&
@@ -250,7 +258,7 @@ const computeStorageUsed = async (reply: string) => {
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
   (
-    block: InputBlock | SetVariableBlock | OpenAIBlock,
+    block: InputBlock | SetVariableBlock | OpenAIBlock | WebhookBlock,
     reply: string | null
   ) => {
     if (

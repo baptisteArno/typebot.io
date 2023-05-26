@@ -71,8 +71,7 @@ if (window.$chatwoot) {
 
 export const executeChatwootBlock = (
   { typebot, result }: SessionState,
-  block: ChatwootBlock,
-  lastBubbleBlockId?: string
+  block: ChatwootBlock
 ): ExecuteIntegrationResponse => {
   const chatwootCode =
     block.options.task === 'Close widget'
@@ -88,7 +87,6 @@ export const executeChatwootBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
-        lastBubbleBlockId,
         chatwoot: {
           scriptToExecute: {
             content: parseVariables(typebot.variables, { fieldToParse: 'id' })(

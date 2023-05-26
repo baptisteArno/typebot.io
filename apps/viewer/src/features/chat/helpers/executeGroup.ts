@@ -67,9 +67,9 @@ export const executeGroup =
           logs,
         }
       const executionResponse = isLogicBlock(block)
-        ? await executeLogic(newSessionState, lastBubbleBlockId)(block)
+        ? await executeLogic(newSessionState)(block)
         : isIntegrationBlock(block)
-        ? await executeIntegration(newSessionState, lastBubbleBlockId)(block)
+        ? await executeIntegration(newSessionState)(block)
         : null
 
       if (!executionResponse) continue
@@ -83,12 +83,17 @@ export const executeGroup =
       ) {
         clientSideActions = [
           ...(clientSideActions ?? []),
-          ...executionResponse.clientSideActions,
+          ...executionResponse.clientSideActions.map((action) => ({
+            ...action,
+            lastBubbleBlockId,
+          })),
         ]
         if (
           executionResponse.clientSideActions?.find(
             (action) =>
-              'setVariable' in action || 'streamOpenAiChatCompletion' in action
+              'setVariable' in action ||
+              'streamOpenAiChatCompletion' in action ||
+              'webhookToExecute' in action
           )
         ) {
           return {

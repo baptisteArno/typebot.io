@@ -5,8 +5,7 @@ import { GoogleAnalyticsBlock, SessionState } from '@typebot.io/schemas'
 
 export const executeGoogleAnalyticsBlock = (
   { typebot: { variables } }: SessionState,
-  block: GoogleAnalyticsBlock,
-  lastBubbleBlockId?: string
+  block: GoogleAnalyticsBlock
 ): ExecuteIntegrationResponse => {
   const googleAnalytics = deepParseVariables(variables)(block.options)
   return {
@@ -19,7 +18,6 @@ export const executeGoogleAnalyticsBlock = (
             ? Number(googleAnalytics.value)
             : undefined,
         },
-        lastBubbleBlockId,
       },
     ],
   }
