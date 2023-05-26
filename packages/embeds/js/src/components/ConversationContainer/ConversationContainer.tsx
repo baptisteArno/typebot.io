@@ -69,7 +69,11 @@ export const ConversationContainer = (props: Props) => {
           (action) => isNotDefined(action.lastBubbleBlockId)
         )
         for (const action of actionsBeforeFirstBubble) {
-          if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+          if (
+            'streamOpenAiChatCompletion' in action ||
+            'webhookToExecute' in action
+          )
+            setIsSending(true)
           const response = await executeClientSideAction(action, {
             apiHost: props.context.apiHost,
             sessionId: props.initialChatReply.sessionId,
@@ -137,7 +141,11 @@ export const ConversationContainer = (props: Props) => {
         isNotDefined(action.lastBubbleBlockId)
       )
       for (const action of actionsBeforeFirstBubble) {
-        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        if (
+          'streamOpenAiChatCompletion' in action ||
+          'webhookToExecute' in action
+        )
+          setIsSending(true)
         const response = await executeClientSideAction(action, {
           apiHost: props.context.apiHost,
           sessionId: props.initialChatReply.sessionId,
@@ -182,7 +190,11 @@ export const ConversationContainer = (props: Props) => {
         (action) => action.lastBubbleBlockId === blockId
       )
       for (const action of actionsToExecute) {
-        if ('streamOpenAiChatCompletion' in action) setIsSending(true)
+        if (
+          'streamOpenAiChatCompletion' in action ||
+          'webhookToExecute' in action
+        )
+          setIsSending(true)
         const response = await executeClientSideAction(action, {
           apiHost: props.context.apiHost,
           sessionId: props.initialChatReply.sessionId,

@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "React library to display typebots on your website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
