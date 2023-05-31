@@ -18,7 +18,7 @@ export default {
     'Möchtest du den Ordner {folderName} wirklich löschen? (Alles im Inneren wird in dein Dashboard verschoben)',
   'folders.typebotButton.live': 'Live',
   'folders.typebotButton.showMoreOptions': 'Mehr Optionen anzeigen',
-  'folders.typebotButton.unpublish': 'Unveröffentlichen',
+  'folders.typebotButton.unpublish': 'Veröffentlichung aufheben',
   'folders.typebotButton.duplicate': 'Duplizieren',
   'folders.typebotButton.delete': 'Löschen',
   'folders.typebotButton.deleteConfirmationMessage':
@@ -104,7 +104,7 @@ export default {
     'Typebot trägt 1% deines Abonnements dazu bei, CO₂ aus der Atmosphäre zu entfernen.',
   'billing.contribution.link': 'Erfahre mehr.',
   'billing.updateSuccessToast.description':
-    'Arbeitsbereich {plan} Plan erfolgreich aktualisiert 🎉',
+    'Workspace {plan} Plan erfolgreich aktualisiert 🎉',
   'billing.customLimit.preLink':
     'Brauchst du individuelle Limits? Spezielle Funktionen?',
   'billing.customLimit.link': 'Lass uns darüber sprechen!',
@@ -112,11 +112,11 @@ export default {
     'Um {type} hinzuzufügen, musst du deinen Tarif aktualisieren',
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading':
-    'Aktuelles Arbeitsbereich-Abonnement:',
+    'Aktuelles Workspace-Abonnement:',
   'billing.currentSubscription.cancelLink': 'Mein Abonnement kündigen',
   'billing.invoices.heading': 'Rechnungen',
   'billing.invoices.empty':
-    'Keine Rechnungen für diesen Arbeitsbereich gefunden.',
+    'Keine Rechnungen für diesen Workspace gefunden.',
   'billing.invoices.paidAt': 'Bezahlt am',
   'billing.invoices.subtotal': 'Zwischensumme',
   'billing.preCheckoutModal.companyInput.label': 'Firmenname:',
@@ -133,7 +133,7 @@ export default {
     'Ein Chat wird gezählt, wenn ein Benutzer eine Diskussion startet. Es ist unabhängig von der Anzahl der gesendeten und empfangenen Nachrichten.',
   'billing.pricingCard.storageLimit': 'GB Speicherplatz',
   'billing.pricingCard.storageLimitTooltip':
-    'Du sammelst Speicherplatz für jede Datei, die dein Benutzer in deinem Bot hochlädt. Wenn du das Ergebnis löschst, wird der Platz freigegeben.',
+    'Du belegst Speicherplatz für jede Datei, die dein Benutzer in deinem Bot hochlädt. Wenn du das Ergebnis löschst, wird der Platz freigegeben.',
   'billing.pricingCard.starter.description':
     'Für Einzelpersonen & kleine Unternehmen.',
   'billing.pricingCard.starter.includedSeats': '2 Plätze inklusive',
@@ -153,7 +153,7 @@ export default {
   'billing.usage.chats.alert.updatePlan':
     'Vergewissere dich, dass du deinen Tarif aktualisierst, um dieses Limit zu erhöhen und weiterhin mit deinen Benutzern zu chatten.',
   'billing.usage.chats.resetInfo': '(setzt sich am 1. jeden Monats zurück)',
-  'billing.usage.storage.heading': 'Speicher',
+  'billing.usage.storage.heading': 'Speicherplatz',
   'billing.usage.storage.alert.soonReach':
     'Deine Typebots sind beliebt! Du wirst bald das Speicherlimit deines Tarifs erreichen. 🚀',
   'billing.usage.storage.alert.updatePlan':
@@ -164,23 +164,23 @@ export default {
   'billing.limitMessage.fileInput': 'Datei-Eingabefelder verwenden',
   'billing.limitMessage.folder': 'Ordner erstellen',
   'billing.upgradeAlert.buttonDefaultLabel': 'Mehr Informationen',
-  'workspace.membersList.inviteInput.placeholder': 'kollege@unternehmen.com',
+  'workspace.membersList.inviteInput.placeholder': 'name@unternehmen.de',
   'workspace.membersList.inviteButton.label': 'Einladen',
   'workspace.membersList.unlockBanner.label':
-    'Aktualisieren Sie Ihren Plan, um mit mehr Teammitgliedern zu arbeiten und erstaunliche Leistungsmerkmale freizuschalten 🚀',
+    'Aktualisiere deinen Plan, um mit mehr Teammitgliedern zu arbeiten und neue Limits freizuschalten 🚀',
   'workspace.membersList.title': 'Mitglieder',
   'workspace.settings.icon.title': 'Symbol',
   'workspace.settings.name.label': 'Name:',
-  'workspace.settings.deleteButton.label': 'Arbeitsbereich löschen',
+  'workspace.settings.deleteButton.label': 'Workspace löschen',
   'workspace.settings.deleteButton.confirmMessage':
-    'Sind Sie sicher, dass Sie den Arbeitsbereich {workspaceName} löschen möchten? Alle seine Ordner, Typebots und Ergebnisse werden dauerhaft gelöscht.',
+    'Sind Sie sicher, dass Sie den Workspace {workspaceName} löschen möchten? Alle seine Ordner, Typebots und Ergebnisse werden dauerhaft gelöscht.',
   'workspace.settings.modal.menu.myAccount.label': 'Mein Konto',
   'workspace.settings.modal.menu.preferences.label': 'Einstellungen',
-  'workspace.settings.modal.menu.workspace.label': 'Arbeitsbereich',
+  'workspace.settings.modal.menu.workspace.label': 'Workspace',
   'workspace.settings.modal.menu.settings.label': 'Einstellungen',
   'workspace.settings.modal.menu.members.label': 'Mitglieder',
   'workspace.settings.modal.menu.billingAndUsage.label': 'Abrechnung & Nutzung',
   'workspace.settings.modal.menu.version.label': 'Version: {version}',
-  'workspace.dropdown.newButton.label': 'Neuer Arbeitsbereich',
+  'workspace.dropdown.newButton.label': 'Neuer Workspace',
   'workspace.dropdown.logoutButton.label': 'Abmelden',
 } as const
