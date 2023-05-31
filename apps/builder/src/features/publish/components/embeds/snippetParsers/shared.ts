@@ -6,8 +6,15 @@ import { Typebot } from '@typebot.io/schemas'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import packageJson from '../../../../../../../../packages/embeds/js/package.json'
 
-export const parseStringParam = (fieldName: string, fieldValue?: string) =>
-  fieldValue ? `${fieldName}: "${fieldValue}",` : ``
+export const parseStringParam = (
+  fieldName: string,
+  fieldValue?: string,
+  defaultValue?: string
+) => {
+  if (!fieldValue) return ''
+  if (isDefined(defaultValue) && fieldValue === defaultValue) return ''
+  return `${fieldName}: "${fieldValue}",`
+}
 
 export const parseNumberOrBoolParam = (
   fieldName: string,

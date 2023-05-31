@@ -1,12 +1,13 @@
 import { Show } from 'solid-js'
 import { isNotDefined, isSvgSrc } from '@typebot.io/lib'
-import { ButtonTheme } from '../types'
+import { BubbleTheme, ButtonTheme } from '../types'
 import { isLight } from '@typebot.io/lib/hexToRgb'
 
-type Props = ButtonTheme & {
-  isBotOpened: boolean
-  toggleBot: () => void
-}
+type Props = Pick<BubbleTheme, 'placement'> &
+  ButtonTheme & {
+    isBotOpened: boolean
+    toggleBot: () => void
+  }
 
 const defaultButtonColor = '#0042DA'
 const defaultDarkIconColor = '#27272A'
@@ -20,8 +21,9 @@ export const BubbleButton = (props: Props) => (
     part="button"
     onClick={() => props.toggleBot()}
     class={
-      'fixed bottom-5 right-5 shadow-md  rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in' +
-      (props.size === 'large' ? ' w-16 h-16' : ' w-12 h-12')
+      'fixed bottom-5 shadow-md  rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in' +
+      (props.size === 'large' ? ' w-16 h-16' : ' w-12 h-12') +
+      (props.placement === 'left' ? ' left-5' : ' right-5')
     }
     style={{
       'background-color': props.backgroundColor ?? defaultButtonColor,
@@ -49,6 +51,7 @@ export const BubbleButton = (props: Props) => (
     </Show>
     <Show when={props.customIconSrc && isImageSrc(props.customIconSrc)}>
       <img
+        part="button-icon"
         src={props.customIconSrc}
         class={
           'duration-200 transition' +
