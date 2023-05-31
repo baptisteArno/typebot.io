@@ -13,7 +13,7 @@ const nextConfig = {
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr', 'pt'],
+    locales: ['en', 'fr', 'pt', 'de'],
   },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),

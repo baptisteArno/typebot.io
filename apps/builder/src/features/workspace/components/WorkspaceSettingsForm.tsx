@@ -12,8 +12,10 @@ import React from 'react'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useWorkspace } from '../WorkspaceProvider'
 import { TextInput } from '@/components/inputs'
+import { useScopedI18n } from '@/locales'
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
+  const scopedT = useScopedI18n('workspace.settings')
   const { workspace, workspaces, updateWorkspace, deleteCurrentWorkspace } =
     useWorkspace()
 
@@ -34,7 +36,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   return (
     <Stack spacing="6" w="full">
       <FormControl>
-        <FormLabel>Icon</FormLabel>
+        <FormLabel>{scopedT('icon.title')}</FormLabel>
         <Flex>
           {workspace && (
             <EditableEmojiOrImageIcon
@@ -48,7 +50,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
       </FormControl>
       {workspace && (
         <TextInput
-          label="Name:"
+          label={scopedT('name.label')}
           withVariableButton={false}
           defaultValue={workspace?.name}
           onChange={handleNameChange}
@@ -71,11 +73,12 @@ const DeleteWorkspaceButton = ({
   workspaceName: string
   onConfirm: () => Promise<void>
 }) => {
+  const scopedT = useScopedI18n('workspace.settings')
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
       <Button colorScheme="red" variant="outline" onClick={onOpen}>
-        Delete workspace
+        {scopedT('deleteButton.label')}
       </Button>
       <ConfirmModal
         isOpen={isOpen}
@@ -83,8 +86,9 @@ const DeleteWorkspaceButton = ({
         onClose={onClose}
         message={
           <Text>
-            Are you sure you want to delete {workspaceName} workspace? All its
-            folders, typebots and results will be deleted forever.
+            {scopedT('deleteButton.confirmMessage', {
+              workspaceName,
+            })}
           </Text>
         }
         confirmButtonLabel="Delete"

@@ -2601,6 +2601,9 @@
                                               },
                                               "isCustomBody": {
                                                 "type": "boolean"
+                                              },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "required": [
@@ -2928,6 +2931,9 @@
                                               },
                                               "isCustomBody": {
                                                 "type": "boolean"
+                                              },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "required": [
@@ -3093,6 +3099,9 @@
                                               },
                                               "isCustomBody": {
                                                 "type": "boolean"
+                                              },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "required": [
@@ -3181,6 +3190,9 @@
                                                 "type": "boolean"
                                               },
                                               "isCustomBody": {
+                                                "type": "boolean"
+                                              },
+                                              "isExecutedOnClient": {
                                                 "type": "boolean"
                                               }
                                             },

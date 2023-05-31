@@ -1,6 +1,4 @@
-import { defineLocale } from './index'
-
-export default defineLocale({
+export default {
   back: 'Voltar',
   'confirmModal.defaultTitle': 'Tem certeza?',
   'dashboard.header.settingsButton.label': 'Configurações & Membros',
@@ -12,6 +10,8 @@ export default defineLocale({
   update: 'Atualizar',
   upgrade: 'Upgrade',
   downgrade: 'Downgrade',
+  remove: 'Remover',
+  pending: 'Pendente',
   'folders.createFolderButton.label': 'Criar uma pasta',
   'folders.createTypebotButton.label': 'Criar um typebot',
   'folders.folderButton.deleteConfirmationMessage':
@@ -46,6 +46,9 @@ export default defineLocale({
     'Por favor, copie seu token e guarde-o em um lugar seguro.',
   'account.apiTokens.createModal.securityWarning':
     'Por motivos de segurança, não podemos mostrá-lo novamente.',
+  'account.preferences.language.heading': 'Idioma',
+  'account.preferences.language.tooltip':
+    'As traduções ainda não estão completas. É um trabalho em andamento. 🤓',
   'account.preferences.graphNavigation.heading': 'Navegação do Editor',
   'account.preferences.graphNavigation.mouse.label': 'Mouse',
   'account.preferences.graphNavigation.mouse.description':
@@ -161,4 +164,23 @@ export default defineLocale({
   'billing.limitMessage.fileInput': 'usar blocos de envio de arquivo',
   'billing.limitMessage.folder': 'criar pastas',
   'billing.upgradeAlert.buttonDefaultLabel': 'Mais informações',
-})
+  'workspace.membersList.inviteInput.placeholder': 'colega@empresa.com',
+  'workspace.membersList.inviteButton.label': 'Convidar',
+  'workspace.membersList.unlockBanner.label':
+    'Atualize seu plano para trabalhar com mais membros da equipe e desbloqueie recursos incríveis 🚀',
+  'workspace.membersList.title': 'Membros',
+  'workspace.settings.icon.title': 'Ícone',
+  'workspace.settings.name.label': 'Nome:',
+  'workspace.settings.deleteButton.label': 'Excluir espaço de trabalho',
+  'workspace.settings.deleteButton.confirmMessage':
+    'Você tem certeza de que deseja excluir o espaço de trabalho {workspaceName}? Todas as suas pastas, typebots e resultados serão excluídos permanentemente.',
+  'workspace.settings.modal.menu.myAccount.label': 'Minha conta',
+  'workspace.settings.modal.menu.preferences.label': 'Preferências',
+  'workspace.settings.modal.menu.workspace.label': 'Espaço de trabalho',
+  'workspace.settings.modal.menu.settings.label': 'Configurações',
+  'workspace.settings.modal.menu.members.label': 'Membros',
+  'workspace.settings.modal.menu.billingAndUsage.label': 'Faturamento e uso',
+  'workspace.settings.modal.menu.version.label': 'Versão: {version}',
+  'workspace.dropdown.newButton.label': 'Novo espaço de trabalho',
+  'workspace.dropdown.logoutButton.label': 'Sair',
+} as const

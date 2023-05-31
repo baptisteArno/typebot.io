@@ -20,8 +20,10 @@ import { updateInvitationQuery } from '../queries/updateInvitationQuery'
 import { updateMemberQuery } from '../queries/updateMemberQuery'
 import { Member } from '../types'
 import { useWorkspace } from '../WorkspaceProvider'
+import { useScopedI18n } from '@/locales'
 
 export const MembersList = () => {
+  const scopedT = useScopedI18n('workspace.membersList')
   const { user } = useUser()
   const { workspace, currentRole } = useWorkspace()
   const { members, invitations, isLoading, mutate } = useMembers({
@@ -102,16 +104,11 @@ export const MembersList = () => {
   return (
     <Stack w="full" spacing={3}>
       {!canInviteNewMember && (
-        <UnlockPlanAlertInfo
-          contentLabel={`
-          Upgrade your plan to work with more team members, and unlock awesome
-          power features 🚀
-        `}
-        />
+        <UnlockPlanAlertInfo contentLabel={scopedT('unlockBanner.label')} />
       )}
       {isDefined(seatsLimit) && (
         <Heading fontSize="2xl">
-          Members{' '}
+          {scopedT('title')}{' '}
           {seatsLimit === -1 ? '' : `(${currentMembersCount}/${seatsLimit})`}
         </Heading>
       )}
