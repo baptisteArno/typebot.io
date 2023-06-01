@@ -14,7 +14,7 @@ import { VariableSearchInput } from '../VariableSearchInput/VariableSearchInput'
 
 type Props = {
   onSelectVariable: (
-    variable: Pick<Variable, 'name' | 'id'> | undefined
+    variable: Pick<Variable, 'name' | 'id' |'token'> | undefined
   ) => void
 } & Omit<IconButtonProps, 'aria-label'>
 

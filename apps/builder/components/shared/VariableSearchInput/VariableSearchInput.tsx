@@ -17,11 +17,13 @@ import {
   InputProps,
   IconButton,
   HStack,
+  Stack
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
+import Select, { StylesConfig } from 'react-select'
 import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import { useDebouncedCallback } from 'use-debounce'
@@ -46,6 +48,7 @@ type Props = {
   initialVariableId?: string
   debounceTimeout?: number
   isDefaultOpen?: boolean
+  addVariable?: boolean,
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
@@ -68,6 +71,7 @@ export const VariableSearchInput = ({
   onSelectVariable,
   isDefaultOpen,
   handleOutsideClick,
+  addVariable = true,
   debounceTimeout = 1000,
   ...inputProps
 }: Props) => {
@@ -108,12 +112,12 @@ export const VariableSearchInput = ({
   }, Object.create(null))
 
   const options = Object.values(grouped)
-    .map((group: any, id: number): any => {
-      if (Object.keys(grouped)[id] !== 'undefined') {
-        return [makeTitle(Object.keys(grouped)[id]), ...group.sort((a: any, b: any) => b.fixed || 0 - a.fixed || 0)]
-      }
-    })
-    .filter((item) => item != undefined)
+  .map((group: any, id: number): any => {
+    if (Object.keys(grouped)[id] !== 'undefined') {
+      return [makeTitle(Object.keys(grouped)[id]), ...group.sort((a: any, b: any) => b.fixed || 0 - a.fixed || 0)]
+    }
+  })
+  .filter((item) => item != undefined)
 
   //todo:
   /**
@@ -256,6 +260,36 @@ export const VariableSearchInput = ({
     event.stopPropagation()
   }
 
+// Usado pra teste
+
+  // const optionsTwo = [
+  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
+  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
+  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' },
+  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
+  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
+  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' },
+  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
+  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
+  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' }
+  // ]
+
+  // const dot = (color = 'transparent') => ({
+  //   alignItems: 'center',
+  //   display: 'flex',
+  
+  //   ':before': {
+  //     backgroundColor: color,
+  //     borderRadius: 10,
+  //     content: '" "',
+  //     display: 'block',
+  //     marginRight: 8,
+  //     height: 10,
+  //     width: 10,
+  //   },
+  // });
+  
+
   return (
     <Flex ref={boxRef} w="full">
       <Popover
@@ -272,7 +306,17 @@ export const VariableSearchInput = ({
             {screen === 'VIEWER' && (
               <Container data-screen={screen}>
                 Selecione uma variável para salvar a resposta:
-                <SearchInput
+                <div>
+                  {/* usado pra teste */}
+                  {/* <Select
+                    options={optionsTwo}
+                    value={optionsTwo.token}
+                    isClearable={true}
+                    noOptionsMessage={() => 'Variável não encontrada'}
+                  /> */}
+                </div>
+                <Input
+                  id="name" 
                   data-testid="variables-input"
                   ref={inputRef}
                   value={inputValue}
@@ -281,10 +325,24 @@ export const VariableSearchInput = ({
                   placeholder={inputProps.placeholder ?? 'Selecione a variável'}
                   {...inputProps}
                 />
-                <OrText>Ou</OrText>
-                <CreateButton onClick={handleToggleScreen}>
-                  Criar variável
-                </CreateButton>
+               
+                {/* <SearchInput
+                  data-testid="variables-input"
+                  ref={inputRef}
+                  value={inputValue}
+                  onChange={onInputChange}
+                  onClick={onOpen}
+                  placeholder={inputProps.placeholder ?? 'Selecione a variável'}
+                  {...inputProps}
+                /> */}
+                {addVariable && (
+                  <Stack>
+                    <OrText>Ou</OrText>
+                    <CreateButton onClick={handleToggleScreen}>
+                      Criar variável
+                    </CreateButton>
+                  </Stack>
+                )}
               </Container>
             )}
             {screen === 'CREATE' && (
