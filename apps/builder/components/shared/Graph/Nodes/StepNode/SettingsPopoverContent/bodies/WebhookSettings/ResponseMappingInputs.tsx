@@ -25,11 +25,10 @@ export const DataVariableInputs = ({
           onValueChange={handleBodyPathChange}
           placeholder="Selecione o dado"
           debounceTimeout={debounceTimeout}
-          withVariableButton
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor="value">Configure sua variável:</FormLabel>
+        {/* <FormLabel htmlFor="value">Configure sua variável:</FormLabel> */}
         <VariableSearchInput
           onSelectVariable={handleVariableChange}
           placeholder="Pesquise sua variável"

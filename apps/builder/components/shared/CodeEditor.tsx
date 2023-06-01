@@ -1,118 +1,65 @@
-import { Box, BoxProps, HStack } from '@chakra-ui/react'
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
-import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { css } from '@codemirror/lang-css'
-import { javascript } from '@codemirror/lang-javascript'
-import { html } from '@codemirror/lang-html'
-import { useEffect, useRef, useState } from 'react'
+import { BoxProps, HStack, Stack, useColorModeValue, useDisclosure, IconButton, FormControl } from '@chakra-ui/react'
+import { TrashIcon } from 'assets/icons'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
+import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
+import { githubDark, githubLight } from '@uiw/codemirror-theme-github'
+import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
+import { isDefined } from '@udecode/plate-common'
 import { linter } from '@codemirror/lint'
-import { VariablesButton } from './buttons/VariablesButton'
+import { VariableSearchInput } from './VariableSearchInput/VariableSearchInput'
+import  { CreateButton } from './VariableSearchInput/VariableSearchInput.style'
 import { Variable } from 'models'
 import { isEmpty } from 'utils'
 
-const linterExtension = linter(jsonParseLinter())
-
 type Props = {
-  value: string
-  lang?: 'css' | 'json' | 'js' | 'html'
+  value?: string
+  defaultValue?: string
+  lang: LanguageName
   isReadOnly?: boolean
   debounceTimeout?: number
   withVariableButton?: boolean
+  height?: string
+  maxHeight?: string
+  minWidth?: string
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
-  value,
+  defaultValue,
   lang,
   onChange,
+  height = '250px',
+  maxHeight = '70vh',
+  minWidth,
   withVariableButton = true,
   isReadOnly = false,
   debounceTimeout = 1000,
   ...props
 }: Props & Omit<BoxProps, 'onChange'>) => {
-  const editorContainer = useRef<HTMLDivElement | null>(null)
-  const editorView = useRef<EditorView | null>(null)
-  const [, setPlainTextValue] = useState(value)
+  const theme = useColorModeValue(githubLight, githubDark)
+  const codeEditor = useRef<ReactCodeMirrorRef | null>(null)
   const [carretPosition, setCarretPosition] = useState<number>(0)
   const isVariableButtonDisplayed = withVariableButton && !isReadOnly
+  const [value, _setValue] = useState(defaultValue ?? '{}')
+  const { onOpen, onClose, isOpen } = useDisclosure()
+  const [addVariable, setAddVariable] = useState<boolean>(false)
 
-  const debounced = useDebouncedCallback(
+  const setValue = useDebouncedCallback(
     (value) => {
-      setPlainTextValue(value)
+      _setValue(value)
       onChange && onChange(value)
     },
     isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
 
-  useEffect(
-    () => () => {
-      debounced.flush()
-    },
-    [debounced]
-  )
-
-  useEffect(() => {
-    if (!editorView.current || !isReadOnly) return
-    editorView.current.dispatch({
-      changes: {
-        from: 0,
-        to: editorView.current.state.doc.length,
-        insert: value,
-      },
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
-
-  useEffect(() => {
-    const editor = initEditor(value)
-    return () => {
-      editor?.destroy()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const initEditor = (value: string) => {
-    if (!editorContainer.current) return
-    const updateListenerExtension = EditorView.updateListener.of((update) => {
-      if (update.docChanged && onChange)
-        debounced(update.state.doc.toJSON().join('\n'))
-    })
-    const extensions = [
-      updateListenerExtension,
-      basicSetup,
-      EditorState.readOnly.of(isReadOnly),
-    ]
-    if (lang === 'json') {
-      extensions.push(json())
-      extensions.push(linterExtension)
-    }
-    if (lang === 'css') extensions.push(css())
-    if (lang === 'js') extensions.push(javascript())
-    if (lang === 'html') extensions.push(html())
-    extensions.push(
-      EditorView.theme({
-        '&': { maxHeight: '500px' },
-        '.cm-gutter,.cm-content': { minHeight: isReadOnly ? '0' : '250px' },
-        '.cm-scroller': { overflow: 'auto' },
-      })
-    )
-    const editor = new EditorView({
-      state: EditorState.create({
-        extensions,
-      }),
-      parent: editorContainer.current,
-    })
-    editor.dispatch({
-      changes: { from: 0, insert: value },
-    })
-    editorView.current = editor
-    return editor
+  const handleChange = (newValue: string) => {
+    setValue(newValue)
   }
 
   const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name' | 'token'>) => {
-    editorView.current?.focus()
+    codeEditor.current?.view?.focus()
     const insert = `{{${variable?.token}}}`
-    editorView.current?.dispatch({
+    codeEditor.current?.view?.dispatch({
       changes: {
         from: carretPosition,
         insert,
@@ -121,22 +68,102 @@ export const CodeEditor = ({
     })
   }
 
-  const handleKeyUp = () => {
-    if (!editorContainer.current) return
-    setCarretPosition(editorView.current?.state.selection.main.from ?? 0)
+  const rememberCarretPosition = () => {
+    setCarretPosition(
+      codeEditor.current?.view?.state?.selection.asSingle().main.head ?? 0
+    )
+  }
+
+  useEffect(
+    () => () => {
+      setValue.flush()
+    },
+    [setValue]
+  )
+  const handleButtonVariable = () => {
+    setAddVariable(!addVariable)
   }
 
   return (
-    <HStack align="flex-end" spacing={0}>
-      <Box
-        w={isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%'}
-        ref={editorContainer}
+    <HStack
+      align="flex-end"
+      flexDirection={'column'}
+      spacing={0}
+      borderWidth={'0px'}
+      rounded="md"
+      bg={useColorModeValue('white', '#1A1B26')}
+      width="full"
+      h="full"
+      pos="relative"
+      minW={minWidth}
+      onMouseEnter={onOpen}
+      onMouseLeave={onClose}
+      maxWidth={props.maxWidth}
+      sx={{
+        '& .cm-editor': {
+          maxH: maxHeight,
+          outline: '0px solid transparent !important',
+          rounded: 'md',
+        },
+        '& .cm-scroller': {
+          rounded: 'md',
+          overflow: 'auto',
+        },
+        '& .cm-gutter,.cm-content': {
+          minH: isReadOnly ? '0' : height,
+        },
+        '& .ͼ1 .cm-scroller': {
+          fontSize: '14px',
+          fontFamily:
+            'JetBrainsMono, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace',
+        },
+      }}
+    >
+      <CodeMirror
         data-testid="code-editor"
-        {...props}
-        onKeyUp={handleKeyUp}
+        ref={codeEditor}
+        value={props.value ?? value}
+        onChange={handleChange}
+        onBlur={rememberCarretPosition}
+        theme={githubDark}
+        extensions={[loadLanguage(lang)].filter(isDefined)}
+        editable={!isReadOnly}
+        style={{
+          width: isVariableButtonDisplayed ? 'calc(100%)' : '100%',
+        }}
+        spellCheck={false}
       />
       {isVariableButtonDisplayed && (
-        <VariablesButton onSelectVariable={handleVariableSelected} size="sm" />
+        <HStack flexDirection={'column'} width="full">
+          {addVariable && (
+            <IconButton
+              icon={<TrashIcon />}
+              aria-label="Editor body"
+              size="xs"
+              onClick={handleButtonVariable}
+              alignSelf={"flex-start"}
+              width={"25px"}
+              top={"15px"}
+              right={"10px"}
+            />
+          )}
+          {addVariable && (
+            <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+              <FormControl>
+              <VariableSearchInput
+                onSelectVariable={handleVariableSelected}
+                placeholder="Pesquise sua variável"
+                width={"100%"}
+              />
+              </FormControl>
+            </Stack>
+          )}
+          {!addVariable && (
+            <CreateButton onClick={handleButtonVariable}>
+              { 'Adicionar variável'}
+            </CreateButton>
+          )}
+        </HStack>
       )}
     </HStack>
   )

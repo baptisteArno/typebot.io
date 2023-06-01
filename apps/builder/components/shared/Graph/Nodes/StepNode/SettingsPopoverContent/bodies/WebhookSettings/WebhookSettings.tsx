@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState, useRef } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -7,25 +7,23 @@ import {
   AccordionPanel,
   Button,
   HStack,
-  Spinner,
   Stack,
   useToast,
   Text,
-  Alert,
-  AlertIcon,
-  Link
+  FormLabel,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
+  useDisclosure
 } from '@chakra-ui/react'
-import { Input } from 'components/shared/Textbox'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
-  KeyValue,
   WebhookOptions,
   VariableForTest,
   ResponseVariableMapping,
   WebhookStep,
-  defaultWebhookAttributes,
-  Webhook,
-  StepIndices,
   QueryParameters,
   Variable,
   Session,
@@ -34,26 +32,24 @@ import {
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
 import { CodeEditor } from 'components/shared/CodeEditor'
-import {
-  convertVariableForTestToVariables,
-  executeWebhook,
-  getDeepKeys,
-} from 'services/integrations'
-import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
+import { OpenEditorBody } from './OpenEditorBody'
+import { getDeepKeys } from 'services/integrations'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
-import { byId } from 'utils'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { ExternalLinkIcon } from 'assets/icons'
 import { sendOctaRequest } from 'util/octaRequest'
-import { debug } from 'console'
-import { Textarea } from 'components/shared/Textbox'
+import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
+import { Options } from 'use-debounce'
+import { Input, Textarea } from 'components/shared/Textbox'
 // import { validateUrl } from 'utils'
 
 enum HttpMethodsWebhook {
   POST = "POST",
   GET = "GET",
-  PUT = "PUT"
+  PUT = "PUT",
+  PATCH = "PATCH",
+  DELETE = "DELETE",
+  OPTIONS = "OPTIONS"
 }
 
 type Props = {
@@ -69,31 +65,42 @@ export const WebhookSettings = ({
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
+  const [successTest, setSuccessTest] = useState<string>()
+  const [mountUrl, setMountUrl] = useState<string>()
 
   if (step.options.path?.length)
   {
     step.options.url += step.options.path?.length ? step.options.path[0].value : ''
     step.options.path = []
   }
-
+  
   const toast = useToast({
     position: 'top-right',
     status: 'error',
   })
 
-  const handleUrlChange = (url?: string) => {
+  const handleUrlChange = (url: string) => {
     if (step.options.url != url) clearOptions()
+
     if (url && url.length > 5) {
       const newUrl = new URL(url.replace(/ /g, '').trim())
       url = newUrl.origin
+      
+      const hasPath = step.options.path.length
 
       if (newUrl.search) handleParams(newUrl.search)
 
-      //addParams('path', '', newUrl.pathname, newUrl.pathname)
+      if(hasPath == 1) {
+        step.options.path[hasPath].value = newUrl.pathname
+        step.options.path[hasPath].displayValue = newUrl.pathname
+        step.options.path[hasPath].properties = undefined
+      } else {
+        addParams('path', '', newUrl.pathname, newUrl.pathname)
+      }
 
       onOptionsChange({
         ...step.options,
-        url: (url ? url : "") + newUrl.pathname
+        url: (url ? url : "")
       })
     }
   }
@@ -106,6 +113,9 @@ export const WebhookSettings = ({
     options.responseVariableMapping = []
     options.variablesForTest = []
     options.headers = []
+
+    setTestResponse(undefined)
+    setSuccessTest("")
   }
 
   const handleParams = (url: string) => {
@@ -119,24 +129,46 @@ export const WebhookSettings = ({
   }
 
   const addParams = (type: string, key: string, value: string, displayValue: string, properties?: Variable | undefined) => {
-    step.options.path.push({
+    const pathVariables = {
       key: key || '',
       value: value || '',
       displayValue: displayValue || '',
       type,
       isNew: true,
       properties: properties
+    } as any
+
+    if(type == 'path') {
+      step.options.path = {...step.options.path , ...pathVariables}
+
+      onOptionsChange({
+        ...step.options,
+        path: { ...step.options.path }
+      })
+    }
+    else {
+      step.options.parameters.push(pathVariables)
+      
+      onOptionsChange({
+        ...step.options,
+        parameters: { ...step.options.parameters }
+      })
+    }
+
+
+    onOptionsChange({
+      ...step.options,
+      path: {...step.options.path}
     })
   }
 
   const handleMethodChange = (method: HttpMethodsWebhook) => {
+    if (step.options.method != method) clearOptions()
     onOptionsChange({
       ...step.options,
       method: method
     })
   }
-
-
 
   const handleQueryParamsChange = (parameters: QueryParameters[]) => {
     onOptionsChange({
@@ -177,7 +209,7 @@ export const WebhookSettings = ({
   const resolveSession = (variablesForTest: VariableForTest[], variables: Variable[]) => {
     if (!variablesForTest?.length || !variables?.length) return {}
 
-    let session: Session = {
+    const session: Session = {
       propertySpecs: [],
       properties: {}
     }
@@ -208,7 +240,7 @@ export const WebhookSettings = ({
     setIsTestResponseLoading(true)
 
     const options = step.options as WebhookOptions
-    const parameters = options.parameters.concat(options.path, options.headers)
+    const parameters = step.options.parameters.concat(options.path, options.headers)
 
     const localWebhook = {
       method: options.method,
@@ -231,8 +263,11 @@ export const WebhookSettings = ({
     const { response, success } = data
 
     setIsTestResponseLoading(false)
+    setSuccessTest(success)
 
-    if (!success) return toast({ title: 'Error', description: `Não foi possivel realizar a sua integração 😢` })
+    if (!success) {
+      toast({ title: 'Error', description: `Não foi possivel executar sua integração. 😢` })
+    }
 
     if (typeof response === 'object') {
       setTestResponse(JSON.stringify(response, undefined, 2))
@@ -249,6 +284,7 @@ export const WebhookSettings = ({
   )
 
   const handlerDefault = (e: any) => {
+    console.log('e', e)
   }
 
   return (
@@ -276,12 +312,34 @@ export const WebhookSettings = ({
                 </Text>
                 <Textarea
                   placeholder="Digite o endereço da API ou do sistema"
-                  defaultValue={step.options.url}
+                  defaultValue={step.options.url ?? ''}
                   onChange={handleUrlChange}
                   debounceTimeout={0}
                 />
               </AccordionPanel>
             </AccordionItem>
+            {/* {hasPath && (
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Path
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4} as={Stack} spacing="6">
+                  <Text color="gray.500" fontSize="sm">
+                    Adicione sua informações ao final da URL da integração
+                    (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
+                  </Text>
+                  <TableList<QueryParameters>
+                    initialItems={step.options.path}
+                    onItemsChange={handlePath}
+                    Item={QueryParamsInputs}
+                    addLabel="Adicionar parâmetro"
+                    type="query"
+                    debounceTimeout={0}
+                  />
+                </AccordionPanel>
+              </AccordionItem>
+            )} */}
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Params
@@ -336,23 +394,29 @@ export const WebhookSettings = ({
                     onCheckChange={handleBodyFormStateChange}
                   />
                   {(step.options.isCustomBody ?? true) && (
-                    <CodeEditor
-                      value={step.options.body ?? ''}
-                      lang="json"
-                      onChange={handleBodyChange}
-                      debounceTimeout={0}
-                    >
+                    <Stack>
                       <text color="gray.500" fontSize="sm">
                         Envie sua informação na corpo da integração  Request Body (apenas JSON)
-                        <text>
-                          Digite # para inserir campos personalizados
-                        </text>
                       </text>
-                      {/* "Request Body (apenas JSON)",
-							      "Digite # para inserir campos personalizados" */}
-                    </CodeEditor>
+                      {/* Verificar se vamos deixar esse ativo */}
+                      {/* <text>
+                        Digite # para inserir campos personalizados
+                      </text> */}
+                      <OpenEditorBody
+                        value={step.options.body ?? '{}'}
+                        lang="json"
+                        onChange={handleBodyChange}
+                        debounceTimeout={0}
+                      />
+                      <CodeEditor
+                        value={step.options.body ?? '{}'}
+                        defaultValue={'{}'}
+                        lang="json"
+                        onChange={handleBodyChange}
+                        debounceTimeout={0}
+                      />
+                    </Stack>
                   )}
-
                 </AccordionPanel>
               </AccordionItem>
             )}
@@ -387,9 +451,15 @@ export const WebhookSettings = ({
           </Button>
         )}
         {testResponse && (
-          <CodeEditor isReadOnly lang="json" value={testResponse} />
+          <CodeEditor
+            value={testResponse}
+            defaultValue={'{}'}
+            lang="json"
+            isReadOnly
+            debounceTimeout={0}
+          />
         )}
-        {(testResponse || step.options?.responseVariableMapping.length > 0) && (
+        {(successTest) && (
           <Accordion allowToggle allowMultiple>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
