@@ -18,16 +18,17 @@ export const VariableForTestInputs = ({
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <FormControl>
-        <FormLabel htmlFor={'name' + item.id}>Variable name:</FormLabel>
+        <FormLabel htmlFor={'name' + item.id}>Nome da variável:</FormLabel>
         <VariableSearchInput
           id={'name' + item.id}
           initialVariableId={item.variableId}
           onSelectVariable={handleVariableSelect}
           debounceTimeout={debounceTimeout}
+          addVariable={false}
         />
       </FormControl>
       <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Test value:</FormLabel>
+        <FormLabel htmlFor={'value' + item.id}>Variável de teste:</FormLabel>
         <Input
           id={'value' + item.id}
           defaultValue={item.value ?? ''}
