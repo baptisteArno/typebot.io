@@ -297,7 +297,9 @@ export const StepSettings = ({
     }
     case IntegrationStepType.WEBHOOK: {
       return (
-        <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />
+        <WebhookSettings 
+        step={step}
+        onOptionsChange={handleOptionsChange} />
       )
     }
     default: {
