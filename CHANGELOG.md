@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="2.14.0"></a>
+## 2.14.0 (2023-06-02)
+
+### Changed
+
+- ♿ Improve credentials dropdown accessibility if long name [[bc90c9c](https://github.com/baptisteArno/typebot.io/commit/bc90c9c81ee6f317ba32e402d1d59cf2d17f372b)]
+- 💄 Improve picture choice description UI [[b6e5002](https://github.com/baptisteArno/typebot.io/commit/b6e5002a5692368a15c526b1bd67572574a9ee0e)]
+- ⚡ (js) Add placement option for bubble embed [[57f3e5c](https://github.com/baptisteArno/typebot.io/commit/57f3e5c004e55bdfcc87e7275f00375619685970)]
+
+### Fixed
+
+- 🚑 Fix bubble window size on mobile devices [[8a0488e](https://github.com/baptisteArno/typebot.io/commit/8a0488ee89d6532874e0d597418db0d5a51a542d)]
+
+### Miscellaneous
+
+-  Update de.ts ([#535](https://github.com/baptisteArno/typebot.io/issues/535)) [[537b9fe](https://github.com/baptisteArno/typebot.io/commit/537b9fe6ce1a42b618c94eead70ff63a20a29835)]
+- 🌐 Translate workspace ([#528](https://github.com/baptisteArno/typebot.io/issues/528)) [[b2ea8fc](https://github.com/baptisteArno/typebot.io/commit/b2ea8fc0595f28cf12a0b8e6dfde102314de1041)]
+-  Update builder configuration docs ([#531](https://github.com/baptisteArno/typebot.io/issues/531)) [[6651c85](https://github.com/baptisteArno/typebot.io/commit/6651c85f021e977c17bbb2df161197ecdc08e6a5)]
+- 🔍 (lp) Add FB app ID in landing page [[9ca0c70](https://github.com/baptisteArno/typebot.io/commit/9ca0c7014e69d1fdd13d02ebfd64f08e0b9d0f99)]
+
+
 <a name="2.13.5"></a>
 ## 2.13.5 (2023-05-26)
 
