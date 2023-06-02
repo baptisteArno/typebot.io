@@ -161,7 +161,7 @@ export const Bubble = (props: BubbleProps) => {
           (props.theme?.button?.size === 'large'
             ? ' bottom-24'
             : ' bottom-20') +
-          (props.theme?.placement === 'left' ? ' left-5' : ' right-5')
+          (props.theme?.placement === 'left' ? ' sm:left-5' : ' sm:right-5')
         }
       >
         <Show when={isBotStarted()}>
