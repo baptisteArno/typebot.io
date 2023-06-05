@@ -13,7 +13,7 @@ export const AssignToTeamContentItems = ({
 
   return (
     <Stack>
-      <Text color={'gray.500'} h={'auto'}>
+      <Text color={'gray.500'} h={'auto'} ml={'8px'}>
         Direcione à um atendente
       </Text>
     </Stack>

@@ -123,6 +123,7 @@ export const ItemNodesList = ({
       maxW="full"
       onClick={stopPropagating}
       pointerEvents={isReadOnly ? 'none' : 'all'}
+      marginLeft={'8px'}
     >
       {/* <Flex
         ref={handlePushElementRef(0)}

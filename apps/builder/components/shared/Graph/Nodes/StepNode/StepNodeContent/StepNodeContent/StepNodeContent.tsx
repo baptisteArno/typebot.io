@@ -66,7 +66,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       )
     }
     case InputStepType.DATE: {
-      return <Text color={'gray.500'}>Informe uma data, por favor...</Text>
+      return <Text color={'gray.500'} ml={'8px'}>Informe uma data, por favor...</Text>
     }
     case InputStepType.CHOICE: {
       return <ItemNodesList step={step} indices={indices} />
