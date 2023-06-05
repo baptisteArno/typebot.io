@@ -86,13 +86,12 @@ export const ItemNode = ({
             transition="box-shadow 200ms, border-color 200ms"
             rounded="md"
             bg={bg}
-            borderWidth={isContextMenuOpened || isPreviewing ? '2px' : '1px'}
+            borderWidth={1}
             borderColor={
               isContextMenuOpened || isPreviewing
                 ? previewingBorderColor
                 : borderColor
             }
-            margin={isContextMenuOpened || isPreviewing ? '-1px' : 0}
             w="full"
           >
             <ItemNodeContent

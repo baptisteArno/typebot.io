@@ -24,6 +24,7 @@ type BlockWithCreatableItems = Extract<Block, { items: DraggabbleItem[] }>
 
 export type ItemsActions = {
   createItem: (item: NewItem, indices: ItemIndices) => void
+  duplicateItem: (indices: ItemIndices) => void
   updateItem: (indices: ItemIndices, updates: Partial<Omit<Item, 'id'>>) => void
   detachItemFromBlock: (indices: ItemIndices) => void
   deleteItem: (indices: ItemIndices) => void
@@ -67,6 +68,44 @@ const createItem = (
   }
 }
 
+const duplicateItem = (
+  block: Draft<BlockWithCreatableItems>,
+  itemIndex: number
+): Item => {
+  const item = block.items[itemIndex]
+  switch (block.type) {
+    case LogicBlockType.CONDITION: {
+      const baseItem = item as ConditionItem
+      const newItem = {
+        ...baseItem,
+        id: createId(),
+        content: baseItem.content ?? defaultConditionContent,
+      }
+      block.items.splice(itemIndex + 1, 0, newItem)
+      return newItem
+    }
+    case InputBlockType.CHOICE: {
+      const baseItem = item as ButtonItem
+      const newItem = {
+        ...baseItem,
+        id: createId(),
+        content: baseItem.content,
+      }
+      block.items.splice(itemIndex + 1, 0, newItem)
+      return newItem
+    }
+    case InputBlockType.PICTURE_CHOICE: {
+      const baseItem = item as PictureChoiceItem
+      const newItem = {
+        ...baseItem,
+        id: createId(),
+      }
+      block.items.splice(itemIndex + 1, 0, newItem)
+      return newItem
+    }
+  }
+}
+
 const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   createItem: (
     item: NewItem,
@@ -92,6 +131,15 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
               })
             : (newItem.outgoingEdgeId = undefined)
         }
+      })
+    ),
+  duplicateItem: ({ groupIndex, blockIndex, itemIndex }: ItemIndices) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        const block = typebot.groups[groupIndex].blocks[
+          blockIndex
+        ] as BlockWithCreatableItems
+        duplicateItem(block, itemIndex)
       })
     ),
   updateItem: (
