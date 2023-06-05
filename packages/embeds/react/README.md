@@ -38,19 +38,19 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/react'
+import { open } from '@typebot.io/js'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/react'
+import { close } from '@typebot.io/js'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/react'
+import { toggle } from '@typebot.io/js'
 
 toggle()
 ```
@@ -85,13 +85,13 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-import { showPreviewMessage } from '@typebot.io/react'
+import { showPreviewMessage } from '@typebot.io/js'
 
 Typebot.showPreviewMessage()
 ```
 
 ```js
-import { hidePreviewMessage } from '@typebot.io/react'
+import { hidePreviewMessage } from '@typebot.io/js'
 
 Typebot.hidePreviewMessage()
 ```
@@ -101,19 +101,19 @@ Typebot.hidePreviewMessage()
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/react'
+import { open } from '@typebot.io/js'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/react'
+import { close } from '@typebot.io/js'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/react'
+import { toggle } from '@typebot.io/js'
 
 toggle()
 ```
