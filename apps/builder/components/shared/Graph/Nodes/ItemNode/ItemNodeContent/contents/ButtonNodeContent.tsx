@@ -61,6 +61,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
         maxW="180px"
+        marginLeft={'8px'}
       >
         <EditablePreview
           w="full"

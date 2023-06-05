@@ -9,7 +9,7 @@ export const CallOtherBotContentItems = ({
 
   return (
     <Stack>
-      <Text color={'gray.500'} h={'auto'}>
+      <Text color={'gray.500'} h={'auto'} ml={'8px'}>
         Chamar outro bot
       </Text>
     </Stack>
