@@ -1,34 +1,20 @@
+import { findUniqueVariableValue } from '@/features/variables/findUniqueVariableValue'
+import { isNotDefined, isDefined } from '@typebot.io/lib'
 import {
   Comparison,
   ComparisonOperators,
-  ConditionBlock,
+  Condition,
   LogicalOperator,
-  SessionState,
   Variable,
 } from '@typebot.io/schemas'
-import { isNotDefined, isDefined } from '@typebot.io/lib'
-import { ExecuteLogicResponse } from '@/features/chat/types'
-import { findUniqueVariableValue } from '@/features/variables/findUniqueVariableValue'
-import { parseVariables } from '@/features/variables/parseVariables'
+import { parseVariables } from 'bot-engine'
 
-export const executeCondition = (
-  { typebot: { variables } }: SessionState,
-  block: ConditionBlock
-): ExecuteLogicResponse => {
-  const passedCondition = block.items.find((item) => {
-    const { content } = item
-    const isConditionPassed =
-      content.logicalOperator === LogicalOperator.AND
-        ? content.comparisons.every(executeComparison(variables))
-        : content.comparisons.some(executeComparison(variables))
-    return isConditionPassed
-  })
-  return {
-    outgoingEdgeId: passedCondition
-      ? passedCondition.outgoingEdgeId
-      : block.outgoingEdgeId,
-  }
-}
+export const executeCondition =
+  (variables: Variable[]) =>
+  (condition: Condition): boolean =>
+    condition.logicalOperator === LogicalOperator.AND
+      ? condition.comparisons.every(executeComparison(variables))
+      : condition.comparisons.some(executeComparison(variables))
 
 const executeComparison =
   (variables: Variable[]) =>

@@ -11,6 +11,9 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
+import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
+import { Condition, LogicalOperator } from '@typebot.io/schemas'
 
 type Props = {
   typebotId: string
@@ -32,15 +35,35 @@ export const PictureChoiceItemSettings = ({
   const updateDescription = (description: string) =>
     onItemChange({ ...item, description })
 
+  const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
+    onItemChange({
+      ...item,
+      displayCondition: {
+        ...item.displayCondition,
+        isEnabled,
+      },
+    })
+
+  const updateDisplayCondition = (condition: Condition) =>
+    onItemChange({
+      ...item,
+      displayCondition: {
+        ...item.displayCondition,
+        condition,
+      },
+    })
+
   return (
-    <Stack>
+    <Stack spacing={4}>
       <HStack>
         <Text fontWeight="medium">Image:</Text>
         <Popover isLazy>
           {({ onClose }) => (
             <>
               <PopoverTrigger>
-                <Button size="sm">Pick an image</Button>
+                <Button size="sm">
+                  {item.pictureSrc ? 'Change image' : 'Pick an image'}
+                </Button>
               </PopoverTrigger>
               <PopoverContent p="4" w="500px">
                 <ImageUploadContent
@@ -67,6 +90,21 @@ export const PictureChoiceItemSettings = ({
         defaultValue={item.description}
         onChange={updateDescription}
       />
+      <SwitchWithRelatedSettings
+        label="Display condition"
+        initialValue={item.displayCondition?.isEnabled ?? false}
+        onCheckChange={updateIsDisplayConditionEnabled}
+      >
+        <ConditionForm
+          condition={
+            item.displayCondition?.condition ?? {
+              comparisons: [],
+              logicalOperator: LogicalOperator.AND,
+            }
+          }
+          onConditionChange={updateDisplayCondition}
+        />
+      </SwitchWithRelatedSettings>
     </Stack>
   )
 }

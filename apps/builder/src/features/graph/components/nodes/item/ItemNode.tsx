@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue } from '@chakra-ui/react'
+import { Flex, useColorModeValue, Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   ChoiceInputBlock,
@@ -20,6 +20,7 @@ import {
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
+import { ConditionContent } from '@/features/blocks/logic/condition/components/ConditionContent'
 
 type Props = {
   item: Item
@@ -71,12 +72,22 @@ export const ItemNode = ({
       renderMenu={() => <ItemNodeContextMenu indices={indices} />}
     >
       {(ref, isContextMenuOpened) => (
-        <Flex
+        <Stack
           data-testid="item"
           pos="relative"
           ref={setMultipleRefs([ref, itemRef])}
           w="full"
         >
+          {'displayCondition' in item &&
+            item.displayCondition?.isEnabled &&
+            item.displayCondition.condition && (
+              <ConditionContent
+                condition={item.displayCondition.condition}
+                variables={typebot?.variables ?? []}
+                size="xs"
+                displaySemicolon
+              />
+            )}
           <Flex
             align="center"
             onMouseEnter={handleMouseEnter}
@@ -113,7 +124,7 @@ export const ItemNode = ({
               />
             )}
           </Flex>
-        </Flex>
+        </Stack>
       )}
     </ContextMenu>
   )

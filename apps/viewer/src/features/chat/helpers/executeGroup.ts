@@ -55,7 +55,7 @@ export const executeGroup =
       if (isInputBlock(block))
         return {
           messages,
-          input: await injectVariablesValueInBlock(newSessionState)(block),
+          input: await parseInput(newSessionState)(block),
           newSessionState: {
             ...newSessionState,
             currentBlock: {
@@ -183,7 +183,7 @@ const parseBubbleBlock =
     }
   }
 
-const injectVariablesValueInBlock =
+const parseInput =
   (state: SessionState) =>
   async (block: InputBlock): Promise<ChatReply['input']> => {
     switch (block.type) {

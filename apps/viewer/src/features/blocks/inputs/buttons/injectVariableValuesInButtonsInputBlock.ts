@@ -8,6 +8,7 @@ import { isDefined } from '@typebot.io/lib'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { transformStringVariablesToList } from '@/features/variables/transformVariablesToList'
 import { updateVariables } from '@/features/variables/updateVariables'
+import { filterChoiceItems } from './filterChoiceItems'
 
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
@@ -30,7 +31,9 @@ export const injectVariableValuesInButtonsInputBlock =
         })),
       }
     }
-    return deepParseVariables(state.typebot.variables)(block)
+    return deepParseVariables(state.typebot.variables)(
+      filterChoiceItems(state.typebot.variables)(block)
+    )
   }
 
 const getVariableValue =

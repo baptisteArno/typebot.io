@@ -1,9 +1,6 @@
 import {
-  Stack,
-  Tag,
   Text,
   Flex,
-  Wrap,
   Fade,
   IconButton,
   Popover,
@@ -12,23 +9,23 @@ import {
   PopoverArrow,
   PopoverBody,
   useEventListener,
-  useColorModeValue,
   PopoverAnchor,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   Comparison,
   ConditionItem,
-  ComparisonOperators,
   ItemType,
   ItemIndices,
+  Condition,
 } from '@typebot.io/schemas'
 import React, { useRef } from 'react'
-import { byId, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 import { PlusIcon } from '@/components/icons'
-import { ConditionItemForm } from './ConditionItemForm'
+import { ConditionForm } from './ConditionForm'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { createId } from '@paralleldrive/cuid2'
+import { ConditionContent } from './ConditionContent'
 
 type Props = {
   item: ConditionItem
@@ -37,7 +34,6 @@ type Props = {
 }
 
 export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
-  const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
   const { typebot, createItem, updateItem } = useTypebot()
   const { openedItemId, setOpenedItemId } = useGraph()
   const ref = useRef<HTMLDivElement | null>(null)
@@ -48,8 +44,8 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
     setOpenedItemId(item.id)
   }
 
-  const handleItemChange = (updates: Partial<ConditionItem>) => {
-    updateItem(indices, { ...item, ...updates })
+  const updateCondition = (condition: Condition) => {
+    updateItem(indices, { ...item, content: condition } as ConditionItem)
   }
 
   const handlePlusClick = (event: React.MouseEvent) => {
@@ -85,37 +81,10 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
           comparisonIsEmpty(item.content.comparisons[0]) ? (
             <Text color={'gray.500'}>Configure...</Text>
           ) : (
-            <Stack maxW="170px">
-              {item.content.comparisons.map((comparison, idx) => {
-                const variable = typebot?.variables.find(
-                  byId(comparison.variableId)
-                )
-                return (
-                  <Wrap key={comparison.id} spacing={1} noOfLines={1}>
-                    {idx > 0 && (
-                      <Text>{item.content.logicalOperator ?? ''}</Text>
-                    )}
-                    {variable?.name && (
-                      <Tag bgColor="orange.400" color="white">
-                        {variable.name}
-                      </Tag>
-                    )}
-                    {comparison.comparisonOperator && (
-                      <Text fontSize="sm">
-                        {parseComparisonOperatorSymbol(
-                          comparison.comparisonOperator
-                        )}
-                      </Text>
-                    )}
-                    {comparison?.value && (
-                      <Tag bgColor={comparisonValueBg}>
-                        <Text noOfLines={1}>{comparison.value}</Text>
-                      </Tag>
-                    )}
-                  </Wrap>
-                )
-              })}
-            </Stack>
+            <ConditionContent
+              condition={item.content}
+              variables={typebot?.variables ?? []}
+            />
           )}
           <Fade
             in={isMouseOver}
@@ -148,9 +117,9 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
             shadow="lg"
             ref={ref}
           >
-            <ConditionItemForm
-              itemContent={item.content}
-              onItemChange={handleItemChange}
+            <ConditionForm
+              condition={item.content}
+              onConditionChange={updateCondition}
             />
           </PopoverBody>
         </PopoverContent>
@@ -163,30 +132,3 @@ const comparisonIsEmpty = (comparison: Comparison) =>
   isNotDefined(comparison.comparisonOperator) &&
   isNotDefined(comparison.value) &&
   isNotDefined(comparison.variableId)
-
-const parseComparisonOperatorSymbol = (
-  operator: ComparisonOperators
-): string => {
-  switch (operator) {
-    case ComparisonOperators.CONTAINS:
-      return 'contains'
-    case ComparisonOperators.EQUAL:
-      return '='
-    case ComparisonOperators.GREATER:
-      return '>'
-    case ComparisonOperators.IS_SET:
-      return 'is set'
-    case ComparisonOperators.LESS:
-      return '<'
-    case ComparisonOperators.NOT_EQUAL:
-      return '!='
-    case ComparisonOperators.ENDS_WITH:
-      return 'ends with'
-    case ComparisonOperators.STARTS_WITH:
-      return 'starts with'
-    case ComparisonOperators.IS_EMPTY:
-      return 'is empty'
-    case ComparisonOperators.NOT_CONTAINS:
-      return 'not contains'
-  }
-}
