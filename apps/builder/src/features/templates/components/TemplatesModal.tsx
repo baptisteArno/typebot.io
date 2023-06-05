@@ -27,7 +27,7 @@ type Props = {
 }
 
 export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
-  const templateCardBackgroundColor = useColorModeValue(undefined, 'gray.800')
+  const templateCardBackgroundColor = useColorModeValue('white', 'gray.800')
   const [typebot, setTypebot] = useState<Typebot>()
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0]
@@ -197,7 +197,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
             spacing="4"
             align="center"
             pb="4"
-            bgColor="white"
+            bgColor={selectedTemplate.backgroundColor ?? 'white'}
           >
             {typebot && (
               <Standard

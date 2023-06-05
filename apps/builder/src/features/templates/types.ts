@@ -6,4 +6,5 @@ export type TemplateProps = {
   category?: 'marketing' | 'product'
   isComingSoon?: boolean
   isNew?: boolean
+  backgroundColor?: string
 }

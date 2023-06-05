@@ -42,6 +42,15 @@ export const templates: TemplateProps[] = [
       'Provide a free content to your prospects in exchange for their contact information.',
   },
   {
+    name: 'Product recommendation',
+    emoji: '🍫',
+    fileName: 'product-recommendation.json',
+    category: 'marketing',
+    description:
+      'Näak is a company that sells energy bars, hydration mix and recovery prodcuts. This bot helps a visitor choosing the right product. It helps you qualify your lead and provide a personalized recommendation.',
+    backgroundColor: '#010000',
+  },
+  {
     name: 'NPS Survey',
     emoji: '⭐',
     fileName: 'nps.json',
