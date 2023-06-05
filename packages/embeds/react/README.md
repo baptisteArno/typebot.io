@@ -85,13 +85,13 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-import * as Typebot from '@typebot.io/js'
+import { showPreviewMessage } from '@typebot.io/js'
 
 Typebot.showPreviewMessage()
 ```
 
 ```js
-import * as Typebot from '@typebot.io/js'
+import { hidePreviewMessage } from '@typebot.io/js'
 
 Typebot.hidePreviewMessage()
 ```
