@@ -11,6 +11,7 @@ import {
   Spacer,
   Portal
 } from '@chakra-ui/react'
+import { InfoIcon } from '@chakra-ui/icons'
 import {
   BubbleStepType,
   DraggableStepType,
@@ -25,7 +26,7 @@ import {
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
-import { LockedIcon, UnlockedIcon, InformationIcon } from 'assets/icons'
+import { LockedIcon, UnlockedIcon } from 'assets/icons'
 import { headerHeight } from 'components/shared/TypebotHeader'
 import { useUser } from 'contexts/UserContext'
 
@@ -151,17 +152,13 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Mensagens
-          <Tooltip
-            label='Etapa que não requer interação com o usuário'>
-            <IconButton
-              icon={<InformationIcon marginLeft="5px" />}
-              aria-label="back"
-              variant="ghost"
-              colorScheme="gray"
-              mr={1}
-            />
-          </Tooltip>
+              Mensagens
+            <Tooltip 
+              hasArrow 
+              label='Etapa que não requer interação com o usuário' bg='gray.700' color='white' width={'200px'}
+            >
+              <InfoIcon marginLeft={'10px'} color={'gray.300'}/>
+            </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleStepType).map(
@@ -180,15 +177,11 @@ export const StepsSideBar = () => {
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Perguntas
-            <Tooltip
-              label='Etapa em que o usuário interage com o bot'>
-              <IconButton
-              icon={<InformationIcon marginLeft="5px" />}
-              aria-label="back"
-              variant="ghost"
-              colorScheme="gray"
-              mr={1}
-            />
+            <Tooltip 
+              hasArrow 
+              label='Etapa em que o usuário interage com o bot' bg='gray.700' color='white' width={'200px'}
+            >
+              <InfoIcon marginLeft={'10px'} color={'gray.300'}/>
             </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -245,7 +238,7 @@ export const StepsSideBar = () => {
               />
             ))}
           </SimpleGrid>
-          <SimpleGrid columns={1} spacing="3">
+          <SimpleGrid columns={1} spacing="3" >
             {Object.values(OctaBubbleStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
@@ -296,19 +289,19 @@ export const StepsSideBar = () => {
       </Stack>
 
       {draggedStepType && (
-          <Portal>
-            <StepCardOverlay
-              type={draggedStepType}
-              onMouseUp={handleMouseUp}
-              pos="fixed"
-              top="0"
-              left="0"
-              style={{
-                transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
-              }}
-            />
-          </Portal>
-        )}
+        <Portal>
+          <StepCardOverlay
+            type={draggedStepType}
+            onMouseUp={handleMouseUp}
+            pos="fixed"
+            top="0"
+            left="0"
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
+            }}
+          />
+        </Portal>
+      )}
 
       <Fade in={!isLocked} unmountOnExit>
         <Flex

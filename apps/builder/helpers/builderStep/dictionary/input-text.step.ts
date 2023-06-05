@@ -7,15 +7,15 @@ const templateTextBot = (typebot: WritableDraft<Typebot>, blockId: string, place
     {
       ...parseNewStep(BubbleStepType.TEXT, blockId),
         content: {
-        html: `<div>${placeholder}</div>`,
-        richText: [{
-          children: [{
-            text: `${placeholder}`,
+          html: `<div style="margin-left: 8px;">${placeholder}</div>`,
+          richText: [{
+            children: [{
+              text: `${placeholder}`,
+            }],
+            type: "p"
           }],
-          type: "p"
-        }],
-        plainText: `${placeholder}`,
-      }
+          plainText: `${placeholder}`,
+        }
     } as DraggableStep,
     parseNewStep(InputStepType.TEXT, blockId)
   ];
