@@ -24,11 +24,13 @@ export const Faq = () => (
           What happens once I reach the monthly chats limit?
         </Heading>
         <Text>
-          When you exceed the number of chats included in your plan, you will
-          receive a heads up by email. There won&apos;t be any immediate
-          additional charges and your bots will continue to run. If you continue
-          to exceed the limit, you will be kindly asked you to upgrade your
-          subscription.
+          You will receive a heads up email when you reach 80% of your monthly
+          limit. Once you have reached the limit, you will receive another email
+          alert. Your bots will continue to run. You will be kindly asked to
+          upgrade your subscription. If you don&apos;t provide an answer after
+          ~48h, your bots will be closed for the remaining of the month. For a
+          FREE workspace, If you exceed 600 chats, your bots will be
+          automatically closed.
         </Text>
       </Stack>
       <Stack borderWidth={1} p="8" rounded="lg" spacing={4}>

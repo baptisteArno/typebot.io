@@ -429,6 +429,68 @@
                                                     },
                                                     "content": {
                                                       "type": "string"
+                                                    },
+                                                    "displayCondition": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "isEnabled": {
+                                                          "type": "boolean"
+                                                        },
+                                                        "condition": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "logicalOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "OR",
+                                                                "AND"
+                                                              ]
+                                                            },
+                                                            "comparisons": {
+                                                              "type": "array",
+                                                              "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "variableId": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "comparisonOperator": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                      "Equal to",
+                                                                      "Not equal",
+                                                                      "Contains",
+                                                                      "Does not contain",
+                                                                      "Greater than",
+                                                                      "Less than",
+                                                                      "Is set",
+                                                                      "Is empty",
+                                                                      "Starts with",
+                                                                      "Ends with"
+                                                                    ]
+                                                                  },
+                                                                  "value": {
+                                                                    "type": "string"
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "id"
+                                                                ],
+                                                                "additionalProperties": false
+                                                              }
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "logicalOperator",
+                                                            "comparisons"
+                                                          ],
+                                                          "additionalProperties": false
+                                                        }
+                                                      },
+                                                      "additionalProperties": false
                                                     }
                                                   },
                                                   "required": [
@@ -1115,6 +1177,68 @@
                                                     },
                                                     "description": {
                                                       "type": "string"
+                                                    },
+                                                    "displayCondition": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "isEnabled": {
+                                                          "type": "boolean"
+                                                        },
+                                                        "condition": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "logicalOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "OR",
+                                                                "AND"
+                                                              ]
+                                                            },
+                                                            "comparisons": {
+                                                              "type": "array",
+                                                              "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                  "id": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "variableId": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "comparisonOperator": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                      "Equal to",
+                                                                      "Not equal",
+                                                                      "Contains",
+                                                                      "Does not contain",
+                                                                      "Greater than",
+                                                                      "Less than",
+                                                                      "Is set",
+                                                                      "Is empty",
+                                                                      "Starts with",
+                                                                      "Ends with"
+                                                                    ]
+                                                                  },
+                                                                  "value": {
+                                                                    "type": "string"
+                                                                  }
+                                                                },
+                                                                "required": [
+                                                                  "id"
+                                                                ],
+                                                                "additionalProperties": false
+                                                              }
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "logicalOperator",
+                                                            "comparisons"
+                                                          ],
+                                                          "additionalProperties": false
+                                                        }
+                                                      },
+                                                      "additionalProperties": false
                                                     }
                                                   },
                                                   "required": [
@@ -3528,6 +3652,68 @@
                                       },
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "displayCondition": {
+                                        "type": "object",
+                                        "properties": {
+                                          "isEnabled": {
+                                            "type": "boolean"
+                                          },
+                                          "condition": {
+                                            "type": "object",
+                                            "properties": {
+                                              "logicalOperator": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "OR",
+                                                  "AND"
+                                                ]
+                                              },
+                                              "comparisons": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "id": {
+                                                      "type": "string"
+                                                    },
+                                                    "variableId": {
+                                                      "type": "string"
+                                                    },
+                                                    "comparisonOperator": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "Equal to",
+                                                        "Not equal",
+                                                        "Contains",
+                                                        "Does not contain",
+                                                        "Greater than",
+                                                        "Less than",
+                                                        "Is set",
+                                                        "Is empty",
+                                                        "Starts with",
+                                                        "Ends with"
+                                                      ]
+                                                    },
+                                                    "value": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "id"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              }
+                                            },
+                                            "required": [
+                                              "logicalOperator",
+                                              "comparisons"
+                                            ],
+                                            "additionalProperties": false
+                                          }
+                                        },
+                                        "additionalProperties": false
                                       }
                                     },
                                     "required": [
@@ -4214,6 +4400,68 @@
                                       },
                                       "description": {
                                         "type": "string"
+                                      },
+                                      "displayCondition": {
+                                        "type": "object",
+                                        "properties": {
+                                          "isEnabled": {
+                                            "type": "boolean"
+                                          },
+                                          "condition": {
+                                            "type": "object",
+                                            "properties": {
+                                              "logicalOperator": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "OR",
+                                                  "AND"
+                                                ]
+                                              },
+                                              "comparisons": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "id": {
+                                                      "type": "string"
+                                                    },
+                                                    "variableId": {
+                                                      "type": "string"
+                                                    },
+                                                    "comparisonOperator": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "Equal to",
+                                                        "Not equal",
+                                                        "Contains",
+                                                        "Does not contain",
+                                                        "Greater than",
+                                                        "Less than",
+                                                        "Is set",
+                                                        "Is empty",
+                                                        "Starts with",
+                                                        "Ends with"
+                                                      ]
+                                                    },
+                                                    "value": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "id"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              }
+                                            },
+                                            "required": [
+                                              "logicalOperator",
+                                              "comparisons"
+                                            ],
+                                            "additionalProperties": false
+                                          }
+                                        },
+                                        "additionalProperties": false
                                       }
                                     },
                                     "required": [

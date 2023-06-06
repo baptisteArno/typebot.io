@@ -90,6 +90,16 @@ const workspaceLimitReachedEventSchema = workspaceEvent.merge(
   })
 )
 
+const workspaceAutoQuarantinedEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Workspace automatically quarantined'),
+    data: z.object({
+      chatsLimit: z.number(),
+      totalChatsUsed: z.number(),
+    }),
+  })
+)
+
 export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
@@ -98,6 +108,7 @@ export const eventSchema = z.discriminatedUnion('name', [
   subscriptionUpdatedEventSchema,
   newResultsCollectedEventSchema,
   workspaceLimitReachedEventSchema,
+  workspaceAutoQuarantinedEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

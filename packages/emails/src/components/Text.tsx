@@ -1,3 +1,4 @@
+import React from 'react'
 import { MjmlText, IMjmlTextProps } from '@faire/mjml-react'
 import { leadingRelaxed, textBase } from '../theme'
 

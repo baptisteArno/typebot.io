@@ -1,26 +1,30 @@
 import {
   MemberInWorkspace,
+  Plan,
   PrismaClient,
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { isDefined } from '@typebot.io/lib'
-import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
+import { getChatsLimit } from '@typebot.io/lib/pricing'
 import { promptAndSetEnvironment } from './utils'
+import { Workspace } from '@typebot.io/schemas'
+import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
+import { sendReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/ReachedChatsLimitEmail'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
-import { Workspace } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
+const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
 type WorkspaceForDigest = Pick<
   Workspace,
   | 'id'
   | 'plan'
   | 'customChatsLimit'
-  | 'customStorageLimit'
   | 'additionalChatsIndex'
-  | 'additionalStorageIndex'
   | 'isQuarantined'
+  | 'chatsLimitFirstEmailSentAt'
+  | 'chatsLimitSecondEmailSentAt'
 > & {
   members: (Pick<MemberInWorkspace, 'role'> & {
     user: { id: string; email: string | null }
@@ -30,11 +34,9 @@ type WorkspaceForDigest = Pick<
 export const sendTotalResultsDigest = async () => {
   await promptAndSetEnvironment('production')
 
-  console.log("Generating total results yesterday's digest...")
-  const todayMidnight = new Date()
-  todayMidnight.setUTCHours(0, 0, 0, 0)
-  const yesterday = new Date(todayMidnight)
-  yesterday.setDate(yesterday.getDate() - 1)
+  console.log('Get collected results from the last hour...')
+
+  const hourAgo = new Date(Date.now() - 1000 * 60 * 60)
 
   const results = await prisma.result.groupBy({
     by: ['typebotId'],
@@ -44,8 +46,7 @@ export const sendTotalResultsDigest = async () => {
     where: {
       hasStarted: true,
       createdAt: {
-        gte: yesterday,
-        lt: todayMidnight,
+        gte: hourAgo,
       },
     },
   })
@@ -54,7 +55,7 @@ export const sendTotalResultsDigest = async () => {
     `Found ${results.reduce(
       (total, result) => total + result._count._all,
       0
-    )} results collected yesterday.`
+    )} results collected for the last hour.`
   )
 
   const workspaces = await prisma.workspace.findMany({
@@ -77,6 +78,8 @@ export const sendTotalResultsDigest = async () => {
       customStorageLimit: true,
       plan: true,
       isQuarantined: true,
+      chatsLimitFirstEmailSentAt: true,
+      chatsLimitSecondEmailSentAt: true,
     },
   })
 
@@ -98,38 +101,17 @@ export const sendTotalResultsDigest = async () => {
     })
     .filter(isDefined)
 
-  console.log('Computing workspaces limits...')
+  console.log('Check limits...')
 
-  const workspaceLimitReachedEvents = await sendAlertIfLimitReached(
+  const events = await sendAlertIfLimitReached(
     resultsWithWorkspaces
       .filter((result) => result.isFirstOfKind)
       .map((result) => result.workspace)
   )
 
-  const newResultsCollectedEvents = resultsWithWorkspaces.map(
-    (result) =>
-      ({
-        name: 'New results collected',
-        userId: result.userId,
-        workspaceId: result.workspace.id,
-        typebotId: result.typebotId,
-        data: {
-          total: result.totalResultsYesterday,
-          isFirstOfKind: result.isFirstOfKind,
-        },
-      } satisfies TelemetryEvent)
-  )
+  console.log(`Send ${events.length} auto quarantine events...`)
 
-  await sendTelemetryEvents(
-    workspaceLimitReachedEvents.concat(newResultsCollectedEvents)
-  )
-
-  console.log(
-    `Sent ${workspaceLimitReachedEvents.length} workspace limit reached events.`
-  )
-  console.log(
-    `Sent ${newResultsCollectedEvents.length} new results collected events.`
-  )
+  await sendTelemetryEvents(events)
 }
 
 const sendAlertIfLimitReached = async (
@@ -141,33 +123,76 @@ const sendAlertIfLimitReached = async (
     if (taggedWorkspaces.includes(workspace.id) || workspace.isQuarantined)
       continue
     taggedWorkspaces.push(workspace.id)
-    const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
-    const totalStorageUsedInGb = totalStorageUsed / 1024 / 1024 / 1024
+    const { totalChatsUsed } = await getUsage(workspace.id)
     const chatsLimit = getChatsLimit(workspace)
-    const storageLimit = getStorageLimit(workspace)
     if (
-      (chatsLimit > 0 && totalChatsUsed >= chatsLimit) ||
-      (storageLimit > 0 && totalStorageUsedInGb >= storageLimit)
+      chatsLimit > 0 &&
+      totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
+      totalChatsUsed < chatsLimit &&
+      !workspace.chatsLimitFirstEmailSentAt
     ) {
+      const to = workspace.members
+        .map((member) => member.user.email)
+        .filter(isDefined)
+      console.log(
+        `Send almost reached chats limit email to ${to.join(', ')}...`
+      )
+      await sendAlmostReachedChatsLimitEmail({
+        to: workspace.members
+          .map((member) => member.user.email)
+          .filter(isDefined),
+        usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
+        chatsLimit,
+        url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+      })
+      await prisma.workspace.update({
+        where: { id: workspace.id },
+        data: { chatsLimitFirstEmailSentAt: new Date() },
+      })
+    }
+
+    if (
+      chatsLimit > 0 &&
+      totalChatsUsed >= chatsLimit &&
+      !workspace.chatsLimitSecondEmailSentAt
+    ) {
+      const to = workspace.members
+        .map((member) => member.user.email)
+        .filter(isDefined)
+      console.log(`Send reached chats limit email to ${to.join(', ')}...`)
+      await sendReachedChatsLimitEmail({
+        to,
+        chatsLimit,
+        url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+      })
+      await prisma.workspace.update({
+        where: { id: workspace.id },
+        data: { chatsLimitSecondEmailSentAt: new Date() },
+      })
+    }
+
+    if (totalChatsUsed > chatsLimit * 3 && workspace.plan === Plan.FREE) {
+      console.log(`Automatically quarantine workspace ${workspace.id}...`)
+      await prisma.workspace.update({
+        where: { id: workspace.id },
+        data: { isQuarantined: true },
+      })
       events.push(
         ...workspace.members
           .filter((member) => member.role === WorkspaceRole.ADMIN)
           .map(
             (member) =>
               ({
-                name: 'Workspace limit reached',
+                name: 'Workspace automatically quarantined',
                 userId: member.user.id,
                 workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
-                  totalStorageUsed: totalStorageUsedInGb,
                   chatsLimit,
-                  storageLimit,
                 },
               } satisfies TelemetryEvent)
           )
       )
-      continue
     }
   }
   return events

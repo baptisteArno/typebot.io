@@ -1,3 +1,4 @@
+import React from 'react'
 import { IMjmlImageProps, MjmlImage } from '@faire/mjml-react'
 import { borderBase } from '../theme'
 

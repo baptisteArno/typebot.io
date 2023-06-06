@@ -47,6 +47,10 @@
     "telemetry:sendTotalResultsDigest": {
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
+    },
+    "sendAlertEmails": {
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "cache": false
     }
   }
 }
