@@ -43,7 +43,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   StepType,
-  WabaStepType
+  OctaWabaStepType
 } from 'models'
 import React from 'react'
 
@@ -100,14 +100,14 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <AssignToIcon color="#373A86" {...props} />
     case OctaStepType.CALL_OTHER_BOT:
       return <BoxIcon color="#373A86" {...props} />
-    case WabaStepType.BUTTONS:
-      return <RadioIcon color="#7B15C1" {...props} />
-    case WabaStepType.OPTIONS:
+    // case OctaWabaStepType.BUTTONS:
+    //   return <RadioIcon color="#7B15C1" {...props} />
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return <ListIcon color="#7B15C1" {...props} />
     case OctaStepType.OFFICE_HOURS:
       return <BsCalendar2Range color="#7B15C1" size={18}/>
-      case WabaStepType.COMMERCE:
-        return <MdStore color="#000" size={18} />
+      // case OctaWabaStepType.COMMERCE:
+      //   return <MdStore color="#000" size={18} />
     case 'start':
       return <FlagIcon {...props} />
     default:

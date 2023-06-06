@@ -7,7 +7,7 @@ import {
   IntegrationStepType,
   LogicStepType,
   StepType,
-  WabaStepType
+  OctaWabaStepType,
 } from 'models'
 import React from 'react'
 
@@ -34,7 +34,7 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Email</Text>
     case InputStepType.CPF:
       return <Text>CPF</Text>
-      // case InputStepType.URL:
+    // case InputStepType.URL:
     //   return <Text>Website</Text>
     case InputStepType.DATE:
       return <Text>Data</Text>
@@ -82,18 +82,18 @@ export const StepTypeLabel = ({ type }: Props) => {
     //   return <Text>Email</Text>
     case OctaStepType.OFFICE_HOURS:
       return <Text>Definir horário de atendimento</Text>
-    case WabaStepType.COMMERCE:
-     return <Text>Enviar um catálogo</Text>
+    // case OctaWabaStepType.COMMERCE:
+    //   return <Text>Enviar um catálogo</Text>
     case OctaStepType.ASSIGN_TO_TEAM:
       return <Text>Direcionar conversa</Text>
     case OctaStepType.CALL_OTHER_BOT:
       return <Text>Chamar outro Bot</Text>
     case OctaBubbleStepType.END_CONVERSATION:
       return <Text>Encerrar conversa</Text>
-    case WabaStepType.BUTTONS:
-      return <Text>Pergunta com botões interativos</Text>
-      case WabaStepType.OPTIONS:
-        return <Text>Pergunta com lista de opções</Text>
+    // case OctaWabaStepType.BUTTONS:
+    //   return <Text>Pergunta com botões interativos</Text>
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      return <Text>Pergunta com lista de opções</Text>
     default:
       return <></>
   }

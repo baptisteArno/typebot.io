@@ -4,6 +4,7 @@ import {
   InputStepType,
   StepWithItems,
   ButtonItem,
+  OctaWabaStepType,
 } from 'models'
 import { SetTypebot } from '../TypebotContext'
 import produce from 'immer'
@@ -30,7 +31,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
-        if (step.type !== InputStepType.CHOICE) return
+        if (step.type !== InputStepType.CHOICE && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST) return
         const newItem = {
           ...item,
           stepId: step.id,

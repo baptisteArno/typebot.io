@@ -37,6 +37,7 @@
     "@types/object-hash": "^2.2.1",
     "@types/react-icons": "^3.0.0",
     "@types/react-input-mask": "^3.0.2",
+    "@types/uuid": "^9.0.1",
     "@udecode/plate-basic-marks": "^11.0.0",
     "@udecode/plate-common": "^7.0.2",
     "@udecode/plate-core": "^11.0.0",
@@ -89,7 +90,8 @@
     "tinycolor2": "^1.4.2",
     "typebot-js": "*",
     "use-debounce": "^8.0.1",
-    "utils": "*"
+    "utils": "*",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.22.0",

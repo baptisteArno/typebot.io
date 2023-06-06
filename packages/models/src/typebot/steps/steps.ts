@@ -9,8 +9,7 @@ import { BubbleStep, BubbleStepType } from './bubble'
 import { AskNameInputStep, InputStep, InputStepType } from './inputs'
 import { IntegrationStep } from './integration'
 import { ConditionStep, LogicStep, LogicStepType } from './logic'
-import { OctaBubbleStepType, OctaStep, OctaStepType, OctaBubbleStep } from './octaStep'
-import { WabaStep, WabaStepType } from './waba'
+import { OctaBubbleStepType, OctaStep, OctaStepType, OctaBubbleStep, OctaWabaStep, OctaWabaStepType } from './octaStep'
 
 export type Step =
   | StartStep
@@ -21,9 +20,9 @@ export type Step =
   | OctaStep
   | OctaBubbleStep
   | AskNameInputStep
-  | WabaStep
+  | OctaWabaStep
 
-export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep | OctaStep | OctaBubbleStep | WabaStep
+export type DraggableStep = BubbleStep | InputStep | LogicStep | IntegrationStep | OctaStep | OctaBubbleStep | OctaWabaStep
 
 export type StepType =
   | 'start'
@@ -33,7 +32,7 @@ export type StepType =
   | IntegrationStepType
   | OctaStepType // todos os tipos possíveis
   | OctaBubbleStepType // !!
-  | WabaStepType
+  | OctaWabaStepType
 
 export type DraggableStepType =
   | BubbleStepType
@@ -42,7 +41,7 @@ export type DraggableStepType =
   | IntegrationStepType
   | OctaStepType
   | OctaBubbleStepType
-  | WabaStepType
+  | OctaWabaStepType
 
 export type StepWithOptions =
   | InputStep

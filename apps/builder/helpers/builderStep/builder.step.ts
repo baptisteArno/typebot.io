@@ -8,7 +8,7 @@ import {
   OctaStepType,
   StepIndices,
   Typebot,
-  WabaStepType,
+  OctaWabaStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateTextBot } from './dictionary/input-text.step'
@@ -60,13 +60,13 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
       case OctaStepType.OFFICE_HOURS:
         step = templateOfficeHours(bot, blockId)
         break
-      case WabaStepType.COMMERCE:
-        step = templateCommerceStep(
-          bot,
-          blockId,
-          'Este é o catálogo que selecionamos para você:'
-        )
-        break
+      // case OctaWabaStepType.COMMERCE:
+      //   step = templateCommerceStep(
+      //     bot,
+      //     blockId,
+      //     'Este é o catálogo que selecionamos para você:'
+      //   )
+      //   break
       case BubbleStepType.MEDIA:
         step = templateUploadBot(
           bot,

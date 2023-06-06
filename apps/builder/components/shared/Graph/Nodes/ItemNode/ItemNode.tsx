@@ -4,11 +4,13 @@ import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
+  BaseOctaOptions,
   ButtonItem,
   ChoiceInputStep,
   Item,
   ItemIndices,
   ItemType,
+  Step
 } from 'models'
 import React, { useRef, useState } from 'react'
 import { setMultipleRefs } from 'services/utils'
@@ -18,6 +20,7 @@ import { ItemNodeContextMenu } from './ItemNodeContextMenu'
 
 type Props = {
   item: Item
+  step: Step
   indices: ItemIndices
   isReadOnly: boolean
   onMouseDown?: (
@@ -26,7 +29,8 @@ type Props = {
   ) => void
 }
 
-export const ItemNode = ({ item, indices, isReadOnly, onMouseDown }: Props) => {
+export const ItemNode = ({ item, indices, isReadOnly, onMouseDown, step }: Props) => {
+  // console.log('item ItemNode', item)
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -77,6 +81,7 @@ export const ItemNode = ({ item, indices, isReadOnly, onMouseDown }: Props) => {
           >
             <ItemNodeContent
               item={item}
+              step={step}
               isMouseOver={isMouseOver}
               indices={indices}
             />
