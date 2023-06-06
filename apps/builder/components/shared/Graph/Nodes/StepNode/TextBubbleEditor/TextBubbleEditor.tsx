@@ -55,15 +55,16 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     handler: closeEditor,
   })
 
-  useLayoutEffect(() => {
-    if (!isVariableDropdownOpen) return
-    const el = varDropdownRef.current
-    if (!el) return
-    const { top, left } = computeTargetCoord()
-    el.style.top = `${top}px`
-    el.style.left = `${left}px`
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVariableDropdownOpen])
+  //  useLayoutEffect(() => {
+  //   console.log('sou eu\n\n\n\n')
+  //   if (!isVariableDropdownOpen) return
+  //   const el = varDropdownRef.current
+  //   if (!el) return
+  //   const { top, left } = computeTargetCoord()
+  //   el.style.top = `${top}px`
+  //   el.style.left = `${left}px`
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isVariableDropdownOpen])
 
   const computeTargetCoord = () => {
     const selection = window.getSelection()
@@ -114,9 +115,10 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   }
 
   const handleKeyUp = (e: React.KeyboardEvent) => {
-    clearTimeout(timeoutId)
+    // clearTimeout(timeoutId)
 
-    timeoutId = setTimeout(keyUpEditor, 1500) as unknown as number
+    // timeoutId = setTimeout(keyUpEditor, 1500) as unknown as number
+    keyUpEditor
   }
 
   return (
@@ -151,7 +153,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
-          onKeyUp: handleKeyUp
+          onKeyUp: keyUpEditor
         }}
         initialValue={
           initialValue.length === 0

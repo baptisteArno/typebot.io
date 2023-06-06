@@ -1,12 +1,13 @@
-import { ButtonItem, ConditionItem, OfficeHoursItem, WebhookItem } from '.'
+import { ButtonItem, ConditionItem, OfficeHoursItem, WebhookItem, WhatsAppOptionsItem } from '.'
 
-export type Item = ButtonItem | ConditionItem | OfficeHoursItem | WebhookItem
+export type Item = ButtonItem | ConditionItem | OfficeHoursItem | WebhookItem | WhatsAppOptionsItem
 
 export enum ItemType {
   BUTTON,
   CONDITION,
   OFFICE_HOURS,
-  WEBHOOK
+  WEBHOOK,
+  WHATSAPP_OPTIONS_LIST
 }
 
 export type ItemBase = {

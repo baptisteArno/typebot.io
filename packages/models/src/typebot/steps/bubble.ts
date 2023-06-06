@@ -52,6 +52,7 @@ export type TextBubbleContent = {
   html: string
   richText: TElement[]
   plainText: string
+  itemId?: string
 }
 
 export type ImageBubbleContent = {
