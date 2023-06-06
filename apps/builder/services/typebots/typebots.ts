@@ -6,7 +6,7 @@ import {
   InputStepType,
   LogicStepType,
   Step,
-  WabaStepType,
+  OctaWabaStepType,
   DraggableStepType,
   DraggableStep,
   defaultTheme,
@@ -38,17 +38,19 @@ import {
   ChoiceInputStep,
   ConditionStep,
   OctaStepOptions,
+  OctaWabaStepOptions,
   OctaStepType,
   defaultAssignToTeamOptions,
   defaultCallOtherBotOptions,
   defaultEndConversationBubbleContent,
   OctaBubbleStepType,
-  defaultRequestOptions,
-  defaultRequestButtons,
+  defaultWhatsAppOptionsListOptions,
+  defaultWhatsAppOptionsListContent,
   OfficeHourStep,
   defaultOfficeHoursOptions,
   defaultCommerceOptions,
   defaultMediaBubbleContent,
+  WhatsAppOptionsListStep,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -205,7 +207,7 @@ const duplicateTypebot = (
                   : undefined,
               })),
               ...newIds,
-            } as ChoiceInputStep | ConditionStep | OfficeHourStep)
+            } as ChoiceInputStep | ConditionStep | OfficeHourStep | WhatsAppOptionsListStep)
           }
 
           if (isWebhookStep(s)) {
@@ -306,12 +308,21 @@ export const parseNewStep = (
 }
 
 const parseDefaultItems = (
-  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK,
+  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST,
   stepId: string
 ): Item[] => {
   switch (type) {
     case InputStepType.CHOICE:
       return [{ id: cuid(), stepId, type: ItemType.BUTTON }]
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.WHATSAPP_OPTIONS_LIST,
+          content: defaultWhatsAppOptionsListContent,
+        },
+      ]
     case LogicStepType.CONDITION:
       return [
         {
@@ -387,7 +398,7 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | OctaWabaStepType): BubbleStepContent | null => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -399,14 +410,14 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
       return defaultEmbedBubbleContent
     case OctaBubbleStepType.END_CONVERSATION:
       return defaultEndConversationBubbleContent
-    case WabaStepType.BUTTONS:
-      return defaultRequestButtons
-    case WabaStepType.OPTIONS:
-      return defaultRequestOptions
+    // case OctaWabaStepType.BUTTONS:
+    //   return defaultRequestButtons
+    default:
+      return null
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | WabaStepType): OctaStepOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOptions | OctaWabaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -414,8 +425,8 @@ const parseOctaStepOptions = (type: OctaStepType | WabaStepType): OctaStepOption
       return defaultCallOtherBotOptions
     case OctaStepType.OFFICE_HOURS:
       return defaultOfficeHoursOptions
-    case WabaStepType.COMMERCE:
-      return defaultCommerceOptions
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      return defaultWhatsAppOptionsListOptions
     default:
       return null
   }

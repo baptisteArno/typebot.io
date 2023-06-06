@@ -4,14 +4,26 @@ import { TextBubbleContent } from './bubble'
 // Regular steps
 export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
 
+// Waba steps
+
+export type OctaWabaStep = WhatsAppOptionsListStep
+
 // Bubble steps (editado na árvore)
 export type OctaBubbleStep = EndConversationStep
 
 // Step options (modal options) usa no OctaStep
-export type OctaStepOptions = AssignToTeamOptions | OfficeHoursOptions | CallOtherBotOptions
+export type OctaStepOptions =
+  | AssignToTeamOptions
+  | OfficeHoursOptions
+  | CallOtherBotOptions
+
+export type OctaWabaStepOptions = WhatsAppOptionsListOptions
 
 // Steps that has variables on the popup modal
-export type OctaStepWithOptions = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
+export type OctaStepWithOptions =
+  | AssignToTeamStep
+  | OfficeHourStep
+  | CallOtherBotStep
 
 // Steps that has variables on its body
 export type OctaBubbleStepContent = EndConversationBubbleContent
@@ -28,7 +40,14 @@ export enum OctaBubbleStepType {
 export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
   ASSIGN_TO_TEAM = 'assign to team',
-  CALL_OTHER_BOT = 'call other bot'
+  CALL_OTHER_BOT = 'call other bot',
+}
+
+// Waba step types
+export enum OctaWabaStepType {
+  WHATSAPP_OPTIONS_LIST = 'whatsapp options list',
+  // BUTTONS = 'buttons',
+  // COMMERCE = 'commerce',
 }
 
 // Regular steps types that have options
@@ -51,11 +70,30 @@ export type CallOtherBotStep = StepBase & {
   options: CallOtherBotOptions
 }
 
+export type WhatsAppOptionsListStep = StepBase & {
+  type: OctaWabaStepType.WHATSAPP_OPTIONS_LIST
+  options: WhatsAppOptionsListOptions
+  items: [WhatsAppOptionsItem]
+}
+
+export type WhatsAppOptionsItem = ItemBase & {
+  type: ItemType.WHATSAPP_OPTIONS_LIST
+  content: WhatsAppOptionsContent
+}
+
+export type WhatsAppOptionsContent = {
+  source: string
+  matchType: '$eq'
+  values: Array<string>
+  referenceProperty: string
+  referenceValue: null
+  subType: null
+}
+
 export type OfficeHourStep = StepBase & {
   type: OctaStepType.OFFICE_HOURS
   items: [OfficeHoursItem]
 }
-
 
 export type OfficeHoursItem = ItemBase & {
   type: ItemType.OFFICE_HOURS
@@ -63,48 +101,44 @@ export type OfficeHoursItem = ItemBase & {
 }
 
 export type OfficeHoursContent = {
-  source: string;
-  matchType: "$eq";
-  values: Array<string>,
-  referenceProperty: string;
-  referenceValue: null;
-  subType: null;
+  source: string
+  matchType: '$eq'
+  values: Array<string>
+  referenceProperty: string
+  referenceValue: null
+  subType: null
 }
 
 export type OfficeHoursOptions = BaseOctaOptions & {
-  id: string;
-  presetName: string;
-  displayName: string;
-  type: string;
+  id: string
+  presetName: string
+  displayName: string
+  type: string
   content: {
-    applicableFor: Array<any>;
-    warnings: Array<any>;
+    applicableFor: Array<any>
+    warnings: Array<any>
     delay: {
-      time: number,
+      time: number
       style: string
-    };
-    messages: Array<any>;
-    calendarId: string;
+    }
+    messages: Array<any>
+    calendarId: string
     buttons: Array<{
-      id: boolean;
-      value: string;
-      label: string;
+      id: boolean
+      value: string
+      label: string
       selected: boolean
     }>
-  },
-  warning: boolean;
-  isOnTree: boolean;
-  created: Date;
-  _isFallback: boolean;
-  _isDirty: boolean;
-  isNew: boolean;
+  }
+  warning: boolean
+  isOnTree: boolean
+  created: Date
+  _isFallback: boolean
+  _isDirty: boolean
+  isNew: boolean
 }
 
-export type CommerceOptions = BaseOctaOptions & {
-  catalogId: string;
-  products: Array<string>
-}
-
+// Regular options
 export type AssignToTeamOptions = BaseOctaOptions & {
   assignTo: string
   assignType: string
@@ -129,7 +163,7 @@ export type AssignToTeamOptions = BaseOctaOptions & {
   }
 }
 
-export type CallOtherBotOptions = {
+export type CallOtherBotOptions = BaseOctaOptions & {
   id: string
   botToCall: string
 }
@@ -149,11 +183,35 @@ export type BaseOctaOptions = {
   subject: string
 }
 
-export const defaultCommerceOptions: CommerceOptions = {
-  catalogId: '',
-  products: [],
-  name: '',
-  subject: ''
+// Waba options
+export type WhatsAppOptionsListOptions = BaseOctaOptions & {
+  id: string
+  subType: string
+  body: {
+    content?: TextBubbleContent
+  }
+  buttons: Array<any>
+  header: {
+    content?: TextBubbleContent
+  }
+  footer: {
+    content?: TextBubbleContent
+  }
+  listTitle: {
+    content?: TextBubbleContent
+  }
+  list: {
+    actionLabel: {
+      content?: TextBubbleContent
+    }
+  }
+  listItems: Array<{
+    description: string
+    id: string
+    label: string
+    selected: boolean
+    value: string
+  }>
 }
 
 export const defaultOfficeHoursOptions: OfficeHoursOptions = {
@@ -166,11 +224,11 @@ export const defaultOfficeHoursOptions: OfficeHoursOptions = {
     warnings: [],
     delay: {
       time: 15000,
-      style: ''
+      style: '',
     },
     messages: [],
     calendarId: '',
-    buttons: []
+    buttons: [],
   },
   warning: false,
   isOnTree: false,
@@ -178,22 +236,22 @@ export const defaultOfficeHoursOptions: OfficeHoursOptions = {
   _isFallback: false,
   _isDirty: false,
   isNew: false,
-  name: "",
-  subject: ""
+  name: '',
+  subject: '',
 }
 
 export const defaultOfficeHoursContent: Array<OfficeHoursContent> = [
   {
-    source: "CURRENT_SESSION",
-    matchType: "$eq",
-    values: [
-      "@OFFICE_HOURS_FALSE"
-    ],
-    referenceProperty: "",
+    source: 'CURRENT_SESSION',
+    matchType: '$eq',
+    values: ['@OFFICE_HOURS_FALSE'],
+    referenceProperty: '',
     referenceValue: null,
-    subType: null
-  }
+    subType: null,
+  },
 ]
+
+export const defaultWhatsAppOptionsListContent: any = null
 
 export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   labels: {
@@ -206,13 +264,13 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   shouldRedirectNoneAvailable: false,
   messages: {
     firstMessage: {
-      content: undefined
+      content: undefined,
     },
     connectionSuccess: {
-      content: undefined
+      content: undefined,
     },
     noAgentAvailable: {
-      content: undefined
+      content: undefined,
     },
   },
   defaultArray: '',
@@ -226,12 +284,40 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
 
 export const defaultCallOtherBotOptions: CallOtherBotOptions = {
   id: '',
-  botToCall: ''
+  botToCall: '',
+  name: '',
+  subject: '',
 }
 
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
-{
-  html: '',
-  richText: [],
-  plainText: '',
+  {
+    html: '',
+    richText: [],
+    plainText: '',
+  }
+
+export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
+  id: '',
+  name: '',
+  subject: '',
+  subType: 'interactive-list',
+  body: {
+    content: undefined,
+  },
+  buttons: [''],
+  header: {
+    content: undefined,
+  },
+  footer: {
+    content: undefined,
+  },
+  list: {
+    actionLabel: {
+      content: undefined,
+    },
+  },
+  listItems: [],
+  listTitle: {
+    content: undefined,
+  },
 }

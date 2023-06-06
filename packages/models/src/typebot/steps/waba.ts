@@ -1,59 +1,59 @@
-import { CommerceOptions, StepBase } from '.'
-import { TElement } from '@udecode/plate-core'
+// import { StepBase } from '.'
+// import { TElement } from '@udecode/plate-core'
 
-export type WabaStep =
-  | OptionsWabaStep
-  | ButtonsWabaStep
-  | OctaCommerceStep
+// export type WabaStep =
+//   | OctaOptionsListWabaStep
+//   | ButtonsWabaStep
+//   | OctaCommerceStep
 
-export enum WabaStepType {
-  OPTIONS = 'options',
-  BUTTONS = 'buttons',
-  COMMERCE = 'commerce'
-}
+// export enum WabaStepType {
+//   OPTIONS = 'options',
+//   BUTTONS = 'buttons',
+//   COMMERCE = 'commerce'
+// }
 
-export type WabaStepContent =
-  | OptionsWabaContent
-  | ButtonsWabaContent
-  | OctaCommerceStep
+// export type WabaStepContent =
+//   | OctaOptionsListWabaContent
+//   | ButtonsWabaContent
+//   | OctaCommerceStep
 
-export type OptionsWabaStep = StepBase & {
-  type: WabaStepType.OPTIONS
-  content: OptionsWabaContent
-}
+// export type OctaOptionsListWabaStep = StepBase & {
+//   type: WabaStepType.WHATSAPP_OPTIONS_LIST
+//   content: OctaOptionsListWabaContent
+// }
 
-export type ButtonsWabaStep = StepBase & {
-  type: WabaStepType.BUTTONS
-  content: ButtonsWabaContent
-}
+// export type ButtonsWabaStep = StepBase & {
+//   type: WabaStepType.BUTTONS
+//   content: ButtonsWabaContent
+// }
 
-export type OctaCommerceStep = StepBase & {
-  type: WabaStepType.COMMERCE
-  options: CommerceOptions
-}
+// export type OctaCommerceStep = StepBase & {
+//   type: WabaStepType.COMMERCE
+//   content: OctaCommerceContent
+// }
 
 // export type OctaCommerceContent = StepBase & {
 //   catalogId: string;
 //   products: Array<String>;
 // }
 
-export type OptionsWabaContent = {
-  labels: { placeholder: string; button: string }
-}
+// export type OctaOptionsListWabaContent = {
+//   labels: { placeholder: string; button: string }
+// }
 
-export type ButtonsWabaContent = {
-  labels: { placeholder: string; button: string }
-}
+// export type ButtonsWabaContent = {
+//   labels: { placeholder: string; button: string }
+// }
 
 
-// mudar
+// // mudar
 
-const defaultButtonLabel = 'Enviar'
+// const defaultButtonLabel = 'Enviar'
 
-export const defaultRequestOptions: OptionsWabaContent = {
-  labels: { button: defaultButtonLabel, placeholder: 'Digite o número options...' },
-}
+// export const defaultRequestOptions: OctaOptionsListWabaContent = {
+//   labels: { button: defaultButtonLabel, placeholder: 'Digite o número options...' },
+// }
 
-export const defaultRequestButtons: ButtonsWabaContent = {
-  labels: { button: defaultButtonLabel, placeholder: 'Digite o número buttons...' },
-}
+// export const defaultRequestButtons: ButtonsWabaContent = {
+//   labels: { button: defaultButtonLabel, placeholder: 'Digite o número buttons...' },
+// }
