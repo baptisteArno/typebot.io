@@ -21,12 +21,15 @@ else
   echo "Skipping env.sh file creation. /app/data/env.sh exists."
 fi
 
-echo "Sourcing env.sh file at /app/data/env.sh"
+echo "Copying inject-runtime-env.sh in data folder..."
+cp ./inject-runtime-env.sh /app/data/inject-runtime-env.sh
+
+echo "Sourcing env.sh file..."
 source /app/data/env.sh
 
 echo 'Injecting environment variables into frontend...'
-ENVSH_ENV=./builder/apps/builder/.env.production ENVSH_OUTPUT=./builder/apps/builder/public/__env.js ./builder/env.sh
-ENVSH_ENV=./viewer/apps/viewer/.env.production ENVSH_OUTPUT=./viewer/apps/viewer/public/__env.js ./viewer/env.sh
+ENVSH_ENV=./builder/apps/builder/.env.production ENVSH_OUTPUT=./builder/apps/builder/public/__env.js /app/data/inject-runtime-env.sh
+ENVSH_ENV=./viewer/apps/viewer/.env.production ENVSH_OUTPUT=./viewer/apps/viewer/public/__env.js /app/data/inject-runtime-env.sh
 
 echo 'Checking if required environment variables are set and valid...'
 

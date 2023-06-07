@@ -18,9 +18,9 @@ RUN npm install pm2 -g
 # With write access
 COPY --from=typebot-builder /app ./builder/
 COPY --from=typebot-viewer /app ./viewer/
-COPY ./packages/cloudron/start.sh ./packages/cloudron/env.default.sh ./
+COPY ./packages/cloudron/start.sh ./packages/cloudron/env.default.sh ./scripts/inject-runtime-env.sh ./
 RUN chmod 777 -R ./builder/apps/builder/public && chmod 777 -R ./viewer/apps/viewer/public
-RUN chmod +x ./start.sh && chmod +x ./env.default.sh
+RUN chmod +x ./start.sh && chmod +x ./env.default.sh && chmod +x ./inject-runtime-env.sh
 
 CMD [ "/app/code/start.sh" ]
 
