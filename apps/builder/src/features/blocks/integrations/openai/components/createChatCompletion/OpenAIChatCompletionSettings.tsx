@@ -124,12 +124,12 @@ export const OpenAIChatCompletionSettings = ({
             </Text>
             <AccordionIcon />
           </AccordionButton>
-
           <AccordionPanel pt="4">
             <TableList
               initialItems={options.responseMapping}
               Item={ChatCompletionResponseItem}
               onItemsChange={updateResponseMapping}
+              newItemDefaultProps={{ valueToExtract: 'Message content' }}
             />
           </AccordionPanel>
         </AccordionItem>
