@@ -68,29 +68,35 @@ const deleteArchivedResults = async () => {
 const deleteOldChatSessions = async () => {
   const twoDaysAgo = new Date()
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-  const chatSessions = await prisma.chatSession.findMany({
-    where: {
-      updatedAt: {
-        lte: twoDaysAgo,
-      },
-    },
-    select: {
-      id: true,
-    },
-  })
-
-  console.log(`Deleting ${chatSessions.length} old chat sessions...`)
-  const chunkSize = 1000
-  for (let i = 0; i < chatSessions.length; i += chunkSize) {
-    const chunk = chatSessions.slice(i, i + chunkSize)
-    await prisma.chatSession.deleteMany({
+  let totalChatSessions
+  do {
+    const chatSessions = await prisma.chatSession.findMany({
       where: {
-        id: {
-          in: chunk.map((chatSession) => chatSession.id),
+        updatedAt: {
+          lte: twoDaysAgo,
         },
       },
+      select: {
+        id: true,
+      },
+      take: 80000,
     })
-  }
+
+    totalChatSessions = chatSessions.length
+
+    console.log(`Deleting ${chatSessions.length} old chat sessions...`)
+    const chunkSize = 1000
+    for (let i = 0; i < chatSessions.length; i += chunkSize) {
+      const chunk = chatSessions.slice(i, i + chunkSize)
+      await prisma.chatSession.deleteMany({
+        where: {
+          id: {
+            in: chunk.map((chatSession) => chatSession.id),
+          },
+        },
+      })
+    }
+  } while (totalChatSessions === 80000)
 }
 
 const deleteExpiredAppSessions = async () => {
