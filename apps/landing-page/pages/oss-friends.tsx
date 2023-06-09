@@ -93,6 +93,17 @@ const OSSFriends = [
       'Open-source enterprise-grade serverless CMS. Own your data. Scale effortlessly. Customize everything.',
     href: 'https://www.webiny.com',
   },
+  {
+    name: 'BoxyHQ',
+    description:
+      'BoxyHQ’s suite of APIs for security and privacy helps engineering teams build and ship compliant cloud applications faster.',
+    href: 'https://boxyhq.com',
+  },
+  {
+    name: 'Webstudio',
+    description: 'Webstudio is an open source alternative to Webflow',
+    href: 'https://webstudio.is',
+  },
 ]
 
 export default function OSSFriendsPage() {
