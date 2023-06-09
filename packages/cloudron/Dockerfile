@@ -14,13 +14,17 @@ RUN apt-get -qy update \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-RUN npm install pm2 -g
-# With write access
 COPY --from=typebot-builder /app ./builder/
 COPY --from=typebot-viewer /app ./viewer/
-COPY ./packages/cloudron/start.sh ./packages/cloudron/env.default.sh ./scripts/inject-runtime-env.sh ./
-RUN chmod 777 -R ./builder/apps/builder/public && chmod 777 -R ./viewer/apps/viewer/public
-RUN chmod +x ./start.sh && chmod +x ./env.default.sh && chmod +x ./inject-runtime-env.sh
+RUN builder/node_modules/.bin/prisma generate --schema=builder/packages/prisma/postgresql/schema.prisma
+RUN viewer/node_modules/.bin/prisma generate --schema=viewer/packages/prisma/postgresql/schema.prisma
+COPY ./packages/cloudron/start.sh ./packages/cloudron/env.default.sh  ./
+COPY ./packages/cloudron/.env.docker ./scripts/inject-runtime-env.sh /run/
+RUN touch /run/builder_runtime_env.js && touch /run/viewer_runtime_env.js
+RUN ln -s /run/builder_runtime_env.js builder/apps/builder/public/__env.js && ln -s /run/viewer_runtime_env.js viewer/apps/viewer/public/__env.js
+RUN chmod +x ./start.sh && chmod +x ./env.default.sh && chmod +x /run/inject-runtime-env.sh
+ADD ./packages/cloudron/supervisor/* /etc/supervisor/conf.d/
+ADD ./packages/cloudron/supervisord.conf /etc/supervisor/
 
 CMD [ "/app/code/start.sh" ]
 

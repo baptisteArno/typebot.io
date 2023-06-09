@@ -8,7 +8,7 @@
   "healthCheckPath": "/",
   "httpPort": 3000,
   "httpPorts": {
-    "NEXT_PUBLIC_VIEWER_URL": {
+    "TYPEBOT_VIEWER_HOST": {
       "title": "Typebot Viewer",
       "description": "The Typebot viewer where your users can interact with your bots",
       "containerPort": 3001,
@@ -18,9 +18,10 @@
   "addons": {
     "localstorage": {},
     "postgresql": {},
-    "email": {}
+    "sendmail": {}
   },
   "manifestVersion": 2,
   "website": "https://typebot.io",
-  "contactEmail": "support@typebot.io"
+  "contactEmail": "support@typebot.io",
+  "memoryLimit": 1073741824
 }

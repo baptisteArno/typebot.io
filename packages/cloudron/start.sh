@@ -21,15 +21,12 @@ else
   echo "Skipping env.sh file creation. /app/data/env.sh exists."
 fi
 
-echo "Copying inject-runtime-env.sh in data folder..."
-cp ./inject-runtime-env.sh /app/data/inject-runtime-env.sh
-
 echo "Sourcing env.sh file..."
 source /app/data/env.sh
 
 echo 'Injecting environment variables into frontend...'
-ENVSH_ENV=./builder/apps/builder/.env.production ENVSH_OUTPUT=./builder/apps/builder/public/__env.js /app/data/inject-runtime-env.sh
-ENVSH_ENV=./viewer/apps/viewer/.env.production ENVSH_OUTPUT=./viewer/apps/viewer/public/__env.js /app/data/inject-runtime-env.sh
+ENVSH_NO_RECREATE=true ENVSH_ENV=/run/.env.docker ENVSH_OUTPUT=/run/builder_runtime_env.js /run/inject-runtime-env.sh
+ENVSH_NO_RECREATE=true ENVSH_ENV=/run/.env.docker ENVSH_OUTPUT=/run/viewer_runtime_env.js /run/inject-runtime-env.sh
 
 echo 'Checking if required environment variables are set and valid...'
 
@@ -48,12 +45,8 @@ if [ -z "$NEXTAUTH_URL" ]; then
   exit 1
 fi
 
-./builder/node_modules/.bin/prisma generate --schema=builder/packages/prisma/postgresql/schema.prisma;
-./viewer/node_modules/.bin/prisma generate --schema=viewer/packages/prisma/postgresql/schema.prisma;
 ./builder/node_modules/.bin/prisma migrate deploy --schema=builder/packages/prisma/postgresql/schema.prisma;
 
+echo "==> Starting supervisor"
+exec /usr/bin/supervisord --configuration /etc/supervisor/supervisord.conf
 
-cd ./builder/apps/builder
-pm2 start --name=typebot server.js
-cd /app/viewer/apps/viewer
-PORT=3001 pm2 start --name=typebot server.js
