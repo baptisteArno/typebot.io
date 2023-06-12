@@ -37,10 +37,10 @@ const initGoogleAnalytics = (id: string): Promise<void> =>
 export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
   if (!options) return
   gtag('event', options.action, {
-    event_category: options.category,
-    event_label: options.label,
+    event_category: options.label?.length ? options.category : undefined,
+    event_label: options.label?.length ? options.label : undefined,
     value: options.value as number,
-    send_to: options.sendTo,
+    send_to: options.sendTo?.length ? options.sendTo : undefined,
   })
 }
 
