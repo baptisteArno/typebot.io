@@ -17,6 +17,7 @@ import { BuilderStepType } from './types.builder'
 import { templateOfficeHours } from './dictionary/input-officeHours.step'
 import { templateCommerceStep } from './dictionary/input-commerce.step'
 import { templateUploadBot } from './dictionary/inputs/input-upload.step'
+import { templateVariableBot } from './dictionary/variables/variable.step'
 export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
   const builder = (
     type: DraggableStepType,
@@ -72,6 +73,13 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
           bot,
           blockId,
           'Este é o arquivo que preparamos para você!'
+        )
+        break
+      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+        step = templateVariableBot(
+          bot,
+          blockId,
+          'colocar itemNodesList aqui'
         )
         break
       default:
