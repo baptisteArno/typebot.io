@@ -29,6 +29,7 @@ export const CpfInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <Stack>
+        <div>okkk</div>
         <VariableSearchInput
           initialVariableId={options.variableId}
           onSelectVariable={handleVariableChange}

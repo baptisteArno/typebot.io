@@ -171,6 +171,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
           w="320px"
           zIndex={10}
         >
+          <div> shausuahsuashu</div>
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
