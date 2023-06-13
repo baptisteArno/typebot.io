@@ -131,7 +131,7 @@ export const WhatsAppOptionsListSettingsBody = ({
     <Stack spacing={4}>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Texto do título
+          Texto do cabeçalho
         </FormLabel>
 
         <TextBubbleEditor
@@ -145,7 +145,7 @@ export const WhatsAppOptionsListSettingsBody = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Texto da pergunta
+          Texto do corpo da mensagem
         </FormLabel>
 
         <TextBubbleEditor

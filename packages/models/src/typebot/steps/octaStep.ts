@@ -232,6 +232,7 @@ export type WhatsAppOptionsListOptions = BaseOctaOptions & {
     selected: boolean
     value: string
   }>
+  variableId: string
 }
 
 export const defaultOfficeHoursOptions: OfficeHoursOptions = {
@@ -340,4 +341,5 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   listTitle: {
     content: undefined,
   },
+  variableId: ''
 }

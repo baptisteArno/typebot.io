@@ -54,6 +54,12 @@ export const colors = {
     800: '#4e3a00',
     900: '#1d1400',
   },
+  blueGray: {
+    400: '#7C8498'
+  },
+  teste: {
+    800: '#303243'
+  }
 }
 
 const components = {
