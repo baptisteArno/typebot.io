@@ -4,6 +4,7 @@ import React, {
   ChangeEvent,
   useEffect,
   WheelEventHandler,
+  useContext,
 } from 'react'
 import {
   useDisclosure,
@@ -43,12 +44,14 @@ import {
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
+import { StepNodeContext } from '../Graph/Nodes/StepNode/StepNode/StepNode'
 
 type Props = {
   initialVariableId?: string
   debounceTimeout?: number
   isDefaultOpen?: boolean
   addVariable?: boolean,
+  isCloseModal?: boolean,
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
@@ -72,6 +75,7 @@ export const VariableSearchInput = ({
   isDefaultOpen,
   handleOutsideClick,
   addVariable = true,
+  isCloseModal = true,
   debounceTimeout = 1000,
   ...inputProps
 }: Props) => {
@@ -150,6 +154,8 @@ export const VariableSearchInput = ({
     [debounced]
   )
 
+  const {setIsPopoverOpened} = useContext(StepNodeContext)
+
   const onInputChange = (event: any): void => {
     if (event && event.id) {
       if (event.token === '') {
@@ -170,7 +176,9 @@ export const VariableSearchInput = ({
           )
           .slice(0, 50),
       ])
-      handleOutsideClick?.()
+      if (isCloseModal) {
+        setIsPopoverOpened?.(false)
+      }
     }
   }
 
@@ -237,7 +245,7 @@ export const VariableSearchInput = ({
   }
 
   return (
-    <Flex ref={boxRef} w="full" border={'1px'} borderColor={'#e5e7eb'} borderStyle={'solid'} borderRadius={'6px'}>
+    <Flex ref={boxRef} w="full" border={'1px'} borderColor={'#e5e7eb'} borderStyle={'solid'} borderRadius={'6px'} >
       {screen === 'VIEWER' && (
         <Container data-screen={screen}>
           Selecione uma variável para salvar a resposta:
@@ -248,11 +256,9 @@ export const VariableSearchInput = ({
               onChange={onInputChange}
               minMenuHeight={50}
               options={options}
-              getValue={inputValue ?? ''}
               placeholder={inputProps.placeholder ?? 'Selecione a variável'}
               getOptionLabel={(option) => option.token}
-              >
-            </Select>
+              />
           </div>
           {addVariable && (
             <Stack>

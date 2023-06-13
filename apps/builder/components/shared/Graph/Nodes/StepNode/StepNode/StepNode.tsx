@@ -7,7 +7,7 @@ import {
   useDisclosure,
   Text,
 } from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import {
   BubbleStep,
   BubbleStepContent,
@@ -42,6 +42,12 @@ import { MediaBubblePopoverContent } from '../MediaBubblePopoverContent'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
 import { BlockStack } from './StepNode.style'
+
+type StepNodeContextProps = {
+  setIsPopoverOpened?: (isPopoverOpened: boolean) => void
+}
+
+export const StepNodeContext = createContext<StepNodeContextProps>({})
 
 export const StepNode = ({
   step,
@@ -155,6 +161,12 @@ export const StepNode = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openedStepId])
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsPopoverOpened(false)
+  //   }, 10000 )
+  // })
+
   const checkisConnectable = (step: Step): boolean  => {
     return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step);
   }
@@ -164,129 +176,133 @@ export const StepNode = ({
       initialValue={step.content.richText}
       onClose={handleCloseEditor}
     />
-  ) : (
-    <ContextMenu<HTMLDivElement>
-      renderMenu={() => <StepNodeContextMenu indices={indices} />}
-    >
-      {(ref, isOpened) => (
-        <Popover
-          placement="left"
-          isLazy
-          isOpen={isPopoverOpened}
-          closeOnBlur={false}
-        >
-          <PopoverTrigger>
-            <Flex
-              pos="relative"
-              ref={setMultipleRefs([ref, stepRef])}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleClick}
-              data-testid={`step`}
-              w="full"
-              direction="column"
-            >
-              <Stack spacing={2}>
-              <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
-                <StepIcon
-                  type={step.type}
-                  mt="1"
-                  data-testid={`${step.id}-icon`}
-                />
-                <StepNodeContent step={step} indices={indices} />
-                <TargetEndpoint
-                  pos="absolute"
-                  left="-32px"
-                  top="19px"
-                  stepId={step.id}
-                />
-                {isConnectable &&
-                  checkisConnectable(step) && (
-                    <SourceEndpoint
-                      source={{
-                        blockId: step.blockId,
-                        stepId: step.id,
-                      }}
-                      pos="absolute"
-                      right="-34px"
-                      bottom="10px"
-                    />
-                  )}
-              </BlockStack>
-
-              {step.type === 'assign to team' &&
-                hasStepRedirectNoneAvailable(step) && (
-                  <HStack
-                    flex="1"
-                    userSelect="none"
-                    p="2"
-                    borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
-                    borderColor={
-                      isOpened || isPreviewing ? 'blue.400' : 'gray.200'
-                    }
-                    margin={isOpened || isPreviewing ? '-1px' : 0}
-                    rounded="lg"
-                    cursor={'pointer'}
-                    bgColor="gray.50"
-                    align="flex-start"
+  ) : 
+    (
+      <StepNodeContext.Provider value={{setIsPopoverOpened}}>
+          <ContextMenu<HTMLDivElement>
+            renderMenu={() => <StepNodeContextMenu indices={indices} />}
+          >
+            {(ref, isOpened) => (
+              <Popover
+                placement="left"
+                isLazy
+                isOpen={isPopoverOpened}
+                closeOnBlur={false}
+              >
+                <PopoverTrigger>
+                  <Flex
+                    pos="relative"
+                    ref={setMultipleRefs([ref, stepRef])}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={handleClick}
+                    data-testid={`step`}
                     w="full"
-                    transition="border-color 0.2s"
+                    direction="column"
                   >
-                    <Flex
-                      px="2"
-                      py="2"
-                      borderWidth="1px"
-                      borderColor="gray.300"
-                      bgColor={'gray.50'}
-                      rounded="md"
-                      pos="relative"
-                      align="center"
-                      cursor={'pointer'}
-                    >
-                      <Text color={'gray.500'}>Sem agentes disponíveis</Text>
-                    </Flex>
-                    <TargetEndpoint
-                      pos="absolute"
-                      left="-32px"
-                      top="19px"
-                      stepId={step.id}
-                    />
-                    {(
-                      <SourceEndpoint
-                        source={{
-                          blockId: step.blockId,
-                          stepId: step.id,
-                        }}
-                        pos="absolute"
-                        right="-34px"
-                        bottom="10px"
+                    <Stack spacing={2}>
+                    <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
+                      <StepIcon
+                        type={step.type}
+                        mt="1"
+                        data-testid={`${step.id}-icon`}
                       />
-                    )}
-                  </HStack>
+                      <StepNodeContent step={step} indices={indices} />
+                      <TargetEndpoint
+                        pos="absolute"
+                        left="-32px"
+                        top="19px"
+                        stepId={step.id}
+                      />
+                      {isConnectable &&
+                        checkisConnectable(step) && (
+                          <SourceEndpoint
+                            source={{
+                              blockId: step.blockId,
+                              stepId: step.id,
+                            }}
+                            pos="absolute"
+                            right="-34px"
+                            bottom="10px"
+                          />
+                        )}
+                    </BlockStack>
+      
+                    {step.type === 'assign to team' &&
+                      hasStepRedirectNoneAvailable(step) && (
+                        <HStack
+                          flex="1"
+                          userSelect="none"
+                          p="2"
+                          borderWidth={isOpened || isPreviewing ? '2px' : '1px'}
+                          borderColor={
+                            isOpened || isPreviewing ? 'blue.400' : 'gray.200'
+                          }
+                          margin={isOpened || isPreviewing ? '-1px' : 0}
+                          rounded="lg"
+                          cursor={'pointer'}
+                          bgColor="gray.50"
+                          align="flex-start"
+                          w="full"
+                          transition="border-color 0.2s"
+                        >
+                          <Flex
+                            px="2"
+                            py="2"
+                            borderWidth="1px"
+                            borderColor="gray.300"
+                            bgColor={'gray.50'}
+                            rounded="md"
+                            pos="relative"
+                            align="center"
+                            cursor={'pointer'}
+                          >
+                            <Text color={'gray.500'}>Sem agentes disponíveis</Text>
+                          </Flex>
+                          <TargetEndpoint
+                            pos="absolute"
+                            left="-32px"
+                            top="19px"
+                            stepId={step.id}
+                          />
+                          {(
+                            <SourceEndpoint
+                              source={{
+                                blockId: step.blockId,
+                                stepId: step.id,
+                              }}
+                              pos="absolute"
+                              right="-34px"
+                              bottom="10px"
+                            />
+                          )}
+                        </HStack>
+                      )}
+                    </Stack>
+                  </Flex>
+                </PopoverTrigger>
+                {hasSettingsPopover(step) && (
+                  <SettingsPopoverContent
+                    step={step}
+                    onExpandClick={handleExpandClick}
+                    onStepChange={handleStepUpdate}
+                  />
                 )}
-              </Stack>
-            </Flex>
-          </PopoverTrigger>
-          {hasSettingsPopover(step) && (
-            <SettingsPopoverContent
-              step={step}
-              onExpandClick={handleExpandClick}
-              onStepChange={handleStepUpdate}
-            />
-          )}
-          {isMediaBubbleStep(step) && (
-            <MediaBubblePopoverContent
-              step={step}
-              onContentChange={handleContentChange}
-            />
-          )}
-          <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-            <StepSettings step={step} onStepChange={handleStepUpdate} />
-          </SettingsModal>
-        </Popover>
-      )}
-    </ContextMenu>
-  )
+                {isMediaBubbleStep(step) && (
+                  <MediaBubblePopoverContent
+                    step={step}
+                    onContentChange={handleContentChange}
+                  />
+                )}
+                <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
+                  <StepSettings step={step} onStepChange={handleStepUpdate} />
+                </SettingsModal>
+              </Popover>
+            )}
+          </ContextMenu>
+      </StepNodeContext.Provider>
+
+    )
 }
 
 const hasSettingsPopover = (step: Step): step is Exclude<Step, BubbleStep> =>
