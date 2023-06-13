@@ -115,7 +115,6 @@ export const ItemNodesList = ({
     }
 
   const webhook = typebot?.blocks[blockIndex].steps[stepIndex].options?.url
-
   return (
     <Stack
       flex={1}
@@ -168,10 +167,19 @@ export const ItemNodesList = ({
           {
             <Stack>
               <Text color={'gray.500'} noOfLines={0}>
-                <strong>Título</strong>título: wip
+                {step.options?.header && (
+                  <strong>{step.options.header.plainText}</strong>
+                )}
               </Text>
               <Text color={'gray.500'} noOfLines={0}>
-                <strong>Título</strong>título: wip
+                {step.options?.body && (
+                  <label>{step.options.body.plainText}</label>
+                )}
+              </Text>
+              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
+                {step.options?.footer && (
+                  <label>{step.options.footer.plainText}</label>
+                )}
               </Text>
             </Stack>
             
