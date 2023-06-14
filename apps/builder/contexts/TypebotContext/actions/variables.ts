@@ -5,7 +5,6 @@ import { produce } from 'immer'
 
 export type VariablesActions = {
   createVariable: (variable: Variable) => void;
-  setVariables: (variables: Array<Variable>) => void;
   updateVariable: (
     variableId: string,
     updates: Partial<Omit<Variable, 'id'>>
@@ -19,13 +18,6 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
       produce(typebot, (typebot) => {
         if (!typebot) return
         typebot.variables.push(newVariable)
-          })
-    ),
-  setVariables: (variables: Array<Variable>) => 
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        if (!typebot) return
-        typebot.variables = variables
       })
     ),
   updateVariable: (

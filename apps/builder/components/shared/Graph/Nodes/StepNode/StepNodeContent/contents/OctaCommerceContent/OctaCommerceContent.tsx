@@ -9,7 +9,7 @@ type Props = {
 
 const OctaCommerceContent = ({ step, options }: Props) => {
   return (
-    <div style={{paddingLeft: '8px'}}>
+    <div>
       Selecione os produtos a serem enviados
       {/* {step.options && <>Produtos selecionados: <SelectedProducts>{step.options[0]}</SelectedProducts> produtos</>} */}
     </div>

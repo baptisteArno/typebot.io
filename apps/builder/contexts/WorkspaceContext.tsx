@@ -186,7 +186,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
-  const { typebot, createVariable, deleteVariable, setVariables } = useTypebot()
+  const { typebot, createVariable, deleteVariable } = useTypebot()
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
@@ -451,15 +451,21 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    // console.log('passou', setVariables)
-    if (loaded && setVariables) {
-
-      const variables = [...octaPersonItems, ...octaChatItems, ...octaOrganizationItems ]
-
-      if(typebot?.variables.length === variables.length) return
-      setVariables(variables)
+    if (loaded && createVariable) {
+      octaPersonItems.map(personItem => {
+        deleteVariable(personItem.id)
+        createVariable(personItem)
+      })
+      octaChatItems.map(chatItem => {
+        deleteVariable(chatItem.id)
+        createVariable(chatItem)
+      })
+      octaOrganizationItems.map(organizationItem => {
+        deleteVariable(organizationItem.id)
+        createVariable(organizationItem)
+      })
     }
-  }, [loaded])
+  }, [loaded, octaChatItems, octaOrganizationItems, octaPersonItems])
 
 
   useEffect(() => {
