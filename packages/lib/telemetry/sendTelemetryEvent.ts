@@ -3,6 +3,7 @@ import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { isEmpty, isNotEmpty } from '../utils'
 
 export const sendTelemetryEvents = async (events: TelemetryEvent[]) => {
+  if (events.length === 0) return { message: 'No events to send' }
   if (isEmpty(process.env.TELEMETRY_WEBHOOK_URL))
     return { message: 'Telemetry not enabled' }
 

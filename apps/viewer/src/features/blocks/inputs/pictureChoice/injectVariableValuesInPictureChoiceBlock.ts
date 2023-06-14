@@ -6,6 +6,7 @@ import {
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
+import { filterPictureChoiceItems } from './filterPictureChoiceItems'
 
 export const injectVariableValuesInPictureChoiceBlock =
   (variables: SessionState['typebot']['variables']) =>
@@ -51,5 +52,7 @@ export const injectVariableValuesInPictureChoiceBlock =
           })),
       }
     }
-    return deepParseVariables(variables)(block)
+    return deepParseVariables(variables)(
+      filterPictureChoiceItems(variables)(block)
+    )
   }

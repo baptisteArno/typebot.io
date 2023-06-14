@@ -1,0 +1,1542 @@
+{
+  "id": "mdbjvgqhqypbsdd0airkzcwu",
+  "version": "3",
+  "createdAt": "2023-06-05T15:40:37.278Z",
+  "updatedAt": "2023-06-05T15:45:43.049Z",
+  "icon": "🍫",
+  "name": "Product recommendation",
+  "folderId": null,
+  "groups": [
+    {
+      "id": "af8ny8rpbejnlkitr2s29ro1",
+      "title": "Start",
+      "blocks": [
+        {
+          "id": "li6nyybzaojujnz241jv5rr1",
+          "type": "start",
+          "label": "Start",
+          "groupId": "af8ny8rpbejnlkitr2s29ro1",
+          "outgoingEdgeId": "aj9vphwwva87uh9f1w7mm999"
+        }
+      ],
+      "graphCoordinates": { "x": 0, "y": 0 }
+    },
+    {
+      "id": "buk5exhk13g3npkaiaw87tvs",
+      "title": "Continent",
+      "blocks": [
+        {
+          "id": "ub5tforva9nlqky5lbrfrsdb",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Ok {{Name}}" }] }
+            ]
+          },
+          "groupId": "buk5exhk13g3npkaiaw87tvs"
+        },
+        {
+          "id": "jaj0pyfmlf4hb4suglr3v0be",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Because all products are not available everywhere, I need to know..."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "buk5exhk13g3npkaiaw87tvs"
+        },
+        {
+          "id": "x6lj1mhze2xtc0h3ln42xg84",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Where do you live?" }] }
+            ]
+          },
+          "groupId": "buk5exhk13g3npkaiaw87tvs"
+        },
+        {
+          "id": "lwtynqjykiem5zdtns3fwhu2",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "b6mg694wlrmx4k1fgc46co57",
+              "type": 0,
+              "blockId": "lwtynqjykiem5zdtns3fwhu2",
+              "content": "North America"
+            },
+            {
+              "id": "fpey0ohbvgvg7b86y4ol8wr7",
+              "type": 0,
+              "blockId": "lwtynqjykiem5zdtns3fwhu2",
+              "content": "Europe"
+            }
+          ],
+          "groupId": "buk5exhk13g3npkaiaw87tvs",
+          "options": {
+            "variableId": "vma96g9rw8oaosc0ei2iacqig",
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "zlab2pp5tfih56jcw6vtjs03"
+        }
+      ],
+      "graphCoordinates": { "x": 367.81512905815083, "y": 175.39453125 }
+    },
+    {
+      "id": "gafkgilrandk3cwydpzq21oy",
+      "title": "Name",
+      "blocks": [
+        {
+          "id": "mu6ygqqpi48dacy1n4xj6x4y",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Let's determine what Näak's products suit you best. 💪"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "gafkgilrandk3cwydpzq21oy"
+        },
+        {
+          "id": "w9rc4yf0ytnzqy16r938h094",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's your name?" }] }
+            ]
+          },
+          "groupId": "gafkgilrandk3cwydpzq21oy"
+        },
+        {
+          "id": "xobx3g928f9zj220n5qe1ih6",
+          "type": "text input",
+          "groupId": "gafkgilrandk3cwydpzq21oy",
+          "options": {
+            "isLong": false,
+            "labels": {
+              "button": "Send",
+              "placeholder": "Type your answer..."
+            },
+            "variableId": "vp1r2yrb6xgmi2aq3x6x73vaz"
+          },
+          "outgoingEdgeId": "gnh6uloe0a8ciwahgq0gnx4k"
+        }
+      ],
+      "graphCoordinates": { "x": 21.63671875, "y": 176.3203125 }
+    },
+    {
+      "id": "z40ynhndj5r4038u3ha39c14",
+      "title": "Sport",
+      "blocks": [
+        {
+          "id": "xpbrytz3gucp0xzf1qs8mlwe",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's your sport?" }] }
+            ]
+          },
+          "groupId": "z40ynhndj5r4038u3ha39c14"
+        },
+        {
+          "id": "zesp4ro7ltjmh64sn8d4912c",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "l4y5s4rz63g3kl91sq5h6401",
+              "type": 3,
+              "title": "Running",
+              "blockId": "zesp4ro7ltjmh64sn8d4912c",
+              "pictureSrc": "https://images.unsplash.com/photo-1456613820599-bfe244172af5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw0fHx0cmFpbHxlbnwwfDB8fHwxNjg1MzYyOTQ2fDA&ixlib=rb-4.0.3&q=80&w=1080"
+            },
+            {
+              "id": "urqlzmsiixatiamg06pexhsn",
+              "type": 3,
+              "title": "Cycling",
+              "blockId": "zesp4ro7ltjmh64sn8d4912c",
+              "pictureSrc": "https://images.unsplash.com/photo-1545575439-3261931f52f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw3fHxjeWNsaW5nfGVufDB8MHx8fDE2ODUzNjI5NjJ8MA&ixlib=rb-4.0.3&q=80&w=1080"
+            },
+            {
+              "id": "go2ko2zs5haeairrtfw7jqb2",
+              "type": 3,
+              "title": "Triathlon",
+              "blockId": "zesp4ro7ltjmh64sn8d4912c",
+              "pictureSrc": "https://images.unsplash.com/photo-1627900258552-50850df9dbc5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw0fHxUcmlhdGhsb258ZW58MHwwfHx8MTY4NTM2Mjk3N3ww&ixlib=rb-4.0.3&q=80&w=1080"
+            },
+            {
+              "id": "ctvsb2gsogkbaj9sxsgw25p9",
+              "type": 3,
+              "title": "Hiking",
+              "blockId": "zesp4ro7ltjmh64sn8d4912c",
+              "pictureSrc": "https://images.unsplash.com/photo-1551632811-561732d1e306?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHwyfHxIaWtpbmd8ZW58MHwwfHx8MTY4NTM2Mjk5NXww&ixlib=rb-4.0.3&q=80&w=1080"
+            }
+          ],
+          "groupId": "z40ynhndj5r4038u3ha39c14",
+          "options": {
+            "buttonLabel": "Send",
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "hwbbi48q0u8xnlqbpq53cdju"
+        }
+      ],
+      "graphCoordinates": { "x": 721.140625, "y": 173.953125 }
+    },
+    {
+      "id": "mncr0l180vs07gc1difaovjx",
+      "title": "Gender",
+      "blocks": [
+        {
+          "id": "ahuasm8oa058gl4np96qadox",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Nice! 😎" }] }]
+          },
+          "groupId": "mncr0l180vs07gc1difaovjx"
+        },
+        {
+          "id": "phbeq3fg1jp2ktmz2blr6bzf",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's your gender?" }] }
+            ]
+          },
+          "groupId": "mncr0l180vs07gc1difaovjx"
+        },
+        {
+          "id": "mfz600vwgfjcisahf5tdnz7l",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "zv2np66vgqoruntfh9h9vidx",
+              "type": 0,
+              "blockId": "mfz600vwgfjcisahf5tdnz7l",
+              "content": "♂️ Men",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "r7gcyof1nhavgaap1uhvw3ox",
+                      "value": "test",
+                      "variableId": "vp1r2yrb6xgmi2aq3x6x73vaz",
+                      "comparisonOperator": "Equal to"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": false
+              }
+            },
+            {
+              "id": "w5e2h4n10u1l2pap1vtm68ma",
+              "type": 0,
+              "blockId": "mfz600vwgfjcisahf5tdnz7l",
+              "content": "♀️ Women"
+            },
+            {
+              "id": "m1t9qrfs4z998ogqd4ttueus",
+              "type": 0,
+              "blockId": "mfz600vwgfjcisahf5tdnz7l",
+              "content": "Other"
+            }
+          ],
+          "groupId": "mncr0l180vs07gc1difaovjx",
+          "options": {
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "bf16js59cs2hmicrkbc7nv1q"
+        }
+      ],
+      "graphCoordinates": { "x": 1071, "y": 173.953125 }
+    },
+    {
+      "id": "mqt2qcyld5du8ecmbphjxpwu",
+      "title": "Goals",
+      "blocks": [
+        {
+          "id": "pksck9ppag8q24ou26ewgodw",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "How can Näak help you achieve your goals?" }
+                ]
+              }
+            ]
+          },
+          "groupId": "mqt2qcyld5du8ecmbphjxpwu"
+        },
+        {
+          "id": "cx2v8nfb4kxvk58bbu6w85uy",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "fmhwukhd2112743tgrmv85st",
+              "type": 3,
+              "title": "Energy",
+              "blockId": "cx2v8nfb4kxvk58bbu6w85uy",
+              "pictureSrc": "https://images.unsplash.com/photo-1615845522103-82f98cd2a9de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw5fHxlbmR1cmFuY2V8ZW58MHwwfHx8MTY4NTM2MzY3Nnww&ixlib=rb-4.0.3&q=80&w=1080"
+            },
+            {
+              "id": "hkzoroc6mf9tt9g2uxppweay",
+              "type": 3,
+              "title": "Hydration",
+              "blockId": "cx2v8nfb4kxvk58bbu6w85uy",
+              "pictureSrc": "https://images.unsplash.com/photo-1536044635785-467d51fc5880?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHwxMnx8ZHJpbmslMjBzcG9ydHxlbnwwfDB8fHwxNjg1MzYzNzIxfDA&ixlib=rb-4.0.3&q=80&w=1080"
+            },
+            {
+              "id": "nn5629jaux41qo0fhl1yj3zi",
+              "type": 3,
+              "title": "Recovery",
+              "blockId": "cx2v8nfb4kxvk58bbu6w85uy",
+              "pictureSrc": "https://images.unsplash.com/photo-1531403939386-c08a16cd7eef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw3fHxzdHJldGNofGVufDB8MHx8fDE2ODUzNjM2OTl8MA&ixlib=rb-4.0.3&q=80&w=1080"
+            }
+          ],
+          "groupId": "mqt2qcyld5du8ecmbphjxpwu",
+          "options": {
+            "variableId": "vgz8fr5u7q0p4jdef1krz2vm3",
+            "buttonLabel": "Send",
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "drxu7gyz2trqjtv5nnfv1x9l"
+        }
+      ],
+      "graphCoordinates": { "x": 1412.34375, "y": 174.76953125 }
+    },
+    {
+      "id": "n3zqahk50kb05th7zbycin5w",
+      "title": "Protein source",
+      "blocks": [
+        {
+          "id": "ife4ujh1l5ljpp3x4gnram1z",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "What protein source are you interested in?" }
+                ]
+              }
+            ]
+          },
+          "groupId": "n3zqahk50kb05th7zbycin5w"
+        },
+        {
+          "id": "ogy9ng7q9jglxg2ivb39tzeh",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "exj60v3j83wx9yjbdsm8gwzj",
+              "type": 0,
+              "blockId": "ogy9ng7q9jglxg2ivb39tzeh",
+              "content": "Cricket-based"
+            },
+            {
+              "id": "kvqeznudz85jbqwxzfpwz8z8",
+              "type": 0,
+              "blockId": "ogy9ng7q9jglxg2ivb39tzeh",
+              "content": "Plant-based"
+            }
+          ],
+          "groupId": "n3zqahk50kb05th7zbycin5w",
+          "options": {
+            "variableId": "vlgo7i0r514jkd9a9f24otm4m",
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "umuilo9l4t27kcpnx5ybnr08"
+        }
+      ],
+      "graphCoordinates": { "x": 1745.61328125, "y": 183.87109375 }
+    },
+    {
+      "id": "y2jfx62oea6q0rxjby9tzqi6",
+      "title": "Flavours",
+      "blocks": [
+        {
+          "id": "muy0ptwahuy20bhs5b9npz2m",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What are flavors do you enjoy?" }]
+              }
+            ]
+          },
+          "groupId": "y2jfx62oea6q0rxjby9tzqi6"
+        },
+        {
+          "id": "p71conb1ln7f3m41ca6pxetz",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "t7fkowjzn7eygfn6q1r4a8l9",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Chocolate",
+              "displayCondition": {
+                "condition": { "comparisons": [], "logicalOperator": "AND" },
+                "isEnabled": false
+              }
+            },
+            {
+              "id": "b1a0qlhtirnxqaqudskc4hnb",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Vanilla"
+            },
+            {
+              "id": "vef4uodxrj05lp2i5k3uhdd5",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Berries"
+            },
+            {
+              "id": "oyyx5j4j5fee37rc47adb5m8",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Caramel"
+            },
+            {
+              "id": "myapux2pojdtbdy0gyc47rhq",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Nuts"
+            },
+            {
+              "id": "aegltvuw163qqx88rwzjrg3v",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Coffee"
+            },
+            {
+              "id": "zql5o66rry2ab3ofxa1y8kll",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Lime"
+            },
+            {
+              "id": "ecvbkdakesh18zn5bfkylvt1",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Watermelon"
+            },
+            {
+              "id": "b1xcrk5tv1b1rkjy40uhp44d",
+              "type": 0,
+              "blockId": "p71conb1ln7f3m41ca6pxetz",
+              "content": "Maple Syrup"
+            }
+          ],
+          "groupId": "y2jfx62oea6q0rxjby9tzqi6",
+          "options": {
+            "variableId": "vhbd5800sc98l1lk8wf7fe742",
+            "buttonLabel": "Next",
+            "isSearchable": false,
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "i3za7jvz8g7m7588g7i1ue9i"
+        }
+      ],
+      "graphCoordinates": { "x": 2077.765625, "y": 182.74609375 }
+    },
+    {
+      "id": "x14lejru0gv2c7afc68nuezy",
+      "title": "Diet restrictions",
+      "blocks": [
+        {
+          "id": "bwqiy7w4x6egwozthsvraeup",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Great choice 😋" }] }
+            ]
+          },
+          "groupId": "x14lejru0gv2c7afc68nuezy"
+        },
+        {
+          "id": "n6ns6i9z8qyk83wg5f8bn2j8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Do you have any dietary restrictions?" }
+                ]
+              }
+            ]
+          },
+          "groupId": "x14lejru0gv2c7afc68nuezy"
+        },
+        {
+          "id": "cbcz08dj67rkx8k1cbj2ybz8",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "u9gi0gnaza6ottid74l82wlm",
+              "type": 0,
+              "blockId": "cbcz08dj67rkx8k1cbj2ybz8",
+              "content": "Non GMO"
+            },
+            {
+              "id": "yr7q8fcyi6l1sw83t37fjosj",
+              "type": 0,
+              "blockId": "cbcz08dj67rkx8k1cbj2ybz8",
+              "content": "No palm oil"
+            },
+            {
+              "id": "gckqnnt2but4d6wwsfia3035",
+              "type": 0,
+              "blockId": "cbcz08dj67rkx8k1cbj2ybz8",
+              "content": "Gluten free"
+            },
+            {
+              "id": "m3qdwzep7uugpejvga0yqorg",
+              "type": 0,
+              "blockId": "cbcz08dj67rkx8k1cbj2ybz8",
+              "content": "Nut free"
+            }
+          ],
+          "groupId": "x14lejru0gv2c7afc68nuezy",
+          "options": {
+            "variableId": "vz4fqc40gkk99h0qeus2tjwhx",
+            "buttonLabel": "Send",
+            "isSearchable": false,
+            "isMultipleChoice": false,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "erx9wo3svpfxs2cteknbhfaz"
+        }
+      ],
+      "graphCoordinates": { "x": 2424.828125, "y": 184.4765625 }
+    },
+    {
+      "id": "q9z4xrzf9z7sgl69rrrhiyoh",
+      "title": "Email",
+      "blocks": [
+        {
+          "id": "fynckthiy3zq7selucjvp44q",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Alright {{Name}}, I think we know exactly what you need."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "q9z4xrzf9z7sgl69rrrhiyoh"
+        },
+        {
+          "id": "pbn0oib7yt3uspici7to3i9f",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Sign up to our email list to receive a copy of your product recommendations."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "q9z4xrzf9z7sgl69rrrhiyoh"
+        },
+        {
+          "id": "rez1phkqpkeoj7u2kzmde653",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "We will also send a little gift 🎁" }]
+              }
+            ]
+          },
+          "groupId": "q9z4xrzf9z7sgl69rrrhiyoh"
+        },
+        {
+          "id": "vdzzxwdocfxdvqnqwwvjymzw",
+          "type": "email input",
+          "groupId": "q9z4xrzf9z7sgl69rrrhiyoh",
+          "options": {
+            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
+          },
+          "outgoingEdgeId": "vnqu52ld3usezpnrgu2l7ul0"
+        }
+      ],
+      "graphCoordinates": { "x": 2765.89453125, "y": 187.64453125 }
+    },
+    {
+      "id": "g27q0psplvzht5xg9erxw738",
+      "title": "If cricket",
+      "blocks": [
+        {
+          "id": "l16y2qzslakgl2up4jybj5m4",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "yffl8ja17g5fr9rpi4d0cl36",
+              "type": 1,
+              "blockId": "l16y2qzslakgl2up4jybj5m4",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "g995jwhkyj8e5tv4ci7gd5fi",
+                    "value": "Cricket-based",
+                    "variableId": "vlgo7i0r514jkd9a9f24otm4m",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "qjhmaage7fe1i5e0nscr0954",
+                    "value": "Europe",
+                    "variableId": "vma96g9rw8oaosc0ei2iacqig",
+                    "comparisonOperator": "Equal to"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "iszgvtfetursv4ktm9mdtxhy"
+            }
+          ],
+          "groupId": "g27q0psplvzht5xg9erxw738",
+          "outgoingEdgeId": "j6d1kch478t4ov4bbz1yshhl"
+        }
+      ],
+      "graphCoordinates": { "x": 3107.953125, "y": 187.3515625 }
+    },
+    {
+      "id": "qjoc17kdjrpkaoxesoeqzmjt",
+      "title": "No cricket in Europe",
+      "blocks": [
+        {
+          "id": "c3m4f1kcyf3dnsdlykjrxytm",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Unfortunately, cricket-based products are not available in Europe. 😢"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "qjoc17kdjrpkaoxesoeqzmjt"
+        },
+        {
+          "id": "pxb59zd4bjqmva9er47l6x15",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "We'll make sure to let you know once it's available!"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "qjoc17kdjrpkaoxesoeqzmjt",
+          "outgoingEdgeId": "apvktyu7x3wks4z9xflecu91"
+        }
+      ],
+      "graphCoordinates": { "x": 3452.45703125, "y": 113.35546875 }
+    },
+    {
+      "id": "b94nqmbqp0ezfazu0kekqioa",
+      "title": "If Energy",
+      "blocks": [
+        {
+          "id": "okl6akklm8djknl7lofqr3cm",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "vyjgfexvyrijez06kpxi1mva",
+              "type": 1,
+              "blockId": "okl6akklm8djknl7lofqr3cm",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "w3ii2flw8vz608pm45j92nli",
+                    "value": "Energy",
+                    "variableId": "vgz8fr5u7q0p4jdef1krz2vm3",
+                    "comparisonOperator": "Contains"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "lk5ghbqljt2f43w1d47rowns"
+            }
+          ],
+          "groupId": "b94nqmbqp0ezfazu0kekqioa",
+          "outgoingEdgeId": "xblzklrcdkmxeu8y5xbicz09"
+        }
+      ],
+      "graphCoordinates": { "x": 3646.396113301624, "y": 447.8859463616741 }
+    },
+    {
+      "id": "co7gxaoxtf1xukmgbby73u6v",
+      "title": "If hydration",
+      "blocks": [
+        {
+          "id": "styhci2fh3yi17b7cmv3x8cc",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "okd2sbmr1mgoubpf7kdjr9ey",
+              "type": 1,
+              "blockId": "styhci2fh3yi17b7cmv3x8cc",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "w3ii2flw8vz608pm45j92nli",
+                    "value": "Hydration",
+                    "variableId": "vgz8fr5u7q0p4jdef1krz2vm3",
+                    "comparisonOperator": "Contains"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "r2cx0lm6xkzjgv1hycekcp25"
+            }
+          ],
+          "groupId": "co7gxaoxtf1xukmgbby73u6v",
+          "outgoingEdgeId": "dyvib6xwm0jieqp37mac1diq"
+        }
+      ],
+      "graphCoordinates": { "x": 4165.908336104726, "y": 568.072108305734 }
+    },
+    {
+      "id": "rcr9zqm4lnevx5dqf9k23m5u",
+      "title": "If recovery",
+      "blocks": [
+        {
+          "id": "m8o93n92t5wcy5bi8tgauc5f",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "yw3cil1rvf3iduc0mko0c8og",
+              "type": 1,
+              "blockId": "m8o93n92t5wcy5bi8tgauc5f",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "w3ii2flw8vz608pm45j92nli",
+                    "value": "Recovery",
+                    "variableId": "vgz8fr5u7q0p4jdef1krz2vm3",
+                    "comparisonOperator": "Contains"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "choo26oflyx4c2em6msd7bum"
+            }
+          ],
+          "groupId": "rcr9zqm4lnevx5dqf9k23m5u"
+        }
+      ],
+      "graphCoordinates": { "x": 4634.078450031568, "y": 886.3561931535737 }
+    },
+    {
+      "id": "ho2hskojxz8ac631driot5kh",
+      "title": "Energy",
+      "blocks": [
+        {
+          "id": "v4tvmb615jdg52vofgzlz7ai",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Let's talk about " },
+                  { "bold": true, "text": "Energy. ⚡" }
+                ]
+              }
+            ]
+          },
+          "groupId": "ho2hskojxz8ac631driot5kh"
+        },
+        {
+          "id": "vxadalubq6hnsywwt7w9tzoc",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Here is a selection for you based on your answers."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "ho2hskojxz8ac631driot5kh"
+        },
+        {
+          "id": "zzws62fe3zha7x7kln3kp0ko",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "kb6eovh6di5xqnkegms0ljee",
+              "type": 1,
+              "blockId": "zzws62fe3zha7x7kln3kp0ko",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "ysu7q0adna5tyhaghtq9qzrj",
+                    "value": "Chocolate",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "j7sune97lh32xukeil8poeif",
+                    "value": "Berries",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "tsrm85u8demtuc95aootakrj",
+                    "value": "Caramel",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "gfqvik3txgrinlslj0jvs9gt",
+                    "value": "Nuts",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "yv3jre55h7w9qp55t5m8ax2p",
+                    "value": "Coffee",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  },
+                  {
+                    "id": "xksf2b1la2h8yy9lvn96yqo1",
+                    "value": "Vanilla",
+                    "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                    "comparisonOperator": "Contains"
+                  }
+                ],
+                "logicalOperator": "AND"
+              },
+              "outgoingEdgeId": "achb4p7q0hnox3hy62ru7dtx"
+            }
+          ],
+          "groupId": "ho2hskojxz8ac631driot5kh",
+          "outgoingEdgeId": "pk7d58d6qmxrylte434czz4x"
+        }
+      ],
+      "graphCoordinates": { "x": 4001.8019197218755, "y": -860.9371698075208 }
+    },
+    {
+      "id": "w3f8ya4hmkuab55dh2ogsvtz",
+      "title": "Hydration",
+      "blocks": [
+        {
+          "id": "qsd35sfqjq1eskoovubrjc7k",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "About " },
+                  { "bold": true, "text": "Hydration. 💧" }
+                ]
+              }
+            ]
+          },
+          "groupId": "w3f8ya4hmkuab55dh2ogsvtz"
+        },
+        {
+          "id": "eobb04nb37ezx24go2iipm85",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Here is a selection for you based on your answers."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "w3f8ya4hmkuab55dh2ogsvtz"
+        },
+        {
+          "id": "ph2jgb8r0lyui0j6v3jtifo2",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "pkv4omwvnr338lkhwh6jglh6",
+              "type": 3,
+              "title": "Lime Energy Drink Mix",
+              "blockId": "ph2jgb8r0lyui0j6v3jtifo2",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-energy-drink-mix-1-sac-3-50-portion-energy-drink-mix-lime-eu-29868312887382_600x.png?v=1677355814",
+              "description": "- 250 calories: get all your calories in a liquid form\n- 55g carbohydrates: simple and complex natural carbohydrates\n- 650mg electrolytes: replenish minerals lost in sweat\n- 1300mg BCAAs: prevent muscle breakdown during exercise\n- 8g protein: all essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "ntnhk9cqrvogutrldgpm7d56",
+                      "value": "Lime",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "s6nx86xyuclsjtqmr53ijea1",
+              "type": 3,
+              "title": "Watermelon Energy Drink Mix",
+              "blockId": "ph2jgb8r0lyui0j6v3jtifo2",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-energy-drink-mix-1-sac-3-50-portion-energy-drink-mix-watermelon-eu-29868346605654_600x.png?v=1677355821",
+              "description": "- 250 calories: get all your calories in a liquid form\n- 55g carbohydrates: simple and complex natural carbohydrates\n- 650mg electrolytes: replenish minerals lost in sweat\n- 1300mg BCAAs: prevent muscle breakdown during exercise\n- 8g protein: all essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "r20yudlu77l7fhss45z87f7l",
+                      "value": "Watermelon",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": false
+              }
+            }
+          ],
+          "groupId": "w3f8ya4hmkuab55dh2ogsvtz",
+          "options": {
+            "buttonLabel": "Next",
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "l8g4gblcmzmiv4fsgjufviws"
+        }
+      ],
+      "graphCoordinates": { "x": 4604.393180386735, "y": 102.6192979908871 }
+    },
+    {
+      "id": "jdd417tfj6hdu4pj6bkksgwa",
+      "title": "Recovery",
+      "blocks": [
+        {
+          "id": "xbbsd6xsl44fukz2ygdpjbd1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "bold": true, "text": "Recovery 🧘‍♂️ " },
+                  {
+                    "text": "is crucial to perform at your highest level on the field."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "jdd417tfj6hdu4pj6bkksgwa"
+        },
+        {
+          "id": "cgb8mt2krmq3mdddwjehtrzu",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Here is a selection for you based on your answers."
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "jdd417tfj6hdu4pj6bkksgwa"
+        },
+        {
+          "id": "mtj2j6zgnp50wpw9ewuwui5u",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "s9nop23fmq55jilo9mntgpn8",
+              "type": 3,
+              "title": "Protein Nut Butter",
+              "blockId": "mtj2j6zgnp50wpw9ewuwui5u",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-breakfast-340g-protein-nut-butter-peanut-40637318365488_600x.png?v=1678033822",
+              "description": "- 500mg super fats: promote heart and gut health\n- 640mg BCAAs: reduce muscle damage & soreness\n- 120mg electrolytes: replenish minerals lost in sweat\n- 4.3g protein: build & repair muscle post-workout",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "rm8omv5htisk7s4nzvmsvc5c",
+                      "value": "Nuts",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    },
+                    {
+                      "id": "xde05nklbld4u80qhs422y47",
+                      "value": "Nut free",
+                      "variableId": "vz4fqc40gkk99h0qeus2tjwhx",
+                      "comparisonOperator": "Does not contain"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "snr3wam9c0p1f191rf2587wz",
+              "type": 3,
+              "title": "Vanilla Protein Powder",
+              "blockId": "mtj2j6zgnp50wpw9ewuwui5u",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-protein-powder-1-bag-2-75-serving-protein-powder-vanilla-29774755954774_600x.png?v=1677355777",
+              "description": "- 25g complete protein: build & repair muscle post-workout\n- 4g BCAAs: reduce muscle damage & soreness\n- 430mg electrolytes: replenish minerals lost in sweat\n- 1g carbohydrates: no added sugar"
+            }
+          ],
+          "groupId": "jdd417tfj6hdu4pj6bkksgwa",
+          "options": {
+            "buttonLabel": "Send",
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          }
+        }
+      ],
+      "graphCoordinates": { "x": 5092.137492973015, "y": 286.5579598199387 }
+    },
+    {
+      "id": "nh69j0kgfd5wdqshpdpjgqdh",
+      "title": "",
+      "blocks": [
+        {
+          "id": "bqq8o994nr8ltkkdc8bax01i",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Since you like all these flavors you could try our discovery packs"
+                  }
+                ]
+              }
+            ]
+          },
+          "groupId": "nh69j0kgfd5wdqshpdpjgqdh"
+        },
+        {
+          "id": "np8236cce7e79h8i21hg5ncp",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "smabu9g31qcovytdu2yyi86n",
+              "type": 3,
+              "title": "Bars - Variety pack",
+              "blockId": "np8236cce7e79h8i21hg5ncp",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/PACKS_8_600x.png?v=1680032168",
+              "description": "- 180 calories: long-lasting energy with no sugar crash\n- 65mg caffeine: increase focus and stamina\n- 29g carbohydrates: simple and complex natural carbohydrates\n- 480mg electrolytes: replenish minerals lost in sweat\n- 7g protein: essential amino acids to reduce muscle fatigue"
+            },
+            {
+              "id": "f8rm4b7ic73nq92u52717th5",
+              "type": 3,
+              "title": "Waffle - Variety pack",
+              "blockId": "np8236cce7e79h8i21hg5ncp",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/PACKS_7_600x.png?v=1680032183",
+              "description": "- 140 calories: quick energy boost from high-quality ingredients\n- 16g carbohydrates: simple and complex natural carbohydrates\n- 200mg electrolytes: replenish minerals lost in sweat\n- 3g protein: all essential amino acids to reduce muscle fatigue"
+            }
+          ],
+          "groupId": "nh69j0kgfd5wdqshpdpjgqdh",
+          "options": {
+            "buttonLabel": "Send",
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "u57y4cl6042u5r34dahfhwus"
+        }
+      ],
+      "graphCoordinates": { "x": 4425.493571638971, "y": -1989.578763047769 }
+    },
+    {
+      "id": "oq9jemd1endd8naxzatkkjbb",
+      "title": "",
+      "blocks": [
+        {
+          "id": "r5hq4sr8iovxqyixejparma7",
+          "type": "picture choice input",
+          "items": [
+            {
+              "id": "zc1c5ahukxhalbu9p6oqz4tw",
+              "type": 3,
+              "title": "Chocolate Energy Waffle",
+              "blockId": "r5hq4sr8iovxqyixejparma7",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-energy-waffle-energy-waffle-chocolate-40633672728880_600x.png?v=1677355844",
+              "description": "- 140 calories: quick energy boost from high-quality ingredients\n- 17g carbohydrates: simple and complex natural carbohydrates\n- 200mg electrolytes: replenish minerals lost in sweat\n- 3g protein: all essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "pkmq8tabhm9nqi5oo8cmz2gz",
+                      "value": "Chocolate",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "j953heg9dx2xzdhwk773fha0",
+              "type": 3,
+              "title": "Vanilla Energy Waffle",
+              "blockId": "r5hq4sr8iovxqyixejparma7",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-energy-waffle-energy-waffle-vanilla-40633799246128_600x.png?v=1677355758",
+              "description": "- 140 calories: quick energy boost from high-quality ingredients\n- 16g carbohydrates: simple and complex natural carbohydrates\n- 210mg electrolytes: replenish minerals lost in sweat\n- 4g protein: all essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "l4cye2ndoqcdmhiylc4zyho9",
+                      "value": "Vanilla",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "z8brrxkvbxfxfwryit6bjqb9",
+              "type": 3,
+              "title": "Maple Syrup Energy Waffle",
+              "blockId": "r5hq4sr8iovxqyixejparma7",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/naak-energy-waffle-energy-waffle-maple-syrup-40633783877936_600x.png?v=1678034628",
+              "description": "- 140 calories: quick energy boost from high-quality ingredients\n- 16g carbohydrates: simple and complex natural carbohydrates\n- 210mg electrolytes: replenish minerals lost in sweat\n- 4g protein: all essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "l4cye2ndoqcdmhiylc4zyho9",
+                      "value": "Maple Syrup",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "ex1l3ynwk2iiz6wmavsr3l8y",
+              "type": 3,
+              "title": "Peanut Butter & Chocolate Bar",
+              "blockId": "r5hq4sr8iovxqyixejparma7",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/PACKS_600x.png?v=1678223153",
+              "description": "- 200 calories: long-lasting energy with no sugar crash\n- 27g carbohydrates: simple and complex natural carbohydrates\n- 445mg electrolytes: replenish minerals lost in sweat\n- 7g protein: essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "ez9ppwlsy77hzum27l7vxnu6",
+                      "value": "Nuts",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    },
+                    {
+                      "id": "s4khjdtxicrwpdelg41fs6d8",
+                      "value": "Chocolate",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "x2octz0rxe0s8ach4zdf2gch",
+              "type": 3,
+              "title": "Mocha Energy Bar",
+              "blockId": "kl9cacv5pde99co9w9d9pmmq",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/98_600x.png?v=1678223518",
+              "description": "- 180 calories: long-lasting energy with no sugar crash\n- 65mg caffeine: increase focus and stamina\n- 29g carbohydrates: simple and complex natural carbohydrates\n- 480mg electrolytes: replenish minerals lost in sweat\n- 7g protein: essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "mz7hwzkpjycizegz5216as63",
+                      "value": "Coffee",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "hxcd05xn9rzhrvreh9bjqdbr",
+              "type": 3,
+              "title": "Caramel Macchiato Bar",
+              "blockId": "kl9cacv5pde99co9w9d9pmmq",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/101_600x.png?v=1678223652",
+              "description": "- 180 calories: long-lasting energy with no sugar crash\n- 65mg caffeine: increase focus and stamina\n- 29g carbohydrates: simple and complex natural carbohydrates\n- 480mg electrolytes: replenish minerals lost in sweat\n- 7g protein: essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "mz7hwzkpjycizegz5216as63",
+                      "value": "Caramel",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            },
+            {
+              "id": "qw9p8xrmvli4xsn019cddxbh",
+              "type": 3,
+              "title": "Berries & Nuts Bar",
+              "blockId": "kl9cacv5pde99co9w9d9pmmq",
+              "pictureSrc": "https://cdn.shopify.com/s/files/1/0704/1744/9254/products/92_600x.png?v=1678222928",
+              "description": "- 200 calories: long-lasting energy with no sugar crash\n- 28g carbohydrates: simple and complex natural carbohydrates\n- 405mg electrolytes: replenish minerals lost in sweat\n- 7g protein: essential amino acids to reduce muscle fatigue",
+              "displayCondition": {
+                "condition": {
+                  "comparisons": [
+                    {
+                      "id": "mz7hwzkpjycizegz5216as63",
+                      "value": "Berries",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    },
+                    {
+                      "id": "m48fa084tvurk9nzcibm0d2d",
+                      "value": "Nuts",
+                      "variableId": "vhbd5800sc98l1lk8wf7fe742",
+                      "comparisonOperator": "Contains"
+                    }
+                  ],
+                  "logicalOperator": "AND"
+                },
+                "isEnabled": true
+              }
+            }
+          ],
+          "groupId": "oq9jemd1endd8naxzatkkjbb",
+          "options": {
+            "buttonLabel": "Send",
+            "isMultipleChoice": true,
+            "searchInputPlaceholder": "Filter the options..."
+          },
+          "outgoingEdgeId": "xevaekw7nv6zfmkijsortgk5"
+        }
+      ],
+      "graphCoordinates": { "x": 4431.336411421283, "y": -1425.8349347868302 }
+    }
+  ],
+  "variables": [
+    { "id": "vp1r2yrb6xgmi2aq3x6x73vaz", "name": "Name" },
+    { "id": "vhbd5800sc98l1lk8wf7fe742", "name": "Flavour" },
+    { "id": "vma96g9rw8oaosc0ei2iacqig", "name": "Continent" },
+    { "id": "vlgo7i0r514jkd9a9f24otm4m", "name": "Protein source" },
+    { "id": "vgz8fr5u7q0p4jdef1krz2vm3", "name": "Goals" },
+    { "id": "vz4fqc40gkk99h0qeus2tjwhx", "name": "Diet restrictions" }
+  ],
+  "edges": [
+    {
+      "id": "aj9vphwwva87uh9f1w7mm999",
+      "to": { "groupId": "gafkgilrandk3cwydpzq21oy" },
+      "from": {
+        "blockId": "li6nyybzaojujnz241jv5rr1",
+        "groupId": "af8ny8rpbejnlkitr2s29ro1"
+      }
+    },
+    {
+      "id": "gnh6uloe0a8ciwahgq0gnx4k",
+      "to": { "groupId": "buk5exhk13g3npkaiaw87tvs" },
+      "from": {
+        "blockId": "xobx3g928f9zj220n5qe1ih6",
+        "groupId": "gafkgilrandk3cwydpzq21oy"
+      }
+    },
+    {
+      "id": "zlab2pp5tfih56jcw6vtjs03",
+      "to": { "groupId": "z40ynhndj5r4038u3ha39c14" },
+      "from": {
+        "blockId": "lwtynqjykiem5zdtns3fwhu2",
+        "groupId": "buk5exhk13g3npkaiaw87tvs"
+      }
+    },
+    {
+      "id": "hwbbi48q0u8xnlqbpq53cdju",
+      "to": { "groupId": "mncr0l180vs07gc1difaovjx" },
+      "from": {
+        "blockId": "zesp4ro7ltjmh64sn8d4912c",
+        "groupId": "z40ynhndj5r4038u3ha39c14"
+      }
+    },
+    {
+      "id": "bf16js59cs2hmicrkbc7nv1q",
+      "to": { "groupId": "mqt2qcyld5du8ecmbphjxpwu" },
+      "from": {
+        "blockId": "mfz600vwgfjcisahf5tdnz7l",
+        "groupId": "mncr0l180vs07gc1difaovjx"
+      }
+    },
+    {
+      "id": "umuilo9l4t27kcpnx5ybnr08",
+      "to": { "groupId": "y2jfx62oea6q0rxjby9tzqi6" },
+      "from": {
+        "blockId": "ogy9ng7q9jglxg2ivb39tzeh",
+        "groupId": "n3zqahk50kb05th7zbycin5w"
+      }
+    },
+    {
+      "id": "i3za7jvz8g7m7588g7i1ue9i",
+      "to": { "groupId": "x14lejru0gv2c7afc68nuezy" },
+      "from": {
+        "blockId": "p71conb1ln7f3m41ca6pxetz",
+        "groupId": "y2jfx62oea6q0rxjby9tzqi6"
+      }
+    },
+    {
+      "id": "erx9wo3svpfxs2cteknbhfaz",
+      "to": { "groupId": "q9z4xrzf9z7sgl69rrrhiyoh" },
+      "from": {
+        "blockId": "cbcz08dj67rkx8k1cbj2ybz8",
+        "groupId": "x14lejru0gv2c7afc68nuezy"
+      }
+    },
+    {
+      "id": "drxu7gyz2trqjtv5nnfv1x9l",
+      "to": { "groupId": "n3zqahk50kb05th7zbycin5w" },
+      "from": {
+        "blockId": "cx2v8nfb4kxvk58bbu6w85uy",
+        "groupId": "mqt2qcyld5du8ecmbphjxpwu"
+      }
+    },
+    {
+      "id": "iszgvtfetursv4ktm9mdtxhy",
+      "to": { "groupId": "qjoc17kdjrpkaoxesoeqzmjt" },
+      "from": {
+        "itemId": "yffl8ja17g5fr9rpi4d0cl36",
+        "blockId": "l16y2qzslakgl2up4jybj5m4",
+        "groupId": "g27q0psplvzht5xg9erxw738"
+      }
+    },
+    {
+      "id": "vnqu52ld3usezpnrgu2l7ul0",
+      "to": { "groupId": "g27q0psplvzht5xg9erxw738" },
+      "from": {
+        "blockId": "vdzzxwdocfxdvqnqwwvjymzw",
+        "groupId": "q9z4xrzf9z7sgl69rrrhiyoh"
+      }
+    },
+    {
+      "id": "apvktyu7x3wks4z9xflecu91",
+      "to": { "groupId": "b94nqmbqp0ezfazu0kekqioa" },
+      "from": {
+        "blockId": "pxb59zd4bjqmva9er47l6x15",
+        "groupId": "qjoc17kdjrpkaoxesoeqzmjt"
+      }
+    },
+    {
+      "id": "j6d1kch478t4ov4bbz1yshhl",
+      "to": { "groupId": "b94nqmbqp0ezfazu0kekqioa" },
+      "from": {
+        "blockId": "l16y2qzslakgl2up4jybj5m4",
+        "groupId": "g27q0psplvzht5xg9erxw738"
+      }
+    },
+    {
+      "id": "lk5ghbqljt2f43w1d47rowns",
+      "to": { "groupId": "ho2hskojxz8ac631driot5kh" },
+      "from": {
+        "itemId": "vyjgfexvyrijez06kpxi1mva",
+        "blockId": "okl6akklm8djknl7lofqr3cm",
+        "groupId": "b94nqmbqp0ezfazu0kekqioa"
+      }
+    },
+    {
+      "id": "xblzklrcdkmxeu8y5xbicz09",
+      "to": { "groupId": "co7gxaoxtf1xukmgbby73u6v" },
+      "from": {
+        "blockId": "okl6akklm8djknl7lofqr3cm",
+        "groupId": "b94nqmbqp0ezfazu0kekqioa"
+      }
+    },
+    {
+      "id": "r2cx0lm6xkzjgv1hycekcp25",
+      "to": { "groupId": "w3f8ya4hmkuab55dh2ogsvtz" },
+      "from": {
+        "itemId": "okd2sbmr1mgoubpf7kdjr9ey",
+        "blockId": "styhci2fh3yi17b7cmv3x8cc",
+        "groupId": "co7gxaoxtf1xukmgbby73u6v"
+      }
+    },
+    {
+      "id": "dyvib6xwm0jieqp37mac1diq",
+      "to": { "groupId": "rcr9zqm4lnevx5dqf9k23m5u" },
+      "from": {
+        "blockId": "styhci2fh3yi17b7cmv3x8cc",
+        "groupId": "co7gxaoxtf1xukmgbby73u6v"
+      }
+    },
+    {
+      "id": "choo26oflyx4c2em6msd7bum",
+      "to": { "groupId": "jdd417tfj6hdu4pj6bkksgwa" },
+      "from": {
+        "itemId": "yw3cil1rvf3iduc0mko0c8og",
+        "blockId": "m8o93n92t5wcy5bi8tgauc5f",
+        "groupId": "rcr9zqm4lnevx5dqf9k23m5u"
+      }
+    },
+    {
+      "id": "l8g4gblcmzmiv4fsgjufviws",
+      "to": { "groupId": "rcr9zqm4lnevx5dqf9k23m5u" },
+      "from": {
+        "blockId": "ph2jgb8r0lyui0j6v3jtifo2",
+        "groupId": "w3f8ya4hmkuab55dh2ogsvtz"
+      }
+    },
+    {
+      "id": "achb4p7q0hnox3hy62ru7dtx",
+      "to": { "groupId": "nh69j0kgfd5wdqshpdpjgqdh" },
+      "from": {
+        "itemId": "kb6eovh6di5xqnkegms0ljee",
+        "blockId": "zzws62fe3zha7x7kln3kp0ko",
+        "groupId": "ho2hskojxz8ac631driot5kh"
+      }
+    },
+    {
+      "id": "pk7d58d6qmxrylte434czz4x",
+      "to": { "groupId": "oq9jemd1endd8naxzatkkjbb" },
+      "from": {
+        "blockId": "zzws62fe3zha7x7kln3kp0ko",
+        "groupId": "ho2hskojxz8ac631driot5kh"
+      }
+    },
+    {
+      "id": "xevaekw7nv6zfmkijsortgk5",
+      "to": { "groupId": "w3f8ya4hmkuab55dh2ogsvtz" },
+      "from": {
+        "blockId": "r5hq4sr8iovxqyixejparma7",
+        "groupId": "oq9jemd1endd8naxzatkkjbb"
+      }
+    },
+    {
+      "id": "u57y4cl6042u5r34dahfhwus",
+      "to": { "groupId": "w3f8ya4hmkuab55dh2ogsvtz" },
+      "from": {
+        "blockId": "np8236cce7e79h8i21hg5ncp",
+        "groupId": "nh69j0kgfd5wdqshpdpjgqdh"
+      }
+    }
+  ],
+  "theme": {
+    "chat": {
+      "inputs": {
+        "color": "#ffffff",
+        "backgroundColor": "#1B1A1A",
+        "placeholderColor": "#9095A0"
+      },
+      "buttons": { "color": "#010000", "backgroundColor": "#FFEF02" },
+      "roundness": "medium",
+      "hostAvatar": {
+        "url": "http://localhost:9000/typebot/public/typebots/cli8tguel00011anqcst3166d/hostAvatar?v=1685368734687",
+        "isEnabled": true
+      },
+      "hostBubbles": { "color": "#ffffff", "backgroundColor": "#1B1A1A" },
+      "guestBubbles": { "color": "#010000", "backgroundColor": "#FFFFFF" }
+    },
+    "general": {
+      "font": "Open Sans",
+      "background": { "type": "Color", "content": "#010000" }
+    }
+  },
+  "selectedThemeTemplateId": "typebot-dark",
+  "settings": {
+    "general": {
+      "rememberUser": { "isEnabled": false },
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true
+    },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    },
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+  },
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false
+}

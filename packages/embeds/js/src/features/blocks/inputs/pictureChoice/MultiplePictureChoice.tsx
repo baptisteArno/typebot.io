@@ -120,14 +120,17 @@ export const MultiplePictureChoice = (props: Props) => {
                   'flex gap-3 py-2 flex-shrink-0' +
                   (isEmpty(item.title) && isEmpty(item.description)
                     ? ' justify-center'
-                    : ' pl-4')
+                    : ' px-3')
                 }
               >
                 <Checkbox
                   isChecked={selectedItemIds().some(
                     (selectedItemId) => selectedItemId === item.id
                   )}
-                  class={item.title || item.description ? 'mt-1' : undefined}
+                  class={
+                    'flex-shrink-0' +
+                    (item.title || item.description ? ' mt-1' : undefined)
+                  }
                 />
                 <Show when={item.title || item.description}>
                   <div class="flex flex-col gap-1 ">
@@ -135,7 +138,9 @@ export const MultiplePictureChoice = (props: Props) => {
                       <span class="font-semibold">{item.title}</span>
                     </Show>
                     <Show when={item.description}>
-                      <span class="text-sm">{item.description}</span>
+                      <span class="text-sm whitespace-pre-wrap text-left">
+                        {item.description}
+                      </span>
                     </Show>
                   </div>
                 </Show>
@@ -186,9 +191,10 @@ export const MultiplePictureChoice = (props: Props) => {
                     (selectedItemId) => selectedItemId === selectedItem.id
                   )}
                   class={
-                    selectedItem.title || selectedItem.description
-                      ? 'mt-1'
-                      : undefined
+                    'flex-shrink-0' +
+                    (selectedItem.title || selectedItem.description
+                      ? ' mt-1'
+                      : undefined)
                   }
                 />
                 <Show when={selectedItem.title || selectedItem.description}>
@@ -197,7 +203,9 @@ export const MultiplePictureChoice = (props: Props) => {
                       <span class="font-semibold">{selectedItem.title}</span>
                     </Show>
                     <Show when={selectedItem.description}>
-                      <span class="text-sm">{selectedItem.description}</span>
+                      <span class="text-sm whitespace-pre-wrap text-left">
+                        {selectedItem.description}
+                      </span>
                     </Show>
                   </div>
                 </Show>

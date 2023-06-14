@@ -1,10 +1,8 @@
-import { defineLocale } from './index'
-
-export default defineLocale({
+export default {
   back: 'Retour',
-  'confirmModal.defaultTitle': 'Êtes-vous sûr ?',
+  'confirmModal.defaultTitle': 'Es-tu sûr ?',
   'dashboard.header.settingsButton.label': 'Paramètres & Membres',
-  'dashboard.redirectionMessage': "Vous êtes en train d'être redirigé...",
+  'dashboard.redirectionMessage': 'Redirection en cours...',
   'dashboard.title': 'Mes typebots',
   delete: 'Supprimer',
   errorMessage: "Une erreur s'est produite",
@@ -12,47 +10,52 @@ export default defineLocale({
   update: 'Mettre à jour',
   upgrade: 'Upgrade',
   downgrade: 'Downgrade',
+  remove: 'Retirer',
+  pending: 'En attente',
   'folders.createFolderButton.label': 'Créer un dossier',
   'folders.createTypebotButton.label': 'Créer un typebot',
   'folders.folderButton.deleteConfirmationMessage':
-    "Êtes-vous sûr de vouloir supprimer le dossier {folderName} ? (Tout ce qui est à l'intérieur sera déplacé dans le dossier parent ou sur votre tableau de bord)",
+    "Es-tu sûr de vouloir supprimer le dossier {folderName} ? (Tout ce qui est à l'intérieur sera déplacé dans le dossier parent ou sur votre tableau de bord)",
   'folders.typebotButton.live': 'Live',
   'folders.typebotButton.showMoreOptions': "Afficher plus d'options",
   'folders.typebotButton.unpublish': 'Dépublier',
   'folders.typebotButton.duplicate': 'Dupliquer',
   'folders.typebotButton.delete': 'Supprimer',
   'folders.typebotButton.deleteConfirmationMessage':
-    'Êtes-vous sûr de vouloir supprimer votre typebot {typebotName} ?',
+    'Es-tu sûr de vouloir supprimer votre typebot {typebotName} ?',
   'folders.typebotButton.deleteConfirmationMessageWarning':
     'Toutes les données associées seront supprimées et ne pourront pas être récupérées.',
   'account.apiTokens.heading': 'Tokens API',
   'account.apiTokens.description':
-    "Ces tokens permettent à d'autres applications de contrôler votre compte et vos typebots. Soyez prudent !",
+    "Ces tokens permettent à d'autres applications de contrôler ton compte et tes typebots. Prudence !",
   'account.apiTokens.createButton.label': 'Créer',
   'account.apiTokens.deleteButton.label': 'Supprimer',
   'account.apiTokens.table.nameHeader': 'Nom',
   'account.apiTokens.table.createdHeader': 'Créé',
   'account.apiTokens.deleteConfirmationMessage':
-    'Le token {tokenName} sera définitivement révoqué, êtes-vous sûr de vouloir continuer ?',
+    'Le token {tokenName} sera définitivement révoqué, es-tu sûr de vouloir continuer ?',
   'account.apiTokens.createModal.createHeading': 'Créer un token',
   'account.apiTokens.createModal.createdHeading': 'Token créé',
   'account.apiTokens.createModal.nameInput.label':
-    'Entrez un nom unique pour votre token afin de le différencier des autres tokens.',
+    'Tape un nom unique pour votre token afin de le différencier des autres tokens.',
   'account.apiTokens.createModal.nameInput.placeholder':
     'Ex. Zapier, Github, Make.com',
   'account.apiTokens.createModal.createButton.label': 'Créer un token',
   'account.apiTokens.createModal.doneButton.label': 'Terminé',
   'account.apiTokens.createModal.copyInstruction':
-    'Veuillez copier votre token et le stocker dans un endroit sûr.',
+    'Copie ton token et enregistre le dans un endroit sûr.',
   'account.apiTokens.createModal.securityWarning':
-    'Pour des raisons de sécurité, nous ne pouvons pas le montrer à nouveau.',
+    'Pour des raisons de sécurité, nous ne pourrons pas le montrer à nouveau.',
+  'account.preferences.language.heading': 'Langue',
+  'account.preferences.language.tooltip':
+    "Les traductions ne sont pas encore complètes. C'est un travail en cours. 🤓",
   'account.preferences.graphNavigation.heading': "Navigation de l'éditeur",
   'account.preferences.graphNavigation.mouse.label': 'Souris',
   'account.preferences.graphNavigation.mouse.description':
-    'Déplacez en glissant et zoom en avant/arrière en utilisant la molette',
+    'Déplace le board en cliquant avec la souris et zoom utilisant la molette',
   'account.preferences.graphNavigation.trackpad.label': 'Trackpad',
   'account.preferences.graphNavigation.trackpad.description':
-    'Déplacez le board en utilisant 2 doigts et zoomer en avant/arrière en pincant',
+    'Déplace le board en déplaçant les 2 doigts et zoom pincant',
   'account.preferences.appearance.heading': 'Apparence',
   'account.preferences.appearance.systemLabel': 'Système',
   'account.preferences.appearance.lightLabel': 'Clair',
@@ -60,35 +63,34 @@ export default defineLocale({
   'account.myAccount.changePhotoButton.label': 'Changer de photo',
   'account.myAccount.changePhotoButton.specification': '.jpg ou.png, max 1MB',
   'account.myAccount.emailInput.disabledTooltip':
-    "La mise à jour de l'adresse e-mail n'est pas disponible. Contactez le service d'assistance si vous souhaitez la modifier.",
+    "La mise à jour de l'adresse e-mail n'est pas disponible. Contacte le service d'assistance si tu souhaites la modifier.",
   'account.myAccount.emailInput.label': 'Adresse e-mail:',
   'account.myAccount.nameInput.label': 'Nom:',
   'analytics.viewsLabel': 'Vues',
   'analytics.startsLabel': 'Démarrés',
   'analytics.completionRateLabel': 'Taux de complétion',
   'auth.signin.heading': 'Se connecter',
-  'auth.signin.noAccountLabel.preLink': "Vous n'avez pas de compte?",
-  'auth.signin.noAccountLabel.link': 'Inscrivez-vous gratuitement',
+  'auth.signin.noAccountLabel.preLink': "Tu n'as pas de compte?",
+  'auth.signin.noAccountLabel.link': 'Inscris-toi gratuitement',
   'auth.register.heading': 'Créer un compte',
-  'auth.register.alreadyHaveAccountLabel.preLink': 'Vous avez déjà un compte?',
+  'auth.register.alreadyHaveAccountLabel.preLink': 'Tu as déjà un compte?',
   'auth.register.alreadyHaveAccountLabel.link': 'Se connecter',
-  'auth.error.default': 'Essayez de vous connecter avec un compte différent.',
+  'auth.error.default': 'Essaye de te connecter avec un compte différent.',
   'auth.error.email':
-    'Email non trouvé. Essayez de vous connecter avec un fournisseur différent.',
+    'Email non trouvé. Essaye de te connecter avec un fournisseur différent.',
   'auth.error.oauthNotLinked':
-    'Pour confirmer votre identité, connectez-vous avec le même compte que vous avez utilisé à lorigine.',
-  'auth.error.unknown': 'Une erreur est survenue. Veuillez réessayer.',
+    'Pour confirmer ton identité, connecte-toi avec le même compte que tu as utilisé à lorigine.',
+  'auth.error.unknown': 'Une erreur est survenue. Essaye à nouveau.',
   'auth.signinErrorToast.title': 'Non autorisé',
   'auth.signinErrorToast.description': 'Les inscriptions sont désactivées.',
-  'auth.noProvider.preLink': 'Vous avez besoin de',
+  'auth.noProvider.preLink': 'Tu as besoin de',
   'auth.noProvider.link':
     "configurer au moins un fournisseur d'authentification (E-mail, Google, GitHub, Facebook ou Azure AD).",
   'auth.orEmailLabel': 'Ou avec votre email',
   'auth.emailSubmitButton.label': 'Se connecter',
   'auth.magicLink.title':
     "Un email avec un lien d'authentification a été envoyé. 🪄",
-  'auth.magicLink.description':
-    'Assurez-vous de vérifier votre dossier de spam.',
+  'auth.magicLink.description': "N'oublie pas de vérifier ton dossier spam.",
   'auth.socialLogin.githubButton.label': 'Continuer avec GitHub',
   'auth.socialLogin.googleButton.label': 'Continuer avec Google',
   'auth.socialLogin.facebookButton.label': 'Continuer avec Facebook',
@@ -100,12 +102,12 @@ export default defineLocale({
     "Typebot contribue à hauteur de 1% de votre abonnement pour éliminer le CO₂ de l'atmosphère.",
   'billing.contribution.link': 'En savoir plus.',
   'billing.updateSuccessToast.description':
-    'Votre abonnement {plan} a été mis à jour avec succès 🎉',
+    'Ton abonnement {plan} a été mis à jour avec succès 🎉',
   'billing.customLimit.preLink':
-    'Vous avez besoin de limites personnalisées ? De fonctionnalités spécifiques ?',
+    'Tu as besoin de limites personnalisées ? De fonctionnalités spécifiques ?',
   'billing.customLimit.link': 'Discutons-en!',
   'billing.upgradeLimitLabel':
-    'Vous devez mettre à niveau votre abonnement pour {type}',
+    'Tu dois mettre à niveau ton abonnement pour {type}',
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Abonnement actuel du workspace :',
   'billing.currentSubscription.cancelLink': "Annuler l'abonnement",
@@ -127,7 +129,7 @@ export default defineLocale({
     "Un chat est comptabilisé chaque fois qu'un utilisateur démarre une discussion. Il est indépendant du nombre de messages qu'il envoie et reçoit.",
   'billing.pricingCard.storageLimit': 'Go de stockage',
   'billing.pricingCard.storageLimitTooltip':
-    "Vous accumulez du stockage pour chaque fichier que votre utilisateur télécharge dans votre bot. Si vous supprimez le résultat, cela libérera de l'espace.",
+    "Tu accumules du stockage pour chaque fichier que ton utilisateur télécharge dans ton bot. Si tu supprimes le résultat, ça libérera de l'espace.",
   'billing.pricingCard.starter.description':
     'Pour les particuliers et les petites entreprises.',
   'billing.pricingCard.starter.includedSeats': '2 collègues inclus',
@@ -145,19 +147,39 @@ export default defineLocale({
   'billing.usage.heading': 'Utilisation',
   'billing.usage.chats.heading': 'Chats',
   'billing.usage.chats.alert.soonReach':
-    'Vos typebots sont populaires ! Vous atteindrez bientôt la limite de chats de votre abonnement. 🚀',
+    'Tes typebots sont populaires ! Tu atteindras bientôt la limite de chats de votre abonnement. 🚀',
   'billing.usage.chats.alert.updatePlan':
-    'Assurez-vous de mettre à jour votre abonnement pour augmenter cette limite et continuer à discuter avec vos utilisateurs.',
+    'Assure-toi de mettre à jour votre abonnement pour augmenter cette limite et continuer à discuter avec vos utilisateurs.',
   'billing.usage.chats.resetInfo': '(réinitialisé le 1er de chaque mois)',
   'billing.usage.storage.heading': 'Stockage',
   'billing.usage.storage.alert.soonReach':
-    'Vos typebots sont populaires ! Vous atteindrez bientôt la limite de stockage de votre abonnement. 🚀',
+    'Tes typebots sont populaires ! Tu atteindras bientôt la limite de stockage de ton abonnement. 🚀',
   'billing.usage.storage.alert.updatePlan':
-    "Assurez-vous de mettre à jour votre abonnement pour continuer à collecter des fichiers téléchargés. Vous pouvez également supprimer des fichiers pour libérer de l'espace.",
+    "Assure-toi de mettre à jour votre abonnement pour continuer à collecter des fichiers téléchargés. Tu peux également supprimer des fichiers pour libérer de l'espace.",
   'billing.limitMessage.brand': 'supprimer la marque',
   'billing.limitMessage.customDomain': 'ajouter des domaines personnalisés',
   'billing.limitMessage.analytics': 'débloquer des analyses approfondies',
   'billing.limitMessage.fileInput': 'utiliser des blocs de saisie de fichiers',
   'billing.limitMessage.folder': 'créer des dossiers',
   'billing.upgradeAlert.buttonDefaultLabel': "Plus d'informations",
-})
+  'workspace.membersList.inviteInput.placeholder': 'collegue@entreprise.fr',
+  'workspace.membersList.inviteButton.label': 'Inviter',
+  'workspace.membersList.unlockBanner.label':
+    "Upgrade ton plan pour travailler les membres de ton équipe et débloquer d'autres fonctionnalités puissantes 🚀",
+  'workspace.membersList.title': 'Membres',
+  'workspace.settings.icon.title': 'Icône',
+  'workspace.settings.name.label': 'Nom:',
+  'workspace.settings.deleteButton.label': 'Supprimer le workspace',
+  'workspace.settings.deleteButton.confirmMessage':
+    'Es-tu sûr(e) de vouloir supprimer le workspace {workspaceName} ? Tous ses dossiers, typebots et résultats seront supprimés pour toujours.',
+  'workspace.settings.modal.menu.myAccount.label': 'Mon compte',
+  'workspace.settings.modal.menu.preferences.label': 'Préférences',
+  'workspace.settings.modal.menu.workspace.label': 'Workspace',
+  'workspace.settings.modal.menu.settings.label': 'Paramètres',
+  'workspace.settings.modal.menu.members.label': 'Membres',
+  'workspace.settings.modal.menu.billingAndUsage.label':
+    'Facturation et utilisation',
+  'workspace.settings.modal.menu.version.label': 'Version : {version}',
+  'workspace.dropdown.newButton.label': 'Nouveau workspace',
+  'workspace.dropdown.logoutButton.label': 'Déconnexion',
+} as const

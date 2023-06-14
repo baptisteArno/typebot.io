@@ -22,3 +22,8 @@ export type OutgoingLog = {
   description: string
   details?: unknown
 }
+
+export type ClientSideActionContext = {
+  apiHost?: string
+  sessionId: string
+}

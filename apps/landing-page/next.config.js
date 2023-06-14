@@ -3,7 +3,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const pages = ['pricing', 'privacy-policies', 'terms-of-service', 'about']
+const pages = [
+  'pricing',
+  'privacy-policies',
+  'terms-of-service',
+  'about',
+  'oss-friends',
+]
 
 module.exports = withBundleAnalyzer({
   transpilePackages: ['utils', 'models'],

@@ -11,7 +11,6 @@ import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEven
 import { Workspace } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
-const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
 
 type WorkspaceForDigest = Pick<
   Workspace,
@@ -170,18 +169,6 @@ const sendAlertIfLimitReached = async (
       )
       continue
     }
-    // if (
-    //   chatsLimit > 0 &&
-    //   totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT
-    // )
-    // await sendAlmostReachedChatsLimitEmail({
-    //   to: workspace.members
-    //     .map((member) => member.user.email)
-    //     .filter(isDefined),
-    //   usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
-    //   chatsLimit,
-    //   url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
-    // })
   }
   return events
 }

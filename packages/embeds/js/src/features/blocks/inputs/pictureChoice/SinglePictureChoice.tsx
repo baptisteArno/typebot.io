@@ -69,7 +69,7 @@ export const SinglePictureChoice = (props: Props) => {
               on:click={handleClick(index())}
               data-itemid={item.id}
               class={
-                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between ' +
+                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
                 (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
               }
             >
@@ -87,7 +87,9 @@ export const SinglePictureChoice = (props: Props) => {
                 }
               >
                 <span class="font-semibold">{item.title}</span>
-                <span class="text-sm">{item.description}</span>
+                <span class="text-sm whitespace-pre-wrap text-left">
+                  {item.description}
+                </span>
               </div>
             </button>
           )}

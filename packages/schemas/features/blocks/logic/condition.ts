@@ -29,7 +29,7 @@ const comparisonSchema = z.object({
   value: z.string().optional(),
 })
 
-const conditionContentSchema = z.object({
+export const conditionSchema = z.object({
   logicalOperator: z.nativeEnum(LogicalOperator),
   comparisons: z.array(comparisonSchema),
 })
@@ -37,7 +37,7 @@ const conditionContentSchema = z.object({
 export const conditionItemSchema = itemBaseSchema.merge(
   z.object({
     type: z.literal(ItemType.CONDITION),
-    content: conditionContentSchema,
+    content: conditionSchema,
   })
 )
 
@@ -48,7 +48,7 @@ export const conditionBlockSchema = blockBaseSchema.merge(
   })
 )
 
-export const defaultConditionContent: ConditionContent = {
+export const defaultConditionContent: Condition = {
   comparisons: [],
   logicalOperator: LogicalOperator.AND,
 }
@@ -56,4 +56,4 @@ export const defaultConditionContent: ConditionContent = {
 export type ConditionItem = z.infer<typeof conditionItemSchema>
 export type Comparison = z.infer<typeof comparisonSchema>
 export type ConditionBlock = z.infer<typeof conditionBlockSchema>
-export type ConditionContent = z.infer<typeof conditionContentSchema>
+export type Condition = z.infer<typeof conditionSchema>

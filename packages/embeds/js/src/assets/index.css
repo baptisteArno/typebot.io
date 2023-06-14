@@ -341,3 +341,8 @@ textarea {
   background-color: rgba(var(--typebot-button-bg-color-rgb), 0.18);
   border-color: rgba(var(--typebot-button-bg-color-rgb), 0.35);
 }
+
+select option {
+  color: var(--typebot-input-color);
+  background-color: var(--typebot-input-bg-color);
+}

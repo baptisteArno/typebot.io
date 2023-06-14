@@ -72,7 +72,8 @@ const parseBubbleTheme = (theme: BubbleProps['theme']): string => {
   const buttonThemeLine = parseButtonTheme(button)
   const previewMessageThemeLine = parsePreviewMessageTheme(previewMessage)
   const chatWindowThemeLine = parseChatWindowTheme(theme.chatWindow)
-  const line = `theme: {${buttonThemeLine}${previewMessageThemeLine}${chatWindowThemeLine}},`
+  const placementLine = parseStringParam('placement', theme.placement, 'right')
+  const line = `theme: {${placementLine}${buttonThemeLine}${previewMessageThemeLine}${chatWindowThemeLine}},`
   if (line === 'theme: {},') return ''
   return line
 }

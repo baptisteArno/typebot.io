@@ -1,5 +1,85 @@
 # Changelog
 
+<a name="2.14.1"></a>
+## 2.14.1 (2023-06-14)
+
+### Added
+
+- 👷‍♂️ Add email alert hourly sender [[a4cb6fa](https://github.com/baptisteArno/typebot.io/commit/a4cb6face8c8311957e233c73cab11f57ca52a9c)]
+- ✨ Add Näak product recommendation template [[40ef934](https://github.com/baptisteArno/typebot.io/commit/40ef934740ab3cfad56b5137c7b0ed4ba9ce2584)]
+- ✨ Add conditional choice items [[ef0a2d9](https://github.com/baptisteArno/typebot.io/commit/ef0a2d9dc61042281ee486ef5e9bb8d711f92e30)]
+
+### Changed
+
+- ♿ (payment) Improve payment input amount label format [[290b491](https://github.com/baptisteArno/typebot.io/commit/290b491e533fcab2448eb0e19af4c283d72a2509)]
+- 🚸 Add item duplication [[acaa1c6](https://github.com/baptisteArno/typebot.io/commit/acaa1c622387ec60a8afa8e18964a5fb291032c9)]
+- 🚸 (openai) Add missing credentials error to chat completion streamer [[8822e4e](https://github.com/baptisteArno/typebot.io/commit/8822e4e7e4d4239122bffbe60017d1a248c413cd)]
+
+### Fixed
+
+- 🐛 Fix GA not working when Send_to is empty string [[0a87386](https://github.com/baptisteArno/typebot.io/commit/0a873863054d63405cadcd51bfcd0858415031f6)]
+- 💚 Fix cleanDatabase when deleting more than 100,000 sessions [[4977481](https://github.com/baptisteArno/typebot.io/commit/49774815820c6dffb8d4dc1c0493743521c055e4)]
+- 🐛 (openai) Fix default response mapping item [[e9c2dee](https://github.com/baptisteArno/typebot.io/commit/e9c2deee5ff935ee941925aafcf3e70bce850ce6)]
+- ✏️ Fix FlutterFlow modal title typo [[a16367b](https://github.com/baptisteArno/typebot.io/commit/a16367b194e0fa778c62ed2dec035d69b113aadd)]
+- ✏️ Fix react README examples ([#542](https://github.com/baptisteArno/typebot.io/issues/542)) [[61fd44f](https://github.com/baptisteArno/typebot.io/commit/61fd44f768d80f7298db689e4dde4c94327fdf6f)]
+
+### Miscellaneous
+
+- 📦 Add Cloudron package ([#550](https://github.com/baptisteArno/typebot.io/issues/550)) [[1e9c4bc](https://github.com/baptisteArno/typebot.io/commit/1e9c4bcb9aab058630d04482ba6b929d50e85df7)]
+- 📝 Add 2 new oss friends in landing page [[25524ac](https://github.com/baptisteArno/typebot.io/commit/25524ac62217c90631e7aaf603ba9a63de05cfe5)]
+- 📝 Add Google Ads conversion instructions [[4614caf](https://github.com/baptisteArno/typebot.io/commit/4614caf49873be955b63f1888be16ddbfa8a8540)]
+
+
+<a name="2.14.0"></a>
+## 2.14.0 (2023-06-02)
+
+### Changed
+
+- ♿ Improve credentials dropdown accessibility if long name [[bc90c9c](https://github.com/baptisteArno/typebot.io/commit/bc90c9c81ee6f317ba32e402d1d59cf2d17f372b)]
+- 💄 Improve picture choice description UI [[b6e5002](https://github.com/baptisteArno/typebot.io/commit/b6e5002a5692368a15c526b1bd67572574a9ee0e)]
+- ⚡ (js) Add placement option for bubble embed [[57f3e5c](https://github.com/baptisteArno/typebot.io/commit/57f3e5c004e55bdfcc87e7275f00375619685970)]
+
+### Fixed
+
+- 🚑 Fix bubble window size on mobile devices [[8a0488e](https://github.com/baptisteArno/typebot.io/commit/8a0488ee89d6532874e0d597418db0d5a51a542d)]
+
+### Miscellaneous
+
+-  Update de.ts ([#535](https://github.com/baptisteArno/typebot.io/issues/535)) [[537b9fe](https://github.com/baptisteArno/typebot.io/commit/537b9fe6ce1a42b618c94eead70ff63a20a29835)]
+- 🌐 Translate workspace ([#528](https://github.com/baptisteArno/typebot.io/issues/528)) [[b2ea8fc](https://github.com/baptisteArno/typebot.io/commit/b2ea8fc0595f28cf12a0b8e6dfde102314de1041)]
+-  Update builder configuration docs ([#531](https://github.com/baptisteArno/typebot.io/issues/531)) [[6651c85](https://github.com/baptisteArno/typebot.io/commit/6651c85f021e977c17bbb2df161197ecdc08e6a5)]
+- 🔍 (lp) Add FB app ID in landing page [[9ca0c70](https://github.com/baptisteArno/typebot.io/commit/9ca0c7014e69d1fdd13d02ebfd64f08e0b9d0f99)]
+
+
+<a name="2.13.5"></a>
+## 2.13.5 (2023-05-26)
+
+### Changed
+
+- ♿ (js) Improve auto scroll when no host bubble [[0ca48e4](https://github.com/baptisteArno/typebot.io/commit/0ca48e4c0842ce6d0a2681dfa5325c2e5fec5493)]
+- 💄 (js) Fix select background color on Windows [[68f0202](https://github.com/baptisteArno/typebot.io/commit/68f02026017e9ffb3f2a0138c8edfaf115ae9447)]
+- ⚡ (webhook) Add client execution option [[75f9da0](https://github.com/baptisteArno/typebot.io/commit/75f9da0a4fe7937e07823ac46a8b449c89bf6eac)]
+- ⬆️ Upgrade dependencies [[55bbf0e](https://github.com/baptisteArno/typebot.io/commit/55bbf0e5938ae8ffe2a0e4c7bd7944b6e12d465f)]
+- ⚡ (openai) Stream chat completion to avoid serverless timeout ([#526](https://github.com/baptisteArno/typebot.io/issues/526)) [[56364fd](https://github.com/baptisteArno/typebot.io/commit/56364fd86335607cbe6c17bdba7f7caf5397cc1e)]
+- 💄 (js) Improve popup ui consistency [[c950406](https://github.com/baptisteArno/typebot.io/commit/c950406997c28dc9aefecbad2aeb58d9b66ccffe)]
+
+### Fixed
+
+- 🐛 Fix outside click on picture choice [[4230f47](https://github.com/baptisteArno/typebot.io/commit/4230f47be911c7be21d7055b01f7548b6bf2436e)]
+- 🐛 (webhook) Add loading bubble when executing webhook on client [[4dec06f](https://github.com/baptisteArno/typebot.io/commit/4dec06fc7502037282e654eb58c4bb93fc0e75c6)]
+- 🐛 (sheets) Fix empty and unique filter [[154271c](https://github.com/baptisteArno/typebot.io/commit/154271c7f22a9d2f7553532a7d16530c2dfe9aae)]
+- 🐛 (payment) Round the amount to avoid weird Js long decimals [[16f3ad3](https://github.com/baptisteArno/typebot.io/commit/16f3ad3a19d36b57f9adef22726aedb60745b80a)]
+- 🐛 (editor) Remove edge if duplicating last block of group [[6bb6a2b](https://github.com/baptisteArno/typebot.io/commit/6bb6a2b0e36a00d3b296acab4fa2e3f90e4641d4)]
+- 🐛 Fix readme typo ([#518](https://github.com/baptisteArno/typebot.io/issues/518)) [[423aca6](https://github.com/baptisteArno/typebot.io/commit/423aca6133ce24f0f0033789eeb0f7f40aba8108)]
+- 🐛 Fix embed bubble icon color [[49a8427](https://github.com/baptisteArno/typebot.io/commit/49a8427776ba43417699029e87ee41d85193a05d)]
+- 💚 Improve auto create tag workflow [[683ba90](https://github.com/baptisteArno/typebot.io/commit/683ba90403676e8baf1eb27c3488163cbb9e5da1)]
+
+### Miscellaneous
+
+- 📝 (lp) Add oss friends page [[084a17f](https://github.com/baptisteArno/typebot.io/commit/084a17ffc8ef587f3f70a46c43a7d35331868d4d)]
+- 📝 (embed) Add FlutterFlow embed instructions [[fdfed16](https://github.com/baptisteArno/typebot.io/commit/fdfed160a657475f50af2a7635923b9d747a12c8)]
+
+
 <a name="2.13.4"></a>
 ## 2.13.4 (2023-05-17)
 

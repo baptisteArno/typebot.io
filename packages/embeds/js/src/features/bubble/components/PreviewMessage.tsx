@@ -1,19 +1,18 @@
 import { createSignal, Show } from 'solid-js'
 import {
+  BubbleTheme,
   ButtonTheme,
   PreviewMessageParams,
   PreviewMessageTheme,
 } from '../types'
 
-export type PreviewMessageProps = Pick<
-  PreviewMessageParams,
-  'avatarUrl' | 'message'
-> & {
-  buttonSize: ButtonTheme['size']
-  previewMessageTheme?: PreviewMessageTheme
-  onClick: () => void
-  onCloseClick: () => void
-}
+export type PreviewMessageProps = Pick<BubbleTheme, 'placement'> &
+  Pick<PreviewMessageParams, 'avatarUrl' | 'message'> & {
+    buttonSize: ButtonTheme['size']
+    previewMessageTheme?: PreviewMessageTheme
+    onClick: () => void
+    onCloseClick: () => void
+  }
 
 const defaultBackgroundColor = '#F7F8FF'
 const defaultTextColor = '#303235'
@@ -27,8 +26,9 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       part="preview-message"
       onClick={() => props.onClick()}
       class={
-        'fixed right-5 max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4' +
-        (props.buttonSize === 'large' ? ' bottom-24' : ' bottom-20')
+        'fixed max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4' +
+        (props.buttonSize === 'large' ? ' bottom-24' : ' bottom-20') +
+        (props.placement === 'left' ? ' left-5' : ' right-5')
       }
       style={{
         'background-color':

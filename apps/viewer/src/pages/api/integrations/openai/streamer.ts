@@ -66,6 +66,8 @@ const handler = async (req: Request) => {
     messages
   )
 
+  if (!stream) return new Response('Missing credentials', { status: 400 })
+
   return new Response(stream, {
     status: 200,
     headers: {

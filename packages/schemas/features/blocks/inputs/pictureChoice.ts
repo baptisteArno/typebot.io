@@ -4,6 +4,7 @@ import { itemBaseSchema } from '../../items/baseSchemas'
 import { optionBaseSchema, blockBaseSchema } from '../baseSchemas'
 import { defaultButtonLabel } from './constants'
 import { InputBlockType } from './enums'
+import { conditionSchema } from '../logic/condition'
 
 export const pictureChoiceOptionsSchema = optionBaseSchema.merge(
   z.object({
@@ -28,6 +29,12 @@ export const pictureChoiceItemSchema = itemBaseSchema.merge(
     pictureSrc: z.string().optional(),
     title: z.string().optional(),
     description: z.string().optional(),
+    displayCondition: z
+      .object({
+        isEnabled: z.boolean().optional(),
+        condition: conditionSchema.optional(),
+      })
+      .optional(),
   })
 )
 

@@ -93,9 +93,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   ENVSH_SED="gsed"
 fi
 
-# Recreate config file
-rm -f "$ENVSH_OUTPUT"
-touch "$ENVSH_OUTPUT"
+# Empty config file
+> "$ENVSH_OUTPUT"
 
 # Create an array from inline variables
 matched_envs=$(env | grep ${ENVSH_PREFIX})

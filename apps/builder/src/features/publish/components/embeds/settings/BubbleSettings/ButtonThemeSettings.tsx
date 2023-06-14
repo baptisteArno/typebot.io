@@ -10,11 +10,10 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  PopoverAnchor,
   PopoverContent,
+  PopoverTrigger,
   Stack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { ButtonTheme } from '@typebot.io/js/dist/features/bubble/types'
 import React from 'react'
@@ -25,8 +24,6 @@ type Props = {
 }
 
 export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   const updateBackgroundColor = (backgroundColor: string) => {
     onChange({
       ...buttonTheme,
@@ -39,7 +36,6 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
       ...buttonTheme,
       customIconSrc,
     })
-    onClose()
   }
 
   const updateSize = (size: ButtonTheme['size']) =>
@@ -73,18 +69,23 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
         </HStack>
         <HStack justify="space-between">
           <Text>Custom icon</Text>
-          <Popover isLazy isOpen={isOpen}>
-            <PopoverAnchor>
-              <Button size="sm" onClick={onOpen}>
-                Pick an image
-              </Button>
-            </PopoverAnchor>
-            <PopoverContent p="4" w="500px">
-              <ImageUploadContent
-                onSubmit={updateCustomIconSrc}
-                filePath={undefined}
-              />
-            </PopoverContent>
+          <Popover isLazy>
+            {({ onClose }) => (
+              <>
+                <PopoverTrigger>
+                  <Button size="sm">Pick an image</Button>
+                </PopoverTrigger>
+                <PopoverContent p="4" w="500px">
+                  <ImageUploadContent
+                    onSubmit={(url) => {
+                      updateCustomIconSrc(url)
+                      onClose()
+                    }}
+                    filePath={undefined}
+                  />
+                </PopoverContent>
+              </>
+            )}
           </Popover>
         </HStack>
       </Stack>

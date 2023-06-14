@@ -33,7 +33,7 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <SwitchWithLabel
         label="With time?"
-        initialValue={options.isRange}
+        initialValue={options.hasTime}
         onCheckChange={handleHasTimeChange}
       />
       {options.isRange && (

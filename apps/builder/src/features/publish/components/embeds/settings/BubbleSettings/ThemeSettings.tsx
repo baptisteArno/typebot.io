@@ -4,17 +4,24 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Button,
   HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
 } from '@chakra-ui/react'
 import { BubbleProps } from '@typebot.io/js'
 import {
+  BubbleTheme,
   ButtonTheme,
   PreviewMessageTheme,
 } from '@typebot.io/js/dist/features/bubble/types'
 import { ButtonThemeSettings } from './ButtonThemeSettings'
 import { PreviewMessageThemeSettings } from './PreviewMessageThemeSettings'
+import { ChevronDownIcon } from '@/components/icons'
 
 type Props = {
   isPreviewMessageEnabled: boolean
@@ -41,6 +48,13 @@ export const ThemeSettings = ({
     })
   }
 
+  const updatePlacement = (placement: BubbleTheme['placement']) => {
+    onChange({
+      ...theme,
+      placement,
+    })
+  }
+
   return (
     <Accordion allowMultiple>
       <AccordionItem>
@@ -51,6 +65,22 @@ export const ThemeSettings = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel as={Stack} pb={4} spacing={4} px="0">
+          <HStack justify="space-between">
+            <Text>Placement</Text>
+            <Menu>
+              <MenuButton as={Button} size="sm" rightIcon={<ChevronDownIcon />}>
+                {theme?.placement ?? 'right'}
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => updatePlacement('right')}>
+                  right
+                </MenuItem>
+                <MenuItem onClick={() => updatePlacement('left')}>
+                  left
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </HStack>
           <ButtonThemeSettings
             buttonTheme={theme?.button}
             onChange={updateButtonTheme}

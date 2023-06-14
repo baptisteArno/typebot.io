@@ -35,10 +35,11 @@ const matchComparison = (
   inputValue?: string,
   comparisonOperator?: ComparisonOperators,
   value?: string
-): boolean => {
-  if (!inputValue || !comparisonOperator || !value) return false
+): boolean | undefined => {
+  if (!comparisonOperator) return false
   switch (comparisonOperator) {
     case ComparisonOperators.CONTAINS: {
+      if (!inputValue || !value) return false
       return inputValue.toLowerCase().includes(value.toLowerCase())
     }
     case ComparisonOperators.EQUAL: {
@@ -48,9 +49,11 @@ const matchComparison = (
       return inputValue !== value
     }
     case ComparisonOperators.GREATER: {
+      if (!inputValue || !value) return false
       return parseFloat(inputValue) > parseFloat(value)
     }
     case ComparisonOperators.LESS: {
+      if (!inputValue || !value) return false
       return parseFloat(inputValue) < parseFloat(value)
     }
     case ComparisonOperators.IS_SET: {
@@ -60,13 +63,16 @@ const matchComparison = (
       return !isDefined(inputValue) || inputValue.length === 0
     }
     case ComparisonOperators.STARTS_WITH: {
+      if (!inputValue || !value) return false
       return inputValue.toLowerCase().startsWith(value.toLowerCase())
     }
     case ComparisonOperators.ENDS_WITH: {
+      if (!inputValue || !value) return false
       return inputValue.toLowerCase().endsWith(value.toLowerCase())
     }
     case ComparisonOperators.NOT_CONTAINS: {
-      return !inputValue.toLowerCase().includes(value.toLowerCase())
+      if (!inputValue || !value) return false
+      return !inputValue?.toLowerCase().includes(value.toLowerCase())
     }
   }
 }

@@ -12,15 +12,15 @@ import {
 import { ExecuteIntegrationResponse } from '../types'
 
 export const executeIntegration =
-  (state: SessionState, lastBubbleBlockId?: string) =>
+  (state: SessionState) =>
   async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
     switch (block.type) {
       case IntegrationBlockType.GOOGLE_SHEETS:
         return executeGoogleSheetBlock(state, block)
       case IntegrationBlockType.CHATWOOT:
-        return executeChatwootBlock(state, block, lastBubbleBlockId)
+        return executeChatwootBlock(state, block)
       case IntegrationBlockType.GOOGLE_ANALYTICS:
-        return executeGoogleAnalyticsBlock(state, block, lastBubbleBlockId)
+        return executeGoogleAnalyticsBlock(state, block)
       case IntegrationBlockType.EMAIL:
         return executeSendEmailBlock(state, block)
       case IntegrationBlockType.WEBHOOK:

@@ -12,7 +12,7 @@ There, you can change the container dimensions. Here is a code example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.9/dist/web.js'
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'
 
   Typebot.initStandard({
     typebot: 'my-typebot',
@@ -32,7 +32,7 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.9/dist/web.js'
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'
 
   Typebot.initPopup({
     typebot: 'my-typebot',
@@ -66,6 +66,36 @@ You can bind these commands on a button element, for example:
 <button onclick="Typebot.open()">Contact us</button>
 ```
 
+### Multiple bots
+
+If you have different bots on the same page you will have to make them distinct with an additional `id` prop:
+
+```html
+<script type="module">
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'
+
+  Typebot.initStandard({
+    id: 'bot1'
+    typebot: 'my-typebot',
+  })
+
+  Typebot.initStandard({
+    id: 'bot2'
+    typebot: 'my-typebot-2',
+  })
+</script>
+
+<typebot-standard
+  id="bot1"
+  style="width: 100%; height: 600px; "
+></typebot-standard>
+...
+<typebot-standard
+  id="bot2"
+  style="width: 100%; height: 600px; "
+></typebot-standard>
+```
+
 ## Bubble
 
 You can get the bubble HTML and Javascript code by clicking on the "HTML & Javascript" button in the "Share" tab of your typebot.
@@ -74,7 +104,7 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0.9/dist/web.js'
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'
 
   Typebot.initBubble({
     typebot: 'my-typebot',

@@ -98,7 +98,7 @@ export const CredentialsDropdown = ({
     }
 
   return (
-    <Menu isLazy placement="bottom-end" matchWidth>
+    <Menu isLazy>
       <MenuButton
         as={Button}
         rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
@@ -111,7 +111,7 @@ export const CredentialsDropdown = ({
           {currentCredential ? currentCredential.name : defaultCredentialsLabel}
         </Text>
       </MenuButton>
-      <MenuList maxW="500px">
+      <MenuList>
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
           {defaultCredentialLabel && (
             <MenuItem

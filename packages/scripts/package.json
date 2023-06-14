@@ -12,21 +12,22 @@
     "db:setCustomPlan": "tsx setCustomPlan.ts",
     "db:bulkUpdate": "tsx bulkUpdate.ts",
     "db:fixTypebots": "tsx fixTypebots.ts",
-    "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts"
+    "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts",
+    "sendAlertEmails": "tsx sendAlertEmails.ts"
   },
   "devDependencies": {
+    "@typebot.io/emails": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
     "@types/node": "20.2.3",
     "@types/prompts": "2.4.4",
-    "@typebot.io/prisma": "workspace:*",
     "deep-object-diff": "1.1.9",
-    "@typebot.io/emails": "workspace:*",
     "got": "12.6.0",
-    "@typebot.io/schemas": "workspace:*",
     "prompts": "2.4.2",
     "stripe": "12.6.0",
     "tsx": "3.12.7",
     "typescript": "5.0.4",
-    "@typebot.io/lib": "workspace:*",
     "zod": "3.21.4"
   }
 }

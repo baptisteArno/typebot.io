@@ -5,15 +5,13 @@ import { ExecuteLogicResponse } from '@/features/chat/types'
 
 export const executeRedirect = (
   { typebot: { variables } }: SessionState,
-  block: RedirectBlock,
-  lastBubbleBlockId?: string
+  block: RedirectBlock
 ): ExecuteLogicResponse => {
   if (!block.options?.url) return { outgoingEdgeId: block.outgoingEdgeId }
   const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   return {
     clientSideActions: [
       {
-        lastBubbleBlockId,
         redirect: { url: formattedUrl, isNewTab: block.options.isNewTab },
       },
     ],

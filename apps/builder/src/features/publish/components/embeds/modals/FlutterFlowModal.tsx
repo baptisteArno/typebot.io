@@ -32,7 +32,7 @@ export const FlutterFlowModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Heading size="md">Notion</Heading>
+          <Heading size="md">FlutterFlow</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

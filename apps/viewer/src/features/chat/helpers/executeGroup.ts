@@ -55,7 +55,7 @@ export const executeGroup =
       if (isInputBlock(block))
         return {
           messages,
-          input: await injectVariablesValueInBlock(newSessionState)(block),
+          input: await parseInput(newSessionState)(block),
           newSessionState: {
             ...newSessionState,
             currentBlock: {
@@ -67,9 +67,9 @@ export const executeGroup =
           logs,
         }
       const executionResponse = isLogicBlock(block)
-        ? await executeLogic(newSessionState, lastBubbleBlockId)(block)
+        ? await executeLogic(newSessionState)(block)
         : isIntegrationBlock(block)
-        ? await executeIntegration(newSessionState, lastBubbleBlockId)(block)
+        ? await executeIntegration(newSessionState)(block)
         : null
 
       if (!executionResponse) continue
@@ -83,12 +83,17 @@ export const executeGroup =
       ) {
         clientSideActions = [
           ...(clientSideActions ?? []),
-          ...executionResponse.clientSideActions,
+          ...executionResponse.clientSideActions.map((action) => ({
+            ...action,
+            lastBubbleBlockId,
+          })),
         ]
         if (
           executionResponse.clientSideActions?.find(
             (action) =>
-              'setVariable' in action || 'streamOpenAiChatCompletion' in action
+              'setVariable' in action ||
+              'streamOpenAiChatCompletion' in action ||
+              'webhookToExecute' in action
           )
         ) {
           return {
@@ -178,14 +183,12 @@ const parseBubbleBlock =
     }
   }
 
-const injectVariablesValueInBlock =
-  (state: Pick<SessionState, 'result' | 'typebot'>) =>
+const parseInput =
+  (state: SessionState) =>
   async (block: InputBlock): Promise<ChatReply['input']> => {
     switch (block.type) {
       case InputBlockType.CHOICE: {
-        return injectVariableValuesInButtonsInputBlock(state.typebot.variables)(
-          block
-        )
+        return injectVariableValuesInButtonsInputBlock(state)(block)
       }
       case InputBlockType.PICTURE_CHOICE: {
         return injectVariableValuesInPictureChoiceBlock(

@@ -1,13 +1,13 @@
-import { createI18n } from '@typebot.io/next-international'
-import type Locale from './en'
+import { createI18n } from 'next-international'
 
 export const {
-  defineLocale,
   useI18n,
   useScopedI18n,
   I18nProvider,
   getLocaleProps,
-} = createI18n<typeof Locale>({
+  useCurrentLocale,
+  useChangeLocale,
+} = createI18n({
   en: () => import('./en'),
   fr: () => import('./fr'),
   pt: () => import('./pt'),
