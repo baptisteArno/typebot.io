@@ -1,5 +1,35 @@
 # Changelog
 
+<a name="2.14.1"></a>
+## 2.14.1 (2023-06-14)
+
+### Added
+
+- 👷‍♂️ Add email alert hourly sender [[a4cb6fa](https://github.com/baptisteArno/typebot.io/commit/a4cb6face8c8311957e233c73cab11f57ca52a9c)]
+- ✨ Add Näak product recommendation template [[40ef934](https://github.com/baptisteArno/typebot.io/commit/40ef934740ab3cfad56b5137c7b0ed4ba9ce2584)]
+- ✨ Add conditional choice items [[ef0a2d9](https://github.com/baptisteArno/typebot.io/commit/ef0a2d9dc61042281ee486ef5e9bb8d711f92e30)]
+
+### Changed
+
+- ♿ (payment) Improve payment input amount label format [[290b491](https://github.com/baptisteArno/typebot.io/commit/290b491e533fcab2448eb0e19af4c283d72a2509)]
+- 🚸 Add item duplication [[acaa1c6](https://github.com/baptisteArno/typebot.io/commit/acaa1c622387ec60a8afa8e18964a5fb291032c9)]
+- 🚸 (openai) Add missing credentials error to chat completion streamer [[8822e4e](https://github.com/baptisteArno/typebot.io/commit/8822e4e7e4d4239122bffbe60017d1a248c413cd)]
+
+### Fixed
+
+- 🐛 Fix GA not working when Send_to is empty string [[0a87386](https://github.com/baptisteArno/typebot.io/commit/0a873863054d63405cadcd51bfcd0858415031f6)]
+- 💚 Fix cleanDatabase when deleting more than 100,000 sessions [[4977481](https://github.com/baptisteArno/typebot.io/commit/49774815820c6dffb8d4dc1c0493743521c055e4)]
+- 🐛 (openai) Fix default response mapping item [[e9c2dee](https://github.com/baptisteArno/typebot.io/commit/e9c2deee5ff935ee941925aafcf3e70bce850ce6)]
+- ✏️ Fix FlutterFlow modal title typo [[a16367b](https://github.com/baptisteArno/typebot.io/commit/a16367b194e0fa778c62ed2dec035d69b113aadd)]
+- ✏️ Fix react README examples ([#542](https://github.com/baptisteArno/typebot.io/issues/542)) [[61fd44f](https://github.com/baptisteArno/typebot.io/commit/61fd44f768d80f7298db689e4dde4c94327fdf6f)]
+
+### Miscellaneous
+
+- 📦 Add Cloudron package ([#550](https://github.com/baptisteArno/typebot.io/issues/550)) [[1e9c4bc](https://github.com/baptisteArno/typebot.io/commit/1e9c4bcb9aab058630d04482ba6b929d50e85df7)]
+- 📝 Add 2 new oss friends in landing page [[25524ac](https://github.com/baptisteArno/typebot.io/commit/25524ac62217c90631e7aaf603ba9a63de05cfe5)]
+- 📝 Add Google Ads conversion instructions [[4614caf](https://github.com/baptisteArno/typebot.io/commit/4614caf49873be955b63f1888be16ddbfa8a8540)]
+
+
 <a name="2.14.0"></a>
 ## 2.14.0 (2023-06-02)
 
