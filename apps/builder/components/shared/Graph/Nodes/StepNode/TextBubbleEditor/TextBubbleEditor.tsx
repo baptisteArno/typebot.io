@@ -174,7 +174,10 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
-            handleOutsideClick={() => setIsVariableDropdownOpen(false)}
+            handleOutsideClick={() => {
+              console.log('Saiuaaaaa')
+              setIsVariableDropdownOpen(false)
+            }}
           />
         </Flex>
       )}

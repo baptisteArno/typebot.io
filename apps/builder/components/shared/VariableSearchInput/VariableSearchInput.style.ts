@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton';
 import { Input } from '@chakra-ui/react';
+  
 
 export const Container = styled.div`
   width: 100%;
   height: ${(props) => props['data-screen'] === 'CREATE' ? '320px' : '200px'};
   padding: ${(props) => props['data-screen'] === 'VIEWER' ? '0px' : '15px'};
+  margin: ${(props) => props['data-screen'] === 'VIEWER' ? '15px' : '0px'};
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans', sans-serif;
