@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENVSH_ENV=./apps/builder/.env.production ENVSH_OUTPUT=./apps/builder/public/__env.js bash env.sh
+ENVSH_ENV=./apps/builder/.env.production ENVSH_OUTPUT=./apps/builder/public/__env.js bash inject-runtime-env.sh
 
 echo 'Checking if required environment variables are set and valid...'
 
