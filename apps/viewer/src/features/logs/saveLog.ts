@@ -1,12 +1,14 @@
 import prisma from '@/lib/prisma'
 import { isNotDefined } from '@typebot.io/lib'
 
-export const saveLog = (
-  status: 'error' | 'success',
-  resultId: string | undefined,
-  message: string,
+type Props = {
+  status: 'error' | 'success' | 'info'
+  resultId: string | undefined
+  message: string
   details?: unknown
-) => {
+}
+
+export const saveLog = ({ status, resultId, message, details }: Props) => {
   if (!resultId || resultId === 'undefined') return
   return prisma.log.create({
     data: {

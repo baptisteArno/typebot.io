@@ -1,6 +1,6 @@
 import { saveLog } from './saveLog'
 
-export const saveErrorLog = ({
+export const saveInfoLog = ({
   resultId,
   message,
   details,
@@ -8,4 +8,4 @@ export const saveErrorLog = ({
   resultId: string | undefined
   message: string
   details?: unknown
-}) => saveLog({ status: 'error', resultId, message, details })
+}) => saveLog({ status: 'info', resultId, message, details })

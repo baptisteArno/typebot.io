@@ -23,11 +23,14 @@ export const WebPreview = () => {
         details: log.details
           ? {
               lang: 'json',
-              content: JSON.stringify(log.details, null, 2),
+              content:
+                typeof log.details === 'string'
+                  ? log.details
+                  : JSON.stringify(log.details, null, 2),
             }
           : undefined,
       })
-      console.error(log)
+      if (log.status === 'error') console.error(log)
     })
   }
 

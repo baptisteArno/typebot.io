@@ -10,6 +10,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { matchFilter } from './helpers/matchFilter'
+import { saveInfoLog } from '@/features/logs/saveInfoLog'
 
 export const updateRow = async (
   { result, typebot: { variables } }: SessionState,
@@ -42,12 +43,12 @@ export const updateRow = async (
   )
   if (filteredRows.length === 0) {
     log = {
-      status: 'error',
+      status: 'info',
       description: `Could not find any row that matches the filter`,
       details: JSON.stringify(filter, null, 2),
     }
     result &&
-      (await saveErrorLog({
+      (await saveInfoLog({
         resultId: result.id,
         message: log.description,
         details: log.details,
