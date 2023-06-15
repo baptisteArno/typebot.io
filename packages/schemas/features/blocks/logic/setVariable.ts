@@ -10,6 +10,7 @@ export const valueTypes = [
   'Yesterday',
   'Tomorrow',
   'Random ID',
+  'Moment of the day',
   'Map item with same index',
 ] as const
 

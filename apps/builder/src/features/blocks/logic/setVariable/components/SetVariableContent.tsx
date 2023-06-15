@@ -42,6 +42,7 @@ const getExpression =
       case 'Today':
       case 'Tomorrow':
       case 'User ID':
+      case 'Moment of the day':
       case 'Yesterday': {
         return `${variableName} = ${options.type}`
       }
