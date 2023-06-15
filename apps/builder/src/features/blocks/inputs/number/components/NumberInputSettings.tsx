@@ -14,9 +14,11 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options.labels, button } })
-  const handleMinChange = (min?: number) => onOptionsChange({ ...options, min })
-  const handleMaxChange = (max?: number) => onOptionsChange({ ...options, max })
-  const handleStepChange = (step?: number) =>
+  const handleMinChange = (min?: NumberInputOptions['min']) =>
+    onOptionsChange({ ...options, min })
+  const handleMaxChange = (max?: NumberInputOptions['max']) =>
+    onOptionsChange({ ...options, max })
+  const handleStepChange = (step?: NumberInputOptions['step']) =>
     onOptionsChange({ ...options, step })
   const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id })
@@ -38,19 +40,16 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
         label="Min:"
         defaultValue={options.min}
         onValueChange={handleMinChange}
-        withVariableButton={false}
       />
       <NumberInput
         label="Max:"
         defaultValue={options.max}
         onValueChange={handleMaxChange}
-        withVariableButton={false}
       />
       <NumberInput
         label="Step:"
         defaultValue={options.step}
         onValueChange={handleStepChange}
-        withVariableButton={false}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">

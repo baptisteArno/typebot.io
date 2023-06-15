@@ -3,14 +3,15 @@ import { optionBaseSchema, blockBaseSchema } from '../baseSchemas'
 import { defaultButtonLabel } from './constants'
 import { InputBlockType } from './enums'
 import { textInputOptionsBaseSchema } from './text'
+import { variableStringSchema } from '../../utils'
 
 export const numberInputOptionsSchema = optionBaseSchema
   .merge(textInputOptionsBaseSchema)
   .merge(
     z.object({
-      min: z.number().optional(),
-      max: z.number().optional(),
-      step: z.number().optional(),
+      min: z.number().or(variableStringSchema).optional(),
+      max: z.number().or(variableStringSchema).optional(),
+      step: z.number().or(variableStringSchema).optional(),
     })
   )
 

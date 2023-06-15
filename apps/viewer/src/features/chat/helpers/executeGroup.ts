@@ -14,6 +14,7 @@ import {
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
+  isNotEmpty,
 } from '@typebot.io/lib'
 import { executeLogic } from './executeLogic'
 import { getNextGroup } from './getNextGroup'
@@ -194,6 +195,29 @@ const parseInput =
         return injectVariableValuesInPictureChoiceBlock(
           state.typebot.variables
         )(block)
+      }
+      case InputBlockType.NUMBER: {
+        const parsedBlock = deepParseVariables(state.typebot.variables)({
+          ...block,
+          prefilledValue: getPrefilledInputValue(state.typebot.variables)(
+            block
+          ),
+        })
+        return {
+          ...parsedBlock,
+          options: {
+            ...parsedBlock.options,
+            min: isNotEmpty(parsedBlock.options.min as string)
+              ? Number(parsedBlock.options.min)
+              : undefined,
+            max: isNotEmpty(parsedBlock.options.max as string)
+              ? Number(parsedBlock.options.max)
+              : undefined,
+            step: isNotEmpty(parsedBlock.options.step as string)
+              ? Number(parsedBlock.options.step)
+              : undefined,
+          },
+        }
       }
       default: {
         return deepParseVariables(state.typebot.variables)({
