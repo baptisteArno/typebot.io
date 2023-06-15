@@ -102,7 +102,10 @@ class Typebot_Public
     $bot_initializer = '<script type="module">
     import Typebot from "' . $lib_url . '"
 
-    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...window.typebotWpUser } });</script>';
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParams = Object.fromEntries(urlParams.entries());
+
+    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
 
     return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
   }
