@@ -639,13 +639,28 @@
                                                     "additionalProperties": false
                                                   },
                                                   "min": {
-                                                    "type": "number"
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "number"
+                                                      },
+                                                      {}
+                                                    ]
                                                   },
                                                   "max": {
-                                                    "type": "number"
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "number"
+                                                      },
+                                                      {}
+                                                    ]
                                                   },
                                                   "step": {
-                                                    "type": "number"
+                                                    "anyOf": [
+                                                      {
+                                                        "type": "number"
+                                                      },
+                                                      {}
+                                                    ]
                                                   }
                                                 },
                                                 "required": [
@@ -1539,6 +1554,7 @@
                                                       "Yesterday",
                                                       "Tomorrow",
                                                       "Random ID",
+                                                      "Moment of the day",
                                                       "Map item with same index"
                                                     ]
                                                   },
@@ -2406,12 +2422,17 @@
                                                       "model": {
                                                         "type": "string",
                                                         "enum": [
-                                                          "gpt-4",
-                                                          "gpt-4-0314",
-                                                          "gpt-4-32k",
-                                                          "gpt-4-32k-0314",
                                                           "gpt-3.5-turbo",
-                                                          "gpt-3.5-turbo-0301"
+                                                          "gpt-3.5-turbo-0613",
+                                                          "gpt-3.5-turbo-16k",
+                                                          "gpt-3.5-turbo-16k-0613",
+                                                          "gpt-3.5-turbo-0301",
+                                                          "gpt-4",
+                                                          "gpt-4-0613",
+                                                          "gpt-4-32k",
+                                                          "gpt-4-32k-0613",
+                                                          "gpt-4-32k-0314",
+                                                          "gpt-4-0314"
                                                         ]
                                                       },
                                                       "messages": {
@@ -2433,6 +2454,9 @@
                                                                   ]
                                                                 },
                                                                 "content": {
+                                                                  "type": "string"
+                                                                },
+                                                                "name": {
                                                                   "type": "string"
                                                                 }
                                                               },
@@ -3862,13 +3886,28 @@
                                       "additionalProperties": false
                                     },
                                     "min": {
-                                      "type": "number"
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {}
+                                      ]
                                     },
                                     "max": {
-                                      "type": "number"
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {}
+                                      ]
                                     },
                                     "step": {
-                                      "type": "number"
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {}
+                                      ]
                                     }
                                   },
                                   "required": [

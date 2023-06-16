@@ -6,22 +6,21 @@ import { IntegrationBlockType } from './enums'
 export const openAITasks = ['Create chat completion', 'Create image'] as const
 
 export const chatCompletionModels = [
-  'gpt-4',
-  'gpt-4-0314',
-  'gpt-4-32k',
-  'gpt-4-32k-0314',
   'gpt-3.5-turbo',
+  'gpt-3.5-turbo-0613',
+  'gpt-3.5-turbo-16k',
+  'gpt-3.5-turbo-16k-0613',
   'gpt-3.5-turbo-0301',
+  'gpt-4',
+  'gpt-4-0613',
+  'gpt-4-32k',
+  'gpt-4-32k-0613',
+  'gpt-4-32k-0314',
+  'gpt-4-0314',
 ] as const
 
-export const modelLimit = {
-  'gpt-3.5-turbo': 4096,
-  'gpt-3.5-turbo-0301': 4096,
-  'gpt-4': 8192,
-  'gpt-4-0314': 8192,
-  'gpt-4-32k': 32768,
-  'gpt-4-32k-0314': 32768,
-} as const
+export const deprecatedCompletionModels: (typeof chatCompletionModels)[number][] =
+  ['gpt-3.5-turbo-0301', 'gpt-4-32k-0314', 'gpt-4-0314']
 
 export const chatCompletionMessageRoles = [
   'system',
@@ -52,6 +51,7 @@ export const chatCompletionMessageSchema = z.object({
   id: z.string(),
   role: z.enum(chatCompletionMessageRoles).optional(),
   content: z.string().optional(),
+  name: z.string().optional(),
 })
 
 const chatCompletionCustomMessageSchema = z.object({

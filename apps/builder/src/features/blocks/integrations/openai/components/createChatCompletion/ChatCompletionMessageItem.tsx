@@ -1,5 +1,5 @@
 import { DropdownList } from '@/components/DropdownList'
-import { Textarea } from '@/components/inputs'
+import { Textarea, TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
@@ -55,6 +55,11 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
     })
   }
 
+  const updateName = (name: string) => {
+    if (item.role === 'Messages sequence ✨') return
+    onItemChange({ ...item, name })
+  }
+
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <DropdownList
@@ -77,12 +82,19 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
           />
         </>
       ) : (
-        <Textarea
-          defaultValue={item.content}
-          onChange={changeSingleMessageContent}
-          placeholder="Content"
-          minH="150px"
-        />
+        <>
+          <Textarea
+            defaultValue={item.content}
+            onChange={changeSingleMessageContent}
+            placeholder="Content"
+            minH="150px"
+          />
+          <TextInput
+            defaultValue={item.name}
+            onChange={updateName}
+            placeholder="Name (Optional)"
+          />
+        </>
       )}
     </Stack>
   )
