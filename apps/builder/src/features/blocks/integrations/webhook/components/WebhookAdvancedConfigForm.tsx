@@ -208,22 +208,24 @@ export const WebhookAdvancedConfigForm = ({
       {testResponse && (
         <CodeEditor isReadOnly lang="json" value={testResponse} />
       )}
-      <Accordion allowMultiple>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Save in variables
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pt="4">
-            <TableList<ResponseVariableMapping>
-              initialItems={options.responseVariableMapping}
-              onItemsChange={updateResponseVariableMapping}
-              Item={ResponseMappingInputs}
-              addLabel="Add an entry"
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+      {(testResponse || options.responseVariableMapping.length > 0) && (
+        <Accordion allowMultiple>
+          <AccordionItem>
+            <AccordionButton justifyContent="space-between">
+              Save in variables
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel pt="4">
+              <TableList<ResponseVariableMapping>
+                initialItems={options.responseVariableMapping}
+                onItemsChange={updateResponseVariableMapping}
+                Item={ResponseMappingInputs}
+                addLabel="Add an entry"
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      )}
     </>
   )
 }
