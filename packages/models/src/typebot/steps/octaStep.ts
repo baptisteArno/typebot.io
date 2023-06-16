@@ -6,7 +6,7 @@ export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
 
 // Waba steps
 
-export type OctaWabaStep = WhatsAppOptionsListStep
+export type OctaWabaStep = WhatsAppOptionsListStep | WhatsAppButtonsListStep
 
 // Bubble steps (editado na árvore)
 export type OctaBubbleStep = EndConversationStep
@@ -17,7 +17,7 @@ export type OctaStepOptions =
   | OfficeHoursOptions
   | CallOtherBotOptions
 
-export type OctaWabaStepOptions = WhatsAppOptionsListOptions
+export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions
 
 // Steps that has variables on the popup modal
 export type OctaStepWithOptions =
@@ -46,6 +46,7 @@ export enum OctaStepType {
 // Waba step types
 export enum OctaWabaStepType {
   WHATSAPP_OPTIONS_LIST = 'whatsapp options list',
+  WHATSAPP_BUTTONS_LIST = 'whatsapp buttons list'
   // BUTTONS = 'buttons',
   // COMMERCE = 'commerce',
 }
@@ -76,9 +77,24 @@ export type WhatsAppOptionsListStep = StepBase & {
   items: [WhatsAppOptionsItem]
 }
 
+export type WhatsAppButtonsListStep = StepBase & {
+  type: OctaWabaStepType.WHATSAPP_BUTTONS_LIST
+  options: WhatsAppButtonsListOptions
+  items: [WhatsAppButtonsItem]
+}
+
 export type WhatsAppOptionsItem = ItemBase & {
   type: ItemType.WHATSAPP_OPTIONS_LIST
   content: WhatsAppOptionsContent
+}
+
+export type WhatsAppButtonsItem = ItemBase & {
+  type: ItemType.WHATSAPP_BUTTONS_LIST
+  content: WhatsAppButtonsContent
+}
+
+export type WhatsAppButtonsContent = ItemBase & {
+  variableId?: string
 }
 
 export type WhatsAppOptionsContent = {
@@ -215,6 +231,21 @@ export type WhatsAppOptionsListOptions = BaseOctaOptions & {
   variableId: string
 }
 
+export type WhatsAppButtonsListOptions = BaseOctaOptions & {
+  id: string
+  subType: string
+  body: {
+    content?: TextBubbleContent
+  }
+  header: {
+    content?: TextBubbleContent
+  }
+  footer: {
+    content?: TextBubbleContent
+  }
+  variableId: string
+}
+
 export const defaultOfficeHoursOptions: OfficeHoursOptions = {
   id: '',
   presetName: 'Horário de atendimento',
@@ -319,6 +350,23 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   },
   listItems: [],
   listTitle: {
+    content: undefined,
+  },
+  variableId: ''
+}
+
+export const defaultWhatsAppButtonsListOptions: WhatsAppButtonsListOptions = {
+  id: '',
+  name: '',
+  subject: '',
+  subType: 'interactive-buttons',
+  body: {
+    content: undefined,
+  },
+  header: {
+    content: undefined,
+  },
+  footer: {
     content: undefined,
   },
   variableId: ''

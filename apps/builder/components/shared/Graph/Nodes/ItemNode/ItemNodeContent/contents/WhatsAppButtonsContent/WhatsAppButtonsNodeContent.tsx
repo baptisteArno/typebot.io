@@ -12,20 +12,21 @@ import {
   Item,
   ItemIndices,
   ItemType,
-  WhatsAppOptionsListStep,
+  WhatsAppButtonsListStep,
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
 type Props = {
   item: Item
-  step: WhatsAppOptionsListStep
+  step: WhatsAppButtonsListStep
   indices: ItemIndices
   isMouseOver: boolean
 }
 
-export const WhatsAppOptionsNodeContent = ({
+export const WhatsAppButtonsNodeContent = ({
   item,
+  step,
   indices,
   isMouseOver,
 }: Props) => {
@@ -61,7 +62,7 @@ export const WhatsAppOptionsNodeContent = ({
     createItem(
       {
         stepId: item.stepId,
-        type: ItemType.WHATSAPP_OPTIONS_LIST as ItemType.BUTTON,
+        type: ItemType.WHATSAPP_BUTTONS_LIST as ItemType.BUTTON,
       },
       { ...indices, itemIndex }
     )

@@ -23,6 +23,7 @@ import {
   WebhookStep,
   IntegrationStepType,
   WhatsAppOptionsListStep,
+  WhatsAppButtonsListStep,
   OctaWabaStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
@@ -161,7 +162,7 @@ export const StepNode = ({
   }, [openedStepId])
 
   const checkisConnectable = (step: Step): boolean  => {
-    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step) && !isWhatsAppOptionsListStep(step);
+    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step) && !isWhatsAppOptionsListStep(step) && !isWhatsAppButtonsListStep(step);
   }
 
   return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
@@ -335,6 +336,10 @@ const isWebhookStep = (
 
 const isWhatsAppOptionsListStep = (step: Step): step is WhatsAppOptionsListStep => {
   return step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST
+}
+
+const isWhatsAppButtonsListStep = (step: Step): step is WhatsAppButtonsListStep => {
+  return step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST
 }
 
 const hasStepRedirectNoneAvailable = (step: Step): step is AssignToTeamStep => {
