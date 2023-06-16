@@ -54,7 +54,7 @@ export const streamChat =
       if (dataString.includes('503 Service Temporarily Unavailable')) {
         if (isRetrying)
           return { error: { message: "Couldn't get streamer data" } }
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 3000))
         return streamChat(context)(messages, {
           onStreamedMessage,
           isRetrying: true,

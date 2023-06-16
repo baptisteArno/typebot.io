@@ -42,6 +42,17 @@ export const executeChatCompletionOpenAIRequest = async ({
     return { response, logs }
   } catch (error) {
     if (error instanceof HTTPError) {
+      if (error.response.statusCode === 503) {
+        console.log('OpenAI API error - 503, retrying in 3 seconds')
+        await new Promise((resolve) => setTimeout(resolve, 3000))
+        return executeChatCompletionOpenAIRequest({
+          apiKey,
+          model,
+          messages,
+          temperature,
+          currentLogs: logs,
+        })
+      }
       if (error.response.statusCode === 400) {
         const log = {
           status: 'info',
