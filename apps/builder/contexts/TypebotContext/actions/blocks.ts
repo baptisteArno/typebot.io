@@ -129,6 +129,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Direcione a conversa para outro bot'
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return 'Pergunta com lista de opções'
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return 'Pergunta com lista de botões'
     default:
       return 'Outro'
   }

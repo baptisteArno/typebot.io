@@ -5,6 +5,7 @@ import { ConditionNodeContent } from './contents/ConditionNodeContent'
 import { OfficeHoursNodeContent } from './contents/OfficeHoursNodeContent'
 import { WebhookNodeContent } from './contents/WebhooksNodeContent/WebhookNodeContent'
 import { WhatsAppOptionsNodeContent } from './contents/WhatsAppOptionsContent'
+import { WhatsAppButtonsNodeContent } from './contents/WhatsAppButtonsContent'
 
 type Props = {
   step?: Step
@@ -33,6 +34,15 @@ export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => 
     case ItemType.WHATSAPP_OPTIONS_LIST:
       return (
         <WhatsAppOptionsNodeContent
+          item={item}
+          step={step}
+          isMouseOver={isMouseOver}
+          indices={indices}
+        />
+      )
+    case ItemType.WHATSAPP_BUTTONS_LIST:
+      return (
+        <WhatsAppButtonsNodeContent
           item={item}
           step={step}
           isMouseOver={isMouseOver}

@@ -46,7 +46,7 @@ import {
   OctaBubbleStepContent,
   defaultPaymentInputOptions,
   defaultWhatsAppOptionsListOptions,
-  // defaultRequestButtons,
+  defaultWhatsAppButtonsListOptions,
   defaultMediaBubbleContent,
   defaultCallOtherBotOptions
 } from 'models'
@@ -354,6 +354,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
     //   return defaultRequestButtons
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return defaultWhatsAppButtonsListOptions
     default:
       return null
   }

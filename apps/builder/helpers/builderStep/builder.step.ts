@@ -17,7 +17,9 @@ import { BuilderStepType } from './types.builder'
 import { templateOfficeHours } from './dictionary/input-officeHours.step'
 import { templateCommerceStep } from './dictionary/input-commerce.step'
 import { templateUploadBot } from './dictionary/inputs/input-upload.step'
-import { templateVariableBot } from './dictionary/variables/variable.step'
+import { templateVariableBot } from './dictionary/variables/whatsapp-options-variable.step'
+import { templateVariableButtonsBot } from './dictionary/variables/whatsapp-buttons-variable.step'
+
 export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
   const builder = (
     type: DraggableStepType,
@@ -79,7 +81,14 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
         step = templateVariableBot(
           bot,
           blockId,
-          'colocar itemNodesList aqui'
+          ''
+        )
+        break
+      case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+        step = templateVariableButtonsBot(
+          bot,
+          blockId,
+          ''
         )
         break
       default:

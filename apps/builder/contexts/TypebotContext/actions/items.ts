@@ -31,7 +31,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
-        if (step.type !== InputStepType.CHOICE && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST) return
+        if (step.type !== InputStepType.CHOICE && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST && step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST) return
         const newItem = {
           ...item,
           stepId: step.id,
