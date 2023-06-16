@@ -104,6 +104,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     //   return <RadioIcon color="#7B15C1" {...props} />
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return <ListIcon color="#7B15C1" {...props} />
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return <CodeIcon color="#b18bca" {...props} />
     case OctaStepType.OFFICE_HOURS:
       return <BsCalendar2Range color="#7B15C1" size={18}/>
       // case OctaWabaStepType.COMMERCE:

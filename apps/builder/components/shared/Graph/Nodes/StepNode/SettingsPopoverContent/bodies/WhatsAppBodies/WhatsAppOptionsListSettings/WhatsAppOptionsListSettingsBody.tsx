@@ -15,6 +15,10 @@ export const WhatsAppOptionsListSettingsBody = ({
   options,
   onOptionsChange,
 }: WhatsAppOptionsListSettingsBodyProps) => {
+  useEffect(() => {
+    console.log(options)
+  })
+  
   const [listOptions, setListOptions] = useState<
     Array<{
       description: string
@@ -28,104 +32,33 @@ export const WhatsAppOptionsListSettingsBody = ({
       }
     }>
   >([])
-  const [optionsListQty, setOptionsListQty] = useState(0)
-
-  useEffect(() => {
-    console.log(options)
-  }, [])
 
   const handleHeaderText = (content: any) => {
-    // console.log('content header', content)
     onOptionsChange({
       ...options,
       header: content,
     })
-    // console.log('options', options)
   }
 
   const handleBodyText = (content: any) => {
-    // console.log('content body', content)
     onOptionsChange({
       ...options,
       body: content,
     })
-    // console.log('options', options)
   }
 
   const handleFooterText = (content: any) => {
-    // console.log('content footer', content)
     onOptionsChange({
       ...options,
       footer: content,
     })
-    // console.log('options', options)
   }
   const handleListTitle = (content: any) => {
-    // console.log('content list title', content)
-    // console.log('options', options)
     onOptionsChange({
       ...options,
       listTitle: content,
     })
-    // console.log('options', options)
   }
-
-  // const handleAddOption = () => {
-  //   const currentOptions: Array<{
-  //     description: string
-  //     id: string
-  //     label: {
-  //       content?: TextBubbleContent
-  //     }
-  //     selected: boolean
-  //     value: {
-  //       content?: TextBubbleContent
-  //     }
-  //   }> = []
-  //   currentOptions.push(...listOptions)
-  //   currentOptions.push({
-  //     description: '',
-  //     id: uuidv4(),
-  //     label: {
-  //       content: undefined,
-  //     },
-  //     selected: true,
-  //     value: {
-  //       content: undefined,
-  //     },
-  //   })
-  //   setListOptions(currentOptions)
-
-  //   onOptionsChange({
-  //     ...options,
-  //     listItems: [...currentOptions],
-  //   })
-  // }
-
-  // const handleListOption = (content: any, itemId: string) => {
-  //   console.log('digitei list option', content)
-  //   console.log('itemId', itemId)
-  //   console.log('options', options)
-  //   const test = options?.listItems?.find((listItem) => listItem.id === itemId)
-  //   const arr = ['a', 'b', 'c']
-
-  //   // const index = arr.indexOf('a') // 👉️  0
-  //   if (test) {
-  //     const currentItemIndex = options?.listItems.indexOf(test)
-  //     listOptions.splice(currentItemIndex, 1, {
-  //       ...test,
-  //       label: content,
-  //       value: content,
-  //     })
-  //   }
-
-  //   console.log('item encontrado', test)
-  //   onOptionsChange({
-  //     ...options,
-  //     listItems: listOptions,
-  //   })
-  //   console.log('listOptions', listOptions)
-  // }
 
   return (
     <Stack spacing={4}>

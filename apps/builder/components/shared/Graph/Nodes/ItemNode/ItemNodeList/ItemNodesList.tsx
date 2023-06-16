@@ -185,6 +185,30 @@ export const ItemNodesList = ({
           }
         </Container>
       )}
+      {step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
+        <Container>
+          {
+            <Stack>
+              <Text color={'gray.500'} noOfLines={0}>
+                {step.options?.header && (
+                  <strong>{step.options.header.plainText}</strong>
+                )}
+              </Text>
+              <Text color={'gray.500'} noOfLines={0}>
+                {step.options?.body && (
+                  <label>{step.options.body.plainText}</label>
+                )}
+              </Text>
+              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
+                {step.options?.footer && (
+                  <label>{step.options.footer.plainText}</label>
+                )}
+              </Text>
+            </Stack>
+            
+          }
+        </Container>
+      )}
       {step && step.items && step.items.map((item, idx) => {
         return (
           <Stack key={item.id} spacing={1}>
@@ -210,7 +234,7 @@ export const ItemNodesList = ({
           </Stack>
         )
       })}
-      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && step.type !== IntegrationStepType.WEBHOOK && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST && (
+      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && step.type !== IntegrationStepType.WEBHOOK && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST && step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
         <Flex
           px="4"
           py="2"

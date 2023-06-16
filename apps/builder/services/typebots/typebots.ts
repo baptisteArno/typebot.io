@@ -46,10 +46,12 @@ import {
   OctaBubbleStepType,
   defaultWhatsAppOptionsListOptions,
   defaultWhatsAppOptionsListContent,
+  defaultWhatsAppButtonsListOptions,
   OfficeHourStep,
   defaultOfficeHoursOptions,
   defaultMediaBubbleContent,
   WhatsAppOptionsListStep,
+  WhatsAppButtonsListStep,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -206,7 +208,7 @@ const duplicateTypebot = (
                   : undefined,
               })),
               ...newIds,
-            } as ChoiceInputStep | ConditionStep | OfficeHourStep | WhatsAppOptionsListStep)
+            } as ChoiceInputStep | ConditionStep | OfficeHourStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep)
           }
 
           if (isWebhookStep(s)) {
@@ -307,7 +309,7 @@ export const parseNewStep = (
 }
 
 const parseDefaultItems = (
-  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST,
+  type: LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST,
   stepId: string
 ): Item[] => {
   switch (type) {
@@ -320,6 +322,15 @@ const parseDefaultItems = (
           stepId,
           type: ItemType.WHATSAPP_OPTIONS_LIST,
           content: defaultWhatsAppOptionsListContent,
+        },
+      ]
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.WHATSAPP_BUTTONS_LIST,
+          // content: defaultWhatsAppOptionsListContent,
         },
       ]
     case LogicStepType.CONDITION:
@@ -426,6 +437,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
       return defaultOfficeHoursOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return defaultWhatsAppButtonsListOptions
     default:
       return null
   }

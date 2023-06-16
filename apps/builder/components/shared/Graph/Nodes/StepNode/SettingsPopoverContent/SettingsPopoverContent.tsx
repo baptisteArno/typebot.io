@@ -32,7 +32,8 @@ import {
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
   CallOtherBotSettingsBody,
-  WhatsAppOptionsListSettingsBody
+  WhatsAppOptionsListSettingsBody,
+  WhatsAppButtonsListSettingsBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -72,6 +73,8 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         width = 450;
         break;
       case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+        width = 450;
+      case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
         width = 450;
         break;
       // case OctaWabaStepType.COMMERCE:
@@ -300,6 +303,16 @@ export const StepSettings = ({
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {
       return (
         <WhatsAppOptionsListSettingsBody
+          options={
+            step.options || { name: '' }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {
+      return (
+        <WhatsAppButtonsListSettingsBody
           options={
             step.options || { name: '' }
           }

@@ -169,6 +169,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {     
       return <ItemNodesList step={step} indices={indices} />
     }
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {     
+      return <ItemNodesList step={step} indices={indices} />
+    }
     // case OctaWabaStepType.COMMERCE: {
     //   return <OctaCommerceContent step={step} options={step} />
     // }
