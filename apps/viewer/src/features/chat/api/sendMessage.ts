@@ -27,6 +27,7 @@ import { prefillVariables } from '@/features/variables/prefillVariables'
 import { injectVariablesFromExistingResult } from '@/features/variables/injectVariablesFromExistingResult'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { parseVariables } from '@/features/variables/parseVariables'
+import { saveLog } from '@/features/logs/saveLog'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -42,8 +43,22 @@ export const sendMessage = publicProcedure
   .input(sendMessageInputSchema)
   .output(chatReplySchema)
   .query(
-    async ({ input: { sessionId, message, startParams }, ctx: { user } }) => {
+    async ({
+      input: { sessionId, message, startParams, clientLogs },
+      ctx: { user },
+    }) => {
       const session = sessionId ? await getSession(sessionId) : null
+
+      if (clientLogs) {
+        for (const log of clientLogs) {
+          await saveLog({
+            message: log.description,
+            status: log.status as 'error' | 'success' | 'info',
+            resultId: session?.state.result.id,
+            details: log.details,
+          })
+        }
+      }
 
       if (!session) {
         const {

@@ -16,7 +16,7 @@ import {
   SetVariableBlock,
   WebhookBlock,
 } from '@typebot.io/schemas'
-import { isInputBlock, isNotDefined, byId, isDefined } from '@typebot.io/lib'
+import { isInputBlock, isNotDefined, byId } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
@@ -69,15 +69,16 @@ export const continueBotFlow =
       )(JSON.parse(reply))
       if (result.newSessionState) newSessionState = result.newSessionState
     } else if (
-      isDefined(reply) &&
       block.type === IntegrationBlockType.OPEN_AI &&
       block.options.task === 'Create chat completion'
     ) {
-      const result = await resumeChatCompletion(state, {
-        options: block.options,
-        outgoingEdgeId: block.outgoingEdgeId,
-      })(reply)
-      newSessionState = result.newSessionState
+      if (reply) {
+        const result = await resumeChatCompletion(state, {
+          options: block.options,
+          outgoingEdgeId: block.outgoingEdgeId,
+        })(reply)
+        newSessionState = result.newSessionState
+      }
     } else if (!isInputBlock(block))
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

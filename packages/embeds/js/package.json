@@ -14,6 +14,7 @@
   "dependencies": {
     "@stripe/stripe-js": "1.53.0",
     "@udecode/plate-common": "^21.1.5",
+    "eventsource-parser": "^1.0.0",
     "solid-element": "1.7.0",
     "solid-js": "1.7.5"
   },

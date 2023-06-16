@@ -10,10 +10,9 @@ import { decrypt, isCredentialsV2 } from '@typebot.io/lib/api/encryption'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
 import { resumeChatCompletion } from './resumeChatCompletion'
-import { isPlaneteScale } from '@/helpers/api/isPlanetScale'
-import { isVercel } from '@/helpers/api/isVercel'
 import { parseChatCompletionMessages } from './parseChatCompletionMessages'
 import { executeChatCompletionOpenAIRequest } from './executeChatCompletionOpenAIRequest'
+import { isPlaneteScale } from '@/helpers/api/isPlanetScale'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -58,7 +57,6 @@ export const createChatCompletionOpenAI = async (
 
   if (
     isPlaneteScale() &&
-    isVercel() &&
     isCredentialsV2(credentials) &&
     newSessionState.isStreamEnabled
   )

@@ -35,6 +35,27 @@
                     "type": "string",
                     "description": "Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session."
                   },
+                  "clientLogs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "details": {}
+                      },
+                      "required": [
+                        "status",
+                        "description"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Logs while executing client side actions"
+                  },
                   "startParams": {
                     "type": "object",
                     "properties": {
