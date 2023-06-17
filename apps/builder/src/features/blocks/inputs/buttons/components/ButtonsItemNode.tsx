@@ -34,6 +34,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
   const editableRef = useRef<HTMLDivElement | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
+  const arrowColor = useColorModeValue('white', 'gray.800')
 
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -96,21 +97,21 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             in={isMouseOver}
             style={{
               position: 'absolute',
-              right: '-60px',
+              left: '-40px',
               zIndex: 3,
             }}
             unmountOnExit
           >
-            <IconButton
-              aria-label="Open settings"
-              icon={<SettingsIcon />}
-              bgColor={useColorModeValue('white', 'gray.800')}
-              variant="ghost"
-              size="sm"
-              shadow="md"
-              colorScheme="gray"
-              onClick={() => setOpenedItemId(item.id)}
-            />
+            <Flex bgColor={useColorModeValue('white', 'gray.800')} rounded="md">
+              <IconButton
+                aria-label="Open settings"
+                icon={<SettingsIcon />}
+                variant="ghost"
+                size="sm"
+                shadow="md"
+                onClick={() => setOpenedItemId(item.id)}
+              />
+            </Flex>
           </SlideFade>
           <Fade
             in={isMouseOver}
@@ -135,7 +136,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       </PopoverAnchor>
       <Portal>
         <PopoverContent pos="relative" onMouseDown={handleMouseDown}>
-          <PopoverArrow />
+          <PopoverArrow bgColor={arrowColor} />
           <PopoverBody
             py="6"
             overflowY="scroll"
@@ -155,5 +156,5 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
 }
 
 const HitboxExtension = () => (
-  <Flex h="full" w="50px" pos="absolute" top="0" right="-70px" />
+  <Flex h="full" w="10px" pos="absolute" top="0" left="-10px" />
 )
