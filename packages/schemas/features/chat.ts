@@ -168,6 +168,13 @@ const startParamsSchema = z.object({
   isStreamEnabled: z.boolean().optional(),
 })
 
+const replyLogSchema = logSchema
+  .pick({
+    status: true,
+    description: true,
+  })
+  .merge(z.object({ details: z.unknown().optional() }))
+
 export const sendMessageInputSchema = z.object({
   message: z
     .string()
@@ -181,17 +188,14 @@ export const sendMessageInputSchema = z.object({
     .describe(
       'Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session.'
     ),
+  clientLogs: z
+    .array(replyLogSchema)
+    .optional()
+    .describe('Logs while executing client side actions'),
   startParams: startParamsSchema.optional(),
 })
 
 const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
-
-const replyLogSchema = logSchema
-  .pick({
-    status: true,
-    description: true,
-  })
-  .merge(z.object({ details: z.unknown().optional() }))
 
 const clientSideActionSchema = z
   .object({

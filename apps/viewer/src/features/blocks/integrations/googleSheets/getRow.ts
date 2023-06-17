@@ -11,6 +11,7 @@ import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { matchFilter } from './helpers/matchFilter'
+import { saveInfoLog } from '@/features/logs/saveInfoLog'
 
 export const getRow = async (
   state: SessionState,
@@ -48,10 +49,11 @@ export const getRow = async (
     )
     if (filteredRows.length === 0) {
       log = {
-        status: 'error',
+        status: 'info',
         description: `Couldn't find any rows matching the filter`,
+        details: JSON.stringify(filter, null, 2),
       }
-      await saveErrorLog({
+      await saveInfoLog({
         resultId,
         message: log.description,
       })

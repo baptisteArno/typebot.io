@@ -1,4 +1,4 @@
-import { FormLabel, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, FormLabel, Stack, Tag, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SetVariableOptions, Variable, valueTypes } from '@typebot.io/schemas'
 import React from 'react'
@@ -129,6 +129,18 @@ const SetVariableValue = ({
             placeholder="Target list"
           />
         </Stack>
+      )
+    }
+    case 'Moment of the day': {
+      return (
+        <Alert fontSize="sm">
+          <AlertIcon />
+          <Text>
+            Will return either <Tag size="sm">morning</Tag>,{' '}
+            <Tag size="sm">afternoon</Tag>,<Tag size="sm">evening</Tag> or{' '}
+            <Tag size="sm">night</Tag> based on the current user time.
+          </Text>
+        </Alert>
       )
     }
     case 'Random ID':

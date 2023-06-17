@@ -6,11 +6,6 @@ import {
   OpenAICredentials,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { SessionState } from '@typebot.io/schemas/features/chat'
-import {
-  ParsedEvent,
-  ReconnectInterval,
-  createParser,
-} from 'eventsource-parser'
 import type {
   ChatCompletionRequestMessage,
   CreateChatCompletionRequest,
@@ -42,11 +37,6 @@ export const getChatCompletionStream =
       options.advancedSettings?.temperature
     )
 
-    const encoder = new TextEncoder()
-    const decoder = new TextDecoder()
-
-    let counter = 0
-
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       headers: {
         'Content-Type': 'application/json',
@@ -61,43 +51,5 @@ export const getChatCompletionStream =
       } satisfies CreateChatCompletionRequest),
     })
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        function onParse(event: ParsedEvent | ReconnectInterval) {
-          if (event.type === 'event') {
-            const data = event.data
-            if (data === '[DONE]') {
-              controller.close()
-              return
-            }
-            try {
-              const json = JSON.parse(data) as {
-                choices: { delta: { content: string } }[]
-              }
-              const text = json.choices.at(0)?.delta.content
-              if (counter < 2 && (text?.match(/\n/) || []).length) {
-                return
-              }
-              const queue = encoder.encode(text)
-              controller.enqueue(queue)
-              counter++
-            } catch (e) {
-              controller.error(e)
-            }
-          }
-        }
-
-        // stream response (SSE) from OpenAI may be fragmented into multiple chunks
-        // this ensures we properly read chunks & invoke an event for each SSE event stream
-        const parser = createParser(onParse)
-
-        // https://web.dev/streams/#asynchronous-iteration
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        for await (const chunk of res.body as any) {
-          parser.feed(decoder.decode(chunk))
-        }
-      },
-    })
-
-    return stream
+    return res.body
   }

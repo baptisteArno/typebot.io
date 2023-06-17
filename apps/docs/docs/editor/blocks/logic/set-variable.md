@@ -88,7 +88,15 @@ For example,
 
 :::
 
-## Map
+## Moment of the day
+
+It will set your variable with either one of these values based on the user's time of the day: `morning`, `afternoon`, `evening`, `night`.
+
+Then you can use this variable to conditionally display content:
+
+<img src="/img/blocks/logic/moment-condition.png" width="400" alt="Moment of the day condition"/>
+
+## Map item with same index
 
 This is a convenient value block that allows you to easily get an item from a list that has the same index as an item from another list.
 

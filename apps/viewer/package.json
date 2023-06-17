@@ -13,7 +13,6 @@
     "test:report": "pnpm playwright show-report"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.7",
     "@planetscale/database": "^1.7.0",
     "@sentry/nextjs": "7.53.1",
     "@trpc/server": "10.27.3",

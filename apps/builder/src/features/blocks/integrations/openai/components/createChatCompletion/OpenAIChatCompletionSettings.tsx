@@ -1,8 +1,8 @@
-import { DropdownList } from '@/components/DropdownList'
 import { TableList } from '@/components/TableList'
 import {
   chatCompletionModels,
   ChatCompletionOpenAIOptions,
+  deprecatedCompletionModels,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { ChatCompletionMessageItem } from './ChatCompletionMessageItem'
 import {
@@ -17,6 +17,7 @@ import {
 import { TextLink } from '@/components/TextLink'
 import { ChatCompletionResponseItem } from './ChatCompletionResponseItem'
 import { NumberInput } from '@/components/inputs'
+import { Select } from '@/components/inputs/Select'
 
 const apiReferenceUrl =
   'https://platform.openai.com/docs/api-reference/chat/create'
@@ -30,7 +31,11 @@ export const OpenAIChatCompletionSettings = ({
   options,
   onOptionsChange,
 }: Props) => {
-  const updateModel = (model: (typeof chatCompletionModels)[number]) => {
+  const updateModel = (
+    _: string | undefined,
+    model: (typeof chatCompletionModels)[number] | undefined
+  ) => {
+    if (!model) return
     onOptionsChange({
       ...options,
       model,
@@ -74,10 +79,12 @@ export const OpenAIChatCompletionSettings = ({
         </TextLink>{' '}
         to better understand the available options.
       </Text>
-      <DropdownList
-        currentItem={options.model}
-        items={chatCompletionModels}
-        onItemSelect={updateModel}
+      <Select
+        selectedItem={options.model}
+        items={chatCompletionModels.filter(
+          (model) => deprecatedCompletionModels.indexOf(model) === -1
+        )}
+        onSelect={updateModel}
       />
       <Accordion allowMultiple>
         <AccordionItem>
