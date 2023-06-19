@@ -28,24 +28,24 @@ if (
     })
   )
 
-if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
-  providers.push(
-    EmailProvider({
-      server: {
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 25,
-        secure: process.env.SMTP_SECURE
-          ? process.env.SMTP_SECURE === 'true'
-          : false,
-        auth: {
-          user: process.env.SMTP_USERNAME,
-          pass: process.env.SMTP_PASSWORD,
-        },
-      },
-      from: env('SMTP_FROM'),
-      sendVerificationRequest,
-    })
-  )
+// if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
+// providers.push(
+//   EmailProvider({
+//     server: {
+//       host: process.env.SMTP_HOST,
+//       port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 25,
+//       secure: process.env.SMTP_SECURE
+//         ? process.env.SMTP_SECURE === 'true'
+//         : false,
+//       auth: {
+//         user: process.env.SMTP_USERNAME,
+//         pass: process.env.SMTP_PASSWORD,
+//       },
+//     },
+//     from: env('SMTP_FROM'),
+//     sendVerificationRequest,
+//   })
+// )
 
 if (
   isNotEmpty(process.env.GOOGLE_CLIENT_ID) &&
