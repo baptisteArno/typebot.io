@@ -6,7 +6,7 @@ import {
   InputStepType,
   LogicStepType,
   Step,
-  WabaStepType,
+  OctaWabaStepType,
   DraggableStepType,
   DraggableStep,
   defaultTheme,
@@ -38,14 +38,15 @@ import {
   ChoiceInputStep,
   ConditionStep,
   OctaStepOptions,
+  OctaWabaStepOptions,
   OctaStepType,
   defaultAssignToTeamOptions,
   defaultEndConversationBubbleContent,
   OctaBubbleStepType,
   OctaBubbleStepContent,
   defaultPaymentInputOptions,
-  defaultRequestOptions,
-  defaultRequestButtons,
+  defaultWhatsAppOptionsListOptions,
+  defaultWhatsAppButtonsListOptions,
   defaultMediaBubbleContent,
   defaultCallOtherBotOptions
 } from 'models'
@@ -326,7 +327,7 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaStepType): BubbleStepContent => {
+const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleStepContent | null => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -338,19 +339,23 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | WabaSte
       return defaultEmbedBubbleContent
     case OctaBubbleStepType.END_CONVERSATION:
       return defaultEndConversationBubbleContent
-    case WabaStepType.BUTTONS:
-      return defaultRequestButtons
-    case WabaStepType.OPTIONS:
-      return defaultRequestOptions
+    default:
+      return null
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType): OctaStepOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOptions | OctaWabaStepOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
     case OctaStepType.CALL_OTHER_BOT:
       return defaultCallOtherBotOptions
+    // case OctaWabaStepType.BUTTONS:
+    //   return defaultRequestButtons
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      return defaultWhatsAppOptionsListOptions
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return defaultWhatsAppButtonsListOptions
     default:
       return null
   }

@@ -8,7 +8,7 @@ import {
   OctaStepType,
   StepIndices,
   Typebot,
-  WabaStepType,
+  OctaWabaStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots/typebots'
 import { templateTextBot } from './dictionary/input-text.step'
@@ -17,6 +17,9 @@ import { BuilderStepType } from './types.builder'
 import { templateOfficeHours } from './dictionary/input-officeHours.step'
 import { templateCommerceStep } from './dictionary/input-commerce.step'
 import { templateUploadBot } from './dictionary/inputs/input-upload.step'
+import { templateVariableBot } from './dictionary/variables/whatsapp-options-variable.step'
+import { templateVariableButtonsBot } from './dictionary/variables/whatsapp-buttons-variable.step'
+
 export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
   const builder = (
     type: DraggableStepType,
@@ -60,18 +63,32 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
       case OctaStepType.OFFICE_HOURS:
         step = templateOfficeHours(bot, blockId)
         break
-      case WabaStepType.COMMERCE:
-        step = templateCommerceStep(
-          bot,
-          blockId,
-          'Este é o catálogo que selecionamos para você:'
-        )
-        break
+      // case OctaWabaStepType.COMMERCE:
+      //   step = templateCommerceStep(
+      //     bot,
+      //     blockId,
+      //     'Este é o catálogo que selecionamos para você:'
+      //   )
+      //   break
       case BubbleStepType.MEDIA:
         step = templateUploadBot(
           bot,
           blockId,
           'Este é o arquivo que preparamos para você!'
+        )
+        break
+      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+        step = templateVariableBot(
+          bot,
+          blockId,
+          ''
+        )
+        break
+      case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+        step = templateVariableButtonsBot(
+          bot,
+          blockId,
+          ''
         )
         break
       default:

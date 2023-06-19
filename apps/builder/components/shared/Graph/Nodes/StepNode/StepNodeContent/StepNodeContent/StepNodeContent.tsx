@@ -9,7 +9,7 @@ import {
   StepIndices,
   OctaBubbleStepType,
   OctaStepType,
-  WabaStepType,
+  OctaWabaStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../../ItemNode'
@@ -24,6 +24,7 @@ import {
 } from '../contents'
 import { AssignToTeamContent } from '../contents/AssignToTeam/AssignToTeamContent'
 import { CallOtherBotContent } from '../contents/CallOtherBot/CallOtherBotContent'
+// import { WhatsAppOptionsContent } from '../contents/WhatsAppOptions/'
 // import { ConfigureContent } from './contents/ConfigureContent'
 import { ImageBubbleContent } from '../contents/ImageBubbleContent'
 import { OctaCommerceContent } from '../contents/OctaCommerceContent'
@@ -165,9 +166,15 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case OctaStepType.OFFICE_HOURS: {     
       return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
-    case WabaStepType.COMMERCE: {
-      return <OctaCommerceContent step={step} options={step} />
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {     
+      return <ItemNodesList step={step} indices={indices} />
     }
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {     
+      return <ItemNodesList step={step} indices={indices} />
+    }
+    // case OctaWabaStepType.COMMERCE: {
+    //   return <OctaCommerceContent step={step} options={step} />
+    // }
     case 'start': {
       return <Text>Início</Text>
     }

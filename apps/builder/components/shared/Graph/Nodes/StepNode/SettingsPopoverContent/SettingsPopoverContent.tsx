@@ -19,7 +19,7 @@ import {
   StepOptions,
   TextBubbleStep,
   Webhook,
-  WabaStepType,
+  OctaWabaStepType,
   BubbleStepType,
 } from 'models'
 import { useRef } from 'react'
@@ -32,6 +32,8 @@ import {
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
   CallOtherBotSettingsBody,
+  WhatsAppOptionsListSettingsBody,
+  WhatsAppButtonsListSettingsBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -70,9 +72,14 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case OctaStepType.OFFICE_HOURS:
         width = 450;
         break;
-      case WabaStepType.COMMERCE:
+      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+        width = 450;
+      case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
         width = 450;
         break;
+      // case OctaWabaStepType.COMMERCE:
+      //   width = 450;
+      //   break;
       case LogicStepType.CONDITION:
         width = 450;
         break;
@@ -95,6 +102,9 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case OctaStepType.CALL_OTHER_BOT:
         height = 400;
         break;
+      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+        height = 800;
+        break;
       default:
         height = undefined
         break;
@@ -110,7 +120,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
           pt="10"
           pb="6"
           overflowY="scroll"
-          maxH="400px"
+          maxH="700px"
           ref={ref}
           shadow="lg"
           h={handleHeightPerComponent(props.step)}
@@ -290,11 +300,31 @@ export const StepSettings = ({
         <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
-    case WabaStepType.COMMERCE: {
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {
       return (
-        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
+        <WhatsAppOptionsListSettingsBody
+          options={
+            step.options || { name: '' }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
       )
     }
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {
+      return (
+        <WhatsAppButtonsListSettingsBody
+          options={
+            step.options || { name: '' }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    // case OctaWabaStepType.COMMERCE: {
+    //   return (
+    //     <OctaCommerceBody step={step} onOptionsChange={handleOptionsChange} />
+    //   )
+    // }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings 

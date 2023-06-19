@@ -21,7 +21,7 @@ import {
   LogicStepType,
   OctaStepType,
   OctaBubbleStepType,
-  WabaStepType
+  OctaWabaStepType
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -102,9 +102,9 @@ export const StepsSideBar = () => {
 
   const shouldDisableComponent = (type: StepType) => {
     return workspace?.channel === 'whatsapp' && (
-      type === WabaStepType.BUTTONS && !verifyFeatureToggle('whatsapp-api') ||
-      type === WabaStepType.OPTIONS && !verifyFeatureToggle('whatsapp-api') || 
-      type === WabaStepType.COMMERCE && !verifyFeatureToggle('whatsapp-api') 
+      // type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST && !verifyFeatureToggle('whatsapp-api') ||
+      // type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST && !verifyFeatureToggle('whatsapp-api') || 
+      type === OctaWabaStepType.COMMERCE && !verifyFeatureToggle('whatsapp-api') 
     )
   }
 
@@ -211,7 +211,7 @@ export const StepsSideBar = () => {
             </Badge>
           </Flex>
           <SimpleGrid columns={1} spacing="3">
-            {Object.values(WabaStepType).map(
+            {Object.values(OctaWabaStepType).map(
               (type) =>
                 shouldHideComponents(type) && (
                   <StepCard

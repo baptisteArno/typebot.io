@@ -9,7 +9,7 @@ import {
   IntegrationStepType,
   StepIndices,
   Typebot,
-  WabaStepType,
+  OctaWabaStepType,
 } from 'models'
 import { SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
@@ -123,10 +123,14 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Conecte a outro sistema'
     case OctaStepType.OFFICE_HOURS:
       return 'Horário de atendimento'
-    case WabaStepType.COMMERCE:
-      return 'Commerce'
+    // case OctaWabaStepType.COMMERCE:
+    //   return 'Commerce'
     case OctaStepType.CALL_OTHER_BOT:
       return 'Direcione a conversa para outro bot'
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      return 'Pergunta com lista de opções'
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
+      return 'Pergunta com lista de botões'
     default:
       return 'Outro'
   }

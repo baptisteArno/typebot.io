@@ -1,11 +1,7 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
-import { CallOtherBotOptions, TextBubbleContent } from 'models'
-import React, { useEffect, useState } from 'react'
+import { CallOtherBotOptions } from 'models'
+import React from 'react'
 import { CallOtherBotSelect } from './CallOtherBotSelect'
-import { TextBubbleEditor } from '../../../TextBubbleEditor'
-import { ASSIGN_TO } from 'enums/assign-to'
-import { useUser } from 'contexts/UserContext'
 
 type CallOtherBotSettingsBodyProps = {
   options: CallOtherBotOptions

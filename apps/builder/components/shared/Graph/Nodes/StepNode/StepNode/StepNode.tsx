@@ -22,6 +22,9 @@ import {
   OctaStepType,
   WebhookStep,
   IntegrationStepType,
+  WhatsAppOptionsListStep,
+  WhatsAppButtonsListStep,
+  OctaWabaStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -143,7 +146,10 @@ export const StepNode = ({
     onModalOpen()
   }
 
-  const handleStepUpdate = (updates: Partial<Step>): void =>{    
+  const handleStepUpdate = (updates: Partial<Step>): void =>{  
+    console.log('indices', indices)
+    console.log('step', step)
+    console.log('updates', updates)  
     updateStep(indices, { ...step, ...updates })
   }
 
@@ -156,7 +162,7 @@ export const StepNode = ({
   }, [openedStepId])
 
   const checkisConnectable = (step: Step): boolean  => {
-    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step);
+    return !isEndConversationStep(step) && !isAssignToTeamStep(step) && hasDefaultConnector(step) && !isOfficeHoursStep(step) && !isWebhookStep(step) && !isCallOtherBotStep(step) && !isWhatsAppOptionsListStep(step) && !isWhatsAppButtonsListStep(step);
   }
 
   return isEditing && (isTextBubbleStep(step) || isOctaBubbleStep(step)) ? (
@@ -326,6 +332,14 @@ const isWebhookStep = (
   step: Step,
 ): step is WebhookStep => {
   return step.type === IntegrationStepType.WEBHOOK
+}
+
+const isWhatsAppOptionsListStep = (step: Step): step is WhatsAppOptionsListStep => {
+  return step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST
+}
+
+const isWhatsAppButtonsListStep = (step: Step): step is WhatsAppButtonsListStep => {
+  return step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST
 }
 
 const hasStepRedirectNoneAvailable = (step: Step): step is AssignToTeamStep => {
