@@ -11,7 +11,6 @@ import oscarPictureSrc from 'public/images/homepage/oscar.jpeg'
 import invictuzPictureSrc from 'public/images/homepage/invictuz.png'
 import laszloPictureSrc from 'public/images/homepage/laszlo.jpeg'
 import kurniaPictureSrc from 'public/images/homepage/kurnia.jpeg'
-import marioPictureSrc from 'public/images/homepage/barretta.jpeg'
 import stevePictureSrc from 'public/images/homepage/steve.jpg'
 import { Testimonial } from './Testimonial'
 import { StaticImageData } from 'next/image'
@@ -54,7 +53,6 @@ const testimonials: TestimonialData[][] = [
       name: 'Mario Barretta',
       role: 'Customer Care Manager',
       provider: 'email',
-      avatarSrc: marioPictureSrc,
       content: (
         <>
           Thanks to typebot I can finally make site forms much more modern and I

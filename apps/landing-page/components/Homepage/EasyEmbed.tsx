@@ -1,7 +1,6 @@
 import { Flex, Stack, Heading, Box, Text, Button } from '@chakra-ui/react'
 import React from 'react'
 import Image from 'next/image'
-import nativeFeelingSrc from 'public/images/homepage/native-feeling.png'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { Flare } from 'assets/illustrations/Flare'
 import Link from 'next/link'
@@ -52,13 +51,6 @@ export const EasyEmbed = () => {
             </Button>
           </Flex>
         </Stack>
-        <Box rounded="md" data-aos="fade">
-          <Image
-            src={nativeFeelingSrc}
-            alt="incomplete results illustration"
-            placeholder="blur"
-          />
-        </Box>
       </Stack>
     </Flex>
   )

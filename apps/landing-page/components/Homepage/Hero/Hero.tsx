@@ -13,7 +13,6 @@ import { Header } from '../../common/Header/Header'
 import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
 import Image from 'next/image'
-import builderScreenshotSrc from 'public/images/homepage/builder.png'
 import Link from 'next/link'
 
 export const Hero = () => {
@@ -94,12 +93,12 @@ export const Hero = () => {
               data-aos="zoom-out-up"
               data-aos-delay="800"
             >
-              <Image
+              {/* <Image
                 src={builderScreenshotSrc}
                 alt="Builder screenshot"
                 placeholder="blur"
                 style={{ borderRadius: '10px' }}
-              />
+              /> */}
             </Box>
           </Box>
         </VStack>
