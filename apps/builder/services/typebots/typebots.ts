@@ -331,7 +331,7 @@ const parseDefaultItems = (
           id: cuid(),
           stepId,
           type: ItemType.WHATSAPP_BUTTONS_LIST,
-          // content: defaultWhatsAppOptionsListContent,
+          content: defaultWhatsAppOptionsListContent,
         },
       ]
     case LogicStepType.CONDITION:
