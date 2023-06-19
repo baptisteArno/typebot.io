@@ -1,6 +1,5 @@
-import { Avatar, Flex, HStack, Stack, Text } from '@chakra-ui/react'
+import { Avatar, Flex, HStack, Stack, Text, Image } from '@chakra-ui/react'
 import * as React from 'react'
-import Image from 'next/image'
 import { TestimonialData } from './Testimonials'
 import {
   CapterraIcon,
@@ -32,8 +31,8 @@ export const Testimonial = ({
             src={avatarSrc}
             alt={name}
             placeholder="blur"
-            width={40}
-            height={40}
+            width="40px"
+            height="40px"
             className="rounded-full"
           />
         ) : (

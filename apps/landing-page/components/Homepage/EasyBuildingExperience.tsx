@@ -1,6 +1,13 @@
-import { Flex, Stack, Heading, Box, Text, Button } from '@chakra-ui/react'
+import {
+  Flex,
+  Stack,
+  Heading,
+  Box,
+  Text,
+  Button,
+  Image,
+} from '@chakra-ui/react'
 import React from 'react'
-import Image from 'next/image'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { Flare } from 'assets/illustrations/Flare'
 import Link from 'next/link'
@@ -50,7 +57,13 @@ export const EasyBuildingExperience = () => {
             </Button>
           </Flex>
         </Stack>
-        <Box rounded="md" data-aos="fade"></Box>
+        <Box rounded="md" data-aos="fade">
+          <Image
+            src="https://s3.typebot.io/builder-dnd.png"
+            alt="incomplete results illustration"
+            placeholder="blur"
+          />
+        </Box>
       </Stack>
     </Flex>
   )

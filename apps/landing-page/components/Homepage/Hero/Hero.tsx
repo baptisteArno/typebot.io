@@ -7,12 +7,12 @@ import {
   Stack,
   Text,
   VStack,
+  Image,
 } from '@chakra-ui/react'
 import * as React from 'react'
 import { Header } from '../../common/Header/Header'
 import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
-import Image from 'next/image'
 import Link from 'next/link'
 
 export const Hero = () => {
@@ -93,12 +93,12 @@ export const Hero = () => {
               data-aos="zoom-out-up"
               data-aos-delay="800"
             >
-              {/* <Image
-                src={builderScreenshotSrc}
+              <Image
+                src="https://s3.typebot.io/builder.png"
                 alt="Builder screenshot"
                 placeholder="blur"
                 style={{ borderRadius: '10px' }}
-              /> */}
+              />
             </Box>
           </Box>
         </VStack>

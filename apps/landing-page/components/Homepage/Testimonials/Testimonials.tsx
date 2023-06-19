@@ -1,23 +1,10 @@
 import { Flex, Heading, SimpleGrid, Stack, VStack } from '@chakra-ui/react'
 import * as React from 'react'
-import joshuaPictureSrc from 'public/images/homepage/joshua.jpg'
-import julienPictureSrc from 'public/images/homepage/julien.jpeg'
-import nicolaiPictureSrc from 'public/images/homepage/nicolai.jpg'
-import annaFilouPictureSrc from 'public/images/homepage/annaFilou.jpeg'
-import theoPictureSrc from 'public/images/homepage/theo.jpeg'
-import abhayPictureSrc from 'public/images/homepage/abhay.jpeg'
-import lucasPictureSrc from 'public/images/homepage/lucas.png'
-import oscarPictureSrc from 'public/images/homepage/oscar.jpeg'
-import invictuzPictureSrc from 'public/images/homepage/invictuz.png'
-import laszloPictureSrc from 'public/images/homepage/laszlo.jpeg'
-import kurniaPictureSrc from 'public/images/homepage/kurnia.jpeg'
-import stevePictureSrc from 'public/images/homepage/steve.jpg'
 import { Testimonial } from './Testimonial'
-import { StaticImageData } from 'next/image'
 
 export type TestimonialData = {
   name: string
-  avatarSrc?: StaticImageData
+  avatarSrc?: string
   provider: 'email' | 'productHunt' | 'capterra' | 'reddit'
   role?: string
   content: string | React.ReactNode
@@ -28,7 +15,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Joshua Lim',
       role: 'Growth Strategist @ Socialhackrs Media',
-      avatarSrc: joshuaPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/joshua.jpg',
       provider: 'email',
       content:
         'I upgraded my typeforms to typebots and saw a conversion rate increase from 14% to 43% on my marketing campaigns. I noticed the improvement on day one. That was a game-changer.',
@@ -37,7 +24,7 @@ const testimonials: TestimonialData[][] = [
       name: 'Laszlo Csömör',
       role: 'Digital Marketing Expert',
       provider: 'email',
-      avatarSrc: laszloPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/laszlo.jpeg',
       content: (
         <>
           Typebot is one of the best chatbot builders with its intelligent
@@ -53,6 +40,7 @@ const testimonials: TestimonialData[][] = [
       name: 'Mario Barretta',
       role: 'Customer Care Manager',
       provider: 'email',
+      avatarSrc: 'https://s3.typebot.io/barretta.jpeg',
       content: (
         <>
           Thanks to typebot I can finally make site forms much more modern and I
@@ -69,7 +57,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Lucas Barp',
       provider: 'email',
-      avatarSrc: lucasPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/lucas.png',
       role: 'Founder at Barp Digital',
       content:
         'The result of your work is incredible and can make life easier for many people.',
@@ -87,14 +75,14 @@ const testimonials: TestimonialData[][] = [
       name: 'Oscar',
       role: 'CEO',
       provider: 'capterra',
-      avatarSrc: oscarPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/oscar.jpeg',
       content:
         'Within 5 minutes of signing up you can already have your bot running thanks to the templates it comes with. I have used many tools to make bots but none as simple, easy and powerful as Typebot.',
     },
     {
       name: 'Julien Muratot',
       role: 'Growth Manager @ Hornetwork',
-      avatarSrc: julienPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/julien.jpeg',
       provider: 'email',
       content:
         'I run Google ads all year long on our landing page that contains a typebot. I saw a 2x increase on our conversation rate compared to our old WordPress form.',
@@ -102,14 +90,14 @@ const testimonials: TestimonialData[][] = [
     {
       name: '_Invictuz',
       provider: 'reddit',
-      avatarSrc: invictuzPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/invictuz.png',
       content:
         "This is the sickest open-source project I've ever seen and demoed. The use case is so cool and modern and I can't believe how easy this is to get started using. The feature richness and polish in this project is incredible, it feel like a mature product. Unbelievable that this was built by one person. This is better than the demos of chatbot builders I've seen from full-fledged companies. I'm going to learn Typescript so that I can contribute to this someday. Mind-blowing stuff...",
     },
     {
       name: 'Theo Marechal',
       provider: 'productHunt',
-      avatarSrc: theoPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/theo.jpeg',
       role: 'Nocode expert and content creator',
       content: (
         <>
@@ -126,7 +114,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Abhay Kulkarni',
       provider: 'productHunt',
-      avatarSrc: abhayPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/abhay.jpeg',
       role: 'Founder at Webisharp',
       content:
         'Using this tool for the last 2 hours & built a full lead capture bot. Pretty good experience till now. @baptiste_arnaud All the best for future :)',
@@ -136,7 +124,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Steve de Jong',
       provider: 'email',
-      avatarSrc: stevePictureSrc,
+      avatarSrc: 'https://s3.typebot.io/steve.jpg',
       role: 'CEO at Stillio',
       content: (
         <>
@@ -171,7 +159,7 @@ const testimonials: TestimonialData[][] = [
       name: 'Kurnia Kwik',
       role: 'Founder at DigitalPointer.ID',
       provider: 'email',
-      avatarSrc: kurniaPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/kurnia.jpeg',
       content: (
         <>
           I have several chatbot builders, but Typebot is the one I use the
@@ -184,7 +172,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Nicolai Grut',
       role: 'CEO @ EcommerceNotebook.com',
-      avatarSrc: nicolaiPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/nicolai.jpg',
       provider: 'email',
       content:
         'I am really loving using Typebot! So good. I have used all the top bots and yours is definitely the most user friendly, and yet still so powerful.',
@@ -192,7 +180,7 @@ const testimonials: TestimonialData[][] = [
     {
       name: 'Anna Filou',
       provider: 'productHunt',
-      avatarSrc: annaFilouPictureSrc,
+      avatarSrc: 'https://s3.typebot.io/annaFilou.jpeg',
       role: 'Geek, Designer, Illustrator, Web Dev',
       content:
         "Seems like the product I've been waiting for Typeform to make! 😝",
