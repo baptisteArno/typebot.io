@@ -32,6 +32,7 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
         label="Display condition"
+        moreInfoContent="Only display this item if a condition is met."
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >
