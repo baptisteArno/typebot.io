@@ -44,6 +44,10 @@ export const WixBubbleInstructions = () => {
           />
         </Stack>
       </ListItem>
+      <ListItem>
+        Select &quot;Body - start&quot; under <Code>Place Code in</Code>
+      </ListItem>
+      <ListItem>Click Apply</ListItem>
     </OrderedList>
   )
 }

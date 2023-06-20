@@ -12,7 +12,7 @@ export const WixPopupInstructions = () => {
         Go to <Code>Settings</Code> in your dashboard on Wix
       </ListItem>
       <ListItem>
-        Click on <Code>Custom Code</Code> under <Code>Advanced</Code>
+        Click on <Code>Custom Code</Code> in the <Code>Advanced</Code> section
       </ListItem>
       <ListItem>
         Click <Code>+ Add Custom Code</Code> at the top right.
@@ -28,6 +28,10 @@ export const WixPopupInstructions = () => {
           <JavascriptPopupSnippet autoShowDelay={inputValue} />
         </Stack>
       </ListItem>
+      <ListItem>
+        Select &quot;Body - start&quot; under <Code>Place Code in</Code>
+      </ListItem>
+      <ListItem>Click Apply</ListItem>
     </OrderedList>
   )
 }

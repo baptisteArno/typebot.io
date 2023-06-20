@@ -7,7 +7,7 @@ export const WixStandardInstructions = () => {
       <ListItem>
         In the Wix Website Editor:
         <Code>
-          Add {'>'} Embed {'>'} Embed a Widget
+          Add {'>'} Embed Code {'>'} Embed HTML
         </Code>
       </ListItem>
       <ListItem>
