@@ -320,11 +320,11 @@ export const StepSettings = ({
         />
       )
     }
-    // case OctaWabaStepType.COMMERCE: {
-    //   return (
-    //     <OctaCommerceBody step={step} onOptionsChange={handleOptionsChange} />
-    //   )
-    // }
+    case OctaStepType.COMMERCE: {
+      return (
+        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
+      )
+    }
     case IntegrationStepType.WEBHOOK: {
       return (
         <WebhookSettings 

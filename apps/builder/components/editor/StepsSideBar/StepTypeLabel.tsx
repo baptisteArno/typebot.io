@@ -82,8 +82,6 @@ export const StepTypeLabel = ({ type }: Props) => {
     //   return <Text>Email</Text>
     case OctaStepType.OFFICE_HOURS:
       return <Text>Definir horário de atendimento</Text>
-    // case OctaWabaStepType.COMMERCE:
-    //   return <Text>Enviar um catálogo</Text>
     case OctaStepType.ASSIGN_TO_TEAM:
       return <Text>Direcionar conversa</Text>
     case OctaStepType.CALL_OTHER_BOT:
@@ -96,7 +94,7 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Pergunta com lista de opções</Text>
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       return <Text>Pergunta com lista de botões</Text>
-    case OctaWabaStepType.COMMERCE:
+    case OctaStepType.COMMERCE:
       return <Text>Enviar um catálogo</Text>
     default:
       return <></>
