@@ -175,7 +175,7 @@ model Typebot {
   version                 String?                   @db.VarChar(10)
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @default(now()) @updatedAt
-  icon                    String?                   @db.VarChar(1000)
+  icon                    String?                   @db.Text()
   name                    String                    @db.VarChar(255)
   folderId                String?
   groups                  Json
