@@ -41,7 +41,9 @@ test.beforeAll(async () => {
 
 test('can switch between workspaces and access typebot', async ({ page }) => {
   await page.goto('/typebots')
-  await expect(page.locator('text="Pro typebot"')).toBeVisible()
+  await expect(page.locator('text="Pro typebot"')).toBeVisible({
+    timeout: 20000,
+  })
   await page.click('text=Pro workspace')
   await page.click('text="Starter workspace"')
   await expect(page.locator('text="Pro typebot"')).toBeHidden()

@@ -87,6 +87,7 @@ export const AvatarForm = ({
                   p="4"
                   onMouseDown={(e) => e.stopPropagation()}
                   onPointerDown={(e) => e.stopPropagation()}
+                  w="500px"
                 >
                   <ImageUploadContent
                     filePath={uploadFilePath}

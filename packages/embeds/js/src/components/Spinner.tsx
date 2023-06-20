@@ -3,7 +3,7 @@ import { JSX } from 'solid-js'
 export const Spinner = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
   <svg
     {...props}
-    class={'animate-spin h-5 w-5 ' + props.class}
+    class={'animate-spin h-6 w-6 ' + props.class}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

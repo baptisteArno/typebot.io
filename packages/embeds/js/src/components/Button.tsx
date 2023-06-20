@@ -17,7 +17,7 @@ export const Button = (props: Props) => {
       {...buttonProps}
       disabled={props.isDisabled || props.isLoading}
       class={
-        'py-2 px-4 font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100' +
+        'py-2 px-4 font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center' +
         (props.variant === 'secondary'
           ? ' secondary-button'
           : ' typebot-button') +

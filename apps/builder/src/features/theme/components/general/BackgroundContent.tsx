@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   Button,
+  Portal,
 } from '@chakra-ui/react'
 import { isNotEmpty } from '@typebot.io/lib'
 import { Background, BackgroundType } from '@typebot.io/schemas'
@@ -57,14 +58,16 @@ export const BackgroundContent = ({
               <Button>Select an image</Button>
             )}
           </PopoverTrigger>
-          <PopoverContent p="4">
-            <ImageUploadContent
-              filePath={`typebots/${typebot?.id}/background`}
-              defaultUrl={background.content}
-              onSubmit={handleContentChange}
-              excludedTabs={['giphy', 'icon']}
-            />
-          </PopoverContent>
+          <Portal>
+            <PopoverContent p="4" w="500px">
+              <ImageUploadContent
+                filePath={`typebots/${typebot?.id}/background`}
+                defaultUrl={background.content}
+                onSubmit={handleContentChange}
+                excludedTabs={['giphy', 'icon']}
+              />
+            </PopoverContent>
+          </Portal>
         </Popover>
       )
     default:

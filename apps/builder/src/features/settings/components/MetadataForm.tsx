@@ -59,7 +59,7 @@ export const MetadataForm = ({
               rounded="md"
             />
           </PopoverTrigger>
-          <PopoverContent p="4">
+          <PopoverContent p="4" w="400px">
             <ImageUploadContent
               filePath={`typebots/${typebotId}/favIcon`}
               defaultUrl={metadata.favIconUrl ?? ''}
@@ -85,7 +85,7 @@ export const MetadataForm = ({
               rounded="md"
             />
           </PopoverTrigger>
-          <PopoverContent p="4">
+          <PopoverContent p="4" w="500px">
             <ImageUploadContent
               filePath={`typebots/${typebotId}/ogImage`}
               defaultUrl={metadata.imageUrl}

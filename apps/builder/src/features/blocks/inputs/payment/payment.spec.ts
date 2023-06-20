@@ -58,7 +58,7 @@ test.describe('Payment input block', () => {
       .locator(`[placeholder="MM / YY"]`)
       .fill('12 / 25')
     await stripePaymentForm(page).locator(`[placeholder="CVC"]`).fill('240')
-    await page.locator(`text="Pay 30€"`).click()
+    await page.getByRole('button', { name: 'Pay 30,00 €' }).click()
     await expect(
       page.locator(`text="Your card has been declined."`)
     ).toBeVisible()
@@ -68,7 +68,7 @@ test.describe('Payment input block', () => {
     const zipInput = stripePaymentForm(page).getByPlaceholder('90210')
     const isZipInputVisible = await zipInput.isVisible()
     if (isZipInputVisible) await zipInput.fill('12345')
-    await page.locator(`text="Pay 30€"`).click()
+    await page.getByRole('button', { name: 'Pay 30,00 €' }).click()
     await expect(page.locator(`text="Success"`)).toBeVisible()
   })
 })

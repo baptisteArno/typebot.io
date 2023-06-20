@@ -65,7 +65,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent width="170px">
-        <PopoverArrow bg={displayedValue} />
+        <PopoverArrow />
         <PopoverCloseButton color="white" />
         <PopoverHeader
           height="100px"

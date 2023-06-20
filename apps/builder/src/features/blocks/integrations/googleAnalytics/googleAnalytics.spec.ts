@@ -23,12 +23,9 @@ test.describe('Google Analytics block', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill('input[placeholder="G-123456..."]', 'G-VWX9WG1TNS')
-    await page.fill('input[placeholder="Example: Typebot"]', 'Typebot')
-    await page.fill(
-      'input[placeholder="Example: Submit email"]',
-      'Submit email'
-    )
+    await page.fill('input[placeholder="Example: conversion"]', 'conversion')
     await page.click('text=Advanced')
+    await page.fill('input[placeholder="Example: Typebot"]', 'Typebot')
     await page.fill('input[placeholder="Example: Campaign Z"]', 'Campaign Z')
     await page.fill('input[placeholder="Example: 0"]', '0')
   })

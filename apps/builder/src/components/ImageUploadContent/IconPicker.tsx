@@ -5,6 +5,7 @@ import {
   HStack,
   useColorModeValue,
   SimpleGrid,
+  Text,
 } from '@chakra-ui/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { iconNames } from './iconNames'
@@ -17,6 +18,9 @@ type Props = {
   onIconSelected: (url: string) => void
 }
 
+const localStorageRecentIconNamesKey = 'recentIconNames'
+const localStorageDefaultIconColorKey = 'defaultIconColor'
+
 export const IconPicker = ({ onIconSelected }: Props) => {
   const initialIconColor = useColorModeValue('#222222', '#ffffff')
   const scrollContainer = useRef<HTMLDivElement>(null)
@@ -28,11 +32,22 @@ export const IconPicker = ({ onIconSelected }: Props) => {
   const [selectedColor, setSelectedColor] = useState(initialIconColor)
   const isWhite = useMemo(
     () =>
-      selectedColor.toLowerCase() === '#ffffff' ||
-      selectedColor.toLowerCase() === '#fff' ||
-      selectedColor === 'white',
-    [selectedColor]
+      initialIconColor === '#222222' &&
+      (selectedColor.toLowerCase() === '#ffffff' ||
+        selectedColor.toLowerCase() === '#fff' ||
+        selectedColor === 'white'),
+    [initialIconColor, selectedColor]
   )
+  const [recentIconNames, setRecentIconNames] = useState([])
+
+  useEffect(() => {
+    const recentIconNames = localStorage.getItem(localStorageRecentIconNamesKey)
+    const defaultIconColor = localStorage.getItem(
+      localStorageDefaultIconColorKey
+    )
+    if (recentIconNames) setRecentIconNames(JSON.parse(recentIconNames))
+    if (defaultIconColor) setSelectedColor(defaultIconColor)
+  }, [])
 
   useEffect(() => {
     if (!bottomElement.current) return
@@ -70,10 +85,15 @@ export const IconPicker = ({ onIconSelected }: Props) => {
 
   const updateColor = (color: string) => {
     if (!color.startsWith('#')) return
+    localStorage.setItem(localStorageDefaultIconColorKey, color)
     setSelectedColor(color)
   }
 
   const selectIcon = async (iconName: string) => {
+    localStorage.setItem(
+      localStorageRecentIconNamesKey,
+      JSON.stringify([...new Set([iconName, ...recentIconNames].slice(0, 30))])
+    )
     const svg = await (await fetch(`/icons/${iconName}.svg`)).text()
     const dataUri = `data:image/svg+xml;utf8,${svg
       .replace('<svg', `<svg fill='${encodeURIComponent(selectedColor)}'`)
@@ -89,34 +109,69 @@ export const IconPicker = ({ onIconSelected }: Props) => {
           onChange={searchIcon}
           withVariableButton={false}
         />
-        <ColorPicker defaultValue={selectedColor} onColorChange={updateColor} />
+        <ColorPicker value={selectedColor} onColorChange={updateColor} />
       </HStack>
 
-      <SimpleGrid
-        spacing={0}
-        minChildWidth="38px"
-        overflowY="scroll"
-        maxH="350px"
-        ref={scrollContainer}
-        overflow="scroll"
-      >
-        {displayedIconNames.map((iconName) => (
-          <Button
-            size="sm"
-            variant={isWhite ? 'solid' : 'ghost'}
-            colorScheme={isWhite ? 'blackAlpha' : undefined}
-            fontSize="xl"
-            w="38px"
-            h="38px"
-            p="2"
-            key={iconName}
-            onClick={() => selectIcon(iconName)}
+      <Stack overflowY="scroll" maxH="350px" ref={scrollContainer} spacing={4}>
+        {recentIconNames.length > 0 && (
+          <Stack>
+            <Text fontSize="xs" color="gray.400" fontWeight="semibold" pl="2">
+              RECENT
+            </Text>
+            <SimpleGrid
+              spacing={0}
+              gridTemplateColumns={`repeat(auto-fill, minmax(38px, 1fr))`}
+              bgColor={isWhite ? 'gray.400' : undefined}
+              rounded="md"
+            >
+              {recentIconNames.map((iconName) => (
+                <Button
+                  size="sm"
+                  variant={'ghost'}
+                  fontSize="xl"
+                  w="38px"
+                  h="38px"
+                  p="2"
+                  key={iconName}
+                  onClick={() => selectIcon(iconName)}
+                >
+                  <Icon name={iconName} color={selectedColor} />
+                </Button>
+              ))}
+            </SimpleGrid>
+          </Stack>
+        )}
+        <Stack>
+          {recentIconNames.length > 0 && (
+            <Text fontSize="xs" color="gray.400" fontWeight="semibold" pl="2">
+              ICONS
+            </Text>
+          )}
+          <SimpleGrid
+            spacing={0}
+            gridTemplateColumns={`repeat(auto-fill, minmax(38px, 1fr))`}
+            bgColor={isWhite ? 'gray.400' : undefined}
+            rounded="md"
           >
-            <Icon name={iconName} color={selectedColor} />
-          </Button>
-        ))}
+            {displayedIconNames.map((iconName) => (
+              <Button
+                size="sm"
+                variant={'ghost'}
+                fontSize="xl"
+                w="38px"
+                h="38px"
+                p="2"
+                key={iconName}
+                onClick={() => selectIcon(iconName)}
+              >
+                <Icon name={iconName} color={selectedColor} />
+              </Button>
+            ))}
+          </SimpleGrid>
+        </Stack>
+
         <div ref={bottomElement} />
-      </SimpleGrid>
+      </Stack>
     </Stack>
   )
 }
