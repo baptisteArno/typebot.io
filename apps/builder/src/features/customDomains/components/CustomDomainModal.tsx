@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { useEffect, useRef, useState } from 'react'
-import { env, getViewerUrl } from '@typebot.io/lib'
 import { createCustomDomainQuery } from '../queries/createCustomDomainQuery'
 
 const hostnameRegex =
@@ -117,13 +116,7 @@ export const CustomDomainModal = ({
                     </Stack>
                     <Stack>
                       <Text fontWeight="bold">Value</Text>
-                      <Text>
-                        {
-                          new URL(
-                            env('VIEWER_INTERNAL_URL') ?? getViewerUrl() ?? ''
-                          ).hostname
-                        }
-                      </Text>
+                      <Text>cname.vercel-dns.com</Text>
                     </Stack>
                   </HStack>
                 ) : (
