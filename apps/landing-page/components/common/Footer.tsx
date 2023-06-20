@@ -16,6 +16,7 @@ const facebookGroupUrl = 'https://www.facebook.com/groups/typebot'
 const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
 const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
 const baptisteTwitterUrl = 'https://twitter.com/baptisteArno'
+const statusPageUrl = 'https://status.typebot.io'
 export const contactUrl = 'https://bot.typebot.io/landing-page-bubble-en'
 export const roadmapLink = 'https://app.typebot.io/feedback'
 export const documentationLink = 'https://docs.typebot.io'
@@ -40,6 +41,9 @@ export const Footer = () => {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Product</ListHeader>
+            <TextLink href={statusPageUrl} isExternal>
+              Status
+            </TextLink>
             <TextLink href={documentationLink} isExternal>
               Documentation
             </TextLink>

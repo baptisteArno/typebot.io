@@ -48,6 +48,7 @@ module.exports = {
               label: 'Homepage',
               to: 'https://www.typebot.io',
             },
+            { label: 'Status', to: 'https://status.typebot.io' },
             {
               label: 'Roadmap',
               to: 'https://app.typebot.io/feedback',
