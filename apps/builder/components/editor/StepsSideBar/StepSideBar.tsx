@@ -101,15 +101,10 @@ export const StepsSideBar = () => {
   }
 
   const shouldDisableComponent = (type: StepType) => {
-    return (
-      // type === InputStepType.DATE ||
-      type === InputStepType.PHONE 
-      // (type === OctaStepType.OFFICE_HOURS && verifyFeatureToggle('whatsapp-api'))
-      // ||
-      // type === OctaWabaStepType.BUTTONS && verifyFeatureToggle('whatsapp-api') 
-      // ||
-      // type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST && verifyFeatureToggle('whatsapp-api') 
-      // || type === LogicStepType.CONDITION && verifyFeatureToggle('botconditional')
+    return workspace?.channel === 'whatsapp' && (
+      type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST && !verifyFeatureToggle('whatsapp-api') ||
+      type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST && !verifyFeatureToggle('whatsapp-api') || 
+      type === OctaStepType.COMMERCE && !verifyFeatureToggle('whatsapp-api') 
     )
   }
 

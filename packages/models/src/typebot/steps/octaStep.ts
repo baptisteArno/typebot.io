@@ -41,14 +41,13 @@ export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
+  COMMERCE = 'commerce'
 }
 
 // Waba step types
 export enum OctaWabaStepType {
   WHATSAPP_OPTIONS_LIST = 'whatsapp options list',
   WHATSAPP_BUTTONS_LIST = 'whatsapp buttons list'
-  // BUTTONS = 'buttons',
-  // COMMERCE = 'commerce',
 }
 
 // Regular steps types that have options
