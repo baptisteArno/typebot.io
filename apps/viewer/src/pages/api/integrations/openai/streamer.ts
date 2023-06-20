@@ -1,6 +1,7 @@
 import { getChatCompletionStream } from '@/features/blocks/integrations/openai/getChatCompletionStream'
 import { connect } from '@planetscale/database'
 import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
+import { StreamingTextResponse } from 'ai'
 import { ChatCompletionRequestMessage } from 'openai'
 
 export const config = {
@@ -8,15 +9,23 @@ export const config = {
   regions: ['lhr1'],
 }
 
+const allowedOrigins = [
+  process.env.NEXT_PUBLIC_VIEWER_URL,
+  process.env.NEXTAUTH_URL,
+]
+
 const handler = async (req: Request) => {
+  const allowedOrigin =
+    allowedOrigins.find(
+      (origin) => origin && req.headers.get('Origin')?.startsWith(origin)
+    ) ?? 'null'
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Methods': 'POST',
         'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
-        'Access-Control-Allow-Headers':
-          'apikey,X-Client-Info, Content-Type, Authorization, Accept, Accept-Language, X-Authorization',
+        'Access-Control-Allow-Headers': '*',
       },
     })
   }
@@ -66,13 +75,11 @@ const handler = async (req: Request) => {
     messages
   )
 
-  if (!stream) return new Response('Missing credentials', { status: 400 })
+  if (!stream) return new Response('Could not create stream', { status: 400 })
 
-  return new Response(stream, {
-    status: 200,
+  return new StreamingTextResponse(stream, {
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': allowedOrigin,
     },
   })
 }

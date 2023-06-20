@@ -6,10 +6,12 @@ import {
   OpenAICredentials,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { SessionState } from '@typebot.io/schemas/features/chat'
-import type {
+import { OpenAIStream } from 'ai'
+import {
   ChatCompletionRequestMessage,
-  CreateChatCompletionRequest,
-} from 'openai'
+  Configuration,
+  OpenAIApi,
+} from 'openai-edge'
 
 export const getChatCompletionStream =
   (conn: Connection) =>
@@ -37,19 +39,18 @@ export const getChatCompletionStream =
       options.advancedSettings?.temperature
     )
 
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        messages,
-        model: options.model,
-        temperature,
-        stream: true,
-      } satisfies CreateChatCompletionRequest),
+    const config = new Configuration({
+      apiKey,
     })
 
-    return res.body
+    const openai = new OpenAIApi(config)
+
+    const response = await openai.createChatCompletion({
+      model: options.model,
+      temperature,
+      stream: true,
+      messages,
+    })
+
+    return OpenAIStream(response)
   }
