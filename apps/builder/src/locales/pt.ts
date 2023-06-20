@@ -84,6 +84,8 @@ export default {
   'auth.error.unknown': 'Ocorreu um erro. Tente novamente.',
   'auth.signinErrorToast.title': 'Não autorizado',
   'auth.signinErrorToast.description': 'As inscrições estão desativadas.',
+  'auth.signinErrorToast.tooManyRequests':
+    'Muitas tentativas. Tente novamente mais tarde.',
   'auth.noProvider.preLink': 'Você precisa',
   'auth.noProvider.link':
     'configurar pelo menos um provedor de autenticação (E-mail, Google, GitHub, Facebook ou Azure AD).',

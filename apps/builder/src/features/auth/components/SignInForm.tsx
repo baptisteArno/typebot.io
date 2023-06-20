@@ -72,17 +72,24 @@ export const SignInForm = ({
     e.preventDefault()
     if (isMagicLinkSent) return
     setAuthLoading(true)
-    const response = await signIn('email', {
-      email: emailValue,
-      redirect: false,
-    })
-    if (response?.error) {
-      showToast({
-        title: scopedT('signinErrorToast.title'),
-        description: scopedT('signinErrorToast.description'),
+    try {
+      const response = await signIn('email', {
+        email: emailValue,
+        redirect: false,
       })
-    } else {
-      setIsMagicLinkSent(true)
+      if (response?.error) {
+        showToast({
+          title: scopedT('signinErrorToast.title'),
+          description: scopedT('signinErrorToast.description'),
+        })
+      } else {
+        setIsMagicLinkSent(true)
+      }
+    } catch {
+      showToast({
+        status: 'info',
+        description: scopedT('signinErrorToast.tooManyRequests'),
+      })
     }
     setAuthLoading(false)
   }

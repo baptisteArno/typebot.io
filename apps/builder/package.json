@@ -49,6 +49,8 @@
     "@uiw/codemirror-theme-github": "^4.20.2",
     "@uiw/codemirror-theme-tokyo-night": "^4.20.2",
     "@uiw/react-codemirror": "^4.20.2",
+    "@upstash/ratelimit": "^0.4.3",
+    "@upstash/redis": "^1.21.0",
     "@use-gesture/react": "^10.2.27",
     "aws-sdk": "2.1384.0",
     "browser-image-compression": "2.0.2",

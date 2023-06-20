@@ -82,6 +82,8 @@ export default {
   'auth.error.unknown': 'An error occurred. Please try again.',
   'auth.signinErrorToast.title': 'Unauthorized',
   'auth.signinErrorToast.description': 'Sign ups are disabled.',
+  'auth.signinErrorToast.tooManyRequests':
+    'Too many requests. Try again later.',
   'auth.noProvider.preLink': 'You need to',
   'auth.noProvider.link':
     'configure at least one auth provider (Email, Google, GitHub, Facebook or Azure AD).',

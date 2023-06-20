@@ -85,6 +85,8 @@ export default {
   'auth.error.unknown': 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.',
   'auth.signinErrorToast.title': 'Nicht autorisiert',
   'auth.signinErrorToast.description': 'Anmeldungen sind deaktiviert.',
+  'auth.signinErrorToast.tooManyRequests':
+    'Zu viele Anfragen. Versuche es später erneut.',
   'auth.noProvider.preLink': 'Du musst',
   'auth.noProvider.link':
     'mindestens einen Authentifizierungsanbieter konfigurieren (E-Mail, Google, GitHub, Facebook oder Azure AD).',
@@ -111,12 +113,10 @@ export default {
   'billing.upgradeLimitLabel':
     'Um {type} hinzuzufügen, musst du deinen Tarif aktualisieren',
   'billing.currentSubscription.heading': 'Abonnement',
-  'billing.currentSubscription.subheading':
-    'Aktuelles Workspace-Abonnement:',
+  'billing.currentSubscription.subheading': 'Aktuelles Workspace-Abonnement:',
   'billing.currentSubscription.cancelLink': 'Mein Abonnement kündigen',
   'billing.invoices.heading': 'Rechnungen',
-  'billing.invoices.empty':
-    'Keine Rechnungen für diesen Workspace gefunden.',
+  'billing.invoices.empty': 'Keine Rechnungen für diesen Workspace gefunden.',
   'billing.invoices.paidAt': 'Bezahlt am',
   'billing.invoices.subtotal': 'Zwischensumme',
   'billing.preCheckoutModal.companyInput.label': 'Firmenname:',

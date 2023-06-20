@@ -14,8 +14,22 @@ import { env, getAtPath, isDefined, isNotEmpty } from '@typebot.io/lib'
 import { mockedUser } from '@/features/auth/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis/nodejs'
 
 const providers: Provider[] = []
+
+let rateLimit: Ratelimit | undefined
+
+if (
+  process.env.UPSTASH_REDIS_REST_URL &&
+  process.env.UPSTASH_REDIS_REST_TOKEN
+) {
+  rateLimit = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(1, '60 s'),
+  })
+}
 
 if (
   isNotEmpty(process.env.GITHUB_CLIENT_ID) &&
@@ -174,6 +188,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (isMockingSession) return res.send({ user: mockedUser })
   const requestIsFromCompanyFirewall = req.method === 'HEAD'
   if (requestIsFromCompanyFirewall) return res.status(200).end()
+
+  if (
+    rateLimit &&
+    req.url === '/api/auth/signin/email' &&
+    req.method === 'POST'
+  ) {
+    let ip = req.headers['x-real-ip'] as string | undefined
+    if (!ip) {
+      const forwardedFor = req.headers['x-forwarded-for']
+      if (Array.isArray(forwardedFor)) {
+        ip = forwardedFor.at(0)
+      } else {
+        ip = forwardedFor?.split(',').at(0) ?? 'Unknown'
+      }
+    }
+    const { success } = await rateLimit.limit(ip as string)
+    if (!success) return res.status(429).json({ error: 'Too many requests' })
+  }
   return await NextAuth(req, res, authOptions)
 }
 
