@@ -13,7 +13,8 @@
     "db:bulkUpdate": "tsx bulkUpdate.ts",
     "db:fixTypebots": "tsx fixTypebots.ts",
     "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts",
-    "sendAlertEmails": "tsx sendAlertEmails.ts"
+    "sendAlertEmails": "tsx sendAlertEmails.ts",
+    "inspectUser": "tsx inspectUser.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
