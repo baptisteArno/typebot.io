@@ -176,7 +176,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     //   return <OctaCommerceContent step={step} options={step} />
     // }
     case 'start': {
-      return <Text>Início</Text>
+      return <Text pl={'8px'}>Início</Text>
     }
     default: {
       return <Text>Sem dado</Text>
