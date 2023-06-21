@@ -76,7 +76,7 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
           Enviar catálogo
         </Title>
         {loading && <OctaLoading />}
-        {products && <SelectProducts key={catalog?.id} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
+        {products && <SelectProducts key={options.catalogId} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
 
       </Container>
     </>
