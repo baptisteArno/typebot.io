@@ -39,7 +39,7 @@ export const ImageBubbleContent = ({ step }: { step: MediaBubbleStep }) => {
   const containsVariables =
     step.content?.url?.includes('{{') && step.content.url.includes('}}')
   return !step.content?.url ? (
-    <Text color={'gray.500'} pl={'8px'}>Clique para editar...</Text>
+    <Text color={'gray.500'}>Clique para editar...</Text>
   ) : (
     <RenderContent url={step.content?.url} containsVariables={containsVariables} />
   )

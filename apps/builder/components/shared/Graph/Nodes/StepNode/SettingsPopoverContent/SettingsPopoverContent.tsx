@@ -5,7 +5,6 @@ import {
   useEventListener,
   Portal,
   IconButton,
-  Stack
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import {
@@ -161,12 +160,10 @@ export const StepSettings = ({
   switch (step.type) {
     case InputStepType.TEXT: {
       return (
-        <Stack>
-          <TextInputSettingsBody
-            options={step.options}
-            onOptionsChange={handleOptionsChange}
-          />
-        </Stack>
+        <TextInputSettingsBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
       )
     }
     case InputStepType.NUMBER: {

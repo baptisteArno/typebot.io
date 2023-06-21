@@ -148,14 +148,13 @@ export const CodeEditor = ({
             />
           )}
           {addVariable && (
-            <Stack rounded="md" flex="1">
+            <Stack p="4" rounded="md" flex="1" borderWidth="1px">
               <FormControl>
-                <VariableSearchInput
-                  onSelectVariable={handleVariableSelected}
-                  placeholder="Pesquise sua variável"
-
-                  isCloseModal={false}
-                />
+              <VariableSearchInput
+                onSelectVariable={handleVariableSelected}
+                placeholder="Pesquise sua variável"
+                width={"100%"}
+              />
               </FormControl>
             </Stack>
           )}
