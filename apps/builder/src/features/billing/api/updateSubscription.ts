@@ -129,6 +129,7 @@ export const updateSubscription = authenticatedProcedure
       if (subscription) {
         await stripe.subscriptions.update(subscription.id, {
           items,
+          proration_behavior: 'always_invoice',
         })
       } else {
         const checkoutUrl = await createCheckoutSessionUrl(stripe)({
