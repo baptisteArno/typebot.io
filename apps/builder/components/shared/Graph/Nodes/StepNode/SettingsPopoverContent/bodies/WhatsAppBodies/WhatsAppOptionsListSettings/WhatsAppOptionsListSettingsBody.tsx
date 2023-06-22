@@ -2,9 +2,6 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { WhatsAppOptionsListOptions, TextBubbleContent } from 'models'
 import React, { useEffect, useState } from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
-import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
-import { Label } from './WhatsAppOptionsListSettingsBody.style'
-import { v4 as uuidv4 } from 'uuid'
 
 type WhatsAppOptionsListSettingsBodyProps = {
   options: WhatsAppOptionsListOptions
