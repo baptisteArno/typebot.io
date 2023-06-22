@@ -15,15 +15,11 @@ import {
   PopoverContent,
   Button,
   InputProps,
-  IconButton,
-  HStack,
   Stack
 } from '@chakra-ui/react'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
-import Select, { StylesConfig } from 'react-select'
-import { fixedPersonProperties } from 'helpers/presets/variables-presets'
 import { Variable } from 'models'
 import { useDebouncedCallback } from 'use-debounce'
 import { byId, isEmpty, isNotDefined } from 'utils'
