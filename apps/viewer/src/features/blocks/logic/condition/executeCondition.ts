@@ -20,13 +20,14 @@ const executeComparison =
   (variables: Variable[]) =>
   (comparison: Comparison): boolean => {
     if (!comparison?.variableId) return false
-    const inputValue = variables.find(
-      (v) => v.id === comparison.variableId
-    )?.value
+    const inputValue =
+      variables.find((v) => v.id === comparison.variableId)?.value ?? null
+    if (isNotDefined(comparison.value)) return false
     const value =
-      findUniqueVariableValue(variables)(comparison.value) ??
-      parseVariables(variables)(comparison.value)
-    if (isNotDefined(value)) return false
+      comparison.value === 'undefined' || comparison.value === 'null'
+        ? null
+        : findUniqueVariableValue(variables)(comparison.value) ??
+          parseVariables(variables)(comparison.value)
     if (isNotDefined(comparison.comparisonOperator)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
@@ -50,7 +51,7 @@ const executeComparison =
         return compare((a, b) => a !== b, inputValue, value, true)
       }
       case ComparisonOperators.GREATER: {
-        if (isNotDefined(inputValue)) return false
+        if (isNotDefined(inputValue) || isNotDefined(value)) return false
         if (typeof inputValue === 'string') {
           if (typeof value === 'string')
             return parseFloat(inputValue) > parseFloat(value)
@@ -61,7 +62,7 @@ const executeComparison =
         return inputValue.length > value.length
       }
       case ComparisonOperators.LESS: {
-        if (isNotDefined(inputValue)) return false
+        if (isNotDefined(inputValue) || isNotDefined(value)) return false
         if (typeof inputValue === 'string') {
           if (typeof value === 'string')
             return parseFloat(inputValue) < parseFloat(value)
@@ -96,18 +97,17 @@ const executeComparison =
 
 const compare = (
   compareStrings: (a: string | null, b: string | null) => boolean,
-  a: Variable['value'],
-  b: Variable['value'],
+  a: Exclude<Variable['value'], undefined>,
+  b: Exclude<Variable['value'], undefined>,
   defaultReturnValue = false
 ): boolean => {
-  if (!a || !b) return defaultReturnValue
-  if (typeof a === 'string') {
-    if (typeof b === 'string') return compareStrings(a, b)
+  if (!a || typeof a === 'string') {
+    if (!b || typeof b === 'string') return compareStrings(a, b)
     return defaultReturnValue === true
       ? b.every((b) => compareStrings(a, b))
       : b.some((b) => compareStrings(a, b))
   }
-  if (typeof b === 'string') {
+  if (!b || typeof b === 'string') {
     return defaultReturnValue === true
       ? a.every((a) => compareStrings(a, b))
       : a.some((a) => compareStrings(a, b))
