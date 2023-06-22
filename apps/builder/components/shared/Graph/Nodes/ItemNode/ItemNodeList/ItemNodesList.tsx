@@ -168,17 +168,23 @@ export const ItemNodesList = ({
             <Stack>
               <Text color={'gray.500'} noOfLines={0}>
                 {step.options?.header && (
-                  <strong>{step.options.header.plainText}</strong>
+                  <strong>{step.options.header.content.plainText}</strong>
                 )}
               </Text>
               <Text color={'gray.500'} noOfLines={0}>
                 {step.options?.body && (
-                  <label>{step.options.body.plainText}</label>
+                  <label>{step.options.body.content.plainText}</label>
                 )}
               </Text>
               <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
                 {step.options?.footer && (
-                  <label>{step.options.footer.plainText}</label>
+                  <label>{step.options.footer.content.plainText}</label>
+                )}
+              </Text>
+
+              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
+                {step.options?.property?.token && (
+                  <label>salvando resposta em <strong>{step.options.property.token}</strong></label>
                 )}
               </Text>
             </Stack>

@@ -1,7 +1,8 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { WhatsAppOptionsListOptions, TextBubbleContent } from 'models'
-import React, { useEffect, useState } from 'react'
+import { WhatsAppOptionsListOptions, Variable } from 'models'
+import React, { useEffect } from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 
 type WhatsAppOptionsListSettingsBodyProps = {
   options: WhatsAppOptionsListOptions
@@ -12,48 +13,52 @@ export const WhatsAppOptionsListSettingsBody = ({
   options,
   onOptionsChange,
 }: WhatsAppOptionsListSettingsBodyProps) => {
-  useEffect(() => {
-    console.log(options)
-  })
-  
-  const [listOptions, setListOptions] = useState<
-    Array<{
-      description: string
-      id: string
-      label: {
-        content?: TextBubbleContent
-      }
-      selected: boolean
-      value: {
-        content?: TextBubbleContent
-      }
-    }>
-  >([])
+
+  const handleVariableChange = (variable: Variable) => {
+    onOptionsChange({
+      ...options,
+      property: {
+        domain: variable.domain,
+        name: variable.name,
+        type: variable.type ? variable.type : 'string',
+        token: variable.token,
+      },
+      variableId: variable.id,
+    })
+  }
 
   const handleHeaderText = (content: any) => {
     onOptionsChange({
       ...options,
-      header: content,
+      header: {
+        content,
+      },
     })
   }
 
   const handleBodyText = (content: any) => {
     onOptionsChange({
       ...options,
-      body: content,
+      body: {
+        content,
+      },
     })
   }
 
   const handleFooterText = (content: any) => {
     onOptionsChange({
       ...options,
-      footer: content,
+      footer: {
+        content,
+      },
     })
   }
   const handleListTitle = (content: any) => {
     onOptionsChange({
       ...options,
-      listTitle: content,
+      listTitle: {
+        content,
+      },
     })
   }
 
@@ -110,38 +115,19 @@ export const WhatsAppOptionsListSettingsBody = ({
           increment={1}
           onClose={handleListTitle}
           initialValue={
-            options.list?.actionLabel.content
-              ? options.list.actionLabel.content?.richText
+            options.listTitle?.content
+              ? options.listTitle.content?.richText
               : []
           }
           onKeyUp={handleListTitle}
         />
       </Stack>
-      {/* <Label>Opções com resposta</Label>
-      {listOptions?.length &&
-        listOptions.map((listOption, idx) => {
-          return (
-            <Stack key={idx}>
-              <FormLabel mb="0" htmlFor="button">
-                Opção {idx + 1}
-              </FormLabel>
-
-              <TextBubbleEditor
-                increment={1}
-                onClose={(content) => handleListOption(content, listOption.id)}
-                initialValue={
-                  listOption?.value.content
-                    ? listOption.value.content?.richText
-                    : []
-                }
-                onKeyUp={(content) => handleListOption(content, listOption.id)}
-              />
-            </Stack>
-          )
-        })}
-      <Stack align="center">
-        <OctaButton onClick={handleAddOption}>Adicionar opção</OctaButton>
-      </Stack> */}
+      <Stack>
+        <VariableSearchInput
+          initialVariableId={options.variableId}
+          onSelectVariable={handleVariableChange}
+        />
+      </Stack>
     </Stack>
   )
 }
