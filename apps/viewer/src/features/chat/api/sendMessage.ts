@@ -175,11 +175,12 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
   const { messages, input, clientSideActions, newSessionState, logs } =
     await startBotFlow(initialState, startParams.startGroupId)
 
-  const containsSetVariableClientSideAction = clientSideActions?.some(
-    (action) => 'setVariable' in action
+  const clientSideActionsNeedSessionId = clientSideActions?.some(
+    (action) =>
+      'setVariable' in action || 'streamOpenAiChatCompletion' in action
   )
 
-  if (!input && !containsSetVariableClientSideAction)
+  if (!input && !clientSideActionsNeedSessionId)
     return {
       messages,
       clientSideActions,
