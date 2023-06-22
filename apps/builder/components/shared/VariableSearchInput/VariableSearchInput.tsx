@@ -19,7 +19,6 @@ import {
   HStack,
   Stack
 } from '@chakra-ui/react'
-import { EditIcon, PlusIcon, TrashIcon } from 'assets/icons'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
