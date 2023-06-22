@@ -22,7 +22,6 @@ const executeComparison =
     if (!comparison?.variableId) return false
     const inputValue =
       variables.find((v) => v.id === comparison.variableId)?.value ?? null
-    if (isNotDefined(comparison.value)) return false
     const value =
       comparison.value === 'undefined' || comparison.value === 'null'
         ? null
