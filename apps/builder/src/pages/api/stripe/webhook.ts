@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
+import { Typebot } from '@typebot.io/schemas'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -126,7 +127,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
-          await prisma.workspace.update({
+          const workspace = await prisma.workspace.update({
             where: {
               stripeId: subscription.customer as string,
             },
@@ -139,6 +140,27 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               customSeatsLimit: null,
             },
           })
+          const typebots = (await prisma.typebot.findMany({
+            where: {
+              workspaceId: workspace.id,
+              isArchived: { not: true },
+            },
+          })) as Typebot[]
+          for (const typebot of typebots) {
+            if (typebot.settings.general.isBrandingEnabled) continue
+            await prisma.typebot.updateMany({
+              where: { id: typebot.id },
+              data: {
+                settings: {
+                  ...typebot.settings,
+                  general: {
+                    ...typebot.settings.general,
+                    isBrandingEnabled: true,
+                  },
+                },
+              },
+            })
+          }
           return res.send({ message: 'workspace downgraded in DB' })
         }
         default: {
