@@ -69,23 +69,12 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   const handleWidthPerComponent = (step: Step): number|undefined => {
     let width;
     switch (step.type) {
-      case OctaStepType.OFFICE_HOURS:
-        width = 450;
-        break;
-      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
-        width = 450;
       case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
-        width = 450;
-        break;
-      // case OctaWabaStepType.COMMERCE:
-      //   width = 450;
-      //   break;
+      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
+      case OctaStepType.OFFICE_HOURS:
+      case OctaStepType.COMMERCE:
       case LogicStepType.CONDITION:
-        width = 450;
-        break;
       case OctaStepType.ASSIGN_TO_TEAM:
-        width = 450;
-        break;
       case OctaStepType.CALL_OTHER_BOT:
         width = 450;
         break;

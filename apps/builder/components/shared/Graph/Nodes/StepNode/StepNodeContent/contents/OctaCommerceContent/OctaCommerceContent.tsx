@@ -1,18 +1,33 @@
-import { Step, StepOptions, StepWithOptions } from 'models'
+import { CommerceOptions } from 'models'
 import React from 'react'
-import { SelectedProducts } from './OctaCommerceContent.style'
+import { Container, SelectedProducts } from './OctaCommerceContent.style'
+import { WithVariableContent } from '../WithVariableContent'
 
 type Props = {
-  step: StepWithOptions,
-  options: StepOptions
+  options: CommerceOptions
 }
 
-const OctaCommerceContent = ({ step, options }: Props) => {
+const OctaCommerceContent = ({ options }: Props) => {
   return (
-    <div>
-      Selecione os produtos a serem enviados
-      {/* {step.options && <>Produtos selecionados: <SelectedProducts>{step.options[0]}</SelectedProducts> produtos</>} */}
-    </div>
+    <>
+      <Container>
+
+        {(!options || !options.products?.length) && 
+          <div>Nenhum produto selecionado</div>
+        }
+        {options && options.products &&
+          <>
+            <div>
+              {options.products.length}
+              {options.products.length > 1 && <SelectedProducts>produtos selecionados</SelectedProducts>}
+              {options.products.length == 1 && <SelectedProducts>produto selecionado</SelectedProducts>}
+            </div>
+          </>
+        }
+        <WithVariableContent variableId={options.variableId} />
+        
+      </Container>
+    </>
   )
 }
 

@@ -207,8 +207,7 @@ export const VariableSearchInput = ({
   const handleCreateVariableChange = (
     e: ChangeEvent<HTMLInputElement>
   ): void => {
-    // setInputValue(e.target.value);
-    const { value, name } = e.target
+    const { value } = e.target
     setCustomVariable(
       (state): Variable =>
       ({
@@ -260,36 +259,6 @@ export const VariableSearchInput = ({
     event.stopPropagation()
   }
 
-// Usado pra teste
-
-  // const optionsTwo = [
-  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
-  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
-  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' },
-  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
-  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
-  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' },
-  //   { value: 'chocolate', label: 'Chocolate', token: 'Chocolate preto'},
-  //   { value: 'strawberry', label: 'Strawberry', token: 'Strawberry'  },
-  //   { value: 'vanilla', label: 'Vanilla', token: 'Vanilla' }
-  // ]
-
-  // const dot = (color = 'transparent') => ({
-  //   alignItems: 'center',
-  //   display: 'flex',
-  
-  //   ':before': {
-  //     backgroundColor: color,
-  //     borderRadius: 10,
-  //     content: '" "',
-  //     display: 'block',
-  //     marginRight: 8,
-  //     height: 10,
-  //     width: 10,
-  //   },
-  // });
-  
-
   return (
     <Flex ref={boxRef} w="full">
       <Popover
@@ -306,15 +275,6 @@ export const VariableSearchInput = ({
             {screen === 'VIEWER' && (
               <Container data-screen={screen}>
                 Selecione uma variável para salvar a resposta:
-                <div>
-                  {/* usado pra teste */}
-                  {/* <Select
-                    options={optionsTwo}
-                    value={optionsTwo.token}
-                    isClearable={true}
-                    noOptionsMessage={() => 'Variável não encontrada'}
-                  /> */}
-                </div>
                 <Input
                   id="name" 
                   data-testid="variables-input"
@@ -326,15 +286,6 @@ export const VariableSearchInput = ({
                   {...inputProps}
                 />
                
-                {/* <SearchInput
-                  data-testid="variables-input"
-                  ref={inputRef}
-                  value={inputValue}
-                  onChange={onInputChange}
-                  onClick={onOpen}
-                  placeholder={inputProps.placeholder ?? 'Selecione a variável'}
-                  {...inputProps}
-                /> */}
                 {addVariable && (
                   <Stack>
                     <OrText>Ou</OrText>
@@ -386,7 +337,7 @@ export const VariableSearchInput = ({
                     </ButtonOption>
                     <ButtonOption
                       className={
-                        customVariable?.type === 'pedido' ? 'active' : ''
+                        customVariable?.type === 'order' ? 'active' : ''
                       }
                       onClick={() => handleSelectTypeVariable('order')}
                     >

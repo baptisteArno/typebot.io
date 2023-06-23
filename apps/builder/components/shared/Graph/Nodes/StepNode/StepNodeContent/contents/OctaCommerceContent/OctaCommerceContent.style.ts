@@ -9,6 +9,5 @@ export const Container = styled.div`
 
 export const SelectedProducts = styled.span`
   border-radius: 15px;
-  background-color: #000;
   padding: 2px;
 `;
