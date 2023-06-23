@@ -11,3 +11,10 @@ export const SelectedProducts = styled.span`
   border-radius: 15px;
   padding: 2px;
 `;
+
+export const Space = styled.span`
+  margin-top: 5px;
+  border-radius: 15px;
+  border: 1px solid orange;
+  padding: 10px;
+`;
