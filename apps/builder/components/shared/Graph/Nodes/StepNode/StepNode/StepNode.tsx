@@ -147,9 +147,6 @@ export const StepNode = ({
   }
 
   const handleStepUpdate = (updates: Partial<Step>): void =>{  
-    console.log('indices', indices)
-    console.log('step', step)
-    console.log('updates', updates)  
     updateStep(indices, { ...step, ...updates })
   }
 

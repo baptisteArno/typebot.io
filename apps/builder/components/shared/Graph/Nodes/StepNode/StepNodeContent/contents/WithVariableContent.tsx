@@ -5,14 +5,14 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { byId } from 'utils'
 
 type Props = {
-  step: InputStep
+  variableId?: string
 }
 
-export const WithVariableContent = ({ step }: Props) => {
+export const WithVariableContent = (variableId: Props) => {
   const { typebot } = useTypebot()
   const variableName = typebot?.variables.find(
-    (variable) => variable.variableId === step.options.variableId
-  )?.token
+    (variable) => variable.variableId === variableId.variableId
+  )?.token || '...'
 
   return (
     <Text>

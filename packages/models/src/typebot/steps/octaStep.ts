@@ -17,7 +17,7 @@ export type OctaStepOptions =
   | OfficeHoursOptions
   | CallOtherBotOptions
 
-export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions
+export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions | CommerceOptions
 
 // Steps that has variables on the popup modal
 export type OctaStepWithOptions =
@@ -151,6 +151,18 @@ export type OfficeHoursOptions = BaseOctaOptions & {
   _isFallback: boolean
   _isDirty: boolean
   isNew: boolean
+}
+
+export type CommerceOptions = BaseOctaOptions & {
+  catalogId: string;
+  products: Array<string>
+  property: {
+    domain: '',
+    name: '',
+    token: '',
+    type: '',
+  }
+  variableId: string
 }
 
 // Regular options

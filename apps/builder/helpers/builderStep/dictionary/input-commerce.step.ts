@@ -18,7 +18,6 @@ const templateCommerceStep = (typebot: WritableDraft<Typebot>, blockId: string, 
       }
     } as DraggableStep,
     parseNewStep(OctaStepType.COMMERCE, blockId),
-    parseNewStep(InputStepType.TEXT, blockId)
   ];
 
   return CommerceStep.reverse();

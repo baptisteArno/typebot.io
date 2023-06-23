@@ -1,17 +1,14 @@
 import OctaLoading from 'components/octaComponents/OctaLoading/OctaLoading';
-import { useTypebot } from 'contexts/TypebotContext';
-import { CommerceOptions, Step } from 'models'
+import { CommerceOptions, Variable } from 'models'
 import React, { useEffect, useState } from 'react'
 import { CommerceService } from 'services/octadesk/commerce/commerce';
 import { ListCatalogType, ProductType } from 'services/octadesk/commerce/commerce.type';
 import {
-  ButtonCreate,
   Container,
-  FormArea,
   Title,
-  FormControl,
 } from './OctaCommerceBody.style'
 import SelectProducts from './SelectProducts/SelectProducts';
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput';
 
 type Props = {
   options: CommerceOptions
@@ -54,18 +51,35 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
     }
   }, [catalog])
 
-  const handleSelectProducts = (product: ProductType) => {
+  const handleSelectProducts = (products: ProductType[], add = false) => {
     let newProducts = [...options.products]
-    const index = newProducts.findIndex(p => p === product.id)
-    if (index >= 0) {
-      newProducts.splice(index, 1)
-    } else {
-      newProducts.push(product.id)
-    }
+    products.forEach(product => {
+      const index = newProducts.findIndex(p => p === product.id)
+      if (index >= 0) {
+        if (!add)
+          newProducts.splice(index, 1)
+      } else {
+        newProducts.push(product.id)
+      }
+    })
 
     onOptionsChange({
       ...options,
       ...{ products: newProducts },
+    });
+  }
+
+  const handleVariableSelected = (variable: Variable) => {
+    console.log('handleVariableSelected', variable)
+    onOptionsChange({
+      ...options,
+      variableId: variable.id,
+      property: {
+        domain: "CHAT",
+        name: variable.name,
+        type: variable.type ? variable.type : "string",
+        token: variable.token
+      },
     });
   }
 
@@ -77,6 +91,12 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
         </Title>
         {loading && <OctaLoading />}
         {products && <SelectProducts key={options.catalogId} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
+        <VariableSearchInput
+          initialVariableId={options.variableId}
+          onSelectVariable={handleVariableSelected}
+          placeholder="Salvar resposta em..."
+          width={"100%"}
+        />
 
       </Container>
     </>

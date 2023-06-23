@@ -40,7 +40,7 @@ type Props = {
 }
 export const StepNodeContent = ({ step, indices }: Props) => {
   if (isInputStep(step) && !isChoiceInput(step) && step.options.variableId) {
-    return <WithVariableContent step={step} />
+    return <WithVariableContent variableId={step.options.variableId} />
   }
   switch (step.type) {
     case BubbleStepType.TEXT: {
@@ -168,6 +168,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {     
       return <ItemNodesList step={step} indices={indices} />
+    }
+    case OctaStepType.COMMERCE: {
+      return <OctaCommerceContent options={step.options} />
     }
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {     
       return <ItemNodesList step={step} indices={indices} />

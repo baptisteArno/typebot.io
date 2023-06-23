@@ -1,15 +1,16 @@
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useState } from 'react'
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md'
 import { ProductType, VariationWithSelection } from 'services/octadesk/commerce/commerce.type'
-import { ButtonCreate, Title } from '../OctaCommerceBody.style'
-import { Container, ListProducts, ProductVariationItem, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
+import { ButtonCreate } from '../OctaCommerceBody.style'
+import { Container, ListProducts, ProductItem, TitleProduct, ImageProduct, ProductContainer, Price, Destination, CustomVariation, ProductVariation, TitleVariation, ContainerVariation, VariationArea, VariationControl, VariationLabel, VariationOption, Instructions } from './SelectProducts.style'
 import { Badge } from '@chakra-ui/react'
+import Variations from '../Variations/Variations'
 
 type Props = {
   products: Array<ProductType>;
   selectedProducts: Array<string>;
-  onSelect: (product: ProductType) => void;
+  onSelect: (products: Array<ProductType>, add: boolean) => void;
 }
 
 const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
@@ -33,7 +34,7 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
   };
 
   const handleSelectProduct = (product: ProductType): void => {
-    onSelect(product);
+    onSelect([product], false);
   }
 
   const handleSelectVariation = (variation: any, item: any): void => {
@@ -47,12 +48,24 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
   }
 
   const addVariations = () => {
+    if (!variationProduct) return
     let selectedVariants = [...variationProduct.variants]
     selectedVariations.forEach(s => {
       selectedVariants = selectedVariants.filter(v => v.attributeValuesHash.includes(s.value))
     })
 
-    selectedVariants.forEach(v => onSelect(v))
+    selectedVariants.forEach(v => onSelect([v], true))
+  }
+
+  const addAllVariations = () => {
+    if (!variationProduct) return
+
+    onSelect(variationProduct.variants, true)
+    handleBackToProducts()
+  }
+
+  const handleRemoveVariation = (variation: any) => {
+    onSelect([variation], false)
   }
 
   return (
@@ -68,6 +81,7 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
               {
                 products.map((product) => (
                   <>
+                    <Variations selectedProducts={selectedProducts} variations={product.variants} onSelect={onSelect} />
                     <ProductItem key={product.id}>
                       <ImageProduct>
                         {product && product.imageUrl && <img src={product.imageUrl} alt={product.name} />}
@@ -83,13 +97,6 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
                         {!product.attributes.length && <input type="checkbox" checked={selectedProducts.includes(product.id)} name="select-product" value={product.id} onChange={(e) => handleSelectProduct(product)} />}
                         {(product.attributes.length > 0) && <CustomVariation onClick={() => handleSelectVariations(product)}><MdOutlineChevronRight size={40} /></CustomVariation>}
                       </Destination>
-                      {product.variants?.filter((v: any) => selectedProducts.includes(v.id)).map((v: any) => (
-                        <>
-                        <Badge variant='solid' colorScheme='blue' borderRadius="6px" textAlign="center"> 
-                          {v.attributeValuesHash}
-                        </Badge>
-                        </>
-                      ))}
                     </ProductItem>
 
                   </>
@@ -119,6 +126,8 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
                     </Price>
                   </ProductContainer>
                 </ProductVariation>
+                <TitleProduct>Variações selecionadas</TitleProduct>
+                <Variations selectedProducts={selectedProducts} variations={variationProduct.variants} onSelect={onSelect} />
                 <VariationArea>
                   {variationProduct.attributes.map(variation => (
                     <VariationControl>
@@ -131,6 +140,9 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
                 </VariationArea>
                 <ButtonCreate onClick={addVariations}>
                   Adicionar
+                </ButtonCreate>
+                <ButtonCreate onClick={addAllVariations}>
+                  Adicionar Todas
                 </ButtonCreate>
               </>
             }
