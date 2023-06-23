@@ -1,6 +1,6 @@
 import { CommerceOptions } from 'models'
 import React from 'react'
-import { Container, SelectedProducts } from './OctaCommerceContent.style'
+import { Container, SelectedProducts, Space } from './OctaCommerceContent.style'
 import { WithVariableContent } from '../WithVariableContent'
 
 type Props = {
@@ -12,10 +12,10 @@ const OctaCommerceContent = ({ options }: Props) => {
     <>
       <Container>
 
-        {(!options || !options.products?.length) && 
+        {!options.products?.length && 
           <div>Nenhum produto selecionado</div>
         }
-        {options && options.products &&
+        {options && options.products && options.products.length > 0 &&
           <>
             <div>
               {options.products.length}
@@ -24,8 +24,9 @@ const OctaCommerceContent = ({ options }: Props) => {
             </div>
           </>
         }
-        <WithVariableContent variableId={options.variableId} />
-        
+        <Space>
+          <WithVariableContent variableId={options.variableId} />
+        </Space>
       </Container>
     </>
   )
