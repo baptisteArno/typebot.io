@@ -115,14 +115,35 @@ const deleteExpiredAppSessions = async () => {
 const deleteExpiredVerificationTokens = async () => {
   const threeDaysAgo = new Date()
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
-  const { count } = await prisma.verificationToken.deleteMany({
-    where: {
-      expires: {
-        lte: threeDaysAgo,
+  let totalVerificationTokens
+  do {
+    const verificationTokens = await prisma.verificationToken.findMany({
+      where: {
+        expires: {
+          lte: threeDaysAgo,
+        },
       },
-    },
-  })
-  console.log(`Deleted ${count} expired verifiations tokens.`)
+      select: {
+        token: true,
+      },
+      take: 80000,
+    })
+
+    totalVerificationTokens = verificationTokens.length
+
+    console.log(`Deleting ${verificationTokens.length} expired tokens...`)
+    const chunkSize = 1000
+    for (let i = 0; i < verificationTokens.length; i += chunkSize) {
+      const chunk = verificationTokens.slice(i, i + chunkSize)
+      await prisma.verificationToken.deleteMany({
+        where: {
+          token: {
+            in: chunk.map((verificationToken) => verificationToken.token),
+          },
+        },
+      })
+    }
+  } while (totalVerificationTokens === 80000)
 }
 
 const resetQuarantinedWorkspaces = async () =>
