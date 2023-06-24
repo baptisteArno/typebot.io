@@ -58,7 +58,9 @@ export const Graph = ({
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(
     () =>
-      `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
+      `translate(${Number(graphPosition.x.toFixed(2))}px, ${Number(
+        graphPosition.y.toFixed(2)
+      )}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
   const { user } = useUser()

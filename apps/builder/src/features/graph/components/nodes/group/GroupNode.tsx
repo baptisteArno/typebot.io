@@ -170,8 +170,8 @@ const NonMemoizedDraggableGroupNode = ({
         setIsMouseDown(false)
       }
       const newCoord = {
-        x: offsetX / graphPosition.scale,
-        y: offsetY / graphPosition.scale,
+        x: Number((offsetX / graphPosition.scale).toFixed(2)),
+        y: Number((offsetY / graphPosition.scale).toFixed(2)),
       }
       setCurrentCoordinates(newCoord)
       onGroupDrag(newCoord)

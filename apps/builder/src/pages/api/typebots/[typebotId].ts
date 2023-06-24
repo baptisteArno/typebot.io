@@ -9,6 +9,7 @@ import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import { archiveResults } from '@/features/results/helpers/archiveResults'
 import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
+import { roundGroupsCoordinate } from '@/features/typebot/helpers/roundGroupsCoordinate'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -36,7 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       collaborators.find((c) => c.userId === user.id)?.type ===
       CollaborationType.READ
     return res.send({
-      typebot: removeTypebotOldProperties(typebot),
+      typebot: roundGroupsCoordinate(
+        removeTypebotOldProperties(typebot) as Typebot
+      ),
       publishedTypebot,
       isReadOnly,
       webhooks,

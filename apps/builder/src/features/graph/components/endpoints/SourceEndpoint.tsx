@@ -39,10 +39,14 @@ export const SourceEndpoint = ({
   const endpointY = useMemo(
     () =>
       ref.current
-        ? (ref.current?.getBoundingClientRect().y +
-            (endpointHeight * graphPosition.scale) / 2 -
-            graphPosition.y) /
-          graphPosition.scale
+        ? Number(
+            (
+              (ref.current?.getBoundingClientRect().y +
+                (endpointHeight * graphPosition.scale) / 2 -
+                graphPosition.y) /
+              graphPosition.scale
+            ).toFixed(2)
+          )
         : undefined,
     // We need to force recompute whenever the group height and position changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
