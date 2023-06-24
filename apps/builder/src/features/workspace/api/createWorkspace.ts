@@ -16,13 +16,13 @@ export const createWorkspace = authenticatedProcedure
       tags: ['Workspace'],
     },
   })
-  .input(workspaceSchema.pick({ name: true }))
+  .input(z.object({ icon: z.string().optional(), name: z.string() }))
   .output(
     z.object({
       workspace: workspaceSchema,
     })
   )
-  .mutation(async ({ input: { name }, ctx: { user } }) => {
+  .mutation(async ({ input: { name, icon }, ctx: { user } }) => {
     const existingWorkspaceNames = (await prisma.workspace.findMany({
       where: {
         members: {
@@ -45,6 +45,7 @@ export const createWorkspace = authenticatedProcedure
     const newWorkspace = (await prisma.workspace.create({
       data: {
         name,
+        icon,
         members: { create: [{ role: 'ADMIN', userId: user.id }] },
         plan,
       },
