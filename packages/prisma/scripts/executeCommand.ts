@@ -1,13 +1,20 @@
 import { exec } from 'child_process'
-import { join } from 'path'
+import { join, relative } from 'path'
 
 require('dotenv').config({
   override: true,
   path: join(__dirname, `../.env`),
 })
 
-const postgesqlSchemaPath = join(__dirname, '../postgresql/schema.prisma')
-const mysqlSchemaPath = join(__dirname, '../mysql/schema.prisma')
+const postgesqlSchemaPath = relative(
+  process.cwd(),
+  join(__dirname, `../postgresql/schema.prisma`)
+)
+
+const mysqlSchemaPath = relative(
+  process.cwd(),
+  join(__dirname, `../mysql/schema.prisma`)
+)
 
 type Options = {
   force?: boolean
