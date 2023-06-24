@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
-import { Typebot } from '@typebot.io/schemas'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -145,7 +145,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               workspaceId: workspace.id,
               isArchived: { not: true },
             },
-          })) as Typebot[]
+            include: { publishedTypebot: true },
+          })) as (Typebot & { publishedTypebot: PublicTypebot })[]
           for (const typebot of typebots) {
             if (typebot.settings.general.isBrandingEnabled) continue
             await prisma.typebot.updateMany({
@@ -155,6 +156,20 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   ...typebot.settings,
                   general: {
                     ...typebot.settings.general,
+                    isBrandingEnabled: true,
+                  },
+                },
+              },
+            })
+            if (typebot.publishedTypebot.settings.general.isBrandingEnabled)
+              continue
+            await prisma.publicTypebot.updateMany({
+              where: { id: typebot.id },
+              data: {
+                settings: {
+                  ...typebot.publishedTypebot.settings,
+                  general: {
+                    ...typebot.publishedTypebot.settings.general,
                     isBrandingEnabled: true,
                   },
                 },
