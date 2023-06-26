@@ -77,20 +77,6 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
           'Este é o arquivo que preparamos para você!'
         )
         break
-      case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
-        step = templateVariableBot(
-          bot,
-          blockId,
-          ''
-        )
-        break
-      case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
-        step = templateVariableButtonsBot(
-          bot,
-          blockId,
-          ''
-        )
-        break
       default:
         step = [parseNewStep(type, blockId)]
         break
