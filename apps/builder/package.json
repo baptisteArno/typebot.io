@@ -19,6 +19,8 @@
     "@chakra-ui/css-reset": "^2.0.0",
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.0.0",
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.10.6",
     "@giphy/js-fetch-api": "^4.1.2",
