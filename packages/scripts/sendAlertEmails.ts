@@ -137,18 +137,20 @@ const sendAlertIfLimitReached = async (
       console.log(
         `Send almost reached chats limit email to ${to.join(', ')}...`
       )
-      await sendAlmostReachedChatsLimitEmail({
-        to: workspace.members
-          .map((member) => member.user.email)
-          .filter(isDefined),
-        usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
-        chatsLimit,
-        url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
-      })
-      await prisma.workspace.update({
-        where: { id: workspace.id },
-        data: { chatsLimitFirstEmailSentAt: new Date() },
-      })
+      try {
+        await sendAlmostReachedChatsLimitEmail({
+          to,
+          usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
+          chatsLimit,
+          url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+        })
+        await prisma.workspace.update({
+          where: { id: workspace.id },
+          data: { chatsLimitFirstEmailSentAt: new Date() },
+        })
+      } catch (err) {
+        console.error(err)
+      }
     }
 
     if (
@@ -159,16 +161,20 @@ const sendAlertIfLimitReached = async (
       const to = workspace.members
         .map((member) => member.user.email)
         .filter(isDefined)
-      console.log(`Send reached chats limit email to ${to.join(', ')}...`)
-      await sendReachedChatsLimitEmail({
-        to,
-        chatsLimit,
-        url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
-      })
-      await prisma.workspace.update({
-        where: { id: workspace.id },
-        data: { chatsLimitSecondEmailSentAt: new Date() },
-      })
+      try {
+        console.log(`Send reached chats limit email to ${to.join(', ')}...`)
+        await sendReachedChatsLimitEmail({
+          to,
+          chatsLimit,
+          url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+        })
+        await prisma.workspace.update({
+          where: { id: workspace.id },
+          data: { chatsLimitSecondEmailSentAt: new Date() },
+        })
+      } catch (err) {
+        console.error(err)
+      }
     }
 
     if (totalChatsUsed > chatsLimit * 3 && workspace.plan === Plan.FREE) {
