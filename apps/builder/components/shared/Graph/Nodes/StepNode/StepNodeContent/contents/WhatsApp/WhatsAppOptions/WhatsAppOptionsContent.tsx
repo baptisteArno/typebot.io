@@ -1,8 +1,9 @@
 import { StepIndices, WhatsAppOptionsListStep } from 'models'
 import React from 'react'
-import { BoxContainer, Container } from './WhatsAppOptionsContent.style'
+import { BoxContainer, Container, Space } from './WhatsAppOptionsContent.style'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { Stack, Text } from '@chakra-ui/react'
+import { WithVariableContent } from '../../WithVariableContent'
 
 type Props = {
   step: WhatsAppOptionsListStep
@@ -43,18 +44,12 @@ const WhatsAppOptionsContent = ({ step, indices }: Props) => {
                   <label>{step.options.footer.content?.plainText}</label>
                 )}
               </Text>
-
-              <Text color={'gray.500'} fontSize="xs" noOfLines={0}>
-                {step.options?.property?.token && (
-                  <label>
-                    salvando resposta em{' '}
-                    <strong>{step.options.property.token}</strong>
-                  </label>
-                )}
-              </Text>
             </Stack>
           }
         </BoxContainer>
+        <Space>
+          <WithVariableContent variableId={step.options?.variableId} />
+        </Space>
       </Container>
     </>
   )

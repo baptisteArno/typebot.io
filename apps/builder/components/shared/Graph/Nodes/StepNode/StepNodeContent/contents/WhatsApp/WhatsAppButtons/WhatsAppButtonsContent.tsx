@@ -1,8 +1,9 @@
 import { StepIndices, WhatsAppButtonsListStep } from 'models'
 import React from 'react'
-import { BoxContainer, Container } from './WhatsAppButtonsContent.style'
+import { BoxContainer, Container, Space } from './WhatsAppButtonsContent.style'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { Stack, Text } from '@chakra-ui/react'
+import { WithVariableContent } from '../../WithVariableContent'
 
 type Props = {
   step: WhatsAppButtonsListStep
@@ -50,6 +51,9 @@ const WhatsApButtonsContent = ({ step, indices }: Props) => {
             </Stack>
           }
         </BoxContainer>
+        <Space>
+          <WithVariableContent variableId={step.options?.variableId} />
+        </Space>
       </Container>
     </>
   )

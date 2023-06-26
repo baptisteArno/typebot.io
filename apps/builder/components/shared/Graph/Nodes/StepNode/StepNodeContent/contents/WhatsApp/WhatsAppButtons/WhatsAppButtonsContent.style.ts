@@ -22,4 +22,5 @@ export const Space = styled.span`
   border-radius: 15px;
   border: 1px solid orange;
   padding: 10px;
+  margin-left: 9px;
 `;
