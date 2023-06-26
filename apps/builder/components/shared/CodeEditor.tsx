@@ -1,4 +1,12 @@
-import { BoxProps, HStack, Stack, useColorModeValue, useDisclosure, IconButton, FormControl } from '@chakra-ui/react'
+import {
+  BoxProps,
+  HStack,
+  Stack,
+  useColorModeValue,
+  useDisclosure,
+  IconButton,
+  FormControl,
+} from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
@@ -8,7 +16,7 @@ import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { isDefined } from '@udecode/plate-common'
 import { linter } from '@codemirror/lint'
 import { VariableSearchInput } from './VariableSearchInput/VariableSearchInput'
-import  { CreateButton } from './VariableSearchInput/VariableSearchInput.style'
+import { CreateButton } from './VariableSearchInput/VariableSearchInput.style'
 import { Variable } from 'models'
 import { isEmpty } from 'utils'
 
@@ -56,7 +64,9 @@ export const CodeEditor = ({
     setValue(newValue)
   }
 
-  const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name' | 'token'>) => {
+  const handleVariableSelected = (
+    variable?: Pick<Variable, 'id' | 'name' | 'token'>
+  ) => {
     codeEditor.current?.view?.focus()
     const insert = `{{${variable?.token}}}`
     codeEditor.current?.view?.dispatch({
@@ -141,26 +151,26 @@ export const CodeEditor = ({
               aria-label="Editor body"
               size="xs"
               onClick={handleButtonVariable}
-              alignSelf={"flex-start"}
-              width={"25px"}
-              top={"15px"}
-              right={"10px"}
+              alignSelf={'flex-start'}
+              width={'25px'}
+              top={'15px'}
+              right={'10px'}
             />
           )}
           {addVariable && (
-            <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+            <Stack rounded="md" flex="1">
               <FormControl>
-              <VariableSearchInput
-                onSelectVariable={handleVariableSelected}
-                placeholder="Pesquise sua variável"
-                width={"100%"}
-              />
+                <VariableSearchInput
+                  onSelectVariable={handleVariableSelected}
+                  placeholder="Pesquise sua variável"
+                  isCloseModal={false}
+                />
               </FormControl>
             </Stack>
           )}
           {!addVariable && (
             <CreateButton onClick={handleButtonVariable}>
-              { 'Adicionar variável'}
+              {'Adicionar variável'}
             </CreateButton>
           )}
         </HStack>
