@@ -162,65 +162,6 @@ export const ItemNodesList = ({
           }
         </Container>
       )}
-      {step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST && (
-        <Container>
-          {
-            <Stack>
-              <Text color={'gray.500'} noOfLines={0}>
-                {step.options?.header && (
-                  <strong>{step.options.header.content?.plainText}</strong>
-                )}
-              </Text>
-              <Text color={'gray.500'} noOfLines={0}>
-                {step.options?.body && (
-                  <label>{step.options.body.content?.plainText}</label>
-                )}
-              </Text>
-              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
-                {step.options?.footer && (
-                  <label>{step.options.footer.content?.plainText}</label>
-                )}
-              </Text>
-
-              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
-                {step.options?.property?.token && (
-                  <label>salvando resposta em <strong>{step.options.property.token}</strong></label>
-                )}
-              </Text>
-            </Stack>
-            
-          }
-        </Container>
-      )}
-      {step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
-        <Container>
-          {
-            <Stack>
-              <Text color={'gray.500'} noOfLines={0}>
-                {step.options?.header && (
-                  <strong>{step.options.header.content?.plainText}</strong>
-                )}
-              </Text>
-              <Text color={'gray.500'} noOfLines={0}>
-                {step.options?.body && (
-                  <label>{step.options.body.content?.plainText}</label>
-                )}
-              </Text>
-              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
-                {step.options?.footer && (
-                  <label>{step.options.footer.content?.plainText}</label>
-                )}
-              </Text>
-              <Text color={'gray.500'} fontSize='xs' noOfLines={0}>
-                {step.options?.property?.token && (
-                  <label>salvando resposta em <strong>{step.options.property.token}</strong></label>
-                )}
-              </Text>
-            </Stack>
-            
-          }
-        </Container>
-      )}
       {step && step.items && step.items.map((item, idx) => {
         return (
           <Stack key={item.id} spacing={1}>
