@@ -86,14 +86,16 @@ export const SelectionToolbar = ({
         return [...currentHeaderLabels, columnLabel]
       }, [])
       .concat(
-        resultHeader
-          .filter(
-            (headerCell) =>
-              !typebot?.resultsTablePreferences?.columnsOrder.includes(
-                headerCell.id
+        typebot?.resultsTablePreferences?.columnsOrder
+          ? resultHeader
+              .filter(
+                (headerCell) =>
+                  !typebot?.resultsTablePreferences?.columnsOrder.includes(
+                    headerCell.id
+                  )
               )
-          )
-          .map((headerCell) => headerCell.label)
+              .map((headerCell) => headerCell.label)
+          : []
       )
 
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
