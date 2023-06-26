@@ -36,7 +36,6 @@ export const ToolBar = ({
   };
 
   const handleEmojiSelect = (emoji: any) => {
-    console.log('Selected emoji:', emoji);
     editor.insertText(emoji.native);
     setShowPicker(false);
   };
