@@ -18,7 +18,7 @@ const checkSubscriptionsStatus = async () => {
     apiVersion: '2022-11-15',
   })
 
-  let activeSubscriptions = 0
+  let totalActiveSubscriptions = 0
   for (const workspace of workspacesWithPaidPlan) {
     if (!workspace.stripeId) {
       console.log('No stripe ID', workspace.id)
@@ -35,12 +35,12 @@ const checkSubscriptionsStatus = async () => {
       continue
     }
     if (subscription.status === 'active') {
-      activeSubscriptions++
+      totalActiveSubscriptions++
       continue
     }
     console.log(`${workspace.id} - ${workspace.name} - ${subscription.status}`)
   }
-  console.log('Active subscriptions', activeSubscriptions)
+  console.log('Active subscriptions', totalActiveSubscriptions)
 }
 
 checkSubscriptionsStatus()

@@ -84,7 +84,6 @@ export const createCustomCheckoutSession = authenticatedProcedure
         mode: 'subscription',
         metadata: {
           claimableCustomPlanId: workspace.claimableCustomPlan.id,
-          userId: user.id,
         },
         currency: workspace.claimableCustomPlan.currency,
         billing_address_collection: 'required',
