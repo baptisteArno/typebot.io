@@ -31,143 +31,138 @@ import { Variable } from 'models/dist/types/typebot/variable'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 export type ChannelType = {
-  name: string,
-  displayName: string,
+  name: string
+  displayName: string
   proactive: {
-    isEnabled: boolean,
+    isEnabled: boolean
     needTemplate: boolean
-  },
-  hoursToAnswer: number,
+  }
+  hoursToAnswer: number
   template: {
-    isMediaEnabled: boolean,
-    isButtonsEnabled: boolean,
-    isIndexedListEnabled: boolean,
-    interactionTypes: Array<string>,
-    categories: Array<string>,
+    isMediaEnabled: boolean
+    isButtonsEnabled: boolean
+    isIndexedListEnabled: boolean
+    interactionTypes: Array<string>
+    categories: Array<string>
     components: {
       body: {
         textStyles: {
-          bold: boolean,
-          italic: boolean,
-          strikethrough: boolean,
-          underline: boolean,
+          bold: boolean
+          italic: boolean
+          strikethrough: boolean
+          underline: boolean
           emoji: boolean
         }
-      },
+      }
       footer: {
         textStyles: {
-          bold: boolean,
-          italic: boolean,
-          strikethrough: boolean,
-          underline: boolean,
-          emoji: boolean,
-          link: boolean,
+          bold: boolean
+          italic: boolean
+          strikethrough: boolean
+          underline: boolean
+          emoji: boolean
+          link: boolean
           richText: boolean
         }
-      },
+      }
       header: {
         textStyles: {
-          bold: boolean,
-          italic: boolean,
-          strikethrough: boolean,
-          underline: boolean,
-          emoji: boolean,
-          link: boolean,
+          bold: boolean
+          italic: boolean
+          strikethrough: boolean
+          underline: boolean
+          emoji: boolean
+          link: boolean
           richText: boolean
         }
-      },
+      }
       buttons: {
         textStyles: {
-          bold: boolean,
-          italic: boolean,
-          strikethrough: boolean,
-          underline: boolean,
-          emoji: boolean,
-          link: boolean,
+          bold: boolean
+          italic: boolean
+          strikethrough: boolean
+          underline: boolean
+          emoji: boolean
+          link: boolean
           richText: boolean
         }
-      },
+      }
       list: {
         section: {
-          maxQuantity: number,
+          maxQuantity: number
           rows: {
             description: {
-              maxLength: number,
+              maxLength: number
               textStyles: {
-                bold: boolean,
-                italic: boolean,
-                strikethrough: boolean,
-                underline: boolean,
-                emoji: boolean,
-                link: boolean,
-                richText: boolean
-              }
-            },
-            title: {
-              maxLength: number,
-              textStyles: {
-                bold: boolean,
-                italic: boolean,
-                strikethrough: boolean,
-                underline: boolean,
-                emoji: boolean,
-                link: boolean,
+                bold: boolean
+                italic: boolean
+                strikethrough: boolean
+                underline: boolean
+                emoji: boolean
+                link: boolean
                 richText: boolean
               }
             }
-          },
+            title: {
+              maxLength: number
+              textStyles: {
+                bold: boolean
+                italic: boolean
+                strikethrough: boolean
+                underline: boolean
+                emoji: boolean
+                link: boolean
+                richText: boolean
+              }
+            }
+          }
           title: {
-            maxLength: number,
+            maxLength: number
             textStyles: {
-              bold: boolean,
-              italic: boolean,
-              strikethrough: boolean,
-              underline: boolean,
-              emoji: boolean,
-              link: boolean,
+              bold: boolean
+              italic: boolean
+              strikethrough: boolean
+              underline: boolean
+              emoji: boolean
+              link: boolean
               richText: boolean
             }
           }
         }
       }
-    },
+    }
     allowOnlyApproveds: boolean
-  },
-  supportedExtensions: Array<string>,
+  }
+  supportedExtensions: Array<string>
   bots: {
     exclusiveComponents: Array<string>
-  },
+  }
   attachmentMaxSize: number
 }
 export type BotSpecification = {
-  id: string,
-  _id: string,
-  name: string,
-  supportedExtensions: Array<string>,
-  hoursToAnswer: number,
-  channels: Array<ChannelType>,
+  id: string
+  _id: string
+  name: string
+  supportedExtensions: Array<string>
+  hoursToAnswer: number
+  channels: Array<ChannelType>
   active: boolean
 }
 
 export type BotSpecificationOption = {
-  id: string,
-  resources: string,
-  WABA:
-  { name: string, value: number },
-  web:
-  { name: string, value: number },
-  whatsapp:
-  { name: string, value: number },
-  instagram:
-  { name: string, value: number },
-  [`facebook-messenger`]:
-  { name: string, value: number },
+  id: string
+  resources: string
+  WABA: { name: string; value: number }
+  web: { name: string; value: number }
+  whatsapp: { name: string; value: number }
+  instagram: { name: string; value: number }
+  [`facebook-messenger`]: { name: string; value: number }
 }
 
 const workspaceContext = createContext<{
   workspaces?: WorkspaceWithMembers[]
-  botSpecificationsChannelsInfo: Array<BotSpecificationOption>,
-  botChannelsSpecifications: Array<string>,
+  botSpecificationsChannelsInfo: Array<BotSpecificationOption>
+  botChannelsSpecifications: Array<string>
   isLoading: boolean
   workspace?: WorkspaceWithMembers
   canEdit: boolean
@@ -186,7 +181,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
-  const { typebot, createVariable, deleteVariable } = useTypebot()
+  const { typebot, createVariable, deleteVariable, setVariables } = useTypebot()
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
@@ -203,10 +198,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
-        w.members.some(
-          (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
+          w.members.some(
+            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
+          )
         )
-      )
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
   }, [workspaces])
 
@@ -238,31 +233,37 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const [octaOrganizationItems, setOctaOrganizationItems] = useState<
     Array<any>
   >([])
-  const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] = useState<Array<BotSpecificationOption>>([])
-  const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<Array<string>>([''])
+  const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] =
+    useState<Array<BotSpecificationOption>>([])
+  const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<
+    Array<string>
+  >([''])
   const translatedKeys = {
-    "bold": "Negrito",
-    "italic": "Itálico",
-    "lineThrough": "Tachado",
-    "underline": "Sublinhado",
-    "emoji": "Emoji",
-    "hoursToAnswer": "Definir horário de atendimento do bot",
-    "attachmentMaxSize": "Tamanho do anexo",
-    "supportedExtensions": "Arquivos permitidos",
-    "exclusiveComponents": "Arquivos e interações"
+    bold: 'Negrito',
+    italic: 'Itálico',
+    lineThrough: 'Tachado',
+    underline: 'Sublinhado',
+    emoji: 'Emoji',
+    hoursToAnswer: 'Definir horário de atendimento do bot',
+    attachmentMaxSize: 'Tamanho do anexo',
+    supportedExtensions: 'Arquivos permitidos',
+    exclusiveComponents: 'Arquivos e interações',
   }
 
   const fetchBotSpecifications = useCallback(async (): Promise<void> => {
     const botSpecifications = await BotsService().getBotSpecifications()
 
     setChannelsSpecifications(botSpecifications)
-  }, []);
+  }, [])
 
   useEffect(() => {
     fetchBotSpecifications()
   }, [fetchBotSpecifications])
 
-  const setChannelsInfoSpecifications = (channels: Array<string>, channelsSpecifications: Array<ChannelType>) => {
+  const setChannelsInfoSpecifications = (
+    channels: Array<string>,
+    channelsSpecifications: Array<ChannelType>
+  ) => {
     const resources = [
       'template.components.body.textStyles.bold',
       'template.components.body.textStyles.italic',
@@ -272,7 +273,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       'hoursToAnswer',
       'attachmentMaxSize',
       'supportedExtensions',
-      'bots.exclusiveComponents'
+      'bots.exclusiveComponents',
     ]
 
     const getMultiLevelProp = (obj: any, keys: any) => {
@@ -283,7 +284,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     const getValue = (channelName: any, key: any) => {
       let value = ''
-      channelsSpecifications.map(channel => {
+      channelsSpecifications.map((channel) => {
         if (channel.displayName === channelName) {
           value = getMultiLevelProp(channel, key)
         }
@@ -292,7 +293,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       return value
     }
 
-    const options: Array<BotSpecificationOption> = resources.map(resource => {
+    const options: Array<BotSpecificationOption> = resources.map((resource) => {
       const key = resource.split('.').pop() || ''
 
       return {
@@ -302,26 +303,28 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
           (acc: any, channelName: any) => (
             (acc[channelName] = {
               name: channelName,
-              value: getValue(channelName, resource)
+              value: getValue(channelName, resource),
             }),
             acc
           ),
           {}
-        )
+        ),
       }
     })
 
     setBotSpecificationsChannelsInfo(options)
   }
 
-  const setChannelsSpecifications = (specifications: Array<BotSpecification>) => {
+  const setChannelsSpecifications = (
+    specifications: Array<BotSpecification>
+  ) => {
     const channels: Array<string> = []
 
     const channelsSpecifications: Array<ChannelType> = []
 
     if (specifications) {
-      specifications.forEach(integrators => {
-        integrators.channels.forEach(channel => {
+      specifications.forEach((integrators) => {
+        integrators.channels.forEach((channel) => {
           channels.push(channel.displayName)
 
           channelsSpecifications.push({ ...channel })
@@ -331,15 +334,15 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     setBotChannelsSpecifications(channels)
 
-    setChannelsInfoSpecifications(
-      channels,
-      channelsSpecifications
-    )
+    setChannelsInfoSpecifications(channels, channelsSpecifications)
   }
 
-  const mountPropertiesOptions = useCallback((propertiesType: any, properties: any) => {
-    return { items: properties }
-  }, []);
+  const mountPropertiesOptions = useCallback(
+    (propertiesType: any, properties: any) => {
+      return { items: properties }
+    },
+    []
+  )
 
   const resolveExample = (type: any) => {
     switch (type) {
@@ -375,7 +378,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const mountProperties = (properties: any, domainType: string) => {
     const customProperties = properties.map(
-      (h: { id: string, fieldType: number; fieldId: string, fixed: boolean }) => {
+      (h: {
+        id: string
+        fieldType: number
+        fieldId: string
+        fixed: boolean
+      }) => {
         const fieldType: string = fieldTypes(h.fieldType)
         let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
 
@@ -394,7 +402,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
           domain: domainType,
           name: `customField.${h.fieldId}`,
           example: resolveExample(fieldType),
-          fixed: h.fixed
+          fixed: h.fixed,
         }
       }
     )
@@ -402,27 +410,31 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     return [...customProperties]
   }
 
-  const fixedChatPropertiesWithId = fixedChatProperties.map(chatProperty => {
+  const fixedChatPropertiesWithId = fixedChatProperties.map((chatProperty) => {
     return {
       ...chatProperty,
       variableId: chatProperty.id,
-      fixed: true
+      fixed: true,
     }
   })
-  const fixedPersonPropertiesWithId = fixedPersonProperties.map(personProperty => {
-    return {
-      ...personProperty,
-      variableId: personProperty.id,
-      fixed: true
+  const fixedPersonPropertiesWithId = fixedPersonProperties.map(
+    (personProperty) => {
+      return {
+        ...personProperty,
+        variableId: personProperty.id,
+        fixed: true,
+      }
     }
-  })
-  const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(organizationProperty => {
-    return {
-      ...organizationProperty,
-      variableId: organizationProperty.id,
-      fixed: true
+  )
+  const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(
+    (organizationProperty) => {
+      return {
+        ...organizationProperty,
+        variableId: organizationProperty.id,
+        fixed: true,
+      }
     }
-  })
+  )
 
   const fetchOctaCustomFields = useCallback(async (): Promise<void> => {
     const fields = await CustomFields().getCustomFields()
@@ -444,29 +456,24 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     setOctaOrganizationFields(organizationFields)
     setLoaded(true)
-  }, []);
+  }, [])
 
   useEffect(() => {
     fetchOctaCustomFields()
   }, [])
 
   useEffect(() => {
-    if (loaded && createVariable) {
-      octaPersonItems.map(personItem => {
-        deleteVariable(personItem.id)
-        createVariable(personItem)
-      })
-      octaChatItems.map(chatItem => {
-        deleteVariable(chatItem.id)
-        createVariable(chatItem)
-      })
-      octaOrganizationItems.map(organizationItem => {
-        deleteVariable(organizationItem.id)
-        createVariable(organizationItem)
-      })
-    }
-  }, [loaded, octaChatItems, octaOrganizationItems, octaPersonItems])
+    if (loaded && setVariables) {
+      const variables = [
+        ...octaPersonItems,
+        ...octaChatItems,
+        ...octaOrganizationItems,
+      ]
 
+      if (typebot?.variables.length === variables.length) return
+      setVariables(variables)
+    }
+  }, [loaded])
 
   useEffect(() => {
     if (octaPersonFields) {
@@ -476,10 +483,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaPersonProperties) {
-        setOctaPersonItems([...fixedPersonPropertiesWithId, ...octaPersonProperties.items])
+        setOctaPersonItems([
+          ...fixedPersonPropertiesWithId,
+          ...octaPersonProperties.items,
+        ])
       }
     }
-
   }, [octaPersonFields])
 
   useEffect(() => {
@@ -490,10 +499,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaChatProperties) {
-        setOctaChatItems([...fixedChatPropertiesWithId, ...octaChatProperties.items])
+        setOctaChatItems([
+          ...fixedChatPropertiesWithId,
+          ...octaChatProperties.items,
+        ])
       }
     }
-
   }, [octaChatFields])
 
   useEffect(() => {
@@ -504,17 +515,20 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaOrganizationProperties) {
-        setOctaOrganizationItems([...fixedOrganizationPropertiesWithId, ...octaOrganizationProperties.items])
+        setOctaOrganizationItems([
+          ...fixedOrganizationPropertiesWithId,
+          ...octaOrganizationProperties.items,
+        ])
       }
     }
-
   }, [octaOrganizationFields])
 
   useEffect(() => {
     const fluxChannel = document.referrer.split('/')
-    setCurrentWorkspace((current): any => (
-      { ...current, channel: fluxChannel[5] || 'web' } as any
-    ))
+    setCurrentWorkspace(
+      (current): any =>
+        ({ ...current, channel: fluxChannel[5] || 'web' } as any)
+    )
   }, [])
 
   const switchWorkspace = (workspaceId: string) =>

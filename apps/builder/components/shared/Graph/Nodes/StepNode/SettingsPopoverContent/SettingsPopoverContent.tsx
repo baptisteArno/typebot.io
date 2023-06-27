@@ -5,6 +5,7 @@ import {
   useEventListener,
   Portal,
   IconButton,
+  Stack
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import {
