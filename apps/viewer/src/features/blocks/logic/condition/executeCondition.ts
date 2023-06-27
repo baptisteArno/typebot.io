@@ -34,41 +34,39 @@ const executeComparison =
           if (b === '' || !b || !a) return false
           return a.toLowerCase().trim().includes(b.toLowerCase().trim())
         }
-        return compare(contains, inputValue, value)
+        return compare(contains, inputValue, value, 'some')
       }
       case ComparisonOperators.NOT_CONTAINS: {
         const notContains = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return true
           return !a.toLowerCase().trim().includes(b.toLowerCase().trim())
         }
-        return compare(notContains, inputValue, value, true)
+        return compare(notContains, inputValue, value)
       }
       case ComparisonOperators.EQUAL: {
         return compare((a, b) => a === b, inputValue, value)
       }
       case ComparisonOperators.NOT_EQUAL: {
-        return compare((a, b) => a !== b, inputValue, value, true)
+        return compare((a, b) => a !== b, inputValue, value)
       }
       case ComparisonOperators.GREATER: {
         if (isNotDefined(inputValue) || isNotDefined(value)) return false
         if (typeof inputValue === 'string') {
           if (typeof value === 'string')
-            return parseFloat(inputValue) > parseFloat(value)
-          return parseFloat(inputValue) > value.length
+            return parseDateOrNumber(inputValue) > parseDateOrNumber(value)
+          return Number(inputValue) > value.length
         }
-        if (typeof value === 'string')
-          return inputValue.length > parseFloat(value)
+        if (typeof value === 'string') return inputValue.length > Number(value)
         return inputValue.length > value.length
       }
       case ComparisonOperators.LESS: {
         if (isNotDefined(inputValue) || isNotDefined(value)) return false
         if (typeof inputValue === 'string') {
           if (typeof value === 'string')
-            return parseFloat(inputValue) < parseFloat(value)
-          return parseFloat(inputValue) < value.length
+            return parseDateOrNumber(inputValue) < parseDateOrNumber(value)
+          return Number(inputValue) < value.length
         }
-        if (typeof value === 'string')
-          return inputValue.length < parseFloat(value)
+        if (typeof value === 'string') return inputValue.length < Number(value)
         return inputValue.length < value.length
       }
       case ComparisonOperators.IS_SET: {
@@ -98,20 +96,29 @@ const compare = (
   compareStrings: (a: string | null, b: string | null) => boolean,
   a: Exclude<Variable['value'], undefined>,
   b: Exclude<Variable['value'], undefined>,
-  defaultReturnValue = false
+  type: 'every' | 'some' = 'every'
 ): boolean => {
   if (!a || typeof a === 'string') {
     if (!b || typeof b === 'string') return compareStrings(a, b)
-    return defaultReturnValue === true
+    return type === 'every'
       ? b.every((b) => compareStrings(a, b))
       : b.some((b) => compareStrings(a, b))
   }
   if (!b || typeof b === 'string') {
-    return defaultReturnValue === true
+    return type === 'every'
       ? a.every((a) => compareStrings(a, b))
       : a.some((a) => compareStrings(a, b))
   }
-  if (defaultReturnValue === true)
+  if (type === 'every')
     return a.every((a) => b.every((b) => compareStrings(a, b)))
   return a.some((a) => b.some((b) => compareStrings(a, b)))
+}
+
+const parseDateOrNumber = (value: string): number => {
+  const parsed = Number(value)
+  if (isNaN(parsed)) {
+    const time = Date.parse(value)
+    return time
+  }
+  return parsed
 }
