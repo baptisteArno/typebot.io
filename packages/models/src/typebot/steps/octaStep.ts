@@ -345,11 +345,25 @@ export const defaultCallOtherBotOptions: CallOtherBotOptions = {
 }
 
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
-  {
-    html: '',
-    richText: [],
-    plainText: '',
-  }
+{
+  html: '',
+  richText: [],
+  plainText: '',
+}
+
+export const defaultCommerceOptions: CommerceOptions = {
+  catalogId: '',
+  products: [],
+  property: {
+    domain: '',
+    name: '',
+    token: '',
+    type: '',
+  },
+  variableId: '',
+  name: '',
+  subject: ''
+}
 
 export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   id: '',

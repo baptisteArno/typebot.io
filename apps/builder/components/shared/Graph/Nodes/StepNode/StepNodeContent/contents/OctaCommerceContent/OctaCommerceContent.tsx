@@ -12,7 +12,7 @@ const OctaCommerceContent = ({ options }: Props) => {
     <>
       <Container>
 
-        {!options.products?.length && 
+        {!options?.products?.length && 
           <div>Nenhum produto selecionado</div>
         }
         {options && options.products && options.products.length > 0 &&
@@ -25,7 +25,7 @@ const OctaCommerceContent = ({ options }: Props) => {
           </>
         }
         <Space>
-          <WithVariableContent variableId={options.variableId} />
+          <WithVariableContent variableId={options?.variableId} />
         </Space>
       </Container>
     </>

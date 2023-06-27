@@ -92,7 +92,7 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
         {loading && <OctaLoading />}
         {products && <SelectProducts key={options.catalogId} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
         <VariableSearchInput
-          initialVariableId={options.variableId}
+          initialVariableId={options?.variableId}
           onSelectVariable={handleVariableSelected}
           placeholder="Salvar resposta em..."
           width={"100%"}
