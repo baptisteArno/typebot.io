@@ -320,7 +320,7 @@ export const StepSettings = ({
         />
       )
     }
-    case OctaStepType.COMMERCE: {
+    case OctaWabaStepType.COMMERCE: {
       return (
         <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
       )

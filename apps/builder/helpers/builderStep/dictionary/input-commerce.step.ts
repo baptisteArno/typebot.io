@@ -1,5 +1,5 @@
 import { WritableDraft } from "immer/dist/internal";
-import { BubbleStepType, DraggableStep, InputStepType, OctaStepType, Typebot, WabaStep, OctaWabaStepType } from "models";
+import { BubbleStepType, DraggableStep, Typebot } from "models";
 import { parseNewStep } from "services/typebots";
 
 const templateCommerceStep = (typebot: WritableDraft<Typebot>, blockId: string, placeholder: string): Array<DraggableStep> => {
