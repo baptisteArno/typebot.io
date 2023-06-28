@@ -1,4 +1,4 @@
-import { isEmpty } from '@typebot.io/lib/utils'
+import { isDefined, isEmpty } from '@typebot.io/lib/utils'
 import type { GoogleAnalyticsOptions } from '@typebot.io/schemas'
 
 declare const gtag: (
@@ -12,8 +12,9 @@ declare const gtag: (
   }
 ) => void
 
-export const initGoogleAnalytics = (id: string): Promise<void> =>
-  new Promise((resolve) => {
+export const initGoogleAnalytics = (id: string): Promise<void> => {
+  if (isDefined(gtag)) return Promise.resolve()
+  return new Promise((resolve) => {
     const existingScript = document.getElementById('gtag')
     if (!existingScript) {
       const script = document.createElement('script')
@@ -34,6 +35,7 @@ export const initGoogleAnalytics = (id: string): Promise<void> =>
     }
     if (existingScript) resolve()
   })
+}
 
 export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
   if (!options) return

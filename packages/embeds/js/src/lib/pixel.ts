@@ -3,7 +3,8 @@ import { PixelBlock } from '@typebot.io/schemas'
 declare const fbq: (
   arg0: string,
   arg1: string,
-  arg2: Record<string, string> | undefined
+  arg2: string,
+  arg3: Record<string, string> | undefined
 ) => void
 
 export const initPixel = (pixelId: string) => {
@@ -26,7 +27,7 @@ export const initPixel = (pixelId: string) => {
 }
 
 export const trackPixelEvent = (options: PixelBlock['options']) => {
-  if (!options.eventType) return
+  if (!options.eventType || !options.pixelId) return
   const params = options.params?.length
     ? options.params.reduce<Record<string, string>>((obj, param) => {
         if (!param.key || !param.value) return obj
@@ -35,7 +36,7 @@ export const trackPixelEvent = (options: PixelBlock['options']) => {
     : undefined
   if (options.eventType === 'Custom') {
     if (!options.name) return
-    fbq('trackCustom', options.name, params)
+    fbq('trackCustom', options.pixelId, options.name, params)
   }
-  fbq('track', options.eventType, params)
+  fbq('track', options.pixelId, options.eventType, params)
 }

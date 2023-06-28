@@ -3402,6 +3402,170 @@
                                           "webhookId"
                                         ],
                                         "additionalProperties": false
+                                      },
+                                      {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "groupId": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Pixel"
+                                            ]
+                                          },
+                                          "options": {
+                                            "anyOf": [
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "pixelId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isInitSkip": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "params": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {}
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "eventType": {
+                                                    "not": {}
+                                                  }
+                                                },
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "pixelId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isInitSkip": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "params": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {}
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "eventType": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Lead",
+                                                      "Contact",
+                                                      "CompleteRegistration",
+                                                      "Schedule",
+                                                      "SubmitApplication",
+                                                      "ViewContent",
+                                                      "AddPaymentInfo",
+                                                      "AddToCart",
+                                                      "AddToWishlist",
+                                                      "CustomizeProduct",
+                                                      "Donate",
+                                                      "FindLocation",
+                                                      "InitiateCheckout",
+                                                      "Purchase",
+                                                      "Search",
+                                                      "StartTrial",
+                                                      "Subscribe"
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "eventType"
+                                                ],
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "pixelId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isInitSkip": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "params": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {}
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "eventType": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Custom"
+                                                    ]
+                                                  },
+                                                  "name": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "eventType"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "id",
+                                          "groupId",
+                                          "type",
+                                          "options"
+                                        ],
+                                        "additionalProperties": false
                                       }
                                     ]
                                   }
@@ -3568,6 +3732,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "icon": {
+                    "type": "string"
+                  },
                   "name": {
                     "type": "string"
                   }

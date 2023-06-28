@@ -184,6 +184,28 @@ typebot-bubble::part(preview-message) {
 }
 ```
 
+## Callbacks
+
+If you need to trigger events on your parent website when the user interact with the bot, you can use the following callbacks:
+
+```js
+Typebot.initStandard({
+  typebot: 'my-typebot',
+  onNewInputBlock: (inputBlock) => {
+    console.log('New input block displayed', inputBlock.id)
+  },
+  onAnswer: (answer) => {
+    console.log('Answer received', answer.message, answer.blockId)
+  },
+  onInit: () => {
+    console.log('Bot initialized')
+  },
+  onEnd: () => {
+    console.log('Bot ended')
+  },
+})
+```
+
 ## Additional configuration
 
 You can prefill the bot variable values in your embed code by adding the `prefilledVariables` option. Here is an example:

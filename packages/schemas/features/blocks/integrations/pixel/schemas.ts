@@ -5,6 +5,7 @@ import { IntegrationBlockType } from '../enums'
 
 const basePixelOptionSchema = z.object({
   pixelId: z.string().optional(),
+  isInitSkip: z.boolean().optional(),
   params: z
     .array(
       z.object({

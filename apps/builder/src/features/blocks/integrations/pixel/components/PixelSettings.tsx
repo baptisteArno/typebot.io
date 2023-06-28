@@ -5,6 +5,7 @@ import { TextLink } from '@/components/TextLink'
 import { TextInput } from '@/components/inputs'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { Select } from '@/components/inputs/Select'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Stack, Text } from '@chakra-ui/react'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import {
@@ -25,6 +26,12 @@ type Props = {
 type Item = NonNullable<PixelBlock['options']['params']>[number]
 
 export const PixelSettings = ({ options, onOptionsChange }: Props) => {
+  const updateIsInitSkipped = (isChecked: boolean) =>
+    onOptionsChange({
+      ...options,
+      isInitSkip: isChecked,
+    })
+
   const updatePixelId = (pixelId: string) =>
     onOptionsChange({
       ...options,
@@ -76,6 +83,12 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
         onChange={updatePixelId}
         withVariableButton={false}
         placeholder='Pixel ID (e.g. "123456789")'
+      />
+      <SwitchWithLabel
+        label={'Skip initialization'}
+        moreInfoContent="Check this if the bot is embedded in your website and the pixel is already initialized."
+        initialValue={options?.isInitSkip ?? false}
+        onCheckChange={updateIsInitSkipped}
       />
       <SwitchWithRelatedSettings
         label={'Track event'}

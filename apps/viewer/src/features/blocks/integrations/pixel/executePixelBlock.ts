@@ -6,7 +6,8 @@ export const executePixelBlock = (
   { typebot: { variables }, result }: SessionState,
   block: PixelBlock
 ): ExecuteIntegrationResponse => {
-  if (!result) return { outgoingEdgeId: block.outgoingEdgeId }
+  if (!result || !block.options.pixelId || !block.options.eventType)
+    return { outgoingEdgeId: block.outgoingEdgeId }
   const pixel = deepParseVariables(variables, {
     guessCorrectTypes: true,
     removeEmptyStrings: true,

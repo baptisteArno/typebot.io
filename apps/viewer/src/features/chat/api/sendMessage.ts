@@ -455,7 +455,9 @@ const parseStartClientSideAction = (
     pixelId: (
       blocks.find(
         (block) =>
-          block.type === IntegrationBlockType.PIXEL && block.options.pixelId
+          block.type === IntegrationBlockType.PIXEL &&
+          block.options.pixelId &&
+          block.options.isInitSkip !== true
       ) as PixelBlock | undefined
     )?.options.pixelId,
   }

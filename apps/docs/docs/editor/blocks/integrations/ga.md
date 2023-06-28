@@ -8,10 +8,6 @@ The Google Analytics integration block allows you to track a Google Analytics ev
   alt="Google Analytics block"
 />
 
-:::note
-This block is not executed in Preview mode. To test it, you need to launch the published bot.
-:::
-
 When your flow contains a Google Analytics block, under the hood it:
 
 - Initialize GA and track a "Page view" event on page load.

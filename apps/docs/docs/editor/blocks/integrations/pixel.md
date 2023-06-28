@@ -8,10 +8,6 @@ The Pixel integration block allows you to add a Meta pixel to your bot and track
   alt="Pixel block"
 />
 
-:::note
-This block is not executed in Preview mode. To test it, you need to launch the published bot.
-:::
-
 When your flow contains a pixel block, under the hood it:
 
 - Initialize the pixel and track "PageView" event on page load.
