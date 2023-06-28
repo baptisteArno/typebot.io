@@ -2,6 +2,7 @@ import { z } from 'zod'
 import {
   googleAnalyticsOptionsSchema,
   paymentInputRuntimeOptionsSchema,
+  pixelOptionsSchema,
   redirectOptionsSchema,
 } from './blocks'
 import { publicTypebotSchema } from './publicTypebot'
@@ -197,6 +198,13 @@ export const sendMessageInputSchema = z.object({
 
 const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
 
+const startPropsToInjectSchema = z.object({
+  googleAnalyticsId: z.string().optional(),
+  pixelId: z.string().optional(),
+  gtmId: z.string().optional(),
+  customHeadCode: z.string().optional(),
+})
+
 const clientSideActionSchema = z
   .object({
     lastBubbleBlockId: z.string().optional(),
@@ -247,6 +255,16 @@ const clientSideActionSchema = z
           webhookToExecute: executableWebhookSchema,
         })
       )
+      .or(
+        z.object({
+          startPropsToInject: startPropsToInjectSchema,
+        })
+      )
+      .or(
+        z.object({
+          pixel: pixelOptionsSchema,
+        })
+      )
   )
 
 export const chatReplySchema = z.object({
@@ -282,3 +300,4 @@ export type StartParams = z.infer<typeof startParamsSchema>
 export type RuntimeOptions = z.infer<typeof runtimeOptionsSchema>
 export type StartTypebot = z.infer<typeof startTypebotSchema>
 export type ReplyLog = z.infer<typeof replyLogSchema>
+export type StartPropsToInject = z.infer<typeof startPropsToInjectSchema>

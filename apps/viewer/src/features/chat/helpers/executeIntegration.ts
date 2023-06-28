@@ -4,6 +4,7 @@ import { executeWebhookBlock } from '@/features/blocks/integrations/webhook/exec
 import { executeChatwootBlock } from '@/features/blocks/integrations/chatwoot/executeChatwootBlock'
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/executeGoogleAnalyticsBlock'
 import { executeGoogleSheetBlock } from '@/features/blocks/integrations/googleSheets/executeGoogleSheetBlock'
+import { executePixelBlock } from '@/features/blocks/integrations/pixel/executePixelBlock'
 import {
   IntegrationBlock,
   IntegrationBlockType,
@@ -30,5 +31,7 @@ export const executeIntegration =
         return executeWebhookBlock(state, block)
       case IntegrationBlockType.OPEN_AI:
         return executeOpenAIBlock(state, block)
+      case IntegrationBlockType.PIXEL:
+        return executePixelBlock(state, block)
     }
   }

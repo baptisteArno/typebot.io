@@ -79,5 +79,7 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       return <Text fontSize="sm">Chatwoot</Text>
     case IntegrationBlockType.OPEN_AI:
       return <Text fontSize="sm">OpenAI</Text>
+    case IntegrationBlockType.PIXEL:
+      return <Text fontSize="sm">Pixel</Text>
   }
 }

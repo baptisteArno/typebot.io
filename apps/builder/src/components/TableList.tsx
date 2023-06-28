@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from '@/components/icons'
 import { createId } from '@paralleldrive/cuid2'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type ItemWithId<T> = T & { id: string }
 
@@ -39,6 +39,10 @@ export const TableList = <T,>({
 }: Props<T>) => {
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (items.length && initialItems.length === 0) setItems(initialItems)
+  }, [initialItems, items.length])
 
   const createItem = () => {
     const id = createId()

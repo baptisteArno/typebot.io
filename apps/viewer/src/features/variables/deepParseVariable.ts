@@ -4,21 +4,38 @@ import {
   parseVariables,
   ParseVariablesOptions,
 } from './parseVariables'
+import { parseGuessedTypeFromString } from './parseGuessedTypeFromString'
+
+type DeepParseOptions = {
+  guessCorrectTypes?: boolean
+  removeEmptyStrings?: boolean
+}
 
 export const deepParseVariables =
   (
     variables: Variable[],
-    options: ParseVariablesOptions = defaultParseVariablesOptions
+    deepParseOptions: DeepParseOptions = {
+      guessCorrectTypes: false,
+      removeEmptyStrings: false,
+    },
+    parseVariablesOptions: ParseVariablesOptions = defaultParseVariablesOptions
   ) =>
   <T extends Record<string, unknown>>(object: T): T =>
     Object.keys(object).reduce<T>((newObj, key) => {
       const currentValue = object[key]
 
       if (typeof currentValue === 'string') {
-        const parsedVariable = parseVariables(variables, options)(currentValue)
+        const parsedVariable = parseVariables(
+          variables,
+          parseVariablesOptions
+        )(currentValue)
+        if (deepParseOptions.removeEmptyStrings && parsedVariable === '')
+          return newObj
         return {
           ...newObj,
-          [key]: parsedVariable,
+          [key]: deepParseOptions.guessCorrectTypes
+            ? parseGuessedTypeFromString(parsedVariable)
+            : parsedVariable,
         }
       }
 
@@ -27,14 +44,21 @@ export const deepParseVariables =
           ...newObj,
           [key]: deepParseVariables(
             variables,
-            options
+            deepParseOptions,
+            parseVariablesOptions
           )(currentValue as Record<string, unknown>),
         }
 
       if (currentValue instanceof Array)
         return {
           ...newObj,
-          [key]: currentValue.map(deepParseVariables(variables, options)),
+          [key]: currentValue.map(
+            deepParseVariables(
+              variables,
+              deepParseOptions,
+              parseVariablesOptions
+            )
+          ),
         }
 
       return { ...newObj, [key]: currentValue }

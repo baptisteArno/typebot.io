@@ -165,7 +165,11 @@ const parseBubbleBlock =
   (block: BubbleBlock): ChatReply['messages'][0] => {
     switch (block.type) {
       case BubbleBlockType.TEXT:
-        return deepParseVariables(variables, { takeLatestIfList: true })(block)
+        return deepParseVariables(
+          variables,
+          {},
+          { takeLatestIfList: true }
+        )(block)
       case BubbleBlockType.EMBED: {
         const message = deepParseVariables(variables)(block)
         return {

@@ -8,4 +8,5 @@ export enum IntegrationBlockType {
   MAKE_COM = 'Make.com',
   PABBLY_CONNECT = 'Pabbly',
   CHATWOOT = 'Chatwoot',
+  PIXEL = 'Pixel',
 }

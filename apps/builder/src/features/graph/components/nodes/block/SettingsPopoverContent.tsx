@@ -46,6 +46,7 @@ import { ChatwootSettings } from '@/features/blocks/integrations/chatwoot/compon
 import { AbTestSettings } from '@/features/blocks/logic/abTest/components/AbTestSettings'
 import { PictureChoiceSettings } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings'
 import { SettingsHoverBar } from './SettingsHoverBar'
+import { PixelSettings } from '@/features/blocks/integrations/pixel/components/PixelSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -306,6 +307,14 @@ export const BlockSettings = ({
     case IntegrationBlockType.OPEN_AI: {
       return (
         <OpenAISettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case IntegrationBlockType.PIXEL: {
+      return (
+        <PixelSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

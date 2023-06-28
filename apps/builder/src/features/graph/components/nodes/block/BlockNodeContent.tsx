@@ -41,6 +41,7 @@ import { GoogleAnalyticsNodeBody } from '@/features/blocks/integrations/googleAn
 import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody'
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
+import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
 
 type Props = {
   block: Block | StartBlock
@@ -193,6 +194,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
           }
         />
       )
+    }
+    case IntegrationBlockType.PIXEL: {
+      return <PixelNodeBody options={block.options} />
     }
     case 'start': {
       return <Text>Start</Text>

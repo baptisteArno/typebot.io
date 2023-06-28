@@ -6,6 +6,9 @@ import {
   ChatReply,
   chatReplySchema,
   ChatSession,
+  GoogleAnalyticsBlock,
+  IntegrationBlockType,
+  PixelBlock,
   ResultInSession,
   sendMessageInputSchema,
   SessionState,
@@ -180,10 +183,40 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
       'setVariable' in action || 'streamOpenAiChatCompletion' in action
   )
 
+  const startClientSideAction = clientSideActions ?? []
+
+  const parsedStartPropsActions = parseStartClientSideAction(typebot)
+
+  const startLogs = logs ?? []
+
+  if (isDefined(parsedStartPropsActions)) {
+    if (!result) {
+      if ('startPropsToInject' in parsedStartPropsActions) {
+        const { customHeadCode, googleAnalyticsId, pixelId, gtmId } =
+          parsedStartPropsActions.startPropsToInject
+        let toolsList = ''
+        if (customHeadCode) toolsList += 'Custom head code, '
+        if (googleAnalyticsId) toolsList += 'Google Analytics, '
+        if (pixelId) toolsList += 'Pixel, '
+        if (gtmId) toolsList += 'Google Tag Manager, '
+        toolsList = toolsList.slice(0, -2)
+        startLogs.push({
+          description: `${toolsList} ${
+            toolsList.includes(',') ? 'are not' : 'is not'
+          } enabled in Preview mode`,
+          status: 'info',
+        })
+      }
+    } else {
+      startClientSideAction.push(parsedStartPropsActions)
+    }
+  }
+
   if (!input && !clientSideActionsNeedSessionId)
     return {
       messages,
-      clientSideActions,
+      clientSideActions:
+        startClientSideAction.length > 0 ? startClientSideAction : undefined,
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(newSessionState.typebot.variables)(
@@ -194,7 +227,7 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
         ),
       },
       dynamicTheme: parseDynamicThemeReply(newSessionState),
-      logs,
+      logs: startLogs.length > 0 ? startLogs : undefined,
     }
 
   const session = (await prisma.chatSession.create({
@@ -217,9 +250,10 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
     },
     messages,
     input,
-    clientSideActions,
+    clientSideActions:
+      startClientSideAction.length > 0 ? startClientSideAction : undefined,
     dynamicTheme: parseDynamicThemeReply(newSessionState),
-    logs,
+    logs: startLogs.length > 0 ? startLogs : undefined,
   } satisfies ChatReply
 }
 
@@ -401,5 +435,40 @@ const parseDynamicThemeReply = (
     guestAvatarUrl: parseVariables(state?.typebot.variables)(
       state.dynamicTheme.guestAvatarUrl
     ),
+  }
+}
+
+const parseStartClientSideAction = (
+  typebot: StartTypebot
+): NonNullable<ChatReply['clientSideActions']>[number] | undefined => {
+  const blocks = typebot.groups.flatMap((group) => group.blocks)
+  const startPropsToInject = {
+    customHeadCode: typebot.settings.metadata.customHeadCode,
+    gtmId: typebot.settings.metadata.googleTagManagerId,
+    googleAnalyticsId: (
+      blocks.find(
+        (block) =>
+          block.type === IntegrationBlockType.GOOGLE_ANALYTICS &&
+          block.options.trackingId
+      ) as GoogleAnalyticsBlock | undefined
+    )?.options.trackingId,
+    pixelId: (
+      blocks.find(
+        (block) =>
+          block.type === IntegrationBlockType.PIXEL && block.options.pixelId
+      ) as PixelBlock | undefined
+    )?.options.pixelId,
+  }
+
+  if (
+    !startPropsToInject.customHeadCode &&
+    !startPropsToInject.gtmId &&
+    !startPropsToInject.googleAnalyticsId &&
+    !startPropsToInject.pixelId
+  )
+    return
+
+  return {
+    startPropsToInject,
   }
 }

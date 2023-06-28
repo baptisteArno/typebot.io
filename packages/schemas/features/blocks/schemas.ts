@@ -1,9 +1,9 @@
-import { ZodDiscriminatedUnionOption, z } from 'zod'
+import { z } from 'zod'
 import { BubbleBlockType } from './bubbles/enums'
 import { choiceInputSchema } from './inputs/choice'
 import { InputBlockType } from './inputs/enums'
 import { IntegrationBlockType } from './integrations/enums'
-import { ConditionBlock, conditionBlockSchema } from './logic/condition'
+import { conditionBlockSchema } from './logic/condition'
 import { LogicBlockType } from './logic/enums'
 import { blockBaseSchema } from './baseSchemas'
 import { startBlockSchema } from './start/schemas'
@@ -31,6 +31,7 @@ import {
   googleSheetsBlockSchema,
   makeComBlockSchema,
   pabblyConnectBlockSchema,
+  pixelBlockSchema,
   sendEmailBlockSchema,
   webhookBlockSchema,
   zapierBlockSchema,
@@ -125,6 +126,7 @@ export const blockSchema = z.discriminatedUnion('type', [
   sendEmailBlockSchema,
   webhookBlockSchema,
   zapierBlockSchema,
+  pixelBlockSchema,
 ])
 
 export type Block = z.infer<typeof blockSchema>

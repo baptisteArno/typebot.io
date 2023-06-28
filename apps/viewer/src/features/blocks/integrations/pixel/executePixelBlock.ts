@@ -1,13 +1,13 @@
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
-import { GoogleAnalyticsBlock, SessionState } from '@typebot.io/schemas'
+import { PixelBlock, SessionState } from '@typebot.io/schemas'
 
-export const executeGoogleAnalyticsBlock = (
+export const executePixelBlock = (
   { typebot: { variables }, result }: SessionState,
-  block: GoogleAnalyticsBlock
+  block: PixelBlock
 ): ExecuteIntegrationResponse => {
   if (!result) return { outgoingEdgeId: block.outgoingEdgeId }
-  const googleAnalytics = deepParseVariables(variables, {
+  const pixel = deepParseVariables(variables, {
     guessCorrectTypes: true,
     removeEmptyStrings: true,
   })(block.options)
@@ -15,7 +15,10 @@ export const executeGoogleAnalyticsBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
-        googleAnalytics,
+        pixel: {
+          ...pixel,
+          pixelId: block.options.pixelId,
+        },
       },
     ],
   }

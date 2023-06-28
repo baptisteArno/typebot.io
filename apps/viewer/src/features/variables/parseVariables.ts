@@ -28,7 +28,7 @@ export const parseVariables =
     return text.replace(
       pattern,
       (_full, nameInCurlyBraces, _dollarSign, nameInTemplateLitteral) => {
-        const dollarSign = _dollarSign ?? ''
+        const dollarSign = (_dollarSign ?? '') as string
         const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral
         const variable = variables.find((variable) => {
           return (

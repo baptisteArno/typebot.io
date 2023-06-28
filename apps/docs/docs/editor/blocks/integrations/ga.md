@@ -8,6 +8,15 @@ The Google Analytics integration block allows you to track a Google Analytics ev
   alt="Google Analytics block"
 />
 
+:::note
+This block is not executed in Preview mode. To test it, you need to launch the published bot.
+:::
+
+When your flow contains a Google Analytics block, under the hood it:
+
+- Initialize GA and track a "Page view" event on page load.
+- Track the event if any when the block is executed.
+
 ## Track conversions with Google Ads
 
 To track conversions for your Google Ad, you can add a Google Analytics block whenever you'd like to trigger the conversion event with the following properties:
@@ -15,3 +24,7 @@ To track conversions for your Google Ad, you can add a Google Analytics block wh
 - Event action: conversion
 - Send to: <YOUR_AW_ID>
 - Value (optional): a number to quantify the conversion
+
+## Troubleshooting
+
+To help you debug how your Google Analytics behaves, I suggest you add the [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijamephohjechhna) extension to your browser.

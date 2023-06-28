@@ -39,6 +39,7 @@ import { SetVariableIcon } from '@/features/blocks/logic/setVariable/components/
 import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/TypebotLinkIcon'
 import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
 import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
+import { PixelLogo } from '@/features/blocks/integrations/pixel/components/PixelLogo'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -115,6 +116,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <ChatwootLogo {...props} />
     case IntegrationBlockType.OPEN_AI:
       return <OpenAILogo fill={openAIColor} {...props} />
+    case IntegrationBlockType.PIXEL:
+      return <PixelLogo {...props} />
     case 'start':
       return <FlagIcon {...props} />
   }

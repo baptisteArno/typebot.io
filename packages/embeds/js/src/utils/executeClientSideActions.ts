@@ -6,8 +6,10 @@ import { executeScript } from '@/features/blocks/logic/script/executeScript'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable/executeSetVariable'
 import { executeWait } from '@/features/blocks/logic/wait/utils/executeWait'
 import { executeWebhook } from '@/features/blocks/integrations/webhook/executeWebhook'
+import { executePixel } from '@/features/blocks/integrations/pixel/executePixel'
 import { ClientSideActionContext } from '@/types'
 import type { ChatReply, ReplyLog } from '@typebot.io/schemas'
+import { injectStartProps } from './injectStartProps'
 
 export const executeClientSideAction = async (
   clientSideAction: NonNullable<ChatReply['clientSideActions']>[0],
@@ -57,5 +59,11 @@ export const executeClientSideAction = async (
   if ('webhookToExecute' in clientSideAction) {
     const response = await executeWebhook(clientSideAction.webhookToExecute)
     return { replyToSend: response }
+  }
+  if ('startPropsToInject' in clientSideAction) {
+    return injectStartProps(clientSideAction.startPropsToInject)
+  }
+  if ('pixel' in clientSideAction) {
+    return executePixel(clientSideAction.pixel)
   }
 }
