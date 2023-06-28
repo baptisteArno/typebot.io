@@ -9,7 +9,7 @@ import {
   Fade,
   Badge,
   Spacer,
-  Portal
+  Portal,
 } from '@chakra-ui/react'
 import { InfoIcon } from '@chakra-ui/icons'
 import {
@@ -21,7 +21,7 @@ import {
   LogicStepType,
   OctaStepType,
   OctaBubbleStepType,
-  OctaWabaStepType
+  OctaWabaStepType,
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -37,9 +37,7 @@ export const StepsSideBar = () => {
     x: 0,
     y: 0,
   })
-  const {
-    workspace
-  } = useWorkspace()
+  const { workspace } = useWorkspace()
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
@@ -96,15 +94,19 @@ export const StepsSideBar = () => {
       type !== LogicStepType.SET_VARIABLE &&
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
-      type !== LogicStepType.TYPEBOT_LINK 
+      type !== LogicStepType.TYPEBOT_LINK
     )
   }
 
   const shouldDisableComponent = (type: StepType) => {
-    return workspace?.channel === 'whatsapp' && (
-      type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST && !verifyFeatureToggle('whatsapp-api') ||
-      type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST && !verifyFeatureToggle('whatsapp-api') || 
-      type === OctaStepType.COMMERCE && !verifyFeatureToggle('whatsapp-api') 
+    return (
+      workspace?.channel === 'whatsapp' &&
+      ((type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST &&
+        !verifyFeatureToggle('whatsapp-api')) ||
+        (type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
+          !verifyFeatureToggle('whatsapp-api')) ||
+        (type === OctaWabaStepType.COMMERCE &&
+          !verifyFeatureToggle('whatsapp-api')))
     )
   }
 
@@ -153,12 +155,15 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-              Mensagens
-            <Tooltip 
-              hasArrow 
-              label='Etapa que não requer interação com o usuário' bg='gray.700' color='white' width={'200px'}
+            Mensagens
+            <Tooltip
+              hasArrow
+              label="Etapa que não requer interação com o usuário"
+              bg="gray.700"
+              color="white"
+              width={'200px'}
             >
-              <InfoIcon marginLeft={'10px'} color={'gray.300'}/>
+              <InfoIcon marginLeft={'10px'} color={'gray.300'} />
             </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -178,11 +183,14 @@ export const StepsSideBar = () => {
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
             Perguntas
-            <Tooltip 
-              hasArrow 
-              label='Etapa em que o usuário interage com o bot' bg='gray.700' color='white' width={'200px'}
+            <Tooltip
+              hasArrow
+              label="Etapa em que o usuário interage com o bot"
+              bg="gray.700"
+              color="white"
+              width={'200px'}
             >
-              <InfoIcon marginLeft={'10px'} color={'gray.300'}/>
+              <InfoIcon marginLeft={'10px'} color={'gray.300'} />
             </Tooltip>
           </Text>
           <SimpleGrid columns={2} spacing="3">
@@ -200,30 +208,34 @@ export const StepsSideBar = () => {
           </SimpleGrid>
         </Stack>
 
-        <Stack>
-          <Flex>
-            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-              Whatsapp Oficial
-            </Text>
-            <Spacer/>
-            <Badge variant='solid' colorScheme='blue' borderRadius="6px" textAlign="center"> 
-              Exclusivo
-            </Badge>
-          </Flex>
-          <SimpleGrid columns={1} spacing="3">
-            {Object.values(OctaWabaStepType).map(
-              (type) =>
-                shouldHideComponents(type) && (
-                  <StepCard
-                    key={type}
-                    type={type}
-                    onMouseDown={handleMouseDown}
-                    isDisabled={shouldDisableComponent(type)}
-                  />
-                )
-            )}
-          </SimpleGrid>
-        </Stack>
+        {workspace?.channel === 'whatsapp' && (
+          <Stack>
+            <Flex>
+              <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+                Whatsapp Oficial
+              </Text>
+              <Spacer />
+              <Badge
+                variant="solid"
+                colorScheme="blue"
+                borderRadius="6px"
+                textAlign="center"
+              >
+                Exclusivo
+              </Badge>
+            </Flex>
+            <SimpleGrid columns={1} spacing="3">
+              {Object.values(OctaWabaStepType).map((type) => (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                  isDisabled={shouldDisableComponent(type)}
+                />
+              ))}
+            </SimpleGrid>
+          </Stack>
+        )}
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
@@ -239,7 +251,7 @@ export const StepsSideBar = () => {
               />
             ))}
           </SimpleGrid>
-          <SimpleGrid columns={1} spacing="3" >
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (
               <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
@@ -248,10 +260,10 @@ export const StepsSideBar = () => {
 
         <Stack>
           <Flex>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Validações
-          </Text>
-          <Spacer/>
+            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+              Validações
+            </Text>
+            <Spacer />
           </Flex>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicStepType).map(
@@ -267,13 +279,13 @@ export const StepsSideBar = () => {
             )}
           </SimpleGrid>
         </Stack>
-      <Stack>
-        <Flex>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            Superintegrações
-          </Text>
-          <Spacer/>
-        </Flex>
+        <Stack>
+          <Flex>
+            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+              Superintegrações
+            </Text>
+            <Spacer />
+          </Flex>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationStepType).map(
               (type) =>
