@@ -108,7 +108,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CodeIcon color="#b18bca" {...props} />
     case OctaStepType.OFFICE_HOURS:
       return <BsCalendar2Range color="#7B15C1" size={18}/>
-      case OctaStepType.COMMERCE:
+      case OctaWabaStepType.COMMERCE:
         return <MdStore color="#000" size={18} />
     case 'start':
       return <FlagIcon {...props} />
