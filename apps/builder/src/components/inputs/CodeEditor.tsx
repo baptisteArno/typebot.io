@@ -132,6 +132,9 @@ export const CodeEditor = ({
           width: isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%',
         }}
         spellCheck={false}
+        basicSetup={{
+          highlightActiveLine: false,
+        }}
       />
       {isVariableButtonDisplayed && (
         <VariablesButton onSelectVariable={handleVariableSelected} size="sm" />
