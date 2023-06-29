@@ -44,7 +44,7 @@ export const getRow = async (
       rows.filter((row) =>
         referenceCell
           ? row[referenceCell.column as string] === referenceCell.value
-          : matchFilter(row, filter as NonNullable<typeof filter>)
+          : matchFilter(row, filter)
       )
     )
     if (filteredRows.length === 0) {

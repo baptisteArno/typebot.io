@@ -8,8 +8,9 @@ import { GoogleSpreadsheetRow } from 'google-spreadsheet'
 
 export const matchFilter = (
   row: GoogleSpreadsheetRow,
-  filter: NonNullable<GoogleSheetsGetOptions['filter']>
+  filter: GoogleSheetsGetOptions['filter']
 ) => {
+  if (!filter) return true
   return filter.logicalOperator === LogicalOperator.AND
     ? filter.comparisons.every(
         (comparison) =>
