@@ -193,16 +193,16 @@ const saveAnswer =
   (state: SessionState, block: InputBlock, itemId?: string) =>
   async (reply: string): Promise<SessionState> => {
     const resultId = state.result?.id
-    const answer = {
-      resultId,
+    const answer: Omit<Prisma.AnswerUncheckedCreateInput, 'resultId'> = {
       blockId: block.id,
       itemId,
+      groupId: block.groupId,
       content: reply,
       variableId: block.options.variableId,
       storageUsed: 0,
     }
-    if (state.result.answers.length === 0 && state.result.id)
-      await setResultAsStarted(state.result.id)
+    if (state.result.answers.length === 0 && resultId)
+      await setResultAsStarted(resultId)
 
     const newSessionState = setNewAnswerInState(state)({
       blockId: block.id,
@@ -221,9 +221,13 @@ const saveAnswer =
             blockId: block.id,
             groupId: block.groupId,
           },
+          itemId: answer.itemId,
         },
-        create: answer as Prisma.AnswerUncheckedCreateInput,
-        update: answer,
+        create: { ...answer, resultId },
+        update: {
+          content: answer.content,
+          storageUsed: answer.storageUsed,
+        },
       })
     }
 
