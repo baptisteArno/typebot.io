@@ -57,12 +57,18 @@ export const ResultsPage = () => {
       />
       <TypebotHeader />
       {workspace && <UsageAlertBanners workspace={workspace} />}
-      <Flex h="full" w="full">
+      <Flex
+        h="full"
+        w="full"
+        bgColor={useColorModeValue(
+          router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
+          router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
+        )}
+      >
         <Flex
           pos="absolute"
           zIndex={2}
           w="full"
-          bg={useColorModeValue('white', 'gray.900')}
           justifyContent="center"
           h="60px"
           display={['none', 'flex']}

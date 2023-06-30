@@ -5,6 +5,7 @@ export const answerSchema = z.object({
   createdAt: z.date(),
   resultId: z.string(),
   blockId: z.string(),
+  itemId: z.string().nullable(),
   groupId: z.string(),
   variableId: z.string().nullable(),
   content: z.string(),
@@ -22,6 +23,7 @@ export const answerInputSchema = answerSchema
     z.object({
       variableId: z.string().nullish(),
       storageUsed: z.number().nullish(),
+      itemId: z.string().nullish(),
     })
   ) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
 

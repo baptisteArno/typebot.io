@@ -20,9 +20,11 @@ const endpointHeight = 32
 
 export const SourceEndpoint = ({
   source,
+  isHidden,
   ...props
 }: BoxProps & {
   source: Source
+  isHidden?: boolean
 }) => {
   const id = source.itemId ?? source.blockId
   const color = useColorModeValue('blue.200', 'blue.100')
@@ -123,6 +125,7 @@ export const SourceEndpoint = ({
       justify="center"
       align="center"
       pointerEvents="all"
+      visibility={isHidden ? 'hidden' : 'visible'}
       {...props}
     >
       <Flex

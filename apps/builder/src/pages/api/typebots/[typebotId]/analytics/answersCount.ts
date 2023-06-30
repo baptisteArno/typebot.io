@@ -5,6 +5,7 @@ import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { canReadTypebots } from '@/helpers/databaseRules'
 
+// TODO: Delete (deprecated)
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)

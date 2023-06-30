@@ -4,32 +4,37 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useToast } from '@/hooks/useToast'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stats } from '@typebot.io/schemas'
 import React from 'react'
-import { useAnswersCount } from '../hooks/useAnswersCount'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
 import { useI18n } from '@/locales'
+import { trpc } from '@/lib/trpc'
+import { isDefined } from '@typebot.io/lib'
 
 export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
   const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
-  const { showToast } = useToast()
-  const { answersCounts } = useAnswersCount({
-    typebotId: publishedTypebot && typebot?.id,
-    onError: (err) => showToast({ title: err.name, description: err.message }),
-  })
+  const { data } = trpc.analytics.getTotalAnswersInBlocks.useQuery(
+    {
+      typebotId: typebot?.id as string,
+    },
+    { enabled: isDefined(publishedTypebot) }
+  )
+  const startBlockId = publishedTypebot?.groups
+    .find((group) => group.blocks.at(0)?.type === 'start')
+    ?.blocks.at(0)?.id
+
   return (
     <Flex
       w="full"
       pos="relative"
-      bgColor={useColorModeValue('white', 'gray.850')}
+      bgColor={useColorModeValue('#f4f5f8', 'gray.850')}
       backgroundImage={useColorModeValue(
         'radial-gradient(#c6d0e1 1px, transparent 0)',
         'radial-gradient(#2f2f39 1px, transparent 0)'
@@ -39,18 +44,24 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
       h="full"
       justifyContent="center"
     >
-      {publishedTypebot && answersCounts && stats ? (
+      {publishedTypebot &&
+      data?.totalAnswersInBlocks &&
+      stats &&
+      startBlockId ? (
         <GraphProvider isReadOnly>
           <GroupsCoordinatesProvider groups={publishedTypebot?.groups}>
             <Graph
               flex="1"
               typebot={publishedTypebot}
               onUnlockProPlanClick={onOpen}
-              answersCounts={
-                answersCounts[0]
+              totalAnswersInBlocks={
+                startBlockId
                   ? [
-                      { ...answersCounts[0], totalAnswers: stats?.totalStarts },
-                      ...answersCounts.slice(1),
+                      {
+                        blockId: startBlockId,
+                        total: stats.totalViews,
+                      },
+                      ...data.totalAnswersInBlocks,
                     ]
                   : []
               }
@@ -72,7 +83,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
         isOpen={isOpen}
         type={t('billing.limitMessage.analytics')}
       />
-      <StatsCards stats={stats} pos="absolute" top={10} />
+      <StatsCards stats={stats} pos="absolute" />
     </Flex>
   )
 }

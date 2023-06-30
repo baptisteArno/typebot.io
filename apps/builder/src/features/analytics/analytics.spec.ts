@@ -21,7 +21,7 @@ test('analytics are not available for non-pro workspaces', async ({ page }) => {
   const firstDropoffBox = page.locator('text="%" >> nth=0')
   await firstDropoffBox.hover()
   await expect(
-    page.locator('text="Unlock Drop-off rate by upgrading to Pro plan"')
+    page.locator('text="Upgrade your plan to PRO to reveal drop-off rate."')
   ).toBeVisible()
   await firstDropoffBox.click()
   await expect(

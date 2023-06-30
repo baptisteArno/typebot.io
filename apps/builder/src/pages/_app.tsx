@@ -27,7 +27,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   const { query, pathname } = useRouter()
 
   useEffect(() => {
-    if (pathname.endsWith('/edit')) {
+    if (pathname.endsWith('/edit') || pathname.endsWith('/analytics')) {
       document.body.style.overflow = 'hidden'
       document.body.classList.add('disable-scroll-x-behavior')
     } else {

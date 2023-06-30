@@ -23,10 +23,10 @@ export const PixelLogo = (props: IconProps) => (
         y2="127"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#0064E1" />
-        <stop offset="0.4" stop-color="#0064E1" />
-        <stop offset="0.83" stop-color="#0073EE" />
-        <stop offset="1" stop-color="#0082FB" />
+        <stop stopColor="#0064E1" />
+        <stop offset="0.4" stopColor="#0064E1" />
+        <stop offset="0.83" stopColor="#0073EE" />
+        <stop offset="1" stopColor="#0082FB" />
       </linearGradient>
       <linearGradient
         id="paint1_linear_1302_7"
@@ -36,8 +36,8 @@ export const PixelLogo = (props: IconProps) => (
         y2="66"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#0082FB" />
-        <stop offset="1" stop-color="#0064E0" />
+        <stop stopColor="#0082FB" />
+        <stop offset="1" stopColor="#0064E0" />
       </linearGradient>
     </defs>
   </Icon>

@@ -9,23 +9,35 @@ import {
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
-import { byId, isDefined } from '@typebot.io/lib'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
-import { AnswersCount } from '@/features/analytics/types'
 import { isProPlan } from '@/features/billing/helpers/isProPlan'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'
 import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
+import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
+import { computePreviousTotalAnswers } from '@/features/analytics/helpers/computePreviousTotalAnswers'
+import { blockHasItems } from '@typebot.io/lib'
+
+export const dropOffBoxDimensions = {
+  width: 100,
+  height: 55,
+}
+
+export const dropOffSegmentLength = 80
+const dropOffSegmentMinWidth = 2
+const dropOffSegmentMaxWidth = 20
+
+export const dropOffStubLength = 30
 
 type Props = {
-  groupId: string
-  answersCounts: AnswersCount[]
+  totalAnswersInBlocks: TotalAnswersInBlock[]
+  blockId: string
   onUnlockProPlanClick?: () => void
 }
 
 export const DropOffEdge = ({
-  answersCounts,
-  groupId,
+  totalAnswersInBlocks,
+  blockId,
   onUnlockProPlanClick,
 }: Props) => {
   const dropOffColor = useColorModeValue(
@@ -36,25 +48,33 @@ export const DropOffEdge = ({
   const { groupsCoordinates } = useGroupsCoordinates()
   const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
   const { publishedTypebot } = useTypebot()
+  const currentBlock = useMemo(
+    () =>
+      totalAnswersInBlocks.reduce<TotalAnswersInBlock | undefined>(
+        (block, totalAnswersInBlock) => {
+          if (totalAnswersInBlock.blockId === blockId) {
+            return block
+              ? { ...block, total: block.total + totalAnswersInBlock.total }
+              : totalAnswersInBlock
+          }
+          return block
+        },
+        undefined
+      ),
+    [blockId, totalAnswersInBlocks]
+  )
 
   const isWorkspaceProPlan = isProPlan(workspace)
 
-  const totalAnswers = useMemo(
-    () => answersCounts.find((a) => a.groupId === groupId)?.totalAnswers,
-    [answersCounts, groupId]
-  )
-
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
-    if (!publishedTypebot || totalAnswers === undefined)
+    if (!publishedTypebot || currentBlock?.total === undefined)
       return { previousTotal: undefined, dropOffRate: undefined }
-    const previousGroupIds = publishedTypebot.edges
-      .map((edge) =>
-        edge.to.groupId === groupId ? edge.from.groupId : undefined
-      )
-      .filter(isDefined)
-    const previousTotal = answersCounts
-      .filter((a) => previousGroupIds.includes(a.groupId))
-      .reduce((prev, acc) => acc.totalAnswers + prev, 0)
+    const totalAnswers = currentBlock.total
+    const previousTotal = computePreviousTotalAnswers(
+      publishedTypebot,
+      currentBlock.blockId,
+      totalAnswersInBlocks
+    )
     if (previousTotal === 0)
       return { previousTotal: undefined, dropOffRate: undefined }
     const totalDroppedUser = previousTotal - totalAnswers
@@ -63,42 +83,92 @@ export const DropOffEdge = ({
       totalDroppedUser,
       dropOffRate: Math.round((totalDroppedUser / previousTotal) * 100),
     }
-  }, [answersCounts, groupId, totalAnswers, publishedTypebot])
-
-  const group = publishedTypebot?.groups.find(byId(groupId))
+  }, [
+    currentBlock?.blockId,
+    currentBlock?.total,
+    publishedTypebot,
+    totalAnswersInBlocks,
+  ])
 
   const sourceTop = useMemo(() => {
-    const endpointId = group?.blocks[group.blocks.length - 1].id
-    return endpointId ? sourceEndpoints.get(endpointId)?.y : undefined
-  }, [group?.blocks, sourceEndpoints])
+    const blockTop = currentBlock?.blockId
+      ? sourceEndpoints.get(currentBlock.blockId)?.y
+      : undefined
+    if (blockTop) return blockTop
+    const block = publishedTypebot?.groups
+      .flatMap((group) => group.blocks)
+      .find((block) => block.id === currentBlock?.blockId)
+    if (!block || !blockHasItems(block)) return 0
+    const itemId = block.items.at(-1)?.id
+    if (!itemId) return 0
+    return sourceEndpoints.get(itemId)?.y
+  }, [currentBlock?.blockId, publishedTypebot?.groups, sourceEndpoints])
 
-  const labelCoordinates = useMemo(() => {
-    if (!groupsCoordinates[groupId]) return
-    return computeSourceCoordinates(groupsCoordinates[groupId], sourceTop ?? 0)
-  }, [groupsCoordinates, groupId, sourceTop])
+  const endpointCoordinates = useMemo(() => {
+    const groupId = publishedTypebot?.groups.find((group) =>
+      group.blocks.some((block) => block.id === currentBlock?.blockId)
+    )?.id
+    if (!groupId) return undefined
+    const coordinates = groupsCoordinates[groupId]
+    if (!coordinates) return undefined
+    return computeSourceCoordinates(coordinates, sourceTop ?? 0)
+  }, [
+    publishedTypebot?.groups,
+    groupsCoordinates,
+    sourceTop,
+    currentBlock?.blockId,
+  ])
 
-  if (!labelCoordinates) return <></>
+  const isLastBlock = useMemo(() => {
+    if (!publishedTypebot) return false
+    const lastBlock = publishedTypebot.groups
+      .find((group) =>
+        group.blocks.some((block) => block.id === currentBlock?.blockId)
+      )
+      ?.blocks.at(-1)
+    return lastBlock?.id === currentBlock?.blockId
+  }, [publishedTypebot, currentBlock?.blockId])
+
+  if (!endpointCoordinates) return null
+
   return (
     <>
       <path
         d={computeDropOffPath(
-          { x: labelCoordinates.x - 300, y: labelCoordinates.y },
-          sourceTop ?? 0
+          {
+            x: endpointCoordinates.x,
+            y: endpointCoordinates.y,
+          },
+          isLastBlock
         )}
         stroke={dropOffColor}
-        strokeWidth="2px"
-        markerEnd="url(#red-arrow)"
+        strokeWidth={
+          dropOffSegmentMinWidth * (1 - (dropOffRate ?? 0) / 100) +
+          dropOffSegmentMaxWidth * ((dropOffRate ?? 0) / 100)
+        }
         fill="none"
       />
       <foreignObject
-        width="100"
-        height="80"
-        x={labelCoordinates.x - 30}
-        y={labelCoordinates.y + 80}
+        width={dropOffBoxDimensions.width}
+        height={dropOffBoxDimensions.height}
+        x={endpointCoordinates.x + dropOffStubLength}
+        y={
+          endpointCoordinates.y +
+          (isLastBlock
+            ? dropOffSegmentLength
+            : -(dropOffBoxDimensions.height / 2))
+        }
       >
         <Tooltip
-          label="Unlock Drop-off rate by upgrading to Pro plan"
+          label={
+            isWorkspaceProPlan
+              ? `At this input, ${totalDroppedUser} user${
+                  (totalDroppedUser ?? 2) > 1 ? 's' : ''
+                } left. This represents ${dropOffRate}% of the users who saw this input.`
+              : 'Upgrade your plan to PRO to reveal drop-off rate.'
+          }
           isDisabled={isWorkspaceProPlan}
+          placement="top"
         >
           <VStack
             bgColor={dropOffColor}
@@ -110,8 +180,9 @@ export const DropOffEdge = ({
             h="full"
             onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
             cursor={isWorkspaceProPlan ? 'auto' : 'pointer'}
+            spacing={0.5}
           >
-            <Text filter={isWorkspaceProPlan ? '' : 'blur(2px)'}>
+            <Text filter={isWorkspaceProPlan ? '' : 'blur(2px)'} fontSize="sm">
               {isWorkspaceProPlan ? (
                 dropOffRate
               ) : (
@@ -121,7 +192,7 @@ export const DropOffEdge = ({
               )}
               %
             </Text>
-            <Tag colorScheme="red">
+            <Tag colorScheme="red" size="sm">
               {isWorkspaceProPlan ? (
                 totalDroppedUser
               ) : (
@@ -129,7 +200,7 @@ export const DropOffEdge = ({
                   NN
                 </Text>
               )}{' '}
-              users
+              user{(totalDroppedUser ?? 2) > 1 ? 's' : ''}
             </Tag>
           </VStack>
         </Tooltip>

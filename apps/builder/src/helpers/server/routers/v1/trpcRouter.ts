@@ -9,11 +9,13 @@ import { themeRouter } from '@/features/theme/api/router'
 import { typebotRouter } from '@/features/typebot/api/router'
 import { workspaceRouter } from '@/features/workspace/api/router'
 import { router } from '../../trpc'
+import { analyticsRouter } from '@/features/analytics/api/router'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
   processTelemetryEvent,
   getLinkedTypebots,
+  analytics: analyticsRouter,
   workspace: workspaceRouter,
   typebot: typebotRouter,
   webhook: webhookRouter,

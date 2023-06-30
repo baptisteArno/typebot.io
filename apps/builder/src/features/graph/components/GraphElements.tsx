@@ -1,5 +1,5 @@
-import { AnswersCount } from '@/features/analytics/types'
 import { Edge, Group } from '@typebot.io/schemas'
+import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
 import React, { memo } from 'react'
 import { EndpointsProvider } from '../providers/EndpointsProvider'
 import { Edges } from './edges/Edges'
@@ -8,20 +8,20 @@ import { GroupNode } from './nodes/group'
 type Props = {
   edges: Edge[]
   groups: Group[]
-  answersCounts?: AnswersCount[]
+  totalAnswersInBlocks?: TotalAnswersInBlock[]
   onUnlockProPlanClick?: () => void
 }
 const GroupNodes = ({
   edges,
   groups,
-  answersCounts,
+  totalAnswersInBlocks,
   onUnlockProPlanClick,
 }: Props) => {
   return (
     <EndpointsProvider>
       <Edges
         edges={edges}
-        answersCounts={answersCounts}
+        totalAnswersInBlocks={totalAnswersInBlocks}
         onUnlockProPlanClick={onUnlockProPlanClick}
       />
       {groups.map((group, idx) => (

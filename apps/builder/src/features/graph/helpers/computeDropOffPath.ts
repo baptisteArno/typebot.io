@@ -1,20 +1,27 @@
 import { roundCorners } from 'svg-round-corners'
 import { pathRadius } from '../constants'
 import { Coordinates } from '../types'
-import { computeSourceCoordinates } from './computeSourceCoordinates'
 import { computeTwoSegments } from './segments'
+import {
+  dropOffBoxDimensions,
+  dropOffSegmentLength,
+  dropOffStubLength,
+} from '../components/edges/DropOffEdge'
 
 export const computeDropOffPath = (
   sourcePosition: Coordinates,
-  sourceTop: number
+  isLastBlock = false
 ) => {
-  const sourceCoord = computeSourceCoordinates(sourcePosition, sourceTop)
-  const segments = computeTwoSegments(sourceCoord, {
-    x: sourceCoord.x + 20,
-    y: sourceCoord.y + 80,
+  const segments = computeTwoSegments(sourcePosition, {
+    x:
+      sourcePosition.x +
+      (isLastBlock
+        ? dropOffStubLength + dropOffBoxDimensions.width / 2
+        : dropOffStubLength),
+    y: sourcePosition.y + (isLastBlock ? dropOffSegmentLength : 0),
   })
   return roundCorners(
-    `M${sourceCoord.x},${sourceCoord.y} ${segments}`,
+    `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
     pathRadius
   ).path
 }
