@@ -221,12 +221,12 @@ const saveAnswer =
             blockId: block.id,
             groupId: block.groupId,
           },
-          itemId: answer.itemId,
         },
         create: { ...answer, resultId },
         update: {
           content: answer.content,
           storageUsed: answer.storageUsed,
+          itemId: answer.itemId,
         },
       })
     }
