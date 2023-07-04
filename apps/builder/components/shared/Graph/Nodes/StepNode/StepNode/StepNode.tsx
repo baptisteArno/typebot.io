@@ -157,7 +157,7 @@ export const StepNode = ({
     onModalOpen()
   }
 
-  const handleStepUpdate = (updates: Partial<Step>): void => {
+  const handleStepUpdate = (updates: Partial<Step>): void =>{
     updateStep(indices, { ...step, ...updates })
   }
 

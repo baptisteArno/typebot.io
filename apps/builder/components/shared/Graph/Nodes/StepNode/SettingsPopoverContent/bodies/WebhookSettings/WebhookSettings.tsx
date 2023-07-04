@@ -66,7 +66,8 @@ export const WebhookSettings = ({
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
   const [successTest, setSuccessTest] = useState<string>()
-  const [mountUrl, setMountUrl] = useState<string>()
+  const [urlSearchParams, setUrlSearchParams] = useState<string>('')
+
 
   if (step.options.path?.length)
   {
@@ -79,14 +80,26 @@ export const WebhookSettings = ({
     status: 'error',
   })
 
+  const [webhookUrl, setWebhookUrl] = useState('')
+  // useEffect(() => {
+  //   handleParams(urlSearchParams)
+  // }, [step?.options?.parameters])
+  
   const handleUrlChange = (url: string) => {
-    if (step.options.url != url) clearOptions()
+    setWebhookUrl(url)
+  }
+  const handleUrlValidate = () => {
+    if (step.options.url != webhookUrl) clearOptions()
+    console.log(webhookUrl)
 
-    if (url && url.length > 5) {
-      const newUrl = new URL(url.replace(/ /g, '').trim())
-      url = newUrl.origin
-      
+    if (webhookUrl && webhookUrl.length > 5) {
+      const newUrl = new URL(webhookUrl.replace(/ /g, '').trim())
+      setWebhookUrl(newUrl.origin)
+
+      console.log('url search', newUrl.search)
+
       const hasPath = step.options.path.length
+      setUrlSearchParams(newUrl.search)
 
       if (newUrl.search) handleParams(newUrl.search)
 
@@ -94,13 +107,14 @@ export const WebhookSettings = ({
         step.options.path[hasPath].value = newUrl.pathname
         step.options.path[hasPath].displayValue = newUrl.pathname
         step.options.path[hasPath].properties = undefined
-      } else {
+      } 
+      else {
         addParams('path', '', newUrl.pathname, newUrl.pathname)
       }
 
       onOptionsChange({
         ...step.options,
-        url: (url ? url : "")
+        url: (webhookUrl ? webhookUrl : "")
       })
     }
   }
@@ -153,6 +167,8 @@ export const WebhookSettings = ({
         ...step.options,
         parameters: { ...step.options.parameters }
       })
+
+      console.log(step.options.parameters)
     }
 
 
@@ -171,6 +187,7 @@ export const WebhookSettings = ({
   }
 
   const handleQueryParamsChange = (parameters: QueryParameters[]) => {
+    console.log('handleQueryParams')
     onOptionsChange({
       ...step.options,
       parameters
@@ -299,7 +316,7 @@ export const WebhookSettings = ({
               items={Object.values(HttpMethodsWebhook)}
             />
           </HStack>
-          <Accordion allowToggle allowMultiple>
+          <Accordion allowToggle allowMultiple defaultIndex={[0, 1, 2, 3]}>
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 URL com path
@@ -314,7 +331,8 @@ export const WebhookSettings = ({
                   placeholder="Digite o endereço da API ou do sistema"
                   defaultValue={step.options.url ?? ''}
                   onChange={handleUrlChange}
-                  debounceTimeout={0}
+                  onBlur={() => handleUrlValidate()}
+                  debounceTimeout={5}
                 />
               </AccordionPanel>
             </AccordionItem>
