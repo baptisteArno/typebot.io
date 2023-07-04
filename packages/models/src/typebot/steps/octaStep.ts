@@ -240,6 +240,12 @@ export type WhatsAppOptionsListOptions = BaseOctaOptions & {
     selected: boolean
     value: string
   }>
+  property: {
+    domain: string
+    name: string
+    token: string
+    type: string
+  }
   variableId: string
 }
 
@@ -254,6 +260,12 @@ export type WhatsAppButtonsListOptions = BaseOctaOptions & {
   }
   footer: {
     content?: TextBubbleContent
+  }
+  property: {
+    domain: string
+    name: string
+    token: string
+    type: string
   }
   variableId: string
 }
@@ -371,6 +383,12 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   listTitle: {
     content: undefined,
   },
+  property: {
+    domain: '',
+    name: '',
+    token: '',
+    type: '',
+  },
   variableId: ''
 }
 
@@ -387,6 +405,12 @@ export const defaultWhatsAppButtonsListOptions: WhatsAppButtonsListOptions = {
   },
   footer: {
     content: undefined,
+  },
+  property: {
+    domain: '',
+    name: '',
+    token: '',
+    type: '',
   },
   variableId: ''
 }

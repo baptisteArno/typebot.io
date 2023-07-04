@@ -1,7 +1,8 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { WhatsAppButtonsListOptions } from 'models'
+import { Variable, WhatsAppButtonsListOptions } from 'models'
 import React from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 
 type WhatsAppButtonsListSettingsBodyProps = {
   options: WhatsAppButtonsListOptions
@@ -13,24 +14,43 @@ export const WhatsAppButtonsListSettingsBody = ({
   onOptionsChange,
 }: WhatsAppButtonsListSettingsBodyProps) => {
 
+  const handleVariableChange = (variable: Variable) => {
+    onOptionsChange({
+      ...options,
+      property: {
+        domain: variable.domain,
+        name: variable.name,
+        type: variable.type ? variable.type : 'string',
+        token: variable.token,
+      },
+      variableId: variable.id,
+    })
+  }
+
   const handleHeaderText = (content: any) => {
     onOptionsChange({
       ...options,
-      header: content,
+      header: {
+        content,
+      },
     })
   }
 
   const handleBodyText = (content: any) => {
     onOptionsChange({
       ...options,
-      body: content,
+      body: { 
+        content, 
+      },
     })
   }
 
   const handleFooterText = (content: any) => {
     onOptionsChange({
       ...options,
-      footer: content,
+      footer: {
+        content,
+      },
     })
   }
 
@@ -76,6 +96,12 @@ export const WhatsAppButtonsListSettingsBody = ({
             options.footer?.content ? options.footer.content.richText : []
           }
           onKeyUp={handleFooterText}
+        />
+      </Stack>
+      <Stack>
+        <VariableSearchInput
+          initialVariableId={options.variableId}
+          onSelectVariable={handleVariableChange}
         />
       </Stack>
     </Stack>
