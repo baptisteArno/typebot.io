@@ -97,6 +97,7 @@ const typebotContext = createContext<
     publishTypebot: () => void
     restorePublishedTypebot: () => void
     octaAgents: Array<any>
+    octaGroups: Array<any>
     botFluxesList: Array<any>
   } & BlocksActions &
   StepsActions &
@@ -387,71 +388,97 @@ export const TypebotContext = ({
   }
 
   const [octaAgents, setOctaAgents] = useState<Array<any>>([])
-  useEffect(() => {
-    const fetchOctaAgents = async (): Promise<void> => {
+  useEffect((shouldGetAgents = true, shouldGetGroups = true, shouldGetDefault = true) => {
+    const fetchOctaAgents = async (shouldGetAgents = true, shouldGetGroups = true, shouldGetDefault = true): Promise<void> => {
       const noOne = {
         group: 'Não atribuir (Visível a todos)',
         name: 'Não atribuir (Visível a todos)',
         operationType: ASSIGN_TO.noOne,
       }
-      const agentsGroupsList: Array<any> = [noOne]
+      const agentsGroupsList: Array<any> = shouldGetDefault ? [noOne] : []
 
-      await Promise.all([
-        Agents()
-          .getAgents()
-          .then((res) => {
-            let agentsList = res
-              .sort((a: any, b: any) => a.name.localeCompare(b.name))
-              .map((agent: any) => ({
-                ...agent,
-                operationType: ASSIGN_TO.agent,
-              }))
+      const agentPromise = shouldGetAgents ? Agents()
+      .getAgents()
+      .then((res) => {
+        let agentsList = res
+          .sort((a: any, b: any) => a.name.localeCompare(b.name))
+          .map((agent: any) => ({
+            ...agent,
+            operationType: ASSIGN_TO.agent,
+          }))
 
-            agentsList = [
-              {
-                name: 'Atribuir a conversa para um usuário',
-                disabled: true,
-                id: 'agent',
-                isTitle: true,
-              },
-              ...agentsList,
-            ]
+        agentsList = [
+          {
+            name: 'Atribuir a conversa para um usuário',
+            disabled: true,
+            id: 'agent',
+            isTitle: true,
+          },
+          ...agentsList,
+        ]
 
-            agentsGroupsList.push(...agentsList)
-          }),
+        agentsGroupsList.push(...agentsList)
+      }) : undefined
 
-        Groups()
-          .getGroups()
-          .then((res) => {
-            let groupsList: Array<any> = []
-            const groups = res
-              .sort((a: any, b: any) => a.name.localeCompare(b.name))
-              .map((group: any) => ({
-                ...group,
-                operationType: ASSIGN_TO.group,
-              }))
+      const groupPromise = shouldGetGroups ? Groups()
+      .getGroups()
+      .then((res) => {
+        let groupsList: Array<any> = []
+        const groups = res
+          .sort((a: any, b: any) => a.name.localeCompare(b.name))
+          .map((group: any) => ({
+            ...group,
+            operationType: ASSIGN_TO.group,
+          }))
 
-            groupsList = [
-              {
-                name: 'Atribuir a conversa para um grupo',
-                id: 'group',
-                disabled: true,
-                isTitle: true,
-              },
-              ...groups,
-            ]
+        groupsList = [
+          {
+            name: 'Atribuir a conversa para um grupo',
+            id: 'group',
+            disabled: true,
+            isTitle: true,
+          },
+          ...groups,
+        ]
 
-            agentsGroupsList.push(...groupsList)
-          }),
-      ])
+        agentsGroupsList.push(...groupsList)
+      }) : undefined
+
+      const promises = [agentPromise, groupPromise]
+
+      await Promise.all(promises.filter(p => p))
 
       setOctaAgents(agentsGroupsList)
     }
 
-    fetchOctaAgents()
+    fetchOctaAgents(shouldGetAgents, shouldGetGroups, shouldGetDefault)
 
     return () => {
       setOctaAgents(() => [])
+    }
+  }, [])
+
+  const [octaGroups, setOctaGroups] = useState<Array<any>>([])
+  useEffect(() => {
+    const fetchOctaGroups = async (): Promise<void> => {
+      const agentsGroupsList = await Groups()
+      .getGroups()
+      .then((res) => {
+        return res
+          .sort((a: any, b: any) => a.name.localeCompare(b.name))
+          .map((group: any) => ({
+            ...group,
+            operationType: ASSIGN_TO.group,
+          }))
+      })
+
+      setOctaGroups(agentsGroupsList)
+    }
+
+    fetchOctaGroups()
+
+    return () => {
+      setOctaGroups(() => [])
     }
   }, [])
 
@@ -553,6 +580,7 @@ export const TypebotContext = ({
         ...edgesAction(setLocalTypebot as SetTypebot),
         ...itemsAction(setLocalTypebot as SetTypebot),
         octaAgents,
+        octaGroups,
         botFluxesList
       }}
     >

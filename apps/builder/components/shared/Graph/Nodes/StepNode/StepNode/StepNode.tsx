@@ -68,6 +68,7 @@ export const StepNode = ({
   } = useGraph()
   const { updateStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
+
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
@@ -89,11 +90,12 @@ export const StepNode = ({
     isDisabled: !onMouseDown || step.type === 'start',
   })
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
   const {
-    isOpen: isModalOpen,
     onOpen: onModalOpen,
     onClose: onModalClose,
-  } = useDisclosure()
+  } = useDisclosure({ defaultIsOpen: true })
 
   useEffect(() => {
     if (query.stepId?.toString() === step.id) setOpenedStepId(step.id)
@@ -110,6 +112,7 @@ export const StepNode = ({
   const handleModalClose = () => {
     updateStep(indices, { ...step })
     onModalClose()
+    setIsModalOpen(false)
   }
 
   const handleMouseEnter = () => {
@@ -131,13 +134,15 @@ export const StepNode = ({
   const handleCloseEditor = (content: TextBubbleContent) => {
     const updatedStep = { ...step, content } as Step
     updateStep(indices, updatedStep)
-    setIsEditing(false)
+    //setIsEditing(false)
+    setIsModalOpen(false)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     setFocusedBlockId(step.blockId)
     e.stopPropagation()
-    if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
+    //if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
+    setIsModalOpen(true)
     setOpenedStepId(step.id)
   }
 
@@ -273,7 +278,7 @@ export const StepNode = ({
               </Stack>
             </Flex>
           </PopoverTrigger>
-          {hasSettingsPopover(step) && (
+          {/* {hasSettingsPopover(step) && (
             <SettingsPopoverContent
               step={step}
               onExpandClick={handleExpandClick}
@@ -285,7 +290,7 @@ export const StepNode = ({
               step={step}
               onContentChange={handleContentChange}
             />
-          )}
+          )} */}
           <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
             <StepSettings step={step} onStepChange={handleStepUpdate} />
           </SettingsModal>

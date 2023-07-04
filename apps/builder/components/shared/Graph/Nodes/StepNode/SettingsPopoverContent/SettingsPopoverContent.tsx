@@ -31,6 +31,7 @@ import {
   UrlInputSettingsBody,
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
+  PreReserveSettingsBody,
   CallOtherBotSettingsBody,
   WhatsAppOptionsListSettingsBody,
   WhatsAppButtonsListSettingsBody
@@ -281,6 +282,16 @@ export const StepSettings = ({
     case OctaStepType.ASSIGN_TO_TEAM: {
       return (
         <AssignToTeamSettingsBody
+          options={
+            step.options || { labels: { placeholder: 'sou um placeholder' } }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case OctaStepType.PRE_RESERVE: {
+      return (
+        <PreReserveSettingsBody
           options={
             step.options || { labels: { placeholder: 'sou um placeholder' } }
           }
