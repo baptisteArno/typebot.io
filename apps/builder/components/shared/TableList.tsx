@@ -2,9 +2,9 @@ import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import cuid from 'cuid'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-type ItemWithId<T> = T & { id: string, type: string }
+type ItemWithId<T> = T & { id: string; type: string }
 
 export type TableListItemProps<T> = {
   item: T
@@ -15,6 +15,7 @@ export type TableListItemProps<T> = {
 type Props<T> = {
   initialItems: ItemWithId<T>[]
   addLabel?: string
+  itemsList?: any[]
   debounceTimeout?: number
   type?: string
   onItemsChange?: (items: ItemWithId<T>[]) => void
@@ -27,13 +28,17 @@ export const TableList = <T,>({
   onItemsChange,
   addLabel = 'Add',
   type,
+  itemsList,
   debounceTimeout,
   Item,
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
-
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (itemsList) setItems(itemsList)
+  }, [itemsList])
 
   const createItem = () => {
     const id = cuid()
@@ -74,7 +79,6 @@ export const TableList = <T,>({
             pos="relative"
             onMouseEnter={handleMouseEnter(itemIndex)}
             onMouseLeave={handleMouseLeave}
-          // mt={itemIndex !== 0 && ComponentBetweenItems() ? 4 : 0}
           >
             <Item
               item={item}
@@ -96,11 +100,7 @@ export const TableList = <T,>({
           </Flex>
         </Box>
       ))}
-      <OctaButton
-        onClick={createItem}
-      >
-        {addLabel}
-      </OctaButton>
+      <OctaButton onClick={createItem}>{addLabel}</OctaButton>
     </Stack>
   )
 }
