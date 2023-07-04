@@ -22,6 +22,16 @@ export const fixedChatProperties = [
     domainType: DomainType.Chat,
   },
   {
+    id: '80102420-c961-4bb5-a4d0-1f4a56cb7884',
+    key: 'numero-conversa',
+    token: '#numero-conversa',
+    fieldId: 'numero-conversa',
+    domain: 'CHAT',
+    property: 'room.number',
+    type: 'text',
+    domainType: DomainType.Chat,
+  },
+  {
     id: 'a88c299f-0469-4da6-80aa-e7854c54289c',
     key: 'nome-empresa',
     token: '#nome-empresa',
