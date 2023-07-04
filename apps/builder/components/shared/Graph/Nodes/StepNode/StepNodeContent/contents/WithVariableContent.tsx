@@ -1,6 +1,6 @@
 import { InputStep } from 'models'
 import { chakra, Text } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { byId } from 'utils'
 
@@ -10,13 +10,24 @@ type Props = {
 
 export const WithVariableContent = (variableId: Props) => {
   const { typebot } = useTypebot()
-  const variableName = typebot?.variables.find(
-    (variable) => variable.variableId === variableId.variableId
-  )?.token || '...'
+  
+  const [variableName, setVariableName] = useState<string>();
+
+  useEffect(() => {
+    if (typebot?.variables) {
+      const variableName = typebot?.variables.find(
+        (variable) => variable.variableId === variableId.variableId
+      )?.token || '...'
+      setVariableName(variableName);
+    }
+    return () => {
+      setVariableName("")
+    };
+  }, [typebot?.variables]);
 
   return (
     <Text>
-      Salvar resposta em{' '}
+      Salvar resposta em {' '}
       <chakra.span
         bgColor="orange.400"
         color="white"
