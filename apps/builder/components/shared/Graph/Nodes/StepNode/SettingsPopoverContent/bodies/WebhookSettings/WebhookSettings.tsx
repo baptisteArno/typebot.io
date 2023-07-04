@@ -336,28 +336,6 @@ export const WebhookSettings = ({
                 />
               </AccordionPanel>
             </AccordionItem>
-            {/* {hasPath && (
-              <AccordionItem>
-                <AccordionButton justifyContent="space-between">
-                  Path
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel pb={4} as={Stack} spacing="6">
-                  <Text color="gray.500" fontSize="sm">
-                    Adicione sua informações ao final da URL da integração
-                    (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
-                  </Text>
-                  <TableList<QueryParameters>
-                    initialItems={step.options.path}
-                    onItemsChange={handlePath}
-                    Item={QueryParamsInputs}
-                    addLabel="Adicionar parâmetro"
-                    type="query"
-                    debounceTimeout={0}
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-            )} */}
             <AccordionItem>
               <AccordionButton justifyContent="space-between">
                 Params
@@ -372,6 +350,7 @@ export const WebhookSettings = ({
                   initialItems={step.options.parameters}
                   onItemsChange={handleQueryParamsChange}
                   Item={QueryParamsInputs}
+                  itemsList={step.options.parameters}
                   addLabel="Adicionar parâmetro"
                   type="query"
                   debounceTimeout={0}
