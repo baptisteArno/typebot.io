@@ -80,6 +80,9 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       // case OctaWabaStepType.COMMERCE:
       //   width = 450;
       //   break;
+      case IntegrationStepType.WEBHOOK:
+        width = 500;
+        break;
       case LogicStepType.CONDITION:
         width = 450;
         break;
@@ -130,7 +133,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         <IconButton
           pos="absolute"
           top="5px"
-          right="5px"
+          right="20px"
           aria-label="expand"
           icon={<ExpandIcon />}
           size="xs"
