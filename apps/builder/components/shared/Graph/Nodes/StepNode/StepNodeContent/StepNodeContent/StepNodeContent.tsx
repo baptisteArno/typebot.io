@@ -35,6 +35,7 @@ import {  } from '../contents/WhatsApp/WhatsAppOptions'
 import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
 import { TypebotLinkContent } from '../contents/TypebotLinkContent'
+import { PreReserveContent } from '../contents/PreReserve'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -178,9 +179,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {     
       return <WhatsAppButtonsContent step={step} indices={indices} />
     }
-    // case OctaWabaStepType.COMMERCE: {
-    //   return <OctaCommerceContent step={step} options={step} />
-    // }
+    case OctaStepType.PRE_RESERVE: {
+      return <PreReserveContent step={step} />
+    }
     case 'start': {
       return <Text>Início</Text>
     }

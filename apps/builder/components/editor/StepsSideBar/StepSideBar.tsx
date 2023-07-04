@@ -105,7 +105,7 @@ export const StepsSideBar = () => {
         !verifyFeatureToggle('whatsapp-api')) ||
         (type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
           !verifyFeatureToggle('whatsapp-api')) ||
-        (type === OctaWabaStepType.COMMERCE &&
+        (type === OctaStepType.COMMERCE &&
           !verifyFeatureToggle('whatsapp-api')))
     )
   }

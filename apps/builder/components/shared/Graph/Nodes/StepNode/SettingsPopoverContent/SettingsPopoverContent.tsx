@@ -32,6 +32,7 @@ import {
   UrlInputSettingsBody,
   DateInputSettingsBody,
   AssignToTeamSettingsBody,
+  PreReserveSettingsBody,
   CallOtherBotSettingsBody,
   WhatsAppOptionsListSettingsBody,
   WhatsAppButtonsListSettingsBody
@@ -74,6 +75,11 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       case OctaStepType.OFFICE_HOURS:
       case OctaStepType.COMMERCE:
+        width = 450;
+        break;
+      case IntegrationStepType.WEBHOOK:
+        width = 500;
+        break;
       case LogicStepType.CONDITION:
       case OctaStepType.ASSIGN_TO_TEAM:
       case OctaStepType.CALL_OTHER_BOT:
@@ -120,7 +126,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         <IconButton
           pos="absolute"
           top="5px"
-          right="5px"
+          right="20px"
           aria-label="expand"
           icon={<ExpandIcon />}
           size="xs"
@@ -275,6 +281,16 @@ export const StepSettings = ({
         />
       )
     }
+    case OctaStepType.PRE_RESERVE: {
+      return (
+        <PreReserveSettingsBody
+          options={
+            step.options || { labels: { placeholder: 'sou um placeholder' } }
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
     case OctaStepType.CALL_OTHER_BOT: {
       return (
         <CallOtherBotSettingsBody
@@ -288,6 +304,11 @@ export const StepSettings = ({
     case OctaStepType.OFFICE_HOURS: {
       return (
         <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
+      )
+    }
+    case OctaStepType.COMMERCE: {
+      return (
+        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
       )
     }
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {
@@ -308,11 +329,6 @@ export const StepSettings = ({
           }
           onOptionsChange={handleOptionsChange}
         />
-      )
-    }
-    case OctaWabaStepType.COMMERCE: {
-      return (
-        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
       )
     }
     case IntegrationStepType.WEBHOOK: {

@@ -123,7 +123,7 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Conecte a outro sistema'
     case OctaStepType.OFFICE_HOURS:
       return 'Horário de atendimento'
-    case OctaWabaStepType.COMMERCE:
+    case OctaStepType.COMMERCE:
       return 'Commerce'
     case OctaStepType.CALL_OTHER_BOT:
       return 'Direcione a conversa para outro bot'
@@ -131,6 +131,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Pergunta com lista de opções'
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       return 'Pergunta com lista de botões'
+    case OctaStepType.PRE_RESERVE:
+      return 'Reserva de conversa'
     default:
       return 'Outro'
   }

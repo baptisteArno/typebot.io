@@ -27,6 +27,7 @@ import {
   RadioIcon,
   ContactCardIcon,
   AskNameIcon,
+  PreReserveIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -53,7 +54,7 @@ import { MdStore } from 'react-icons/md'
 type StepIconProps = { type: StepType } & IconProps
 
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
-  
+
   switch (type) {
     case BubbleStepType.TEXT:
       return <ChatIcon color="#AA561C" {...props} />
@@ -107,9 +108,11 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       return <CodeIcon color="#b18bca" {...props} />
     case OctaStepType.OFFICE_HOURS:
-      return <BsCalendar2Range color="#7B15C1" size={18}/>
-      case OctaWabaStepType.COMMERCE:
-        return <MdStore color="#000" size={18} />
+      return <BsCalendar2Range color="#7B15C1" size={18} />
+    case OctaStepType.COMMERCE:
+      return <MdStore color="#000" size={18} />
+    case OctaStepType.PRE_RESERVE:
+      return <PreReserveIcon color="#373A86" {...props} />
     case 'start':
       return <FlagIcon {...props} />
     default:

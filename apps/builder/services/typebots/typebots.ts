@@ -53,6 +53,7 @@ import {
   defaultMediaBubbleContent,
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
+  defaultPreReserveOptions,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -438,6 +439,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
       return defaultOfficeHoursOptions
     case OctaStepType.COMMERCE:
       return defaultCommerceOptions
+    case OctaStepType.PRE_RESERVE:
+      return defaultPreReserveOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:

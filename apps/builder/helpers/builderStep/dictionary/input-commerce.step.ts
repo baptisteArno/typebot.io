@@ -1,5 +1,5 @@
 import { WritableDraft } from "immer/dist/internal";
-import { BubbleStepType, DraggableStep, OctaWabaStepType, Typebot } from "models";
+import { BubbleStepType, DraggableStep, OctaStepType, OctaWabaStepType, Typebot } from "models";
 import { parseNewStep } from "services/typebots";
 
 const templateCommerceStep = (typebot: WritableDraft<Typebot>, blockId: string, placeholder: string): Array<DraggableStep> => {
@@ -17,7 +17,7 @@ const templateCommerceStep = (typebot: WritableDraft<Typebot>, blockId: string, 
         plainText: `${placeholder}`,
       }
     } as DraggableStep,
-    parseNewStep(OctaWabaStepType.COMMERCE, blockId),
+    parseNewStep(OctaStepType.COMMERCE, blockId),
   ];
 
   return CommerceStep.reverse();
