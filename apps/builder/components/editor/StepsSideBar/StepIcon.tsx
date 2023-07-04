@@ -27,6 +27,7 @@ import {
   RadioIcon,
   ContactCardIcon,
   AskNameIcon,
+  PreReserveIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -108,8 +109,10 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CodeIcon color="#b18bca" {...props} />
     case OctaStepType.OFFICE_HOURS:
       return <BsCalendar2Range color="#7B15C1" size={18}/>
-      case OctaStepType.COMMERCE:
+    case OctaStepType.COMMERCE:
         return <MdStore color="#000" size={18} />
+    case OctaStepType.PRE_RESERVE:
+        return <PreReserveIcon color="#373A86" {...props} />
     case 'start':
       return <FlagIcon {...props} />
     default:

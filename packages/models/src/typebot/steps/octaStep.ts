@@ -2,7 +2,7 @@ import { StepBase, StepWithItems, ItemBase, Step, ItemType } from '.'
 import { TextBubbleContent } from './bubble'
 
 // Regular steps
-export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep
+export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep
 
 // Waba steps
 
@@ -16,6 +16,7 @@ export type OctaStepOptions =
   | AssignToTeamOptions
   | OfficeHoursOptions
   | CallOtherBotOptions
+  | PreReserveOptions
 
 export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions
 
@@ -24,6 +25,7 @@ export type OctaStepWithOptions =
   | AssignToTeamStep
   | OfficeHourStep
   | CallOtherBotStep
+  | PreReserveStep
 
 // Steps that has variables on its body
 export type OctaBubbleStepContent = EndConversationBubbleContent
@@ -41,7 +43,8 @@ export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
-  COMMERCE = 'commerce'
+  COMMERCE = 'commerce',
+  PRE_RESERVE = 'pre reserve'
 }
 
 // Waba step types
@@ -63,6 +66,11 @@ export type EndConversationStep = StepBase & {
 export type AssignToTeamStep = StepBase & {
   type: OctaStepType.ASSIGN_TO_TEAM
   options: AssignToTeamOptions
+}
+
+export type PreReserveStep = StepBase & {
+  type: OctaStepType.PRE_RESERVE
+  options: PreReserveOptions
 }
 
 export type CallOtherBotStep = StepBase & {
@@ -176,6 +184,11 @@ export type AssignToTeamOptions = BaseOctaOptions & {
     placeholder: { assignToTeam: string; connectionMessage: string }
     button: string
   }
+}
+
+export type PreReserveOptions = BaseOctaOptions & {
+  assignTo: string
+  assignType: string
 }
 
 export type CallOtherBotOptions = BaseOctaOptions & {
@@ -311,6 +324,13 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   assignType: '',
   subType: '',
   isAvailable: true,
+}
+
+export const defaultPreReserveOptions: PreReserveOptions = {
+  assignTo: '',
+  assignType: '',
+  name: '',
+  subject: ''
 }
 
 export const defaultCallOtherBotOptions: CallOtherBotOptions = {

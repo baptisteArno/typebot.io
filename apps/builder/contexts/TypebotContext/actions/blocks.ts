@@ -131,6 +131,8 @@ const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
       return 'Pergunta com lista de opções'
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       return 'Pergunta com lista de botões'
+    case OctaStepType.PRE_RESERVE:
+      return 'Reserva de conversa'
     default:
       return 'Outro'
   }
