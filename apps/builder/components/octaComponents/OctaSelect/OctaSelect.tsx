@@ -56,7 +56,8 @@ const OctaSelect = (props: OctaSelectProps) => {
   const handleChangeFind = (value: any): void => {
     setSearch(value.label);
     setSelected(value);
-    props.onChange(value.value, value);
+    if (props?.onChange)
+      props.onChange(value.value, value);
   }
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -69,7 +70,7 @@ const OctaSelect = (props: OctaSelectProps) => {
       return [];
     }
     return allOptions.filter((option) => {
-      return option.label.toLocaleLowerCase().indexOf(search ? search : "") >= 0
+      return option.label.toLocaleLowerCase().indexOf(search ? search.toLocaleLowerCase() : "") >= 0
     });
   }, [allOptions, search])
 

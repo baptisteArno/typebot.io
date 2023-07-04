@@ -4,6 +4,7 @@ import axios, { AxiosInstance } from 'axios'
 import { getBaseClient } from "../http";
 
 import { loadParameterHeader } from '../helpers/headers'
+import { OfficeHoursFormType } from "components/shared/Graph/Nodes/StepNode/SettingsPopoverContent/bodies/OfficeHoursBody/OfficeHours.type";
 
 const getCalendarClient = () => getBaseClient('calendar');
 
@@ -46,6 +47,17 @@ export class OfficeHoursServices implements IOfficeHoursServices {
       })
     })
     return timezones;
+  }
+
+  async createOfficeHour(officeHour: OfficeHoursFormType): Promise<OfficeHour | null> {
+    await this.client().then(async (client) => {
+      await client.post("/", officeHour, loadParameterHeader()
+      ).then((res) => {
+        return res.data
+      })
+    })
+
+    return null
   }
 
 }

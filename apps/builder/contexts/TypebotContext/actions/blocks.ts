@@ -51,7 +51,7 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         const newBlock: Block = {
           id,
           graphCoordinates,
-          title: hisNameComponents(step),
+          title: `Grupo ${typebot?.blocks?.length || '1'}`,
           steps: [],
         }
         typebot.blocks.push(newBlock)
@@ -90,53 +90,6 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
       })
     ),
 })
-
-const hisNameComponents = (step: DraggableStep | DraggableStepType) => {
-  switch (step) {
-    case BubbleStepType.TEXT:
-      return 'Envie uma mensagem de texto'
-    case BubbleStepType.MEDIA:
-      return 'Envie um arquivo'
-    case BubbleStepType.EMBED:
-      return 'Envie um arquivo'
-    case InputStepType.TEXT:
-      return 'Pergunte qualquer coisa'
-    case InputStepType.NUMBER:
-      return 'Pergunte o número do pedido'
-    case InputStepType.EMAIL:
-      return 'Pergunte o email'
-    case InputStepType.CPF:
-      return 'Pergunte o CPF'
-    case InputStepType.DATE:
-      return 'Pergunte uma data'
-    case InputStepType.PHONE:
-      return 'Pergunte o número de celular'
-    case InputStepType.CHOICE:
-      return 'Qual sua escolha?'
-    case InputStepType.ASK_NAME:
-      return 'Pergunte o nome'
-    case OctaStepType.ASSIGN_TO_TEAM:
-      return 'Direcione a conversa para um agente/time'
-    case OctaBubbleStepType.END_CONVERSATION:
-      return 'Encerre a conversa do bot'
-    case IntegrationStepType.WEBHOOK:
-      return 'Conecte a outro sistema'
-    case OctaStepType.OFFICE_HOURS:
-      return 'Horário de atendimento'
-    case OctaStepType.COMMERCE:
-      return 'Commerce'
-    case OctaStepType.CALL_OTHER_BOT:
-      return 'Direcione a conversa para outro bot'
-    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
-      return 'Pergunta com lista de opções'
-    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
-      return 'Pergunta com lista de botões'
-    case OctaStepType.PRE_RESERVE:
-      return 'Reserva de conversa'
-    default:
-      return 'Outro'
-  }
-}
 
 const deleteBlockDraft =
   (typebot: WritableDraft<Typebot>) => (blockIndex: number) => {

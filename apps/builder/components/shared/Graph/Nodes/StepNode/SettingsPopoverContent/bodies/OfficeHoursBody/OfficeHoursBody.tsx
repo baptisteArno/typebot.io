@@ -7,7 +7,7 @@ import { parse } from 'path'
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useMemo, useState } from 'react'
 import { OfficeHoursServices } from 'services/octadesk/officehours/officeHours.services'
 import { OfficeHour } from '../../../../../../../../services/octadesk/officehours/officehours.types'
-import { OfficeHoursFormType } from './OfficeHours.type'
+import { DayInfo, OfficeHoursFormType } from './OfficeHours.type'
 import {
   ButtonCreate,
   Container,
@@ -110,8 +110,20 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
     }
   }, [officeHoursMemo])
 
-  const createOfficeHour = (): void => {
+  const changeScreenToCreateOfficeHour = (): void => {
     setScreen("CREATE-OFFICE-HOURS");
+  }
+
+  const createOfficeHour = async (): Promise<OfficeHour | null> => {
+    console.log('createOfficeHour', form)
+    // if (form) {
+    //   const saved = await service.createOfficeHour(form)
+    //   handleOfficeHourSelect(saved)
+
+    //   return saved
+    // }
+
+    return null
   }
 
   const cancelCreate = (): void => {
@@ -123,7 +135,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
 
     switch (name) {
       case "name":
-        setForm((e) => ({ ...e, name: value } as OfficeHoursFormType));
+        setForm((e) => (({ ...e, name: value, daysOfWeek: [] } as unknown) as OfficeHoursFormType));
         break;
 
       default:
@@ -141,9 +153,9 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
 
   const handleHoursToDaysSelected = (e: ChangeEvent<HTMLInputElement>): void => {
     const { value, name, dataset } = e.target;
-    
+
     let day;
-    let mount;
+    let mount: DayInfo | undefined = undefined;
     switch (name) {
       case "start":
         day = daysOfWeekMemo.find(d => d.dayOfWeek.toString() === dataset.day?.toString());
@@ -189,6 +201,12 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
       default:
         break;
     }
+
+    if (form && mount) {
+      const index = form.daysOfWeek.days.findIndex(s => s.dayOfWeek === mount?.dayOfWeek)
+      form.daysOfWeek.days[index] = mount
+      setForm({ ...form })
+    }
   }
 
   const handleOfficeHourSelect = (calendar: any): void => {
@@ -201,7 +219,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
         screen === "SETTINGS" &&
         <Container>
           <Title>
-            Configure o atentimento
+            Configure o atendimento
           </Title>
           <FormArea>
             <FormControl>
@@ -210,7 +228,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
               }
             </FormControl>
           </FormArea>
-          <ButtonCreate onClick={createOfficeHour}>
+          <ButtonCreate onClick={changeScreenToCreateOfficeHour}>
             Criar novo horário de expediente
           </ButtonCreate>
         </Container>
