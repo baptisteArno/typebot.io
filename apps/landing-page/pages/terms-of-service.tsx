@@ -1,6 +1,7 @@
 import { Stack, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
+import { TextLink } from 'components/common/TextLink'
 
 const PrivacyPolicies = () => {
   return (
@@ -117,11 +118,26 @@ const PrivacyPolicies = () => {
           bound by the current version of these Terms and Conditions of Use.
         </p>
 
-        <Heading>8. Your Privacy</Heading>
+        <Heading id="scam-typebots">8. Prohibition of Scam Typebots</Heading>
+        <p>
+          You agree not to create or use typebots on Typebot&apos;s Website for
+          the purpose of engaging in fraudulent activities, scamming
+          individuals, or any other unethical or illegal activities. This
+          includes but is not limited to typebots designed to deceive, defraud,
+          or mislead people for financial gain or personal benefit. Typebot
+          reserves the right to take appropriate action, including the
+          termination of any user account, if it determines that a typebot is
+          being used in violation of this provision.
+        </p>
 
-        <p>Please read our Privacy Policy.</p>
+        <Heading>9. Your Privacy</Heading>
 
-        <Heading>9. Governing Law</Heading>
+        <p>
+          Please read our{' '}
+          <TextLink href={'/privacy-policies'}>Privacy Policy</TextLink>.
+        </p>
+
+        <Heading>10. Governing Law</Heading>
 
         <p>
           Any claim related to Typebot&apos;s Website shall be governed by the

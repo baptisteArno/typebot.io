@@ -3900,6 +3900,9 @@
                         },
                         "isQuarantined": {
                           "type": "boolean"
+                        },
+                        "isSuspended": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -3919,7 +3922,8 @@
                         "customChatsLimit",
                         "customStorageLimit",
                         "customSeatsLimit",
-                        "isQuarantined"
+                        "isQuarantined",
+                        "isSuspended"
                       ],
                       "additionalProperties": false
                     }
@@ -4045,6 +4049,9 @@
                         },
                         "isQuarantined": {
                           "type": "boolean"
+                        },
+                        "isSuspended": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -4064,7 +4071,8 @@
                         "customChatsLimit",
                         "customStorageLimit",
                         "customSeatsLimit",
-                        "isQuarantined"
+                        "isQuarantined",
+                        "isSuspended"
                       ],
                       "additionalProperties": false
                     }
@@ -4207,6 +4215,9 @@
                         },
                         "isQuarantined": {
                           "type": "boolean"
+                        },
+                        "isSuspended": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -4226,7 +4237,8 @@
                         "customChatsLimit",
                         "customStorageLimit",
                         "customSeatsLimit",
-                        "isQuarantined"
+                        "isQuarantined",
+                        "isSuspended"
                       ],
                       "additionalProperties": false
                     }
@@ -5472,6 +5484,9 @@
                         },
                         "isQuarantined": {
                           "type": "boolean"
+                        },
+                        "isSuspended": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -5491,7 +5506,8 @@
                         "customChatsLimit",
                         "customStorageLimit",
                         "customSeatsLimit",
-                        "isQuarantined"
+                        "isQuarantined",
+                        "isSuspended"
                       ],
                       "additionalProperties": false,
                       "nullable": true
