@@ -65,9 +65,7 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
         break
       case OctaStepType.COMMERCE:
         step = templateCommerceStep(
-          bot,
-          blockId,
-          'Este é o catálogo que selecionamos para você:'
+          blockId
         )
         break
       case BubbleStepType.MEDIA:
