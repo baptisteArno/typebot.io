@@ -18,3 +18,13 @@ export const Space = styled.span`
   border: 1px solid orange;
   padding: 10px;
 `;
+
+export const BoxContainer = styled.div`
+  padding: 10px 15px;
+  background-color: #F4F4F5;
+  margin-bottom: 5px;
+  border: 1px solid #E3E4E8;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: .9rem;
+  margin-left: 9px;
+`;

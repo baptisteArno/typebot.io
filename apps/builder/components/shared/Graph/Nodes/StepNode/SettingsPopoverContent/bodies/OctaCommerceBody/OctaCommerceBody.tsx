@@ -1,5 +1,5 @@
 import OctaLoading from 'components/octaComponents/OctaLoading/OctaLoading';
-import { CommerceOptions, Variable } from 'models'
+import { CommerceOptions, TextBubbleContent, Variable } from 'models'
 import React, { useEffect, useState } from 'react'
 import { CommerceService } from 'services/octadesk/commerce/commerce';
 import { ListCatalogType, ProductType } from 'services/octadesk/commerce/commerce.type';
@@ -9,6 +9,8 @@ import {
 } from './OctaCommerceBody.style'
 import SelectProducts from './SelectProducts/SelectProducts';
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput';
+import { FormLabel, Stack } from '@chakra-ui/react';
+import { TextBubbleEditor } from '../../../TextBubbleEditor';
 
 type Props = {
   options: CommerceOptions
@@ -23,7 +25,7 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
   useEffect(() => {
     const getCatalogs = async (): Promise<void> => {
       CommerceService.getList().then(data => {
-        options.catalogId = data[0].id
+        options.catalogId = data && data.length ? data[0].id : ''
         setCatalog(data);
         setLoading(false);
       })
@@ -82,6 +84,12 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
       },
     });
   }
+  const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
+    onOptionsChange({
+      ...options,
+      message: content,
+    })
+  }
 
   return (
     <>
@@ -89,6 +97,23 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
         <Title>
           Enviar catálogo
         </Title>
+        <Stack>
+          <FormLabel mb="0" htmlFor="placeholder">
+            Mensagem enviada com o catálogo
+          </FormLabel>
+          (
+          <TextBubbleEditor
+            increment={1}
+            onClose={handleCloseEditorBotMessage}
+            initialValue={
+              options.message
+              ? options.message.richText
+              : []
+            }
+            onKeyUp={handleCloseEditorBotMessage}
+          />
+          )
+        </Stack>
         {loading && <OctaLoading />}
         {products && <SelectProducts key={options.catalogId} selectedProducts={options.products} products={products} onSelect={handleSelectProducts} />}
         <VariableSearchInput

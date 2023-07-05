@@ -171,12 +171,13 @@ export type CommerceOptions = BaseOctaOptions & {
   catalogId: string;
   products: Array<string>
   property: {
-    domain: '',
-    name: '',
-    token: '',
-    type: '',
+    domain: string,
+    name: string,
+    token: string,
+    type: string,
   }
   variableId: string
+  message?: TextBubbleContent
 }
 
 // Regular options
@@ -388,7 +389,17 @@ export const defaultCommerceOptions: CommerceOptions = {
   },
   variableId: '',
   name: '',
-  subject: ''
+  subject: '',
+  message: {
+    html: `<div style="margin-left: 8px;">'Este é o catálogo que selecionamos para você:'</div>`,
+    richText: [{
+      children: [{
+        text: 'Este é o catálogo que selecionamos para você:',
+      }],
+      type: "p"
+    }],
+    plainText: 'Este é o catálogo que selecionamos para você:'
+  }
 }
 
 export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {

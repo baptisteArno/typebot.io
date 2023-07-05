@@ -119,6 +119,8 @@ export const StepNode = ({
     updateStep(indices, { ...step })
     onModalClose()
     setIsModalOpen(false)
+    setIsEditing(false)
+    setIsPopoverOpened(false)
   }
 
   const handleMouseEnter = () => {
@@ -140,16 +142,20 @@ export const StepNode = ({
   const handleCloseEditor = (content: TextBubbleContent) => {
     const updatedStep = { ...step, content } as Step
     updateStep(indices, updatedStep)
-    //setIsEditing(false)
+    setIsEditing(false)
     setIsModalOpen(false)
+    setIsPopoverOpened(false)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     setFocusedBlockId(step.blockId)
     e.stopPropagation()
-    //if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
-    setIsModalOpen(true)
+    if (isTextBubbleStep(step) || isOctaBubbleStep(step) || isMediaBubbleStep(step)) setIsEditing(true)
+    else setIsModalOpen(true)
+      
     setOpenedStepId(step.id)
+
+    console.log('handleClick', )
   }
 
   const handleExpandClick = () => {
@@ -292,7 +298,12 @@ export const StepNode = ({
                 </Stack>
               </Flex>
             </PopoverTrigger>
-
+            {isMediaBubbleStep(step) && (
+              <MediaBubblePopoverContent
+                step={step}
+                onContentChange={handleContentChange}
+              />
+            )}
             <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
               <StepSettings step={step} onStepChange={handleStepUpdate} />
             </SettingsModal>
