@@ -208,6 +208,8 @@ export const WebhookSettings = ({
     })
   }
 
+  const [responseData, setResponseData] = useState({status: ''})
+
   const handleVariablesChange = (variablesForTest: VariableForTest[]) =>
     onOptionsChange({ ...step.options, variablesForTest })
 
@@ -251,6 +253,7 @@ export const WebhookSettings = ({
 
     return session
   }
+  
 
   const handleTestRequestClick = async () => {
     if (!typebot || !step.options) return
@@ -282,8 +285,12 @@ export const WebhookSettings = ({
     setIsTestResponseLoading(false)
     setSuccessTest(success)
 
+    console.log("RESPONSE", data)
+    console.log("RESPONSE", data.status)
+
+    setResponseData(data)
     if (!success) {
-      toast({ title: 'Error', description: `Não foi possivel executar sua integração. 😢` })
+      toast({ title: 'Error ' + data.status, description: `Não foi possivel executar sua integração. 😢` })
     }
 
     if (typeof response === 'object') {
@@ -446,7 +453,19 @@ export const WebhookSettings = ({
           >
             Testar request
           </Button>
+          
         )}
+       {responseData && responseData.status ? (
+          <div style={{
+            backgroundColor: '#cd3838',
+            color: 'white',
+            padding: '10px',
+            borderRadius: '8px',
+            marginTop: '20px'
+          }}>
+            Erro: {responseData.status}
+          </div>
+        ) : null}
         {testResponse && (
           <CodeEditor
             value={testResponse}
@@ -476,6 +495,7 @@ export const WebhookSettings = ({
           </Accordion>
         )}
       </Stack>
+      as
     </Stack>
   )
 }
