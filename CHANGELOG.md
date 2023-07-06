@@ -1,5 +1,70 @@
 # Changelog
 
+<a name="2.15.0"></a>
+## 2.15.0 (2023-07-06)
+
+### Added
+
+- ✨ Add Meta Pixel block [[033f8f9](https://github.com/baptisteArno/typebot.io/commit/033f8f99ddb72c91b46cd37cfb012ea45e23bf1e)]
+- 📈 (billing) Track when workspace subscription is cancelled [[6f7ef82](https://github.com/baptisteArno/typebot.io/commit/6f7ef820e21e77a2be0c7c8911cc8cdbce9a848e)]
+- 👷‍♂️ Surround email alerts sending with try catch [[6430d57](https://github.com/baptisteArno/typebot.io/commit/6430d576add7e3add3bb3ce40eba7e0e78bb2205)]
+
+### Changed
+
+- ⚡ (analytics) Improve analytics graph accuracy [[b0f25f3](https://github.com/baptisteArno/typebot.io/commit/b0f25f301b89e6dadb730c1537df2b559b9d549f)]
+- 💄 Correctly highlight current line in code editor [[55ff944](https://github.com/baptisteArno/typebot.io/commit/55ff944ebb107577f9bd9728e387e0b75c5bb79a)]
+- ⚡ (pixel) Add skip initialization option [[50fcbfd](https://github.com/baptisteArno/typebot.io/commit/50fcbfd95e7e480e2579b1ac4e914cb85770ae27)]
+- 🚸 (editor) Improve editor performance by rounding paths [[0582ca7](https://github.com/baptisteArno/typebot.io/commit/0582ca74acded209b84e8929c5b874c00042f694)]
+- ⚡ (openai) Use Vercel&#x27;s AI SDK for streaming [[3be39cb](https://github.com/baptisteArno/typebot.io/commit/3be39cbc789e85aab6b22460eac58da9c074d84f)]
+- 🗃️ Convert mysql icon varchar to text [[3b52363](https://github.com/baptisteArno/typebot.io/commit/3b52363e118e1009c3c5ab244f837639c1796305)]
+- ⚡ Add recent section in icon and emoji picker [[eaadc59](https://github.com/baptisteArno/typebot.io/commit/eaadc59b1fc39ab79e024b7d85b4ef7269ccc852)]
+- 🚸 Move item settings button to the left [[d8e5605](https://github.com/baptisteArno/typebot.io/commit/d8e56050f3415fee1586f00975b451ec82f3af3e)]
+- ⚡ (openai) Retry OpenAI call if status code is 503 [[dcdf870](https://github.com/baptisteArno/typebot.io/commit/dcdf8703086cb127b1e135480e088e1f9fd68b8b)]
+- 🚸 (openai) Parse stream on client to correctly handle errors [[524f156](https://github.com/baptisteArno/typebot.io/commit/524f1565d8600b7efcc0674c56ee5b2f908c07dd)]
+- ⚡ (openai) Add new models and remove tiktoken [[83f2a29](https://github.com/baptisteArno/typebot.io/commit/83f2a29faae2f4ad78eca56256977fbbd20a1740)]
+- 🚸 (webhook) Show save in variables accordion only when needed [[e54aab4](https://github.com/baptisteArno/typebot.io/commit/e54aab452acd6b7d492f78d624014dfeb42bdfb0)]
+- ⚡ (wp) Add UTM auto forward [[a64e621](https://github.com/baptisteArno/typebot.io/commit/a64e6214329ec298742ef453b7aaaa60cf3fbf42)]
+- ⚡ (numberInput) Variabalize min, max, step [[4223485](https://github.com/baptisteArno/typebot.io/commit/42234850ed637f67b8b8b7e31dfd093b4824ac47)]
+- ⚡ (setVariable) Add &quot;Moment of the day&quot; variable value [[d8c1a36](https://github.com/baptisteArno/typebot.io/commit/d8c1a36bc0c06426be4da5039d24d97bcf2ef719)]
+- 🚸 (sheets) Show info log instead of error when no rows are found [[fbe63aa](https://github.com/baptisteArno/typebot.io/commit/fbe63aa3f357adb65b811f134ff702b9a899803d)]
+
+### Fixed
+
+- 🐛 (js) Fix container color when empty [[aeb62f9](https://github.com/baptisteArno/typebot.io/commit/aeb62f968accce7769f34c5a25c142fdfe20961e)]
+- 🚑 Fix answer upsert on duplicate itemId [[92740ad](https://github.com/baptisteArno/typebot.io/commit/92740ad2ff46c75152d0dd1c4d586e4f01ad323c)]
+- 🚑 Fix answer upsert missing groupId [[24126ac](https://github.com/baptisteArno/typebot.io/commit/24126ac9b89d74705b571e3e54afaf8c22d630cb)]
+- 🐛 (sheets) Fix sheet block when filter is undefined [[9658277](https://github.com/baptisteArno/typebot.io/commit/9658277d97b358567547adbe677ca8b08458af4c)]
+- 🐛 (condition) Improve comparison on dates [[92f7f3c](https://github.com/baptisteArno/typebot.io/commit/92f7f3cbe2febd0ae348008017d3dbd6aafa6b93)]
+- 🐛 (results) Fix export duplicate columns when no order set [[3575fef](https://github.com/baptisteArno/typebot.io/commit/3575fef34f0ee0646af1bbf900b98dc45b0c8177)]
+- 💚 Fix prisma schema path evaluation on windows [[dcda2d0](https://github.com/baptisteArno/typebot.io/commit/dcda2d06ac54acfdf1fd6284569f096671a64f6d)]
+- 💚 (db) Fix verification bulk delete [[63e826f](https://github.com/baptisteArno/typebot.io/commit/63e826f9913ff0dac6c37dd9c4dcb85e2541a480)]
+- 🚑 (condition) Remove null check on comparison value [[c94cd1e](https://github.com/baptisteArno/typebot.io/commit/c94cd1e37cd9acef1e1858075a36b6512c3e2e5f)]
+- 🐛 (openai) Fix streaming when starting with OpenAI block [[bfca8d9](https://github.com/baptisteArno/typebot.io/commit/bfca8d9368ef5d2eb664909fcef500f7f6268936)]
+- 🐛 (condition) Fix condition parsing with value &quot;null&quot; [[8e7479a](https://github.com/baptisteArno/typebot.io/commit/8e7479a1bde96fa6f46d40b7e96eea23dbc9fbfd)]
+- 🐛 (conditions) Fix negative comparisons [[cec072b](https://github.com/baptisteArno/typebot.io/commit/cec072b2a223ec400ab1a6fe022e4bfa06c2c25f)]
+
+### Security
+
+- 🔒 Add rate limiter on email signin endpoint [[7c2e574](https://github.com/baptisteArno/typebot.io/commit/7c2e5740dcff4b555c8d6b53fb422af12c222f3d)]
+- 🔒 Revert ddos lockdown [[f1b643c](https://github.com/baptisteArno/typebot.io/commit/f1b643c5be8bcfd1de68a13b770b9569d39dd53c)]
+- 🔒 Remove lp image DDOS prevention [[3e2c462](https://github.com/baptisteArno/typebot.io/commit/3e2c462617754e7d920a904865d018e7e236531c)]
+- 🔒 Disable email auth [[00945bf](https://github.com/baptisteArno/typebot.io/commit/00945bfa0cf4d73293f1438c43203327e104fad2)]
+
+### Miscellaneous
+
+- 🛂 Add isSuspended prop on workspace [[5a05310](https://github.com/baptisteArno/typebot.io/commit/5a05310a9c9f1f3ef90a54936cbc2238b05eb8c9)]
+- 🧑‍💻 (api) Add icon field in create workspace endpoint [[69254c3](https://github.com/baptisteArno/typebot.io/commit/69254c362416cc014f44133b8597027a1e410ff4)]
+- 🛂 (billing) Enable Published bot branding when plan cancelled [[6864667](https://github.com/baptisteArno/typebot.io/commit/6864667297b056b96f76e206aff05231163cbe75)]
+- 🛂 Add checkSubscriptions script [[2abce89](https://github.com/baptisteArno/typebot.io/commit/2abce89a4644ba3502cf5a323b3c0b642e603563)]
+- 🛂 (billing) Display branding when subscription… [[de0b105](https://github.com/baptisteArno/typebot.io/commit/de0b105276f90881c6d0d8740e1d0a2b09432a56)]
+- 🛂 (billing) Always invoice when subscription is updated [[97fcee2](https://github.com/baptisteArno/typebot.io/commit/97fcee276449a2ad18c1ba9709d1a6ebb9194681)]
+- ⚗️ Add inspect user script [[931540b](https://github.com/baptisteArno/typebot.io/commit/931540b91bf0b1bcb1658de93faecd34811a3e95)]
+- 📝 Add status page link in footers [[3662393](https://github.com/baptisteArno/typebot.io/commit/36623930bce59d59975cba3dd2a6f164710e5866)]
+- 📝 (embed) Improve Wix embed instructions [[da289a0](https://github.com/baptisteArno/typebot.io/commit/da289a0da797fb797a8c864cdbb424360c65777e)]
+- 📝 Change CNAME value to vercel domain [[471dedc](https://github.com/baptisteArno/typebot.io/commit/471dedccc8964bffa43c5baaeb955d6d34688430)]
+- 📝 (makecom) Add return data instructions [[0e31a6c](https://github.com/baptisteArno/typebot.io/commit/0e31a6ce0028b86ad070fbd36b506c47af2484e5)]
+
+
 <a name="2.14.1"></a>
 ## 2.14.1 (2023-06-14)
 
