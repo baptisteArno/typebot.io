@@ -8,6 +8,7 @@ import {
 } from '@typebot.io/schemas'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/enums'
 import { isLight, hexToRgb } from '@typebot.io/lib/hexToRgb'
+import { isNotEmpty } from '@typebot.io/lib'
 
 const cssVariableNames = {
   general: {
@@ -37,6 +38,7 @@ const cssVariableNames = {
     },
     checkbox: {
       bgColor: '--typebot-checkbox-bg-color',
+      color: '--typebot-checkbox-color',
     },
   },
 } as const
@@ -155,7 +157,9 @@ const setTypebotBackground = (
     parseBackgroundValue(background)
   )
   const backgroundColor =
-    (BackgroundType.COLOR ? background.content : '#ffffff') ?? '#ffffff'
+    (BackgroundType.COLOR && isNotEmpty(background.content)
+      ? background.content
+      : '#ffffff') ?? '#ffffff'
   documentStyle.setProperty(
     cssVariableNames.chat.checkbox.bgColor,
     (BackgroundType.COLOR ? background.content : '#ffffff') ?? '#ffffff'
