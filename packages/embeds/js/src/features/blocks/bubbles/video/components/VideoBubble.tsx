@@ -17,6 +17,14 @@ export const VideoBubble = (props: Props) => {
   const [isTyping, setIsTyping] = createSignal(true)
 
   const onTypingEnd = () => {
+    const videoElement = ref?.querySelector('video')
+    if (videoElement) {
+      try {
+        videoElement.play()
+      } catch (e) {
+        console.warn('Could not autoplay the video:', e)
+      }
+    }
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
@@ -74,9 +82,7 @@ const VideoContent = (props: VideoContentProps) => {
           }
           style={{
             height: props.isTyping ? '32px' : 'auto',
-            'max-height': window.navigator.vendor.match(/apple/i) ? '40vh' : '',
           }}
-          autoplay
         >
           <source src={props.content.url} type="video/mp4" />
           Sorry, your browser doesn&apos;t support embedded videos.

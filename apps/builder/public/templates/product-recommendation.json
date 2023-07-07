@@ -1509,7 +1509,6 @@
       "buttons": { "color": "#010000", "backgroundColor": "#FFEF02" },
       "roundness": "medium",
       "hostAvatar": {
-        "url": "http://localhost:9000/typebot/public/typebots/cli8tguel00011anqcst3166d/hostAvatar?v=1685368734687",
         "isEnabled": true
       },
       "hostBubbles": { "color": "#ffffff", "backgroundColor": "#1B1A1A" },

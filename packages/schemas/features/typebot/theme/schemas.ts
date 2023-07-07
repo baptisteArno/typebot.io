@@ -63,6 +63,9 @@ export const defaultTheme: Theme = {
       color: '#303235',
       placeholderColor: '#9095A0',
     },
+    hostAvatar: {
+      isEnabled: true,
+    },
   },
   general: {
     font: 'Open Sans',
