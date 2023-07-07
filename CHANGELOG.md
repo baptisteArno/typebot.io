@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="2.15.1"></a>
+## 2.15.1 (2023-07-07)
+
+### Changed
+
+- 🚸 (video) Improve video autoplay behavior [[5ae6c64](https://github.com/baptisteArno/typebot.io/commit/5ae6c64d065d295780f2b008a88c0e0ea59a70e5)]
+- 🚸 Remove new typebot default user avatar [[31b7022](https://github.com/baptisteArno/typebot.io/commit/31b70223c84786ba18a39502c9f750b72f1d014a)]
+
+### Fixed
+
+- 🐛 (share) Enable back empty public ID for self-hosted version [[56078b4](https://github.com/baptisteArno/typebot.io/commit/56078b4e0215b2d6313a9d2b3b89ae4936cac7f7)]
+
+
 <a name="2.15.0"></a>
 ## 2.15.0 (2023-07-06)
 
