@@ -23,7 +23,6 @@ export type NewTypebotProps = Omit<
 export const parseNewTypebot = ({
   folderId,
   name,
-  ownerAvatarUrl,
   workspaceId,
   isBrandingEnabled = true,
 }: {
@@ -56,13 +55,7 @@ export const parseNewTypebot = ({
     edges: [],
     variables: [],
     selectedThemeTemplateId: null,
-    theme: {
-      ...defaultTheme,
-      chat: {
-        ...defaultTheme.chat,
-        hostAvatar: { isEnabled: true, url: ownerAvatarUrl },
-      },
-    },
+    theme: defaultTheme,
     settings: {
       ...defaultSettings,
       general: {

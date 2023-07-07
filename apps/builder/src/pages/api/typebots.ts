@@ -34,7 +34,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           'groups' in formattedData
             ? formattedData
             : parseNewTypebot({
-                ownerAvatarUrl: user.image ?? undefined,
                 isBrandingEnabled: workspace.plan === Plan.FREE,
                 ...data,
               }),
