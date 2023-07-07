@@ -125,10 +125,10 @@ export const sendMessage = publicProcedure
   )
 
 const startSession = async (startParams?: StartParams, userId?: string) => {
-  if (!startParams?.typebot)
+  if (!startParams)
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'No typebot provided in startParams',
+      message: 'StartParams are missing',
     })
 
   const typebot = await getTypebot(startParams, userId)

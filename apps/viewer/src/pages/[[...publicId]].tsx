@@ -94,7 +94,14 @@ const getTypebotFromPublicId = async (
   const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { publicId: publicId ?? '' } },
     include: {
-      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+      typebot: {
+        select: {
+          name: true,
+          isClosed: true,
+          isArchived: true,
+          publicId: true,
+        },
+      },
     },
   })
   if (isNotDefined(publishedTypebot)) return null

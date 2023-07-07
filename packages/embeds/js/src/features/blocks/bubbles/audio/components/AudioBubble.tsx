@@ -20,6 +20,14 @@ export const AudioBubble = (props: Props) => {
     typingTimeout = setTimeout(() => {
       setIsTyping(false)
       setTimeout(() => {
+        const audioElement = ref?.querySelector('audio')
+        if (audioElement) {
+          try {
+            audioElement.play()
+          } catch (e) {
+            console.warn('Could not autoplay the audio:', e)
+          }
+        }
         props.onTransitionEnd(ref?.offsetTop)
       }, showAnimationDuration)
     }, typingDuration)
@@ -49,7 +57,6 @@ export const AudioBubble = (props: Props) => {
               (isTyping() ? 'opacity-0' : 'opacity-100')
             }
             style={{ height: isTyping() ? '32px' : 'revert' }}
-            autoplay
             controls
           />
         </div>

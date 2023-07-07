@@ -1,6 +1,6 @@
 import { LiteBadge } from './LiteBadge'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotDefined, isNotEmpty } from '@typebot.io/lib'
 import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
 import { ConversationContainer } from './ConversationContainer'
 import { setIsMobile } from '@/utils/isMobileSignal'
@@ -92,7 +92,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
   }
 
   createEffect(() => {
-    if (!props.typebot || isInitialized()) return
+    if (isNotDefined(props.typebot) || isInitialized()) return
     initializeBot().then()
   })
 

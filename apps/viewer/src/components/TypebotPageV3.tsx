@@ -5,11 +5,11 @@ import { SEO } from './Seo'
 
 export type TypebotPageProps = {
   url: string
-  typebot?: Pick<Typebot, 'settings' | 'theme' | 'name' | 'publicId'>
+  typebot: Pick<Typebot, 'settings' | 'theme' | 'name' | 'publicId'>
 }
 
 export const TypebotPageV3 = ({ url, typebot }: TypebotPageProps) => {
-  const { asPath, push, query } = useRouter()
+  const { asPath, push } = useRouter()
 
   const background = typebot?.theme.general.background
 
@@ -36,15 +36,13 @@ export const TypebotPageV3 = ({ url, typebot }: TypebotPageProps) => {
             : '#fff',
       }}
     >
-      {typebot && (
-        <SEO
-          url={url}
-          typebotName={typebot.name}
-          metadata={typebot.settings.metadata}
-        />
-      )}
+      <SEO
+        url={url}
+        typebotName={typebot.name}
+        metadata={typebot.settings.metadata}
+      />
       <Standard
-        typebot={typebot?.publicId ?? query.publicId?.toString() ?? 'n'}
+        typebot={typebot.publicId}
         onInit={clearQueryParamsIfNecessary}
       />
     </div>

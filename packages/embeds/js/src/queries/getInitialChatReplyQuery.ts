@@ -1,7 +1,7 @@
 import { InitialChatReply } from '@/types'
 import { guessApiHost } from '@/utils/guessApiHost'
 import type { SendMessageInput, StartParams } from '@typebot.io/schemas'
-import { isNotEmpty, sendRequest } from '@typebot.io/lib'
+import { isNotDefined, isNotEmpty, sendRequest } from '@typebot.io/lib'
 
 export async function getInitialChatReplyQuery({
   typebot,
@@ -13,7 +13,7 @@ export async function getInitialChatReplyQuery({
 }: StartParams & {
   apiHost?: string
 }) {
-  if (!typebot)
+  if (isNotDefined(typebot))
     throw new Error('Typebot ID is required to get initial messages')
 
   return sendRequest<InitialChatReply>({
