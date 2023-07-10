@@ -13,7 +13,6 @@ export type InputStep =
   | AskNameInputStep
 
 export enum InputStepType {
-  TEXT = 'text input',
   ASK_NAME = 'name input',
   EMAIL = 'email input',
   CPF = 'cpf input',
@@ -21,7 +20,8 @@ export enum InputStepType {
   DATE = 'date input',
   PHONE = 'phone number input',
   CHOICE = 'choice input',
-  PAYMENT = 'payment input'
+  PAYMENT = 'payment input',
+  TEXT = 'text input'
 }
 
 export type InputStepOptions =

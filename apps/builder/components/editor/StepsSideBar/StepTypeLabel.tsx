@@ -16,11 +16,11 @@ type Props = { type: StepType }
 export const StepTypeLabel = ({ type }: Props) => {
   switch (type) {
     case BubbleStepType.TEXT:
-      return <Text>Envie uma mensagem</Text>
+      return <Text>Envie uma mensagem de texto</Text>
     case InputStepType.TEXT:
-      return <Text>Qualquer coisa</Text>
+      return <Text>Pergunte qualquer coisa</Text>
     case BubbleStepType.MEDIA:
-      return <Text>Arquivo</Text>
+      return <Text>Envie um arquivo</Text>
     case BubbleStepType.VIDEO:
       return <Text>Vídeo</Text>
     case BubbleStepType.EMBED:
@@ -30,25 +30,25 @@ export const StepTypeLabel = ({ type }: Props) => {
         </Tooltip>
       )
     case InputStepType.EMAIL:
-      return <Text>Email</Text>
+      return <Text>Pergunte o email</Text>
     case InputStepType.CPF:
-      return <Text>CPF</Text>
+      return <Text>Pergunte o CPF</Text>
     // case InputStepType.URL:
     //   return <Text>Website</Text>
     case InputStepType.DATE:
       return <Text>Data</Text>
     case InputStepType.PHONE:
-      return <Text>Telefone</Text>
+      return <Text>Pergunte o telefone</Text>
     case InputStepType.CHOICE:
-      return <Text>Múltipla escolha</Text>
+      return <Text>Perguta de múltipla escolha</Text>
     // case InputStepType.PAYMENT:
     //   return <Text>Payment</Text>
     case InputStepType.ASK_NAME:
-      return <Text>Nome</Text>
+      return <Text>Pergunte o nome</Text>
     // case LogicStepType.SET_VARIABLE:
     //   return <Text>Set variable</Text>
     case LogicStepType.CONDITION:
-      return <Text>Condição</Text>
+      return <Text>Valide uma informação</Text>
     // case LogicStepType.REDIRECT:
     //   return <Text>Redirect</Text>
     // case LogicStepType.CODE:
@@ -70,7 +70,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     //     </Tooltip>
     //   )
     case IntegrationStepType.WEBHOOK:
-      return <Text>Webhook</Text>
+      return <Text>Conecte a outro sistema</Text>
     // case IntegrationStepType.ZAPIER:
     //   return <Text>Zapier</Text>
     // case IntegrationStepType.MAKE_COM:

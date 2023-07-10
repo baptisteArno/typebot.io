@@ -1,18 +1,23 @@
-import { Flex, HStack, StackProps, Text, Tooltip } from '@chakra-ui/react'
+import { Badge, Flex, HStack, StackProps, Text, Tooltip } from '@chakra-ui/react'
 import { StepType, DraggableStepType } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useEffect, useState } from 'react'
 import { StepIcon } from './StepIcon'
 import { StepTypeLabel } from './StepTypeLabel'
+import { InfoIcon } from '@chakra-ui/icons'
 
 export const StepCard = ({
   type,
   onMouseDown,
   isDisabled = false,
+  tooltip,
+  badge
 }: {
   type: DraggableStepType
   isDisabled?: boolean
   onMouseDown: (e: React.MouseEvent, type: DraggableStepType) => void
+  tooltip?: string,
+  badge?: string
 }) => {
   const { draggedStepType } = useStepDnd()
   const [isMouseDown, setIsMouseDown] = useState(false)
@@ -45,6 +50,27 @@ export const StepCard = ({
             <>
               <StepIcon type={type} />
               <StepTypeLabel type={type} />
+              {tooltip && tooltip.length &&
+                <Tooltip
+                  hasArrow
+                  label={tooltip}
+                  bg="gray.700"
+                  color="white"
+                  width={'200px'}
+                >
+                  <InfoIcon marginLeft={'10px'} color={'gray.300'} />
+                </Tooltip>
+              }
+              {badge && badge.length &&
+                <Badge
+                  variant="solid"
+                  colorScheme="blue"
+                  borderRadius="6px"
+                  textAlign="center"
+                >
+                  {badge}
+                </Badge>
+              }
             </>
           ) : (
             <Text color="white" userSelect="none">
