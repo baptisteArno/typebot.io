@@ -41,6 +41,7 @@ import { PreReserveContent } from '../contents/PreReserve'
 import { InputContent } from '../contents/Input'
 import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
+import { InputItemsContent } from '../contents/InputItemsContent'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -81,7 +82,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       )
     }
     case InputStepType.CHOICE: {
-      return <ItemNodesList step={step} indices={indices} />
+      return <InputItemsContent step={step} indices={indices} />
     }
     // case InputStepType.PAYMENT: {
     //   return <PaymentInputContent step={step} />

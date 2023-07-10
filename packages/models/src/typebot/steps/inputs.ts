@@ -106,7 +106,7 @@ type InputTextOptionsBase = {
   labels: { placeholder: string; button: string }
 }
 
-export type ChoiceInputOptions = OptionBase & {
+export type ChoiceInputOptions = InputOptions & {
   isMultipleChoice: boolean
   buttonLabel: string
 }
@@ -299,8 +299,14 @@ export const defaultPhoneInputOptions: InputOptions = {
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {
-  buttonLabel: defaultButtonLabel,
+  message: undefined,
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '',
+  property: undefined,
+  variableId: undefined,
   isMultipleChoice: false,
+  buttonLabel: ''
 }
 
 export const defaultPaymentInputOptions: PaymentInputOptions = {

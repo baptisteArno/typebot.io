@@ -114,7 +114,7 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
-  const webhook = typebot?.blocks[blockIndex].steps[stepIndex].options?.url
+  const webhook = typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.url
   return (
     <Stack
       flex={1}

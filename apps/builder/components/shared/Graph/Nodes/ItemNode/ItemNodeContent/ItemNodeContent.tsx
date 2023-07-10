@@ -15,7 +15,7 @@ type Props = {
 }
 
 export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => {
-  // console.log('ItemNodeContent (chama o WhatsNode)', item)
+  console.log('ItemNodeContent', item)
   switch (item.type) {
     case ItemType.BUTTON:
       return (
@@ -35,7 +35,6 @@ export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => 
       return (
         <WhatsAppOptionsNodeContent
           item={item}
-          step={step}
           isMouseOver={isMouseOver}
           indices={indices}
         />
@@ -44,7 +43,6 @@ export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => 
       return (
         <WhatsAppButtonsNodeContent
           item={item}
-          step={step}
           isMouseOver={isMouseOver}
           indices={indices}
         />

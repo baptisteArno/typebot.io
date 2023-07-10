@@ -11,15 +11,13 @@ import { PlusIcon } from 'assets/icons'
 import {
   Item,
   ItemIndices,
-  ItemType,
-  WhatsAppOptionsListStep,
+  ItemType
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
 type Props = {
   item: Item
-  step: WhatsAppOptionsListStep
   indices: ItemIndices
   isMouseOver: boolean
 }

@@ -18,7 +18,6 @@ import {
   defaultImageBubbleContent,
   defaultVideoBubbleContent,
   defaultGenericInputOptions,
-  defaultNumberInputOptions,
   defaultEmailInputOptions,
   defaultCpfInputOptions,
   defaultDateInputOptions,
@@ -376,29 +375,12 @@ const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null 
       return defaultDateInputOptions
     case InputStepType.PHONE:
       return defaultPhoneInputOptions
-    // case InputStepType.URL:
-    //   return defaultUrlInputOptions
     case InputStepType.CHOICE:
       return defaultChoiceInputOptions
-    // case InputStepType.PAYMENT:
-    //   return defaultPaymentInputOptions
     case InputStepType.ASK_NAME:
       return defaultAskNameOptions
-    // case LogicStepType.SET_VARIABLE:
-    //   return defaultSetVariablesOptions
-    // case LogicStepType.REDIRECT:
-    //   return defaultRedirectOptions
-    // case LogicStepType.CODE:
-    //   return defaultCodeOptions
     case LogicStepType.TYPEBOT_LINK:
       return {}
-    // case IntegrationStepType.GOOGLE_SHEETS:
-    //   return defaultGoogleSheetsOptions
-    // case IntegrationStepType.GOOGLE_ANALYTICS:
-    //   return defaultGoogleAnalyticsOptions
-    // case IntegrationStepType.ZAPIER:
-    // case IntegrationStepType.PABBLY_CONNECT:
-    // case IntegrationStepType.MAKE_COM:
     case IntegrationStepType.WEBHOOK:
       return defaultWebhookOptions
     // case IntegrationStepType.EMAIL:

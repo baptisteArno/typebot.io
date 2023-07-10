@@ -51,7 +51,7 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         const newBlock: Block = {
           id,
           graphCoordinates,
-          title: `Grupo ${typebot?.blocks?.length || '1'}`,
+          title: `Grupo #${typebot?.blocks?.length || '1'}`,
           steps: [],
         }
         typebot.blocks.push(newBlock)

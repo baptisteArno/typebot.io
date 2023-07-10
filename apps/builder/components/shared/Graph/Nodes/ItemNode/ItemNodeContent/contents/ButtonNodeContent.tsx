@@ -21,12 +21,12 @@ type Props = {
 export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
-  const [itemValue, setItemValue] = useState(item.content ?? 'Clique para editar')
+  const [itemValue, setItemValue] = useState(item.content ?? 'Clique para editar 1')
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar')
+      setItemValue(item.content ?? 'Clique para editar 2')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -37,7 +37,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Clique para editar') deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Clique para editar 4') deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
