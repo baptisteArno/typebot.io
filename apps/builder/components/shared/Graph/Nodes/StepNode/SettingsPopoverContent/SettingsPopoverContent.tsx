@@ -22,11 +22,12 @@ import {
   Webhook,
   OctaWabaStepType,
   BubbleStepType,
+  MediaBubbleContent,
 } from 'models'
 import { useRef } from 'react'
 import {
-  TextInputSettingsBody,
-  NumberInputSettingsBody,
+  //TextInputSettingsBody,
+  //NumberInputSettingsBody,
   EmailInputSettingsBody,
   CpfInputSettingsBody,
   UrlInputSettingsBody,
@@ -52,6 +53,8 @@ import { SetVariableSettings } from './bodies/SetVariableSettings'
 import { TypebotLinkSettingsForm } from './bodies/TypebotLinkSettingsForm'
 import { WebhookSettings } from './bodies/WebhookSettings'
 import { ZapierSettings } from './bodies/ZapierSettings'
+import { InputSettingBody } from './bodies/InputSettingsBody'
+import { InputMediaSettingBody } from './bodies/InputMediaSettingsBody'
 
 type Props = {
   step: Exclude<Step, TextBubbleStep>
@@ -68,7 +71,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
 
-  const handleWidthPerComponent = (step: Step): number|undefined => {
+  const handleWidthPerComponent = (step: Step): number | undefined => {
     let width;
     switch (step.type) {
       case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
@@ -92,7 +95,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
     return width;
   }
 
-  const handleHeightPerComponent = (step: Step): number|undefined => {
+  const handleHeightPerComponent = (step: Step): number | undefined => {
     let height;
     switch (step.type) {
       case OctaStepType.CALL_OTHER_BOT:
@@ -107,7 +110,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
     }
     return height;
   }
-  
+
   return (
     <Portal>
       <PopoverContent onMouseDown={handleMouseDown} pos="relative" w={handleWidthPerComponent(props.step)}>
@@ -145,6 +148,9 @@ export const StepSettings = ({
   webhook?: Webhook
   onStepChange: (step: Partial<Step>) => void
 }) => {
+  const handleContentChange = (content: MediaBubbleContent) => {
+    onStepChange({ content } as Partial<Step>)
+  }
   const handleOptionsChange = (options: StepOptions) => {
     onStepChange({ options } as Partial<Step>)
   }
@@ -154,38 +160,6 @@ export const StepSettings = ({
     } as Partial<Step>)
   }
   switch (step.type) {
-    case InputStepType.TEXT: {
-      return (
-        <TextInputSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    case InputStepType.NUMBER: {
-      return (
-        <NumberInputSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    case InputStepType.EMAIL: {
-      return (
-        <EmailInputSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    case InputStepType.CPF: {
-      return (
-        <CpfInputSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
     case InputStepType.URL: {
       return (
         <UrlInputSettingsBody
@@ -194,22 +168,7 @@ export const StepSettings = ({
         />
       )
     }
-    case InputStepType.DATE: {
-      return (
-        <DateInputSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    case InputStepType.PHONE: {
-      return (
-        <PhoneNumberSettingsBody
-          options={step.options}
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
+    
     case InputStepType.CHOICE: {
       return (
         <ChoiceInputSettingsBody
@@ -226,22 +185,6 @@ export const StepSettings = ({
         />
       )
     }
-    case InputStepType.ASK_NAME: {
-      return (
-        <TextInputSettingsBody
-          options={step.options || { variableId: '2' } }
-          onOptionsChange={handleOptionsChange}
-        />
-      )
-    }
-    // case LogicStepType.SET_VARIABLE: {
-    //   return (
-    //     <SetVariableSettings
-    //       options={step.options}
-    //       onOptionsChange={handleOptionsChange}
-    //     />
-    //   )
-    // }
     case LogicStepType.CONDITION: {
       return (
         <ConditionSettingsBody step={step} onItemChange={handleItemChange} />
@@ -333,13 +276,31 @@ export const StepSettings = ({
     }
     case IntegrationStepType.WEBHOOK: {
       return (
-        <WebhookSettings 
-        step={step}
-        onOptionsChange={handleOptionsChange} />
+        <WebhookSettings
+          step={step}
+          onOptionsChange={handleOptionsChange} />
       )
     }
-    default: {
-      return <></>
+    case InputStepType.ASK_NAME:
+    case InputStepType.EMAIL:
+    case InputStepType.TEXT:
+    case InputStepType.PHONE:
+    case InputStepType.DATE:
+    case InputStepType.CPF:  {
+      return (
+        <InputSettingBody
+          step={step}
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
+    case BubbleStepType.MEDIA: {
+      return (
+        <InputMediaSettingBody
+          step={step}
+          onContentChange={handleContentChange}
+        />
+      )
     }
   }
 }

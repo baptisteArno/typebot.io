@@ -28,53 +28,6 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
   ) => {
     let step: Array<DraggableStep>
     switch (type) {
-      case InputStepType.TEXT: {
-        step = templateTextBot(bot, blockId, 'Pergunte qualquer coisa')
-        break
-      }
-      case InputStepType.NUMBER: {
-        step = templateTextBot(
-          bot,
-          blockId,
-          'Pode me informar o número do seu pedido, por favor?'
-        )
-        break
-      }
-      case InputStepType.EMAIL:
-        step = templateTextBot(bot, blockId, 'Por favor, digite seu email')
-        break
-      case InputStepType.CPF:
-        step = templateTextBot(bot, blockId, 'Por favor, digite seu CPF')
-        break
-      case InputStepType.DATE: {
-        step = templateDateBot(bot, blockId, 'Informe uma data, por favor')
-        break
-      }
-      case InputStepType.ASK_NAME:
-        step = templateTextBot(bot, blockId, 'Pode me dizer o seu nome?')
-        break
-      case InputStepType.PHONE:
-        step = templateTextBot(
-          bot,
-          blockId,
-          'Posso anotar seu telefone, por favor?'
-        )
-        break
-      case OctaStepType.OFFICE_HOURS:
-        step = templateOfficeHours(bot, blockId)
-        break
-      case OctaStepType.COMMERCE:
-        step = templateCommerceStep(
-          blockId
-        )
-        break
-      case BubbleStepType.MEDIA:
-        step = templateUploadBot(
-          bot,
-          blockId,
-          'Este é o arquivo que preparamos para você!'
-        )
-        break
       default:
         step = [parseNewStep(type, blockId)]
         break
@@ -90,7 +43,7 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
 
     const steps = builder(type, bot, blockId)
 
-    steps.map((step) =>
+    steps.map((step) => 
       block[stepIndices.blockIndex].steps.splice(
         stepIndices.stepIndex ?? 0,
         0,

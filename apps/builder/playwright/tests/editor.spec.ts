@@ -4,7 +4,7 @@ import {
   importTypebotInDatabase,
   parseDefaultBlockWithStep,
 } from '../services/database'
-import { defaultTextInputOptions, InputStepType } from 'models'
+import { defaultGenericInputOptions, InputStepType } from 'models'
 import path from 'path'
 import cuid from 'cuid'
 
@@ -107,7 +107,7 @@ test.describe.parallel('Editor', () => {
         id: typebotId,
         ...parseDefaultBlockWithStep({
           type: InputStepType.TEXT,
-          options: defaultTextInputOptions,
+          options: defaultGenericInputOptions,
         }),
       },
     ])
@@ -134,7 +134,7 @@ test.describe.parallel('Editor', () => {
         name: 'My awesome typebot',
         ...parseDefaultBlockWithStep({
           type: InputStepType.TEXT,
-          options: defaultTextInputOptions,
+          options: defaultGenericInputOptions,
         }),
       },
     ])

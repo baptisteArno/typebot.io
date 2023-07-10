@@ -1,4 +1,4 @@
-import { StepBase } from '.'
+import { InputOptions, StepBase } from '.'
 import { TElement } from '@udecode/plate-core'
 
 export type BubbleStep =
@@ -62,7 +62,7 @@ export type ImageBubbleContent = {
   type: string
 }
 
-export type MediaBubbleContent = {
+export type MediaBubbleContent = InputOptions & {
   url?: string
   name: string
   size: number
@@ -101,7 +101,22 @@ export const defaultImageBubbleContent: ImageBubbleContent = {
 export const defaultMediaBubbleContent: MediaBubbleContent = {
   name: '',
   size: 1,
-  type: 'media'
+  type: 'media',
+  message: {
+    html: `<div style="margin-left: 8px;">Confira nossas opções</div>`,
+    richText: [{
+      children: [{
+        text: 'Confira nossas opções',
+      }],
+      type: "p"
+    }],
+    plainText: 'Confira nossas opções'
+  },
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '',
+  property: undefined,
+  variableId: undefined
 }
 
 export const defaultVideoBubbleContent: VideoBubbleContent = {}

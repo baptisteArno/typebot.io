@@ -106,12 +106,12 @@ export const UploadButton = ({
     }
   }
 
-  useEffect(() => {
-    if (workspace && workspace.channel) {
-      handleMaxFilesize(workspace.channel)
-      handleSupportedExtensions(workspace.channel)
-    }
-  }, [workspace])
+  // useEffect(() => {
+  //   if (workspace && workspace.channel) {
+  //     handleMaxFilesize(workspace.channel)
+  //     handleSupportedExtensions(workspace.channel)
+  //   }
+  // }, [workspace])
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true)

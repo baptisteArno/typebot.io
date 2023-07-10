@@ -70,7 +70,7 @@ export const VariableSearchInput = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { typebot, createVariable, deleteVariable } = useTypebot()
-
+  
   const variables = typebot?.variables ?? []
   const makeTitle = (propertiesType: string): string => {
     switch (propertiesType) {
@@ -85,6 +85,8 @@ export const VariableSearchInput = ({
     }
   }
 
+  let myVariable = typebot?.variables.find(v => v.id === initialVariableId)
+  
   const grouped = typebot?.variables.reduce((acc, current) => {
     if (!acc[current.domain]) {
       acc[current.domain] = {
@@ -92,6 +94,7 @@ export const VariableSearchInput = ({
         options: [],
       }
     }
+
     acc[current.domain].options.push(current)
 
     return acc
@@ -102,7 +105,9 @@ export const VariableSearchInput = ({
   const debounced = useDebouncedCallback(
     (value) => {
       const variable = variables.find((v) => v.name === value)
-      if (variable) onSelectVariable(variable)
+      if (variable) {
+        onSelectVariable(variable)
+      }
     },
     isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
@@ -141,7 +146,7 @@ export const VariableSearchInput = ({
       if (event.token === '') {
         onSelectVariable({} as any)
         return
-      }
+      }      
       onSelectVariable(event)
       debounced(event.token)
       onClose()
@@ -230,6 +235,7 @@ export const VariableSearchInput = ({
           Selecione uma variável para salvar a resposta:
           <div onWheelCapture={handleContentWheel}>
             <Select
+              value={myVariable}
               isClearable={true}
               noOptionsMessage={() => 'Variável não encontrada'}
               onChange={onInputChange}

@@ -166,7 +166,7 @@ export const StepsSideBar = () => {
               <InfoIcon marginLeft={'10px'} color={'gray.300'} />
             </Tooltip>
           </Text>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(BubbleStepType).map(
               (type) =>
                 shouldHideComponents(type) && (
@@ -193,7 +193,7 @@ export const StepsSideBar = () => {
               <InfoIcon marginLeft={'10px'} color={'gray.300'} />
             </Tooltip>
           </Text>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(InputStepType).map(
               (type) =>
                 shouldHideComponents(type) && (
@@ -265,7 +265,7 @@ export const StepsSideBar = () => {
             </Text>
             <Spacer />
           </Flex>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(LogicStepType).map(
               (type) =>
                 shouldHideComponents(type) && (
@@ -286,7 +286,7 @@ export const StepsSideBar = () => {
             </Text>
             <Spacer />
           </Flex>
-          <SimpleGrid columns={2} spacing="3">
+          <SimpleGrid columns={1} spacing="3">
             {Object.values(IntegrationStepType).map(
               (type) =>
                 shouldHideComponents(type) && (

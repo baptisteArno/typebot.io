@@ -96,8 +96,8 @@ export const isMediaBubbleStep = (
 ): step is ImageBubbleStep | MediaBubbleStep | VideoBubbleStep =>
   step.type === BubbleStepType.IMAGE || step.type === BubbleStepType.MEDIA || step.type === BubbleStepType.VIDEO
 
-export const isTextInputStep = (step: Step): step is TextInputStep =>
-  step.type === InputStepType.TEXT
+// export const isTextInputStep = (step: Step): step is TextInputStep =>
+//   step.type === InputStepType.TEXT
 
 export const isChoiceInput = (step: Step): step is ChoiceInputStep =>
   step.type === InputStepType.CHOICE

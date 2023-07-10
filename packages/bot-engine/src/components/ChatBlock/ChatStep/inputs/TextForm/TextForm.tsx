@@ -2,7 +2,6 @@ import {
   EmailInputStep,
   CpfInputStep,
   InputStepType,
-  NumberInputStep,
   PhoneNumberInputStep,
   TextInputStep,
   UrlInputStep,
@@ -16,7 +15,6 @@ type TextFormProps = {
     | TextInputStep
     | EmailInputStep
     | CpfInputStep
-    | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep
   onSubmit: (value: string) => void

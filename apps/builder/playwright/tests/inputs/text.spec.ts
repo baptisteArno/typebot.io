@@ -3,7 +3,7 @@ import {
   createTypebots,
   parseDefaultBlockWithStep,
 } from '../../services/database'
-import { defaultTextInputOptions, InputStepType } from 'models'
+import { defaultGenericInputOptions, InputStepType } from 'models'
 import { typebotViewer } from '../../services/selectorUtils'
 import cuid from 'cuid'
 
@@ -15,7 +15,7 @@ test.describe.parallel('Text input step', () => {
         id: typebotId,
         ...parseDefaultBlockWithStep({
           type: InputStepType.TEXT,
-          options: defaultTextInputOptions,
+          options: defaultGenericInputOptions,
         }),
       },
     ])
@@ -25,12 +25,12 @@ test.describe.parallel('Text input step', () => {
     await page.click('text=Preview')
     await expect(
       typebotViewer(page).locator(
-        `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+        `input[placeholder="${defaultGenericInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'text')
     await expect(typebotViewer(page).locator(`button`)).toBeDisabled()
 
-    await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
+    await page.click(`text=${defaultGenericInputOptions.labels.placeholder}`)
     await page.fill('#placeholder', 'Your name...')
     await page.fill('#button', 'Go')
     await page.click('text=Long text?')
