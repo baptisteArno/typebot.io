@@ -192,7 +192,7 @@ export const defaultGenericInputOptions: InputOptions = {
 
 export const defaultAskNameOptions: InputOptions = {
   message: {
-    html: `<div style="margin-left: 8px;">'Pode me dizer o seu nome?'</div>`,
+    html: `<div style="margin-left: 8px;">Pode me dizer o seu nome?</div>`,
     richText: [{
       children: [{
         text: 'Pode me dizer o seu nome?',
@@ -210,7 +210,7 @@ export const defaultAskNameOptions: InputOptions = {
 
 export const defaultEmailInputOptions: InputOptions = {
   message: {
-    html: `<div style="margin-left: 8px;">'Pode me informar o seu email?'</div>`,
+    html: `<div style="margin-left: 8px;">Pode me informar o seu email?</div>`,
     richText: [{
       children: [{
         text: 'Pode me informar o seu email?',
@@ -237,7 +237,7 @@ export const defaultEmailInputOptions: InputOptions = {
 
 export const defaultCpfInputOptions: InputOptions = {
   message: {
-    html: `<div style="margin-left: 8px;">'Pode me informar o seu CPF?'</div>`,
+    html: `<div style="margin-left: 8px;">Pode me informar o seu CPF?</div>`,
     richText: [{
       children: [{
         text: 'Pode me informar o seu CPF?',
@@ -273,7 +273,7 @@ export const defaultDateInputOptions: InputOptions = {
 
 export const defaultPhoneInputOptions: InputOptions = {
   message: {
-    html: `<div style="margin-left: 8px;">'Pode me informar o seu celular?'</div>`,
+    html: `<div style="margin-left: 8px;">Pode me informar o seu celular?</div>`,
     richText: [{
       children: [{
         text: 'Pode me informar o seu celular',
