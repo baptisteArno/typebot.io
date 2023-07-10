@@ -44,14 +44,14 @@ export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
-  COMMERCE = 'commerce',
   PRE_RESERVE = 'pre reserve'
 }
 
 // Waba step types
 export enum OctaWabaStepType {
   WHATSAPP_OPTIONS_LIST = 'whatsapp options list',
-  WHATSAPP_BUTTONS_LIST = 'whatsapp buttons list'
+  WHATSAPP_BUTTONS_LIST = 'whatsapp buttons list',
+  COMMERCE = 'commerce',
 }
 
 // Regular steps types that have options
@@ -75,7 +75,7 @@ export type PreReserveStep = StepBase & {
 }
 
 export type CommerceStep = StepBase & {
-  type: OctaStepType.COMMERCE
+  type: OctaWabaStepType.COMMERCE
   options: CommerceOptions
 }
 
