@@ -1,9 +1,9 @@
-import { DraggableStep, OctaStepType } from "models";
+import { DraggableStep, OctaWabaStepType } from "models";
 import { parseNewStep } from "services/typebots";
 
 const templateCommerceStep = (blockId: string): Array<DraggableStep> => {
   const CommerceStep = [
-    parseNewStep(OctaStepType.COMMERCE, blockId),
+    parseNewStep(OctaWabaStepType.COMMERCE, blockId),
   ];
 
   return CommerceStep.reverse();

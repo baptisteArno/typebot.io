@@ -436,7 +436,7 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
       return defaultCallOtherBotOptions
     case OctaStepType.OFFICE_HOURS:
       return defaultOfficeHoursOptions
-    case OctaStepType.COMMERCE:
+    case OctaWabaStepType.COMMERCE:
       return defaultCommerceOptions
     case OctaStepType.PRE_RESERVE:
       return defaultPreReserveOptions

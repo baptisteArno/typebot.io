@@ -22,18 +22,18 @@ export const AssignToResponsibleSelect = ({
 
   useEffect(() => {
     if (octaAgents) {
-      const items = [
-        {
-          label: 'Responsável pelo contato',
-          value: {
-            assignType: '@AGENT',
-            subType: 'RESPONSIBLE_CONTACT',
-          },
-          key: 'responsible-key',
-          isTitle: false,
+      const responsibleForContact = {
+        label: 'Responsável pelo contato',
+        value: {
+          assignType: '@AGENT',
+          subType: 'RESPONSIBLE_CONTACT',
         },
-      ]
-      setDefaultSelected(items[0])
+        key: 'responsible-key',
+        isTitle: false,
+      }
+      const items = [responsibleForContact]
+      setDefaultSelected(responsibleForContact)
+      onSelect(responsibleForContact)
       setItemsToResponsibleAssign(items)
     }
     return () => {

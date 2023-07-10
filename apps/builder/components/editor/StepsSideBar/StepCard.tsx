@@ -49,18 +49,20 @@ export const StepCard = ({
           {!isMouseDown ? (
             <>
               <StepIcon type={type} />
-              <StepTypeLabel type={type} />
-              {tooltip && tooltip.length &&
-                <Tooltip
-                  hasArrow
-                  label={tooltip}
-                  bg="gray.700"
-                  color="white"
-                  width={'200px'}
-                >
-                  <InfoIcon marginLeft={'10px'} color={'gray.300'} />
-                </Tooltip>
-              }
+              <HStack style={{flex: 1}}>
+                <StepTypeLabel type={type} />
+                {tooltip && tooltip.length &&
+                  <Tooltip
+                    hasArrow
+                    label={tooltip}
+                    bg="gray.700"
+                    color="white"
+                    width={'200px'}
+                  >
+                    <InfoIcon marginLeft={'10px'} color={'gray.300'} />
+                  </Tooltip>
+                }
+              </HStack>
               {badge && badge.length &&
                 <Badge
                   variant="solid"

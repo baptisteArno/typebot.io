@@ -105,14 +105,18 @@ export const StepsSideBar = () => {
         !verifyFeatureToggle('whatsapp-api')) ||
         (type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
           !verifyFeatureToggle('whatsapp-api')) ||
-        (type === OctaStepType.COMMERCE &&
+        (type === OctaWabaStepType.COMMERCE &&
           !verifyFeatureToggle('whatsapp-api')))
     )
   }
 
+  const wabaMessageComponent = () => {
+    return [OctaWabaStepType.COMMERCE]
+  }
+
   return (
     <Flex
-      w="360px"
+      w="375px"
       pos="absolute"
       left="0"
       h={`calc(100vh - ${headerHeight}px)`}
@@ -177,6 +181,16 @@ export const StepsSideBar = () => {
                   />
                 )
             )}
+            {workspace?.channel === 'whatsapp' && (
+              wabaMessageComponent().map((type) => (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                  badge={"WAB"}
+                  isDisabled={shouldDisableComponent(type)}
+                />
+              )))}
           </SimpleGrid>
         </Stack>
 
@@ -206,7 +220,7 @@ export const StepsSideBar = () => {
                 )
             )}
             {workspace?.channel === 'whatsapp' && (
-              Object.values(OctaWabaStepType).map((type) => (
+              Object.values(OctaWabaStepType).filter(s => !wabaMessageComponent().includes(s)).map((type) => (
                 <StepCard
                   key={type}
                   type={type}

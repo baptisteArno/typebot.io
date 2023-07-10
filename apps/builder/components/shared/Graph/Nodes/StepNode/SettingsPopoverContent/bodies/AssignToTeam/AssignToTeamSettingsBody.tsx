@@ -29,10 +29,11 @@ export const AssignToTeamSettingsBody = ({
       'responsible-contact-enabled'
     )
     setHasResponsibleContact(responsibleContactEnabled)
-    if (responsibleContactEnabled)
+    if (responsibleContactEnabled) {
       setAutoAssignToTitle(
         'Se não houver um responsável pelo contato, atribuir para:'
       )
+    }
   }, [])
 
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
@@ -79,7 +80,7 @@ export const AssignToTeamSettingsBody = ({
   const handleAssignToResponsibleChange = (e: any) => {
     onOptionsChange({
       ...options,
-      subType: e.subType
+      subType: e.value?.subType
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>

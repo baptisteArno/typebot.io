@@ -127,7 +127,11 @@ export const isOctaBubbleStepType = (type: StepType): type is OctaBubbleStepType
 // export const hasRedirectWhenNoneAvailable = (step: Step): step is OctaBubbleStepType =>
 
 export const isOctaStepType = (type: StepType): type is OctaStepType =>
-  (Object.values(OctaStepType) as string[]).includes(type)
+{
+  const octaType = Object.values(OctaStepType) as string[]
+  return [...octaType, OctaWabaStepType.COMMERCE].includes(type)
+}
+  
 
 export const stepTypeHasOption = (
   type: StepType
@@ -152,8 +156,8 @@ export const stepTypeHasWebhook = (
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST =>
-  type === LogicStepType.CONDITION || type === InputStepType.CHOICE || type === OctaStepType.OFFICE_HOURS || type === IntegrationStepType.WEBHOOK || type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST || type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE => 
+  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE].includes(type)
 
 export const stepHasItems = (
   step: Step

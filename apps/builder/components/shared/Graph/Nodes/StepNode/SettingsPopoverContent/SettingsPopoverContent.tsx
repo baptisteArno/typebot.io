@@ -77,7 +77,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       case OctaStepType.OFFICE_HOURS:
-      case OctaStepType.COMMERCE:
+      case OctaWabaStepType.COMMERCE:
         width = 450;
         break;
       case IntegrationStepType.WEBHOOK:
@@ -249,7 +249,7 @@ export const StepSettings = ({
         <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
-    case OctaStepType.COMMERCE: {
+    case OctaWabaStepType.COMMERCE: {
       return (
         <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
       )
