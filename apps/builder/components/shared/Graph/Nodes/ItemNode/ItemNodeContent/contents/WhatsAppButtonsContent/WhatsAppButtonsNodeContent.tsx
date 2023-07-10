@@ -11,22 +11,19 @@ import { PlusIcon } from 'assets/icons'
 import {
   Item,
   ItemIndices,
-  ItemType,
-  WhatsAppButtonsListStep,
+  ItemType
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
 type Props = {
   item: Item
-  step: WhatsAppButtonsListStep
   indices: ItemIndices
   isMouseOver: boolean
 }
 
 export const WhatsAppButtonsNodeContent = ({
   item,
-  step,
   indices,
   isMouseOver,
 }: Props) => {
