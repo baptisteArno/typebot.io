@@ -1,9 +1,8 @@
-import { ItemBase, ItemType } from '.'
+import { ItemBase, ItemType, TextBubbleContent } from '.'
 import { StepBase } from './steps'
 
 export type InputStep =
   | TextInputStep
-  | NumberInputStep
   | EmailInputStep
   | CpfInputStep
   | UrlInputStep
@@ -16,7 +15,6 @@ export type InputStep =
 export enum InputStepType {
   TEXT = 'text input',
   ASK_NAME = 'name input',
-  NUMBER = 'number input',
   EMAIL = 'email input',
   CPF = 'cpf input',
   URL = 'url input',
@@ -39,27 +37,22 @@ export type InputStepOptions =
 
 export type AskNameInputStep = StepBase & {
   type: InputStepType.ASK_NAME
-  options: AskNameOptions
+  options: InputOptions
 }
 
 export type TextInputStep = StepBase & {
   type: InputStepType.TEXT
-  options: TextInputOptions
-}
-
-export type NumberInputStep = StepBase & {
-  type: InputStepType.NUMBER
-  options: NumberInputOptions
+  options: InputOptions
 }
 
 export type EmailInputStep = StepBase & {
   type: InputStepType.EMAIL
-  options: EmailInputOptions
+  options: InputOptions
 }
 
 export type CpfInputStep = StepBase & {
   type: InputStepType.CPF
-  options: CpfInputOptions
+  options: InputOptions
 }
 
 export type UrlInputStep = StepBase & {
@@ -69,12 +62,12 @@ export type UrlInputStep = StepBase & {
 
 export type DateInputStep = StepBase & {
   type: InputStepType.DATE
-  options: DateInputOptions
+  options: InputOptions
 }
 
 export type PhoneNumberInputStep = StepBase & {
   type: InputStepType.PHONE
-  options: PhoneNumberInputOptions
+  options: InputOptions
 }
 
 export type ChoiceInputStep = StepBase & {
@@ -145,6 +138,13 @@ export type PhoneNumberInputOptions = OptionBase & {
   defaultCountryCode?: string
 }
 
+export type InputOptions = OptionBase & {
+  message?: TextBubbleContent
+  useFallback: boolean
+  fallbackMessages?: Array<TextBubbleContent>
+  initialVariableToken?: string
+}
+
 export type TextInputOptions = OptionBase &
   InputTextOptionsBase & {
     isLong: boolean
@@ -181,38 +181,76 @@ export type PaymentInputOptions = OptionBase & {
 
 const defaultButtonLabel = 'Enviar'
 
-export const defaultTextInputOptions: TextInputOptions = {
-  isLong: false,
-  labels: { button: defaultButtonLabel, placeholder: 'Salvar resposta em ...' },
+export const defaultGenericInputOptions: InputOptions = {
+  message: undefined,
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '',
+  property: undefined,
+  variableId: undefined
 }
 
-export const defaultAskNameOptions: AskNameOptions = {
-  isLong: false,
-  variableId: '1',
-  labels: { button: defaultButtonLabel, placeholder: 'Digite a sua resposta...' },
-}
-
-export const defaultNumberInputOptions: NumberInputOptions = {
-  labels: { button: defaultButtonLabel, placeholder: 'Digite o número...' },
-}
-
-export const defaultEmailInputOptions: EmailInputOptions = {
-  labels: {
-    button: defaultButtonLabel,
-    placeholder: 'Digite o seu email...',
+export const defaultAskNameOptions: InputOptions = {
+  message: {
+    html: `<div style="margin-left: 8px;">'Pode me dizer o seu nome?'</div>`,
+    richText: [{
+      children: [{
+        text: 'Pode me dizer o seu nome?',
+      }],
+      type: "p"
+    }],
+    plainText: 'Pode me dizer o seu nome?'
   },
-  retryMessageContent:
-    "Esse email não parece ser válido. Você pode digitar novamente?",
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '#nome-contato',
+  property: undefined,
+  variableId: undefined
 }
 
-export const defaultCpfInputOptions: CpfInputOptions = {
-  labels: {
-    button: defaultButtonLabel,
-    placeholder: 'Digite o seu cpf...',
+export const defaultEmailInputOptions: InputOptions = {
+  message: {
+    html: `<div style="margin-left: 8px;">'Pode me informar o seu email?'</div>`,
+    richText: [{
+      children: [{
+        text: 'Pode me informar o seu email?',
+      }],
+      type: "p"
+    }],
+    plainText: 'Pode me informar o seu email?'
   },
-  variableId: undefined,
-  retryMessageContent:
-    "Esse cpf não parece ser válido. Você pode digitar novamente?",
+  useFallback: true,
+  fallbackMessages: [ {
+    html: `<div style="margin-left: 8px;">Esse email não parece ser válido. Você pode digitar novamente?</div>`,
+    richText: [{
+      children: [{
+        text: "Esse email não parece ser válido. Você pode digitar novamente?",
+      }],
+      type: "p"
+    }],
+    plainText: "Esse email não parece ser válido. Você pode digitar novamente?",
+  }],
+  initialVariableToken: '#email-contato',
+  property: undefined,
+  variableId: undefined
+}
+
+export const defaultCpfInputOptions: InputOptions = {
+  message: {
+    html: `<div style="margin-left: 8px;">'Pode me informar o seu CPF?'</div>`,
+    richText: [{
+      children: [{
+        text: 'Pode me informar o seu CPF?',
+      }],
+      type: "p"
+    }],
+    plainText: 'Pode me informar o seu CPF?'
+  },
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '#cpf-contato',
+  property: undefined,
+  variableId: undefined
 }
 
 export const defaultUrlInputOptions: UrlInputOptions = {
@@ -224,19 +262,40 @@ export const defaultUrlInputOptions: UrlInputOptions = {
     "Essa URL não parece válida. Você pode digitar novamente?",
 }
 
-export const defaultDateInputOptions: DateInputOptions = {
-  hasTime: false,
-  isRange: false,
-  labels: { button: defaultButtonLabel, from: 'De:', to: 'Até:' },
+export const defaultDateInputOptions: InputOptions = {
+  message: undefined,
+  useFallback: false,
+  fallbackMessages: undefined,
+  initialVariableToken: '',
+  property: undefined,
+  variableId: undefined
 }
 
-export const defaultPhoneInputOptions: PhoneNumberInputOptions = {
-  labels: {
-    button: defaultButtonLabel,
-    placeholder: 'Digite o seu número...',
+export const defaultPhoneInputOptions: InputOptions = {
+  message: {
+    html: `<div style="margin-left: 8px;">'Pode me informar o seu celular?'</div>`,
+    richText: [{
+      children: [{
+        text: 'Pode me informar o seu celular',
+      }],
+      type: "p"
+    }],
+    plainText: 'Pode me informar o seu celular'
   },
-  retryMessageContent:
-    "Esse número não parece válido. Você pode digitar novamente?",
+  useFallback: true,
+  fallbackMessages: [ {
+    html: `<div style="margin-left: 8px;">Isso não se parece com um telefone válido. Você pode digitar novamente?</div>`,
+    richText: [{
+      children: [{
+        text: "Isso não se parece com um telefone válido. Você pode digitar novamente?",
+      }],
+      type: "p"
+    }],
+    plainText: "Isso não se parece com um telefone válido. Você pode digitar novamente?",
+  }],
+  initialVariableToken: '#tel-celular-contato',
+  property: undefined,
+  variableId: undefined
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {

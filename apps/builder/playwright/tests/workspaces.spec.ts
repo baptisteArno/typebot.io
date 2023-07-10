@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
-import { defaultTextInputOptions, InputStepType } from 'models'
+import { defaultGenericInputOptions, InputStepType } from 'models'
 import {
   createTypebots,
   parseDefaultBlockWithStep,
@@ -20,9 +20,9 @@ test.beforeAll(async () => {
       ...parseDefaultBlockWithStep({
         type: InputStepType.TEXT,
         options: {
-          ...defaultTextInputOptions,
+          ...defaultGenericInputOptions,
           labels: {
-            ...defaultTextInputOptions.labels,
+            //...defaultGenericInputOptions.labels,
             placeholder: 'Hey there',
           },
         },

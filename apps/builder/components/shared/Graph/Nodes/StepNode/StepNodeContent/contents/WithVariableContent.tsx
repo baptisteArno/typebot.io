@@ -8,7 +8,7 @@ type Props = {
   variableId?: string
 }
 
-export const WithVariableContent = (variableId: Props) => {
+export const WithVariableContent = ({ variableId }: Props) => {
   const { typebot } = useTypebot()
   
   const [variableName, setVariableName] = useState<string>();
@@ -16,14 +16,14 @@ export const WithVariableContent = (variableId: Props) => {
   useEffect(() => {
     if (typebot?.variables) {
       const variableName = typebot?.variables.find(
-        (variable) => variable.variableId === variableId.variableId
+        (variable) => variable.variableId === variableId
       )?.token || '...'
       setVariableName(variableName);
     }
     return () => {
       setVariableName("")
     };
-  }, [typebot?.variables]);
+  }, [typebot?.variables, variableId]);
 
   return (
     <Text>

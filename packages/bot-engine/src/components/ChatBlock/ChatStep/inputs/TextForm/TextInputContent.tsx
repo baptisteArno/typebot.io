@@ -2,7 +2,6 @@ import {
   TextInputStep,
   EmailInputStep,
   CpfInputStep,
-  NumberInputStep,
   InputStepType,
   UrlInputStep,
   PhoneNumberInputStep,
@@ -22,7 +21,6 @@ type TextInputProps = {
     | TextInputStep
     | EmailInputStep
     | CpfInputStep
-    | NumberInputStep
     | UrlInputStep
     | PhoneNumberInputStep
     | AskNameInputStep
@@ -91,23 +89,6 @@ export const TextInput = ({ step, value, onChange }: TextInputProps) => {
             step.options?.labels?.placeholder ?? 'Digite o seu cpf...'
           }
           onChange={handleInputChange}
-        />
-      )
-    }
-    case InputStepType.NUMBER: {
-      return (
-        <ShortTextInput
-          ref={inputRef}
-          value={value}
-          placeholder={
-            step.options?.labels?.placeholder ?? 'Digite a sua resposta...'
-          }
-          onChange={handleInputChange}
-          type="number"
-          style={{ appearance: 'auto' }}
-          min={step.options?.min}
-          max={step.options?.max}
-          step={step.options?.step ?? 'any'}
         />
       )
     }

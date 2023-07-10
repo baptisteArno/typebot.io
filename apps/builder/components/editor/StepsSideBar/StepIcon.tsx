@@ -66,8 +66,6 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <LayoutIcon color="#AA561C" {...props} />
     case InputStepType.TEXT:
       return <TextIcon color="#256F42" {...props} />
-    case InputStepType.NUMBER:
-      return <NumberIcon color="#256F42" {...props} />
     case InputStepType.EMAIL:
       return <EmailIcon color="#256F42" {...props} />
     case InputStepType.CPF:

@@ -16,8 +16,9 @@ type Props = { type: StepType }
 export const StepTypeLabel = ({ type }: Props) => {
   switch (type) {
     case BubbleStepType.TEXT:
+      return <Text>Envie uma mensagem</Text>
     case InputStepType.TEXT:
-      return <Text>Texto</Text>
+      return <Text>Qualquer coisa</Text>
     case BubbleStepType.MEDIA:
       return <Text>Arquivo</Text>
     case BubbleStepType.VIDEO:
@@ -28,8 +29,6 @@ export const StepTypeLabel = ({ type }: Props) => {
           <Text>Arquivo</Text>
         </Tooltip>
       )
-    case InputStepType.NUMBER:
-      return <Text>Número</Text>
     case InputStepType.EMAIL:
       return <Text>Email</Text>
     case InputStepType.CPF:
@@ -41,7 +40,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.PHONE:
       return <Text>Telefone</Text>
     case InputStepType.CHOICE:
-      return <Text>Botão</Text>
+      return <Text>Múltipla escolha</Text>
     // case InputStepType.PAYMENT:
     //   return <Text>Payment</Text>
     case InputStepType.ASK_NAME:

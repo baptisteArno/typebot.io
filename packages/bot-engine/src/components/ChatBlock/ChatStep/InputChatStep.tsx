@@ -92,7 +92,6 @@ const Input = ({
 }) => {
   switch (step.type) {
     case InputStepType.TEXT:
-    case InputStepType.NUMBER:
     case InputStepType.EMAIL:
     case InputStepType.CPF:
     // case InputStepType.URL:

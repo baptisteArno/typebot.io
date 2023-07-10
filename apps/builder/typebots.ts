@@ -17,7 +17,7 @@ import {
   defaultTextBubbleContent,
   defaultImageBubbleContent,
   defaultVideoBubbleContent,
-  defaultTextInputOptions,
+  defaultGenericInputOptions,
   defaultNumberInputOptions,
   defaultEmailInputOptions,
   defaultCpfInputOptions,
@@ -367,9 +367,7 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
 const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null => {
   switch (type) {
     case InputStepType.TEXT:
-      return defaultTextInputOptions
-    case InputStepType.NUMBER:
-      return defaultNumberInputOptions
+      return defaultGenericInputOptions
     case InputStepType.EMAIL:
       return defaultEmailInputOptions
     case InputStepType.CPF:

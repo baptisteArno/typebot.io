@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import { InputStepType, defaultTextInputOptions } from 'models'
+import { InputStepType, defaultGenericInputOptions } from 'models'
 import {
   createTypebots,
   freeWorkspaceId,
@@ -15,7 +15,7 @@ test('should be able to connect custom domain', async ({ page }) => {
       id: typebotId,
       ...parseDefaultBlockWithStep({
         type: InputStepType.TEXT,
-        options: defaultTextInputOptions,
+        options: defaultGenericInputOptions,
       }),
     },
   ])
@@ -56,7 +56,7 @@ test.describe('Free workspace', () => {
         workspaceId: freeWorkspaceId,
         ...parseDefaultBlockWithStep({
           type: InputStepType.TEXT,
-          options: defaultTextInputOptions,
+          options: defaultGenericInputOptions,
         }),
       },
     ])

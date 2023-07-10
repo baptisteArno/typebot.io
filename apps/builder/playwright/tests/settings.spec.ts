@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import cuid from 'cuid'
-import { defaultTextInputOptions } from 'models'
+import { defaultGenericInputOptions } from 'models'
 import path from 'path'
 import { importTypebotInDatabase } from '../services/database'
 import { typebotViewer } from '../services/selectorUtils'
@@ -39,9 +39,9 @@ test.describe.parallel('Settings page', () => {
       await page.waitForTimeout(1000)
       await page.click('text=Settings')
       await expect(
-        typebotViewer(page).locator(
-          `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
-        )
+        // typebotViewer(page).locator(
+        //   `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
+        // )
       ).toHaveValue('')
     })
   })

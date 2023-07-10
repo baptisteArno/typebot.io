@@ -150,7 +150,7 @@ export const StepNode = ({
   const handleClick = (e: React.MouseEvent) => {
     setFocusedBlockId(step.blockId)
     e.stopPropagation()
-    if (isTextBubbleStep(step) || isOctaBubbleStep(step) || isMediaBubbleStep(step)) setIsEditing(true)
+    if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
     else setIsModalOpen(true)
       
     setOpenedStepId(step.id)
@@ -298,12 +298,6 @@ export const StepNode = ({
                 </Stack>
               </Flex>
             </PopoverTrigger>
-            {isMediaBubbleStep(step) && (
-              <MediaBubblePopoverContent
-                step={step}
-                onContentChange={handleContentChange}
-              />
-            )}
             <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
               <StepSettings step={step} onStepChange={handleStepUpdate} />
             </SettingsModal>

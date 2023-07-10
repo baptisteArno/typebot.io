@@ -10,6 +10,8 @@ import {
   OctaBubbleStepType,
   OctaStepType,
   OctaWabaStepType,
+  StepWithOptions,
+  InputOptions,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../../ItemNode'
@@ -30,12 +32,15 @@ import { ImageBubbleContent } from '../contents/ImageBubbleContent'
 import { OctaCommerceContent } from '../contents/OctaCommerceContent'
 import { WhatsAppOptionsContent } from '../contents/WhatsApp/WhatsAppOptions'
 import { WhatsAppButtonsContent } from '../contents/WhatsApp/WhatsAppButtons'
-import {  } from '../contents/WhatsApp/WhatsAppOptions'
+import { } from '../contents/WhatsApp/WhatsAppOptions'
 // import { PaymentInputContent } from './contents/PaymentInputContent'
 import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
 import { TypebotLinkContent } from '../contents/TypebotLinkContent'
 import { PreReserveContent } from '../contents/PreReserve'
+import { InputContent } from '../contents/Input'
+import { useTypebot } from 'contexts/TypebotContext'
+import { MediaInputContent } from '../contents/MediaInput'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -43,35 +48,37 @@ type Props = {
   indices: StepIndices
 }
 export const StepNodeContent = ({ step, indices }: Props) => {
-  if (isInputStep(step) && !isChoiceInput(step) && step.options.variableId) {
-    return <WithVariableContent variableId={step.options.variableId} />
+  const { updateStep } = useTypebot()
+  const handleStepUpdate = (options: InputOptions): void => {
+    const stepWithOptions = step as StepWithOptions
+    if (stepWithOptions.options) {
+      stepWithOptions.options = { ...stepWithOptions.options, ...options }
+      updateStep(indices, { ...stepWithOptions })
+    }
   }
+
+  // if (isInputStep(step) && !isChoiceInput(step) && step.options.variableId) {
+  //   return <WithVariableContent variableId={step.options.variableId} />
+  // }
   switch (step.type) {
     case BubbleStepType.TEXT: {
       return <TextBubbleContent step={step} />
     }
-    case BubbleStepType.MEDIA: {
-      return <ImageBubbleContent step={step} />
-    }
-    case InputStepType.TEXT: {
-      return (
-        <PlaceholderContent
-          placeholder={step.options.labels.placeholder}
-          isLong={step.options.isLong}
-        />
-      )
-    }
-    case InputStepType.NUMBER:
-    case InputStepType.EMAIL:
+    case BubbleStepType.MEDIA: 
+    return (
+      <MediaInputContent step={step} />
+    )
+    case InputStepType.TEXT:
+    case InputStepType.ASK_NAME:
+    case InputStepType.EMAIL: 
     case InputStepType.CPF:
-    // case InputStepType.URL:
+    case InputStepType.DATE:
     case InputStepType.PHONE: {
       return (
-        <PlaceholderContent placeholder={step.options.labels.placeholder} />
+        <InputContent
+          step={step} onUpdateStep={handleStepUpdate}
+        />
       )
-    }
-    case InputStepType.DATE: {
-      return <Text color={'gray.500'} ml={'8px'}>Informe uma data, por favor...</Text>
     }
     case InputStepType.CHOICE: {
       return <ItemNodesList step={step} indices={indices} />
@@ -79,14 +86,15 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     // case InputStepType.PAYMENT: {
     //   return <PaymentInputContent step={step} />
     // }
-    case InputStepType.ASK_NAME: {
-      return (
-        <PlaceholderContent
-          placeholder={step.options.labels.placeholder}
-          isLong={step.options.isLong}
-        />
-      )
-    }
+    // case InputStepType.ASK_NAME: {
+    //   return (
+    //     <div>ASK_NAME</div>
+    //     // <PlaceholderContent
+    //     //   placeholder={step.options.labels.placeholder}
+    //     //   isLong={step.options.isLong}
+    //     // />
+    //   )
+    // }
     // case LogicStepType.SET_VARIABLE: {
     //   return <SetVariableContent step={step} />
     // }
@@ -167,16 +175,16 @@ export const StepNodeContent = ({ step, indices }: Props) => {
         <CallOtherBotContent step={step} options={step.options.botToCall} />
       )
     }
-    case OctaStepType.OFFICE_HOURS: {     
+    case OctaStepType.OFFICE_HOURS: {
       return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
-    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {     
+    case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {
       return <WhatsAppOptionsContent step={step} indices={indices} />
     }
     case OctaStepType.COMMERCE: {
       return <OctaCommerceContent options={step.options} />
     }
-    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {     
+    case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {
       return <WhatsAppButtonsContent step={step} indices={indices} />
     }
     case OctaStepType.PRE_RESERVE: {
