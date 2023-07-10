@@ -7,7 +7,6 @@ import {
   IconButton,
   Tooltip,
   Fade,
-  Badge,
   Spacer,
   Portal,
 } from '@chakra-ui/react'
@@ -94,7 +93,8 @@ export const StepsSideBar = () => {
       type !== LogicStepType.SET_VARIABLE &&
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
-      type !== LogicStepType.TYPEBOT_LINK
+      type !== LogicStepType.TYPEBOT_LINK &&
+      type !== InputStepType.DATE
     )
   }
 
@@ -205,37 +205,18 @@ export const StepsSideBar = () => {
                   />
                 )
             )}
-          </SimpleGrid>
-        </Stack>
-
-        {workspace?.channel === 'whatsapp' && (
-          <Stack>
-            <Flex>
-              <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-                Whatsapp Oficial
-              </Text>
-              <Spacer />
-              <Badge
-                variant="solid"
-                colorScheme="blue"
-                borderRadius="6px"
-                textAlign="center"
-              >
-                Exclusivo
-              </Badge>
-            </Flex>
-            <SimpleGrid columns={1} spacing="3">
-              {Object.values(OctaWabaStepType).map((type) => (
+            {workspace?.channel === 'whatsapp' && (
+              Object.values(OctaWabaStepType).map((type) => (
                 <StepCard
                   key={type}
                   type={type}
                   onMouseDown={handleMouseDown}
+                  badge={"WAB"}
                   isDisabled={shouldDisableComponent(type)}
                 />
-              ))}
-            </SimpleGrid>
-          </Stack>
-        )}
+              )))}
+          </SimpleGrid>
+        </Stack>
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
