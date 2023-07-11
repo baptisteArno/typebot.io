@@ -97,8 +97,7 @@ export const MembersList = () => {
     !isSeatsLimitReached({
       plan: workspace?.plan,
       customSeatsLimit: workspace?.customSeatsLimit,
-      existingMembersCount: currentMembersCount,
-      existingInvitationsCount: invitations.length,
+      existingMembersAndInvitationsCount: currentMembersCount,
     })
 
   return (

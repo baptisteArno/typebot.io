@@ -38,8 +38,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ])
     if (
       isSeatsLimitReached({
-        existingMembersCount,
-        existingInvitationsCount,
+        existingMembersAndInvitationsCount:
+          existingMembersCount + existingInvitationsCount,
         ...workspace,
       })
     )

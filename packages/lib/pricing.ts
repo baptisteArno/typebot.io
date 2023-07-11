@@ -180,18 +180,15 @@ export const getSeatsLimit = ({
 }
 
 export const isSeatsLimitReached = ({
-  existingMembersCount,
-  existingInvitationsCount,
+  existingMembersAndInvitationsCount,
   plan,
   customSeatsLimit,
-}: { existingMembersCount: number; existingInvitationsCount: number } & Pick<
-  Workspace,
-  'plan' | 'customSeatsLimit'
->) => {
+}: {
+  existingMembersAndInvitationsCount: number
+} & Pick<Workspace, 'plan' | 'customSeatsLimit'>) => {
   const seatsLimit = getSeatsLimit({ plan, customSeatsLimit })
   return (
-    seatsLimit !== infinity &&
-    seatsLimit <= existingMembersCount + existingInvitationsCount
+    seatsLimit !== infinity && seatsLimit <= existingMembersAndInvitationsCount
   )
 }
 
