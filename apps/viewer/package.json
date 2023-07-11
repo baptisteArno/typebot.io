@@ -29,6 +29,7 @@
     "libphonenumber-js": "1.10.30",
     "next": "13.4.3",
     "nextjs-cors": "2.1.2",
+    "node-html-parser": "^6.1.5",
     "nodemailer": "6.9.2",
     "openai": "3.2.1",
     "openai-edge": "^1.1.0",

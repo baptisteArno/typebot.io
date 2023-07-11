@@ -25,12 +25,13 @@ import {
   setResultAsCompleted,
   startBotFlow,
 } from '../helpers'
-import { env, isDefined, omit } from '@typebot.io/lib'
+import { env, isDefined, isNotEmpty, omit } from '@typebot.io/lib'
 import { prefillVariables } from '@/features/variables/prefillVariables'
 import { injectVariablesFromExistingResult } from '@/features/variables/injectVariablesFromExistingResult'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { saveLog } from '@/features/logs/saveLog'
+import { NodeType, parse } from 'node-html-parser'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -448,7 +449,9 @@ const parseStartClientSideAction = (
 ): NonNullable<ChatReply['clientSideActions']>[number] | undefined => {
   const blocks = typebot.groups.flatMap((group) => group.blocks)
   const startPropsToInject = {
-    customHeadCode: typebot.settings.metadata.customHeadCode,
+    customHeadCode: isNotEmpty(typebot.settings.metadata.customHeadCode)
+      ? parseHeadCode(typebot.settings.metadata.customHeadCode)
+      : undefined,
     gtmId: typebot.settings.metadata.googleTagManagerId,
     googleAnalyticsId: (
       blocks.find(
@@ -478,4 +481,34 @@ const parseStartClientSideAction = (
   return {
     startPropsToInject,
   }
+}
+
+const parseHeadCode = (code: string) => {
+  code = injectTryCatch(code)
+  return parse(code)
+    .childNodes.filter((child) => child.nodeType !== NodeType.TEXT_NODE)
+    .join('\n')
+}
+
+const injectTryCatch = (headCode: string) => {
+  const scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+  const scriptTags = headCode.match(scriptTagRegex)
+  if (scriptTags) {
+    scriptTags.forEach(function (tag) {
+      const wrappedTag = tag.replace(
+        /(<script\b[^>]*>)([\s\S]*?)(<\/script>)/gi,
+        function (_, openingTag, content, closingTag) {
+          return `${openingTag}
+try {
+  ${content}
+} catch (e) {
+  console.warn(e); 
+}
+${closingTag}`
+        }
+      )
+      headCode = headCode.replace(tag, wrappedTag)
+    })
+  }
+  return headCode
 }
