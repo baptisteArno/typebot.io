@@ -1,24 +1,15 @@
 import {
-  Flex,
   FormControl,
   FormLabel,
   HStack,
   Stack,
-  Switch,
   Tag,
-  useDisclosure,
   Text,
 } from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { Plan } from '@typebot.io/prisma'
 import { GeneralSettings, rememberUserStorages } from '@typebot.io/schemas'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
-import { LockTag } from '@/features/billing/components/LockTag'
-import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
-import { useI18n } from '@/locales'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { DropdownList } from '@/components/DropdownList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
@@ -32,18 +23,6 @@ export const GeneralSettingsForm = ({
   generalSettings,
   onGeneralSettingsChange,
 }: Props) => {
-  const t = useI18n()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const { workspace } = useWorkspace()
-  const isWorkspaceFreePlan = isFreePlan(workspace)
-  const handleSwitchChange = () => {
-    if (generalSettings?.isBrandingEnabled && isWorkspaceFreePlan) return
-    onGeneralSettingsChange({
-      ...generalSettings,
-      isBrandingEnabled: !generalSettings?.isBrandingEnabled,
-    })
-  }
-
   const toggleRememberUser = (isEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
@@ -78,26 +57,6 @@ export const GeneralSettingsForm = ({
 
   return (
     <Stack spacing={6}>
-      <ChangePlanModal
-        isOpen={isOpen}
-        onClose={onClose}
-        type={t('billing.limitMessage.brand')}
-      />
-      <Flex
-        justifyContent="space-between"
-        align="center"
-        onClick={isWorkspaceFreePlan ? onOpen : undefined}
-      >
-        <FormLabel htmlFor="branding" mb="0">
-          Typebot.io branding{' '}
-          {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
-        </FormLabel>
-        <Switch
-          id="branding"
-          isChecked={generalSettings.isBrandingEnabled}
-          onChange={handleSwitchChange}
-        />
-      </Flex>
       <SwitchWithLabel
         label="Prefill input"
         initialValue={generalSettings.isInputPrefillEnabled ?? true}

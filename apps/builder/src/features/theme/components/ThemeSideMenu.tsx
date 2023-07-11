@@ -42,6 +42,12 @@ export const ThemeSideMenu = () => {
     })
   }
 
+  const updateBranding = (isBrandingEnabled: boolean) =>
+    typebot &&
+    updateTypebot({
+      settings: { ...typebot.settings, general: { isBrandingEnabled } },
+    })
+
   return (
     <Stack
       flex="1"
@@ -87,15 +93,17 @@ export const ThemeSideMenu = () => {
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <DropletIcon />
-              <Heading fontSize="lg">Font & Background</Heading>
+              <Heading fontSize="lg">Global</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
             {typebot && (
               <GeneralSettings
+                isBrandingEnabled={typebot.settings.general.isBrandingEnabled}
                 generalTheme={typebot.theme.general}
                 onGeneralThemeChange={updateGeneralTheme}
+                onBrandingChange={updateBranding}
               />
             )}
           </AccordionPanel>
