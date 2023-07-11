@@ -21,13 +21,10 @@ export const AudioBubble = (props: Props) => {
       setIsTyping(false)
       setTimeout(() => {
         const audioElement = ref?.querySelector('audio')
-        if (audioElement) {
-          try {
-            audioElement.play()
-          } catch (e) {
-            console.warn('Could not autoplay the audio:', e)
-          }
-        }
+        if (audioElement)
+          audioElement
+            .play()
+            .catch((e) => console.warn('Could not autoplay the audio:', e))
         props.onTransitionEnd(ref?.offsetTop)
       }, showAnimationDuration)
     }, typingDuration)

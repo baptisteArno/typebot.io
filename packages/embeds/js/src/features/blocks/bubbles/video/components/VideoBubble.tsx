@@ -18,13 +18,10 @@ export const VideoBubble = (props: Props) => {
 
   const onTypingEnd = () => {
     const videoElement = ref?.querySelector('video')
-    if (videoElement) {
-      try {
-        videoElement.play()
-      } catch (e) {
-        console.warn('Could not autoplay the video:', e)
-      }
-    }
+    if (videoElement)
+      videoElement
+        .play()
+        .catch((e) => console.warn('Could not autoplay the video:', e))
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
