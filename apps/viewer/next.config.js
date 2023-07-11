@@ -67,6 +67,12 @@ const nextConfig = {
               landingPagePaths.map((path) => ({
                 source: path,
                 destination: `${process.env.LANDING_PAGE_URL}${path}`,
+                has: [
+                  {
+                    type: 'host',
+                    value: 'typebot.io',
+                  },
+                ],
               }))
             )
         : []
