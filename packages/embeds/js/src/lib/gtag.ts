@@ -1,19 +1,21 @@
 import { isDefined, isEmpty } from '@typebot.io/lib/utils'
 import type { GoogleAnalyticsOptions } from '@typebot.io/schemas'
 
-declare const gtag: (
-  type: string,
-  action: string | undefined,
-  options: {
-    event_category: string | undefined
-    event_label: string | undefined
-    value: number | undefined
-    send_to: string | undefined
-  }
-) => void
+declare const window: {
+  gtag?: (
+    type: string,
+    action: string | undefined,
+    options: {
+      event_category: string | undefined
+      event_label: string | undefined
+      value: number | undefined
+      send_to: string | undefined
+    }
+  ) => void
+}
 
 export const initGoogleAnalytics = (id: string): Promise<void> => {
-  if (isDefined(gtag)) return Promise.resolve()
+  if (isDefined(window.gtag)) return Promise.resolve()
   return new Promise((resolve) => {
     const existingScript = document.getElementById('gtag')
     if (!existingScript) {
@@ -39,7 +41,11 @@ export const initGoogleAnalytics = (id: string): Promise<void> => {
 
 export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
   if (!options) return
-  gtag('event', options.action, {
+  if (!window.gtag) {
+    console.error('Google Analytics was not properly initialized')
+    return
+  }
+  window.gtag('event', options.action, {
     event_category: isEmpty(options.category) ? undefined : options.category,
     event_label: isEmpty(options.label) ? undefined : options.label,
     value: options.value as number,

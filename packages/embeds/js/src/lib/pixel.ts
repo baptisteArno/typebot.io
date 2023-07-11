@@ -1,11 +1,13 @@
 import { PixelBlock } from '@typebot.io/schemas'
 
-declare const fbq: (
-  arg0: string,
-  arg1: string,
-  arg2: string,
-  arg3: Record<string, string> | undefined
-) => void
+declare const window: {
+  fbq?: (
+    arg0: string,
+    arg1: string,
+    arg2: string,
+    arg3: Record<string, string> | undefined
+  ) => void
+}
 
 export const initPixel = (pixelId: string) => {
   const script = document.createElement('script')
@@ -28,6 +30,10 @@ export const initPixel = (pixelId: string) => {
 
 export const trackPixelEvent = (options: PixelBlock['options']) => {
   if (!options.eventType || !options.pixelId) return
+  if (!window.fbq) {
+    console.error('Facebook Pixel was not properly initialized')
+    return
+  }
   const params = options.params?.length
     ? options.params.reduce<Record<string, string>>((obj, param) => {
         if (!param.key || !param.value) return obj
@@ -36,7 +42,7 @@ export const trackPixelEvent = (options: PixelBlock['options']) => {
     : undefined
   if (options.eventType === 'Custom') {
     if (!options.name) return
-    fbq('trackCustom', options.pixelId, options.name, params)
+    window.fbq('trackCustom', options.pixelId, options.name, params)
   }
-  fbq('track', options.pixelId, options.eventType, params)
+  window.fbq('track', options.pixelId, options.eventType, params)
 }

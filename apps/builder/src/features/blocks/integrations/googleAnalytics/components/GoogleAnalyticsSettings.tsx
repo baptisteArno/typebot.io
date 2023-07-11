@@ -46,7 +46,8 @@ export const GoogleAnalyticsSettings = ({
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Tracking ID:"
+        label="Measurement ID:"
+        moreInfoTooltip="Can be found by clicking on your data stream in Google Analytics dashboard"
         defaultValue={options?.trackingId ?? ''}
         placeholder="G-123456..."
         onChange={updateTrackingId}
