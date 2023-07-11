@@ -2,9 +2,8 @@
 import { initGoogleAnalytics } from '@/lib/gtag'
 import { gtmBodyElement } from '@/lib/gtm'
 import { initPixel } from '@/lib/pixel'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { injectCustomHeadCode, isNotEmpty } from '@typebot.io/lib/utils'
 import { StartPropsToInject } from '@typebot.io/schemas'
-import { injectCustomHeadCode } from './injectCustomHeadCode'
 
 export const injectStartProps = async (
   startPropsToInject: StartPropsToInject
