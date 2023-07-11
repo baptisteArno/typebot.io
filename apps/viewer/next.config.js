@@ -33,7 +33,7 @@ const nextConfig = {
                 {
                   type: 'header',
                   key: 'referer',
-                  value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                  value: `https://typebot.io${path}`,
                 },
               ],
             }))
@@ -45,7 +45,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                    value: `https://typebot.io${path}`,
                   },
                 ],
               }))
@@ -58,7 +58,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                    value: `https://typebot.io${path}`,
                   },
                 ],
               }))
