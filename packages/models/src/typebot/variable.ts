@@ -20,4 +20,5 @@ export type VariableLight = {
   name: string
   token: string
   type: string | undefined
+  value: string | undefined
 }

@@ -74,7 +74,7 @@ export const TextBox = ({
     )
     const newValue =
       textBeforeCursorPosition +
-      `{{${variable.token}}}` +
+      `${variable.token}` +
       textAfterCursorPosition
     setValue(newValue)
     debounced(newValue)

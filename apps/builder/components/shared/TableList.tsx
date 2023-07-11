@@ -20,6 +20,7 @@ type Props<T> = {
   type?: string
   onItemsChange?: (items: ItemWithId<T>[]) => void
   Item: (props: TableListItemProps<T>) => JSX.Element
+  shouldHideButton?: boolean
   ComponentBetweenItems?: (props: unknown) => JSX.Element
 }
 
@@ -31,6 +32,7 @@ export const TableList = <T,>({
   itemsList,
   debounceTimeout,
   Item,
+  shouldHideButton,
   ComponentBetweenItems = () => <></>,
 }: Props<T>) => {
   const [items, setItems] = useState(initialItems)
@@ -100,7 +102,9 @@ export const TableList = <T,>({
           </Flex>
         </Box>
       ))}
-      <OctaButton onClick={createItem}>{addLabel}</OctaButton>
+      {!shouldHideButton && (
+        <OctaButton onClick={createItem}>{addLabel}</OctaButton>
+      )}
     </Stack>
   )
 }

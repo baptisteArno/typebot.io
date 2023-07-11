@@ -65,6 +65,7 @@ export type VariableForTest = {
   id: string
   variableId?: string
   value?: string
+  token?: string
 }
 
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {

@@ -30,7 +30,6 @@ type Props = {
 }
 
 export const ItemNode = ({ item, indices, isReadOnly, onMouseDown, step }: Props) => {
-  // console.log('item ItemNode', item)
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
