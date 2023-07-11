@@ -287,18 +287,7 @@ export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
 export const injectCustomHeadCode = (customHeadCode: string) => {
-  customHeadCode = customHeadCode.replace(
-    /<script>/g,
-    `<script>
-try {`
-  )
-  customHeadCode = customHeadCode.replace(
-    /<\/script>/g,
-    `} catch(e) {
-  console.warn("Error while executing custom head code", e)
-}
-</script>`
-  )
+  customHeadCode = injectTryCatch(customHeadCode)
   const headCodes = customHeadCode.split('</noscript>')
   headCodes.forEach((headCode) => {
     const [codeToInject, noScriptContentToInject] = headCode.split('<noscript>')
@@ -316,6 +305,29 @@ try {`
     noScriptElement.append(noScriptContentFragment)
     document.head.append(noScriptElement)
   })
+}
+
+const injectTryCatch = (headCode: string) => {
+  const scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+  const scriptTags = headCode.match(scriptTagRegex)
+  if (scriptTags) {
+    scriptTags.forEach(function (tag) {
+      const wrappedTag = tag.replace(
+        /(<script\b[^>]*>)([\s\S]*?)(<\/script>)/gi,
+        function (_, openingTag, content, closingTag) {
+          return `${openingTag}
+try {
+  ${content}
+} catch (e) {
+  console.warn(e); 
+}
+${closingTag}`
+        }
+      )
+      headCode = headCode.replace(tag, wrappedTag)
+    })
+  }
+  return headCode
 }
 
 export const getAtPath = <T>(obj: T, path: string): unknown => {
