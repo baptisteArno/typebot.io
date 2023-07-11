@@ -2,6 +2,20 @@
 
 The theme tab allows you to customize the look of your typebot.
 
+## Global
+
+This section allows you to enable or disable the typebot branding, change the font and the background of your bot.
+
+## Chat
+
+This section allows you to customize all the chats components (avatars, bubbles, inputs etc...).
+
+Click on the bot avatar to change the image:
+
+<img
+src="/img/theme/avatar.png"
+alt="Avatar"/>
+
 ## Custom CSS
 
 You can also decide to customize even further by adding any custom CSS you want. For this you right-click on the bot in the Theme page and inspect the element you want to customize:
