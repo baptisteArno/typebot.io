@@ -1,6 +1,15 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 const path = require('path')
 
+const landingPagePaths = [
+  '/',
+  '/pricing',
+  '/privacy-policies',
+  '/terms-of-service',
+  '/about',
+  '/oss-friends',
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -14,13 +23,59 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
   async rewrites() {
-    return [
-      {
+    return {
+      beforeFiles: (process.env.LANDING_PAGE_URL
+        ? landingPagePaths
+            .map((path) => ({
+              source: '/_next/static/:static*',
+              destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
+              has: [
+                {
+                  type: 'header',
+                  key: 'referer',
+                  value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                },
+              ],
+            }))
+            .concat(
+              landingPagePaths.map((path) => ({
+                source: '/typebots/:typebot*',
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                  },
+                ],
+              }))
+            )
+            .concat(
+              landingPagePaths.map((path) => ({
+                source: '/styles/:style*',
+                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `${process.env.NEXT_PUBLIC_VIEWER_URL}${path}`,
+                  },
+                ],
+              }))
+            )
+            .concat(
+              landingPagePaths.map((path) => ({
+                source: path,
+                destination: `${process.env.LANDING_PAGE_URL}${path}`,
+              }))
+            )
+        : []
+      ).concat({
         source: '/api/typebots/:typebotId/blocks/:blockId/storage/upload-url',
         destination:
           '/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url',
-      },
-    ]
+      }),
+    }
   },
 }
 
