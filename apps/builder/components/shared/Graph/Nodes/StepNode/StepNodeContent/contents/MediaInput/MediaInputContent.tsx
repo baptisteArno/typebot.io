@@ -20,10 +20,7 @@ const MediaInputContent = ({ step }: Props) => {
       {
         <Stack>
           <Text color={'gray.500'} noOfLines={0}>
-            <strong>Texto da mensagem:</strong>
-          </Text>
-          <Text color={'gray.500'} noOfLines={0}>
-            {step.content.message?.plainText && <label>{step.content.message?.plainText}</label>}
+            Texto da mensagem: {step.content.message?.plainText && <label>{step.content.message?.plainText}</label>}
             {!step.content.message?.plainText && <i>Não informado.</i>}
           </Text>
         </Stack>

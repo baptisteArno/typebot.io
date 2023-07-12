@@ -54,9 +54,6 @@ export const ChoiceInputSettingsBody = ({
           onSelectVariable={handleVariableChange}
         />
       </Stack>
-      <FooterMessage>
-        Edite as opções diretamente na árvore.
-      </FooterMessage>
     </Stack>
   )
 }

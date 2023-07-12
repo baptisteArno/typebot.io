@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
   useDisclosure,
   Text,
+  Divider,
 } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import {
@@ -45,6 +46,7 @@ import { MediaBubblePopoverContent } from '../MediaBubblePopoverContent'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
 import { BlockStack } from './StepNode.style'
+import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -152,10 +154,10 @@ export const StepNode = ({
     e.stopPropagation()
     if (isTextBubbleStep(step) || isOctaBubbleStep(step)) setIsEditing(true)
     else setIsModalOpen(true)
-      
+
     setOpenedStepId(step.id)
 
-    console.log('handleClick', )
+    console.log('handleClick',)
   }
 
   const handleExpandClick = () => {
@@ -218,29 +220,37 @@ export const StepNode = ({
               >
                 <Stack spacing={2}>
                   <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
-                    <StepIcon
-                      type={step.type}
-                      mt="1"
-                      data-testid={`${step.id}-icon`}
-                    />
-                    <StepNodeContent step={step} indices={indices} />
-                    <TargetEndpoint
-                      pos="absolute"
-                      left="-32px"
-                      top="19px"
-                      stepId={step.id}
-                    />
-                    {isConnectable && checkisConnectable(step) && (
-                      <SourceEndpoint
-                        source={{
-                          blockId: step.blockId,
-                          stepId: step.id,
-                        }}
+                    <Stack spacing={2}>
+                      <HStack fontSize={"13px"}>
+                        <StepIcon
+                          type={step.type}
+                          mt="1"
+                          data-testid={`${step.id}-icon`}
+                        />
+                        <StepTypeLabel
+                          type={step.type}
+                          data-testid={`${step.id}-icon`}
+                        />
+                      </HStack>
+                      <StepNodeContent step={step} indices={indices} />
+                      <TargetEndpoint
                         pos="absolute"
-                        right="-34px"
-                        bottom="10px"
+                        left="-32px"
+                        top="19px"
+                        stepId={step.id}
                       />
-                    )}
+                      {isConnectable && checkisConnectable(step) && (
+                        <SourceEndpoint
+                          source={{
+                            blockId: step.blockId,
+                            stepId: step.id,
+                          }}
+                          pos="absolute"
+                          right="-34px"
+                          bottom="10px"
+                        />
+                      )}
+                    </Stack>
                   </BlockStack>
 
                   {step.type === 'assign to team' &&
@@ -298,7 +308,7 @@ export const StepNode = ({
                 </Stack>
               </Flex>
             </PopoverTrigger>
-            <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
+            <SettingsModal isOpen={isModalOpen} onClose={handleModalClose} stepType={step.type}>
               <StepSettings step={step} onStepChange={handleStepUpdate} />
             </SettingsModal>
           </Popover>

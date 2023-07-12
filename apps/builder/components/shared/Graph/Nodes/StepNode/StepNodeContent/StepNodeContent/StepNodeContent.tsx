@@ -192,7 +192,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       return <PreReserveContent step={step} />
     }
     case 'start': {
-      return <Text>Início</Text>
+      return <span></span>
     }
     default: {
       return <Text>Sem dado</Text>

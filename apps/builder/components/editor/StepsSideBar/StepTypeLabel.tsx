@@ -40,7 +40,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     case InputStepType.PHONE:
       return <Text>Pergunte o telefone</Text>
     case InputStepType.CHOICE:
-      return <Text>Perguta de múltipla escolha</Text>
+      return <Text>Pergunta de múltipla escolha</Text>
     // case InputStepType.PAYMENT:
     //   return <Text>Payment</Text>
     case InputStepType.ASK_NAME:
@@ -95,6 +95,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Enviar um catálogo</Text>
     case OctaStepType.PRE_RESERVE:
       return <Text>Reservar conversa para um grupo</Text>
+    case "start":
+      return <Text>Início</Text>
     default:
       return <></>
   }
