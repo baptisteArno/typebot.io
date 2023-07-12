@@ -18,25 +18,26 @@ export const AudioBubble = (props: Props) => {
   let audioElement: HTMLAudioElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const autoPlay = () => {
+  const autoPlay = async () => {
+    if (isPlayed) return
     isPlayed = true
-    if (audioElement)
-      audioElement
-        .play()
-        .catch((e) => console.warn('Could not autoplay the audio:', e))
+    try {
+      if (audioElement) await audioElement.play()
+    } catch (e) {
+      console.warn('Could not autoplay the audio:', e)
+    }
+
     props.onTransitionEnd(ref?.offsetTop)
   }
 
   onMount(() => {
     if (audioElement)
       audioElement.oncanplay = () => {
-        if (isPlayed) return
         clearTimeout(typingTimeout)
         setIsTyping(false)
         setTimeout(autoPlay, showAnimationDuration)
       }
     typingTimeout = setTimeout(() => {
-      if (isPlayed) return
       setIsTyping(false)
       setTimeout(autoPlay, showAnimationDuration)
     }, defaultTypingDuration)

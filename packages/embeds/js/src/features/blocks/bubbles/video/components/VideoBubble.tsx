@@ -19,26 +19,26 @@ export const VideoBubble = (props: Props) => {
   let videoElement: HTMLVideoElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const autoPlay = () => {
+  const autoPlay = async () => {
+    if (isPlayed) return
     isPlayed = true
-    if (videoElement)
-      videoElement
-        .play()
-        .catch((e) => console.warn('Could not autoplay the video:', e))
+    try {
+      if (videoElement) await videoElement.play()
+    } catch (e) {
+      console.warn('Could not autoplay the video:', e)
+    }
     props.onTransitionEnd(ref?.offsetTop)
   }
 
   onMount(() => {
     if (videoElement)
       videoElement.oncanplay = () => {
-        if (isPlayed) return
         clearTimeout(typingTimeout)
         setIsTyping(false)
         setTimeout(autoPlay, showAnimationDuration)
       }
     typingTimeout = setTimeout(
       () => {
-        if (isPlayed) return
         setIsTyping(false)
         setTimeout(autoPlay, showAnimationDuration)
       },
