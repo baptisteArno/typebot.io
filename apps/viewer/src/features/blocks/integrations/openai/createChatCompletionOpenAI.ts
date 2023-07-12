@@ -4,6 +4,7 @@ import { SessionState } from '@typebot.io/schemas'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
+  chatCompletionMessageRoles,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { isEmpty } from '@typebot.io/lib'
 import { decrypt, isCredentialsV2 } from '@typebot.io/lib/api/encryption'
@@ -61,7 +62,16 @@ export const createChatCompletionOpenAI = async (
     newSessionState.isStreamEnabled
   )
     return {
-      clientSideActions: [{ streamOpenAiChatCompletion: { messages } }],
+      clientSideActions: [
+        {
+          streamOpenAiChatCompletion: {
+            messages: messages as {
+              content?: string
+              role: (typeof chatCompletionMessageRoles)[number]
+            }[],
+          },
+        },
+      ],
       outgoingEdgeId,
       newSessionState,
     }
