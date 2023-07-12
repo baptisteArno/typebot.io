@@ -8,26 +8,34 @@ type Props = {
 }
 
 const showAnimationDuration = 400
-const typingDuration = 500
+const defaultTypingDuration = 5000
 
 let typingTimeout: NodeJS.Timeout
 
 export const AudioBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined
+  let audioElement: HTMLAudioElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
+
+  const autoPlay = () => {
+    if (audioElement)
+      audioElement
+        .play()
+        .catch((e) => console.warn('Could not autoplay the audio:', e))
+    props.onTransitionEnd(ref?.offsetTop)
+  }
 
   onMount(() => {
     typingTimeout = setTimeout(() => {
       setIsTyping(false)
-      setTimeout(() => {
-        const audioElement = ref?.querySelector('audio')
-        if (audioElement)
-          audioElement
-            .play()
-            .catch((e) => console.warn('Could not autoplay the audio:', e))
-        props.onTransitionEnd(ref?.offsetTop)
-      }, showAnimationDuration)
-    }, typingDuration)
+      setTimeout(autoPlay, showAnimationDuration)
+    }, defaultTypingDuration)
+    if (audioElement)
+      audioElement.oncanplay = () => {
+        clearTimeout(typingTimeout)
+        setIsTyping(false)
+        setTimeout(autoPlay, showAnimationDuration)
+      }
   })
 
   onCleanup(() => {
@@ -48,6 +56,7 @@ export const AudioBubble = (props: Props) => {
             {isTyping() && <TypingBubble />}
           </div>
           <audio
+            ref={audioElement}
             src={props.url}
             class={
               'z-10 text-fade-in m-2 ' +

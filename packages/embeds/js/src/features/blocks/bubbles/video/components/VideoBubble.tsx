@@ -9,28 +9,39 @@ type Props = {
 }
 
 export const showAnimationDuration = 400
+const defaultTypingDuration = 5000
 
 let typingTimeout: NodeJS.Timeout
 
 export const VideoBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined
+  let videoElement: HTMLVideoElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const onTypingEnd = () => {
-    const videoElement = ref?.querySelector('video')
+  const autoPlay = () => {
+    console.log(videoElement)
     if (videoElement)
       videoElement
         .play()
         .catch((e) => console.warn('Could not autoplay the video:', e))
-    if (!isTyping()) return
-    setIsTyping(false)
-    setTimeout(() => {
-      props.onTransitionEnd(ref?.offsetTop)
-    }, showAnimationDuration)
+    props.onTransitionEnd(ref?.offsetTop)
   }
 
   onMount(() => {
-    typingTimeout = setTimeout(onTypingEnd, 2000)
+    console.log(videoElement)
+    typingTimeout = setTimeout(
+      () => {
+        setIsTyping(false)
+        setTimeout(autoPlay, showAnimationDuration)
+      },
+      videoElement ? defaultTypingDuration : 2000
+    )
+    if (videoElement)
+      videoElement.oncanplay = () => {
+        clearTimeout(typingTimeout)
+        setIsTyping(false)
+        setTimeout(autoPlay, showAnimationDuration)
+      }
   })
 
   onCleanup(() => {
@@ -50,65 +61,53 @@ export const VideoBubble = (props: Props) => {
           >
             {isTyping() && <TypingBubble />}
           </div>
-          <VideoContent content={props.content} isTyping={isTyping()} />
+          <Switch>
+            <Match
+              when={
+                props.content?.type &&
+                props.content.type === VideoBubbleContentType.URL
+              }
+            >
+              <video
+                ref={videoElement}
+                src={props.content.url}
+                controls
+                class={
+                  'p-4 focus:outline-none w-full z-10 text-fade-in rounded-md ' +
+                  (isTyping() ? 'opacity-0' : 'opacity-100')
+                }
+                style={{
+                  height: isTyping() ? '32px' : 'auto',
+                }}
+              />
+            </Match>
+            <Match
+              when={
+                props.content?.type &&
+                [
+                  VideoBubbleContentType.VIMEO,
+                  VideoBubbleContentType.YOUTUBE,
+                ].includes(props.content.type)
+              }
+            >
+              <iframe
+                src={`${
+                  props.content.type === VideoBubbleContentType.VIMEO
+                    ? 'https://player.vimeo.com/video'
+                    : 'https://www.youtube.com/embed'
+                }/${props.content.id}`}
+                class={
+                  'w-full p-4 text-fade-in z-10 ' +
+                  (isTyping() ? 'opacity-0' : 'opacity-100')
+                }
+                height={isTyping() ? '32px' : '200px'}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </Match>
+          </Switch>
         </div>
       </div>
     </div>
-  )
-}
-
-type VideoContentProps = {
-  content: VideoBubbleContent
-  isTyping: boolean
-}
-
-const VideoContent = (props: VideoContentProps) => {
-  return (
-    <Switch>
-      <Match
-        when={
-          props.content?.type &&
-          props.content.type === VideoBubbleContentType.URL
-        }
-      >
-        <video
-          controls
-          class={
-            'p-4 focus:outline-none w-full z-10 text-fade-in ' +
-            (props.isTyping ? 'opacity-0' : 'opacity-100')
-          }
-          style={{
-            height: props.isTyping ? '32px' : 'auto',
-          }}
-        >
-          <source src={props.content.url} type="video/mp4" />
-          Sorry, your browser doesn&apos;t support embedded videos.
-        </video>
-      </Match>
-      <Match
-        when={
-          props.content?.type &&
-          [
-            VideoBubbleContentType.VIMEO,
-            VideoBubbleContentType.YOUTUBE,
-          ].includes(props.content.type)
-        }
-      >
-        <iframe
-          src={`${
-            props.content.type === VideoBubbleContentType.VIMEO
-              ? 'https://player.vimeo.com/video'
-              : 'https://www.youtube.com/embed'
-          }/${props.content.id}`}
-          class={
-            'w-full p-4 text-fade-in z-10 ' +
-            (props.isTyping ? 'opacity-0' : 'opacity-100')
-          }
-          height={props.isTyping ? '32px' : '200px'}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        />
-      </Match>
-    </Switch>
   )
 }
