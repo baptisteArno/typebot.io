@@ -1002,6 +1002,9 @@ importers:
       got:
         specifier: 12.6.0
         version: 12.6.0
+      minio:
+        specifier: 7.1.1
+        version: 7.1.1
     devDependencies:
       '@paralleldrive/cuid2':
         specifier: 2.2.0

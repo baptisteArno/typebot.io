@@ -1,5 +1,7 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
+import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import { Typebot } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
 
@@ -14,9 +16,9 @@ export const cleanDatabase = async () => {
   if (isFirstOfMonth) {
     await deleteArchivedResults()
     await deleteArchivedTypebots()
-    await resetQuarantinedWorkspaces()
+    await resetBillingProps()
   }
-  console.log('Done!')
+  console.log('Database cleaned!')
 }
 
 const deleteArchivedTypebots = async () => {
@@ -24,26 +26,9 @@ const deleteArchivedTypebots = async () => {
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
   lastDayTwoMonthsAgo.setDate(0)
 
-  const { count } = await prisma.typebot.deleteMany({
+  const typebots = await prisma.typebot.findMany({
     where: {
       updatedAt: {
-        lte: lastDayTwoMonthsAgo,
-      },
-      isArchived: true,
-    },
-  })
-
-  console.log(`Deleted ${count} archived typebots.`)
-}
-
-const deleteArchivedResults = async () => {
-  const lastDayTwoMonthsAgo = new Date()
-  lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
-  lastDayTwoMonthsAgo.setDate(0)
-
-  const results = await prisma.result.findMany({
-    where: {
-      createdAt: {
         lte: lastDayTwoMonthsAgo,
       },
       isArchived: true,
@@ -51,18 +36,55 @@ const deleteArchivedResults = async () => {
     select: { id: true },
   })
 
-  console.log(`Deleting ${results.length} archived results...`)
+  console.log(`Deleting ${typebots.length} archived typebots...`)
+
   const chunkSize = 1000
-  for (let i = 0; i < results.length; i += chunkSize) {
-    const chunk = results.slice(i, i + chunkSize)
-    await prisma.result.deleteMany({
+  for (let i = 0; i < typebots.length; i += chunkSize) {
+    const chunk = typebots.slice(i, i + chunkSize)
+    await deleteResultsFromArchivedTypebotsIfAny(chunk)
+    await prisma.typebot.deleteMany({
       where: {
         id: {
-          in: chunk.map((result) => result.id),
+          in: chunk.map((typebot) => typebot.id),
         },
       },
     })
   }
+  console.log('Done!')
+}
+
+const deleteArchivedResults = async () => {
+  const lastDayTwoMonthsAgo = new Date()
+  lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
+  lastDayTwoMonthsAgo.setDate(0)
+  let totalResults
+  do {
+    const results = await prisma.result.findMany({
+      where: {
+        createdAt: {
+          lte: lastDayTwoMonthsAgo,
+        },
+        isArchived: true,
+      },
+      select: { id: true },
+      take: 80000,
+    })
+    totalResults = results.length
+    console.log(`Deleting ${results.length} archived results...`)
+    const chunkSize = 1000
+    for (let i = 0; i < results.length; i += chunkSize) {
+      const chunk = results.slice(i, i + chunkSize)
+      await prisma.result.deleteMany({
+        where: {
+          id: {
+            in: chunk.map((result) => result.id),
+          },
+        },
+      })
+    }
+  } while (totalResults === 80000)
+
+  console.log('Done!')
 }
 
 const deleteOldChatSessions = async () => {
@@ -144,16 +166,69 @@ const deleteExpiredVerificationTokens = async () => {
       })
     }
   } while (totalVerificationTokens === 80000)
+  console.log('Done!')
 }
 
-const resetQuarantinedWorkspaces = async () =>
-  prisma.workspace.updateMany({
+const resetBillingProps = async () => {
+  console.log('Resetting billing props...')
+  const { count } = await prisma.workspace.updateMany({
     where: {
-      isQuarantined: true,
+      OR: [
+        {
+          isQuarantined: true,
+        },
+        {
+          chatsLimitFirstEmailSentAt: { not: null },
+        },
+        {
+          storageLimitFirstEmailSentAt: { not: null },
+        },
+      ],
     },
     data: {
       isQuarantined: false,
+      chatsLimitFirstEmailSentAt: null,
+      storageLimitFirstEmailSentAt: null,
+      chatsLimitSecondEmailSentAt: null,
+      storageLimitSecondEmailSentAt: null,
     },
   })
+  console.log(`Resetted ${count} workspaces.`)
+}
+
+const deleteResultsFromArchivedTypebotsIfAny = async (
+  typebotIds: { id: string }[]
+) => {
+  console.log('Checking for archived typebots with non-archived results...')
+  const archivedTypebotsWithResults = (await prisma.typebot.findMany({
+    where: {
+      id: {
+        in: typebotIds.map((typebot) => typebot.id),
+      },
+      isArchived: true,
+      results: {
+        some: {},
+      },
+    },
+    select: {
+      id: true,
+      groups: true,
+    },
+  })) as Pick<Typebot, 'groups' | 'id'>[]
+  if (archivedTypebotsWithResults.length === 0) return
+  console.log(
+    `Found ${archivedTypebotsWithResults.length} archived typebots with non-archived results.`
+  )
+  for (const archivedTypebot of archivedTypebotsWithResults) {
+    await archiveResults(prisma)({
+      typebot: archivedTypebot,
+      resultsFilter: {
+        typebotId: archivedTypebot.id,
+      },
+    })
+  }
+  console.log('Delete archived results...')
+  await deleteArchivedResults()
+}
 
 cleanDatabase().then()

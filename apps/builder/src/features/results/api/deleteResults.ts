@@ -3,7 +3,8 @@ import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
-import { archiveResults } from '../helpers/archiveResults'
+import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import prisma from '@/lib/prisma'
 
 export const deleteResults = authenticatedProcedure
   .meta({
@@ -40,7 +41,7 @@ export const deleteResults = authenticatedProcedure
     })) as Pick<Typebot, 'groups'> | null
     if (!typebot)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
-    const { success } = await archiveResults({
+    const { success } = await archiveResults(prisma)({
       typebot,
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,

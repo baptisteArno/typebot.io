@@ -8,14 +8,14 @@
   "devDependencies": {
     "@paralleldrive/cuid2": "2.2.0",
     "@playwright/test": "1.34.3",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "6.4.8",
     "aws-sdk": "2.1384.0",
-    "@typebot.io/prisma": "workspace:*",
     "dotenv": "16.0.3",
-    "@typebot.io/schemas": "workspace:*",
     "next": "13.4.3",
     "nodemailer": "6.9.2",
-    "@typebot.io/tsconfig": "workspace:*",
     "typescript": "5.0.4"
   },
   "peerDependencies": {
@@ -24,6 +24,7 @@
     "nodemailer": "6.7.8"
   },
   "dependencies": {
-    "got": "12.6.0"
+    "got": "12.6.0",
+    "minio": "7.1.1"
   }
 }
