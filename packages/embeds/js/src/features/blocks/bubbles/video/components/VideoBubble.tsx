@@ -9,9 +9,6 @@ type Props = {
 }
 
 export const showAnimationDuration = 400
-const defaultTypingDuration = 5000
-let isPlayed = false
-
 let typingTimeout: NodeJS.Timeout
 
 export const VideoBubble = (props: Props) => {
@@ -19,31 +16,21 @@ export const VideoBubble = (props: Props) => {
   let videoElement: HTMLVideoElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const autoPlay = async () => {
-    if (isPlayed) return
-    isPlayed = true
-    try {
-      if (videoElement) await videoElement.play()
-    } catch (e) {
-      console.warn('Could not autoplay the video:', e)
-    }
-    props.onTransitionEnd(ref?.offsetTop)
+  const onTypingEnd = () => {
+    const videoElement = ref?.querySelector('video')
+    if (videoElement)
+      videoElement
+        .play()
+        .catch((e) => console.warn('Could not autoplay the video:', e))
+    if (!isTyping()) return
+    setIsTyping(false)
+    setTimeout(() => {
+      props.onTransitionEnd(ref?.offsetTop)
+    }, showAnimationDuration)
   }
 
   onMount(() => {
-    if (videoElement)
-      videoElement.oncanplay = () => {
-        clearTimeout(typingTimeout)
-        setIsTyping(false)
-        setTimeout(autoPlay, showAnimationDuration)
-      }
-    typingTimeout = setTimeout(
-      () => {
-        setIsTyping(false)
-        setTimeout(autoPlay, showAnimationDuration)
-      },
-      videoElement ? defaultTypingDuration : 2000
-    )
+    typingTimeout = setTimeout(onTypingEnd, 2000)
   })
 
   onCleanup(() => {

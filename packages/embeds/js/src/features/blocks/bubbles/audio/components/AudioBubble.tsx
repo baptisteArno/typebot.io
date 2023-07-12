@@ -8,8 +8,7 @@ type Props = {
 }
 
 const showAnimationDuration = 400
-const defaultTypingDuration = 5000
-let isPlayed = false
+const typingDuration = 500
 
 let typingTimeout: NodeJS.Timeout
 
@@ -18,29 +17,18 @@ export const AudioBubble = (props: Props) => {
   let audioElement: HTMLAudioElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const autoPlay = async () => {
-    if (isPlayed) return
-    isPlayed = true
-    try {
-      if (audioElement) await audioElement.play()
-    } catch (e) {
-      console.warn('Could not autoplay the audio:', e)
-    }
-
-    props.onTransitionEnd(ref?.offsetTop)
-  }
-
   onMount(() => {
-    if (audioElement)
-      audioElement.oncanplay = () => {
-        clearTimeout(typingTimeout)
-        setIsTyping(false)
-        setTimeout(autoPlay, showAnimationDuration)
-      }
     typingTimeout = setTimeout(() => {
       setIsTyping(false)
-      setTimeout(autoPlay, showAnimationDuration)
-    }, defaultTypingDuration)
+      setTimeout(() => {
+        const audioElement = ref?.querySelector('audio')
+        if (audioElement)
+          audioElement
+            .play()
+            .catch((e) => console.warn('Could not autoplay the audio:', e))
+        props.onTransitionEnd(ref?.offsetTop)
+      }, showAnimationDuration)
+    }, typingDuration)
   })
 
   onCleanup(() => {
