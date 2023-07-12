@@ -22,7 +22,7 @@
 # - Replacing varaible:
 #   $ NEXT_PUBLIC_API_BASE=xxx ./env.sh
 #
-# - Enviroment variable not in whitelist will be discarded:
+# - Environment variable not in whitelist will be discarded:
 #   $ BAD_ENV=zzz ./env.sh
 #
 # - Change script options:
