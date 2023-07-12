@@ -9,6 +9,7 @@ type Props = {
 
 const showAnimationDuration = 400
 const defaultTypingDuration = 5000
+let isPlayed = false
 
 let typingTimeout: NodeJS.Timeout
 
@@ -18,6 +19,7 @@ export const AudioBubble = (props: Props) => {
   const [isTyping, setIsTyping] = createSignal(true)
 
   const autoPlay = () => {
+    isPlayed = true
     if (audioElement)
       audioElement
         .play()
@@ -25,19 +27,19 @@ export const AudioBubble = (props: Props) => {
     props.onTransitionEnd(ref?.offsetTop)
   }
 
-  const onCanPlay = () => {
-    clearTimeout(typingTimeout)
-    setIsTyping(false)
-    setTimeout(autoPlay, showAnimationDuration)
-  }
-
   onMount(() => {
+    if (audioElement)
+      audioElement.oncanplay = () => {
+        if (isPlayed) return
+        clearTimeout(typingTimeout)
+        setIsTyping(false)
+        setTimeout(autoPlay, showAnimationDuration)
+      }
     typingTimeout = setTimeout(() => {
-      if (audioElement) audioElement.removeEventListener('canplay', onCanPlay)
+      if (isPlayed) return
       setIsTyping(false)
       setTimeout(autoPlay, showAnimationDuration)
     }, defaultTypingDuration)
-    if (audioElement) audioElement.addEventListener('canplay', onCanPlay)
   })
 
   onCleanup(() => {
