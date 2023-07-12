@@ -25,17 +25,19 @@ export const AudioBubble = (props: Props) => {
     props.onTransitionEnd(ref?.offsetTop)
   }
 
+  const onCanPlay = () => {
+    clearTimeout(typingTimeout)
+    setIsTyping(false)
+    setTimeout(autoPlay, showAnimationDuration)
+  }
+
   onMount(() => {
     typingTimeout = setTimeout(() => {
+      if (audioElement) audioElement.removeEventListener('canplay', onCanPlay)
       setIsTyping(false)
       setTimeout(autoPlay, showAnimationDuration)
     }, defaultTypingDuration)
-    if (audioElement)
-      audioElement.oncanplay = () => {
-        clearTimeout(typingTimeout)
-        setIsTyping(false)
-        setTimeout(autoPlay, showAnimationDuration)
-      }
+    if (audioElement) audioElement.addEventListener('canplay', onCanPlay)
   })
 
   onCleanup(() => {

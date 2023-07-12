@@ -27,21 +27,23 @@ export const VideoBubble = (props: Props) => {
     props.onTransitionEnd(ref?.offsetTop)
   }
 
+  const onCanPlay = () => {
+    clearTimeout(typingTimeout)
+    setIsTyping(false)
+    setTimeout(autoPlay, showAnimationDuration)
+  }
+
   onMount(() => {
     console.log(videoElement)
     typingTimeout = setTimeout(
       () => {
+        if (videoElement) videoElement.removeEventListener('canplay', onCanPlay)
         setIsTyping(false)
         setTimeout(autoPlay, showAnimationDuration)
       },
       videoElement ? defaultTypingDuration : 2000
     )
-    if (videoElement)
-      videoElement.oncanplay = () => {
-        clearTimeout(typingTimeout)
-        setIsTyping(false)
-        setTimeout(autoPlay, showAnimationDuration)
-      }
+    if (videoElement) videoElement.addEventListener('canplay', onCanPlay)
   })
 
   onCleanup(() => {
