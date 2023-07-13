@@ -15,7 +15,6 @@ type Props = {
 }
 
 export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => {
-  // console.log('ItemNodeContent (chama o WhatsNode)', item)
   switch (item.type) {
     case ItemType.BUTTON:
       return (
