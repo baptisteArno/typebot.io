@@ -13,7 +13,7 @@ const nextConfig = {
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr', 'pt', 'de'],
+    locales: ['en', 'fr', 'pt', 'de', 'zh'],
   },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
@@ -40,13 +40,13 @@ const sentryWebpackPluginOptions = {
 
 module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
   ? withSentryConfig(
-      {
-        ...nextConfig,
-        sentry: {
-          hideSourceMaps: true,
-          widenClientFileUpload: true,
-        },
+    {
+      ...nextConfig,
+      sentry: {
+        hideSourceMaps: true,
+        widenClientFileUpload: true,
       },
-      sentryWebpackPluginOptions
-    )
+    },
+    sentryWebpackPluginOptions
+  )
   : nextConfig
