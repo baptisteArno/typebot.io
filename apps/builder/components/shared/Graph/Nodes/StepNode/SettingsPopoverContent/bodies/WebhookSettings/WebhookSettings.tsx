@@ -179,7 +179,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
     onOptionsChange({
       ...step.options,
-      headers,
+      headers: headers.map(h => { return {...h, type: 'header' }}),
     })
   }
 
