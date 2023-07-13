@@ -9,6 +9,7 @@ import {
   InputSearch,
 } from './OctaSelect.style'
 import { OctaSelectProps, OptionProps } from './OctaSelect.type';
+import { background, color } from '@chakra-ui/react';
 
 const Option = ({ value, children, optionKey, isTitle, disabled, onClick, selected }: OptionProps) => {
   const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
@@ -108,7 +109,7 @@ const OctaSelect = (props: OctaSelectProps) => {
             ))}
           </>
         </OptionGroup>
-        <DropDownIcon onClick={handleToggle} />
+        <DropDownIcon />
       </>
     </Container>
   )
