@@ -415,7 +415,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 onItemsChange={handleHeadersChange}
                 Item={QueryParamsInputs}
                 addLabel="Adicionar parâmetro"
-                type="query"
+                type="header"
                 debounceTimeout={0}
               />
             </AccordionPanel>
