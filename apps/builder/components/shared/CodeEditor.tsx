@@ -31,11 +31,13 @@ type Props = {
   maxHeight?: string
   minWidth?: string
   onChange?: (value: string) => void
+  postVariableSelected?: (variable: Pick<Variable, 'id' | 'name' | 'token'>) => void
 }
 export const CodeEditor = ({
   defaultValue,
   lang,
   onChange,
+  postVariableSelected,
   height = '250px',
   maxHeight = '70vh',
   minWidth,
@@ -67,8 +69,9 @@ export const CodeEditor = ({
   const handleVariableSelected = (
     variable?: Pick<Variable, 'id' | 'name' | 'token'>
   ) => {
+    if (!variable) return
     codeEditor.current?.view?.focus()
-    const insert = `{{${variable?.token}}}`
+    const insert = `${variable.token}`
     codeEditor.current?.view?.dispatch({
       changes: {
         from: carretPosition,
@@ -76,6 +79,8 @@ export const CodeEditor = ({
       },
       selection: { anchor: carretPosition + insert.length },
     })
+
+    if (postVariableSelected) postVariableSelected(variable)
   }
 
   const rememberCarretPosition = () => {
@@ -164,6 +169,7 @@ export const CodeEditor = ({
                   onSelectVariable={handleVariableSelected}
                   placeholder="Pesquise sua variável"
                   isCloseModal={false}
+                  labelDefault='Adicionar variável ao body:'
                 />
               </FormControl>
             </Stack>

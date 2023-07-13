@@ -10,6 +10,7 @@ export const VariableForTestInputs = ({
   debounceTimeout,
 }: TableListItemProps<VariableForTest>) => {
   const handleValueChange = (value: string) => {
+    console.log('handleValueChange', { value, item })
     if (value === item.value) return
     onItemChange({ ...item, value })
   }

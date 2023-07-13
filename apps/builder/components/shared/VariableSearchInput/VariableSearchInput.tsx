@@ -42,6 +42,7 @@ type Props = {
   isDefaultOpen?: boolean
   addVariable?: boolean
   isCloseModal?: boolean
+  labelDefault: string
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
@@ -67,6 +68,7 @@ export const VariableSearchInput = ({
   addVariable = true,
   isCloseModal = true,
   debounceTimeout = 1000,
+  labelDefault = '',
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
@@ -174,22 +176,22 @@ export const VariableSearchInput = ({
     const { value } = e.target
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          token: value,
-          fieldId: value.replace('#', ''),
-          name: value.replace('#', ''),
-        } as Variable)
+      ({
+        ...state,
+        token: value,
+        fieldId: value.replace('#', ''),
+        name: value.replace('#', ''),
+      } as Variable)
     )
   }
 
   const handleSelectTypeVariable = (type: string) => {
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          type,
-        } as Variable)
+      ({
+        ...state,
+        type,
+      } as Variable)
     )
   }
 
@@ -233,7 +235,9 @@ export const VariableSearchInput = ({
     >
       {screen === 'VIEWER' && (
         <Container data-screen={screen}>
-          Selecione uma variável para salvar a resposta:
+          {labelDefault ||
+            "Selecione uma variável para salvar a resposta:"
+          }
           <div onWheelCapture={handleContentWheel}>
             <Select
               value={myVariable}
