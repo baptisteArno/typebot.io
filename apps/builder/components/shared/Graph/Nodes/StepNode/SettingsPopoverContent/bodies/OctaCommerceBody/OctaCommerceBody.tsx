@@ -72,7 +72,6 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
   }
 
   const handleVariableSelected = (variable: Variable) => {
-    console.log('handleVariableSelected', variable)
     onOptionsChange({
       ...options,
       variableId: variable.id,

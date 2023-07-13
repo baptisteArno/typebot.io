@@ -82,8 +82,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
       if (newUrl.search) handleParams(newUrl.search.replace(/_hash_/g, '#'))
 
-      console.log('options', { options: step.options, newUrl })
-
       setWebhookUrl(newUrl.origin)
       setPath(newUrl.pathname?.replace(/_hash_/g, '#') || '')
 
@@ -92,8 +90,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
         url: newUrl.origin || '',
         path: newUrl.pathname?.replace(/_hash_/g, '#') || ''
       })
-
-      console.log('effectUrlChange', { options: step.options, newUrl })
     }
   }
 
@@ -175,6 +171,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
+    console.log('handleHeadersChange', headers)
     const properties = headers.flatMap(p => p.properties).filter(s => s)
     if (properties?.length) {
       handleAddedVariables(properties.map(s => s?.token))
@@ -182,7 +179,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
     onOptionsChange({
       ...step.options,
-      headers,
+      headers: headers.map(h => { return {...h, type: 'header' }}),
     })
   }
 
@@ -241,7 +238,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     variablesForTest: VariableForTest[],
     variables: Variable[]
   ) => {
-    console.log('resolveSession', { variablesForTest, variables })
     if (!variablesForTest?.length || !variables?.length) return {}
 
     const session: Session = {

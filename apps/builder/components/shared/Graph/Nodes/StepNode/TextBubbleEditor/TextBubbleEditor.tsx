@@ -55,17 +55,6 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     handler: closeEditor,
   })
 
-  //  useLayoutEffect(() => {
-  //   console.log('sou eu\n\n\n\n')
-  //   if (!isVariableDropdownOpen) return
-  //   const el = varDropdownRef.current
-  //   if (!el) return
-  //   const { top, left } = computeTargetCoord()
-  //   el.style.top = `${top}px`
-  //   el.style.left = `${left}px`
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isVariableDropdownOpen])
-
   const computeTargetCoord = () => {
     const selection = window.getSelection()
     const relativeParent = textEditorRef.current
