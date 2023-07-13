@@ -302,5 +302,7 @@ export const StepSettings = ({
         />
       )
     }
+    default: 
+    return (<spam></spam>)
   }
 }

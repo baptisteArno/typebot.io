@@ -42,11 +42,8 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
       {
         <Stack>
           <Text color={'gray.500'} noOfLines={0}>
-            <strong>Texto da pergunta:</strong>
-          </Text>
-          <Text color={'gray.500'} noOfLines={0}>
-            {step.options.message?.plainText && <label>{step.options.message?.plainText}</label>}
-            {!step.options.message?.plainText && <i>Não informado.</i>}
+            Texto da pergunta: {step.options.message?.plainText && <label>{step.options.message?.plainText}</label>}
+                               {!step.options.message?.plainText && <i>Não informado.</i>}
           </Text>
         </Stack>
       }
