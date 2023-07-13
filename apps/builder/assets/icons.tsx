@@ -213,6 +213,12 @@ export const TrashIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const PlayIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+  </Icon>
+)
+
 export const LayoutIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}

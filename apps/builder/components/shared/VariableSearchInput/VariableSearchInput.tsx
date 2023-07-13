@@ -12,6 +12,7 @@ import {
   Flex,
   InputProps,
   Stack,
+  Portal
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
