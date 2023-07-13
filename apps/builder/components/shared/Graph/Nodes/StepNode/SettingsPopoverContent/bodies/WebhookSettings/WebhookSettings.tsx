@@ -28,6 +28,7 @@ import {
   Variable,
   Session,
   VariableLight,
+  HttpMethodsWebhook,
 } from 'models'
 import { DropdownList } from 'components/shared/DropdownList'
 import { TableList, TableListItemProps } from 'components/shared/TableList'
@@ -41,16 +42,6 @@ import { sendOctaRequest } from 'util/octaRequest'
 import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
 import { Options } from 'use-debounce'
 import { Input, Textarea } from 'components/shared/Textbox'
-// import { validateUrl } from 'utils'
-
-enum HttpMethodsWebhook {
-  POST = 'POST',
-  GET = 'GET',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
-  OPTIONS = 'OPTIONS',
-}
 
 type Props = {
   step: WebhookStep
@@ -194,6 +185,11 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handleQueryParamsChange = (parameters: QueryParameters[]) => {
+    const properties = parameters.flatMap(p => p.properties).filter(s => s)
+    if (properties?.length) {
+      handleAddedVariables(properties.map(s => s?.token))
+    }
+
     onOptionsChange({
       ...step.options,
       parameters,
@@ -201,6 +197,11 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
+    const properties = headers.flatMap(p => p.properties).filter(s => s)
+    if (properties?.length) {
+      handleAddedVariables(properties.map(s => s?.token))
+    }
+
     onOptionsChange({
       ...step.options,
       headers,
@@ -227,7 +228,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const handleVariablesForTestChange = (
     variablesForTest: VariableForTest[]
   ) => {
-    step.options.variablesForTest = variablesForTest
+    step.options.variablesForTest = [...new Set([...(step.options.variablesForTest || []), ...variablesForTest])] 
   }
 
   const handleResponseMappingChange = (

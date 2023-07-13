@@ -10,6 +10,15 @@ export enum IntegrationStepType {
   WEBHOOK = 'Webhook'
 }
 
+export enum HttpMethodsWebhook {
+  POST = 'POST',
+  GET = 'GET',
+  PUT = 'PUT',
+  PATCH = 'PATCH',
+  DELETE = 'DELETE',
+  OPTIONS = 'OPTIONS',
+}
+
 export type WebhookStep = StepBase & {
   type: IntegrationStepType.WEBHOOK;
   options: WebhookOptions;
@@ -51,7 +60,7 @@ export type WebhookOptions = {
   responseVariableMapping: ResponseVariableMapping[]
   isAdvancedConfig?: boolean
   isCustomBody?: boolean
-  method: "POST"|"GET"|"PUT";
+  method: HttpMethodsWebhook;
   headers: QueryParameters[];
   parameters: QueryParameters[];
   path: QueryParameters[];
@@ -72,7 +81,7 @@ export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   url: "",
   body: "",
   headers: [],
-  method: "GET",
+  method: HttpMethodsWebhook.GET,
   parameters: [],
   path: [],
   returnMap: "",
