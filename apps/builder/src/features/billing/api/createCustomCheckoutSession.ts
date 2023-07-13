@@ -65,12 +65,14 @@ export const createCustomCheckoutSession = authenticatedProcedure
             } as Stripe.CustomerCreateParams.TaxIdDatum)
           : undefined
 
-      const customer = await stripe.customers.create({
-        email,
-        name: workspace.claimableCustomPlan.companyName ?? workspace.name,
-        metadata: { workspaceId },
-        tax_id_data: vat ? [vat] : undefined,
-      })
+      const customer = workspace.stripeId
+        ? await stripe.customers.retrieve(workspace.stripeId)
+        : await stripe.customers.create({
+            email,
+            name: workspace.claimableCustomPlan.companyName ?? workspace.name,
+            metadata: { workspaceId },
+            tax_id_data: vat ? [vat] : undefined,
+          })
 
       const session = await stripe.checkout.sessions.create({
         success_url: `${returnUrl}?stripe=${Plan.CUSTOM}&success=true`,
