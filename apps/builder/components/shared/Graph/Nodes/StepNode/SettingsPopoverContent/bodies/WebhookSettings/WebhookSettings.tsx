@@ -197,6 +197,8 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     })
   }
 
+  const [responseData, setResponseData] = useState({status: ''})
+
   const handleAddedVariables = (addedVariables: Array<string | undefined>) => {
     const selectedVariables = addedVariables.flatMap((addedVar: string | undefined) => {
       return typebot?.variables.filter(
@@ -305,10 +307,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
     setIsTestResponseLoading(false)
     setSuccessTest(success)
-
-    console.log("RESPONSE", data)
-    console.log("RESPONSE", data.status)
-
     setResponseData(data)
     if (!success) {
       toast({ title: 'Error ' + data.status, description: `Não foi possivel executar sua integração. 😢` })
