@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useState, useRef } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -9,14 +9,7 @@ import {
   HStack,
   Stack,
   useToast,
-  Text,
-  FormLabel,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  ModalBody,
-  useDisclosure,
+  Text
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
@@ -39,9 +32,10 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { sendOctaRequest } from 'util/octaRequest'
-import { HeadersInputs, QueryParamsInputs } from './KeyValueInputs'
-import { Options } from 'use-debounce'
+import { QueryParamsInputs } from './KeyValueInputs'
 import { Input, Textarea } from 'components/shared/Textbox'
+import { stepTypeHasWebhook } from 'utils'
+import { optionCSS } from 'react-select/dist/declarations/src/components/Option'
 
 type Props = {
   step: WebhookStep
@@ -55,23 +49,60 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const [responseKeys, setResponseKeys] = useState<string[]>([])
   const [successTest, setSuccessTest] = useState<string>()
 
-  if (step.options.path?.length) {
-    step.options.url += step.options.path?.length
-      ? step.options.path[0].value
-      : ''
-    step.options.path = []
-  }
-
   const toast = useToast({
     position: 'top-right',
     status: 'error',
   })
 
-  const [webhookUrl, setWebhookUrl] = useState('')
+  const [webhookUrl, setWebhookUrl] = useState(step.options?.url)
+  const [pathPortion, setPath] = useState(step.options?.path)
+  const [bodyPortion, setBody] = useState(step.options?.body)
+
+  const effectPathChange = () => {
+    handleVariablesHashList(pathPortion)
+    onOptionsChange({
+      ...step.options,
+      path: pathPortion
+    })
+  }
+
+  const handlePathChange = (path: string) => {
+    setPath(path)
+  }
 
   const handleUrlChange = (url: string) => {
     setWebhookUrl(url)
   }
+
+  const effectUrlChange = () => {
+    if (step.options.url != webhookUrl) clearOptions()
+
+    if (webhookUrl && webhookUrl.length > 5) {
+      const newUrl = new URL(webhookUrl.replace(/ /g, '').replace(/#/g, '_hash_').trim())
+
+      if (newUrl.search) handleParams(newUrl.search.replace(/_hash_/g, '#'))
+
+      console.log('options', { options: step.options, newUrl })
+
+      setWebhookUrl(newUrl.origin)
+      setPath(newUrl.pathname?.replace(/_hash_/g, '#') || '')
+
+      onOptionsChange({
+        ...step.options,
+        url: newUrl.origin || '',
+        path: newUrl.pathname?.replace(/_hash_/g, '#') || ''
+      })
+
+      console.log('effectUrlChange', { options: step.options, newUrl })
+    }
+  }
+
+  // const handleVariablesBody = (body: string) => {
+
+  //   const webhookUrlVariables = variablesHashList.split('/')
+
+  //   handleAddedVariables(webhookUrlVariables)
+  // }
 
   const handleVariablesHashList = (variablesHashList: string) => {
     const webhookUrlVariables = variablesHashList.split('/')
@@ -79,46 +110,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     handleAddedVariables(webhookUrlVariables)
   }
 
-  const handleUrlValidate = () => {
-    if (step.options.url != webhookUrl) clearOptions()
-
-    if (webhookUrl && webhookUrl.length > 5) {
-      const newUrl = new URL(webhookUrl.replace(/ /g, '').trim())
-
-      const hasPath = step.options.parameters.findIndex(
-        (item) => item.type === 'path'
-      )
-
-      if (newUrl.search) handleParams(newUrl.search)
-
-      if (newUrl.hash) {
-        handleVariablesHashList(newUrl.hash)
-      }
-
-      if (hasPath == 1) {
-        step.options.path[hasPath].value = newUrl.pathname
-        step.options.path[hasPath].displayValue = newUrl.pathname
-        step.options.path[hasPath].properties = undefined
-      } else {
-        addParams('path', '', newUrl.pathname, newUrl.pathname)
-      }
-
-      onOptionsChange({
-        ...step.options,
-        url: webhookUrl ? webhookUrl : '',
-      })
-    }
-  }
-
   const clearOptions = () => {
-    const options = step.options
-    options.parameters = []
-    options.path = []
-    options.returnMap = ''
-    options.responseVariableMapping = []
-    options.variablesForTest = []
-    options.headers = []
-
     setTestResponse(undefined)
     setSuccessTest('')
   }
@@ -145,7 +137,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     displayValue: string,
     properties?: Variable | undefined
   ) => {
-    const pathVariables = {
+    const newParameter = {
       key: key || '',
       value: value || '',
       displayValue: displayValue || '',
@@ -154,25 +146,11 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
       properties: properties,
     } as any
 
-    if (type == 'path') {
-      step.options.path = { ...step.options.path, ...pathVariables }
-
-      onOptionsChange({
-        ...step.options,
-        path: { ...step.options.path },
-      })
-    } else {
-      step.options.parameters.push(pathVariables)
-
-      onOptionsChange({
-        ...step.options,
-        parameters: { ...step.options.parameters },
-      })
-    }
+    step.options.parameters.push(newParameter)
 
     onOptionsChange({
       ...step.options,
-      path: { ...step.options.path },
+      parameters: { ...step.options.parameters },
     })
   }
 
@@ -208,27 +186,44 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     })
   }
 
+  const codeVariableSelected = (variable: Pick<Variable, 'id' | 'name' | 'token'>) => {
+    handleAddedVariables([variable?.token])
+  }
+
   const handleBodyChange = (body: string) => {
     onOptionsChange({
       ...step.options,
-      body: body,
+      body
     })
   }
 
-  const handleAddedVariables = (addedVariables: any) => {
-    const selectedVariables = addedVariables.flatMap((addedVar: string) => {
+  const handleAddedVariables = (addedVariables: Array<string | undefined>) => {
+    const selectedVariables = addedVariables.flatMap((addedVar: string | undefined) => {
       return typebot?.variables.filter(
         (variable) => variable.token === addedVar
       )
-    })
+    }).filter((s: Variable | undefined) => s) as Array<VariableForTest>
 
     handleVariablesForTestChange(selectedVariables)
+  }
+
+  type aggregate = {
+    keys: Array<string>,
+    variables: Array<VariableForTest>
   }
 
   const handleVariablesForTestChange = (
     variablesForTest: VariableForTest[]
   ) => {
-    step.options.variablesForTest = [...new Set([...(step.options.variablesForTest || []), ...variablesForTest])] 
+    const toTest = [...variablesForTest, ...(step.options.variablesForTest || []),].reduce((agg: aggregate, curr: VariableForTest) => {
+      if (!agg.keys.includes(curr.token)) {
+        agg.keys.push(curr.token)
+        agg.variables.push(curr)
+      }
+      return agg
+    }, ({ keys: [], variables: [] }))
+
+    step.options.variablesForTest = toTest.variables
   }
 
   const handleResponseMappingChange = (
@@ -244,6 +239,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     variablesForTest: VariableForTest[],
     variables: Variable[]
   ) => {
+    console.log('resolveSession', { variablesForTest, variables })
     if (!variablesForTest?.length || !variables?.length) return {}
 
     const session: Session = {
@@ -282,13 +278,13 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
     const options = step.options as WebhookOptions
     const parameters = step.options.parameters.concat(
-      options.path,
       options.headers
     )
 
     const localWebhook = {
       method: options.method,
       body: options.body,
+      path: options.path,
       parameters: parameters,
       url: options.url,
     }
@@ -345,22 +341,42 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
         <Accordion allowToggle allowMultiple defaultIndex={[0, 1, 2, 3, 4]}>
           <AccordionItem>
             <AccordionButton justifyContent="space-between">
-              URL com path
+              URL
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={4} as={Stack} spacing="6">
-              <Text color="gray.500" fontSize="sm">
-                Edite os parâmetros da sua URL inserindo campos na sua
-                composição (ex.: https://apiurl.com/<strong>#valor</strong>
-                /valid)
-              </Text>
-              <Textarea
+              <Input
                 placeholder="Digite o endereço da API ou do sistema"
-                defaultValue={step.options.url ?? ''}
+                defaultValue={webhookUrl ?? ''}
                 onChange={handleUrlChange}
-                onBlur={() => handleUrlValidate()}
+                onBlur={() => effectUrlChange()}
+                value={webhookUrl ?? ''}
                 debounceTimeout={5}
+                withVariableButton={false}
               />
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionButton justifyContent="space-between">
+              Path
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel pb={4} as={Stack} spacing="6">
+              <Stack>
+                <Text color="gray.500" fontSize="sm">
+                  Edite os parâmetros da sua URL inserindo campos na sua
+                  composição (ex.: /<strong>#valor</strong>/valid)
+                </Text>
+                <label>{step.options.url ?? ''}</label>
+                <Textarea
+                  placeholder=""
+                  defaultValue={pathPortion ?? ''}
+                  onChange={handlePathChange}
+                  onBlur={() => effectPathChange()}
+                  debounceTimeout={5}
+                  value={pathPortion}
+                />
+              </Stack>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -420,13 +436,13 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 {(step.options.isCustomBody ?? true) && (
                   <Stack>
                     <text color="gray.500" fontSize="sm">
-                      Envie sua informação na corpo da integração Request Body
-                      (apenas JSON)
+                      Envie sua informação na corpo da integração <i>Request Body</i> (apenas JSON)
                     </text>
                     <OpenEditorBody
                       value={step.options.body ?? '{}'}
                       lang="json"
                       onChange={handleBodyChange}
+                      postVariableSelected={codeVariableSelected}
                       debounceTimeout={0}
                     />
                     <CodeEditor
@@ -434,6 +450,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                       defaultValue={'{}'}
                       lang="json"
                       onChange={handleBodyChange}
+                      postVariableSelected={codeVariableSelected}
                       debounceTimeout={0}
                     />
                   </Stack>

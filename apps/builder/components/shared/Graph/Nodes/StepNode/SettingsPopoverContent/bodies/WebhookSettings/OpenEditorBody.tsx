@@ -15,12 +15,14 @@ type Props = {
   maxHeight?: string
   minWidth?: string
   onChange?: (value: string) => void
+  postVariableSelected: (variable: Pick<Variable, 'id' | 'name' | 'token'>) => void
 }
 
 export const OpenEditorBody = ({
   value,
   lang,
   onChange,
+  postVariableSelected,
   ...props
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -54,6 +56,7 @@ export const OpenEditorBody = ({
             value={value}
             lang="json"
             onChange={onChange}
+            postVariableSelected={postVariableSelected}
             debounceTimeout={0}
           />
           </ModalBody>

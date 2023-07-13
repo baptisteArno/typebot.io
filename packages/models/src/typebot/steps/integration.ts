@@ -63,7 +63,7 @@ export type WebhookOptions = {
   method: HttpMethodsWebhook;
   headers: QueryParameters[];
   parameters: QueryParameters[];
-  path: QueryParameters[];
+  path: string;
   returnMap: any;
   typebotId: string;
   url: string;
@@ -74,7 +74,7 @@ export type VariableForTest = {
   id: string
   variableId?: string
   value?: string
-  token?: string
+  token: string
 }
 
 export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
@@ -83,7 +83,7 @@ export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   headers: [],
   method: HttpMethodsWebhook.GET,
   parameters: [],
-  path: [],
+  path: '',
   returnMap: "",
   typebotId: "",
   responseVariableMapping: [],
