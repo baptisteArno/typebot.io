@@ -7,6 +7,7 @@ import {
   useDisclosure,
   Text,
   Divider,
+  SlideFade,
 } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import {
@@ -45,8 +46,10 @@ import { TargetEndpoint } from '../../../Endpoints'
 import { MediaBubblePopoverContent } from '../MediaBubblePopoverContent'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
+import { isDefined } from 'utils'
 import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
+import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/BlockFocusToolbar'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -59,11 +62,13 @@ export const StepNode = ({
   isConnectable,
   indices,
   onMouseDown,
+  isStartBlock
 }: {
   step: Step
   isConnectable: boolean
   indices: { stepIndex: number; blockIndex: number }
   onMouseDown?: (stepNodePosition: NodePosition, step: DraggableStep) => void
+  isStartBlock: boolean
 }) => {
   const { query } = useRouter()
   const {
@@ -74,15 +79,17 @@ export const StepNode = ({
     setFocusedBlockId,
     previewingEdge,
   } = useGraph()
-  const { updateStep } = useTypebot()
+  const { updateStep, duplicateStep, deleteStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const [isToolbarFocused, setIsToolbarFocused] = useState(false)
 
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-    step.content.plainText === ''
+      step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -126,6 +133,7 @@ export const StepNode = ({
   }
 
   const handleMouseEnter = () => {
+    setIsFocused(true)
     if (connectingIds)
       setConnectingIds({
         ...connectingIds,
@@ -134,6 +142,9 @@ export const StepNode = ({
   }
 
   const handleMouseLeave = () => {
+    setTimeout(() => {
+      setIsFocused(false)
+    }, 1500);
     if (connectingIds?.target)
       setConnectingIds({
         ...connectingIds,
@@ -156,8 +167,6 @@ export const StepNode = ({
     else setIsModalOpen(true)
 
     setOpenedStepId(step.id)
-
-    console.log('handleClick',)
   }
 
   const handleExpandClick = () => {
@@ -252,6 +261,25 @@ export const StepNode = ({
                       )}
                     </Stack>
                   </BlockStack>
+                  {isFocused && !isStartBlock && (
+                    <SlideFade
+                      in={isFocused}
+                      style={{
+                        position: 'absolute',
+                        top: '-50px',
+                        right: 0,
+                      }}
+                      unmountOnExit
+                    >
+                      <BlockFocusToolbar
+                        onDuplicateClick={() => {
+                          setIsFocused(false)
+                          duplicateStep(indices)
+                        }}
+                        onDeleteClick={() => deleteStep(indices)}
+                      />
+                    </SlideFade>
+                  )}
 
                   {step.type === 'assign to team' &&
                     hasStepRedirectNoneAvailable(step) && (
