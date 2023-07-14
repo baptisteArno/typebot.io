@@ -20,7 +20,7 @@ export const BlockFocusToolbar = ({
       bgColor={useColorModeValue('white', 'gray.800')}
       shadow="md"
     >
-      <IconButton
+      {/* <IconButton
         icon={<PlayIcon />}
         borderRightWidth="1px"
         borderRightRadius="none"
@@ -28,7 +28,7 @@ export const BlockFocusToolbar = ({
         variant="ghost"
         onClick={onPlayClick}
         size="sm"
-      />
+      /> */}
       <IconButton
         icon={<CopyIcon />}
         borderRightWidth="1px"

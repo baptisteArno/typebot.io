@@ -178,7 +178,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
                   isStartBlock={isStartBlock}
                 />
               )}
-              {isFocused && (
+              {isFocused && !isStartBlock && (
                 <SlideFade
                 in={isFocused}
                 style={{

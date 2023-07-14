@@ -142,6 +142,7 @@ export const StepNodesList = ({
               indices={{ blockIndex, stepIndex: idx }}
               isConnectable={steps.length - 1 === idx}
               onMouseDown={handleStepMouseDown(idx)}
+              isStartBlock={isStartBlock}
             />
             <Flex
               ref={handlePushElementRef(idx + 1)}
