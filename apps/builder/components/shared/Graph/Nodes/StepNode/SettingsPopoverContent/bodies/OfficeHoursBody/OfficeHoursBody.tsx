@@ -115,12 +115,15 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   }
 
   const createOfficeHour = async (): Promise<OfficeHour | null> => {
-    // if (form) {
-    //   const saved = await service.createOfficeHour(form)
-    //   handleOfficeHourSelect(saved)
+    console.log('createOfficeHour', form)
+    if (form) {
+      console.log('bateu aqui')
+       const formTest = {"name":"teste 24/766","daysOfWeek":{"is24hours":true, days: [], sameSchedule: false},"specialDates":{"active":false},"timeZone":"America/Sao_Paulo"};
+      const saved = await service.createOfficeHour(formTest)
+      handleOfficeHourSelect(saved)
 
-    //   return saved
-    // }
+      return saved
+    }
 
     return null
   }
@@ -274,6 +277,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
               Em quais dias você estará <strong>disponível</strong>?
             </h4>
           </FormArea>
+          
           <FormArea>
             {WEEK_DAYS.map((week) => (
               <ButtonDays key={week} onClick={() => handleSelectDaysOfWeek(week)} className={selectedDays.includes(week) ? "active" : ""}>
