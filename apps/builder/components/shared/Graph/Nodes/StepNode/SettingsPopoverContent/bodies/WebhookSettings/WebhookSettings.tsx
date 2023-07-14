@@ -57,6 +57,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const [webhookUrl, setWebhookUrl] = useState(step.options?.url)
   const [pathPortion, setPath] = useState(step.options?.path)
   const [bodyPortion, setBody] = useState(step.options?.body)
+  const [variablesKeyDown, setVariablesKeyDown] = useState<KeyboardEvent>()
 
   const effectPathChange = () => {
     handleVariablesHashList(pathPortion)
@@ -99,6 +100,13 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   //   handleAddedVariables(webhookUrlVariables)
   // }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === '#') {
+      e.preventDefault()
+      setVariablesKeyDown(e)
+    }
+  }
 
   const handleVariablesHashList = (variablesHashList: string) => {
     const webhookUrlVariables = variablesHashList.split('/')
@@ -366,7 +374,9 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 <label>{step.options.url ?? ''}</label>
                 <Textarea
                   placeholder=""
+                  onKeyDown={handleKeyDown}
                   defaultValue={pathPortion ?? ''}
+                  handleOpenVariablesSelect={variablesKeyDown}
                   onChange={handlePathChange}
                   onBlur={() => effectPathChange()}
                   debounceTimeout={5}
