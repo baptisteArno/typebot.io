@@ -17,6 +17,7 @@ export type TextBoxProps = {
     | ComponentWithAs<'input', InputProps>
   withVariableButton?: boolean
   debounceTimeout?: number
+  handleOpenVariablesSelect?: KeyboardEvent
 } & Omit<InputProps & TextareaProps, 'onChange'>
 
 export const TextBox = ({
@@ -24,6 +25,7 @@ export const TextBox = ({
   TextBox,
   withVariableButton = true,
   debounceTimeout = 1000,
+  handleOpenVariablesSelect,
   ...props
 }: TextBoxProps) => {
   const textBoxRef = useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(
@@ -44,6 +46,13 @@ export const TextBox = ({
       setValue(props.defaultValue ?? '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.defaultValue])
+
+  useEffect(() => {
+    if(handleOpenVariablesSelect?.key === '#' && document) {
+      (document?.querySelector("#variables-button") as HTMLDivElement)?.click()
+    }
+
+  }, [handleOpenVariablesSelect])
 
   useEffect(
     () => () => {
@@ -114,7 +123,7 @@ export const TextBox = ({
         bgColor={'white'}
         {...props}
       />
-      <VariablesButton onSelectVariable={handleVariableSelected} />
+      <VariablesButton onSelectVariable={handleVariableSelected} id='variables-button' />
     </HStack>
   )
 }
