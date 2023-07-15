@@ -4,9 +4,10 @@ import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { PhoneNumberInputOptions } from '@typebot.io/schemas'
-import { createSignal, For, onMount } from 'solid-js'
+import { createSignal, For, onCleanup, onMount } from 'solid-js'
 import { isEmpty } from '@typebot.io/lib'
 import { phoneCountries } from '@typebot.io/lib/phoneCountries'
+import { CommandData } from '@/features/commands/types'
 
 type PhoneInputProps = Pick<
   PhoneNumberInputOptions,
@@ -33,7 +34,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
     const matchedCountry =
       inputValue?.startsWith('+') &&
       inputValue.length > 2 &&
-      phoneCountries.reduce<typeof phoneCountries[number] | null>(
+      phoneCountries.reduce<(typeof phoneCountries)[number] | null>(
         (matchedCountry, country) => {
           if (
             !country?.dial_code ||
@@ -87,7 +88,18 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
   onMount(() => {
     if (!isMobile() && inputRef) inputRef.focus()
+    window.addEventListener('message', processIncomingEvent)
   })
+
+  onCleanup(() => {
+    window.removeEventListener('message', processIncomingEvent)
+  })
+
+  const processIncomingEvent = (event: MessageEvent<CommandData>) => {
+    const { data } = event
+    if (!data.isFromTypebot) return
+    if (data.command === 'setInputValue') setInputValue(data.value)
+  }
 
   return (
     <div

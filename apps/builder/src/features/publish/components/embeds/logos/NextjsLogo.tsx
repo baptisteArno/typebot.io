@@ -43,8 +43,8 @@ export const NextjsLogo = (props: IconProps) => (
         y1="116.5"
         y2="160.5"
       >
-        <stop stop-color="white"></stop>
-        <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        <stop stopColor="white"></stop>
+        <stop offset="1" stopColor="white" stopOpacity="0"></stop>
       </linearGradient>
       <linearGradient
         gradientUnits="userSpaceOnUse"
@@ -54,8 +54,8 @@ export const NextjsLogo = (props: IconProps) => (
         y1="54"
         y2="106.875"
       >
-        <stop stop-color="white"></stop>
-        <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        <stop stopColor="white"></stop>
+        <stop offset="1" stopColor="white" stopOpacity="0"></stop>
       </linearGradient>
     </defs>
   </Icon>

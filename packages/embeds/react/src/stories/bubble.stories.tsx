@@ -6,6 +6,7 @@ import {
   showPreviewMessage,
   hidePreviewMessage,
   setPrefilledVariables,
+  setInputValue,
 } from '@typebot.io/js'
 import { useState } from 'react'
 import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
@@ -23,6 +24,7 @@ export const Default = () => {
         <button onClick={() => showPreviewMessage()}>
           Show Preview Message
         </button>
+        <button onClick={() => setInputValue('YOOOO!')}>Set input value</button>
         <button onClick={hidePreviewMessage}>Close Preview Message</button>
         <div>
           <p>Predefined name:</p>
