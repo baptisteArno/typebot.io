@@ -498,6 +498,7 @@ const injectTryCatch = (headCode: string) => {
       const wrappedTag = tag.replace(
         /(<script\b[^>]*>)([\s\S]*?)(<\/script>)/gi,
         function (_, openingTag, content, closingTag) {
+          if (!isValidJsSyntax(content)) return ''
           return `${openingTag}
 try {
   ${content}
@@ -511,4 +512,13 @@ ${closingTag}`
     })
   }
   return headCode
+}
+
+const isValidJsSyntax = (snippet: string): boolean => {
+  try {
+    new Function(snippet)
+    return true
+  } catch (err) {
+    return false
+  }
 }
