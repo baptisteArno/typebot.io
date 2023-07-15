@@ -16,7 +16,7 @@ import { sendRequest } from '@typebot.io/lib'
 import { DontIcon } from 'assets/icons/DontIcon'
 import { DoIcon } from 'assets/icons/DoIcon'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
-import { Standard } from '@typebot.io/react'
+import { Standard } from '@typebot.io/nextjs'
 
 export const IntroducingChatApps = () => {
   const [typebot, setTypebot] = useState<PublicTypebot>()

@@ -2,7 +2,7 @@ import { Seo } from '@/components/Seo'
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Flex } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/react'
+import { Standard } from '@typebot.io/nextjs'
 import { ThemeSideMenu } from './ThemeSideMenu'
 
 export const ThemePage = () => {

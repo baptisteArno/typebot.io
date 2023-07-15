@@ -1,6 +1,6 @@
 import { NumberInput } from '@/components/inputs'
 import { FormLabel, HStack, Input, Stack, Switch, Text } from '@chakra-ui/react'
-import { PreviewMessageParams } from '@typebot.io/js/dist/features/bubble/types'
+import { PreviewMessageParams } from '@typebot.io/nextjs'
 import { useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 

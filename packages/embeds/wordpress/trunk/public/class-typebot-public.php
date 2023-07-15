@@ -33,7 +33,7 @@ class Typebot_Public
     function typebot_script()
     {
       echo '<script type="module">
-      import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js";';
+      import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js";';
       if (
         get_option('excluded_pages') !== null &&
         get_option('excluded_pages') !== ''
@@ -77,7 +77,7 @@ class Typebot_Public
 
   public function add_typebot_container($attributes = [])
   {
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js";
+    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js";
     $width = '100%';
     $height = '500px';
     $api_host = 'https://viewer.typebot.io';

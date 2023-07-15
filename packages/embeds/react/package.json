@@ -1,7 +1,7 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.0.80",
-  "description": "React library to display typebots on your website",
+  "version": "0.1.0",
+  "description": "Convenient library to display typebots on your Next.js website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -21,28 +21,28 @@
   "devDependencies": {
     "@babel/preset-react": "7.22.5",
     "@babel/preset-typescript": "7.22.5",
+    "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.2",
     "@typebot.io/js": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
-    "@typebot.io/prisma": "workspace:*",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
     "react": "18.2.0",
     "rollup": "3.26.2",
     "rollup-plugin-typescript-paths": "1.4.0",
-    "@typebot.io/tsconfig": "workspace:*",
     "tslib": "2.6.0",
     "tsx": "3.12.7",
-    "typescript": "5.1.6",
-    "@typebot.io/lib": "workspace:*"
+    "typescript": "5.1.6"
   },
   "peerDependencies": {
-    "@typebot.io/js": "workspace:*",
     "react": "18.x"
   }
 }

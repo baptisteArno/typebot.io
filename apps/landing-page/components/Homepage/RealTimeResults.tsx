@@ -1,5 +1,5 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/react'
+import { Standard } from '@typebot.io/nextjs'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
 import { PublicTypebot, Typebot } from '@typebot.io/schemas'

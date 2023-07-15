@@ -7,7 +7,7 @@ import {
   Image,
   chakra,
 } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/js'
+import { BubbleProps } from '@typebot.io/nextjs'
 import { isDefined, isSvgSrc } from '@typebot.io/lib'
 import { PreviewMessageSettings } from './PreviewMessageSettings'
 import { ThemeSettings } from './ThemeSettings'

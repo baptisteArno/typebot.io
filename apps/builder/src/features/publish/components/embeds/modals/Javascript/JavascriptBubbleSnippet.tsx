@@ -7,7 +7,7 @@ import {
 } from '../../snippetParsers'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { BubbleProps } from '@typebot.io/js'
+import { BubbleProps } from '@typebot.io/nextjs'
 
 type Props = Pick<BubbleProps, 'theme' | 'previewMessage'>
 

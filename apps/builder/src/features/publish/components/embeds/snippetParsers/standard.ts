@@ -1,4 +1,4 @@
-import { BotProps } from '@typebot.io/js'
+import { BotProps } from '@typebot.io/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { parseBotProps } from './shared'

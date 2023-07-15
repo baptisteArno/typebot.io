@@ -7,7 +7,7 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react'
-import { PopupProps } from '@typebot.io/js'
+import { PopupProps } from '@typebot.io/nextjs'
 import { useState, useEffect } from 'react'
 import { isDefined } from '@typebot.io/lib'
 
