@@ -34,11 +34,11 @@ export const updateRow = async (
   const parsedValues = parseCellValues(variables)(options.cellsToUpsert)
 
   await doc.loadInfo()
-  const sheet = doc.sheetsById[sheetId]
+  const sheet = doc.sheetsById[Number(sheetId)]
   const rows = await sheet.getRows()
   const filteredRows = rows.filter((row) =>
     referenceCell
-      ? row[referenceCell.column as string] === referenceCell.value
+      ? row.get(referenceCell.column as string) === referenceCell.value
       : matchFilter(row, filter as NonNullable<typeof filter>)
   )
   if (filteredRows.length === 0) {
@@ -58,9 +58,9 @@ export const updateRow = async (
 
   try {
     for (const filteredRow of filteredRows) {
-      const rowIndex = filteredRow.rowIndex - 2 // -1 for 0-indexing, -1 for header row
+      const rowIndex = filteredRow.rowNumber - 2 // -1 for 1-indexing, -1 for header row
       for (const key in parsedValues) {
-        rows[rowIndex][key] = parsedValues[key]
+        rows[rowIndex].set(key, parsedValues[key])
       }
       await rows[rowIndex].save()
     }

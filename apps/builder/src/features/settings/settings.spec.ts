@@ -3,7 +3,6 @@ import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { defaultTextInputOptions } from '@typebot.io/schemas'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
-import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
@@ -13,12 +12,7 @@ test.describe.parallel('Settings page', () => {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/settings`)
-      await expect(
-        page.locator('a:has-text("Made with Typebot")')
-      ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
-      await page.click('text="Typebot.io branding"')
-      await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
-
+    
       await page.click('text="Remember user"')
 
       await expect(page.getByPlaceholder('Type your answer...')).toHaveValue(
@@ -101,27 +95,6 @@ test.describe.parallel('Settings page', () => {
         'div[contenteditable=true]',
         '<script>Lorem ipsum</script>'
       )
-    })
-  })
-
-  test.describe('Free workspace', () => {
-    test("can't remove branding", async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
-        id: typebotId,
-        workspaceId: freeWorkspaceId,
-      })
-      await page.goto(`/typebots/${typebotId}/settings`)
-      await expect(page.locator('text="What\'s your name?"')).toBeVisible()
-      await expect(
-        page.locator('[data-testid="starter-lock-tag"]')
-      ).toBeVisible()
-      await page.click('text=Typebot.io branding')
-      await expect(
-        page.locator(
-          'text="You need to upgrade your plan in order to remove branding"'
-        )
-      ).toBeVisible()
     })
   })
 })

@@ -117,8 +117,6 @@ export const TypebotButton = ({
       variant="outline"
       w="225px"
       h="270px"
-      mr={{ sm: 6 }}
-      mb={6}
       rounded="lg"
       whiteSpace="normal"
       opacity={draggedTypebot?.id === typebot.id ? 0.2 : 1}

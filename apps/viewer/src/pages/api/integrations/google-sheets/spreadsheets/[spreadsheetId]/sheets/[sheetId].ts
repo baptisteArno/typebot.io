@@ -61,20 +61,19 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const doc = new GoogleSpreadsheet(spreadsheetId)
   const client = await getAuthenticatedGoogleClient(credentialsId)
   if (!client) {
     notFound(res, "Couldn't find credentials in database")
     return
   }
-  doc.useOAuth2Client(client)
+  const doc = new GoogleSpreadsheet(spreadsheetId, client)
   await doc.loadInfo()
-  const sheet = doc.sheetsById[sheetId]
+  const sheet = doc.sheetsById[Number(sheetId)]
   try {
     const rows = await sheet.getRows()
     const filteredRows = rows.filter((row) =>
       referenceCell
-        ? row[referenceCell.column as string] === referenceCell.value
+        ? row.get(referenceCell.column as string) === referenceCell.value
         : matchFilter(row, filter as NonNullable<typeof filter>)
     )
     if (filteredRows.length === 0) {
@@ -88,7 +87,7 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     const response = {
       rows: filteredRows.map((row) =>
         extractingColumns.reduce<{ [key: string]: string }>(
-          (obj, column) => ({ ...obj, [column]: row[column] }),
+          (obj, column) => ({ ...obj, [column]: row.get(column) }),
           {}
         )
       ),
@@ -119,14 +118,13 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string }
     }
   if (!hasValue(credentialsId)) return badRequest(res)
-  const doc = new GoogleSpreadsheet(spreadsheetId)
   const auth = await getAuthenticatedGoogleClient(credentialsId)
   if (!auth)
     return res.status(404).send("Couldn't find credentials in database")
-  doc.useOAuth2Client(auth)
+  const doc = new GoogleSpreadsheet(spreadsheetId, auth)
   try {
     await doc.loadInfo()
-    const sheet = doc.sheetsById[sheetId]
+    const sheet = doc.sheetsById[Number(sheetId)]
     await sheet.addRow(values)
     await saveSuccessLog({ resultId, message: 'Succesfully inserted row' })
     return res.send({ message: 'Success' })
@@ -149,22 +147,21 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string }
     }
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res)
-  const doc = new GoogleSpreadsheet(spreadsheetId)
   const auth = await getAuthenticatedGoogleClient(credentialsId)
   if (!auth)
     return res.status(404).send("Couldn't find credentials in database")
-  doc.useOAuth2Client(auth)
+  const doc = new GoogleSpreadsheet(spreadsheetId, auth)
   try {
     await doc.loadInfo()
-    const sheet = doc.sheetsById[sheetId]
+    const sheet = doc.sheetsById[Number(sheetId)]
     const rows = await sheet.getRows()
     const updatingRowIndex = rows.findIndex(
-      (row) => row[referenceCell.column as string] === referenceCell.value
+      (row) => row.get(referenceCell.column as string) === referenceCell.value
     )
     if (updatingRowIndex === -1)
       return res.status(404).send({ message: "Couldn't find row to update" })
     for (const key in values) {
-      rows[updatingRowIndex][key] = values[key]
+      rows[updatingRowIndex].set(key, values[key])
     }
     await rows[updatingRowIndex].save()
     await saveSuccessLog({ resultId, message: 'Succesfully updated row' })
@@ -188,7 +185,7 @@ const matchFilter = (
         (comparison) =>
           comparison.column &&
           matchComparison(
-            row[comparison.column],
+            row.get(comparison.column),
             comparison.comparisonOperator,
             comparison.value
           )
@@ -197,7 +194,7 @@ const matchFilter = (
         (comparison) =>
           comparison.column &&
           matchComparison(
-            row[comparison.column],
+            row.get(comparison.column),
             comparison.comparisonOperator,
             comparison.value
           )

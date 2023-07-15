@@ -29,7 +29,7 @@ export const insertRow = async (
 
   try {
     await doc.loadInfo()
-    const sheet = doc.sheetsById[options.sheetId]
+    const sheet = doc.sheetsById[Number(options.sheetId)]
     await sheet.addRow(parsedValues)
     log = {
       status: 'success',

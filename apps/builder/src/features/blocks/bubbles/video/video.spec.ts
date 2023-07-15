@@ -56,7 +56,7 @@ test.describe.parallel('Video bubble block', () => {
 
       await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Preview')
-      await expect(page.locator('video > source').nth(1)).toHaveAttribute(
+      await expect(page.locator('video').nth(1)).toHaveAttribute(
         'src',
         videoSrc
       )

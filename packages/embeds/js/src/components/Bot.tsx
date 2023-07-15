@@ -97,7 +97,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
   })
 
   createEffect(() => {
-    if (typeof props.typebot === 'string') return
+    if (isNotDefined(props.typebot) || typeof props.typebot === 'string') return
     setCustomCss(props.typebot.theme.customCss ?? '')
   })
 
