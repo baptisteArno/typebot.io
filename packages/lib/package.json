@@ -14,7 +14,7 @@
     "@types/nodemailer": "6.4.8",
     "aws-sdk": "2.1415.0",
     "dotenv": "16.3.1",
-    "next": "13.4.9",
+    "next": "13.4.3",
     "nodemailer": "6.9.3",
     "typescript": "5.1.6"
   },

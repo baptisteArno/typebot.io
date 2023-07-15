@@ -21,7 +21,7 @@
     "focus-visible": "5.2.0",
     "framer-motion": "10.12.20",
     "@typebot.io/schemas": "workspace:*",
-    "next": "13.4.9",
+    "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "@typebot.io/lib": "workspace:*"

@@ -26,7 +26,7 @@
     "google-spreadsheet": "4.0.2",
     "got": "12.6.0",
     "libphonenumber-js": "1.10.37",
-    "next": "13.4.9",
+    "next": "13.4.3",
     "nextjs-cors": "2.1.2",
     "node-html-parser": "^6.1.5",
     "nodemailer": "6.9.3",
