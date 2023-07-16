@@ -2,7 +2,6 @@ import { PixelBlock } from '@typebot.io/schemas'
 
 declare const window: {
   fbq?: (
-    arg0: string,
     arg1: string,
     arg2: string,
     arg3: Record<string, string> | undefined
@@ -42,7 +41,7 @@ export const trackPixelEvent = (options: PixelBlock['options']) => {
     : undefined
   if (options.eventType === 'Custom') {
     if (!options.name) return
-    window.fbq('trackCustom', options.pixelId, options.name, params)
+    window.fbq('trackCustom', options.name, params)
   }
-  window.fbq('track', options.pixelId, options.eventType, params)
+  window.fbq('track', options.eventType, params)
 }
