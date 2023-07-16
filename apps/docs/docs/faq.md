@@ -25,3 +25,7 @@ Natural recommendations resonate a lot more with me. My goal is to create the be
 ## How can I change my password
 
 Typebot doesn't store any password. Its login works with Github, Google, Facebook and Magic link email.
+
+## Can I set a variable with the Script block?
+
+No, the script block is only meant to execute a script. You can't set a variable with/in it. If you need to set a variable with some code, you can use the [Set variable block](/editor/blocks/logic/set-variable).

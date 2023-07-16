@@ -1,6 +1,6 @@
 # Script block
 
-The "Script" block allows you to execute Javascript code. If you want to set a variable value with Javascript, use the [Set variable block](./set-variable) instead.
+The "Script" block allows you to execute Javascript code. If you want to set a variable value with Javascript, use the [Set variable block](./set-variable) instead. You can't set a variable with the script block.
 
 **It doesn't allow you to create a custom visual block**
 
