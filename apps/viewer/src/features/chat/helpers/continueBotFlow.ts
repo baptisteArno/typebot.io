@@ -162,7 +162,7 @@ const saveVariableValueIfAny =
   }
 
 export const setResultAsCompleted = async (resultId: string) => {
-  await prisma.result.update({
+  await prisma.result.updateMany({
     where: { id: resultId },
     data: { isCompleted: true },
   })
@@ -235,7 +235,7 @@ const saveAnswer =
   }
 
 const setResultAsStarted = async (resultId: string) => {
-  await prisma.result.update({
+  await prisma.result.updateMany({
     where: { id: resultId },
     data: { hasStarted: true },
   })

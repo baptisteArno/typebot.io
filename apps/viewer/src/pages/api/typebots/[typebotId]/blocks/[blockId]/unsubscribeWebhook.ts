@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const { webhookId } = typebot.groups
         .flatMap((g) => g.blocks)
         .find(byId(blockId)) as WebhookBlock
-      await prisma.webhook.update({
+      await prisma.webhook.updateMany({
         where: { id: webhookId },
         data: { url: null },
       })

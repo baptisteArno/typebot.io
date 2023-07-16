@@ -216,7 +216,7 @@ const updateLastActivityDate = async (user: User) => {
     first.getDate() === second.getDate()
 
   if (!datesAreOnSameDay(user.lastActivityAt, new Date()))
-    await prisma.user.update({
+    await prisma.user.updateMany({
       where: { id: user.id },
       data: { lastActivityAt: new Date() },
     })

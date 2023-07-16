@@ -144,7 +144,7 @@ const sendAlertIfLimitReached = async (
           chatsLimit,
           url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
         })
-        await prisma.workspace.update({
+        await prisma.workspace.updateMany({
           where: { id: workspace.id },
           data: { chatsLimitFirstEmailSentAt: new Date() },
         })
@@ -168,7 +168,7 @@ const sendAlertIfLimitReached = async (
           chatsLimit,
           url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
         })
-        await prisma.workspace.update({
+        await prisma.workspace.updateMany({
           where: { id: workspace.id },
           data: { chatsLimitSecondEmailSentAt: new Date() },
         })
@@ -179,7 +179,7 @@ const sendAlertIfLimitReached = async (
 
     if (totalChatsUsed > chatsLimit * 3 && workspace.plan === Plan.FREE) {
       console.log(`Automatically quarantine workspace ${workspace.id}...`)
-      await prisma.workspace.update({
+      await prisma.workspace.updateMany({
         where: { id: workspace.id },
         data: { isQuarantined: true },
       })

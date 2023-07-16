@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as Result
     const resultId = req.query.resultId as string
-    const result = await prisma.result.update({
+    const result = await prisma.result.updateMany({
       where: { id: resultId },
       data,
     })

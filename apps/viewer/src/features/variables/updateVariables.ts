@@ -44,7 +44,7 @@ const updateResultVariables =
     ].filter((variable) => isDefined(variable.value)) as VariableWithValue[]
 
     if (result.id)
-      await prisma.result.update({
+      await prisma.result.updateMany({
         where: {
           id: result.id,
         },

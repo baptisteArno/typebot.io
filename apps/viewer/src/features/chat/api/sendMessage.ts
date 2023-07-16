@@ -95,13 +95,6 @@ export const sendMessage = publicProcedure
         const { messages, input, clientSideActions, newSessionState, logs } =
           await continueBotFlow(session.state)(message)
 
-        await prisma.chatSession.updateMany({
-          where: { id: session.id },
-          data: {
-            state: newSessionState,
-          },
-        })
-
         const containsSetVariableClientSideAction = clientSideActions?.some(
           (action) => 'setVariable' in action
         )
@@ -113,6 +106,13 @@ export const sendMessage = publicProcedure
           session.state.result.id
         )
           await setResultAsCompleted(session.state.result.id)
+
+        await prisma.chatSession.updateMany({
+          where: { id: session.id },
+          data: {
+            state: newSessionState,
+          },
+        })
 
         return {
           messages,
