@@ -1,5 +1,5 @@
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
@@ -35,14 +35,13 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
+  
   const [value, setValue] = useState(initialValue)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
-  let timeoutId: number
-
   const closeEditor = () => {
     if (onClose) onClose(convertValueToStepContent(value))
   }
@@ -54,21 +53,6 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     ref: textEditorRef,
     handler: closeEditor,
   })
-
-  const computeTargetCoord = () => {
-    const selection = window.getSelection()
-    const relativeParent = textEditorRef.current
-    
-    if (!selection || !relativeParent) return { top: 0, left: 0 }
-
-    const range = selection.getRangeAt(0)
-    const selectionBoundingRect = range.getBoundingClientRect()
-    const relativeRect = relativeParent.getBoundingClientRect()
-    return {
-      top: selectionBoundingRect.bottom - relativeRect.top,
-      left: selectionBoundingRect.left - relativeRect.left,
-    }
-  }
 
   const convertValueToStepContent = (value: TElement[]): TextBubbleContent => {
     if (value.length === 0) defaultTextBubbleContent
@@ -101,13 +85,6 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.shiftKey) return
     if (e.key === 'Enter') closeEditor()
-  }
-
-  const handleKeyUp = (e: React.KeyboardEvent) => {
-    // clearTimeout(timeoutId)
-
-    // timeoutId = setTimeout(keyUpEditor, 1500) as unknown as number
-    keyUpEditor
   }
 
   return (

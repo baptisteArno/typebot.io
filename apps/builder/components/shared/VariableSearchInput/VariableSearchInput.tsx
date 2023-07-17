@@ -42,7 +42,7 @@ type Props = {
   isDefaultOpen?: boolean
   addVariable?: boolean
   isCloseModal?: boolean
-  labelDefault: string
+  labelDefault?: string
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<

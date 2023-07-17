@@ -75,7 +75,6 @@ export const InputSettingBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={1}
           onClose={handleCloseEditorBotMessage}
           initialValue={
             step.options.message
@@ -102,7 +101,6 @@ export const InputSettingBody = ({
                   Mensagem para resposta inválida - Tentativa {index + 1}
                 </FormLabel>
                 <TextBubbleEditor
-                  increment={1}
                   onClose={(content) => handleFallBackMessage(content, index)}
                   initialValue={
                     message
@@ -115,7 +113,6 @@ export const InputSettingBody = ({
               </>
             )) :
             <TextBubbleEditor
-              increment={1}
               onClose={(content) => handleFallBackMessage(content, 0)}
               initialValue={[]}
               onKeyUp={(content) => handleFallBackMessage(content, 0)}
