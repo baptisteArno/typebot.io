@@ -175,6 +175,16 @@ export const UnderlineIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const StrikethroughIcon = (props: IconProps) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdStrikethroughS />
+    </div>
+  </IconContext.Provider>
+)
+
 export const LinkIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>

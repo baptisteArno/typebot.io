@@ -4,11 +4,12 @@ import {
   MARK_BOLD,
   MARK_ITALIC,
   MARK_UNDERLINE,
+  MARK_STRIKETHROUGH
 } from '@udecode/plate-basic-marks';
 import { getPluginType, PlateEditor, Value } from '@udecode/plate-core';
 import { LinkToolbarButton } from '@udecode/plate-ui-link';
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar';
-import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon } from 'assets/icons';
+import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, StrikethroughIcon } from 'assets/icons';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { VscSmiley } from 'react-icons/vsc';
@@ -95,30 +96,31 @@ export const ToolBar = ({
           icon={<UnderlineIcon />}
         />
       </span>
+
       <span data-testid="link-button">
         <LinkToolbarButton icon={<LinkIcon />} />
       </span>
-      
+
       <span style={{ position: 'relative' }}>
-        <span 
-        onClick={handleEmojiIconClick}  
-        style={{
-          color: 'gray',
-          cursor: 'pointer',
-          display: 'inline-block',
-          fontSize: '1.4em',
-          marginTop: '5px'
-        }}
-        ><VscSmiley/>
+        <span
+          onClick={handleEmojiIconClick}
+          style={{
+            color: 'gray',
+            cursor: 'pointer',
+            display: 'inline-block',
+            fontSize: '1.4em',
+            marginTop: '5px'
+          }}
+        ><VscSmiley />
         </span>
         {showPicker && (
           <div style={{ position: 'absolute', top: '100%', zIndex: 9999 }}>
-              <style>{`
+            <style>{`
               .emoji-mart-preview {
                 display: none;
               }
             `}</style>
-            <Picker onSelect={handleEmojiSelect}  i18n={customI18n}  />
+            <Picker onSelect={handleEmojiSelect} i18n={customI18n} />
           </div>
         )}
       </span>

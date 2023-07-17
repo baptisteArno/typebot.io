@@ -371,11 +371,17 @@ export const defaultCallOtherBotOptions: CallOtherBotOptions = {
   subject: '',
 }
 
+const seeYa = 'Até mais!'
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
 {
-  html: '',
-  richText: [],
-  plainText: '',
+  html: `<div style="margin-left: 8px;">${seeYa}</div>`,
+    richText: [{
+      children: [{
+        text: seeYa,
+      }],
+      type: "p"
+    }],
+    plainText: seeYa
 }
 
 export const defaultCommerceOptions: CommerceOptions = {
