@@ -33,7 +33,6 @@ export const InputMediaSettingBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={1}
           onClose={handleCloseEditorBotMessage}
           initialValue={
             step.content.message
