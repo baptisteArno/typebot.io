@@ -179,7 +179,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
-    console.log('handleHeadersChange', headers)
     const properties = headers.flatMap(p => p.properties).filter(s => s)
     if (properties?.length) {
       handleAddedVariables(properties.map(s => s?.token))
