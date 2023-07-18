@@ -44,10 +44,6 @@ export const resumeChatCompletion =
     }, [])
     if (newVariables.length > 0)
       newSessionState = updateVariables(newSessionState)(newVariables)
-    logs.push({
-      description: 'OpenAI block successfully executed',
-      status: 'success',
-    })
     return {
       outgoingEdgeId,
       newSessionState,
