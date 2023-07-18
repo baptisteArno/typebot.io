@@ -276,11 +276,11 @@ export const defaultPhoneInputOptions: InputOptions = {
     html: `<div style="margin-left: 8px;">Pode me informar o seu celular?</div>`,
     richText: [{
       children: [{
-        text: 'Pode me informar o seu celular',
+        text: 'Pode me informar o seu celular?',
       }],
       type: "p"
     }],
-    plainText: 'Pode me informar o seu celular'
+    plainText: 'Pode me informar o seu celular?'
   },
   useFallback: true,
   fallbackMessages: [ {
