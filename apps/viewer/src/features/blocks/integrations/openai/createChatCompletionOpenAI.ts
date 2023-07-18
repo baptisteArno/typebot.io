@@ -50,7 +50,7 @@ export const createChatCompletionOpenAI = async (
     newSessionState.typebot.variables
   )(options.messages)
   if (variablesTransformedToList.length > 0)
-    newSessionState = await updateVariables(state)(variablesTransformedToList)
+    newSessionState = updateVariables(state)(variablesTransformedToList)
 
   const temperature = parseVariableNumber(newSessionState.typebot.variables)(
     options.advancedSettings?.temperature

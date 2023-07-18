@@ -7,13 +7,10 @@ import { parseCellValues } from './helpers/parseCellValues'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
-import { saveErrorLog } from '@/features/logs/saveErrorLog'
-import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { matchFilter } from './helpers/matchFilter'
-import { saveInfoLog } from '@/features/logs/saveInfoLog'
 
 export const updateRow = async (
-  { result, typebot: { variables } }: SessionState,
+  { typebot: { variables } }: SessionState,
   {
     outgoingEdgeId,
     options,
@@ -24,7 +21,7 @@ export const updateRow = async (
   if (!options.cellsToUpsert || !sheetId || (!referenceCell && !filter))
     return { outgoingEdgeId }
 
-  let log: ReplyLog | undefined
+  const logs: ReplyLog[] = []
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
@@ -42,18 +39,12 @@ export const updateRow = async (
       : matchFilter(row, filter as NonNullable<typeof filter>)
   )
   if (filteredRows.length === 0) {
-    log = {
+    logs.push({
       status: 'info',
       description: `Could not find any row that matches the filter`,
-      details: JSON.stringify(filter, null, 2),
-    }
-    result &&
-      (await saveInfoLog({
-        resultId: result.id,
-        message: log.description,
-        details: log.details,
-      }))
-    return { outgoingEdgeId, logs: log ? [log] : undefined }
+      details: filter,
+    })
+    return { outgoingEdgeId, logs }
   }
 
   try {
@@ -65,28 +56,17 @@ export const updateRow = async (
       await rows[rowIndex].save()
     }
 
-    log = log = {
+    logs.push({
       status: 'success',
       description: `Succesfully updated matching rows`,
-    }
-    result &&
-      (await saveSuccessLog({
-        resultId: result.id,
-        message: log.description,
-      }))
+    })
   } catch (err) {
     console.log(err)
-    log = {
+    logs.push({
       status: 'error',
       description: `An error occured while updating the row`,
       details: err,
-    }
-    result &&
-      (await saveErrorLog({
-        resultId: result.id,
-        message: log.description,
-        details: err,
-      }))
+    })
   }
-  return { outgoingEdgeId, logs: log ? [log] : undefined }
+  return { outgoingEdgeId, logs }
 }

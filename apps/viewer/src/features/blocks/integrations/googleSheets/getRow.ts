@@ -7,11 +7,9 @@ import {
 import { isNotEmpty, byId } from '@typebot.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
-import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { matchFilter } from './helpers/matchFilter'
-import { saveInfoLog } from '@/features/logs/saveInfoLog'
 
 export const getRow = async (
   state: SessionState,
@@ -20,15 +18,13 @@ export const getRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
 ): Promise<ExecuteIntegrationResponse> => {
+  const logs: ReplyLog[] = []
   const { sheetId, cellsToExtract, referenceCell, filter } = deepParseVariables(
     state.typebot.variables
   )(options)
   if (!sheetId) return { outgoingEdgeId }
 
-  let log: ReplyLog | undefined
-
   const variables = state.typebot.variables
-  const resultId = state.result?.id
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
@@ -48,16 +44,12 @@ export const getRow = async (
       )
     )
     if (filteredRows.length === 0) {
-      log = {
+      logs.push({
         status: 'info',
         description: `Couldn't find any rows matching the filter`,
         details: JSON.stringify(filter, null, 2),
-      }
-      await saveInfoLog({
-        resultId,
-        message: log.description,
       })
-      return { outgoingEdgeId, logs: log ? [log] : undefined }
+      return { outgoingEdgeId, logs }
     }
     const extractingColumns = cellsToExtract
       .map((cell) => cell.column)
@@ -85,24 +77,19 @@ export const getRow = async (
       },
       []
     )
-    const newSessionState = await updateVariables(state)(newVariables)
+    const newSessionState = updateVariables(state)(newVariables)
     return {
       outgoingEdgeId,
       newSessionState,
     }
   } catch (err) {
-    log = {
+    logs.push({
       status: 'error',
       description: `An error occurred while fetching the spreadsheet data`,
       details: err,
-    }
-    await saveErrorLog({
-      resultId,
-      message: log.description,
-      details: err,
     })
   }
-  return { outgoingEdgeId, logs: log ? [log] : undefined }
+  return { outgoingEdgeId, logs }
 }
 
 const getTotalRows = <T>(

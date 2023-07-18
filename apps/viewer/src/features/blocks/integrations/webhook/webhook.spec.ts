@@ -63,5 +63,5 @@ test('should execute webhooks properly', async ({ page }) => {
   await expect(
     page.locator('text="Webhook successfuly executed." >> nth=1')
   ).toBeVisible()
-  await expect(page.locator('text="Webhook returned an error"')).toBeVisible()
+  await expect(page.locator('text="Webhook returned an error."')).toBeVisible()
 })

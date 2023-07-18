@@ -4,6 +4,7 @@ import { render } from '@faire/mjml-react/utils/render'
 import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import {
   PublicTypebot,
+  ReplyLog,
   ResultInSession,
   SendEmailBlock,
   SendEmailOptions,
@@ -18,14 +19,13 @@ import { parseAnswers } from '@typebot.io/lib/results'
 import { decrypt } from '@typebot.io/lib/api'
 import { defaultFrom, defaultTransportOptions } from './constants'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
-import { saveErrorLog } from '@/features/logs/saveErrorLog'
-import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
 
 export const executeSendEmailBlock = async (
   { result, typebot }: SessionState,
   block: SendEmailBlock
 ): Promise<ExecuteIntegrationResponse> => {
+  const logs: ReplyLog[] = []
   const { options } = block
   const { variables } = typebot
   const isPreview = !result.id
@@ -45,7 +45,7 @@ export const executeSendEmailBlock = async (
     parseVariables(variables, { escapeHtml: true })(options.body ?? '')
 
   try {
-    await sendEmail({
+    const sendEmailLogs = await sendEmail({
       typebotId: typebot.id,
       result,
       credentialsId: options.credentialsId,
@@ -61,17 +61,16 @@ export const executeSendEmailBlock = async (
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
     })
+    if (sendEmailLogs) logs.push(...sendEmailLogs)
   } catch (err) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: 'Email not sent',
-      details: {
-        error: err,
-      },
+    logs.push({
+      status: 'error',
+      details: err,
+      description: `Email not sent`,
     })
   }
 
-  return { outgoingEdgeId: block.outgoingEdgeId }
+  return { outgoingEdgeId: block.outgoingEdgeId, logs }
 }
 
 const sendEmail = async ({
@@ -91,7 +90,8 @@ const sendEmail = async ({
   typebotId: string
   result: ResultInSession
   fileUrls?: string | string[]
-}) => {
+}): Promise<ReplyLog[] | undefined> => {
+  const logs: ReplyLog[] = []
   const { name: replyToName } = parseEmailRecipient(replyTo)
 
   const { host, port, isTlsEnabled, username, password, from } =
@@ -117,9 +117,9 @@ const sendEmail = async ({
   })
 
   if (!emailBody) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: 'Email not sent',
+    logs.push({
+      status: 'error',
+      description: 'Email not sent',
       details: {
         error: 'No email body found',
         transportConfig,
@@ -131,6 +131,7 @@ const sendEmail = async ({
         emailBody,
       },
     })
+    return logs
   }
   const transporter = createTransport(transportConfig)
   const fromName = isEmpty(replyToName) ? from.name : replyToName
@@ -150,9 +151,9 @@ const sendEmail = async ({
   }
   try {
     await transporter.sendMail(email)
-    await saveSuccessLog({
-      resultId: result.id,
-      message: 'Email successfully sent',
+    logs.push({
+      status: 'success',
+      description: 'Email successfully sent',
       details: {
         transportConfig: {
           ...transportConfig,
@@ -162,11 +163,11 @@ const sendEmail = async ({
       },
     })
   } catch (err) {
-    await saveErrorLog({
-      resultId: result.id,
-      message: 'Email not sent',
+    logs.push({
+      status: 'error',
+      description: 'Email not sent',
       details: {
-        error: err,
+        error: err instanceof Error ? err.toString() : err,
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: '******' },
@@ -175,6 +176,8 @@ const sendEmail = async ({
       },
     })
   }
+
+  return logs
 }
 
 const getEmailInfo = async (

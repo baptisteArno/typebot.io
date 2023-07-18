@@ -1,4 +1,3 @@
-import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { byId, isDefined } from '@typebot.io/lib'
 import { ChatReply, SessionState } from '@typebot.io/schemas'
@@ -11,7 +10,7 @@ export const resumeChatCompletion =
     {
       outgoingEdgeId,
       options,
-      logs,
+      logs = [],
     }: {
       outgoingEdgeId?: string
       options: ChatCompletionOpenAIOptions
@@ -44,12 +43,11 @@ export const resumeChatCompletion =
       return newVariables
     }, [])
     if (newVariables.length > 0)
-      newSessionState = await updateVariables(newSessionState)(newVariables)
-    state.result &&
-      (await saveSuccessLog({
-        resultId: state.result.id,
-        message: 'OpenAI block successfully executed',
-      }))
+      newSessionState = updateVariables(newSessionState)(newVariables)
+    logs.push({
+      description: 'OpenAI block successfully executed',
+      status: 'success',
+    })
     return {
       outgoingEdgeId,
       newSessionState,

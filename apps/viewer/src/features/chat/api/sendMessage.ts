@@ -1,14 +1,12 @@
-import prisma from '@/lib/prisma'
 import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Prisma } from '@typebot.io/prisma'
 import {
   ChatReply,
   chatReplySchema,
-  ChatSession,
   GoogleAnalyticsBlock,
   IntegrationBlockType,
   PixelBlock,
+  ReplyLog,
   ResultInSession,
   sendMessageInputSchema,
   SessionState,
@@ -19,19 +17,20 @@ import {
   Variable,
   VariableWithValue,
 } from '@typebot.io/schemas'
-import {
-  continueBotFlow,
-  getSession,
-  setResultAsCompleted,
-  startBotFlow,
-} from '../helpers'
 import { env, isDefined, isNotEmpty, omit } from '@typebot.io/lib'
 import { prefillVariables } from '@/features/variables/prefillVariables'
 import { injectVariablesFromExistingResult } from '@/features/variables/injectVariablesFromExistingResult'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { parseVariables } from '@/features/variables/parseVariables'
-import { saveLog } from '@/features/logs/saveLog'
 import { NodeType, parse } from 'node-html-parser'
+import { saveStateToDatabase } from '../helpers/saveStateToDatabase'
+import { getSession } from '../queries/getSession'
+import { continueBotFlow } from '../helpers/continueBotFlow'
+import { startBotFlow } from '../helpers/startBotFlow'
+import { findTypebot } from '../queries/findTypebot'
+import { findPublicTypebot } from '../queries/findPublicTypebot'
+import { findResult } from '../queries/findResult'
+import { createId } from '@paralleldrive/cuid2'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -53,17 +52,6 @@ export const sendMessage = publicProcedure
     }) => {
       const session = sessionId ? await getSession(sessionId) : null
 
-      if (clientLogs) {
-        for (const log of clientLogs) {
-          await saveLog({
-            message: log.description,
-            status: log.status as 'error' | 'success' | 'info',
-            resultId: session?.state.result.id,
-            details: log.details,
-          })
-        }
-      }
-
       if (!session) {
         const {
           sessionId,
@@ -74,7 +62,7 @@ export const sendMessage = publicProcedure
           dynamicTheme,
           logs,
           clientSideActions,
-        } = await startSession(startParams, user?.id)
+        } = await startSession(startParams, user?.id, clientLogs)
         return {
           sessionId,
           typebot: typebot
@@ -95,24 +83,18 @@ export const sendMessage = publicProcedure
         const { messages, input, clientSideActions, newSessionState, logs } =
           await continueBotFlow(session.state)(message)
 
-        const containsSetVariableClientSideAction = clientSideActions?.some(
-          (action) => 'setVariable' in action
-        )
+        const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 
-        if (
-          !input &&
-          !containsSetVariableClientSideAction &&
-          session.state.result.answers.length > 0 &&
-          session.state.result.id
-        )
-          await setResultAsCompleted(session.state.result.id)
-
-        await prisma.chatSession.updateMany({
-          where: { id: session.id },
-          data: {
-            state: newSessionState,
-          },
-        })
+        if (newSessionState)
+          await saveStateToDatabase({
+            session: {
+              id: session.id,
+              state: newSessionState,
+            },
+            input,
+            logs: allLogs,
+            clientSideActions,
+          })
 
         return {
           messages,
@@ -125,7 +107,11 @@ export const sendMessage = publicProcedure
     }
   )
 
-const startSession = async (startParams?: StartParams, userId?: string) => {
+const startSession = async (
+  startParams?: StartParams,
+  userId?: string,
+  clientLogs?: ReplyLog[]
+) => {
   if (!startParams)
     throw new TRPCError({
       code: 'BAD_REQUEST',
@@ -231,11 +217,16 @@ const startSession = async (startParams?: StartParams, userId?: string) => {
       logs: startLogs.length > 0 ? startLogs : undefined,
     }
 
-  const session = (await prisma.chatSession.create({
-    data: {
+  const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
+
+  const session = await saveStateToDatabase({
+    session: {
       state: newSessionState,
     },
-  })) as ChatSession
+    input,
+    logs: allLogs,
+    clientSideActions,
+  })
 
   return {
     resultId: result?.id,
@@ -270,45 +261,8 @@ const getTypebot = async (
         'You need to authenticate the request to start a bot in preview mode.',
     })
   const typebotQuery = isPreview
-    ? await prisma.typebot.findFirst({
-        where: { id: typebot, workspace: { members: { some: { userId } } } },
-        select: {
-          id: true,
-          groups: true,
-          edges: true,
-          settings: true,
-          theme: true,
-          variables: true,
-          isArchived: true,
-        },
-      })
-    : await prisma.publicTypebot.findFirst({
-        where: { typebot: { publicId: typebot } },
-        select: {
-          groups: true,
-          edges: true,
-          settings: true,
-          theme: true,
-          variables: true,
-          typebotId: true,
-          typebot: {
-            select: {
-              isArchived: true,
-              isClosed: true,
-              workspace: {
-                select: {
-                  id: true,
-                  plan: true,
-                  additionalChatsIndex: true,
-                  customChatsLimit: true,
-                  isQuarantined: true,
-                  isSuspended: true,
-                },
-              },
-            },
-          },
-        },
-      })
+    ? await findTypebot({ id: typebot, userId })
+    : await findPublicTypebot({ publicId: typebot })
 
   const parsedTypebot =
     typebotQuery && 'typebot' in typebotQuery
@@ -347,7 +301,6 @@ const getTypebot = async (
 }
 
 const getResult = async ({
-  typebotId,
   isPreview,
   resultId,
   prefilledVariables,
@@ -358,56 +311,31 @@ const getResult = async ({
   isRememberUserEnabled: boolean
 }) => {
   if (isPreview) return
-  const select = {
-    id: true,
-    variables: true,
-    answers: { select: { blockId: true, variableId: true, content: true } },
-  } satisfies Prisma.ResultSelect
-
   const existingResult =
     resultId && isRememberUserEnabled
-      ? ((await prisma.result.findFirst({
-          where: { id: resultId },
-          select,
-        })) as ResultInSession)
+      ? ((await findResult({ id: resultId })) as ResultInSession)
       : undefined
 
-  if (existingResult) {
-    const prefilledVariableWithValue = prefilledVariables.filter(
-      (prefilledVariable) => isDefined(prefilledVariable.value)
-    )
-    const updatedResult = {
-      variables: prefilledVariableWithValue.concat(
-        existingResult.variables.filter(
-          (resultVariable) =>
-            isDefined(resultVariable.value) &&
-            !prefilledVariableWithValue.some(
-              (prefilledVariable) =>
-                prefilledVariable.name === resultVariable.name
-            )
-        )
-      ) as VariableWithValue[],
-    }
-    await prisma.result.updateMany({
-      where: { id: existingResult.id },
-      data: updatedResult,
-    })
-    return {
-      id: existingResult.id,
-      variables: updatedResult.variables,
-      answers: existingResult.answers,
-    }
-  } else {
-    return (await prisma.result.create({
-      data: {
-        isCompleted: false,
-        typebotId,
-        variables: prefilledVariables.filter((variable) =>
-          isDefined(variable.value)
-        ),
-      },
-      select,
-    })) as ResultInSession
+  const prefilledVariableWithValue = prefilledVariables.filter(
+    (prefilledVariable) => isDefined(prefilledVariable.value)
+  )
+
+  const updatedResult = {
+    variables: prefilledVariableWithValue.concat(
+      existingResult?.variables.filter(
+        (resultVariable) =>
+          isDefined(resultVariable.value) &&
+          !prefilledVariableWithValue.some(
+            (prefilledVariable) =>
+              prefilledVariable.name === resultVariable.name
+          )
+      ) ?? []
+    ) as VariableWithValue[],
+  }
+  return {
+    id: existingResult?.id ?? createId(),
+    variables: updatedResult.variables,
+    answers: existingResult?.answers,
   }
 }
 

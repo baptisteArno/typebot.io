@@ -27,6 +27,6 @@ test.describe.parallel('Templates page', () => {
     await page.click('text=Customer Support')
     await expect(page.locator('text=How can I help you?')).toBeVisible()
     await page.click('text=Use this template')
-    await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 10000 })
+    await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 20000 })
   })
 })

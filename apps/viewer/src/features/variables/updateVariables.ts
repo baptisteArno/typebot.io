@@ -1,4 +1,3 @@
-import prisma from '@/lib/prisma'
 import { isDefined } from '@typebot.io/lib'
 import {
   SessionState,
@@ -10,7 +9,7 @@ import { safeStringify } from './safeStringify'
 
 export const updateVariables =
   (state: SessionState) =>
-  async (newVariables: VariableWithUnknowValue[]): Promise<SessionState> => ({
+  (newVariables: VariableWithUnknowValue[]): SessionState => ({
     ...state,
     typebot: {
       ...state.typebot,
@@ -18,15 +17,13 @@ export const updateVariables =
     },
     result: {
       ...state.result,
-      variables: await updateResultVariables(state)(newVariables),
+      variables: updateResultVariables(state)(newVariables),
     },
   })
 
 const updateResultVariables =
   ({ result }: Pick<SessionState, 'result' | 'typebot'>) =>
-  async (
-    newVariables: VariableWithUnknowValue[]
-  ): Promise<VariableWithValue[]> => {
+  (newVariables: VariableWithUnknowValue[]): VariableWithValue[] => {
     const serializedNewVariables = newVariables.map((variable) => ({
       ...variable,
       value: Array.isArray(variable.value)
@@ -42,16 +39,6 @@ const updateResultVariables =
       ),
       ...serializedNewVariables,
     ].filter((variable) => isDefined(variable.value)) as VariableWithValue[]
-
-    if (result.id)
-      await prisma.result.updateMany({
-        where: {
-          id: result.id,
-        },
-        data: {
-          variables: updatedVariables,
-        },
-      })
 
     return updatedVariables
   }
