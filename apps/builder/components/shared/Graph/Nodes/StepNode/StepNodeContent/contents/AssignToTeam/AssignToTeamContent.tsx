@@ -42,23 +42,21 @@ export const AssignToTeamContent = ({
         <span>Atribuir conversa para {resolveAssignType(step.options.assignType, step.options.subType)}</span>
       </Text>
       {step.options.assignTo &&
-        <Stack>
-          <chakra.span
-            w={"100%"}
-            gap={"8px"}
-            bgColor="orange.400"
-            color="white"
-            rounded="md"
-            py="0.5"
-            px="1"
-          >
-            {resolveAssignTo(step.options.assignTo)}
-          </chakra.span>
-        </Stack>
+        <chakra.span
+          w={"100%"}
+          gap={"8px"}
+          bgColor="orange.400"
+          color="white"
+          rounded="md"
+          py="0.5"
+          px="1"
+        >
+          {resolveAssignTo(step.options.assignTo)}
+        </chakra.span>
       }
       <OctaDivider />
       <Text fontSize={"13px"} align={"center"} color={"blue"}>
-        <span>Clique para mais configurações</span>
+        <span>Ver mais detalhes</span>
       </Text>
 
     </Stack>

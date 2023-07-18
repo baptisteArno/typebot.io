@@ -15,26 +15,28 @@ export const CallOtherBotContent = ({ options }: Props) => {
   return (
     <Stack>
       {!selectedBot && (
-        <Text color={'gray.500'} h={'auto'} ml={'8px'}>
-          Configurar...
+        <Text h={'auto'} ml={'8px'}>
+          Clique para editar...
         </Text>
       )}
       {selectedBot && (
-        <Text color={'gray.500'} h={'auto'} ml={'8px'}>
-          Chamar o bot{' '}
-          {selectedBot && (
-            <chakra.span
-              bgColor="#5699EA"
-              color="white"
-              rounded="md"
-              py="0.5"
-              px="1"
-            >
-              {selectedBot.name}
-            </chakra.span>
-          )}
-        </Text>
+        <Stack>
+          <Text h={'auto'} ml={'8px'}>
+            Passar conversa para o bot
+          </Text>
+
+          <chakra.span
+            bgColor="#5699EA"
+            color="white"
+            rounded="md"
+            py="0.5"
+            px="1"
+          >
+            {selectedBot.name}
+          </chakra.span>
+        </Stack>
       )}
+
     </Stack>
   )
 }

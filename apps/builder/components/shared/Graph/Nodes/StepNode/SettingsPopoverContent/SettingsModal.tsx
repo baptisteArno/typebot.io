@@ -8,8 +8,10 @@ import {
   ModalFooter,
   ModalBodyProps,
   HStack,
+  Text,
 } from '@chakra-ui/react'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
+import { StepTypeHelper } from 'components/editor/StepsSideBar/StepTypeHelper'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { StepType } from 'models'
 import React from 'react'
@@ -33,12 +35,17 @@ export const SettingsModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
       <ModalOverlay />
       <ModalContent onMouseDown={handleMouseDown}>
-        <ModalHeader mb="2" borderBottomColor={"black"} borderBottomWidth={0.5}>
+        <ModalHeader>
           <HStack>
             <StepIcon type={stepType}></StepIcon>
-            <StepTypeLabel type={stepType}></StepTypeLabel>
+            <Text fontSize={"16px"} fontStyle={"normal"} fontWeight={700}>
+              <StepTypeLabel type={stepType}></StepTypeLabel>
+            </Text>
             <ModalCloseButton />
           </HStack>
+          <Text fontSize={"14px"} fontStyle={"normal"} fontWeight={400} lineHeight={"20px"}>
+            <StepTypeHelper type={stepType}></StepTypeHelper>
+          </Text>
         </ModalHeader>
         <ModalBody {...props}>{props.children}</ModalBody>
         <ModalFooter />
