@@ -1,23 +1,40 @@
 import React from 'react'
-import { CallOtherBotOptions, CallOtherBot, CallOtherBotStep } from 'models'
-import { TableListOcta } from 'components/shared/TableListOcta'
-import { CallOtherBotContentItems } from './CallOtherBotContentItems'
+import { CallOtherBotOptions, CallOtherBotStep } from 'models'
+import { useTypebot } from 'contexts/TypebotContext'
+import { Stack, Text, chakra } from '@chakra-ui/react'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
-  options: CallOtherBotOptions['botToCall']
+  options: CallOtherBotOptions
   step: CallOtherBotStep
 }
 
-export const CallOtherBotContent = ({
-  options,
-  step,
-}: Props) => {
-  const itemContent = { botToCall: [{ id: 'asd' }] }
+export const CallOtherBotContent = ({ options }: Props) => {
+  const { botFluxesList } = useTypebot()
+  const selectedBot = botFluxesList?.filter((item) => item.id === options)[0]
+
   return (
-    <TableListOcta<CallOtherBot>
-      initialItems={itemContent.botToCall}
-      Item={CallOtherBotContentItems}
-    />
+    <Stack>
+      {!selectedBot && (
+        <Text color={'gray.500'} h={'auto'} ml={'8px'}>
+          Configurar...
+        </Text>
+      )}
+      {selectedBot && (
+        <Text color={'gray.500'} h={'auto'} ml={'8px'}>
+          Chamar o bot{' '}
+          {selectedBot && (
+            <chakra.span
+              bgColor="#5699EA"
+              color="white"
+              rounded="md"
+              py="0.5"
+              px="1"
+            >
+              {selectedBot.name}
+            </chakra.span>
+          )}
+        </Text>
+      )}
+    </Stack>
   )
 }

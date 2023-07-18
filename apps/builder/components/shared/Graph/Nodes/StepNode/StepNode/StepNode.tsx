@@ -145,7 +145,7 @@ export const StepNode = ({
   const handleMouseLeave = () => {
     setTimeout(() => {
       setIsFocused(false)
-    }, 1500);
+    }, 750);
     if (connectingIds?.target)
       setConnectingIds({
         ...connectingIds,
