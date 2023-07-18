@@ -51,11 +51,14 @@ importers:
         specifier: 3.3.0
         version: 3.3.0(mjml@4.14.1)(react-dom@18.2.0)(react@18.2.0)
       '@giphy/js-fetch-api':
-        specifier: 4.9.1
-        version: 4.9.1
+        specifier: 5.0.0
+        version: 5.0.0
       '@giphy/js-types':
         specifier: 4.4.0
         version: 4.4.0
+      '@giphy/js-util':
+        specifier: ^5.0.0
+        version: 5.0.0
       '@giphy/react-components':
         specifier: 7.1.0
         version: 7.1.0(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
@@ -7382,7 +7385,7 @@ packages:
     resolution: {integrity: sha512-yZVIhy4LM2fTtUeEBPPleXrkLnOAp3Lc7faPu8q65s+dyPeP85xcoY9pd3I8gxuLwQS6QAqjJ7VOWNy6SAIgEQ==}
     dependencies:
       '@giphy/js-types': 4.4.0
-      '@giphy/js-util': 4.4.1
+      '@giphy/js-util': 5.0.0
       append-query: 2.1.1
       throttle-debounce: 3.0.1
     dev: false
@@ -7393,11 +7396,11 @@ packages:
       emotion: 10.0.27
     dev: false
 
-  /@giphy/js-fetch-api@4.9.1:
-    resolution: {integrity: sha512-s5iofpdcV9FvAHG0mQMS7aNcfFcbDUUMbtR5GpHNFyZSQqOtLvryXaILmA8Gn2huasH8JvA2lbKR5dMDfIpXzQ==}
+  /@giphy/js-fetch-api@5.0.0:
+    resolution: {integrity: sha512-tS3/0/RewzgpOqMyT3QCTKyPaSQfMfq023UWPkEH9GwbJGlOVN2s9acQNfun+w9SCTdIaZmW/f9HbDpsoz7jWg==}
     dependencies:
       '@giphy/js-types': 4.4.0
-      '@giphy/js-util': 4.4.1
+      '@giphy/js-util': 5.0.0
       qs: 6.11.2
     dev: false
 
@@ -7405,8 +7408,8 @@ packages:
     resolution: {integrity: sha512-W9G6crS2oqTn7g0RpvYu1l/sna4LnivRTk25jmxdzujOFb9kvQ+VFM/v9RPYV2GIBnzT/maW/EwjFIba9jkflA==}
     dev: false
 
-  /@giphy/js-util@4.4.1:
-    resolution: {integrity: sha512-45fPD9GR6oiVz51N8wAiw9tfZd/JYOta5dDu5khDRZLrRfGMT0pfR8kNBOpYiuFfZh74ZlljyONkVZPBcbAlUg==}
+  /@giphy/js-util@5.0.0:
+    resolution: {integrity: sha512-LYBmpcdE2Iumt+Wj1/EUEeAc3NNDrsC4UW64ywlmTO61VTvkgQo0iFC2tZrHV0BENMww1jGsQj+uH82S/UpCGQ==}
     dependencies:
       '@giphy/js-types': 4.4.0
       dompurify: 2.4.5
@@ -7422,9 +7425,9 @@ packages:
       '@emotion/styled': 11.9.3(@emotion/react@11.9.3)(@types/react@18.2.15)(react@18.2.0)
       '@giphy/js-analytics': 4.3.1
       '@giphy/js-brand': 2.3.1
-      '@giphy/js-fetch-api': 4.9.1
+      '@giphy/js-fetch-api': 5.0.0
       '@giphy/js-types': 4.4.0
-      '@giphy/js-util': 4.4.1
+      '@giphy/js-util': 5.0.0
       intersection-observer: 0.12.2
       react: 18.2.0
       react-use: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -11720,7 +11723,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001515
+      caniuse-lite: 1.0.30001489
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
