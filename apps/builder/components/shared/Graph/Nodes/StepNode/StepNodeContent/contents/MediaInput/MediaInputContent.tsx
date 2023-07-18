@@ -3,6 +3,7 @@ import React from 'react'
 import { Box, Image, Stack, Text } from '@chakra-ui/react'
 import { Container } from './MediaInputContent.style'
 import { UploadFileIcon } from 'assets/icons'
+import { OctaDivider } from 'assets/OctaDivider'
 
 type Props = {
   step: {
@@ -18,15 +19,14 @@ const MediaInputContent = ({ step }: Props) => {
   return (
     <Container>
       {
-        <Stack>
-          <Text color={'gray.500'} noOfLines={0}>
-            Texto da mensagem: {step.content.message?.plainText && <label>{step.content.message?.plainText}</label>}
-            {!step.content.message?.plainText && <i>Não informado.</i>}
-          </Text>
-        </Stack>
+        <Text noOfLines={0}>
+          {step.content.message?.plainText && step.content.message?.plainText}
+          {!step.content.message?.plainText && <label>Clique para editar...</label>}
+        </Text>
       }
+      <OctaDivider />
       {!step.content?.url ? (
-        <Text color={'gray.500'} pl={'8px'}>Clique para editar...</Text>
+        <Text pl={'8px'}>Clique para editar...</Text>
       ) : (
         <RenderContent url={step.content?.url} containsVariables={containsVariables} ignoreGenericIcon={false} />
       )}
@@ -67,7 +67,7 @@ export const RenderContent = ({ url, containsVariables, ignoreGenericIcon }: Ren
         <UploadFileIcon fontSize={120} color='rgba(90, 99, 119, .7)' />
       </Box>
     )
-  
+
   return <span></span>
 }
 

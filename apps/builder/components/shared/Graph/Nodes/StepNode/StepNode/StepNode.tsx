@@ -50,6 +50,7 @@ import { isDefined } from 'utils'
 import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/BlockFocusToolbar'
+import { OctaDivider } from 'assets/OctaDivider'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -89,7 +90,7 @@ export const StepNode = ({
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-      step.content.plainText === ''
+    step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -174,7 +175,7 @@ export const StepNode = ({
     onModalOpen()
   }
 
-  const handleStepUpdate = (updates: Partial<Step>): void =>{
+  const handleStepUpdate = (updates: Partial<Step>): void => {
     updateStep(indices, { ...step, ...updates })
   }
 
@@ -230,7 +231,7 @@ export const StepNode = ({
                 <Stack spacing={2}>
                   <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
                     <Stack spacing={2}>
-                      <HStack fontSize={"13px"}>
+                      <HStack fontSize={"14px"}>
                         <StepIcon
                           type={step.type}
                           mt="1"
@@ -241,7 +242,12 @@ export const StepNode = ({
                           data-testid={`${step.id}-icon`}
                         />
                       </HStack>
-                      <StepNodeContent step={step} indices={indices} />
+                      {step.type !== 'start' &&
+                        <span>
+                          <OctaDivider />
+                          <StepNodeContent step={step} indices={indices} />
+                        </span>
+                      }
                       <TargetEndpoint
                         pos="absolute"
                         left="-32px"

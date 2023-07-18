@@ -4,6 +4,7 @@ import { Stack, Text } from '@chakra-ui/react'
 import { Container, Space } from './InputItemsContent.style'
 import { WithVariableContent } from '../WithVariableContent'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
+import { OctaDivider } from 'assets/OctaDivider'
 
 type Props = {
   step: StepWithItems & {
@@ -15,21 +16,16 @@ type Props = {
 
 const InputItemsContent = ({ step, indices }: Props) => {
   return (
-    <Container>
-      {
-        <Stack>
-          <Text color={'gray.500'} noOfLines={0}>
-            Texto da pergunta: {step.options.message?.plainText && <label>{step.options.message?.plainText}</label>}
-                               {!step.options.message?.plainText && <i>Não informado.</i>}
-          </Text>
-        </Stack>
-      }
-      <ItemNodesList step={step} indices={indices} />
-      <Space>
-        <WithVariableContent variableId={step.options?.variableId} />
-      </Space>
 
-    </Container>
+    <Stack>
+      <Text noOfLines={0}>
+        {step.options.message?.plainText && step.options.message?.plainText}
+        {!step.options.message?.plainText && <label>Clique para editar...</label>}
+      </Text>
+      <OctaDivider />
+      <ItemNodesList step={step} indices={indices} />
+      <WithVariableContent variableId={step.options?.variableId} />
+    </Stack>
   )
 }
 

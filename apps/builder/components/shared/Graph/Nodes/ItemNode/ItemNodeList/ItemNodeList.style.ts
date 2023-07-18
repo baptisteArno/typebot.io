@@ -11,9 +11,7 @@ export const Container = styled.div`
 
 export const HandleSelectCalendar = styled.div`
   font-family: 'Noto Sans', sans-serif;
-  color: #000;
-  font-size: .9rem;
-  font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
 `
 

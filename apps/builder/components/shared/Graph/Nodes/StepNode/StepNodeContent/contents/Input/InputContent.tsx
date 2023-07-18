@@ -1,9 +1,9 @@
 import { InputOptions, Variable } from 'models'
 import React from 'react'
 import { Stack, Text } from '@chakra-ui/react'
-import { Container, Space } from './InputContent.style'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
+import { OctaDivider } from 'assets/OctaDivider'
 
 type Props = {
   step: {
@@ -38,20 +38,15 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
   }
 
   return (
-    <Container>
-      {
-        <Stack>
-          <Text color={'gray.500'} noOfLines={0}>
-            Texto da pergunta: {step.options.message?.plainText && <label>{step.options.message?.plainText}</label>}
-                               {!step.options.message?.plainText && <i>Não informado.</i>}
-          </Text>
-        </Stack>
-      }
-      <Space>
-        <WithVariableContent variableId={step.options?.variableId} />
-      </Space>
+    <Stack>
+      <Text noOfLines={0}>
+        {step.options.message?.plainText && step.options.message?.plainText}
+        {!step.options.message?.plainText && <span>Clique para editar...</span>}
+      </Text>
 
-    </Container>
+      <OctaDivider />
+      <WithVariableContent variableId={step.options?.variableId} />
+    </Stack>
   )
 }
 

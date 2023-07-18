@@ -30,7 +30,7 @@ export const SettingsModal = ({
     e.stopPropagation()
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
       <ModalOverlay />
       <ModalContent onMouseDown={handleMouseDown}>
         <ModalHeader mb="2" borderBottomColor={"black"} borderBottomWidth={0.5}>

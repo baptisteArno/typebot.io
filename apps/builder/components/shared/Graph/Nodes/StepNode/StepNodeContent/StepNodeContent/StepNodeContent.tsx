@@ -168,7 +168,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.ASSIGN_TO_TEAM: {
       return (
-        <AssignToTeamContent step={step} options={step.options.labels} />
+        <AssignToTeamContent step={step} />
       )
     }
     case OctaStepType.CALL_OTHER_BOT: {

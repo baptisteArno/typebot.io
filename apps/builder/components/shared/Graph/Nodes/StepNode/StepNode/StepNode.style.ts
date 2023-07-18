@@ -6,13 +6,13 @@ interface PropsBlockStack {
 }
 
 export const BlockStack = styled.div<PropsBlockStack>`
-  width: 100%;
+  width: 278px;
   display: flex; 
   background-color: #F4F4F5;
   border: 1px solid #E3E4E8;
-  padding: 15px 18px;
+  padding: 8px;
   border-radius: 8px;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
   margin: ${p => (p.isOpened ? "-1px" : "0")};
 `;

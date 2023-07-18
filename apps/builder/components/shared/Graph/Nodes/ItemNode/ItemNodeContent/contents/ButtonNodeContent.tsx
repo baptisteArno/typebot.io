@@ -26,7 +26,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
 
   useEffect(() => {
     if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar 2')
+      setItemValue(item.content ?? 'Clique para editar')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 

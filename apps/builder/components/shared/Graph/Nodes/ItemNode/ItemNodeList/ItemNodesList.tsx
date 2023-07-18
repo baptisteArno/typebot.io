@@ -11,6 +11,7 @@ import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
 import { ItemNodeOverlay } from '../ItemNodeOverlay'
 import { Container, HandleSelectCalendar, SelectedCalendar } from './ItemNodeList.style'
+import { OctaDivider } from 'assets/OctaDivider'
 
 type Props = {
   step: StepWithItems
@@ -114,7 +115,12 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
-  const webhook = typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.url
+  const webhook = { 
+    method: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.method,
+    url: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.url, 
+    path: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.path 
+  }
+
   return (
     <Stack
       flex={1}
@@ -122,7 +128,6 @@ export const ItemNodesList = ({
       maxW="full"
       onClick={stopPropagating}
       pointerEvents={isReadOnly ? 'none' : 'all'}
-      marginLeft={'8px'}
     >
       {/* <Flex
         ref={handlePushElementRef(0)}
@@ -133,9 +138,9 @@ export const ItemNodesList = ({
         transition={showPlaceholders ? 'height 200ms' : 'none'}
       /> */}
       {step.type === OctaStepType.OFFICE_HOURS && (
-        <Container>
+        <Stack paddingBottom={"10px"}>
           {!typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && <HandleSelectCalendar>
-            Selecione o expediente que o seu bot irá seguir
+            Selecione o expediente:
           </HandleSelectCalendar>}
           {typebot?.blocks[blockIndex].steps[stepIndex].options['name'] &&
             <div>
@@ -145,26 +150,26 @@ export const ItemNodesList = ({
               </SelectedCalendar>
             </div>
           }
-        </Container>
+        </Stack>
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          {!webhook &&
-          <Text color={'gray.500'} noOfLines={0}>
-            {'Conecte a outro sistema'}
+          {!webhook?.url &&
+          <Text noOfLines={0}>
+            {'Clique para editar...'}
           </Text>
           }
-          {webhook &&
-            <Text color={'gray.500'} noOfLines={0}>
-              {typebot?.blocks[blockIndex].steps[stepIndex].options?.method} <br/>
-              {webhook}
+          {webhook?.url &&
+            <Text noOfLines={0}>
+              {webhook.method} <br/>
+              {webhook.url + webhook.path}
             </Text>
           }
         </Container>
       )}
       {step && step.items && step.items.map((item, idx) => {
         return (
-          <Stack key={item.id} spacing={1}>
+          <Stack key={item.id} spacing={1}> 
             <ItemNode
               item={item}
               step={step}
@@ -199,7 +204,7 @@ export const ItemNodesList = ({
           align="center"
           cursor={isReadOnly ? 'pointer' : 'not-allowed'}
         >
-          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão  </Text>
+          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão</Text>
           <SourceEndpoint
             source={{
               blockId: step.blockId,

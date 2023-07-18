@@ -13,8 +13,8 @@ export const WebhookNodeContent = ({ item }: Props) => {
       <ul style={{listStyle: "none"}}>
         {item.content.values.map((value, idx) =>
           <li key={idx}>
-            {value.includes('HTTP_STATUS_CODE_SUCCESS') && "Se a regra for válida, ir para"}
-            {value.includes('HTTP_STATUS_CODE_CLIENT_ERROR') && "Se a regra não for válida, ir para"}
+            {value.includes('HTTP_STATUS_CODE_SUCCESS') && "Em caso de sucesso"}
+            {value.includes('HTTP_STATUS_CODE_CLIENT_ERROR') && "Em caso de falha"}
           </li>
         )}
       </ul>

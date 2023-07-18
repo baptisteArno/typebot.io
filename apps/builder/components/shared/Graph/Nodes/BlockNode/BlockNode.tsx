@@ -136,7 +136,6 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
                   ? 'blue.400'
                   : '#ffffff'
               }
-              w="300px"
               transition="border 300ms, box-shadow 200ms"
               pos="absolute"
               style={{
