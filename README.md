@@ -159,7 +159,11 @@ Here are the 3 different possible use cases:
 
 <p>
 
-**You need to open-source your modifications and after your users registration, they should see a prominent mention and link to the original project (https://typebot.io). You should clearly mention that you provide a modified version. It's a good place to explain your version advantages comparing to the original project.**
+**You need to open-source your modifications.**
+
+**After your users registration, you should provide a prominent mention and link to the original project (https://typebot.io). You should clearly mention that you provide a modified version of the official project, Typebot. It would be also a good place to explain your version advantages comparing to the original project.**
+
+**You need to provide a link to your forked repository somewhere in the landing page or the builder. This way, interested users can easily access and review the modifications you've made.**
 
 </p>
 
