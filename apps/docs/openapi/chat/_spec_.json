@@ -5145,6 +5145,9 @@
                                                       },
                                                       "additionalProperties": false
                                                     }
+                                                  },
+                                                  "displayStream": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "required": [

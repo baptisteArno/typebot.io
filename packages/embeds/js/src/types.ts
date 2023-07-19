@@ -27,3 +27,10 @@ export type ClientSideActionContext = {
   apiHost?: string
   sessionId: string
 }
+
+export type ChatChunk = Pick<
+  ChatReply,
+  'messages' | 'input' | 'clientSideActions'
+> & {
+  streamingMessageId?: string
+}
