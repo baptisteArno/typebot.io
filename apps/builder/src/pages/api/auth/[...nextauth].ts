@@ -119,6 +119,11 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
     id: 'custom-oauth',
     name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
     type: 'oauth',
+    authorization: {
+      params: {
+        scope: process.env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email'
+      }
+    },
     clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
     clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
     wellKnown: process.env.CUSTOM_OAUTH_WELL_KNOWN_URL,
