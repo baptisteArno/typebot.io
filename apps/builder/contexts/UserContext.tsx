@@ -49,27 +49,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>()
   const [companyFeatureFlags, setCompanyFeatureFlags] = useState<{[key: string]: boolean}>()
 
-  // const companyFeatures = ({ companyFeatures }) => companyFeatures
-
-  // const companyModel = ({ companyModel }) => companyModel
-  // const toast = useToast({
-  //     position: 'top-right',
-  //     status: 'error',
-  // })
-  //   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
-
-  //   const [isSaving, setIsSaving] = useState(false)
-  //   const isOAuthProvider = false
-  //  useMemo(
-  //   // () => (session?.providerType as boolean | undefined) ?? false,
-  //   // [session?.providerType]
-  // )
-
-  // const hasUnsavedChanges = useMemo(
-  //     () => !dequal(session?.user, user),
-  //     [session?.user, user]
-  // )
-
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return
     // setCurrentWorkspaceId(
@@ -102,35 +81,13 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
   }
 
   const getFeatures = async (): Promise<void> => {
-    const featuresToggle = await getStatus()
-
-    const features = Object.keys(featuresToggle)
-      .map((code) => ({
-        code,
-        active: !!featuresToggle[code],
-        baseLimit: null,
-        maxLimit: null,
-        qty: null,
-      }))
-      .filter((item) => item.code !== 'commerce-enabled')
-
     const {
-      features: nucleusFeatures,
-    }: { features: Array<FeatureFlagsProps> } = (await getStatus()) || {}
+      featureFlags,
+    }: { featureFlags: Array<FeatureFlagsProps> } = (await getStatus()) || {}
 
-    const allFeatures: Array<FeatureFlagsProps> = []
-
-    if (features) {
-      allFeatures.push(...features)
-    }
-
-    if (nucleusFeatures) {
-      allFeatures.push(...nucleusFeatures)
-    }
-    // const featureFlagsObject = allFeatures.reduce((acc, curr) => (curr.code = 'whatsapp-api', acc), { test: 1})
     const featureFlagsObject: FeatureFlags = Object.assign(
       {},
-      allFeatures
+      featureFlags
     ) as any
     setFeatureFlags(featureFlagsObject)
   }
@@ -145,24 +102,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
       setFeatureFlags(undefined)
     }
   }, [])
-
-  // useEffect(() => {
-  //     if (!router.isReady) return
-  //     if (status === 'loading') return
-  //     if (!user && status === 'unauthenticated' && !isSigningIn())
-  //         router.replace({
-  //             pathname: '/signin',
-  //             query:
-  //                 router.pathname !== '/typebots'
-  //                     ? {
-  //                         redirectPath: router.asPath,
-  //                     }
-  //                     : undefined,
-  //         })
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [status, router])
-
-  //const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
 
   const updateUser = (newUser: Partial<User>) => {
     if (isNotDefined(user)) return
