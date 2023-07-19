@@ -28,7 +28,7 @@ const OctaCommerceContent = ({ options }: Props) => {
         </Text>
       }
       <OctaDivider />
-      <WithVariableContent variableId={options?.variableId} />
+      <WithVariableContent variableId={options?.variableId} property={options?.property} />
     </Stack>
   )
 }

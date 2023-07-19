@@ -12,7 +12,6 @@ import {
   Flex,
   InputProps,
   Stack,
-  Portal
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
@@ -73,7 +72,7 @@ export const VariableSearchInput = ({
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { typebot, createVariable, deleteVariable } = useTypebot()
-  
+
   const variables = typebot?.variables ?? []
   const makeTitle = (propertiesType: string): string => {
     switch (propertiesType) {
@@ -88,8 +87,28 @@ export const VariableSearchInput = ({
     }
   }
 
-  let myVariable = typebot?.variables.find(v => v.id === initialVariableId)
-  
+  const dontSave = {
+    "id": '',
+    "key": "no-variable",
+    "token": "não salvar"
+  }
+
+  const newVariable = {
+    "id": 'new',
+    "key": "new-variable",
+    "token": "+ criar variável"
+  }
+
+  let myVariable = (typebot?.variables.find(v => v.id === initialVariableId) || dontSave) as Variable
+
+  let initial = {
+    ACTIONS: {
+      label: '', options: [dontSave]
+    }
+  } as any
+
+  if (addVariable) initial.ACTIONS.options.push(newVariable)
+
   const grouped = typebot?.variables.reduce((acc, current) => {
     if (!acc[current.domain]) {
       acc[current.domain] = {
@@ -101,7 +120,7 @@ export const VariableSearchInput = ({
     acc[current.domain].options.push(current)
 
     return acc
-  }, Object.create(null))
+  }, initial)
 
   const options: Variable[] = Object.values(grouped)
 
@@ -145,17 +164,29 @@ export const VariableSearchInput = ({
   const { setIsPopoverOpened } = useContext(StepNodeContext)
 
   const onInputChange = (event: any): void => {
-    if (event && event.id) {
-      if (event.token === '') {
+    if (event) {
+      if (event.key === 'no-variable') {
         onSelectVariable({} as any)
         return
-      }      
-      onSelectVariable(event)
-      debounced(event.token)
-      onClose()
+      }
 
-      if (isCloseModal) {
-        setIsPopoverOpened?.(false)
+      if (event.key === 'new-variable') {
+        handleToggleScreen()
+        return
+      }
+
+      if (event.id) {
+        if (event.token === '') {
+          onSelectVariable({} as any)
+          return
+        }
+        onSelectVariable(event)
+        debounced(event.token)
+        onClose()
+
+        if (isCloseModal) {
+          setIsPopoverOpened?.(false)
+        }
       }
     }
   }
@@ -248,16 +279,9 @@ export const VariableSearchInput = ({
               options={options}
               placeholder={inputProps.placeholder ?? 'Selecione a variável'}
               getOptionLabel={(option: Variable) => option.token}
+              getOptionValue={(option: Variable) => option.variableId || option.id}
             />
           </div>
-          {addVariable && (
-            <Stack>
-              <OrText>Ou</OrText>
-              <CreateButton onClick={handleToggleScreen}>
-                Criar variável
-              </CreateButton>
-            </Stack>
-          )}
         </Container>
       )}
       {screen === 'CREATE' && (
@@ -294,7 +318,7 @@ export const VariableSearchInput = ({
                 123
               </ButtonOption>
               <ButtonOption
-                className={customVariable?.type === 'pedido' ? 'active' : ''}
+                className={customVariable?.type === 'order' ? 'active' : ''}
                 onClick={() => handleSelectTypeVariable('order')}
               >
                 Pedido

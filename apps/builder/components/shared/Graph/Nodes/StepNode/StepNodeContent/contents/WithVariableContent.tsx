@@ -1,21 +1,29 @@
 import { chakra, Stack, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
+import { OctaProperty, Variable } from 'models'
 
 type Props = {
   variableId?: string
+  property?: OctaProperty
 }
 
-export const WithVariableContent = ({ variableId }: Props) => {
-  const { typebot } = useTypebot()
+export const WithVariableContent = ({ variableId, property }: Props) => {
+  const { typebot, createVariable } = useTypebot()
 
   const [variableName, setVariableName] = useState<string>();
 
   useEffect(() => {
     if (typebot?.variables) {
-      const variableName = typebot?.variables.find(
+      const variable = typebot.variables.find(
         (variable) => variable.variableId === variableId
-      )?.token || '...'
+      )
+
+      if (!variable && property?.token) {
+        createVariable({ ...property, id: variableId, variableId } as Variable)
+      }
+
+      const variableName = variable?.token || property?.token || '...'
       setVariableName(variableName);
     }
     return () => {

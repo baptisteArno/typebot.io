@@ -94,7 +94,7 @@ export type CreditCardDetails = {
 }
 
 export type OctaProperty = {
-  domain: "CHAT";
+  domain: string;
   name: string;
   token: string;
   type: string;
