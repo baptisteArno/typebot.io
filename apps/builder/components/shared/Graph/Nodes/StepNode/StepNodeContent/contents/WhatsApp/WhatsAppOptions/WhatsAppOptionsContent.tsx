@@ -35,7 +35,7 @@ const WhatsAppOptionsContent = ({ step, indices }: Props) => {
         {step.options?.footer && step.options.footer.content?.plainText}
       </Text>
       <OctaDivider />
-      <WithVariableContent variableId={step.options?.variableId} />
+      <WithVariableContent variableId={step.options?.variableId} property={step?.options?.property} />
     </Stack >
   )
 }

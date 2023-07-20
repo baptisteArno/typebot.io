@@ -4,7 +4,7 @@ import { Input } from '@chakra-ui/react';
 
 export const Container = styled.div`
   width: 100%;
-  height: ${(props) => props['data-screen'] === 'CREATE' ? '320px' : '200px'};
+  height: ${(props) => props['data-screen'] === 'CREATE' ? '320px' : 'auto'};
   padding: ${(props) => props['data-screen'] === 'VIEWER' ? '0px' : '15px'};
   margin: ${(props) => props['data-screen'] === 'VIEWER' ? '15px' : '0px'};
   display: flex;

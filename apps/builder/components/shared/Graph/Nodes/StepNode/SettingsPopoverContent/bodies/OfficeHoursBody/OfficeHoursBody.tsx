@@ -115,7 +115,6 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   }
 
   const createOfficeHour = async (): Promise<OfficeHour | null> => {
-    console.log('createOfficeHour', form)
     // if (form) {
     //   const saved = await service.createOfficeHour(form)
     //   handleOfficeHourSelect(saved)

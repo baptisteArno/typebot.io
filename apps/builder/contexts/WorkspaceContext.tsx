@@ -181,7 +181,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
   const { user } = useUser()
   const userId = user?.id
-  const { typebot, createVariable, deleteVariable, setVariables } = useTypebot()
+  const { typebot, setVariables } = useTypebot()
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()

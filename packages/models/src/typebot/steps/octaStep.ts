@@ -1,4 +1,4 @@
-import { StepBase, StepWithItems, ItemBase, Step, ItemType } from '.'
+import { StepBase, StepWithItems, ItemBase, Step, ItemType, OctaProperty } from '.'
 import { TextBubbleContent } from './bubble'
 
 // Regular steps
@@ -170,12 +170,7 @@ export type OfficeHoursOptions = BaseOctaOptions & {
 export type CommerceOptions = BaseOctaOptions & {
   catalogId: string;
   products: Array<string>
-  property: {
-    domain: string,
-    name: string,
-    token: string,
-    type: string,
-  }
+  property: OctaProperty
   variableId: string
   message?: TextBubbleContent
 }
@@ -259,12 +254,7 @@ export type WhatsAppOptionsListOptions = BaseOctaOptions & {
     selected: boolean
     value: string
   }>
-  property: {
-    domain: string
-    name: string
-    token: string
-    type: string
-  }
+  property: OctaProperty
   variableId: string
 }
 
@@ -280,12 +270,7 @@ export type WhatsAppButtonsListOptions = BaseOctaOptions & {
   footer: {
     content?: TextBubbleContent
   }
-  property: {
-    domain: string
-    name: string
-    token: string
-    type: string
-  }
+  property: OctaProperty
   variableId: string
 }
 

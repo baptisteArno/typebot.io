@@ -45,7 +45,7 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
       </Text>
 
       <OctaDivider />
-      <WithVariableContent variableId={step.options?.variableId} />
+      <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />
     </Stack>
   )
 }

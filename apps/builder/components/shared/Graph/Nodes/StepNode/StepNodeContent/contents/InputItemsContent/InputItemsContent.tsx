@@ -24,7 +24,7 @@ const InputItemsContent = ({ step, indices }: Props) => {
       </Text>
       <OctaDivider />
       <ItemNodesList step={step} indices={indices} />
-      <WithVariableContent variableId={step.options?.variableId} />
+      <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />
     </Stack>
   )
 }
