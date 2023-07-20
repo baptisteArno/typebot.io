@@ -18,7 +18,6 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         if (!typebot) return
-        console.log('createVariable', {old: typebot.variables, newVariable})
         typebot.variables.push(newVariable)
       })
     ),
@@ -26,7 +25,6 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         if (!typebot) return
-        console.log('setVariables', { old: typebot.variables, new: variables })
         typebot.variables = variables
       })
     ),

@@ -20,10 +20,10 @@ const CustomFields = (): CustomFieldsServicesInterface => {
         `/system-type/${Person}?showEnabledItems=true`,
         loadParameterHeader()
       ),
-      // client.get(
-      //   `/system-type/${Chat}?showEnabledItems=true`,
-      //   loadParameterHeader()
-      // ),
+      client.get(
+        `/system-type/${Chat}?showEnabledItems=true`,
+        loadParameterHeader()
+      ),
       client.get(
         `/system-type/${Organization}?showEnabledItems=true`,
         loadParameterHeader()
