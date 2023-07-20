@@ -20,7 +20,6 @@ import {
   VariableWithValue,
 } from 'models'
 import { Log } from 'db'
-import { LiteBadge } from './LiteBadge'
 import { isEmpty } from 'utils'
 
 export type TypebotViewerProps = {
@@ -68,9 +67,7 @@ export const TypebotViewer = ({
   const handleCompleted = () => onCompleted && onCompleted()
 
   if (isEmpty(apiHost))
-    return <p>
-      process.env.NEXT_PUBLIC_VIEWER_URL is missing in env
-      </p>
+    return <p>process.env.NEXT_PUBLIC_VIEWER_URL is missing in env</p>
   return (
     <Frame
       id="typebot-iframe"
@@ -120,7 +117,6 @@ export const TypebotViewer = ({
                 predefinedVariables={predefinedVariables}
               />
             </div>
-            {typebot.settings.general.isBrandingEnabled && <LiteBadge />}
           </div>
         </AnswersContext>
       </TypebotContext>
