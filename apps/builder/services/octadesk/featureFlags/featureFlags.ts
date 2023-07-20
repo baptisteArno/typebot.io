@@ -1,24 +1,7 @@
-import { environment, subDomain, services } from '@octadesk-tech/services'
+import { services } from '@octadesk-tech/services'
 import Storage from '@octadesk-tech/storage'
 import { loadParameterHeader } from '../helpers/headers'
 import { getBaseClient } from '../http'
-
-export const getCompanyFeatures = async () => {
-  const client = await services.createClient('tenant')
-
-  const headers = {
-    'Content-Type': 'application/json',
-    environment: environment.getEnvironment(),
-    subdomain: subDomain.getSubDomain(),
-  }
-
-  const response = await client.get(
-    '/api/tenant/get-feature-toggle?source=chat-settings',
-    { headers }
-  )
-
-  return response.data
-}
 
 const getClient = () => getBaseClient('company')
 
