@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack, Text } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: {

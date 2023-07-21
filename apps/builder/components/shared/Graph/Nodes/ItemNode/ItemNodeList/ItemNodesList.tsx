@@ -11,7 +11,7 @@ import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
 import { ItemNodeOverlay } from '../ItemNodeOverlay'
 import { Container, HandleSelectCalendar, SelectedCalendar } from './ItemNodeList.style'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: StepWithItems

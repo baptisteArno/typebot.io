@@ -4,7 +4,7 @@ import { BoxContainer, Container, Space } from './WhatsAppOptionsContent.style'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { Stack, Text } from '@chakra-ui/react'
 import { WithVariableContent } from '../../WithVariableContent'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: WhatsAppOptionsListStep

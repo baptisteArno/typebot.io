@@ -3,7 +3,7 @@ import React from 'react'
 import { BoxContainer, Container, SelectedProducts, Space } from './OctaCommerceContent.style'
 import { WithVariableContent } from '../WithVariableContent'
 import { Stack, Text } from '@chakra-ui/react'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   options: CommerceOptions

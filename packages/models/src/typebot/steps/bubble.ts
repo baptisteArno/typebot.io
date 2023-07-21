@@ -98,19 +98,20 @@ export const defaultImageBubbleContent: ImageBubbleContent = {
   type: ''
 }
 
+const mediaDefaultText = 'Confira nossas opções:'
 export const defaultMediaBubbleContent: MediaBubbleContent = {
   name: '',
   size: 1,
   type: 'media',
   message: {
-    html: `<div style="margin-left: 8px;">Confira nossas opções</div>`,
+    html: `<div style="margin-left: 8px;">${mediaDefaultText}</div>`,
     richText: [{
       children: [{
-        text: 'Confira nossas opções',
+        text: mediaDefaultText,
       }],
       type: "p"
     }],
-    plainText: 'Confira nossas opções'
+    plainText: mediaDefaultText
   },
   useFallback: false,
   fallbackMessages: undefined,

@@ -44,7 +44,7 @@ export const InputMediaSettingBody = ({
         )
       </Stack>
       <Stack>
-        <ImageUploadContent url={step.content?.url} name={step.content?.name} onSubmit={handleImageUrlChange} />
+        <ImageUploadContent url={step.content?.url} name={step.content?.name} size={step.content?.size} onSubmit={handleImageUrlChange} />
       </Stack>
     </Stack>
   )

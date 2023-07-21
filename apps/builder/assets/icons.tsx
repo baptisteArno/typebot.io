@@ -98,7 +98,7 @@ export const AskNameIcon = (props: any) => (
 
 export const ImageIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name' }}
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
   >
     <div>
       <MaterialDesign.MdOutlineImage />
@@ -175,7 +175,7 @@ export const UnderlineIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const StrikethroughIcon = (props: IconProps) => (
+export const StrikethroughIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}
   >

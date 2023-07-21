@@ -68,26 +68,27 @@ export const UploadButton = ({
     infoBtn: 'Mais detalhes aqui.',
   }
 
-  const handleMaxFilesize = (channel: string) => {
-    const getAttachmentMaxSize = botSpecificationsChannelsInfo.find(
+  const handleMaxFilesize = (channel: string | undefined) => {
+    const getAttachmentMaxSize = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'attachmentMaxSize'
-    )
+    ) as any
 
-    if (getAttachmentMaxSize && channel) {
+    if (getAttachmentMaxSize && channel && getAttachmentMaxSize[channel]) {
       const convertToMb =
-        (getAttachmentMaxSize as any)[channel].value / 1000 / 1000
+        (getAttachmentMaxSize as any)[channel].value / 1024 / 1024
 
       setMaxFilesize(convertToMb)
     }
   }
 
-  const handleSupportedExtensions = (channel: string) => {
-    const getSupportedExtensions = botSpecificationsChannelsInfo.find(
+  const handleSupportedExtensions = (channel: string | undefined) => {
+    const getSupportedExtensions = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'supportedExtensions'
-    )
+    ) as any
 
-    if (getSupportedExtensions && channel) {
-      const extensions = (getSupportedExtensions as any)[channel]
+    if (getSupportedExtensions && channel && getSupportedExtensions[channel]) {
+      const extensions = getSupportedExtensions[channel]
+      
       if (extensions.length) {
         const andI18n = (alertFileSizeExtension as any)['e']
 
@@ -106,29 +107,33 @@ export const UploadButton = ({
     }
   }
 
-  // useEffect(() => {
-  //   if (workspace && workspace.channel) {
-  //     handleMaxFilesize(workspace.channel)
-  //     handleSupportedExtensions(workspace.channel)
-  //   }
-  // }, [workspace])
+  useEffect(() => {
+    handleMaxFilesize(workspace?.channel)
+    handleSupportedExtensions(workspace?.channel)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setIsUploading(true)
+    setIsUploading(false)
     const uploader = await fileUploader()
     if (!e.target?.files) return
 
     const file = e.target.files[0]
 
-    if (file.size > maxFilesize * 1000 * 1000) {
-      setIsUploading(false)
+    if (!file) return
+
+    if (file.size > maxFilesize * 1024 * 1024) {
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }
+
+    setIsUploading(true)
     uploader.upload(file).then((resp): any => {
       const url = resp.data.url
       const convertedToMb = file.size / 1000 / 1000
       if (url) onFileUploaded(url, file.type, file.name, convertedToMb)
+      setIsUploading(false)
+    }).catch(() => {
       setIsUploading(false)
     })
   }
