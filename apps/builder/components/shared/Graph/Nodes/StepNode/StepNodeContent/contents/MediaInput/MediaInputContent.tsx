@@ -52,15 +52,17 @@ export const RenderContent = ({ url, containsVariables, name, size, fullImage }:
 
   const resolveSize = () => {
     if (!size) return
+    const sizeInBytes = size * 1000 * 1000
+    let sizeInMb = sizeInBytes / 1024 / 1024
     const sizes = ["mb", "kb", "b"]
 
     for (let i = 0; i < sizes.length; i++) {
-      if (size > 1)
-        return size.toFixed(1) + sizes[i]
-      size *= 1000
+      if (sizeInMb > 1)
+        return sizeInMb.toFixed(1) + sizes[i]
+      sizeInMb *= 1024
     }
 
-    return size.toFixed(1) + 'b'
+    return sizeInMb.toFixed(1) + 'b'
   }
 
   const resolvedSize = resolveSize()
@@ -107,7 +109,7 @@ type NameTextProps = {
   fullImage: boolean
 }
 
-const NameText = ({name, fullImage} : NameTextProps) => {
+const NameText = ({ name, fullImage }: NameTextProps) => {
   return <Text fontSize={"14px"} fontWeight={"600"} textOverflow={"ellipsis"} overflow={"hidden"} width={fullImage ? "auto" : "210px"} whiteSpace={"nowrap"}>{name}</Text>
 }
 
