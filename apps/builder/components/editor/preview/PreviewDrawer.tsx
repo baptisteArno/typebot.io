@@ -18,6 +18,7 @@ import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 import { Log } from 'model'
 import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
+import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
 
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
@@ -88,7 +89,20 @@ export const PreviewDrawer = () => {
 
       <VStack w="full" spacing={4}>
         <Flex justifyContent={'space-between'} w="full">
-          <Button onClick={handleRestartClick}>Restart</Button>
+          <Flex align="center">
+            <Button onClick={handleRestartClick} mr="2">
+              Reiniciar
+            </Button>
+            <OctaTooltip
+              contentText={`Made with `}
+              contentLink={'Typebot'}
+              hrefUrl="https://www.typebot.io/?utm_source=litebadge"
+              duration={2000}
+              popoverColor="#303243"
+              textColor="#F4F4F5"
+              tooltipPlacement="right"
+            />
+          </Flex>
           <CloseButton onClick={handleCloseClick} />
         </Flex>
 

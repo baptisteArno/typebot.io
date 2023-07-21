@@ -1,24 +1,16 @@
-//import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react'
 import { isDefined, isNotDefined } from 'utils'
-import { updateUser as updateUserInDb } from 'services/user/user'
-import { useToast } from '@chakra-ui/react'
-import { dequal } from 'dequal'
 import { FeatureFlags, FeatureFlagsProps, User } from 'model'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from 'services/api/utils'
-import Storage from '@octadesk-tech/storage'
 import {
   getCompany,
-  getCompanyFeatures,
   getStatus,
 } from 'services/octadesk/featureFlags/featureFlags'
 
@@ -27,11 +19,6 @@ const userContext = createContext<{
   featureFlags: FeatureFlags | undefined
   companyFeatures?: {[key: string]: boolean}
   verifyFeatureToggle: (featureFlag: string) => boolean
-  //   isLoading: boolean
-  //   isSaving: boolean
-  //   hasUnsavedChanges: boolean
-  //   isOAuthProvider: boolean
-  //   currentWorkspaceId?: string
   updateUser: (newUser: Partial<User>) => void
   saveUser: (newUser?: Partial<User>) => Promise<void>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -39,7 +26,6 @@ const userContext = createContext<{
 }>({})
 
 export const UserContext = ({ children }: { children: ReactNode }) => {
-  //const router = useRouter()
   const mockUser = getAuthenticatedUser()
   const {
     data: { session },
@@ -110,12 +96,8 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
 
   const saveUser = async (newUser?: Partial<User>) => {
     if (isNotDefined(user)) return
-    //setIsSaving(true)
+
     if (newUser) updateUser(newUser)
-    //const { error } = await updateUserInDb(user.id, { ...user, ...newUser })
-    //if (error) toast({ title: error.name, description: error.message })
-    //await refreshUser()
-    //setIsSaving(false)
   }
 
   return (
@@ -125,11 +107,6 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
         featureFlags,
         verifyFeatureToggle,
         companyFeatures: companyFeatureFlags,
-        // isSaving: false,
-        // isLoading: status === 'loading',
-        // hasUnsavedChanges,
-        // isOAuthProvider,
-        // currentWorkspaceId,
         updateUser,
         saveUser,
       }}
@@ -138,15 +115,5 @@ export const UserContext = ({ children }: { children: ReactNode }) => {
     </userContext.Provider>
   )
 }
-
-// export const refreshUser = async () => {
-//     await fetch('/api/auth/session?update')
-//     reloadSession()
-// }
-
-// const reloadSession = () => {
-//     const event = new Event('visibilitychange')
-//     document.dispatchEvent(event)
-// }
 
 export const useUser = () => useContext(userContext)
