@@ -65,7 +65,6 @@
     "google-spreadsheet": "4.0.2",
     "got": "12.6.0",
     "immer": "10.0.2",
-    "js-video-url-parser": "0.5.1",
     "jsonwebtoken": "9.0.1",
     "micro": "10.0.1",
     "micro-cors": "0.1.1",

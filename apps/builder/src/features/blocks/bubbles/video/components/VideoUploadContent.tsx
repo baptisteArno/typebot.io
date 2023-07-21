@@ -1,10 +1,9 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleContent, VideoBubbleContentType } from '@typebot.io/schemas'
-import urlParser from 'js-video-url-parser/lib/base'
-import 'js-video-url-parser/lib/provider/vimeo'
-import 'js-video-url-parser/lib/provider/youtube'
-import { isDefined } from '@typebot.io/lib'
 import { TextInput } from '@/components/inputs'
+
+const vimeoRegex = /vimeo\.com\/(\d+)/
+const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)/
 
 type Props = {
   content?: VideoBubbleContent
@@ -13,14 +12,12 @@ type Props = {
 
 export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   const handleUrlChange = (url: string) => {
-    const info = urlParser.parse(url)
-    return isDefined(info) && info.provider && info.id
-      ? onSubmit({
-          type: info.provider as VideoBubbleContentType,
-          url,
-          id: info.id,
-        })
-      : onSubmit({ type: VideoBubbleContentType.URL, url })
+    const info = parseVideoUrl(url)
+    return onSubmit({
+      type: info.type,
+      url,
+      id: info.id,
+    })
   }
   return (
     <Stack p="2">
@@ -34,4 +31,21 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
       </Text>
     </Stack>
   )
+}
+
+const parseVideoUrl = (
+  url: string
+): { type: VideoBubbleContentType; url: string; id?: string } => {
+  if (vimeoRegex.test(url)) {
+    const id = url.match(vimeoRegex)?.at(1)
+    if (!id) return { type: VideoBubbleContentType.URL, url }
+    return { type: VideoBubbleContentType.VIMEO, url, id }
+  }
+  if (youtubeRegex.test(url)) {
+    console.log(url.match(youtubeRegex)?.at(2))
+    const id = url.match(youtubeRegex)?.at(2)
+    if (!id) return { type: VideoBubbleContentType.URL, url }
+    return { type: VideoBubbleContentType.YOUTUBE, url, id }
+  }
+  return { type: VideoBubbleContentType.URL, url }
 }
