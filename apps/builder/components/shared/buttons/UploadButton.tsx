@@ -69,11 +69,14 @@ export const UploadButton = ({
   }
 
   const handleMaxFilesize = (channel: string | undefined) => {
+    console.log('handleMaxFilesize', { channel, botSpecificationsChannelsInfo })
     const getAttachmentMaxSize = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'attachmentMaxSize'
-    )
+    ) as any
 
-    if (getAttachmentMaxSize && channel) {
+    if (getAttachmentMaxSize && channel && getAttachmentMaxSize[channel]) {
+      console.log('handleMaxFilesize', {attach: getAttachmentMaxSize[channel]})
+      
       const convertToMb =
         (getAttachmentMaxSize as any)[channel].value / 1000 / 1000
 
@@ -81,15 +84,15 @@ export const UploadButton = ({
     }
   }
 
-  handleMaxFilesize(workspace?.channel)
-
   const handleSupportedExtensions = (channel: string | undefined) => {
     const getSupportedExtensions = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'supportedExtensions'
-    )
+    ) as any
 
-    if (getSupportedExtensions && channel) {
-      const extensions = (getSupportedExtensions as any)[channel]
+    if (getSupportedExtensions && channel && getSupportedExtensions[channel]) {
+      const extensions = getSupportedExtensions[channel]
+      
+      console.log('handleSupportedExtensions', {extensions})
       if (extensions.length) {
         const andI18n = (alertFileSizeExtension as any)['e']
 
@@ -108,7 +111,11 @@ export const UploadButton = ({
     }
   }
 
-  handleSupportedExtensions(workspace?.channel)
+  useEffect(() => {
+    handleMaxFilesize(workspace?.channel)
+    handleSupportedExtensions(workspace?.channel)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsUploading(false)
@@ -122,7 +129,7 @@ export const UploadButton = ({
 
     console.log('handleInputChange', { file, maxFilesize })
 
-    if (file.size > maxFilesize * 1000 * 1000) {
+    if (file.size > maxFilesize * 1024 * 1024) {
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }

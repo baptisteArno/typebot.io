@@ -46,7 +46,7 @@ const UploadFileContent = ({ onNewUrl, initialUrl, name, size }: ContentProps) =
       <Stack>
         <Flex justify="center" py="2">
           <UploadButton
-            filePath={`public/typebots/${typebot?.id}`}
+            //filePath={`public/typebots/${typebot?.id}`}
             onFileUploaded={onNewUrl}
             includeFileName
             colorScheme="blue"
