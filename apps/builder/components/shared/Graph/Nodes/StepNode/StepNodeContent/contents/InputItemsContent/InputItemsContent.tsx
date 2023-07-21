@@ -4,7 +4,7 @@ import { Stack, Text } from '@chakra-ui/react'
 import { Container, Space } from './InputItemsContent.style'
 import { WithVariableContent } from '../WithVariableContent'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: StepWithItems & {

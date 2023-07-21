@@ -3,7 +3,7 @@ import { chakra, Text, Stack } from '@chakra-ui/react'
 import { AssignToTeamOptions, Assign, AssignToTeamStep } from 'models'
 import { SourceEndpoint } from '../../../../../Endpoints'
 import { TableListOcta } from 'components/shared/TableListOcta'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { ASSIGN_TO } from 'enums/assign-to'
 import { useTypebot } from 'contexts/TypebotContext'
 

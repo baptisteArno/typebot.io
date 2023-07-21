@@ -11,6 +11,7 @@ import { FooterMessage } from '../buttons/UploadButton.style'
 type Props = {
   url?: string
   name?: string
+  size?: number
   isEmojiEnabled?: boolean
   isGiphyEnabled?: boolean
   onSubmit: (url: string, type: string, name: string, size: number) => void
@@ -21,29 +22,25 @@ export const ImageUploadContent = ({
   onSubmit,
   onClose,
   url,
-  name
+  name,
+  size
 }: Props) => {
   return (
     <Stack>
-      <UploadFileContent onNewUrl={onSubmit} initialUrl={url} name={name} />
+      <UploadFileContent onNewUrl={onSubmit} initialUrl={url} name={name} size={size} />
     </Stack>
   )
 }
 
-type ContentProps = { initialUrl?: string, name?: string, onNewUrl: (url: string, type: string, name: string, size: number) => void }
+type ContentProps = { initialUrl?: string, name?: string, size?: number, onNewUrl: (url: string, type: string, name: string, size: number) => void }
 
-const UploadFileContent = ({ onNewUrl, initialUrl, name }: ContentProps) => {
+const UploadFileContent = ({ onNewUrl, initialUrl, name, size }: ContentProps) => {
   const { typebot } = useTypebot()
   return (
     <Stack spacing={4}>
       {initialUrl &&
         <Stack>
-          <strong>
-            <FooterMessage>
-              Arquivo sendo enviado: {name}
-            </FooterMessage>
-          </strong>
-          <RenderContent url={initialUrl} containsVariables={false} ignoreGenericIcon={true} />
+          <RenderContent url={initialUrl} containsVariables={false} fullImage={true} name={name} size={size} />
         </Stack>
       }
       <Stack>

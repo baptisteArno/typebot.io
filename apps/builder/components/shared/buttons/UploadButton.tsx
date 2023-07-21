@@ -69,7 +69,7 @@ export const UploadButton = ({
   }
 
   const handleMaxFilesize = (channel: string | undefined) => {
-    const getAttachmentMaxSize = botSpecificationsChannelsInfo.find(
+    const getAttachmentMaxSize = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'attachmentMaxSize'
     )
 
@@ -84,7 +84,7 @@ export const UploadButton = ({
   handleMaxFilesize(workspace?.channel)
 
   const handleSupportedExtensions = (channel: string | undefined) => {
-    const getSupportedExtensions = botSpecificationsChannelsInfo.find(
+    const getSupportedExtensions = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'supportedExtensions'
     )
 
