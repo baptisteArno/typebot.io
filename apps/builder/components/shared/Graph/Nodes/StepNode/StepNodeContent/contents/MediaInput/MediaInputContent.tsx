@@ -50,8 +50,6 @@ export const RenderContent = ({ url, containsVariables, name, size, fullImage }:
 
   const isImage = typed && imageTypes.includes(typed)
 
-  console.log('RenderContent', size)
-
   const resolveSize = () => {
     if (!size) return
     const sizeInBytes = size * 1000 * 1000
