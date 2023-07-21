@@ -122,7 +122,7 @@ export const UploadButton = ({
 
     if (!file) return
 
-    if (file.size > maxFilesize * 1000 * 1000) {
+    if (file.size > maxFilesize * 1024 * 1024) {
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }
