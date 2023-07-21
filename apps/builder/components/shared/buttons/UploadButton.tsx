@@ -69,14 +69,11 @@ export const UploadButton = ({
   }
 
   const handleMaxFilesize = (channel: string | undefined) => {
-    console.log('handleMaxFilesize', { channel, botSpecificationsChannelsInfo })
     const getAttachmentMaxSize = botSpecificationsChannelsInfo?.find(
       (item) => item.id === 'attachmentMaxSize'
     ) as any
 
     if (getAttachmentMaxSize && channel && getAttachmentMaxSize[channel]) {
-      console.log('handleMaxFilesize', {attach: getAttachmentMaxSize[channel]})
-      
       const convertToMb =
         (getAttachmentMaxSize as any)[channel].value / 1024 / 1024
 
@@ -92,7 +89,6 @@ export const UploadButton = ({
     if (getSupportedExtensions && channel && getSupportedExtensions[channel]) {
       const extensions = getSupportedExtensions[channel]
       
-      console.log('handleSupportedExtensions', {extensions})
       if (extensions.length) {
         const andI18n = (alertFileSizeExtension as any)['e']
 
@@ -120,14 +116,11 @@ export const UploadButton = ({
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setIsUploading(false)
     const uploader = await fileUploader()
-    console.log()
     if (!e.target?.files) return
 
     const file = e.target.files[0]
 
     if (!file) return
-
-    console.log('handleInputChange', { file, maxFilesize })
 
     if (file.size > maxFilesize * 1024 * 1024) {
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
