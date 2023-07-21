@@ -75,7 +75,7 @@ export const UploadButton = ({
 
     if (getAttachmentMaxSize && channel && getAttachmentMaxSize[channel]) {
       const convertToMb =
-        (getAttachmentMaxSize as any)[channel].value / 1024 / 1024
+        (getAttachmentMaxSize as any)[channel].value / 1000 / 1000
 
       setMaxFilesize(convertToMb)
     }
@@ -122,7 +122,7 @@ export const UploadButton = ({
 
     if (!file) return
 
-    if (file.size > maxFilesize * 1024 * 1024) {
+    if (file.size > maxFilesize * 1000 * 1000) {
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }
