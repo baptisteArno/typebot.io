@@ -4,7 +4,7 @@ import { PreReserveStep } from 'models'
 import React, { useEffect, useState } from 'react'
 import { Container, Space } from './PreReserveContent.style'
 import { chakra, Stack, Text } from '@chakra-ui/react'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: PreReserveStep

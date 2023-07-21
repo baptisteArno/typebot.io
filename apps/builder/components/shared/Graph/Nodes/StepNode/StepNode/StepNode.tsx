@@ -50,7 +50,7 @@ import { isDefined } from 'utils'
 import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/BlockFocusToolbar'
-import { OctaDivider } from 'assets/OctaDivider'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
