@@ -68,7 +68,7 @@ export const UploadButton = ({
     infoBtn: 'Mais detalhes aqui.',
   }
 
-  const handleMaxFilesize = (channel: string) => {
+  const handleMaxFilesize = (channel: string | undefined) => {
     const getAttachmentMaxSize = botSpecificationsChannelsInfo.find(
       (item) => item.id === 'attachmentMaxSize'
     )
@@ -81,7 +81,9 @@ export const UploadButton = ({
     }
   }
 
-  const handleSupportedExtensions = (channel: string) => {
+  handleMaxFilesize(workspace?.channel)
+
+  const handleSupportedExtensions = (channel: string | undefined) => {
     const getSupportedExtensions = botSpecificationsChannelsInfo.find(
       (item) => item.id === 'supportedExtensions'
     )
@@ -106,29 +108,32 @@ export const UploadButton = ({
     }
   }
 
-  // useEffect(() => {
-  //   if (workspace && workspace.channel) {
-  //     handleMaxFilesize(workspace.channel)
-  //     handleSupportedExtensions(workspace.channel)
-  //   }
-  // }, [workspace])
+  handleSupportedExtensions(workspace?.channel)
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setIsUploading(true)
+    setIsUploading(false)
     const uploader = await fileUploader()
+    console.log()
     if (!e.target?.files) return
 
     const file = e.target.files[0]
 
+    if (!file) return
+
+    console.log('handleInputChange', { file, maxFilesize })
+
     if (file.size > maxFilesize * 1000 * 1000) {
-      setIsUploading(false)
       setErrorMessage(`Ops! O tamanho máximo permitido é ${maxFilesize}MB`)
       return
     }
+
+    setIsUploading(true)
     uploader.upload(file).then((resp): any => {
       const url = resp.data.url
       const convertedToMb = file.size / 1000 / 1000
       if (url) onFileUploaded(url, file.type, file.name, convertedToMb)
+      setIsUploading(false)
+    }).catch(() => {
       setIsUploading(false)
     })
   }
