@@ -4,6 +4,7 @@ import { Box, HStack, Image, Stack, Text } from '@chakra-ui/react'
 import { Container } from './MediaInputContent.style'
 import { ImageIcon, UploadFileIcon } from 'assets/icons'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
 
 type Props = {
   step: {
@@ -83,13 +84,31 @@ export const RenderContent = ({ url, containsVariables, name, size, fullImage }:
       }
 
       <Stack>
-        <Text fontSize={"14px"} fontWeight={"600"} textOverflow={"ellipsis"} overflow={"hidden"} width={fullImage ? "420px" : "210px"} whiteSpace={"nowrap"}>{name}</Text>
+        {!fullImage &&
+          <OctaTooltip
+            element={<NameText name={name} fullImage={false}></NameText>}
+            contentText={name || ''}
+            tooltipPlacement={"auto"}
+            popoverColor="#303243"
+            textColor="#F4F4F5"
+          />
+        }
+        {fullImage && <NameText name={name} fullImage={fullImage}></NameText>}
         {(!fullImage || !isImage) &&
           <Text fontSize={"12px"} fontWeight={"normal"} textTransform={"uppercase"}>{typed} - {resolvedSize}</Text>
         }
       </Stack>
     </HStack>
   </>)
+}
+
+type NameTextProps = {
+  name?: string
+  fullImage: boolean
+}
+
+const NameText = ({name, fullImage} : NameTextProps) => {
+  return <Text fontSize={"14px"} fontWeight={"600"} textOverflow={"ellipsis"} overflow={"hidden"} width={fullImage ? "auto" : "210px"} whiteSpace={"nowrap"}>{name}</Text>
 }
 
 export default MediaInputContent
