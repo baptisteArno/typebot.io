@@ -10,6 +10,7 @@ const Document = () => (
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
         rel="stylesheet"
       />
+      <meta name="google-site-verification" content="J3xNT6mxZKsTbgkoAGkvVk0BLrMHD5de2c_icciYj7g" />
       <meta name="google" content="notranslate" />
       {/* eslint-disable-next-line @next/next/no-sync-scripts */}
       <script src="/__env.js" />
