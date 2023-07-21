@@ -33,7 +33,6 @@ const OctaTooltip = ({
   tooltipPlacement = 'bottom',
   element
 }: OctaTooltipProps) => {
-  console.log('OctaTooltip', element)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleMouseEnter = () => {
