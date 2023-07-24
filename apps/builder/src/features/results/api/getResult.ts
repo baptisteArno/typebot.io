@@ -5,39 +5,28 @@ import { TRPCError } from '@trpc/server'
 import { ResultWithAnswers, resultWithAnswersSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 
-const maxLimit = 200
-
-export const getResults = authenticatedProcedure
+export const getResult = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results',
+      path: '/typebots/{typebotId}/results/{resultId}',
       protect: true,
-      summary: 'List results ordered by descending creation date',
+      summary: 'Get result by id',
       tags: ['Results'],
     },
   })
   .input(
     z.object({
       typebotId: z.string(),
-      limit: z.string().regex(/^[0-9]{1,3}$/),
-      cursor: z.string().optional(),
+      resultId: z.string(),
     })
   )
   .output(
     z.object({
-      results: z.array(resultWithAnswersSchema),
-      nextCursor: z.string().nullish(),
+      result: resultWithAnswersSchema,
     })
   )
   .query(async ({ input, ctx: { user } }) => {
-    const limit = Number(input.limit)
-    if (limit < 1 || limit > maxLimit)
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'limit must be between 1 and 200',
-      })
-    const { cursor } = input
     const typebot = await getTypebot({
       accessLevel: 'read',
       user,
@@ -46,12 +35,9 @@ export const getResults = authenticatedProcedure
     if (!typebot?.id)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
     const results = (await prisma.result.findMany({
-      take: limit + 1,
-      cursor: cursor ? { id: cursor } : undefined,
       where: {
+        id: input.resultId,
         typebotId: typebot.id,
-        hasStarted: true,
-        isArchived: false,
       },
       orderBy: {
         createdAt: 'desc',
@@ -59,11 +45,8 @@ export const getResults = authenticatedProcedure
       include: { answers: true },
     })) as ResultWithAnswers[]
 
-    let nextCursor: typeof cursor | undefined
-    if (results.length > limit) {
-      const nextResult = results.pop()
-      nextCursor = nextResult?.id
-    }
+    if (results.length === 0)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Result not found' })
 
-    return { results, nextCursor }
+    return { result: results[0] }
   })

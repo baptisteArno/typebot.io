@@ -4778,7 +4778,7 @@
     "/typebots/{typebotId}/results": {
       "get": {
         "operationId": "results-getResults",
-        "summary": "List results",
+        "summary": "List results ordered by descending creation date",
         "tags": [
           "Results"
         ],
@@ -4997,6 +4997,177 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/results/{resultId}": {
+      "get": {
+        "operationId": "results-getResult",
+        "summary": "Get result by id",
+        "tags": [
+          "Results"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resultId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "typebotId": {
+                          "type": "string"
+                        },
+                        "variables": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "isCompleted": {
+                          "type": "boolean"
+                        },
+                        "hasStarted": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "isArchived": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "answers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "resultId": {
+                                "type": "string"
+                              },
+                              "blockId": {
+                                "type": "string"
+                              },
+                              "itemId": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "groupId": {
+                                "type": "string"
+                              },
+                              "variableId": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "storageUsed": {
+                                "type": "number",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "createdAt",
+                              "resultId",
+                              "blockId",
+                              "itemId",
+                              "groupId",
+                              "variableId",
+                              "content",
+                              "storageUsed"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "createdAt",
+                        "typebotId",
+                        "variables",
+                        "isCompleted",
+                        "hasStarted",
+                        "isArchived",
+                        "answers"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "result"
+                  ],
+                  "additionalProperties": false
+                }
               }
             }
           },
