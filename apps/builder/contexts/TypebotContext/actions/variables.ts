@@ -18,7 +18,9 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         if (!typebot) return
-        typebot.variables.push(newVariable)
+        
+        if (!typebot.variables.find(s => s.domain + ':' + s.fieldId === newVariable.domain + ':' + newVariable.fieldId))
+          typebot.variables.push(newVariable)
       })
     ),
   setVariables: (variables: Array<Variable>) =>
