@@ -31,7 +31,7 @@ export const continueBotFlow =
   (state: SessionState) =>
   async (
     reply?: string
-  ): Promise<ChatReply & { newSessionState?: SessionState }> => {
+  ): Promise<ChatReply & { newSessionState: SessionState }> => {
     let newSessionState = { ...state }
     const group = state.typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
@@ -87,12 +87,13 @@ export const continueBotFlow =
     let formattedReply = null
 
     if (isInputBlock(block)) {
-      if (reply && !isReplyValid(reply, block)) return parseRetryMessage(block)
+      if (reply && !isReplyValid(reply, block))
+        return { ...parseRetryMessage(block), newSessionState }
 
       formattedReply = formatReply(reply, block.type)
 
       if (!formattedReply && !canSkip(block.type)) {
-        return parseRetryMessage(block)
+        return { ...parseRetryMessage(block), newSessionState }
       }
 
       const nextEdgeId = getOutgoingEdgeId(newSessionState)(
@@ -121,11 +122,11 @@ export const continueBotFlow =
     }
 
     if (!nextEdgeId && state.linkedTypebots.queue.length === 0)
-      return { messages: [] }
+      return { messages: [], newSessionState }
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
-    if (!nextGroup) return { messages: [] }
+    if (!nextGroup) return { messages: [], newSessionState }
 
     return executeGroup(newSessionState)(nextGroup.group)
   }
