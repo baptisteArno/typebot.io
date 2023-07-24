@@ -17,18 +17,8 @@ import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
-// import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
-// import CustomFields from 'services/octadesk/customFields/customFields'
-// import { DomainType } from 'enums/customFieldsEnum'
-// import cuid from 'cuid'
-// import {
-//   fixedChatProperties,
-//   fixedOrganizationProperties,
-//   fixedPersonProperties,
-// } from 'helpers/presets/variables-presets'
-
 function TypebotEditPage() {
-  const { typebot, isReadOnly, save, createVariable, deleteVariable } = useTypebot()
+  const { typebot, isReadOnly, save } = useTypebot()
 
   const [typebotInitialUpdatedAt, setTypebotInitialUpdatedAt] =
     useState<any>(null)

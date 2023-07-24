@@ -144,9 +144,9 @@ export const TypebotButton = ({
             right="20px"
             aria-label={`Show ${typebot.name} menu`}
           >
-            <MenuItem onClick={handleDuplicateClick}>Duplicate</MenuItem>
+            <MenuItem onClick={handleDuplicateClick}>Duplicar</MenuItem>
             <MenuItem color="red" onClick={handleDeleteClick}>
-              Delete
+              Deletar
             </MenuItem>
           </MoreButton>
         </>
