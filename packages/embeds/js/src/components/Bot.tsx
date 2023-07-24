@@ -176,7 +176,7 @@ const BotContent = (props: BotContentProps) => {
     )
       return
     const font = document.createElement('link')
-    font.href = `https://fonts.googleapis.com/css2?family=${
+    font.href = `https://fonts.bunny.net/css?family=${
       props.initialChatReply.typebot?.theme?.general?.font ?? 'Open Sans'
     }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');')`
     font.rel = 'stylesheet'
