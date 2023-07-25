@@ -121,8 +121,8 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
     type: 'oauth',
     authorization: {
       params: {
-        scope: process.env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email'
-      }
+        scope: process.env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email',
+      },
     },
     clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
     clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
@@ -156,6 +156,9 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: '/signin',
+    newUser: process.env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID
+      ? '/onboarding'
+      : undefined,
   },
   callbacks: {
     session: async ({ session, user }) => {

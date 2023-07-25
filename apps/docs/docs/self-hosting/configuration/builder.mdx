@@ -21,6 +21,7 @@ Parameters marked with <Asterix/> are required.
 | NEXTAUTH_URL_INTERNAL             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.                                      |
 | DEFAULT_WORKSPACE_PLAN            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`                                       |
 | DISABLE_SIGNUP                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                                                         |
+| NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID |         | Typebot ID used for the onboarding. Onboarding page is skipped if not provided.                                                                                                                                                             |
 
 ## Email (Auth, notifications)
 

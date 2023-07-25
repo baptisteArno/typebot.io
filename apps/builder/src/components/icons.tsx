@@ -628,3 +628,10 @@ export const BookIcon = (props: IconProps) => (
     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
   </Icon>
 )
+
+export const ChevronLastIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="m7 18 6-6-6-6" />
+    <path d="M17 6v12" />
+  </Icon>
+)

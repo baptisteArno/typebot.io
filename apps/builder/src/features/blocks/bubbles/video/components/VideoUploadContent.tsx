@@ -42,7 +42,6 @@ const parseVideoUrl = (
     return { type: VideoBubbleContentType.VIMEO, url, id }
   }
   if (youtubeRegex.test(url)) {
-    console.log(url.match(youtubeRegex)?.at(2))
     const id = url.match(youtubeRegex)?.at(2)
     if (!id) return { type: VideoBubbleContentType.URL, url }
     return { type: VideoBubbleContentType.YOUTUBE, url, id }

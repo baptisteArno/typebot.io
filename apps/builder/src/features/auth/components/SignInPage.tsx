@@ -48,6 +48,22 @@ export const SignInPage = ({ type }: Props) => {
         </Text>
       )}
       <SignInForm defaultEmail={query.g?.toString()} />
+      {type === 'signup' ? (
+        <Text fontSize="sm" maxW="400px" textAlign="center">
+          {scopedT('register.aggreeToTerms', {
+            termsOfService: (
+              <TextLink href={'https://typebot.io/terms-of-service'}>
+                {scopedT('register.termsOfService')}
+              </TextLink>
+            ),
+            privacyPolicy: (
+              <TextLink href={'https://typebot.io/privacy-policies'}>
+                {scopedT('register.privacyPolicy')}
+              </TextLink>
+            ),
+          })}
+        </Text>
+      ) : null}
     </VStack>
   )
 }
