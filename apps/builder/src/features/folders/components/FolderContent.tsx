@@ -26,6 +26,7 @@ import { TypebotCardOverlay } from './TypebotButtonOverlay'
 import { useI18n } from '@/locales'
 import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
 import { TypebotInDashboard } from '@/features/dashboard/types'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -160,7 +161,9 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
-      {typebots && <OnboardingModal totalTypebots={typebots.length} />}
+      {typebots && isCloudProdInstance && (
+        <OnboardingModal totalTypebots={typebots.length} />
+      )}
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>

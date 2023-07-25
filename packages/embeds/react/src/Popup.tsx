@@ -18,25 +18,39 @@ declare global {
 type PopupElement = HTMLElement & Props
 
 export const Popup = (props: Props) => {
-  const ref = useRef<PopupElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const popupRef = useRef<PopupElement | null>(null)
 
-  const attachPopupToDom = useCallback((props: Props) => {
+  const attachPopupToContainer = useCallback((props: Props) => {
     const popupElement = document.createElement('typebot-popup') as PopupElement
-    ref.current = popupElement
-    injectPropsToElement(ref.current, props)
-    document.body.append(ref.current)
+    popupRef.current = popupElement
+    injectPropsToElement(popupRef.current, props)
+    if (!containerRef.current) {
+      console.warn(
+        'Could not attach popup to container because containerRef.current is null'
+      )
+      return
+    }
+    containerRef.current?.append(popupRef.current)
   }, [])
 
   useEffect(() => {
-    if (!ref.current) attachPopupToDom(props)
-    injectPropsToElement(ref.current as PopupElement, props)
-  }, [attachPopupToDom, props])
+    if (!popupRef.current) attachPopupToContainer(props)
+    injectPropsToElement(popupRef.current as PopupElement, props)
+  }, [attachPopupToContainer, props])
+
+  useEffect(() => {
+    return () => {
+      popupRef.current?.remove()
+      popupRef.current = null
+    }
+  }, [])
 
   const injectPropsToElement = (element: PopupElement, props: Props) => {
     Object.assign(element, props)
   }
 
-  return null
+  return <div ref={containerRef} />
 }
 
 export default Popup

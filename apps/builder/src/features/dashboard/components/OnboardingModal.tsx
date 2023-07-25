@@ -1,46 +1,25 @@
 import { chakra, useColorModeValue } from '@chakra-ui/react'
 import { Popup } from '@typebot.io/nextjs'
 import { useUser } from '@/features/account/hooks/useUser'
-import { Typebot } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
-import { sendRequest } from '@typebot.io/lib'
 import confetti from 'canvas-confetti'
-import { useToast } from '@/hooks/useToast'
 import { useRouter } from 'next/router'
 
 type Props = { totalTypebots: number }
 
 export const OnboardingModal = ({ totalTypebots }: Props) => {
   const { push } = useRouter()
-  const botPath = useColorModeValue(
-    '/bots/onboarding.json',
-    '/bots/onboarding-dark.json'
-  )
   const backgroundColor = useColorModeValue('white', '#171923')
   const { user, updateUser } = useUser()
-  const [typebot, setTypebot] = useState<Typebot>()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
   const confettiCanon = useRef<confetti.CreateTypes>()
   const [chosenCategories, setChosenCategories] = useState<string[]>([])
-
-  const { showToast } = useToast()
 
   const isNewUser =
     user &&
     new Date(user?.createdAt as unknown as string).toDateString() ===
       new Date().toDateString() &&
     totalTypebots === 0
-
-  useEffect(() => {
-    const fetchTemplate = async () => {
-      const { data, error } = await sendRequest(botPath)
-      if (error)
-        return showToast({ title: error.name, description: error.message })
-      setTypebot(data as Typebot)
-    }
-
-    fetchTemplate()
-  }, [botPath, showToast])
 
   useEffect(() => {
     initConfettis()
@@ -68,12 +47,11 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
     const isCompany = answer.blockId === 'cl126jioz000v2e6dwrk1f2cb'
     const isCategories = answer.blockId === 'cl126lb8v00142e6duv5qe08l'
     const isOtherCategories = answer.blockId === 'cl126pv7n001o2e6dajltc4qz'
-    const answeredAllQuestions =
-      isOtherCategories || (isCategories && !answer.message.includes('Other'))
-    if (answeredAllQuestions && confettiCanon.current)
-      shootConfettis(confettiCanon.current)
     if (isName) updateUser({ name: answer.message })
-    if (isCompany) updateUser({ company: answer.message })
+    if (isCompany) {
+      updateUser({ company: answer.message })
+      if (confettiCanon.current) shootConfettis(confettiCanon.current)
+    }
     if (isCategories) {
       const onboardingCategories = answer.message.split(', ')
       updateUser({ onboardingCategories })
@@ -97,14 +75,16 @@ export const OnboardingModal = ({ totalTypebots }: Props) => {
         zIndex={9999}
         pointerEvents="none"
       />
-      {typebot && (
+      {user?.email && (
         <Popup
-          typebot={typebot}
+          typebot="onboarding-typebot"
           prefilledVariables={{
-            Name: user?.name?.split(' ')[0] ?? undefined,
+            Name: user.name?.split(' ')[0] ?? undefined,
+            Email: user.email ?? undefined,
           }}
           theme={{
             backgroundColor,
+            zIndex: 100,
           }}
           defaultOpen={isNewUser}
           onAnswer={handleNewAnswer}
