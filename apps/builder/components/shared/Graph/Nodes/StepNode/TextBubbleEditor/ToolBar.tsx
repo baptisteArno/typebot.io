@@ -13,6 +13,7 @@ import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, StrikethroughIcon, Emoji
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { VscSmiley } from 'react-icons/vsc';
+import { useWorkspace } from 'contexts/WorkspaceContext';
 
 
 type Props = {
@@ -30,6 +31,7 @@ export const ToolBar = ({
   ...props
 }: Props) => {
   const [showPicker, setShowPicker] = useState(false);
+  const { workspace } = useWorkspace()
 
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,22 +84,23 @@ export const ToolBar = ({
       <span data-testid="bold-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_BOLD)}
-          icon={<BoldIcon fontSize="20px"  />}
+          icon={<BoldIcon fontSize="20px" />}
         />
       </span>
       <span data-testid="italic-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_ITALIC)}
-          icon={<ItalicIcon fontSize="20px"  />}
+          icon={<ItalicIcon fontSize="20px" />}
         />
       </span>
-      <span data-testid="underline-button">
-        <MarkToolbarButton
-          type={getPluginType(editor, MARK_UNDERLINE)}
-          icon={<UnderlineIcon fontSize="20px"  />}
-        />
-      </span>
-
+      {workspace?.channel === 'web' &&
+        <span data-testid="underline-button">
+          <MarkToolbarButton
+            type={getPluginType(editor, MARK_UNDERLINE)}
+            icon={<UnderlineIcon fontSize="20px" />}
+          />
+        </span>
+      }
       <span data-testid="underline-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_STRIKETHROUGH)}
