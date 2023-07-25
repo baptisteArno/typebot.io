@@ -92,7 +92,7 @@ export const ItemNode = ({ item, indices, isReadOnly, onMouseDown, step }: Props
                   itemId: item.id,
                 }}
                 pos="absolute"
-                right="-49px"
+                right="-43px"
                 pointerEvents="all"
               />
             )}

@@ -4,6 +4,7 @@ import { BoxContainer, Container, SelectedProducts, Space } from './OctaCommerce
 import { WithVariableContent } from '../WithVariableContent'
 import { Stack, Text } from '@chakra-ui/react'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 type Props = {
   options: CommerceOptions
@@ -12,10 +13,7 @@ type Props = {
 const OctaCommerceContent = ({ options }: Props) => {
   return (
     <Stack>
-      <Text noOfLines={0}>
-        {options.message?.plainText && options.message?.plainText}
-        {!options.message?.plainText && <span>Clique para editar...</span>}
-      </Text>
+      <TextHtmlContent html={options.message?.html} />
       <OctaDivider />
       {!options?.products?.length &&
         <Text noOfLines={0}>Nenhum produto selecionado</Text>

@@ -62,7 +62,6 @@ export const WhatsAppButtonsListSettingsBody = ({
         </FormLabel>
 
         <TextBubbleEditor
-          increment={1}
           onClose={handleHeaderText}
           initialValue={
             options.header?.content ? options.header.content.richText : []
@@ -76,7 +75,6 @@ export const WhatsAppButtonsListSettingsBody = ({
         </FormLabel>
 
         <TextBubbleEditor
-          increment={1}
           onClose={handleBodyText}
           initialValue={
             options.body?.content ? options.body.content.richText : []
@@ -90,7 +88,6 @@ export const WhatsAppButtonsListSettingsBody = ({
         </FormLabel>
 
         <TextBubbleEditor
-          increment={1}
           onClose={handleFooterText}
           initialValue={
             options.footer?.content ? options.footer.content.richText : []

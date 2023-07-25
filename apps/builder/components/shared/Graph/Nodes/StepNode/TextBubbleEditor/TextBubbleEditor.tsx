@@ -1,5 +1,5 @@
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
@@ -35,8 +35,8 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  
-  const [value, setValue] = useState(initialValue)
+
+  let [value, setValue] = useState(initialValue)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
@@ -45,8 +45,9 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   const closeEditor = () => {
     if (onClose) onClose(convertValueToStepContent(value))
   }
-  const keyUpEditor = () => {
-    if (onKeyUp) onKeyUp(convertValueToStepContent(value))
+
+  const keyUpEditor = (v?: TElement[]) => {
+    if (onKeyUp) onKeyUp(convertValueToStepContent(v || value))
   }
 
   useOutsideClick({
@@ -54,20 +55,27 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     handler: closeEditor,
   })
 
-  const convertValueToStepContent = (value: TElement[]): TextBubbleContent => {
-    if (value.length === 0) defaultTextBubbleContent
+  const convertValueToStepContent = (v: TElement[]): TextBubbleContent => {
+    if (v.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
-      nodes: value,
+      nodes: v,
     })
     return {
       html,
-      richText: value,
+      richText: v,
       plainText: parseHtmlStringToPlainText(html),
     }
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
+  }
+
+  const handleEmoji = (emoji?: string) => {
+    if (!rememberedSelection.current || !emoji) return
+    Transforms.select(editor as BaseEditor, rememberedSelection.current)
+    Transforms.insertText(editor as BaseEditor, emoji)
+    ReactEditor.focus(editor as unknown as ReactEditor)
   }
 
   const handleVariableSelected = (variable?: Variable) => {
@@ -79,7 +87,11 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   }
 
   const handleChangeEditorContent = (val: TElement[]) => {
-    setValue(val)
+    const timeout = setTimeout(() => {
+      if (timeout) clearTimeout(timeout)
+      setValue(val)
+      keyUpEditor(val)
+    }, 250)
     setIsVariableDropdownOpen(false)
   }
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -101,7 +113,8 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     >
       <ToolBar
         editor={editor}
-        onVariablesButtonClick={() => setIsVariableDropdownOpen(true)}
+        onVariablesButtonClick={(showDialog) => { setIsVariableDropdownOpen(showDialog); }}
+        onEmojiSelected={handleEmoji}
       />
       <Plate
         id={randomEditorId}
@@ -119,7 +132,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
-          onKeyUp: keyUpEditor
+          onKeyUp: () => keyUpEditor()
         }}
         initialValue={
           initialValue.length === 0
@@ -136,13 +149,15 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
           shadow="lg"
           rounded="md"
           bgColor="white"
-          w="320px"
+          w="100%"
           zIndex={10}
         >
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
             handleOutsideClick={() => setIsVariableDropdownOpen(false)}
+            isSaveContext={false}
+            labelDefault={"Selecione uma variável:"}
           />
         </Flex>
       )}

@@ -1,10 +1,12 @@
 import { InputOptions, Variable } from 'models'
+
 import React, { useEffect } from 'react'
-import { Stack, Text } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 type Props = {
   step: {
@@ -78,11 +80,8 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
 
   return (
     <Stack>
-      <Text noOfLines={0}>
-        {step.options.message?.plainText && step.options.message?.plainText}
-        {!step.options.message?.plainText && <span>Clique para editar...</span>}
-      </Text>
-
+      <TextHtmlContent html={step?.options?.message?.html} />
+      
       <OctaDivider />
       <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />
     </Stack>
