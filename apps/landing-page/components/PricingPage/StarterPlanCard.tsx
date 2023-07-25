@@ -142,7 +142,7 @@ export const StarterPlanCard = ({ isYearly }: Props) => {
       button={
         <Button
           as={Link}
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}&isYearly=${isYearly}`}
+          href={`https://typebot-builder-teal.vercel.app/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}&isYearly=${isYearly}`}
           colorScheme="orange"
           size="lg"
           w="full"
