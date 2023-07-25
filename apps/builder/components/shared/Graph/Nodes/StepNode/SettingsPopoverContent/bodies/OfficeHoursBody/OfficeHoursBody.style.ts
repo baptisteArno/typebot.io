@@ -82,6 +82,12 @@ export const ButtonCreate = styled(OctaButton)`
 export const ButtonCancel = styled(OctaButton)`
   background: #fff;
   color: rgb(19, 102, 201);
+  width: 100%;
+  padding: 10px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 700;
+  border-radius: 15px;
+  margin: 15px 5px;
 `;
 
 export const ButtonDays = styled(OctaButton)`
