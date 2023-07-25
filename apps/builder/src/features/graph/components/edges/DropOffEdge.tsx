@@ -167,7 +167,6 @@ export const DropOffEdge = ({
                 } left. This represents ${dropOffRate}% of the users who saw this input.`
               : 'Upgrade your plan to PRO to reveal drop-off rate.'
           }
-          isDisabled={isWorkspaceProPlan}
           placement="top"
         >
           <VStack

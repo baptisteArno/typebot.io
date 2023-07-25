@@ -21,6 +21,7 @@ import {
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { ConditionContent } from '@/features/blocks/logic/condition/components/ConditionContent'
+import { useRouter } from 'next/router'
 
 type Props = {
   item: Item
@@ -43,6 +44,7 @@ export const ItemNode = ({
   const bg = useColorModeValue('white', 'gray.850')
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
+  const { pathname } = useRouter()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const itemRef = useRef<HTMLDivElement | null>(null)
   const isPreviewing = previewingEdge?.from.itemId === item.id
@@ -110,7 +112,7 @@ export const ItemNode = ({
               isMouseOver={isMouseOver}
               indices={indices}
             />
-            {typebot && isConnectable && (
+            {typebot && (isConnectable || pathname.endsWith('analytics')) && (
               <SourceEndpoint
                 source={{
                   groupId: typebot.groups[indices.groupIndex].id,
@@ -121,6 +123,7 @@ export const ItemNode = ({
                 right="-49px"
                 bottom="9px"
                 pointerEvents="all"
+                isHidden={!isConnectable}
               />
             )}
           </Flex>
