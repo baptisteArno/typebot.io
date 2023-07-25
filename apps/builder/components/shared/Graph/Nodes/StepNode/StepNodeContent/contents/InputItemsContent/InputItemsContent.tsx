@@ -1,10 +1,11 @@
 import { InputOptions, StepIndices, StepWithItems } from 'models'
 import React from 'react'
-import { Stack, Text } from '@chakra-ui/react'
-import { Container, Space } from './InputItemsContent.style'
+import { Stack } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { useTypebot } from 'contexts/TypebotContext'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 type Props = {
   step: StepWithItems & {
@@ -15,13 +16,12 @@ type Props = {
 }
 
 const InputItemsContent = ({ step, indices }: Props) => {
+  const { typebot } = useTypebot()
   return (
 
     <Stack>
-      <Text noOfLines={0}>
-        {step.options.message?.plainText && step.options.message?.plainText}
-        {!step.options.message?.plainText && <label>Clique para editar...</label>}
-      </Text>
+      <TextHtmlContent html={step.options.message?.html} />
+
       <OctaDivider />
       <ItemNodesList step={step} indices={indices} />
       <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />

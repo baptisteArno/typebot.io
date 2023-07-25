@@ -1,11 +1,13 @@
 import React from 'react'
-import { chakra, Text, Stack } from '@chakra-ui/react'
+import { chakra, Text, Stack, Flex } from '@chakra-ui/react'
 import { AssignToTeamOptions, Assign, AssignToTeamStep } from 'models'
 import { SourceEndpoint } from '../../../../../Endpoints'
 import { TableListOcta } from 'components/shared/TableListOcta'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { ASSIGN_TO } from 'enums/assign-to'
 import { useTypebot } from 'contexts/TypebotContext'
+import { parseVariableHighlight } from 'services/utils'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {
@@ -15,7 +17,7 @@ type Props = {
 export const AssignToTeamContent = ({
   step,
 }: Props) => {
-  const { octaAgents } = useTypebot();
+  const { octaAgents, typebot } = useTypebot();
 
   const resolveAssignTo = (assignTo: string) => {
     const value = octaAgents.find(s => s.id === assignTo)
@@ -33,10 +35,10 @@ export const AssignToTeamContent = ({
 
   return (
     <Stack>
-      <Text noOfLines={0}>
-        {(!step.options.messages?.firstMessage?.content?.plainText || (!step.options.assignTo && step.options.assignType !== ASSIGN_TO.noOne)) && <span>Clique para editar...</span>}
-        {step.options.messages?.firstMessage?.content?.plainText && (step.options.assignTo || step.options.assignType === ASSIGN_TO.noOne) && step.options.messages?.firstMessage?.content?.plainText}
-      </Text>
+      <TextHtmlContent html={
+        step.options.messages?.firstMessage?.content?.html && (step.options.assignTo || step.options.assignType === ASSIGN_TO.noOne) ?
+          step.options.messages?.firstMessage?.content?.html : undefined} />
+          
       <OctaDivider />
       <Text>
         <span>Atribuir conversa para {resolveAssignType(step.options.assignType, step.options.subType)}</span>

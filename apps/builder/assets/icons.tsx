@@ -153,43 +153,64 @@ export const FlagIcon = (props: IconProps) => (
   </Icon>
 )
 
-export const BoldIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
-    <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
-  </Icon>
-)
-
-export const ItalicIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <line x1="19" y1="4" x2="10" y2="4"></line>
-    <line x1="14" y1="20" x2="5" y2="20"></line>
-    <line x1="15" y1="4" x2="9" y2="20"></line>
-  </Icon>
-)
-
-export const UnderlineIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
-    <line x1="4" y1="21" x2="20" y2="21"></line>
-  </Icon>
-)
-
-export const StrikethroughIcon = (props: any) => (
+export const BoldIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name' }}
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
   >
     <div>
-      <MaterialDesign.MdStrikethroughS />
+      <MaterialDesign.MdFormatBold />
     </div>
   </IconContext.Provider>
 )
 
-export const LinkIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-  </Icon>
+export const ItalicIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdFormatItalic />
+    </div>
+  </IconContext.Provider>
+)
+
+export const UnderlineIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdFormatUnderlined />
+    </div>
+  </IconContext.Provider>
+)
+
+export const StrikethroughIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdFormatStrikethrough />
+    </div>
+  </IconContext.Provider>
+)
+
+export const LinkIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdLink />
+    </div>
+  </IconContext.Provider>
+)
+
+export const EmojiIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+  >
+    <div>
+      <MaterialDesign.MdInsertEmoticon />
+    </div>
+  </IconContext.Provider>
 )
 
 export const SaveIcon = (props: IconProps) => (
@@ -370,7 +391,7 @@ export const AlarmIcon = (props: any) => (
 
 export const ListIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name' }}
+    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
   >
     <div>
       <MaterialDesign.MdFormatListBulleted />
@@ -602,7 +623,7 @@ export const CreditCardIcon = (props: IconProps) => (
 
 export const InformationIcon = (props: IconProps) => (
   <Icon viewBox="0 0 16 16"  {...featherIconsBaseProps} {...props}>
-    <path 
+    <path
       d="M8.00004 1.3335C4.32004 1.3335 1.33337 4.32016 1.33337 8.00016C1.33337 11.6802 4.32004 14.6668 8.00004 14.6668C11.68 14.6668 14.6667 11.6802 14.6667 8.00016C14.6667 4.32016 11.68 1.3335 8.00004 1.3335ZM8.00004 11.3335C7.63337 11.3335 7.33337 11.0335 7.33337 10.6668V8.00016C7.33337 7.6335 7.63337 7.3335 8.00004 7.3335C8.36671 7.3335 8.66671 7.6335 8.66671 8.00016V10.6668C8.66671 11.0335 8.36671 11.3335 8.00004 11.3335ZM8.66671 6.00016H7.33337V4.66683H8.66671V6.00016Z"
       fill="#C4C7CF"
       stroke="none"

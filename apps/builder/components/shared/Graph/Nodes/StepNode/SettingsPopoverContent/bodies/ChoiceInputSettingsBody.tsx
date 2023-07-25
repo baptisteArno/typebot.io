@@ -34,7 +34,6 @@ export const ChoiceInputSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={1}
           onClose={handleCloseEditorBotMessage}
           initialValue={
             options?.message

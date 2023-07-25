@@ -211,7 +211,7 @@ export const ItemNodesList = ({
               stepId: step.id,
             }}
             pos="absolute"
-            right="-49px"
+            right="-44px"
           />
         </Flex>
       )}

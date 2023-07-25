@@ -1,6 +1,7 @@
 import {
   createBoldPlugin,
   createItalicPlugin,
+  createStrikethroughPlugin,
   createUnderlinePlugin,
 } from '@udecode/plate-basic-marks'
 import { createPlugins } from '@udecode/plate-core'
@@ -19,6 +20,7 @@ export const platePlugins = createPlugins(
     createItalicPlugin(),
     createUnderlinePlugin(),
     createLinkPlugin(),
+    createStrikethroughPlugin(),
   ],
   {
     components: {
