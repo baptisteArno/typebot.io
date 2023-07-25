@@ -42,6 +42,7 @@ type Props = {
   addVariable?: boolean
   isCloseModal?: boolean
   labelDefault?: string
+  isSaveContext?: boolean
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
@@ -68,6 +69,7 @@ export const VariableSearchInput = ({
   isCloseModal = true,
   debounceTimeout = 1000,
   labelDefault = '',
+  isSaveContext = true,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose, isOpen } = useDisclosure()
@@ -99,13 +101,15 @@ export const VariableSearchInput = ({
     "token": "+ criar variável"
   }
 
-  let myVariable = (typebot?.variables.find(v => v.id === initialVariableId) || dontSave) as Variable
+  let myVariable = (typebot?.variables.find(v => v.id === initialVariableId) || isSaveContext && dontSave) as Variable
 
   let initial = {
     ACTIONS: {
-      label: '', options: [dontSave]
+      label: '', options: []
     }
   } as any
+
+  if (isSaveContext) initial.ACTIONS.options.push(dontSave) 
 
   if (addVariable) initial.ACTIONS.options.push(newVariable)
 
@@ -163,7 +167,7 @@ export const VariableSearchInput = ({
   )
   const { setIsPopoverOpened } = useContext(StepNodeContext)
 
-  const onInputChange = (event: any): void => {
+  const onInputChange = (event: any, actionData: any): void => {
     if (event) {
       if (event.key === 'no-variable') {
         onSelectVariable({} as any)
@@ -241,7 +245,7 @@ export const VariableSearchInput = ({
         variableId: id,
         example: '',
         fieldId: customVariable.fieldId,
-        type: customVariable.type,
+        type: customVariable.type || 'string',
         fixed: true,
       }
       createVariable(customVariableDraft)
@@ -266,13 +270,11 @@ export const VariableSearchInput = ({
     >
       {screen === 'VIEWER' && (
         <Container data-screen={screen}>
-          {labelDefault ||
-            "Selecione uma variável para salvar a resposta:"
-          }
+          {labelDefault || "Selecione uma variável para salvar a resposta:" }
           <div onWheelCapture={handleContentWheel}>
             <Select
               value={myVariable}
-              isClearable={true}
+              //isClearable={true}
               noOptionsMessage={() => 'Variável não encontrada'}
               onChange={onInputChange}
               minMenuHeight={50}
@@ -300,7 +302,7 @@ export const VariableSearchInput = ({
             <LabelField>Selecione o formato deste campo:</LabelField>
             <FormFieldRowMin>
               <ButtonOption
-                className={customVariable?.type === 'string' ? 'active' : ''}
+                className={['', 'string'].includes(customVariable?.type || '') ? 'active' : ''}
                 onClick={() => handleSelectTypeVariable('string')}
               >
                 Texto

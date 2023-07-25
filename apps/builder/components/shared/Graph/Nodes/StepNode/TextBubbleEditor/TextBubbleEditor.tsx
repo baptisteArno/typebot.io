@@ -1,5 +1,5 @@
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
@@ -16,6 +16,7 @@ import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
+import { EmojiData } from 'emoji-mart'
 
 type Props = {
   initialValue: TElement[]
@@ -35,11 +36,12 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  
-  const [value, setValue] = useState(initialValue)
+
+  let [value, setValue] = useState(initialValue)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+  const [isEmojiOrVariable, setIsEmojiOrVariable] = useState(false)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
   const closeEditor = () => {
@@ -70,6 +72,13 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     e.stopPropagation()
   }
 
+  const handleEmoji = (emoji?: string) => {
+    if (!rememberedSelection.current || !emoji) return
+    Transforms.select(editor as BaseEditor, rememberedSelection.current)
+    Transforms.insertText(editor as BaseEditor, emoji)
+    ReactEditor.focus(editor as unknown as ReactEditor)
+  }
+
   const handleVariableSelected = (variable?: Variable) => {
     setIsVariableDropdownOpen(false)
     if (!rememberedSelection.current || !variable) return
@@ -79,7 +88,13 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   }
 
   const handleChangeEditorContent = (val: TElement[]) => {
-    setValue(val)
+    if (isEmojiOrVariable) {
+      if (onKeyUp) onKeyUp(convertValueToStepContent(val))
+      setIsEmojiOrVariable(false)
+    }
+    else 
+      setValue(val)
+    
     setIsVariableDropdownOpen(false)
   }
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -101,7 +116,9 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     >
       <ToolBar
         editor={editor}
-        onVariablesButtonClick={() => setIsVariableDropdownOpen(true)}
+        onVariablesButtonClick={(showDialog) => { setIsVariableDropdownOpen(showDialog); setIsEmojiOrVariable(showDialog) }}
+        onEmojiButtonClick={(showPicker) => setIsEmojiOrVariable(showPicker) }
+        onEmojiSelected={handleEmoji}
       />
       <Plate
         id={randomEditorId}
@@ -136,13 +153,15 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
           shadow="lg"
           rounded="md"
           bgColor="white"
-          w="320px"
+          w="100%"
           zIndex={10}
         >
           <VariableSearchInput
             onSelectVariable={handleVariableSelected}
             placeholder="Pesquise sua variável"
             handleOutsideClick={() => setIsVariableDropdownOpen(false)}
+            isSaveContext={false}
+            labelDefault={"Selecione uma variável:"}
           />
         </Flex>
       )}

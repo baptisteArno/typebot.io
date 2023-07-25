@@ -9,7 +9,7 @@ import {
 import { getPluginType, PlateEditor, Value } from '@udecode/plate-core';
 import { LinkToolbarButton } from '@udecode/plate-ui-link';
 import { MarkToolbarButton } from '@udecode/plate-ui-toolbar';
-import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, StrikethroughIcon } from 'assets/icons';
+import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, StrikethroughIcon, EmojiIcon } from 'assets/icons';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { VscSmiley } from 'react-icons/vsc';
@@ -17,32 +17,33 @@ import { VscSmiley } from 'react-icons/vsc';
 
 type Props = {
   editor: PlateEditor<Value>;
-  onVariablesButtonClick: () => void;
+  onVariablesButtonClick: (showDialog: boolean) => void;
+  onEmojiButtonClick: (showPicker: boolean) => void;
+  onEmojiSelected: (emojiText: string) => void;
 } & StackProps;
 
 export const ToolBar = ({
   editor,
   onVariablesButtonClick,
+  onEmojiButtonClick,
+  onEmojiSelected,
   ...props
 }: Props) => {
   const [showPicker, setShowPicker] = useState(false);
 
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
-    onVariablesButtonClick();
+    onVariablesButtonClick(true);
   };
 
   const handleEmojiIconClick = () => {
+    onEmojiButtonClick(!showPicker)
     setShowPicker((prevState) => !prevState);
   };
 
   const handleEmojiSelect = (emoji: any) => {
-    editor.insertText(emoji.native);
     setShowPicker(false);
-  };
-
-  const handlePickerBlur = () => {
-    setShowPicker(false);
+    onEmojiSelected(emoji.native)
   };
 
   const customI18n = {
@@ -81,24 +82,31 @@ export const ToolBar = ({
       <span data-testid="bold-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_BOLD)}
-          icon={<BoldIcon />}
+          icon={<BoldIcon fontSize="20px"  />}
         />
       </span>
       <span data-testid="italic-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_ITALIC)}
-          icon={<ItalicIcon />}
+          icon={<ItalicIcon fontSize="20px"  />}
         />
       </span>
       <span data-testid="underline-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_UNDERLINE)}
-          icon={<UnderlineIcon />}
+          icon={<UnderlineIcon fontSize="20px"  />}
+        />
+      </span>
+
+      <span data-testid="underline-button">
+        <MarkToolbarButton
+          type={getPluginType(editor, MARK_STRIKETHROUGH)}
+          icon={<StrikethroughIcon fontSize="20px" />}
         />
       </span>
 
       <span data-testid="link-button">
-        <LinkToolbarButton icon={<LinkIcon />} />
+        <LinkToolbarButton icon={<LinkIcon fontSize="20px" />} />
       </span>
 
       <span style={{ position: 'relative' }}>
@@ -111,7 +119,7 @@ export const ToolBar = ({
             fontSize: '1.4em',
             marginTop: '5px'
           }}
-        ><VscSmiley />
+        ><EmojiIcon fontSize="20px" />
         </span>
         {showPicker && (
           <div style={{ position: 'absolute', top: '100%', zIndex: 9999 }}>

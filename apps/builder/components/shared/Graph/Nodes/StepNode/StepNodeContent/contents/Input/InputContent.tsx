@@ -1,9 +1,10 @@
 import { InputOptions, Variable } from 'models'
 import React from 'react'
-import { Stack, Text } from '@chakra-ui/react'
+import { Flex, Stack, Text } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { parseVariableHighlight } from 'services/utils'
 
 type Props = {
   step: {
@@ -39,10 +40,16 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
 
   return (
     <Stack>
-      <Text noOfLines={0}>
-        {step.options.message?.plainText && step.options.message?.plainText}
-        {!step.options.message?.plainText && <span>Clique para editar...</span>}
-      </Text>
+      <Flex
+        w="90%"
+        flexDir={'column'}
+        opacity={step.options.message?.html === '' ? '0.5' : '1'}
+        className="slate-html-container"
+        dangerouslySetInnerHTML={{
+          __html:
+            step?.options?.message && typebot ? parseVariableHighlight(step.options.message.html, typebot) : `<p>Clique para editar...</p>`
+        }}
+      />
 
       <OctaDivider />
       <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />

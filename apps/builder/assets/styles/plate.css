@@ -10,6 +10,10 @@
   text-decoration: underline;
 }
 
+.slate-strikethrough {
+  text-decoration: line-through;
+}
+
 .slate-ToolbarButton-active {
   color: blue !important;
 }

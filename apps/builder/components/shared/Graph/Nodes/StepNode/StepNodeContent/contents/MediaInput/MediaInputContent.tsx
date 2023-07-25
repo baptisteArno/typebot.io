@@ -5,6 +5,7 @@ import { Container } from './MediaInputContent.style'
 import { ImageIcon, UploadFileIcon } from 'assets/icons'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 type Props = {
   step: {
@@ -19,12 +20,8 @@ const MediaInputContent = ({ step }: Props) => {
 
   return (
     <Container>
-      {
-        <Text noOfLines={0}>
-          {step.content.message?.plainText && step.content.message?.plainText}
-          {!step.content.message?.plainText && <label>Clique para editar...</label>}
-        </Text>
-      }
+      <TextHtmlContent html={step.content.message?.html} />
+
       <OctaDivider />
       {!step.content?.url ? (
         <Text pl={'8px'}>Clique para editar...</Text>
