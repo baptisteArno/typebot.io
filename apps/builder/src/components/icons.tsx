@@ -546,12 +546,12 @@ export const CloseIcon = (props: IconProps) => (
 
 export const NoRadiusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 20 20" {...props}>
-    <mask id="path-1-inside-1_1009_3" fill="white">
+    <mask id="path-1-inside-1_1009_3" fill="currentColor">
       <path d="M0 0H20V20H0V0Z" />
     </mask>
     <path
       d="M0 0V-2H-2V0H0ZM0 20H-2V22H0V20ZM0 2H20V-2H0V2ZM20 18H0V22H20V18ZM2 20V0H-2V20H2Z"
-      fill="black"
+      fill="currentColor"
       mask="url(#path-1-inside-1_1009_3)"
     />
   </Icon>
@@ -559,12 +559,12 @@ export const NoRadiusIcon = (props: IconProps) => (
 
 export const MediumRadiusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 20 20" {...props}>
-    <mask id="path-1-inside-1_1009_4" fill="white">
+    <mask id="path-1-inside-1_1009_4" fill="currentColor">
       <path d="M0 4C0 1.79086 1.79086 0 4 0H20V20H4C1.79086 20 0 18.2091 0 16V4Z" />
     </mask>
     <path
       d="M-2 4C-2 0.686292 0.686292 -2 4 -2H20V2H4C2.89543 2 2 2.89543 2 4H-2ZM20 22H4C0.686292 22 -2 19.3137 -2 16H2C2 17.1046 2.89543 18 4 18H20V22ZM4 22C0.686292 22 -2 19.3137 -2 16V4C-2 0.686292 0.686292 -2 4 -2V2C2.89543 2 2 2.89543 2 4V16C2 17.1046 2.89543 18 4 18V22ZM20 0V20V0Z"
-      fill="black"
+      fill="currentColor"
       mask="url(#path-1-inside-1_1009_4)"
     />
   </Icon>
@@ -572,12 +572,12 @@ export const MediumRadiusIcon = (props: IconProps) => (
 
 export const LargeRadiusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 20 20" {...props}>
-    <mask id="path-1-inside-1_1009_5" fill="white">
+    <mask id="path-1-inside-1_1009_5" fill="currentColor">
       <path d="M0 10C0 4.47715 4.47715 0 10 0H20V20H10C4.47715 20 0 15.5228 0 10V10Z" />
     </mask>
     <path
       d="M-2 10C-2 3.37258 3.37258 -2 10 -2H20V2H10C5.58172 2 2 5.58172 2 10H-2ZM20 22H10C3.37258 22 -2 16.6274 -2 10H2C2 14.4183 5.58172 18 10 18H20V22ZM10 22C3.37258 22 -2 16.6274 -2 10C-2 3.37258 3.37258 -2 10 -2V2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18V22ZM20 0V20V0Z"
-      fill="black"
+      fill="currentColor"
       mask="url(#path-1-inside-1_1009_5)"
     />
   </Icon>
