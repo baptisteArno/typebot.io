@@ -104,7 +104,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 data: { claimedAt: new Date() },
               })
 
-            await prisma.workspace.update({
+            await prisma.workspace.updateMany({
               where: { id: workspaceId },
               data: {
                 plan: Plan.CUSTOM,

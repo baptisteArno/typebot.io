@@ -20,6 +20,7 @@ export type ButtonTheme = {
   backgroundColor?: string
   iconColor?: string
   customIconSrc?: string
+  customCloseIconSrc?: string
 }
 
 export type PreviewMessageParams = {

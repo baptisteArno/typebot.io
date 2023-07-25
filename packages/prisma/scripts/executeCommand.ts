@@ -26,7 +26,7 @@ export const executePrismaCommand = (command: string, options?: Options) => {
 
   if (!databaseUrl) {
     console.error('Could not find DATABASE_URL in environment')
-    return
+    process.exit(1)
   }
 
   if (databaseUrl?.startsWith('mysql://')) {
@@ -37,6 +37,11 @@ export const executePrismaCommand = (command: string, options?: Options) => {
   if (databaseUrl?.startsWith('postgresql://')) {
     console.log('Executing for PostgreSQL schema')
     executeCommand(`${command} --schema ${postgesqlSchemaPath}`)
+  }
+
+  if (process.env.DATABASE_URL?.startsWith('postgres://')) {
+    console.error('PostgreSQL `DATABASE_URL` should start with postgresql://')
+    process.exit(1)
   }
 }
 

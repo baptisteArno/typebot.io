@@ -36,11 +36,6 @@ export const getUsage = authenticatedProcedure
 
     const now = new Date()
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const firstDayOfNextMonth = new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      1
-    )
     const [
       totalChatsUsed,
       {
@@ -62,7 +57,6 @@ export const getUsage = authenticatedProcedure
             hasStarted: true,
             createdAt: {
               gte: firstDayOfMonth,
-              lt: firstDayOfNextMonth,
             },
           },
         }),

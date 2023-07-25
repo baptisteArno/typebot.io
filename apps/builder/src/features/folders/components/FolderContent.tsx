@@ -12,7 +12,6 @@ import {
 import { useTypebotDnd } from '../TypebotDndProvider'
 import React, { useState } from 'react'
 import { BackButton } from './BackButton'
-import { OnboardingModal } from '../../dashboard/components/OnboardingModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { useFolders } from '../hooks/useFolders'
@@ -160,7 +159,6 @@ export const FolderContent = ({ folder }: Props) => {
 
   return (
     <Flex w="full" flex="1" justify="center">
-      {typebots && <OnboardingModal totalTypebots={typebots.length} />}
       <Stack w="1000px" spacing={6}>
         <Skeleton isLoaded={folder?.name !== undefined}>
           <Heading as="h1">{folder?.name}</Heading>

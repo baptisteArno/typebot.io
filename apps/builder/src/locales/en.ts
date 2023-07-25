@@ -12,6 +12,7 @@ export default {
   downgrade: 'Downgrade',
   remove: 'Remove',
   pending: 'Pending',
+  skip: 'Skip',
   'folders.createFolderButton.label': 'Create a folder',
   'folders.createTypebotButton.label': 'Create a typebot',
   'folders.folderButton.deleteConfirmationMessage':
@@ -75,6 +76,10 @@ export default {
   'auth.register.heading': 'Create an account',
   'auth.register.alreadyHaveAccountLabel.preLink': 'Already have an account?',
   'auth.register.alreadyHaveAccountLabel.link': 'Sign in',
+  'auth.register.aggreeToTerms':
+    'By signing up, you agree to our {termsOfService} and {privacyPolicy}.',
+  'auth.register.termsOfService': 'terms of service',
+  'auth.register.privacyPolicy': 'privacy policy',
   'auth.error.default': 'Try signing with a different account.',
   'auth.error.email': 'Email not found. Try signing with a different provider.',
   'auth.error.oauthNotLinked':

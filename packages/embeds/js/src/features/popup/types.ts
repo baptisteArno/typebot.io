@@ -3,5 +3,6 @@ export type PopupParams = {
   theme?: {
     width?: string
     backgroundColor?: string
+    zIndex?: number
   }
 }

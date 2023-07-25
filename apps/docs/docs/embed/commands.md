@@ -8,6 +8,7 @@ Here are the commands you can use to trigger your embedded typebot:
 - `Typebot.showPreviewMessage()`: Show preview message from the bubble,
 - `Typebot.hidePreviewMessage()`: Hide preview message from the bubble,
 - `Typebot.setPrefilledVariables(...)`: Set prefilled variables.
+- `Typebot.setInputValue(...)`: Set the value in the currently displayed input.
 
   Example:
 

@@ -13,12 +13,12 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/js'
+import { BubbleProps } from '@typebot.io/nextjs'
 import {
   BubbleTheme,
   ButtonTheme,
   PreviewMessageTheme,
-} from '@typebot.io/js/dist/features/bubble/types'
+} from '@typebot.io/nextjs'
 import { ButtonThemeSettings } from './ButtonThemeSettings'
 import { PreviewMessageThemeSettings } from './PreviewMessageThemeSettings'
 import { ChevronDownIcon } from '@/components/icons'

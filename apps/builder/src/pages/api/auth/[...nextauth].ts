@@ -119,6 +119,11 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
     id: 'custom-oauth',
     name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
     type: 'oauth',
+    authorization: {
+      params: {
+        scope: process.env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email',
+      },
+    },
     clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
     clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
     wellKnown: process.env.CUSTOM_OAUTH_WELL_KNOWN_URL,
@@ -151,6 +156,9 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: '/signin',
+    newUser: process.env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID
+      ? '/onboarding'
+      : undefined,
   },
   callbacks: {
     session: async ({ session, user }) => {
@@ -216,7 +224,7 @@ const updateLastActivityDate = async (user: User) => {
     first.getDate() === second.getDate()
 
   if (!datesAreOnSameDay(user.lastActivityAt, new Date()))
-    await prisma.user.update({
+    await prisma.user.updateMany({
       where: { id: user.id },
       data: { lastActivityAt: new Date() },
     })

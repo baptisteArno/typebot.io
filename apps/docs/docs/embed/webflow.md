@@ -22,7 +22,7 @@ It should look like:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.0/dist/web.js'
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js'
 
   Typebot.initPopup({
     typebot: 'my-typebot',

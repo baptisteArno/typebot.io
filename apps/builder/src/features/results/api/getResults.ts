@@ -13,7 +13,7 @@ export const getResults = authenticatedProcedure
       method: 'GET',
       path: '/typebots/{typebotId}/results',
       protect: true,
-      summary: 'List results',
+      summary: 'List results ordered by descending creation date',
       tags: ['Results'],
     },
   })

@@ -16,7 +16,7 @@ export const matchFilter = (
         (comparison) =>
           comparison.column &&
           matchComparison(
-            row[comparison.column],
+            row.get(comparison.column),
             comparison.comparisonOperator,
             comparison.value
           )
@@ -25,7 +25,7 @@ export const matchFilter = (
         (comparison) =>
           comparison.column &&
           matchComparison(
-            row[comparison.column],
+            row.get(comparison.column),
             comparison.comparisonOperator,
             comparison.value
           )

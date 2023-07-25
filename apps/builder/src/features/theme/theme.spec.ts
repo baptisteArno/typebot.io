@@ -2,6 +2,7 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
@@ -20,8 +21,15 @@ test.describe.parallel('Theme page', () => {
       await page.goto(`/typebots/${typebotId}/theme`)
       await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
 
+      // Branding
+      await page.getByRole('button', { name: 'Global' }).click()
+      await expect(
+        page.locator('a:has-text("Made with Typebot")')
+      ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
+      await page.click('text="Show Typebot brand"')
+      await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
+
       // Font
-      await page.getByRole('button', { name: 'Font & Background' }).click()
       await page.getByRole('textbox').fill('Roboto Slab')
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'font-family',
@@ -250,5 +258,27 @@ test.describe.parallel('Theme page', () => {
         'rgb(30, 41, 59)'
       )
     })
+  })
+})
+
+test.describe('Free workspace', () => {
+  test("can't remove branding", async ({ page }) => {
+    const typebotId = createId()
+    await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
+      id: typebotId,
+      workspaceId: freeWorkspaceId,
+    })
+    await page.goto(`/typebots/${typebotId}/theme`)
+    await expect(page.locator('text="What\'s your name?"')).toBeVisible()
+    await page.getByRole('button', { name: 'Global' }).click()
+    await expect(
+      page.locator('[data-testid="starter-lock-tag"]')
+    ).toBeVisible()
+    await page.click('text=Show Typebot brand')
+    await expect(
+      page.locator(
+        'text="You need to upgrade your plan in order to remove branding"'
+      )
+    ).toBeVisible()
   })
 })

@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { PopupProps } from '@typebot.io/js'
+import { PopupProps } from '@typebot.io/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { parseReactPopupProps } from '../../snippetParsers'

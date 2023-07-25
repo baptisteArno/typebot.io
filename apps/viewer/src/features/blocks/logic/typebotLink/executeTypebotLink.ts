@@ -8,33 +8,32 @@ import {
   SessionState,
   TypebotInSession,
   Variable,
+  ReplyLog,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '@/features/chat/types'
-import { saveErrorLog } from '@/features/logs/saveErrorLog'
 
 export const executeTypebotLink = async (
   state: SessionState,
   block: TypebotLinkBlock
 ): Promise<ExecuteLogicResponse> => {
+  const logs: ReplyLog[] = []
   if (!block.options.typebotId) {
-    state.result &&
-      saveErrorLog({
-        resultId: state.result.id,
-        message: 'Failed to link typebot',
-        details: 'Typebot ID is not specified',
-      })
-    return { outgoingEdgeId: block.outgoingEdgeId }
+    logs.push({
+      status: 'error',
+      description: `Failed to link typebot`,
+      details: `Typebot ID is not specified`,
+    })
+    return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
   const linkedTypebot = await getLinkedTypebot(state, block.options.typebotId)
   if (!linkedTypebot) {
-    state.result &&
-      saveErrorLog({
-        resultId: state.result.id,
-        message: 'Failed to link typebot',
-        details: `Typebot with ID ${block.options.typebotId} not found`,
-      })
-    return { outgoingEdgeId: block.outgoingEdgeId }
+    logs.push({
+      status: 'error',
+      description: `Failed to link typebot`,
+      details: `Typebot with ID ${block.options.typebotId} not found`,
+    })
+    return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
   let newSessionState = addLinkedTypebotToState(state, block, linkedTypebot)
 
@@ -43,13 +42,12 @@ export const executeTypebotLink = async (
     linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
       ?.id
   if (!nextGroupId) {
-    state.result &&
-      saveErrorLog({
-        resultId: state.result.id,
-        message: 'Failed to link typebot',
-        details: `Group with ID "${block.options.groupId}" not found`,
-      })
-    return { outgoingEdgeId: block.outgoingEdgeId }
+    logs.push({
+      status: 'error',
+      description: `Failed to link typebot`,
+      details: `Group with ID "${block.options.groupId}" not found`,
+    })
+    return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
 
   const portalEdge = createPortalEdge({ to: { groupId: nextGroupId } })

@@ -26,7 +26,7 @@ test.describe('Builder', () => {
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
-      `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`
+      `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`, {timeout: 10000}
     )
   })
 

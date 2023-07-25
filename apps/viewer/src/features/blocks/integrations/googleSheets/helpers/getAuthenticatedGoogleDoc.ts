@@ -9,18 +9,16 @@ export const getAuthenticatedGoogleDoc = async ({
   credentialsId?: string
   spreadsheetId?: string
 }) => {
-  if (!credentialsId)
+  if (!credentialsId || !spreadsheetId)
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'Missing credentialsId or sheetId',
+      message: 'Missing credentialsId or spreadsheetId',
     })
-  const doc = new GoogleSpreadsheet(spreadsheetId)
   const auth = await getAuthenticatedGoogleClient(credentialsId)
   if (!auth)
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: "Couldn't find credentials in database",
     })
-  doc.useOAuth2Client(auth)
-  return doc
+  return new GoogleSpreadsheet(spreadsheetId, auth)
 }

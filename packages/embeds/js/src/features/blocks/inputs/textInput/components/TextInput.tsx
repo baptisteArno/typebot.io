@@ -1,9 +1,10 @@
 import { Textarea, ShortTextInput } from '@/components'
 import { SendButton } from '@/components/SendButton'
+import { CommandData } from '@/features/commands'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { TextInputBlock } from '@typebot.io/schemas'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
   block: TextInputBlock
@@ -36,7 +37,18 @@ export const TextInput = (props: Props) => {
 
   onMount(() => {
     if (!isMobile() && inputRef) inputRef.focus()
+    window.addEventListener('message', processIncomingEvent)
   })
+
+  onCleanup(() => {
+    window.removeEventListener('message', processIncomingEvent)
+  })
+
+  const processIncomingEvent = (event: MessageEvent<CommandData>) => {
+    const { data } = event
+    if (!data.isFromTypebot) return
+    if (data.command === 'setInputValue') setInputValue(data.value)
+  }
 
   return (
     <div

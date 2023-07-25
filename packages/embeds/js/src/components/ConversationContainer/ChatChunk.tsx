@@ -1,10 +1,11 @@
-import { BotContext } from '@/types'
+import { BotContext, ChatChunk as ChatChunkType } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { ChatReply, Settings, Theme } from '@typebot.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { HostBubble } from '../bubbles/HostBubble'
 import { InputChatBlock } from '../InputChatBlock'
 import { AvatarSideContainer } from './AvatarSideContainer'
+import { StreamingBubble } from '../bubbles/StreamingBubble'
 
 type Props = Pick<ChatReply, 'messages' | 'input'> & {
   theme: Theme
@@ -13,6 +14,7 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   context: BotContext
   hasError: boolean
   hideAvatar: boolean
+  streamingMessageId: ChatChunkType['streamingMessageId']
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: (top?: number) => void
   onSubmit: (input: string) => void
@@ -25,6 +27,7 @@ export const ChatChunk = (props: Props) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
 
   onMount(() => {
+    if (props.streamingMessageId) return
     if (props.messages.length === 0) {
       props.onAllBubblesDisplayed()
     }
@@ -101,6 +104,31 @@ export const ChatChunk = (props: Props) => {
           hasError={props.hasError}
         />
       )}
+      <Show when={props.streamingMessageId} keyed>
+        {(streamingMessageId) => (
+          <div class={'flex' + (isMobile() ? ' gap-1' : ' gap-2')}>
+            <Show when={props.theme.chat.hostAvatar?.isEnabled}>
+              <AvatarSideContainer
+                hostAvatarSrc={props.theme.chat.hostAvatar?.url}
+                hideAvatar={props.hideAvatar}
+              />
+            </Show>
+
+            <div
+              class="flex flex-col flex-1 gap-2"
+              style={{
+                'margin-right': props.theme.chat.guestAvatar?.isEnabled
+                  ? isMobile()
+                    ? '32px'
+                    : '48px'
+                  : undefined,
+              }}
+            >
+              <StreamingBubble streamingMessageId={streamingMessageId} />
+            </div>
+          </div>
+        )}
+      </Show>
     </div>
   )
 }

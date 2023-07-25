@@ -161,7 +161,7 @@ export const TableList = <T,>({
           </Flex>
         </Box>
       ))}
-      {!isOrdered && (
+      {(!isOrdered || items.length === 0) && (
         <Button
           leftIcon={<PlusIcon />}
           onClick={createItem}

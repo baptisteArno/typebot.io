@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import type { BubbleProps } from '@typebot.io/js'
+import '@typebot.io/js/dist/web'
 
 type Props = BubbleProps
 
@@ -17,33 +18,28 @@ declare global {
 type BubbleElement = HTMLElement & Props
 
 export const Bubble = (props: Props) => {
-  const ref = useRef<BubbleElement | null>(null)
-  const [isInitialized, setIsInitialized] = useState(false)
-
-  useEffect(() => {
-    ;(async () => {
-      await import('@typebot.io/js/dist/web')
-      setIsInitialized(true)
-    })()
-    return () => {
-      ref.current?.remove()
-    }
-  }, [])
+  const bubbleElement = useRef<BubbleElement | null>(null)
 
   const attachBubbleToDom = useCallback((props: Props) => {
-    const bubbleElement = document.createElement(
+    const newBubbleElement = document.createElement(
       'typebot-bubble'
     ) as BubbleElement
-    ref.current = bubbleElement
-    injectPropsToElement(ref.current, props)
-    document.body.append(ref.current)
+    bubbleElement.current = newBubbleElement
+    injectPropsToElement(bubbleElement.current, props)
+    document.body.append(bubbleElement.current)
   }, [])
 
   useEffect(() => {
-    if (!isInitialized) return
-    if (!ref.current) attachBubbleToDom(props)
-    injectPropsToElement(ref.current as BubbleElement, props)
-  }, [attachBubbleToDom, isInitialized, props])
+    if (!bubbleElement.current) attachBubbleToDom(props)
+    injectPropsToElement(bubbleElement.current as BubbleElement, props)
+  }, [attachBubbleToDom, props])
+
+  useEffect(() => {
+    return () => {
+      bubbleElement.current?.remove()
+      bubbleElement.current = null
+    }
+  }, [])
 
   const injectPropsToElement = (element: BubbleElement, props: Props) => {
     Object.assign(element, props)
@@ -51,3 +47,5 @@ export const Bubble = (props: Props) => {
 
   return null
 }
+
+export default Bubble

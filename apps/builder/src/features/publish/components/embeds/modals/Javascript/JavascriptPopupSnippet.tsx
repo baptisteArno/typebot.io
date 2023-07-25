@@ -7,7 +7,7 @@ import {
   typebotImportCode,
 } from '../../snippetParsers'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { PopupProps } from '@typebot.io/js'
+import { PopupProps } from '@typebot.io/nextjs'
 
 type Props = Pick<PopupProps, 'autoShowDelay'>
 

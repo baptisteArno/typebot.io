@@ -23,8 +23,6 @@ export const CreateBotButton = ({
 
   return (
     <Button
-      mr={{ sm: 6 }}
-      mb={6}
       style={{ width: '225px', height: '270px' }}
       onClick={handleClick}
       paddingX={6}

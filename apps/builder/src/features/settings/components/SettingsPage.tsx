@@ -1,6 +1,6 @@
 import { Seo } from '@/components/Seo'
 import { Flex } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/react'
+import { Standard } from '@typebot.io/nextjs'
 import { getViewerUrl } from '@typebot.io/lib'
 import { SettingsSideMenu } from './SettingsSideMenu'
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'

@@ -112,7 +112,7 @@ export const Popup = (props: PopupProps) => {
         role="dialog"
         aria-modal="true"
         style={{
-          'z-index': 42424242,
+          'z-index': props.theme?.zIndex ?? 42424242,
         }}
       >
         <style>{styles}</style>

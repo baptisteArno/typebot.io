@@ -156,8 +156,6 @@ export const FolderButton = ({
 export const ButtonSkeleton = () => (
   <Button
     as={VStack}
-    mr={{ sm: 6 }}
-    mb={6}
     style={{ width: '225px', height: '270px' }}
     paddingX={6}
     whiteSpace={'normal'}

@@ -1,13 +1,26 @@
 import { ChatReply, SendMessageInput, Theme } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
-import { createEffect, createSignal, For, onMount, Show } from 'solid-js'
+import {
+  createEffect,
+  createSignal,
+  createUniqueId,
+  For,
+  onMount,
+  Show,
+} from 'solid-js'
 import { sendMessageQuery } from '@/queries/sendMessageQuery'
 import { ChatChunk } from './ChatChunk'
-import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
+import {
+  BotContext,
+  ChatChunk as ChatChunkType,
+  InitialChatReply,
+  OutgoingLog,
+} from '@/types'
 import { isNotDefined } from '@typebot.io/lib'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
 import { PopupBlockedToast } from './PopupBlockedToast'
+import { setStreamingMessage } from '@/utils/streamingMessageSignal'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -44,9 +57,7 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  const [chatChunks, setChatChunks] = createSignal<
-    Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>[]
-  >([
+  const [chatChunks, setChatChunks] = createSignal<ChatChunkType[]>([
     {
       input: props.initialChatReply.input,
       messages: props.initialChatReply.messages,
@@ -74,9 +85,13 @@ export const ConversationContainer = (props: Props) => {
             'webhookToExecute' in action
           )
             setIsSending(true)
-          const response = await executeClientSideAction(action, {
-            apiHost: props.context.apiHost,
-            sessionId: props.initialChatReply.sessionId,
+          const response = await executeClientSideAction({
+            clientSideAction: action,
+            context: {
+              apiHost: props.context.apiHost,
+              sessionId: props.initialChatReply.sessionId,
+            },
+            onMessageStream: streamMessage,
           })
           if (response && 'replyToSend' in response) {
             sendMessage(response.replyToSend, response.logs)
@@ -88,6 +103,22 @@ export const ConversationContainer = (props: Props) => {
       }
     })()
   })
+
+  const streamMessage = (content: string) => {
+    setIsSending(false)
+    const lastChunk = chatChunks().at(-1)
+    if (!lastChunk) return
+    const id = lastChunk.streamingMessageId ?? createUniqueId()
+    if (!lastChunk.streamingMessageId)
+      setChatChunks((displayedChunks) => [
+        ...displayedChunks,
+        {
+          messages: [],
+          streamingMessageId: id,
+        },
+      ])
+    setStreamingMessage({ id, content })
+  }
 
   createEffect(() => {
     setTheme(
@@ -151,9 +182,13 @@ export const ConversationContainer = (props: Props) => {
           'webhookToExecute' in action
         )
           setIsSending(true)
-        const response = await executeClientSideAction(action, {
-          apiHost: props.context.apiHost,
-          sessionId: props.initialChatReply.sessionId,
+        const response = await executeClientSideAction({
+          clientSideAction: action,
+          context: {
+            apiHost: props.context.apiHost,
+            sessionId: props.initialChatReply.sessionId,
+          },
+          onMessageStream: streamMessage,
         })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend, response.logs)
@@ -167,7 +202,9 @@ export const ConversationContainer = (props: Props) => {
       ...displayedChunks,
       {
         input: data.input,
-        messages: data.messages,
+        messages: chatChunks().at(-1)?.streamingMessageId
+          ? data.messages.slice(1)
+          : data.messages,
         clientSideActions: data.clientSideActions,
       },
     ])
@@ -200,9 +237,13 @@ export const ConversationContainer = (props: Props) => {
           'webhookToExecute' in action
         )
           setIsSending(true)
-        const response = await executeClientSideAction(action, {
-          apiHost: props.context.apiHost,
-          sessionId: props.initialChatReply.sessionId,
+        const response = await executeClientSideAction({
+          clientSideAction: action,
+          context: {
+            apiHost: props.context.apiHost,
+            sessionId: props.initialChatReply.sessionId,
+          },
+          onMessageStream: streamMessage,
         })
         if (response && 'replyToSend' in response) {
           sendMessage(response.replyToSend, response.logs)
@@ -229,14 +270,19 @@ export const ConversationContainer = (props: Props) => {
             input={chatChunk.input}
             theme={theme()}
             settings={props.initialChatReply.typebot.settings}
+            streamingMessageId={chatChunk.streamingMessageId}
+            context={props.context}
+            hideAvatar={
+              !chatChunk.input &&
+              !chatChunk.streamingMessageId &&
+              index() < chatChunks().length - 1
+            }
+            hasError={hasError() && index() === chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
             onScrollToBottom={autoScrollToBottom}
             onSkip={handleSkip}
-            context={props.context}
-            hasError={hasError() && index() === chatChunks().length - 1}
-            hideAvatar={!chatChunk.input && index() < chatChunks().length - 1}
           />
         )}
       </For>

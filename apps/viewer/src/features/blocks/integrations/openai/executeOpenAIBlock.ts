@@ -12,6 +12,7 @@ export const executeOpenAIBlock = async (
       return createChatCompletionOpenAI(state, {
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,
+        blockId: block.id,
       })
     case 'Create image':
     case undefined:

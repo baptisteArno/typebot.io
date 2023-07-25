@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { isNotDefined } from '@typebot.io/lib'
+import { formatLogDetails } from './helpers/formatLogDetails'
 
 type Props = {
   status: 'error' | 'success' | 'info'
@@ -15,16 +15,7 @@ export const saveLog = ({ status, resultId, message, details }: Props) => {
       resultId,
       status,
       description: message,
-      details: formatDetails(details) as string | null,
+      details: formatLogDetails(details) as string | null,
     },
   })
-}
-
-const formatDetails = (details: unknown) => {
-  if (isNotDefined(details)) return null
-  try {
-    return JSON.stringify(details, null, 2).substring(0, 1000)
-  } catch {
-    return details
-  }
 }

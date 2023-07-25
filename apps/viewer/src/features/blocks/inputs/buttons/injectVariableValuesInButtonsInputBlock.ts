@@ -12,7 +12,7 @@ import { filterChoiceItems } from './filterChoiceItems'
 
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
-  async (block: ChoiceInputBlock): Promise<ChoiceInputBlock> => {
+  (block: ChoiceInputBlock): ChoiceInputBlock => {
     if (block.options.dynamicVariableId) {
       const variable = state.typebot.variables.find(
         (variable) =>
@@ -20,7 +20,7 @@ export const injectVariableValuesInButtonsInputBlock =
           isDefined(variable.value)
       ) as VariableWithValue | undefined
       if (!variable) return block
-      const value = await getVariableValue(state)(variable)
+      const value = getVariableValue(state)(variable)
       return {
         ...block,
         items: value.filter(isDefined).map((item, idx) => ({
@@ -38,12 +38,12 @@ export const injectVariableValuesInButtonsInputBlock =
 
 const getVariableValue =
   (state: SessionState) =>
-  async (variable: VariableWithValue): Promise<(string | null)[]> => {
+  (variable: VariableWithValue): (string | null)[] => {
     if (!Array.isArray(variable.value)) {
       const [transformedVariable] = transformStringVariablesToList(
         state.typebot.variables
       )([variable.id])
-      await updateVariables(state)([transformedVariable])
+      updateVariables(state)([transformedVariable])
       return transformedVariable.value as string[]
     }
     return variable.value

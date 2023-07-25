@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-npm install @typebot.io/js @typebot.io/react
+npm install @typebot.io/react
 ```
 
 ## Standard
@@ -38,19 +38,19 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/js'
+import { open } from '@typebot.io/react'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/js'
+import { close } from '@typebot.io/react'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/js'
+import { toggle } from '@typebot.io/react'
 
 toggle()
 ```
@@ -85,13 +85,13 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-import { showPreviewMessage } from '@typebot.io/js'
+import { showPreviewMessage } from '@typebot.io/react'
 
 Typebot.showPreviewMessage()
 ```
 
 ```js
-import { hidePreviewMessage } from '@typebot.io/js'
+import { hidePreviewMessage } from '@typebot.io/react'
 
 Typebot.hidePreviewMessage()
 ```
@@ -101,19 +101,19 @@ Typebot.hidePreviewMessage()
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/js'
+import { open } from '@typebot.io/react'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/js'
+import { close } from '@typebot.io/react'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/js'
+import { toggle } from '@typebot.io/react'
 
 toggle()
 ```

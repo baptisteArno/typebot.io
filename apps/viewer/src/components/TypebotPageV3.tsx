@@ -1,4 +1,4 @@
-import { Standard } from '@typebot.io/react'
+import { Standard } from '@typebot.io/nextjs'
 import { BackgroundType, Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'

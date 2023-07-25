@@ -11,7 +11,7 @@ export const streamChat =
       content?: string | undefined
       role?: 'system' | 'user' | 'assistant' | undefined
     }[],
-    { onStreamedMessage }: { onStreamedMessage?: (message: string) => void }
+    { onMessageStream }: { onMessageStream?: (message: string) => void }
   ): Promise<{ message?: string; error?: object }> => {
     try {
       abortController = new AbortController()
@@ -59,8 +59,8 @@ export const streamChat =
           break
         }
         const chunk = decoder.decode(value)
-        if (onStreamedMessage) onStreamedMessage(chunk)
         message += chunk
+        if (onMessageStream) onMessageStream(message)
         if (abortController === null) {
           reader.cancel()
           break

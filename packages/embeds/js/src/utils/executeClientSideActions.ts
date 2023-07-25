@@ -11,11 +11,17 @@ import { ClientSideActionContext } from '@/types'
 import type { ChatReply, ReplyLog } from '@typebot.io/schemas'
 import { injectStartProps } from './injectStartProps'
 
-export const executeClientSideAction = async (
-  clientSideAction: NonNullable<ChatReply['clientSideActions']>[0],
-  context: ClientSideActionContext,
-  onStreamedMessage?: (message: string) => void
-): Promise<
+type Props = {
+  clientSideAction: NonNullable<ChatReply['clientSideActions']>[0]
+  context: ClientSideActionContext
+  onMessageStream?: (message: string) => void
+}
+
+export const executeClientSideAction = async ({
+  clientSideAction,
+  context,
+  onMessageStream,
+}: Props): Promise<
   | { blockedPopupUrl: string }
   | { replyToSend: string | undefined; logs?: ReplyLog[] }
   | void
@@ -41,7 +47,12 @@ export const executeClientSideAction = async (
   if ('streamOpenAiChatCompletion' in clientSideAction) {
     const { error, message } = await streamChat(context)(
       clientSideAction.streamOpenAiChatCompletion.messages,
-      { onStreamedMessage }
+      {
+        onMessageStream: clientSideAction.streamOpenAiChatCompletion
+          .displayStream
+          ? onMessageStream
+          : undefined,
+      }
     )
     if (error)
       return {

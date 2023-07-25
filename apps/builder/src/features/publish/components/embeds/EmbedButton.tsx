@@ -37,6 +37,8 @@ import { ApiModal } from './modals/ApiModal'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { FlutterFlowLogo } from './logos/FlutterFlowLogo'
 import { FlutterFlowModal } from './modals/FlutterFlowModal'
+import { NextjsLogo } from './logos/NextjsLogo'
+import { NextjsModal } from './modals/Nextjs/NextjsModal'
 
 export type ModalProps = {
   publicId: string
@@ -122,6 +124,14 @@ export const integrationsList = [
       logo={<ReactLogo height={100} width="70px" />}
       label="React"
       Modal={ReactModal}
+      {...props}
+    />
+  ),
+  (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
+    <EmbedButton
+      logo={<NextjsLogo height={100} width="70px" />}
+      label="Nextjs"
+      Modal={NextjsModal}
       {...props}
     />
   ),

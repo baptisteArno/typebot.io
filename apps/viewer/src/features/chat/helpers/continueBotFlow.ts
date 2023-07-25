@@ -1,7 +1,4 @@
-import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
-import { Prisma } from '@typebot.io/prisma'
-import got from 'got'
 import {
   Block,
   BlockType,
@@ -16,7 +13,7 @@ import {
   SetVariableBlock,
   WebhookBlock,
 } from '@typebot.io/schemas'
-import { isInputBlock, isNotDefined, byId } from '@typebot.io/lib'
+import { isInputBlock, byId } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
@@ -28,12 +25,13 @@ import { parseVariables } from '@/features/variables/parseVariables'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { resumeChatCompletion } from '@/features/blocks/integrations/openai/resumeChatCompletion'
 import { resumeWebhookExecution } from '@/features/blocks/integrations/webhook/resumeWebhookExecution'
+import { upsertAnswer } from '../queries/upsertAnswer'
 
 export const continueBotFlow =
   (state: SessionState) =>
   async (
     reply?: string
-  ): Promise<ChatReply & { newSessionState?: SessionState }> => {
+  ): Promise<ChatReply & { newSessionState: SessionState }> => {
     let newSessionState = { ...state }
     const group = state.typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
@@ -60,13 +58,14 @@ export const continueBotFlow =
           ...existingVariable,
           value: reply,
         }
-        newSessionState = await updateVariables(state)([newVariable])
+        newSessionState = updateVariables(state)([newVariable])
       }
     } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
-      const result = await resumeWebhookExecution(
+      const result = resumeWebhookExecution({
         state,
-        block
-      )(JSON.parse(reply))
+        block,
+        response: JSON.parse(reply),
+      })
       if (result.newSessionState) newSessionState = result.newSessionState
     } else if (
       block.type === IntegrationBlockType.OPEN_AI &&
@@ -88,12 +87,13 @@ export const continueBotFlow =
     let formattedReply = null
 
     if (isInputBlock(block)) {
-      if (reply && !isReplyValid(reply, block)) return parseRetryMessage(block)
+      if (reply && !isReplyValid(reply, block))
+        return { ...parseRetryMessage(block), newSessionState }
 
       formattedReply = formatReply(reply, block.type)
 
       if (!formattedReply && !canSkip(block.type)) {
-        return parseRetryMessage(block)
+        return { ...parseRetryMessage(block), newSessionState }
       }
 
       const nextEdgeId = getOutgoingEdgeId(newSessionState)(
@@ -122,11 +122,11 @@ export const continueBotFlow =
     }
 
     if (!nextEdgeId && state.linkedTypebots.queue.length === 0)
-      return { messages: [] }
+      return { messages: [], newSessionState }
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
-    if (!nextGroup) return { messages: [] }
+    if (!nextGroup) return { messages: [], newSessionState }
 
     return executeGroup(newSessionState)(nextGroup.group)
   }
@@ -136,20 +136,20 @@ const processAndSaveAnswer =
   async (reply: string | null): Promise<SessionState> => {
     if (!reply) return state
     let newState = await saveAnswer(state, block, itemId)(reply)
-    newState = await saveVariableValueIfAny(newState, block)(reply)
+    newState = saveVariableValueIfAny(newState, block)(reply)
     return newState
   }
 
 const saveVariableValueIfAny =
   (state: SessionState, block: InputBlock) =>
-  async (reply: string): Promise<SessionState> => {
+  (reply: string): SessionState => {
     if (!block.options.variableId) return state
     const foundVariable = state.typebot.variables.find(
       (variable) => variable.id === block.options.variableId
     )
     if (!foundVariable) return state
 
-    const newSessionState = await updateVariables(state)([
+    const newSessionState = updateVariables(state)([
       {
         ...foundVariable,
         value: Array.isArray(foundVariable.value)
@@ -160,13 +160,6 @@ const saveVariableValueIfAny =
 
     return newSessionState
   }
-
-export const setResultAsCompleted = async (resultId: string) => {
-  await prisma.result.update({
-    where: { id: resultId },
-    data: { isCompleted: true },
-  })
-}
 
 const parseRetryMessage = (
   block: InputBlock
@@ -192,54 +185,27 @@ const parseRetryMessage = (
 const saveAnswer =
   (state: SessionState, block: InputBlock, itemId?: string) =>
   async (reply: string): Promise<SessionState> => {
-    const resultId = state.result?.id
-    const answer: Omit<Prisma.AnswerUncheckedCreateInput, 'resultId'> = {
-      blockId: block.id,
+    await upsertAnswer({
+      block,
+      answer: {
+        blockId: block.id,
+        itemId,
+        groupId: block.groupId,
+        content: reply,
+        variableId: block.options.variableId,
+        storageUsed: 0,
+      },
+      reply,
+      state,
       itemId,
-      groupId: block.groupId,
-      content: reply,
-      variableId: block.options.variableId,
-      storageUsed: 0,
-    }
-    if (state.result.answers.length === 0 && resultId)
-      await setResultAsStarted(resultId)
+    })
 
-    const newSessionState = setNewAnswerInState(state)({
+    return setNewAnswerInState(state)({
       blockId: block.id,
       variableId: block.options.variableId ?? null,
       content: reply,
     })
-
-    if (resultId) {
-      if (reply.includes('http') && block.type === InputBlockType.FILE) {
-        answer.storageUsed = await computeStorageUsed(reply)
-      }
-      await prisma.answer.upsert({
-        where: {
-          resultId_blockId_groupId: {
-            resultId,
-            blockId: block.id,
-            groupId: block.groupId,
-          },
-        },
-        create: { ...answer, resultId },
-        update: {
-          content: answer.content,
-          storageUsed: answer.storageUsed,
-          itemId: answer.itemId,
-        },
-      })
-    }
-
-    return newSessionState
   }
-
-const setResultAsStarted = async (resultId: string) => {
-  await prisma.result.update({
-    where: { id: resultId },
-    data: { hasStarted: true },
-  })
-}
 
 const setNewAnswerInState =
   (state: SessionState) => (newAnswer: ResultInSession['answers'][number]) => {
@@ -255,21 +221,6 @@ const setNewAnswerInState =
       },
     } satisfies SessionState
   }
-
-const computeStorageUsed = async (reply: string) => {
-  let storageUsed = 0
-  const fileUrls = reply.split(', ')
-  const hasReachedStorageLimit = fileUrls[0] === null
-  if (!hasReachedStorageLimit) {
-    for (const url of fileUrls) {
-      const { headers } = await got(url)
-      const size = headers['content-length']
-      if (isNotDefined(size)) continue
-      storageUsed += parseInt(size, 10)
-    }
-  }
-  return storageUsed
-}
 
 const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>

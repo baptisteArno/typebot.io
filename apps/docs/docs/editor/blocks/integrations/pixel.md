@@ -12,7 +12,3 @@ When your flow contains a pixel block, under the hood it:
 
 - Initialize the pixel and track "PageView" event on page load.
 - Track the event if any when the block is executed.
-
-## Troubleshooting
-
-To help you debug how your pixel behaves, I suggest you add the [Facebook Pixel Helper](https://chrome.google.com/webstore/detail/facebook-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc) extension to your browser.

@@ -48,7 +48,7 @@ const updateTokens =
       access_token: credentials.access_token,
     }
     const { encryptedData, iv } = await encrypt(newCredentials)
-    await prisma.credentials.update({
+    await prisma.credentials.updateMany({
       where: { id: credentialsId },
       data: { data: encryptedData, iv },
     })

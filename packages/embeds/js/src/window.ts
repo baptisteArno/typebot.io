@@ -9,6 +9,7 @@ import {
   setPrefilledVariables,
   showPreviewMessage,
   toggle,
+  setInputValue,
 } from './features/commands'
 
 export const initStandard = (props: BotProps & { id?: string }) => {
@@ -41,6 +42,7 @@ type Typebot = {
   setPrefilledVariables: typeof setPrefilledVariables
   showPreviewMessage: typeof showPreviewMessage
   toggle: typeof toggle
+  setInputValue: typeof setInputValue
 }
 
 declare const window:
@@ -59,6 +61,7 @@ export const parseTypebot = () => ({
   setPrefilledVariables,
   showPreviewMessage,
   toggle,
+  setInputValue,
 })
 
 export const injectTypebotInWindow = (typebot: Typebot) => {

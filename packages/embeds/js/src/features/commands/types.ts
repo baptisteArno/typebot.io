@@ -8,6 +8,7 @@ export type CommandData = {
     }
   | ShowMessageCommandData
   | SetPrefilledVariablesCommandData
+  | SetInputValueCommandData
 )
 
 export type ShowMessageCommandData = {
@@ -18,4 +19,9 @@ export type ShowMessageCommandData = {
 export type SetPrefilledVariablesCommandData = {
   command: 'setPrefilledVariables'
   variables: Record<string, string | number | boolean>
+}
+
+export type SetInputValueCommandData = {
+  command: 'setInputValue'
+  value: string
 }

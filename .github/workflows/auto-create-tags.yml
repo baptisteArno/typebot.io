@@ -33,3 +33,9 @@ jobs:
         with:
           root: '/packages/embeds/react'
           tag_prefix: 'react-v'
+
+      - name: 'Create nextjs tag'
+        uses: butlerlogic/action-autotag@stable
+        with:
+          root: '/packages/embeds/nextjs'
+          tag_prefix: 'nextjs-v'

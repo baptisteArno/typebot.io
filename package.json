@@ -1,5 +1,5 @@
 {
-  "version": "2.15.1",
+  "version": "2.15.2",
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -8,8 +8,8 @@
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && sleep 5",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
-    "dev": "pnpm docker:up && cross-env NEXT_PUBLIC_E2E_TEST=false turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
-    "dev:mocking": "pnpm docker:up && cross-env NEXT_PUBLIC_E2E_TEST=true turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
+    "dev": "pnpm docker:up && cross-env NEXT_PUBLIC_E2E_TEST=false turbo build --filter=@typebot.io/nextjs... && cross-env NEXT_PUBLIC_E2E_TEST=false turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
+    "dev:mocking": "pnpm docker:up && cross-env NEXT_PUBLIC_E2E_TEST=false turbo build --filter=@typebot.io/nextjs... && cross-env NEXT_PUBLIC_E2E_TEST=true turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
     "build": "pnpm docker:up && turbo run build",
     "build:builder": "turbo run build --filter=builder... && turbo run build:env --filter=builder...",
     "build:viewer": "turbo run build --filter=viewer... && turbo run build:env --filter=viewer...",
@@ -22,12 +22,12 @@
     "cross-env": "7.0.3",
     "cz-emoji": "1.3.2-canary.2",
     "husky": "^8.0.3",
-    "turbo": "1.9.9"
+    "turbo": "1.10.7"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@8.1.0"
+  "packageManager": "pnpm@8.6.7"
 }

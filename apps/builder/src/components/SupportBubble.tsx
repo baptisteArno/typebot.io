@@ -2,9 +2,8 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React from 'react'
-import { Bubble } from '@typebot.io/react'
+import { Bubble, BubbleProps } from '@typebot.io/nextjs'
 import { planToReadable } from '@/features/billing/helpers/planToReadable'
-import { BubbleProps } from '@typebot.io/js'
 
 export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
   const { typebot } = useTypebot()

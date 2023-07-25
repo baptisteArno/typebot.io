@@ -247,6 +247,7 @@ const clientSideActionSchema = z
             messages: z.array(
               chatCompletionMessageSchema.pick({ content: true, role: true })
             ),
+            displayStream: z.boolean().optional(),
           }),
         })
       )

@@ -6,10 +6,10 @@ import { parseVariables } from '@/features/variables/parseVariables'
 import { parseGuessedValueType } from '@/features/variables/parseGuessedValueType'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 
-export const executeSetVariable = async (
+export const executeSetVariable = (
   state: SessionState,
   block: SetVariableBlock
-): Promise<ExecuteLogicResponse> => {
+): ExecuteLogicResponse => {
   const { variables } = state.typebot
   if (!block.options?.variableId)
     return {
@@ -48,7 +48,7 @@ export const executeSetVariable = async (
     ...existingVariable,
     value: evaluatedExpression,
   }
-  const newSessionState = await updateVariables(state)([newVariable])
+  const newSessionState = updateVariables(state)([newVariable])
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     newSessionState,

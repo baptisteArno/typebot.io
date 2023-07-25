@@ -6,10 +6,8 @@ sidebar_position: 5
 
 ## Install
 
-Make sure you install both `@typebot.io/js` and `@typebot.io/react` first.
-
 ```bash
-npm install @typebot.io/js @typebot.io/react
+npm install @typebot.io/react
 ```
 
 ## Standard
