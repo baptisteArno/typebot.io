@@ -28,6 +28,7 @@ import {
   fixedPersonProperties,
 } from 'helpers/presets/variables-presets'
 import { Variable } from 'models/dist/types/typebot/variable'
+import { OctaProperty } from 'models'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
 export type ChannelType = {
@@ -172,7 +173,9 @@ const workspaceContext = createContext<{
     workspaceId: string,
     updates: Partial<Workspace>
   ) => Promise<void>
-  deleteCurrentWorkspace: () => Promise<void>
+  deleteCurrentWorkspace: () => Promise<void>,
+  createCustomField: (name: string, domain: string) => Promise<any>
+  createChatField: (property: OctaProperty, variableId?: string) => Promise<any>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -198,10 +201,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
-          w.members.some(
-            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
-          )
+        w.members.some(
+          (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
         )
+      )
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
   }, [workspaces])
 
@@ -226,18 +229,18 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
   const [octaPersonItems, setOctaPersonItems] = useState<Array<any>>([])
   const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
+  const [addedChatFields, setAddedChatFields] = useState<Array<any>>([])
   const [octaChatItems, setOctaChatItems] = useState<Array<any>>([])
-  const [octaOrganizationFields, setOctaOrganizationFields] = useState<
-    Array<any>
-  >([])
-  const [octaOrganizationItems, setOctaOrganizationItems] = useState<
-    Array<any>
-  >([])
+  const [octaOrganizationFields, setOctaOrganizationFields] = useState<Array<any>>([])
+  const [octaOrganizationItems, setOctaOrganizationItems] = useState<Array<any>>([])
   const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] =
     useState<Array<BotSpecificationOption>>([])
   const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<
     Array<string>
   >([''])
+
+  const [fieldsCreated, setFieldsCreated] = useState<Array<string>>([])
+
   const translatedKeys = {
     bold: 'Negrito',
     italic: 'Itálico',
@@ -389,9 +392,8 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
         if (domainType === 'PERSON') {
           tokenValue = tokenValue.concat('-contato')
-        } else if (domainType === 'CHAT') {
-          tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
         } else if (domainType === 'ORGANIZATION') {
+          tokenValue = tokenValue.concat('-organizacao')
         }
 
         return {
@@ -436,25 +438,73 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     }
   )
 
-  const fetchOctaCustomFields = useCallback(async (): Promise<void> => {
+  const createChatField = (property: OctaProperty, variableId?: string): any => {
+    if (octaChatFields.find(c => c.token === property.token)) return
+    const field = {
+      type: property.type,
+      id: variableId,
+      variableId,
+      token: property.token,
+      domain: "CHAT",
+      name: "customField." + property.name,
+      fieldId: property.name
+    }
+    setOctaChatFields([...octaChatFields, field])
+    setAddedChatFields([...addedChatFields, field])
+  }
+
+  const createCustomField = async (name: string, domain: string): Promise<any> => {
+    const key = `${name}:${domain}`
+    if (fieldsCreated.includes(key)) return
+
+    const payload = {
+      domainType: 2,
+      fieldId: name,
+      isEnabled: true,
+      order: typebot?.variables?.filter(v => v.domain === domain)?.length || 0,
+      systemType: 2,
+      title: name,
+      type: 1
+    }
+    await CustomFields().createCustomField(payload)
+
+    //createCustomField({ ...property, id: variableId, variableId } as Variable)
+
+    setFieldsCreated([...fieldsCreated, key])
+
+    setLoaded(false)
+
+    return fetchOctaCustomFields(domain)
+  }
+
+  const fetchOctaCustomFields = useCallback(async (domain?: string): Promise<void> => {
+    setLoaded(false)
+    
     const fields = await CustomFields().getCustomFields()
-    const personFields = fields.filter(
-      (f: { domainType: number }) => f.domainType === DomainType.Person
-    )
+    if (!domain || domain === 'PERSON') {
+      const personFields = fields.filter(
+        (f: { domainType: number }) => f.domainType === DomainType.Person
+      )
 
-    setOctaPersonFields(personFields)
+      setOctaPersonFields(personFields)
+    }
 
-    const chatFields = fields.filter(
-      (f: { domainType: number }) => f.domainType === DomainType.Chat
-    )
+    if (!domain || domain === 'CHAT') {
+      const chatFields = fields.filter(
+        (f: { domainType: number }) => f.domainType === DomainType.Chat
+      )
 
-    setOctaChatFields(chatFields)
+      setOctaChatFields([...chatFields, ...addedChatFields])
+    }
 
-    const organizationFields = fields.filter(
-      (f: { domainType: number }) => f.domainType === DomainType.Organization
-    )
+    if (!domain || domain === 'ORGANIZATION') {
+      const organizationFields = fields.filter(
+        (f: { domainType: number }) => f.domainType === DomainType.Organization
+      )
 
-    setOctaOrganizationFields(organizationFields)
+      setOctaOrganizationFields(organizationFields)
+    }
+
     setLoaded(true)
   }, [])
 
@@ -473,7 +523,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       if (typebot?.variables.length === variables.length) return
       setVariables(variables)
     }
-  }, [loaded])
+  }, [loaded, octaPersonItems, octaChatItems, octaOrganizationItems])
 
   useEffect(() => {
     if (octaPersonFields) {
@@ -598,7 +648,9 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         switchWorkspace,
         createWorkspace,
         deleteCurrentWorkspace,
+        createCustomField,
         updateWorkspace,
+        createChatField
       }}
     >
       {children}
