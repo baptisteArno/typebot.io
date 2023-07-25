@@ -52,7 +52,7 @@ export const ResultsActionButtons = ({
           isLoading={isDeleteLoading}
         >
           <TrashIcon />
-          <Text>Delete</Text>
+          <Text>Deletar</Text>
           {totalSelected > 0 && (
             <Tag colorScheme="red" variant="subtle" size="sm">
               {totalSelected}

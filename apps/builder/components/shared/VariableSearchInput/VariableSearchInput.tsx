@@ -34,6 +34,7 @@ import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 import { StepNodeContext } from '../Graph/Nodes/StepNode/StepNode/StepNode'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = {
   initialVariableId?: string
@@ -72,8 +73,8 @@ export const VariableSearchInput = ({
   isSaveContext = true,
   ...inputProps
 }: Props) => {
-  const { onOpen, onClose, isOpen } = useDisclosure()
-  const { typebot, createVariable, deleteVariable } = useTypebot()
+  const { onOpen, onClose } = useDisclosure()
+  const { typebot, createVariable } = useTypebot()
 
   const variables = typebot?.variables ?? []
   const makeTitle = (propertiesType: string): string => {
@@ -240,7 +241,7 @@ export const VariableSearchInput = ({
       const customVariableDraft: Variable = {
         id,
         name: customVariable.name,
-        domain: 'CHAT',
+        domain: customVariable.domain,
         token: customVariable.token,
         variableId: id,
         example: '',
