@@ -4,8 +4,8 @@ import { Stack } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
-import { TextHtmlContent } from '../TextHtmlContent'
 import { useWorkspace } from 'contexts/WorkspaceContext'
+import { TextHtmlContent } from '../TextHtmlContent'
 
 type Props = {
   step: {
