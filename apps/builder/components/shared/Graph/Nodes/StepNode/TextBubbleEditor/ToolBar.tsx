@@ -19,14 +19,12 @@ import { useWorkspace } from 'contexts/WorkspaceContext';
 type Props = {
   editor: PlateEditor<Value>;
   onVariablesButtonClick: (showDialog: boolean) => void;
-  onEmojiButtonClick: (showPicker: boolean) => void;
   onEmojiSelected: (emojiText: string) => void;
 } & StackProps;
 
 export const ToolBar = ({
   editor,
   onVariablesButtonClick,
-  onEmojiButtonClick,
   onEmojiSelected,
   ...props
 }: Props) => {
@@ -39,7 +37,6 @@ export const ToolBar = ({
   };
 
   const handleEmojiIconClick = () => {
-    onEmojiButtonClick(!showPicker)
     setShowPicker((prevState) => !prevState);
   };
 
@@ -101,7 +98,7 @@ export const ToolBar = ({
           />
         </span>
       }
-      <span data-testid="underline-button">
+      <span data-testid="strikethrough-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_STRIKETHROUGH)}
           icon={<StrikethroughIcon fontSize="20px" />}

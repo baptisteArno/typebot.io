@@ -153,9 +153,12 @@ export const StepNode = ({
       })
   }
 
-  const handleCloseEditor = (content: TextBubbleContent) => {
+  const handleKeyUp = (content: TextBubbleContent) => {
     const updatedStep = { ...step, content } as Step
     updateStep(indices, updatedStep)
+  }
+
+  const handleCloseEditor = (content: TextBubbleContent) => {
     setIsEditing(false)
     setIsModalOpen(false)
     setIsPopoverOpened(false)
@@ -204,6 +207,7 @@ export const StepNode = ({
     <TextBubbleEditor
       initialValue={step.content.richText}
       onClose={handleCloseEditor}
+      onKeyUp={handleKeyUp}
     />
   ) : (
     <StepNodeContext.Provider value={{ setIsPopoverOpened }}>
