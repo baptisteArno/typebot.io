@@ -1,10 +1,11 @@
 import { InputOptions, Variable } from 'models'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Stack } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { TextHtmlContent } from '../TextHtmlContent'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = {
   step: {
