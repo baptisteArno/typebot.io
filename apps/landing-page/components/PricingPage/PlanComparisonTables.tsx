@@ -371,7 +371,7 @@ export const PlanComparisonTables = () => (
           <chakra.span fontSize="lg">/ month</chakra.span>
         </Heading>
         <Link
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
+          href={`https://typebot-builder-teal.vercel.app/register?subscribePlan=${Plan.STARTER}`}
         >
           <Button variant="outline" colorScheme="orange">
             Subscribe
