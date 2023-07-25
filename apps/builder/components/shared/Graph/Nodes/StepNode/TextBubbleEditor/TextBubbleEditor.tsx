@@ -16,7 +16,6 @@ import { parseHtmlStringToPlainText } from 'services/utils'
 import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
-import { EmojiData } from 'emoji-mart'
 
 type Props = {
   initialValue: TElement[]
@@ -41,14 +40,14 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
-  const [isEmojiOrVariable, setIsEmojiOrVariable] = useState(false)
 
   const textEditorRef = useRef<HTMLDivElement>(null)
   const closeEditor = () => {
     if (onClose) onClose(convertValueToStepContent(value))
   }
-  const keyUpEditor = () => {
-    if (onKeyUp) onKeyUp(convertValueToStepContent(value))
+
+  const keyUpEditor = (v?: TElement[]) => {
+    if (onKeyUp) onKeyUp(convertValueToStepContent(v || value))
   }
 
   useOutsideClick({
@@ -56,14 +55,14 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     handler: closeEditor,
   })
 
-  const convertValueToStepContent = (value: TElement[]): TextBubbleContent => {
-    if (value.length === 0) defaultTextBubbleContent
+  const convertValueToStepContent = (v: TElement[]): TextBubbleContent => {
+    if (v.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
-      nodes: value,
+      nodes: v,
     })
     return {
       html,
-      richText: value,
+      richText: v,
       plainText: parseHtmlStringToPlainText(html),
     }
   }
@@ -88,13 +87,11 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
   }
 
   const handleChangeEditorContent = (val: TElement[]) => {
-    if (isEmojiOrVariable) {
-      if (onKeyUp) onKeyUp(convertValueToStepContent(val))
-      setIsEmojiOrVariable(false)
-    }
-    else 
+    const timeout = setTimeout(() => {
+      if (timeout) clearTimeout(timeout)
       setValue(val)
-    
+      keyUpEditor(val)
+    }, 250)
     setIsVariableDropdownOpen(false)
   }
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -116,8 +113,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     >
       <ToolBar
         editor={editor}
-        onVariablesButtonClick={(showDialog) => { setIsVariableDropdownOpen(showDialog); setIsEmojiOrVariable(showDialog) }}
-        onEmojiButtonClick={(showPicker) => setIsEmojiOrVariable(showPicker) }
+        onVariablesButtonClick={(showDialog) => { setIsVariableDropdownOpen(showDialog); }}
         onEmojiSelected={handleEmoji}
       />
       <Plate
@@ -136,7 +132,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
-          onKeyUp: keyUpEditor
+          onKeyUp: () => keyUpEditor()
         }}
         initialValue={
           initialValue.length === 0
