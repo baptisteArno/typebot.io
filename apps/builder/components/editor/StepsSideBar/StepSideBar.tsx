@@ -94,7 +94,8 @@ export const StepsSideBar = () => {
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
       type !== LogicStepType.TYPEBOT_LINK &&
-      type !== InputStepType.DATE
+      type !== InputStepType.DATE && 
+      type !== OctaStepType.CALL_OTHER_BOT
     )
   }
 
