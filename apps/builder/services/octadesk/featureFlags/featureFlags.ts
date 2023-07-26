@@ -16,12 +16,11 @@ export const getStatus = async () => {
 
   if (tenantId) {
     try {
-      const { data } = await getBaseClient('nucleus')
-        .then((client) => client.get(`Tenants/${tenantId}/status`, {
-          headers: {
-            authorization: `Bearer ${authStorage.access_token}`
-          }
-        })).then((r) => r.data)
+      const { data } = await services.nucleus.getClient({ baseURL: process.env.NUCLEUS_API_URL }).get(`Tenants/${tenantId}/status`, {
+        headers: {
+          authorization: `Bearer ${authStorage.access_token}`
+        }
+      })
 
       return data
     } catch (ex) {
