@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { isDefined } from '@udecode/plate-core'
-import { Component, ReactElement, useState } from 'react'
+import { ReactElement } from 'react'
 
 interface OctaTooltipProps {
   contentText: string

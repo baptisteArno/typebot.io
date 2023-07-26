@@ -65,7 +65,7 @@ function TypebotEditPage() {
       })
     }
   }
-
+  
   return !typebot ? (
     <></>
   ) : (

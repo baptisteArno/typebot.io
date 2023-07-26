@@ -99,7 +99,6 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={1}
           onClose={handleCloseEditorBotMessage}
           initialValue={
             options.messages.firstMessage?.content
@@ -135,7 +134,6 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={2}
           onClose={handleCloseEditorConnectionMessage}
           initialValue={
             options.messages.connectionSuccess?.content
@@ -158,7 +156,6 @@ export const AssignToTeamSettingsBody = ({
         </FormLabel>
         (
         <TextBubbleEditor
-          increment={3}
           onClose={handleCloseEditorUnavailability}
           initialValue={
             options.messages.noAgentAvailable?.content

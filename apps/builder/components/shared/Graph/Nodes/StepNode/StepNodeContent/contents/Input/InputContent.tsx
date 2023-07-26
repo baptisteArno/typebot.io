@@ -1,5 +1,4 @@
 import { InputOptions, Variable } from 'models'
-
 import React, { useEffect } from 'react'
 import { Stack } from '@chakra-ui/react'
 import { WithVariableContent } from '../WithVariableContent'
