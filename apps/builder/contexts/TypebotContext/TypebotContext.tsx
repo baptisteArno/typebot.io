@@ -24,7 +24,6 @@ import {
 } from 'services/publicTypebot'
 import {
   checkIfPublished,
-  checkIfTypebotsAreEqual,
   parseDefaultPublicId,
   updateTypebot,
 } from 'services/typebots/typebots'
@@ -99,11 +98,12 @@ const typebotContext = createContext<
     octaAgents: Array<any>
     octaGroups: Array<any>
     botFluxesList: Array<any>
+    currentTypebot?: Typebot
   } & BlocksActions &
-  StepsActions &
-  ItemsActions &
-  VariablesActions &
-  EdgesActions
+    StepsActions &
+    ItemsActions &
+    VariablesActions &
+    EdgesActions
 >({} as any)
 
 export const TypebotContext = ({
@@ -147,7 +147,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-          isDefined(step.options.typebotId)
+        isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []
@@ -184,7 +184,7 @@ export const TypebotContext = ({
     personaThumbUrl?: string,
     options?: { disableMutation: boolean }
   ) => {
-    const currentSubDomain = subDomain.getSubDomain() 
+    const currentSubDomain = subDomain.getSubDomain()
 
     const typebotToSave = {
       ...currentTypebotRef.current,
@@ -233,15 +233,6 @@ export const TypebotContext = ({
     })
   }
 
-  // useAutoSave(
-  //   {
-  //     handler: saveTypebot,
-  //     item: localTypebot,
-  //     debounceTimeout: autoSaveTimeout,
-  //   },
-  //   [typebot, publishedTypebot, webhooks]
-  // )
-
   useEffect(() => {
     const save = () =>
       saveTypebot(typebot?.persona?.name, typebot?.persona?.thumbUrl, {
@@ -268,13 +259,6 @@ export const TypebotContext = ({
   useEffect(() => {
     if (!localTypebot || !typebot) return
     currentTypebotRef.current = localTypebot
-    if (!checkIfTypebotsAreEqual(localTypebot, typebot)) {
-      window.removeEventListener('beforeunload', preventUserFromRefreshing)
-      window.addEventListener('beforeunload', preventUserFromRefreshing)
-    } else {
-      window.removeEventListener('beforeunload', preventUserFromRefreshing)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localTypebot])
 
   useEffect(() => {
@@ -388,89 +372,104 @@ export const TypebotContext = ({
   }
 
   const [octaAgents, setOctaAgents] = useState<Array<any>>([])
-  useEffect((shouldGetAgents = true, shouldGetGroups = true, shouldGetDefault = true) => {
-    const fetchOctaAgents = async (shouldGetAgents = true, shouldGetGroups = true, shouldGetDefault = true): Promise<void> => {
-      const noOne = {
-        group: 'Não atribuir (Visível a todos)',
-        name: 'Não atribuir (Visível a todos)',
-        operationType: ASSIGN_TO.noOne,
+  useEffect(
+    (
+      shouldGetAgents = true,
+      shouldGetGroups = true,
+      shouldGetDefault = true
+    ) => {
+      const fetchOctaAgents = async (
+        shouldGetAgents = true,
+        shouldGetGroups = true,
+        shouldGetDefault = true
+      ): Promise<void> => {
+        const noOne = {
+          group: 'Não atribuir (Visível a todos)',
+          name: 'Não atribuir (Visível a todos)',
+          operationType: ASSIGN_TO.noOne,
+        }
+        const agentsGroupsList: Array<any> = shouldGetDefault ? [noOne] : []
+
+        const agentPromise = shouldGetAgents
+          ? Agents()
+              .getAgents()
+              .then((res) => {
+                let agentsList = res
+                  .sort((a: any, b: any) => a.name.localeCompare(b.name))
+                  .map((agent: any) => ({
+                    ...agent,
+                    operationType: ASSIGN_TO.agent,
+                  }))
+
+                agentsList = [
+                  {
+                    name: 'Atribuir a conversa para um usuário',
+                    disabled: true,
+                    id: 'agent',
+                    isTitle: true,
+                  },
+                  ...agentsList,
+                ]
+
+                agentsGroupsList.push(...agentsList)
+              })
+          : undefined
+
+        const groupPromise = shouldGetGroups
+          ? Groups()
+              .getGroups()
+              .then((res) => {
+                let groupsList: Array<any> = []
+                const groups = res
+                  .sort((a: any, b: any) => a.name.localeCompare(b.name))
+                  .map((group: any) => ({
+                    ...group,
+                    operationType: ASSIGN_TO.group,
+                  }))
+
+                groupsList = [
+                  {
+                    name: 'Atribuir a conversa para um grupo',
+                    id: 'group',
+                    disabled: true,
+                    isTitle: true,
+                  },
+                  ...groups,
+                ]
+
+                agentsGroupsList.push(...groupsList)
+              })
+          : undefined
+
+        const promises = [agentPromise, groupPromise]
+
+        await Promise.all(promises.filter((p) => p))
+
+        setOctaAgents(agentsGroupsList)
       }
-      const agentsGroupsList: Array<any> = shouldGetDefault ? [noOne] : []
 
-      const agentPromise = shouldGetAgents ? Agents()
-      .getAgents()
-      .then((res) => {
-        let agentsList = res
-          .sort((a: any, b: any) => a.name.localeCompare(b.name))
-          .map((agent: any) => ({
-            ...agent,
-            operationType: ASSIGN_TO.agent,
-          }))
+      fetchOctaAgents(shouldGetAgents, shouldGetGroups, shouldGetDefault)
 
-        agentsList = [
-          {
-            name: 'Atribuir a conversa para um usuário',
-            disabled: true,
-            id: 'agent',
-            isTitle: true,
-          },
-          ...agentsList,
-        ]
-
-        agentsGroupsList.push(...agentsList)
-      }) : undefined
-
-      const groupPromise = shouldGetGroups ? Groups()
-      .getGroups()
-      .then((res) => {
-        let groupsList: Array<any> = []
-        const groups = res
-          .sort((a: any, b: any) => a.name.localeCompare(b.name))
-          .map((group: any) => ({
-            ...group,
-            operationType: ASSIGN_TO.group,
-          }))
-
-        groupsList = [
-          {
-            name: 'Atribuir a conversa para um grupo',
-            id: 'group',
-            disabled: true,
-            isTitle: true,
-          },
-          ...groups,
-        ]
-
-        agentsGroupsList.push(...groupsList)
-      }) : undefined
-
-      const promises = [agentPromise, groupPromise]
-
-      await Promise.all(promises.filter(p => p))
-
-      setOctaAgents(agentsGroupsList)
-    }
-
-    fetchOctaAgents(shouldGetAgents, shouldGetGroups, shouldGetDefault)
-
-    return () => {
-      setOctaAgents(() => [])
-    }
-  }, [])
+      return () => {
+        setOctaAgents(() => [])
+      }
+    },
+    []
+  )
 
   const [octaGroups, setOctaGroups] = useState<Array<any>>([])
   useEffect(() => {
     const fetchOctaGroups = async (): Promise<void> => {
       const agentsGroupsList = await Groups()
-      .getGroups()
-      .then((res) => {
-        return res
-          .sort((a: any, b: any) => a.name.localeCompare(b.name))
-          .map((group: any) => ({
-            ...group,
-            operationType: ASSIGN_TO.group,
-          }))
-      })
+        .getGroups()
+        .then((res) => {
+          return res
+            .sort((a: any, b: any) => a.name.localeCompare(b.name))
+            .map((group: any) => ({
+              ...group,
+              operationType: ASSIGN_TO.group,
+            }))
+        })
 
       setOctaGroups(agentsGroupsList)
     }
@@ -558,6 +557,7 @@ export const TypebotContext = ({
     <typebotContext.Provider
       value={{
         typebot: localTypebot,
+        currentTypebot: typebot,
         publishedTypebot,
         linkedTypebots,
         isReadOnly,
