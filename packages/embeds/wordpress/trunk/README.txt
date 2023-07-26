@@ -5,7 +5,7 @@ Requires at least: 5.0
 Tested up to: 6.0
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 3.1.11
+Stable Tag: 3.2.0
 
 == Description ==
 Collect 4x more responses with conversational apps using Typebot.
@@ -24,6 +24,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 3.2.0 =
+* Update embed lib to 0.1
+
 = 3.1.11 =
 * Automatically forward UTMs for standard embed
 

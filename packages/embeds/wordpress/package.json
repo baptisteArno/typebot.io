@@ -1,13 +1,13 @@
 {
   "name": "@typebot.io/wordpress",
-  "version": "3.1.11",
+  "version": "3.2.0",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/3.1.11",
-    "commit": "svn ci -m 'Auto forward UTMs'"
+    "copy": "svn copy ./trunk ./tags/3.2.0",
+    "commit": "svn ci -m 'Update embed lib to 0.1'"
   }
 }
