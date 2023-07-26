@@ -1,13 +1,11 @@
 import { Flex } from '@chakra-ui/layout'
 import { Seo } from 'components/Seo'
-//import hash from 'object-hash'
 import {
   EditorContext,
   RightPanel as RightPanelEnum,
   useEditor,
 } from 'contexts/EditorContext'
-import { useEffect, useRef, useState, useMemo } from 'react'
-import { KBar } from 'components/shared/KBar'
+import { useEffect } from 'react'
 import { BoardMenuButton } from 'components/editor/BoardMenuButton'
 import { PreviewDrawer } from 'components/editor/preview/PreviewDrawer'
 import { StepsSideBar } from 'components/editor/StepsSideBar'
@@ -16,39 +14,26 @@ import { GraphProvider } from 'contexts/GraphContext'
 import { GraphDndContext } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
+import { dequal } from 'dequal'
 
 function TypebotEditPage() {
-  const { typebot, isReadOnly, save } = useTypebot()
-
-  const [typebotInitialUpdatedAt, setTypebotInitialUpdatedAt] =
-    useState<any>(null)
-  const updatedTypebot = useRef(false)
+  const { typebot, isReadOnly, save, currentTypebot } = useTypebot()
 
   useEffect(() => {
     window.addEventListener('message', handleEventListeners)
 
-    // return () => window.removeEventListener('message', handleEventListeners)
-  }, [])
+    return () => window.removeEventListener('message', handleEventListeners)
+  }, [typebot])
 
   useEffect(() => {
     window.parent.postMessage({ name: 'iFrameHasLoaded' }, '*')
-  
   }, [])
-  
-
-  useEffect(() => {
-    if (updatedTypebot.current) return
-
-    if (typebot && !typebotInitialUpdatedAt) {
-      setTypebotInitialUpdatedAt(typebot.updatedAt)
-    } else if (typebot && typebot.updatedAt !== typebotInitialUpdatedAt) {
-      updatedTypebot.current = true
-    }
-  }, [typebot])
 
   const handleEventListeners = (e: any): void => {
-    if (e.data === 'backClick') {
-      if (updatedTypebot.current) {
+    if (e.data === 'backOrExitClick') {
+      const hasUnsavedChanges = dequal(typebot?.blocks, currentTypebot?.blocks)
+
+      if (!hasUnsavedChanges) {
         const botEditedMessage = Object.assign({
           name: 'botEditedCannotSave',
         })
@@ -63,12 +48,8 @@ function TypebotEditPage() {
       }
     }
     if (e.data.name === 'saveClick') {
-
       save(e.data.personaName, e.data.personaThumbUrl).then((res) => {
         if (res.saved) {
-          updatedTypebot.current = false
-          setTypebotInitialUpdatedAt(res.updatedAt)
-
           const data = Object.assign({
             name: 'successSave',
           })
@@ -91,7 +72,6 @@ function TypebotEditPage() {
     <>
       <EditorContext>
         <Seo title="Editor" />
-        {/* <KBar /> */}
         <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
           <GettingStartedModal />
           <Flex
