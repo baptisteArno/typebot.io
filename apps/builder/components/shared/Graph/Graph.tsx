@@ -90,8 +90,8 @@ export const Graph = ({
     user?.graphNavigation === GraphNavigation.MOUSE
       ? zoom(-e.deltaY * 0.001, { x: e.clientX, y: e.clientY })
       : isPinchingTrackpad
-      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
-      : setGraphPosition({
+        ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+        : setGraphPosition({
           ...graphPosition,
           x: graphPosition.x - e.deltaX,
           y: graphPosition.y - e.deltaY,
@@ -178,9 +178,12 @@ export const Graph = ({
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
   useEventListener('click', handleClick, editorContainerRef.current)
   useEventListener('mousemove', handleMouseMove)
+
+  const draggingStep = draggedStep || draggedStepType
+
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
-      <Flex ref={graphContainerRef} position="relative" {...props}>
+      <Flex ref={graphContainerRef} position="relative" {...props} background={draggingStep ? "gray.200" : "#f4f5f8"}>
         <ZoomButtons
           onZoomIn={() => zoom(zoomButtonsScaleStep)}
           onZoomOut={() => zoom(-zoomButtonsScaleStep)}
@@ -276,14 +279,14 @@ const useAutoMoveBoard = (
           autoMoveDirection === 'right'
             ? prev.x - 5
             : autoMoveDirection === 'left'
-            ? prev.x + 5
-            : prev.x,
+              ? prev.x + 5
+              : prev.x,
         y:
           autoMoveDirection === 'bottom'
             ? prev.y - 5
             : autoMoveDirection === 'top'
-            ? prev.y + 5
-            : prev.y,
+              ? prev.y + 5
+              : prev.y,
       }))
     }, 5)
 

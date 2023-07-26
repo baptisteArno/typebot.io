@@ -13,7 +13,7 @@ import { PreviewDrawer } from 'components/editor/preview/PreviewDrawer'
 import { StepsSideBar } from 'components/editor/StepsSideBar'
 import { Graph } from 'components/shared/Graph'
 import { GraphProvider } from 'contexts/GraphContext'
-import { GraphDndContext } from 'contexts/GraphDndContext'
+import { GraphDndContext, useStepDnd } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 
@@ -84,7 +84,7 @@ function TypebotEditPage() {
       })
     }
   }
-
+  
   return !typebot ? (
     <></>
   ) : (

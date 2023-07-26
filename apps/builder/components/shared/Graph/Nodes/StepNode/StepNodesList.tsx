@@ -1,4 +1,4 @@
-import { useEventListener, Stack, Flex, Portal } from '@chakra-ui/react'
+import { useEventListener, Stack, Flex, Portal, Text, Center, HStack } from '@chakra-ui/react'
 import { DraggableStep, DraggableStepType, Step } from 'models'
 import {
   computeNearestPlaceholderIndex,
@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { StepNode } from './StepNode/StepNode'
 import { StepNodeOverlay } from './StepNodeOverlay'
+import { PlusIcon } from 'assets/icons'
 
 type Props = {
   blockId: string
@@ -88,17 +89,17 @@ export const StepNodesList = ({
 
   const handleStepMouseDown =
     (stepIndex: number) =>
-    (
-      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      step: DraggableStep
-    ) => {
-      if (isReadOnly) return
-      placeholderRefs.current.splice(stepIndex + 1, 1)
-      detachStepFromBlock({ blockIndex, stepIndex })
-      setPosition(absolute)
-      setMousePositionInElement(relative)
-      setDraggedStep(step)
-    }
+      (
+        { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+        step: DraggableStep
+      ) => {
+        if (isReadOnly) return
+        placeholderRefs.current.splice(stepIndex + 1, 1)
+        detachStepFromBlock({ blockIndex, stepIndex })
+        setPosition(absolute)
+        setMousePositionInElement(relative)
+        setDraggedStep(step)
+      }
 
   const handlePushElementRef =
     (idx: number) => (elem: HTMLDivElement | null) => {
@@ -147,15 +148,23 @@ export const StepNodesList = ({
             <Flex
               ref={handlePushElementRef(idx + 1)}
               h={
-                showSortPlaceholders && expandedPlaceholderIndex === idx + 1
+                showSortPlaceholders ? (expandedPlaceholderIndex === idx + 1
                   ? '50px'
-                  : '2px'
+                  : '30px') : "2px"
               }
               bgColor={'gray.300'}
               visibility={showSortPlaceholders ? 'visible' : 'hidden'}
               rounded="lg"
               transition={showSortPlaceholders ? 'height 200ms' : 'none'}
-            />
+              alignItems={"center"}
+            >
+              <Center w={"100%"} h={"100%"}>
+                <HStack color={"gray"} fontWeight={"semibold"}>
+                  <PlusIcon />
+                  <Text>Adicionar aqui</Text>
+                </HStack>
+              </Center>
+            </Flex>
           </Stack>
         ))}
       {draggedStep && draggedStep.blockId === blockId && (
