@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, Box } from '@chakra-ui/react'
-import newLogo from '../../img/Log.png' // corrected path to new logo file
+import newLogo from '../../img/chatworth-logo..png' // corrected path to new logo file
 
 export const Logo = (props) => (
   <Box boxSize="50px" {...props}>
