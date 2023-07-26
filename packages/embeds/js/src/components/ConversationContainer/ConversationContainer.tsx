@@ -106,7 +106,7 @@ export const ConversationContainer = (props: Props) => {
 
   const streamMessage = (content: string) => {
     setIsSending(false)
-    const lastChunk = chatChunks().at(-1)
+    const lastChunk = [...chatChunks()].pop()
     if (!lastChunk) return
     const id = lastChunk.streamingMessageId ?? createUniqueId()
     if (!lastChunk.streamingMessageId)
@@ -202,7 +202,7 @@ export const ConversationContainer = (props: Props) => {
       ...displayedChunks,
       {
         input: data.input,
-        messages: chatChunks().at(-1)?.streamingMessageId
+        messages: [...chatChunks()].pop()?.streamingMessageId
           ? data.messages.slice(1)
           : data.messages,
         clientSideActions: data.clientSideActions,
