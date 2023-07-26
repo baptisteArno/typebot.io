@@ -183,7 +183,11 @@ export const Graph = ({
 
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
-      <Flex ref={graphContainerRef} position="relative" {...props} background={draggingStep ? "gray.200" : "#f4f5f8"}>
+      <Flex ref={graphContainerRef} position="relative" {...props} 
+        background={draggingStep ? "gray.200" : "#f4f5f8"}
+        backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
+        backgroundSize="40px 40px"
+        backgroundPosition="-19px -19px">
         <ZoomButtons
           onZoomIn={() => zoom(zoomButtonsScaleStep)}
           onZoomOut={() => zoom(-zoomButtonsScaleStep)}
