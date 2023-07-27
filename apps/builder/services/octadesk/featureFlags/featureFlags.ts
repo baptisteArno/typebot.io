@@ -14,6 +14,13 @@ export const getStatus = async () => {
   const authStorage = Storage.getItem('auth') as any
   const tenantId = authStorage?.octaAuthenticated?.tenantId
 
+  console.log('getStatus', {
+    IS_LOCAL: process.env.IS_LOCAL,
+    NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
+    BASE_PATH: process.env.BASE_PATH,
+    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
+  })
+
   if (tenantId) {
     try {
       const { data } = await services.nucleus.getClient({ baseURL: process.env.NUCLEUS_API_URL }).get(`Tenants/${tenantId}/status`, {
