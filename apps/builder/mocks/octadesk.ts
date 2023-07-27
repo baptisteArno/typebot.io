@@ -4,13 +4,6 @@ import { config } from 'config/octadesk.config'
 
 export const setupEnvironment = () =>
 {
-  console.log('setupEnvironment', {
-    IS_LOCAL: process.env.IS_LOCAL,
-    NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
-    BASE_PATH: process.env.BASE_PATH,
-    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
-  })
-  
   if (!config.local) return
   
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
