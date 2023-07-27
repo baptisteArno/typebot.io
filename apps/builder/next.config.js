@@ -3,19 +3,12 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const { i18n } = require('./next-i18next.config')
 require('dotenv').config({ path: `./.env.${process.env.ENVIRONMENT}` })
 
-console.log('config', {
-  IS_LOCAL: process.env.IS_LOCAL,
-  NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
-  BASE_PATH: process.env.BASE_PATH,
-  NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
-})
-
 const moduleExports = {
   env: {
     IS_LOCAL: process.env.IS_LOCAL,
     NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
     BASE_PATH: process.env.BASE_PATH,
-    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
+    BUILDER_NUCLEUS_API_URL: process.env.BUILDER_NUCLEUS_API_URL
   },
   experimental: {
     outputStandalone: true,
