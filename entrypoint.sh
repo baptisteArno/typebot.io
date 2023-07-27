@@ -33,7 +33,4 @@ function apply_path {
 
 apply_path
 
-envFilename='./.env.octadesk'
-  
-apply_path
 exec "$@"
