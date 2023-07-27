@@ -16,12 +16,10 @@ export const Description = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 400px;
   display: block;
 `;
 
 export const ContainerCreate = styled.div`
-  width: 400px;
   display: block;
 `;
 

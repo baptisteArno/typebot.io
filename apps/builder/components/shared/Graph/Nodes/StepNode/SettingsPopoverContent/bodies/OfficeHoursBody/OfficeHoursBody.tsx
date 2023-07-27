@@ -35,55 +35,51 @@ import {
   HourDay,
 } from './OfficeHoursBody.style'
 import { format } from 'path/posix'
-
+​
 type Props = {
   step: Step
   onOptionsChange: (options: any) => void
   onExpand?: () => void
 }
-
+​
 export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   const service = new OfficeHoursServices()
   const [officeHour, setOfficeHour] = useState<Array<OfficeHour> | undefined>()
   const [optionsTimezone, setOptionsTimezone] =
     useState<Array<{ label: string; value: string; isTitle?: boolean }>>()
   const [optionsOfficeHour, setOptionsOfficeHours] = useState<
-    Array<{ label: string; value: any; isTitle?: boolean }>
+    Array<{ label: string; value: any; isTitle?: boolean; key: number }>
   >([])
   const [screen, setScreen] = useState<'SETTINGS' | 'CREATE-OFFICE-HOURS'>(
     'SETTINGS'
   )
-
+​
   const [is24hours, setIs24Hours] = useState<boolean>(true)
-
+​
   const WEEK_DAYS = [1, 2, 3, 4, 5, 6, 7]
-
-  const [daysOfWeek, setDaysOfWeek] = useState<
-    Array<{ dayOfWeek: number; hours: { [key: string]: string } }>
-  >([])
+  type dayOfWeek = {
+    dayOfWeek: number
+    hours: Array<{
+      start: string
+      end: string
+    }>
+  }
+  const [daysOfWeek, setDaysOfWeek] = useState<{
+    days: Array<dayOfWeek>
+    is24hours: boolean
+    sameSchedule: boolean
+  }>()
   const [selectedDays, setSelectedDays] = useState<Array<number>>([])
-
-  const [form, setForm] = useState<OfficeHoursFormType>({
-    name: '',
-    timeZone: '',
-    daysOfWeek: {
-      days: [],
-      is24hours: false,
-      sameSchedule: false,
-    },
-    specialDates: {
-      active: false,
-    },
-  })
-
+  const [officeHoursName, setOfficeHoursName] = useState('')
+  const [officeHoursTimezone, setOfficeHoursTimezone] = useState('')
+​
+  const [form, setForm] = useState<OfficeHoursFormType>()
+​
   const officeHoursMemo = useMemo(() => {
     return officeHour
   }, [officeHour])
-
-  const daysOfWeekMemo = useMemo(() => {
-    return daysOfWeek
-  }, [daysOfWeek])
-
+​
+​
   const dayPerNumber = (number: number): { min: string; full: string } => {
     switch (number) {
       case 1:
@@ -104,40 +100,28 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
         return { min: '', full: '' }
     }
   }
-
+​
   useEffect(() => {
     const getOfficeHours = async () => {
       const expedients = await service.getExpedients()
-
+​
       setOfficeHour(expedients)
     }
-
+​
     if (!officeHour) {
       getOfficeHours()
     }
   })
-
-  // useEffect(() => {
-  //   const getTimezones = async () => {
-  //     const timezones = await service.getTimeZones();
-  //     const options = timezones.map(timezone => ({ label: timezone.translation, value: timezone.timezone }));
-
-  //     setOptionsTimezone(options);
-  //   }
-  //   if (!optionsTimezone) {
-  //     getTimezones();
-  //   }
-  // });
-
+​
   useEffect(() => {
     const getTimezones = async () => {
       const timezones = await service.getTimeZones()
-
+​
       const sortedOptions = timezones.map((timezone) => ({
         label: timezone.translation,
         value: timezone.timezone,
       }))
-
+​
       sortedOptions.sort((a, b) => {
         if (a.value === 'America/Sao_Paulo') {
           return -1
@@ -147,31 +131,32 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
         }
         return a.label.localeCompare(b.label)
       })
-
+​
       setOptionsTimezone(sortedOptions)
     }
-
+​
     if (!optionsTimezone) {
       getTimezones()
     }
   }, [])
-
+​
   useEffect(() => {
     if (officeHoursMemo && officeHoursMemo.length) {
-      const options = officeHoursMemo.map((item) => ({
+      const options = officeHoursMemo.map((item, idx) => ({
         label: item.name,
         value: item,
+        key: idx,
       }))
       setOptionsOfficeHours(options)
     }
   }, [officeHoursMemo])
-
+​
   const changeScreenToCreateOfficeHour = (): void => {
     setScreen('CREATE-OFFICE-HOURS')
   }
-
+​
   const createOfficeHour = async (): Promise<OfficeHour | null> => {
-    console.log('createOfficeHour', form)
+    // console.log('createOfficeHour', form)
     // if (form) {
     //   console.log('bateu aqui')
     //    const formTest = {
@@ -188,243 +173,128 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
     //     };
     //   const saved = await service.createOfficeHour(form)
     //   handleOfficeHourSelect(saved)
-
+​
     //   return saved
     // }
-
+​
     return null
   }
-
+​
   const cancelCreate = (): void => {
     setScreen('SETTINGS')
   }
-
-  const handleChangeInput = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = event.target
-
-    // switch (name) {
-    //   case 'name':
-    //     setForm(
-    //       (e) =>
-    //         ({
-    //           ...e,
-    //           name: value,
-    //           daysOfWeek: [],
-    //         } as unknown as OfficeHoursFormType)
-    //     )
-    //     break
-
-    //   default:
-    //     break
-    // }
-
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }));
+​
+  const handleChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target
+​
+    setOfficeHoursName(value)
   }
-
-  const handleChangeTimezone = (selectedOption: any) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      timeZone: selectedOption,
-    }))
+​
+  const handleChangeTimezone = (selectedOption: string) => {
+    setOfficeHoursTimezone(selectedOption)
+    // setForm((prevForm) => ({
+    //   ...prevForm,
+    //   timeZone: selectedOption,
+    // }))
   }
-
-  const handleChangeIs24Hours = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setIs24Hours(event.target.value === 'true')
-  }
-
-  useEffect(() => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      daysOfWeek: {
-        ...prevForm.daysOfWeek,
-        is24hours: is24hours,
-      },
-    }))
-  }, [is24hours])
-
+​
+  // useEffect(() => {
+  //   // setForm((prevForm) => ({
+  //   //   ...prevForm,
+  //   //   daysOfWeek: {
+  //   //     ...prevForm.daysOfWeek,
+  //   //     is24hours: is24hours,
+  //   //   },
+  //   // }))
+  // }, [is24hours])
+​
   const handleSelectDaysOfWeek = (number: number): void => {
     const hasSelectedDay = selectedDays.indexOf(number)
+    if (!form) {
+      setForm({
+        daysOfWeek: {
+          days: [
+            {
+              dayOfWeek: number,
+              hours: [
+                {
+                  start: '',
+                  end: '',
+                },
+              ],
+            },
+          ],
+          is24hours: is24hours,
+          sameSchedule: true,
+        },
+        specialDates: { active: true },
+        name: officeHoursName,
+        timeZone: officeHoursTimezone,
+      })
+    } else {
+      setForm({
+        ...form,
+        daysOfWeek: {
+          days: [
+            ...form.daysOfWeek.days,
+            {
+              dayOfWeek: number,
+              hours: [
+                {
+                  start: '',
+                  end: '',
+                },
+              ],
+            },
+          ],
+          is24hours: is24hours,
+          sameSchedule: true,
+        },
+      })
+    }
+​
     if (hasSelectedDay <= -1) {
       return setSelectedDays((values) => [...values, number])
     }
-
     return setSelectedDays((values) => values.splice(hasSelectedDay, 0))
   }
-
-  const getSelectedDaysAndHours = (): void => {
-    const selectedDaysWithHours = selectedDays.map((dayOfWeek) => {
-      const dayInfo = daysOfWeek.find(
-        (day) => day.dayOfWeek.toString() === dayOfWeek.toString()
+​
+  const handleSelectHours = (e: any): void => {
+    const { value, dataset, name } = e.target
+    e.stopPropagation()
+​
+    const dayIndex = selectedDays.findIndex(
+      (selectedDay) => selectedDay.toString() === dataset.day.toString()
+    )
+​
+    const day = form?.daysOfWeek.days.find(
+      (dayOfWeek) => dayOfWeek.dayOfWeek.toString() === dataset.day.toString()
+    )
+​
+    const selectedHours = {
+      start: name === 'start' ? value : day?.hours[0].start,
+      end: name === 'end' ? value : day?.hours[0].end,
+    }
+​
+    const mount = {
+      dayOfWeek: day?.dayOfWeek,
+      hours: [selectedHours],
+    } as any
+​
+    if (form?.daysOfWeek?.days && mount) {
+      const index = form?.daysOfWeek?.days?.findIndex(
+        (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
       )
-      const { start, end } = dayInfo?.hours || { start: '', end: '' }
-      // console.group()
-      // console.log('days of week', daysOfWeek)
-
-      // console.log('day OF WEEK', dayOfWeek)
-      // console.log('Day INFO', dayInfo)
-      // console.groupEnd()
-      return { dayOfWeek, hours: { start, end } }
-    })
-    // console.log(selectedDaysWithHours);
+​
+      form.daysOfWeek.days[index] = mount
+      setForm({ ...form })
+    }
   }
-
-  const handleEndHoursToDaysSelected = (
-    e: any
-  ): void => {
-    const {value , dataset} = e.target
-    e.stopPropagation()
-    console.log('END', e.target.value)
-
-    const day = daysOfWeekMemo.find(d => d.dayOfWeek.toString() === dataset.day.toString())
-
-    if (!day) {
-            setDaysOfWeek((values) => [
-              ...values,
-              {
-                dayOfWeek: dataset.day,
-                hours: {
-                  end: value,
-                },
-              } as any,
-            ])
-          }
-  }
-
-  const handleStartHoursToDaysSelected = (
-    e: any
-  ): void => {
-    const {value , dataset} = e.target
-    e.stopPropagation()
-    console.log('DATADAY', dataset.day)
-    console.log('EVENT', e)
-    console.log('START:', value)
-
-    let day 
-    day = daysOfWeekMemo.find(d => d.dayOfWeek.toString() === dataset.day.toString())
-    if (!day) {
-            setDaysOfWeek((values) => [
-              ...values,
-              {
-                dayOfWeek: dataset.day,
-                hours: {
-                  start: value,
-                },
-              } as any,
-            ])
-            day = daysOfWeekMemo.forEach(d => { 
-              console.log('AAAAAAA', d)
-              console.log('BBBBBBBBB', dataset.day)
-            })
-          }
-          console.log('DAYS OF WEEK', daysOfWeek)
-      let mount: DayInfo | undefined = undefined   
-      console.log('DAY', day)
-      console.log('MEMO', daysOfWeekMemo)
-      
-      mount = {
-              dayOfWeek: day?.dayOfWeek || dataset.day,
-              hours: {
-                start: value,
-                end: day?.hours.end,
-              },
-            } as any
-          
-             if (form?.daysOfWeek?.days && mount) {
-              console.log('TEXTO FODASE', form)
-              const filteredArray = form?.daysOfWeek?.days.filter(item => item !== undefined);
-              console.log(filteredArray); // Output: [“item1”, “item3"]
-               
-              
-              const index = filteredArray.findIndex(
-                 (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
-               )
-               console.log('INDEX', index)
-               if(index > 0){
-
-                 form.daysOfWeek.days[index] = mount
-                } else {
-                  form.daysOfWeek.days[dataset.day] = mount
-                }
-                setForm({ ...form })
-             }
-
-             console.log('FORM', form)
-    // const { value, name, dataset } = e.target
-
-    // let day
-    // let mount: DayInfo | undefined = undefined
-    // console.log('EVENTO', e)
-    // switch (name) {
-    //   case 'start':
-    //     day = daysOfWeekMemo.find(
-    //       (d) => d.dayOfWeek.toString() === dataset.day?.toString()
-    //     )
-    //     if (!day) {
-    //       setDaysOfWeek((values) => [
-    //         ...values,
-    //         {
-    //           dayOfWeek: dataset.day,
-    //           hours: {
-    //             [name]: value,
-    //           },
-    //         } as any,
-    //       ])
-    //     }
-    //     mount = {
-    //       dayOfWeek: day?.dayOfWeek,
-    //       hours: {
-    //         start: value,
-    //         end: day?.hours.end,
-    //       },
-    //     } as any
-    //     break
-    //   case 'end':
-    //     day = daysOfWeekMemo.find(
-    //       (d) => d.dayOfWeek.toString() === dataset.day?.toString()
-    //     )
-    //     if (!day) {
-    //       setDaysOfWeek((values) => [
-    //         ...values,
-    //         {
-    //           dayOfWeek: dataset.day,
-    //           hours: {
-    //             [name]: value,
-    //           },
-    //         } as any,
-    //       ])
-    //     }
-    //     console.log('DAY', day)
-    //     mount = {
-    //       dayOfWeek: day?.dayOfWeek,
-    //       hours: {
-    //         start: day?.hours.start,
-    //         end: value,
-    //       },
-    //     } as any
-    //   default:
-    //     break
-    // }
-    // console.log('MOUNT', mount)
-    // if (form?.daysOfWeek?.days && mount) {
-    //   console.log('FORM', form)
-    //   const index = form?.daysOfWeek?.days?.findIndex(
-    //     (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
-    //   )
-    //   console.log('INDEX', index)
-    //   form.daysOfWeek.days[index] = mount
-    //   setForm({ ...form })
-    // }
-  }
-
+​
   const handleOfficeHourSelect = (calendar: any): void => {
     onOptionsChange(calendar)
   }
-
+​
   return (
     <>
       {screen === 'SETTINGS' && (
@@ -434,6 +304,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
             <FormControl>
               {
                 <OctaSelect
+                  key={'office-hours-select'}
                   options={optionsOfficeHour}
                   findable
                   onChange={(e) => handleOfficeHourSelect(e)}
@@ -462,7 +333,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                 name="name"
                 placeholder="Novo horário expediente"
                 label="Dê um nome para esse expediente"
-                onChange={handleChangeInput}
+                onChange={handleChangeName}
                 required
               />
             </FormControl>
@@ -472,10 +343,11 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
               {optionsTimezone && (
                 <OctaSelect
                   findable
+                  key={'timezone-select'}
                   options={optionsTimezone}
                   defaultValue="America/Sao_Paulo"
                   onChange={handleChangeTimezone}
-                  value={form.timeZone}
+                  // value={form?.timeZone}
                   placeholder="Selecione um fuso horário"
                   label="Qual é o fuso horário do expediente?"
                 />
@@ -509,7 +381,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
               </Options>
             </FormControl>
           </FormArea>
-
+​
           <div>
             {!is24hours && (
               <>
@@ -518,17 +390,14 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                     Em quais dias você estará <strong>disponível</strong>?
                   </h4>
                 </FormArea>
-                <Button onClick={getSelectedDaysAndHours}>
-                  Get Selected Days and Hours
-                </Button>
                 <FormArea>
-                  {WEEK_DAYS.map((week) => (
+                  {WEEK_DAYS.map((day) => (
                     <ButtonDays
-                      key={week}
-                      onClick={() => handleSelectDaysOfWeek(week)}
-                      className={selectedDays.includes(week) ? 'active' : ''}
+                      key={day}
+                      onClick={() => handleSelectDaysOfWeek(day)}
+                      className={selectedDays.includes(day) ? 'active' : ''}
                     >
-                      {dayPerNumber(week).min}
+                      {dayPerNumber(day).min}
                     </ButtonDays>
                   ))}
                 </FormArea>
@@ -537,7 +406,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                     {selectedDays
                       .sort((a, b) => a - b)
                       .map((day) => (
-                        <>
+                        <div key={day}>
                           <HourDay>{dayPerNumber(day).full}</HourDay>
                           <HoursRow>
                             <HoursControl>
@@ -546,7 +415,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                                 mask="99:99"
                                 name="start"
                                 data-day={`${day}`}
-                                onBlur={handleStartHoursToDaysSelected}
+                                onBlur={handleSelectHours}
                               />
                             </HoursControl>
                             <HoursPipe>até</HoursPipe>
@@ -556,11 +425,11 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                                 mask="99:99"
                                 name="end"
                                 data-day={`${day}`}
-                                onBlur={handleEndHoursToDaysSelected}
+                                onBlur={handleSelectHours}
                               />
                             </HoursControl>
                           </HoursRow>
-                        </>
+                        </div>
                       ))}
                   </HoursArea>
                 </FormArea>
