@@ -76,3 +76,35 @@ These apps are built with awesome web technologies including [Typescript](https:
    ```
 
 I know the project can be a bit hard to understand at first. I'm working on improving the documentation and the codebase to make it easier to contribute. If you have any questions, feel free to [open a discussion](https://github.com/baptisteArno/typebot.io/discussions/new)
+
+## How to create a new integration block
+
+The first step to create a new Typebot block is to define its schema. For this you need to
+
+1. Add your integration in the enum `IntegrationBlockType` in `packages/schemas/features/blocks/integrations/enums.ts`
+2. Create a new file in `packages/schemas/features/blocks/integrations`.
+
+   Your schema should look like:
+
+   ```ts
+   import { z } from 'zod'
+   import { blockBaseSchema } from '../baseSchemas'
+
+   export const myIntegrationBlockSchema = blockBaseSchema.merge(
+     z.object({
+       type: z.enum([IntegrationBlockType.MY_INTEGRATION]),
+       options: z.object({
+         //...
+       }),
+     })
+   )
+
+   export type MyIntegrationBlock = z.infer<typeof myIntegrationBlockSchema>
+   ```
+
+3. Add `myIntegrationBlockSchema` to `blockSchema` in `packages/schemas/features/blocks/schemas.ts`
+
+As soon as you have defined your schema, you can start implementing your block in the builder and the viewer.
+Since the code is strictly typed, you should see exactly where you need to add your integration-specific code.
+
+To sum it up you need to create a folder in `apps/builder/src/features/blocks/integrations` and in `apps/viewer/src/features/blocks/integrations`
