@@ -34,6 +34,7 @@ import {
   HoursRow,
   HourDay,
 } from './OfficeHoursBody.style'
+import { format } from 'path/posix'
 
 type Props = {
   step: Step
@@ -201,26 +202,26 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target
 
-    switch (name) {
-      case 'name':
-        setForm(
-          (e) =>
-            ({
-              ...e,
-              name: value,
-              daysOfWeek: [],
-            } as unknown as OfficeHoursFormType)
-        )
-        break
+    // switch (name) {
+    //   case 'name':
+    //     setForm(
+    //       (e) =>
+    //         ({
+    //           ...e,
+    //           name: value,
+    //           daysOfWeek: [],
+    //         } as unknown as OfficeHoursFormType)
+    //     )
+    //     break
 
-      default:
-        break
-    }
+    //   default:
+    //     break
+    // }
 
-    // setForm((prevForm) => ({
-    //   ...prevForm,
-    //   [name]: value,
-    // }));
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
   }
 
   const handleChangeTimezone = (selectedOption: any) => {
@@ -272,74 +273,152 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
     // console.log(selectedDaysWithHours);
   }
 
-  const handleHoursToDaysSelected = (
-    e: ChangeEvent<HTMLInputElement>
+  const handleEndHoursToDaysSelected = (
+    e: any
   ): void => {
-    const { value, name, dataset } = e.target
+    const {value , dataset} = e.target
+    e.stopPropagation()
+    console.log('END', e.target.value)
 
-    let day
-    let mount: DayInfo | undefined = undefined
-    console.log('EVENTO', e)
-    switch (name) {
-      case 'start':
-        day = daysOfWeekMemo.find(
-          (d) => d.dayOfWeek.toString() === dataset.day?.toString()
-        )
-        if (!day) {
-          setDaysOfWeek((values) => [
-            ...values,
-            {
-              dayOfWeek: dataset.day,
+    const day = daysOfWeekMemo.find(d => d.dayOfWeek.toString() === dataset.day.toString())
+
+    if (!day) {
+            setDaysOfWeek((values) => [
+              ...values,
+              {
+                dayOfWeek: dataset.day,
+                hours: {
+                  end: value,
+                },
+              } as any,
+            ])
+          }
+  }
+
+  const handleStartHoursToDaysSelected = (
+    e: any
+  ): void => {
+    const {value , dataset} = e.target
+    e.stopPropagation()
+    console.log('DATADAY', dataset.day)
+    console.log('EVENT', e)
+    console.log('START:', value)
+
+    let day 
+    day = daysOfWeekMemo.find(d => d.dayOfWeek.toString() === dataset.day.toString())
+    if (!day) {
+            setDaysOfWeek((values) => [
+              ...values,
+              {
+                dayOfWeek: dataset.day,
+                hours: {
+                  start: value,
+                },
+              } as any,
+            ])
+            day = daysOfWeekMemo.forEach(d => { 
+              console.log('AAAAAAA', d)
+              console.log('BBBBBBBBB', dataset.day)
+            })
+          }
+          console.log('DAYS OF WEEK', daysOfWeek)
+      let mount: DayInfo | undefined = undefined   
+      console.log('DAY', day)
+      console.log('MEMO', daysOfWeekMemo)
+      
+      mount = {
+              dayOfWeek: day?.dayOfWeek || dataset.day,
               hours: {
-                [name]: value,
+                start: value,
+                end: day?.hours.end,
               },
-            } as any,
-          ])
-        }
-        mount = {
-          dayOfWeek: day?.dayOfWeek,
-          hours: {
-            start: value,
-            end: day?.hours.end,
-          },
-        } as any
-        break
-      case 'end':
-        day = daysOfWeekMemo.find(
-          (d) => d.dayOfWeek.toString() === dataset.day?.toString()
-        )
-        if (!day) {
-          setDaysOfWeek((values) => [
-            ...values,
-            {
-              dayOfWeek: dataset.day,
-              hours: {
-                [name]: value,
-              },
-            } as any,
-          ])
-        }
-        console.log('DAY', day)
-        mount = {
-          dayOfWeek: day?.dayOfWeek,
-          hours: {
-            start: day?.hours.start,
-            end: value,
-          },
-        } as any
-      default:
-        break
-    }
-    console.log('MOUNT', mount)
-    if (form?.daysOfWeek?.days && mount) {
-      console.log('FORM', form)
-      const index = form?.daysOfWeek?.days?.findIndex(
-        (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
-      )
-      console.log('INDEX', index)
-      form.daysOfWeek.days[index] = mount
-      setForm({ ...form })
-    }
+            } as any
+          
+             if (form?.daysOfWeek?.days && mount) {
+              console.log('TEXTO FODASE', form)
+              const filteredArray = form?.daysOfWeek?.days.filter(item => item !== undefined);
+              console.log(filteredArray); // Output: [“item1”, “item3"]
+               
+              
+              const index = filteredArray.findIndex(
+                 (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
+               )
+               console.log('INDEX', index)
+               if(index > 0){
+
+                 form.daysOfWeek.days[index] = mount
+                } else {
+                  form.daysOfWeek.days[dataset.day] = mount
+                }
+                setForm({ ...form })
+             }
+
+             console.log('FORM', form)
+    // const { value, name, dataset } = e.target
+
+    // let day
+    // let mount: DayInfo | undefined = undefined
+    // console.log('EVENTO', e)
+    // switch (name) {
+    //   case 'start':
+    //     day = daysOfWeekMemo.find(
+    //       (d) => d.dayOfWeek.toString() === dataset.day?.toString()
+    //     )
+    //     if (!day) {
+    //       setDaysOfWeek((values) => [
+    //         ...values,
+    //         {
+    //           dayOfWeek: dataset.day,
+    //           hours: {
+    //             [name]: value,
+    //           },
+    //         } as any,
+    //       ])
+    //     }
+    //     mount = {
+    //       dayOfWeek: day?.dayOfWeek,
+    //       hours: {
+    //         start: value,
+    //         end: day?.hours.end,
+    //       },
+    //     } as any
+    //     break
+    //   case 'end':
+    //     day = daysOfWeekMemo.find(
+    //       (d) => d.dayOfWeek.toString() === dataset.day?.toString()
+    //     )
+    //     if (!day) {
+    //       setDaysOfWeek((values) => [
+    //         ...values,
+    //         {
+    //           dayOfWeek: dataset.day,
+    //           hours: {
+    //             [name]: value,
+    //           },
+    //         } as any,
+    //       ])
+    //     }
+    //     console.log('DAY', day)
+    //     mount = {
+    //       dayOfWeek: day?.dayOfWeek,
+    //       hours: {
+    //         start: day?.hours.start,
+    //         end: value,
+    //       },
+    //     } as any
+    //   default:
+    //     break
+    // }
+    // console.log('MOUNT', mount)
+    // if (form?.daysOfWeek?.days && mount) {
+    //   console.log('FORM', form)
+    //   const index = form?.daysOfWeek?.days?.findIndex(
+    //     (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
+    //   )
+    //   console.log('INDEX', index)
+    //   form.daysOfWeek.days[index] = mount
+    //   setForm({ ...form })
+    // }
   }
 
   const handleOfficeHourSelect = (calendar: any): void => {
@@ -467,7 +546,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                                 mask="99:99"
                                 name="start"
                                 data-day={`${day}`}
-                                onChange={handleHoursToDaysSelected}
+                                onBlur={handleStartHoursToDaysSelected}
                               />
                             </HoursControl>
                             <HoursPipe>até</HoursPipe>
@@ -477,7 +556,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                                 mask="99:99"
                                 name="end"
                                 data-day={`${day}`}
-                                onChange={handleHoursToDaysSelected}
+                                onBlur={handleEndHoursToDaysSelected}
                               />
                             </HoursControl>
                           </HoursRow>
