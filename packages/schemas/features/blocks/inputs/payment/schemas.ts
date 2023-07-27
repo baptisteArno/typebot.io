@@ -42,6 +42,7 @@ export const paymentInputOptionsSchema = optionBaseSchema.merge(
     credentialsId: z.string().optional(),
     currency: z.string(),
     amount: z.string().optional(),
+    retryMessageContent: z.string().optional(),
   })
 )
 
@@ -77,6 +78,7 @@ export const stripeCredentialsSchema = z
 export const defaultPaymentInputOptions: PaymentInputOptions = {
   provider: PaymentProvider.STRIPE,
   labels: { button: 'Pay', success: 'Success' },
+  retryMessageContent: 'Payment failed. Please, try again.',
   currency: 'USD',
 }
 

@@ -12,6 +12,7 @@ import {
   SessionState,
   SetVariableBlock,
   WebhookBlock,
+  defaultPaymentInputOptions,
 } from '@typebot.io/schemas'
 import { isInputBlock, byId } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
@@ -167,7 +168,7 @@ const parseRetryMessage = (
   const retryMessage =
     'retryMessageContent' in block.options && block.options.retryMessageContent
       ? block.options.retryMessageContent
-      : 'Invalid message. Please, try again.'
+      : parseDefaultRetryMessage(block)
   return {
     messages: [
       {
@@ -179,6 +180,15 @@ const parseRetryMessage = (
       },
     ],
     input: block,
+  }
+}
+
+const parseDefaultRetryMessage = (block: InputBlock): string => {
+  switch (block.type) {
+    case InputBlockType.PAYMENT:
+      return defaultPaymentInputOptions.retryMessageContent as string
+    default:
+      return 'Invalid message. Please, try again.'
   }
 }
 
@@ -271,6 +281,8 @@ export const isReplyValid = (inputValue: string, block: Block): boolean => {
       return validatePhoneNumber(inputValue)
     case InputBlockType.URL:
       return validateUrl(inputValue)
+    case InputBlockType.PAYMENT:
+      return inputValue !== 'fail'
   }
   return true
 }

@@ -47,6 +47,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     const typebotIdFromProps =
       typeof props.typebot === 'string' ? props.typebot : undefined
     const { data, error } = await getInitialChatReplyQuery({
+      stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
       isPreview: props.isPreview ?? false,
@@ -134,8 +135,9 @@ export const Bot = (props: BotProps & { class?: string }) => {
               apiHost: props.apiHost,
               isPreview:
                 typeof props.typebot !== 'string' || (props.isPreview ?? false),
-              typebotId: initialChatReply.typebot.id,
               resultId: initialChatReply.resultId,
+              sessionId: initialChatReply.sessionId,
+              typebot: initialChatReply.typebot,
             }}
             onNewInputBlock={props.onNewInputBlock}
             onNewLogs={props.onNewLogs}

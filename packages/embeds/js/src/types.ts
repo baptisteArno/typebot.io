@@ -6,10 +6,11 @@ export type InputSubmitContent = {
 }
 
 export type BotContext = {
-  typebotId: string
+  typebot: InitialChatReply['typebot']
   resultId?: string
   isPreview: boolean
   apiHost?: string
+  sessionId: string
 }
 
 export type InitialChatReply = ChatReply & {

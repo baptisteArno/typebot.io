@@ -4,6 +4,10 @@ import type { Stripe, StripeElements } from '@stripe/stripe-js'
 import { BotContext } from '@/types'
 import type { PaymentInputOptions, RuntimeOptions } from '@typebot.io/schemas'
 import { loadStripe } from '@/lib/stripe'
+import {
+  removePaymentInProgressFromStorage,
+  setPaymentInProgressInStorage,
+} from '../helpers/paymentInProgressStorage'
 
 type Props = {
   context: BotContext
@@ -51,11 +55,14 @@ export const StripePaymentForm = (props: Props) => {
 
     setIsLoading(true)
 
+    setPaymentInProgressInStorage({
+      sessionId: props.context.sessionId,
+      typebot: props.context.typebot,
+    })
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // TO-DO: Handle redirection correctly.
-        return_url: props.context.apiHost,
+        return_url: window.location.href,
         payment_method_data: {
           billing_details: {
             name: props.options.additionalInformation?.name,
@@ -71,6 +78,7 @@ export const StripePaymentForm = (props: Props) => {
       },
       redirect: 'if_required',
     })
+    removePaymentInProgressFromStorage()
 
     setIsLoading(false)
     if (error?.type === 'validation_error') return

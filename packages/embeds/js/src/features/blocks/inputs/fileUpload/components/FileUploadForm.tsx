@@ -54,7 +54,7 @@ export const FileUploadForm = (props: Props) => {
     setIsUploading(true)
     const urls = await uploadFiles({
       basePath: `${props.context.apiHost ?? guessApiHost()}/api/typebots/${
-        props.context.typebotId
+        props.context.typebot.id
       }/blocks/${props.block.id}`,
       files: [
         {
@@ -79,7 +79,7 @@ export const FileUploadForm = (props: Props) => {
     setIsUploading(true)
     const urls = await uploadFiles({
       basePath: `${props.context.apiHost ?? guessApiHost()}/api/typebots/${
-        props.context.typebotId
+        props.context.typebot.id
       }/blocks/${props.block.id}`,
       files: files.map((file) => ({
         file: file,

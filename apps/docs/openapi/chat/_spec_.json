@@ -981,6 +981,9 @@
                                                   },
                                                   "amount": {
                                                     "type": "string"
+                                                  },
+                                                  "retryMessageContent": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "required": [
@@ -4391,6 +4394,9 @@
                                       "type": "string"
                                     },
                                     "amount": {
+                                      "type": "string"
+                                    },
+                                    "retryMessageContent": {
                                       "type": "string"
                                     }
                                   },

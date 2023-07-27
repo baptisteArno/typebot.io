@@ -13,6 +13,7 @@ import { PreviewMessage, PreviewMessageProps } from './PreviewMessage'
 import { isDefined } from '@typebot.io/lib'
 import { BubbleParams } from '../types'
 import { Bot, BotProps } from '../../../components/Bot'
+import { getPaymentInProgressInStorage } from '@/features/blocks/inputs/payment/helpers/paymentInProgressStorage'
 
 export type BubbleProps = BotProps &
   BubbleParams & {
@@ -51,6 +52,8 @@ export const Bubble = (props: BubbleProps) => {
     const autoShowDelay = bubbleProps.autoShowDelay
     const previewMessageAutoShowDelay =
       bubbleProps.previewMessage?.autoShowDelay
+    const paymentInProgress = getPaymentInProgressInStorage()
+    if (paymentInProgress) openBot()
     if (isDefined(autoShowDelay)) {
       setTimeout(() => {
         openBot()

@@ -11,6 +11,7 @@ import { CommandData } from '../../commands'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { PopupParams } from '../types'
 import { Bot, BotProps } from '../../../components/Bot'
+import { getPaymentInProgressInStorage } from '@/features/blocks/inputs/payment/helpers/paymentInProgressStorage'
 
 export type PopupProps = BotProps &
   PopupParams & {
@@ -41,7 +42,8 @@ export const Popup = (props: PopupProps) => {
   )
 
   onMount(() => {
-    if (popupProps.defaultOpen) openBot()
+    const paymentInProgress = getPaymentInProgressInStorage()
+    if (popupProps.defaultOpen || paymentInProgress) openBot()
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = popupProps.autoShowDelay
     if (isDefined(autoShowDelay)) {
