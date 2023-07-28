@@ -29,6 +29,12 @@ function TypebotEditPage() {
     window.parent.postMessage({ name: 'iFrameHasLoaded' }, '*')
   }, [])
 
+  useEffect(() => {
+    if(!dequal(typebot?.blocks, currentTypebot?.blocks)) {
+      window.parent.postMessage({ name: 'hasUnsavedChanges' }, '*')
+    }
+  }, [typebot?.blocks])
+
   const handleEventListeners = (e: any): void => {
     if (e.data === 'backOrExitClick') {
       const hasUnsavedChanges = dequal(typebot?.blocks, currentTypebot?.blocks)
