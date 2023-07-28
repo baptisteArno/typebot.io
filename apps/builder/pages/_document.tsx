@@ -12,6 +12,10 @@ class MyDocument extends Document {
     return { ...initialProps }
   }
 
+  getConfigPath() {
+    return process.env.BASE_PATH + '/config.js'
+  }
+
   render() {
     return (
       <Html>
@@ -23,6 +27,7 @@ class MyDocument extends Document {
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+          <script src={this.getConfigPath()}></script>
         </Head>
         <body>
           <Main />

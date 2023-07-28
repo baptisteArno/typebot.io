@@ -92,6 +92,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   }
 
   const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
+    _.preventDefault()
     const { deltaX, deltaY } = draggableData
     updateBlockCoordinates(block.id, {
       x: blockCoordinates.x + deltaX / graphPosition.scale,

@@ -18,10 +18,14 @@ function apply_path {
       continue
     fi
     
+    echo "Line ${line}..."
     # split
     configName="$(cut -d'=' -f1 <<<"$line")"
+    echo "configName ${configName}..."
     configValue="$(cut -d'=' -f2 <<<"$line")"    # get system env
+    echo "configValue ${configValue}..."
     envValue=$(env | grep "^$configName=" | grep -oe '[^=]*$');
+    echo "envValue ${envValue}..."
     
     if [ -n "$configValue" ] && [ -n "$envValue" ]; then
       echo "Injecting ${configName}..."
@@ -30,6 +34,7 @@ function apply_path {
     find $nextFolder \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#$configValue#$envValue#g"
   done < $envFilename
 }
-  
+
 apply_path
+
 exec "$@"

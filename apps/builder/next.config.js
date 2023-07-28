@@ -7,7 +7,8 @@ const moduleExports = {
   env: {
     IS_LOCAL: process.env.IS_LOCAL,
     NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
-    BASE_PATH: process.env.BASE_PATH
+    BASE_PATH: process.env.BASE_PATH,
+    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
   },
   experimental: {
     outputStandalone: true,
