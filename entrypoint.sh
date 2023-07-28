@@ -18,10 +18,14 @@ function apply_path {
       continue
     fi
     
+    echo "Line ${line}..."
     # split
     configName="$(cut -d'=' -f1 <<<"$line")"
+    echo "Line ${configName}..."
     configValue="$(cut -d'=' -f2 <<<"$line")"    # get system env
+    echo "Line ${configValue}..."
     envValue=$(env | grep "^$configName=" | grep -oe '[^=]*$');
+    echo "Line ${envValue}..."
     
     if [ -n "$configValue" ] && [ -n "$envValue" ]; then
       echo "Injecting ${configName}..."
