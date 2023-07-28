@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -34,8 +34,6 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { sendOctaRequest } from 'util/octaRequest'
 import { QueryParamsInputs } from './KeyValueInputs'
 import { Input, Textarea } from 'components/shared/Textbox'
-import { stepTypeHasWebhook } from 'utils'
-import { optionCSS } from 'react-select/dist/declarations/src/components/Option'
 
 type Props = {
   step: WebhookStep
@@ -389,7 +387,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
               Params
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel pb={4} as={Stack} spacing="6">
+            <AccordionPanel as={Stack}>
               <Text color="gray.500" fontSize="sm">
                 Adicione sua informações ao final da URL da integração
                 (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
@@ -410,7 +408,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
               Headers
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel pb={4} as={Stack} spacing="6">
+            <AccordionPanel as={Stack}>
               <Text color="gray.500" fontSize="sm">
                 Sua informação no cabeçalho da integração
                 <strong> (ex.: Authorization: Basic 1234)</strong>

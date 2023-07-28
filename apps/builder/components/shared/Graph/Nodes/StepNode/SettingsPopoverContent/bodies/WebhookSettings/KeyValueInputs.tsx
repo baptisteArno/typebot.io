@@ -35,7 +35,7 @@ export const KeyValueInputs = ({
 
   const handleKeyChange = (key: string) => {
     if (key === item.key) return
-    onItemChange({ ...item, key, isNew: true, type: 'query'})
+    onItemChange({ ...item, key, isNew: true, type: 'query' })
   }
 
   const handleValueChange = (value: string) => {
@@ -47,26 +47,22 @@ export const KeyValueInputs = ({
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <FormControl>
-        <FormLabel htmlFor={'key' + item.key}>Chave:</FormLabel>
-        <Input
-          id={'key' + item.key}
-          defaultValue={item.key ?? ''}
-          onChange={handleKeyChange}
-          placeholder={keyPlaceholder}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor={'value' + item.value}>Valor:</FormLabel>
-        <Input
-          id={'value' + item.value}
-          defaultValue={item.value ?? ''}
-          onChange={handleValueChange}
-          placeholder={valuePlaceholder}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
+      <FormLabel htmlFor={'key' + item.key}>Chave:</FormLabel>
+      <Input
+        id={'key' + item.key}
+        defaultValue={item.key ?? ''}
+        onChange={handleKeyChange}
+        placeholder={keyPlaceholder}
+        debounceTimeout={debounceTimeout}
+      />
+      <FormLabel htmlFor={'value' + item.value}>Valor:</FormLabel>
+      <Input
+        id={'value' + item.value}
+        defaultValue={item.value ?? ''}
+        onChange={handleValueChange}
+        placeholder={valuePlaceholder}
+        debounceTimeout={debounceTimeout}
+      />
     </Stack>
   )
 }
