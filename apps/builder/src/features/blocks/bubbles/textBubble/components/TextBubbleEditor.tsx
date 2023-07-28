@@ -106,6 +106,9 @@ const TextBubbleEditorContent = ({
         '[class^="PlateFloatingLink___Styled"]': {
           '--tw-bg-opacity': useColorModeValue('1', '.1') + '!important',
           backgroundColor: useColorModeValue('white', 'gray.800'),
+          borderRadius: 'md',
+          transitionProperty: 'background-color',
+          transitionDuration: 'normal'
         },
         '[class^="FloatingVerticalDivider___"]': {
           '--tw-bg-opacity': useColorModeValue('1', '.4') + '!important',
