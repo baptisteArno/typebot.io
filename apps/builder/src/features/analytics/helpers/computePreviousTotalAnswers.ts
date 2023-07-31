@@ -18,7 +18,10 @@ export const computePreviousTotalAnswers = (
   )
   const previousBlocks = currentGroup.blocks.slice(0, currentBlockIndex + 1)
   for (const block of previousBlocks.reverse()) {
-    if (isInputBlock(block) || block.type === 'start')
+    if (
+      currentBlockId !== block.id &&
+      (isInputBlock(block) || block.type === 'start')
+    )
       return (
         totalAnswersInBlocks.find(
           (totalAnswersInBlock) =>
