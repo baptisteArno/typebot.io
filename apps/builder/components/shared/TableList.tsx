@@ -75,31 +75,26 @@ export const TableList = <T,>({
   return (
     <Stack spacing="4">
       {items.map((item, itemIndex) => (
-        <Box key={item.id}>
+        <Box key={item.id}
+          onMouseEnter={handleMouseEnter(itemIndex)}
+          onMouseLeave={handleMouseLeave}>
           {itemIndex !== 0 && <ComponentBetweenItems />}
-          <Flex
-            pos="relative"
-            onMouseEnter={handleMouseEnter(itemIndex)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Item
-              item={item}
-              onItemChange={handleCellChange(itemIndex)}
-              debounceTimeout={debounceTimeout}
+          <Fade in={showDeleteIndex === itemIndex}>
+            <IconButton
+              icon={<TrashIcon />}
+              aria-label="Remove cell"
+              onClick={deleteItem(itemIndex)}
+              top="10px"
+              size="sm"
+              shadow="md"
             />
-            <Fade in={showDeleteIndex === itemIndex}>
-              <IconButton
-                icon={<TrashIcon />}
-                aria-label="Remove cell"
-                onClick={deleteItem(itemIndex)}
-                pos="absolute"
-                left="-15px"
-                top="-15px"
-                size="sm"
-                shadow="md"
-              />
-            </Fade>
-          </Flex>
+          </Fade>
+
+          <Item
+            item={item}
+            onItemChange={handleCellChange(itemIndex)}
+            debounceTimeout={debounceTimeout}
+          />
         </Box>
       ))}
       {!shouldHideButton && (
