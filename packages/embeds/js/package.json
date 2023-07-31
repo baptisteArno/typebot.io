@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -29,6 +29,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "autoprefixer": "10.4.14",
     "babel-preset-solid": "1.7.7",
+    "clsx": "2.0.0",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "eslint-plugin-solid": "0.12.1",
