@@ -20,6 +20,7 @@ export const SourceEndpoint = ({
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
+    e.preventDefault()
     setConnectingIds({ source })
   }
 
