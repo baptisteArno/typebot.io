@@ -69,6 +69,12 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
    ```sh
    yarn && yarn dev
    ```
+If you are a windows developer you should try (make sure that you are in the app/builder folder):
+
+  ```
+ yarn dev:windows
+   ```
+
 
    Builder is available at `http://localhost:3000`
 
