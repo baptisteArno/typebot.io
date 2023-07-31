@@ -3,7 +3,7 @@ import { VideoBubbleContent, VideoBubbleContentType } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
 
 const vimeoRegex = /vimeo\.com\/(\d+)/
-const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)/
+const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)|youtu\.be\/(\w+)/
 
 type Props = {
   content?: VideoBubbleContent
@@ -42,7 +42,7 @@ const parseVideoUrl = (
     return { type: VideoBubbleContentType.VIMEO, url, id }
   }
   if (youtubeRegex.test(url)) {
-    const id = url.match(youtubeRegex)?.at(2)
+    const id = url.match(youtubeRegex)?.at(2) ?? url.match(youtubeRegex)?.at(3)
     if (!id) return { type: VideoBubbleContentType.URL, url }
     return { type: VideoBubbleContentType.YOUTUBE, url, id }
   }
