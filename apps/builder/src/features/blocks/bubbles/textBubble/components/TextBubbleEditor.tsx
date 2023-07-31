@@ -103,12 +103,15 @@ const TextBubbleEditorContent = ({
         '.slate-ToolbarButton-active': {
           color: useColorModeValue('blue.500', 'blue.300') + ' !important',
         },
-        '.PlateFloatingLink___StyledFloatingLinkInsertRoot-sc-1bralnd-8': {
+        '[class^="PlateFloatingLink___Styled"]': {
+          '--tw-bg-opacity': useColorModeValue('1', '.1') + '!important',
           backgroundColor: useColorModeValue('white', 'gray.800'),
-          borderWidth: 1,
+          borderRadius: 'md',
+          transitionProperty: 'background-color',
+          transitionDuration: 'normal'
         },
-        '.PlateFloatingLink___StyledDiv2-sc-1bralnd-2': {
-          backgroundColor: useColorModeValue('gray.200', 'gray.600'),
+        '[class^="FloatingVerticalDivider___"]': {
+          '--tw-bg-opacity': useColorModeValue('1', '.4') + '!important',
         },
         '.slate-a': {
           color: useColorModeValue('blue.500', 'blue.300'),
