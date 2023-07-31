@@ -77,6 +77,18 @@ export const ButtonCreate = styled(OctaButton)`
   margin: 15px 5px;
 `;
 
+export const ButtonAddInterval = styled(OctaButton)`
+width: 40%;
+border: 2px solid rgb(19, 102, 201);
+background: rgb(19, 102, 201);
+padding: 10px;
+font-family: 'Noto Sans', sans-serif;
+font-weight: 700;
+color: #fff;
+border-radius: 15px;
+margin: 10px 3px;
+`;
+
 export const ButtonCancel = styled(OctaButton)`
   background: #fff;
   color: rgb(19, 102, 201);
@@ -97,6 +109,18 @@ export const ButtonDays = styled(OctaButton)`
     background: rgb(19, 102, 201);
     color: #fff;
   }
+`;
+
+export const ButtonAddSpecialDate = styled(OctaButton)`
+width: 40%;
+border: 2px solid rgb(19, 102, 201);
+background: rgb(19, 102, 201);
+padding: 10px;
+font-family: 'Noto Sans', sans-serif;
+font-weight: 700;
+color: #fff;
+border-radius: 15px;
+margin: 10px 3px;
 `;
 
 
@@ -167,10 +191,24 @@ export const HourDay = styled.div`
   font-weight: bold;
 `;
 
+export const LabelInterval = styled.div`
+  padding-left: 15px;
+  margin-top: 15px;
+  font-size: .8rem;
+  font-weight: bold;
+`
+
 export const HoursRow = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
+export const HoursIntervalRow = styled.div`
+display: flex;
+flex-direction: row;
+margin-top: 7px;
+margin-bottom 7px;
+`
 
 export const HoursPipe = styled.div`
   width: 30px;
@@ -187,3 +225,4 @@ export const HoursControl = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
