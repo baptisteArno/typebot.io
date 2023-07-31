@@ -1,4 +1,5 @@
 import { TypingBubble } from '@/components'
+import { isMobile } from '@/utils/isMobileSignal'
 import type { AudioBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
@@ -8,7 +9,7 @@ type Props = {
 }
 
 const showAnimationDuration = 400
-const typingDuration = 500
+const typingDuration = 100
 
 let typingTimeout: NodeJS.Timeout
 
@@ -18,29 +19,16 @@ export const AudioBubble = (props: Props) => {
   let audioElement: HTMLAudioElement | undefined
   const [isTyping, setIsTyping] = createSignal(true)
 
-  const endTyping = () => {
-    if (isPlayed) return
-    isPlayed = true
-    setIsTyping(false)
-    setTimeout(
-      () => props.onTransitionEnd(ref?.offsetTop),
-      showAnimationDuration
-    )
-  }
-
   onMount(() => {
-    typingTimeout = setTimeout(endTyping, typingDuration)
-    audioElement?.addEventListener(
-      'canplay',
-      () => {
-        clearTimeout(typingTimeout)
-        audioElement
-          ?.play()
-          .catch((e) => console.warn("Couldn't autoplay audio", e))
-        endTyping()
-      },
-      { once: true }
-    )
+    typingTimeout = setTimeout(() => {
+      if (isPlayed) return
+      isPlayed = true
+      setIsTyping(false)
+      setTimeout(
+        () => props.onTransitionEnd(ref?.offsetTop),
+        showAnimationDuration
+      )
+    }, typingDuration)
   })
 
   onCleanup(() => {
@@ -63,11 +51,14 @@ export const AudioBubble = (props: Props) => {
           <audio
             ref={audioElement}
             src={props.url}
+            autoplay
             class={
-              'z-10 text-fade-in m-2 ' +
-              (isTyping() ? 'opacity-0' : 'opacity-100')
+              'z-10 text-fade-in ' +
+              (isTyping() ? 'opacity-0' : 'opacity-100 m-2')
             }
-            style={{ height: isTyping() ? '32px' : 'revert' }}
+            style={{
+              height: isTyping() ? (isMobile() ? '32px' : '36px') : 'revert',
+            }}
             controls
           />
         </div>

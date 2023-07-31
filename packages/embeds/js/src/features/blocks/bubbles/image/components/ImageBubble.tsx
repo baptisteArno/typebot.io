@@ -1,6 +1,8 @@
 import { TypingBubble } from '@/components'
 import type { ImageBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
+import { clsx } from 'clsx'
+import { isMobile } from '@/utils/isMobileSignal'
 
 type Props = {
   content: ImageBubbleContent
@@ -73,12 +75,20 @@ export const ImageBubble = (props: Props) => {
             <a
               href={props.content.clickLink.url}
               target="_blank"
-              class="p-4 z-10"
+              class={clsx('z-10', isTyping() ? 'h-8' : 'p-4')}
             >
               {Image}
             </a>
           ) : (
-            <figure class="p-4 z-10">{Image}</figure>
+            <figure
+              class={clsx(
+                'z-10',
+                !isTyping() && 'p-4',
+                isTyping() ? (isMobile() ? 'h-8' : 'h-9') : ''
+              )}
+            >
+              {Image}
+            </figure>
           )}
         </div>
       </div>
