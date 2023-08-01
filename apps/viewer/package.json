@@ -18,7 +18,7 @@
     "@trpc/server": "10.34.0",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
-    "ai": "^2.1.20",
+    "ai": "2.1.30",
     "aws-sdk": "2.1415.0",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",

@@ -154,6 +154,17 @@ export const setupDatabase = async () => {
 }
 
 export const teardownDatabase = async () => {
+  await prisma.webhook.deleteMany({
+    where: {
+      typebot: {
+        workspace: {
+          members: {
+            some: { userId: { in: [userId, otherUserId] } },
+          },
+        },
+      },
+    },
+  })
   await prisma.workspace.deleteMany({
     where: {
       members: {
@@ -161,8 +172,20 @@ export const teardownDatabase = async () => {
       },
     },
   })
+  await prisma.workspace.deleteMany({
+    where: {
+      id: {
+        in: [
+          proWorkspaceId,
+          freeWorkspaceId,
+          starterWorkspaceId,
+          lifetimeWorkspaceId,
+          customWorkspaceId,
+        ],
+      },
+    },
+  })
   await prisma.user.deleteMany({
     where: { id: { in: [userId, otherUserId] } },
   })
-  return prisma.webhook.deleteMany()
 }
