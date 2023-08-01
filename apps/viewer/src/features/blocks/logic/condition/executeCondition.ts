@@ -89,6 +89,20 @@ const executeComparison =
         }
         return compare(endsWith, inputValue, value)
       }
+      case ComparisonOperators.MATCHES_REGEX: {
+        const matchesRegex = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
+          return new RegExp(b).test(a)
+        }
+        return compare(matchesRegex, inputValue, value, 'some')
+      }
+      case ComparisonOperators.NOT_MATCH_REGEX: {
+        const matchesRegex = (a: string | null, b: string | null) => {
+          if (b === '' || !b || !a) return false
+          return !new RegExp(b).test(a)
+        }
+        return compare(matchesRegex, inputValue, value)
+      }
     }
   }
 

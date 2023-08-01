@@ -74,5 +74,9 @@ const parseComparisonOperatorSymbol = (
       return 'is empty'
     case ComparisonOperators.NOT_CONTAINS:
       return 'not contains'
+    case ComparisonOperators.MATCHES_REGEX:
+      return 'matches'
+    case ComparisonOperators.NOT_MATCH_REGEX:
+      return 'not matches'
   }
 }

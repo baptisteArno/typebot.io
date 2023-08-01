@@ -490,7 +490,9 @@
                                                                       "Is set",
                                                                       "Is empty",
                                                                       "Starts with",
-                                                                      "Ends with"
+                                                                      "Ends with",
+                                                                      "Matches regex",
+                                                                      "Does not match regex"
                                                                     ]
                                                                   },
                                                                   "value": {
@@ -1256,7 +1258,9 @@
                                                                       "Is set",
                                                                       "Is empty",
                                                                       "Starts with",
-                                                                      "Ends with"
+                                                                      "Ends with",
+                                                                      "Matches regex",
+                                                                      "Does not match regex"
                                                                     ]
                                                                   },
                                                                   "value": {
@@ -1457,7 +1461,9 @@
                                                                   "Is set",
                                                                   "Is empty",
                                                                   "Starts with",
-                                                                  "Ends with"
+                                                                  "Ends with",
+                                                                  "Matches regex",
+                                                                  "Does not match regex"
                                                                 ]
                                                               },
                                                               "value": {
@@ -2051,7 +2057,9 @@
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
-                                                                    "Ends with"
+                                                                    "Ends with",
+                                                                    "Matches regex",
+                                                                    "Does not match regex"
                                                                   ]
                                                                 },
                                                                 "value": {
@@ -2247,7 +2255,9 @@
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
-                                                                    "Ends with"
+                                                                    "Ends with",
+                                                                    "Matches regex",
+                                                                    "Does not match regex"
                                                                   ]
                                                                 },
                                                                 "value": {
@@ -3904,7 +3914,9 @@
                                                         "Is set",
                                                         "Is empty",
                                                         "Starts with",
-                                                        "Ends with"
+                                                        "Ends with",
+                                                        "Matches regex",
+                                                        "Does not match regex"
                                                       ]
                                                     },
                                                     "value": {
@@ -4670,7 +4682,9 @@
                                                         "Is set",
                                                         "Is empty",
                                                         "Starts with",
-                                                        "Ends with"
+                                                        "Ends with",
+                                                        "Matches regex",
+                                                        "Does not match regex"
                                                       ]
                                                     },
                                                     "value": {
